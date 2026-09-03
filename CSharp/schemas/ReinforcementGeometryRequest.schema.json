@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "widthMm": {
+      "type": "number"
+    },
+    "depthMm": {
+      "type": "number"
+    },
+    "nominalCoverMm": {
+      "type": "number"
+    },
+    "linkDiameterMm": {
+      "type": "number"
+    },
+    "minimumClearSpacingMm": {
+      "type": "number"
+    },
+    "tensionFace": {
+      "enum": [
+        "top",
+        "bottom"
+      ]
+    },
+    "tensionBars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "layerId": {
+            "type": "string"
+          },
+          "diameterMm": {
+            "type": "number"
+          },
+          "xFromLeftMm": {
+            "type": "number"
+          },
+          "yFromTopMm": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "layerId",
+          "diameterMm",
+          "xFromLeftMm",
+          "yFromTopMm"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "widthMm",
+    "depthMm",
+    "nominalCoverMm",
+    "linkDiameterMm",
+    "minimumClearSpacingMm",
+    "tensionFace",
+    "tensionBars"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReinforcementGeometryRequest"
+}

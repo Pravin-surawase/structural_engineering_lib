@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "nodes": [
+    { "id": "A", "xMm": 0, "prescribedDisplacementMm": 0 },
+    { "id": "B", "xMm": 6000, "prescribedDisplacementMm": 0 }
+  ],
+  "elements": [
+    { "id": "AB", "startNodeId": "A", "endNodeId": "B", "elasticModulusMpa": 25000,
+      "secondMomentMm4": 3125000000, "uniformLoadKnPerM": 10, "stationsFromStartMm": [3000] }
+  ]
+}

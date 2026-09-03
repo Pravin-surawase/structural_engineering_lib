@@ -1,0 +1,27 @@
+id,title,operations,examples,sources
+AR01,Keep each signed six-component action concurrent and traceable.,AO01,AX01,AS02; AS03; AS04; AS07
+AR02,"Solve a planar elastic beam line with supports, springs, settlements and loads.",AO02,AX02,AS08
+AR03,"Compute actual steel area, centroid, effective depth and geometric fit.",AO03,AX03,AS01; AS15
+AR04,Calculate quantities and direct cost from resolved bar paths and contact faces.,AO04,AX04,AS05; AS09; AS10
+AR05,Rank feasible evaluated candidates for one fixed analysis revision.,AO05,AX05,AS11; AS22
+AR06,"Check both bending signs, singly/doubly reinforced and eligible flanged sections.",AO06,AX06,AS01; AS17; AS18
+AR07,Check both relevant shear axes and actual link provision.,AO07,AX07,AS12; AS13
+AR08,"Check combined torsion, shear and flexure with perimeter reinforcement.",AO08,AX08,AS13; AS15
+AR09,Evaluate screening or calculated short/long-term deflection with stated assumptions.,AO09,AX09,AS14
+AR10,"Calculate crack width from service action, actual bars and exposure limit.",AO10,AX10,AS14
+AR11,Check required and available development at actual bar ends and supports.,AO11,AX11,AS15
+AR12,Resolve lap zones and curtailment against the stationwise demand envelope.,AO12,AX12,AS15; AS09
+AR13,Evaluate the selected seismic beam and joint context using actual reinforcement.,AO13,AX13,AS16; AS15
+AR14,Create a versioned project and explicit design criteria.,AO14,AX14,AS06; AS22
+AR15,"Separate physical, design and analysis spans and section geometry.",AO15,AX15,AS06; AS07
+AR16,Acquire a reproducible ETABS model and force snapshot.,AO16,AX16,AS02; AS03; AS04; AS07
+AR17,Design or check a complete member through all required engineering operations.,AO17,AX17,AS06; AS01; AS12; AS13; AS14; AS15
+AR18,"Resolve constructible longitudinal, side, torsion and link bar paths.",AO18,AX18,AS06; AS09; AS15
+AR19,Create BBS and cutting schedules from resolved reinforcement.,AO19,AX19,AS09; AS05
+AR20,Estimate complete declared construction cost and quantities.,AO20,AX20,AS10; AS09
+AR21,Search feasible constructible alternatives and report search completeness.,AO21,AX21,AS11; AS04; AS10
+AR22,Apply a selected candidate to an identified model copy and reanalyse.,AO22,AX22,AS03; AS04
+AR23,Run an understandable Excel workflow with explicit input and result freshness.,AO23,AX23,AS19; AS20; AS22
+AR24,"Produce a reproducible engineering report, detail drawings and schedules.",AO24,AX24,AS09; AS22
+AR25,Measure actual Windows Excel latency and scaling against declared workloads.,AO25,AX25,AS19; AS20
+AR26,"Check full reinforcement arrangement, layers, cover and construction fit.",AO26,AX26,AS01; AS15; AS16

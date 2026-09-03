@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ExcelDnaCreate32BitAddIn>false</ExcelDnaCreate32BitAddIn>
+    <ExcelDnaCreate64BitAddIn>true</ExcelDnaCreate64BitAddIn>
+    <ExcelDnaPack>true</ExcelDnaPack>
+    <ExcelDnaAddInName>StructAutomate</ExcelDnaAddInName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../StructAutomate.Application/StructAutomate.Application.csproj" />
+    <PackageReference Include="ExcelDna.AddIn" />
+  </ItemGroup>
+</Project>

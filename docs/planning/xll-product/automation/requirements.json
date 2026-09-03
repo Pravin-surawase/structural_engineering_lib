@@ -1,0 +1,517 @@
+[
+  {
+    "id": "AR01",
+    "title": "Keep each signed six-component action concurrent and traceable.",
+    "operations": [
+      "AO01"
+    ],
+    "examples": [
+      "AX01"
+    ],
+    "sources": [
+      "AS02",
+      "AS03",
+      "AS04",
+      "AS07"
+    ],
+    "acceptance": [
+      "Both source stations survive conversion to mm.",
+      "N and Nmm become kN and kNm without changing signs.",
+      "Different rows, axes or analysis revisions have different identities."
+    ]
+  },
+  {
+    "id": "AR02",
+    "title": "Solve a planar elastic beam line with supports, springs, settlements and loads.",
+    "operations": [
+      "AO02"
+    ],
+    "examples": [
+      "AX02"
+    ],
+    "sources": [
+      "AS08"
+    ],
+    "acceptance": [
+      "Each upward reaction is 30 kN; midpoint moment 45 kNm and downward deflection 2.16 mm.",
+      "Point loads retain both sides of the shear jump.",
+      "Continuous support hogging moments and settlements match independent formulas."
+    ]
+  },
+  {
+    "id": "AR03",
+    "title": "Compute actual steel area, centroid, effective depth and geometric fit.",
+    "operations": [
+      "AO03"
+    ],
+    "examples": [
+      "AX03"
+    ],
+    "sources": [
+      "AS01",
+      "AS15"
+    ],
+    "acceptance": [
+      "Area is 829.38046055 mm2 and bottom-face effective depth 435.45454545 mm.",
+      "Top-face depth is measured from the opposite compression face.",
+      "Cover and spacing failures retain their bar identifiers."
+    ]
+  },
+  {
+    "id": "AR04",
+    "title": "Calculate quantities and direct cost from resolved bar paths and contact faces.",
+    "operations": [
+      "AO04"
+    ],
+    "examples": [
+      "AX04"
+    ],
+    "sources": [
+      "AS05",
+      "AS09",
+      "AS10"
+    ],
+    "acceptance": [
+      "At 7850 kg/m3 steel mass is 59.18760559 kg; concrete 0.9 m3; formwork 7.8 m2.",
+      "A 90-degree bend on a 16 mm bar with 32 mm internal radius adds 62.83185307 mm to tangent lengths.",
+      "Omitted rates return no cost, never default prices."
+    ]
+  },
+  {
+    "id": "AR05",
+    "title": "Rank feasible evaluated candidates for one fixed analysis revision.",
+    "operations": [
+      "AO05"
+    ],
+    "examples": [
+      "AX05"
+    ],
+    "sources": [
+      "AS11",
+      "AS22"
+    ],
+    "acceptance": [
+      "Only the third candidate is feasible.",
+      "An incomplete domain cannot claim complete enumeration.",
+      "Required checks cannot be waived through notApplicable."
+    ]
+  },
+  {
+    "id": "AR06",
+    "title": "Check both bending signs, singly/doubly reinforced and eligible flanged sections.",
+    "operations": [
+      "AO06"
+    ],
+    "examples": [
+      "AX06"
+    ],
+    "sources": [
+      "AS01",
+      "AS17",
+      "AS18"
+    ],
+    "acceptance": [
+      "Actual d and compression-steel depth come from selected bars.",
+      "Return required/provided steel, neutral axis/strain regime, moment resistance, minimum/maximum steel and governing row.",
+      "Flange contributes only on its applicable compression side.",
+      "Axial/biaxial actions need a covered interaction method before member completion."
+    ]
+  },
+  {
+    "id": "AR07",
+    "title": "Check both relevant shear axes and actual link provision.",
+    "operations": [
+      "AO07"
+    ],
+    "examples": [
+      "AX07"
+    ],
+    "sources": [
+      "AS12",
+      "AS13"
+    ],
+    "acceptance": [
+      "Evaluate design shear stress, concrete contribution, maximum stress, required/provided links, minimum links and maximum spacing.",
+      "Enhancement applies only to its covered concentrated-load case.",
+      "Concurrent torsion routes through combined demand before selecting final links."
+    ]
+  },
+  {
+    "id": "AR08",
+    "title": "Check combined torsion, shear and flexure with perimeter reinforcement.",
+    "operations": [
+      "AO08"
+    ],
+    "examples": [
+      "AX08"
+    ],
+    "sources": [
+      "AS13",
+      "AS15"
+    ],
+    "acceptance": [
+      "Use one concurrent action vector per interaction check.",
+      "Return equivalent shear/moments and transverse plus longitudinal demands.",
+      "Check closed links, corner/side bars, perimeter spacing and development, not only total longitudinal area.",
+      "Zero T still runs applicable ordinary shear/link rules."
+    ]
+  },
+  {
+    "id": "AR09",
+    "title": "Evaluate screening or calculated short/long-term deflection with stated assumptions.",
+    "operations": [
+      "AO09"
+    ],
+    "examples": [
+      "AX09"
+    ],
+    "sources": [
+      "AS14"
+    ],
+    "acceptance": [
+      "Screening is identified separately from calculated deflection.",
+      "Service combinations never substitute factored ULS forces.",
+      "Report instantaneous, creep/shrinkage and incremental-after-finishes components and limits.",
+      "Method-specific creep, cracking and stiffness assumptions are returned."
+    ]
+  },
+  {
+    "id": "AR10",
+    "title": "Calculate crack width from service action, actual bars and exposure limit.",
+    "operations": [
+      "AO10"
+    ],
+    "examples": [
+      "AX10"
+    ],
+    "sources": [
+      "AS14"
+    ],
+    "acceptance": [
+      "Return steel stress/strain, effective tension region, cover/spacing terms, calculated width, limit and governing service row.",
+      "Different arrangements can give different crack widths despite equal steel area."
+    ]
+  },
+  {
+    "id": "AR11",
+    "title": "Check required and available development at actual bar ends and supports.",
+    "operations": [
+      "AO11"
+    ],
+    "examples": [
+      "AX11"
+    ],
+    "sources": [
+      "AS15"
+    ],
+    "acceptance": [
+      "Development demand depends on stress state, grade/bar type and bond conditions.",
+      "Available length uses the correct reference face and explicit bend/hook credit convention.",
+      "Simple-support anchorage conditions are evaluated where applicable."
+    ]
+  },
+  {
+    "id": "AR12",
+    "title": "Resolve lap zones and curtailment against the stationwise demand envelope.",
+    "operations": [
+      "AO12"
+    ],
+    "examples": [
+      "AX12"
+    ],
+    "sources": [
+      "AS15",
+      "AS09"
+    ],
+    "acceptance": [
+      "Check minimum extension past theoretical cutoff and anchorage at actual termination.",
+      "Check remaining bars and extra links at cutoffs where required.",
+      "Laps respect tension/compression rules, spliced percentage, staggering and zone restrictions.",
+      "Couplers are counted and carry qualification/installation references."
+    ]
+  },
+  {
+    "id": "AR13",
+    "title": "Evaluate the selected seismic beam and joint context using actual reinforcement.",
+    "operations": [
+      "AO13"
+    ],
+    "examples": [
+      "AX13"
+    ],
+    "sources": [
+      "AS16",
+      "AS15"
+    ],
+    "acceptance": [
+      "Geometry-only IS13920 checks do not constitute complete seismic detailing.",
+      "Evaluate top/bottom continuity, proportions, hoops, hooks, zone lengths and splice placement.",
+      "Capacity-based shear can govern over imported elastic-analysis shear.",
+      "Dependent joint/system checks retain their engineering result references."
+    ]
+  },
+  {
+    "id": "AR14",
+    "title": "Create a versioned project and explicit design criteria.",
+    "operations": [
+      "AO14"
+    ],
+    "examples": [
+      "AX14"
+    ],
+    "sources": [
+      "AS06",
+      "AS22"
+    ],
+    "acceptance": [
+      "Inputs and results carry new identities; prior results are marked as needing recalculation.",
+      "Normalized IS source distribution permission is already recorded in the repository."
+    ]
+  },
+  {
+    "id": "AR15",
+    "title": "Separate physical, design and analysis spans and section geometry.",
+    "operations": [
+      "AO15"
+    ],
+    "examples": [
+      "AX15"
+    ],
+    "sources": [
+      "AS06",
+      "AS07"
+    ],
+    "acceptance": [
+      "Store centreline, clear, effective design, flexible analysis and physical quantity lengths separately.",
+      "Support faces, point loads, section changes, reinforcement changes and extrema become check stations."
+    ]
+  },
+  {
+    "id": "AR16",
+    "title": "Acquire a reproducible ETABS model and force snapshot.",
+    "operations": [
+      "AO16"
+    ],
+    "examples": [
+      "AX16"
+    ],
+    "sources": [
+      "AS02",
+      "AS03",
+      "AS04",
+      "AS07"
+    ],
+    "acceptance": [
+      "Check all CSI return codes and equal result-array lengths.",
+      "Acquire units, local axes, sections/materials/modifiers/releases/offsets, analysis state and all raw rows.",
+      "No blanket component maxima create fictional simultaneous actions.",
+      "Normalization is implemented; COM acquisition is the next adapter operation."
+    ]
+  },
+  {
+    "id": "AR17",
+    "title": "Design or check a complete member through all required engineering operations.",
+    "operations": [
+      "AO17"
+    ],
+    "examples": [
+      "AX17"
+    ],
+    "sources": [
+      "AS06",
+      "AS01",
+      "AS12",
+      "AS13",
+      "AS14",
+      "AS15"
+    ],
+    "acceptance": [
+      "Iterate bar arrangement and actual depth before final checks.",
+      "Aggregate all applicable ULS, SLS, detailing and construction results without a partial pass.",
+      "Retain governing row/station/face and requirement IDs for every result."
+    ]
+  },
+  {
+    "id": "AR18",
+    "title": "Resolve constructible longitudinal, side, torsion and link bar paths.",
+    "operations": [
+      "AO18"
+    ],
+    "examples": [
+      "AX18"
+    ],
+    "sources": [
+      "AS06",
+      "AS09",
+      "AS15"
+    ],
+    "acceptance": [
+      "Each mark has tangent straights, bend centreline arcs, start/end stations and count.",
+      "Bar intersections/layer enclosure and congestion use actual geometry.",
+      "No full-span-bar assumption is substituted for a curtailed or lapped path."
+    ]
+  },
+  {
+    "id": "AR19",
+    "title": "Create BBS and cutting schedules from resolved reinforcement.",
+    "operations": [
+      "AO19"
+    ],
+    "examples": [
+      "AX19"
+    ],
+    "sources": [
+      "AS09",
+      "AS05"
+    ],
+    "acceptance": [
+      "Marks/shape dimensions/counts/cut lengths/mass reconcile to the same detail identity.",
+      "Stock cutting, laps, waste and offcuts are distinct; no waste double counting.",
+      "Link count uses first/last positions and zone-end inclusion conventions."
+    ]
+  },
+  {
+    "id": "AR20",
+    "title": "Estimate complete declared construction cost and quantities.",
+    "operations": [
+      "AO20"
+    ],
+    "examples": [
+      "AX20"
+    ],
+    "sources": [
+      "AS10",
+      "AS09"
+    ],
+    "acceptance": [
+      "Concrete uses explicit net segments and overlap/deduction policy.",
+      "Soffit, exposed sides, end bulkheads and slab/support interfaces are itemized.",
+      "Actual links, anchorage, laps and side bars contribute to steel.",
+      "Direct cost foundation is callable; labour/overhead/tax/waste model extends it explicitly."
+    ]
+  },
+  {
+    "id": "AR21",
+    "title": "Search feasible constructible alternatives and report search completeness.",
+    "operations": [
+      "AO21"
+    ],
+    "examples": [
+      "AX21"
+    ],
+    "sources": [
+      "AS11",
+      "AS04",
+      "AS10"
+    ],
+    "acceptance": [
+      "All required ULS/SLS/detailing checks precede ranking.",
+      "Best among evaluated candidates is distinct from a proven optimum of a fully enumerated domain.",
+      "Changes to stiffness, section, releases, offsets, self weight or loads require fresh analysis for coupled results.",
+      "Fixed-action comparisons explicitly retain their common force assumption."
+    ]
+  },
+  {
+    "id": "AR22",
+    "title": "Apply a selected candidate to an identified model copy and reanalyse.",
+    "operations": [
+      "AO22"
+    ],
+    "examples": [
+      "AX22"
+    ],
+    "sources": [
+      "AS03",
+      "AS04"
+    ],
+    "acceptance": [
+      "Verify target copy/model/property identity before writes.",
+      "Record every changed property, CSI return code, saved copy and new analysis identity.",
+      "Reimport and recheck resulting forces before comparison or report.",
+      "No live model operation is executed by this foundation setup."
+    ]
+  },
+  {
+    "id": "AR23",
+    "title": "Run an understandable Excel workflow with explicit input and result freshness.",
+    "operations": [
+      "AO23"
+    ],
+    "examples": [
+      "AX23"
+    ],
+    "sources": [
+      "AS19",
+      "AS20",
+      "AS22"
+    ],
+    "acceptance": [
+      "Use separate project/member/sections/actions/reinforcement/checks/BBS/quantities sheets with stable table columns.",
+      "Blank, zero, omitted and invalid text remain distinct.",
+      "Changed inputs invalidate associated results immediately.",
+      "Pure UDFs calculate; commands perform import, optimization, save and export.",
+      "Rows report exact cell/field/action identity and actionable input errors."
+    ]
+  },
+  {
+    "id": "AR24",
+    "title": "Produce a reproducible engineering report, detail drawings and schedules.",
+    "operations": [
+      "AO24"
+    ],
+    "examples": [
+      "AX24"
+    ],
+    "sources": [
+      "AS09",
+      "AS22"
+    ],
+    "acceptance": [
+      "Include input assumptions, code/rule references, formulas/normalized substitutions, required/provided values, utilization and governing cases.",
+      "Retain project/member/revision/engine/dataset and input/result hashes.",
+      "Prepared/checked/approved fields refer to real people and recorded actions; do not invent professional signatures.",
+      "Exports use one current complete member result and resolved schedule."
+    ]
+  },
+  {
+    "id": "AR25",
+    "title": "Measure actual Windows Excel latency and scaling against declared workloads.",
+    "operations": [
+      "AO25"
+    ],
+    "examples": [
+      "AX25"
+    ],
+    "sources": [
+      "AS19",
+      "AS20"
+    ],
+    "acceptance": [
+      "Record cold start, warm median/p95, allocations, memory, Excel bitness/build/runtime and machine.",
+      "Separate calculation from COM transfer, rendering and workbook save.",
+      "Use bulk reads/writes and avoid volatile per-cell ETABS calls.",
+      "Initial UX targets: typical recalculation under 1 s and responsive cancellation/progress within 250 ms; validate on a named reference machine before claiming them."
+    ]
+  },
+  {
+    "id": "AR26",
+    "title": "Check full reinforcement arrangement, layers, cover and construction fit.",
+    "operations": [
+      "AO26"
+    ],
+    "examples": [
+      "AX26"
+    ],
+    "sources": [
+      "AS01",
+      "AS15",
+      "AS16"
+    ],
+    "acceptance": [
+      "Check pairwise horizontal/vertical clearance, aggregate passage, cover to the correct steel surface and link-bend enclosure.",
+      "Compute each tension/compression group centroid separately; never mix top and bottom groups into one effective depth.",
+      "Construction fit includes insertion/placement sequence and joint clashes where selected.",
+      "The current geometry helper evaluates one tension group inside a clear rectangle; full-member fit extends this."
+    ]
+  }
+]

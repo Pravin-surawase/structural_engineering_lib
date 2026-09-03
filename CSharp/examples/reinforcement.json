@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0.0", "widthMm": 300, "depthMm": 500, "nominalCoverMm": 25,
+  "linkDiameterMm": 8, "minimumClearSpacingMm": 25, "tensionFace": "bottom",
+  "tensionBars": [
+    { "id": "B1", "layerId": "L1", "diameterMm": 20, "xFromLeftMm": 60, "yFromTopMm": 450 },
+    { "id": "B2", "layerId": "L1", "diameterMm": 20, "xFromLeftMm": 240, "yFromTopMm": 450 },
+    { "id": "B3", "layerId": "L2", "diameterMm": 16, "xFromLeftMm": 150, "yFromTopMm": 390 }
+  ]
+}

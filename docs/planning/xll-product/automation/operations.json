@@ -1,0 +1,1923 @@
+[
+  {
+    "id": "AO01",
+    "version": "1.0.0",
+    "name": "ForceNormalizer.Normalize",
+    "request_type": "EtabsForceBatch",
+    "result_type": "IReadOnlyList<BeamActionRow>",
+    "signature": "IReadOnlyList<BeamActionRow> ForceNormalizer.Normalize(EtabsForceBatch request)",
+    "implementation": {
+      "source": "CSharp/src/StructAutomate.Application/ForceNormalizer.cs",
+      "tests": "CSharp/tests/StructAutomate.Tests/ForceAndRankingTests.cs"
+    },
+    "purpose": "Keep each signed six-component action concurrent and traceable.",
+    "inputs": [
+      {
+        "name": "schemaVersion",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/EtabsForceBatch.schema.json. Numerical and identity validation: Application/ForceNormalizer.cs."
+      },
+      {
+        "name": "source",
+        "type": "object",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/EtabsForceBatch.schema.json. Numerical and identity validation: Application/ForceNormalizer.cs."
+      },
+      {
+        "name": "isAnalysisCurrent",
+        "type": "boolean",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/EtabsForceBatch.schema.json. Numerical and identity validation: Application/ForceNormalizer.cs."
+      },
+      {
+        "name": "forceUnit",
+        "type": "object",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/EtabsForceBatch.schema.json. Numerical and identity validation: Application/ForceNormalizer.cs."
+      },
+      {
+        "name": "lengthUnit",
+        "type": "object",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/EtabsForceBatch.schema.json. Numerical and identity validation: Application/ForceNormalizer.cs."
+      },
+      {
+        "name": "momentUnit",
+        "type": "object",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/EtabsForceBatch.schema.json. Numerical and identity validation: Application/ForceNormalizer.cs."
+      },
+      {
+        "name": "objectAxes",
+        "type": "object",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/EtabsForceBatch.schema.json. Numerical and identity validation: Application/ForceNormalizer.cs."
+      },
+      {
+        "name": "rows",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/EtabsForceBatch.schema.json. Numerical and identity validation: Application/ForceNormalizer.cs."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "IReadOnlyList<BeamActionRow>",
+        "semantics": "Keep each signed six-component action concurrent and traceable."
+      }
+    ],
+    "requirements": [
+      "AR01"
+    ],
+    "examples": [
+      "AX01"
+    ],
+    "sources": [
+      "AS02",
+      "AS03",
+      "AS04",
+      "AS07"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "../../../../CSharp/schemas/EtabsForceBatch.schema.json",
+    "result_contract": "CSharp/src/StructAutomate.Contracts/Forces.cs"
+  },
+  {
+    "id": "AO02",
+    "version": "1.0.0",
+    "name": "BeamLineSolver.Solve",
+    "request_type": "BeamLineRequest",
+    "result_type": "BeamLineResult",
+    "signature": "BeamLineResult BeamLineSolver.Solve(BeamLineRequest request)",
+    "implementation": {
+      "source": "CSharp/src/StructAutomate.Engineering/BeamLineSolver.cs",
+      "tests": "CSharp/tests/StructAutomate.Tests/BeamLineTests.cs"
+    },
+    "purpose": "Solve a planar elastic beam line with supports, springs, settlements and loads.",
+    "inputs": [
+      {
+        "name": "schemaVersion",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/BeamLineRequest.schema.json. Numerical and identity validation: Engineering/BeamLineSolver.cs."
+      },
+      {
+        "name": "nodes",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/BeamLineRequest.schema.json. Numerical and identity validation: Engineering/BeamLineSolver.cs."
+      },
+      {
+        "name": "elements",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/BeamLineRequest.schema.json. Numerical and identity validation: Engineering/BeamLineSolver.cs."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "BeamLineResult",
+        "semantics": "Solve a planar elastic beam line with supports, springs, settlements and loads."
+      }
+    ],
+    "requirements": [
+      "AR02"
+    ],
+    "examples": [
+      "AX02"
+    ],
+    "sources": [
+      "AS08"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "../../../../CSharp/schemas/BeamLineRequest.schema.json",
+    "result_contract": "CSharp/src/StructAutomate.Contracts/BeamLine.cs"
+  },
+  {
+    "id": "AO03",
+    "version": "1.0.0",
+    "name": "ReinforcementGeometry.Evaluate",
+    "request_type": "ReinforcementGeometryRequest",
+    "result_type": "ReinforcementGeometryResult",
+    "signature": "ReinforcementGeometryResult ReinforcementGeometry.Evaluate(ReinforcementGeometryRequest request)",
+    "implementation": {
+      "source": "CSharp/src/StructAutomate.Engineering/ReinforcementGeometry.cs",
+      "tests": "CSharp/tests/StructAutomate.Tests/GeometryQuantityTests.cs"
+    },
+    "purpose": "Compute actual steel area, centroid, effective depth and geometric fit.",
+    "inputs": [
+      {
+        "name": "schemaVersion",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/ReinforcementGeometryRequest.schema.json. Numerical and identity validation: Engineering/ReinforcementGeometry.cs."
+      },
+      {
+        "name": "widthMm",
+        "type": "number",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/ReinforcementGeometryRequest.schema.json. Numerical and identity validation: Engineering/ReinforcementGeometry.cs."
+      },
+      {
+        "name": "depthMm",
+        "type": "number",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/ReinforcementGeometryRequest.schema.json. Numerical and identity validation: Engineering/ReinforcementGeometry.cs."
+      },
+      {
+        "name": "nominalCoverMm",
+        "type": "number",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/ReinforcementGeometryRequest.schema.json. Numerical and identity validation: Engineering/ReinforcementGeometry.cs."
+      },
+      {
+        "name": "linkDiameterMm",
+        "type": "number",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/ReinforcementGeometryRequest.schema.json. Numerical and identity validation: Engineering/ReinforcementGeometry.cs."
+      },
+      {
+        "name": "minimumClearSpacingMm",
+        "type": "number",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/ReinforcementGeometryRequest.schema.json. Numerical and identity validation: Engineering/ReinforcementGeometry.cs."
+      },
+      {
+        "name": "tensionFace",
+        "type": "object",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/ReinforcementGeometryRequest.schema.json. Numerical and identity validation: Engineering/ReinforcementGeometry.cs."
+      },
+      {
+        "name": "tensionBars",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/ReinforcementGeometryRequest.schema.json. Numerical and identity validation: Engineering/ReinforcementGeometry.cs."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "ReinforcementGeometryResult",
+        "semantics": "Compute actual steel area, centroid, effective depth and geometric fit."
+      }
+    ],
+    "requirements": [
+      "AR03"
+    ],
+    "examples": [
+      "AX03"
+    ],
+    "sources": [
+      "AS01",
+      "AS15"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "../../../../CSharp/schemas/ReinforcementGeometryRequest.schema.json",
+    "result_contract": "CSharp/src/StructAutomate.Contracts/Reinforcement.cs"
+  },
+  {
+    "id": "AO04",
+    "version": "1.0.0",
+    "name": "QuantityCalculator.Calculate",
+    "request_type": "QuantityRequest",
+    "result_type": "QuantityResult",
+    "signature": "QuantityResult QuantityCalculator.Calculate(QuantityRequest request)",
+    "implementation": {
+      "source": "CSharp/src/StructAutomate.Engineering/QuantityCalculator.cs",
+      "tests": "CSharp/tests/StructAutomate.Tests/GeometryQuantityTests.cs"
+    },
+    "purpose": "Calculate quantities and direct cost from resolved bar paths and contact faces.",
+    "inputs": [
+      {
+        "name": "schemaVersion",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/QuantityRequest.schema.json. Numerical and identity validation: Engineering/QuantityCalculator.cs."
+      },
+      {
+        "name": "steelDensityKgPerM3",
+        "type": "number",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/QuantityRequest.schema.json. Numerical and identity validation: Engineering/QuantityCalculator.cs."
+      },
+      {
+        "name": "bars",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/QuantityRequest.schema.json. Numerical and identity validation: Engineering/QuantityCalculator.cs."
+      },
+      {
+        "name": "concrete",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/QuantityRequest.schema.json. Numerical and identity validation: Engineering/QuantityCalculator.cs."
+      },
+      {
+        "name": "formwork",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/QuantityRequest.schema.json. Numerical and identity validation: Engineering/QuantityCalculator.cs."
+      },
+      {
+        "name": "rates",
+        "type": "['object', 'null']",
+        "unit": null,
+        "required": false,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/QuantityRequest.schema.json. Numerical and identity validation: Engineering/QuantityCalculator.cs."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "QuantityResult",
+        "semantics": "Calculate quantities and direct cost from resolved bar paths and contact faces."
+      }
+    ],
+    "requirements": [
+      "AR04"
+    ],
+    "examples": [
+      "AX04"
+    ],
+    "sources": [
+      "AS05",
+      "AS09",
+      "AS10"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "../../../../CSharp/schemas/QuantityRequest.schema.json",
+    "result_contract": "CSharp/src/StructAutomate.Contracts/Quantities.cs"
+  },
+  {
+    "id": "AO05",
+    "version": "1.0.0",
+    "name": "CandidateRanker.Rank",
+    "request_type": "CandidateRankingRequest",
+    "result_type": "CandidateRankingResult",
+    "signature": "CandidateRankingResult CandidateRanker.Rank(CandidateRankingRequest request)",
+    "implementation": {
+      "source": "CSharp/src/StructAutomate.Application/CandidateRanker.cs",
+      "tests": "CSharp/tests/StructAutomate.Tests/ForceAndRankingTests.cs"
+    },
+    "purpose": "Rank feasible evaluated candidates for one fixed analysis revision.",
+    "inputs": [
+      {
+        "name": "schemaVersion",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/CandidateRankingRequest.schema.json. Numerical and identity validation: Application/CandidateRanker.cs."
+      },
+      {
+        "name": "analysisRevision",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/CandidateRankingRequest.schema.json. Numerical and identity validation: Application/CandidateRanker.cs."
+      },
+      {
+        "name": "requiredCheckIds",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/CandidateRankingRequest.schema.json. Numerical and identity validation: Application/CandidateRanker.cs."
+      },
+      {
+        "name": "domainCandidateIds",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/CandidateRankingRequest.schema.json. Numerical and identity validation: Application/CandidateRanker.cs."
+      },
+      {
+        "name": "candidates",
+        "type": "array",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Exact field/nested contract: CSharp/schemas/CandidateRankingRequest.schema.json. Numerical and identity validation: Application/CandidateRanker.cs."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CandidateRankingResult",
+        "semantics": "Rank feasible evaluated candidates for one fixed analysis revision."
+      }
+    ],
+    "requirements": [
+      "AR05"
+    ],
+    "examples": [
+      "AX05"
+    ],
+    "sources": [
+      "AS11",
+      "AS22"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "../../../../CSharp/schemas/CandidateRankingRequest.schema.json",
+    "result_contract": "CSharp/src/StructAutomate.Contracts/Candidates.cs"
+  },
+  {
+    "id": "AO06",
+    "version": "1.0.0",
+    "name": "CheckFlexure",
+    "request_type": "CheckFlexureRequest",
+    "result_type": "CheckFlexureResult",
+    "signature": "CheckFlexureResult CheckFlexure(CheckFlexureRequest request)",
+    "implementation": null,
+    "purpose": "Check both bending signs, singly/doubly reinforced and eligible flanged sections.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "tensionFace",
+        "type": "TensionFace",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "interactionMethod",
+        "type": "string",
+        "unit": null,
+        "required": false,
+        "default": null,
+        "condition": "Any axial or biaxial action outside selected pure-flexure applicability",
+        "validation": "Method must explicitly cover the retained P/M2/M3 domain; no silent component discard."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckFlexureResult",
+        "semantics": "Check both bending signs, singly/doubly reinforced and eligible flanged sections."
+      }
+    ],
+    "requirements": [
+      "AR06"
+    ],
+    "examples": [
+      "AX06"
+    ],
+    "sources": [
+      "AS01",
+      "AS17",
+      "AS18"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckFlexureRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  },
+  {
+    "id": "AO07",
+    "version": "1.0.0",
+    "name": "CheckShear",
+    "request_type": "CheckShearRequest",
+    "result_type": "CheckShearResult",
+    "signature": "CheckShearResult CheckShear(CheckShearRequest request)",
+    "implementation": null,
+    "purpose": "Check both relevant shear axes and actual link provision.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "shearAxis",
+        "type": "V2|V3",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "supportEnhancement",
+        "type": "ConcentratedLoadContext",
+        "unit": null,
+        "required": false,
+        "default": null,
+        "condition": "Selected near-support concentrated-load enhancement",
+        "validation": "Provide load type, support face, load position/av, load magnitude and rule ID; no UDL enhancement."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckShearResult",
+        "semantics": "Check both relevant shear axes and actual link provision."
+      }
+    ],
+    "requirements": [
+      "AR07"
+    ],
+    "examples": [
+      "AX07"
+    ],
+    "sources": [
+      "AS12",
+      "AS13"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckShearRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  },
+  {
+    "id": "AO08",
+    "version": "1.0.0",
+    "name": "CheckTorsion",
+    "request_type": "CheckTorsionRequest",
+    "result_type": "CheckTorsionResult",
+    "signature": "CheckTorsionResult CheckTorsion(CheckTorsionRequest request)",
+    "implementation": null,
+    "purpose": "Check combined torsion, shear and flexure with perimeter reinforcement.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "torsionNature",
+        "type": "equilibrium|compatibility",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "redistributionBasis",
+        "type": "string",
+        "unit": null,
+        "required": false,
+        "default": null,
+        "condition": "Compatibility torsion redistribution selected",
+        "validation": "A structural analysis/design basis is required; never set T to zero merely because it is inconvenient."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckTorsionResult",
+        "semantics": "Check combined torsion, shear and flexure with perimeter reinforcement."
+      }
+    ],
+    "requirements": [
+      "AR08"
+    ],
+    "examples": [
+      "AX08"
+    ],
+    "sources": [
+      "AS13",
+      "AS15"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckTorsionRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  },
+  {
+    "id": "AO09",
+    "version": "1.0.0",
+    "name": "CheckDeflection",
+    "request_type": "CheckDeflectionRequest",
+    "result_type": "CheckDeflectionResult",
+    "signature": "CheckDeflectionResult CheckDeflection(CheckDeflectionRequest request)",
+    "implementation": null,
+    "purpose": "Evaluate screening or calculated short/long-term deflection with stated assumptions.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "serviceability",
+        "type": "Serviceability",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "See full typed service inputs, long-term conditional fields and finish-date conditions in member-inputs.schema.json."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckDeflectionResult",
+        "semantics": "Evaluate screening or calculated short/long-term deflection with stated assumptions."
+      }
+    ],
+    "requirements": [
+      "AR09"
+    ],
+    "examples": [
+      "AX09"
+    ],
+    "sources": [
+      "AS14"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckDeflectionRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  },
+  {
+    "id": "AO10",
+    "version": "1.0.0",
+    "name": "CheckCrackWidth",
+    "request_type": "CheckCrackWidthRequest",
+    "result_type": "CheckCrackWidthResult",
+    "signature": "CheckCrackWidthResult CheckCrackWidth(CheckCrackWidthRequest request)",
+    "implementation": null,
+    "purpose": "Calculate crack width from service action, actual bars and exposure limit.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "surfacePoint",
+        "type": "SectionSurfacePoint",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Define physical face/point and distance to actual bar surfaces."
+      },
+      {
+        "name": "crackMethod",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckCrackWidthResult",
+        "semantics": "Calculate crack width from service action, actual bars and exposure limit."
+      }
+    ],
+    "requirements": [
+      "AR10"
+    ],
+    "examples": [
+      "AX10"
+    ],
+    "sources": [
+      "AS14"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckCrackWidthRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  },
+  {
+    "id": "AO11",
+    "version": "1.0.0",
+    "name": "CheckAnchorage",
+    "request_type": "CheckAnchorageRequest",
+    "result_type": "CheckAnchorageResult",
+    "signature": "CheckAnchorageResult CheckAnchorage(CheckAnchorageRequest request)",
+    "implementation": null,
+    "purpose": "Check required and available development at actual bar ends and supports.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "anchorages",
+        "type": "IReadOnlyList<Anchorage>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Typed Anchorage records define bar stress, bond, support face, straight length, bends/hooks and confinement."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckAnchorageResult",
+        "semantics": "Check required and available development at actual bar ends and supports."
+      }
+    ],
+    "requirements": [
+      "AR11"
+    ],
+    "examples": [
+      "AX11"
+    ],
+    "sources": [
+      "AS15"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckAnchorageRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  },
+  {
+    "id": "AO12",
+    "version": "1.0.0",
+    "name": "CheckLapsCurtailment",
+    "request_type": "CheckLapsCurtailmentRequest",
+    "result_type": "CheckLapsCurtailmentResult",
+    "signature": "CheckLapsCurtailmentResult CheckLapsCurtailment(CheckLapsCurtailmentRequest request)",
+    "implementation": null,
+    "purpose": "Resolve lap zones and curtailment against the stationwise demand envelope.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "splices",
+        "type": "IReadOnlyList<Splice>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Typed Splice records including overlap, percentage, staggering and qualified couplers."
+      },
+      {
+        "name": "cutoffStationsMm",
+        "type": "IReadOnlyList<double>",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "requiredSteelEnvelope",
+        "type": "StationSteelDemand[]",
+        "unit": "mm2",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Keep originating action-row IDs and supplemental shear/cutoff requirements."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckLapsCurtailmentResult",
+        "semantics": "Resolve lap zones and curtailment against the stationwise demand envelope."
+      }
+    ],
+    "requirements": [
+      "AR12"
+    ],
+    "examples": [
+      "AX12"
+    ],
+    "sources": [
+      "AS15",
+      "AS09"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckLapsCurtailmentRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  },
+  {
+    "id": "AO13",
+    "version": "1.0.0",
+    "name": "CheckSeismicDetailing",
+    "request_type": "CheckSeismicDetailingRequest",
+    "result_type": "CheckSeismicDetailingResult",
+    "signature": "CheckSeismicDetailingResult CheckSeismicDetailing(CheckSeismicDetailingRequest request)",
+    "implementation": null,
+    "purpose": "Evaluate the selected seismic beam and joint context using actual reinforcement.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "seismic",
+        "type": "Seismic",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Complete system, joint, probable-end-strength, capacity-shear and confinement data are required."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckSeismicDetailingResult",
+        "semantics": "Evaluate the selected seismic beam and joint context using actual reinforcement."
+      }
+    ],
+    "requirements": [
+      "AR13"
+    ],
+    "examples": [
+      "AX13"
+    ],
+    "sources": [
+      "AS16",
+      "AS15"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckSeismicDetailingRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  },
+  {
+    "id": "AO14",
+    "version": "1.0.0",
+    "name": "CreateBeamProject",
+    "request_type": "BeamProjectRequest",
+    "result_type": "BeamProjectResult",
+    "signature": "BeamProjectResult CreateBeamProject(BeamProjectRequest request)",
+    "implementation": null,
+    "purpose": "Create a versioned project and explicit design criteria.",
+    "inputs": [
+      {
+        "name": "project",
+        "type": "Project",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "criteria",
+        "type": "DesignCriteria",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Declare required checks by applicability, objectives, units and all profile-resolved assumptions."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "BeamProjectResult",
+        "semantics": "Create a versioned project and explicit design criteria."
+      }
+    ],
+    "requirements": [
+      "AR14"
+    ],
+    "examples": [
+      "AX14"
+    ],
+    "sources": [
+      "AS06",
+      "AS22"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO15",
+    "version": "1.0.0",
+    "name": "DefineBeamTopology",
+    "request_type": "BeamTopologyRequest",
+    "result_type": "BeamTopologyResult",
+    "signature": "BeamTopologyResult DefineBeamTopology(BeamTopologyRequest request)",
+    "implementation": null,
+    "purpose": "Separate physical, design and analysis spans and section geometry.",
+    "inputs": [
+      {
+        "name": "member",
+        "type": "Member",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "analysisMapping",
+        "type": "FrameElementMapping[]",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Map physical members/spans to ETABS objects/elements, offsets, releases, insertion points and station coordinates."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "BeamTopologyResult",
+        "semantics": "Separate physical, design and analysis spans and section geometry."
+      }
+    ],
+    "requirements": [
+      "AR15"
+    ],
+    "examples": [
+      "AX15"
+    ],
+    "sources": [
+      "AS06",
+      "AS07"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO16",
+    "version": "1.0.0",
+    "name": "ImportEtabsSnapshot",
+    "request_type": "EtabsImportRequest",
+    "result_type": "EtabsSnapshotResult",
+    "signature": "EtabsSnapshotResult ImportEtabsSnapshot(EtabsImportRequest request)",
+    "implementation": null,
+    "purpose": "Acquire a reproducible ETABS model and force snapshot.",
+    "inputs": [
+      {
+        "name": "connection",
+        "type": "EtabsConnection",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Version/runtime/bitness plus explicit model/session identity; read-only selected application."
+      },
+      {
+        "name": "frameSelection",
+        "type": "FrameSelection",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "resultSelections",
+        "type": "IReadOnlyList<Selection>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "stationPolicy",
+        "type": "StationPolicy",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "EtabsSnapshotResult",
+        "semantics": "Acquire a reproducible ETABS model and force snapshot."
+      }
+    ],
+    "requirements": [
+      "AR16"
+    ],
+    "examples": [
+      "AX16"
+    ],
+    "sources": [
+      "AS02",
+      "AS03",
+      "AS04",
+      "AS07"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO17",
+    "version": "1.0.0",
+    "name": "DesignMember",
+    "request_type": "MemberDesignRequest",
+    "result_type": "MemberDesignResult",
+    "signature": "MemberDesignResult DesignMember(MemberDesignRequest request)",
+    "implementation": null,
+    "purpose": "Design or check a complete member through all required engineering operations.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "candidateCatalogue",
+        "type": "CandidateCatalogue",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "designRegions",
+        "type": "StationRegion[]",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "requiredChecks",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "MemberDesignResult",
+        "semantics": "Design or check a complete member through all required engineering operations."
+      }
+    ],
+    "requirements": [
+      "AR17"
+    ],
+    "examples": [
+      "AX17"
+    ],
+    "sources": [
+      "AS06",
+      "AS01",
+      "AS12",
+      "AS13",
+      "AS14",
+      "AS15"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO18",
+    "version": "1.0.0",
+    "name": "ResolveBarPaths",
+    "request_type": "BarPathRequest",
+    "result_type": "MemberReinforcementSchedule",
+    "signature": "MemberReinforcementSchedule ResolveBarPaths(BarPathRequest request)",
+    "implementation": null,
+    "purpose": "Resolve constructible longitudinal, side, torsion and link bar paths.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "barZones",
+        "type": "BarZone[]",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "anchorages",
+        "type": "IReadOnlyList<Anchorage>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "splices",
+        "type": "IReadOnlyList<Splice>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "stockLengthsMm",
+        "type": "IReadOnlyList<double>",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "MemberReinforcementSchedule",
+        "semantics": "Resolve constructible longitudinal, side, torsion and link bar paths."
+      }
+    ],
+    "requirements": [
+      "AR18"
+    ],
+    "examples": [
+      "AX18"
+    ],
+    "sources": [
+      "AS06",
+      "AS09",
+      "AS15"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO19",
+    "version": "1.0.0",
+    "name": "CreateBbs",
+    "request_type": "BbsRequest",
+    "result_type": "BbsResult",
+    "signature": "BbsResult CreateBbs(BbsRequest request)",
+    "implementation": null,
+    "purpose": "Create BBS and cutting schedules from resolved reinforcement.",
+    "inputs": [
+      {
+        "name": "schedule",
+        "type": "MemberReinforcementSchedule",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "shapeConvention",
+        "type": "ShapeConvention",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "stockAndCuttingPolicy",
+        "type": "CuttingStockPolicy",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "BbsResult",
+        "semantics": "Create BBS and cutting schedules from resolved reinforcement."
+      }
+    ],
+    "requirements": [
+      "AR19"
+    ],
+    "examples": [
+      "AX19"
+    ],
+    "sources": [
+      "AS09",
+      "AS05"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO20",
+    "version": "1.0.0",
+    "name": "EstimateConstructionCost",
+    "request_type": "ConstructionCostRequest",
+    "result_type": "ConstructionCostResult",
+    "signature": "ConstructionCostResult EstimateConstructionCost(ConstructionCostRequest request)",
+    "implementation": null,
+    "purpose": "Estimate complete declared construction cost and quantities.",
+    "inputs": [
+      {
+        "name": "quantities",
+        "type": "QuantityResult",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "rateProfile",
+        "type": "RateProfile",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Currency/date/source, material rates, labour, waste, formwork method/reuse, overhead and tax treatment are explicit."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "ConstructionCostResult",
+        "semantics": "Estimate complete declared construction cost and quantities."
+      }
+    ],
+    "requirements": [
+      "AR20"
+    ],
+    "examples": [
+      "AX20"
+    ],
+    "sources": [
+      "AS10",
+      "AS09"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO21",
+    "version": "1.0.0",
+    "name": "OptimizeBeam",
+    "request_type": "BeamOptimizationRequest",
+    "result_type": "BeamOptimizationResult",
+    "signature": "BeamOptimizationResult OptimizeBeam(BeamOptimizationRequest request)",
+    "implementation": null,
+    "purpose": "Search feasible constructible alternatives and report search completeness.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "domain",
+        "type": "DiscreteCandidateDomain",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Finite b/D/grade/bar diameter/count/layer/link alternatives, constructibility bounds, evaluation budget and deterministic tie-break."
+      },
+      {
+        "name": "objective",
+        "type": "Cost|SteelMass|Depth|Carbon",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "analysisMode",
+        "type": "fixedActions|coupledReanalysis",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "reanalysisPolicy",
+        "type": "ReanalysisPolicy",
+        "unit": null,
+        "required": false,
+        "default": null,
+        "condition": "coupledReanalysis",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "BeamOptimizationResult",
+        "semantics": "Search feasible constructible alternatives and report search completeness."
+      }
+    ],
+    "requirements": [
+      "AR21"
+    ],
+    "examples": [
+      "AX21"
+    ],
+    "sources": [
+      "AS11",
+      "AS04",
+      "AS10"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO22",
+    "version": "1.0.0",
+    "name": "ApplyCandidateToEtabsCopy",
+    "request_type": "EtabsCandidateTransaction",
+    "result_type": "EtabsCandidateReceipt",
+    "signature": "EtabsCandidateReceipt ApplyCandidateToEtabsCopy(EtabsCandidateTransaction request)",
+    "implementation": null,
+    "purpose": "Apply a selected candidate to an identified model copy and reanalyse.",
+    "inputs": [
+      {
+        "name": "modelCopyPath",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "expectedBaselineSha256",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "candidate",
+        "type": "MemberCandidate",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "propertyMapping",
+        "type": "EtabsPropertyMapping",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "analysisCases",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "EtabsCandidateReceipt",
+        "semantics": "Apply a selected candidate to an identified model copy and reanalyse."
+      }
+    ],
+    "requirements": [
+      "AR22"
+    ],
+    "examples": [
+      "AX22"
+    ],
+    "sources": [
+      "AS03",
+      "AS04"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO23",
+    "version": "1.0.0",
+    "name": "CalculateWorkbook",
+    "request_type": "WorkbookCalculationRequest",
+    "result_type": "WorkbookCalculationResult",
+    "signature": "WorkbookCalculationResult CalculateWorkbook(WorkbookCalculationRequest request)",
+    "implementation": null,
+    "purpose": "Run an understandable Excel workflow with explicit input and result freshness.",
+    "inputs": [
+      {
+        "name": "templateVersion",
+        "type": "string",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "namedTables",
+        "type": "WorkbookTableMap",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "project",
+        "type": "Project",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "memberRequests",
+        "type": "MemberDesignRequest[]",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "calculationMode",
+        "type": "automatic|manual",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "WorkbookCalculationResult",
+        "semantics": "Run an understandable Excel workflow with explicit input and result freshness."
+      }
+    ],
+    "requirements": [
+      "AR23"
+    ],
+    "examples": [
+      "AX23"
+    ],
+    "sources": [
+      "AS19",
+      "AS20",
+      "AS22"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO24",
+    "version": "1.0.0",
+    "name": "CreateCalculationReport",
+    "request_type": "CalculationReportRequest",
+    "result_type": "CalculationReportPackage",
+    "signature": "CalculationReportPackage CreateCalculationReport(CalculationReportRequest request)",
+    "implementation": null,
+    "purpose": "Produce a reproducible engineering report, detail drawings and schedules.",
+    "inputs": [
+      {
+        "name": "memberResults",
+        "type": "MemberDesignResult[]",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "schedule",
+        "type": "MemberReinforcementSchedule",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "quantityResult",
+        "type": "ConstructionCostResult",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "projectMetadata",
+        "type": "ReportMetadata",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "reportProfile",
+        "type": "ReportProfile",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CalculationReportPackage",
+        "semantics": "Produce a reproducible engineering report, detail drawings and schedules."
+      }
+    ],
+    "requirements": [
+      "AR24"
+    ],
+    "examples": [
+      "AX24"
+    ],
+    "sources": [
+      "AS09",
+      "AS22"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO25",
+    "version": "1.0.0",
+    "name": "MeasureWorkbookPerformance",
+    "request_type": "PerformanceRequest",
+    "result_type": "PerformanceResult",
+    "signature": "PerformanceResult MeasureWorkbookPerformance(PerformanceRequest request)",
+    "implementation": null,
+    "purpose": "Measure actual Windows Excel latency and scaling against declared workloads.",
+    "inputs": [
+      {
+        "name": "workload",
+        "type": "BenchmarkWorkload",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "environment",
+        "type": "EnvironmentIdentity",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "batchSizes",
+        "type": "IReadOnlyList<int>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      },
+      {
+        "name": "coldAndWarmRuns",
+        "type": "RunPolicy",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Validate against the referenced schema and domain rules."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "PerformanceResult",
+        "semantics": "Measure actual Windows Excel latency and scaling against declared workloads."
+      }
+    ],
+    "requirements": [
+      "AR25"
+    ],
+    "examples": [
+      "AX25"
+    ],
+    "sources": [
+      "AS19",
+      "AS20"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs."
+  },
+  {
+    "id": "AO26",
+    "version": "1.0.0",
+    "name": "CheckReinforcementFit",
+    "request_type": "CheckReinforcementFitRequest",
+    "result_type": "CheckReinforcementFitResult",
+    "signature": "CheckReinforcementFitResult CheckReinforcementFit(CheckReinforcementFitRequest request)",
+    "implementation": null,
+    "purpose": "Check full reinforcement arrangement, layers, cover and construction fit.",
+    "inputs": [
+      {
+        "name": "context",
+        "type": "DesignContext",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "member-inputs.schema.json #/$defs/DesignContext; includes project, topology, actions, actual bars, SLS and conditional seismic context."
+      },
+      {
+        "name": "actionRowIds",
+        "type": "IReadOnlyList<string>",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Resolve to complete concurrent signed rows from the selected current snapshot."
+      },
+      {
+        "name": "stationXMm",
+        "type": "double",
+        "unit": "mm",
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "Station is inside member, mapped to the appropriate section/support face and discontinuity side."
+      },
+      {
+        "name": "arrangement",
+        "type": "Reinforcement",
+        "unit": null,
+        "required": true,
+        "default": null,
+        "condition": "always",
+        "validation": "All top/bottom/side/corner bars and links together; separate horizontal and vertical spacing criteria, bends and enclosure."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "CheckReinforcementFitResult",
+        "semantics": "Check full reinforcement arrangement, layers, cover and construction fit."
+      }
+    ],
+    "requirements": [
+      "AR26"
+    ],
+    "examples": [
+      "AX26"
+    ],
+    "sources": [
+      "AS01",
+      "AS15",
+      "AS16"
+    ],
+    "errors": "Field-specific invalid input; unavailable methods/checks are identified explicitly and cannot satisfy required checks.",
+    "optional_input_rule": "Omission uses only documented defaults; zero is a supplied numerical value. Conditional engineering inputs must resolve before that check runs.",
+    "request_schema": "member-inputs.schema.json#/$defs/CheckReinforcementFitRequest",
+    "result_schema": "member-inputs.schema.json#/$defs/CheckResponse"
+  }
+]

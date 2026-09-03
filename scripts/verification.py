@@ -34,6 +34,7 @@ REQUIRED_DOMAINS = (
     "fastapi",
     "react",
     "excel",
+    "dotnet",
     "control_plane",
     "docs",
     "repository",

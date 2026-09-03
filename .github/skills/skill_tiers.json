@@ -6,13 +6,14 @@
       "specialist": "Available to specific agents based on role",
       "experimental": "Requires explicit activation"
     },
-    "last_updated": "2026-08-11"
+    "last_updated": "2026-09-03"
   },
   "core": [
     {"name": "session-management", "description": "Session start/end automation", "available_to": "all"},
     {"name": "api-discovery", "description": "API function signature lookup", "available_to": "all"},
     {"name": "safe-file-ops", "description": "File move/delete preserving links", "available_to": "all"},
-    {"name": "development-rules", "description": "Hard-learned development rules by domain", "available_to": "all"}
+    {"name": "development-rules", "description": "Hard-learned development rules by domain", "available_to": "all"},
+    {"name": "beam-automation", "description": "Requirements-first ETABS-to-Excel beam automation workflow", "available_to": "all"}
   ],
   "specialist": [
     {"name": "function-quality-pipeline", "description": "9-step IS 456 function quality gate", "available_to": ["structural-math", "tester", "reviewer"]},

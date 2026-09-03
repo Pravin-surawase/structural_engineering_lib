@@ -25,6 +25,10 @@
       "description": "Excel add-in source and its dependency-free Node test surface",
       "hosted_job": "excel-validation"
     },
+    "dotnet": {
+      "description": "C# beam automation solution, tests, and packed x64 XLL output",
+      "hosted_job": "dotnet-validation"
+    },
     "control_plane": {
       "description": "Agent, script, session, Git, registry, workflow, and permission controls",
       "hosted_job": "control-plane-validation"
@@ -81,8 +85,12 @@
       "domains": ["excel"]
     },
     {
+      "paths": ["CSharp/**"],
+      "domains": ["dotnet", "docs"]
+    },
+    {
       "paths": ["scripts/verification.py", "scripts/verification-manifest.json", "scripts/verification-manifest.schema.json", "scripts/check_all.py", "scripts/control_plane/**", ".github/workflows/fast-checks.yml", ".github/actions/verification-evidence/**"],
-      "domains": ["python", "fastapi", "react", "excel", "control_plane", "docs", "repository"]
+      "domains": ["python", "fastapi", "react", "excel", "dotnet", "control_plane", "docs", "repository"]
     },
     {
       "paths": ["scripts/_lib/utils.py"],

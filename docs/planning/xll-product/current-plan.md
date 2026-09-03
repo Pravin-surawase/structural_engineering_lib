@@ -9,16 +9,16 @@ tags: [excel-dna, xll, planning, research]
 
 # StructAutomate — current plan
 
-Updated 3 September 2026 after reading the user-supplied original XLL architecture decision. The user implements; the assistant teaches and reviews observed results.
+Updated 3 September 2026 for the owner's request to implement the C# automation foundation. The first product workflow is standalone beam design in Windows Excel; the complete automation path includes ETABS forces, design/checking, candidate search, reanalysis, detailing and construction outputs.
 
 **Use the original architecture's P0–P6 phase meanings.** My earlier v2 synthesis changed those meanings and compared the older optimizer roadmap instead of this document. That comparison is superseded.
 
 ## Read these in order
 
-1. [Original XLL architecture decision](../excel-dna-xll-product-architecture-decision.md). Its text is preserved in this LF-normalized publication copy. The exact supplied bytes are retained in the [intake archive](../../_archive/xll-product-intake-2026-09-03/excel-dna-xll-product-architecture-decision.md). [Source provenance](source-manifest.json) records the original and published hashes; the earlier Mac Git revision has not been independently verified.
-2. [Phase comparison and research improvements](phase-review.md). This preserves the original phases, corrects the earlier mapping, and proposes clearer completion evidence.
-3. [Windows P0 task](windows-p0-task.txt). This separately supplied, narrower packet controls the first implementation exercise.
-4. [Research map](research/README.md). Use it to find the evidence, requirements, costs and parked questions relevant to each phase.
+1. [Automation requirements and delivery sequence](automation/README.md), with operation contracts, examples, source crosswalk and member/check schemas.
+2. [Working C# foundation](../../../CSharp/README.md), its exact build/test commands and implemented boundaries.
+3. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
+4. [Original XLL architecture decision](../excel-dna-xll-product-architecture-decision.md) and [phase review](phase-review.md), retained for architectural history. [Source provenance](source-manifest.json) records the supplied and publication hashes.
 
 ## Original phases, retained
 
@@ -32,9 +32,11 @@ Updated 3 September 2026 after reading the user-supplied original XLL architectu
 | P5 | Controlled ETABS transaction on a model copy |
 | P6 | Commercial hardening |
 
-The current exercise is the **shell-only Windows P0 packet**: preservation and environment checks, x64 Excel-DNA 1.9.0/net48, About/Diagnostics/Open Panel, and pure SA_HELLO/SA_ADD functions. A separate net8 comparison is conditional on existing prerequisites. Its explicit exclusions include CSI references and ETABS calls, structural calculations and solver work. Follow the packet's signing and acceptance rules.
+The original shell-only Windows P0 packet remains historical evidence of the first narrow exercise: preservation and environment checks, x64 Excel-DNA 1.9.0/net48, About/Diagnostics/Open Panel, and pure SA_HELLO/SA_ADD functions. It did not authorize or establish ETABS calls, structural calculations, solver work, or installed acceptance.
 
-The architecture's larger Windows matrix spans later capabilities. Completing the shell packet cannot close that matrix. Record deferred CSI compatibility proof before live P2 integration; the companion review explains the proposed scheduling. After P0 passes its receipt rules, P1 is one specified C# beam calculation.
+The C# solution now provides typed force normalization, beam-line analysis, reinforcement geometry, bar-path quantities and candidate ranking, with an Excel-DNA x64 build. The automation specification defines full member checks, ETABS adapters, candidate evaluation, detailing and workbook/report delivery. Installed Excel and ETABS behavior is verified with the actual applications as those interfaces are implemented.
+
+The next engineering increment ports ordinary-beam strength checks with actual reinforcement, followed by serviceability and full detailing through the same contracts. Application increments connect ETABS intake and the workbook, then complete candidate generation/reanalysis and construction/report delivery. This does not change the original phase meanings or the separate library beam programme.
 
 ## Learning and evidence status
 
@@ -48,4 +50,4 @@ The [v2 synthesis](history/foundation-and-delivery-plan-v2.md) and its unchanged
 
 The [engineering-depth assessment](research/engineering-depth.md) and [readiness audit](research/foundation-readiness.md) remain dated evidence. They establish neither a completed XLL nor independent engineering approval.
 
-This update changes planning and learning documents only. The supplied architecture remains a research decision; it does not itself authorize later implementation, model activity or release.
+The latest owner request authorizes this implementation and setup. Model operations use an identified application/model and the existing repository transaction workflow; package releases retain their per-release authorization process.

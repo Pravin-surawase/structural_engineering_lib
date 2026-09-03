@@ -9,6 +9,8 @@ tags: [beams, excel, csharp, requirements, contracts]
 
 # Standalone Excel beam product: requirements before migration
 
+The [automation requirements and C# foundation](../automation/README.md) extend this dated research with complete beam-workflow coverage and implemented foundational APIs. Use that package and the current plan for ongoing implementation; this directory preserves the original research, source inventory and failure evidence.
+
 **Decision date:** 3 September 2026. **Primary workflow selected by the owner:** standalone beam design in Windows Excel. **Status:** research and proposed product specification; no C# engineering implementation or installed acceptance is established here.
 
 The recommendation is to build a reusable C# calculation core and an Excel-DNA interface, starting with one complete ordinary beam workflow. The three existing projects provide useful calculations, cases and lessons. They do not make a reliable product a mechanical translation. The decisive work is reconciling engineering assumptions, preserving input/result identity, specifying what “complete” means, and delivering an understandable workbook and calculation report.
