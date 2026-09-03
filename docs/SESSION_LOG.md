@@ -5,6 +5,94 @@
 
 ---
 
+## 2026-09-03 — Session: Structural library definition programme
+
+**Agent:** Codex (`MAIN`, sole writer)
+
+**Branch:** `codex/library-definition-programme`.
+
+**Focus:** Define and document PF0–PF11 for the reusable Python/.NET libraries and their Excel/ETABS boundaries before further product implementation.
+
+### Issues encountered
+
+- The current-plan wording still directed the next engineering increment to
+  implementation, which conflicted with the owner's newer decision to plan the
+  library thoroughly first.
+- The first Word render continued the working-rules numbering from the preceding
+  read-order list and rendered the Mermaid source as plain code.
+- The canonical document renderer could not start because LibreOffice was not
+  installed on this Windows host. An initial attempt to reread the document
+  skill also used the wrong `.system` locator instead of its installed plugin
+  cache path.
+- The first accessibility audit classified the lead callout's one-cell layout
+  table as a table without a header row.
+- The documentation check rejected the `research` document type already present
+  on the preceding Python/.NET research and would reject the new `plan` type;
+  neither belongs to the maintained document-type enumeration.
+- The first two receipt commands passed human-readable evidence descriptions to
+  `--evidence`, but that option expects an evidence file path.
+- The first session-log insertion matched an older repeated receipt line and
+  split a historical E1 session; the handoff parser therefore continued to use
+  the preceding reusable-library research entry.
+- The regenerated handoff copied only the first line of the multi-line Focus
+  field and retained an older implementation boundary below its automatic block.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the active plan had not yet been reconciled after the
+  owner changed the work order. Resolution: make PF0–PF11 the current authority,
+  treat existing Python/C# code as planning evidence, and defer implementation
+  ordering to the PF11 blueprint. The current plan and new programme now state
+  the same order.
+- Confirmed root cause: both ordered lists shared one Word numbering instance,
+  and the generic Markdown converter had no Mermaid rendering path. Resolution:
+  create a new numbered-list instance with an explicit level-zero start override
+  and generate an accessible phase-map image. Word's final render shows 1–10 for
+  the working rules and a readable PF0–PF11 dependency map.
+- Confirmed root cause: `render_docx.py` invoked a missing `soffice` executable;
+  the skill is installed under the primary-runtime plugin cache, not the guessed
+  `.system` directory. Resolution: use the correct skill path, paginate/export
+  through installed Microsoft Word, rasterize with bundled Poppler, and inspect
+  all 11 page images. ⚠️ TERMINAL ISSUE: LibreOffice and the guessed skill path
+  were unavailable → used the installed plugin path plus Word/Poppler rendering.
+- Confirmed root cause: a visual callout had been implemented with a table even
+  though its content was not tabular. Resolution: replace it with a shaded,
+  bordered paragraph. The final accessibility audit reports zero high, medium
+  or low findings.
+- Confirmed root cause: repository front-matter validation accepts `guide`,
+  `reference`, `tutorial`, `index`, `spec` and `log`. Resolution: classify the
+  research as `reference` and the programme as `spec`. The complete documentation
+  check then passes all five checks with zero invalid front matter.
+- Confirmed root cause: the receipt CLI's short help names `--evidence` without
+  explaining that it is a path. Resolution: create the local-state receipt with
+  the task ownership fields and retain validation evidence in this session entry.
+  ⚠️ TERMINAL ISSUE: receipt evidence prose was treated as a path → reran the
+  receipt creator without that optional file argument.
+- Confirmed root cause: the chosen append anchor occurs in two historical E1
+  records, while newest session records belong immediately after the log header.
+  Resolution: move this complete entry to the newest position, rejoin the exact
+  displaced E1 continuation with its original header, and verify both boundaries
+  before regenerating the durable handoff.
+- Confirmed root cause: the handoff parser reads the Focus value from its heading
+  line, while the maintained body of `next-session-brief.md` is not regenerated
+  automatically. Resolution: keep the Focus on one line and replace the stale
+  briefing body with the PF0–PF11 authority, boundary and reading order.
+
+### Validation through content freeze
+
+- `validate_programme.py`: 12 ordered phases, 58 deliverables, 23 decisions, 17
+  capability families and AO01–AO26 validated.
+- `check_links.py`: 559 Markdown files, 1,384 local links, six images and zero
+  broken references.
+- `check_docs.py`: all five checks passed; zero invalid front matter.
+- Word/Poppler visual inspection: all 11 final pages inspected at 144 DPI; no
+  clipping, overlap, orphaned table header or unreadable phase label remains.
+- DOCX accessibility audit: zero high, medium or low findings.
+- `git diff --check`: no whitespace errors.
+
+**Git handoff receipt:** `docs/verification/library-definition-programme-git-handoff-receipt.json`
+
+---
 ## 2026-09-03 — Session: Reusable Python and .NET library research
 
 **Agent:** Codex (`MAIN`, with two bounded read-only research agents).

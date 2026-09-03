@@ -4,67 +4,48 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-03
-- Focus: Research reusable Python/.NET boundaries, application-specific functions, old-library lessons, peer libraries and ETABS API requirements.
-- Git receipt: docs/verification/reusable-library-research-git-handoff-receipt.json | sha256:756f6a0e4135431228499fc3ee8cfab47731517b9fb120d333e76e9f3d379fc1 | HOLD
-- Git identity: codex/reusable-library-research@5300767eda1dd5f98328c7e3c3116891967e75ab | upstream=NONE@UNKNOWN | base=origin/main@5300767eda1dd5f98328c7e3c3116891967e75ab | tree=dirty | operation=none
+- Focus: Define and document PF0–PF11 for the reusable Python/.NET libraries and their Excel/ETABS boundaries before further product implementation.
+- Git receipt: docs/verification/library-definition-programme-git-handoff-receipt.json | sha256:9c0811a4aa8e2c0988dc52b85cb4149980d4b3e03140582061af940a228475ad | HOLD
+- Git identity: codex/library-definition-programme@3e7c8ee7c2d6cae8babc60e6bb1c315b0e6b3d09 | upstream=NONE@UNKNOWN | base=origin/main@3e7c8ee7c2d6cae8babc60e6bb1c315b0e6b3d09 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-The
-[Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md)
-is the human-facing programme authority. It freezes six sequential phases and
-makes Phase 1 the only active phase.
-
-PR #952 is merged at `c29a468a`. It accepted the supervised getter-only A1
-state/file preservation and the exact C1 SQLite schema inventory. All required
-hosted checks passed. The installed run found 160 tables/62,133 rows, all 10
-requested tables and all 80 requested fields. The 3,502 IS 456 beam-summary rows
-matched 3,502 direct getter items across 153/153 beams. The comparison result
-epoch remains `BLOCKED`, so those values remain diagnostic rather than fresh
-project comparison truth.
+[Structural Library Definition Programme PF0–PF11](xll-product/library-definition/README.md)
+is the current work authority. It defines the reusable Python/.NET libraries and
+their Excel/ETABS boundaries before further implementation. The existing Python
+package, C# foundation, automation catalogue and historical projects are inputs
+to the programme; none can silently become the normative public API.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | Phase 1 is active. A0/A1/C0/C1 foundations and installed schema evidence are accepted. B1B/B2 later-phase evaluator/search code is retained but does not advance the active phase. |
-| **Next** | Freeze the minimum baseline allowlist/output contract and implement C2 for only the accepted C1 schema, entirely offline. |
-| Commit lane | Exactly the three accepted mutation-safety hooks from PR #949; no broad gate is repeated per commit. |
-| PR lane | Formatting, linting, typing, security, tests, generated contracts, docs and API parity run once for the complete batch. |
-| Phase 1 exit | Exact process/runtime/model identity, fresh result epoch, explicit types/units, signed forces with physical-face identity, unchanged original model and repeatable normalized acquisition. |
-| Held | Fresh project comparison truth until the result epoch is proved. Installed ETABS work requires separate authorization. Setters, save, unlock, further analysis/design, application exit, model input mutation, Excel automation, original-model changes, release/publication and unrelated cleanup remain excluded from C2. |
+| **Current** | The 12-phase programme, 58 deliverables, 23 decisions, 17 capability families and AO01–AO26 traceability are defined and validated. No PF phase has yet been executed. |
+| **Next** | Complete PF0's charter, owner map, success measures and glossary; review its exit evidence before PF1/PF2 discovery closes. |
+| Definition boundary | Requirements, semantics, signatures, assurance, application contracts, packaging, migration and implementation ordering are decided through PF0–PF11. |
+| Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |
+| Implementation boundary | Further product implementation begins only from the integrated PF11 blueprint. Existing code remains usable evidence during definition. |
+| Release boundary | Package publication and GitHub releases retain the repository's separate per-release authorization and evidence process. |
 
 ## Next decision order
 
-1. Freeze the minimum Phase 1 baseline fields and canonical output contract.
-2. Implement the C2 parser for only the accepted C1 tables and fields.
-3. Prove schema, integrity, bounds, units, identity and deterministic
-   normalization offline while preserving the result-epoch `HOLD`.
-4. Add one acquisition/repeatability receipt rather than more independent
-   extraction paths.
-5. Request separate authorization before obtaining fresh installed result-epoch
-   evidence, then repeat acquisition and close Phase 1 only if every gate passes.
-
-## Cleanup state
-
-- Urgent cleanup removed 40 clean merged-PR worktrees and 266 closed/merged-PR
-  cache records. Five protected worktrees, all branches, open-PR/default-branch
-  caches and dirty user work remain.
-- No task-owned stale Python/test/dev/ETABS/Excel process remained. Codex/MCP
-  and remote-desktop helpers are unrelated and must remain running.
-- The hygiene-documentation worktree was removed after PR #951 was accepted;
-  its branch remains preserved because deletion was not authorized.
-- The dirty Excel-pilot and W3F live-foundation worktrees are suspended
-  preservation lanes with zero commits ahead and overlapping historical docs.
-  Preserve their exact dirty files and rebind deliberately before resumption;
-  do not merge, reset, stash or rebase them as cleanup.
+1. PF0: settle purpose, users, owners and measurable success.
+2. PF1 and PF2: document real workflows while auditing existing assets and
+   failure-prevention evidence.
+3. PF3–PF5: settle capability boundaries, engineering semantics and public
+   operations before choosing language signatures.
+4. PF6–PF8: settle Python/.NET parity, assurance and Excel/ETABS contracts.
+5. PF9–PF11: settle packaging/performance, migration/documentation and the
+   ordered implementation blueprint.
 
 ## Required Reading
 
-1. [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md)
-2. [W3 and professional beam integrated plan](w3-beam-professional-integrated-execution-plan.md)
-3. [Current task board](../TASKS.md)
-4. [Newest session entry](../SESSION_LOG.md)
-5. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
-6. [Commit and PR validation consolidation plan](commit-pr-validation-consolidation-plan.md)
+1. [Structural Library Definition Programme](xll-product/library-definition/README.md)
+2. [Machine-readable programme](xll-product/library-definition/programme.json)
+3. [Decision register](xll-product/library-definition/decision-register.json)
+4. [Current XLL plan](xll-product/current-plan.md)
+5. [Automation requirements](xll-product/automation/README.md)
+6. [Reusable Python/.NET library research](xll-product/reusable-library-research.md)
+7. [Newest session entry](../SESSION_LOG.md)
+8. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
