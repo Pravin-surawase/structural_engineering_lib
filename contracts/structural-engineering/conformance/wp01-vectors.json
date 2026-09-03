@@ -1,0 +1,62 @@
+{
+  "schema_version": "structural-conformance/v1",
+  "work_packet": "WP01",
+  "tolerance": {"absolute": 1e-9, "relative": 1e-9},
+  "vectors": [
+    {
+      "id": "wp01-canonical-object",
+      "operation_semantic_id": "canonicalization",
+      "input": {"b": 2, "a": 1},
+      "expected_canonical_utf8": "{\"a\":1,\"b\":2}",
+      "expected_normalized_input_id": "normalized_input_id:pf4-canonical-json-v1:43258cff783fe7036d8a43033f830adfc60ec037382473548ac742b888292777"
+    },
+    {
+      "id": "wp01-bar-area-16",
+      "operation_semantic_id": "structural.reinforcement.bar_area/v1",
+      "input": {"profile_id": "IS456-WP01", "diameter_mm": 16},
+      "expected": {"execution": "completed", "engineering": "pass", "area_mm2": 201.06192982974676}
+    },
+    {
+      "id": "wp01-mass-16",
+      "operation_semantic_id": "structural.reinforcement.mass_per_length/v1",
+      "input": {"profile_id": "IS456-WP01", "diameter_mm": 16, "density_kg_per_m3": 7850},
+      "expected": {"execution": "completed", "engineering": "pass", "mass_kg_per_m": 1.5783361491635123}
+    },
+    {
+      "id": "wp01-geometry-bottom",
+      "operation_semantic_id": "structural.reinforcement_geometry.evaluate/v1",
+      "input": {"width_mm": 300, "depth_mm": 500, "bars": [{"bar_id": "B1", "diameter_mm": 20, "x_from_left_mm": 80, "y_from_top_mm": 450, "face": "bottom", "layer": 1}, {"bar_id": "B2", "diameter_mm": 20, "x_from_left_mm": 220, "y_from_top_mm": 450, "face": "bottom", "layer": 1}]},
+      "expected": {"engineering": "pass", "area_mm2": 628.3185307179587, "effective_depth_mm": 450, "minimum_clear_spacing_mm": 120}
+    },
+    {
+      "id": "wp01-effective-depth-bottom",
+      "operation_semantic_id": "structural.reinforcement.effective_depth/v1",
+      "input": {"depth_mm": 500, "tension_face": "bottom", "bars": [{"bar_id": "B1", "diameter_mm": 20, "x_from_left_mm": 80, "y_from_top_mm": 450, "face": "bottom", "layer": 1}, {"bar_id": "B2", "diameter_mm": 20, "x_from_left_mm": 220, "y_from_top_mm": 450, "face": "bottom", "layer": 1}]},
+      "expected": {"engineering": "pass", "area_mm2": 628.3185307179587, "effective_depth_mm": 450}
+    },
+    {
+      "id": "wp01-rectangular-capacity",
+      "operation_semantic_id": "is456.beam.flexural_capacity/v1",
+      "input": {"web_width_mm": 300, "depth_mm": 500, "fck_n_per_mm2": 25, "fy_n_per_mm2": 415, "tension_face": "bottom", "bars": ["2-20", 450]},
+      "expected": {"engineering": "pass", "capacity_knm": 94.07913916844615, "neutral_axis_depth_mm": 84.02015019100702, "effective_depth_mm": 450}
+    },
+    {
+      "id": "wp01-flexure-positive",
+      "operation_semantic_id": "is456.beam.flexure.check/v1",
+      "input": {"design_moment_knm": 80, "capacity_vector": "wp01-rectangular-capacity"},
+      "expected": {"engineering": "pass", "utilization": 0.8503479167338274, "tension_face": "bottom"}
+    },
+    {
+      "id": "wp01-bar-area-zero",
+      "operation_semantic_id": "structural.reinforcement.bar_area/v1",
+      "input": {"diameter_mm": 0},
+      "expected": {"execution": "rejected_input", "engineering": "not_evaluated", "diagnostic": "INPUT.RANGE"}
+    },
+    {
+      "id": "wp01-axial-interaction-unsupported",
+      "operation_semantic_id": "is456.beam.flexural_capacity/v1",
+      "input": {"axial_force_kn": 10},
+      "expected": {"execution": "completed", "applicability": "not_applicable", "completeness": "complete_for_scope", "diagnostic": "PROFILE.UNSUPPORTED"}
+    }
+  ]
+}

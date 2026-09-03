@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+"""Validate language-neutral structural-engineering contract artifacts."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+from jsonschema import Draft202012Validator
+
+ROOT = Path(__file__).resolve().parents[1]
+CONTRACT_ROOT = ROOT / "contracts" / "structural-engineering"
+EXPECTED_WP01 = {
+    "FO01": "structural.reinforcement.bar_area/v1",
+    "FO02": "structural.reinforcement.mass_per_length/v1",
+    "FO03": "structural.reinforcement.effective_depth/v1",
+    "FO04": "is456.beam.flexural_capacity/v1",
+    "AO03": "structural.reinforcement_geometry.evaluate/v1",
+    "AO06": "is456.beam.flexure.check/v1",
+}
+
+
+def load(path: Path) -> object:
+    with path.open(encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def fail(message: str) -> None:
+    raise ValueError(message)
+
+
+def validate() -> None:
+    paths = tuple(CONTRACT_ROOT.rglob("*.json"))
+    if not paths:
+        fail("no structural-engineering contract JSON files found")
+    for path in paths:
+        load(path)
+
+    result_schema = load(CONTRACT_ROOT / "schemas" / "operation-result.schema.json")
+    request_schema = load(CONTRACT_ROOT / "schemas" / "wp01.schema.json")
+    Draft202012Validator.check_schema(result_schema)
+    Draft202012Validator.check_schema(request_schema)
+
+    manifest = load(CONTRACT_ROOT / "operations" / "wp01.json")
+    operations = manifest["operations"]
+    actual = {item["catalogue_id"]: item["semantic_id"] for item in operations}
+    if actual != EXPECTED_WP01:
+        fail(f"WP01 semantic catalogue mismatch: {actual!r}")
+    for item in operations:
+        if not item["python_projection"].startswith("structural_lib."):
+            fail(f"invalid Python projection for {item['catalogue_id']}")
+        if not item["dotnet_projection"].startswith("StructuralEngineering."):
+            fail(f"invalid .NET projection for {item['catalogue_id']}")
+        if not item["required_inputs"] or not item["outputs"]:
+            fail(f"incomplete signature for {item['catalogue_id']}")
+
+    code_data = load(CONTRACT_ROOT / "code-data" / "is456" / "flexure-v1.json")
+    if code_data["code_data_revision_id"] != "is456-wp01-v1":
+        fail("WP01 code-data revision mismatch")
+    if code_data["limiting_neutral_axis_ratios"] != {
+        "250": 0.53,
+        "415": 0.48,
+        "500": 0.46,
+    }:
+        fail("WP01 limiting neutral-axis ratios changed")
+
+    conformance = load(CONTRACT_ROOT / "conformance" / "wp01-vectors.json")
+    vectors = conformance["vectors"]
+    vector_ids = [item["id"] for item in vectors]
+    if len(vector_ids) != len(set(vector_ids)):
+        fail("duplicate WP01 conformance vector id")
+    canonical = next(item for item in vectors if item["id"] == "wp01-canonical-object")
+    expected_bytes = canonical["expected_canonical_utf8"].encode("utf-8")
+    digest = hashlib.sha256(expected_bytes).hexdigest()
+    expected_id = f"normalized_input_id:pf4-canonical-json-v1:{digest}"
+    if canonical["expected_normalized_input_id"] != expected_id:
+        fail("canonical fixture digest does not match its bytes")
+    operations_with_vectors = {
+        item["operation_semantic_id"]
+        for item in vectors
+        if item["operation_semantic_id"] != "canonicalization"
+    }
+    missing = set(EXPECTED_WP01.values()) - operations_with_vectors
+    if missing:
+        fail(f"operations without a conformance vector: {sorted(missing)}")
+
+
+def main() -> int:
+    try:
+        validate()
+    except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+    print("OK: WP01 semantic manifests, schemas, code data, and conformance vectors")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

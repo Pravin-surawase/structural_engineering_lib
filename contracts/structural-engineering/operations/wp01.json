@@ -1,0 +1,79 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP01",
+  "profile_id": "IS456-WP01",
+  "operations": [
+    {
+      "catalogue_id": "FO01",
+      "semantic_id": "structural.reinforcement.bar_area/v1",
+      "kind": "value",
+      "purpose": "Calculate nominal circular bar area without selecting reinforcement.",
+      "required_inputs": [{"name": "diameter_mm", "unit": "mm"}],
+      "outputs": [{"name": "area_mm2", "unit": "mm2"}],
+      "python_projection": "structural_lib.beam.bar_area",
+      "dotnet_projection": "StructuralEngineering.Reinforcement.ReinforcementOperations.BarArea",
+      "valid_example": "wp01-bar-area-16",
+      "non_success_example": "wp01-bar-area-zero"
+    },
+    {
+      "catalogue_id": "FO02",
+      "semantic_id": "structural.reinforcement.mass_per_length/v1",
+      "kind": "value",
+      "purpose": "Calculate bar mass per length from diameter and declared density.",
+      "required_inputs": [{"name": "diameter_mm", "unit": "mm"}, {"name": "density_kg_per_m3", "unit": "kg/m3"}],
+      "outputs": [{"name": "mass_kg_per_m", "unit": "kg/m"}],
+      "python_projection": "structural_lib.beam.mass_per_length",
+      "dotnet_projection": "StructuralEngineering.Reinforcement.ReinforcementOperations.MassPerLength",
+      "valid_example": "wp01-mass-16",
+      "non_success_example": "wp01-mass-density-missing"
+    },
+    {
+      "catalogue_id": "FO03",
+      "semantic_id": "structural.reinforcement.effective_depth/v1",
+      "kind": "value",
+      "purpose": "Resolve effective depth from actual bar coordinates and a physical tension face.",
+      "required_inputs": [{"name": "depth_mm", "unit": "mm"}, {"name": "bars", "unit": "resolved coordinates"}, {"name": "tension_face", "unit": "enum"}],
+      "outputs": [{"name": "effective_depth_mm", "unit": "mm"}, {"name": "area_mm2", "unit": "mm2"}],
+      "python_projection": "structural_lib.beam.effective_depth",
+      "dotnet_projection": "StructuralEngineering.Reinforcement.ReinforcementOperations.EffectiveDepth",
+      "valid_example": "wp01-effective-depth-bottom",
+      "non_success_example": "wp01-effective-depth-unresolved-face"
+    },
+    {
+      "catalogue_id": "FO04",
+      "semantic_id": "is456.beam.flexural_capacity/v1",
+      "kind": "capacity",
+      "purpose": "Calculate supported supplied-section flexural capacity without deciding demand adequacy.",
+      "required_inputs": [{"name": "section", "unit": "mm"}, {"name": "materials", "unit": "N/mm2"}, {"name": "bars", "unit": "resolved coordinates"}, {"name": "tension_face", "unit": "enum"}],
+      "outputs": [{"name": "capacity_knm", "unit": "kNm"}, {"name": "neutral_axis_depth_mm", "unit": "mm"}],
+      "python_projection": "structural_lib.beam.flexural_capacity",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Flexure.Capacity",
+      "valid_example": "wp01-rectangular-capacity",
+      "non_success_example": "wp01-axial-interaction-unsupported"
+    },
+    {
+      "catalogue_id": "AO03",
+      "semantic_id": "structural.reinforcement_geometry.evaluate/v1",
+      "kind": "service",
+      "purpose": "Evaluate actual steel areas, centroids, effective depths, cover, spacing, and geometric fit.",
+      "required_inputs": [{"name": "section", "unit": "mm"}, {"name": "cover_and_links", "unit": "mm"}, {"name": "bars", "unit": "resolved coordinates"}],
+      "outputs": [{"name": "faces", "unit": "resolved geometry"}, {"name": "minimum_clear_spacing_mm", "unit": "mm"}],
+      "python_projection": "structural_lib.beam.evaluate_geometry",
+      "dotnet_projection": "StructuralEngineering.Reinforcement.ReinforcementOperations.EvaluateGeometry",
+      "valid_example": "wp01-geometry-bottom",
+      "non_success_example": "wp01-geometry-overlap"
+    },
+    {
+      "catalogue_id": "AO06",
+      "semantic_id": "is456.beam.flexure.check/v1",
+      "kind": "check",
+      "purpose": "Check relevant bending signs against actual physical-face reinforcement.",
+      "required_inputs": [{"name": "capacity_request", "unit": "typed"}, {"name": "design_moments", "unit": "kNm"}],
+      "outputs": [{"name": "checks", "unit": "per sign"}, {"name": "governing_utilization", "unit": "ratio"}],
+      "python_projection": "structural_lib.beam.check_flexure",
+      "dotnet_projection": "StructuralEngineering.Beam.BeamOperations.CheckFlexure",
+      "valid_example": "wp01-flexure-positive",
+      "non_success_example": "wp01-flexure-over-reinforced"
+    }
+  ]
+}

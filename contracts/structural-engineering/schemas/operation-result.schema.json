@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/operation-result/v1",
+  "title": "Structural engineering operation result",
+  "type": "object",
+  "required": [
+    "schema_version", "operation_semantic_id", "execution", "applicability",
+    "engineering", "completeness", "freshness", "approval",
+    "effective_inputs", "outputs", "diagnostics", "provenance",
+    "normalized_input_id", "calculation_id"
+  ],
+  "properties": {
+    "schema_version": {"const": "structural-operation-result/v1"},
+    "operation_semantic_id": {"type": "string", "pattern": "^[a-z0-9._/-]+/v[1-9][0-9]*$"},
+    "execution": {"enum": ["completed", "rejected_input", "not_run", "software_error", "cancelled"]},
+    "applicability": {"enum": ["applicable", "not_applicable", "unknown"]},
+    "engineering": {"enum": ["pass", "fail", "not_evaluated"]},
+    "completeness": {"enum": ["complete_for_scope", "partial"]},
+    "freshness": {"enum": ["current", "stale", "unbound"]},
+    "approval": {"enum": ["unreviewed", "checked", "approved", "rejected"]},
+    "effective_inputs": {"type": "object", "additionalProperties": {"$ref": "#/$defs/effectiveValue"}},
+    "outputs": {"type": ["object", "null"]},
+    "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "normalized_input_id": {"type": "string"},
+    "calculation_id": {"type": "string"},
+    "result_id": {"type": "string"}
+  },
+  "$defs": {
+    "effectiveValue": {
+      "type": "object",
+      "required": ["value", "state", "origin"],
+      "properties": {
+        "value": {},
+        "state": {"enum": ["absent", "null", "blank", "zero", "supplied", "defaulted", "derived", "conflicting"]},
+        "origin": {"type": "string"},
+        "dependencies": {"type": "array", "items": {"type": "string"}},
+        "rule": {"type": ["string", "null"]}
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "required": ["code", "severity", "message"],
+      "properties": {
+        "code": {"type": "string"},
+        "severity": {"enum": ["information", "warning", "error"]},
+        "message": {"type": "string"},
+        "operation_semantic_id": {"type": "string"},
+        "field_or_location": {"type": ["string", "null"]},
+        "source": {"type": "string"},
+        "remediation": {"type": ["string", "null"]}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["code_data_revision_id", "method_revision_id", "source_references"],
+      "properties": {
+        "code_data_revision_id": {"type": "string"},
+        "method_revision_id": {"type": "string"},
+        "source_references": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
