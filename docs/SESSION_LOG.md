@@ -5,6 +5,85 @@
 
 ---
 
+## 2026-09-03 — Session: Reusable Python and .NET library research
+
+**Agent:** Codex (`MAIN`, with two bounded read-only research agents).
+**Task:** `DUAL-LANGUAGE-LIBRARY-RESEARCH`.
+**Branch:** `codex/reusable-library-research`.
+**Source:** fetched `origin/main` at `5300767eda1dd5f98328c7e3c3116891967e75ab`.
+**Git handoff receipt:** docs/verification/reusable-library-research-git-handoff-receipt.json
+**Focus:** Research reusable Python/.NET boundaries, application-specific functions, old-library lessons, peer libraries and ETABS API requirements.
+
+### Summary
+
+- Produced a source-backed architecture study mapping all 26 automation
+  operations to reusable calculations, member services and application adapters.
+  Explained native dual implementations versus a .NET engine/Python wrapper,
+  shared semantic contracts, examples, numerical conformance and package scope.
+- Inspected StructuralCodes, sectionproperties, concreteproperties, PyNite and
+  BHoM through primary documentation/source. Reconciled worker findings with
+  parent inspection; BBS data stays reusable and scalar math need not acquire
+  a large result envelope. Excluded a speculative station-limit finding.
+- Identified nine consequential migration observations, distinguishing current
+  behavior from deliberate limits. Independently checked six historical repair
+  records against public session history and the existing sourcebook clone.
+- Verified CSI's .NET 10 COM support in ETABS 23.3 release notes and inspected
+  installed ETABS 23.3.1.4563 / CSiAPIv1 2.16.0.0 metadata. Clarified that
+  preserving a force row does not establish concurrent combination semantics.
+- Authored an 11-page Word report outside Git using the documents skill and
+  established reference-guide styling. All final pages were visually inspected;
+  unchanged pages were verified by image hashes after the focused layout repair.
+  Source/claim ledger and installed API metadata remain with the external report.
+- No numerical code, dependency, live Excel workbook or ETABS model was changed.
+  The study describes proposed interfaces and does not assert full parity or
+  live integration acceptance. Current-plan now links the research.
+- Verification: report/source equality, all 26 unique operation mappings,
+  citation targets, OOXML table geometry and 11-page PDF checks passed; all
+  maintained local links passed, context validation and efficiency checks
+  passed, and the diff has no whitespace errors. No numerical suite was rerun
+  for this documentation-only packet.
+- Inspected current PRs and all bounded sibling evidence worktrees: no active
+  task-owned predecessor needed integration. Detached evidence lanes remain
+  clean and untouched. Hosted/merge facts stay external after candidate freeze.
+
+### Issues encountered
+
+- Session begin recorded the timer but preflight rejected the previous clean
+  squash-merged branch as diverged; it could not be reused as a new work lane.
+- Installed CHM extraction produced no usable topics in two attempts.
+- A worker's concreteproperties example used a parameter absent from the
+  current ordinary ConcreteSection API. Several recommendations also needed
+  correction to avoid moving reusable BBS data into presentation.
+- Initial document review found awkward signature wrapping, literal Markdown
+  inside a bold label, and an almost-empty final page.
+- Exploratory terminal reads included an absent script name and POSIX-style
+  wildcard assumptions; literal paths and the maintained session CLI resolved
+  discovery without changing project controls.
+
+### Root causes and resolutions
+
+- GitHub PR 957 and equal candidate/merge tree IDs proved the former branch
+  was integrated under a different commit identity. Fetched main, verified a
+  clean tree and fast-forward ancestry, synchronized local main, and created
+  this new branch. Environment-only preflight then passed.
+- CHM extraction cause remains unconfirmed. Bounded retries stopped; current
+  assembly reflection plus version-labelled public CSI method/release documents
+  supplied the required evidence. No application instance was invoked.
+- The current ConcreteSection reference specifies `theta` and `n`; the report
+  uses that verified signature. The parent distinguished fabrication data from
+  output rendering and retained simple scalar functions. Numerical examples
+  from other libraries are not treated as IS 456 verification.
+- The report renderer lacked deliberate breaks for code signatures, and a
+  redundant methodology sentence spilled to another page. Applied a single
+  focused layout/content repair, rendered again with Word and checked all
+  changed pages; unchanged page images matched the inspected first render.
+- Terminal discovery used exact files and `session.py`/CLI help after the
+  failed searches. Evidence commands completed successfully thereafter.
+  ⚠️ TERMINAL ISSUE: unavailable script/POSIX wildcard reads and unusable CHM
+  extraction → literal paths, maintained CLI help, API reflection and CSI docs.
+
+---
+
 ## 2026-09-03 — Session: Beam automation requirements and C# foundation
 
 **Agent:** Codex (`MAIN`, with two bounded research/specification and CI/review agents).
