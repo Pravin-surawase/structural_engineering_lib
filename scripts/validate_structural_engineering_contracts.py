@@ -50,6 +50,12 @@ EXPECTED_MANIFESTS = {
         "AO17": "is456.beam_member.design/v1",
         "AO18": "structural.reinforcement_paths.resolve/v1",
     },
+    "wp07": {
+        "AO04": "structural.construction_quantities.calculate/v1",
+        "AO19": "structural.bbs.create/v1",
+        "AO20": "structural.construction_cost.estimate/v1",
+        "AO24": "structural.calculation_package.create/v1",
+    },
 }
 
 
@@ -267,6 +273,27 @@ def validate() -> None:
         - 1157.0796326794897
     ) > 1e-12:
         fail("WP06 tangent-and-arc path result changed")
+    quantity_vector = next(
+        item for item in all_vectors if item["id"] == "wp07-reference-quantities"
+    )
+    if abs(quantity_vector["expected"]["steel_mass_kg"] - 59.187605588935) > 1e-12:
+        fail("WP07 independent steel mass result changed")
+    if quantity_vector["expected"]["direct_cost"] is not None:
+        fail("WP07 unpriced quantities must not invent cost")
+    cutting_vector = next(
+        item for item in all_vectors if item["id"] == "wp07-cutting-reconciliation"
+    )
+    expected_cutting = cutting_vector["expected"]
+    if expected_cutting["stock_length_mm"] != sum(
+        expected_cutting[key]
+        for key in (
+            "scheduled_cut_length_mm",
+            "kerf_length_mm",
+            "reusable_offcut_length_mm",
+            "waste_length_mm",
+        )
+    ):
+        fail("WP07 cutting-stock fixture does not reconcile")
     operations_with_vectors = {
         item["operation_semantic_id"]
         for item in all_vectors

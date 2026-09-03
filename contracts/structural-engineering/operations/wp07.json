@@ -1,0 +1,89 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP07",
+  "profile_id": "IS456-WP07",
+  "operations": [
+    {
+      "catalogue_id": "AO04",
+      "semantic_id": "structural.construction_quantities.calculate/v1",
+      "kind": "service",
+      "purpose": "Calculate reconciled steel, concrete, formwork, and fabrication-waste quantities from current physical construction data.",
+      "required_inputs": [
+        {"name": "current_bbs_and_detail_identity", "unit": "semantic identity"},
+        {"name": "concrete_net_segments_and_overlap_policy", "unit": "mm2/mm/m3"},
+        {"name": "formwork_contact_faces_and_measurement_policy", "unit": "mm2"}
+      ],
+      "outputs": [
+        {"name": "steel/concrete/formwork items", "unit": "kg/m3/m2"},
+        {"name": "kerf/reusable offcut/unreusable waste ledger", "unit": "mm"},
+        {"name": "direct_cost", "unit": "null until AO20"}
+      ],
+      "python_projection": "structural_lib.construction.calculate_construction_quantities",
+      "dotnet_projection": "StructuralEngineering.Construction.QuantityOperations.Calculate",
+      "valid_example": "wp07-reference-quantities",
+      "non_success_example": "wp07-duplicate-concrete-ownership"
+    },
+    {
+      "catalogue_id": "AO19",
+      "semantic_id": "structural.bbs.create/v1",
+      "kind": "service",
+      "purpose": "Create BBS rows and deterministic cutting data from current resolved physical reinforcement paths.",
+      "required_inputs": [
+        {"name": "current_resolved_schedule", "unit": "AO18 result identity"},
+        {"name": "shape_convention", "unit": "versioned policy"},
+        {"name": "stock_and_cutting_policy", "unit": "mm/versioned policy"},
+        {"name": "splice_and_link_zone_records", "unit": "typed physical records"}
+      ],
+      "outputs": [
+        {"name": "BBS rows and link stations", "unit": "count/mm/kg"},
+        {"name": "stock cuts, kerf, reusable offcuts, waste", "unit": "mm/kg"},
+        {"name": "allocation_optimality", "unit": "declared algorithm status"}
+      ],
+      "python_projection": "structural_lib.construction.create_bbs",
+      "dotnet_projection": "StructuralEngineering.Construction.BbsOperations.Create",
+      "valid_example": "wp07-cutting-reconciliation",
+      "non_success_example": "wp07-link-boundary-duplicate"
+    },
+    {
+      "catalogue_id": "AO20",
+      "semantic_id": "structural.construction_cost.estimate/v1",
+      "kind": "service",
+      "purpose": "Apply a dated, sourced, scoped rate profile to current reconciled quantities using decimal arithmetic.",
+      "required_inputs": [
+        {"name": "current_quantity_result", "unit": "AO04 result identity"},
+        {"name": "rate_profile_identity/currency/date/geography/source", "unit": "typed commercial basis"},
+        {"name": "included/excluded scope and measured rates", "unit": "decimal strings"},
+        {"name": "waste/overhead/tax treatment", "unit": "declared basis/percent"}
+      ],
+      "outputs": [
+        {"name": "itemized cost lines", "unit": "currency decimal"},
+        {"name": "direct/overhead/pre-tax/tax/total", "unit": "currency decimal"}
+      ],
+      "python_projection": "structural_lib.construction.estimate_construction_cost",
+      "dotnet_projection": "StructuralEngineering.Construction.CostOperations.Estimate",
+      "valid_example": "wp07-dated-direct-cost",
+      "non_success_example": "wp07-cost-waste-double-count"
+    },
+    {
+      "catalogue_id": "AO24",
+      "semantic_id": "structural.calculation_package.create/v1",
+      "kind": "service",
+      "purpose": "Create an immutable calculation, report, drawing, and schedule semantic model for language-specific renderers.",
+      "required_inputs": [
+        {"name": "project/member/engine/dataset metadata", "unit": "identity/time"},
+        {"name": "current member/schedule/BBS/quantity/optional cost bindings", "unit": "semantic result"},
+        {"name": "complete leaves/traces/assumptions/limitations", "unit": "typed evidence"},
+        {"name": "drawing data and recorded human actions", "unit": "semantic records"}
+      ],
+      "outputs": [
+        {"name": "calculation_package_id and dependency chain", "unit": "semantic identity"},
+        {"name": "leaf/trace/construction/drawing model", "unit": "renderer-neutral records"},
+        {"name": "issue state and active human approval", "unit": "explicit state"}
+      ],
+      "python_projection": "structural_lib.reporting.create_calculation_package",
+      "dotnet_projection": "StructuralEngineering.Reporting.CalculationPackageOperations.Create",
+      "valid_example": "wp07-calculation-package-current",
+      "non_success_example": "wp07-calculation-package-stale"
+    }
+  ]
+}

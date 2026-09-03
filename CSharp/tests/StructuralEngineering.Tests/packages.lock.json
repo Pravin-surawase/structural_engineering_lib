@@ -149,6 +149,13 @@
           "StructuralEngineering.Core": "[0.1.0, )"
         }
       },
+      "structuralengineering.construction": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Core": "[0.1.0, )",
+          "StructuralEngineering.Reinforcement": "[0.1.0, )"
+        }
+      },
       "structuralengineering.contracts": {
         "type": "Project"
       },
@@ -162,6 +169,13 @@
         "type": "Project",
         "dependencies": {
           "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.reporting": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Beam": "[0.1.0, )",
+          "StructuralEngineering.Construction": "[0.1.0, )"
         }
       }
     }

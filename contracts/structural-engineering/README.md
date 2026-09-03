@@ -34,3 +34,9 @@ aggregation, and exact reinforcement centreline path contracts. It carries no
 new code table: every member leaf remains bound to the code-data revision of
 its originating operation. Its signatures and geometry rules are documented
 in `docs/library/reference/wp06-project-member-paths.md`.
+
+WP07 adds physical-path BBS and cutting data, uniquely owned concrete and
+formwork quantities, dated decimal construction cost, and the immutable
+renderer-neutral calculation package. Its signatures and reconciliation rules
+are documented in
+`docs/library/reference/wp07-construction-calculation-package.md`.

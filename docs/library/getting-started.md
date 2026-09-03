@@ -75,3 +75,11 @@ resolves physical reinforcement into marked tangent straights and bend arcs.
 See the [WP06 reference](reference/wp06-project-member-paths.md) for the public
 signatures, optional input rules, actual-depth convergence, and exact bar-path
 geometry.
+
+WP07 consumes those current physical paths to create BBS rows, cutting-stock
+allocations, steel/concrete/formwork quantities, dated itemized direct cost,
+and the renderer-neutral calculation package. Kerf, reusable offcuts, waste,
+concrete overlap ownership, formwork contact faces, commercial scope, and real
+human actions stay explicit. See the
+[WP07 reference](reference/wp07-construction-calculation-package.md) for the
+public signatures and reconciliation rules.

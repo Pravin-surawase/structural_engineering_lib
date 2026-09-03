@@ -24,4 +24,5 @@ See [Getting started](getting-started.md), [WP01 reference](reference/wp01-flexu
 [WP04 reference](reference/wp04-serviceability.md),
 [WP05 reference](reference/wp05-detailing-constructability.md),
 [WP06 reference](reference/wp06-project-member-paths.md), and
+[WP07 reference](reference/wp07-construction-calculation-package.md), plus
 [migration guidance](migration/python-and-dotnet.md).

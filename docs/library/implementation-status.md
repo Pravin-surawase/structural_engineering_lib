@@ -286,3 +286,66 @@ WP07 plan update:
   governing cases, paths, BBS, quantities, cost, drawing data, limitations, and
   real prepared/checked/approved actions. File rendering remains an adapter and
   formwork temporary-works design remains outside this packet.
+
+## WP07 review
+
+State: implemented and focused verification passing.
+
+Confirmed outcomes:
+
+- AO19 accepts only the unchanged passing AO18 payload, reconciles every mark
+  summary with all physical paths, requires explicit ownership of each link
+  station, and reports centreline dimensions, fabrication cuts, scheduled mass,
+  stock, kerf, reusable offcuts, waste, laps, and couplers separately.
+- AO04 measures actual scheduled bars, uniquely owned concrete prisms and
+  deductions, and uniquely owned included or excluded formwork contact faces.
+  Its output retains scheduled and purchased steel bases and never invents cost.
+- AO20 binds the unchanged quantity payload and same project/member/detail,
+  requires a dated and sourced exhaustive cost scope, prices steel from one
+  waste basis, and sums displayed half-even-rounded lines before overhead and tax.
+- AO24 binds every supplied dependency payload, enforces one project/member/
+  detail/result chain and the complete AO17 leaf set, reproduces leaf values in
+  traces, retains renderer-neutral drawing data, and activates only the latest
+  real member approval on a current passing chain.
+- Python and .NET expose the same required identities, typed records, semantic
+  operation IDs, portable enum values, units, numerical fixtures, and result
+  states. Rendering, Excel, ETABS, and temporary-works design remain outside the
+  pure packages.
+
+Corrections made during review:
+
+- Rejected unzoned transverse-link marks and duplicate ownership of a shared
+  link boundary.
+- Replaced summary/exemplar trust with exact mark, path, count, material,
+  developed-length, segment, and bend reconciliation.
+- Defined currency rounding at each displayed line and based subtotal,
+  overhead, tax, and total on those rounded amounts.
+- Added canonical output-payload identities to every downstream request and
+  dependency binding, and expanded the portable schema from opaque objects to
+  typed WP07 records.
+- Required quantity, cost, and package dependencies to retain one project
+  basis; a cost from another project cannot enter an issued package.
+- Required passing dependency engineering states for an issue-ready package
+  and ordered approval actions by parsed UTC instant so time-zone offsets cannot
+  preserve an earlier approval after a later rejection.
+- Replaced the initial compact .NET sketch with readable public contracts,
+  complete operations, and focused parity facts.
+
+WP08 plan update:
+
+- AO05 will generate a finite, reproducible candidate domain from explicit
+  section, material, bar, link, layering, stock, and construction choices. It
+  will retain the domain revision, enumeration order, count, exclusions, and
+  cancellation state rather than claiming an unbounded search.
+- AO21 will evaluate each candidate through the profile-derived AO17 leaf set.
+  A candidate is feasible only when every required leaf is current, complete,
+  applicable as expected, and passing; required `not_applicable` or unevaluated
+  evidence cannot become a feasible winner.
+- Ranking will use versioned deterministic objectives and tie-breakers over
+  physical steel, concrete, formwork, cost, depth, congestion, and utilization
+  values. Every excluded candidate will retain reason codes and result
+  identities.
+- A global-optimum claim will require complete enumeration of the declared
+  finite domain. Cancelled, timed-out, bounded, or heuristic searches will
+  report their actual completeness and best-known candidate without upgrading
+  it to a proven optimum.
