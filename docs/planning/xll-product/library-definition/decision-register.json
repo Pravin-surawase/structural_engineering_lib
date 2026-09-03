@@ -35,8 +35,34 @@
         ]
       }
     },
-    {"id": "D02", "question": "Which real workflows and information handoffs must the system support?", "current_direction": "Cover standalone design, ordinary library use, ETABS intake, coupled redesign, fabrication and reporting.", "required_evidence": ["workflow narratives", "input/output inventory", "actor responsibility map"], "resolution_phase": "PF1"},
-    {"id": "D03", "question": "Which existing functions and contracts should be retained, corrected, wrapped, replaced or omitted?", "current_direction": "Reuse only after semantic and evidence review; do not port by existence alone.", "required_evidence": ["Python/C# public surface inventory", "caller analysis", "failure history", "source/test strength"], "resolution_phase": "PF2"},
+    {
+      "id": "D02",
+      "question": "Which real workflows and information handoffs must the system support?",
+      "current_direction": "Cover standalone design, ordinary library use, ETABS intake, coupled redesign, fabrication and reporting.",
+      "required_evidence": ["workflow narratives", "input/output inventory", "actor responsibility map"],
+      "resolution_phase": "PF1",
+      "state": "resolved",
+      "decision_record": {
+        "resolved_on": "2026-09-03",
+        "selected_direction": "Use six authoritative workflows: standalone Excel, direct Python, direct .NET, ETABS automation, construction output, and review/correction. Pure libraries and worksheet calculations consume explicit immutable data; Excel and ETABS effects are commands. Construction outputs require current resolved reinforcement and declared policies.",
+        "evidence_paths": ["pf1/README.md", "pf1/baseline.json"],
+        "downstream_effects": ["PF3 maps every capability and AO operation to these workflows.", "PF8 preserves the command and immutable-snapshot boundaries.", "PF10 documentation includes one journey for each user route."]
+      }
+    },
+    {
+      "id": "D03",
+      "question": "Which existing functions and contracts should be retained, corrected, wrapped, replaced or omitted?",
+      "current_direction": "Reuse only after semantic and evidence review; do not port by existence alone.",
+      "required_evidence": ["Python/C# public surface inventory", "caller analysis", "failure history", "source/test strength"],
+      "resolution_phase": "PF2",
+      "state": "resolved",
+      "decision_record": {
+        "resolved_on": "2026-09-03",
+        "selected_direction": "Use selective reuse: retain bounded pure kernels and traceability controls, correct engineering meaning before migration, compatibility-wrap recoverable published behavior, replace application/transport implementations where semantics differ, and omit unrelated or advisory features from the initial beam common set.",
+        "evidence_paths": ["pf2/README.md", "pf2/baseline.json", "pf2/audit_public_surfaces.py"],
+        "downstream_effects": ["PF3 selects capabilities from workflow demand and evidence rather than code existence.", "PF7 promotes numerical behavior only with source and independent assurance.", "PF10 gives every current surface a compatibility or migration route."]
+      }
+    },
     {"id": "D04", "question": "What is the maintained capability set and where is each boundary?", "current_direction": "Keep pure calculations and reusable member/fabrication/search services in libraries; keep application state and rendering in adapters.", "required_evidence": ["AO01-AO26 crosswalk", "beam capability map", "dependency analysis"], "resolution_phase": "PF3"},
     {"id": "D05", "question": "What beam types, section forms, analysis scopes and code profiles are initially supported?", "current_direction": "Begin from the agreed ordinary reinforced-concrete beam profile, while the definition covers extension points and explicit applicability.", "required_evidence": ["workflow demand", "source coverage", "existing implementation evidence", "assurance feasibility"], "resolution_phase": "PF3"},
     {"id": "D06", "question": "What quantity, unit, sign, axis, station and physical-face conventions are normative?", "current_direction": "Use explicit dimensional names, one internal unit policy and adapter-owned conversions with physical-face mapping.", "required_evidence": ["calculation inventory", "ETABS result semantics", "legacy terminology audit"], "resolution_phase": "PF4"},

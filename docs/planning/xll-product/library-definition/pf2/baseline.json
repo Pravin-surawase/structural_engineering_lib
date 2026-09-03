@@ -1,0 +1,163 @@
+{
+  "phase_id": "PF2",
+  "title": "Evidence and existing-asset audit baseline",
+  "revision_date": "2026-09-03",
+  "state": "complete",
+  "decision_ids": ["D03"],
+  "source_evidence": [
+    "../../../../../Python/pyproject.toml",
+    "../../../../../Python/structural_lib/services/api.py",
+    "../../../../../Python/structural_lib/api.py",
+    "../../../../../Python/structural_lib/data/advertised_entry_points_v1.json",
+    "../../../../../Python/structural_lib/services/family_facade_registry.py",
+    "../../../../../CSharp/README.md",
+    "../../../../../CSharp/src",
+    "../../../../../CSharp/schemas",
+    "../../automation/operations.json",
+    "../../automation/examples.json",
+    "../../automation/source-crosswalk.json",
+    "../../requirements-first/failure-register.json",
+    "../../requirements-first/corpus-summary.json",
+    "../../requirements-first/sources.json"
+  ],
+  "evidence_scale": [
+    {"level": "E0", "meaning": "claim or proposal with no execution evidence", "allowed_use": "planning question only"},
+    {"level": "E1", "meaning": "schema, static inspection or build evidence", "allowed_use": "structure and compilation claims"},
+    {"level": "E2", "meaning": "focused software test or invariant", "allowed_use": "bounded implementation behavior"},
+    {"level": "E3", "meaning": "cross-language or cross-project comparison", "allowed_use": "parity/correlation; never independent proof by itself"},
+    {"level": "E4", "meaning": "independent sourced example, analytic oracle or controlled boundary evidence", "allowed_use": "engineering assurance for its declared case"},
+    {"level": "E5", "meaning": "installed application observation on an identified candidate/environment", "allowed_use": "Excel/ETABS/application claim only"},
+    {"level": "E6", "meaning": "qualified engineering review and recorded approval", "allowed_use": "approved engineering claim within recorded scope"}
+  ],
+  "deliverables": [
+    {
+      "id": "PF2-D1-asset-catalogue",
+      "records": [
+        {"asset": "Python pure IS 456 calculations", "current_evidence": "E2-E3 depending on route", "disposition": "retain candidates only after source, applicability, units and E4 assurance review"},
+        {"asset": "Python family facades", "current_evidence": "E2 public-contract behavior", "disposition": "retain journey concepts; correct or compatibility-wrap meanings after PF4"},
+        {"asset": "Python CLI and result consumers", "current_evidence": "E2 release/UAT behavior", "disposition": "preserve user paths through compatibility mapping; do not make CLI shape common API authority"},
+        {"asset": "Python ETABS contracts and adapters", "current_evidence": "E1-E2 identity/snapshot patterns", "disposition": "reuse immutable identity patterns; replace vendor/runtime implementation under PF8"},
+        {"asset": "Python BBS, detailing, quantity and cost", "current_evidence": "E2 bounded behavior with declared limitations", "disposition": "reuse decomposition; replace area-only, one-layer and incomplete priced-scope behavior with resolved detail data"},
+        {"asset": "C# AO01-AO05 foundation", "current_evidence": "E1-E2 build, schemas, examples and focused tests", "disposition": "retain bounded kernels subject to PF4 semantics and PF7 assurance"},
+        {"asset": "C# Excel UDFs", "current_evidence": "E1-E2 compiled and argument-conversion tests", "disposition": "compatibility-wrap spreadsheet conveniences; PF5/PF8 own final functions and commands"},
+        {"asset": "C# generated request schemas", "current_evidence": "E1 strict transport structure", "disposition": "retain generation and unknown-field patterns; semantic ownership moves to PF4-PF6"},
+        {"asset": "C# beam-line solver", "current_evidence": "E2 bounded numerical tests", "disposition": "retain planar elastic kernel and oracle approach; never present as whole-building or RC design"},
+        {"asset": "C# candidate ranker", "current_evidence": "E2 deterministic control behavior", "disposition": "retain fixed-revision ranking controls; correct required-check semantics and compose with later evaluator/generator"},
+        {"asset": "Automation AO01-AO26 manifests", "current_evidence": "E0 planning traceability", "disposition": "retain as requirements input; PF5 establishes normative semantic operations"},
+        {"asset": "StructProof snapshot", "current_evidence": "E3 correlated/private pattern evidence", "disposition": "reuse proof-state, limitation and identity patterns only; copy no private records or claims"},
+        {"asset": "Sourcebook snapshot", "current_evidence": "E3 candidate example corpus", "disposition": "reconcile each selected case's source revision, units and applicability; promote only with E4 review"},
+        {"asset": "Failure register", "current_evidence": "E2-E3 prevention history with explicit state", "disposition": "retain controls and state; never report repaired history as a current defect"},
+        {"asset": "Issue corpus summary", "current_evidence": "E1 index/classification", "disposition": "use counts and pointers; never infer root cause from titles"},
+        {"asset": "C# package/build evidence", "current_evidence": "E1-E2", "disposition": "supports bounded software claims only; installed Excel and ETABS remain E5 work"}
+      ]
+    },
+    {
+      "id": "PF2-D2-public-surface-map",
+      "current_counts": {
+        "python_root_exports": 489,
+        "python_root_callable_exports": 466,
+        "python_services_api_exports": 245,
+        "python_services_api_callable_exports": 245,
+        "advertised_cli_entries": 15,
+        "advertised_family_facades": 13,
+        "csharp_working_engineering_or_application_operations": 5,
+        "csharp_excel_functions": 4
+      },
+      "python_module_disposition_rules": [
+        {"order": 1, "module_prefixes": ["structural_lib.services.etabs", "structural_lib.services.contracts.etabs"], "disposition": "replace_adapter_preserve_identity_patterns"},
+        {"order": 2, "module_prefixes": ["structural_lib.visualization", "structural_lib.services.dxf", "structural_lib.services.excel"], "disposition": "omit_from_common_kernel_retain_adapter_candidate"},
+        {"order": 3, "module_prefixes": ["structural_lib.services.column", "structural_lib.services.slab", "structural_lib.services.wall", "structural_lib.services.staircase", "structural_lib.services.deep_beam", "structural_lib.services.flat_slab", "structural_lib.services.footing", "structural_lib.services.combined_footing", "structural_lib.services.strap_footing", "structural_lib.services.gravity", "structural_lib.core.building_gravity", "structural_lib.core.gravity"], "disposition": "compatibility_wrap_outside_initial_beam_common_set"},
+        {"order": 4, "module_prefixes": ["structural_lib.services.optimization", "structural_lib.services.multi_objective_optimizer", "structural_lib.services.costing", "structural_lib.services.beam_candidate"], "disposition": "correct_before_selective_reuse"},
+        {"order": 5, "module_prefixes": ["structural_lib.services.calculation_report", "structural_lib.services.calculation_dossier", "structural_lib.core.calculation_dossier"], "disposition": "retain_reusable_record_replace_rendering_boundary"},
+        {"order": 6, "module_prefixes": ["structural_lib.codes.is456"], "disposition": "retain_candidate_after_applicability_and_assurance"},
+        {"order": 7, "module_prefixes": ["structural_lib.core"], "disposition": "retain_or_replace_after_pf4_semantic_review"},
+        {"order": 8, "module_prefixes": ["structural_lib.services"], "disposition": "selective_reuse_or_compatibility_wrap_after_pf3_pf5"},
+        {"order": 9, "module_prefixes": ["typing"], "disposition": "omit_non_domain_reexport"}
+      ],
+      "advertised_surface_rules": [
+        {"entries": ["install-preflight", "capabilities", "validate", "mark-diff"], "disposition": "compatibility_wrap_diagnostics"},
+        {"entries": ["gravity-v1", "excel-v1", "beam-v1", "design", "job"], "disposition": "correct_and_compatibility_wrap_workflow"},
+        {"entries": ["bbs", "detail", "dxf", "report", "critical"], "disposition": "compatibility_wrap_then_replace_with_current_result_consumers"},
+        {"entries": ["smart"], "disposition": "omit_from_normative_common_set_optional_compatibility_only"},
+        {"entries": ["is456.beam.design/v1", "is456.torsion.design/v1"], "disposition": "retain_candidate_and_correct"},
+        {"entries": ["is456.column.supplied-steel-check/v1", "is456.slab.one-way/v1", "is456.slab.continuous-one-way/v1", "is456.slab.two-way/v1", "is456.wall.braced-axial/v1", "is456.staircase.straight-flight/v1", "is456.deep-beam.simply-supported/v1", "is456.flat-slab.regular-interior/v1", "is456.isolated-footing.concentric/v1", "is456.combined-footing.symmetric/v1", "is456.strap-footing.property-line/v1"], "disposition": "outside_initial_common_set_preserve_compatibility_where_recoverable"}
+      ],
+      "csharp_surface_rules": [
+        {"operation": "ForceNormalizer.Normalize", "disposition": "retain_and_correct_vendor_neutral_action_contract"},
+        {"operation": "BeamLineSolver.Solve", "disposition": "retain_bounded_analysis_kernel"},
+        {"operation": "ReinforcementGeometry.Evaluate", "disposition": "retain_and_extend_to_full_arrangement"},
+        {"operation": "QuantityCalculator.Calculate", "disposition": "retain_and_require_resolved_detail_inputs"},
+        {"operation": "CandidateRanker.Rank", "disposition": "retain_and_correct_required_check_and_search_contract"},
+        {"operation": "Functions.Version", "disposition": "compatibility_wrap_diagnostic"},
+        {"operation": "Functions.BarMass", "disposition": "compatibility_wrap_small_value_projection"},
+        {"operation": "Functions.RebarGeometry", "disposition": "compatibility_wrap_evolved_geometry_service"},
+        {"operation": "Functions.SimplySupportedUdl", "disposition": "compatibility_wrap_bounded_analysis_projection"},
+        {"operation": "ContractJson, ContractSchemas, InputValidationException and Require", "disposition": "retain_patterns_correct_version_canonicalization_and_semantics"},
+        {"operation": "Current public records and enums", "disposition": "replace_with_pf5_projections_and_compatibility_wrap_if_published"}
+      ],
+      "coverage_validator": "audit_public_surfaces.py"
+    },
+    {
+      "id": "PF2-D3-provenance-register",
+      "records": [
+        {"id": "PROV-IS", "source": "owner-controlled IS code/data", "strength": "source authority", "use": "normalized approved-scope code data with per-operation provenance; release authorization remains separate"},
+        {"id": "PROV-PY", "source": "current Python code and tests", "strength": "E2-E3", "use": "behavior, caller and regression evidence; not independent oracle"},
+        {"id": "PROV-CS", "source": "current C# foundation", "strength": "E1-E2", "use": "bounded contracts/build/tests only"},
+        {"id": "PROV-AUTO", "source": "AO01-AO26 catalogue", "strength": "E0", "use": "requirement and traceability input"},
+        {"id": "PROV-REQ", "source": "requirements-first register", "strength": "E1-E3 by record", "use": "failure and prevention evidence with original state"},
+        {"id": "PROV-SP", "source": "StructProof snapshot 280829fc4d8fc5186235c97042e029c3a83df7f6", "strength": "E3 private correlated evidence", "use": "patterns only"},
+        {"id": "PROV-SB", "source": "Sourcebook snapshot 0b8ffeefa93a5772e0a9e15a532cdef534e0686b", "strength": "E3 candidate corpus", "use": "180 records require per-case promotion"},
+        {"id": "PROV-ISSUES", "source": "197 returned issue records and 137 repeated title matches", "strength": "E1 classification", "use": "index only, not root-cause proof"},
+        {"id": "PROV-RUNTIME", "source": ".NET 10.0.400, Excel-DNA 1.9.0, Math.NET 5.0.0 and Python >=3.11 manifests", "strength": "E1", "use": "current build inputs, not final runtime acceptance"},
+        {"id": "PROV-LIVE", "source": "installed Excel/XLL and ETABS behavior", "strength": "E0 in this programme", "use": "must be produced later as E5 candidate-bound evidence"}
+      ]
+    },
+    {
+      "id": "PF2-D4-failure-prevention-register",
+      "records": [
+        {"id": "F01", "state": "historical-repaired", "prevention": "required checks cannot disappear from aggregate issue/export", "acceptance": "omit a required check and prove issue is blocked"},
+        {"id": "F02", "state": "current-observed-contract-risk", "prevention": "unresolved or profile-resolved engineering inputs are explicit", "acceptance": "reject unresolved input or return all resolved values and origins"},
+        {"id": "F03", "state": "historical-repaired", "prevention": "result identity binds every effective dependency", "acceptance": "change each dependency and prove stale prior result"},
+        {"id": "F04", "state": "historical-repaired", "prevention": "producer and consumer share a replayed contract fixture", "acceptance": "replay one fixture through both ends"},
+        {"id": "F05", "state": "historical-repaired", "prevention": "one owner/kernel supplies each engineering quantity", "acceptance": "trace every display/export quantity to its owner"},
+        {"id": "F06", "state": "historical-corrected-reference", "prevention": "interpolation branches and provenance are explicit", "acceptance": "replay corrected nodes, interiors and boundaries"},
+        {"id": "F07", "state": "historical-corrected-reference", "prevention": "load-shape and support assumptions replace label-only coefficients", "acceptance": "different shapes retain their justified coefficients"},
+        {"id": "F08", "state": "historical-corrected-reference", "prevention": "eligibility, minima, caps and inapplicability are explicit", "acceptance": "supported, limiting and unsupported branches remain distinct"},
+        {"id": "F09", "state": "historical-corrected-reference", "prevention": "required and provided steel remain separate", "acceptance": "route cases preserve and use both quantities correctly"},
+        {"id": "F10", "state": "current-observed-reconciliation", "prevention": "migration ledger resolves source, amendment and dataset differences", "acceptance": "every divergent rule resolves before promotion"},
+        {"id": "F11", "state": "current-observed-product-gap", "prevention": "actual bar coordinates, spacing and anchorage precede issued detail", "acceptance": "full-arrangement fit and anchorage evidence"},
+        {"id": "F12", "state": "current-observed-product-gap", "prevention": "planning, build, schema and installed evidence remain separate", "acceptance": "load exact XLL and complete clean-target workbook journey"},
+        {"id": "F13", "state": "historical-repaired", "prevention": "runtime, imported source and candidate identity are recorded", "acceptance": "receipt binds all three"},
+        {"id": "F14", "state": "historical-repaired", "prevention": "projections are generated/checked from one authoritative contract", "acceptance": "regenerate and replay all maintained consumers"},
+        {"id": "F15", "state": "historical-recorded-planning-error", "prevention": "controlling packet, repository and revision are recorded", "acceptance": "each milestone cites all three"},
+        {"id": "F16", "state": "current-evidence-limitation", "prevention": "parity and independent evidence use different classifications", "acceptance": "evidence ledger distinguishes them"},
+        {"id": "F17", "state": "future-integration-risk", "prevention": "model, analysis and selection identity bind; relevant changes reanalyse", "acceptance": "section/stiffness change requires a new snapshot"},
+        {"id": "F18", "state": "historical-process-correction", "prevention": "focused evidence per change and one named cumulative gate", "acceptance": "cumulative candidate carries the union evidence"},
+        {"id": "F19", "state": "root-cause-unconfirmed", "prevention": "inspect logs and group alerts only by verified cause", "acceptance": "each group cites cause and fixing candidate"},
+        {"id": "F20", "state": "inferred-future-contract-risk", "prevention": "version negotiation covers semantic and unknown-field incompatibility", "acceptance": "old/new fixtures exercise the compatibility policy"}
+      ]
+    },
+    {
+      "id": "PF2-D5-reusable-pattern-register",
+      "records": [
+        "strict typed contracts with field-specific diagnostics",
+        "explicit units and declared internal conversion",
+        "complete signed action rows without fabricated concurrent envelopes",
+        "separate source, model, analysis, normalized-input, result and report identities",
+        "required-check completeness and deterministic finite-domain ranking",
+        "actual reinforcement coordinates and resolved paths before quantities",
+        "explicit absent, blank, null, zero, default and derived semantics",
+        "strict unknown-field handling with deliberate contract migration",
+        "independent oracle and boundary-case evidence for bounded solvers",
+        "pure Excel worksheet functions separated from commands and mutations",
+        "evidence states and limitations that travel with results",
+        "schema, build, engineering and installed-application evidence kept distinct"
+      ]
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Every existing public operation has a disposition candidate.", "evidence": ["audit_public_surfaces.py covers all 489 root exports and 245 services facade exports by module rule; all 28 advertised journeys and current C# operations/UDFs have explicit dispositions."]},
+    {"criterion": "Historical failures have prevention rules.", "evidence": ["PF2-D4 maps F01-F20 with original state, prevention and acceptance."]},
+    {"criterion": "Current behavior, proposals and live-application claims are distinguished.", "evidence": ["The E0-E6 evidence scale and provenance register keep build, engineering, parity, installed behavior and approval separate."]}
+  ]
+}

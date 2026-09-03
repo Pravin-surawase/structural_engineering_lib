@@ -6,8 +6,8 @@
   "implementation_phase_prefix": "P",
   "definition_phase_prefix": "PF",
   "phase_progress": {
-    "completed": ["PF0"],
-    "next": ["PF1", "PF2"]
+    "completed": ["PF0", "PF1", "PF2"],
+    "next": ["PF3"]
   },
   "automation_operations": [
     "AO01", "AO02", "AO03", "AO04", "AO05", "AO06", "AO07", "AO08", "AO09",
@@ -70,15 +70,27 @@
       "purpose": "Describe real tasks, decisions, inputs and outputs without assuming current interfaces are correct.",
       "depends_on": ["PF0"],
       "deliverables": ["PF1-D1-workflow-catalogue", "PF1-D2-actor-matrix", "PF1-D3-information-inventory", "PF1-D4-scenario-set"],
-      "exit_criteria": ["Every proposed capability serves a workflow.", "Standalone use does not require ETABS.", "Construction outputs trace to resolved reinforcement and declared policies."]
+      "exit_criteria": ["Every proposed capability serves a workflow.", "Standalone use does not require ETABS.", "Construction outputs trace to resolved reinforcement and declared policies."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D02"],
+        "evidence_paths": ["pf1/README.md", "pf1/baseline.json"]
+      }
     },
     {
       "id": "PF2",
       "name": "Evidence and existing-asset audit",
       "purpose": "Classify existing code, contracts, examples, sources and historical evidence before reuse or migration.",
       "depends_on": ["PF0"],
-      "deliverables": ["PF2-D1-asset-catalogue", "PF2-D2-public-surface-map", "PF2-D3-provenance-register", "PF2-D4-failure-prevention-register"],
-      "exit_criteria": ["Every existing public operation has a disposition candidate.", "Historical failures have prevention rules.", "Current behavior, proposals and live-application claims are distinguished."]
+      "deliverables": ["PF2-D1-asset-catalogue", "PF2-D2-public-surface-map", "PF2-D3-provenance-register", "PF2-D4-failure-prevention-register", "PF2-D5-reusable-pattern-register"],
+      "exit_criteria": ["Every existing public operation has a disposition candidate.", "Historical failures have prevention rules.", "Current behavior, proposals and live-application claims are distinguished."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D03"],
+        "evidence_paths": ["pf2/README.md", "pf2/baseline.json", "pf2/audit_public_surfaces.py"]
+      }
     },
     {
       "id": "PF3",

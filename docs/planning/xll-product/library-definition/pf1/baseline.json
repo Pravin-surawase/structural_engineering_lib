@@ -1,0 +1,140 @@
+{
+  "phase_id": "PF1",
+  "title": "Users, workflows and information flow baseline",
+  "revision_date": "2026-09-03",
+  "state": "complete",
+  "decision_ids": ["D02"],
+  "source_evidence": [
+    "../pf0/owner-map.json",
+    "../../automation/README.md",
+    "../../automation/requirements.json",
+    "../../automation/examples.json",
+    "../../requirements-first/README.md",
+    "../../reusable-library-research.md",
+    "../../../../../CSharp/README.md",
+    "../../../../../Python/structural_lib/README.md"
+  ],
+  "deliverables": [
+    {
+      "id": "PF1-D1-workflow-catalogue",
+      "records": [
+        {
+          "id": "WF-STANDALONE-EXCEL",
+          "actors": ["USER-EXCEL-ENGINEER", "USER-REVIEWER", "ROLE-EXCEL"],
+          "trigger": "An engineer starts a beam project in Windows Excel without an ETABS dependency.",
+          "required_inputs": ["project and design basis", "code-data identity", "materials and bar catalogue", "member topology and distinct length meanings", "sections and supports", "manual loads, bounded-analysis input or supplied actions", "ULS and SLS action bases", "required-check profile", "detailing and construction policies"],
+          "missing_information_decision": "Reject missing required or conditional engineering data, or resolve it from an explicitly named profile and return its origin; blank is never numerical zero.",
+          "steps": ["define project and members", "validate input completeness and station coverage", "obtain actions through the declared standalone route", "evaluate strength, SLS and applicability", "resolve actual reinforcement and repeat dependent checks", "create detailing, BBS, quantities and calculation record", "save, reopen and review freshness"],
+          "approval_points": ["engineer selects design basis and profiles", "checker reviews a current complete result", "qualified engineering authority records any engineering approval"],
+          "outputs": ["member result", "resolved reinforcement", "calculation record", "construction package"],
+          "failures_and_recovery": ["field/member/action diagnostics for invalid cells", "input change makes prior result stale", "missing add-in leaves saved evidence visible but prevents recalculation", "return to the responsible input or detail step and recalculate"],
+          "application_boundary": "Pure worksheet functions consume validated values only; Excel commands own bulk table I/O, save, export and other host effects. No live ETABS call occurs."
+        },
+        {
+          "id": "WF-PYTHON-LIBRARY",
+          "actors": ["USER-PYTHON", "USER-REVIEWER", "ROLE-PYTHON"],
+          "trigger": "A Python caller requests a small calculation, check, whole-member service or candidate evaluation.",
+          "required_inputs": ["explicit typed engineering values", "operation and scope profile", "optional-value choices", "source/code-data identity when engineering rules apply"],
+          "missing_information_decision": "Return structured validation, inapplicability or incomplete-scope information; do not acquire host state or use undeclared engineering defaults.",
+          "steps": ["construct request", "validate", "calculate or orchestrate", "inspect named result and evidence", "optionally pass data to a separate output adapter"],
+          "approval_points": ["caller selects operation and profile", "engineering use is accepted outside the library by an authorized person"],
+          "outputs": ["typed value, check, design, member or search result"],
+          "failures_and_recovery": ["field diagnostics", "explicit unsupported applicability", "partial result cannot become whole-member complete"],
+          "application_boundary": "No Excel, COM, ETABS, workbook, HTTP or UI process is required."
+        },
+        {
+          "id": "WF-DOTNET-LIBRARY",
+          "actors": ["USER-DOTNET", "USER-REVIEWER", "ROLE-DOTNET"],
+          "trigger": "A .NET caller requests a maintained common-set capability outside Excel.",
+          "required_inputs": ["the same semantic engineering information as the Python operation", "explicit optional choices", "declared scope and evidence identities"],
+          "missing_information_decision": "Return the shared diagnostic meaning through idiomatic C# result types; never obtain calculation inputs from Excel implicitly.",
+          "steps": ["construct immutable request", "validate", "execute native .NET operation", "inspect result", "compose application service if required"],
+          "approval_points": ["architecture owner accepts common meaning", "engineering authority accepts engineering applicability"],
+          "outputs": ["idiomatic C# result equivalent in engineering meaning to the Python operation"],
+          "failures_and_recovery": ["field diagnostics", "unsupported result", "no installed-product claim from a library test"],
+          "application_boundary": "Contracts and engineering packages load without Excel or CSI dependencies."
+        },
+        {
+          "id": "WF-ETABS-AUTOMATION",
+          "actors": ["USER-ANALYST", "ROLE-ETABS", "ROLE-ENGINEERING"],
+          "trigger": "An analyst selects an identified ETABS model and result state for beam checking or redesign.",
+          "required_inputs": ["identified authorized model copy", "ETABS and adapter version", "locked/current analysis state", "selected cases, combinations and steps", "present units", "section, material, modifier, offset, release and local-axis facts", "object/element mapping", "six-component result rows"],
+          "missing_information_decision": "Reject missing source identity, non-current analysis, failed API calls, inconsistent arrays or unresolved axis/action semantics. Obtain design, reinforcement, SLS and construction policies from project inputs.",
+          "steps": ["preflight model copy and result state", "acquire raw facts in a controlled adapter transaction", "normalize an immutable snapshot", "map axes to physical faces", "run the common member workflow", "search fixed-action candidates or classify a coupled change", "apply a coupled candidate only to the identified copy", "reanalyse, reimport and compare current results"],
+          "approval_points": ["analyst identifies source and transaction target", "engineering authority classifies reanalysis need and accepts comparison"],
+          "outputs": ["normalized snapshot", "member results", "ranked candidates", "transaction/reanalysis receipt"],
+          "failures_and_recovery": ["restore application units and selections", "retain invalid or old snapshots only as non-current evidence", "never synthesize concurrency from separate component maxima"],
+          "application_boundary": "All live COM and model mutation are adapter commands; calculation and worksheet layers consume immutable data."
+        },
+        {
+          "id": "WF-CONSTRUCTION-OUTPUT",
+          "actors": ["USER-DETAILING", "ROLE-ENGINEERING", "USER-REVIEWER"],
+          "trigger": "A current complete member has actual resolved reinforcement and declared fabrication, measurement and pricing policies.",
+          "required_inputs": ["bar groups, layers and faces", "links, side and torsion bars", "anchorage, lap, cutoff and bend decisions", "bar paths and marks", "stock/offcut and coupler policy", "concrete overlap/deduction policy", "formwork contact faces", "dated rate table and priced scope"],
+          "missing_information_decision": "Block the affected output or return it explicitly unavailable; a missing rate never creates a plausible cost and required steel area never substitutes for scheduled bars.",
+          "steps": ["check full arrangement and congestion", "resolve anchors, laps, cutoffs and paths", "assign bar marks", "create BBS and cutting data", "measure concrete, steel and formwork", "apply declared rates", "render reports and views"],
+          "approval_points": ["detailer confirms fabrication policy", "checker reconciles outputs", "engineering authority accepts issued detail"],
+          "outputs": ["bar paths", "BBS", "cutting/stock schedule", "quantities", "cost", "formwork schedule", "report data"],
+          "failures_and_recovery": ["return to reinforcement resolution after fit or anchorage failure", "return missing policy/rate diagnostics", "re-export only from current detail identity"],
+          "application_boundary": "Reusable services create construction data; presentation adapters create files and drawings."
+        },
+        {
+          "id": "WF-REVIEW",
+          "actors": ["USER-REVIEWER", "ROLE-ENGINEERING", "ROLE-ASSURANCE", "ROLE-PRODUCT"],
+          "trigger": "A checker receives a calculation, member or construction record.",
+          "required_inputs": ["effective inputs", "code/ruleset and data identity", "engine identity", "required-check profile", "governing rows, stations and faces", "applicability", "execution, engineering, completeness and freshness states", "correction history"],
+          "missing_information_decision": "Missing provenance, inapplicability without explanation or an unevaluated required check makes the record non-issuable.",
+          "steps": ["reproduce basis", "inspect each required check", "review actual provision and construction reconciliation", "record correction", "rerun affected workflow", "compare new identities", "record review and approval actions"],
+          "approval_points": ["checker records review", "qualified engineer approves or rejects engineering package", "product owner separately accepts software/release evidence"],
+          "outputs": ["review record", "corrections", "new current result", "recorded approval or rejection"],
+          "failures_and_recovery": ["historical evidence remains immutable", "correction creates new calculation/detail/report identity", "stale or partial result remains visible but non-issuable"],
+          "application_boundary": "Review consumes immutable evidence; it does not rewrite past calculation records."
+        }
+      ]
+    },
+    {
+      "id": "PF1-D2-actor-matrix",
+      "records": [
+        {"decision": "product purpose, priority, acceptance and release authorization", "accountable": "ROLE-PRODUCT", "responsible": ["ROLE-ARCHITECTURE"], "evidence_boundary": "Product acceptance is separate from engineering approval."},
+        {"decision": "code meaning, supported applicability and engineering acceptance", "accountable": "ROLE-ENGINEERING", "responsible": ["ROLE-PYTHON", "ROLE-DOTNET"], "evidence_boundary": "Requires source and independent engineering evidence."},
+        {"decision": "shared semantics, API policy and common-set parity", "accountable": "ROLE-ARCHITECTURE", "responsible": ["ROLE-PYTHON", "ROLE-DOTNET"], "evidence_boundary": "Semantic conformance does not require identical language syntax."},
+        {"decision": "Excel workflow and installed behavior", "accountable": "ROLE-PRODUCT", "responsible": ["ROLE-EXCEL"], "evidence_boundary": "Requires installed workbook evidence."},
+        {"decision": "ETABS acquisition, axis/action mapping and model transactions", "accountable": "ROLE-ENGINEERING", "responsible": ["ROLE-ETABS"], "evidence_boundary": "Requires identified model/result and live adapter evidence."},
+        {"decision": "independent calculation and conformance assurance", "accountable": "ROLE-ASSURANCE", "responsible": ["ROLE-ASSURANCE"], "evidence_boundary": "Python/.NET agreement is correlated rather than independent evidence."},
+        {"decision": "detailing, BBS, quantities, pricing and formwork outcome", "accountable": "ROLE-ENGINEERING", "responsible": ["ROLE-PYTHON", "ROLE-DOTNET"], "evidence_boundary": "Requires resolved-detail reconciliation."},
+        {"decision": "candidate reanalysis classification", "accountable": "ROLE-ENGINEERING", "responsible": ["ROLE-ETABS"], "evidence_boundary": "Fixed-action reuse or a new snapshot is explicit."}
+      ]
+    },
+    {
+      "id": "PF1-D3-information-inventory",
+      "records": [
+        {"class": "design basis", "information": ["code edition and amendments", "code-data digest", "required-check profile", "exposure and fire", "ordinary or seismic profile"], "etabs_can_supply": false},
+        {"class": "physical and construction topology", "information": ["support faces and widths", "clear/effective/design/analysis/quantity lengths", "slab/support overlap policy", "intended connection behavior"], "etabs_can_supply": "partial; adapter mapping and project decisions required"},
+        {"class": "actual reinforcement", "information": ["bar faces, groups, layers, centres and diameters", "links, legs, spacing and zones", "side/torsion bars", "bar catalogue"], "etabs_can_supply": false},
+        {"class": "detailing policy", "information": ["bond and development basis", "anchorage credit", "lap/stagger/coupler rules", "cutoff rules", "placement sequence"], "etabs_can_supply": false},
+        {"class": "serviceability basis", "information": ["service combinations", "sustained share", "cracking/stiffness route", "ages, duration, humidity, creep/shrinkage", "finish date", "crack limit"], "etabs_can_supply": "actions/displacements only; method decisions remain external"},
+        {"class": "construction and estimate policy", "information": ["stock lengths and waste/offcut policy", "bend convention", "net concrete deductions", "formwork contact faces", "dated rates and priced scope"], "etabs_can_supply": false},
+        {"class": "human controls", "information": ["prepared, checked and approved actions", "review comments", "issue policy"], "etabs_can_supply": false},
+        {"class": "adapter interpretation", "information": ["local-axis to physical-face mapping", "selection intent", "concurrent-row classification"], "etabs_can_supply": "raw facts only; adapter preserves and classifies meaning"}
+      ]
+    },
+    {
+      "id": "PF1-D4-scenario-set",
+      "records": [
+        {"id": "SC-ORDINARY", "start": "simply supported rectangular beam with explicit standalone loads or actions", "end": "complete ordinary member result, resolved bars and reviewable record", "required_evidence": ["standalone independence", "ULS/SLS/detailing completeness", "actual-depth recheck"]},
+        {"id": "SC-CONTINUOUS", "start": "two or more spans with support faces, slab/flange context and discontinuity stations", "end": "hogging/sagging regions with resolved top/bottom bars, anchorage and curtailment", "required_evidence": ["distinct length meanings", "support-face actions", "negative bending and continuity"]},
+        {"id": "SC-REDISTRIBUTED", "start": "original and redistributed action bases or a declared candidate domain", "end": "comparison of complete feasible candidates", "required_evidence": ["redistribution basis", "fixed-action or coupled classification", "reanalysis after model-changing choice"]},
+        {"id": "SC-TORSION", "start": "one concurrent nonzero T/V/M station row and physical section", "end": "combined provision with closed links and perimeter longitudinal steel", "required_evidence": ["concurrent row identity", "interaction method", "fit, anchorage and zero-torsion boundary"]},
+        {"id": "SC-SEISMIC", "start": "beam-end, joint and system context with capacity-design demand", "end": "seismic member/joint detailing result using actual reinforcement", "required_evidence": ["continuity", "capacity shear", "confinement", "hook and splice restrictions"]},
+        {"id": "SC-SLS", "start": "service actions, sustained share, ages, humidity, duration, finishes and actual bars", "end": "calculated deflection/crack result and any redesign loop", "required_evidence": ["screening versus calculation", "short/long-term components", "arrangement-sensitive crack behavior"]},
+        {"id": "SC-ETABS", "start": "authorized locked model copy and selected result state", "end": "immutable normalized snapshot and common member workflow", "required_evidence": ["API return/array checks", "model/version/units/lock identity", "axes and object-element mapping"]},
+        {"id": "SC-CONSTRUCTION", "start": "current checked member with resolved bars and policies", "end": "reconciled BBS, cutting data, quantities, formwork, cost and report", "required_evidence": ["bar path and mark traceability", "complete steel scope", "explicit measurement and pricing policy"]}
+      ]
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Every proposed capability serves a workflow.", "evidence": ["Six workflow records and eight scenarios establish the demand side; PF3 completes the capability-to-workflow crosswalk."]},
+    {"criterion": "Standalone use does not require ETABS.", "evidence": ["WF-STANDALONE-EXCEL, WF-PYTHON-LIBRARY and WF-DOTNET-LIBRARY prohibit a host dependency."]},
+    {"criterion": "Construction outputs trace to resolved reinforcement and declared policies.", "evidence": ["WF-CONSTRUCTION-OUTPUT and SC-CONSTRUCTION require current resolved details before BBS, quantities or cost."]}
+  ]
+}

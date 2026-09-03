@@ -91,11 +91,10 @@ PF1 and PF2 may gather evidence concurrently, but PF3 cannot close until both ar
 
 ## Programme progress
 
-PF0 is complete. Its [charter and exit review](pf0/README.md) resolve D01 with
-five definition artefacts and measurable ownership. PF1 workflow discovery and
-PF2 existing-asset audit are next and may proceed in parallel; PF3 waits for
-both. The machine-readable programme now contains 59 deliverables across the 12
-phases.
+PF0-PF2 are complete. The [charter](pf0/README.md),
+[workflow baseline](pf1/README.md) and [existing-asset audit](pf2/README.md)
+resolve D01-D03. PF3 capability scope is next and now has both required inputs.
+The machine-readable programme contains 60 deliverables across the 12 phases.
 
 ## PF0 — Product and library charter
 
