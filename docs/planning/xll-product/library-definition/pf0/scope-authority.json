@@ -1,0 +1,122 @@
+{
+  "phase_id": "PF0",
+  "deliverable_id": "PF0-D5-scope-authority",
+  "title": "PF0 scope and decision authority",
+  "revision_date": "2026-09-03",
+  "chartered_scope": {
+    "product_sequence": [
+      "Standalone reinforced-concrete beam design and review in Windows Excel.",
+      "Normal direct use of reusable Python and .NET libraries.",
+      "ETABS acquisition, checking, candidate search, controlled reanalysis and comparison.",
+      "Resolved reinforcement, bar paths and construction outputs including BBS, quantities, pricing, formwork measurement and reports."
+    ],
+    "library_direction": [
+      "Native Python and native .NET libraries maintain a deliberate common semantic capability set.",
+      "Small calculations, design-code checks, whole-member services, bounded analysis, candidate evaluation and construction-data services can be reusable library capabilities.",
+      "Excel and ETABS dependencies remain in application adapters.",
+      "The existing Python package, C# foundation, StructProof and sourcebook are evidence and migration inputs rather than automatic API authority."
+    ],
+    "initial_code_and_member_focus": "IS 456 reinforced-concrete beam work is the first common-set focus. Exact ordinary-beam profiles, check membership, limits and extensions are decided in PF3-PF7.",
+    "platform_direction": "The first product is Windows Excel through an Excel-DNA add-in. Pure Python and .NET packages remain host-independent within the runtime matrix selected in PF9. The ETABS adapter is Windows and vendor specific.",
+    "implementation_deliverables": []
+  },
+  "excluded_from_this_programme": [
+    {
+      "area": "Calculation or application implementation",
+      "reason": "PF0-PF11 define the work and evidence before implementation.",
+      "future_authority": "PF11 implementation blueprint and the applicable P0-P6 delivery phase"
+    },
+    {
+      "area": "Package publication or GitHub release",
+      "reason": "Each release retains the repository's separate authorization and evidence gate.",
+      "future_authority": "ROLE-PRODUCT and ROLE-RELEASE"
+    },
+    {
+      "area": "Professional engineering certification",
+      "reason": "Software evidence supports review but cannot create a person's approval or assume legal design responsibility.",
+      "future_authority": "ROLE-ENGINEERING and the project's authorized approver"
+    },
+    {
+      "area": "Temporary-works formwork design",
+      "reason": "The charter includes formwork contact-area measurement for quantities, not structural design of formwork systems.",
+      "future_authority": "A separately chartered capability extension"
+    },
+    {
+      "area": "Automatic migration of every existing feature",
+      "reason": "Existing behavior must receive retain, correct, compatibility-wrap, replace or omit disposition before inclusion.",
+      "future_authority": "PF2 and PF10"
+    },
+    {
+      "area": "Other design codes and complete parity for every existing structural family",
+      "reason": "Existing Python capabilities remain available under their current supported boundaries; expansion of the new common set requires an explicit scope and assurance decision.",
+      "future_authority": "ROLE-PRODUCT and ROLE-ENGINEERING through a later chartered extension"
+    }
+  ],
+  "phase_authority": [
+    {
+      "phase": "PF0",
+      "may_decide": "Purpose, named user groups, first and later workflows, desired outcomes, accountable roles, high-level platform/code direction and success measures.",
+      "may_not_decide": "Exact operation signatures, formula behavior, supported beam branches, runtime versions, numeric performance budgets or implementation order."
+    },
+    {
+      "phase": "PF1",
+      "may_decide": "Detailed user journeys, actors, information needs, decisions, outputs and recovery paths.",
+      "may_not_decide": "Public APIs or engineering formulas."
+    },
+    {
+      "phase": "PF2",
+      "may_decide": "Evidence strength and candidate disposition of existing assets and historical failure-prevention rules.",
+      "may_not_decide": "Reuse solely because code exists or because two projects agree."
+    },
+    {
+      "phase": "PF3",
+      "may_decide": "Capability scope, dependency boundaries, supported profiles and application-versus-library ownership.",
+      "may_not_decide": "Detailed field meanings or language signatures."
+    },
+    {
+      "phase": "PF4",
+      "may_decide": "Quantities, units, signs, axes, topology, optional values, result states, provenance and identity meanings.",
+      "may_not_decide": "Language-specific API shape before semantic agreement."
+    },
+    {
+      "phase": "PF5",
+      "may_decide": "Language-neutral operations, complete request/result contracts and idiomatic Python/C# projections.",
+      "may_not_decide": "Treat an adapter need as a reusable engineering dependency."
+    },
+    {
+      "phase": "PF6",
+      "may_decide": "Maintained common set, package maps, schema projection and drift controls.",
+      "may_not_decide": "Use generated schemas or cross-language agreement as engineering proof."
+    },
+    {
+      "phase": "PF7",
+      "may_decide": "Source, oracle, example, boundary, tolerance, conformance and aggregate-assurance requirements.",
+      "may_not_decide": "Claim installed Excel or ETABS behavior from library evidence."
+    },
+    {
+      "phase": "PF8",
+      "may_decide": "Excel functions/commands, ETABS snapshots/transactions and coupled optimization state.",
+      "may_not_decide": "Put live COM, workbook mutation or vendor state in pure calculation contracts."
+    },
+    {
+      "phase": "PF9",
+      "may_decide": "Runtimes, dependencies, packaging, deployment diagnostics, numeric performance budgets and benchmark environments.",
+      "may_not_decide": "Infer performance from language choice or replace installed acceptance with a build."
+    },
+    {
+      "phase": "PF10",
+      "may_decide": "Compatibility disposition, migration, versioning, documentation architecture and example curriculum.",
+      "may_not_decide": "Preserve ambiguous semantics silently or abandon existing callers without a recorded disposition."
+    },
+    {
+      "phase": "PF11",
+      "may_decide": "Integrated baseline, ordered implementation work, risks, acceptance evidence and the first bounded packet.",
+      "may_not_decide": "Bypass unresolved upstream decisions, release authorization or required engineering/application evidence."
+    }
+  ],
+  "standing_authorities": [
+    "Normalized IS-code data needed for an approved feature scope may be implemented and publicly distributed under the repository's recorded permission.",
+    "The source permission does not authorize a package or GitHub release.",
+    "The original XLL P0-P6 delivery meanings and the separate six-phase beam programme remain effective and must be reconciled by PF11."
+  ]
+}

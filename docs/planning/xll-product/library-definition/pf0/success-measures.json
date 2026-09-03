@@ -1,0 +1,135 @@
+{
+  "phase_id": "PF0",
+  "deliverable_id": "PF0-D3-success-measures",
+  "title": "PF0 measurable success outcomes",
+  "revision_date": "2026-09-03",
+  "measurement_rule": "A measure is satisfied only by evidence bound to the reviewed candidate and declared scope. Planning completion, cross-language agreement and compiled application artifacts are not substitutes for engineering or installed-product evidence.",
+  "measures": [
+    {
+      "id": "OUT-WORKFLOW-01",
+      "category": "product fitness",
+      "desired_outcome": "The first product and later automation serve named engineering work.",
+      "measure": "Trace every accepted capability and public operation to at least one user workflow and scenario.",
+      "target": "100% traceability; zero orphan capabilities or operations in the PF11 baseline.",
+      "accountable_owner": "ROLE-PRODUCT",
+      "definition_owner_phase": "PF11"
+    },
+    {
+      "id": "OUT-CORRECT-01",
+      "category": "engineering correctness",
+      "desired_outcome": "Every implemented engineering operation has an appropriate source and independent assurance route.",
+      "measure": "Count accepted engineering operations with source provenance, applicability, worked examples, boundary evidence and an independent assurance classification.",
+      "target": "100% of the maintained common engineering set before implementation acceptance.",
+      "accountable_owner": "ROLE-ENGINEERING",
+      "definition_owner_phase": "PF7"
+    },
+    {
+      "id": "OUT-COMPLETE-01",
+      "category": "engineering completeness",
+      "desired_outcome": "A whole-member result cannot appear complete when a required check is absent or unevaluated.",
+      "measure": "Inject an omitted, inapplicable and unevaluated required check into member-result conformance cases and inspect aggregate outcome and issue eligibility.",
+      "target": "100% of such cases remain visibly incomplete and cannot support a current issued package.",
+      "accountable_owner": "ROLE-ENGINEERING",
+      "definition_owner_phase": "PF7"
+    },
+    {
+      "id": "OUT-CONTRACT-01",
+      "category": "professional API",
+      "desired_outcome": "Every public operation is understandable, explicit and linked to examples.",
+      "measure": "Audit purpose, applicability, fields, units, signs, conditionality, optional resolution, outputs, diagnostics, provenance, compatibility and positive/non-success examples.",
+      "target": "100% of public operations satisfy the PF5 signature rubric before inclusion.",
+      "accountable_owner": "ROLE-ARCHITECTURE",
+      "definition_owner_phase": "PF5"
+    },
+    {
+      "id": "OUT-REUSE-01",
+      "category": "library reuse",
+      "desired_outcome": "Python and .NET engineering services work as ordinary libraries outside Excel and ETABS.",
+      "measure": "Install and execute small-calculation and whole-member example journeys in each pure library environment.",
+      "target": "Both journeys run in both languages with zero Excel, CSI, COM, workbook or UI dependency.",
+      "accountable_owner": "ROLE-ARCHITECTURE",
+      "definition_owner_phase": "PF9"
+    },
+    {
+      "id": "OUT-PARITY-01",
+      "category": "interoperability",
+      "desired_outcome": "The deliberately maintained Python/.NET common set has the same engineering meaning.",
+      "measure": "Replay valid, invalid, boundary and unsupported conformance vectors and compare effective inputs, discrete states and quantities using the declared tolerances.",
+      "target": "100% of common-set vectors agree semantically; zero pass/fail or applicability disagreements.",
+      "accountable_owner": "ROLE-ARCHITECTURE",
+      "definition_owner_phase": "PF7"
+    },
+    {
+      "id": "OUT-AUDIT-01",
+      "category": "auditability",
+      "desired_outcome": "A reviewer can reproduce the basis of an engineering result.",
+      "measure": "Inspect rich result records for effective inputs, code-data identity, applicability, rule/example provenance, engine identity, diagnostics and result freshness where applicable.",
+      "target": "100% of member/check result schemas carry the required evidence fields and reproduce from the same normalized inputs.",
+      "accountable_owner": "ROLE-ASSURANCE",
+      "definition_owner_phase": "PF7"
+    },
+    {
+      "id": "OUT-EXCEL-01",
+      "category": "Excel usability",
+      "desired_outcome": "An engineer can complete a standalone beam journey in Windows Excel and understand missing information and governing results.",
+      "measure": "Run the reference workbook from project/input entry through checks, resolved reinforcement, report and save/reopen on the supported installed configuration.",
+      "target": "All reference journey steps pass; invalid cells identify field/member location; reopened results retain identity and freshness.",
+      "accountable_owner": "ROLE-PRODUCT",
+      "definition_owner_phase": "PF9"
+    },
+    {
+      "id": "OUT-ETABS-01",
+      "category": "ETABS integrity",
+      "desired_outcome": "Imported and reanalysed forces remain bound to the correct model, analysis state, action basis, station and axes.",
+      "measure": "Exercise read-only acquisition, fixed-demand search and one stiffness-changing candidate transaction on an identified model copy.",
+      "target": "Every accepted result retains complete source identity; a model-changing candidate cannot reuse the prior analysis snapshot.",
+      "accountable_owner": "ROLE-ENGINEERING",
+      "definition_owner_phase": "PF9"
+    },
+    {
+      "id": "OUT-CONSTRUCTION-01",
+      "category": "construction outputs",
+      "desired_outcome": "BBS, bar lengths, quantities, prices and formwork measurements derive from resolved buildable details.",
+      "measure": "Reconcile every output item to member/detail identity, bar paths or explicit concrete/formwork geometry and declared pricing/measurement policy.",
+      "target": "100% item traceability and zero silent substitution of required steel area for scheduled steel.",
+      "accountable_owner": "ROLE-ENGINEERING",
+      "definition_owner_phase": "PF7"
+    },
+    {
+      "id": "OUT-PERF-01",
+      "category": "performance",
+      "desired_outcome": "Performance is measured at the boundary users experience.",
+      "measure": "Define and run candidate-bound benchmarks for scalar kernel, member batch, candidate search, serialization, workbook recalculation and ETABS acquisition.",
+      "target": "PF9 sets a numeric budget and reference environment for all six classes; accepted implementation meets every applicable budget.",
+      "accountable_owner": "ROLE-ARCHITECTURE",
+      "definition_owner_phase": "PF9"
+    },
+    {
+      "id": "OUT-MAINTAIN-01",
+      "category": "maintainability",
+      "desired_outcome": "Engineering meaning has one owner and dependency direction remains enforceable.",
+      "measure": "Check capability ownership, package dependency direction, generated/handwritten artifact ownership and consumer drift.",
+      "target": "100% capability ownership; zero forbidden upward or host dependencies in pure packages; zero unexplained schema drift.",
+      "accountable_owner": "ROLE-ARCHITECTURE",
+      "definition_owner_phase": "PF9"
+    },
+    {
+      "id": "OUT-MIGRATE-01",
+      "category": "migration",
+      "desired_outcome": "Existing useful callers can adopt corrected semantics without silently preserving ambiguity.",
+      "measure": "Assign retain, correct, compatibility-wrap, replace or omit disposition to each existing public/de facto operation and document affected callers.",
+      "target": "100% disposition coverage and a migration example for every retained breaking semantic correction.",
+      "accountable_owner": "ROLE-PYTHON",
+      "definition_owner_phase": "PF10"
+    },
+    {
+      "id": "OUT-RELEASE-01",
+      "category": "delivery evidence",
+      "desired_outcome": "Library, compiled XLL and installed-product claims are based on the evidence each claim requires.",
+      "measure": "Bind package, XLL, workbook, installed Excel/ETABS and benchmark evidence to the exact candidate and stated environment.",
+      "target": "100% release claims have matching candidate-bound evidence and required authorization; zero evidence-category substitutions.",
+      "accountable_owner": "ROLE-RELEASE",
+      "definition_owner_phase": "PF11"
+    }
+  ]
+}

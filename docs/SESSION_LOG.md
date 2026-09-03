@@ -5,6 +5,76 @@
 
 ---
 
+## 2026-09-03 — Session: PF0 product and library charter
+
+**Agent:** Codex (MAIN, sole writer)
+
+**Task:** PF0-LIBRARY-CHARTER.
+
+**Branch:** codex/pf0-library-charter.
+
+**Focus:** Complete PF0 by reconciling the existing Python library, C# foundation, owner goals, automation requirements and historical failure evidence into a product/library charter with measurable decision ownership.
+
+### Summary
+
+- Resolved D01: maintain native Python and native .NET libraries for a
+  deliberately selected common semantic capability set; deliver standalone
+  IS 456 reinforced-concrete beam design in Windows Excel first; later connect
+  ETABS snapshots, checking, candidate search, controlled reanalysis and
+  construction outputs through adapters around the same reusable services.
+- Added the concise charter, six-user/six-workflow map, nine-role decision map,
+  fourteen measurable outcomes, 29-term glossary and PF0-PF11 scope-authority
+  record. Each outcome has a target, accountable role and later phase that owns
+  its detailed evidence definition.
+- Reviewed the current Python facade/capability surface, C# foundation,
+  AO01-AO26 automation requirements, reusable-library research and the
+  three-project failure evidence. Existing code remains evidence and migration
+  input; it does not become the shared API by existence or by direct porting.
+- Recorded PF0 completion and D01 evidence in the machine-readable programme and
+  decision register, added the missing scope-authority deliverable, and advanced
+  the current plan and next-session briefing to PF1/PF2.
+- No calculation, dependency, package, XLL, workbook or ETABS model was changed.
+
+### Issues encountered
+
+- The programme prose required a scope-authority output, but PF0's
+  machine-readable deliverable list omitted it.
+- The first PF0 validation run rejected a required charter phrase because
+  Markdown line wrapping split the phrase across whitespace.
+- The first link-check invocation supplied selected paths, but the maintained
+  checker does not accept positional path arguments.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the prior human-readable and machine-readable PF0 output
+  lists drifted by one item. Resolution: add PF0-D5-scope-authority, include
+  the artefact in completion evidence and validate all 59 programme
+  deliverables. The PF0 and programme validators both pass.
+- Confirmed root cause: the validator compared a raw multiline Markdown string
+  with a single-space literal. Resolution: normalize whitespace before checking
+  required charter markers. The corrected PF0 validator passes with all five
+  deliverables and completion evidence.
+- Confirmed root cause: check_links.py is a repository-wide CLI with flags
+  only. Resolution: run its canonical no-argument form. It checked all
+  maintained Markdown with zero broken references.
+  ⚠️ TERMINAL ISSUE: selected paths were rejected by check_links.py → ran the
+  maintained repository-wide command without positional arguments.
+
+### Validation through content freeze
+
+- validate_pf0.py: six user groups, six workflows, nine roles, fourteen
+  success measures, 29 glossary terms and 12 phase-authority records validated.
+- validate_programme.py: 12 ordered phases, 59 deliverables, 23 decisions, 17
+  capability families and AO01-AO26 validated.
+- check_links.py: 561 maintained Markdown files, 1,401 local links, six images
+  and zero broken references.
+- run.sh check --quick: all ten fast checks passed.
+- git diff --check: no whitespace errors.
+
+**Git handoff receipt:** docs/verification/pf0-library-charter-git-handoff-receipt.json
+
+---
+
 ## 2026-09-03 — Session: Structural library definition programme
 
 **Agent:** Codex (`MAIN`, sole writer)
