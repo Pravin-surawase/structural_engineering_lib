@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/wp02/v1",
+  "title": "WP02 portable shear and torsion requests",
+  "$defs": {
+    "transverseLink": {
+      "type": "object",
+      "required": ["link_id", "diameter_mm", "legs_v2", "legs_v3", "spacing_mm", "steel_yield_strength_n_per_mm2", "closed", "centre_width_mm", "centre_depth_mm"],
+      "properties": {
+        "link_id": {"type": "string", "minLength": 1},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "legs_v2": {"type": "integer", "minimum": 1},
+        "legs_v3": {"type": "integer", "minimum": 1},
+        "spacing_mm": {"type": "number", "exclusiveMinimum": 0},
+        "steel_yield_strength_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "closed": {"type": "boolean"},
+        "centre_width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "centre_depth_mm": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "shearCapacityRequest": {
+      "type": "object",
+      "required": ["profile_id", "axis", "resisting_width_mm", "effective_depth_mm", "concrete_strength_n_per_mm2", "longitudinal_tension_area_mm2", "link", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "axis": {"enum": ["v2", "v3"]},
+        "resisting_width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "effective_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "concrete_strength_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "longitudinal_tension_area_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "link": {"oneOf": [{"$ref": "#/$defs/transverseLink"}, {"type": "null"}]},
+        "code_data_revision_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "shearDemand": {
+      "type": "object",
+      "required": ["station_id", "axis", "shear_kn"],
+      "properties": {
+        "station_id": {"type": "string", "minLength": 1},
+        "axis": {"enum": ["v2", "v3"]},
+        "shear_kn": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "concurrentActionRow": {
+      "type": "object",
+      "required": ["row_id", "station_id", "action_basis", "v2_kn", "v3_kn", "torsion_knm", "m2_knm", "m3_knm", "source_identity"],
+      "properties": {
+        "row_id": {"type": "string", "minLength": 1},
+        "station_id": {"type": "string", "minLength": 1},
+        "action_basis": {"enum": ["static_concurrent", "staged_step", "component_envelope", "design_envelope"]},
+        "v2_kn": {"type": "number"}, "v3_kn": {"type": "number"},
+        "torsion_knm": {"type": "number"}, "m2_knm": {"type": "number"}, "m3_knm": {"type": "number"},
+        "source_identity": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "shearCheckRequest": {
+      "type": "object",
+      "required": ["capacities", "demands"],
+      "properties": {
+        "capacities": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/shearCapacityRequest"}},
+        "demands": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/shearDemand"}}
+      },
+      "additionalProperties": false
+    },
+    "torsionCheckRequest": {
+      "type": "object",
+      "required": ["profile_id", "action", "flexural_capacity", "link", "perimeter_bar_ids", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "action": {"$ref": "#/$defs/concurrentActionRow"},
+        "flexural_capacity": {"type": "object"},
+        "link": {"oneOf": [{"$ref": "#/$defs/transverseLink"}, {"type": "null"}]},
+        "perimeter_bar_ids": {"type": "array", "minItems": 4, "items": {"type": "string", "minLength": 1}},
+        "code_data_revision_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}
