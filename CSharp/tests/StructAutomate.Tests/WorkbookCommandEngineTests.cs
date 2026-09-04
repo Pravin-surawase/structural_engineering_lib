@@ -222,6 +222,54 @@ public class WorkbookCommandEngineTests
     }
 
     [Fact]
+    public void LegacyOutputSchemasMigrateDuringTheFirstFullRecalculation()
+    {
+        var (tables, priorReceiptCount) = LegacyWorkbookTables();
+        var store = new StrictSchemaStore(tables);
+        var inputs = WorkbookInputReader.Read(store);
+        var engine = new WorkbookCommandEngine(executionFingerprint: "runtime-b");
+
+        var recalculated = engine.ExecuteBatch(WorkbookCommandKind.Calculate, inputs, store,
+            "2026-09-04T00:01:00Z");
+
+        Assert.Equal(WorkbookReceiptState.Completed, recalculated.Receipt.State);
+        Assert.NotEmpty(recalculated.Results);
+        Assert.True(store.TryRead(WorkbookContract.FreshnessTable, out var freshness));
+        Assert.Equal("execution_fingerprint", freshness.Rows[0][4].Value);
+        Assert.All(freshness.Rows.Skip(1), row => Assert.Equal("runtime-b", row[4].Value));
+        Assert.True(store.TryRead(WorkbookContract.ReceiptTable, out var receipts));
+        Assert.Equal("execution_fingerprint", receipts.Rows[0][8].Value);
+        Assert.Equal(priorReceiptCount + 1, receipts.Rows.Count - 1);
+        Assert.All(receipts.Rows.Skip(1).Take(priorReceiptCount),
+            row => Assert.Equal("legacy-unbound", row[8].Value));
+        Assert.Equal("runtime-b", receipts.Rows[^1][8].Value);
+    }
+
+    [Fact]
+    public void FailedLegacySchemaMigrationRestoresEveryExactTablePreimage()
+    {
+        var (tables, _) = LegacyWorkbookTables();
+        var store = new StrictSchemaStore(tables, failAfterWrites: 2);
+        var inputs = WorkbookInputReader.Read(store);
+        Assert.True(store.TryRead(WorkbookContract.ResultsTable, out var priorResults));
+        Assert.True(store.TryRead(WorkbookContract.FreshnessTable, out var priorFreshness));
+        Assert.True(store.TryRead(WorkbookContract.ReceiptTable, out var priorReceipts));
+
+        var result = new WorkbookCommandEngine(executionFingerprint: "runtime-b")
+            .ExecuteBatch(WorkbookCommandKind.Calculate, inputs, store,
+                "2026-09-04T00:01:00Z");
+
+        Assert.Equal(WorkbookReceiptState.Restored, result.Receipt.State);
+        Assert.False(result.Freshness.IsCurrent);
+        Assert.True(store.TryRead(WorkbookContract.ResultsTable, out var restoredResults));
+        Assert.True(store.TryRead(WorkbookContract.FreshnessTable, out var restoredFreshness));
+        Assert.True(store.TryRead(WorkbookContract.ReceiptTable, out var restoredReceipts));
+        Assert.Equal(WorkbookContract.HashJson(priorResults), WorkbookContract.HashJson(restoredResults));
+        Assert.Equal(WorkbookContract.HashJson(priorFreshness), WorkbookContract.HashJson(restoredFreshness));
+        Assert.Equal(WorkbookContract.HashJson(priorReceipts), WorkbookContract.HashJson(restoredReceipts));
+    }
+
+    [Fact]
     public void CreateValidateDoesNotSubstituteForTheFirstCompleteCalculation()
     {
         var store = new MemoryStore(SampleWorkbookData.CreateTypicalTables(1));
@@ -298,6 +346,29 @@ public class WorkbookCommandEngineTests
         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower) }
     });
 
+    private static (IReadOnlyList<WorkbookTable> Tables, int PriorReceiptCount) LegacyWorkbookTables()
+    {
+        var inputs = SampleWorkbookData.CreateTypicalTables(1);
+        var seed = new MemoryStore(inputs);
+        var engine = new WorkbookCommandEngine(executionFingerprint: "runtime-a");
+        var snapshots = WorkbookInputReader.Read(seed);
+        var calculated = engine.ExecuteBatch(WorkbookCommandKind.Calculate, snapshots, seed,
+            "2026-09-04T00:00:00Z");
+        Assert.Equal(WorkbookReceiptState.Completed, calculated.Receipt.State);
+        Assert.True(seed.TryRead(WorkbookContract.ResultsTable, out var results));
+        Assert.True(seed.TryRead(WorkbookContract.FreshnessTable, out var freshness));
+        Assert.True(seed.TryRead(WorkbookContract.ReceiptTable, out var receipts));
+        var legacyFreshness = WithoutColumn(freshness, 4);
+        var legacyReceipts = WithoutColumn(receipts, 8);
+        return ([.. inputs, results, legacyFreshness, legacyReceipts], receipts.Rows.Count - 1);
+    }
+
+    private static WorkbookTable WithoutColumn(WorkbookTable table, int column) => table with
+    {
+        Rows = [.. table.Rows.Select(row =>
+            row.Where((_, index) => index != column).ToArray())]
+    };
+
     private class MemoryStore : IWorkbookTableStore
     {
         protected readonly Dictionary<string, WorkbookTable> Tables = new(StringComparer.Ordinal);
@@ -332,6 +403,34 @@ public class WorkbookCommandEngineTests
                 throw new InvalidOperationException("injected write failure");
             }
             base.BulkWrite(tables);
+        }
+    }
+
+    private sealed class StrictSchemaStore : MemoryStore
+    {
+        private readonly int? _failAfterWrites;
+        private int _writes;
+        private bool _failureConsumed;
+
+        public StrictSchemaStore(IReadOnlyList<WorkbookTable> tables, int? failAfterWrites = null)
+            : base(tables) => _failAfterWrites = failAfterWrites;
+
+        public override void BulkWrite(IReadOnlyList<WorkbookTable> tables)
+        {
+            foreach (var table in tables)
+            {
+                if (Tables.TryGetValue(table.TableId, out var prior) &&
+                    !prior.Rows[0].Select(cell => cell.Value)
+                        .SequenceEqual(table.Rows[0].Select(cell => cell.Value), StringComparer.Ordinal))
+                    throw new InvalidOperationException($"Existing table {table.TableId} has a different schema.");
+                Tables[table.TableId] = table;
+                _writes++;
+                if (!_failureConsumed && _failAfterWrites is { } limit && _writes >= limit)
+                {
+                    _failureConsumed = true;
+                    throw new InvalidOperationException("injected migration write failure");
+                }
+            }
         }
     }
 

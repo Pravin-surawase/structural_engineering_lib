@@ -290,6 +290,39 @@ function Set-TableColumnValue {
     throw "Required workbook table is missing: $TableName"
 }
 
+function Remove-TableColumn {
+    param(
+        [Parameter(Mandatory)][object]$Workbook,
+        [Parameter(Mandatory)][string]$TableName,
+        [Parameter(Mandatory)][string]$ColumnName
+    )
+    $worksheets = $null
+    try {
+        $worksheets = $Workbook.Worksheets
+        for ($sheetIndex = 1; $sheetIndex -le $worksheets.Count; $sheetIndex++) {
+            $worksheet = $null; $tables = $null
+            try {
+                $worksheet = $worksheets.Item($sheetIndex); $tables = $worksheet.ListObjects
+                for ($tableIndex = 1; $tableIndex -le $tables.Count; $tableIndex++) {
+                    $table = $null; $columns = $null; $rows = $null; $column = $null
+                    try {
+                        $table = $tables.Item($tableIndex)
+                        if ([string]$table.Name -ne $TableName) { continue }
+                        $columns = $table.ListColumns; $rows = $table.ListRows
+                        $before = [int]$columns.Count
+                        $column = $columns.Item($ColumnName); $column.Delete()
+                        return [ordered]@{ table = $TableName; removed_column = $ColumnName; row_count = [int]$rows.Count; columns_before = $before; columns_after = [int]$columns.Count }
+                    }
+                    finally { Release-StructAutomateComObject $column; Release-StructAutomateComObject $columns; Release-StructAutomateComObject $rows; Release-StructAutomateComObject $table }
+                }
+            }
+            finally { Release-StructAutomateComObject $tables; Release-StructAutomateComObject $worksheet }
+        }
+    }
+    finally { Release-StructAutomateComObject $worksheets }
+    throw "Required workbook table is missing: $TableName"
+}
+
 function Set-UdfPurityProbe {
     param([Parameter(Mandatory)][object]$Workbook)
     $worksheets = $null; $worksheet = $null; $range = $null
@@ -435,6 +468,24 @@ try {
         $reconstructionMatches = [bool]($preReopen.StructuralResults.result_id_sha256 -eq $postReopen.StructuralResults.result_id_sha256 -and $preReopen.StructuralFreshness.freshness_result_id_sha256 -eq $postReopen.StructuralFreshness.freshness_result_id_sha256 -and @($postReopen.StructuralFreshness.freshness_current_values | Where-Object { $_ -ne 'TRUE' -and $_ -ne 'True' -and $_ -ne 'true' }).Count -eq 0 -and @($postReopen.StructuralFreshness.freshness_execution_fingerprint_values | Where-Object { $_ -cne $liveExecutionFingerprint }).Count -eq 0)
         if (-not $reconstructionMatches) { throw 'Diagnostic/current-reconstruction did not preserve a current freshness ledger and result identity after reopen.' }
 
+        $legacyFreshnessChange = Remove-TableColumn -Workbook $workbook -TableName 'StructuralFreshness' -ColumnName 'execution_fingerprint'
+        $legacyReceiptChange = Remove-TableColumn -Workbook $workbook -TableName 'StructuralReceipts' -ColumnName 'execution_fingerprint'
+        if ($legacyFreshnessChange.columns_before -ne 10 -or $legacyFreshnessChange.columns_after -ne 9 -or $legacyReceiptChange.columns_before -ne 14 -or $legacyReceiptChange.columns_after -ne 13) { throw 'The legacy-schema probe did not create the exact prior StructuralFreshness and StructuralReceipts shapes.' }
+        $workbook.Save(); $workbook.Close($true); Release-StructAutomateComObject $workbook; $workbook = $null
+        $workbook = $workbooks.Open($workbookCopy, 0, $false); Wait-ForExcelReady -Excel $excel
+        $legacySchemaRecalculation = Invoke-ExcelCommand -Excel $excel -Name $CalculateCommand; Assert-CommandState -Evidence $legacySchemaRecalculation -AllowedStates @('completed') | Out-Null
+        $postLegacySchemaRecalculation = Get-WorkbookTables -Workbook $workbook -RequiredNames @('StructuralResults', 'StructuralFreshness', 'StructuralReceipts')
+        $legacySchemaUpgrade = [bool](
+            -not [bool]$legacySchemaRecalculation.json.reused_current_results -and
+            [int]$legacySchemaRecalculation.json.operation_result_count -gt 0 -and
+            [string]$legacySchemaRecalculation.json.execution_fingerprint -ceq $liveExecutionFingerprint -and
+            $postLegacySchemaRecalculation.StructuralResults.result_id_sha256 -eq $postReopen.StructuralResults.result_id_sha256 -and
+            $postLegacySchemaRecalculation.StructuralFreshness.column_count -eq 10 -and
+            $postLegacySchemaRecalculation.StructuralReceipts.column_count -eq 14 -and
+            @($postLegacySchemaRecalculation.StructuralFreshness.freshness_execution_fingerprint_values | Where-Object { $_ -cne $liveExecutionFingerprint }).Count -eq 0 -and
+            @($postLegacySchemaRecalculation.StructuralReceipts.receipt_bindings | Where-Object { $_.execution_fingerprint -eq 'legacy-unbound' }).Count -eq $postReopen.StructuralReceipts.row_count)
+        if (-not $legacySchemaUpgrade) { throw 'The exact prior output-table schema did not migrate through a non-reused full calculation with retained legacy receipts.' }
+
         $syntheticPriorFingerprint = 'structautomate.synthetic-prior-runtime/v1'
         $driftedRowCount = Set-TableColumnValue -Workbook $workbook -TableName 'StructuralFreshness' -ColumnName 'execution_fingerprint' -Value $syntheticPriorFingerprint
         $preDriftRestart = Get-WorkbookTables -Workbook $workbook -RequiredNames @('StructuralResults', 'StructuralFreshness')
@@ -485,6 +536,7 @@ try {
         xl_cmd_03_warm_p95_budget = $warmP95 -le $WarmP95BudgetMs; cold_ready_budget = $coldMax -le $ColdReadyBudgetMs; optimize_export_measure_receipts = $true; export_package_bound = $true; forced_mid_write_rollback = $preimage -ceq $postimage -and $preRollbackResultsSha256 -eq $postRollbackResultsSha256
         progress_budget = [double]$progress.json.response_ms -le $ProgressAndCancellationBudgetMs; cancellation_budget = [double]$cancel.json.response_ms -le $ProgressAndCancellationBudgetMs
         memory_delta_budget = $workingSetDeltaMiB -le $ExcelWorkingSetDeltaBudgetMiB; save_reopen_current_reconstruction = $reconstructionMatches
+        legacy_output_schema_upgrade = $legacySchemaUpgrade
         restart_runtime_fingerprint_invalidation = $runtimeFingerprintInvalidation
     }
     $receipt = [ordered]@{
@@ -493,10 +545,11 @@ try {
         authenticode = [ordered]@{ status = [string]$signature.Status; thumbprint = $signature.SignerCertificate.Thumbprint; package_file_digest_algorithm = [string]$manifest.file_digest_algorithm; authenticode_file_digest_algorithm = [string]$manifest.signature.authenticode_file_digest_algorithm; certificate_signature_algorithm = [string]$manifest.signature.certificate_signature_algorithm }
         sample = [ordered]@{ input = $sampleIdentity; evidence_copy = Get-StructAutomateFileIdentity $workbookCopy; setup = $sampleSetup; tables = $inputTables }; lifecycle = $lifecycle
         udf_purity = [ordered]@{ formula = '=STR.REBAR.AREA(20)'; value = $udfProbeValue; reset = $hostEffectReset; capture = $hostEffectCapture; total_effects = [Int64]$hostEffectCapture.json.total_effects }
-        commands = [ordered]@{ create_validate = $createValidate; xl_cmd_03 = [ordered]@{ initial_full_calculation_ms = $warmups[0]; warmups_ms = $warmups; warmup_reused_current_results = $warmupReuse; samples_ms = $warmSamples; samples_reused_current_results = $warmSampleReuse; cache_verified = -not ($warmSampleReuse | Where-Object { -not $_ }); median_ms = $warmMedian; p95_ms = $warmP95 }; optimize = $optimize; export = $export; measure_diagnose = $measureDiagnose; rollback = $rollback; progress = $progress; cancellation = $cancel; reconstruction = $diagnostic; drift_reconstruction = $driftDiagnostic; drift_recalculation = $recalculatedAfterDrift }
+        commands = [ordered]@{ create_validate = $createValidate; xl_cmd_03 = [ordered]@{ initial_full_calculation_ms = $warmups[0]; warmups_ms = $warmups; warmup_reused_current_results = $warmupReuse; samples_ms = $warmSamples; samples_reused_current_results = $warmSampleReuse; cache_verified = -not ($warmSampleReuse | Where-Object { -not $_ }); median_ms = $warmMedian; p95_ms = $warmP95 }; optimize = $optimize; export = $export; measure_diagnose = $measureDiagnose; rollback = $rollback; progress = $progress; cancellation = $cancel; reconstruction = $diagnostic; legacy_schema_recalculation = $legacySchemaRecalculation; drift_reconstruction = $driftDiagnostic; drift_recalculation = $recalculatedAfterDrift }
         export_package = [ordered]@{ artifact = $exportIdentity; schema_version = [string]$exportBundle.schema_version; member_package_count = @($exportBundle.packages).Count; receipt_bound = $true }
         rollback = [ordered]@{ table = $RollbackSentinelTable; column = $RollbackSentinelColumn; row = $RollbackSentinelRow; preimage = $preimage; postimage = $postimage; structural_results_preimage_sha256 = $preRollbackResultsSha256; structural_results_postimage_sha256 = $postRollbackResultsSha256; probe_receipt = Get-StructAutomateFileIdentity $rollbackReceiptPath; probe_receipt_state = [string]$rollbackReceipt.state }
         reconstruction = [ordered]@{ before = $preReopen; after = $postReopen; result_identity_preserved = $reconstructionMatches }
+        legacy_schema_upgrade = [ordered]@{ freshness_change = $legacyFreshnessChange; receipt_change = $legacyReceiptChange; recalculation = $legacySchemaRecalculation; after_recalculation = $postLegacySchemaRecalculation; passed = $legacySchemaUpgrade }
         runtime_fingerprint_invalidation = [ordered]@{ synthetic_prior_fingerprint = $syntheticPriorFingerprint; mutated_row_count = $driftedRowCount; before_restart = $preDriftRestart; after_restart = $postDriftRestart; rejected_reconstruction = $driftDiagnostic; recalculation = $recalculatedAfterDrift; after_recalculation = $postDriftRecalculation; prior_live_evidence_reused = [bool]$recalculatedAfterDrift.json.reused_current_results; passed = $runtimeFingerprintInvalidation }
         performance = [ordered]@{ workload = [ordered]@{ members = 20; operations = 200; command = 'XL-CMD-03' }; cold_ready_measurement_boundary = 'Fresh Excel automation start through installed STR.INFO.VERSION response; registry precondition, host configuration, and AddIns lifecycle enumeration are verified outside the timed interval.'; cold_launch_samples_ms = $coldSamples; cold_ready_max_ms = $coldMax; memory_baseline_bytes = $memoryBaselineBytes; memory_after_commands_bytes = $memoryAfterCommandsBytes; memory_delta_mib = $workingSetDeltaMiB }
         budgets = [ordered]@{ warm_median_ms = $WarmMedianBudgetMs; warm_p95_ms = $WarmP95BudgetMs; cold_ready_ms = $ColdReadyBudgetMs; progress_and_cancellation_ms = $ProgressAndCancellationBudgetMs; memory_delta_mib = $ExcelWorkingSetDeltaBudgetMiB }; checks = $checks

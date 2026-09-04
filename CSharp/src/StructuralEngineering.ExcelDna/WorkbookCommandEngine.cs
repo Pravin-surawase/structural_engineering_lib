@@ -9,6 +9,18 @@ namespace StructuralEngineering.ExcelDna;
 /// <summary>Pure application core: a workbook host supplies bulk table I/O and optional artifact storage.</summary>
 public sealed class WorkbookCommandEngine
 {
+    private const string LegacyUnboundExecutionFingerprint = "legacy-unbound";
+    private static readonly string?[] FreshnessHeader = ["workbook_id", "project_id", "member_id",
+        "input_revision", "execution_fingerprint", "output_revision", "is_current",
+        "updated_at_utc", "reason", "result_id"];
+    private static readonly string?[] LegacyFreshnessHeader = ["workbook_id", "project_id", "member_id",
+        "input_revision", "output_revision", "is_current", "updated_at_utc", "reason", "result_id"];
+    private static readonly string?[] ReceiptHeader = ["receipt_id", "command", "state", "workbook_id",
+        "project_id", "member_id", "request_id", "input_revision", "execution_fingerprint",
+        "output_revision", "issued_at_utc", "artifact_sha256", "declared_output_tables", "diagnostics"];
+    private static readonly string?[] LegacyReceiptHeader = ["receipt_id", "command", "state", "workbook_id",
+        "project_id", "member_id", "request_id", "input_revision", "output_revision",
+        "issued_at_utc", "artifact_sha256", "declared_output_tables", "diagnostics"];
     private readonly WorkbookOperationDispatcher _dispatcher;
     private readonly string _executionFingerprint;
 
@@ -558,13 +570,10 @@ public sealed class WorkbookCommandEngine
             "engineering", "completeness", "freshness", "result_id", "normalized_input_id",
             "calculation_id", "code_data_revision_id", "method_revision_id",
             "payload_chunk_index", "payload_chunk_count", "output_json_chunk", "diagnostics"];
-        string?[] expectedFreshnessHeader = ["workbook_id", "project_id", "member_id",
-            "input_revision", "execution_fingerprint", "output_revision", "is_current",
-            "updated_at_utc", "reason", "result_id"];
         if (!HeaderMatches(results, expectedResultHeader) ||
-            !HeaderMatches(freshness, expectedFreshnessHeader)) return false;
+            !HeaderMatches(freshness, FreshnessHeader)) return false;
         var rows = freshness.Rows.Skip(1).ToArray();
-        if (rows.Any(row => row.Count != expectedFreshnessHeader.Length ||
+        if (rows.Any(row => row.Count != FreshnessHeader.Length ||
             row[0].Value != workbookId || row[1].Value != projectId || row[2].Value != memberId ||
             row[3].Value != inputRevision || row[4].Value != _executionFingerprint ||
             row[6].Value != bool.TrueString)) return false;
@@ -588,6 +597,13 @@ public sealed class WorkbookCommandEngine
     private static bool HeaderMatches(WorkbookTable table, IReadOnlyList<string?> expected) =>
         table.Rows.Count > 0 && table.Rows[0].Count == expected.Count &&
         table.Rows[0].Select(cell => cell.Value).SequenceEqual(expected, StringComparer.Ordinal);
+
+    private static bool IsSupportedLegacySchema(WorkbookTable prior, WorkbookTable next) =>
+        prior.TableId == next.TableId &&
+        (prior.TableId == WorkbookContract.FreshnessTable &&
+             HeaderMatches(prior, LegacyFreshnessHeader) && HeaderMatches(next, FreshnessHeader) ||
+         prior.TableId == WorkbookContract.ReceiptTable &&
+             HeaderMatches(prior, LegacyReceiptHeader) && HeaderMatches(next, ReceiptHeader));
 
     private static bool TryPackages(
         WorkbookTable results,
@@ -730,8 +746,13 @@ public sealed class WorkbookCommandEngine
         var provisionalReceipt = Receipt(command, WorkbookReceiptState.Completed, ledger.OutputRevisionSha256, ledger, diagnostics, declared, input, timestamp, artifactHash);
         var priorReceipts = prior.GetValueOrDefault(WorkbookContract.ReceiptTable);
         var tablesWithReceipt = tables.Concat([ReceiptTable(provisionalReceipt, priorReceipts)]).ToArray();
+        var schemaMigrations = tablesWithReceipt.Where(table =>
+                prior.GetValueOrDefault(table.TableId) is { } old &&
+                IsSupportedLegacySchema(old, table))
+            .Select(table => table.TableId).ToHashSet(StringComparer.Ordinal);
         try
         {
+            foreach (var tableId in schemaMigrations) store.Remove(tableId);
             store.BulkWrite(tablesWithReceipt);
             var expected = tablesWithReceipt.ToDictionary(table => table.TableId, StringComparer.Ordinal);
             foreach (var pair in expected)
@@ -759,7 +780,11 @@ public sealed class WorkbookCommandEngine
                 try
                 {
                     if (entry.Value is null) store.Remove(entry.Key);
-                    else store.BulkWrite([entry.Value]);
+                    else
+                    {
+                        if (schemaMigrations.Contains(entry.Key)) store.Remove(entry.Key);
+                        store.BulkWrite([entry.Value]);
+                    }
                 }
                 catch (Exception rollbackError) { rollbackErrors.Add($"{entry.Key}: {rollbackError.Message}"); }
             }
@@ -883,7 +908,7 @@ public sealed class WorkbookCommandEngine
     {
         var resultIds = ledger.ResultIds.Count == 0 ? new string?[] { null } : ledger.ResultIds.Cast<string?>().ToArray();
         return new(WorkbookContract.FreshnessTable,
-            [[new("workbook_id"), new("project_id"), new("member_id"), new("input_revision"), new("execution_fingerprint"), new("output_revision"), new("is_current"), new("updated_at_utc"), new("reason"), new("result_id")],
+            [FreshnessHeader.Select(value => new WorkbookCell(value)).ToArray(),
              .. resultIds.Select(resultId => (IReadOnlyList<WorkbookCell>)[new(ledger.WorkbookId), new(ledger.ProjectId), new(ledger.MemberId), new(ledger.InputRevisionSha256), new(ledger.ExecutionFingerprint), new(ledger.OutputRevisionSha256), new(ledger.IsCurrent.ToString()), new(ledger.UpdatedAtUtc), new(ledger.Reason), new(resultId)])]);
     }
 
@@ -895,14 +920,19 @@ public sealed class WorkbookCommandEngine
 
     private static WorkbookTable ReceiptTable(WorkbookCommandReceipt receipt, WorkbookTable? prior = null)
     {
-        IReadOnlyList<WorkbookCell> header = [new("receipt_id"), new("command"), new("state"), new("workbook_id"), new("project_id"), new("member_id"), new("request_id"), new("input_revision"), new("execution_fingerprint"), new("output_revision"), new("issued_at_utc"), new("artifact_sha256"), new("declared_output_tables"), new("diagnostics")];
+        IReadOnlyList<WorkbookCell> header = ReceiptHeader.Select(value => new WorkbookCell(value)).ToArray();
         IReadOnlyList<WorkbookCell> row = [new(receipt.ReceiptId), new(receipt.Command.ToString()), new(receipt.State.ToString()), new(receipt.WorkbookId), new(receipt.ProjectId), new(receipt.MemberId), new(receipt.RequestId), new(receipt.InputRevisionSha256), new(receipt.ExecutionFingerprint), new(receipt.OutputRevisionSha256), new(receipt.IssuedAtUtc), new(receipt.ArtifactSha256), new(string.Join(",", receipt.DeclaredOutputTables)), new(JsonSerializer.Serialize(receipt.Diagnostics, WorkbookContract.Json))];
         var retained = prior is not null && prior.Rows.Count > 0 &&
             prior.Rows[0].Select(cell => cell.Value).SequenceEqual(header.Select(cell => cell.Value), StringComparer.Ordinal)
                 ? prior.Rows.Skip(1)
-                : [];
+                : prior is not null && HeaderMatches(prior, LegacyReceiptHeader)
+                    ? prior.Rows.Skip(1).Select(LegacyReceiptRow)
+                    : [];
         return new(WorkbookContract.ReceiptTable, [header, .. retained, row]);
     }
+
+    private static IReadOnlyList<WorkbookCell> LegacyReceiptRow(IReadOnlyList<WorkbookCell> row) =>
+        [.. row.Take(8), new(LegacyUnboundExecutionFingerprint), .. row.Skip(8)];
 
     private static WorkbookCommandResult Finish(WorkbookCommandKind command, WorkbookReceiptState state, string? outputRevision, WorkbookFreshnessLedger ledger, IReadOnlyList<WorkbookOperationResult> results, IReadOnlyList<WorkbookDiagnostic> diagnostics, IReadOnlyList<string> declared, WorkbookInputSnapshot input, string timestamp, IReadOnlyList<WorkbookTable>? tables = null, string? artifactHash = null, WorkbookBenchmarkSummary? benchmark = null)
     {
