@@ -16,9 +16,13 @@ $registration = [ordered]@{ found = $false; removed = $false; full_name = $insta
 if (Test-Path -LiteralPath $installedXll -PathType Leaf) {
     $excel = New-Object -ComObject Excel.Application
     $addIns = $null
+    $workbooks = $null
+    $bootstrapWorkbook = $null
     try {
         $excel.Visible = $false
         $excel.DisplayAlerts = $false
+        $workbooks = $excel.Workbooks
+        $bootstrapWorkbook = $workbooks.Add()
         $addIns = $excel.AddIns
         for ($index = 1; $index -le $addIns.Count; $index++) {
             $addin = $null
@@ -36,6 +40,11 @@ if (Test-Path -LiteralPath $installedXll -PathType Leaf) {
         }
     }
     finally {
+        if ($bootstrapWorkbook) {
+            try { $bootstrapWorkbook.Close($false) }
+            finally { Release-StructAutomateComObject $bootstrapWorkbook }
+        }
+        Release-StructAutomateComObject $workbooks
         Release-StructAutomateComObject $addIns
         Close-StructAutomateExcelApplication $excel
     }
