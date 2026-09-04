@@ -424,6 +424,7 @@ try {
             $warmSamples += $command.elapsed_ms
             $warmSampleReuse += [bool]$command.json.reused_current_results
         }
+        $calculationReferenceTables = Get-WorkbookTables -Workbook $workbook -RequiredNames @('StructuralResults')
         $optimize = Invoke-ExcelCommand -Excel $excel -Name $OptimizeCommand; Assert-CommandState -Evidence $optimize -AllowedStates @('completed') | Out-Null
         $export = Invoke-ExcelCommand -Excel $excel -Name $ExportCommand; Assert-CommandState -Evidence $export -AllowedStates @('completed') | Out-Null
         if ([string]::IsNullOrWhiteSpace([string]$export.json.artifact_path) -or [string]::IsNullOrWhiteSpace([string]$export.json.artifact_sha256)) { throw 'ExportPackage did not return artifact_path and artifact_sha256.' }
@@ -479,7 +480,7 @@ try {
             -not [bool]$legacySchemaRecalculation.json.reused_current_results -and
             [int]$legacySchemaRecalculation.json.operation_result_count -gt 0 -and
             [string]$legacySchemaRecalculation.json.execution_fingerprint -ceq $liveExecutionFingerprint -and
-            $postLegacySchemaRecalculation.StructuralResults.result_id_sha256 -eq $postReopen.StructuralResults.result_id_sha256 -and
+            $postLegacySchemaRecalculation.StructuralResults.result_id_sha256 -eq $calculationReferenceTables.StructuralResults.result_id_sha256 -and
             $postLegacySchemaRecalculation.StructuralFreshness.column_count -eq 10 -and
             $postLegacySchemaRecalculation.StructuralReceipts.column_count -eq 14 -and
             @($postLegacySchemaRecalculation.StructuralFreshness.freshness_execution_fingerprint_values | Where-Object { $_ -cne $liveExecutionFingerprint }).Count -eq 0 -and
@@ -549,7 +550,7 @@ try {
         export_package = [ordered]@{ artifact = $exportIdentity; schema_version = [string]$exportBundle.schema_version; member_package_count = @($exportBundle.packages).Count; receipt_bound = $true }
         rollback = [ordered]@{ table = $RollbackSentinelTable; column = $RollbackSentinelColumn; row = $RollbackSentinelRow; preimage = $preimage; postimage = $postimage; structural_results_preimage_sha256 = $preRollbackResultsSha256; structural_results_postimage_sha256 = $postRollbackResultsSha256; probe_receipt = Get-StructAutomateFileIdentity $rollbackReceiptPath; probe_receipt_state = [string]$rollbackReceipt.state }
         reconstruction = [ordered]@{ before = $preReopen; after = $postReopen; result_identity_preserved = $reconstructionMatches }
-        legacy_schema_upgrade = [ordered]@{ freshness_change = $legacyFreshnessChange; receipt_change = $legacyReceiptChange; recalculation = $legacySchemaRecalculation; after_recalculation = $postLegacySchemaRecalculation; passed = $legacySchemaUpgrade }
+        legacy_schema_upgrade = [ordered]@{ freshness_change = $legacyFreshnessChange; receipt_change = $legacyReceiptChange; reference_calculation_result_id_sha256 = $calculationReferenceTables.StructuralResults.result_id_sha256; recalculation = $legacySchemaRecalculation; after_recalculation = $postLegacySchemaRecalculation; passed = $legacySchemaUpgrade }
         runtime_fingerprint_invalidation = [ordered]@{ synthetic_prior_fingerprint = $syntheticPriorFingerprint; mutated_row_count = $driftedRowCount; before_restart = $preDriftRestart; after_restart = $postDriftRestart; rejected_reconstruction = $driftDiagnostic; recalculation = $recalculatedAfterDrift; after_recalculation = $postDriftRecalculation; prior_live_evidence_reused = [bool]$recalculatedAfterDrift.json.reused_current_results; passed = $runtimeFingerprintInvalidation }
         performance = [ordered]@{ workload = [ordered]@{ members = 20; operations = 200; command = 'XL-CMD-03' }; cold_ready_measurement_boundary = 'Fresh Excel automation start through installed STR.INFO.VERSION response; registry precondition, host configuration, and AddIns lifecycle enumeration are verified outside the timed interval.'; cold_launch_samples_ms = $coldSamples; cold_ready_max_ms = $coldMax; memory_baseline_bytes = $memoryBaselineBytes; memory_after_commands_bytes = $memoryAfterCommandsBytes; memory_delta_mib = $workingSetDeltaMiB }
         budgets = [ordered]@{ warm_median_ms = $WarmMedianBudgetMs; warm_p95_ms = $WarmP95BudgetMs; cold_ready_ms = $ColdReadyBudgetMs; progress_and_cancellation_ms = $ProgressAndCancellationBudgetMs; memory_delta_mib = $ExcelWorkingSetDeltaBudgetMiB }; checks = $checks
