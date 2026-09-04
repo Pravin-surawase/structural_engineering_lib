@@ -103,12 +103,176 @@ stage does not run while a cheaper earlier stage is failing.
 Independent review starts only after the slice's acceptance matrix passes and
 returns one consolidated blocker list. The initial reviewed candidate may have
 one consolidated repair candidate; a second rejection triggers contract or
-design re-planning before more implementation. Installed evidence is generated
-only after the functional source candidate is stable. Before the final commit,
-run `./run.sh check --candidate-integrity`, rebind any repository-facing
-identity affected by normalization, and rerun the command clean. The final
-read-only `session end` precedes the push; the task timing closeout follows
-post-merge verification.
+design re-planning before more implementation. Installed qualification evidence
+is generated only after the functional source candidate is stable. After the
+slice content freezes, run its formatter and focused matrix once, create the
+candidate, obtain one independent decision, and run the read-only
+`./run.sh check --candidate-integrity` once on the accepted head. Pre-push owns
+the one final read-only `session end`; task closeout follows post-merge proof.
+
+## Delivery decision — one clean session per bounded slice
+
+PF11 estimates all of WP10 at 10–15 engineer-days and classifies it high risk.
+The remaining work crosses distinct installed-ETABS, offline-normalization,
+installed-Excel, and external qualification gates. Combining those gates into
+one coding session would recreate WP09's oversized-packet failure mode.
+
+For delivery purposes, **one session** therefore means that each remaining
+slice starts and closes one parent task without carrying repair work into a
+later session. WP10-02 is the next such session. Later slices may share the
+IMP-M3 milestone branch only when their accepted authority and installed-host
+gate are unchanged; they retain separate task timers and acceptance decisions.
+
+| Session | Complete outcome | Must not leak into the session |
+| --- | --- | --- |
+| WP10-02 | exact-version getter port, binding, fake-host proof, and one live getter-only matrix | broker retries, normalization, Excel, performance |
+| WP10-03 | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
+| WP10-04 | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
+| WP10-05 | transactional `XL-CMD-02` import, readback, rollback, and freshness | ETABS mutation and qualification claims |
+| WP10-06 | E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
+
+The operating target for every session is one candidate, zero repair batches,
+zero focused-check retries, one candidate-integrity run, one final closeout,
+one hosted run, and less than ten percent writer-rework time. A real defect is
+not hidden to meet the target; the delivery state machine records it and stops
+after its bounded repair allowance.
+
+## WP10-02 single-session execution contract
+
+### Entry card — pass before opening the implementation timer
+
+WP10-02 does not start until every entry row is known. A missing row is a
+preflight hold, not an invitation to start coding and repair later.
+
+| Entry row | Required evidence |
+| --- | --- |
+| Repository | clean feature-lane base, local/remote/live `main` equality, no operation, and no overlapping active candidate |
+| Delivery controls | efficiency policy plus focused replan, derived-state, pre-push, hosted-rejection, and automatic-closeout tests pass |
+| Frozen portable authority | `operations/wp10.json`, `schemas/wp10.schema.json`, and `conformance/wp10-vectors.json` validate and their version-1 meaning is unchanged |
+| Runtime | Windows x64, .NET SDK 10.0.400, ETABS 23.3.1.4563, ETABSv1.dll file version 2.16.0.0, and x64 type library identities are freshly measured |
+| Active host | exactly one user-selected ETABS process has the intended saved, analysed model open; its process start, executable, model path, file identity, lock, units, analysis status, and output selection are recordable |
+| Request | exact model expectation, member selection, station mode, result cases/combinations, required result kinds, deadline, and evidence path are fixed before attachment |
+| Prior evidence | W3B/W3C/W3D evidence is discovery material only; it is never reused as a current process, model, result-epoch, or compatibility claim |
+
+Passive readiness observed on 2026-09-04 found the expected executable,
+managed assembly, and x64 type library at their installed paths. Their versions,
+byte counts, and SHA-256 values match the retained W3B static evidence, and
+.NET SDK 10.0.400 is available. No ETABS process was running. This proves that
+the machine can be prepared; it does not pass the active-host row or establish
+live compatibility. Before WP10-02 begins, the user must open exactly one saved
+model with current analysis results and the intended output selections already
+set. The adapter is forbidden from creating that state.
+
+### Fixed source and evidence budget
+
+The intended product paths are fixed before implementation:
+
+- `CSharp/src/StructuralEngineering.Etabs/StructuralEngineering.Etabs.csproj`;
+- a narrow getter port, exact host probe, and exact-version getter adapter under
+  `CSharp/src/StructuralEngineering.Etabs/`;
+- `CSharp/tests/StructAutomate.Tests/Wp10GetterAdapterTests.cs` and one project
+  reference from its existing Windows test project;
+- one project entry in `CSharp/StructAutomate.slnx`;
+- `docs/verification/wp10-02-host-microprobe-evidence.json`;
+- this plan, implementation status, newest session entry, and generated handoff.
+
+No vendor DLL, generated interop wrapper, model, workbook, result export, or
+machine-specific absolute dependency is committed. The default locked solution
+must restore, build, and run fake-host tests on a clean Windows runner without
+ETABS installed. The live binding separately loads and verifies the exact
+installed assembly identity. If the micro-probe proves that this build strategy
+cannot preserve the installed parameter directions and return shapes, change
+the contract before implementation instead of adding an unreviewed workaround.
+
+### Ordered work — no speculative implementation
+
+1. **Admit the lane.** Start `WP10-02`, create its feature lane, bind this
+   acceptance file, and record the exact base before any product write.
+2. **Run the micro-probe.** Inspect file/assembly/type-library identities, bind
+   the exact selected process, establish the supported attachment path, reflect
+   the proposed getter signatures and enum values, read model identity, and
+   release all acquired references deterministically. Record no compatibility
+   claim and make no model or selection call that can mutate state.
+3. **Freeze the getter matrix.** For every allowed call, record interface,
+   member, parameter order/direction/type, enum values, output order and shape,
+   CSI return-code position, required input identity, and normalized evidence
+   destination. Freeze a deny list covering setters, unlock, analysis, design,
+   save, close, and exit before writing the adapter.
+4. **Build the host boundary offline first.** Implement the port, strict result
+   decoders, exact version guard, call whitelist, and fake scalar/list/array,
+   failed-return, unequal-array, timeout, and identity-drift cases. Consume the
+   WP10-01 records without changing their wire meaning.
+5. **Run one getter smoke path.** Attach to the exact process; prove runtime,
+   model filename, lock, units, analysis status and output selection; call no
+   force getter while any readiness value is absent, stale, or unexpected.
+6. **Run the reviewed functional matrix.** Read the approved metadata,
+   topology, assignment, axis/mapping, selection, and `Results.FrameForce`
+   getters. Persist exact raw outputs and call identities; do not normalize or
+   expose a partial accepted snapshot in WP10-02.
+7. **Prove postflight equality.** Re-read process/model/file/lock/units,
+   analysis/result and output-selection state, require byte/identity equality,
+   close the call ledger, and release the broker/COM boundary. Any uncertain
+   cleanup is `RESTORATION_UNVERIFIED`, never success or automatic retry.
+8. **Freeze once.** Finish product, tests, evidence, status, session record and
+   handoff; run changed-path formatting once and the focused checks below once.
+9. **Review and publish once.** Create one candidate, obtain one consolidated
+   independent decision, run candidate integrity once, let pre-push close the
+   session once, and use one hosted PR cycle. A rejection uses the one bounded
+   repair; another rejection requires a changed-contract replan.
+
+### Stop rules that prevent repair cycles
+
+Stop before product writes when the active host, saved model, request, output
+selection, version/hash, attachment path, or full getter matrix is ambiguous.
+After product writes, stop and replan rather than patch around any of these:
+
+- installed signature, parameter direction, enum, return-code, or output-shape
+  mismatch;
+- a required setter or a hosted build that needs an unavailable vendor binary;
+- unsaved/multiple/wrong model identity, stale results, or absent/drifted
+  selection;
+- any setter, unlock, analysis, design, save, close or exit entry in the ledger;
+- process, file, lock, units, analysis/result, or selection postflight drift;
+- unpaired calls, timeout/COM uncertainty, failed cleanup, or partial evidence;
+- any semantic or canonical-identity change to the frozen WP10-01 authority;
+- changed files outside the fixed budget without an explicit acceptance update.
+
+### Focused freeze matrix
+
+Run this union only after content freezes; use a narrow reproducer earlier only
+to diagnose the current implementation. Do not add an unchanged quick/full gate
+between these checks and the candidate.
+
+```bash
+./scripts/python_runtime.sh scripts/validate_structural_engineering_contracts.py
+./scripts/python_runtime.sh -m pytest Python/tests/unit/test_structural_engineering_wp10.py -q
+(cd CSharp && dotnet restore StructAutomate.slnx --locked-mode)
+(cd CSharp && dotnet build StructAutomate.slnx -c Release --no-restore)
+(cd CSharp && dotnet test --project tests/StructAutomate.Tests/StructAutomate.Tests.csproj -c Release --no-build --filter FullyQualifiedName~Wp10GetterAdapterTests)
+(cd CSharp && dotnet format StructAutomate.slnx --verify-no-changes --no-restore)
+git diff --check
+./run.sh session check
+```
+
+The candidate is acceptable only when the matrix passes, the exact live getter
+ledger and postflight equality pass, the default solution remains independent
+of installed vendor binaries, WP10-01 fixture identities are unchanged, and
+the evidence states its exact-host limitation. Comprehensive cross-domain
+assurance remains the single hosted PR run.
+
+### Recurrence controls applied to WP10-02
+
+| Recurrence | Preventive rule |
+| --- | --- |
+| RR-001/RR-002 | one bounded slice and one frozen getter matrix; do not combine broker, normalizer, Excel or qualification work |
+| RR-003 | format changed source once before candidate; integrity is read-only and runs once after audit acceptance |
+| RR-004 | admit intake before the timer and use only executable delivery transitions through post-merge closeout |
+| RR-005 | use repository-root maintained launchers, exact literal Windows paths, and one shell shape per command; no wildcard or mixed-shell probes |
+| RR-006 | no preparation closeout; pre-push owns one idempotent final session verdict |
+| RR-007 | preserve the already-qualified PF4 Unicode canonicalization and shared fixture identity |
+| RR-008 | one candidate plus one repair ceiling; changed acceptance digest is required after a second rejection |
+| RR-009 | add/fetch the exact task-branch refspec before asserting upstream equality |
+| RR-010 | update recurrence count, basis, last-seen task, session row, and generated handoff as one pre-freeze set |
 
 ## Frozen performance workloads
 
@@ -203,10 +367,10 @@ The snapshot contract freezes these boundaries:
 The focused freeze commands are the structural-contract validator, the WP10
 Python tests, the host-free .NET test project, Python format/lint for changed
 files, `dotnet format --verify-no-changes`, and `git diff --check`. After those
-pass and the task records are final, candidate integrity runs once before the
-immutable reviewed candidate is created. WP10-02 may consume these records but
-may not change their version-1 meaning while binding installed getter
-signatures.
+pass and the task records are final, create the immutable candidate, obtain its
+independent audit decision, and run candidate integrity once on the accepted
+head. WP10-02 may consume these records but may not change their version-1
+meaning while binding installed getter signatures.
 
 ## Acceptance
 

@@ -5,6 +5,92 @@
 
 ---
 
+## 2026-09-04 — Session: WP10 one-session readiness plan
+
+**Agent:** Codex (`orchestrator`); no subagents.
+
+**Branch:** `codex/wp10-readiness-plan`.
+
+**Focus:** Verify the merged delivery-efficiency controls, read the current
+WP10/PF8/PF11 authority and recurrence ledger, and make WP10-02 executable in
+one accurate parent session without combining later installed-host gates.
+
+**Completed:**
+
+- Re-ran the token-efficiency policy and eight focused lifecycle cases covering
+  digest-gated replanning, guarded derived states, idempotent pre-push closeout,
+  hosted rejection, and automatic closeout accounting; all passed.
+- Re-read RR-001 through RR-010 and mapped every relevant recurrence to an
+  explicit WP10-02 entry, execution, stop, formatting, audit, or push rule.
+- Reconciled the requested one-session goal with PF11's 10–15 engineer-day,
+  high-risk WP10 estimate: each remaining installed/offline/Excel/qualification
+  slice must close one parent session, while WP10-02 is the next exact session.
+- Added WP10-02's entry card, fixed source/evidence budget, micro-probe and
+  getter-matrix order, vendor-independent hosted-build constraint, stop rules,
+  focused freeze matrix, and one-candidate operating target.
+- Passively verified ETABS 23.3.1.4563, ETABSv1.dll 2.16.0.0, the x64 type
+  library, and .NET SDK 10.0.400. The three installed file hashes match retained
+  W3B static evidence; no ETABS process was running and no COM/model access or
+  live compatibility claim occurred.
+
+### Issues encountered
+
+- The existing WP10 plan still placed candidate integrity before creation of
+  the immutable reviewed candidate, contradicting the newly executable
+  delivery lifecycle and risking another evidence-rebind cycle.
+- The request to finish all remaining WP10 work in one session crossed separate
+  installed ETABS, offline normalization, installed Excel, and external
+  qualification gates; PF11 independently estimates the whole packet at 10–15
+  engineer-days and high risk.
+- Passive readiness found the exact installed binaries but zero running ETABS
+  processes, so WP10-02 cannot yet prove an active model, result epoch, output
+  selection, getter behavior, or postflight equality.
+- ⚠️ TERMINAL ISSUE: one status path was resolved relative to `docs/planning`
+  instead of `docs`, and one `rg` call passed Windows-incompatible recursive
+  glob arguments. The canonical `docs/library/implementation-status.md` path
+  and `rg --files` followed by a filter resolved both probes. (`RR-005`)
+- Pre-candidate review found that the RR-005 count and basis were current while
+  `last_seen_task` still named the delivery-redesign task. The same coupled
+  provenance class had caused the previous task's audit rejection. (`RR-010`)
+
+### Root causes and resolutions
+
+- Confirmed root cause: WP10's earlier prose predated the executable candidate
+  lifecycle. Resolution: freeze content and focused evidence first, create the
+  candidate, obtain one independent decision, then run exactly one read-only
+  integrity check and let pre-push own final closeout. Proof: the focused
+  delivery-control selection passed before this plan update.
+- Confirmed root cause: “one session” had no gate-aware definition. Resolution:
+  make every remaining slice a one-session outcome while prohibiting a session
+  from spanning distinct installed-application or qualification gates; WP10-02
+  now has one fixed entry card and file budget.
+- Confirmed root cause: the old plan allowed implementation to begin before the
+  active host/request/getter matrix was fully known. Resolution: make ambiguity
+  a pre-write hold, require exactly one saved analysed model with selections
+  already set, freeze the complete getter matrix from a non-mutating probe, and
+  reject vendor-dependent hosted builds or postflight drift.
+- Confirmed root cause: path discovery mixed relative-document interpretation
+  and shell glob semantics. Resolution: use repository-root canonical paths and
+  `rg --files` filtering for Windows discovery. (`RR-005`)
+- Confirmed root cause: recurrence updates had no atomic checklist for their
+  coupled count, basis, last-seen task, session row, and generated handoff.
+  Resolution: add RR-010 with that exact update set and regenerate the handoff
+  before freeze. Proof: recurrence and session consistency are the affected
+  focused checks. (`RR-010`)
+
+### Rework and recurrence
+
+- `RR-005`, occurrences=20, minutes=unknown — use repository-root maintained
+  launchers, literal Windows paths, `rg --files`, and one shell shape per probe.
+- `RR-010`, occurrences=2, minutes=unknown — update recurrence count, basis,
+  last-seen task, session row, and generated handoff together before freeze.
+
+**Git handoff:** No receipt is required; this is a same-checkout planning task
+and no device, worktree, installed-artifact authority, or mutation authority is
+being transferred.
+
+---
+
 ## 2026-09-04 — Session: executable delivery-system redesign
 
 **Agent:** Codex (`orchestrator`) with read-only audits from Helmholtz and Kuhn.

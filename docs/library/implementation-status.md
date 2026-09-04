@@ -507,3 +507,11 @@ WP10-02 remains the first host adapter packet. It must consume these frozen
 records and add exact-version CSI/STA acquisition evidence; no such host code,
 Excel command, model mutation, copied-model reanalysis, solver, or optimization
 is implemented by WP10-01.
+
+WP10-02 readiness update (2026-09-04): its one-session entry card, fixed source
+budget, micro-probe order, stop rules, focused freeze matrix, and recurrence
+controls are now defined in the WP10 plan. Passive inspection found ETABS
+23.3.1.4563, ETABSv1.dll 2.16.0.0, the x64 type library, and .NET SDK 10.0.400
+at the expected identities, but no ETABS process was running. Live work remains
+held until exactly one intended saved, analysed model is open with its required
+output selections already set.
