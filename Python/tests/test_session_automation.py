@@ -104,9 +104,11 @@ def test_run_sh_routes_compact_recurrence_index():
     )
 
     assert result.returncode == 0, result.stderr
-    assert "RR-003 | 4x | unknown" in result.stdout
+    index = json.loads(session.REWORK_INDEX.read_text(encoding="utf-8"))
+    pattern = next(item for item in index["patterns"] if item["id"] == "RR-003")
+    assert f"RR-003 | {pattern['occurrences']}x | unknown" in result.stdout
     assert "Candidate or evidence frozen before normalization" in result.stdout
-    assert "corrected-candidate-sequence" in result.stdout
+    assert pattern["details"][0] in result.stdout
 
 
 def test_handoff_replaces_maintained_legacy_heading(monkeypatch, tmp_path):
@@ -1567,6 +1569,41 @@ def test_handoff_parsers_preserve_wrapped_focus_and_completed_items():
     ]
 
 
+@pytest.mark.parametrize("heading", ["**Completed:**", "### Completed", "### Summary"])
+@pytest.mark.parametrize("has_outcome", [True, False])
+def test_completion_outcomes_agree_across_handoff_check_and_closeout(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, heading: str, has_outcome: bool
+):
+    session_log = tmp_path / "SESSION_LOG.md"
+    next_brief = tmp_path / "next-session-brief.md"
+    outcome = (
+        "- Verified the current\n  candidate." if has_outcome else "- <!-- pending -->"
+    )
+    session_log.write_text(
+        f"# Log\n\n## {date.today().isoformat()} — Session\n"
+        f"**Focus:** Finish the bounded workflow repair\n\n{heading}\n{outcome}\n\n"
+        "### Issues encountered\n- None encountered.\n\n"
+        "### Root causes and resolutions\n- None encountered.\n\n"
+        "### Rework and recurrence\n- None encountered.\n",
+        encoding="utf-8",
+    )
+    next_brief.write_text(
+        "# Next Session Briefing\n\n## Required Reading\n"
+        "| **Current** | candidate |\n| **Next** | closeout |\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "NEXT_BRIEF", next_brief)
+    assert session._do_handoff()[0] is True
+    handoff = next_brief.read_text(encoding="utf-8")
+    assert ("- Completed: Verified the current candidate." in handoff) is has_outcome
+    assert "<!-- pending -->" not in handoff
+    assert session.cmd_check(SimpleNamespace()) == (0 if has_outcome else 1)
+    complete, issues = session.check_session_log_complete()
+    assert complete is has_outcome
+    assert ("SESSION_LOG: No completed items listed" in issues) is not has_outcome
+
+
 def _write_rework_index_fixture(path: Path) -> None:
     path.write_text(
         json.dumps(
@@ -2325,6 +2362,117 @@ def test_delivery_prepush_closeout_is_idempotent(
     assert calls == ["end"]
 
 
+@pytest.mark.parametrize("candidate_count", [1, 2])
+@pytest.mark.parametrize("explicit", [False, True])
+def test_closeout_failure_preserves_history_and_uses_existing_repair_ceiling(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    candidate_count: int,
+    explicit: bool,
+):
+    ledger = tmp_path / "usage.jsonl"
+    heads = ["a" * 40, "c" * 40][:candidate_count]
+    snapshot = {
+        "state": "INTEGRITY_VERIFIED",
+        "candidate_heads": heads,
+        "latest_candidate_head": heads[-1],
+        "design_candidate_count": candidate_count,
+        "repair_batches": candidate_count - 1,
+        "audit_rejections": 0,
+    }
+    rows = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "RECOVERY",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "RECOVERY",
+            "delivery": snapshot,
+        },
+    ]
+    original = "\n".join(json.dumps(row) for row in rows) + "\n"
+    ledger.write_text(original, encoding="utf-8")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    monkeypatch.setattr(
+        session, "_resolve_head_and_tree", lambda _ref: (heads[-1], "b" * 40)
+    )
+    monkeypatch.setattr(session, "_run_final_closeout", lambda: 1)
+    action = (
+        [
+            "--to",
+            "CLOSEOUT_REJECTED",
+            "--head",
+            heads[-1],
+            "--evidence",
+            "recorded closeout failure",
+        ]
+        if explicit
+        else ["--guard-push"]
+    )
+    args = session.build_parser().parse_args(
+        ["delivery", "--task-id", "RECOVERY", *action]
+    )
+    assert session.cmd_delivery(args) == (0 if explicit else 1)
+    current = session._delivery_snapshot(session._read_jsonl(ledger), "RECOVERY")
+    assert current["state"] == ("REPAIR" if candidate_count == 1 else "REPLAN")
+    assert current["repair_batches"] == 1
+    assert current["closeout_rejections"] == 1
+    assert current["candidate_heads"] == heads
+    assert current["audit_rejections"] == 0
+    assert ledger.read_text(encoding="utf-8").startswith(original)
+    rejected = ledger.read_bytes()
+    assert session.cmd_delivery(args) == 1
+    assert ledger.read_bytes() == rejected
+
+
+@pytest.mark.parametrize(
+    "invalid", ["state", "head", "missing_head", "missing_evidence"]
+)
+def test_explicit_closeout_rejection_requires_current_head_state_and_evidence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, invalid: str
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "state": "AUDIT_ACCEPTED" if invalid == "state" else "INTEGRITY_VERIFIED",
+        "latest_candidate_head": "a" * 40,
+        "design_candidate_count": 1,
+        "repair_batches": 0,
+    }
+    rows = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "RECOVERY",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "RECOVERY",
+            "delivery": snapshot,
+        },
+    ]
+    ledger.write_text(
+        "\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8"
+    )
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    monkeypatch.setattr(
+        session,
+        "_resolve_head_and_tree",
+        lambda ref: ("a" * 40 if ref == "HEAD" else ref, "b" * 40),
+    )
+    arguments = ["delivery", "--task-id", "RECOVERY", "--to", "CLOSEOUT_REJECTED"]
+    if invalid != "missing_head":
+        arguments += ["--head", ("c" if invalid == "head" else "a") * 40]
+    if invalid != "missing_evidence":
+        arguments += ["--evidence", "recorded closeout failure"]
+    before = ledger.read_bytes()
+    assert session.cmd_delivery(session.build_parser().parse_args(arguments)) == 1
+    assert ledger.read_bytes() == before
+
+
 def test_delivery_hosted_rejection_records_attempt_and_reenters_repair(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
@@ -2383,8 +2531,13 @@ def test_delivery_hosted_rejection_records_attempt_and_reenters_repair(
     assert repaired["hosted_run_ids"] == ["12345"]
 
 
+@pytest.mark.parametrize("first_pushed", [True, False])
+@pytest.mark.parametrize("replacement_check", [True, False])
 def test_automatic_delivery_closeout_counts_each_published_candidate(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    first_pushed: bool,
+    replacement_check: bool,
 ):
     ledger = tmp_path / "usage.jsonl"
     task_id = "DELIVERY-TEST"
@@ -2409,6 +2562,8 @@ def test_automatic_delivery_closeout_counts_each_published_candidate(
         ("10:26:00", "HOSTED_PASSED"),
     )
     for clock, state in timeline:
+        if not first_pushed and clock in {"10:13:00", "10:14:00"}:
+            continue
         rows.append(
             {
                 "timestamp": f"2026-09-04T{clock}+00:00",
@@ -2418,6 +2573,8 @@ def test_automatic_delivery_closeout_counts_each_published_candidate(
             }
         )
     for clock in ("10:12:00", "10:22:00"):
+        if not replacement_check and clock == "10:22:00":
+            continue
         rows.append(
             {
                 "timestamp": f"2026-09-04T{clock}+00:00",
@@ -2439,8 +2596,9 @@ def test_automatic_delivery_closeout_counts_each_published_candidate(
         "design_candidate_count": 2,
         "design_audit_rejections": 0,
         "repair_batches": 1,
-        "hosted_validation_runs": 2,
-        "hosted_run_ids": ["failed", "passed"],
+        "hosted_validation_runs": 2 if first_pushed else 1,
+        "hosted_run_ids": ["failed", "passed"] if first_pushed else ["passed"],
+        "closeout_rejections": 0 if first_pushed else 1,
         "latest_candidate_head": "c" * 40,
         "latest_candidate_tree": "d" * 40,
         "pr_number": 1,
@@ -2458,6 +2616,14 @@ def test_automatic_delivery_closeout_counts_each_published_candidate(
     ledger.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
     monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
 
+    if not replacement_check:
+        with pytest.raises(ValueError, match="each pushed candidate requires its own"):
+            session._automatic_delivery_efficiency(
+                task_id,
+                entries=session._read_jsonl(ledger),
+                observed_at=datetime.fromisoformat("2026-09-04T10:28:00+00:00"),
+            )
+        return
     result = session._automatic_delivery_efficiency(
         task_id,
         entries=session._read_jsonl(ledger),
@@ -2465,8 +2631,14 @@ def test_automatic_delivery_closeout_counts_each_published_candidate(
     )
 
     assert result["candidate_integrity_runs"] == 2
-    assert result["final_session_end_runs"] == 2
-    assert result["hosted_validation_runs"] == 2
-    assert result["phase_timings_min"]["final local closeout"] == 6
-    assert result["phase_timings_min"]["hosted/network wait"] == 4
+    assert result["unpublished_candidate_integrity_runs"] == (0 if first_pushed else 1)
+    assert result["closeout_rejections"] == (0 if first_pushed else 1)
+    assert result["final_session_end_runs"] == (2 if first_pushed else 1)
+    assert result["hosted_validation_runs"] == (2 if first_pushed else 1)
+    assert result["phase_timings_min"]["final local closeout"] == (
+        6 if first_pushed else 8
+    )
+    assert result["phase_timings_min"]["hosted/network wait"] == (
+        4 if first_pushed else 2
+    )
     assert result["phase_total_min"] == result["total_wall_time_min"] == 28

@@ -308,6 +308,8 @@ Format once after freeze and run focused checks. After independent acceptance,
 run read-only candidate integrity once. `INTEGRITY_REJECTED` uses the same
 repair ceiling. Pre-push runs one read-only `session end` and records
 `FINAL_CLOSED` idempotently. Record each hosted verdict by exact run ID;
+Failed pre-push closeout enters the same repair ceiling; `CLOSEOUT_REJECTED`
+records an older stuck candidate's observed failure with exact head/evidence.
 `HOSTED_REJECTED` enters repair or, after its repair candidate, `REPLAN`.
 
 Finish all versioned task, handoff, documentation, test, generated projection,

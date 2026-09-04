@@ -90,3 +90,41 @@ elapsed time in the writer-rework phase. An essential failure may use the one
 repair candidate and therefore records another integrity, closeout, and hosted
 attempt for that new head; the target is diagnostic, not permission to hide a
 defect or its failed attempt.
+
+## Closeout recovery and early-check parity — 2026-09-05
+
+The owner authorized this general control-plane repair while the original
+`WP10-04-PREP` task was at `INTEGRITY_VERIFIED`. Its first candidate passed
+integrity, but pre-push rejected a completed-items heading that `session check`
+had accepted. The guard provided no recovery transition; aggregate usage also
+assumed every successful integrity run belonged to a pushed candidate.
+
+The repair retains the original task, base and candidate history. It adds no
+WP10-specific behavior and does not implement product normalization. The narrow
+bootstrap is to add and test the missing command, then use it to record the
+already-observed closeout rejection before preparing the replacement candidate.
+No ledger is edited directly and no hook is skipped.
+
+| Acceptance | Required proof |
+| --- | --- |
+| One completed-items interpretation | Handoff, early session check and final closeout consume the same parser for `**Completed:**`, `### Completed` and `### Summary`; missing/placeholder outcomes fail early and wrapped real outcomes survive handoff. |
+| Failed closeout is recoverable | Pre-push still returns failure, records a head-bound rejection and enters the shared one-repair allowance; failure on the repaired candidate enters digest-gated `REPLAN`. |
+| Existing stuck tasks can recover | Explicit `CLOSEOUT_REJECTED` requires `INTEGRITY_VERIFIED`, exact current candidate head and evidence. It cannot mark a candidate closed/pushed or reset history. |
+| Accounting follows candidates | An unpublished rejected candidate retains its integrity run and rejection count. Each pushed candidate must still have exactly one successful integrity check and final closeout in its own candidate window. Extra checks or a missing replacement check cannot be hidden by aggregate totals. |
+| Existing behavior remains intact | Repeated successful push guard stays idempotent; wrong-head rejection fails without mutation; ordinary audit/integrity/hosted ceilings and exact merge-tree checks remain enforced. |
+
+Bounded writes: `scripts/session.py`, its existing
+`Python/tests/test_session_automation.py`, this authority, the canonical Git
+workflow, the session-management skill, and the existing task-owned log,
+recurrence index and handoff. Update the short `AGENTS.md` lifecycle sentence
+only to reference the new rejection event. No new scheduler, agent, Git wrapper,
+generic formatter, product change, or installed application work is needed.
+
+After all intended writes, use the original task base
+`31974b34d6bfc589d506648cd73ac5431b095638` for impact and formatting. Run the
+affected session-automation tests, skill validation and session check. The
+named cumulative gate for this shared delivery-control repair is one full
+`./run.sh check` plus `./run.sh control validate`; rely on the authoritative
+impact plan and one hosted PR cycle for the remaining assurance. This does not
+introduce a broad Python product-suite requirement for documentation/control
+changes. Repeat only affected evidence if a real failure changes the candidate.

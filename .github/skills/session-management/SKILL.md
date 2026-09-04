@@ -46,17 +46,22 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
 
 ## Session Closeout
 
-1. Record the acceptance files at `BOUNDED_UNITS`, complete the bounded writes,
-   then enter `CONTENT_FROZEN`.
-2. Run `./run.sh format --write` once. Advance through `FORMATTED`,
-   `FOCUSED_VERIFIED`, and `PREPARED` with exact evidence.
-3. Update `docs/TASKS.md`, the newest `docs/SESSION_LOG.md` entry, maintained
+1. Record the acceptance files at `BOUNDED_UNITS`. Complete all bounded writes,
+   including task evidence and the documentation below, before `CONTENT_FROZEN`.
+2. Update affected `docs/TASKS.md` rows, the newest `docs/SESSION_LOG.md` entry, maintained
    generated projections, and `docs/planning/next-session-brief.md` before the
    candidate commit. A versioned `scripts/git_handoff_receipt.py` receipt is
    required only for a real cross-device, cross-worktree, installed-artifact,
    or authority transition; routine same-checkout delivery needs none.
    Every declared receipt remains evidence rather than authority:
    `receipt_grants_authority: false` is mandatory.
+   Record real outcome bullets under `**Completed:**`, `### Completed`, or
+   `### Summary`; handoff and session validation use the same parser. Run
+   `session handoff` after updating the entry, then `session check` before the
+   candidate so missing outcomes and stale handoff facts are caught early.
+3. Enter `CONTENT_FROZEN`, run `./run.sh format --write --base <task-base-sha>`
+   once, and advance through `FORMATTED`, `FOCUSED_VERIFIED`, and `PREPARED`
+   with exact evidence. Preserve the original task base during repairs.
 4. Commit the clean `CANDIDATE`, have one independent audit return one decision,
    then advance to `AUDIT_ACCEPTED`. One rejection admits one consolidated
    repair candidate; a second enters `REPLAN` until acceptance content changes.
@@ -71,6 +76,15 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
    `HOSTED_REJECTED` with its exact run ID before entering repair; the
    replacement head receives one new closeout and hosted verdict.
 
+If final closeout fails, pre-push remains blocked and automatically records
+the rejection into the same `REPAIR`/`REPLAN` ceiling. Inspect `session delivery
+--status` before taking another action. For an older task already stuck at
+`INTEGRITY_VERIFIED`, record its observed failure with `session delivery --to
+CLOSEOUT_REJECTED --head <full-candidate-sha> --evidence <failure>`. This cannot
+close or publish the candidate. Never reset the timer or ledger to recover.
+Usage retains checks for rejected unpublished candidates while requiring each
+pushed candidate's own integrity check and final closeout.
+
 Do not run global doc syncing, legacy index generation, evolution fixes, release
 checks, or a second documentation commit by default. After push or PR creation,
 keep hosted-check and merge facts in GitHub and the external handoff; do not
@@ -84,10 +98,10 @@ the same Codex-native workflow.
 ./run.sh session check
 ```
 
-Verifies:
-- SESSION_LOG.md is not stale
-- next-session-brief.md has recent updates
-- TASKS.md has no abandoned "in progress" items
+Verifies the newest session's focus, completed outcomes and issue/recurrence
+record, plus the maintained briefing structure, date and declared receipt.
+It is an early document check; final closeout also verifies clean Git state
+and repository context.
 
 ## Key Files
 

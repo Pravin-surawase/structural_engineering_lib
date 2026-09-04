@@ -200,6 +200,12 @@ The persisted stage gates are:
    enter the same single repair allowance, or `REPLAN` if that allowance was
    already used. The pre-push hook runs the one final read-only `session end`
    and records `FINAL_CLOSED` idempotently.
+   If closeout fails, the push remains blocked and the guard records the
+   rejection into the existing `REPAIR`/`REPLAN` ceiling. An older task stuck
+   at `INTEGRITY_VERIFIED` can record the observed failure with `session delivery
+   --to CLOSEOUT_REJECTED --head <full-candidate-sha> --evidence <failure>`.
+   The command requires the exact current accepted SHA; it never closes or
+   publishes a candidate, resets a timer, or discards earlier attempts.
 7. **PUSHED → HOSTED_PASSED → MERGED:** push once, complete one hosted CI/review
    closeout, and immediately recheck the exact head/tree, base, required checks,
    reviews, unresolved threads, conflicts, and mergeability. Merge only the
@@ -217,6 +223,15 @@ non-overlapping wall-time phases, exact candidate heads,
 rejection/repair/retry counters, full-gate count, hosted-run count, and rework
 ratio from transitions and timed commands. Hosted closeout binds the PR and
 reachable merge commit and requires accepted-candidate/merged-tree equality.
+Successful integrity checks on rejected unpublished candidates remain visible
+in usage. Each pushed candidate must have its own single integrity check and
+final closeout; an earlier candidate's check cannot qualify its replacement.
+
+Before freezing the candidate, run `session handoff` after session-record
+updates and then `session check`. The early check and final closeout use the
+same completed-item parser as the handoff: real outcome bullets under
+`**Completed:**`, `### Completed`, or `### Summary`. Blank/placeholder outcomes
+fail early. Final closeout retains its additional clean-Git and context checks.
 
 The mutation cutoff is strict: finish versioned session/task/handoff records,
 local evidence, and any boundary-required receipt first; refresh only affected
