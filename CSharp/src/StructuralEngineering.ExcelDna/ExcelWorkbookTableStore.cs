@@ -231,14 +231,12 @@ public sealed class ExcelWorkbookTableStore : IWorkbookTableStore
             {
                 dynamic? sheet = null;
                 dynamic? used = null;
-                dynamic? usedCells = null;
                 try
                 {
                     sheet = worksheets.Item(index);
                     if (!string.Equals((string)sheet.Name, sheetName, StringComparison.Ordinal)) continue;
                     used = sheet.UsedRange;
-                    usedCells = used.Cells;
-                    if ((long)usedCells.CountLarge > 1 || !string.IsNullOrWhiteSpace(ToInvariantText(used.Value2)))
+                    if (HasCellContent(used.Value2) || HasCellContent(used.Formula))
                         throw new InvalidOperationException($"Controlled sheet name {sheetName} already contains unrelated content.");
                     var matched = sheet;
                     sheet = null;
@@ -246,7 +244,6 @@ public sealed class ExcelWorkbookTableStore : IWorkbookTableStore
                 }
                 finally
                 {
-                    ReleaseCom(usedCells);
                     ReleaseCom(used);
                     ReleaseCom(sheet);
                 }
@@ -350,6 +347,16 @@ public sealed class ExcelWorkbookTableStore : IWorkbookTableStore
         var firstColumn = cells.GetLowerBound(1);
         return Enumerable.Range(0, expected.Count)
             .All(index => ToInvariantText(cells[row, firstColumn + index]) == expected[index].Value);
+    }
+
+    private static bool HasCellContent(object? values)
+    {
+        if (values is not Array cells)
+            return !string.IsNullOrWhiteSpace(ToInvariantText(values));
+
+        foreach (var cell in cells)
+            if (!string.IsNullOrWhiteSpace(ToInvariantText(cell))) return true;
+        return false;
     }
 
     private static void Validate(WorkbookTable table)
