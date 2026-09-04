@@ -379,8 +379,10 @@ def _resolve_seed(
     for index in range(edge_count):
         following = (index + 1) % count
         available = _distance(points[index], points[following])
-        used = (bends[index].tangent_offset_mm if bends[index] is not None else 0) + (
-            bends[following].tangent_offset_mm if bends[following] is not None else 0
+        start_bend = bends[index]
+        end_bend = bends[following]
+        used = (start_bend.tangent_offset_mm if start_bend is not None else 0) + (
+            end_bend.tangent_offset_mm if end_bend is not None else 0
         )
         if used + tolerance >= available:
             raise _PathError(
@@ -393,12 +395,10 @@ def _resolve_seed(
     sequence = 1
     for index in range(edge_count):
         following = (index + 1) % count
-        start = bends[index].tangent_out if bends[index] is not None else points[index]
-        end = (
-            bends[following].tangent_in
-            if bends[following] is not None
-            else points[following]
-        )
+        start_bend = bends[index]
+        end_bend = bends[following]
+        start = start_bend.tangent_out if start_bend is not None else points[index]
+        end = end_bend.tangent_in if end_bend is not None else points[following]
         straight_length = _distance(start, end)
         segments.append(
             ResolvedPathSegment(

@@ -124,7 +124,7 @@ def _text(value: str | None) -> bool:
 
 
 def _leaf_identifier(value: str | None) -> bool:
-    return _text(value) and "@" not in value
+    return bool(value and value.strip() and "@" not in value)
 
 
 def _unique_text(items: tuple[Any, ...], attribute: str) -> bool:

@@ -34,7 +34,8 @@ class ApplicabilityState(StrEnum):
 
 
 class EngineeringState(StrEnum):
-    PASS = "pass"
+    # Engineering outcome, not a credential.
+    PASS = "pass"  # nosec B105
     FAIL = "fail"
     NOT_EVALUATED = "not_evaluated"
 
@@ -103,7 +104,7 @@ class OperationResult:
     result_id: str
 
     def to_dict(self) -> dict[str, Any]:
-        return plain(asdict(self))
+        return {str(key): plain(value) for key, value in asdict(self).items()}
 
 
 def plain(value: Any) -> Any:

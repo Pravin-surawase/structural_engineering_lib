@@ -97,6 +97,13 @@ ETABS adapters remain the following host packets.
 - Attempting to open a separate hosted-gate repair timer reported that the
   original task checkpoint remained active after the successful read-only
   closeout.
+- The second hosted Python job passed formatting but exposed 68 full-package
+  mypy errors across nine new beam files; after those were corrected, the next
+  hosted command identified the engineering enum value `PASS = "pass"` as a
+  Bandit B105 password candidate.
+- One local hosted-command replay redirected output to Windows `NUL` while the
+  command was running in Bash. Bash created a literal untracked `NUL` file, and
+  the fail-closed verification router rejected it in three repository checks.
 
 ### Root causes and resolutions
 
@@ -192,6 +199,24 @@ ETABS adapters remain the following host packets.
   than starting a competing timer.
   ⚠️ TERMINAL ISSUE: a second `session begin` was rejected because the original
   checkpoint remained active → continued the existing task checkpoint.
+- Confirmed root cause: packet-level mypy had checked WP08 alone, while hosted
+  CI checks all 315 configured source files. Heterogeneous internal dictionaries,
+  reused union-branch variables and validation helpers that do not provide type
+  narrowing left WP01–WP06 errors outside that earlier scope. Resolution: add
+  precise internal records/protocols, use branch-specific variables, narrow
+  optional values explicitly and retain the existing equations and public
+  signatures. Full-package mypy and all 110 WP01–WP08 tests pass.
+- Confirmed root cause: Bandit B105 matches the string value `"pass"` without
+  knowing that it is an engineering disposition. Resolution: add a line-scoped
+  B105 suppression identifying it as an engineering outcome; the complete
+  Bandit scan then passes without suppressing any other finding.
+- Confirmed root cause: `NUL` is a Windows shell sink but a normal filename in
+  Bash; the exact replay mixed those shell conventions. Resolution: verify the
+  resolved path, remove only the accidental workspace file, and use
+  `/dev/null` for Bash redirection. Verification routing, Git workflow and CLI
+  smoke then pass.
+  ⚠️ TERMINAL ISSUE: Bash redirection created a literal `NUL` file → removed the
+  verified workspace path and used Bash `/dev/null` semantics.
 
 ### Validation through content freeze
 
@@ -218,6 +243,11 @@ ETABS adapters remain the following host packets.
   eight manual pre-commit hooks pass; the 110 WP01–WP08 Python tests pass, and
   the signed calculation-review replay passes after fixture regeneration.
 - The 32-check repository gate passed again after the hosted-gate repair.
+- Exact hosted Python pipeline replay passes: Black, Ruff, full-package mypy,
+  Bandit, imports, generated API manifest, 18 contract tests, 149 core tests,
+  type-annotation policy, architecture, circular-import and governance checks.
+- The final 32-check repository gate passed after the type/security repairs and
+  removal of the accidental `NUL` path.
 - `git diff --check`: no whitespace errors; Git reported only configured
   line-ending conversion notices.
 - The immutable commit/closeout, hosted PR checks and integration are the

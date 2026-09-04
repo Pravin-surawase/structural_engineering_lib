@@ -614,6 +614,7 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
         )
 
     checks: list[dict[str, object]] = []
+    utilizations: list[float] = []
     diagnostics: list[Diagnostic] = []
     for path in request.paths:
         if (
@@ -651,20 +652,23 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
             AnchorageLocation.SIMPLE_SUPPORT,
             AnchorageLocation.CONTINUOUS_SUPPORT,
         )
-        support_values = (
-            path.support_near_face_x_mm,
-            path.support_centre_x_mm,
+        support_near_face = path.support_near_face_x_mm
+        support_centre = path.support_centre_x_mm
+        support_geometry_invalid = (
+            support_near_face is None
+            or not math.isfinite(support_near_face)
+            or support_centre is None
+            or not math.isfinite(support_centre)
+        )
+        critical_section_at_face = support_near_face is not None and math.isclose(
+            path.critical_section_x_mm,
+            support_near_face,
+            abs_tol=1e-9,
         )
         if at_support and (
             not path.support_id
-            or any(
-                value is None or not math.isfinite(value) for value in support_values
-            )
-            or not math.isclose(
-                path.critical_section_x_mm,
-                float(path.support_near_face_x_mm),
-                abs_tol=1e-9,
-            )
+            or support_geometry_invalid
+            or not critical_section_at_face
         ):
             return rejected_result(
                 ANCHORAGE_CHECK_OPERATION,
@@ -728,7 +732,8 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
                     "Simple-support anchorage requires moment resistance, support shear, and source action rows.",
                     f"paths[{path.bar_id}].simple_support_evidence",
                 )
-            centre = float(path.support_centre_x_mm)
+            assert support_centre is not None
+            centre = support_centre
             anchorage_beyond_centre = (
                 path.path_end_x_mm - centre
                 if path.direction is AnchorageDirection.INCREASING_X
@@ -751,6 +756,9 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
                     "Extend the bar path or revise the supported bend/anchorage detail.",
                 )
             )
+        utilization = required / available if available > 0 else None
+        if utilization is not None:
+            utilizations.append(utilization)
         checks.append(
             {
                 "bar_id": path.bar_id,
@@ -765,17 +773,12 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
                 "anchorage_beyond_support_centre_mm": anchorage_beyond_centre,
                 "available_for_criterion_mm": available,
                 "deficit_mm": max(0.0, required - available),
-                "utilization": required / available if available > 0 else None,
+                "utilization": utilization,
                 "passed": passed,
             }
         )
 
     passed = not diagnostics
-    utilizations = [
-        float(check["utilization"])
-        for check in checks
-        if check["utilization"] is not None
-    ]
     return completed_result(
         ANCHORAGE_CHECK_OPERATION,
         inputs,

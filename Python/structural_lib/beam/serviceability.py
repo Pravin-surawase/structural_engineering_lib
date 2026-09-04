@@ -213,7 +213,7 @@ def _select_limit(
     selected = project_limit if source is LimitSource.PROJECT else supplied_limit
     other = supplied_limit if source is LimitSource.PROJECT else project_limit
     field = "project_limit_mm" if source is LimitSource.PROJECT else "supplied_limit_mm"
-    if not _positive(selected) or other is not None:
+    if selected is None or not _positive(selected) or other is not None:
         return _diagnostic(
             operation,
             "INPUT.CONFLICT",
@@ -428,20 +428,20 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
                 ),
                 provenance=provenance,
             )
-        basis = request.screening
+        screening_basis = request.screening
         factors = (
-            basis.tension_steel_modification_factor,
-            basis.compression_steel_modification_factor,
-            basis.flanged_section_modification_factor,
+            screening_basis.tension_steel_modification_factor,
+            screening_basis.compression_steel_modification_factor,
+            screening_basis.flanged_section_modification_factor,
         )
         if (
-            not _positive(basis.effective_span_mm)
-            or basis.effective_span_mm > 10_000
-            or not _positive(basis.effective_depth_mm)
-            or not isinstance(basis.support_condition, SupportCondition)
+            not _positive(screening_basis.effective_span_mm)
+            or screening_basis.effective_span_mm > 10_000
+            or not _positive(screening_basis.effective_depth_mm)
+            or not isinstance(screening_basis.support_condition, SupportCondition)
             or not all(_positive(value) for value in factors)
-            or not basis.span_support_reference
-            or not basis.modification_factors_reference
+            or not screening_basis.span_support_reference
+            or not screening_basis.modification_factors_reference
         ):
             return rejected_result(
                 DEFLECTION_CHECK_OPERATION,
@@ -461,8 +461,8 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
             SupportCondition.CANTILEVER: 7.0,
             SupportCondition.SIMPLY_SUPPORTED: 20.0,
             SupportCondition.CONTINUOUS: 26.0,
-        }[basis.support_condition]
-        actual = basis.effective_span_mm / basis.effective_depth_mm
+        }[screening_basis.support_condition]
+        actual = screening_basis.effective_span_mm / screening_basis.effective_depth_mm
         allowable = basic * math.prod(factors)
         passed = actual <= allowable
         diagnostics = (
@@ -520,32 +520,47 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
             "Calculated deflection requires component evidence and both limits.",
             "calculated/limits",
         )
-    basis = request.calculated
+    calculated_basis = request.calculated
+    age_at_loading_days = calculated_basis.age_at_loading_days
+    finish_installation_age_days = calculated_basis.finish_installation_age_days
+    assessment_age_days = calculated_basis.assessment_age_days
+    sustained_duration_days = calculated_basis.sustained_duration_days
+    relative_humidity_percent = calculated_basis.relative_humidity_percent
+    notional_size_mm = calculated_basis.notional_size_mm
+    deflection_at_finish_installation_mm = (
+        calculated_basis.deflection_at_finish_installation_mm
+    )
     required_strings = (
-        basis.service_action_snapshot_id,
-        basis.analysis_result_id,
-        basis.reinforcement_revision_id,
-        basis.stiffness_method,
-        basis.cracking_method,
-        basis.creep_method,
-        basis.shrinkage_method,
+        calculated_basis.service_action_snapshot_id,
+        calculated_basis.analysis_result_id,
+        calculated_basis.reinforcement_revision_id,
+        calculated_basis.stiffness_method,
+        calculated_basis.cracking_method,
+        calculated_basis.creep_method,
+        calculated_basis.shrinkage_method,
     )
     history = (
-        basis.age_at_loading_days,
-        basis.finish_installation_age_days,
-        basis.assessment_age_days,
-        basis.sustained_duration_days,
-        basis.relative_humidity_percent,
-        basis.notional_size_mm,
-        basis.deflection_at_finish_installation_mm,
+        age_at_loading_days,
+        finish_installation_age_days,
+        assessment_age_days,
+        sustained_duration_days,
+        relative_humidity_percent,
+        notional_size_mm,
+        deflection_at_finish_installation_mm,
     )
     if (
         not all(required_strings)
-        or not basis.total_service_action_row_ids
-        or not all(basis.total_service_action_row_ids)
-        or not basis.sustained_service_action_row_ids
-        or not all(basis.sustained_service_action_row_ids)
-        or any(value is None for value in history)
+        or not calculated_basis.total_service_action_row_ids
+        or not all(calculated_basis.total_service_action_row_ids)
+        or not calculated_basis.sustained_service_action_row_ids
+        or not all(calculated_basis.sustained_service_action_row_ids)
+        or age_at_loading_days is None
+        or finish_installation_age_days is None
+        or assessment_age_days is None
+        or sustained_duration_days is None
+        or relative_humidity_percent is None
+        or notional_size_mm is None
+        or deflection_at_finish_installation_mm is None
     ):
         return _not_evaluated(
             DEFLECTION_CHECK_OPERATION,
@@ -555,21 +570,21 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
             "calculated",
         )
     components = (
-        basis.instantaneous_total_deflection_mm,
-        basis.instantaneous_sustained_deflection_mm,
-        basis.creep_multiplier,
-        basis.shrinkage_deflection_mm,
-        basis.deflection_at_finish_installation_mm,
+        calculated_basis.instantaneous_total_deflection_mm,
+        calculated_basis.instantaneous_sustained_deflection_mm,
+        calculated_basis.creep_multiplier,
+        calculated_basis.shrinkage_deflection_mm,
+        deflection_at_finish_installation_mm,
     )
     if (
         not all(_nonnegative(value) for value in components)
-        or not _positive(basis.effective_span_mm)
+        or not _positive(calculated_basis.effective_span_mm)
         or not all(_positive(value) for value in history[:4])
-        or not 0 < float(basis.relative_humidity_percent) <= 100
-        or not _positive(basis.notional_size_mm)
-        or not float(basis.age_at_loading_days)
-        <= float(basis.finish_installation_age_days)
-        <= float(basis.assessment_age_days)
+        or not 0 < relative_humidity_percent <= 100
+        or not _positive(notional_size_mm)
+        or not age_at_loading_days
+        <= finish_installation_age_days
+        <= assessment_age_days
     ):
         return rejected_result(
             DEFLECTION_CHECK_OPERATION,
@@ -602,7 +617,7 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
         or request.after_finishes_limit.criterion
         is not DeflectionCriterion.AFTER_FINISHES
         or request.total_limit.span_mm != request.after_finishes_limit.span_mm
-        or request.total_limit.span_mm != basis.effective_span_mm
+        or request.total_limit.span_mm != calculated_basis.effective_span_mm
     ):
         return rejected_result(
             DEFLECTION_CHECK_OPERATION,
@@ -618,11 +633,16 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
             ),
             provenance=provenance,
         )
-    creep = basis.instantaneous_sustained_deflection_mm * basis.creep_multiplier
-    total = (
-        basis.instantaneous_total_deflection_mm + creep + basis.shrinkage_deflection_mm
+    creep = (
+        calculated_basis.instantaneous_sustained_deflection_mm
+        * calculated_basis.creep_multiplier
     )
-    after_finishes = max(0.0, total - float(basis.deflection_at_finish_installation_mm))
+    total = (
+        calculated_basis.instantaneous_total_deflection_mm
+        + creep
+        + calculated_basis.shrinkage_deflection_mm
+    )
+    after_finishes = max(0.0, total - deflection_at_finish_installation_mm)
     total_limit_mm = float(total_limit_result.outputs["limit_mm"])
     finish_limit_mm = float(finish_limit_result.outputs["limit_mm"])
     passed = total <= total_limit_mm and after_finishes <= finish_limit_mm
@@ -645,23 +665,23 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
         {
             "method": request.method,
             "result_kind": "calculated_component_aggregation",
-            "instantaneous_total_deflection_mm": basis.instantaneous_total_deflection_mm,
-            "instantaneous_sustained_deflection_mm": basis.instantaneous_sustained_deflection_mm,
+            "instantaneous_total_deflection_mm": calculated_basis.instantaneous_total_deflection_mm,
+            "instantaneous_sustained_deflection_mm": calculated_basis.instantaneous_sustained_deflection_mm,
             "creep_additional_deflection_mm": creep,
-            "shrinkage_deflection_mm": basis.shrinkage_deflection_mm,
+            "shrinkage_deflection_mm": calculated_basis.shrinkage_deflection_mm,
             "total_final_deflection_mm": total,
-            "deflection_at_finish_installation_mm": basis.deflection_at_finish_installation_mm,
+            "deflection_at_finish_installation_mm": deflection_at_finish_installation_mm,
             "after_finishes_deflection_mm": after_finishes,
             "total_limit_mm": total_limit_mm,
             "after_finishes_limit_mm": finish_limit_mm,
             "total_pass": total <= total_limit_mm,
             "after_finishes_pass": after_finishes <= finish_limit_mm,
             "passed": passed,
-            "service_action_snapshot_id": basis.service_action_snapshot_id,
-            "total_service_action_row_ids": basis.total_service_action_row_ids,
-            "sustained_service_action_row_ids": basis.sustained_service_action_row_ids,
-            "analysis_result_id": basis.analysis_result_id,
-            "reinforcement_revision_id": basis.reinforcement_revision_id,
+            "service_action_snapshot_id": calculated_basis.service_action_snapshot_id,
+            "total_service_action_row_ids": calculated_basis.total_service_action_row_ids,
+            "sustained_service_action_row_ids": calculated_basis.sustained_service_action_row_ids,
+            "analysis_result_id": calculated_basis.analysis_result_id,
+            "reinforcement_revision_id": calculated_basis.reinforcement_revision_id,
         },
         engineering=EngineeringState.PASS if passed else EngineeringState.FAIL,
         diagnostics=diagnostics,

@@ -475,6 +475,7 @@ def check_flexure(request: FlexureCheckRequest) -> OperationResult:
             provenance=provenance,
         )
     checks: list[dict[str, object]] = []
+    utilizations: list[float] = []
     diagnostics: list[Diagnostic] = []
     any_not_applicable = False
     any_rejected = False
@@ -498,6 +499,7 @@ def check_flexure(request: FlexureCheckRequest) -> OperationResult:
         maximum_ok = total_area <= float(output["maximum_total_steel_area_mm2"]) + 1e-9
         capacity_value = float(output["capacity_knm"])
         utilization = demand / capacity_value if capacity_value > 0 else math.inf
+        utilizations.append(utilization)
         passed = (
             capacity.engineering is EngineeringState.PASS
             and minimum_ok
@@ -548,9 +550,7 @@ def check_flexure(request: FlexureCheckRequest) -> OperationResult:
         operation_inputs,
         {
             "checks": checks,
-            "governing_utilization": max(
-                float(check["utilization"]) for check in checks
-            ),
+            "governing_utilization": max(utilizations),
         },
         engineering=EngineeringState.PASS if all_pass else EngineeringState.FAIL,
         diagnostics=diagnostics,

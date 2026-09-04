@@ -444,7 +444,7 @@ def design_member(request: MemberDesignRequest) -> OperationResult:
         final_iteration is not None
         and set(final_iteration.dependent_result_ids) == current_depth_result_ids
     )
-    depth_complete = bool(final_iteration) and (
+    depth_complete = final_iteration is not None and (
         final_iteration.converged
         and final_iteration.reinforcement_revision_id
         == request.reinforcement_revision_id

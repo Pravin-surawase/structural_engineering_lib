@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-09-04
 - Focus: Implement the first library milestone from the approved PF1–PF11
-- Git receipt: docs/verification/wp01-wp08-native-libraries-git-handoff-receipt.json | sha256:1a005ea2f1bac05fc9f779a6e977efc9d9cf0fa5dbeab1beb609a559268245a0 | HOLD
-- Git identity: codex/wp01-wp08-native-libraries@8a40cec790b89a5c6cfa16e173e9bb9ae40e70a6 | upstream=NONE@UNKNOWN | base=origin/main@24f116f7c7d99205516eb2d95f6a1009e7a32855 | tree=dirty | operation=none
+- Git receipt: docs/verification/wp01-wp08-native-libraries-git-handoff-receipt.json | sha256:b7697e0a873f294cab951c13a2c52e87e4ecfd865929d92a18cd3bd1a551b418 | HOLD
+- Git identity: codex/wp01-wp08-native-libraries@c39a95819628a976efd6d96555194ad4889065a7 | upstream=NONE@UNKNOWN | base=origin/main@24f116f7c7d99205516eb2d95f6a1009e7a32855 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

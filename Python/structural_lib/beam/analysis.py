@@ -10,7 +10,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import Any
+from typing import Any, Protocol, TypedDict, TypeVar
 
 from .semantics import (
     Diagnostic,
@@ -186,6 +186,36 @@ class BeamLineRequest:
     station_intervals: int = 20
 
 
+@dataclass(frozen=True)
+class _ElementSolveData:
+    element: BeamElement
+    length: float
+    stiffness: list[list[float]]
+    equivalent: list[float]
+    points: list[BeamPointLoad]
+    dofs: tuple[int, int, int, int]
+
+
+class _NodeResult(TypedDict):
+    node_id: str
+    x_mm: float
+    vertical_displacement_mm: float
+    rotation_rad: float
+    vertical_reaction_n: float
+    reaction_moment_nmm: float
+
+
+class _SpanRegion(Protocol):
+    @property
+    def start_x_mm(self) -> float: ...
+
+    @property
+    def end_x_mm(self) -> float: ...
+
+
+_SpanRegionT = TypeVar("_SpanRegionT", bound=_SpanRegion)
+
+
 def _provenance(method: str) -> Provenance:
     return Provenance(
         METHOD_REVISION,
@@ -211,6 +241,25 @@ def _diagnostic(operation: str, code: str, message: str, field: str) -> Diagnost
 
 def _finite(value: float) -> bool:
     return isinstance(value, (int, float)) and math.isfinite(value)
+
+
+def _covers_centreline_without_gaps(
+    regions: list[_SpanRegionT],
+    start_x_mm: float,
+    end_x_mm: float,
+    tolerance: float,
+) -> bool:
+    """Return whether ordered region limits exactly cover a span centreline."""
+
+    regions.sort(key=lambda item: item.start_x_mm)
+    return bool(regions) and (
+        abs(regions[0].start_x_mm - start_x_mm) <= tolerance
+        and abs(regions[-1].end_x_mm - end_x_mm) <= tolerance
+        and all(
+            abs(a.end_x_mm - b.start_x_mm) <= tolerance
+            for a, b in zip(regions, regions[1:], strict=False)
+        )
+    )
 
 
 def _vector_values(vector: Vector3) -> tuple[float, float, float]:
@@ -641,33 +690,31 @@ def define_beam_topology(request: BeamTopologyRequest) -> OperationResult:
                 ),
                 provenance=provenance,
             )
-        for label, regions in (
-            ("section_regions", list(span.section_regions)),
-            ("analysis_elements", mapped_by_span.get(span.span_id, [])),
+        section_regions = list(span.section_regions)
+        analysis_regions = mapped_by_span.get(span.span_id, [])
+        coverage_label: str | None = None
+        if not _covers_centreline_without_gaps(
+            section_regions, start.centre_x_mm, end.centre_x_mm, tolerance
         ):
-            regions.sort(key=lambda item: item.start_x_mm)
-            if (
-                not regions
-                or abs(regions[0].start_x_mm - start.centre_x_mm) > tolerance
-                or abs(regions[-1].end_x_mm - end.centre_x_mm) > tolerance
-                or any(
-                    abs(a.end_x_mm - b.start_x_mm) > tolerance
-                    for a, b in zip(regions, regions[1:], strict=False)
-                )
-            ):
-                return rejected_result(
-                    TOPOLOGY_OPERATION,
-                    inputs,
-                    (
-                        _diagnostic(
-                            TOPOLOGY_OPERATION,
-                            "REGION.COVERAGE",
-                            f"{label} must cover the centreline span exactly without gaps or overlap.",
-                            f"spans[{span.span_id}].{label}",
-                        ),
+            coverage_label = "section_regions"
+        elif not _covers_centreline_without_gaps(
+            analysis_regions, start.centre_x_mm, end.centre_x_mm, tolerance
+        ):
+            coverage_label = "analysis_elements"
+        if coverage_label is not None:
+            return rejected_result(
+                TOPOLOGY_OPERATION,
+                inputs,
+                (
+                    _diagnostic(
+                        TOPOLOGY_OPERATION,
+                        "REGION.COVERAGE",
+                        f"{coverage_label} must cover the centreline span exactly without gaps or overlap.",
+                        f"spans[{span.span_id}].{coverage_label}",
                     ),
-                    provenance=provenance,
-                )
+                ),
+                provenance=provenance,
+            )
         outputs.append(
             {
                 "span_id": span.span_id,
@@ -848,7 +895,7 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
             )
         force[2 * i] += node.nodal_force_n
         force[2 * i + 1] += node.nodal_moment_nmm
-    element_data: list[dict[str, Any]] = []
+    element_data: list[_ElementSolveData] = []
     for index, element in enumerate(request.elements):
         if (element.start_node_id, element.end_node_id) != (
             nodes[index].node_id,
@@ -868,15 +915,15 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
                 provenance=provenance,
             )
         length = nodes[index + 1].x_mm - nodes[index].x_mm
-        values = (
+        element_values = (
             element.elastic_modulus_n_per_mm2,
             element.second_moment_mm4,
             element.uniform_load_n_per_mm,
         )
         if (
-            not all(_finite(value) for value in values)
-            or values[0] <= 0
-            or values[1] <= 0
+            not all(_finite(value) for value in element_values)
+            or element_values[0] <= 0
+            or element_values[1] <= 0
         ):
             return rejected_result(
                 BEAM_LINE_SOLVE_OPERATION,
@@ -936,14 +983,7 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
             for b in range(4):
                 matrix[dofs[a]][dofs[b]] += k[a][b]
         element_data.append(
-            {
-                "element": element,
-                "length": length,
-                "stiffness": k,
-                "equivalent": equivalent,
-                "points": points,
-                "dofs": dofs,
-            }
+            _ElementSolveData(element, length, k, equivalent, points, dofs)
         )
     if points_by_element:
         return rejected_result(
@@ -974,7 +1014,7 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
         for i in free
     ]
     try:
-        values = _solve_positive_definite(
+        solved_free_displacements = _solve_positive_definite(
             [[matrix[i][j] for j in free] for i in free], rhs
         )
     except (ArithmeticError, ValueError):
@@ -991,14 +1031,14 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
             ),
             provenance=provenance,
         )
-    for dof, value in zip(free, values, strict=True):
+    for dof, value in zip(free, solved_free_displacements, strict=True):
         displacement[dof] = value
     residual = [
         value - applied
         for value, applied in zip(_matvec(matrix, displacement), force, strict=True)
     ]
     origin = nodes[0].x_mm
-    node_results = []
+    node_results: list[_NodeResult] = []
     for index, node in enumerate(nodes):
         node_results.append(
             {
@@ -1016,19 +1056,19 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
         )
     station_results: list[dict[str, Any]] = []
     for data in element_data:
-        element: BeamElement = data["element"]
-        local_d = [displacement[dof] for dof in data["dofs"]]
+        element = data.element
+        local_d = [displacement[dof] for dof in data.dofs]
         end_actions = [
             a - b
             for a, b in zip(
-                _matvec(data["stiffness"], local_d), data["equivalent"], strict=True
+                _matvec(data.stiffness, local_d), data.equivalent, strict=True
             )
         ]
         positions = {
-            data["length"] * i / request.station_intervals
+            data.length * i / request.station_intervals
             for i in range(request.station_intervals + 1)
         }
-        point_positions = {point.distance_from_start_mm for point in data["points"]}
+        point_positions = {point.distance_from_start_mm for point in data.points}
         positions.update(point_positions)
         for x in sorted(positions):
             moment = (
@@ -1052,7 +1092,7 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
                 / (element.elastic_modulus_n_per_mm2 * element.second_moment_mm4)
             )
             shear = end_actions[0] + element.uniform_load_n_per_mm * x
-            for point in data["points"]:
+            for point in data.points:
                 delta = max(0.0, x - point.distance_from_start_mm)
                 moment += point.vertical_force_n * delta
                 rotation += (
@@ -1094,7 +1134,7 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
                         "v2_n": shear
                         + math.fsum(
                             point.vertical_force_n
-                            for point in data["points"]
+                            for point in data.points
                             if point.distance_from_start_mm == x
                         ),
                     }
@@ -1104,7 +1144,7 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
     applied_force = (
         math.fsum(node.nodal_force_n for node in nodes)
         + math.fsum(
-            element.uniform_load_n_per_mm * data["length"]
+            element.uniform_load_n_per_mm * data.length
             for element, data in zip(request.elements, element_data, strict=True)
         )
         + math.fsum(point.vertical_force_n for point in request.point_loads)
@@ -1117,8 +1157,8 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
     )
     applied_moment += math.fsum(
         element.uniform_load_n_per_mm
-        * data["length"]
-        * (nodes[index].x_mm - origin + data["length"] / 2)
+        * data.length
+        * (nodes[index].x_mm - origin + data.length / 2)
         for index, (element, data) in enumerate(
             zip(request.elements, element_data, strict=True)
         )

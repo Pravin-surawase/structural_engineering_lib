@@ -354,27 +354,28 @@ def check_shear(request: ShearCheckRequest) -> OperationResult:
                 provenance=provenance,
             )
         capacity_by_axis[capacity_request.axis] = shear_capacity(capacity_request)
-    for capacity in capacity_by_axis.values():
-        if capacity.execution is ExecutionState.REJECTED_INPUT:
+    for capacity_result in capacity_by_axis.values():
+        if capacity_result.execution is ExecutionState.REJECTED_INPUT:
             return rejected_result(
                 SHEAR_CHECK_OPERATION,
                 inputs,
-                capacity.diagnostics,
+                capacity_result.diagnostics,
                 provenance=provenance,
             )
-        if capacity.engineering is EngineeringState.NOT_EVALUATED:
-            diagnostic = capacity.diagnostics[0]
+        if capacity_result.engineering is EngineeringState.NOT_EVALUATED:
+            diagnostic = capacity_result.diagnostics[0]
             return not_evaluated_result(
                 SHEAR_CHECK_OPERATION, inputs, diagnostic, provenance=provenance
             )
-        if capacity.applicability is ApplicabilityState.NOT_APPLICABLE:
+        if capacity_result.applicability is ApplicabilityState.NOT_APPLICABLE:
             return not_applicable_result(
                 SHEAR_CHECK_OPERATION,
                 inputs,
-                capacity.diagnostics[0],
+                capacity_result.diagnostics[0],
                 provenance=provenance,
             )
     checks: list[dict[str, object]] = []
+    utilizations: list[float] = []
     diagnostics: list[Diagnostic] = []
     all_pass = True
     for demand in request.demands:
@@ -416,6 +417,7 @@ def check_shear(request: ShearCheckRequest) -> OperationResult:
         )
         all_pass = all_pass and passed
         utilization = magnitude / capacity_kn
+        utilizations.append(utilization)
         checks.append(
             {
                 "station_id": demand.station_id,
@@ -442,9 +444,7 @@ def check_shear(request: ShearCheckRequest) -> OperationResult:
         inputs,
         {
             "checks": checks,
-            "governing_utilization": max(
-                float(check["utilization"]) for check in checks
-            ),
+            "governing_utilization": max(utilizations),
         },
         engineering=EngineeringState.PASS if all_pass else EngineeringState.FAIL,
         diagnostics=diagnostics,
