@@ -1,11 +1,15 @@
 [CmdletBinding()]
 param(
     [string]$Subject = 'CN=StructAutomate WP09 Validation',
-    [string]$OutputDirectory = (Join-Path $PSScriptRoot '..\..\..\tmp\wp09-certificate'),
+    [string]$OutputDirectory,
     [switch]$TrustForCurrentUser
 )
 
 . (Join-Path $PSScriptRoot 'Common.ps1')
+
+if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
+    $OutputDirectory = Join-Path $PSScriptRoot '..\..\..\tmp\wp09-certificate'
+}
 
 $output = Assert-StructAutomateSafeRepositoryOutput $OutputDirectory
 [void](New-Item -ItemType Directory -Path $output -Force)

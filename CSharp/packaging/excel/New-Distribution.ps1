@@ -1,12 +1,16 @@
 [CmdletBinding()]
 param(
     [string]$Configuration = 'Release',
-    [string]$OutputDirectory = (Join-Path $PSScriptRoot '..\..\..\tmp\wp09-distribution'),
+    [string]$OutputDirectory,
     [Parameter(Mandatory)][string]$CertificateThumbprint,
     [switch]$SkipBuild
 )
 
 . (Join-Path $PSScriptRoot 'Common.ps1')
+
+if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
+    $OutputDirectory = Join-Path $PSScriptRoot '..\..\..\tmp\wp09-distribution'
+}
 
 $repository = Get-StructAutomateRepositoryRoot
 $csharp = Join-Path $repository 'CSharp'

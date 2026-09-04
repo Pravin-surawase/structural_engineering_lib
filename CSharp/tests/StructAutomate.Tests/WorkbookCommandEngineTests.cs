@@ -180,6 +180,26 @@ public class WorkbookCommandEngineTests
     }
 
     [Fact]
+    public void CreateValidateDoesNotSubstituteForTheFirstCompleteCalculation()
+    {
+        var store = new MemoryStore(SampleWorkbookData.CreateTypicalTables(1));
+        var inputs = WorkbookInputReader.Read(store);
+        var engine = new WorkbookCommandEngine();
+
+        var validated = engine.ExecuteBatch(WorkbookCommandKind.CreateValidate, inputs, store,
+            "2026-09-04T00:00:00Z");
+        var calculated = engine.ExecuteBatch(WorkbookCommandKind.Calculate, inputs, store,
+            "2026-09-04T00:01:00Z");
+
+        Assert.True(validated.Freshness.IsCurrent);
+        Assert.True(calculated.Freshness.IsCurrent);
+        Assert.Equal("batch_completed", calculated.Freshness.Reason);
+        Assert.NotEmpty(calculated.Results);
+        Assert.Contains(calculated.Results,
+            result => result.OperationSemanticId == "structural.calculation_package.create/v1");
+    }
+
+    [Fact]
     public void TamperingOrFailedArtifactStageCannotReplaceCurrentCalculationTables()
     {
         var store = new MemoryStore(SampleWorkbookData.CreateTypicalTables(1));

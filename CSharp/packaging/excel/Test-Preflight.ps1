@@ -1,10 +1,14 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)][string]$DistributionDirectory,
-    [string]$ReceiptPath = (Join-Path $PSScriptRoot '..\..\..\tmp\wp09-preflight.json')
+    [string]$ReceiptPath
 )
 
 . (Join-Path $PSScriptRoot 'Common.ps1')
+
+if ([string]::IsNullOrWhiteSpace($ReceiptPath)) {
+    $ReceiptPath = Join-Path $PSScriptRoot '..\..\..\tmp\wp09-preflight.json'
+}
 
 $distribution = [System.IO.Path]::GetFullPath($DistributionDirectory)
 $manifestPath = Join-Path $distribution 'manifest.json'

@@ -73,7 +73,11 @@ function Write-StructAutomateJson {
     [void](New-Item -ItemType Directory -Path $directory -Force)
     $temporary = Join-Path $directory ('.' + [System.IO.Path]::GetFileName($fullPath) + '.' + [guid]::NewGuid().ToString('N') + '.tmp')
     try {
-        $Value | ConvertTo-Json -Depth $Depth | Set-Content -LiteralPath $temporary -Encoding utf8NoBOM
+        $json = $Value | ConvertTo-Json -Depth $Depth
+        [System.IO.File]::WriteAllText(
+            $temporary,
+            $json + [Environment]::NewLine,
+            [System.Text.UTF8Encoding]::new($false))
         Move-Item -LiteralPath $temporary -Destination $fullPath -Force
     }
     finally {
