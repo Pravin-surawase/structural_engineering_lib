@@ -180,7 +180,7 @@ The snapshot contract freezes these boundaries:
   canonical snapshot.
 - Snapshot and raw-capture SHA-256 values use PF4 canonical UTF-8 JSON with
   ordered keys, preserved array order, canonical enum strings, unescaped
-  non-ASCII text, negative zero normalized to `0`, and their own
+  non-ASCII text including U+2028/U+2029, negative zero normalized to `0`, and their own
   derived id/digest fields omitted from the corresponding hash basis. Arrays
   use deterministic identity/ordinal ordering. Acquisition time remains in the
   artifact identity but does not become a normalized engineering input.

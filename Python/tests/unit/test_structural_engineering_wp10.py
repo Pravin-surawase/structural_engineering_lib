@@ -104,9 +104,17 @@ def test_invalid_json_transport_is_rejected(kind: str) -> None:
 def test_canonical_json_normalizes_negative_zero_and_preserves_unicode() -> None:
     assert (
         canonical_snapshot_json_bytes(
-            {"negative_zero": -0.0, "model": "Bâtiment मराठी"}
+            {
+                "negative_zero": -0.0,
+                "model": "Bâtiment मराठी\u2028\u2029",
+                "control": '"\\\b\f\n\r\t\u0001',
+            }
         )
-        == '{"model":"Bâtiment मराठी","negative_zero":0}'.encode()
+        == (
+            r'{"control":"\"\\\b\f\n\r\t\u0001","model":"'
+            + "Bâtiment मराठी\u2028\u2029"
+            + r'","negative_zero":0}'
+        ).encode()
     )
 
 

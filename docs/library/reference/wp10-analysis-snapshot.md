@@ -72,6 +72,10 @@ serialize as integers, and non-ASCII text remains unescaped UTF-8. The
 record, call-ledger, raw-capture, action-row, and snapshot hashes exclude only
 their own derived identity/digest fields.
 
+String canonicalization escapes JSON quotation marks, reverse solidus, and
+U+0000–U+001F controls only. Other valid Unicode scalar values, including
+U+2028 and U+2029, remain literal UTF-8 in both runtimes.
+
 Successful replay reports `completed`, `applicable`, `not_evaluated`,
 `complete_for_scope`, `current`, and `unreviewed`. Schema or hash failure is
 `rejected_input` and `unbound`. Unresolved units, axes, mapping, selection,

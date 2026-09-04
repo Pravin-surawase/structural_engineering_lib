@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "8a0c1b42d76c87ab3d61ba16aecf77bf75f32c00688c16c7105598d0a96aa109",
+    "receipt_sha256": "e3a7169ea6bde27f3d5680c5d32871660c78658aad67f415f5c768e591ae8a41",
     "state": {
       "branch": "codex/wp10-01-etabs-snapshot-contracts",
       "default_base": {
-        "ahead": 1,
+        "ahead": 2,
         "behind": 0,
         "ref": "origin/main",
         "sha": "798229fd387115d2c58f50516c588b5345ece9c2",
         "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 288.776,
+      "duration_ms": 273.02,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
-      "head_sha": "3b83e5be756f365734ec8566dec4c9dafec2532a",
+      "head_sha": "1ba33ba03130f2530da2541577b6e335cb4aad37",
       "hold_reasons": [
-        "changed paths: 11"
+        "changed paths: 9"
       ],
       "linked_worktree": false,
       "locks": [],
-      "observed_at_utc": "2026-09-04T13:16:40.586248+00:00",
+      "observed_at_utc": "2026-09-04T13:25:23.485485+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,14 +53,12 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 11,
+        "dirty_count": 9,
         "modified_paths": [],
         "staged_paths": [
           "CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotCodec.cs",
           "CSharp/tests/StructuralEngineering.Tests/Wp10Tests.cs",
-          "Python/structural_lib/services/analysis_snapshot.py",
           "Python/tests/unit/test_structural_engineering_wp10.py",
-          "contracts/structural-engineering/conformance/wp10-vectors.json",
           "docs/SESSION_LOG.md",
           "docs/library/reference/wp10-analysis-snapshot.md",
           "docs/planning/next-session-brief.md",
@@ -80,9 +78,9 @@
       "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:8a0c1b42d76c87ab3d61ba16aecf77bf75f32c00688c16c7105598d0a96aa109",
+  "local_state_receipt_hash": "sha256:e3a7169ea6bde27f3d5680c5d32871660c78658aad67f415f5c768e591ae8a41",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-04T13:16:40.586248+00:00",
+  "observed_at_utc": "2026-09-04T13:25:23.485485+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"

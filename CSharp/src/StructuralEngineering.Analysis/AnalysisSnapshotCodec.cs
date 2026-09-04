@@ -1,6 +1,6 @@
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -551,7 +551,7 @@ public static class AnalysisSnapshotCodec
 
     private static string Canonical(JsonNode? node) => node switch
     {
-        JsonObject obj => "{" + string.Join(",", obj.OrderBy(pair => pair.Key, StringComparer.Ordinal).Select(pair => JsonSerializer.Serialize(pair.Key, JsonOptions) + ":" + Canonical(pair.Value))) + "}",
+        JsonObject obj => "{" + string.Join(",", obj.OrderBy(pair => pair.Key, StringComparer.Ordinal).Select(pair => CanonicalString(pair.Key) + ":" + Canonical(pair.Value))) + "}",
         JsonArray array => "[" + string.Join(",", array.Select(Canonical)) + "]",
         JsonValue value => CanonicalValue(value),
         _ => node?.ToJsonString(JsonOptions) ?? "null"
@@ -559,6 +559,8 @@ public static class AnalysisSnapshotCodec
 
     private static string CanonicalValue(JsonValue value)
     {
+        if (value.TryGetValue<string>(out var text))
+            return CanonicalString(text);
         if (value.TryGetValue<double>(out var number))
         {
             if (!double.IsFinite(number))
@@ -568,12 +570,51 @@ public static class AnalysisSnapshotCodec
         return value.ToJsonString(JsonOptions);
     }
 
+    private static string CanonicalString(string value)
+    {
+        var builder = new StringBuilder(value.Length + 2).Append('"');
+        for (var index = 0; index < value.Length; index++)
+        {
+            var character = value[index];
+            switch (character)
+            {
+                case '"': builder.Append("\\\""); break;
+                case '\\': builder.Append("\\\\"); break;
+                case '\b': builder.Append("\\b"); break;
+                case '\f': builder.Append("\\f"); break;
+                case '\n': builder.Append("\\n"); break;
+                case '\r': builder.Append("\\r"); break;
+                case '\t': builder.Append("\\t"); break;
+                default:
+                    if (character < ' ')
+                    {
+                        builder.Append("\\u").Append(((int)character).ToString("x4", CultureInfo.InvariantCulture));
+                    }
+                    else if (char.IsHighSurrogate(character))
+                    {
+                        if (++index >= value.Length || !char.IsLowSurrogate(value[index]))
+                            throw new ArgumentException("Canonical snapshot strings must contain valid Unicode scalar values.", nameof(value));
+                        builder.Append(character).Append(value[index]);
+                    }
+                    else if (char.IsLowSurrogate(character))
+                    {
+                        throw new ArgumentException("Canonical snapshot strings must contain valid Unicode scalar values.", nameof(value));
+                    }
+                    else
+                    {
+                        builder.Append(character);
+                    }
+                    break;
+            }
+        }
+        return builder.Append('"').ToString();
+    }
+
     private static JsonSerializerOptions CreateOptions()
     {
         var options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = false,
             WriteIndented = false,
             UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,

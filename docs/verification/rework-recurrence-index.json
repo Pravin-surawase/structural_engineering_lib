@@ -71,11 +71,11 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 12,
+      "occurrences": 14,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "At least twelve retries are explicit across WP09 and WP10-01. WP09 events are contained within its 30 to 60 minute environment and coordination range; WP10-01 retries were not separately timed."
+        "basis": "At least fourteen retries are explicit across WP09 and WP10-01. WP09 events are contained within its 30 to 60 minute environment and coordination range; WP10-01 retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
       "last_seen_task": "WP10-01",
@@ -95,6 +95,22 @@
         "basis": "WP09 controls and WP10-01 both printed the expected preparation exit 2 while the outer command result surfaced exit 1; neither event was separately timed."
       },
       "short_solution": "Require every printed preparation check to pass, then use the clean read-only session-end verdict as final authority.",
+      "last_seen_task": "WP10-01",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-007",
+      "pattern": "Cross-runtime canonical JSON string parity was delegated to a platform encoder",
+      "occurrences": 2,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "The first WP10-01 Unicode repair covered ordinary non-ASCII text; re-audit reproduced a second mismatch for permitted U+2028/U+2029 separators. Neither correction was separately timed."
+      },
+      "short_solution": "Encode PF4 JSON strings explicitly and test syntax escapes, controls, ordinary Unicode, and U+2028/U+2029 across both runtimes.",
       "last_seen_task": "WP10-01",
       "aggregate_parent": null,
       "details": [

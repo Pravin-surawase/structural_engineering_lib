@@ -95,12 +95,13 @@ public sealed class Wp10Tests
     {
         var value = new Dictionary<string, object>
         {
+            ["control"] = "\"\\\b\f\n\r\t\u0001",
             ["negative_zero"] = -0.0,
-            ["model"] = "Bâtiment मराठी"
+            ["model"] = "Bâtiment मराठी\u2028\u2029"
         };
 
         Assert.Equal(
-            "{\"model\":\"Bâtiment मराठी\",\"negative_zero\":0}",
+            "{\"control\":\"\\\"\\\\\\b\\f\\n\\r\\t\\u0001\",\"model\":\"Bâtiment मराठी\u2028\u2029\",\"negative_zero\":0}",
             System.Text.Encoding.UTF8.GetString(
                 AnalysisSnapshotCodec.CanonicalJsonBytes(value)));
     }

@@ -42,7 +42,9 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
   context area, the wrong solution and validator/test filenames, and
   PowerShell-incompatible recursive project globs. A later root-relative mypy
   target also appeared under both `Python.structural_lib` and `structural_lib`.
-  No repository data changed.
+  The PowerShell closeout probe also parsed `HEAD^{tree}` as a brace expression
+  instead of a literal Git revision. A combined verification command later
+  invoked the root Python launcher from `CSharp/`. No repository data changed.
 - The first .NET replay rejected strict JSON fields such as
   `inertia_2_mm4`, and Python's first public canonical serialization retained
   `.0` for integer-valued model fields even though its identity basis normalized
@@ -60,6 +62,9 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
 - The solution-level .NET format command rewrote pre-existing style across
   unrelated C# files even though the WP10 additions were the only intended
   formatting scope.
+- The first review repair used .NET's relaxed JavaScript encoder; re-audit
+  proved that it still escaped the permitted U+2028/U+2029 separators while
+  Python retained their UTF-8 bytes.
 
 ### Root causes and resolutions
 
@@ -73,7 +78,9 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
   key did not match the active Windows workspace. Resolution: use `rg --files`,
   `Get-ChildItem -LiteralPath`, repository-root paths, and the actual
   `CSharp/StructAutomate.slnx` and maintained validator/test paths; run mypy
-  from `Python/` so the package has one module identity. (`RR-005`)
+  from `Python/` so the package has one module identity, and use `git show -s
+  --format=%T HEAD` for the tree identity on PowerShell. Keep root Python and
+  C# solution commands in separate working-directory calls. (`RR-005`)
 - Confirmed root cause: .NET's snake-case policy does not insert an underscore
   before all numeric suffixes, and Python returned `model_dump` before applying
   recursive PF4 numeric normalization. Resolution: bind ambiguous .NET wire
@@ -107,6 +114,11 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
   resulting line-ending-only status through the index, and verify the staged
   C# paths are exactly the codec and WP10 test. Proof: `git diff --cached
   --name-only` contains only those two C# paths.
+- Confirmed root cause: the platform JSON encoder owns JavaScript-safe escaping,
+  not this contract's narrower PF4 string canonicalization. Resolution: encode
+  strings explicitly, escaping JSON syntax and U+0000–U+001F controls while
+  retaining all other valid Unicode scalar values. Proof: both runtime tests
+  now include U+2028/U+2029 as literal UTF-8. (`RR-007`)
 
 ### Rework and recurrence
 
@@ -115,9 +127,11 @@ Counts, time bases, short controls, and detail links live once in the
 
 - `RR-004` occurrences=5; minutes=unknown; includes the WP10-01 main-start
   preflight event.
-- `RR-005` occurrences=12; minutes=unknown; includes five bounded WP10-01
+- `RR-005` occurrences=14; minutes=unknown; includes seven bounded WP10-01
   command-shape/path corrections.
 - `RR-006` occurrences=2; minutes=unknown; includes this preparation closeout.
+- `RR-007` occurrences=2; minutes=unknown; includes the incomplete first Unicode
+  parity repair and its re-audit correction.
 
 ### Validation through candidate preparation
 
