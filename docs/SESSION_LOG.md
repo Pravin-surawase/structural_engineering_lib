@@ -12,9 +12,10 @@
 **Branch:** `codex/wp10-04-prep`, from fetched `origin/main`
 `31974b34d6bfc589d506648cd73ac5431b095638`.
 
-**Focus:** Review delivered WP10-03 and prepare the executable WP10-04 offline
-normalization card. This is documentation and read-only evidence inspection;
-no product implementation, new tests, COM, Excel, or workflow redesign.
+**Focus:** Review delivered WP10-03, prepare the executable WP10-04 offline
+normalization card, and repair the shared session delivery path under the
+owner's subsequent library-wide authorization. No product normalization,
+COM or Excel activity is included.
 
 ### Completed
 
@@ -36,12 +37,32 @@ no product implementation, new tests, COM, Excel, or workflow redesign.
   target, alongside its successful one-live-run/one-hosted-run boundary.
   No token or cost estimates were invented.
 - Updated the maintained next-session handoff to point to the WP10-04 card.
+- Unified completed-outcome parsing across handoff, early session validation
+  and final closeout; accepted headings preserve wrapped real outcome bullets
+  while placeholder outcomes fail before candidate publication.
+- Added automatic failed-closeout recovery and explicit exact-head
+  `CLOSEOUT_REJECTED` for previously stuck tasks. Both preserve candidate
+  history and use the shared repair/replan ceiling. Used the tested command
+  to move the original planning candidate into its one allowed repair.
+- Corrected usage accounting to retain integrity checks on rejected unpublished
+  candidates while requiring every pushed candidate's own integrity/closeout
+  evidence. Added focused regressions and updated the general workflow and
+  maintained session-management skill.
 
 ### Issues encountered
 
 - Initial session admission returned `HOLD_DIVERGED` on the clean predecessor
   branch. Ordinary `git fetch origin` then failed because local configuration
   still requested the absent remote `codex/wp10-completion` branch. (`RR-017`)
+- The first pre-push closeout rejected the `### Completed` heading although
+  `session check` had passed; the generated handoff also omitted outcomes.
+  (`RR-004`)
+- The delivery state had no recovery from that closeout failure, and usage
+  incorrectly assumed every successful integrity check led to a push. (`RR-018`)
+- Two recovery searches guessed nonexistent `scripts/delivery_lifecycle.py`
+  and `scripts/_tests` paths before current source/test discovery. (`RR-005`)
+- The first focused recovery test exposed the CLI's inherited `--head HEAD`
+  default, which did not meet the explicit recovery command's exact-SHA rule.
 
 ### Root causes and resolutions
 
@@ -54,21 +75,48 @@ no product implementation, new tests, COM, Excel, or workflow redesign.
   refspec. An explicit fetch of the existing main and WP10-03 branch refs
   succeeded; session admission then passed on the new branch. Configuration
   and branch cleanup remain outside this preparation scope. (`RR-017`)
+- Confirmed: handoff, early check and closeout parsed completion independently.
+  They now share one outcome parser and block missing outcomes early. The
+  six heading/outcome combinations pass through both validation paths and
+  generated handoff assertions. (`RR-004`)
+- Confirmed: failed `_run_final_closeout` raised without a lifecycle transition,
+  and closeout compared total integrity runs with total pushes. Added guarded
+  failure transitions and validation within each candidate's time window;
+  tests cover first/second rejection, wrong state/head, absent evidence,
+  idempotence and unpublished checks that cannot qualify a replacement.
+  The same task/base/candidate history remains in the ledger. (`RR-018`)
+- Confirmed: recovery lookup reused guessed helper/test locations. `rg --files`
+  found `scripts/session.py` and `Python/tests/test_session_automation.py`;
+  subsequent changes and commands use those maintained paths. (`RR-005`)
+- Confirmed: argparse supplies `HEAD` when `--head` is omitted. Explicit
+  recovery now requires a full lowercase commit SHA before resolving equality;
+  all 18 targeted recovery/parser/accounting cases pass after that correction.
 
 ### Rework and recurrence
 
 - `RR-017`, occurrences=1, minutes=unknown — inspect narrow fetch configuration
   and fetch exact required refs when an obsolete branch blocks ordinary fetch;
   never treat the failed fetch as current remote proof.
+- `RR-004`, occurrences=8, minutes=unknown — share completion parsing and
+  validate real outcomes during the early session check before candidate freeze.
+- `RR-005`, occurrences=37, minutes=unknown — discover exact maintained helper
+  and test locations before invoking commands.
+- `RR-018`, occurrences=1, minutes=unknown — recover failed closeout through the
+  shared ceiling and account for integrity evidence per candidate.
 
 ### Validation and delivery boundary
 
 - Read-only predecessor proof: merged PR, successful exact-head hosted run,
   candidate/merge tree equality, and two retained-artifact byte/hash matches.
-- This packet changes only the WP10 plan, session log, recurrence index and
-  generated handoff. Its frozen verification is documentation checks, session
-  check, efficiency policy, changed-path formatting and file integrity. Product
-  and installed tests are not repeated for planning-only edits.
+- The original four-file planning candidate passed docs 8/8, session,
+  efficiency, formatter, review and integrity; its pre-push closeout failed.
+  The owner then authorized the bounded general repair recorded in
+  `docs/verification/delivery-system-redesign.md`. No timing or candidate
+  reset hides the failed attempt.
+- The replacement's frozen verification is session-automation regressions,
+  skill validation, the early session check, control registry validation and
+  one named cumulative full repository check for shared delivery controls.
+  Product/installed test suites are not repeated for this control-plane repair.
 - Same-checkout delivery uses the executable lifecycle ledger; no cross-device
   writer or installed-artifact handoff is claimed. New WP10-04 implementation
   must bind its own fetched base and pass the semantic entry matrix first.

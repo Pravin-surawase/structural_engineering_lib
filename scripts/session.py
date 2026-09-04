@@ -614,6 +614,7 @@ def _delivery_snapshot(entries: list[dict], task_id: str) -> dict[str, object]:
         "candidate_heads": [],
         "candidate_trees": {},
         "audit_rejections": 0,
+        "closeout_rejections": 0,
         "design_candidate_count": 0,
         "design_audit_rejections": 0,
         "repair_batches": 0,
@@ -1220,6 +1221,58 @@ def _minutes_between(start: datetime, end: datetime) -> float:
     return max(0.0, (end - start).total_seconds() / 60)
 
 
+def _validate_candidate_closeouts(
+    history: list[dict], integrity_events: list[dict]
+) -> int:
+    """Keep unpublished checks without letting them qualify a replacement head."""
+    candidates = [
+        entry
+        for entry in history
+        if entry["delivery"]["state"] in {"CANDIDATE", "REPAIRED_CANDIDATE"}
+    ]
+
+    def when(entry: dict) -> datetime:
+        return datetime.fromisoformat(str(entry["timestamp"]))
+
+    accounted = 0
+    unpublished = 0
+    for index, candidate in enumerate(candidates):
+        start = when(candidate)
+        end = when(candidates[index + 1]) if index + 1 < len(candidates) else None
+
+        def in_window(entry: dict) -> bool:
+            return when(entry) >= start and (end is None or when(entry) < end)
+
+        window = [entry for entry in history if in_window(entry)]
+        checks = [entry for entry in integrity_events if in_window(entry)]
+        pushes = [entry for entry in window if entry["delivery"]["state"] == "PUSHED"]
+        closed = [
+            entry for entry in window if entry["delivery"]["state"] == "FINAL_CLOSED"
+        ]
+        rejected = any(
+            entry["delivery"]["state"] in {"REPAIR", "REPLAN"} for entry in window
+        )
+        accounted += len(checks)
+        if pushes:
+            if (
+                len(pushes) != 1
+                or len(checks) != 1
+                or len(closed) != 1
+                or not when(checks[0]) <= when(closed[0]) <= when(pushes[0])
+            ):
+                raise ValueError(
+                    "each pushed candidate requires its own single integrity check "
+                    "and final closeout before push"
+                )
+        elif closed or len(checks) > 1 or (checks and not rejected):
+            raise ValueError("unpublished candidate gates require a recorded rejection")
+        else:
+            unpublished += len(checks)
+    if accounted != len(integrity_events):
+        raise ValueError("integrity checks must belong to a recorded candidate")
+    return unpublished
+
+
 def _automatic_delivery_efficiency(
     task_id: str, *, entries: list[dict], observed_at: datetime
 ) -> dict[str, object]:
@@ -1321,9 +1374,10 @@ def _automatic_delivery_efficiency(
         and entry.get("result_code") != 0
     )
     full_runs = sum(1 for entry in task_events if entry.get("event") == "check full")
-    integrity_runs = len(
-        _successful_task_events(entries, task_id, "check candidate integrity")
+    integrity_events = _successful_task_events(
+        entries, task_id, "check candidate integrity"
     )
+    integrity_runs = len(integrity_events)
     final_closeout_runs = sum(
         1
         for entry in history
@@ -1334,11 +1388,9 @@ def _automatic_delivery_efficiency(
     )
     if int(snapshot["hosted_validation_runs"]) != push_runs:
         raise ValueError("closeout requires one hosted verdict per pushed candidate")
-    if integrity_runs != push_runs or final_closeout_runs != push_runs:
-        raise ValueError(
-            "closeout requires one candidate-integrity run and one final session end "
-            "per pushed candidate"
-        )
+    unpublished_integrity_runs = _validate_candidate_closeouts(
+        history, integrity_events
+    )
     integration = {
         "pr_number": snapshot.get("pr_number"),
         "merge_commit": snapshot.get("merge_commit"),
@@ -1357,11 +1409,13 @@ def _automatic_delivery_efficiency(
         "candidate_heads": list(snapshot["candidate_heads"]),
         "candidate_trees": dict(snapshot["candidate_trees"]),
         "audit_rejections": int(snapshot["audit_rejections"]),
+        "closeout_rejections": int(snapshot.get("closeout_rejections", 0)),
         "repair_batches": int(snapshot["repair_batches"]),
         "focused_gate_retries": focused_failures,
         "full_gate_runs": full_runs,
         "hosted_validation_runs": int(snapshot["hosted_validation_runs"]),
         "candidate_integrity_runs": integrity_runs,
+        "unpublished_candidate_integrity_runs": unpublished_integrity_runs,
         "final_session_end_runs": final_closeout_runs,
         "rework_minutes": rounded_phases["writer rework"],
         "rework_ratio_pct": (
@@ -1748,6 +1802,18 @@ def _run_final_closeout() -> int:
     )
 
 
+def _record_closeout_rejection(
+    task_id: str, snapshot: dict[str, object], evidence: list[str]
+) -> None:
+    snapshot["closeout_rejections"] = int(snapshot.get("closeout_rejections", 0)) + 1
+    if int(snapshot["design_candidate_count"]) == 1:
+        snapshot["state"] = "REPAIR"
+        snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
+    else:
+        snapshot["state"] = "REPLAN"
+    _append_delivery_state(task_id, snapshot, evidence=evidence)
+
+
 def cmd_delivery(args: argparse.Namespace) -> int:
     """Advance or inspect the persisted, fail-closed delivery state machine."""
     entries = _read_jsonl(MODEL_USAGE_LOG)
@@ -1784,7 +1850,14 @@ def cmd_delivery(args: argparse.Namespace) -> int:
                     f"pre-push guard requires INTEGRITY_VERIFIED, found {state}"
                 )
             if _run_final_closeout() != 0:
-                raise ValueError("final read-only session closeout failed")
+                _record_closeout_rejection(
+                    task_id,
+                    snapshot,
+                    [f"read-only session end failed for {current_head}"],
+                )
+                raise ValueError(
+                    f"final read-only session closeout failed; entered {snapshot['state']}"
+                )
             snapshot["state"] = "FINAL_CLOSED"
             _append_delivery_state(
                 task_id, snapshot, evidence=["read-only session end passed"]
@@ -1818,6 +1891,24 @@ def cmd_delivery(args: argparse.Namespace) -> int:
                 snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
             else:
                 target = "REPLAN"
+        elif requested == "CLOSEOUT_REJECTED":
+            if state != "INTEGRITY_VERIFIED":
+                raise ValueError(f"closeout rejection is invalid from {state}")
+            if not re.fullmatch(r"[0-9a-f]{40}", args.head or "") or not evidence:
+                raise ValueError(
+                    "closeout rejection requires exact --head SHA and --evidence"
+                )
+            current_head, _tree = _resolve_head_and_tree("HEAD")
+            rejected_head, _tree = _resolve_head_and_tree(args.head)
+            if rejected_head != current_head or rejected_head != snapshot.get(
+                "latest_candidate_head"
+            ):
+                raise ValueError(
+                    "closeout rejection must name the current accepted head"
+                )
+            _record_closeout_rejection(task_id, snapshot, evidence)
+            print(f"Delivery transition: {state} -> {snapshot['state']} ({task_id})")
+            return 0
         elif requested == "INTEGRITY_REJECTED":
             if state != "AUDIT_ACCEPTED":
                 raise ValueError(f"integrity rejection is invalid from {state}")
@@ -2062,7 +2153,7 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
     issues: list[str] = []
 
     try:
-        content = SESSION_LOG.read_text()
+        content = SESSION_LOG.read_text(encoding="utf-8")
         if today_str not in content and today_display not in content:
             issues.append("No entry for today")
             return False, issues
@@ -2072,38 +2163,7 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
             issues.append("SESSION_LOG: Newest entry is not for today")
             return False, issues
 
-        focus = _parse_focus(block)
-        has_focus = len(focus) > 5 and focus != "-" and "<!--" not in focus
-
-        has_completed = False
-        in_outcome_section = False
-        for line in block:
-            if line.startswith("**Completed:**") or line.startswith("### Summary"):
-                in_outcome_section = True
-                continue
-            if in_outcome_section and line.startswith("### "):
-                in_outcome_section = False
-            if in_outcome_section and line.strip().startswith("-"):
-                item = line.strip().removeprefix("-").strip()
-                if item and item != "-" and "<!--" not in item:
-                    has_completed = True
-
-        has_issues = any(line == "### Issues encountered" for line in block)
-        has_root_causes = any(
-            line == "### Root causes and resolutions" for line in block
-        )
-        _recurrence_ids, recurrence_errors = _validate_rework_section(block)
-
-        if not has_focus:
-            issues.append("SESSION_LOG: Focus not filled in")
-        if not has_completed:
-            issues.append("SESSION_LOG: No completed items listed")
-        if not has_issues:
-            issues.append("SESSION_LOG: Missing 'Issues encountered' section")
-        if not has_root_causes:
-            issues.append("SESSION_LOG: Missing 'Root causes and resolutions' section")
-        issues.extend(recurrence_errors)
-
+        issues = _session_block_issues(block)
         return len(issues) == 0, issues
     except Exception as e:
         return False, [f"Error reading SESSION_LOG: {e}"]
@@ -2385,7 +2445,27 @@ def _parse_section_bullets(block: list[str], heading: str) -> list[str]:
 
 
 def _parse_completed(block: list[str]) -> list[str]:
-    return _parse_section_bullets(block, "**Completed:**")
+    return [
+        item
+        for heading in ("**Completed:**", "### Completed", "### Summary")
+        for item in _parse_section_bullets(block, heading)
+        if item != "-" and "<!--" not in item
+    ]
+
+
+def _session_block_issues(block: list[str]) -> list[str]:
+    issues: list[str] = []
+    focus = _parse_focus(block)
+    if len(focus) <= 5 or focus == "-" or "<!--" in focus:
+        issues.append("SESSION_LOG: Focus not filled in")
+    if not _parse_completed(block):
+        issues.append("SESSION_LOG: No completed items listed")
+    if "### Issues encountered" not in block:
+        issues.append("SESSION_LOG: Missing 'Issues encountered' section")
+    if "### Root causes and resolutions" not in block:
+        issues.append("SESSION_LOG: Missing 'Root causes and resolutions' section")
+    _recurrence_ids, recurrence_errors = _validate_rework_section(block)
+    return [*issues, *recurrence_errors]
 
 
 def _parse_rework_and_recurrence(block: list[str]) -> list[str]:
@@ -2984,24 +3064,9 @@ def cmd_check(args: argparse.Namespace) -> int:
         len(session_lines),
     )
     session_block = session_lines[session_idx:session_end_idx]
-    if not any("Focus:" in line for line in session_block):
-        print(f"ERROR: SESSION_LOG.md entry for {date_str} missing 'Focus:' line")
-        return 1
-    if "### Issues encountered" not in session_block:
-        print(
-            f"ERROR: SESSION_LOG.md entry for {date_str} missing "
-            "'Issues encountered' section"
-        )
-        return 1
-    if "### Root causes and resolutions" not in session_block:
-        print(
-            f"ERROR: SESSION_LOG.md entry for {date_str} missing "
-            "'Root causes and resolutions' section"
-        )
-        return 1
-    _recurrence_ids, recurrence_errors = _validate_rework_section(session_block)
-    if recurrence_errors:
-        for issue in recurrence_errors:
+    block_issues = _session_block_issues(session_block)
+    if block_issues:
+        for issue in block_issues:
             print(f"ERROR: {issue}")
         return 1
 
@@ -3963,6 +4028,7 @@ def build_parser() -> argparse.ArgumentParser:
             *DELIVERY_STATES,
             "AUDIT_REJECTED",
             "INTEGRITY_REJECTED",
+            "CLOSEOUT_REJECTED",
             "HOSTED_REJECTED",
         ),
     )

@@ -55,14 +55,14 @@
     {
       "id": "RR-004",
       "pattern": "Session or handoff lifecycle contract missed",
-      "occurrences": 7,
+      "occurrences": 8,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale next-session handoff projection after a new dated session entry; only partial timestamps exist."
+        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale next-session handoff projection after a new dated session entry. WP10-04-PREP used a Completed heading accepted by early validation but omitted by handoff and rejected by final closeout; the parsers now share outcome rules. Only partial timestamps exist."
       },
-      "short_solution": "Admit intake before opening the timer, refresh the task-owned handoff after session-entry changes, then enforce persisted delivery states through automatic closeout.",
-      "last_seen_task": "WP10-PLAN-DRIVEN-DELIVERY",
+      "short_solution": "Admit intake, use shared completion parsing in early checks and closeout, refresh the handoff, and preserve persisted delivery history.",
+      "last_seen_task": "WP10-04-PREP",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 35,
+      "occurrences": 37,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Twenty earlier retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness. WP10-02 added ten command-shape retries: one JavaScript binding collision, one non-JavaScript exec body, two malformed PowerShell reflection pipelines, one Windows wildcard path, one reserved PowerShell Host variable, two .NET 10 test invocations started outside the CSharp/global.json runner context, one unquoted Git tree revision, and one direct foreach pipeline rejected by PowerShell. WP10-PLAN-DRIVEN-DELIVERY added one Windows wildcard path passed directly to rg before the search was corrected to directory-based matching. WP10-03 added two direct wildcard path searches, one guessed obsolete nested handoff path, and one duplicate lifecycle transition after a yielded formatter session was not polled before status inspection; each was corrected with directory plus glob filters, exact paths, or final session/state polling. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
+        "basis": "Twenty earlier retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness. WP10-02 added ten command-shape retries: one JavaScript binding collision, one non-JavaScript exec body, two malformed PowerShell reflection pipelines, one Windows wildcard path, one reserved PowerShell Host variable, two .NET 10 test invocations started outside the CSharp/global.json runner context, one unquoted Git tree revision, and one direct foreach pipeline rejected by PowerShell. WP10-PLAN-DRIVEN-DELIVERY added one Windows wildcard path passed directly to rg before the search was corrected to directory-based matching. WP10-03 added two direct wildcard path searches, one guessed obsolete nested handoff path, and one duplicate lifecycle transition after a yielded formatter session was not polled before status inspection; each was corrected with directory plus glob filters, exact paths, or final session/state polling. WP10-04-PREP added two guessed nonexistent recovery helper/test paths before rg --files discovered their maintained locations. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-03",
+      "last_seen_task": "WP10-04-PREP",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -280,6 +280,23 @@
       "last_seen_task": "WP10-04-PREP",
       "aggregate_parent": null,
       "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-018",
+      "pattern": "Rejected final closeout has no recovery or unpublished-candidate accounting path",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-04-PREP became stuck at INTEGRITY_VERIFIED after pre-push rejected its session record. Source inspection also proved aggregate integrity-versus-push accounting would reject a repaired unpublished candidate. The owner authorized a general repair; separate rework minutes are not isolated from that implementation."
+      },
+      "short_solution": "Record closeout rejection through the shared repair ceiling; retain unpublished checks and require each pushed candidate's own gate evidence.",
+      "last_seen_task": "WP10-04-PREP",
+      "aggregate_parent": null,
+      "details": [
+        "docs/verification/delivery-system-redesign.md#closeout-recovery-and-early-check-parity--2026-09-05",
         "docs/SESSION_LOG.md"
       ]
     }

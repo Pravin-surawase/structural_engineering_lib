@@ -489,6 +489,13 @@ write outside the path budget, or a second rejected candidate. The review
 question stays: would fixing this change the main normalization outcome?
 Ignore adjacent hardening and do not add tests during the audit pass.
 
+The owner subsequently authorized a library-wide delivery repair after this
+preparation candidate's final closeout exposed inconsistent completion parsing
+and a missing recovery transition. Its separate maintained authority is
+[closeout recovery and early-check parity](../../verification/delivery-system-redesign.md#closeout-recovery-and-early-check-parity--2026-09-05).
+That repair shares this unpublished planning branch and original task history;
+it changes no WP10 engineering contract and does not start normalization.
+
 ## WP10-02 single-session execution contract
 
 ### Entry card — pass before opening the implementation timer

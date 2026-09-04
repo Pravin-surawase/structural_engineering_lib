@@ -4,8 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-05
-- Focus: Review delivered WP10-03 and prepare the executable WP10-04 offline normalization card. This is documentation and read-only evidence inspection; no product implementation, new tests, COM, Excel, or workflow redesign.
-- Recurrence controls: RR-017 x1 / unknown: Inspect configured refspecs and fetch exact required existing refs; preserve configuration and branches unless cleanup is separately authorized.
+- Focus: Review delivered WP10-03, prepare the executable WP10-04 offline normalization card, and repair the shared session delivery path under the owner's subsequent library-wide authorization. No product normalization, COM or Excel activity is included.
+- Completed: Verified PR 970 merged the reviewed `9d3cf00a` head with identical tree `ae92ea494173264343ad48338bf35eaec904e44b`; hosted run `33916559572` succeeded. Historical candidate-stage notes are not a pending delivery gate.; Verified both retained WP10-03 durable artifact files against the committed byte counts and SHA-256 values. Inspected getter facts without attaching to ETABS or invoking the configured live broker test.; Reviewed production contracts and validators, the current getter matrix, source-discovered test names, scripts/hooks, scoped documentation rules, beam-automation skill, and relevant recurrence controls.
+- Recurrence controls: RR-017 x1 / unknown: Inspect configured refspecs and fetch exact required existing refs; preserve configuration and branches unless cleanup is separately authorized.; RR-004 x8 / unknown: Admit intake, use shared completion parsing in early checks and closeout, refresh the handoff, and preserve persisted delivery history.; RR-005 x37 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
 <!-- HANDOFF:END -->
 
 ## Current boundary
