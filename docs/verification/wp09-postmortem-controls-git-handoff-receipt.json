@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "198e404b88c8aa862c7042c5cdf2d39f81cd096597d95a0a6b6df13727f0b817",
+    "receipt_sha256": "b0d1abc4e6fc91c0f496c5507f5f872ab55ca71981cd021c183c3cf4de7dcd73",
     "state": {
       "branch": "codex/wp09-postmortem-controls",
       "default_base": {
-        "ahead": 1,
+        "ahead": 2,
         "behind": 0,
         "ref": "origin/main",
         "sha": "ac1bd2b3e38f61b165504331ea35e5642cd49860",
         "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 254.134,
+      "duration_ms": 285.17,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
-      "head_sha": "b3f9a4c85558530ec21c80e63449792819453ed2",
+      "head_sha": "f8a7957b7bb3fa35db9a4e8c812a9ab11a64d982",
       "hold_reasons": [
-        "changed paths: 12"
+        "changed paths: 6"
       ],
       "linked_worktree": false,
       "locks": [],
-      "observed_at_utc": "2026-09-04T11:45:54.444126+00:00",
+      "observed_at_utc": "2026-09-04T11:56:49.033752+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,21 +53,15 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 12,
+        "dirty_count": 6,
         "modified_paths": [],
         "staged_paths": [
           "AGENTS.md",
           "Python/tests/test_session_automation.py",
           "docs/SESSION_LOG.md",
           "docs/guidelines/ai-token-efficiency.md",
-          "docs/planning/xll-product/README.md",
           "docs/planning/xll-product/wp09-postmortem.md",
-          "docs/verification/rework-recurrence-index.json",
-          "run.sh",
-          "scripts/agent_brief.sh",
-          "scripts/automation-map.json",
-          "scripts/control-plane.json",
-          "scripts/session.py"
+          "docs/verification/rework-recurrence-index.json"
         ],
         "untracked_paths": []
       },
@@ -81,9 +75,9 @@
       "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:198e404b88c8aa862c7042c5cdf2d39f81cd096597d95a0a6b6df13727f0b817",
+  "local_state_receipt_hash": "sha256:b0d1abc4e6fc91c0f496c5507f5f872ab55ca71981cd021c183c3cf4de7dcd73",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-04T11:45:54.444126+00:00",
+  "observed_at_utc": "2026-09-04T11:56:49.033752+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"

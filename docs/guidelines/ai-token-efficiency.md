@@ -165,8 +165,8 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    rerun quick, full, or unchanged suites after each edit.
 4. Freeze the packet content and validate the live repository-context manifest;
    generic committed folder indexes require no refresh.
-5. Run the affected focused tests, benchmarks, and architecture/import checks
-   together as one consolidated selection.
+5. Run the affected formatter/linter, focused tests, benchmarks, and
+   architecture/import checks together as one consolidated selection.
 6. Add one or two independent reviews only when risk justifies them. Before the
    final candidate commit, run `./run.sh check --candidate-integrity`; it uses
    the hosted manual all-files hooks and may normalize files. If it writes,

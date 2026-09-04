@@ -54,6 +54,8 @@ weakening Excel or ETABS acceptance.
 - The command wrapper reported preparation closeout as exit `1` even though the
   closeout text named its expected nonfinal exit `2`, prompting one diagnostic
   rerun.
+- The first PR run passed repository integrity but failed Python Validation:
+  Black would reformat two assertions in `test_session_automation.py`.
 
 ### Root causes and resolutions
 
@@ -93,6 +95,11 @@ weakening Excel or ETABS acceptance.
   `run.sh` returning the documented exit `2`; only the outer command wrapper had
   surfaced `1`. No repository change was warranted, and future preparation runs
   should treat their direct process status as the authority.
+- Confirmed root cause: the frozen candidate ran focused tests and the exact
+  hosted manual file-integrity hooks, but its affected-domain selection omitted
+  Python format/lint. Resolution: apply Black, add the changed-domain
+  formatter/linter to the pre-push sequence, increment `RR-003`, and run the
+  hosted Black/Ruff commands before the consolidated repair candidate.
 
 ### Rework and recurrence
 
@@ -101,7 +108,7 @@ Counts, time bases, short controls, and detail links live once in the
 
 - `RR-001` occurrences=1; minutes=120-165; WP09 retrospective baseline.
 - `RR-002` occurrences=7; minutes=unknown; WP09 retrospective baseline.
-- `RR-003` occurrences=3; minutes=unknown; WP09 retrospective baseline.
+- `RR-003` occurrences=4; minutes=unknown; includes the three-minute PR repair.
 - `RR-004` occurrences=4; minutes=unknown; includes this session's handoff parser finding.
 - `RR-005` occurrences=7; minutes=unknown; WP09 retrospective baseline.
 

@@ -6,9 +6,9 @@
 - Date: 2026-09-04
 - Focus: Reconstruct why WP09 consumed about 6.5 hours, distinguish necessary installed-product qualification from preventable rework, implement controls that would have changed the delivery outcome, and re-sequence WP10 without weakening Excel or ETABS acceptance.
 - Completed: Reconstructed the WP09 scope, commit and hosted-check timeline, duration limits, repair classes, and the root causes behind repeated candidate cycles.; Added a hosted-equivalent pre-freeze candidate-integrity command and explicit timed-task closeout guidance, with focused regression coverage.; Recorded the postmortem and updated the WP09/WP10 plans so later host work uses bounded slices, an early host micro-probe, staged acceptance, and one consolidated repair boundary.
-- Recurrence controls: RR-001 x1 / 120-165m: Keep one milestone branch, but execute contracts, host work, integration, and qualification as bounded tasks.; RR-002 x7 / unknown: Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.; RR-003 x3 / unknown: Stabilize behavior, normalize files, rebind affected repository identities, then commit and push once.
-- Git receipt: docs/verification/wp09-postmortem-controls-git-handoff-receipt.json | sha256:198e404b88c8aa862c7042c5cdf2d39f81cd096597d95a0a6b6df13727f0b817 | HOLD
-- Git identity: codex/wp09-postmortem-controls@b3f9a4c85558530ec21c80e63449792819453ed2 | upstream=NONE@UNKNOWN | base=origin/main@ac1bd2b3e38f61b165504331ea35e5642cd49860 | tree=dirty | operation=none
+- Recurrence controls: RR-001 x1 / 120-165m: Keep one milestone branch, but execute contracts, host work, integration, and qualification as bounded tasks.; RR-002 x7 / unknown: Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.; RR-003 x4 / unknown: Stabilize behavior, run changed-domain format/lint, normalize files, rebind affected identities, then push once.
+- Git receipt: docs/verification/wp09-postmortem-controls-git-handoff-receipt.json | sha256:b0d1abc4e6fc91c0f496c5507f5f872ab55ca71981cd021c183c3cf4de7dcd73 | HOLD
+- Git identity: codex/wp09-postmortem-controls@f8a7957b7bb3fa35db9a4e8c812a9ab11a64d982 | upstream=NONE@UNKNOWN | base=origin/main@ac1bd2b3e38f61b165504331ea35e5642cd49860 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

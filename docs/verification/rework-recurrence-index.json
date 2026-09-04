@@ -39,13 +39,13 @@
     {
       "id": "RR-003",
       "pattern": "Candidate or evidence frozen before normalization and behavior stability",
-      "occurrences": 3,
+      "occurrences": 4,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The hosted EOF incident took about 5 minutes to repair and 12 minutes to green integration; earlier evidence rebind work overlaps RR-001."
+        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately."
       },
-      "short_solution": "Stabilize behavior, normalize files, rebind affected repository identities, then commit and push once.",
+      "short_solution": "Stabilize behavior, run changed-domain format/lint, normalize files, rebind affected identities, then push once.",
       "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
       "aggregate_parent": "RR-001",
       "details": [

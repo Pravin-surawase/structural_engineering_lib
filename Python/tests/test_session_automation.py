@@ -104,7 +104,7 @@ def test_run_sh_routes_compact_recurrence_index():
     )
 
     assert result.returncode == 0, result.stderr
-    assert "RR-003 | 3x | unknown" in result.stdout
+    assert "RR-003 | 4x | unknown" in result.stdout
     assert "Candidate or evidence frozen before normalization" in result.stdout
     assert "corrected-candidate-sequence" in result.stdout
 
@@ -1147,7 +1147,10 @@ def test_new_usage_start_explains_how_to_close_the_active_task(
     assert session.cmd_usage(args) == 1
     output = capsys.readouterr().err
     assert "WP09-STANDALONE-EXCEL" in output
-    assert "session end validates repository state but does not close task timing" in output
+    assert (
+        "session end validates repository state but does not close task timing"
+        in output
+    )
     assert "./run.sh session usage --active --json" in output
     assert len(usage_log.read_text(encoding="utf-8").splitlines()) == 1
 
@@ -2005,9 +2008,7 @@ def test_session_log_completeness_rejects_missing_recurrence_record(
     complete, issues = session.check_session_log_complete()
 
     assert complete is False
-    assert issues == [
-        "SESSION_LOG: Missing or empty 'Rework and recurrence' section"
-    ]
+    assert issues == ["SESSION_LOG: Missing or empty 'Rework and recurrence' section"]
 
 
 def test_repeated_session_compaction_indexes_existing_archives(

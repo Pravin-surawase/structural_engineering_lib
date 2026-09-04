@@ -145,7 +145,8 @@ For future Excel and ETABS milestones:
    acceptance commands;
 2. run host-free fixtures first, then the exact-host micro-probe when the slice
    reaches a host boundary;
-3. complete implementation before the consolidated focused gate;
+3. complete implementation, then run the changed domain's formatter/linter and
+   consolidated focused gate;
 4. run the installed path as smoke, functional matrix, postflight/cleanup, and
    performance, stopping at the first failing layer;
 5. obtain one consolidated independent review of the locally passing candidate;
