@@ -14,7 +14,7 @@ dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- beam
 dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- benchmark
 ```
 
-The packed add-in is `src/StructuralEngineering.ExcelDna/bin/Release/net10.0-windows/publish/StructuralEngineering.ExcelDna-AddIn64-packed.xll`. It contains its managed dependencies and requires 64-bit Windows Excel and the matching .NET 10 Desktop Runtime. The WP09 packaging scripts under `packaging/excel` create a signed, checksummed distribution and exercise per-user preflight, installation, repair, installed Excel acceptance, and uninstall. The solution does not connect to ETABS yet; the reusable native packages and standalone workbook implement the bounded WP01-WP08 beam workflow.
+The packed add-in is `src/StructuralEngineering.ExcelDna/bin/Release/net10.0-windows/publish/StructuralEngineering.ExcelDna-AddIn64-packed.xll`. It contains its managed dependencies and requires 64-bit Windows Excel and the matching .NET 10 Desktop Runtime. The WP09 packaging scripts under `packaging/excel` create a signed, checksummed distribution and exercise per-user preflight, installation, repair, installed Excel acceptance, and uninstall. The solution does not connect to ETABS yet; the reusable native packages and standalone workbook complete the bounded programme through WP09. WP10 adds the optional getter-only ETABS adapter.
 
 Worksheet examples:
 

@@ -21,15 +21,23 @@ reconciles the existing Python library, C# foundation, three-project evidence,
 standalone Excel workflow and later ETABS automation into twelve implementation
 packets. Its PF11 blueprint is the authority for new library work.
 
+**Implemented through WP09:** the native Python/.NET beam libraries and the
+standalone Windows Excel XLL are complete. The signed local candidate passed
+preflight, install, repair, installed Excel acceptance, performance, uninstall,
+and cleanup. [WP10 read-only ETABS acquisition](wp10-etabs-read-adapter.md) is
+the next implementation unit.
+
 **Owner-selected workflow:** [Standalone Excel beam requirements and contract proposal](requirements-first/README.md) records the 3 September requirements-first research across all three projects. It supplements this plan; its proposed delivery packets do not rename P0–P6 or change the Windows shell exercise.
 
 1. [PF0–PF11 library definition](library-definition/README.md): the complete requirements, semantics, APIs, assurance, boundaries and implementation blueprint.
 2. [Original XLL architecture](../excel-dna-xll-product-architecture-decision.md): what was actually proposed.
 3. [Current plan](current-plan.md): the source hierarchy and present scope.
-4. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
-5. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
-6. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.
-7. [Learning record](learning/README.md): the last observed result and the next exercise.
+4. [WP09 completion record](wp09-standalone-excel.md): the shipped Excel surface and installed evidence.
+5. [WP10 execution plan](wp10-etabs-read-adapter.md): the next getter-only ETABS unit.
+6. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
+7. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
+8. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.
+9. [Learning record](learning/README.md): the last observed result and the next exercise.
 
 ## Original phase meanings
 
@@ -47,7 +55,10 @@ Earlier blueprint/v2 phase numbers are historical. Optional AI has no assigned o
 
 ## Evidence and learning status
 
-- No installed XLL acceptance or completed user lesson observation is established by this handoff.
+- WP09 installed XLL acceptance is complete and bound to the candidate and
+  artifact hashes in its verification receipts.
+- No user lesson observation is marked complete; the learning sequence remains
+  separate from product implementation evidence.
 - The user implements the product; the assistant explains and reviews actual results.
 - Broad market research remains paused. R01–R13 are proposed requirements and B01–B23 remain parked under their recorded reopening conditions.
 - Costs and vendor claims retain their original 3 September research dates and limitations; this intake performs no price refresh.

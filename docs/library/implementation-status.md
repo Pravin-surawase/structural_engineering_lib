@@ -1,4 +1,4 @@
-# WP01-WP08 implementation status
+# WP01-WP09 implementation status
 
 This record captures the review performed after each work packet and any change
 to the next packet before implementation continues.
@@ -400,3 +400,67 @@ Corrections made during review:
 - Replaced scalar application-supplied pass lists with the complete AO17 leaf
   set and retained all feasible, failed, incomplete, unevaluated, and duplicate
   records in the result ledger.
+
+WP09 plan update:
+
+- The canonical add-in references the native `StructuralEngineering.*`
+  packages directly; the earlier Excel demo survives only through four
+  compatibility delegates.
+- Worksheet functions remain pure immutable projections. Workbook reads,
+  writes, files, progress, cancellation, and rollback occur only in explicit
+  commands.
+- Installed acceptance uses one signed AMD64 package, an exact startup
+  registration, a 20-member/200-operation sample, and the frozen PF9 budgets.
+
+## WP09 review
+
+State: implemented, independently reviewed, and installed verification passing.
+
+Confirmed outcomes:
+
+- `StructuralEngineering.ExcelDna` exposes the required `STR.INFO`,
+  `STR.REBAR`, `STR.IS456.*`, `STR.BEAM.LINE`, and `STR.CONSTRUCTION` families
+  over native WP01–WP08 operations.
+- Versioned workbook tables and `XL-CMD-01/03/04/06/07` provide validation,
+  full calculation, verified current-result reuse, current-candidate evaluation,
+  calculation-package export, diagnostics, progress, and cancellation.
+- Bulk writes bind preimage, readback, freshness, command receipts, result
+  identities, and exact rollback. The shipped workbook saves, reopens, and
+  reconstructs its current result identities.
+- The signed per-user package passed preflight, install, repair, installed Excel
+  workflow, and uninstall. UDF recalculation recorded zero host effects.
+- `BENCH-EXCEL-TYPICAL` passed with 356.715 ms warm median, 413.457 ms warm p95,
+  2,018.668 ms maximum cold-ready time, and 202.059 MiB working-set growth.
+  Its 20 rows repeat one frozen physical beam case for batch and performance
+  evidence; broader engineering diversity remains in the operation fixtures.
+- Installed migration upgraded the legacy freshness/receipt table shapes and a
+  changed runtime fingerprint invalidated saved results before recalculation.
+
+Corrections made during review:
+
+- Replaced the application-specific calculation chain with native operation
+  dispatch and strict result projection.
+- Fixed transient grouping, oversized Excel cells, result/freshness identities,
+  cache content identity, export binding, table readback, COM object lifetime,
+  and exact rollback.
+- Allowed formatting-only controlled sheets to be reused while still refusing
+  sheets containing unrelated values or formulas, and compared legacy
+  recalculation with the matching calculation evidence rather than the later
+  current-candidate result set.
+- Made packaging compatible with Windows PowerShell 5, registered the exact XLL
+  for normal Excel startup, and verified install/repair/uninstall against active
+  workbook and startup-registration behaviour.
+- Corrected cold-ready timing to end at the installed version probe and exclude
+  prerequisite, host-configuration, and post-ready lifecycle checks while
+  retaining those checks as mandatory evidence; removed the unnecessary blank
+  bootstrap workbook from the timed startup path.
+
+WP10 plan update:
+
+- Add AO16 and `XL-CMD-02` through an optional exact-version ETABS adapter and
+  bounded STA broker; keep CSI COM outside pure libraries and worksheet UDFs.
+- Port the useful getter/ledger/snapshot semantics from the old Python work, but
+  exclude its unit and result-selection setters from attached acquisition.
+- Require exact pre/post state equality, complete parallel-array validation,
+  six-component concurrent rows, offline replay, Excel transactional import,
+  and PF8 E5-02 through E5-04 plus `PERF-ETABS-ACQUISITION`.

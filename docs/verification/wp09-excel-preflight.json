@@ -1,0 +1,165 @@
+{
+    "schema_version":  "structautomate.excel-preflight/v1",
+    "passed":  true,
+    "observed_at_utc":  "2026-09-04T09:17:15.5500667+00:00",
+    "source_commit":  "6d03be23ec4964034def3b74492f9722cfdd3bee",
+    "distribution_manifest_sha256":  "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae",
+    "xll":  {
+                "name":  "StructAutomate.xll",
+                "length_bytes":  1519920,
+                "sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5"
+            },
+    "pe_machine":  "AMD64",
+    "authenticode":  {
+                         "status":  "Valid",
+                         "message":  "Signature verified.",
+                         "signature_type":  "Authenticode",
+                         "thumbprint":  "8F5460BE9356A3A2103266687229389BB9DDE972",
+                         "file_digest_algorithm":  "SHA-256",
+                         "certificate_signature_algorithm":  "sha256RSA"
+                     },
+    "excel":  {
+                  "executable":  "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+                  "platform":  "x64",
+                  "version":  "16.0.20326.20112",
+                  "products":  "O365HomePremRetail"
+              },
+    "desktop_runtimes":  [
+                             "Microsoft.WindowsDesktop.App 8.0.20 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]",
+                             "Microsoft.WindowsDesktop.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]"
+                         ],
+    "registered_open_addins":  [
+
+                               ],
+    "checks":  {
+                   "windows_x64":  true,
+                   "excel_present":  true,
+                   "excel_x64":  true,
+                   "desktop_runtime_10_x64":  true,
+                   "xll_amd64":  true,
+                   "xll_hash_matches":  true,
+                   "file_digest_algorithm_declared":  true,
+                   "signature_present":  true,
+                   "signature_valid":  true,
+                   "signature_identity_matches":  true,
+                   "authenticode_file_digest_algorithm_declared":  true,
+                   "certificate_signature_algorithm_declared":  true,
+                   "package_files_match":  true,
+                   "sha256sums_present":  true,
+                   "sha256sums_match":  true
+               },
+    "file_checks":  [
+                        {
+                            "name":  "Common.ps1",
+                            "exists":  true,
+                            "expected_sha256":  "938b337e1f1368c266d43a67da0b0e24943ab627b1bb15b029b5135205a7b180",
+                            "actual_sha256":  "938b337e1f1368c266d43a67da0b0e24943ab627b1bb15b029b5135205a7b180",
+                            "matches":  true
+                        },
+                        {
+                            "name":  "Install-PerUser.ps1",
+                            "exists":  true,
+                            "expected_sha256":  "b6658d935660f82178edcbab97eeefa5bdc2e30c7e83fe3afb8010a6da1e96df",
+                            "actual_sha256":  "b6658d935660f82178edcbab97eeefa5bdc2e30c7e83fe3afb8010a6da1e96df",
+                            "matches":  true
+                        },
+                        {
+                            "name":  "README.md",
+                            "exists":  true,
+                            "expected_sha256":  "af4b7215b69c02633ce0fbb0bd4a5bc5a08ce4bff987db19fc49567ac3f316f1",
+                            "actual_sha256":  "af4b7215b69c02633ce0fbb0bd4a5bc5a08ce4bff987db19fc49567ac3f316f1",
+                            "matches":  true
+                        },
+                        {
+                            "name":  "Repair-PerUser.ps1",
+                            "exists":  true,
+                            "expected_sha256":  "77111e4d5ab038e2fc418369eaf907c331c9c0d758bfb1f825801aac0083cd07",
+                            "actual_sha256":  "77111e4d5ab038e2fc418369eaf907c331c9c0d758bfb1f825801aac0083cd07",
+                            "matches":  true
+                        },
+                        {
+                            "name":  "StructAutomate-Standalone-Beam.xlsx",
+                            "exists":  true,
+                            "expected_sha256":  "2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9",
+                            "actual_sha256":  "2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9",
+                            "matches":  true
+                        },
+                        {
+                            "name":  "StructAutomate.xll",
+                            "exists":  true,
+                            "expected_sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5",
+                            "actual_sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5",
+                            "matches":  true
+                        },
+                        {
+                            "name":  "Test-Preflight.ps1",
+                            "exists":  true,
+                            "expected_sha256":  "d58aee32cc853605ff6dec66a429aacb23d9bda45a8ac38865d01c75dd505949",
+                            "actual_sha256":  "d58aee32cc853605ff6dec66a429aacb23d9bda45a8ac38865d01c75dd505949",
+                            "matches":  true
+                        },
+                        {
+                            "name":  "Uninstall-PerUser.ps1",
+                            "exists":  true,
+                            "expected_sha256":  "3278753af07b23808e1f959dd792fddaff62b4bca5dee137d9706e05561a3941",
+                            "actual_sha256":  "3278753af07b23808e1f959dd792fddaff62b4bca5dee137d9706e05561a3941",
+                            "matches":  true
+                        }
+                    ],
+    "sha256sum_checks":  [
+                             {
+                                 "name":  "Common.ps1",
+                                 "expected_sha256":  "938b337e1f1368c266d43a67da0b0e24943ab627b1bb15b029b5135205a7b180",
+                                 "actual_sha256":  "938b337e1f1368c266d43a67da0b0e24943ab627b1bb15b029b5135205a7b180",
+                                 "matches":  true
+                             },
+                             {
+                                 "name":  "Install-PerUser.ps1",
+                                 "expected_sha256":  "b6658d935660f82178edcbab97eeefa5bdc2e30c7e83fe3afb8010a6da1e96df",
+                                 "actual_sha256":  "b6658d935660f82178edcbab97eeefa5bdc2e30c7e83fe3afb8010a6da1e96df",
+                                 "matches":  true
+                             },
+                             {
+                                 "name":  "manifest.json",
+                                 "expected_sha256":  "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae",
+                                 "actual_sha256":  "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae",
+                                 "matches":  true
+                             },
+                             {
+                                 "name":  "README.md",
+                                 "expected_sha256":  "af4b7215b69c02633ce0fbb0bd4a5bc5a08ce4bff987db19fc49567ac3f316f1",
+                                 "actual_sha256":  "af4b7215b69c02633ce0fbb0bd4a5bc5a08ce4bff987db19fc49567ac3f316f1",
+                                 "matches":  true
+                             },
+                             {
+                                 "name":  "Repair-PerUser.ps1",
+                                 "expected_sha256":  "77111e4d5ab038e2fc418369eaf907c331c9c0d758bfb1f825801aac0083cd07",
+                                 "actual_sha256":  "77111e4d5ab038e2fc418369eaf907c331c9c0d758bfb1f825801aac0083cd07",
+                                 "matches":  true
+                             },
+                             {
+                                 "name":  "StructAutomate.xll",
+                                 "expected_sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5",
+                                 "actual_sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5",
+                                 "matches":  true
+                             },
+                             {
+                                 "name":  "StructAutomate-Standalone-Beam.xlsx",
+                                 "expected_sha256":  "2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9",
+                                 "actual_sha256":  "2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9",
+                                 "matches":  true
+                             },
+                             {
+                                 "name":  "Test-Preflight.ps1",
+                                 "expected_sha256":  "d58aee32cc853605ff6dec66a429aacb23d9bda45a8ac38865d01c75dd505949",
+                                 "actual_sha256":  "d58aee32cc853605ff6dec66a429aacb23d9bda45a8ac38865d01c75dd505949",
+                                 "matches":  true
+                             },
+                             {
+                                 "name":  "Uninstall-PerUser.ps1",
+                                 "expected_sha256":  "3278753af07b23808e1f959dd792fddaff62b4bca5dee137d9706e05561a3941",
+                                 "actual_sha256":  "3278753af07b23808e1f959dd792fddaff62b4bca5dee137d9706e05561a3941",
+                                 "matches":  true
+                             }
+                         ]
+}

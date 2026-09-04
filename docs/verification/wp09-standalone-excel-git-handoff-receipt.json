@@ -1,0 +1,148 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "d3a6d8ae9c80a205a52ee4875cb08d11e5b06e6ea034901d5f023f080258eee7",
+    "state": {
+      "branch": "codex/wp09-standalone-excel",
+      "default_base": {
+        "ahead": 15,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "1b9da3165cc4fed12a87af9bca553ed51f04fa57",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 282.247,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "head_sha": "6d03be23ec4964034def3b74492f9722cfdd3bee",
+      "hold_reasons": [
+        "changed paths: 20"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-09-04T10:19:00.102370+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 20,
+        "modified_paths": [],
+        "staged_paths": [
+          "CSharp/README.md",
+          "docs/SESSION_LOG.md",
+          "docs/library/README.md",
+          "docs/library/implementation-status.md",
+          "docs/planning/xll-product/README.md",
+          "docs/planning/xll-product/current-plan.md",
+          "docs/planning/xll-product/learning/README.md",
+          "docs/planning/xll-product/wp09-standalone-excel.md",
+          "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+          "docs/verification/wp09-excel-cleanup.json",
+          "docs/verification/wp09-excel-distribution-evidence.json",
+          "docs/verification/wp09-excel-distribution-manifest.json",
+          "docs/verification/wp09-excel-install-preflight.json",
+          "docs/verification/wp09-excel-install.json",
+          "docs/verification/wp09-excel-installed-acceptance.json",
+          "docs/verification/wp09-excel-preflight.json",
+          "docs/verification/wp09-excel-repair.json",
+          "docs/verification/wp09-excel-rollback-probe.json",
+          "docs/verification/wp09-excel-uninstall.json",
+          "docs/verification/wp09-excel-validation-certificate.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:d3a6d8ae9c80a205a52ee4875cb08d11e5b06e6ea034901d5f023f080258eee7",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-04T10:19:00.102370+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python",
+      "fastapi_app",
+      "react_app"
+    ],
+    "integration_owner": "MAIN",
+    "owned_paths": [
+      "CSharp",
+      "docs/library",
+      "docs/planning/xll-product",
+      "docs/verification/wp09-excel-cleanup.json",
+      "docs/verification/wp09-excel-distribution-evidence.json",
+      "docs/verification/wp09-excel-distribution-manifest.json",
+      "docs/verification/wp09-excel-install-preflight.json",
+      "docs/verification/wp09-excel-install.json",
+      "docs/verification/wp09-excel-installed-acceptance.json",
+      "docs/verification/wp09-excel-preflight.json",
+      "docs/verification/wp09-excel-repair.json",
+      "docs/verification/wp09-excel-rollback-probe.json",
+      "docs/verification/wp09-excel-uninstall.json",
+      "docs/verification/wp09-excel-validation-certificate.json",
+      "docs/verification/wp09-standalone-excel-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md"
+    ],
+    "task_id": "WP09-STANDALONE-EXCEL"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
