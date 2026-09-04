@@ -5,6 +5,206 @@
 
 ---
 
+## 2026-09-04 — Session: executable delivery-system redesign
+
+**Agent:** Codex (`orchestrator`) with read-only audits from Helmholtz and Kuhn.
+
+**Branch:** `codex/delivery-state-machine`.
+
+**Focus:** Audit WP09, its postmortem controls, and WP10-01; freeze a causal
+model and replace descriptive delivery limits with one fail-closed executable
+state machine without changing WP10 product behavior.
+
+**Completed:**
+
+- Reconstructed authoritative task durations, candidate/repair/retry counts,
+  integrity/session-end repetitions, hosted runs, and PR #964/#965 history;
+  recorded the causal model, keep/update/merge/narrow/remove/add decisions, and
+  measurable acceptance contract.
+- Added persisted delivery transitions from intake through merge, exact
+  candidate/tree and audit binding, a one-repair ceiling, digest-gated replan,
+  one hosted-run ceiling, idempotent pre-push closeout, and automatically
+  derived phase/counter/rework closeout metrics.
+- Made `session end` strictly read-only, moved admission before timer creation,
+  admitted clean synchronized `main` for intake only, required both standard
+  hooks, and made Git receipts conditional on an actual boundary transition.
+- Replaced mutation-capable manual hygiene fixers with one consolidated
+  read-only integrity owner, added changed-path Python/FastAPI/C# formatting
+  with an outside-scope byte guard, aligned hosted formatting, corrected exact
+  pytest path routing, and updated the canonical registry/projection, tests,
+  skills, workflow, and governing documentation.
+- Closed the first hosted run's two failed owners by binding the Actions Python
+  runtime, replacing stale hook/formatter coverage with current behavior
+  assertions, and making failed hosted verdicts and replacement-candidate
+  closeouts explicit and mechanically counted.
+- Closed a candidate-binding bypass so repair, replan, and final-closeout states
+  can be emitted only by their guarded commands.
+
+### Issues encountered
+
+- `session begin` opened this task's timer and then failed on clean `main`,
+  repeating the lifecycle contradiction already seen in WP10-01.
+- Read-only audits confirmed that `run.sh session end` appended hidden usage
+  telemetry despite its ReadOnly registry classification, that manual integrity
+  hooks could rewrite the candidate, that receipts incorporated moving live
+  state, and that the control-plane test used a stale raw operation count.
+- The first consolidated integrity implementation was a new top-level script,
+  which correctly failed control-plane coverage until it was merged into the
+  existing `verification.py` owner and the compatibility projection refreshed.
+- The first changed-path formatter run applied repository-wide Ruff rules to
+  changed infrastructure scripts and stopped on 43 pre-existing script-only
+  lint findings after making eight safe fixes; the scope guard reported no
+  changes outside selected paths.
+- `./run.sh test Python/tests/...` first rejected the root-relative path; the
+  retry then began the entire Python suite because the fallback always prepended
+  `tests/`. The unintended broad run was stopped at 12 percent.
+- The one broad local gate passed 30 of 32 checks. API classification correctly
+  held the new untracked contract until intended paths were staged, and the Git
+  workflow semantic check required the literal `receipt_grants_authority:
+  false` invariant in the narrowed receipt guidance.
+- The first session consistency check still required a receipt even though the
+  same-checkout handoff and final closeout had already been made conditional.
+- Final staged-diff review found that the .NET hosted job would load PyYAML
+  eagerly even though that job does not install Python project dependencies.
+- The first accepted candidate's read-only integrity gate rejected 101
+  historical paths: binary workbooks/images/vendor files were decoded as UTF-8,
+  and documentation underline rows longer than seven equals signs were treated
+  as merge separators.
+- The first repair session-consistency check rejected a prose-only “no
+  recurrence” bullet inside the machine-parsed recurrence list.
+- Independent re-audit rejected the repaired candidate because one Git lesson
+  contains a deliberate, fenced three-marker conflict example that remained
+  indistinguishable from an unresolved conflict to the all-files checker.
+- The first hosted PR run passed Python, FastAPI, React, Excel, .NET, and
+  documentation but failed repository validation because the manual hook could
+  not find the hosted Python interpreter, and failed control-plane validation
+  on two stale tests that still described the retired hook/formatter owners.
+- The replacement hosted run passed every product and repository job but failed
+  the two strict instruction-composition tests because `AGENTS.md` was 24,302
+  bytes, above its enforced 24,000-byte owner limit.
+- A direct `REPAIRED_CANDIDATE` request advanced the state without binding the
+  new head/tree or incrementing its candidate count; independent audit exposed
+  the stale binding while checking the repaired evidence.
+- The first push created the remote branch and branch config but the repository's
+  intentionally narrow fetch refspec did not classify the new remote-tracking
+  branch as an upstream until its exact refspec was added and fetched.
+- ⚠️ TERMINAL ISSUE: PowerShell interpreted part of an `rg` alternation as a
+  command, wildcard-like path arguments were invalid, a guessed `session active`
+  subcommand did not exist, Git-Bash `/tmp` did not map to the Windows Python
+  path, and unquoted revision syntax (`@{upstream}` and `HEAD^{tree}`) was
+  parsed by PowerShell. Exact paths, one quoted Bash command, `session usage
+  --active --json`, and `git show -s --format=%T HEAD` resolved the probes.
+  (`RR-005`)
+
+### Root causes and resolutions
+
+- Confirmed root cause: timer creation preceded admission and `HOLD_MAIN` did
+  not distinguish safe read-only intake from mutation authority. Resolution:
+  run read-only preflight first, admit only clean synchronized main as
+  `HOLD_MAIN_INTAKE_ONLY`, then open the timer; `BOUNDED_UNITS` still rejects
+  the default branch. Proof: preflight and transition tests cover both states.
+  (`RR-004`)
+- Confirmed root cause: candidate, review, retry, closeout, and hosted ceilings
+  were prose conventions without persisted transitions or guards. Resolution:
+  bind every transition to the active task, acceptance digest, exact head/tree,
+  audit evidence, and allowed predecessor; pre-push owns one idempotent final
+  closeout. Proof: regression tests force the second rejection to `REPLAN`,
+  reject an unchanged acceptance digest, and run closeout once across two push
+  probes. (`RR-008`)
+- Confirmed root cause: mutation and observation were combined at the freeze
+  boundary. Resolution: changed-path formatters run before `FORMATTED`; the
+  later consolidated integrity owner only reads bytes. Hosted jobs call the
+  same formatter selection and scope guard.
+- Confirmed root cause: the formatter initially conflated Python syntax/format
+  ownership with package lint ownership. Resolution: Black covers every changed
+  Python file, while Ruff covers only its maintained `Python/` and
+  `fastapi_app/` package roots; a failed formatter leaves the task at
+  `CONTENT_FROZEN`, where the corrected content can be explicitly re-frozen.
+- Confirmed root cause: the generic pytest fallback unconditionally added the
+  full `tests/` directory and did not normalize root-relative `Python/` paths.
+  Resolution: pass exact arguments after stripping only the known `Python/`
+  prefix; default no-argument behavior remains the full Python suite.
+- Confirmed root cause: operation-count assertions encoded inventory size
+  instead of required behavior. Resolution: assert active/full parity, script
+  coverage, and named delivery operation semantics instead of a raw count.
+- Confirmed root cause: classification cannot bind untracked caller text and
+  semantic governance validates required safety tokens, not inferred meaning.
+  Resolution: stage only reviewed task paths before candidate classification
+  and restore the explicit no-authority receipt invariant; rerun only the two
+  failed controls.
+- Confirmed root cause: receipt optionality had been updated in the handoff and
+  closeout consumers but not in `session check`. Resolution: validate receipt
+  identity and recorded-time freshness only when the newest entry declares one.
+- Confirmed root cause: YAML syntax validation and changed-path formatting
+  shared one module-level optional dependency. Resolution: import PyYAML only
+  inside the integrity YAML branch; the dependency-free .NET formatter path no
+  longer needs it.
+- Confirmed root cause: `_syntax_error` decoded every path before checking
+  whether its suffix had a structured-data parser, while conflict detection
+  used prefix matching for the exact seven-character separator. Resolution:
+  decode only JSON/TOML/YAML candidates, recognize the separator only when the
+  whole line is exactly seven equals signs, and make `INTEGRITY_REJECTED`
+  consume the same one-repair allowance as an audit rejection. Proof: the
+  regression test retains a real conflict failure while accepting a binary and
+  an eight-character documentation underline; re-audit then exposed the fenced
+  documentation case below.
+- Confirmed root cause: every bullet under `Rework and recurrence` is a typed
+  recurrence row and therefore requires exactly one `RR-NNN` identity.
+  Resolution: keep the first-occurrence explanation in the ordinary issue and
+  root-cause sections and leave only real recurrence rows in that list. Proof:
+  `./run.sh session check` is the affected repair check.
+- Confirmed root cause: marker syntax alone cannot distinguish an unresolved
+  merge from an intentionally quoted example; the checker lacked Markdown
+  fence context. Resolution: design revision 2 explicitly excludes markers
+  inside CommonMark-style backtick/tilde fences while retaining marker failures
+  outside fences and in executable text. Proof: the narrow test covers both
+  Markdown contexts and Python, and the exact historical reproducer plus the
+  repository-wide read-only integrity command form the new candidate evidence.
+- Confirmed root cause: the hosted repository step invoked the local hook
+  without setting `STRUCTURAL_LIB_PYTHON`, while two maintained governance
+  consumers retained the previous eight-manual-hook and whole-tree Black/Ruff
+  tokens. Resolution: bind the Actions interpreter explicitly, replace the
+  stale hook inventory with commit/manual/pre-push behavior assertions, and
+  update validation coverage to the consolidated integrity and changed-path
+  formatter owners without raw entry counts. Proof: rerun only the two failed
+  hosted-equivalent selections before the replacement candidate.
+- Confirmed root cause: `HOSTED_PASSED` was the only executable hosted verdict,
+  so a failed published candidate could neither enter repair nor be counted at
+  closeout. Resolution: add exact-run `HOSTED_REJECTED`, preserve every hosted
+  attempt, allow one repair candidate per design revision, and require one
+  integrity run, final closeout, and hosted verdict per pushed candidate.
+- Confirmed root cause: `remote.origin.fetch` listed only maintained exact
+  branches, so `git push -u` wrote branch configuration without making the new
+  remote-tracking ref eligible as an upstream. Resolution: add and fetch the
+  exact task-branch refspec; `git_state.py` then reports upstream `equal`.
+  (`RR-009`)
+- Confirmed root cause: the first hosted-failure guidance duplicated detail
+  already owned by the acceptance contract, and local efficiency validation
+  warned instead of enforcing the hosted 24,000-byte limit. Resolution: make
+  the size ceiling explicit acceptance evidence and compress the owner while
+  retaining every lifecycle invariant. Proof: rerun the two failed strict
+  instruction-composition tests and the efficiency check.
+- Confirmed root cause: derived lifecycle states remained present in the public
+  transition map, so callers could bypass the guarded commands that bind Git
+  objects, count failures, and run final closeout. Resolution: reject direct
+  requests for `REPAIR`, `REPAIRED_CANDIDATE`, `REPLAN`, and `FINAL_CLOSED` and
+  remove their generic edges; the regression test verifies each source state
+  remains unchanged.
+
+### Rework and recurrence
+
+- `RR-004`, occurrences=6, minutes=unknown — preflight now admits safe intake
+  before the task timer and preserves the feature-branch write boundary.
+- `RR-005`, occurrences=18, minutes=unknown — use exact paths, maintained
+  discovery, and one shell shape per probe.
+- `RR-008`, occurrences=1, minutes=unknown — executable transitions now enforce
+  candidate, audit, repair, closeout, hosted-run, and merge-tree limits.
+- `RR-009`, occurrences=1, minutes=unknown — add and fetch the task branch's
+  exact refspec before relying on upstream equality in a narrow-fetch checkout.
+
+**Git handoff:** No receipt is required; this is a same-checkout delivery and no
+device, worktree, installed-artifact, or authority boundary was crossed.
+
 ## 2026-09-04 — Session: WP10-01 portable ETABS snapshot contracts
 
 **Agent:** Codex (`MAIN`).

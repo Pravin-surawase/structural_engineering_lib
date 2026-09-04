@@ -49,9 +49,7 @@ def test_current_registry_has_frozen_operation_and_script_parity():
     all_operations = control_plane.operation_map(registry)
     active_operations = control_plane.operation_map(registry, active_only=True)
 
-    assert len(all_operations) == 121
-    assert len(active_operations) == 121
-    assert len(control_plane.top_level_scripts()) == 107
+    assert active_operations == all_operations
     assert control_plane.referenced_top_level_scripts(registry) == (
         control_plane.top_level_scripts()
     )
@@ -62,6 +60,9 @@ def test_current_registry_has_frozen_operation_and_script_parity():
     )
     assert active_operations["verification impact"]["command"]["display"] == (
         "./scripts/python_runtime.sh scripts/verification.py validate"
+    )
+    assert active_operations["delivery state"]["command"]["display"] == (
+        "./run.sh session delivery --status"
     )
 
 
@@ -178,7 +179,9 @@ def test_structured_commands_do_not_store_shell_chains_as_one_step():
     registry = control_plane.load_registry()
     operations = control_plane.operation_map(registry)
 
-    assert len(operations["format code"]["command"]["steps"]) == 2
+    assert operations["format code"]["command"]["steps"] == [
+        {"argv": ["./run.sh", "format", "--write"], "cwd": "."}
+    ]
     for operation in operations.values():
         for step in operation["command"]["steps"]:
             assert not ({"&&", "||", ";", "|"} & set(step["argv"]))

@@ -45,7 +45,7 @@
         "maximum": null,
         "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately."
       },
-      "short_solution": "Stabilize behavior, run changed-domain format/lint, normalize files, rebind affected identities, then push once.",
+      "short_solution": "Freeze content, format only changed source paths, then run one read-only integrity check after audit acceptance.",
       "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
       "aggregate_parent": "RR-001",
       "details": [
@@ -55,14 +55,14 @@
     {
       "id": "RR-004",
       "pattern": "Session or handoff lifecycle contract missed",
-      "occurrences": 5,
+      "occurrences": 6,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and main-branch start-preflight incidents are confirmed; only partial timestamps exist."
+        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed; only partial timestamps exist."
       },
-      "short_solution": "Use session begin, compact RR references, preparation closeout, clean closeout, and post-merge usage closeout in order.",
-      "last_seen_task": "WP10-01",
+      "short_solution": "Admit intake before opening the timer, then enforce the persisted delivery states through automatic post-merge closeout.",
+      "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 14,
+      "occurrences": 18,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "At least fourteen retries are explicit across WP09 and WP10-01. WP09 events are contained within its 30 to 60 minute environment and coordination range; WP10-01 retries were not separately timed."
+        "basis": "At least eighteen retries are explicit across WP09, WP10-01, and the delivery redesign, including the design-revision-3 PowerShell tree probe. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-01",
+      "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -94,7 +94,7 @@
         "maximum": null,
         "basis": "WP09 controls and WP10-01 both printed the expected preparation exit 2 while the outer command result surfaced exit 1; neither event was separately timed."
       },
-      "short_solution": "Require every printed preparation check to pass, then use the clean read-only session-end verdict as final authority.",
+      "short_solution": "Remove preparation mode; pre-push owns one idempotent read-only session-end verdict.",
       "last_seen_task": "WP10-01",
       "aggregate_parent": null,
       "details": [
@@ -112,6 +112,38 @@
       },
       "short_solution": "Encode PF4 JSON strings explicitly and test syntax escapes, controls, ordinary Unicode, and U+2028/U+2029 across both runtimes.",
       "last_seen_task": "WP10-01",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-008",
+      "pattern": "Delivery limits exist in prose but not executable state",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "The systemic audit confirmed repeated candidates, integrity runs, and session-end runs across WP09 controls and WP10-01, but their overlapping rework time is not separately attributable."
+      },
+      "short_solution": "Persist guarded delivery transitions, allow one repair candidate, and require an acceptance-digest change after a second audit rejection.",
+      "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",
+      "aggregate_parent": null,
+      "details": [
+        "docs/verification/delivery-system-redesign.md"
+      ]
+    },
+    {
+      "id": "RR-009",
+      "pattern": "Narrow fetch refspec leaves a newly pushed task branch without a recognized upstream",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "The first delivery-redesign push wrote branch configuration, but upstream equality remained unavailable until the exact branch refspec was added and fetched; the retry was not separately timed."
+      },
+      "short_solution": "Add and fetch the exact task-branch refspec before relying on upstream equality in a narrow-fetch checkout.",
+      "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"

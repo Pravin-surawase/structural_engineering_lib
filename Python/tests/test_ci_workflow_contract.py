@@ -328,6 +328,7 @@ def test_hosted_validation_checks_are_split_by_natural_domain_without_loss():
         assert command in docs_policy
     assert repository_policy.strip() == "python scripts/check_repo_hygiene.py"
     assert candidate_integrity.strip() == (
+        'STRUCTURAL_LIB_PYTHON="$(command -v python)" '
         "python -m pre_commit run --hook-stage manual --all-files"
     )
     assert version_policy.strip() == "python scripts/check_python_version.py --ci"
@@ -339,29 +340,22 @@ def test_every_retired_commit_hook_has_a_hosted_owner_or_explicit_disposition():
     entries = coverage["entries"]
 
     assert coverage["schema_version"] == 1
-    assert len(entries) == 34
-    assert len({entry["key"] for entry in entries}) == 34
+    assert len({entry["key"] for entry in entries}) == len(entries)
     assert set(coverage["target_commit_hook_ids"]) == {
         "check-merge-conflict",
         "check-added-large-files",
         "git-operation-guard",
     }
     assert set(coverage["target_manual_hook_ids"]) == {
-        "check-yaml",
-        "check-toml",
-        "check-json",
-        "end-of-file-fixer",
-        "trailing-whitespace",
-        "mixed-line-ending",
-        "check-merge-conflict",
-        "check-added-large-files",
+        "file-integrity-read-only",
     }
+    assert set(coverage["target_pre_push_hook_ids"]) == {"delivery-state-guard"}
 
     retired = [entry for entry in entries if "retirement" in entry]
     assert [entry["key"] for entry in retired] == ["check-doc-metadata"]
     for entry in entries:
         hosted_checks = entry.get("hosted_checks", [])
-        assert hosted_checks or entry.get("retirement")
+        assert hosted_checks or entry.get("retirement") or entry.get("local_only")
         for hosted in hosted_checks:
             run_source = "\n".join(
                 step.get("run", "") for step in workflow["jobs"][hosted["job"]]["steps"]

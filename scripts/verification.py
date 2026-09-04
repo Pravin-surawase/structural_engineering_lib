@@ -15,13 +15,18 @@ import importlib.metadata
 import json
 import os
 import platform
+import re
+import shutil
 import subprocess
 import sys
 import tempfile
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable, Sequence
+from typing import Any
+
+import tomllib
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
@@ -39,9 +44,24 @@ REQUIRED_DOMAINS = (
     "docs",
     "repository",
 )
+JSONC_PATHS = {"react_app/tsconfig.app.json", "react_app/tsconfig.node.json"}
+PRESERVED_TEXT_PREFIXES = (
+    "VBA/",
+    "Excel/",
+    ".vite/",
+    "docs/_archive/",
+    "docs/reference/vendor/",
+    "Python/tests/data/",
+    "Python/tests/fixtures/",
+    "react_app/src/__fixtures__/",
+    "tests/fixtures/",
+)
+MERGE_MARKERS = (b"<<<<<<< ", b"=======", b">>>>>>> ")
+MARKDOWN_SUFFIXES = {".md", ".markdown", ".mdx"}
+MARKDOWN_FENCE = re.compile(rb"^[ \t]{0,3}(`{3,}|~{3,})")
 
 sys.path.insert(0, str(SCRIPT_DIR))
-from control_plane import (  # noqa: E402
+from control_plane import (
     ControlPlaneError,
     read_strict_json,
     schema_errors,
@@ -276,6 +296,188 @@ def changed_paths(
             )
         )
     return tuple(sorted(changed))
+
+
+def _file_digest(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _syntax_error(path: str, payload: bytes) -> str | None:
+    suffix = Path(path).suffix.lower()
+    structured_suffixes = {".json", ".toml", ".yml", ".yaml"}
+    if suffix not in structured_suffixes or (
+        suffix in {".yml", ".yaml"} and path == "mkdocs.yml"
+    ):
+        return None
+    try:
+        text = payload.decode("utf-8")
+        if suffix == ".json" and path not in JSONC_PATHS:
+            json.loads(text)
+        elif suffix == ".toml":
+            tomllib.loads(text)
+        elif suffix in {".yml", ".yaml"}:
+            import yaml
+
+            try:
+                yaml.safe_load(text)
+            except yaml.YAMLError as exc:
+                return str(exc).splitlines()[0]
+    except (UnicodeDecodeError, json.JSONDecodeError, tomllib.TOMLDecodeError) as exc:
+        return str(exc)
+    return None
+
+
+def _has_merge_marker(path: str, payload: bytes) -> bool:
+    """Detect unresolved markers while ignoring fenced Markdown literals."""
+    markdown = Path(path).suffix.lower() in MARKDOWN_SUFFIXES
+    fence_character: bytes | None = None
+    fence_length = 0
+    for line in payload.splitlines():
+        if markdown and (match := MARKDOWN_FENCE.match(line)):
+            token = match.group(1)
+            if fence_character is None:
+                fence_character = token[:1]
+                fence_length = len(token)
+            elif token[:1] == fence_character and len(token) >= fence_length:
+                fence_character = None
+                fence_length = 0
+            continue
+        if fence_character is not None:
+            continue
+        if (
+            line.startswith(MERGE_MARKERS[0])
+            or line == MERGE_MARKERS[1]
+            or line.startswith(MERGE_MARKERS[2])
+        ):
+            return True
+    return False
+
+
+def file_integrity(paths: Sequence[str], *, root: Path = REPO_ROOT) -> list[str]:
+    """Return exact read-only file-integrity failures for repository paths."""
+    failures: list[str] = []
+    for relative in sorted(set(paths)):
+        path = root / relative
+        if not path.is_file() or path.is_symlink():
+            continue
+        payload = path.read_bytes()
+        if syntax := _syntax_error(relative, payload):
+            failures.append(f"{relative}: syntax: {syntax}")
+        if b"\0" in payload:
+            continue
+        if _has_merge_marker(relative, payload):
+            failures.append(f"{relative}: merge-marker: conflict marker present")
+        if relative.startswith(PRESERVED_TEXT_PREFIXES):
+            continue
+        if payload and not payload.endswith(b"\n"):
+            failures.append(f"{relative}: final-newline: missing final LF")
+        if b"\r\n" in payload and b"\n" in payload.replace(b"\r\n", b""):
+            failures.append(f"{relative}: line-ending: mixed CRLF and LF")
+        for line_number, line in enumerate(payload.splitlines(), start=1):
+            if line.endswith((b" ", b"\t")):
+                failures.append(f"{relative}: trailing-whitespace: line {line_number}")
+                break
+    return failures
+
+
+def _repository_byte_state(root: Path) -> dict[str, str]:
+    return {
+        relative: _file_digest(root / relative)
+        for relative in repository_paths(root)
+        if (root / relative).is_file()
+    }
+
+
+def _format_selection(
+    paths: Sequence[str], scopes: Sequence[str]
+) -> dict[str, list[str]]:
+    selected = {"python": [], "fastapi": [], "dotnet": []}
+    enabled = set(scopes or selected)
+    unknown = enabled - set(selected)
+    if unknown:
+        raise VerificationError(
+            "unknown formatter scope: " + ", ".join(sorted(unknown))
+        )
+    for path in paths:
+        if path.endswith(".py"):
+            owner = "fastapi" if path.startswith("fastapi_app/") else "python"
+            if owner in enabled:
+                selected[owner].append(path)
+        elif (
+            path.startswith("CSharp/") and path.endswith(".cs") and "dotnet" in enabled
+        ):
+            selected["dotnet"].append(path)
+    return selected
+
+
+def _run_formatter(command: list[str], *, cwd: Path = REPO_ROOT) -> None:
+    result = subprocess.run(command, cwd=cwd, check=False)
+    if result.returncode != 0:
+        raise VerificationError(
+            f"formatter failed with exit {result.returncode}: {' '.join(command)}"
+        )
+
+
+def format_changed(args: argparse.Namespace) -> dict[str, object]:
+    """Format or verify only changed source paths and guard all other bytes."""
+    paths = changed_paths(
+        base=args.base,
+        head=args.head,
+        include_worktree=not args.no_worktree,
+    )
+    selected = _format_selection(paths, args.scope or [])
+    selected_paths = sorted({path for group in selected.values() for path in group})
+    before = _repository_byte_state(REPO_ROOT)
+    python = sys.executable
+    for owner in ("python", "fastapi"):
+        owner_paths = [path for path in selected[owner] if (REPO_ROOT / path).is_file()]
+        if not owner_paths:
+            continue
+        lint_paths = [
+            path for path in owner_paths if path.startswith(("Python/", "fastapi_app/"))
+        ]
+        if args.write:
+            if lint_paths:
+                _run_formatter([python, "-m", "ruff", "check", "--fix", *lint_paths])
+            _run_formatter([python, "-m", "black", *owner_paths])
+        else:
+            _run_formatter([python, "-m", "black", "--check", *owner_paths])
+            if lint_paths:
+                _run_formatter([python, "-m", "ruff", "check", *lint_paths])
+    dotnet_paths = [path for path in selected["dotnet"] if (REPO_ROOT / path).is_file()]
+    if dotnet_paths:
+        if shutil.which("dotnet") is None:
+            raise VerificationError(
+                "dotnet formatter scope selected but dotnet is unavailable"
+            )
+        command = [
+            "dotnet",
+            "format",
+            "CSharp/StructAutomate.slnx",
+            "--no-restore",
+            "--include",
+            *dotnet_paths,
+        ]
+        if not args.write:
+            command.append("--verify-no-changes")
+        _run_formatter(command)
+    after = _repository_byte_state(REPO_ROOT)
+    outside_changes = sorted(
+        path
+        for path in set(before) | set(after)
+        if before.get(path) != after.get(path) and path not in selected_paths
+    )
+    if outside_changes:
+        raise VerificationError(
+            "formatter scope violation; bytes changed outside selected paths: "
+            + ", ".join(outside_changes)
+        )
+    return {
+        "mode": "write" if args.write else "check",
+        "candidate_paths": list(paths),
+        "selected_paths": selected_paths,
+        "scope_guard": "pass",
+    }
 
 
 def plan_changes(
@@ -637,6 +839,27 @@ def build_parser() -> argparse.ArgumentParser:
     record = sub.add_parser("record", help="Record PASS for the exact current identity")
     _add_identity_args(record)
     record.add_argument("--receipt", type=Path, required=True)
+
+    formatter = sub.add_parser(
+        "format",
+        help="Format or verify changed source paths with an outside-scope guard",
+    )
+    mode = formatter.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--write", action="store_true")
+    mode.add_argument("--check", action="store_true")
+    formatter.add_argument("--base")
+    formatter.add_argument("--head", default="HEAD")
+    formatter.add_argument("--no-worktree", action="store_true")
+    formatter.add_argument(
+        "--scope", action="append", choices=("python", "fastapi", "dotnet")
+    )
+    formatter.add_argument("--json", action="store_true")
+
+    integrity = sub.add_parser(
+        "integrity", help="Run consolidated read-only repository file checks"
+    )
+    integrity.add_argument("--all-files", action="store_true")
+    integrity.add_argument("paths", nargs="*")
     return parser
 
 
@@ -688,6 +911,28 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(f"Verification domains: {label}")
                 if plan.fail_closed:
                     print("Fail-closed reason: unknown impact selected every domain")
+            return 0
+
+        if args.command == "format":
+            result = format_changed(args)
+            if args.json:
+                print(json.dumps(result, indent=2))
+            else:
+                print(
+                    f"Changed-path format: PASS ({result['mode']}; "
+                    f"{len(result['selected_paths'])} selected paths; scope guard clean)"
+                )
+            return 0
+
+        if args.command == "integrity":
+            selected = tuple(args.paths) if args.paths else repository_paths()
+            failures = file_integrity(selected)
+            if failures:
+                raise VerificationError(
+                    f"file integrity found {len(failures)} issue(s):\n  "
+                    + "\n  ".join(failures)
+                )
+            print(f"File integrity: PASS ({len(selected)} paths; read-only)")
             return 0
 
         identity = _identity_from_args(args, manifest)

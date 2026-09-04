@@ -204,9 +204,9 @@
       "permission": "ReadOnly"
     },
     "format code": {
-      "script": "cd Python && ../scripts/python_runtime.sh -m black . && ../scripts/python_runtime.sh -m ruff check --fix .",
+      "script": "./run.sh format --write",
       "group": "Infrastructure",
-      "description": "Auto-format Python code with black + ruff",
+      "description": "Format only changed source paths with an outside-scope byte guard",
       "permission": "WorkspaceWrite"
     },
     "check folder structure": {
@@ -262,7 +262,7 @@
     "start session": {
       "script": "./run.sh session begin --task-id <task> --agent <role>",
       "group": "Session",
-      "description": "Start one shared task timer before the compact brief and environment preflight without Git/GitHub lifecycle actions",
+      "description": "Admit a safe local intake, then start one shared task timer before the compact brief without Git/GitHub lifecycle actions",
       "permission": "WorkspaceWrite",
       "aliases": [
         "session"
@@ -278,9 +278,16 @@
       "script": "./scripts/python_runtime.sh scripts/session.py end",
       "group": "Session",
       "description": "Validate session closeout without hidden writes",
+      "permission": "ReadOnly"
+    },
+    "delivery state": {
+      "script": "./run.sh session delivery --status",
+      "group": "Session",
+      "description": "Inspect or advance the bounded fail-closed delivery lifecycle; the pre-push mode runs the one final read-only closeout",
       "permission": "ReadOnly",
       "permission_modes": {
-        "--fix": "WorkspaceWrite"
+        "--to <state>": "WorkspaceWrite",
+        "--guard-push": "WorkspaceWrite"
       }
     },
     "session summary": {

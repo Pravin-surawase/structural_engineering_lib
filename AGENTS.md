@@ -42,7 +42,7 @@ its P0–P6 phases; it does not replace the library's six-phase beam programme.
 
 The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines/ai-token-efficiency.md); project efficiency defaults are enforced by [`.codex/config.toml`](.codex/config.toml).
 
-- Keep one parent task active. An explicit model or reasoning selection by the user controls. When the user explicitly delegates model choice for a task, the orchestrator may choose suitable available parent and subagent profiles in proportion to task risk; repository defaults remain advisory. If the user asks for a recommendation, prefer Luna for clear repeatable work, Terra for normal implementation, and Sol only after explicit selection, case-specific approval, or delegated model-choice authority.
+- Keep one parent task active. An explicit model or reasoning selection by the user controls. When the user explicitly delegates model choice for a task, the orchestrator may choose suitable available parent and subagent profiles in proportion to task risk; repository defaults remain advisory. Luna is unavailable in the active runtime: use Terra-low for clear repeatable work, Terra for normal implementation, and Sol only after explicit selection, case-specific approval, or delegated model-choice authority.
 - Keep Fast mode off unless the user explicitly prioritizes speed over usage.
 - Default to no subagents. Use at most two concurrent subagents, only for independent bounded work that materially benefits from delegation.
 - Never pass full parent history to a subagent. Send a concise packet with the objective, exact files, constraints, question, commands, and expected output.
@@ -84,9 +84,9 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
   `./run.sh session usage` checkpoint.
 - Run `./run.sh model "task"` only when the user asks for a recommendation,
   has not selected a model, or has delegated model choice. The picker is
-  advisory: Luna-first for clear repeatable work, Terra for normal or high-risk
-  implementation, and Sol only after explicit selection, case-specific
-  approval, or delegated model-choice authority.
+  advisory: Luna is unavailable; use Terra-low for clear repeatable work,
+  Terra for normal or high-risk implementation, and Sol only after explicit
+  selection, case-specific approval, or delegated model-choice authority.
 
 ## Surgical Work and Essential-Only Review (MANDATORY)
 
@@ -160,7 +160,7 @@ confirmation when the reviewed head commit is unchanged, required checks pass,
 and there are no conflicts or unresolved blockers. Closing issues or pull
 requests and deleting branches still require **explicit user confirmation**.
 
-**Permission enforcement:** Agent permissions are now programmatically enforced via `tool_permissions.py`. Each agent has a `permission_level` (ReadOnly, WorkspaceWrite, DangerFullAccess) defined in `agents/agent_registry.json`.
+**Permission enforcement:** Agent permissions are now programmatically enforced via `tool_permissions.py`. Each agent has a `permission_level` (ReadOnly, ReadOnlyTerminal, WorkspaceWrite, DangerFullAccess) defined in `agents/agent_registry.json`.
 
 ## Architecture (4 layers — STRICT)
 
@@ -293,33 +293,31 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 # START: task-bound timer + bounded orientation + environment check
 ./run.sh session begin --task-id <task> --agent <role>
 
-# END: update task/handoff only when state changed, then use Codex Git/GitHub
-# Run affected focused diagnostics; comprehensive assurance belongs to the PR.
-# Codex stages intended paths and creates the immutable candidate commit.
-./run.sh session end --agent <role>              # Final read-only validation
-# Codex pushes and creates/updates the PR.
+# END: advance the executable delivery states. The pre-push guard runs the
+# final read-only session closeout for the accepted candidate.
+./run.sh session delivery --status
+./run.sh session end
 ```
 
-**Closeout freeze:** Finish every owned session/task/handoff/evidence update and
-the pre-commit Git handoff receipt. Before freezing repository-facing evidence
-identities, run `./run.sh check --candidate-integrity`; if it writes, review,
-rebind only affected repository identities, and rerun clean. Preserve separately
-declared raw installed-artifact identities. Folder indexes are retired;
-`./run.sh context validate` is read-only and requires no final generated write.
-Create the immutable candidate commit, run final read-only `session end`, then
-push. After push or PR creation, keep hosted-check and merge facts in GitHub and
-the external handoff; never append them to the same candidate and restart CI. A
-material post-push defect requires a repair candidate.
+**Executable delivery lifecycle:** Enforce
+`INTAKE → BOUNDED_UNITS → CONTENT_FROZEN → FORMATTED → FOCUSED_VERIFIED →
+PREPARED → CANDIDATE → AUDIT_ACCEPTED → INTEGRITY_VERIFIED → FINAL_CLOSED →
+PUSHED → HOSTED_PASSED → MERGED`. One rejection admits
+`REPAIR → REPAIRED_CANDIDATE`; the next enters digest-gated `REPLAN`.
+Format once after freeze and run focused checks. After independent acceptance,
+run read-only candidate integrity once. `INTEGRITY_REJECTED` uses the same
+repair ceiling. Pre-push runs one read-only `session end` and records
+`FINAL_CLOSED` idempotently. Record each hosted verdict by exact run ID;
+`HOSTED_REJECTED` enters repair or, after its repair candidate, `REPLAN`.
 
-`session end --fix` is preparation mode, not final validation. It must run
-before candidate freeze when explicitly needed. Review all resulting writes,
-create the candidate commit, and rerun `session end` without `--fix`. A
-preparation run that otherwise passes exits `2`, never `0`, so automation
-cannot mistake it for the final verdict. Expected dirty preparation content
-does not by itself change that `2`; unknown Git state, an operation/conflict,
-missing receipt, or another failed preparation check still exits `1`.
+Finish all versioned task, handoff, documentation, test, generated projection,
+and repository evidence writes before `CANDIDATE`. A Git handoff receipt is
+required only for a real cross-device, cross-worktree, installed-artifact, or
+authority transition; routine same-checkout delivery uses the lifecycle ledger.
+After push, keep hosted/merge facts external and bind exact run, PR, and merge
+IDs. Post-push defects use the repair candidate or a changed-contract replan.
 
-Log feedback only when a concrete stale instruction or missing control was found. `session summary`, `session sync`, and `session end` are read-only by default; `--write` or `--fix` must be intentional. Agent evolution is scheduled governance work, not a mandatory session-end mutation.
+Log feedback only when a concrete stale instruction or missing control was found. `session summary`, `session sync`, and `session end` are read-only; preparation writes happen explicitly before `PREPARED`. Agent evolution is scheduled governance work, not a mandatory session-end mutation.
 
 ## Key Patterns — Do NOT Reinvent
 

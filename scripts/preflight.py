@@ -71,15 +71,21 @@ def python_binding() -> dict:
         return {"status": "FAIL", "source_bound": False, "detail": str(exc)}
 
 
-def hook_readiness() -> dict:
-    """Respect Git's effective hook path; never install/replace an unknown hook."""
+def _one_hook_readiness(hook_type: str) -> dict:
+    """Inspect one effective pre-commit-managed hook without changing it."""
     rc, output = _run(
-        ["git", "rev-parse", "--path-format=absolute", "--git-path", "hooks/pre-commit"]
+        [
+            "git",
+            "rev-parse",
+            "--path-format=absolute",
+            "--git-path",
+            f"hooks/{hook_type}",
+        ]
     )
     if rc:
         return {
             "status": "FAIL",
-            "detail": "Cannot resolve effective pre-commit hook: " + output,
+            "detail": f"Cannot resolve effective {hook_type} hook: " + output,
         }
     path = Path(output)
     if not path.is_absolute():
@@ -89,7 +95,7 @@ def hook_readiness() -> dict:
         return {
             "status": "FAIL",
             "path": str(path),
-            "detail": "Active pre-commit hook missing",
+            "detail": f"Active {hook_type} hook missing",
             "action": hint,
         }
     try:
@@ -128,8 +134,31 @@ def hook_readiness() -> dict:
         "path": str(path),
         "interpreter": interpreter,
         "detail": (
-            "Standard pre-commit hook and interpreter ready" if rc == 0 else detail
+            f"Standard {hook_type} hook and interpreter ready" if rc == 0 else detail
         ),
+    }
+
+
+def hook_readiness() -> dict:
+    """Require both ordinary commit safety and the delivery pre-push guard."""
+    results = {
+        hook_type: _one_hook_readiness(hook_type)
+        for hook_type in ("pre-commit", "pre-push")
+    }
+    failures = [
+        f"{hook_type}: {row['detail']}"
+        for hook_type, row in results.items()
+        if row["status"] != "PASS"
+    ]
+    return {
+        "status": "FAIL" if failures else "PASS",
+        "detail": (
+            "; ".join(failures)
+            if failures
+            else "Standard pre-commit and pre-push hooks are ready"
+        ),
+        "hooks": results,
+        "action": "Install missing standard hooks: ./scripts/python_runtime.sh -m pre_commit install --hook-type pre-commit --hook-type pre-push",
     }
 
 
@@ -144,7 +173,10 @@ def missing_react_dependencies(repo_root: Path | None = None) -> list[str]:
 
 
 def collect_readiness(
-    *, environment_only: bool = False, expected_root: Path | None = None
+    *,
+    environment_only: bool = False,
+    expected_root: Path | None = None,
+    allow_clean_main_intake: bool = False,
 ) -> dict:
     started = time.monotonic()
     root = Path(REPO_ROOT).resolve()
@@ -155,14 +187,24 @@ def collect_readiness(
             "status": "PASS" if expected_root.resolve() == root else "FAIL",
             "detail": f"requested={expected_root.resolve()}; actual={root}",
         }
+    clean_main_intake = (
+        allow_clean_main_intake
+        and state.derived_action == "HOLD_MAIN"
+        and state.tree.clean
+        and state.operation == "none"
+        and not state.locks
+        and state.default_base.status == "equal"
+    )
     git_status = (
         "PASS"
-        if state.ready_local
-        else "WARN" if state.derived_action == "HOLD_DIRTY" else "FAIL"
+        if state.ready_local or clean_main_intake
+        else ("WARN" if state.derived_action == "HOLD_DIRTY" else "FAIL")
     )
     checks["git"] = {
         "status": git_status,
-        "detail": state.derived_action,
+        "detail": (
+            "HOLD_MAIN_INTAKE_ONLY" if clean_main_intake else state.derived_action
+        ),
         "action": "Inspect dirty/held state; no automatic recovery or cross-device synchronization",
     }
     checks["python"] = python_binding()
@@ -216,10 +258,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--environment-only", action="store_true")
     parser.add_argument("--expected-root", type=Path)
+    parser.add_argument("--allow-clean-main-intake", action="store_true")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     report = collect_readiness(
-        environment_only=args.environment_only, expected_root=args.expected_root
+        environment_only=args.environment_only,
+        expected_root=args.expected_root,
+        allow_clean_main_intake=args.allow_clean_main_intake,
     )
     if args.json:
         print(json.dumps(report, indent=2))

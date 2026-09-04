@@ -192,6 +192,68 @@ def test_live_verification_manifest_is_strict_and_covers_every_path():
     }
 
 
+def test_changed_formatter_selects_only_owned_source_paths():
+    selected = verification._format_selection(
+        (
+            "Python/structural_lib/core.py",
+            "scripts/session.py",
+            "fastapi_app/main.py",
+            "CSharp/src/Adapter.cs",
+            "docs/guide.md",
+        ),
+        ("python", "fastapi", "dotnet"),
+    )
+
+    assert selected == {
+        "python": ["Python/structural_lib/core.py", "scripts/session.py"],
+        "fastapi": ["fastapi_app/main.py"],
+        "dotnet": ["CSharp/src/Adapter.cs"],
+    }
+
+
+def test_consolidated_file_integrity_is_read_only_and_reports_exact_failures(
+    tmp_path: Path,
+):
+    (tmp_path / "bad.json").write_bytes(b'{"missing": true}')
+    (tmp_path / "conflict.py").write_bytes(
+        b"<<<<<<< ours\nvalue = 1 \n=======\nvalue = 2\n>>>>>>> theirs\n"
+    )
+    (tmp_path / "conflict.md").write_bytes(
+        b"<<<<<<< ours\ntext\n=======\ntext\n>>>>>>> theirs\n"
+    )
+    (tmp_path / "documented.md").write_bytes(
+        b"```text\n<<<<<<< HEAD\ntext\n=======\ntext\n>>>>>>> branch\n```\n"
+    )
+    (tmp_path / "heading.py").write_bytes(b"========\n")
+    (tmp_path / "image.png").write_bytes(b"\x89PNG\r\n\x1a\n\x00binary")
+    before = {
+        path.name: path.read_bytes() for path in tmp_path.iterdir() if path.is_file()
+    }
+
+    failures = verification.file_integrity(
+        (
+            "bad.json",
+            "conflict.md",
+            "conflict.py",
+            "documented.md",
+            "heading.py",
+            "image.png",
+        ),
+        root=tmp_path,
+    )
+
+    assert any("bad.json: final-newline" in failure for failure in failures)
+    assert any("conflict.py: merge-marker" in failure for failure in failures)
+    assert any("conflict.md: merge-marker" in failure for failure in failures)
+    assert any("conflict.py: trailing-whitespace" in failure for failure in failures)
+    assert not any("documented.md:" in failure for failure in failures)
+    assert not any("heading.py:" in failure for failure in failures)
+    assert not any("image.png:" in failure for failure in failures)
+    assert before == {
+        path.name: path.read_bytes() for path in tmp_path.iterdir() if path.is_file()
+    }
+
+
 def test_manifest_rejects_duplicate_keys_and_unknown_fields(tmp_path):
     duplicate = tmp_path / "duplicate.json"
     duplicate.write_text('{"schema_version": 1, "schema_version": 1}\n')

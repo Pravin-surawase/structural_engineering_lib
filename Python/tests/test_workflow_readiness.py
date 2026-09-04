@@ -51,6 +51,22 @@ def test_unsafe_or_failed_git_queries_never_report_ready(ready, action):
     assert preflight.collect_readiness(environment_only=True)["status"] == "FAIL"
 
 
+def test_clean_synchronized_main_is_admitted_only_for_read_only_intake(ready):
+    ready.ready_local = False
+    ready.derived_action = "HOLD_MAIN"
+    ready.tree = SimpleNamespace(clean=True)
+    ready.operation = "none"
+    ready.locks = []
+    ready.default_base = SimpleNamespace(status="equal")
+
+    result = preflight.collect_readiness(
+        environment_only=True, allow_clean_main_intake=True
+    )
+
+    assert result["status"] == "PASS"
+    assert result["checks"]["git"]["detail"] == "HOLD_MAIN_INTAKE_ONLY"
+
+
 def test_dirty_state_is_visible_warning_not_mutation_authority(ready):
     ready.ready_local = False
     ready.derived_action = "HOLD_DIRTY"
@@ -124,7 +140,7 @@ def test_standard_hook_with_space_path_and_live_interpreter(monkeypatch, tmp_pat
     assert preflight.hook_readiness()["status"] == "PASS"
     assert calls[-1] == [sys.executable, "-c", "import pre_commit"]
     # We never execute the hook or mutate its contents during a diagnostic.
-    assert len(calls) == 2
+    assert len(calls) == 4
 
 
 def test_custom_hook_is_preserved_and_not_executed(monkeypatch, tmp_path):

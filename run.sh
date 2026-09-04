@@ -19,6 +19,7 @@
 #   frontend  Run React commands with the Node version pinned by .nvmrc
 #   generate  Generate SDKs, manifests, and scaffolds
 #   context   Validate and query live repository context
+#   format    Format or verify only changed source paths
 #   route     Route tasks to the right agent
 #   tools     Tool & script discovery
 #   control   Canonical control-plane registry
@@ -100,8 +101,7 @@ Options:
   --changed            Run categories for whole-candidate impact domains
   --pre-commit         Run the three ordinary commit-safety hooks
   --candidate-integrity
-                       Run hosted-equivalent file checks before candidate freeze;
-                       may normalize files, so rerun to a clean pass
+                       Run hosted-equivalent read-only file checks once after audit
   --category <name>    Run one category: api|docs|arch|governance|fastapi|git|stale|code
   --fix                Auto-fix what's fixable (sync numbers, etc.)
   --json               Machine-readable JSON output
@@ -123,7 +123,7 @@ Examples:
   ./run.sh check --quick              # Fast validation
   ./run.sh check --category api       # API checks only
   ./run.sh check --category docs --fix  # Fix doc issues
-  ./run.sh check --candidate-integrity  # Prepare final candidate file bytes
+  ./run.sh check --candidate-integrity  # Verify accepted candidate bytes once
   ./run.sh check --json               # CI-friendly output
 EOF
 }
@@ -152,6 +152,12 @@ _cmd_session_begin() {
         return 1
     fi
 
+    # Admission is read-only and must pass before a timer is opened. Clean,
+    # synchronized main is valid only for intake; writes still require a branch.
+    if ! "$SCRIPTS/agent_start.sh" --quick --preflight-only --allow-clean-main-intake; then
+        return 1
+    fi
+
     local -a usage_args=(usage --checkpoint start --task-id "$task_id")
     [[ -n "$task" ]] && usage_args+=(--task "$task")
     usage_args+=(--model "$model" --reasoning "$reasoning")
@@ -164,10 +170,6 @@ _cmd_session_begin() {
     set +e
     bash "$SCRIPTS/agent_brief.sh" "${brief_args[@]}"
     status=$?
-    if [[ "$status" -eq 0 ]]; then
-        "$SCRIPTS/agent_start.sh" --quick --preflight-only
-        status=$?
-    fi
     set -e
     finished_epoch=$(date +%s)
     duration_sec=$((finished_epoch - started_epoch))
@@ -190,7 +192,7 @@ _cmd_session() {
             ;;
         end)
             _require_venv
-            _run_with_usage_event "session end" "$VENV" "$SCRIPTS/session.py" end "$@"
+            "$VENV" "$SCRIPTS/session.py" end "$@"
             ;;
         handoff)
             _require_venv
@@ -215,7 +217,7 @@ _cmd_session() {
         brief)
             bash "$SCRIPTS/agent_brief.sh" "$@"
             ;;
-        costs|usage|compact|trust|recurrence)
+        costs|usage|delivery|compact|trust|recurrence)
             _require_venv
             "$VENV" "$SCRIPTS/session.py" "$subcmd" "$@"
             ;;
@@ -236,8 +238,8 @@ Manage agent work sessions.
 Subcommands:
   begin      Timed compact brief + environment start for one exact task
   start      Begin session (verify env, read priorities)
-  end        Validate closeout without closing task timing; --fix updates handoff
-  handoff    Write a receipt-bound durable task handoff
+  end        Run the final read-only closeout validation
+  handoff    Write the durable task handoff; receipt is optional unless crossing lanes/devices
   summary    Preview summary from git log; pass --write to update docs
   sync       Check stale doc numbers; pass --fix to update them
   check      Check session docs for issues
@@ -245,6 +247,7 @@ Subcommands:
   brief      Fast 20-line agent brief (--agent <name> | --handoff)
   recurrence Show compact issue counts, observed time, prevention, and detail links
   usage      Record/show model, reasoning, agent, and usage checkpoints
+  delivery   Inspect/advance the executable delivery state machine
   costs      Show legacy Git-activity proxies (not billing or tokens)
   compact    Archive old SESSION_LOG entries
   trust      Show or reset session trust state
@@ -394,7 +397,7 @@ EOF
 
 # ── Command: test ──────────────────────────────────────────────────────────
 
-_cmd_test() {
+_cmd_test_impl() {
     local subcmd="${1:-}"
 
     case "$subcmd" in
@@ -461,14 +464,24 @@ _cmd_test() {
             )
             ;;
         *)
-            # Pass all args to pytest
+            # Pass exact args to pytest. Repository-root Python/ paths are
+            # normalized because the maintained interpreter runs in Python/.
             _require_venv
+            local -a pytest_args=()
+            local value
+            for value in "$@"; do
+                pytest_args+=("${value#Python/}")
+            done
             (
                 cd "$REPO_ROOT/Python"
-                "$VENV" -m pytest tests/ "$@"
+                "$VENV" -m pytest "${pytest_args[@]}"
             )
             ;;
     esac
+}
+
+_cmd_test() {
+    _run_with_usage_event "test" _cmd_test_impl "$@"
 }
 
 _help_test() {
@@ -862,6 +875,12 @@ _cmd_verification() {
     "$VENV" "$SCRIPTS/verification.py" "$@"
 }
 
+_cmd_format() {
+    _require_venv
+    _run_with_usage_event "format changed" \
+        "$VENV" "$SCRIPTS/verification.py" format "$@"
+}
+
 # ── Command: pipeline ──────────────────────────────────────────────────────
 
 _cmd_pipeline() {
@@ -987,6 +1006,7 @@ _print_usage() {
     echo -e "  ${GREEN}generate${NC}    Generate SDKs, manifests, and scaffolds"
     echo -e "  ${GREEN}context${NC}     Validate/query live context without generated indexes"
     echo -e "  ${GREEN}verification${NC} Plan change domains and inspect exact PASS evidence"
+    echo -e "  ${GREEN}format${NC}      Format/check changed source paths with a scope guard"
     echo -e "  ${GREEN}health${NC}      Project health scan (unified checker)"
     echo -e "  ${GREEN}feedback${NC}    Agent feedback collection & analysis"
     echo -e "  ${GREEN}dev${NC}         Launch full development stack (FastAPI + React)"
@@ -1026,6 +1046,7 @@ _dispatch_help() {
         generate) _help_generate ;;
         context)  _cmd_context --help ;;
         verification) _cmd_verification --help ;;
+        format)   _cmd_verification format --help ;;
         health)   _help_health ;;
         feedback) _help_feedback ;;
         evolve)   _help_evolve ;;
@@ -1069,6 +1090,7 @@ _run_sh() {
         'task:Build a lane-safe task intake brief'
         'tools:Tool and script discovery'
         'control:Canonical operation registry'
+        'format:Format or verify changed source paths'
         'pipeline:Pipeline state tracking'
         'parity:Cross-layer parity dashboard'
         'efficiency:Validate low-token controls'
@@ -1076,7 +1098,7 @@ _run_sh() {
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--candidate-integrity' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
-    local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust' 'recurrence')
+    local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'delivery' 'costs' 'compact' 'trust' 'recurrence')
     local -a task_subs=('brief')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
@@ -1169,6 +1191,7 @@ main() {
         generate) _cmd_generate "$@" ;;
         context)  _cmd_context "$@" ;;
         verification) _cmd_verification "$@" ;;
+        format)    _cmd_format "$@" ;;
         health)   _cmd_health "$@" ;;
         feedback) _cmd_feedback "$@" ;;
         evolve)   _cmd_evolve "$@" ;;

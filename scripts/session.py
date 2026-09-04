@@ -9,7 +9,8 @@ Consolidates: start_session.py, end_session.py, update_handoff.py, check_session
 
 USAGE:
     ./scripts/python_runtime.sh scripts/session.py start [--quick] [--no-add]
-    ./scripts/python_runtime.sh scripts/session.py end [--fix] [--quick]
+    ./scripts/python_runtime.sh scripts/session.py end [--quick]
+    ./scripts/python_runtime.sh scripts/session.py delivery --status
     ./scripts/python_runtime.sh scripts/session.py handoff
     ./scripts/python_runtime.sh scripts/session.py check
     ./scripts/python_runtime.sh scripts/session.py summary [--write]
@@ -22,6 +23,7 @@ USAGE:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import re
@@ -30,17 +32,16 @@ import sys
 from dataclasses import asdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
-from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine
+from _lib.utils import REPO_ROOT
+from git_handoff_receipt import load_receipt, validate_receipt
 from git_state import (
     RepositoryState,
     collect_repository_state,
     validate_repository_state_consistency,
 )
-from git_handoff_receipt import load_receipt, validate_receipt
 
 SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
@@ -358,7 +359,7 @@ def archive_completed_tasks(fix: bool = False) -> tuple[int, int]:
 
 def get_key_blocker(
     tasks: list[tuple[str, str, str]] | None = None,
-) -> Optional[str]:
+) -> str | None:
     for task_id, desc, hint in tasks if tasks is not None else get_active_tasks():
         if "BLOCKER" in hint:
             return f"{task_id}: {desc}"
@@ -370,7 +371,7 @@ def run_handoff_check() -> tuple[bool, str]:
     issues: list[str] = []
     today = date.today().strftime("%Y-%m-%d")
 
-    def _safe_read(path: Path, limit: int = 0) -> Optional[str]:
+    def _safe_read(path: Path, limit: int = 0) -> str | None:
         try:
             text = path.read_text(encoding="utf-8")
             return text[:limit] if limit else text
@@ -543,6 +544,198 @@ EFFICIENCY_COUNTER_ARGUMENTS = (
     ("full_gate_runs", "--full-gate-runs"),
     ("hosted_validation_runs", "--hosted-validation-runs"),
 )
+
+DELIVERY_STATES = (
+    "INTAKE",
+    "BOUNDED_UNITS",
+    "CONTENT_FROZEN",
+    "FORMATTED",
+    "FOCUSED_VERIFIED",
+    "PREPARED",
+    "CANDIDATE",
+    "REPAIR",
+    "REPAIRED_CANDIDATE",
+    "REPLAN",
+    "AUDIT_ACCEPTED",
+    "INTEGRITY_VERIFIED",
+    "FINAL_CLOSED",
+    "PUSHED",
+    "HOSTED_PASSED",
+    "MERGED",
+)
+DELIVERY_TRANSITIONS = {
+    "INTAKE": {"BOUNDED_UNITS"},
+    "BOUNDED_UNITS": {"CONTENT_FROZEN"},
+    "CONTENT_FROZEN": {"CONTENT_FROZEN", "FORMATTED"},
+    "FORMATTED": {"CONTENT_FROZEN", "FOCUSED_VERIFIED"},
+    "FOCUSED_VERIFIED": {"CONTENT_FROZEN", "PREPARED"},
+    "PREPARED": {"CONTENT_FROZEN", "CANDIDATE"},
+    "CANDIDATE": {"AUDIT_ACCEPTED"},
+    "REPAIR": {"CONTENT_FROZEN"},
+    "REPAIRED_CANDIDATE": {"AUDIT_ACCEPTED"},
+    "REPLAN": {"BOUNDED_UNITS"},
+    "AUDIT_ACCEPTED": {"INTEGRITY_VERIFIED"},
+    "INTEGRITY_VERIFIED": set(),
+    "FINAL_CLOSED": {"PUSHED"},
+    "PUSHED": {"HOSTED_PASSED"},
+    "HOSTED_PASSED": {"MERGED"},
+    "MERGED": set(),
+}
+DERIVED_DELIVERY_TARGETS = {
+    "REPAIR",
+    "REPAIRED_CANDIDATE",
+    "REPLAN",
+    "FINAL_CLOSED",
+}
+
+
+def _task_entries(entries: list[dict], task_id: str, started: dict) -> list[dict]:
+    started_at = str(started.get("timestamp", ""))
+    return [
+        entry
+        for entry in entries
+        if entry.get("task_id") == task_id
+        and str(entry.get("timestamp", "")) >= started_at
+    ]
+
+
+def _delivery_snapshot(entries: list[dict], task_id: str) -> dict[str, object]:
+    started = _latest_open_start(task_id, entries)
+    if started is None:
+        raise ValueError(
+            f"delivery state requires an unmatched start for task {task_id}"
+        )
+    snapshot: dict[str, object] = {
+        "task_id": task_id,
+        "state": "INTAKE",
+        "design_revision": 1,
+        "acceptance_digest": None,
+        "acceptance_paths": [],
+        "candidate_heads": [],
+        "candidate_trees": {},
+        "audit_rejections": 0,
+        "design_candidate_count": 0,
+        "design_audit_rejections": 0,
+        "repair_batches": 0,
+        "hosted_validation_runs": 0,
+        "hosted_run_ids": [],
+        "latest_candidate_head": None,
+        "latest_candidate_tree": None,
+    }
+    for entry in _task_entries(entries, task_id, started):
+        delivery = entry.get("delivery")
+        if entry.get("checkpoint") == "delivery" and isinstance(delivery, dict):
+            snapshot = dict(delivery)
+    return snapshot
+
+
+def _delivery_history(entries: list[dict], task_id: str) -> list[dict]:
+    started = _latest_open_start(task_id, entries)
+    if started is None:
+        return []
+    return [
+        entry
+        for entry in _task_entries(entries, task_id, started)
+        if entry.get("checkpoint") == "delivery"
+        and isinstance(entry.get("delivery"), dict)
+    ]
+
+
+def _acceptance_identity(paths: list[str]) -> tuple[list[str], str]:
+    if not paths:
+        raise ValueError("transition requires at least one --acceptance-path")
+    normalized: list[str] = []
+    digest = hashlib.sha256()
+    for raw in sorted(set(paths)):
+        path = (REPO_ROOT / raw).resolve()
+        try:
+            relative = path.relative_to(REPO_ROOT.resolve()).as_posix()
+        except ValueError as exc:
+            raise ValueError(f"acceptance path is outside repository: {raw}") from exc
+        if not path.is_file():
+            raise ValueError(f"acceptance path is not a file: {relative}")
+        normalized.append(relative)
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return normalized, digest.hexdigest()
+
+
+def _resolve_head_and_tree(value: str) -> tuple[str, str]:
+    requested = value or "HEAD"
+    result = subprocess.run(
+        ["git", "rev-parse", "--verify", f"{requested}^{{commit}}"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise ValueError(f"candidate head does not resolve: {requested}")
+    head = result.stdout.strip()
+    return _resolve_commit_tree(head, label="candidate head")
+
+
+def _successful_task_events(
+    entries: list[dict], task_id: str, label: str
+) -> list[dict]:
+    started = _latest_open_start(task_id, entries)
+    if started is None:
+        return []
+    return [
+        entry
+        for entry in _task_entries(entries, task_id, started)
+        if entry.get("checkpoint") == "event"
+        and entry.get("event") == label
+        and entry.get("result_code") == 0
+    ]
+
+
+def _append_delivery_state(
+    task_id: str,
+    snapshot: dict[str, object],
+    *,
+    evidence: list[str] | None = None,
+) -> dict:
+    entry = {
+        "schema_version": 3,
+        "timestamp": _usage_now().isoformat(timespec="seconds"),
+        "checkpoint": "delivery",
+        "task_id": task_id,
+        "delivery": snapshot,
+        "evidence": evidence or [],
+        "billing_tokens": None,
+        "billing_cost": None,
+    }
+    MODEL_USAGE_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with MODEL_USAGE_LOG.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(entry, sort_keys=True) + "\n")
+    return entry
+
+
+def _delivery_metrics(entries: list[dict], task_id: str) -> dict[str, object]:
+    snapshot = _delivery_snapshot(entries, task_id)
+    history = _delivery_history(entries, task_id)
+    integrity = _successful_task_events(entries, task_id, "check candidate integrity")
+    failed_controlled = [
+        entry
+        for entry in _task_entries(
+            entries, task_id, _latest_open_start(task_id, entries) or {}
+        )
+        if entry.get("checkpoint") == "event"
+        and isinstance(entry.get("result_code"), int)
+        and entry["result_code"] != 0
+    ]
+    return {
+        **snapshot,
+        "candidate_integrity_runs": len(integrity),
+        "final_session_end_runs": sum(
+            1 for entry in history if entry["delivery"].get("state") == "FINAL_CLOSED"
+        ),
+        "controlled_command_failures": len(failed_controlled),
+        "transition_count": len(history),
+    }
 
 
 def _log_session_cost(agent: str = "unknown") -> None:
@@ -859,6 +1052,16 @@ def _efficiency_payload(
     if args.checkpoint != "closeout":
         return None
 
+    delivery_history = _delivery_history(entries, args.task_id) if args.task_id else []
+    if delivery_history:
+        if supplied:
+            raise ValueError(
+                "delivery-managed closeout derives phases and counters; remove manual phase/counter evidence"
+            )
+        return _automatic_delivery_efficiency(
+            args.task_id, entries=entries, observed_at=observed_at
+        )
+
     phases: dict[str, float] = {}
     for raw in raw_phases:
         label, separator, value_text = raw.partition("=")
@@ -1011,6 +1214,170 @@ def _efficiency_payload(
     if integration is not None:
         payload["integration"] = integration
     return payload
+
+
+def _minutes_between(start: datetime, end: datetime) -> float:
+    return max(0.0, (end - start).total_seconds() / 60)
+
+
+def _automatic_delivery_efficiency(
+    task_id: str, *, entries: list[dict], observed_at: datetime
+) -> dict[str, object]:
+    """Derive closeout timings/counters from lifecycle transitions and commands."""
+    started = _latest_open_start(task_id, entries)
+    snapshot = _delivery_snapshot(entries, task_id)
+    history = _delivery_history(entries, task_id)
+    if started is None or snapshot.get("state") != "MERGED":
+        raise ValueError("delivery-managed closeout requires the MERGED state")
+    started_at = datetime.fromisoformat(str(started["timestamp"]))
+    timeline = [
+        (
+            str(entry["delivery"]["state"]),
+            datetime.fromisoformat(str(entry["timestamp"])),
+        )
+        for entry in history
+    ]
+
+    def first_time(name: str) -> datetime:
+        for state, timestamp in timeline:
+            if state == name:
+                return timestamp
+        raise ValueError(f"delivery history is missing {name}")
+
+    bounded_at = first_time("BOUNDED_UNITS")
+    first_candidate_at = next(
+        timestamp
+        for state, timestamp in timeline
+        if state in {"CANDIDATE", "REPAIRED_CANDIDATE"}
+    )
+    hosted_at = first_time("HOSTED_PASSED")
+
+    audit_minutes = 0.0
+    rework_minutes = 0.0
+    local_closeout_minutes = 0.0
+    network_wait_minutes = 0.0
+    audit_started: datetime | None = None
+    rework_started: datetime | None = None
+    local_closeout_started: datetime | None = None
+    network_wait_started: datetime | None = None
+    for state, timestamp in timeline:
+        if state in {"CANDIDATE", "REPAIRED_CANDIDATE"}:
+            if rework_started is not None:
+                rework_minutes += _minutes_between(rework_started, timestamp)
+                rework_started = None
+            audit_started = timestamp
+        elif state in {"REPAIR", "REPLAN", "AUDIT_ACCEPTED"}:
+            if audit_started is not None:
+                audit_minutes += _minutes_between(audit_started, timestamp)
+                audit_started = None
+            if state in {"REPAIR", "REPLAN"}:
+                rework_started = timestamp
+        if state == "AUDIT_ACCEPTED":
+            local_closeout_started = timestamp
+        elif state == "PUSHED":
+            if local_closeout_started is not None:
+                local_closeout_minutes += _minutes_between(
+                    local_closeout_started, timestamp
+                )
+                local_closeout_started = None
+            network_wait_started = timestamp
+        elif state in {"REPAIR", "REPLAN"}:
+            if local_closeout_started is not None:
+                local_closeout_minutes += _minutes_between(
+                    local_closeout_started, timestamp
+                )
+                local_closeout_started = None
+            if network_wait_started is not None:
+                network_wait_minutes += _minutes_between(
+                    network_wait_started, timestamp
+                )
+                network_wait_started = None
+        elif state == "HOSTED_PASSED" and network_wait_started is not None:
+            network_wait_minutes += _minutes_between(network_wait_started, timestamp)
+            network_wait_started = None
+
+    phases = {
+        "contract/intake": _minutes_between(started_at, bounded_at),
+        "writer implementation + focused verification": _minutes_between(
+            bounded_at, first_candidate_at
+        ),
+        "independent local audit": audit_minutes,
+        "writer rework": rework_minutes,
+        "final local closeout": local_closeout_minutes,
+        "hosted/network wait": network_wait_minutes,
+        "merge + post-merge verification": _minutes_between(hosted_at, observed_at),
+    }
+    rounded_phases = {name: round(value, 3) for name, value in phases.items()}
+    total = round(_minutes_between(started_at, observed_at), 3)
+    task_events = [
+        entry
+        for entry in _task_entries(entries, task_id, started)
+        if entry.get("checkpoint") == "event"
+    ]
+    focused_failures = sum(
+        1
+        for entry in task_events
+        if entry.get("event") in {"test", "check changed", "format changed"}
+        and entry.get("result_code") != 0
+    )
+    full_runs = sum(1 for entry in task_events if entry.get("event") == "check full")
+    integrity_runs = len(
+        _successful_task_events(entries, task_id, "check candidate integrity")
+    )
+    final_closeout_runs = sum(
+        1
+        for entry in history
+        if entry.get("delivery", {}).get("state") == "FINAL_CLOSED"
+    )
+    push_runs = sum(
+        1 for entry in history if entry.get("delivery", {}).get("state") == "PUSHED"
+    )
+    if int(snapshot["hosted_validation_runs"]) != push_runs:
+        raise ValueError("closeout requires one hosted verdict per pushed candidate")
+    if integrity_runs != push_runs or final_closeout_runs != push_runs:
+        raise ValueError(
+            "closeout requires one candidate-integrity run and one final session end "
+            "per pushed candidate"
+        )
+    integration = {
+        "pr_number": snapshot.get("pr_number"),
+        "merge_commit": snapshot.get("merge_commit"),
+        "merged_tree": snapshot.get("merged_tree"),
+        "final_candidate_tree": snapshot.get("latest_candidate_tree"),
+        "reviewed_tree_matches_merged_tree": True,
+        "authority": "delivery transition evidence plus locally resolved Git objects",
+    }
+    return {
+        "phase_timings_min": rounded_phases,
+        "phase_total_min": round(sum(phases.values()), 3),
+        "total_wall_time_min": total,
+        "unallocated_time_min": round(total - sum(phases.values()), 3),
+        "measurement_source": "derived from lifecycle transitions and timed commands",
+        "started_at": started_at.isoformat(timespec="seconds"),
+        "candidate_heads": list(snapshot["candidate_heads"]),
+        "candidate_trees": dict(snapshot["candidate_trees"]),
+        "audit_rejections": int(snapshot["audit_rejections"]),
+        "repair_batches": int(snapshot["repair_batches"]),
+        "focused_gate_retries": focused_failures,
+        "full_gate_runs": full_runs,
+        "hosted_validation_runs": int(snapshot["hosted_validation_runs"]),
+        "candidate_integrity_runs": integrity_runs,
+        "final_session_end_runs": final_closeout_runs,
+        "rework_minutes": rounded_phases["writer rework"],
+        "rework_ratio_pct": (
+            round(100 * phases["writer rework"] / total, 2) if total else 0.0
+        ),
+        "network_wait_minutes": rounded_phases["hosted/network wait"],
+        "recorded_steps": [
+            {
+                "event": entry.get("event"),
+                "duration_sec": entry.get("duration_sec"),
+                "result_code": entry.get("result_code"),
+            }
+            for entry in task_events
+        ],
+        "integration": integration,
+    }
 
 
 def _record_usage_checkpoint(
@@ -1340,6 +1707,278 @@ def cmd_usage(args: argparse.Namespace) -> int:
     return 0
 
 
+def _active_delivery_task(entries: list[dict], requested: str) -> str:
+    active = _active_usage_start(entries)
+    if active is None:
+        raise ValueError("delivery control requires one unmatched task start")
+    task_id = str(active.get("task_id", ""))
+    if requested and requested != task_id:
+        raise ValueError(f"requested task {requested} is not the active task {task_id}")
+    return task_id
+
+
+def _latest_delivery_timestamp(history: list[dict], state: str) -> str:
+    for entry in reversed(history):
+        delivery = entry.get("delivery", {})
+        if delivery.get("state") == state:
+            return str(entry.get("timestamp", ""))
+    return ""
+
+
+def _require_clean_candidate(head_value: str) -> tuple[str, str]:
+    state = collect_repository_state(REPO_ROOT)
+    if state.derived_action != "READY_LOCAL" or not state.tree.clean:
+        raise ValueError(
+            "candidate transition requires a clean READY_LOCAL feature branch"
+        )
+    if state.branch == state.default_base.ref.rsplit("/", 1)[-1]:
+        raise ValueError("candidate transition is forbidden on the default branch")
+    head, tree = _resolve_head_and_tree(head_value)
+    if state.head_sha != head:
+        raise ValueError("candidate head must equal the checked-out HEAD")
+    return head, tree
+
+
+def _run_final_closeout() -> int:
+    return cmd_end(
+        argparse.Namespace(
+            quick=False,
+            git_receipt=None,
+        )
+    )
+
+
+def cmd_delivery(args: argparse.Namespace) -> int:
+    """Advance or inspect the persisted, fail-closed delivery state machine."""
+    entries = _read_jsonl(MODEL_USAGE_LOG)
+    try:
+        task_id = _active_delivery_task(entries, args.task_id)
+        snapshot = _delivery_snapshot(entries, task_id)
+        history = _delivery_history(entries, task_id)
+        state = str(snapshot["state"])
+
+        if args.status:
+            payload = _delivery_metrics(entries, task_id)
+            print(
+                json.dumps(payload, indent=2)
+                if args.json_output
+                else (
+                    f"Delivery {task_id}: {payload['state']} | design "
+                    f"{payload['design_revision']} | candidates "
+                    f"{len(payload['candidate_heads'])} | audit rejections "
+                    f"{payload['audit_rejections']}"
+                )
+            )
+            return 0
+
+        if args.guard_push:
+            latest_head = snapshot.get("latest_candidate_head")
+            current_head, _tree = _resolve_head_and_tree("HEAD")
+            if latest_head != current_head:
+                raise ValueError("pre-push guard head is not the accepted candidate")
+            if state == "FINAL_CLOSED":
+                print(f"Delivery pre-push guard: PASS ({task_id}; already closed)")
+                return 0
+            if state != "INTEGRITY_VERIFIED":
+                raise ValueError(
+                    f"pre-push guard requires INTEGRITY_VERIFIED, found {state}"
+                )
+            if _run_final_closeout() != 0:
+                raise ValueError("final read-only session closeout failed")
+            snapshot["state"] = "FINAL_CLOSED"
+            _append_delivery_state(
+                task_id, snapshot, evidence=["read-only session end passed"]
+            )
+            print(f"Delivery pre-push guard: PASS ({task_id}; FINAL_CLOSED)")
+            return 0
+
+        requested = args.to
+        if not requested:
+            raise ValueError(
+                "delivery transition requires --to, --status, or --guard-push"
+            )
+
+        evidence = list(args.evidence or [])
+        target = requested
+        if requested in DERIVED_DELIVERY_TARGETS:
+            raise ValueError(f"{requested} is derived by its guarded delivery command")
+        if requested == "AUDIT_REJECTED":
+            if state not in {"CANDIDATE", "REPAIRED_CANDIDATE"}:
+                raise ValueError(f"audit rejection is invalid from {state}")
+            latest_head = snapshot.get("latest_candidate_head")
+            current_head, _tree = _resolve_head_and_tree(args.head)
+            if latest_head != current_head:
+                raise ValueError("audit decision must name the latest candidate head")
+            snapshot["audit_rejections"] = int(snapshot["audit_rejections"]) + 1
+            snapshot["design_audit_rejections"] = (
+                int(snapshot["design_audit_rejections"]) + 1
+            )
+            if int(snapshot["design_candidate_count"]) == 1:
+                target = "REPAIR"
+                snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
+            else:
+                target = "REPLAN"
+        elif requested == "INTEGRITY_REJECTED":
+            if state != "AUDIT_ACCEPTED":
+                raise ValueError(f"integrity rejection is invalid from {state}")
+            latest_head = snapshot.get("latest_candidate_head")
+            current_head, _tree = _resolve_head_and_tree(args.head)
+            if latest_head != current_head:
+                raise ValueError(
+                    "integrity rejection must name the latest accepted candidate head"
+                )
+            if not evidence:
+                raise ValueError("integrity rejection requires --evidence")
+            if int(snapshot["design_candidate_count"]) == 1:
+                target = "REPAIR"
+                snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
+            else:
+                target = "REPLAN"
+        elif requested == "HOSTED_REJECTED":
+            if state != "PUSHED":
+                raise ValueError(f"hosted rejection is invalid from {state}")
+            if not args.run_id or not evidence:
+                raise ValueError("hosted rejection requires --run-id and --evidence")
+            run_ids = list(snapshot.get("hosted_run_ids", []))
+            if args.run_id in run_ids:
+                raise ValueError("hosted run id is already recorded")
+            run_ids.append(args.run_id)
+            snapshot["hosted_run_ids"] = run_ids
+            snapshot["hosted_validation_runs"] = (
+                int(snapshot["hosted_validation_runs"]) + 1
+            )
+            if int(snapshot["design_candidate_count"]) == 1:
+                target = "REPAIR"
+                snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
+            else:
+                target = "REPLAN"
+        elif requested == "AUDIT_ACCEPTED":
+            if state not in {"CANDIDATE", "REPAIRED_CANDIDATE"}:
+                raise ValueError(f"audit acceptance is invalid from {state}")
+            latest_head = snapshot.get("latest_candidate_head")
+            current_head, _tree = _resolve_head_and_tree(args.head)
+            if latest_head != current_head:
+                raise ValueError("audit decision must name the latest candidate head")
+            if not evidence:
+                raise ValueError("audit acceptance requires --evidence")
+        elif requested == "CANDIDATE":
+            if state != "PREPARED":
+                raise ValueError(f"candidate is invalid from {state}")
+            count = int(snapshot["design_candidate_count"])
+            if count >= 2:
+                raise ValueError(
+                    "candidate ceiling reached; change the acceptance contract via REPLAN"
+                )
+            target = "CANDIDATE" if count == 0 else "REPAIRED_CANDIDATE"
+            head, tree = _require_clean_candidate(args.head)
+            snapshot["design_candidate_count"] = count + 1
+            heads = list(snapshot["candidate_heads"])
+            heads.append(head)
+            trees = dict(snapshot["candidate_trees"])
+            trees[head] = tree
+            snapshot["candidate_heads"] = heads
+            snapshot["candidate_trees"] = trees
+            snapshot["latest_candidate_head"] = head
+            snapshot["latest_candidate_tree"] = tree
+        else:
+            allowed = DELIVERY_TRANSITIONS.get(state, set())
+            if target not in allowed:
+                raise ValueError(f"invalid delivery transition {state} -> {target}")
+
+        if target == "BOUNDED_UNITS":
+            paths, digest = _acceptance_identity(args.acceptance_path or [])
+            if state == "REPLAN":
+                if digest == snapshot.get("acceptance_digest"):
+                    raise ValueError(
+                        "REPLAN remains blocked until the acceptance digest changes"
+                    )
+                snapshot["design_revision"] = int(snapshot["design_revision"]) + 1
+                snapshot["design_candidate_count"] = 0
+                snapshot["design_audit_rejections"] = 0
+            git_state = collect_repository_state(REPO_ROOT)
+            if git_state.branch == git_state.default_base.ref.rsplit("/", 1)[-1]:
+                raise ValueError("BOUNDED_UNITS requires a feature branch")
+            snapshot["acceptance_paths"] = paths
+            snapshot["acceptance_digest"] = digest
+        elif target == "CONTENT_FROZEN":
+            paths, digest = _acceptance_identity(
+                args.acceptance_path or list(snapshot["acceptance_paths"])
+            )
+            snapshot["acceptance_paths"] = paths
+            snapshot["acceptance_digest"] = digest
+        elif target == "FORMATTED":
+            frozen_at = _latest_delivery_timestamp(history, "CONTENT_FROZEN")
+            formatted = _successful_task_events(entries, task_id, "format changed")
+            if not any(
+                str(item.get("timestamp", "")) >= frozen_at for item in formatted
+            ):
+                raise ValueError(
+                    "FORMATTED requires one successful changed-path formatter run after freeze"
+                )
+        elif target in {"FOCUSED_VERIFIED", "PREPARED"} and not evidence:
+            raise ValueError(f"{target} requires --evidence")
+        elif target == "INTEGRITY_VERIFIED":
+            current_head, _tree = _resolve_head_and_tree(args.head)
+            if snapshot.get("latest_candidate_head") != current_head:
+                raise ValueError("integrity evidence must name the accepted candidate")
+            candidate_at = max(
+                _latest_delivery_timestamp(history, "CANDIDATE"),
+                _latest_delivery_timestamp(history, "REPAIRED_CANDIDATE"),
+            )
+            runs = [
+                item
+                for item in _successful_task_events(
+                    entries, task_id, "check candidate integrity"
+                )
+                if str(item.get("timestamp", "")) >= candidate_at
+            ]
+            if len(runs) != 1:
+                raise ValueError(
+                    "INTEGRITY_VERIFIED requires exactly one successful candidate-integrity run"
+                )
+        elif target == "PUSHED":
+            git_state = collect_repository_state(REPO_ROOT)
+            if git_state.head_sha != snapshot.get("latest_candidate_head"):
+                raise ValueError("pushed head is not the accepted candidate")
+            if git_state.upstream.status != "equal":
+                raise ValueError("PUSHED requires local HEAD equal to its upstream")
+        elif target == "HOSTED_PASSED":
+            if not args.run_id:
+                raise ValueError("HOSTED_PASSED requires --run-id")
+            run_ids = list(snapshot.get("hosted_run_ids", []))
+            if args.run_id in run_ids:
+                raise ValueError("hosted run id is already recorded")
+            run_ids.append(args.run_id)
+            snapshot["hosted_run_ids"] = run_ids
+            snapshot["hosted_validation_runs"] = (
+                int(snapshot["hosted_validation_runs"]) + 1
+            )
+            snapshot["hosted_run_id"] = args.run_id
+        elif target == "MERGED":
+            if not args.pr_number or not args.merge_commit:
+                raise ValueError("MERGED requires --pr-number and --merge-commit")
+            merge_commit, merged_tree = _resolve_commit_tree(
+                args.merge_commit, label="merge commit"
+            )
+            if not _commit_reachable_from_origin_main(merge_commit):
+                raise ValueError("merge commit is not reachable from origin/main")
+            if merged_tree != snapshot.get("latest_candidate_tree"):
+                raise ValueError(
+                    "merged tree does not equal the accepted candidate tree"
+                )
+            snapshot["pr_number"] = args.pr_number
+            snapshot["merge_commit"] = merge_commit
+            snapshot["merged_tree"] = merged_tree
+
+        snapshot["state"] = target
+        _append_delivery_state(task_id, snapshot, evidence=evidence)
+        print(f"Delivery transition: {state} -> {target} ({task_id})")
+        return 0
+    except ValueError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+
+
 # ─── End Session ─────────────────────────────────────────────────────────────
 
 
@@ -1527,24 +2166,11 @@ def cmd_end(args: argparse.Namespace) -> int:
 
     # 1. Uncommitted changes
     closeout_evidence = get_closeout_git_evidence()
-    if not report_closeout_git_evidence(
-        closeout_evidence, allow_dirty_preparation=args.fix
-    ):
+    if not report_closeout_git_evidence(closeout_evidence):
         all_passed = False
     print()
 
-    # 2. Handoff brief update (if --fix)
-    if args.fix:
-        print("🧭 Handoff Brief:")
-        ok, msg = _do_handoff(preserve_current_same_day=True)
-        if ok:
-            print(f"  ✅ {msg}")
-        else:
-            print(f"  ⚠️  {msg}")
-            all_passed = False
-        print()
-
-    # 3. Handoff checks
+    # 2. Handoff checks
     print("🔍 Handoff Checks:")
     passed, msg = run_handoff_check()
     if "All checks passed" in msg or "passed" in msg.lower():
@@ -1557,7 +2183,7 @@ def cmd_end(args: argparse.Namespace) -> int:
         all_passed = False
     print()
 
-    # 4. Session log completeness
+    # 3. Session log completeness
     print("📝 Session Log:")
     complete, issues = check_session_log_complete()
     if complete:
@@ -1568,23 +2194,28 @@ def cmd_end(args: argparse.Namespace) -> int:
         all_passed = False
     print()
 
-    # 5. Durable task-to-Git handoff receipt
+    # 4. Optional durable cross-device/task-to-Git handoff receipt
     print("🧾 Task-to-Git Handoff Receipt:")
     try:
         _date_str, latest_block = _latest_session_block(
             SESSION_LOG.read_text(encoding="utf-8").splitlines()
         )
-        receipt, receipt_path, receipt_errors = _resolve_git_receipt(
-            latest_block, args.git_receipt
-        )
+        declared_receipt = args.git_receipt or _parse_git_receipt_path(latest_block)
+        if declared_receipt is None:
+            receipt, receipt_path, receipt_errors = None, None, []
+        else:
+            receipt, receipt_path, receipt_errors = _resolve_git_receipt(
+                latest_block, args.git_receipt
+            )
     except (OSError, ValueError) as exc:
         receipt, receipt_path, receipt_errors = None, None, [str(exc)]
     if receipt_errors:
         for issue in receipt_errors:
             print(f"  ⚠️  {issue}")
         all_passed = False
+    elif receipt is None or receipt_path is None:
+        print("  ✅ Not declared; same-checkout delivery needs no Git receipt")
     else:
-        assert receipt is not None and receipt_path is not None
         brief_lines = NEXT_BRIEF.read_text(encoding="utf-8").splitlines()
         identity_errors = _brief_receipt_identity_errors(
             brief_lines, receipt, receipt_path
@@ -1621,16 +2252,11 @@ def cmd_end(args: argparse.Namespace) -> int:
 
     # 7. TASKS.md auto-archival
     print("📋 TASKS.md Archival:")
-    total_rows, to_archive = archive_completed_tasks(fix=args.fix)
+    total_rows, to_archive = archive_completed_tasks(fix=False)
     if to_archive > 0:
-        if args.fix:
-            print(
-                f"  ✅ Archived {to_archive} old completed task(s) to tasks-history.md (kept {total_rows - to_archive})"
-            )
-        else:
-            print(
-                f"  ℹ️  {to_archive} completed task(s) ready to archive (run with --fix)"
-            )
+        print(
+            f"  ℹ️  {to_archive} completed task(s) ready for a future preparation packet"
+        )
     else:
         print(
             f"  ✅ Completed tasks table is tidy ({total_rows} rows, max {MAX_COMPLETED_ROWS})"
@@ -1677,27 +2303,8 @@ def cmd_end(args: argparse.Namespace) -> int:
         print("  (No commits today)")
     print()
 
-    # 10. Optional legacy Git-activity proxy logging
-    if args.log_cost:
-        print("💰 Session Activity Proxy:")
-        agent_name = getattr(args, "agent", None) or "unknown"
-        try:
-            _log_session_cost(agent=agent_name)
-            print(f"  ✅ Activity entry logged (agent={agent_name})")
-        except Exception as exc:
-            print(f"  ⚠️  Could not log activity proxy: {exc}")
-        print()
-
     print("=" * 60)
-    if args.fix:
-        print("🟡 Preparation mode completed; this is not a final closeout verdict.")
-        print(
-            "   Review all writes, commit the candidate, then rerun session end "
-            "without --fix for read-only validation."
-        )
-        if all_passed:
-            print("   Exit status 2: final read-only validation is still required.")
-    elif all_passed:
+    if all_passed:
         print("✅ All checks passed! Safe to end session.")
         print(
             "ℹ️  session end is read-only and does not close timed task usage. "
@@ -1706,10 +2313,6 @@ def cmd_end(args: argparse.Namespace) -> int:
         )
     else:
         print("⚠️  Some issues found. Consider fixing before handoff.")
-        if not args.fix:
-            print(
-                "   Use --fix only before candidate freeze to prepare handoff/task files."
-            )
         print()
         print("💡 Tip: Collect diagnostics for troubleshooting:")
         print(
@@ -1719,8 +2322,6 @@ def cmd_end(args: argparse.Namespace) -> int:
     print("=" * 60)
     print()
 
-    if args.fix and all_passed:
-        return 2
     return 0 if all_passed else 1
 
 
@@ -1811,7 +2412,10 @@ def _load_rework_index() -> tuple[dict[str, dict], list[str]]:
             errors.append(f"{label} must be an object")
             continue
         pattern_id = entry.get("id")
-        if not isinstance(pattern_id, str) or REWORK_ID_RE.fullmatch(pattern_id) is None:
+        if (
+            not isinstance(pattern_id, str)
+            or REWORK_ID_RE.fullmatch(pattern_id) is None
+        ):
             errors.append(f"{label} has an invalid id")
             continue
         if pattern_id in patterns:
@@ -1823,7 +2427,11 @@ def _load_rework_index() -> tuple[dict[str, dict], list[str]]:
         if not isinstance(pattern, str) or not 5 <= len(pattern.strip()) <= 160:
             errors.append(f"{pattern_id} pattern must contain 5-160 characters")
         occurrences = entry.get("occurrences")
-        if not isinstance(occurrences, int) or isinstance(occurrences, bool) or occurrences < 1:
+        if (
+            not isinstance(occurrences, int)
+            or isinstance(occurrences, bool)
+            or occurrences < 1
+        ):
             errors.append(f"{pattern_id} occurrences must be a positive integer")
         solution = entry.get("short_solution")
         if not isinstance(solution, str) or not 10 <= len(solution.strip()) <= 180:
@@ -1853,8 +2461,10 @@ def _load_rework_index() -> tuple[dict[str, dict], list[str]]:
             if not isinstance(timing.get("basis"), str) or not timing["basis"].strip():
                 errors.append(f"{pattern_id} observed_minutes basis is required")
         details = entry.get("details")
-        if not isinstance(details, list) or not details or not all(
-            isinstance(item, str) and item.strip() for item in details
+        if (
+            not isinstance(details, list)
+            or not details
+            or not all(isinstance(item, str) and item.strip() for item in details)
         ):
             errors.append(f"{pattern_id} details must be a non-empty string list")
 
@@ -1897,7 +2507,9 @@ def _validate_rework_section(block: list[str]) -> tuple[list[str], list[str]]:
     for item in items:
         matches = REWORK_ID_RE.findall(item)
         if len(matches) != 1:
-            errors.append("SESSION_LOG: Each recurrence row must reference one RR-NNN id")
+            errors.append(
+                "SESSION_LOG: Each recurrence row must reference one RR-NNN id"
+            )
             continue
         pattern_id = matches[0]
         if pattern_id in ids:
@@ -2181,9 +2793,15 @@ def _do_handoff(
     try:
         lines = SESSION_LOG.read_text(encoding="utf-8").splitlines()
         date_str, block = _latest_session_block(lines)
-        receipt, receipt_path, receipt_errors = _resolve_git_receipt(block, git_receipt)
-        if receipt_errors:
-            return False, "Git handoff receipt hold: " + ", ".join(receipt_errors)
+        declared_receipt = git_receipt or _parse_git_receipt_path(block)
+        if declared_receipt is None:
+            receipt, receipt_path, receipt_errors = None, None, []
+        else:
+            receipt, receipt_path, receipt_errors = _resolve_git_receipt(
+                block, git_receipt
+            )
+            if receipt_errors:
+                return False, "Git handoff receipt hold: " + ", ".join(receipt_errors)
         if preserve_current_same_day:
             current_brief = NEXT_BRIEF.read_text(encoding="utf-8")
             current_match = re.search(
@@ -2194,10 +2812,14 @@ def _do_handoff(
             if (
                 f"- Date: {date_str}" in current_block
                 and "- Focus:" in current_block
-                and receipt is not None
-                and receipt_path is not None
-                and not _brief_receipt_identity_errors(
-                    current_block.splitlines(), receipt, receipt_path
+                and (
+                    receipt is None
+                    or (
+                        receipt_path is not None
+                        and not _brief_receipt_identity_errors(
+                            current_block.splitlines(), receipt, receipt_path
+                        )
+                    )
                 )
             ):
                 return True, "Preserved current same-day handoff block"
@@ -2383,21 +3005,24 @@ def cmd_check(args: argparse.Namespace) -> int:
             print(f"ERROR: {issue}")
         return 1
 
-    receipt, receipt_path, receipt_errors = _resolve_git_receipt(
-        session_block, validate_at_recorded_time=True
-    )
-    if receipt_errors:
-        print("ERROR: Latest session Git handoff receipt is not valid:")
-        for issue in receipt_errors:
-            print(f"  - {issue}")
-        return 1
-    assert receipt is not None and receipt_path is not None
-    identity_errors = _brief_receipt_identity_errors(next_lines, receipt, receipt_path)
-    if identity_errors:
-        print("ERROR: Latest Handoff does not match the selected Git receipt:")
-        for issue in identity_errors:
-            print(f"  - {issue}")
-        return 1
+    if _parse_git_receipt_path(session_block) is not None:
+        receipt, receipt_path, receipt_errors = _resolve_git_receipt(
+            session_block, validate_at_recorded_time=True
+        )
+        if receipt_errors:
+            print("ERROR: Latest session Git handoff receipt is not valid:")
+            for issue in receipt_errors:
+                print(f"  - {issue}")
+            return 1
+        assert receipt is not None and receipt_path is not None
+        identity_errors = _brief_receipt_identity_errors(
+            next_lines, receipt, receipt_path
+        )
+        if identity_errors:
+            print("ERROR: Latest Handoff does not match the selected Git receipt:")
+            for issue in identity_errors:
+                print(f"  - {issue}")
+            return 1
 
     hash_errors = _validate_commit_hashes(session_lines, "SESSION_LOG.md")
     hash_errors.extend(_validate_commit_hashes(next_lines, "next-session-brief.md"))
@@ -3215,23 +3840,7 @@ def build_parser() -> argparse.ArgumentParser:
     # end
     p_end = sub.add_parser("end", help="End-of-session checks")
     p_end.add_argument(
-        "--fix",
-        action="store_true",
-        help=(
-            "Prepare handoff/task files before the candidate freeze; "
-            "never a final closeout verdict"
-        ),
-    )
-    p_end.add_argument(
-        "--log-cost",
-        action="store_true",
-        help="Record the legacy Git-activity proxy (not billing or token usage)",
-    )
-    p_end.add_argument(
         "--quick", action="store_true", help="Skip test count verification"
-    )
-    p_end.add_argument(
-        "--agent", type=str, default=None, help="Agent name for cost logging"
     )
     p_end.add_argument(
         "--git-receipt",
@@ -3343,6 +3952,30 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p_usage.add_argument("--json", dest="json_output", action="store_true")
 
+    # executable delivery lifecycle
+    p_delivery = sub.add_parser(
+        "delivery", help="Inspect or advance the fail-closed delivery state machine"
+    )
+    p_delivery.add_argument("--task-id", default="")
+    p_delivery.add_argument(
+        "--to",
+        choices=(
+            *DELIVERY_STATES,
+            "AUDIT_REJECTED",
+            "INTEGRITY_REJECTED",
+            "HOSTED_REJECTED",
+        ),
+    )
+    p_delivery.add_argument("--status", action="store_true")
+    p_delivery.add_argument("--guard-push", action="store_true")
+    p_delivery.add_argument("--acceptance-path", action="append")
+    p_delivery.add_argument("--evidence", action="append")
+    p_delivery.add_argument("--head", default="HEAD")
+    p_delivery.add_argument("--run-id")
+    p_delivery.add_argument("--pr-number", type=int)
+    p_delivery.add_argument("--merge-commit")
+    p_delivery.add_argument("--json", dest="json_output", action="store_true")
+
     # context
     sub.add_parser("context", help="Dump compact session context for quick orientation")
 
@@ -3393,6 +4026,7 @@ def main() -> int:
         "sync": cmd_sync,
         "costs": cmd_costs,
         "usage": cmd_usage,
+        "delivery": cmd_delivery,
         "context": cmd_context,
         "recurrence": cmd_recurrence,
         "compact": cmd_compact,

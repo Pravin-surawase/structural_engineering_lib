@@ -1,43 +1,19 @@
 # Pre-commit hooks for structural_engineering_lib
-# Install hooks: ./scripts/python_runtime.sh -m pre_commit install
+# Install hooks: ./scripts/python_runtime.sh -m pre_commit install --hook-type pre-commit --hook-type pre-push
 # Run PR file integrity: ./scripts/python_runtime.sh -m pre_commit run --hook-stage manual --all-files
 
 default_stages: [pre-commit]
 
 repos:
-  # General file hygiene
+  # Ordinary commits retain only mutation-safety checks.
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-      - id: check-yaml
-        files: \.(yml|yaml)$  # Only run on YAML files
-        stages: [manual]
-        # MkDocs uses a Python callable tag for Mermaid fences. Its config is
-        # validated by the strict MkDocs workflow instead of the safe YAML loader.
-        exclude: ^mkdocs\.yml$
-      - id: check-toml
-        files: \.toml$  # Only run on TOML files
-        stages: [manual]
-      - id: check-json
-        files: \.json$  # Only run on JSON files
-        stages: [manual]
-        # TypeScript consumes these two deliberate JSONC configuration files.
-        # Every other .json file remains under strict JSON validation.
-        exclude: ^react_app/tsconfig\.(app|node)\.json$
-      - id: end-of-file-fixer
-        exclude: &preserved-text-artifacts ^(VBA/|Excel/|\.vite/|docs/_archive/|docs/reference/vendor/|Python/tests/data/|Python/tests/fixtures/|react_app/src/__fixtures__/|tests/fixtures/)
-        stages: [manual]
-      - id: trailing-whitespace
-        exclude: *preserved-text-artifacts
-        stages: [manual]
-      - id: mixed-line-ending
-        exclude: *preserved-text-artifacts
-        stages: [manual]
       - id: check-merge-conflict
-        stages: [pre-commit, manual]
+        stages: [pre-commit]
       - id: check-added-large-files
         args: ['--maxkb=500']
-        stages: [pre-commit, manual]
+        stages: [pre-commit]
 
   # Live operation safety cannot be observed by a hosted checkout.
   - repo: local
@@ -50,5 +26,21 @@ repos:
         always_run: true
         stages: [pre-commit]
 
-# Required candidate assurance runs once in the PR workflow. Use explicit local
-# format/test/check commands only as implementation diagnostics, never as hooks.
+      - id: file-integrity-read-only
+        name: Validate immutable candidate bytes without rewriting files
+        entry: ./scripts/python_runtime.sh scripts/verification.py integrity --all-files
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [manual]
+
+      - id: delivery-state-guard
+        name: Block push unless the current candidate passed the delivery audit
+        entry: ./scripts/python_runtime.sh scripts/session.py delivery --guard-push
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+
+# Required candidate assurance runs once in the PR workflow. Formatting,
+# tests, and broad checks remain explicit changed-domain or hosted gates.

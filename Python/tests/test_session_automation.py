@@ -451,69 +451,36 @@ def test_session_end_reuses_one_clean_authority_query_and_validates_context(
     assert "session end is read-only and does not close timed task usage" in output
 
 
-def test_session_end_fix_never_writes_indexes_or_claims_final_closeout(
+def test_session_end_has_no_mutating_fix_or_activity_logging_modes():
+    parser = session.build_parser()
+    with pytest.raises(SystemExit):
+        parser.parse_args(["end", "--fix"])
+    with pytest.raises(SystemExit):
+        parser.parse_args(["end", "--log-cost"])
+
+
+def test_session_end_dirty_state_is_always_a_failure(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ):
     authority_calls, args = _patch_cmd_end_dependencies(
-        monkeypatch,
-        _closeout_state(
-            clean=False,
-            paths=["docs/SESSION_LOG.md", "docs/planning/next-session-brief.md"],
-        ),
-    )
-    args.fix = True
-    monkeypatch.setattr(session, "_do_handoff", lambda **_kwargs: (True, "prepared"))
-
-    assert session.cmd_end(args) == 2
-    output = capsys.readouterr().out
-    assert authority_calls == [["collect_repository_state"]]
-    assert "Repository Context" in output
-    assert "Preparation mode completed; this is not a final closeout verdict" in output
-    assert "Dirty content is allowed only for preparation" in output
-    assert "Exit status 2: final read-only validation is still required" in output
-    assert "Safe to end session" not in output
-    assert all(
-        "generate_enhanced_index.py" not in command
-        for call in args._subprocess_calls
-        for command in call
-    )
-
-
-def test_session_end_fix_clean_preparation_cannot_exit_as_final_success(
-    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
-):
-    authority_calls, args = _patch_cmd_end_dependencies(
-        monkeypatch, _closeout_state(clean=True)
-    )
-    args.fix = True
-    monkeypatch.setattr(session, "_do_handoff", lambda **_kwargs: (True, "prepared"))
-
-    assert session.cmd_end(args) == 2
-    output = capsys.readouterr().out
-    assert authority_calls == [["collect_repository_state"]]
-    assert "Preparation mode completed; this is not a final closeout verdict" in output
-    assert "Exit status 2: final read-only validation is still required" in output
-    assert "Safe to end session" not in output
-
-
-def test_session_end_fix_missing_receipt_remains_a_failure(
-    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
-):
-    _authority_calls, args = _patch_cmd_end_dependencies(
         monkeypatch, _closeout_state(clean=False, paths=["docs/SESSION_LOG.md"])
-    )
-    args.fix = True
-    monkeypatch.setattr(session, "_do_handoff", lambda **_kwargs: (True, "prepared"))
-    monkeypatch.setattr(
-        session,
-        "_resolve_git_receipt",
-        lambda _block, _path: (None, None, ["missing task-to-Git receipt"]),
     )
 
     assert session.cmd_end(args) == 1
     output = capsys.readouterr().out
-    assert "missing task-to-Git receipt" in output
-    assert "Exit status 2" not in output
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Safe to end session" not in output
+
+
+def test_session_end_allows_same_checkout_without_a_git_receipt(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    _authority_calls, args = _patch_cmd_end_dependencies(
+        monkeypatch, _closeout_state(clean=True)
+    )
+
+    assert session.cmd_end(args) == 0
+    assert "same-checkout delivery needs no Git receipt" in capsys.readouterr().out
 
 
 def test_session_end_query_failure_cannot_pass_or_print_clean(
@@ -1479,8 +1446,14 @@ def test_session_entry_and_check_orchestrator_record_timed_events() -> None:
 
     assert "_cmd_session_begin" in run_sh
     assert 'usage --checkpoint start --task-id "$task_id"' in run_sh
-    assert '"$SCRIPTS/agent_start.sh" --quick --preflight-only' in run_sh
-    assert '_run_with_usage_event "session end"' in run_sh
+    assert (
+        '"$SCRIPTS/agent_start.sh" --quick --preflight-only --allow-clean-main-intake'
+        in run_sh
+    )
+    assert '_run_with_usage_event "session end"' not in run_sh
+    assert '"$VENV" "$SCRIPTS/session.py" end "$@"' in run_sh
+    assert 'pytest_args+=("${value#Python/}")' in run_sh
+    assert '"$VENV" -m pytest tests/ "$@"' not in run_sh
     assert "--preflight-only)" in (REPO_ROOT / "scripts/agent_start.sh").read_text(
         encoding="utf-8"
     )
@@ -1873,7 +1846,7 @@ def test_handoff_round_trip_embeds_valid_receipt_identity(
     assert "Next action: CONTINUE_LOCAL_VALIDATION" in handoff
 
 
-def test_handoff_missing_receipt_is_an_explicit_hold(
+def test_handoff_without_receipt_is_valid_for_same_checkout_delivery(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
     session_log = tmp_path / "SESSION_LOG.md"
@@ -1892,8 +1865,10 @@ def test_handoff_missing_receipt_is_an_explicit_hold(
 
     ok, message = session._do_handoff()
 
-    assert ok is False
-    assert "Missing task-to-Git handoff receipt" in message
+    assert ok is True, message
+    handoff = next_brief.read_text(encoding="utf-8")
+    assert "- Focus: missing receipt" in handoff
+    assert "Git receipt:" not in handoff
 
 
 def test_session_log_completeness_uses_only_newest_same_day_entry(
@@ -2099,3 +2074,399 @@ def test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate(
     assert entry["duration_min"] is None
     assert entry["billing_tokens"] is None
     assert entry["billing_cost"] is None
+
+
+def test_delivery_second_audit_rejection_requires_changed_acceptance_contract(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    ledger = tmp_path / "usage.jsonl"
+    contract = tmp_path / "acceptance.md"
+    contract.write_text("first\n", encoding="utf-8")
+    ledger.write_text(
+        json.dumps(
+            {
+                "timestamp": "2026-09-04T10:00:00+00:00",
+                "checkpoint": "start",
+                "task_id": "DELIVERY-TEST",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    git = SimpleNamespace(
+        branch="codex/test",
+        default_base=SimpleNamespace(ref="origin/main"),
+    )
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    monkeypatch.setattr(session, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(session, "collect_repository_state", lambda _root: git)
+    monkeypatch.setattr(
+        session, "_require_clean_candidate", lambda _head: ("a" * 40, "b" * 40)
+    )
+    monkeypatch.setattr(
+        session, "_resolve_head_and_tree", lambda _head: ("a" * 40, "b" * 40)
+    )
+
+    def advance(*arguments: str) -> int:
+        parsed = session.build_parser().parse_args(
+            ["delivery", "--task-id", "DELIVERY-TEST", *arguments]
+        )
+        return session.cmd_delivery(parsed)
+
+    acceptance = ["--acceptance-path", "acceptance.md"]
+    assert advance("--to", "BOUNDED_UNITS", *acceptance) == 0
+    assert advance("--to", "CONTENT_FROZEN") == 0
+    with ledger.open("a", encoding="utf-8") as stream:
+        stream.write(
+            json.dumps(
+                {
+                    "timestamp": "9999-01-01T00:00:00+00:00",
+                    "checkpoint": "event",
+                    "task_id": "DELIVERY-TEST",
+                    "event": "format changed",
+                    "result_code": 0,
+                }
+            )
+            + "\n"
+        )
+    assert advance("--to", "FORMATTED") == 0
+    assert advance("--to", "FOCUSED_VERIFIED", "--evidence", "tests pass") == 0
+    assert advance("--to", "PREPARED", "--evidence", "docs complete") == 0
+    assert advance("--to", "CANDIDATE") == 0
+    assert advance("--to", "AUDIT_REJECTED") == 0
+    assert advance("--to", "CONTENT_FROZEN") == 0
+    assert advance("--to", "FORMATTED") == 0
+    assert advance("--to", "FOCUSED_VERIFIED", "--evidence", "tests pass") == 0
+    assert advance("--to", "PREPARED", "--evidence", "repair ready") == 0
+    assert advance("--to", "CANDIDATE") == 0
+    assert advance("--to", "AUDIT_REJECTED") == 0
+    assert (
+        session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")[
+            "state"
+        ]
+        == "REPLAN"
+    )
+    assert advance("--to", "BOUNDED_UNITS", *acceptance) == 1
+    contract.write_text("changed\n", encoding="utf-8")
+    assert advance("--to", "BOUNDED_UNITS", *acceptance) == 0
+
+
+@pytest.mark.parametrize(
+    ("state", "target"),
+    (
+        ("PREPARED", "REPAIRED_CANDIDATE"),
+        ("CANDIDATE", "REPAIR"),
+        ("REPAIRED_CANDIDATE", "REPLAN"),
+        ("INTEGRITY_VERIFIED", "FINAL_CLOSED"),
+    ),
+)
+def test_delivery_derived_states_require_their_guarded_commands(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    state: str,
+    target: str,
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "task_id": "DELIVERY-TEST",
+        "state": state,
+        "design_revision": 1,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40},
+        "audit_rejections": 0,
+        "design_candidate_count": 1,
+        "design_audit_rejections": 0,
+        "repair_batches": 0,
+        "hosted_validation_runs": 0,
+        "latest_candidate_head": "a" * 40,
+        "latest_candidate_tree": "b" * 40,
+    }
+    rows = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "DELIVERY-TEST",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "DELIVERY-TEST",
+            "delivery": snapshot,
+        },
+    ]
+    ledger.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    args = session.build_parser().parse_args(
+        ["delivery", "--task-id", "DELIVERY-TEST", "--to", target]
+    )
+
+    assert session.cmd_delivery(args) == 1
+    unchanged = session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")
+    assert unchanged["state"] == state
+
+
+@pytest.mark.parametrize(
+    ("candidate_count", "repair_batches", "expected_state"),
+    ((1, 0, "REPAIR"), (2, 1, "REPLAN")),
+)
+def test_delivery_integrity_rejection_uses_the_shared_repair_ceiling(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    candidate_count: int,
+    repair_batches: int,
+    expected_state: str,
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "task_id": "DELIVERY-TEST",
+        "state": "AUDIT_ACCEPTED",
+        "design_revision": 1,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40},
+        "audit_rejections": 0,
+        "design_candidate_count": candidate_count,
+        "design_audit_rejections": 0,
+        "repair_batches": repair_batches,
+        "hosted_validation_runs": 0,
+        "latest_candidate_head": "a" * 40,
+        "latest_candidate_tree": "b" * 40,
+    }
+    entries = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "DELIVERY-TEST",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "DELIVERY-TEST",
+            "delivery": snapshot,
+        },
+    ]
+    ledger.write_text("\n".join(json.dumps(row) for row in entries) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    monkeypatch.setattr(
+        session, "_resolve_head_and_tree", lambda _head: ("a" * 40, "b" * 40)
+    )
+    args = session.build_parser().parse_args(
+        [
+            "delivery",
+            "--task-id",
+            "DELIVERY-TEST",
+            "--to",
+            "INTEGRITY_REJECTED",
+            "--evidence",
+            "read-only gate found an outcome-changing defect",
+        ]
+    )
+
+    assert session.cmd_delivery(args) == 0
+    repaired = session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")
+    assert repaired["state"] == expected_state
+    assert repaired["repair_batches"] == 1
+    assert repaired["audit_rejections"] == 0
+
+
+def test_delivery_prepush_closeout_is_idempotent(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "task_id": "DELIVERY-TEST",
+        "state": "INTEGRITY_VERIFIED",
+        "design_revision": 1,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40},
+        "audit_rejections": 0,
+        "design_candidate_count": 1,
+        "design_audit_rejections": 0,
+        "repair_batches": 0,
+        "hosted_validation_runs": 0,
+        "latest_candidate_head": "a" * 40,
+        "latest_candidate_tree": "b" * 40,
+    }
+    entries = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "DELIVERY-TEST",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "DELIVERY-TEST",
+            "delivery": snapshot,
+        },
+    ]
+    ledger.write_text("\n".join(json.dumps(row) for row in entries) + "\n")
+    calls: list[str] = []
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    monkeypatch.setattr(
+        session, "_resolve_head_and_tree", lambda _head: ("a" * 40, "b" * 40)
+    )
+    monkeypatch.setattr(
+        session,
+        "_run_final_closeout",
+        lambda: calls.append("end") or 0,
+    )
+    args = session.build_parser().parse_args(
+        ["delivery", "--task-id", "DELIVERY-TEST", "--guard-push"]
+    )
+
+    assert session.cmd_delivery(args) == 0
+    assert session.cmd_delivery(args) == 0
+    assert calls == ["end"]
+
+
+def test_delivery_hosted_rejection_records_attempt_and_reenters_repair(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "task_id": "DELIVERY-TEST",
+        "state": "PUSHED",
+        "design_revision": 2,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40},
+        "audit_rejections": 1,
+        "design_candidate_count": 1,
+        "design_audit_rejections": 0,
+        "repair_batches": 3,
+        "hosted_validation_runs": 0,
+        "hosted_run_ids": [],
+        "latest_candidate_head": "a" * 40,
+        "latest_candidate_tree": "b" * 40,
+    }
+    entries = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "DELIVERY-TEST",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "DELIVERY-TEST",
+            "delivery": snapshot,
+        },
+    ]
+    ledger.write_text("\n".join(json.dumps(row) for row in entries) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    args = session.build_parser().parse_args(
+        [
+            "delivery",
+            "--task-id",
+            "DELIVERY-TEST",
+            "--to",
+            "HOSTED_REJECTED",
+            "--run-id",
+            "12345",
+            "--evidence",
+            "required hosted job failed",
+        ]
+    )
+
+    assert session.cmd_delivery(args) == 0
+    repaired = session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")
+    assert repaired["state"] == "REPAIR"
+    assert repaired["repair_batches"] == 4
+    assert repaired["hosted_validation_runs"] == 1
+    assert repaired["hosted_run_ids"] == ["12345"]
+
+
+def test_automatic_delivery_closeout_counts_each_published_candidate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    ledger = tmp_path / "usage.jsonl"
+    task_id = "DELIVERY-TEST"
+    rows: list[dict[str, object]] = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": task_id,
+        }
+    ]
+    timeline = (
+        ("10:01:00", "BOUNDED_UNITS"),
+        ("10:10:00", "CANDIDATE"),
+        ("10:11:00", "AUDIT_ACCEPTED"),
+        ("10:13:00", "FINAL_CLOSED"),
+        ("10:14:00", "PUSHED"),
+        ("10:16:00", "REPAIR"),
+        ("10:20:00", "REPAIRED_CANDIDATE"),
+        ("10:21:00", "AUDIT_ACCEPTED"),
+        ("10:23:00", "FINAL_CLOSED"),
+        ("10:24:00", "PUSHED"),
+        ("10:26:00", "HOSTED_PASSED"),
+    )
+    for clock, state in timeline:
+        rows.append(
+            {
+                "timestamp": f"2026-09-04T{clock}+00:00",
+                "checkpoint": "delivery",
+                "task_id": task_id,
+                "delivery": {"state": state},
+            }
+        )
+    for clock in ("10:12:00", "10:22:00"):
+        rows.append(
+            {
+                "timestamp": f"2026-09-04T{clock}+00:00",
+                "checkpoint": "event",
+                "task_id": task_id,
+                "event": "check candidate integrity",
+                "result_code": 0,
+            }
+        )
+    final_snapshot = {
+        "task_id": task_id,
+        "state": "MERGED",
+        "design_revision": 2,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40, "c" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40, "c" * 40: "d" * 40},
+        "audit_rejections": 0,
+        "design_candidate_count": 2,
+        "design_audit_rejections": 0,
+        "repair_batches": 1,
+        "hosted_validation_runs": 2,
+        "hosted_run_ids": ["failed", "passed"],
+        "latest_candidate_head": "c" * 40,
+        "latest_candidate_tree": "d" * 40,
+        "pr_number": 1,
+        "merge_commit": "e" * 40,
+        "merged_tree": "d" * 40,
+    }
+    rows.append(
+        {
+            "timestamp": "2026-09-04T10:27:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": task_id,
+            "delivery": final_snapshot,
+        }
+    )
+    ledger.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+
+    result = session._automatic_delivery_efficiency(
+        task_id,
+        entries=session._read_jsonl(ledger),
+        observed_at=datetime.fromisoformat("2026-09-04T10:28:00+00:00"),
+    )
+
+    assert result["candidate_integrity_runs"] == 2
+    assert result["final_session_end_runs"] == 2
+    assert result["hosted_validation_runs"] == 2
+    assert result["phase_timings_min"]["final local closeout"] == 6
+    assert result["phase_timings_min"]["hosted/network wait"] == 4
+    assert result["phase_total_min"] == result["total_wall_time_min"] == 28

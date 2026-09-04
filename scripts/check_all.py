@@ -252,7 +252,7 @@ def _run_pre_commit(*, candidate_integrity: bool = False) -> int:
     cmd.append("--all-files")
 
     if candidate_integrity:
-        print("🧹 Preparing candidate file integrity (may normalize files)...")
+        print("🔍 Verifying candidate file integrity (read-only)...")
     else:
         print("🔍 Running ordinary commit-safety hooks...")
     try:
@@ -630,7 +630,7 @@ def _main() -> int:
             "  ./run.sh check --category api        # API checks only\n"
             "  ./run.sh check --changed             # Changed paths only\n"
             "  ./run.sh check --pre-commit          # Run pre-commit hooks\n"
-            "  ./run.sh check --candidate-integrity # Prepare hosted file integrity\n"
+            "  ./run.sh check --candidate-integrity # Verify candidate file integrity\n"
             "  ./run.sh check --no-reuse            # Force fresh execution\n"
             "  ./run.sh check --fix                 # Auto-fix issues\n"
             "  ./run.sh check --json                # CI output\n"
@@ -665,8 +665,7 @@ def _main() -> int:
         "--candidate-integrity",
         action="store_true",
         help=(
-            "Run the hosted manual all-files hooks before candidate freeze; "
-            "may normalize files"
+            "Run the hosted-equivalent read-only all-files hook after audit acceptance"
         ),
     )
     parser.add_argument(
