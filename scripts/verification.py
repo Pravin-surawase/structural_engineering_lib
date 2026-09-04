@@ -15,6 +15,7 @@ import importlib.metadata
 import json
 import os
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -56,6 +57,8 @@ PRESERVED_TEXT_PREFIXES = (
     "tests/fixtures/",
 )
 MERGE_MARKERS = (b"<<<<<<< ", b"=======", b">>>>>>> ")
+MARKDOWN_SUFFIXES = {".md", ".markdown", ".mdx"}
+MARKDOWN_FENCE = re.compile(rb"^[ \t]{0,3}(`{3,}|~{3,})")
 
 sys.path.insert(0, str(SCRIPT_DIR))
 from control_plane import (
@@ -324,6 +327,32 @@ def _syntax_error(path: str, payload: bytes) -> str | None:
     return None
 
 
+def _has_merge_marker(path: str, payload: bytes) -> bool:
+    """Detect unresolved markers while ignoring fenced Markdown literals."""
+    markdown = Path(path).suffix.lower() in MARKDOWN_SUFFIXES
+    fence_character: bytes | None = None
+    fence_length = 0
+    for line in payload.splitlines():
+        if markdown and (match := MARKDOWN_FENCE.match(line)):
+            token = match.group(1)
+            if fence_character is None:
+                fence_character = token[:1]
+                fence_length = len(token)
+            elif token[:1] == fence_character and len(token) >= fence_length:
+                fence_character = None
+                fence_length = 0
+            continue
+        if fence_character is not None:
+            continue
+        if (
+            line.startswith(MERGE_MARKERS[0])
+            or line == MERGE_MARKERS[1]
+            or line.startswith(MERGE_MARKERS[2])
+        ):
+            return True
+    return False
+
+
 def file_integrity(paths: Sequence[str], *, root: Path = REPO_ROOT) -> list[str]:
     """Return exact read-only file-integrity failures for repository paths."""
     failures: list[str] = []
@@ -336,12 +365,7 @@ def file_integrity(paths: Sequence[str], *, root: Path = REPO_ROOT) -> list[str]
             failures.append(f"{relative}: syntax: {syntax}")
         if b"\0" in payload:
             continue
-        if any(
-            line.startswith(MERGE_MARKERS[0])
-            or line == MERGE_MARKERS[1]
-            or line.startswith(MERGE_MARKERS[2])
-            for line in payload.splitlines()
-        ):
+        if _has_merge_marker(relative, payload):
             failures.append(f"{relative}: merge-marker: conflict marker present")
         if relative.startswith(PRESERVED_TEXT_PREFIXES):
             continue

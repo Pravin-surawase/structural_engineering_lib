@@ -66,6 +66,9 @@ state machine without changing WP10 product behavior.
   as merge separators.
 - The first repair session-consistency check rejected a prose-only “no
   recurrence” bullet inside the machine-parsed recurrence list.
+- Independent re-audit rejected the repaired candidate because one Git lesson
+  contains a deliberate, fenced three-marker conflict example that remained
+  indistinguishable from an unresolved conflict to the all-files checker.
 - ⚠️ TERMINAL ISSUE: PowerShell interpreted part of an `rg` alternation as a
   command, wildcard-like path arguments were invalid, a guessed `session active`
   subcommand did not exist, and Git-Bash `/tmp` did not map to the Windows Python
@@ -122,13 +125,20 @@ state machine without changing WP10 product behavior.
   whole line is exactly seven equals signs, and make `INTEGRITY_REJECTED`
   consume the same one-repair allowance as an audit rejection. Proof: the
   regression test retains a real conflict failure while accepting a binary and
-  an eight-character documentation underline; the repository-wide read-only
-  integrity owner is the repaired-candidate gate.
+  an eight-character documentation underline; re-audit then exposed the fenced
+  documentation case below.
 - Confirmed root cause: every bullet under `Rework and recurrence` is a typed
   recurrence row and therefore requires exactly one `RR-NNN` identity.
   Resolution: keep the first-occurrence explanation in the ordinary issue and
   root-cause sections and leave only real recurrence rows in that list. Proof:
   `./run.sh session check` is the affected repair check.
+- Confirmed root cause: marker syntax alone cannot distinguish an unresolved
+  merge from an intentionally quoted example; the checker lacked Markdown
+  fence context. Resolution: design revision 2 explicitly excludes markers
+  inside CommonMark-style backtick/tilde fences while retaining marker failures
+  outside fences and in executable text. Proof: the narrow test covers both
+  Markdown contexts and Python, and the exact historical reproducer plus the
+  repository-wide read-only integrity command form the new candidate evidence.
 
 ### Rework and recurrence
 

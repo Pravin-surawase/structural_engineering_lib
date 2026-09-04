@@ -71,6 +71,7 @@ that transition. Hosted and merge identities are recorded only after push.
 | Safe intake on clean synchronized `main` | preflight admits `HOLD_MAIN_INTAKE_ONLY`; `BOUNDED_UNITS` still requires a feature branch |
 | No post-freeze formatter spill | `verification.py format` selects changed source paths and compares all other repository bytes before/after |
 | Immutable integrity boundary | consolidated manual integrity owner performs read-only syntax/whitespace/line-ending/conflict checks |
+| Documented conflict literals | fenced Markdown examples are ignored, while the same markers outside a fence and markers in executable text fail |
 | One independent decision | audit transition is bound to the latest exact candidate head and evidence |
 | Initial plus one repair candidate | audit or integrity rejection uses the same repair allowance; a third candidate in one design revision is rejected |
 | Second rejection forces design change | `REPLAN` cannot advance until an acceptance-file digest changes |

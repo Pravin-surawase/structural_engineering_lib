@@ -2151,8 +2151,16 @@ def test_delivery_second_audit_rejection_requires_changed_acceptance_contract(
     assert advance("--to", "BOUNDED_UNITS", *acceptance) == 0
 
 
-def test_delivery_integrity_rejection_enters_the_single_repair_batch(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+@pytest.mark.parametrize(
+    ("candidate_count", "repair_batches", "expected_state"),
+    ((1, 0, "REPAIR"), (2, 1, "REPLAN")),
+)
+def test_delivery_integrity_rejection_uses_the_shared_repair_ceiling(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    candidate_count: int,
+    repair_batches: int,
+    expected_state: str,
 ):
     ledger = tmp_path / "usage.jsonl"
     snapshot = {
@@ -2164,9 +2172,9 @@ def test_delivery_integrity_rejection_enters_the_single_repair_batch(
         "candidate_heads": ["a" * 40],
         "candidate_trees": {"a" * 40: "b" * 40},
         "audit_rejections": 0,
-        "design_candidate_count": 1,
+        "design_candidate_count": candidate_count,
         "design_audit_rejections": 0,
-        "repair_batches": 0,
+        "repair_batches": repair_batches,
         "hosted_validation_runs": 0,
         "latest_candidate_head": "a" * 40,
         "latest_candidate_tree": "b" * 40,
@@ -2203,7 +2211,7 @@ def test_delivery_integrity_rejection_enters_the_single_repair_batch(
 
     assert session.cmd_delivery(args) == 0
     repaired = session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")
-    assert repaired["state"] == "REPAIR"
+    assert repaired["state"] == expected_state
     assert repaired["repair_batches"] == 1
     assert repaired["audit_rejections"] == 0
 
