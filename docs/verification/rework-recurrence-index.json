@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "updated": "2026-09-04",
+  "tracking_rule": "One occurrence is one confirmed event or repair, not one mention. Reuse an existing RR-NNN for the same root-cause pattern, increment occurrences, update cumulative observed minutes when measured, and add only a deep-detail link. Create a new ID only for a distinct root cause.",
+  "time_rule": "Numeric bounds are cumulative observed or reconstructed rework minutes. Null bounds mean the pattern was confirmed but not separately timed; explain the evidence boundary in basis. Child patterns whose aggregate_parent is set must not be added to the parent's time.",
+  "patterns": [
+    {
+      "id": "RR-001",
+      "pattern": "Oversized milestone invalidates several delivery surfaces",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": 120,
+        "maximum": 165,
+        "basis": "Reconstructed WP09 preventable-rework range. RR-002 and RR-003 are wholly contained child patterns; do not add their time to this total."
+      },
+      "short_solution": "Keep one milestone branch, but execute contracts, host work, integration, and qualification as bounded tasks.",
+      "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/wp09-postmortem.md#decision"
+      ]
+    },
+    {
+      "id": "RR-002",
+      "pattern": "Host or acceptance boundary discovered after implementation",
+      "occurrences": 7,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "Seven explicit WP09 incidents are recorded, but their minutes overlap the RR-001 aggregate and were not timed separately."
+      },
+      "short_solution": "Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.",
+      "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
+      "aggregate_parent": "RR-001",
+      "details": [
+        "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger"
+      ]
+    },
+    {
+      "id": "RR-003",
+      "pattern": "Candidate or evidence frozen before normalization and behavior stability",
+      "occurrences": 4,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately."
+      },
+      "short_solution": "Stabilize behavior, run changed-domain format/lint, normalize files, rebind affected identities, then push once.",
+      "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
+      "aggregate_parent": "RR-001",
+      "details": [
+        "docs/planning/xll-product/wp09-postmortem.md#corrected-candidate-sequence"
+      ]
+    },
+    {
+      "id": "RR-004",
+      "pattern": "Session or handoff lifecycle contract missed",
+      "occurrences": 4,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "Log placement, completion marker, unmatched timer, and wrapped-handoff incidents are confirmed; only partial timestamps exist."
+      },
+      "short_solution": "Use session begin, compact RR references, preparation closeout, clean closeout, and post-merge usage closeout in order.",
+      "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-005",
+      "pattern": "Windows shell command shape does not match the active shell",
+      "occurrences": 7,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "At least seven retries are explicit. They are contained within the 30 to 60 minute environment and coordination range, not isolated from it."
+      },
+      "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
+      "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger"
+      ]
+    }
+  ]
+}

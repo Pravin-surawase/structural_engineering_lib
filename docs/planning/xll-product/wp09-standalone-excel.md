@@ -107,6 +107,14 @@ binds the artifact and lifecycle receipts; the
 installation, startup registration, Excel processes, and local validation
 certificate were removed.
 
+Checked-in receipt and evidence files must pass `./run.sh check
+--candidate-integrity` before their repository-facing byte identities are
+frozen. If normalization changes a file, recompute only the affected
+repository-facing identity and rerun the command to a clean pass. A raw packaged
+or installed artifact may have different bytes; retain its hash separately and
+label the two identities explicitly. The detailed sequencing and duration
+review is recorded in the [WP09 postmortem](wp09-postmortem.md).
+
 The exact candidate was exercised three times during final verification. Two
 runs passed every unchanged gate. The middle repeat passed every functional and
 timing check but recorded 275.438 MiB working-set growth against the locked

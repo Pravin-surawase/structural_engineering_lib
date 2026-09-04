@@ -98,7 +98,10 @@ Options:
   (no args)            Run ALL checks (parallel by category)
   --quick              Fast subset: links, imports, hygiene (<30s)
   --changed            Run categories for whole-candidate impact domains
-  --pre-commit         Run pre-commit hooks (black, ruff, mypy, bandit)
+  --pre-commit         Run the three ordinary commit-safety hooks
+  --candidate-integrity
+                       Run hosted-equivalent file checks before candidate freeze;
+                       may normalize files, so rerun to a clean pass
   --category <name>    Run one category: api|docs|arch|governance|fastapi|git|stale|code
   --fix                Auto-fix what's fixable (sync numbers, etc.)
   --json               Machine-readable JSON output
@@ -120,6 +123,7 @@ Examples:
   ./run.sh check --quick              # Fast validation
   ./run.sh check --category api       # API checks only
   ./run.sh check --category docs --fix  # Fix doc issues
+  ./run.sh check --candidate-integrity  # Prepare final candidate file bytes
   ./run.sh check --json               # CI-friendly output
 EOF
 }
@@ -211,7 +215,7 @@ _cmd_session() {
         brief)
             bash "$SCRIPTS/agent_brief.sh" "$@"
             ;;
-        costs|usage|compact|trust)
+        costs|usage|compact|trust|recurrence)
             _require_venv
             "$VENV" "$SCRIPTS/session.py" "$subcmd" "$@"
             ;;
@@ -232,13 +236,14 @@ Manage agent work sessions.
 Subcommands:
   begin      Timed compact brief + environment start for one exact task
   start      Begin session (verify env, read priorities)
-  end        Validate closeout; --fix updates handoff, --log-cost records a proxy
+  end        Validate closeout without closing task timing; --fix updates handoff
   handoff    Write a receipt-bound durable task handoff
   summary    Preview summary from git log; pass --write to update docs
   sync       Check stale doc numbers; pass --fix to update them
   check      Check session docs for issues
   context    Dump compact orientation context (tasks, brief, git status)
   brief      Fast 20-line agent brief (--agent <name> | --handoff)
+  recurrence Show compact issue counts, observed time, prevention, and detail links
   usage      Record/show model, reasoning, agent, and usage checkpoints
   costs      Show legacy Git-activity proxies (not billing or tokens)
   compact    Archive old SESSION_LOG entries
@@ -248,6 +253,7 @@ Examples:
   ./run.sh session begin --task-id TASK-XXX --agent governance
   ./run.sh session start      # Compatibility entry without automatic timing
   ./run.sh session context    # Quick orientation mid-session
+  ./run.sh session recurrence # Compact recurring issue counts and controls
   ./run.sh session usage --help
   ./run.sh session end        # Validate closeout without hidden writes
   ./run.sh session sync --fix # Explicitly fix stale numbers when required
@@ -1068,9 +1074,9 @@ _run_sh() {
         'efficiency:Validate low-token controls'
         'model:Recommend model and reasoning profile'
     )
-    local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
+    local -a check_opts=('--quick' '--changed' '--pre-commit' '--candidate-integrity' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
-    local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
+    local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust' 'recurrence')
     local -a task_subs=('brief')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')

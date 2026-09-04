@@ -244,14 +244,17 @@ def _detect_changed_domains() -> tuple[set[str], bool, tuple[str, ...]]:
     return set(plan.domains), plan.fail_closed, reasons
 
 
-def _run_pre_commit(fix: bool = False) -> int:
-    """Run pre-commit hooks and return exit code."""
-    cmd = _python_runtime("-m", "pre_commit", "run", "--all-files")
-    if fix:
-        # pre-commit auto-fixes by default for formatters
-        pass
+def _run_pre_commit(*, candidate_integrity: bool = False) -> int:
+    """Run ordinary commit guards or the hosted-equivalent candidate hooks."""
+    cmd = _python_runtime("-m", "pre_commit", "run")
+    if candidate_integrity:
+        cmd.extend(("--hook-stage", "manual"))
+    cmd.append("--all-files")
 
-    print("🔍 Running pre-commit hooks...")
+    if candidate_integrity:
+        print("🧹 Preparing candidate file integrity (may normalize files)...")
+    else:
+        print("🔍 Running ordinary commit-safety hooks...")
     try:
         result = subprocess.run(
             cmd,
@@ -627,6 +630,7 @@ def _main() -> int:
             "  ./run.sh check --category api        # API checks only\n"
             "  ./run.sh check --changed             # Changed paths only\n"
             "  ./run.sh check --pre-commit          # Run pre-commit hooks\n"
+            "  ./run.sh check --candidate-integrity # Prepare hosted file integrity\n"
             "  ./run.sh check --no-reuse            # Force fresh execution\n"
             "  ./run.sh check --fix                 # Auto-fix issues\n"
             "  ./run.sh check --json                # CI output\n"
@@ -651,10 +655,19 @@ def _main() -> int:
         action="store_true",
         help="Only run checks for categories affected by recent file changes",
     )
-    parser.add_argument(
+    pre_commit_mode = parser.add_mutually_exclusive_group()
+    pre_commit_mode.add_argument(
         "--pre-commit",
         action="store_true",
         help="Run the three local commit-safety hooks",
+    )
+    pre_commit_mode.add_argument(
+        "--candidate-integrity",
+        action="store_true",
+        help=(
+            "Run the hosted manual all-files hooks before candidate freeze; "
+            "may normalize files"
+        ),
     )
     parser.add_argument(
         "--fix",
@@ -697,7 +710,9 @@ def _main() -> int:
 
     # Handle --pre-commit mode
     if args.pre_commit:
-        return _run_pre_commit(fix=args.fix)
+        return _run_pre_commit()
+    if args.candidate_integrity:
+        return _run_pre_commit(candidate_integrity=True)
 
     # Detect canonical change domains if --changed
     changed_domains = None
@@ -901,6 +916,8 @@ def _main() -> int:
 
 
 def _timing_label(argv: list[str]) -> str:
+    if "--candidate-integrity" in argv:
+        return "check candidate integrity"
     if "--pre-commit" in argv:
         return "check pre-commit"
     if "--quick" in argv:

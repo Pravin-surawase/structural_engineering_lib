@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-03
+last_updated: 2026-09-04
 doc_type: guide
 complexity: intermediate
 tags: [excel-dna, xll, planning, handoff]
@@ -33,11 +33,12 @@ the next implementation unit.
 2. [Original XLL architecture](../excel-dna-xll-product-architecture-decision.md): what was actually proposed.
 3. [Current plan](current-plan.md): the source hierarchy and present scope.
 4. [WP09 completion record](wp09-standalone-excel.md): the shipped Excel surface and installed evidence.
-5. [WP10 execution plan](wp10-etabs-read-adapter.md): the next getter-only ETABS unit.
-6. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
-7. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
-8. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.
-9. [Learning record](learning/README.md): the last observed result and the next exercise.
+5. [WP09 postmortem](wp09-postmortem.md) and [compact recurrence index](../../verification/rework-recurrence-index.json): deep evidence plus stable issue IDs, counts, time, and short controls.
+6. [WP10 execution plan](wp10-etabs-read-adapter.md): the next getter-only ETABS unit.
+7. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
+8. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
+9. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.
+10. [Learning record](learning/README.md): the last observed result and the next exercise.
 
 ## Original phase meanings
 

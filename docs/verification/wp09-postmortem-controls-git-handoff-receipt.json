@@ -1,0 +1,130 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b0d1abc4e6fc91c0f496c5507f5f872ab55ca71981cd021c183c3cf4de7dcd73",
+    "state": {
+      "branch": "codex/wp09-postmortem-controls",
+      "default_base": {
+        "ahead": 2,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ac1bd2b3e38f61b165504331ea35e5642cd49860",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 285.17,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "head_sha": "f8a7957b7bb3fa35db9a4e8c812a9ab11a64d982",
+      "hold_reasons": [
+        "changed paths: 6"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-09-04T11:56:49.033752+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 6,
+        "modified_paths": [],
+        "staged_paths": [
+          "AGENTS.md",
+          "Python/tests/test_session_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/guidelines/ai-token-efficiency.md",
+          "docs/planning/xll-product/wp09-postmortem.md",
+          "docs/verification/rework-recurrence-index.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b0d1abc4e6fc91c0f496c5507f5f872ab55ca71981cd021c183c3cf4de7dcd73",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-04T11:56:49.033752+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "MAIN",
+    "owned_paths": [
+      "AGENTS.md",
+      "Python/tests/test_agent_governance_automation.py",
+      "Python/tests/test_session_automation.py",
+      "Python/tests/test_verification_control.py",
+      "docs/guidelines/ai-token-efficiency.md",
+      "docs/planning/xll-product",
+      "docs/verification/rework-recurrence-index.json",
+      "run.sh",
+      "scripts/agent_brief.sh",
+      "scripts/automation-map.json",
+      "scripts/check_all.py",
+      "scripts/control-plane.json",
+      "scripts/session.py",
+      "docs/verification/wp09-postmortem-controls-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "WP09-POSTMORTEM-CONTROLS"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

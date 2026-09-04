@@ -341,6 +341,38 @@ def test_pre_commit_manual_command_uses_repository_runtime():
     assert "# Run manually: pre-commit" not in source
 
 
+def test_candidate_integrity_uses_the_exact_hosted_manual_hooks(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    calls: list[tuple[list[str], dict[str, object]]] = []
+
+    def record(args, **kwargs):
+        calls.append(([str(item) for item in args], kwargs))
+        return subprocess.CompletedProcess(args, 1)
+
+    monkeypatch.setattr(check_all.subprocess, "run", record)
+
+    assert check_all._run_pre_commit(candidate_integrity=True) == 1
+    assert calls == [
+        (
+            [
+                "bash",
+                str(SCRIPTS_DIR / "python_runtime.sh"),
+                "-m",
+                "pre_commit",
+                "run",
+                "--hook-stage",
+                "manual",
+                "--all-files",
+            ],
+            {
+                "cwd": str(REPO_ROOT),
+                "timeout": check_all.PRE_COMMIT_TIMEOUT_SECONDS,
+            },
+        )
+    ]
+
+
 def test_api_classification_moved_from_commit_hook_to_hosted_coverage():
     config = yaml.safe_load(
         (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")

@@ -349,6 +349,21 @@
       "description": "Verify session docs are consistent and complete",
       "permission": "ReadOnlyTerminal"
     },
+    "session recurrence": {
+      "script": "./scripts/python_runtime.sh scripts/session.py recurrence",
+      "group": "Session",
+      "description": "Show canonical recurring issue counts, observed time, prevention controls, and deep-detail links",
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--id RR-NNN": "Show one recurring root-cause pattern",
+        "--json": "Machine-readable canonical rows"
+      },
+      "aliases": [
+        "rework index",
+        "recurrence index",
+        "repeated issues"
+      ]
+    },
     "check git state": {
       "script": "./scripts/python_runtime.sh scripts/git_state.py",
       "group": "Git",

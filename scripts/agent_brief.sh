@@ -28,18 +28,16 @@ B='\033[1m' D='\033[2m' N='\033[0m'
 # ── Current priorities (from next-session-brief.md) ────────────────────
 _priorities() {
     if [[ -f "$BRIEF" ]]; then
-        # Extract last session summary: "Completed:" line and known issues
-        local completed known_issues focus
-        focus=$(grep -m1 'Focus:' "$BRIEF" 2>/dev/null | sed -E 's/^[- ]*\*\*?Focus:\*\*?[[:space:]]*//; s/^[- ]*Focus:[[:space:]]*//' | head -c 120)
-        completed=$(grep -A1 '^\*\*Completed:\*\*' "$BRIEF" 2>/dev/null | tail -1 | head -c 120)
-        known_issues=$(grep -A3 '^\*\*Known Issues:\*\*' "$BRIEF" 2>/dev/null | grep '^-' | head -3 | sed 's/^/    /')
+        # Read the bounded generated handoff, including the latest repeat controls.
+        local completed focus recurrence
+        focus=$(grep -m1 '^- Focus:' "$BRIEF" 2>/dev/null | sed -E 's/^- Focus:[[:space:]]*//' | head -c 120)
+        completed=$(grep -m1 '^- Completed:' "$BRIEF" 2>/dev/null | sed -E 's/^- Completed:[[:space:]]*//' | head -c 120)
+        recurrence=$(grep -m1 '^- Recurrence controls:' "$BRIEF" 2>/dev/null | sed -E 's/^- Recurrence controls:[[:space:]]*//' | head -c 180)
 
         [[ -n "$focus" ]] && echo "  Last focus: $focus"
         [[ -n "$completed" ]] && echo "  Done: $completed"
-        if [[ -n "$known_issues" ]]; then
-            echo "  Known issues:"
-            echo "$known_issues"
-        fi
+        [[ -n "$recurrence" ]] && echo "  Repeat control: $recurrence"
+        [[ -n "$recurrence" ]] && echo "  Full index: ./run.sh session recurrence"
     else
         echo "  (no next-session-brief.md found)"
     fi
@@ -215,7 +213,7 @@ main() {
     fi
 
     echo -e "${B}Priorities:${N}"
-    _priorities | head -3
+    _priorities | head -4
     echo ""
 
     echo -e "${B}Active Tasks:${N}"

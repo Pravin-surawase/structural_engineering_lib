@@ -46,6 +46,7 @@ SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
 NEXT_BRIEF = REPO_ROOT / "docs" / "planning" / "next-session-brief.md"
+REWORK_INDEX = REPO_ROOT / "docs" / "verification" / "rework-recurrence-index.json"
 TRUST_STATE_FILE = REPO_ROOT / "logs" / "session_trust.json"
 
 # Accept both the canonical ``— Session`` heading and descriptive variants such
@@ -57,6 +58,9 @@ HANDOFF_START = "<!-- HANDOFF:START -->"
 HANDOFF_END = "<!-- HANDOFF:END -->"
 HANDOFF_DATE_RE = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
 COMMIT_HASH_RE = re.compile(r"(?<![0-9a-fA-F])([0-9a-fA-F]{7,40})(?![0-9a-fA-F])")
+REWORK_ID_RE = re.compile(r"\bRR-\d{3}\b")
+REWORK_COUNT_RE = re.compile(r"\boccurrences=(\d+)\b")
+REWORK_MINUTES_RE = re.compile(r"\bminutes=(unknown|\d+(?:-\d+)?)\b")
 
 
 def _python_exe() -> str:
@@ -200,6 +204,9 @@ def add_session_log_entry() -> bool:
         "- None encountered.",
         "",
         "### Root causes and resolutions",
+        "- None encountered.",
+        "",
+        "### Rework and recurrence",
         "- None encountered.",
         "",
         "### Notes",
@@ -1172,6 +1179,14 @@ def cmd_usage(args: argparse.Namespace) -> int:
                 f"{active_start['task_id']}",
                 file=sys.stderr,
             )
+            print(
+                "session end validates repository state but does not close task "
+                "timing. Inspect the active task with "
+                "'./run.sh session usage --active --json'; after integration record "
+                "its closeout, or record an explicit superseded checkpoint if it "
+                "was abandoned.",
+                file=sys.stderr,
+            )
             return 1
         if args.checkpoint == "superseded":
             if active_start is None:
@@ -1438,6 +1453,7 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
         has_root_causes = any(
             line == "### Root causes and resolutions" for line in block
         )
+        _recurrence_ids, recurrence_errors = _validate_rework_section(block)
 
         if not has_focus:
             issues.append("SESSION_LOG: Focus not filled in")
@@ -1447,6 +1463,7 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
             issues.append("SESSION_LOG: Missing 'Issues encountered' section")
         if not has_root_causes:
             issues.append("SESSION_LOG: Missing 'Root causes and resolutions' section")
+        issues.extend(recurrence_errors)
 
         return len(issues) == 0, issues
     except Exception as e:
@@ -1682,6 +1699,11 @@ def cmd_end(args: argparse.Namespace) -> int:
             print("   Exit status 2: final read-only validation is still required.")
     elif all_passed:
         print("✅ All checks passed! Safe to end session.")
+        print(
+            "ℹ️  session end is read-only and does not close timed task usage. "
+            "After integration, record the closeout checkpoint before beginning "
+            "another task."
+        )
     else:
         print("⚠️  Some issues found. Consider fixing before handoff.")
         if not args.fix:
@@ -1725,29 +1747,227 @@ def _latest_session_block(lines: list[str]) -> tuple[str, list[str]]:
 
 
 def _parse_focus(block: list[str]) -> str:
-    for line in block:
+    for index, line in enumerate(block):
         if line.startswith("**Focus:**"):
-            return line.split("**Focus:**", 1)[1].strip()
+            parts = [line.split("**Focus:**", 1)[1].strip()]
+            for continuation in block[index + 1 :]:
+                stripped = continuation.strip()
+                if not stripped:
+                    break
+                if stripped.startswith(("**", "#", "- ")):
+                    break
+                parts.append(stripped)
+            return " ".join(part for part in parts if part)
     return ""
 
 
-def _parse_completed(block: list[str]) -> list[str]:
-    completed: list[str] = []
-    in_completed = False
+def _parse_section_bullets(block: list[str], heading: str) -> list[str]:
+    items: list[str] = []
+    in_section = False
     for line in block:
-        if line.startswith("**Completed:**"):
-            in_completed = True
+        if line.startswith(heading):
+            in_section = True
             continue
-        if in_completed:
-            if line.startswith("### ") or line.startswith("## "):
+        if in_section:
+            stripped = line.strip()
+            if stripped.startswith(("### ", "## ", "**")):
                 break
-            if line.strip().startswith("-"):
-                item = line.strip().lstrip("-").strip()
+            if stripped.startswith("-"):
+                item = stripped.lstrip("-").strip()
                 if item:
-                    completed.append(item)
-            elif line.strip() == "" and completed:
+                    items.append(item)
+            elif not stripped and items:
                 break
-    return completed
+            elif stripped and items:
+                items[-1] = f"{items[-1]} {stripped}"
+    return items
+
+
+def _parse_completed(block: list[str]) -> list[str]:
+    return _parse_section_bullets(block, "**Completed:**")
+
+
+def _parse_rework_and_recurrence(block: list[str]) -> list[str]:
+    return _parse_section_bullets(block, "### Rework and recurrence")
+
+
+def _load_rework_index() -> tuple[dict[str, dict], list[str]]:
+    try:
+        payload = json.loads(REWORK_INDEX.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return {}, [f"Rework index cannot be read: {exc}"]
+
+    errors: list[str] = []
+    if payload.get("schema_version") != 1:
+        errors.append("Rework index schema_version must be 1")
+    raw_patterns = payload.get("patterns")
+    if not isinstance(raw_patterns, list) or not raw_patterns:
+        return {}, [*errors, "Rework index patterns must be a non-empty list"]
+
+    patterns: dict[str, dict] = {}
+    for position, entry in enumerate(raw_patterns, start=1):
+        label = f"Rework index pattern {position}"
+        if not isinstance(entry, dict):
+            errors.append(f"{label} must be an object")
+            continue
+        pattern_id = entry.get("id")
+        if not isinstance(pattern_id, str) or REWORK_ID_RE.fullmatch(pattern_id) is None:
+            errors.append(f"{label} has an invalid id")
+            continue
+        if pattern_id in patterns:
+            errors.append(f"Rework index duplicates {pattern_id}")
+            continue
+        patterns[pattern_id] = entry
+
+        pattern = entry.get("pattern")
+        if not isinstance(pattern, str) or not 5 <= len(pattern.strip()) <= 160:
+            errors.append(f"{pattern_id} pattern must contain 5-160 characters")
+        occurrences = entry.get("occurrences")
+        if not isinstance(occurrences, int) or isinstance(occurrences, bool) or occurrences < 1:
+            errors.append(f"{pattern_id} occurrences must be a positive integer")
+        solution = entry.get("short_solution")
+        if not isinstance(solution, str) or not 10 <= len(solution.strip()) <= 180:
+            errors.append(f"{pattern_id} short_solution must contain 10-180 characters")
+        timing = entry.get("observed_minutes")
+        if not isinstance(timing, dict):
+            errors.append(f"{pattern_id} observed_minutes must be an object")
+        else:
+            minimum = timing.get("minimum")
+            maximum = timing.get("maximum")
+            numbers = (minimum, maximum)
+            valid_numbers = all(
+                value is None
+                or (
+                    isinstance(value, int)
+                    and not isinstance(value, bool)
+                    and value >= 0
+                )
+                for value in numbers
+            )
+            if not valid_numbers or (minimum is None) != (maximum is None):
+                errors.append(
+                    f"{pattern_id} observed minute bounds must both be integers or null"
+                )
+            elif minimum is not None and maximum is not None and minimum > maximum:
+                errors.append(f"{pattern_id} observed minute bounds are reversed")
+            if not isinstance(timing.get("basis"), str) or not timing["basis"].strip():
+                errors.append(f"{pattern_id} observed_minutes basis is required")
+        details = entry.get("details")
+        if not isinstance(details, list) or not details or not all(
+            isinstance(item, str) and item.strip() for item in details
+        ):
+            errors.append(f"{pattern_id} details must be a non-empty string list")
+
+    for pattern_id, entry in patterns.items():
+        parent = entry.get("aggregate_parent")
+        if parent is not None and (parent == pattern_id or parent not in patterns):
+            errors.append(f"{pattern_id} aggregate_parent must name another pattern")
+
+    return patterns, errors
+
+
+def _format_rework_minutes(entry: dict) -> str:
+    timing = entry["observed_minutes"]
+    minimum = timing["minimum"]
+    maximum = timing["maximum"]
+    if minimum is None:
+        return "unknown"
+    if minimum == maximum:
+        return f"{minimum:g}"
+    return f"{minimum:g}-{maximum:g}"
+
+
+def _display_rework_minutes(entry: dict) -> str:
+    minutes = _format_rework_minutes(entry)
+    return minutes if minutes == "unknown" else f"{minutes}m"
+
+
+def _validate_rework_section(block: list[str]) -> tuple[list[str], list[str]]:
+    items = _parse_rework_and_recurrence(block)
+    if not items:
+        return [], ["SESSION_LOG: Missing or empty 'Rework and recurrence' section"]
+    if len(items) == 1 and items[0].lower() == "none encountered.":
+        return [], []
+
+    patterns, index_errors = _load_rework_index()
+    errors = [f"SESSION_LOG: {error}" for error in index_errors]
+    if errors:
+        return [], errors
+    ids: list[str] = []
+    for item in items:
+        matches = REWORK_ID_RE.findall(item)
+        if len(matches) != 1:
+            errors.append("SESSION_LOG: Each recurrence row must reference one RR-NNN id")
+            continue
+        pattern_id = matches[0]
+        if pattern_id in ids:
+            errors.append(f"SESSION_LOG: Duplicate recurrence row for {pattern_id}")
+            continue
+        ids.append(pattern_id)
+        count_match = REWORK_COUNT_RE.search(item)
+        time_match = REWORK_MINUTES_RE.search(item)
+        if count_match is None or time_match is None:
+            errors.append(
+                f"SESSION_LOG: {pattern_id} must include occurrences=N and "
+                "minutes=unknown|N|N-N"
+            )
+            continue
+        entry = patterns.get(pattern_id)
+        if entry is None:
+            errors.append(f"SESSION_LOG: Unknown recurrence id {pattern_id}")
+            continue
+        if int(count_match.group(1)) != entry["occurrences"]:
+            errors.append(f"SESSION_LOG: {pattern_id} occurrence count is stale")
+        if time_match.group(1) != _format_rework_minutes(entry):
+            errors.append(f"SESSION_LOG: {pattern_id} observed minutes are stale")
+    return ids, errors
+
+
+def _rework_handoff_summary(block: list[str]) -> str:
+    pattern_ids, errors = _validate_rework_section(block)
+    if errors or not pattern_ids:
+        return ""
+    patterns, index_errors = _load_rework_index()
+    if index_errors:
+        return ""
+    controls = []
+    for pattern_id in pattern_ids[:3]:
+        entry = patterns[pattern_id]
+        controls.append(
+            f"{pattern_id} x{entry['occurrences']} / "
+            f"{_display_rework_minutes(entry)}: {entry['short_solution']}"
+        )
+    return "; ".join(controls)
+
+
+def cmd_recurrence(args: argparse.Namespace) -> int:
+    patterns, errors = _load_rework_index()
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+    selected = list(patterns.values())
+    if args.pattern_id:
+        entry = patterns.get(args.pattern_id)
+        if entry is None:
+            print(f"ERROR: Unknown recurrence id {args.pattern_id}", file=sys.stderr)
+            return 1
+        selected = [entry]
+    if args.json_output:
+        print(json.dumps({"patterns": selected}, indent=2))
+        return 0
+
+    print("Rework and recurrence index")
+    for entry in selected:
+        print(
+            f"  {entry['id']} | {entry['occurrences']}x | "
+            f"{_display_rework_minutes(entry)} | "
+            f"{entry['pattern']}"
+        )
+        print(f"    Control: {entry['short_solution']}")
+        print(f"    Time basis: {entry['observed_minutes']['basis']}")
+        print(f"    Detail: {entry['details'][0]}")
+    return 0
 
 
 def _parse_prs(block: list[str]) -> list[str]:
@@ -1899,12 +2119,15 @@ def _build_handoff_lines(
 ) -> list[str]:
     focus = _parse_focus(block)
     completed = _parse_completed(block)[:3]
+    recurrence = _rework_handoff_summary(block)
     prs = _parse_prs(block)[:6]
     lines = [f"- Date: {date_str}"]
     if focus:
         lines.append(f"- Focus: {focus}")
     if completed:
         lines.append(f"- Completed: {'; '.join(completed)}")
+    if recurrence:
+        lines.append(f"- Recurrence controls: {recurrence}")
     if prs:
         lines.append(f"- PRs: {', '.join(prs)}")
     if receipt is not None and receipt_path is not None:
@@ -2153,6 +2376,11 @@ def cmd_check(args: argparse.Namespace) -> int:
             f"ERROR: SESSION_LOG.md entry for {date_str} missing "
             "'Root causes and resolutions' section"
         )
+        return 1
+    _recurrence_ids, recurrence_errors = _validate_rework_section(session_block)
+    if recurrence_errors:
+        for issue in recurrence_errors:
+            print(f"ERROR: {issue}")
         return 1
 
     receipt, receipt_path, receipt_errors = _resolve_git_receipt(
@@ -3118,6 +3346,13 @@ def build_parser() -> argparse.ArgumentParser:
     # context
     sub.add_parser("context", help="Dump compact session context for quick orientation")
 
+    # recurrence
+    p_recurrence = sub.add_parser(
+        "recurrence", help="Show the compact rework and recurrence index"
+    )
+    p_recurrence.add_argument("--id", dest="pattern_id", help="Show one RR-NNN row")
+    p_recurrence.add_argument("--json", dest="json_output", action="store_true")
+
     # compact
     p_compact = sub.add_parser(
         "compact", help="Compact SESSION_LOG.md — archive old entries"
@@ -3159,6 +3394,7 @@ def main() -> int:
         "costs": cmd_costs,
         "usage": cmd_usage,
         "context": cmd_context,
+        "recurrence": cmd_recurrence,
         "compact": cmd_compact,
         "trust": cmd_trust,
     }

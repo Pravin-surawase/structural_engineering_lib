@@ -5,6 +5,132 @@
 
 ---
 
+## 2026-09-04 — Session: WP09 delivery postmortem and recurrence controls
+
+**Agent:** Codex (`MAIN`, with independent forensic-timeline and workflow-control
+auditors).
+
+**Branch:** `codex/wp09-postmortem-controls`.
+
+**Focus:** Reconstruct why WP09 consumed about 6.5 hours, distinguish necessary
+installed-product qualification from preventable rework, implement controls
+that would have changed the delivery outcome, and re-sequence WP10 without
+weakening Excel or ETABS acceptance.
+
+**Completed:**
+
+- Reconstructed the WP09 scope, commit and hosted-check timeline, duration
+  limits, repair classes, and the root causes behind repeated candidate cycles.
+- Added a hosted-equivalent pre-freeze candidate-integrity command and explicit
+  timed-task closeout guidance, with focused regression coverage.
+- Recorded the postmortem and updated the WP09/WP10 plans so later host work uses
+  bounded slices, an early host micro-probe, staged acceptance, and one
+  consolidated repair boundary.
+- Added a compact recurrence registry with stable IDs, counts, honest time
+  bounds, short controls, and deep-detail links.
+
+### Issues encountered
+
+- The prior WP09 `session end` succeeded while its usage timer remained open, so
+  the first attempt to begin this task was rejected by the unmatched-start
+  guard.
+- The local broad gate and ordinary commit hooks did not run the manual all-file
+  hooks used by hosted Repository Validation. WP09 therefore discovered three
+  missing final newlines only after PR publication, and normalization changed a
+  repository-facing evidence identity.
+- The transcript was compacted repeatedly and the user-visible duration differs
+  from the later usage-ledger closeout, so exact active-labor attribution cannot
+  be recovered.
+- Adding the new freeze instructions initially increased `AGENTS.md` beyond its
+  24,000-byte semantic-contract limit.
+- Several read-only diagnostics used invalid PowerShell/`rg` argument shapes or
+  assumed the GitHub squash commit had a second parent. One multi-file patch also
+  used a stale WP09 prose anchor and was rejected without changing files.
+- The first generated next-session brief truncated wrapped focus and completion
+  text, which would have omitted part of the WP10 handoff.
+- The first compact-index pass routed the new command through `run.sh` without
+  registering it in the canonical control plane, and its text view showed the
+  prevention rule without naming the recurring pattern or timing basis.
+- The command wrapper reported preparation closeout as exit `1` even though the
+  closeout text named its expected nonfinal exit `2`, prompting one diagnostic
+  rerun.
+- The first PR run passed repository integrity but failed Python Validation:
+  Black would reformat two assertions in `test_session_automation.py`.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `session end` is intentionally read-only and did not
+  explain that post-merge usage closeout remained required. Resolution: make
+  successful closeout and duplicate-start output state the lifecycle explicitly
+  and point to the active-task query.
+- Confirmed root cause: no local command exposed the exact hosted manual hook
+  stage at the candidate boundary. Resolution: add `./run.sh check
+  --candidate-integrity`, preserve ordinary three-hook commits, and require the
+  hosted-equivalent command before repository evidence identity and commit
+  freeze.
+- Confirmed root cause: WP09 combined six delivery surfaces and completed parts
+  of its executable acceptance contract during implementation. Resolution:
+  retain one milestone branch and PR while executing WP10 as bounded slices;
+  freeze contracts first and run host preflight, smoke, functional, cleanup,
+  then performance gates in increasing-cost order.
+- Evidence limitation: the available records prove about two to 2.75 hours of
+  preventable rework but cannot isolate every idle or active minute. Resolution:
+  document ranges and their basis rather than claim false precision.
+- The instruction-size failure came from duplicating detail already owned by the
+  efficiency guide. Resolution: keep only the enforceable candidate sequence in
+  `AGENTS.md`; the instruction-composition check then passed.
+- Confirmed root cause: the handoff parser read only the marker or bullet's first
+  physical line. Resolution: join bounded paragraph and list continuations; the
+  wrapped-focus/completion regression and regenerated brief preserve full text.
+- ⚠️ TERMINAL ISSUE: diagnostic commands mixed PowerShell parsing with regex or
+  two-parent assumptions. Resolution: rerun bounded commands with literal
+  patterns, exact paths, and the squash commit's actual one-parent history; apply
+  documentation patches against inspected text.
+- Confirmed root cause: the first pass treated command routing and compact
+  display as sufficient, while repository operation ownership and evidence
+  interpretation are separate contracts. Resolution: register `session
+  recurrence` in `control-plane.json`, regenerate its compatibility projection,
+  show pattern/control/time basis/detail distinctly, and validate both paths.
+- Evidence result, root cause unconfirmed: a direct literal Bash capture observed
+  `run.sh` returning the documented exit `2`; only the outer command wrapper had
+  surfaced `1`. No repository change was warranted, and future preparation runs
+  should treat their direct process status as the authority.
+- Confirmed root cause: the frozen candidate ran focused tests and the exact
+  hosted manual file-integrity hooks, but its affected-domain selection omitted
+  Python format/lint. Resolution: apply Black, add the changed-domain
+  formatter/linter to the pre-push sequence, increment `RR-003`, and run the
+  hosted Black/Ruff commands before the consolidated repair candidate.
+
+### Rework and recurrence
+
+Counts, time bases, short controls, and detail links live once in the
+[recurrence index](verification/rework-recurrence-index.json).
+
+- `RR-001` occurrences=1; minutes=120-165; WP09 retrospective baseline.
+- `RR-002` occurrences=7; minutes=unknown; WP09 retrospective baseline.
+- `RR-003` occurrences=4; minutes=unknown; includes the three-minute PR repair.
+- `RR-004` occurrences=4; minutes=unknown; includes this session's handoff parser finding.
+- `RR-005` occurrences=7; minutes=unknown; WP09 retrospective baseline.
+
+### Validation through candidate preparation
+
+- All 254 tests in `test_agent_governance_automation.py`,
+  `test_verification_control.py`, and `test_session_automation.py` passed.
+- The 16-command CLI smoke suite, instruction-composition check,
+  token-efficiency check, documentation checks, and maintained-link check
+  passed.
+- The new hosted-equivalent `./run.sh check --candidate-integrity` command
+  passed all eight manual hooks on its first candidate-preparation run.
+- The fresh quick repository gate passed all 10 checks with zero reused results.
+- The fresh full repository gate passed all 32 checks with zero reused results.
+- A live compact agent brief displayed the newest `Repeat control`, proving the
+  recurrence record is read at the next session boundary.
+- The canonical recurrence command displayed all five rows and the control-plane
+  validator passed with 122 active operations and 107/107 scripts registered.
+- `git diff --check` passed before candidate preparation.
+
+**Git handoff receipt:** `docs/verification/wp09-postmortem-controls-git-handoff-receipt.json`
+
 ## 2026-09-04 — Session: WP09 standalone Windows Excel product
 
 **Agent:** Codex (`MAIN`, with independent kernel/bridge and
