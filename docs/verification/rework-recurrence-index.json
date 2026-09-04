@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 37,
+      "occurrences": 38,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Twenty earlier retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness. WP10-02 added ten command-shape retries: one JavaScript binding collision, one non-JavaScript exec body, two malformed PowerShell reflection pipelines, one Windows wildcard path, one reserved PowerShell Host variable, two .NET 10 test invocations started outside the CSharp/global.json runner context, one unquoted Git tree revision, and one direct foreach pipeline rejected by PowerShell. WP10-PLAN-DRIVEN-DELIVERY added one Windows wildcard path passed directly to rg before the search was corrected to directory-based matching. WP10-03 added two direct wildcard path searches, one guessed obsolete nested handoff path, and one duplicate lifecycle transition after a yielded formatter session was not polled before status inspection; each was corrected with directory plus glob filters, exact paths, or final session/state polling. WP10-04-PREP added two guessed nonexistent recovery helper/test paths before rg --files discovered their maintained locations. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
+        "basis": "WP10-04 intake included a stale implementation-status path, Windows rg glob paths and an absent usage-helper guess. Direct discovered paths succeeded; command correction time was not isolated."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-04-PREP",
+      "last_seen_task": "WP10-04",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -220,14 +220,14 @@
     {
       "id": "RR-014",
       "pattern": "Semantically equal UTC instants use different text spellings inside hashed evidence",
-      "occurrences": 1,
+      "occurrences": 2,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-03's first full offline replay preserved the same UTC instants but DateTimeOffset emitted +00:00 where the accepted protected-state digest used Z. The replay artifact was replaced before the only live run; the correction was not separately timed."
+        "basis": "WP10-04 first production normalization rejected broker offset timestamps under the portable UTC-Z contract. Original ledger retained; separately rehashed portable UTC ledger passed exact replay. Correction time was not isolated."
       },
-      "short_solution": "Normalize UTC instants to one Z representation before hashing and assert replay state digest equality before live acquisition.",
-      "last_seen_task": "WP10-03",
+      "short_solution": "Preserve original evidence; canonicalize equivalent instants to UTC Z and rehash the portable representation before cross-runtime replay.",
+      "last_seen_task": "WP10-04",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-03-implementation-review--2026-09-05",
@@ -298,6 +298,40 @@
       "details": [
         "docs/verification/delivery-system-redesign.md#closeout-recovery-and-early-check-parity--2026-09-05",
         "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-019",
+      "pattern": "Cross-runtime canonical numeric spelling differs between platform serializers",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-04 Python replay rejected the .NET raw hash at the first uppercase E exponent. Portable numeric normalization and a version-specific durable encoder restored parity without invalidating the retained artifact; correction time was not isolated."
+      },
+      "short_solution": "Use explicit PF4 numeric spelling for portable identity and preserve established encodings for historical artifact versions; test both runtimes and retained bytes.",
+      "last_seen_task": "WP10-04",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md",
+        "docs/verification/wp10-04-normalization-evidence.json"
+      ]
+    },
+    {
+      "id": "RR-020",
+      "pattern": "Host help extraction reports success without producing usable evidence",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-04 hh decompile returned zero without files; tar rejected CHM. A portable official 7-Zip extractor produced the installed API help. hh root cause and separate recovery time remain unconfirmed."
+      },
+      "short_solution": "Verify extracted files and source hash; use a CHM-capable extractor when the host help command produces no evidence.",
+      "last_seen_task": "WP10-04",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md",
+        "docs/verification/wp10-04-normalization-evidence.json"
       ]
     }
   ]

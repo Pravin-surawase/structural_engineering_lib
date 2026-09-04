@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-05
-- Focus: Review delivered WP10-03, prepare the executable WP10-04 offline normalization card, and repair the shared session delivery path under the owner's subsequent library-wide authorization. No product normalization, COM or Excel activity is included.
-- Completed: Verified PR 970 merged the reviewed `9d3cf00a` head with identical tree `ae92ea494173264343ad48338bf35eaec904e44b`; hosted run `33916559572` succeeded. Historical candidate-stage notes are not a pending delivery gate.; Verified both retained WP10-03 durable artifact files against the committed byte counts and SHA-256 values. Inspected getter facts without attaching to ETABS or invoking the configured live broker test.; Reviewed production contracts and validators, the current getter matrix, source-discovered test names, scripts/hooks, scoped documentation rules, beam-automation skill, and relevant recurrence controls.
-- Recurrence controls: RR-017 x1 / unknown: Inspect configured refspecs and fetch exact required existing refs; preserve configuration and branches unless cleanup is separately authorized.; RR-004 x8 / unknown: Admit intake, use shared completion parsing in early checks and closeout, refresh the handoff, and preserve persisted delivery history.; RR-005 x37 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
+- Focus: Complete the offline durable-capture projection and portable normalization boundary, including exact retained input and Python/.NET parity. The owner supplied the material classification and delegated remaining implementation decisions. No live acquisition or Excel work is included.
+- Completed: Resolved semantic intake against the exact retained capture, installed API 2.16 help, endpoint geometry and explicit owner-declared concrete material classification. Preserved the difference between source fact, policy and evidence-derived revision identity; inferred no strength grade.; Added typed normalization inputs, `EtabsCaptureProjector` and the pure `AnalysisSnapshotNormalizer`. The production path validates complete getter coverage, units, physical axes/stations, assignments, selected static dependency closure, same-row force components and complete dispositions.; Normalized the unchanged 410-call/820-ledger-record acquisition to 97 model records and 13 action rows, accepting all 110 without exclusions. Repeated normalization returned identical canonical bytes. Source files remained unchanged and no COM, broker or Excel entry point was used.
+- Recurrence controls: RR-005 x38 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-014 x2 / unknown: Preserve original evidence; canonicalize equivalent instants to UTC Z and rehash the portable representation before cross-runtime replay.; RR-019 x1 / unknown: Use explicit PF4 numeric spelling for portable identity and preserve established encodings for historical artifact versions; test both runtimes and retained bytes.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -15,13 +15,13 @@
 remains the implementation authority. IMP-M1 implements WP01–WP08 as native
 Python and .NET libraries, and IMP-M2 completes the standalone Windows Excel
 product in WP09. WP10-01 freezes AO16, WP10-02 adds the exact getter port, and
-WP10-03 adds bounded operation control; the next packet is WP10-04 offline
-normalization.
+WP10-03 adds bounded operation control and WP10-04 adds offline normalization;
+the next packet is WP10-05 transactional Excel import.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | IMP-M1 WP01–WP08 and IMP-M2 WP09 are implemented and qualified. WP10-01 freezes AO16's host-free boundary. WP10-02 supplies the exact getter adapter and accepted 410-call capture. WP10-03 adds the process lease, STA/message-pump broker, deadlines, 820-record durable ledger, exact replay, atomic artifact, postflight, and cleanup receipt; its one final installed run preserved the protected-state digest. |
-| **Next** | Start `WP10-04` semantic intake from its [executable plan card](xll-product/wp10-etabs-read-adapter.md#wp10-04-executable-plan-card). Resolve material-kind evidence, matrix/face conventions, revision context and complete projection/disposition counts before product writes. Then validate the exact retained artifact and prove offline normalization, same-row actions, conservation and deterministic identity. |
+| **Current** | WP10-04 normalizes the unchanged retained WP10-03 artifact to 97 model records plus 13 action rows, with all getter evidence retained and Python/.NET canonical parity. Its [receipt](../verification/wp10-04-normalization-evidence.json) records offline proof; inspect the exact PR and delivery ledger for subsequent delivery facts. |
+| **Next** | Prepare WP10-05 transactional `XL-CMD-02` Excel import, readback, rollback and freshness. Preserve the raw cardinal-point/reference-line assignment and separate section modifiers; do not treat the snapshot as centered geometry or current live ETABS state. Freeze installed Excel/workbook identity and popup handling before its application gate. WP10-05 has not started. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |
 | Implementation boundary | WP10-01 is pure offline validation, WP10-02 is the exact getter-only host boundary, and WP10-03 is the bounded acquisition-control boundary. WP10-04 adds offline projection and normalization without COM or Excel. The pure analysis package must not depend on the optional ETABS assembly. |

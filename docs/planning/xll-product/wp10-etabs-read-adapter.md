@@ -135,7 +135,7 @@ acceptance decisions.
 | --- | --- | --- | --- |
 | WP10-02 | Complete | exact-version getter port, binding, fake-host proof, and one live getter-only matrix | broker retries, normalization, Excel, performance |
 | WP10-03 | Complete | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
-| WP10-04 | Next | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
+| WP10-04 | Implemented; delivery candidate | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
 | WP10-05 | Planned | transactional `XL-CMD-02` import, readback, rollback, and freshness | ETABS mutation and qualification claims |
 | WP10-06 | Planned | E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
 
@@ -334,10 +334,10 @@ and no accepted partial snapshot. A test independently checks those invariants.
 
 #### WP10-04 executable plan card
 
-Status: preparation complete; **semantic intake must pass before product
-writes**. The retained capture is usable input, but the choices in the entry
-matrix below are not all established by getter bytes. Do not describe this as
-an already implemented normalizer or an unconditional implementation go-ahead.
+Status: implemented after the semantic intake recorded below. Exact retained
+normalization and Python replay pass; subsequent publication/merge facts belong
+to the task delivery ledger and PR. The entry matrix remains the source of
+truth for the distinctions between getter facts and declared policy.
 
 | Plan row | WP10-04 value |
 | --- | --- |
@@ -394,6 +394,82 @@ semantic cross-check, not proof of the installed 2.16 signature:
 
 #### Acceptance-to-proof map and ordered units
 
+WP10-04 intake accepted on 2026-09-05, base
+`e95a11414cfbb43cc7fecd0581720447d7b83798`, Windows writer on
+`codex/wp10-04-normalization`. Fetched main equals the clean starting checkout;
+the five detached sibling worktrees retain historical WP09 evidence. Open PRs
+are unrelated dependency updates. The owner supplied concrete classification
+for `M25FE500`, then delegated remaining decisions. This is explicitly a
+user-declared classification, not a captured material enum or strength grade.
+
+The bounded normalization policy is `wp10-offline-horizontal-frame/v1`:
+
+- Retain all 410 getter calls, their ordinals, inputs, outputs (including null),
+  signatures and ledger IDs. Group them into nine portable record kinds using
+  metadata for catalog/story/pattern/protected-state evidence. Accept all 15
+  cases and 62 combinations as definitions; concurrency is proved only for the
+  selected dependency closure. Expected model count is 97: metadata 1, points
+  2, material 1, section 1, member 1, cases 15, combinations 62, selection 1,
+  stations 13. Add the 13 force rows for 110 dispositions; zero exclusions.
+- Source units are m, kN, kNm, kN/m2 and kN*s2/m4. Factors are 1000, 1, 1,
+  0.001 and 1000 respectively; density comes from mass, never weight/gravity.
+  Section area and fourth moments use length squared and fourth power.
+- Use row-major local-to-global direction cosines, columns e1/e2/e3. The
+  installed 2.16 help has an undocumented LineElm parameter page; its LinkObj
+  page explicitly defines the matrix equation. This cross-interface convention
+  is a chosen bounded policy, independently checked against I-to-J geometry,
+  all element directions, orthogonality, handedness and global Z. It is not a
+  claim that the LineElm page documents that equation. Physical top is global
+  +Z, left is cross(+Z, I-to-J), viewed from I toward J. Nonhorizontal or
+  obliquely rotated sections block; no transpose guessing.
+- Physical stations originate at object I, ratio uses full I-to-J length,
+  and element stations use retained relative element endpoints. End offsets
+  do not shift the station origin. Unresolved topology blocks.
+- Cardinal point 8 means top centre. Preserve cardinal point, separate section
+  modifiers, offsets and stiffness-transform flag in typed raw member/section
+  evidence. No centroid relocation or eccentric action transformation occurs.
+  Consumers must honor that reference line. Mirroring, nonzero joint offsets,
+  transformed stiffness or nonzero release springs block this bounded policy.
+- All selected cases are linear static with zero initial conditions (`None`),
+  selected combination type 0 is linear-add, and factors reference case enum
+  0. Only after recursive static proof, `Single Value`/0 becomes portable null;
+  original step zero remains in getter evidence. Unsupported selected bases block.
+- Project identity is an explicit evidence-project context, model revision is
+  model-file-SHA-derived; analysis revision binds model and retained status;
+  epoch binds acquisition, protected state and force evidence. Created time is
+  retained completion time. Freshness means consistent at capture only.
+- Installed help SHA-256 is
+  `0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88`.
+  Exact pages are `ab496301-f4fe-d09c-eae8-77bf4824ca59` (matrix),
+  `ea3cc193-4efa-195e-db7d-39ab7678fffb` (insertion),
+  `35a593d3-423d-53f1-47be-c3aebb058e2e` (mass), and
+  `f7701fac-9d31-4e45-be6b-57a3ac47745b` (initial conditions).
+  Extracted help and tooling stay external; no vendor content enters Git.
+- The retained broker ledger uses offset timestamps. Preserve that original
+  ledger in acquisition evidence, convert equivalent instants to the portable
+  schema's required UTC `Z`, and recompute only the portable chain and digest.
+  Call IDs, method, arguments, return values and signature identity stay bound.
+
+Additive path allowance: `AnalysisNormalizationContracts.cs` in Contracts,
+synthetic fixture support beside the two planned test files, a new shared
+`wp10-normalization-vectors.json`, the existing Python WP10 test, reference
+page and TASKS row. No wire-contract meanings change. `Wp10NormalizationTests`
+proves dimensions, topology, faces and conservation; `Wp10CaptureProjectionTests`
+proves the durable boundary, complete coverage, selected graph and deterministic
+output. Its explicit `WP10_OFFLINE_ARTIFACT`, `WP10_OFFLINE_SHA256` and
+`WP10_OFFLINE_OUTPUT` retained-input test must run with all three supplied.
+Shared synthetic output and the retained output are independently replayed by
+Python. The original frozen vectors must remain byte-for-byte unchanged.
+
+Cross-runtime replay exposed the existing .NET serializer's uppercase exponent
+spelling, contrary to the frozen Python/PF4 canonical representation. The path
+allowance includes a correction in `AnalysisSnapshotCodec.cs` and preservation
+of the already-issued durable artifact v1 numeric spelling inside
+`EtabsAcquisitionArtifactCodec` in `EtabsOperationBroker.cs`. This fixes
+implementation parity without changing the portable wire meaning or old golden
+identities. Exact retained artifact validation and offline broker-codec
+regressions are required; no live broker test is selected.
+
 | ID | Required proof on the production path |
 | --- | --- |
 | N1 | Exact-file hash plus production durable validation; wrong bytes/schema/ledger/state fail before any portable output. |
@@ -430,7 +506,10 @@ These are the command shapes for the implementation card. Run shell examples
 from repository root unless `workdir: CSharp` is stated. In this Windows
 checkout, use literal PowerShell paths and explicit `bash` for repository
 launchers. Fetch exact refs if a stale narrow refspec blocks ordinary fetch;
-never modify refspec configuration or delete old branches as incidental cleanup.
+never broaden refspec configuration or delete old branches as incidental cleanup.
+WP10-04 registers only its exact new task-branch fetch mapping because the
+delivery ledger requires a resolved upstream equal to the pushed candidate;
+existing mappings and all historical branches/worktrees remain untouched.
 
 ```text
 git fetch origin refs/heads/main:refs/remotes/origin/main

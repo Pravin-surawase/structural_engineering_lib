@@ -1,4 +1,4 @@
-# WP01-WP10-03 implementation status
+# WP01-WP10-04 implementation status
 
 This record captures the review performed after each work packet and any change
 to the next packet before implementation continues.
@@ -617,8 +617,37 @@ journal files remain external and hash-bound. WP10-03 does not normalize the
 portable snapshot, write Excel, mutate ETABS, qualify performance, or broaden
 the exact installed-version claim.
 
-WP10-04 is next. It must consume the hash-validated durable artifact offline,
-project ETABS records into the portable raw-capture contract, and prove unit,
-axis, mapping, station, force-row, and row-disposition conservation without
-creating a dependency from the host-free analysis library back to the ETABS
-adapter.
+## WP10-04 offline projection and normalization
+
+State: implemented; exact retained-input normalization and independent Python
+replay pass. Publication and merge facts belong to the exact task delivery
+ledger and PR; this versioned record describes prepublication evidence.
+
+`EtabsCaptureProjector.Normalize` validates exact durable bytes and all 48
+getter operations before producing a complete typed source projection.
+`AnalysisSnapshotNormalizer.Normalize` owns units, topology, physical faces,
+static concurrency, row conservation and canonical construction. The Analysis
+assembly has no ETABS or Excel dependency. Failures expose no partial snapshot.
+
+The retained capture produces 97 model records and 13 concurrent action rows;
+all 110 source records are accepted, with no exclusions. All 410 getter calls
+and the original 820-record ledger remain traceable. The portable ledger uses
+equivalent UTC `Z` instants. The portable numeric serializer now matches PF4
+scientific-number spelling; the durable artifact v1 encoder preserves existing
+capture identities. Original WP10-01 golden vectors are unchanged.
+
+The bounded policy supports horizontal straight rectangular members with
+geometry-proved axes and static selected dependency closure. Original
+cardinal insertion, separate section/object modifiers and getter details are
+retained in typed raw evidence. There is no centroid relocation or implied
+eccentric-force transformation. Nonzero joint offsets/release springs,
+mirroring, transformed stiffness, unresolved topology or unsupported selected
+analysis bases withhold the snapshot. Material kind is caller-supplied with
+provenance; no material strength is inferred from names. Evidence-derived
+revision/epoch identities describe the capture, not today's live model state.
+
+Evidence: [WP10-04 normalization receipt](../verification/wp10-04-normalization-evidence.json).
+The synthetic shared vector contains invented data only; proprietary capture,
+API help and emitted retained snapshot remain external. WP10-05 Excel import
+is next and has not started. No live acquisition, installed application test,
+performance qualification, mutation, release or engineering approval is claimed.

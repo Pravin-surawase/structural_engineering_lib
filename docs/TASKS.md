@@ -495,6 +495,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| WP10-04 | Normalize the retained ETABS capture offline with complete evidence and row conservation | MAIN | IMPLEMENTED — [receipt](verification/wp10-04-normalization-evidence.json); 97 model records and 13 actions, Python/.NET parity, no live application work. Delivery/merge facts belong to the task ledger and PR. WP10-05 is next. |
 | XLL-PLAN-HANDOFF | Preserve the supplied XLL architecture, corrected phase plan, completed research and portable Mac/Windows learning handoff | MAIN | DOCUMENTATION CANDIDATE PREPARED — [shared entry point](planning/xll-product/README.md); local audit and hosted closeout are subsequent observations; no XLL lesson, engineering or release acceptance claimed |
 | INDIA-3-IS13920-M0 | Cumulatively accept the repaired bounded IS 13920 source, benchmark, unsafe-case, cross-surface, capability, package, and qualified-review boundary | Main Agent | ✅ LOCAL COMPLETE — 7,024 broad Python and 498 FastAPI cases pass after one cumulative metadata/test repair; exact source-free wheel and 29-case UAT pass; quick/full/hooks/immutable candidate/hosted checks/unchanged merge/tree equality remain required; no successor packet started |
 | INDIA-3-COLUMN-R1 | Repair the G0-bounded IS 13920 column applicability, actual/provided confinement, amended formulas, result meaning, and cross-surface clause contract | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — PR #868 merged at `306e2a46`, tree `cbe0f8d9`; `INDIA-3-IS13920-M0` started only afterward |
