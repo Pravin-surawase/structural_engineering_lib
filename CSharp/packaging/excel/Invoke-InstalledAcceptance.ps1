@@ -74,12 +74,8 @@ function Start-InstalledExcel {
     if ($startupRegistrations.Count -eq 0) { throw "The installed XLL has no exact per-user Excel startup registration: $XllPath" }
     if ($ReadyTimer) { $ReadyTimer.Restart() }
     $excel = New-Object -ComObject Excel.Application
-    $workbooks = $null
-    $bootstrapWorkbook = $null
     $succeeded = $false
     try {
-        $workbooks = $excel.Workbooks
-        $bootstrapWorkbook = $workbooks.Add()
         if (-not [bool]$excel.RegisterXLL($XllPath)) { throw "Excel automation could not load the installed XLL: $XllPath" }
         $versionProbe = [string]$excel.Run('STR.INFO.VERSION')
         if ([string]::IsNullOrWhiteSpace($versionProbe)) { throw 'The installed XLL version probe returned no value.' }
@@ -104,11 +100,6 @@ function Start-InstalledExcel {
         }
     }
     finally {
-        if ($bootstrapWorkbook) {
-            try { $bootstrapWorkbook.Close($false) }
-            finally { Release-StructAutomateComObject $bootstrapWorkbook }
-        }
-        Release-StructAutomateComObject $workbooks
         if (-not $succeeded) { Close-StructAutomateExcelApplication $excel }
     }
 }
