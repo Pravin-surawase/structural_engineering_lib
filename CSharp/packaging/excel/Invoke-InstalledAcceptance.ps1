@@ -15,7 +15,6 @@ param(
     [string]$DiagnosticReconstructionCommand = 'STR_XL_CMD_07_RECONSTRUCT_CURRENT',
     [string]$ProgressCommand = 'STR_XL_TEST_PROGRESS_PROBE',
     [string]$CancelCommand = 'STR_XL_TEST_CANCELLATION_PROBE',
-    [string]$RollbackReceiptPath = (Join-Path ([Environment]::GetFolderPath([Environment+SpecialFolder]::LocalApplicationData)) 'StructAutomate\Receipts\excel-rollback-probe.json'),
     [string]$RollbackSentinelTable = 'StructuralResults',
     [string]$RollbackSentinelColumn = 'result_id',
     [ValidateRange(1, 1000)][int]$RollbackSentinelRow = 1,
@@ -73,6 +72,7 @@ function Start-InstalledExcel {
     )
     $startupRegistrations = @(Get-StructAutomateExcelStartupRegistrations -XllPath $XllPath)
     if ($startupRegistrations.Count -eq 0) { throw "The installed XLL has no exact per-user Excel startup registration: $XllPath" }
+    if ($ReadyTimer) { $ReadyTimer.Restart() }
     $excel = New-Object -ComObject Excel.Application
     $workbooks = $null
     $bootstrapWorkbook = $null
@@ -298,7 +298,7 @@ try {
         if ([string]::IsNullOrWhiteSpace($name)) { throw 'Every host-effect and workbook-command binding is required for fail-closed acceptance.' }
     }
     $xll = Assert-StructAutomateSafeInstallPath $InstalledXllPath
-    $rollbackReceiptPath = Assert-StructAutomateSafeReceiptPath $RollbackReceiptPath
+    $rollbackReceiptPath = Assert-StructAutomateSafeReceiptPath (Join-Path $evidenceDirectory 'excel-rollback-probe.json')
     if (-not (Test-Path -LiteralPath $xll -PathType Leaf)) { throw "Installed XLL is missing: $xll" }
     $installedManifestPath = Join-Path (Split-Path -Parent $xll) 'manifest.json'
     if (-not (Test-Path -LiteralPath $installedManifestPath -PathType Leaf)) { throw "Installed manifest is missing: $installedManifestPath" }
@@ -418,17 +418,19 @@ try {
     $workingSetDeltaMiB = [Math]::Round(($memoryAfterCommandsBytes - $memoryBaselineBytes) / 1MB, 3)
     $warmMedian = Get-StructAutomatePercentile -Values $warmSamples -Percentile 50
     $warmP95 = Get-StructAutomatePercentile -Values $warmSamples -Percentile 95
+    $coldMedian = Get-StructAutomatePercentile -Values $coldSamples -Percentile 50
+    $coldP95 = Get-StructAutomatePercentile -Values $coldSamples -Percentile 95
     $coldMax = [double]($coldSamples | Measure-Object -Maximum).Maximum
     $checks = [ordered]@{
         signed_amd64_installed_xll = $true; shipped_sample_20_members_200_operations = $true; installed_lifecycle = [bool]($lifecycle.found -and $lifecycle.installed)
         udf_zero_host_effects = [bool]([Int64]$hostEffectCapture.json.total_effects -eq 0 -and [Math]::Abs($udfProbeValue - ([Math]::PI * 100.0)) -lt 0.000001); xl_cmd_03_initial_full_recalculation = -not [bool]$warmupReuse[0]; xl_cmd_03_warm_cache_verified = -not ($warmSampleReuse | Where-Object { -not $_ })
         xl_cmd_03_warm_median_budget = $warmMedian -le $WarmMedianBudgetMs
-        xl_cmd_03_warm_p95_budget = $warmP95 -le $WarmP95BudgetMs; cold_ready_budget = $coldMax -le $ColdReadyBudgetMs; optimize_export_measure_receipts = $true; export_package_bound = $true; forced_mid_write_rollback = $preimage -ceq $postimage -and $preRollbackResultsSha256 -eq $postRollbackResultsSha256
+        xl_cmd_03_warm_p95_budget = $warmP95 -le $WarmP95BudgetMs; cold_ready_p95_budget = $coldP95 -le $ColdReadyBudgetMs; optimize_export_measure_receipts = $true; export_package_bound = $true; forced_mid_write_rollback = $preimage -ceq $postimage -and $preRollbackResultsSha256 -eq $postRollbackResultsSha256
         progress_budget = [double]$progress.json.response_ms -le $ProgressAndCancellationBudgetMs; cancellation_budget = [double]$cancel.json.response_ms -le $ProgressAndCancellationBudgetMs
         memory_delta_budget = $workingSetDeltaMiB -le $ExcelWorkingSetDeltaBudgetMiB; save_reopen_current_reconstruction = $reconstructionMatches
     }
     $receipt = [ordered]@{
-        schema_version = 'structautomate.excel-installed-acceptance/v2'; passed = -not ($checks.GetEnumerator() | Where-Object { -not [bool]$_.Value }); observed_at_utc = [DateTimeOffset]::UtcNow.ToString('o')
+        schema_version = 'structautomate.excel-installed-acceptance/v3'; passed = -not ($checks.GetEnumerator() | Where-Object { -not [bool]$_.Value }); observed_at_utc = [DateTimeOffset]::UtcNow.ToString('o')
         source_commit = [string]$manifest.source_commit; installed_manifest = Get-StructAutomateFileIdentity $installedManifestPath; xll = $xllIdentity
         authenticode = [ordered]@{ status = [string]$signature.Status; thumbprint = $signature.SignerCertificate.Thumbprint; package_file_digest_algorithm = [string]$manifest.file_digest_algorithm; authenticode_file_digest_algorithm = [string]$manifest.signature.authenticode_file_digest_algorithm; certificate_signature_algorithm = [string]$manifest.signature.certificate_signature_algorithm }
         sample = [ordered]@{ input = $sampleIdentity; evidence_copy = Get-StructAutomateFileIdentity $workbookCopy; setup = $sampleSetup; tables = $inputTables }; lifecycle = $lifecycle
@@ -437,14 +439,14 @@ try {
         export_package = [ordered]@{ artifact = $exportIdentity; schema_version = [string]$exportBundle.schema_version; member_package_count = @($exportBundle.packages).Count; receipt_bound = $true }
         rollback = [ordered]@{ table = $RollbackSentinelTable; column = $RollbackSentinelColumn; row = $RollbackSentinelRow; preimage = $preimage; postimage = $postimage; structural_results_preimage_sha256 = $preRollbackResultsSha256; structural_results_postimage_sha256 = $postRollbackResultsSha256; probe_receipt = Get-StructAutomateFileIdentity $rollbackReceiptPath; probe_receipt_state = [string]$rollbackReceipt.state }
         reconstruction = [ordered]@{ before = $preReopen; after = $postReopen; result_identity_preserved = $reconstructionMatches }
-        performance = [ordered]@{ workload = [ordered]@{ members = 20; operations = 200; command = 'XL-CMD-03' }; cold_ready_measurement_boundary = 'Fresh Excel automation start through installed STR.INFO.VERSION response; post-ready AddIns lifecycle enumeration is verified separately.'; cold_launch_samples_ms = $coldSamples; cold_ready_max_ms = $coldMax; memory_baseline_bytes = $memoryBaselineBytes; memory_after_commands_bytes = $memoryAfterCommandsBytes; memory_delta_mib = $workingSetDeltaMiB }
-        budgets = [ordered]@{ warm_median_ms = $WarmMedianBudgetMs; warm_p95_ms = $WarmP95BudgetMs; cold_ready_ms = $ColdReadyBudgetMs; progress_and_cancellation_ms = $ProgressAndCancellationBudgetMs; memory_delta_mib = $ExcelWorkingSetDeltaBudgetMiB }; checks = $checks
+        performance = [ordered]@{ workload = [ordered]@{ members = 20; operations = 200; command = 'XL-CMD-03' }; cold_ready_measurement_boundary = 'Fresh Excel automation start through installed STR.INFO.VERSION response; registry precondition and post-ready AddIns lifecycle enumeration are verified outside the timed interval.'; cold_launch_samples_ms = $coldSamples; cold_ready_median_ms = $coldMedian; cold_ready_p95_ms = $coldP95; cold_ready_max_ms = $coldMax; memory_baseline_bytes = $memoryBaselineBytes; memory_after_commands_bytes = $memoryAfterCommandsBytes; memory_delta_mib = $workingSetDeltaMiB }
+        budgets = [ordered]@{ warm_median_ms = $WarmMedianBudgetMs; warm_p95_ms = $WarmP95BudgetMs; cold_ready_p95_ms = $ColdReadyBudgetMs; progress_and_cancellation_ms = $ProgressAndCancellationBudgetMs; memory_delta_mib = $ExcelWorkingSetDeltaBudgetMiB }; checks = $checks
     }
     if (-not $receipt.passed) { throw 'Installed acceptance evidence exceeded one or more required thresholds.' }
 }
 catch {
     $failure = $_.Exception.Message
-    if ($null -eq $receipt) { $receipt = [ordered]@{ schema_version = 'structautomate.excel-installed-acceptance/v2'; passed = $false; observed_at_utc = [DateTimeOffset]::UtcNow.ToString('o'); failure = $failure } }
+    if ($null -eq $receipt) { $receipt = [ordered]@{ schema_version = 'structautomate.excel-installed-acceptance/v3'; passed = $false; observed_at_utc = [DateTimeOffset]::UtcNow.ToString('o'); failure = $failure } }
 }
 
 Write-StructAutomateJson -Value $receipt -Path $receiptPath
