@@ -569,17 +569,23 @@ DELIVERY_TRANSITIONS = {
     "CONTENT_FROZEN": {"CONTENT_FROZEN", "FORMATTED"},
     "FORMATTED": {"CONTENT_FROZEN", "FOCUSED_VERIFIED"},
     "FOCUSED_VERIFIED": {"CONTENT_FROZEN", "PREPARED"},
-    "PREPARED": {"CONTENT_FROZEN", "CANDIDATE", "REPAIRED_CANDIDATE"},
-    "CANDIDATE": {"REPAIR", "AUDIT_ACCEPTED"},
+    "PREPARED": {"CONTENT_FROZEN", "CANDIDATE"},
+    "CANDIDATE": {"AUDIT_ACCEPTED"},
     "REPAIR": {"CONTENT_FROZEN"},
-    "REPAIRED_CANDIDATE": {"REPLAN", "AUDIT_ACCEPTED"},
+    "REPAIRED_CANDIDATE": {"AUDIT_ACCEPTED"},
     "REPLAN": {"BOUNDED_UNITS"},
     "AUDIT_ACCEPTED": {"INTEGRITY_VERIFIED"},
-    "INTEGRITY_VERIFIED": {"FINAL_CLOSED"},
+    "INTEGRITY_VERIFIED": set(),
     "FINAL_CLOSED": {"PUSHED"},
     "PUSHED": {"HOSTED_PASSED"},
     "HOSTED_PASSED": {"MERGED"},
     "MERGED": set(),
+}
+DERIVED_DELIVERY_TARGETS = {
+    "REPAIR",
+    "REPAIRED_CANDIDATE",
+    "REPLAN",
+    "FINAL_CLOSED",
 }
 
 
@@ -1794,6 +1800,8 @@ def cmd_delivery(args: argparse.Namespace) -> int:
 
         evidence = list(args.evidence or [])
         target = requested
+        if requested in DERIVED_DELIVERY_TARGETS:
+            raise ValueError(f"{requested} is derived by its guarded delivery command")
         if requested == "AUDIT_REJECTED":
             if state not in {"CANDIDATE", "REPAIRED_CANDIDATE"}:
                 raise ValueError(f"audit rejection is invalid from {state}")

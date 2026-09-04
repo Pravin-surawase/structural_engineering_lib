@@ -37,6 +37,8 @@ state machine without changing WP10 product behavior.
   runtime, replacing stale hook/formatter coverage with current behavior
   assertions, and making failed hosted verdicts and replacement-candidate
   closeouts explicit and mechanically counted.
+- Closed a candidate-binding bypass so repair, replan, and final-closeout states
+  can be emitted only by their guarded commands.
 
 ### Issues encountered
 
@@ -80,6 +82,9 @@ state machine without changing WP10 product behavior.
 - The replacement hosted run passed every product and repository job but failed
   the two strict instruction-composition tests because `AGENTS.md` was 24,302
   bytes, above its enforced 24,000-byte owner limit.
+- A direct `REPAIRED_CANDIDATE` request advanced the state without binding the
+  new head/tree or incrementing its candidate count; independent audit exposed
+  the stale binding while checking the repaired evidence.
 - The first push created the remote branch and branch config but the repository's
   intentionally narrow fetch refspec did not classify the new remote-tracking
   branch as an upstream until its exact refspec was added and fetched.
@@ -179,6 +184,12 @@ state machine without changing WP10 product behavior.
   the size ceiling explicit acceptance evidence and compress the owner while
   retaining every lifecycle invariant. Proof: rerun the two failed strict
   instruction-composition tests and the efficiency check.
+- Confirmed root cause: derived lifecycle states remained present in the public
+  transition map, so callers could bypass the guarded commands that bind Git
+  objects, count failures, and run final closeout. Resolution: reject direct
+  requests for `REPAIR`, `REPAIRED_CANDIDATE`, `REPLAN`, and `FINAL_CLOSED` and
+  remove their generic edges; the regression test verifies each source state
+  remains unchanged.
 
 ### Rework and recurrence
 

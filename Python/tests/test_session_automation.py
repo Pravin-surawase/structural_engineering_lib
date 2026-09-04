@@ -2152,6 +2152,62 @@ def test_delivery_second_audit_rejection_requires_changed_acceptance_contract(
 
 
 @pytest.mark.parametrize(
+    ("state", "target"),
+    (
+        ("PREPARED", "REPAIRED_CANDIDATE"),
+        ("CANDIDATE", "REPAIR"),
+        ("REPAIRED_CANDIDATE", "REPLAN"),
+        ("INTEGRITY_VERIFIED", "FINAL_CLOSED"),
+    ),
+)
+def test_delivery_derived_states_require_their_guarded_commands(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    state: str,
+    target: str,
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "task_id": "DELIVERY-TEST",
+        "state": state,
+        "design_revision": 1,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40},
+        "audit_rejections": 0,
+        "design_candidate_count": 1,
+        "design_audit_rejections": 0,
+        "repair_batches": 0,
+        "hosted_validation_runs": 0,
+        "latest_candidate_head": "a" * 40,
+        "latest_candidate_tree": "b" * 40,
+    }
+    rows = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "DELIVERY-TEST",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "DELIVERY-TEST",
+            "delivery": snapshot,
+        },
+    ]
+    ledger.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    args = session.build_parser().parse_args(
+        ["delivery", "--task-id", "DELIVERY-TEST", "--to", target]
+    )
+
+    assert session.cmd_delivery(args) == 1
+    unchanged = session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")
+    assert unchanged["state"] == state
+
+
+@pytest.mark.parametrize(
     ("candidate_count", "repair_batches", "expected_state"),
     ((1, 0, "REPAIR"), (2, 1, "REPLAN")),
 )

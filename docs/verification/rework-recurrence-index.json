@@ -75,7 +75,7 @@
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "At least seventeen retries are explicit across WP09, WP10-01, and the delivery redesign. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
+        "basis": "At least eighteen retries are explicit across WP09, WP10-01, and the delivery redesign, including the design-revision-3 PowerShell tree probe. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
       "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",

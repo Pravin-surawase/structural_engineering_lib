@@ -77,6 +77,7 @@ exact run ID after push.
 | One independent decision | audit transition is bound to the latest exact candidate head and evidence |
 | Initial plus one repair candidate | audit or integrity rejection uses the same repair allowance; a third candidate in one design revision is rejected |
 | Second rejection forces design change | `REPLAN` cannot advance until an acceptance-file digest changes |
+| Derived states cannot bypass guards | `REPAIR`, `REPAIRED_CANDIDATE`, `REPLAN`, and `FINAL_CLOSED` reject direct requests and are emitted only by their guarded commands |
 | One final closeout per pushed candidate | idempotent pre-push transition counts one `FINAL_CLOSED` state for each distinct published head |
 | One hosted verdict per pushed candidate | a failed exact run records `HOSTED_REJECTED` before repair; a candidate cannot receive two verdicts |
 | Bounded instruction owner | strict composition tests require `AGENTS.md` to remain at or below 24,000 bytes; local warnings are not acceptance evidence |
