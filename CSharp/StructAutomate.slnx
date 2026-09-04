@@ -4,6 +4,7 @@
     <Project Path="src/StructAutomate.Engineering/StructAutomate.Engineering.csproj" />
     <Project Path="src/StructAutomate.Application/StructAutomate.Application.csproj" />
     <Project Path="src/StructuralEngineering.ExcelDna/StructuralEngineering.ExcelDna.csproj" />
+    <Project Path="src/StructuralEngineering.Etabs/StructuralEngineering.Etabs.csproj" />
     <Project Path="src/StructuralEngineering.Contracts/StructuralEngineering.Contracts.csproj" />
     <Project Path="src/StructuralEngineering.Core/StructuralEngineering.Core.csproj" />
     <Project Path="src/StructuralEngineering.Reinforcement/StructuralEngineering.Reinforcement.csproj" />

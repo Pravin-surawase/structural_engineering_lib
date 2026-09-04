@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="../../src/StructAutomate.Application/StructAutomate.Application.csproj" />
     <ProjectReference Include="../../src/StructuralEngineering.ExcelDna/StructuralEngineering.ExcelDna.csproj" />
+    <ProjectReference Include="../../src/StructuralEngineering.Etabs/StructuralEngineering.Etabs.csproj" />
     <PackageReference Include="xunit.v3" />
   </ItemGroup>
   <ItemGroup><None Include="../../examples/*.json" Link="examples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>

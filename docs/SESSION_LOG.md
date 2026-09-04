@@ -5,6 +5,200 @@
 
 ---
 
+## 2026-09-04 — Session: WP10-02 exact ETABS getter adapter
+
+**Agent:** Codex (`orchestrator`); no subagents.
+
+**Branch:** `codex/wp10-02-getter-adapter`, from clean `main` commit
+`419941c7d361c6ad2ba240b3c4d7662923ef59d5`.
+
+**Focus:** Implement the exact-version, getter-only C# ETABS boundary and prove
+one bounded installed matrix without combining WP10-03 broker/ledger work,
+WP10-04 normalization, Excel, performance, or release work.
+
+**Completed:**
+
+- Admitted a clean current lane, bound the fixed WP10 plan and WP10-01
+  authority, and kept one parent session with no subagents.
+- Freshly verified .NET 10.0.400, the one ETABS 23.3.1.4563 process, exact PID
+  and process start, ETABSv1 2.16.0.0 assembly identity/hash, x64 type-library
+  hash, saved copied-model path/hash/size/mtime, lock, unit enum 6, 15 finished
+  analysis cases, and the one intended output combination.
+- Added `StructuralEngineering.Etabs` as an optional `net10.0-windows` project
+  with no compile-time CSI binary. It loads and validates the exact installed
+  assembly at runtime, attaches by exact PID, rejects identity/version/file
+  drift, exposes the 48-entry frozen getter matrix through a runtime read-only
+  dictionary, validates exact reflected parameter names, and attempts every
+  acquired COM release even when an earlier release fails.
+- Added strict direct/CSI-return handling, counted and fixed-array validation,
+  one-dispatch deadline/cancellation handling, whitelist rejection, and no
+  accepted raw call after failure, timeout, unequal arrays, or identity drift.
+- Added ten focused fake-host tests for the immutable matrix, host-free assembly,
+  scalar, counted-list, complete parallel result arrays, nonzero CSI status,
+  unequal arrays, timeout, identity drift, expired deadline, and unknown call.
+- Completed one installed run for object `82` (beam label `B1`, story `Ground`)
+  and selected combination `117.(1.5DL+1.5LL)`: all 48 operations were exercised
+  through 410 calls. The repaired probe enforces exact force-row object and
+  selected-case identity, connected element/frame-endpoint topology, matching
+  case-type overloads, section/material agreement, and retains all 13 rows with
+  exact object, element, station, step, and six signed component arrays.
+- Protected process/file/lock/units/status/run-flag/selection preflight and
+  postflight digests are identical. The exact 792,151-byte raw capture stays
+  outside Git with SHA-256
+  `5e47bfeeeedc7949792e9cc6c7c87e6efb0bed429791f4a9bb146900c0609552`;
+  the safe committed manifest is
+  `docs/verification/wp10-02-host-microprobe-evidence.json`.
+- Design revision 2 normalized only the four integrity-reported
+  solution/project/lock files to repository LF/EOF policy. No product or live
+  ETABS behavior changed, and no failing candidate was published.
+- Hosted run `33905189848` passed repository and documentation validation but
+  its .NET job stopped at changed-C# formatting before build/tests: Windows
+  checkout produced CRLF for the five changed `.cs` files while the maintained
+  formatter requires LF. The failing head was not merged. (`RR-013`)
+
+### Issues encountered
+
+- The first functional attempt stopped before force access because
+  `FrameObj.GetElm("82")` returned CSI status `1`. Its older evidence had proved
+  only an installed static signature, not a live successful return. (`RR-002`)
+- The first frame-list item, object `70`, was column label `C1`, not a beam.
+  Exact label/story inspection identified object `82` as beam `B1` before the
+  accepted request or force call.
+- Narrow live diagnostics found that direct return values had been counted as
+  by-reference outputs during signature validation, and the initial
+  `FrameForce` parallel-array range contained 14 indexes for 13 arrays.
+- The first candidate-bound strict-type pass stopped before force access when
+  the correctly counted `Story.GetStories_2` `SimilarToStory` managed string
+  array contained CLR-null reference elements not expressible in static
+  reflection metadata. (`RR-002`)
+- The first focused test build was command-blocked by xUnit1051 because test
+  calls did not pass the test context cancellation token.
+- The frozen focused matrix invoked repo-wide `dotnet format` directly and
+  reported more than 268,000 output tokens of pre-existing whitespace/EOL
+  findings in unrelated C# projects. The guarded formatter had already proved
+  all five admitted changed source paths formatted with a clean scope guard.
+  (`RR-011`)
+- Consolidated review rejected the first candidate once: the exposed whitelist
+  could be down-cast and mutated, the proved nullable-array exception was not
+  part of the matrix hash, reflection omitted parameter-name checks, the live
+  probe recorded but did not enforce five cross-getter consistency relations,
+  and one COM release exception could skip later releases. One repair batch was
+  admitted; no second repair cycle was used.
+- Two focused-test commands were started from the repository root, outside the
+  `CSharp/global.json` Microsoft.Testing.Platform context. The maintained
+  CSharp-root command with an exact class filter passed all ten tests. (`RR-005`)
+- The repaired candidate's single read-only integrity gate found mixed CRLF/LF
+  bytes in the solution, test project, and test lock file plus a missing final
+  LF in the adapter lock file. These files entered with the first candidate and
+  were outside the repair-only formatter selection. The lifecycle correctly
+  entered digest-gated `REPLAN`; no failing candidate was pushed. (`RR-012`)
+- ⚠️ TERMINAL ISSUE: two later read-only PowerShell probes required correction:
+  an unquoted `HEAD^{tree}` revision was parsed as an encoded command, and a
+  direct `foreach` pipeline was rejected by the parser. Quoting the revision
+  and collecting rows before piping resolved both. (`RR-005`)
+- ⚠️ TERMINAL ISSUE: six command shapes required correction: a reused
+  JavaScript binding, a PowerShell body supplied where the tool required
+  JavaScript, two malformed inline reflection pipelines, one Windows-invalid
+  wildcard path, and the reserved PowerShell `$Host` variable. Literal
+  PowerShell commands, unique bindings, file enumeration before filtering, and
+  `$etabsHost` resolved them. (`RR-005`)
+
+### Root causes and resolutions
+
+- Confirmed root cause: the admitted mapping getter inherited only static W3H
+  proof. Resolution: stop without accepting partial output, record the plan
+  replan, exclude `FrameObj.GetElm`, obtain object/element identities from the
+  proved same-row `FrameForce` shape after readiness, and verify every returned
+  element with four `LineElm` getters. The accepted capture proves object `82`,
+  element `82`, 13 rows, and the exact selected combination. (`RR-002`)
+- Confirmed root cause: ETABS internal frame-name order does not encode member
+  design role. Resolution: bind the request through exact object, label, story,
+  section, and result-selection getters; never select the first returned name.
+- Confirmed root cause: return value and by-reference outputs were represented
+  in one manual count, and the result signature was miscounted. Resolution:
+  direct returns are separate from output arrays and `FrameForce` validates
+  exactly 13 arrays against `NumberResults`. Focused fake-host and installed
+  13-row checks pass with no partial result.
+- Confirmed root cause: managed `String[]` reflection proves the container type
+  but not element nullability. Resolution: permit and retain null reference
+  elements only for `Story.GetStories_2.SimilarToStory`; do not coerce or
+  interpret them, and keep null invalid for scalar strings, name arrays, and
+  value-type arrays. A focused fake-host case and the final 410-call installed
+  capture pass. (`RR-002`)
+- Confirmed root cause: the test methods accepted cancellation but the call
+  sites relied on the optional default. Resolution: pass
+  `TestContext.Current.CancellationToken` explicitly; the focused ten-test
+  selection then passed.
+- Confirmed root cause: the WP10 plan retained a repo-wide formatter command
+  even though the governing efficiency policy had moved formatting to the
+  maintained changed-path router. Resolution: replace only that stale gate
+  with `./run.sh format --check --scope dotnet`, leave unrelated files
+  untouched, and log the concrete stale instruction for the improvement loop.
+  (`RR-011`)
+- Confirmed root cause: the first candidate separately proved the relevant raw
+  values but did not make every evidence relationship and immutability premise
+  executable. Resolution: use a real read-only dictionary, include the only
+  nullable string-array index in the matrix digest, validate exact reflected
+  parameter names, enforce force-object/selection, connected endpoint topology,
+  overload and material agreement during the live run, and aggregate cleanup
+  failures only after attempting all references. The repaired build, ten tests,
+  and refreshed 410-call installed capture pass with identical state digests.
+- Confirmed root cause: the .NET 10 runner selection is scoped by
+  `CSharp/global.json`; starting from the repository root selected the legacy
+  VSTest command path. Resolution: run the maintained test command with
+  `CSharp` as the explicit working directory and filter the exact WP10 class.
+  (`RR-005`)
+- Confirmed root cause: the repair formatter selected paths changed after the
+  first candidate rather than the complete task diff from its base; therefore
+  it could not normalize four original-candidate text files before the first
+  integrity run. Resolution: change the acceptance digest, bind design revision
+  2 to the original task base, normalize exactly the four reported paths to the
+  repository LF/EOF contract, and repeat only their affected verification
+  before one replacement candidate. (`RR-012`)
+- Confirmed root cause: `.gitattributes` left `.cs`, `.csproj`, and `.slnx`
+  under platform-dependent `text=auto`, so a clean Windows hosted checkout
+  changed locally verified LF source bytes to CRLF before `dotnet format
+  --verify-no-changes`. Resolution: declare explicit LF policy for those three
+  maintained .NET extensions, renormalize the full task diff, and repeat only
+  the failed .NET formatting/build/test evidence. (`RR-013`)
+- Confirmed root cause: PowerShell requires braces in Git revision expressions
+  to be quoted and does not accept that direct statement-pipeline form.
+  Resolution: quote `HEAD^{tree}` and accumulate loop output before piping.
+  (`RR-005`)
+- Confirmed root cause: long mixed-language one-liners and shell-specific path
+  syntax bypassed the repository's literal-command rule. Resolution: keep the
+  execution wrapper in JavaScript, use one literal PowerShell command per
+  probe, enumerate files before filtering, and avoid reserved automatic
+  variables. (`RR-005`)
+
+### Rework and recurrence
+
+- `RR-002`, occurrences=9, minutes=unknown — require successful model-specific
+  getter return/shape proof, not only installed static reflection, before
+  admitting a host-sensitive operation.
+- `RR-005`, occurrences=30, minutes=unknown — use maintained launchers, literal
+  PowerShell blocks, exact paths, native output tools, unique JavaScript
+  bindings, and non-reserved task-specific variable names.
+- `RR-011`, occurrences=1, minutes=unknown — use the maintained changed-path
+  formatter for focused verification; do not invoke repo-wide formatting from
+  a bounded packet.
+- `RR-012`, occurrences=1, minutes=unknown — on a repair or replan, bind text
+  hygiene to the original task base so paths from earlier candidates are not
+  omitted from the replacement candidate.
+- `RR-013`, occurrences=1, minutes=unknown — declare LF explicitly for
+  maintained .NET source/project/solution extensions so local and hosted
+  Windows checkouts run the same formatter bytes.
+
+**Git handoff:** No receipt is required for routine same-checkout delivery.
+The external raw capture is evidence retained by this task, not an authority or
+worktree transition.
+
+**Next:** WP10-03 separately adds the STA lease, deadlines, hash-chained durable
+call ledger/raw artifact, postflight fencing, and cleanup receipt. Do not repeat
+this installed matrix unless an exact bound host/model/getter identity changes.
+
+---
+
 ## 2026-09-04 — Session: WP10 one-session readiness plan
 
 **Agent:** Codex (`orchestrator`); no subagents.

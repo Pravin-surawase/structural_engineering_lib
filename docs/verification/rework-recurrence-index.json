@@ -23,14 +23,14 @@
     {
       "id": "RR-002",
       "pattern": "Host or acceptance boundary discovered after implementation",
-      "occurrences": 7,
+      "occurrences": 9,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Seven explicit WP09 incidents are recorded, but their minutes overlap the RR-001 aggregate and were not timed separately."
+        "basis": "Seven explicit WP09 incidents are recorded. WP10-02 then admitted FrameObj.GetElm from static evidence before its model-specific live return was proved, and a later strict pass showed that managed String[] reflection did not prove SimilarToStory element nullability. The WP09 minutes overlap RR-001 and the two WP10-02 stop/replan events were not separately timed."
       },
       "short_solution": "Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.",
-      "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
+      "last_seen_task": "WP10-02",
       "aggregate_parent": "RR-001",
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger"
@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 20,
+      "occurrences": 30,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "At least twenty retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness, including two readiness path/glob corrections. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
+        "basis": "Twenty earlier retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness. WP10-02 added ten command-shape retries: one JavaScript binding collision, one non-JavaScript exec body, two malformed PowerShell reflection pipelines, one Windows wildcard path, one reserved PowerShell Host variable, two .NET 10 test invocations started outside the CSharp/global.json runner context, one unquoted Git tree revision, and one direct foreach pipeline rejected by PowerShell. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-READINESS-PLAN",
+      "last_seen_task": "WP10-02",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -164,6 +164,57 @@
       "details": [
         "docs/SESSION_LOG.md",
         "docs/verification/rework-recurrence-index.json"
+      ]
+    },
+    {
+      "id": "RR-011",
+      "pattern": "Bounded verification bypasses the maintained changed-path formatter",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-02's frozen focused matrix invoked repo-wide dotnet format and emitted more than 268,000 output tokens of unrelated pre-existing whitespace/EOL findings; the scan was not separately timed."
+      },
+      "short_solution": "Use ./run.sh format --check with the affected scope so the outside-scope byte guard and changed-path selection remain authoritative.",
+      "last_seen_task": "WP10-02",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/wp10-etabs-read-adapter.md#focused-freeze-matrix",
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-012",
+      "pattern": "Repair-only formatting omits text files introduced by an earlier candidate",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-02 candidate integrity found three mixed-line-ending files and one missing final newline from the original candidate after the repair formatter selected only the five repair-source paths; the correction was not separately timed."
+      },
+      "short_solution": "On repair or replan, bind text hygiene to the original task base and include the full candidate path union before the replacement candidate.",
+      "last_seen_task": "WP10-02",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-02-candidate-audit-repair--2026-09-04",
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-013",
+      "pattern": "Platform-dependent C# checkout line endings disagree with the hosted dotnet formatter",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed."
+      },
+      "short_solution": "Declare LF explicitly for maintained .cs, .csproj, and .slnx files and renormalize the full candidate diff.",
+      "last_seen_task": "WP10-02",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-02-candidate-audit-repair--2026-09-04",
+        "docs/SESSION_LOG.md"
       ]
     }
   ]

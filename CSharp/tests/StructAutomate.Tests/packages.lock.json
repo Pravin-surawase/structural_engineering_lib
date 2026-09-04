@@ -186,6 +186,9 @@
           "StructuralEngineering.Contracts": "[0.1.0, )"
         }
       },
+      "structuralengineering.etabs": {
+        "type": "Project"
+      },
       "structuralengineering.exceldna": {
         "type": "Project",
         "dependencies": {

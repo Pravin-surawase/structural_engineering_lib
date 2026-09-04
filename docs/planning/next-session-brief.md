@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-04
-- Focus: Verify the merged delivery-efficiency controls, read the current WP10/PF8/PF11 authority and recurrence ledger, and make WP10-02 executable in one accurate parent session without combining later installed-host gates.
-- Completed: Re-ran the token-efficiency policy and eight focused lifecycle cases covering digest-gated replanning, guarded derived states, idempotent pre-push closeout, hosted rejection, and automatic closeout accounting; all passed.; Re-read RR-001 through RR-010 and mapped every relevant recurrence to an explicit WP10-02 entry, execution, stop, formatting, audit, or push rule.; Reconciled the requested one-session goal with PF11's 10–15 engineer-day, high-risk WP10 estimate: each remaining installed/offline/Excel/qualification slice must close one parent session, while WP10-02 is the next exact session.
-- Recurrence controls: RR-005 x20 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-010 x2 / unknown: Update recurrence count, basis, last-seen task, session row, and generated handoff together before content freeze.
+- Focus: Implement the exact-version, getter-only C# ETABS boundary and prove one bounded installed matrix without combining WP10-03 broker/ledger work, WP10-04 normalization, Excel, performance, or release work.
+- Completed: Admitted a clean current lane, bound the fixed WP10 plan and WP10-01 authority, and kept one parent session with no subagents.; Freshly verified .NET 10.0.400, the one ETABS 23.3.1.4563 process, exact PID and process start, ETABSv1 2.16.0.0 assembly identity/hash, x64 type-library hash, saved copied-model path/hash/size/mtime, lock, unit enum 6, 15 finished analysis cases, and the one intended output combination.; Added `StructuralEngineering.Etabs` as an optional `net10.0-windows` project with no compile-time CSI binary. It loads and validates the exact installed assembly at runtime, attaches by exact PID, rejects identity/version/file drift, exposes the 48-entry frozen getter matrix through a runtime read-only dictionary, validates exact reflected parameter names, and attempts every acquired COM release even when an earlier release fails.
+- Recurrence controls: RR-002 x9 / unknown: Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.; RR-005 x30 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-011 x1 / unknown: Use ./run.sh format --check with the affected scope so the outside-scope byte guard and changed-path selection remain authoritative.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -14,15 +14,16 @@
 [Structural Library Definition Programme PF0–PF11](xll-product/library-definition/README.md)
 remains the implementation authority. IMP-M1 implements WP01–WP08 as native
 Python and .NET libraries, and IMP-M2 completes the standalone Windows Excel
-product in WP09. The next packet is WP10's getter-only ETABS read adapter.
+product in WP09. WP10-01 freezes AO16 and WP10-02 adds the exact getter port;
+the next packet is WP10-03 operation control.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | IMP-M1 WP01–WP08 and IMP-M2 WP09 are implemented and qualified. WP10-01 freezes AO16's host-free boundary; WP10-02 now has a one-session entry card, fixed file budget, ordered micro-probe/implementation path, stop rules, focused matrix, and recurrence controls. Passive host files match the expected tuple, but no ETABS process was running at readiness inspection. |
-| **Next** | Before starting `WP10-02`, open exactly one intended saved, analysed ETABS model with the required output selections already set. Then run the read-only exact-host micro-probe and bind only its reviewed 2.16.0.0 getter matrix without changing units, selection, model, or analysis state. |
+| **Current** | IMP-M1 WP01–WP08 and IMP-M2 WP09 are implemented and qualified. WP10-01 freezes AO16's host-free boundary. WP10-02 supplies a vendor-independent build, exact-version/PID host binding, a 48-operation getter whitelist, strict fake-host failure controls, and one 410-call installed capture with identical preflight/postflight state. |
+| **Next** | Start `WP10-03` as a separate bounded task for the STA broker, one operation lease, deadlines and uncertain-call fencing, hash-chained call ledger, durable raw artifact, postflight, and cleanup receipt. Do not repeat WP10-02's installed getter matrix unless an exact bound identity changes. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |
-| Implementation boundary | WP10-01 is pure offline validation. WP10-02 adds the exact getter adapter after its micro-probe; CSI/COM must remain outside the pure libraries and must not alter units, result selection, the attached model, or analysis state. |
+| Implementation boundary | WP10-01 is pure offline validation and WP10-02 is the exact getter-only host boundary. WP10-03 adds operation control without normalization or Excel. CSI/COM remains outside the pure libraries and may not alter units, result selection, the attached model, or analysis state. |
 | Release boundary | Package publication and GitHub releases retain the repository's separate per-release authorization and evidence process. |
 
 ## Implementation order

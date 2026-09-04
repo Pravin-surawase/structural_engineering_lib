@@ -237,6 +237,71 @@ After product writes, stop and replan rather than patch around any of these:
 - any semantic or canonical-identity change to the frozen WP10-01 authority;
 - changed files outside the fixed budget without an explicit acceptance update.
 
+### WP10-02 installed getter-matrix replan — 2026-09-04
+
+The exact-version C# micro-probe attached successfully to the prepared process,
+but the first functional attempt stopped when `FrameObj.GetElm("82")` returned
+CSI status `1`. Earlier W3H material proved only that member's installed static
+signature; it did not prove a successful live return for this model. No force
+call had been issued by that stopped attempt and no partial capture was
+accepted.
+
+The frozen WP10-02 whitelist therefore excludes `FrameObj.GetElm`. The already
+reviewed `Results.FrameForce` return shape supplies the source object, object
+station, analysis element and element station on every force row. After the
+readiness gate, the probe obtains the exact analysis-element identities from
+those same rows and verifies each one with `LineElm.GetObj`, `GetPoints`,
+`GetLocalAxes`, and `GetTransformationMatrix`. A direct bounded getter check
+proved 13 rows for object `82`, all owned by object/element `82` and the exact
+selected combination `117.(1.5DL+1.5LL)`. This is the required mapping evidence,
+not a fallback inference or retry. Any failure or disagreement in those paired
+fields still blocks the complete capture.
+
+The first candidate-bound shape pass then stopped before force access because
+`Story.GetStories_2` returned a correctly counted managed `String[]` whose
+`SimilarToStory` array contains CLR-null reference elements. Static reflection
+cannot establish element nullability. WP10-02 therefore permits and retains
+null elements only for this proved `SimilarToStory` managed string-array
+output; it neither coerces them to blank strings nor interprets them. Nulls in
+scalar strings, other string arrays, or value-type arrays remain invalid, and
+WP10-04 must explicitly normalize or block the semantic destination. A focused
+fake-host case freezes this exact raw-shape rule.
+
+### WP10-02 candidate audit repair — 2026-09-04
+
+The first immutable candidate was rejected once by the consolidated essential
+review. One bounded repair now backs the public whitelist with a true read-only
+dictionary, binds the sole nullable string-array index into the matrix digest,
+checks exact installed parameter names as well as type and direction, attempts
+release of every acquired COM reference before aggregating any cleanup errors,
+and makes the live matrix enforce its cross-getter evidence rather than merely
+record it. The force rows must all name the requested object and exact selected
+case/combo set; returned analysis elements must form one connected graph across
+the two frame endpoints; the basic and extended case-type getters must agree;
+and the section/material getters must agree. The repaired candidate must repeat
+only its affected build, ten fake-host tests, changed-path formatting, and one
+final installed matrix. A second rejection still requires `REPLAN`.
+
+The first repaired candidate then reached the mandatory read-only integrity
+gate, which found mixed line endings in the solution, test project, and test
+lock file plus a missing final newline in the adapter lock file. Those files
+entered with the original candidate, while the repair formatter correctly
+selected only the five source files changed since that candidate. This is a
+delivery-path defect, not an ETABS behavior defect. Design revision 2 therefore
+adds the full task base (`419941c7d361c6ad2ba240b3c4d7662923ef59d5`) to the
+text-hygiene selection, normalizes only the four reported files to repository
+LF/EOF policy, repeats only the affected build/test/session evidence, and then
+creates one replacement candidate. Another rejection remains a hard stop.
+
+Hosted run `33905189848` then reproduced the remaining platform boundary: the
+Windows checkout converted the five changed `.cs` files to CRLF because
+`.gitattributes` declared them only through `text=auto`, while the maintained
+.NET formatter requires LF. Local source files had been LF and all product
+checks passed, so this was not a source-format or ETABS behavior defect. The
+bounded hosted repair adds explicit LF policy for `.cs`, `.csproj`, and `.slnx`
+files, renormalizes the full task diff, repeats only changed-.NET formatting and
+the directly affected build/tests, then republishes one replacement head.
+
 ### Focused freeze matrix
 
 Run this union only after content freezes; use a narrow reproducer earlier only
@@ -249,7 +314,7 @@ between these checks and the candidate.
 (cd CSharp && dotnet restore StructAutomate.slnx --locked-mode)
 (cd CSharp && dotnet build StructAutomate.slnx -c Release --no-restore)
 (cd CSharp && dotnet test --project tests/StructAutomate.Tests/StructAutomate.Tests.csproj -c Release --no-build --filter FullyQualifiedName~Wp10GetterAdapterTests)
-(cd CSharp && dotnet format StructAutomate.slnx --verify-no-changes --no-restore)
+./run.sh format --check --scope dotnet
 git diff --check
 ./run.sh session check
 ```
