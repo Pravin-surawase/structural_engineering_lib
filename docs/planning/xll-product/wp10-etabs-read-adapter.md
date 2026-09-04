@@ -237,6 +237,36 @@ After product writes, stop and replan rather than patch around any of these:
 - any semantic or canonical-identity change to the frozen WP10-01 authority;
 - changed files outside the fixed budget without an explicit acceptance update.
 
+### WP10-02 installed getter-matrix replan — 2026-09-04
+
+The exact-version C# micro-probe attached successfully to the prepared process,
+but the first functional attempt stopped when `FrameObj.GetElm("82")` returned
+CSI status `1`. Earlier W3H material proved only that member's installed static
+signature; it did not prove a successful live return for this model. No force
+call had been issued by that stopped attempt and no partial capture was
+accepted.
+
+The frozen WP10-02 whitelist therefore excludes `FrameObj.GetElm`. The already
+reviewed `Results.FrameForce` return shape supplies the source object, object
+station, analysis element and element station on every force row. After the
+readiness gate, the probe obtains the exact analysis-element identities from
+those same rows and verifies each one with `LineElm.GetObj`, `GetPoints`,
+`GetLocalAxes`, and `GetTransformationMatrix`. A direct bounded getter check
+proved 13 rows for object `82`, all owned by object/element `82` and the exact
+selected combination `117.(1.5DL+1.5LL)`. This is the required mapping evidence,
+not a fallback inference or retry. Any failure or disagreement in those paired
+fields still blocks the complete capture.
+
+The first candidate-bound shape pass then stopped before force access because
+`Story.GetStories_2` returned a correctly counted managed `String[]` whose
+`SimilarToStory` array contains CLR-null reference elements. Static reflection
+cannot establish element nullability. WP10-02 therefore permits and retains
+null elements only for this proved `SimilarToStory` managed string-array
+output; it neither coerces them to blank strings nor interprets them. Nulls in
+scalar strings, other string arrays, or value-type arrays remain invalid, and
+WP10-04 must explicitly normalize or block the semantic destination. A focused
+fake-host case freezes this exact raw-shape rule.
+
 ### Focused freeze matrix
 
 Run this union only after content freezes; use a narrow reproducer earlier only
@@ -249,7 +279,7 @@ between these checks and the candidate.
 (cd CSharp && dotnet restore StructAutomate.slnx --locked-mode)
 (cd CSharp && dotnet build StructAutomate.slnx -c Release --no-restore)
 (cd CSharp && dotnet test --project tests/StructAutomate.Tests/StructAutomate.Tests.csproj -c Release --no-build --filter FullyQualifiedName~Wp10GetterAdapterTests)
-(cd CSharp && dotnet format StructAutomate.slnx --verify-no-changes --no-restore)
+./run.sh format --check --scope dotnet
 git diff --check
 ./run.sh session check
 ```
