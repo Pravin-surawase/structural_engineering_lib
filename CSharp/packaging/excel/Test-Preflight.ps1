@@ -7,7 +7,7 @@ param(
 . (Join-Path $PSScriptRoot 'Common.ps1')
 
 if ([string]::IsNullOrWhiteSpace($ReceiptPath)) {
-    $ReceiptPath = Join-Path $PSScriptRoot '..\..\..\tmp\wp09-preflight.json'
+    $ReceiptPath = Join-Path (Get-StructAutomateReceiptRoot) 'excel-preflight.json'
 }
 
 $distribution = [System.IO.Path]::GetFullPath($DistributionDirectory)
