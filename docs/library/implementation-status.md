@@ -1,4 +1,4 @@
-# WP01-WP10-02 implementation status
+# WP01-WP10-03 implementation status
 
 This record captures the review performed after each work packet and any change
 to the next packet before implementation continues.
@@ -579,7 +579,44 @@ Candidate review and one bounded repair:
   local and hosted formatter bytes; the failed run never reached or invalidated
   product tests and was not merged.
 
-WP10-03 remains separate. It owns the STA broker, operation lease, durable
-hash-chained call ledger, deadline/uncertain-call fencing, durable raw artifact,
-and cleanup receipt. WP10-02 does not normalize AO16, write Excel, re-run ETABS
-analysis/design, or claim compatibility beyond the exact captured tuple.
+## WP10-03 bounded operation broker
+
+State: implemented, deterministic focused proof passing, the accepted WP10-02
+capture replayed offline, and one exact-host getter-only broker acquisition
+completed without protected-state drift.
+
+Confirmed outcomes:
+
+- The optional ETABS adapter now runs each acquisition on a dedicated STA
+  worker with explicit message pumping and a process-keyed exclusive lease.
+  A second operation cannot attach while that process lease is active.
+- Absolute deadlines return `transaction_uncertain` without retry or final
+  artifact. A late provider call retains the lease until host cleanup quiesces,
+  preventing an overlapping second operation.
+- Every permitted getter is surrounded by durable, write-through `started` and
+  `returned` records. The continuous hash chain reuses WP10-01 canonical call
+  and ledger identities and accepts only paired getter returns with status zero.
+- Exact-SHA recorded replay reconstructs the accepted raw managed types and
+  call order without a process or model file. The 410-call WP10-02 capture
+  reproduced its exact protected-state digest before the live gate.
+- Final evidence uses a no-overwrite atomic move only after postflight identity
+  equality, complete ledger construction, host disposal, and lease release.
+  Pre-existing output, denied effects, deadline, identity drift, failed cleanup,
+  incomplete ledger, and artifact tampering all fail closed without an accepted
+  final artifact.
+- One final installed run produced 820 paired records across all 48 frozen
+  getter operations. Process `7316` remained alive; the saved model's 703,208
+  bytes, SHA-256, lock, units, result epoch, and selected combination were
+  unchanged before and after.
+
+The committed evidence is
+`docs/verification/wp10-03-operation-broker-evidence.json`. Raw acquisition and
+journal files remain external and hash-bound. WP10-03 does not normalize the
+portable snapshot, write Excel, mutate ETABS, qualify performance, or broaden
+the exact installed-version claim.
+
+WP10-04 is next. It must consume the hash-validated durable artifact offline,
+project ETABS records into the portable raw-capture contract, and prove unit,
+axis, mapping, station, force-row, and row-disposition conservation without
+creating a dependency from the host-free analysis library back to the ETABS
+adapter.

@@ -1,6 +1,6 @@
 **Type:** Architecture
 **Audience:** Developers
-**Status:** Ready
+**Status:** Active
 **Importance:** Critical
 **Created:** 2026-09-04
 **Last Updated:** 2026-09-05
@@ -18,8 +18,9 @@ The primary installed tuple is Windows x64, ETABS `23.3.1.4563`,
 `CSiAPIv1.dll`/ETABSv1 `2.16.0.0`, .NET 10, and the WP09 64-bit Excel host.
 Other ETABS versions do not inherit this compatibility claim.
 
-WP10-01 and WP10-02 are complete. WP10-02 proved the exact-version getter
-boundary and one unchanged-model live matrix; WP10-03 is the next bounded
+WP10-01 through WP10-03 are complete. WP10-02 proved the exact-version getter
+boundary and one unchanged-model live matrix; WP10-03 added the bounded STA
+operation-control and durable evidence boundary. WP10-04 is the next bounded
 slice. The remaining slices use the plan-driven delivery contract below as a
 pilot of the repository-wide workflow. That contract orchestrates existing
 controls; it does not create a second WP10-only delivery system.
@@ -125,7 +126,7 @@ one coding session would recreate WP09's oversized-packet failure mode.
 
 For delivery purposes, **one session** therefore means that each remaining
 slice starts and closes one parent task without carrying repair work into a
-later session. WP10-02 completed this boundary; WP10-03 is next. Later slices
+later session. WP10-03 completed this boundary; WP10-04 is next. Later slices
 may share the IMP-M3 milestone branch only when their accepted authority and
 installed-host gate are unchanged; they retain separate task timers and
 acceptance decisions.
@@ -133,8 +134,8 @@ acceptance decisions.
 | Session | State | Complete outcome | Must not leak into the session |
 | --- | --- | --- | --- |
 | WP10-02 | Complete | exact-version getter port, binding, fake-host proof, and one live getter-only matrix | broker retries, normalization, Excel, performance |
-| WP10-03 | Next | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
-| WP10-04 | Planned | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
+| WP10-03 | Complete | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
+| WP10-04 | Next | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
 | WP10-05 | Planned | transactional `XL-CMD-02` import, readback, rollback, and freshness | ETABS mutation and qualification claims |
 | WP10-06 | Planned | E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
 
@@ -246,6 +247,66 @@ for every repository domain. Its closeout must compare planned versus actual
 paths, commands, gates, candidates, rework, and live runs. Only generic rules
 that reduce a measured failure without importing WP10 facts may move into the
 project-wide control plane; that promotion is a separate maintenance scope.
+
+### WP10-03 implementation review — 2026-09-05
+
+State: implemented locally with offline and exact-host evidence passing; final
+candidate and hosted PR acceptance remain delivery gates.
+
+Confirmed outcomes:
+
+- `StructuralEngineering.Etabs` now owns a process-keyed single-operation
+  lease, dedicated STA worker, explicit Windows message pumping, absolute
+  deadline, no-retry timeout fence, and a quiescence handle that retains the
+  lease until any late provider call and cleanup finish.
+- Each getter writes and flushes one `started` record before dispatch and one
+  `returned` record after the provider returns. Records use the WP10-01
+  canonical hash functions, form one continuous SHA-256 chain, and are paired
+  into a finalized ledger only after every getter succeeds.
+- The final raw acquisition artifact is written to a write-through temporary
+  path and moved without overwrite only after exact host identity, protected
+  pre/post state, ledger, host disposal, and lease release are proved. Timeout,
+  cancellation, cleanup uncertainty, identity drift, denied effects, failed
+  return, or existing evidence emits no accepted final artifact.
+- Exact-SHA recorded capture replay reconstructs the proved managed scalar and
+  array kinds in order without ETABS. The accepted WP10-02 capture replayed all
+  410 calls and reproduced its protected-state digest exactly.
+- One final live run on process `7316` completed 410 calls across all 48 frozen
+  getters and 820 hash-chained records. It retained STA execution and message
+  pumping, released all acquired COM references and the lease, left the ETABS
+  process alive, and preserved model bytes, model SHA-256, lock, units,
+  analysis/result state, and output selection.
+
+The committed receipt is
+`docs/verification/wp10-03-operation-broker-evidence.json`; the hash-bound raw
+artifact and journals remain outside Git. This slice performs no normalization,
+workbook write, ETABS setter, analysis/design action, performance qualification,
+general-version claim, engineering approval, or release.
+
+One implementation-stage replay comparison exposed that `DateTimeOffset` used
+`+00:00` while the accepted protected-state digest used canonical UTC `Z`.
+The host-independent inspection now formats the same UTC instants identically;
+the affected replay was regenerated before the only live run. No candidate had
+been created, so this was not a candidate repair.
+
+### WP10-04 next-plan review after WP10-03
+
+WP10-04 remains an offline-only task. Its entry card must bind the exact
+WP10-03 artifact schema and receipt hashes, then project vendor-specific getter
+records into the already frozen `RawAnalysisCapture` contract before pure
+normalization. `StructuralEngineering.Analysis` must not reference the optional
+ETABS assembly; the adapter may project to portable records, while canonical
+unit conversion, axes/mapping validation, row conservation, and snapshot
+identity stay in the host-free layer.
+
+Before WP10-04 product writes, freeze explicit mappings for ETABS unit enum `6`,
+load-case/combination enums, `SimilarToStory` nulls, section/material facts,
+local-axis and physical-face evidence, object/element/physical stations, action
+basis and step-number rules, and every raw-model/force-row disposition. Its
+focused matrix must first replay the retained WP10-03 artifact, prove the same
+snapshot identity without COM, and make unresolved mappings or axes block the
+whole snapshot. WP10-04 must not attach to ETABS, write Excel, or reopen the
+completed broker design unless its input contract is shown to be insufficient.
 
 ## WP10-02 single-session execution contract
 

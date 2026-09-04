@@ -1,16 +1,16 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-04
+last_updated: 2026-09-05
 doc_type: guide
 complexity: advanced
 ---
 
 # StructAutomate — current plan
 
-Updated 4 September 2026 after completion of PF0–PF11, the WP01–WP08 native
-library milestone, and the WP09 standalone Windows Excel product. The next
-implementation unit is the getter-only ETABS snapshot adapter; the complete
+Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
+library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-03.
+The next implementation unit is offline ETABS-capture normalization; the complete
 automation path includes ETABS forces,
 design/checking, candidate search, reanalysis, detailing and construction
 outputs.
@@ -19,9 +19,9 @@ outputs.
 [PF11's implementation blueprint](library-definition/pf11/README.md) are
 complete. WP01–WP08 implement the shared native Python and .NET beam libraries,
 and [WP09](wp09-standalone-excel.md) now supplies the signed, installed-tested
-standalone Excel product. [WP10](wp10-etabs-read-adapter.md) is ready next and
-adds read-only ETABS acquisition without moving engineering formulas into the
-adapter.
+standalone Excel product. [WP10](wp10-etabs-read-adapter.md) has frozen its
+portable contract, exact getter adapter, and bounded STA broker. WP10-04 next
+normalizes the retained raw capture without ETABS or Excel.
 
 **Use the original architecture's P0–P6 phase meanings.** My earlier v2 synthesis changed those meanings and compared the older optimizer roadmap instead of this document. That comparison is superseded.
 
@@ -31,8 +31,8 @@ adapter.
 2. [Automation requirements and delivery sequence](automation/README.md), with operation contracts, examples, source crosswalk and member/check schemas.
 3. [WP09 standalone Excel record](wp09-standalone-excel.md), with the canonical
    adapter decision and installed acceptance evidence.
-4. [WP10 read-only ETABS plan](wp10-etabs-read-adapter.md), with the next exact
-   boundary, reuse decisions, delivery slices and gates.
+4. [WP10 read-only ETABS plan](wp10-etabs-read-adapter.md), with completed
+   WP10-01 through WP10-03 evidence and the next offline-normalization boundary.
 5. [Working C# foundation](../../../CSharp/README.md), its exact build/test commands and implemented boundaries.
 6. [Reusable Python/.NET library research](reusable-library-research.md), covering proposed library boundaries, peer libraries, public signatures and ETABS result semantics.
 7. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
@@ -60,8 +60,8 @@ adapter, versioned workbook commands, a sample, signed packaging, and installed
 Excel evidence. Its workbook evaluates the one declared current physical
 candidate; it does not yet expose a useful multi-option search domain.
 
-Implementation sequencing follows PF11: WP09 is complete, WP10 now adds
-getter-only ETABS acquisition, WP11 exposes multi-option fixed-action search in
+Implementation sequencing follows PF11: WP09 and WP10-01 through WP10-03 are
+complete, WP10-04 now adds offline normalization, WP11 exposes multi-option fixed-action search in
 Excel before adding controlled copied-model reanalysis, and WP12 completes
 migration and release readiness.
 
@@ -77,6 +77,6 @@ The [v2 synthesis](history/foundation-and-delivery-plan-v2.md) and its unchanged
 
 The [engineering-depth assessment](research/engineering-depth.md) and [readiness audit](research/foundation-readiness.md) remain dated evidence. They establish neither a completed XLL nor independent engineering approval.
 
-The approved implementation sequence now continues with WP10. Model operations
+The approved implementation sequence now continues with WP10-04. Model operations
 use an identified application/model and the repository transaction workflow;
 package releases retain their per-release authorization process.

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-09-04",
+  "updated": "2026-09-05",
   "tracking_rule": "One occurrence is one confirmed event or repair, not one mention. Reuse an existing RR-NNN for the same root-cause pattern, increment occurrences, update cumulative observed minutes when measured, and add only a deep-detail link. Create a new ID only for a distinct root cause.",
   "time_rule": "Numeric bounds are cumulative observed or reconstructed rework minutes. Null bounds mean the pattern was confirmed but not separately timed; explain the evidence boundary in basis. Child patterns whose aggregate_parent is set must not be added to the parent's time.",
   "patterns": [
@@ -39,14 +39,14 @@
     {
       "id": "RR-003",
       "pattern": "Candidate or evidence frozen before normalization and behavior stability",
-      "occurrences": 4,
+      "occurrences": 5,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately."
+        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed."
       },
-      "short_solution": "Freeze content, format only changed source paths, then run one read-only integrity check after audit acceptance.",
-      "last_seen_task": "WP09-POSTMORTEM-CONTROLS",
+      "short_solution": "Refresh dependency and generated projections before freeze, format only changed source paths, then run one read-only integrity check after audit acceptance.",
+      "last_seen_task": "WP10-03",
       "aggregate_parent": "RR-001",
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#corrected-candidate-sequence"
@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 31,
+      "occurrences": 32,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Twenty earlier retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness. WP10-02 added ten command-shape retries: one JavaScript binding collision, one non-JavaScript exec body, two malformed PowerShell reflection pipelines, one Windows wildcard path, one reserved PowerShell Host variable, two .NET 10 test invocations started outside the CSharp/global.json runner context, one unquoted Git tree revision, and one direct foreach pipeline rejected by PowerShell. WP10-PLAN-DRIVEN-DELIVERY added one Windows wildcard path passed directly to rg before the search was corrected to directory-based matching. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
+        "basis": "Twenty earlier retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness. WP10-02 added ten command-shape retries: one JavaScript binding collision, one non-JavaScript exec body, two malformed PowerShell reflection pipelines, one Windows wildcard path, one reserved PowerShell Host variable, two .NET 10 test invocations started outside the CSharp/global.json runner context, one unquoted Git tree revision, and one direct foreach pipeline rejected by PowerShell. WP10-PLAN-DRIVEN-DELIVERY added one Windows wildcard path passed directly to rg before the search was corrected to directory-based matching. WP10-03 added one direct wildcard path search and then used directory-based rg for the remaining inspection. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-PLAN-DRIVEN-DELIVERY",
+      "last_seen_task": "WP10-03",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -214,6 +214,23 @@
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-02-candidate-audit-repair--2026-09-04",
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-014",
+      "pattern": "Semantically equal UTC instants use different text spellings inside hashed evidence",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-03's first full offline replay preserved the same UTC instants but DateTimeOffset emitted +00:00 where the accepted protected-state digest used Z. The replay artifact was replaced before the only live run; the correction was not separately timed."
+      },
+      "short_solution": "Normalize UTC instants to one Z representation before hashing and assert replay state digest equality before live acquisition.",
+      "last_seen_task": "WP10-03",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-03-implementation-review--2026-09-05",
         "docs/SESSION_LOG.md"
       ]
     }
