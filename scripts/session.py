@@ -1243,7 +1243,9 @@ def _automatic_delivery_efficiency(
         for state, timestamp in timeline
         if state in {"CANDIDATE", "REPAIRED_CANDIDATE"}
     )
-    accepted_at = first_time("AUDIT_ACCEPTED")
+    accepted_at = max(
+        timestamp for state, timestamp in timeline if state == "AUDIT_ACCEPTED"
+    )
     pushed_at = first_time("PUSHED")
     hosted_at = first_time("HOSTED_PASSED")
 
@@ -1775,7 +1777,29 @@ def cmd_delivery(args: argparse.Namespace) -> int:
             snapshot["design_audit_rejections"] = (
                 int(snapshot["design_audit_rejections"]) + 1
             )
-            if int(snapshot["design_audit_rejections"]) == 1:
+            if (
+                int(snapshot["design_candidate_count"]) == 1
+                and int(snapshot["repair_batches"]) == 0
+            ):
+                target = "REPAIR"
+                snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
+            else:
+                target = "REPLAN"
+        elif requested == "INTEGRITY_REJECTED":
+            if state != "AUDIT_ACCEPTED":
+                raise ValueError(f"integrity rejection is invalid from {state}")
+            latest_head = snapshot.get("latest_candidate_head")
+            current_head, _tree = _resolve_head_and_tree(args.head)
+            if latest_head != current_head:
+                raise ValueError(
+                    "integrity rejection must name the latest accepted candidate head"
+                )
+            if not evidence:
+                raise ValueError("integrity rejection requires --evidence")
+            if (
+                int(snapshot["design_candidate_count"]) == 1
+                and int(snapshot["repair_batches"]) == 0
+            ):
                 target = "REPAIR"
                 snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
             else:
@@ -3880,7 +3904,10 @@ def build_parser() -> argparse.ArgumentParser:
         "delivery", help="Inspect or advance the fail-closed delivery state machine"
     )
     p_delivery.add_argument("--task-id", default="")
-    p_delivery.add_argument("--to", choices=(*DELIVERY_STATES, "AUDIT_REJECTED"))
+    p_delivery.add_argument(
+        "--to",
+        choices=(*DELIVERY_STATES, "AUDIT_REJECTED", "INTEGRITY_REJECTED"),
+    )
     p_delivery.add_argument("--status", action="store_true")
     p_delivery.add_argument("--guard-push", action="store_true")
     p_delivery.add_argument("--acceptance-path", action="append")

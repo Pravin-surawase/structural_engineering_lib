@@ -169,11 +169,12 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    affected focused tests, benchmarks, and architecture/import checks together
    as one consolidated selection. The formatter owns only changed Python,
    FastAPI, and C# paths and fails if bytes change outside that set.
-6. Add one or two independent reviews only when risk justifies them. Before the
+6. Add one or two independent reviews only when risk justifies them. After the
    final candidate commit and independent acceptance, run
    `./run.sh check --candidate-integrity` exactly once; its consolidated manual
-   all-files owner is read-only. A failure invalidates the candidate and returns
-   to the one allowed repair path. Preserve separately named raw artifact identities.
+   all-files owner is read-only. A failure invalidates the candidate; record
+   `INTEGRITY_REJECTED` to use the one repair path or enter `REPLAN` after the
+   repair candidate. Preserve separately named raw artifact identities.
    Ordinary commits run only conflict, large-file, and live Git-operation
    safety guards; comprehensive assurance belongs to the PR.
 7. If verification exposes an outcome-changing defect, repair its root cause,
@@ -248,7 +249,9 @@ The ignored Git-common ledger persists the executable sequence
 PREPARED → CANDIDATE → AUDIT_ACCEPTED → INTEGRITY_VERIFIED → FINAL_CLOSED →
 PUSHED → HOSTED_PASSED → MERGED`. One rejection enters `REPAIR` and permits one
 `REPAIRED_CANDIDATE`; a second enters `REPLAN` and blocks until an acceptance
-file changes. Transitions, timed commands, candidate heads, audit failures,
+file changes. An accepted candidate's integrity failure uses that same repair
+allowance and is recorded separately from an audit rejection. Transitions,
+timed commands, candidate heads, audit failures,
 repair batches, focused retries, full-gate runs, the single hosted run, and total
 elapsed time are machine-derived rather than caller-entered. Closeout derives
 the seven non-overlapping phase intervals from transition timestamps, binds the

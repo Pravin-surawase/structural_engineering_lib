@@ -54,8 +54,10 @@ structure is affected; this check is read-only.
 
 Run this read-only hosted-equivalent file check only after the independent audit
 accepts the immutable candidate. If it fails, the candidate is not immutable:
-return to the writer state, repair the root cause, and create the one allowed
-repair candidate. Do not run `check --quick` as a ritual before every commit.
+record `INTEGRITY_REJECTED`, return to the writer state, repair the root cause,
+and create the one allowed repair candidate. A failure on that repaired
+candidate enters `REPLAN`. Do not run `check --quick` as a ritual before every
+commit.
 
 ### 5. PR acceptance: required CI
 

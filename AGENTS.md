@@ -307,6 +307,8 @@ PUSHED → HOSTED_PASSED → MERGED`. The first audit rejection admits one
 patching until the acceptance digest changes. Run `./run.sh format --write`
 once after content freeze, then focused checks. After independent acceptance,
 run the read-only `./run.sh check --candidate-integrity` exactly once. The
+`INTEGRITY_REJECTED` transition sends the first failed candidate to the same
+single repair path; a failure on the repair candidate enters `REPLAN`. The
 pre-push hook runs the one final read-only `session end` and records
 `FINAL_CLOSED`; repeated push attempts at the same head do not rerun it.
 

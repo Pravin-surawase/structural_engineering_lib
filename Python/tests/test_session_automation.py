@@ -2151,6 +2151,63 @@ def test_delivery_second_audit_rejection_requires_changed_acceptance_contract(
     assert advance("--to", "BOUNDED_UNITS", *acceptance) == 0
 
 
+def test_delivery_integrity_rejection_enters_the_single_repair_batch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "task_id": "DELIVERY-TEST",
+        "state": "AUDIT_ACCEPTED",
+        "design_revision": 1,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40},
+        "audit_rejections": 0,
+        "design_candidate_count": 1,
+        "design_audit_rejections": 0,
+        "repair_batches": 0,
+        "hosted_validation_runs": 0,
+        "latest_candidate_head": "a" * 40,
+        "latest_candidate_tree": "b" * 40,
+    }
+    entries = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "DELIVERY-TEST",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "DELIVERY-TEST",
+            "delivery": snapshot,
+        },
+    ]
+    ledger.write_text("\n".join(json.dumps(row) for row in entries) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    monkeypatch.setattr(
+        session, "_resolve_head_and_tree", lambda _head: ("a" * 40, "b" * 40)
+    )
+    args = session.build_parser().parse_args(
+        [
+            "delivery",
+            "--task-id",
+            "DELIVERY-TEST",
+            "--to",
+            "INTEGRITY_REJECTED",
+            "--evidence",
+            "read-only gate found an outcome-changing defect",
+        ]
+    )
+
+    assert session.cmd_delivery(args) == 0
+    repaired = session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")
+    assert repaired["state"] == "REPAIR"
+    assert repaired["repair_batches"] == 1
+    assert repaired["audit_rejections"] == 0
+
+
 def test_delivery_prepush_closeout_is_idempotent(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

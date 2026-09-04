@@ -61,7 +61,9 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
    then advance to `AUDIT_ACCEPTED`. One rejection admits one consolidated
    repair candidate; a second enters `REPLAN` until acceptance content changes.
 5. Run `./run.sh check --candidate-integrity` once on the accepted unchanged
-   head and advance to `INTEGRITY_VERIFIED`.
+   head and advance to `INTEGRITY_VERIFIED`. On failure, record
+   `INTEGRITY_REJECTED`; it consumes the same single repair allowance as an
+   audit rejection, and a repaired-candidate failure enters `REPLAN`.
 6. Push normally. The pre-push hook runs one read-only `session end`, records
    `FINAL_CLOSED`, and does not rerun on a repeated push of the same head. After
    one hosted run passes, record `HOSTED_PASSED`, merge, record `MERGED`, and

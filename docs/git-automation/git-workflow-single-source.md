@@ -196,8 +196,10 @@ The persisted stage gates are:
    more patching until an acceptance file changes.
 6. **AUDIT_ACCEPTED → INTEGRITY_VERIFIED → FINAL_CLOSED:** run the consolidated
    read-only candidate-integrity owner exactly once on the unchanged accepted
-   head. A failure invalidates the candidate. The pre-push hook runs the one
-   final read-only `session end` and records `FINAL_CLOSED` idempotently.
+   head. A failure invalidates the candidate; record `INTEGRITY_REJECTED` to
+   enter the same single repair allowance, or `REPLAN` if that allowance was
+   already used. The pre-push hook runs the one final read-only `session end`
+   and records `FINAL_CLOSED` idempotently.
 7. **PUSHED → HOSTED_PASSED → MERGED:** push once, complete one hosted CI/review
    closeout, and immediately recheck the exact head/tree, base, required checks,
    reviews, unresolved threads, conflicts, and mergeability. Merge only the

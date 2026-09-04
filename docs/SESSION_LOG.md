@@ -60,6 +60,12 @@ state machine without changing WP10 product behavior.
   same-checkout handoff and final closeout had already been made conditional.
 - Final staged-diff review found that the .NET hosted job would load PyYAML
   eagerly even though that job does not install Python project dependencies.
+- The first accepted candidate's read-only integrity gate rejected 101
+  historical paths: binary workbooks/images/vendor files were decoded as UTF-8,
+  and documentation underline rows longer than seven equals signs were treated
+  as merge separators.
+- The first repair session-consistency check rejected a prose-only “no
+  recurrence” bullet inside the machine-parsed recurrence list.
 - ⚠️ TERMINAL ISSUE: PowerShell interpreted part of an `rg` alternation as a
   command, wildcard-like path arguments were invalid, a guessed `session active`
   subcommand did not exist, and Git-Bash `/tmp` did not map to the Windows Python
@@ -109,6 +115,20 @@ state machine without changing WP10 product behavior.
   shared one module-level optional dependency. Resolution: import PyYAML only
   inside the integrity YAML branch; the dependency-free .NET formatter path no
   longer needs it.
+- Confirmed root cause: `_syntax_error` decoded every path before checking
+  whether its suffix had a structured-data parser, while conflict detection
+  used prefix matching for the exact seven-character separator. Resolution:
+  decode only JSON/TOML/YAML candidates, recognize the separator only when the
+  whole line is exactly seven equals signs, and make `INTEGRITY_REJECTED`
+  consume the same one-repair allowance as an audit rejection. Proof: the
+  regression test retains a real conflict failure while accepting a binary and
+  an eight-character documentation underline; the repository-wide read-only
+  integrity owner is the repaired-candidate gate.
+- Confirmed root cause: every bullet under `Rework and recurrence` is a typed
+  recurrence row and therefore requires exactly one `RR-NNN` identity.
+  Resolution: keep the first-occurrence explanation in the ordinary issue and
+  root-cause sections and leave only real recurrence rows in that list. Proof:
+  `./run.sh session check` is the affected repair check.
 
 ### Rework and recurrence
 

@@ -301,13 +301,18 @@ def _file_digest(path: Path) -> str:
 
 def _syntax_error(path: str, payload: bytes) -> str | None:
     suffix = Path(path).suffix.lower()
+    structured_suffixes = {".json", ".toml", ".yml", ".yaml"}
+    if suffix not in structured_suffixes or (
+        suffix in {".yml", ".yaml"} and path == "mkdocs.yml"
+    ):
+        return None
     try:
         text = payload.decode("utf-8")
         if suffix == ".json" and path not in JSONC_PATHS:
             json.loads(text)
         elif suffix == ".toml":
             tomllib.loads(text)
-        elif suffix in {".yml", ".yaml"} and path != "mkdocs.yml":
+        elif suffix in {".yml", ".yaml"}:
             import yaml
 
             try:
@@ -332,9 +337,10 @@ def file_integrity(paths: Sequence[str], *, root: Path = REPO_ROOT) -> list[str]
         if b"\0" in payload:
             continue
         if any(
-            line.startswith(marker)
+            line.startswith(MERGE_MARKERS[0])
+            or line == MERGE_MARKERS[1]
+            or line.startswith(MERGE_MARKERS[2])
             for line in payload.splitlines()
-            for marker in MERGE_MARKERS
         ):
             failures.append(f"{relative}: merge-marker: conflict marker present")
         if relative.startswith(PRESERVED_TEXT_PREFIXES):

@@ -55,6 +55,7 @@ INTAKE → BOUNDED_UNITS → CONTENT_FROZEN → FORMATTED
 
 first rejection:  CANDIDATE → REPAIR → ... → REPAIRED_CANDIDATE
 second rejection: REPAIRED_CANDIDATE → REPLAN
+integrity failure: AUDIT_ACCEPTED → REPAIR (or REPLAN after the repair candidate)
 REPLAN → BOUNDED_UNITS only after the acceptance digest changes
 ```
 
@@ -71,7 +72,7 @@ that transition. Hosted and merge identities are recorded only after push.
 | No post-freeze formatter spill | `verification.py format` selects changed source paths and compares all other repository bytes before/after |
 | Immutable integrity boundary | consolidated manual integrity owner performs read-only syntax/whitespace/line-ending/conflict checks |
 | One independent decision | audit transition is bound to the latest exact candidate head and evidence |
-| Initial plus one repair candidate | third candidate in one design revision is rejected |
+| Initial plus one repair candidate | audit or integrity rejection uses the same repair allowance; a third candidate in one design revision is rejected |
 | Second rejection forces design change | `REPLAN` cannot advance until an acceptance-file digest changes |
 | One final closeout | idempotent pre-push transition counts exactly one `FINAL_CLOSED` state |
 | One hosted cycle | a second `HOSTED_PASSED` transition is rejected |
