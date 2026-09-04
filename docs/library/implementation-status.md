@@ -1,4 +1,4 @@
-# WP01-WP09 implementation status
+# WP01-WP10-01 implementation status
 
 This record captures the review performed after each work packet and any change
 to the next packet before implementation continues.
@@ -464,3 +464,46 @@ WP10 plan update:
 - Require exact pre/post state equality, complete parallel-array validation,
   six-component concurrent rows, offline replay, Excel transactional import,
   and PF8 E5-02 through E5-04 plus `PERF-ETABS-ACQUISITION`.
+
+## WP10-01 review
+
+State: implemented, cross-language parity verified, and host-free focused
+verification passing.
+
+Confirmed outcomes:
+
+- AO16 now has strict portable request, raw-capture, call-ledger, normalized
+  snapshot, diagnostic, provenance, and result records in Python and .NET.
+- Model metadata, explicit optional evidence states, source/runtime/model and
+  analysis/result identities, units and one-time conversions, axes and physical
+  faces, geometry, material/section assignments, modifiers, offsets, releases,
+  cases, combinations, selections, stations, and six-component force rows are
+  retained without a host dependency.
+- Every normalized fact references raw evidence; every source record has one
+  accepted, approved-exclusion, or blocked disposition; accepted force rows
+  bind the exact getter signature, call, source-row ordinal, station, selection,
+  and canonical row identity.
+- PF4 compact canonical JSON freezes call-record, ledger, raw-capture, action-row,
+  and snapshot identities. Python and .NET produce the same canonical bytes and
+  SHA-256 for the shared valid fixture.
+- Invalid schema, stale result epoch, unresolved mapping/axes, blocked rows,
+  incomplete ledgers, and raw/snapshot tampering fail closed with distinct
+  operation and result states and never expose a partial accepted snapshot.
+- The reusable modules reference no CSI, ETABS, COM, Office, or Excel host
+  assembly. Offline replay proves portable integrity, not live ETABS
+  compatibility, analysis correctness, or engineering approval.
+
+Corrections made during review:
+
+- Added explicit .NET JSON wire names for digit-delimited fields such as
+  `inertia_2_mm4`, preventing a serializer-policy ambiguity from breaking the
+  shared schema.
+- Made Python canonical serialization recursively normalize model values, so
+  integer-valued floats produce the same PF4 bytes as JSON and .NET.
+- Kept approved exclusions visible in the conserved row ledger and separated
+  transport/hash rejection, host-evidence fencing, and uncertain call completion.
+
+WP10-02 remains the first host adapter packet. It must consume these frozen
+records and add exact-version CSI/STA acquisition evidence; no such host code,
+Excel command, model mutation, copied-model reanalysis, solver, or optimization
+is implemented by WP10-01.

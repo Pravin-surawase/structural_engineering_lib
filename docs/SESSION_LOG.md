@@ -5,6 +5,149 @@
 
 ---
 
+## 2026-09-04 — Session: WP10-01 portable ETABS snapshot contracts
+
+**Agent:** Codex (`MAIN`).
+
+**Branch:** `codex/wp10-01-etabs-snapshot-contracts`.
+
+**Focus:** Freeze and implement the host-free AO16 request, raw acquisition,
+normalized analysis-snapshot, deterministic identity, replay-result, and
+Python/.NET conformance boundary without CSI, COM, installed ETABS/Excel,
+model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
+
+**Completed:**
+
+- Reconciled PF4/PF8/PF11 semantics, the WP10 plan, existing Python ETABS
+  evidence models, native .NET contracts, public API conventions, units,
+  provenance, result states, optional evidence, and cross-language identity.
+- Added strict pure Python and .NET contracts and offline replay validators for
+  metadata, units, axes/faces, geometry, assignments, releases/offsets,
+  cases/combinations, result selections, stations, same-row forces, call/source
+  provenance, raw-row disposition, and freshness.
+- Added the AO16 manifest, strict JSON Schema, one shared valid fixture,
+  adversarial mutations, canonical identities, public examples, focused tests,
+  and the WP10-01 library/reference/status documentation.
+- Repaired independent-review findings so Python/.NET canonical JSON agrees for
+  Unicode and negative zero, and every accepted model-ledger row proves its
+  record kind and canonical identity.
+
+### Issues encountered
+
+- The required `session begin` command recorded the WP10-01 timing checkpoint
+  on clean `main` and then stopped at `HOLD_MAIN`; after creating the scoped
+  feature branch, trust became ready and the unmatched-start guard correctly
+  rejected a second start.
+- Several read-only commands used guessed paths or shell shapes: an unknown
+  context area, the wrong solution and validator/test filenames, and
+  PowerShell-incompatible recursive project globs. A later root-relative mypy
+  target also appeared under both `Python.structural_lib` and `structural_lib`.
+  The PowerShell closeout probe also parsed `HEAD^{tree}` as a brace expression
+  instead of a literal Git revision. A combined verification command later
+  invoked the root Python launcher from `CSharp/`. No repository data changed.
+- The first .NET replay rejected strict JSON fields such as
+  `inertia_2_mm4`, and Python's first public canonical serialization retained
+  `.0` for integer-valued model fields even though its identity basis normalized
+  them.
+- The first same-row validator compared converted forces and the selected
+  station/member, but did not yet prove that case, step, getter method, raw
+  object/element, and converted object/element stations came from that same row.
+- Preparation closeout passed every printed check and named its expected
+  nonfinal exit as `2`, while the outer command result again surfaced exit `1`.
+- Independent review first raised two Python schema concerns that the existing
+  strict models and focused reproducers disproved, then identified two real
+  parity defects: .NET emitted escaped Unicode and negative zero differently
+  from Python, and accepted model-ledger rows did not prove their canonical
+  kind and identity.
+- The solution-level .NET format command rewrote pre-existing style across
+  unrelated C# files even though the WP10 additions were the only intended
+  formatting scope.
+- The first review repair used .NET's relaxed JavaScript encoder; re-audit
+  proved that it still escaped the permitted U+2028/U+2029 separators while
+  Python retained their UTF-8 bytes.
+
+### Root causes and resolutions
+
+- Confirmed root cause: session timing is recorded before the main-branch hold
+  check, while the user required that exact start command before branch
+  creation. Resolution: retain the single checkpoint, create the scoped branch,
+  verify trusted state, and do not create a duplicate start. Proof: the branch
+  trust check reported `READY_LOCAL` and the duplicate-start guard named the
+  existing WP10-01 checkpoint. (`RR-004`)
+- ⚠️ TERMINAL ISSUE: guessed filenames/globs and a nonexistent context routing
+  key did not match the active Windows workspace. Resolution: use `rg --files`,
+  `Get-ChildItem -LiteralPath`, repository-root paths, and the actual
+  `CSharp/StructAutomate.slnx` and maintained validator/test paths; run mypy
+  from `Python/` so the package has one module identity, and use `git show -s
+  --format=%T HEAD` for the tree identity on PowerShell. Keep root Python and
+  C# solution commands in separate working-directory calls. (`RR-005`)
+- Confirmed root cause: .NET's snake-case policy does not insert an underscore
+  before all numeric suffixes, and Python returned `model_dump` before applying
+  recursive PF4 numeric normalization. Resolution: bind ambiguous .NET wire
+  names explicitly and recurse through dumped Python models. Proof: both
+  languages now accept the fixture and match its 12,658 canonical bytes and
+  SHA-256 `3a56e0c0e024a10d9266622c18da020ce8c33507c4efabf921ed7c8143de8523`.
+- Confirmed root cause: the initial cross-record check treated matching force
+  values and references as sufficient provenance. Resolution: compare the
+  complete source object/element/case/step tuple, getter method/signature/call,
+  source-row ordinal/reference, and one-time converted object/element stations
+  before accepting an action. Proof: the shared recombined-row vector is fenced
+  as `ETABS.MAPPING_UNRESOLVED` in both languages.
+- Root cause remains unconfirmed for the preparation-status mismatch; the same
+  outer-wrapper symptom was previously reproduced with a direct Bash status of
+  `2`. Resolution: verify every printed preparation check, preserve the
+  nonfinal status, and use the later clean read-only session-end result as the
+  final authority. (`RR-006`)
+- Confirmed root cause: the .NET serializer used its default encoder and
+  negative-zero rendering instead of the full PF4 cross-runtime rules.
+  Resolution: retain non-ASCII UTF-8 and normalize every numeric zero before
+  serialization. Proof: focused Python/.NET tests assert the same canonical
+  `Bâtiment मराठी` and negative-zero bytes.
+- Confirmed root cause: the first row-accounting validator bound force rows but
+  treated model-row ledger identities as generic accepted text. Resolution:
+  require every raw model record to bind exactly one normalized fact of the
+  same record kind and exact canonical identity. Proof: the shared tampered
+  point-ledger vector is fenced as `ETABS.ROW_ACCOUNTING` in both languages.
+- Confirmed root cause: `dotnet format` selected the whole solution and applied
+  its current style rules beyond the changed domain. Resolution: reverse only
+  the formatter-created diffs outside the two WP10 C# files, normalize the
+  resulting line-ending-only status through the index, and verify the staged
+  C# paths are exactly the codec and WP10 test. Proof: `git diff --cached
+  --name-only` contains only those two C# paths.
+- Confirmed root cause: the platform JSON encoder owns JavaScript-safe escaping,
+  not this contract's narrower PF4 string canonicalization. Resolution: encode
+  strings explicitly, escaping JSON syntax and U+0000–U+001F controls while
+  retaining all other valid Unicode scalar values. Proof: both runtime tests
+  now include U+2028/U+2029 as literal UTF-8. (`RR-007`)
+
+### Rework and recurrence
+
+Counts, time bases, short controls, and detail links live once in the
+[recurrence index](verification/rework-recurrence-index.json).
+
+- `RR-004` occurrences=5; minutes=unknown; includes the WP10-01 main-start
+  preflight event.
+- `RR-005` occurrences=14; minutes=unknown; includes seven bounded WP10-01
+  command-shape/path corrections.
+- `RR-006` occurrences=2; minutes=unknown; includes this preparation closeout.
+- `RR-007` occurrences=2; minutes=unknown; includes the incomplete first Unicode
+  parity repair and its re-audit correction.
+
+### Validation through candidate preparation
+
+- All 18 Python WP10 tests and all 17 focused .NET WP10 tests pass, including the
+  shared valid identity/replay fixture, eleven fail-closed mutations, duplicate
+  keys/non-finite transport, explicit request scope/optional evidence, and
+  host-dependency checks.
+- The structural-engineering contract validator accepts WP01–WP08 and WP10
+  manifests, schemas, code data, vector coverage, and the WP10 canonical
+  identity/byte-count expectations.
+- The locked .NET 10 solution restore and release build pass with no warnings;
+  all 106 native-library tests and all 46 compatibility/application tests pass.
+  No ETABS or Excel host was opened or installed.
+
+**Git handoff receipt:** `docs/verification/wp10-01-git-handoff-receipt.json`
+
 ## 2026-09-04 — Session: WP09 delivery postmortem and recurrence controls
 
 **Agent:** Codex (`MAIN`, with independent forensic-timeline and workflow-control

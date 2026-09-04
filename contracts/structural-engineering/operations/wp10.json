@@ -1,0 +1,63 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP10-01",
+  "profile_id": "STRUCTURAL-ANALYSIS-SNAPSHOT-WP10",
+  "operations": [
+    {
+      "catalogue_id": "AO16",
+      "semantic_id": "etabs.beam_snapshot.import/v1",
+      "kind": "adapter_command",
+      "purpose": "Acquire through a later getter-only host adapter and replay a portable immutable model, mapping, selection, and force snapshot without moving engineering calculations into ETABS or Excel.",
+      "required_inputs": [
+        {"name": "source expectation and explicit optional evidence states", "unit": "identity/state"},
+        {"name": "member, station, result-selection, and result-kind scope", "unit": "ordered identity"},
+        {"name": "raw capture and completed getter call ledger", "unit": "canonical JSON/SHA-256"},
+        {"name": "model facts, units, axes, mappings, selections, stations, and same-row actions", "unit": "mm, kN, kNm, N/mm2, kg/m3"}
+      ],
+      "outputs": [
+        {"name": "analysis_snapshot", "unit": "structural.analysis_snapshot/v1"},
+        {"name": "raw_capture_id and snapshot_id", "unit": "PF4 canonical SHA-256 identity"},
+        {"name": "independent result states, diagnostics, provenance, and limitations", "unit": "typed record"}
+      ],
+      "optional_inputs": [
+        {"name": "process_identity", "rule": "portable optional evidence: supplied value or named not_requested/unavailable/not_applicable reason"},
+        {"name": "model_file_sha256", "rule": "portable optional evidence: supplied lowercase SHA-256 or named non-supplied reason"},
+        {"name": "member/station filters", "rule": "explicit tagged selection mode; empty arrays mean all only under all_beams/all_available"},
+        {"name": "step_number", "rule": "required JSON key; null for non-step actions and numeric for staged_step/response_result"}
+      ],
+      "result_states": {
+        "accepted_replay": ["completed", "applicable", "not_evaluated", "complete_for_scope", "current", "unreviewed"],
+        "invalid_transport_or_hash": ["rejected_input", "unknown", "not_evaluated", "partial", "unbound", "unreviewed"],
+        "mapping_axis_unit_or_row_block": ["completed", "unknown", "not_evaluated", "partial", "current", "unreviewed"],
+        "unfinalized_ledger": ["not_run", "unknown", "not_evaluated", "partial", "unbound", "unreviewed"]
+      },
+      "diagnostics": [
+        "INPUT.SCHEMA",
+        "ETABS.IDENTITY_DRIFT",
+        "ETABS.RESULT_EPOCH_INVALID",
+        "ETABS.SELECTION_UNPROVED",
+        "ETABS.LEDGER_UNFINALIZED",
+        "ETABS.LEDGER_INVALID",
+        "ETABS.MAPPING_UNRESOLVED",
+        "ETABS.ROW_ACCOUNTING",
+        "ETABS.ROW_BLOCKED",
+        "UNITS.INVALID",
+        "AXIS.UNRESOLVED",
+        "SNAPSHOT.ORDER_INVALID",
+        "RAW_CAPTURE.HASH_MISMATCH",
+        "SNAPSHOT.HASH_MISMATCH"
+      ],
+      "provenance": [
+        "raw artifact/acquisition/model/analysis/result identities",
+        "source version/runtime/process/model-file evidence",
+        "getter signature/call/source-row evidence",
+        "unit/axis/face/mapping evidence",
+        "row disposition, exclusion approval, limitations, and evidence-manifest digest"
+      ],
+      "python_projection": "structural_lib.analysis_snapshot.parse_analysis_snapshot_json",
+      "dotnet_projection": "StructuralEngineering.Analysis.AnalysisSnapshotCodec.ParseAndValidate",
+      "valid_example": "wp10-portable-snapshot-valid",
+      "non_success_example": "wp10-portable-snapshot-tampered"
+    }
+  ]
+}

@@ -23,6 +23,11 @@ operations: pure worksheet functions, versioned workbook commands, a sample,
 signed per-user packaging, rollback/freshness, and installed performance
 evidence. See the [Excel user and function reference](excel/README.md).
 
+WP10-01 adds the portable AO16 ETABS import boundary to both libraries: strict
+request, raw getter evidence, normalized analysis snapshots, canonical
+identity, and offline validation. No CSI assembly, COM call, installed ETABS,
+or Excel dependency enters the reusable packages.
+
 See [Getting started](getting-started.md), [WP01 reference](reference/wp01-flexure.md),
 [WP02 reference](reference/wp02-shear-torsion.md),
 [WP03 reference](reference/wp03-actions-analysis-topology.md),
@@ -30,5 +35,6 @@ See [Getting started](getting-started.md), [WP01 reference](reference/wp01-flexu
 [WP05 reference](reference/wp05-detailing-constructability.md),
 [WP06 reference](reference/wp06-project-member-paths.md), and
 [WP07 reference](reference/wp07-construction-calculation-package.md),
-[WP08 reference](reference/wp08-beam-optimization.md), plus
+[WP08 reference](reference/wp08-beam-optimization.md),
+[WP10-01 reference](reference/wp10-analysis-snapshot.md), plus
 [migration guidance](migration/python-and-dotnet.md).

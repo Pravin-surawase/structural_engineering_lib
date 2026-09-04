@@ -144,6 +144,70 @@ The next packet may start only from those versioned schemas and conformance
 fixtures. This prevents installed API details, workbook cells, or an older
 application-specific force batch from becoming the reusable library contract.
 
+## WP10-01 frozen contract and acceptance matrix
+
+WP10-01 owns only portable records and offline replay. The authored authority
+is `contracts/structural-engineering`: `operations/wp10.json` fixes AO16's
+meaning, `schemas/wp10.schema.json` fixes the strict wire shape, and
+`conformance/wp10-vectors.json` is the one shared Python/.NET fixture. Python
+projects those records through `structural_lib.analysis_snapshot`; .NET keeps
+the records in `StructuralEngineering.Contracts` and replay/validation in
+`StructuralEngineering.Analysis`. None of those packages references CSI,
+Excel-DNA, COM, a workbook, a process-attachment API, or a filesystem adapter.
+
+The snapshot contract freezes these boundaries:
+
+- AO16 requests use explicit source expectations, member/station selection
+  modes, selected result identities, required result kinds, deadline, and
+  optional evidence records. `absent`, `null`, `blank`, and zero are never
+  interchangeable; optional engineering evidence carries its state, value,
+  and reason instead of relying on a language default.
+- Raw capture retains source/runtime/model/analysis/result identity, original
+  units and conversion factors, ordered model records, ordered force rows, and
+  a hash-chained `started`/`returned` getter ledger. A returned call has one
+  reviewed signature identity, exact return code, and raw shape. An unmatched
+  start, non-getter effect, failed return, gap, or digest mismatch fences the
+  operation and emits no canonical snapshot.
+- The normalized snapshot uses millimetres, kN, kNm, N/mm2, and kg/m3. It
+  contains model metadata, points, materials, sections, member assignments,
+  modifiers, offsets, releases, axes/face evidence, load cases, combinations,
+  selected results, physical/object/element stations, and same-row signed
+  P/V2/V3/T/M2/M3 actions with force-result provenance.
+- Every raw model or force record has exactly one `accepted`,
+  `approved_exclusion`, or `blocked` disposition. Accepted rows bind a
+  canonical identity; an exclusion requires a reason and approval reference;
+  any blocked row prevents `complete_for_scope` and exposes no partial
+  canonical snapshot.
+- Snapshot and raw-capture SHA-256 values use PF4 canonical UTF-8 JSON with
+  ordered keys, preserved array order, canonical enum strings, unescaped
+  non-ASCII text including U+2028/U+2029, negative zero normalized to `0`, and their own
+  derived id/digest fields omitted from the corresponding hash basis. Arrays
+  use deterministic identity/ordinal ordering. Acquisition time remains in the
+  artifact identity but does not become a normalized engineering input.
+- AO16 results keep execution, applicability, engineering, completeness,
+  freshness, approval, and operation state independent. Snapshot acquisition
+  is not an engineering pass: a valid replay is `completed`, `applicable`,
+  `not_evaluated`, `complete_for_scope`, `current`, and `unreviewed`.
+
+| Acceptance row | Required outcome |
+| --- | --- |
+| Valid shared fixture | Both languages accept the exact payload, reconstruct the same snapshot id/digest and produce identical canonical full-payload byte hash and length. |
+| Strict structure | Missing required or unknown fields, duplicate JSON keys, invalid enum tokens, non-finite numbers, and invalid conditional optional values return `rejected_input` with `INPUT.SCHEMA`. |
+| Tamper detection | A changed engineering/source/ledger value without the corresponding identities returns the matching hash/ledger diagnostic and no snapshot. |
+| Source and result freshness | Model, analysis, result epoch, and selected-result identities must agree throughout the source, freshness, selections, stations, actions, and raw capture. |
+| Units and axes | Conversion factors are positive and consistent; axes and transforms are orthonormal/right-handed; physical-face evidence is explicit. Failure returns `AXIS.UNRESOLVED` or `UNITS.INVALID`. |
+| Mapping and row conservation | Every reference resolves, every raw row is dispositioned once, accepted/excluded counts reconcile, and blocked/unresolved data cannot yield a partial accepted snapshot. |
+| Dependency boundary | Pure Python/.NET projects load and test without CSI, ETABS, Excel, COM, model mutation, solver, or optimization dependencies. |
+| Documentation | Normal Python and .NET callers can load, validate, serialize, and replay the portable fixture without an installed host. |
+
+The focused freeze commands are the structural-contract validator, the WP10
+Python tests, the host-free .NET test project, Python format/lint for changed
+files, `dotnet format --verify-no-changes`, and `git diff --check`. After those
+pass and the task records are final, candidate integrity runs once before the
+immutable reviewed candidate is created. WP10-02 may consume these records but
+may not change their version-1 meaning while binding installed getter
+signatures.
+
 ## Acceptance
 
 WP10 closes when one unchanged candidate proves all of the following:
