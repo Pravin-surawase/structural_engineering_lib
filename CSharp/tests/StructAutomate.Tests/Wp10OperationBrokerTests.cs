@@ -380,6 +380,42 @@ public sealed class Wp10OperationBrokerTests
     }
 
     [Fact]
+    public async Task RecordedReplayCannotPublishUntilEverySourceCallIsConsumed()
+    {
+        var testDirectory = NewTestDirectory();
+        try
+        {
+            var processId = NextProcessId();
+            var sourceHost = new FakeHost(Identity(processId), (_, _) => new EtabsInvocation(6, []));
+            var deadline = DateTimeOffset.UtcNow.AddSeconds(10);
+            var capture = CaptureOneSuccessfulCall(
+                sourceHost,
+                deadline,
+                TestContext.Current.CancellationToken);
+            var sourcePath = Path.Combine(testDirectory, "source.json");
+            File.WriteAllText(sourcePath, EtabsLiveGetterProbe.Serialize(capture));
+            var request = Request(processId, Path.Combine(testDirectory, "incomplete.json"), deadline);
+            var handle = new EtabsOperationBroker().Start(
+                request,
+                () => EtabsRecordedGetterHost.Load(sourcePath, Sha256File(sourcePath)),
+                (_, _) => capture,
+                TestContext.Current.CancellationToken);
+
+            var result = await handle.Completion;
+            await handle.Quiescence;
+
+            Assert.Equal(EtabsBrokerState.Fenced, result.State);
+            Assert.Equal("ETABS.CALL_FAILED", result.DiagnosticCode);
+            Assert.Contains("unconsumed calls", result.Message, StringComparison.Ordinal);
+            Assert.False(File.Exists(result.EvidencePath));
+        }
+        finally
+        {
+            Directory.Delete(testDirectory, recursive: true);
+        }
+    }
+
+    [Fact]
     public async Task ConfiguredAcceptedCaptureReplaysThroughBroker()
     {
         var capturePath = Environment.GetEnvironmentVariable("WP10_REPLAY_CAPTURE_PATH");
@@ -404,7 +440,6 @@ public sealed class Wp10OperationBrokerTests
             (host, token) =>
             {
                 var result = EtabsLiveGetterProbe.Run(host, request, token);
-                replaySource!.AssertComplete();
                 return result;
             },
             TestContext.Current.CancellationToken);

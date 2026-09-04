@@ -38,6 +38,11 @@ public interface IEtabsGetterHost : IDisposable
         CancellationToken cancellationToken);
 }
 
+public interface IEtabsGetterHostCompletionVerifier
+{
+    void AssertComplete();
+}
+
 public enum EtabsGetterState
 {
     Completed,

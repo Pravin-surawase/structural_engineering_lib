@@ -4,7 +4,7 @@ using System.Text.Json;
 namespace StructuralEngineering.Etabs;
 
 /// <summary>Host-free strict replay of an accepted WP10-02 getter capture.</summary>
-public sealed class EtabsRecordedGetterHost : IEtabsGetterHost
+public sealed class EtabsRecordedGetterHost : IEtabsGetterHost, IEtabsGetterHostCompletionVerifier
 {
     private readonly IReadOnlyList<RecordedCall> _calls;
     private int _nextCall;

@@ -71,11 +71,11 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 32,
+      "occurrences": 35,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Twenty earlier retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness. WP10-02 added ten command-shape retries: one JavaScript binding collision, one non-JavaScript exec body, two malformed PowerShell reflection pipelines, one Windows wildcard path, one reserved PowerShell Host variable, two .NET 10 test invocations started outside the CSharp/global.json runner context, one unquoted Git tree revision, and one direct foreach pipeline rejected by PowerShell. WP10-PLAN-DRIVEN-DELIVERY added one Windows wildcard path passed directly to rg before the search was corrected to directory-based matching. WP10-03 added one direct wildcard path search and then used directory-based rg for the remaining inspection. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
+        "basis": "Twenty earlier retries are explicit across WP09, WP10-01, the delivery redesign, and WP10 readiness. WP10-02 added ten command-shape retries: one JavaScript binding collision, one non-JavaScript exec body, two malformed PowerShell reflection pipelines, one Windows wildcard path, one reserved PowerShell Host variable, two .NET 10 test invocations started outside the CSharp/global.json runner context, one unquoted Git tree revision, and one direct foreach pipeline rejected by PowerShell. WP10-PLAN-DRIVEN-DELIVERY added one Windows wildcard path passed directly to rg before the search was corrected to directory-based matching. WP10-03 added two direct wildcard path searches, one guessed obsolete nested handoff path, and one duplicate lifecycle transition after a yielded formatter session was not polled before status inspection; each was corrected with directory plus glob filters, exact paths, or final session/state polling. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
       "last_seen_task": "WP10-03",
@@ -152,14 +152,14 @@
     {
       "id": "RR-010",
       "pattern": "Recurrence-index increment leaves coupled provenance stale",
-      "occurrences": 2,
+      "occurrences": 3,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The delivery redesign incremented RR-005 without updating its evidence basis; WP10 readiness updated the count and basis without updating last_seen_task. Neither correction was separately timed."
+        "basis": "The delivery redesign incremented RR-005 without updating its evidence basis; WP10 readiness updated the count and basis without updating last_seen_task. WP10-03 used an imprecise JSON patch that changed RR-001 while intending to increment RR-016; exact diff inspection caught and repaired it before validation or commit. None of the corrections was separately timed."
       },
       "short_solution": "Update recurrence count, basis, last-seen task, session row, and generated handoff together before content freeze.",
-      "last_seen_task": "WP10-READINESS-PLAN",
+      "last_seen_task": "WP10-03",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md",
@@ -231,6 +231,39 @@
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-03-implementation-review--2026-09-05",
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-015",
+      "pattern": "Focused test selector is copied from narrative instead of discovered from current source",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-03's first affected getter-test command used the stale descriptive selector EtabsGetterAdapterTests and the test platform exited with zero tests. Source discovery found Wp10GetterAdapterTests, whose 10 cases passed; the correction was not separately timed."
+      },
+      "short_solution": "Discover exact focused test class names from current source before freezing commands, and reject zero-test results as evidence.",
+      "last_seen_task": "WP10-03",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-03-implementation-review--2026-09-05",
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-016",
+      "pattern": "Delivery transition is invoked without its required evidence or identity argument",
+      "occurrences": 2,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-03's first FOCUSED_VERIFIED transition and the next chained PREPARED transition each omitted --evidence and were rejected without corrupting lifecycle state; the corrections were not separately timed."
+      },
+      "short_solution": "Consult the current delivery CLI contract and freeze required evidence, head, run, PR, and merge identifiers before each transition.",
+      "last_seen_task": "WP10-03",
+      "aggregate_parent": null,
+      "details": [
         "docs/SESSION_LOG.md"
       ]
     }

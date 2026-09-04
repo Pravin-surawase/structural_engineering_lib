@@ -269,8 +269,10 @@ Confirmed outcomes:
   cancellation, cleanup uncertainty, identity drift, denied effects, failed
   return, or existing evidence emits no accepted final artifact.
 - Exact-SHA recorded capture replay reconstructs the proved managed scalar and
-  array kinds in order without ETABS. The accepted WP10-02 capture replayed all
-  410 calls and reproduced its protected-state digest exactly.
+  array kinds in order without ETABS. The broker itself requires complete source
+  consumption before publication, so a callback cannot accept a partial replay.
+  The accepted WP10-02 capture replayed all 410 calls and reproduced its
+  protected-state digest exactly.
 - One final live run on process `7316` completed 410 calls across all 48 frozen
   getters and 820 hash-chained records. It retained STA execution and message
   pumping, released all acquired COM references and the lease, left the ETABS
@@ -288,6 +290,20 @@ One implementation-stage replay comparison exposed that `DateTimeOffset` used
 The host-independent inspection now formats the same UTC instants identically;
 the affected replay was regenerated before the only live run. No candidate had
 been created, so this was not a candidate repair.
+
+The first immutable-candidate audit found that complete replay consumption was
+asserted by the configured test callback instead of the broker. The one admitted
+repair moved that invariant behind a small host capability checked by the broker
+before postflight and publication, removed the harness-owned assertion, and
+added an early-return rejection case. No live behavior or evidence identity was
+changed, so the accepted one-run ETABS evidence was not repeated.
+
+The affected verification selectors are the source-discovered
+`Wp10GetterAdapterTests` and `Wp10OperationBrokerTests` classes. A descriptive
+note had used the stale name `EtabsGetterAdapterTests`; its zero-test exit was
+rejected rather than counted as evidence, and the exact maintained selector ran
+all 10 getter cases. Future plan cards must freeze test identifiers from current
+source, not narrative labels.
 
 ### WP10-04 next-plan review after WP10-03
 

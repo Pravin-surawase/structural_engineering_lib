@@ -354,6 +354,8 @@ public sealed class EtabsOperationBroker
                 var ledgerHost = new LedgerEtabsGetterHost(host, journal);
                 capture = acquire(ledgerHost, linkedCancellation.Token);
                 linkedCancellation.Token.ThrowIfCancellationRequested();
+                if (host is IEtabsGetterHostCompletionVerifier completionVerifier)
+                    completionVerifier.AssertComplete();
                 after = host.InspectIdentity();
                 ValidateCompletedCapture(capture, before, after);
                 ledger = journal.Build();

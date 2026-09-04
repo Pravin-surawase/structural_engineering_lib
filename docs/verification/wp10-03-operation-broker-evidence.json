@@ -24,6 +24,7 @@
     "preexisting_artifact_behavior": "reject before lease or host attachment",
     "cleanup_failure_behavior": "restoration_unverified and no accepted final artifact",
     "recorded_capture_replay_requires_exact_source_sha256": true,
+    "recorded_capture_replay_requires_complete_source_consumption": true,
     "host_independent_replay": true
   },
   "accepted_wp10_02_source": {
@@ -107,6 +108,7 @@
       "expired deadline rejection before attachment",
       "denied mutation with zero host invocations and no artifact",
       "exact recorded bytes and typed ordered replay",
+      "incomplete recorded replay rejection before artifact publication",
       "artifact tamper rejection"
     ],
     "existing_getter_adapter_cases_retained": 10,
