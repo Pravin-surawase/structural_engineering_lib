@@ -69,8 +69,8 @@
     },
     "rollback": {
       "name": "wp09-excel-rollback-probe.json",
-      "length_bytes": 1267,
-      "sha256": "61d5dc8376a17f5837db2f6273784262a4e523db7ebfbff9e2f2c9d5fcda88a1"
+      "length_bytes": 1268,
+      "sha256": "bc0cf19c0fe5e87554f72659d81bc143c7215d75edc06f09d2e73d7b7c3aa042"
     },
     "uninstall": {
       "name": "wp09-excel-uninstall.json",
@@ -82,6 +82,12 @@
       "length_bytes": 1012,
       "sha256": "8459a1e3cc3a96b04a5a6fa666d51a148a8b78c92fbeeb2cf1bc2b11d1cb8436"
     }
+  },
+  "acceptance_bound_rollback_probe": {
+    "name": "excel-rollback-probe.json",
+    "length_bytes": 1267,
+    "sha256": "61d5dc8376a17f5837db2f6273784262a4e523db7ebfbff9e2f2c9d5fcda88a1",
+    "relationship": "Byte-exact raw probe generated and bound by installed acceptance before repository EOF normalization."
   },
   "installed_acceptance": {
     "passed": true,
@@ -127,7 +133,7 @@
     },
     "selected_receipt": "Run 3 is the latest exact-candidate run and passed every unchanged gate. The repeat variance is retained here; no budget or measurement boundary was changed."
   },
-  "repository_serialization": "Checked-in JSON evidence uses repository-required LF line endings. package_manifest records the byte-exact packaged manifest; checked_in_manifest_receipt records its LF-normalized semantic copy.",
+  "repository_serialization": "Checked-in JSON evidence uses repository-required LF line endings and final newlines. package_manifest and acceptance_bound_rollback_probe record byte-exact installed artifacts; checked_in_manifest_receipt and lifecycle_receipts.rollback record their repository-normalized semantic copies.",
   "cleanup_verified": true,
   "public_release_authorized": false
 }

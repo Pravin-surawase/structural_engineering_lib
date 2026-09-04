@@ -78,6 +78,10 @@ and a GitHub Release remain outside WP09.
   older E1 entry instead of at the top of this reverse-chronological log.
 - The next clean closeout found that the detailed WP09 record still omitted the
   exact `**Completed:**` list required by the session validator.
+- Hosted Repository Validation failed at its manual candidate-integrity step;
+  the exact local replay found missing final newlines in two NuGet lock files
+  and the rollback receipt, plus working-tree line-ending mixtures created by
+  Windows checkout and later edits.
 
 ### Root causes and resolutions
 
@@ -167,6 +171,13 @@ and a GitHub Release remain outside WP09.
   while `scripts/session.py` reads the explicit completion marker. Resolution:
   add three outcome-level completed items and regenerate the receipt-bound
   Latest Handoff. The session document check accepts the completed-item shape.
+- Confirmed root cause: the immutable Git blobs for the two lock files and the
+  rollback receipt lacked final newlines; normal commit hooks intentionally run
+  only mutation-safety checks, and the earlier repository gate did not execute
+  the hosted manual all-file hook. Resolution: run the exact hosted pre-commit
+  command, retain its EOF normalization, confirm all working changes disappear
+  when end-of-line whitespace is ignored, update the rollback receipt's stored
+  length/hash, and rerun the same command to a clean pass.
 
 ### Validation through content freeze
 
@@ -208,6 +219,10 @@ and a GitHub Release remain outside WP09.
 - Final packaging re-review after LF normalization: PASS. Context validation
   reports 10 areas, 6 authorities, and zero generated folder indexes; the
   token-efficiency policy check also passes.
+- Hosted repository repair replay: `python -m pre_commit run --hook-stage
+  manual --all-files` passes all eight file-integrity hooks after EOF
+  normalization; the rollback receipt identity is rebound in distribution
+  evidence.
 
 **Git handoff receipt:** `docs/verification/wp09-standalone-excel-git-handoff-receipt.json`
 
