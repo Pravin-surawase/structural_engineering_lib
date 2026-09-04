@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-09-05 — Session: WP10 plan-driven delivery contract
+
+**Agent:** Codex (`orchestrator`); no subagents.
+
+**Branch:** `codex/wp10-plan-driven-delivery`, from fetched `origin/main`
+commit `3e3f278bb73dd320ef7deab24aa7a23020b8e1d5`.
+
+**Focus:** Update the remaining WP10 plan so each slice begins from one compact
+plan that binds the existing session, verification, formatting, hook, hosted,
+and recurrence controls without creating a WP10-only delivery framework.
+
+**Completed:**
+
+- Marked WP10-02 complete and WP10-03 next while preserving WP10-02's detailed
+  execution and repair history.
+- Added one-owner boundaries for task state, change routing, command discovery,
+  formatting/integrity, installed-host evidence, recurrence, and hosted
+  assurance. ETABS/model/workbook facts remain in WP10 evidence and do not enter
+  the generic control plane.
+- Added the reusable eleven-row executable plan card and the exact existing
+  automation sequence. It binds one immutable task-base SHA across formatting,
+  validation, repair, and replan and does not claim that a future consolidated
+  preparation command already exists.
+- Instantiated the plan card for WP10-03 with its outcome, non-goals, expected
+  domains, reuse, external-state boundary, bounded writes, proof map, order,
+  command shape, stop rules, and efficiency target.
+- Extended the WP10 recurrence table through RR-013 and required a post-task
+  planned-versus-actual comparison before any proven generic improvement is
+  promoted through a separate maintenance scope.
+- Refreshed the maintained next-session handoff so WP10-03 now points to the
+  executable plan card rather than only the earlier getter closeout.
+
+### Issues encountered
+
+- ⚠️ TERMINAL ISSUE: one discovery command passed Windows wildcard paths
+  directly to `rg`; Windows did not expand them. Directory-based `rg` matching
+  returned the required inventory. (`RR-005`)
+- The first large patch hunk did not match the delivery-section prefix exactly,
+  so it made no change. Reading the bounded section and applying smaller exact
+  hunks completed the intended edit.
+- The first session-document check found that the new September 5 session entry
+  preceded a September 4 generated handoff. The canonical handoff command
+  refreshed the projection before the repeated focused check. (`RR-004`)
+
+### Root causes and resolutions
+
+- Confirmed root cause: the command reused POSIX wildcard assumptions in a
+  Windows shell. Resolution: pass directories to `rg` and filter its results;
+  the recurrence index now records the thirty-first occurrence. (`RR-005`)
+- Confirmed root cause: the first patch context omitted the leading words on a
+  wrapped paragraph. Resolution: re-read only the target section and use two
+  bounded patches; the resulting diff contains only the intended plan changes.
+- Confirmed root cause: the task added a new dated session entry without first
+  refreshing its generated next-session projection. Resolution: add the
+  handoff to the frozen task-owned paths and run `./run.sh session handoff`;
+  the projection now carries the new date and plan outcome. (`RR-004`)
+
+### Rework and recurrence
+
+- `RR-004`, occurrences=7, minutes=unknown — refresh the maintained handoff
+  after changing the newest session entry, then run the session-document check.
+- `RR-005`, occurrences=31, minutes=unknown — use maintained launchers, exact
+  paths, directory-based `rg` searches, literal PowerShell blocks, and one
+  shell shape per operation.
+
+**Git handoff:** No receipt is required for routine same-checkout planning.
+
+**Next:** Run WP10-03 from its executable plan card. Treat any generic
+candidate-preparation automation as a separately scoped control-plane change,
+not as hidden WP10 product work.
+
+---
+
 ## 2026-09-04 — Session: WP10-02 exact ETABS getter adapter
 
 **Agent:** Codex (`orchestrator`); no subagents.

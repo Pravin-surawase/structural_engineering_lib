@@ -3,7 +3,7 @@
 **Status:** Ready
 **Importance:** Critical
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-04
+**Last Updated:** 2026-09-05
 
 # WP10 — read-only ETABS snapshot adapter
 
@@ -17,6 +17,12 @@ ETABS.
 The primary installed tuple is Windows x64, ETABS `23.3.1.4563`,
 `CSiAPIv1.dll`/ETABSv1 `2.16.0.0`, .NET 10, and the WP09 64-bit Excel host.
 Other ETABS versions do not inherit this compatibility claim.
+
+WP10-01 and WP10-02 are complete. WP10-02 proved the exact-version getter
+boundary and one unchanged-model live matrix; WP10-03 is the next bounded
+slice. The remaining slices use the plan-driven delivery contract below as a
+pilot of the repository-wide workflow. That contract orchestrates existing
+controls; it does not create a second WP10-only delivery system.
 
 ## Boundary and package layout
 
@@ -119,23 +125,127 @@ one coding session would recreate WP09's oversized-packet failure mode.
 
 For delivery purposes, **one session** therefore means that each remaining
 slice starts and closes one parent task without carrying repair work into a
-later session. WP10-02 is the next such session. Later slices may share the
-IMP-M3 milestone branch only when their accepted authority and installed-host
-gate are unchanged; they retain separate task timers and acceptance decisions.
+later session. WP10-02 completed this boundary; WP10-03 is next. Later slices
+may share the IMP-M3 milestone branch only when their accepted authority and
+installed-host gate are unchanged; they retain separate task timers and
+acceptance decisions.
 
-| Session | Complete outcome | Must not leak into the session |
-| --- | --- | --- |
-| WP10-02 | exact-version getter port, binding, fake-host proof, and one live getter-only matrix | broker retries, normalization, Excel, performance |
-| WP10-03 | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
-| WP10-04 | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
-| WP10-05 | transactional `XL-CMD-02` import, readback, rollback, and freshness | ETABS mutation and qualification claims |
-| WP10-06 | E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
+| Session | State | Complete outcome | Must not leak into the session |
+| --- | --- | --- | --- |
+| WP10-02 | Complete | exact-version getter port, binding, fake-host proof, and one live getter-only matrix | broker retries, normalization, Excel, performance |
+| WP10-03 | Next | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
+| WP10-04 | Planned | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
+| WP10-05 | Planned | transactional `XL-CMD-02` import, readback, rollback, and freshness | ETABS mutation and qualification claims |
+| WP10-06 | Planned | E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
 
 The operating target for every session is one candidate, zero repair batches,
 zero focused-check retries, one candidate-integrity run, one final closeout,
 one hosted run, and less than ten percent writer-rework time. A real defect is
 not hidden to meet the target; the delivery state machine records it and stops
 after its bounded repair allowance.
+
+## Plan-driven delivery contract for WP10-03 through WP10-06
+
+The main process risk is a plan that describes the intended feature but does
+not bind the existing scripts, hooks, affected domains, evidence, and stop
+conditions before implementation. Each remaining slice therefore begins with
+one compact executable plan card. The card is the slice-specific input to the
+repository controls, not a replacement for those controls.
+
+### One owner for each kind of truth
+
+| Concern | Existing project owner | WP10 supplies |
+| --- | --- | --- |
+| Task identity, timing, base state, and delivery states | `./run.sh session` and `scripts/session.py` | one task ID and the accepted WP10 plan path |
+| Changed paths and affected validation domains | `scripts/verification.py` and `scripts/verification-manifest.json` | no separate WP10 routing table |
+| Maintained command discovery and permissions | `scripts/control-plane.json` | operation names to reuse, never a copied script catalogue |
+| Formatting, text hygiene, and candidate integrity | `./run.sh format`, `.gitattributes`, and the installed hooks | the exact immutable task-base SHA and bounded changed paths |
+| Product and installed-host acceptance | this plan, portable contracts, and task evidence | ETABS/Excel tuple, request, model, artifact, and proof identities |
+| Rework recurrence | `docs/verification/rework-recurrence-index.json` | references to applicable `RR-NNN` rows, not duplicated counts or solutions |
+| Hosted assurance | the change-domain PR workflow and required `PR Gate` | one frozen candidate and its exact run ID |
+
+ETABS process IDs, model paths, members, result selections, combinations,
+workbook identities, and CSI calls remain WP10 evidence. They must never be
+added to the generic session, verification, hook, or control-plane contracts.
+Conversely, WP10 must not introduce another formatter, Git wrapper, impact
+map, test scheduler, or delivery state machine.
+
+### Required executable plan card
+
+Before opening a slice's implementation timer, freeze all of these rows. A
+missing or ambiguous row is an intake hold. The card may cite an existing
+authority instead of copying it.
+
+| Plan row | Required content |
+| --- | --- |
+| Outcome | one complete user/developer-visible result and explicit non-goals |
+| Starting identity | fetched default-base ref and exact SHA, feature branch, initial head/tree, clean state, and overlap disposition |
+| Impact | provisional product/control domains plus the authoritative `verification plan` result once changed paths exist |
+| Reuse | existing contracts, source APIs, scripts, hooks, fixtures, and prior evidence that will be consumed without reinvention |
+| Inputs and external state | exact files/artifacts and, when applicable, process/model/workbook/runtime identities plus who may change them |
+| Bounded writes | intended product, test, documentation, evidence, and generated paths; an unplanned path requires an acceptance update |
+| Acceptance-to-proof map | every outcome claim names a focused test, deterministic artifact check, installed observation, or explicit manual decision |
+| Ordered units | implementation order, the cheapest failing gate before each expensive or live gate, and the content-freeze point |
+| Command matrix | maintained commands, exact working directory, filters, runtime, expected output, and retry/repair rule |
+| Stop/replan rules | ambiguity, changed authority, host drift, unexpected write, failed cleanup, or second rejected candidate |
+| Efficiency target | one candidate, zero repair batches/retries, one integrity/closeout/hosted run, and writer rework below ten percent |
+
+### Existing automation sequence
+
+Until a repository-wide candidate-preparation command is separately designed,
+implemented, and accepted, WP10 uses the current maintained controls directly:
+
+1. Fetch and inspect Git through the canonical workflow, then run `session
+   begin`; admission must pass before the task timer opens.
+2. Enter `BOUNDED_UNITS` with this plan and any slice-specific acceptance file.
+   Preserve the exact default-base SHA recorded at intake for the whole slice;
+   do not substitute a later candidate or moving branch reference during a
+   repair.
+3. Implement the bounded product, tests, documentation, evidence, and required
+   projections. Run only a narrow diagnostic needed to answer an active
+   question.
+4. Before freeze, run `./run.sh verification plan --base <exact-task-base>` and
+   reconcile its full changed-path/domain result with the plan card. Unknown
+   impact remains fail-closed to all domains.
+5. Enter `CONTENT_FROZEN`; run the changed-path formatter once with the same
+   exact task base, then run the slice's consolidated focused matrix once.
+   Check every task-touched text path from the original base, including paths
+   introduced by an earlier candidate.
+6. Finish all task-owned versioned evidence before `PREPARED`, commit one
+   immutable candidate, obtain one consolidated audit decision, and run the
+   read-only candidate-integrity gate once on the accepted head.
+7. Let pre-push own the idempotent final closeout, publish once, bind the exact
+   hosted verdict, verify candidate/merge tree equality, and record the derived
+   efficiency result.
+
+Hooks remain final safety boundaries; they are not the first place to discover
+ordinary formatting, line-ending, command-shape, or missing-domain problems.
+The future generic automation may consolidate steps 4–5 only after shadow-mode
+proof across every validation domain. WP10 does not claim that command exists
+today.
+
+### WP10-03 executable plan card
+
+| Plan row | Frozen WP10-03 value |
+| --- | --- |
+| Outcome | one host-independent operation-control boundary providing an STA lease, bounded deadlines, durable raw capture, hash-chained call records, postflight fencing, and deterministic cleanup around the accepted WP10-02 getter adapter |
+| Non-goals | no normalization, workbook import/write, ETABS setter, analysis/design/save/close/exit action, performance qualification, WP11 mutation, or release |
+| Starting identity | record the exact fetched `origin/main` SHA and clean `codex/wp10-03-*` feature head/tree at intake; never reuse WP10-02's historical base as the new task base |
+| Expected impact | `dotnet`, `docs`, and always-run `repository`; the live verification plan is authoritative, and any generic workflow edit is a separate control-plane packet |
+| Reuse | WP10-01 wire/canonical contracts, WP10-02 exact getter matrix and nullable-array rule, its accepted live raw capture, existing C# solution, locked dependencies, repository session/verification controls, and the applicable recurrence rows |
+| External state | offline fake-host work first; one final live path may use only the freshly preflighted exact ETABS tuple, selected unchanged saved model, output selection, request, and evidence destination |
+| Bounded writes | the existing `StructuralEngineering.Etabs` project, one focused WP10 operation-control test file, this plan/status, one task evidence record, newest session entry, recurrence index only when an issue actually repeats, and maintained generated handoff/projection files when required |
+| Proof map | lease exclusivity, ordered start/return ledger, deadline and uncertain-call fencing, partial-artifact rejection, all-resource cleanup, postflight equality, and deny-listed effects each require a deterministic fake-host assertion; the final installed path additionally requires exact call/artifact identities and unchanged host/model state |
+| Order | freeze broker contract and failure states; implement fake host and offline broker; pass negative paths; replay the accepted getter capture; run one live smoke/final path; prove postflight/cleanup; freeze and verify once |
+| Command shape | use repository launchers and literal paths; run the locked .NET 10 restore/build/test sequence from `CSharp`; freeze the exact focused test class/filter before product writes; do not assemble wildcard or cross-shell probes |
+| Stop/replan | stop on ambiguous lease ownership, unsafe timeout semantics, missing message pumping, unpaired ledger entries, partial durable output, cleanup uncertainty, model/selection drift, a required CSI effect, or any change to WP10-01/02 accepted meanings |
+| Efficiency | one live acquisition, one candidate, zero command-shape corrections, zero focused retries, one integrity/closeout/hosted run, and writer rework below ten percent |
+
+WP10-03 is the pilot, not proof that the same plan automation is already safe
+for every repository domain. Its closeout must compare planned versus actual
+paths, commands, gates, candidates, rework, and live runs. Only generic rules
+that reduce a measured failure without importing WP10 facts may move into the
+project-wide control plane; that promotion is a separate maintenance scope.
 
 ## WP10-02 single-session execution contract
 
@@ -338,6 +448,9 @@ assurance remains the single hosted PR run.
 | RR-008 | one candidate plus one repair ceiling; changed acceptance digest is required after a second rejection |
 | RR-009 | add/fetch the exact task-branch refspec before asserting upstream equality |
 | RR-010 | update recurrence count, basis, last-seen task, session row, and generated handoff as one pre-freeze set |
+| RR-011 | use the maintained changed-path formatter; never replace it with a whole-solution or ad hoc formatting command |
+| RR-012 | every repair and replan retains the original task-base SHA and full task-touched path union |
+| RR-013 | formatter-owned C# extensions retain explicit repository LF policy and local/hosted formatter parity |
 
 ## Frozen performance workloads
 
