@@ -70,6 +70,7 @@ def test_agent_brief_filters_multiline_closed_task_ids_without_awk_failure(tmp_p
     assert "LIVE-1: active packet [ready]" in result.stdout
     assert "CLOSED-1: completed packet" not in result.stdout
     assert "Repeat control: normalize evidence before freezing hashes" in result.stdout
+    assert "Full index: ./run.sh session recurrence" in result.stdout
 
 
 def test_run_sh_routes_receipt_bound_handoff_help():
@@ -83,6 +84,29 @@ def test_run_sh_routes_receipt_bound_handoff_help():
 
     assert result.returncode == 0, result.stderr
     assert "--git-receipt" in result.stdout
+
+
+def test_run_sh_routes_compact_recurrence_index():
+    result = subprocess.run(
+        [
+            "bash",
+            str(REPO_ROOT / "run.sh"),
+            "session",
+            "recurrence",
+            "--id",
+            "RR-003",
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=15,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "RR-003 | 3x | unknown" in result.stdout
+    assert "Candidate or evidence frozen before normalization" in result.stdout
+    assert "corrected-candidate-sequence" in result.stdout
 
 
 def test_handoff_replaces_maintained_legacy_heading(monkeypatch, tmp_path):
@@ -1567,6 +1591,82 @@ def test_handoff_parsers_preserve_wrapped_focus_and_completed_items():
     ]
 
 
+def _write_rework_index_fixture(path: Path) -> None:
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "patterns": [
+                    {
+                        "id": "RR-001",
+                        "pattern": "Evidence bytes changed after freeze",
+                        "occurrences": 2,
+                        "short_solution": "Normalize evidence before freezing hashes.",
+                        "observed_minutes": {
+                            "minimum": 5,
+                            "maximum": 8,
+                            "basis": "Two timed repairs.",
+                        },
+                        "aggregate_parent": None,
+                        "details": ["docs/postmortem.md#rr-001"],
+                    }
+                ],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def test_rework_index_drives_compact_handoff_and_cli(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    index = tmp_path / "rework.json"
+    _write_rework_index_fixture(index)
+    monkeypatch.setattr(session, "REWORK_INDEX", index)
+    block = [
+        "### Rework and recurrence",
+        "",
+        "- `RR-001` occurrences=2; minutes=5-8; repeated normalization.",
+    ]
+
+    pattern_ids, errors = session._validate_rework_section(block)
+
+    assert pattern_ids == ["RR-001"]
+    assert errors == []
+    assert session._rework_handoff_summary(block) == (
+        "RR-001 x2 / 5-8m: Normalize evidence before freezing hashes."
+    )
+    args = SimpleNamespace(pattern_id=None, json_output=False)
+    assert session.cmd_recurrence(args) == 0
+    output = capsys.readouterr().out
+    assert "RR-001 | 2x | 5-8m | Evidence bytes changed after freeze" in output
+    assert "Control: Normalize evidence before freezing hashes." in output
+    assert "Time basis: Two timed repairs." in output
+    assert "docs/postmortem.md#rr-001" in output
+
+
+def test_rework_section_rejects_stale_index_count_and_time(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    index = tmp_path / "rework.json"
+    _write_rework_index_fixture(index)
+    monkeypatch.setattr(session, "REWORK_INDEX", index)
+    block = [
+        "### Rework and recurrence",
+        "- `RR-001` occurrences=1; minutes=unknown; stale projection.",
+    ]
+
+    _pattern_ids, errors = session._validate_rework_section(block)
+
+    assert errors == [
+        "SESSION_LOG: RR-001 occurrence count is stale",
+        "SESSION_LOG: RR-001 observed minutes are stale",
+    ]
+
+
 def test_brief_receipt_identity_rejects_artifact_hash_substitution():
     receipt = {
         "local_state_receipt_hash": "sha256:" + "a" * 64,
@@ -1860,7 +1960,7 @@ def test_session_log_completeness_accepts_explicit_issue_record(
 - Registry construction skipped uniqueness validation; validation now fails closed and the duplicate regression passes.
 
 ### Rework and recurrence
-- Validate registry uniqueness before accepting generated entries.
+- None encountered.
 """,
         encoding="utf-8",
     )

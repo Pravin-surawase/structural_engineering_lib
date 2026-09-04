@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "e1d3c72274ae596288d7eff1483b2d5f1510fc9c6f1e6323376d1ce82188f021",
+    "receipt_sha256": "198e404b88c8aa862c7042c5cdf2d39f81cd096597d95a0a6b6df13727f0b817",
     "state": {
       "branch": "codex/wp09-postmortem-controls",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "ac1bd2b3e38f61b165504331ea35e5642cd49860",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 256.711,
+      "duration_ms": 254.134,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
-      "head_sha": "ac1bd2b3e38f61b165504331ea35e5642cd49860",
+      "head_sha": "b3f9a4c85558530ec21c80e63449792819453ed2",
       "hold_reasons": [
-        "changed paths: 13"
+        "changed paths: 12"
       ],
       "linked_worktree": false,
       "locks": [],
-      "observed_at_utc": "2026-09-04T11:13:12.713823+00:00",
+      "observed_at_utc": "2026-09-04T11:45:54.444126+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,21 +53,20 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 13,
+        "dirty_count": 12,
         "modified_paths": [],
         "staged_paths": [
           "AGENTS.md",
-          "Python/tests/test_agent_governance_automation.py",
           "Python/tests/test_session_automation.py",
-          "Python/tests/test_verification_control.py",
           "docs/SESSION_LOG.md",
           "docs/guidelines/ai-token-efficiency.md",
           "docs/planning/xll-product/README.md",
           "docs/planning/xll-product/wp09-postmortem.md",
-          "docs/planning/xll-product/wp09-standalone-excel.md",
-          "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+          "docs/verification/rework-recurrence-index.json",
           "run.sh",
-          "scripts/check_all.py",
+          "scripts/agent_brief.sh",
+          "scripts/automation-map.json",
+          "scripts/control-plane.json",
           "scripts/session.py"
         ],
         "untracked_paths": []
@@ -82,9 +81,9 @@
       "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:e1d3c72274ae596288d7eff1483b2d5f1510fc9c6f1e6323376d1ce82188f021",
+  "local_state_receipt_hash": "sha256:198e404b88c8aa862c7042c5cdf2d39f81cd096597d95a0a6b6df13727f0b817",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-04T11:13:12.713823+00:00",
+  "observed_at_utc": "2026-09-04T11:45:54.444126+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -115,8 +114,12 @@
       "Python/tests/test_verification_control.py",
       "docs/guidelines/ai-token-efficiency.md",
       "docs/planning/xll-product",
+      "docs/verification/rework-recurrence-index.json",
       "run.sh",
+      "scripts/agent_brief.sh",
+      "scripts/automation-map.json",
       "scripts/check_all.py",
+      "scripts/control-plane.json",
       "scripts/session.py",
       "docs/verification/wp09-postmortem-controls-git-handoff-receipt.json"
     ],

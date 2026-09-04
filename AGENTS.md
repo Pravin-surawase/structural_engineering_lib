@@ -97,21 +97,22 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 
 ## Root-Cause and Session-Issue Record (MANDATORY)
 
-- Every agent records material issues encountered during its owned work in the
-  newest task-owned `docs/SESSION_LOG.md` entry. A material issue is one that
-  changes the main-process outcome, blocks a required command, exposes a stale
-  instruction/contract, or would cause the same work to be repeated.
-- Every entry must contain `### Issues encountered`, `### Root causes and
-  resolutions`, and `### Rework and recurrence`. Record each material issue's
-  symptom/impact, confirmed root cause (or `unconfirmed`), solution, proof, and
-  repeat-prevention rule. Write `- None encountered.` when appropriate.
-- Do not log secrets, transient noise, speculative hardening, or failures outside
-  the owned scope that did not affect the work. Do not claim a root cause from an
-  error message alone; trace the failing path and distinguish evidence from
-  inference.
-- `session begin` shows the latest bounded recurrence controls. Subagents receive
-  relevant controls and return issue/root-cause/evidence fields; the parent owns
-  one deduplicated record. `session end` fails if a required section is absent.
+- Each agent records material issues in the newest task-owned
+  `docs/SESSION_LOG.md` entry. Material means outcome-changing, command-blocking,
+  stale-contract, or likely-to-repeat.
+- Each entry needs `### Issues encountered`, `### Root causes and resolutions`,
+  and `### Rework and recurrence`. Record symptom/impact, confirmed root cause
+  (or `unconfirmed`), solution, and proof. When recurrence exists, each row
+  references one `RR-NNN`, `occurrences=N`, and `minutes=unknown|N|N-N`; update
+  the count/time and short solution once in
+  `docs/verification/rework-recurrence-index.json`. Reuse IDs for the same cause
+  and create one only for a distinct pattern; otherwise write `- None encountered.`
+- Exclude secrets, transient noise, speculative hardening, and unrelated
+  failures. Trace the path; an error message alone does not prove root cause.
+- `session begin` shows compact recurrence controls. Subagents receive relevant
+  controls and return issue/root-cause/evidence; the parent writes one
+  deduplicated entry. `session end` fails if a required section or index mapping
+  is absent or stale.
 
 ## Git and GitHub — Codex Native
 

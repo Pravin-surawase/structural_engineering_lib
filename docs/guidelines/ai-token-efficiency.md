@@ -132,8 +132,11 @@ Then:
 - Treat the compact brief and environment result as the default orientation;
   do not reopen files or rerun Git queries that they already answered.
 - Read the bounded recurrence controls shown by `session begin`. Each task's
-  newest session entry records issues, root causes, and repeat-prevention rules;
-  subagent findings are deduplicated by the parent into that one entry.
+  newest session entry references stable `RR-NNN` rows in
+  `docs/verification/rework-recurrence-index.json`; counts, observed-time basis,
+  and short solutions live once in that index, while deep evidence stays in the
+  session log or linked postmortem. Subagent findings are deduplicated by the
+  parent into that one entry.
 - Use `./run.sh context show <area>` only for a concrete unresolved routing
   question, then targeted
   `rg`; request a bounded live inventory with

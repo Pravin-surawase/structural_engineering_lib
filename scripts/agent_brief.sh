@@ -37,6 +37,7 @@ _priorities() {
         [[ -n "$focus" ]] && echo "  Last focus: $focus"
         [[ -n "$completed" ]] && echo "  Done: $completed"
         [[ -n "$recurrence" ]] && echo "  Repeat control: $recurrence"
+        [[ -n "$recurrence" ]] && echo "  Full index: ./run.sh session recurrence"
     else
         echo "  (no next-session-brief.md found)"
     fi
@@ -212,7 +213,7 @@ main() {
     fi
 
     echo -e "${B}Priorities:${N}"
-    _priorities | head -3
+    _priorities | head -4
     echo ""
 
     echo -e "${B}Active Tasks:${N}"

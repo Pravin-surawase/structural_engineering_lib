@@ -26,6 +26,8 @@ weakening Excel or ETABS acceptance.
 - Recorded the postmortem and updated the WP09/WP10 plans so later host work uses
   bounded slices, an early host micro-probe, staged acceptance, and one
   consolidated repair boundary.
+- Added a compact recurrence registry with stable IDs, counts, honest time
+  bounds, short controls, and deep-detail links.
 
 ### Issues encountered
 
@@ -46,6 +48,12 @@ weakening Excel or ETABS acceptance.
   used a stale WP09 prose anchor and was rejected without changing files.
 - The first generated next-session brief truncated wrapped focus and completion
   text, which would have omitted part of the WP10 handoff.
+- The first compact-index pass routed the new command through `run.sh` without
+  registering it in the canonical control plane, and its text view showed the
+  prevention rule without naming the recurring pattern or timing basis.
+- The command wrapper reported preparation closeout as exit `1` even though the
+  closeout text named its expected nonfinal exit `2`, prompting one diagnostic
+  rerun.
 
 ### Root causes and resolutions
 
@@ -76,23 +84,30 @@ weakening Excel or ETABS acceptance.
   two-parent assumptions. Resolution: rerun bounded commands with literal
   patterns, exact paths, and the squash commit's actual one-parent history; apply
   documentation patches against inspected text.
+- Confirmed root cause: the first pass treated command routing and compact
+  display as sufficient, while repository operation ownership and evidence
+  interpretation are separate contracts. Resolution: register `session
+  recurrence` in `control-plane.json`, regenerate its compatibility projection,
+  show pattern/control/time basis/detail distinctly, and validate both paths.
+- Evidence result, root cause unconfirmed: a direct literal Bash capture observed
+  `run.sh` returning the documented exit `2`; only the outer command wrapper had
+  surfaced `1`. No repository change was warranted, and future preparation runs
+  should treat their direct process status as the authority.
 
 ### Rework and recurrence
 
-- WP09's repeated families were late acceptance boundaries, host assumptions,
-  evidence normalization/rebinding, session/handoff state, and Windows command
-  shapes. The postmortem now records each small issue and its prevention rule,
-  including valid product defects that must remain in acceptance.
-- Every future `session begin` reads the bounded recurrence controls generated
-  from the newest entry. Closeout fails if the entry omits issues, root causes,
-  or recurrence controls.
-- Subagents receive the relevant controls in their bounded packet and return
-  issues, root causes, and proof. The parent writes one deduplicated versioned
-  entry so parallel agents do not create conflicting log blocks.
+Counts, time bases, short controls, and detail links live once in the
+[recurrence index](verification/rework-recurrence-index.json).
+
+- `RR-001` occurrences=1; minutes=120-165; WP09 retrospective baseline.
+- `RR-002` occurrences=7; minutes=unknown; WP09 retrospective baseline.
+- `RR-003` occurrences=3; minutes=unknown; WP09 retrospective baseline.
+- `RR-004` occurrences=4; minutes=unknown; includes this session's handoff parser finding.
+- `RR-005` occurrences=7; minutes=unknown; WP09 retrospective baseline.
 
 ### Validation through candidate preparation
 
-- All 251 tests in `test_agent_governance_automation.py`,
+- All 254 tests in `test_agent_governance_automation.py`,
   `test_verification_control.py`, and `test_session_automation.py` passed.
 - The 16-command CLI smoke suite, instruction-composition check,
   token-efficiency check, documentation checks, and maintained-link check
@@ -103,6 +118,8 @@ weakening Excel or ETABS acceptance.
 - The fresh full repository gate passed all 32 checks with zero reused results.
 - A live compact agent brief displayed the newest `Repeat control`, proving the
   recurrence record is read at the next session boundary.
+- The canonical recurrence command displayed all five rows and the control-plane
+  validator passed with 122 active operations and 107/107 scripts registered.
 - `git diff --check` passed before candidate preparation.
 
 **Git handoff receipt:** `docs/verification/wp09-postmortem-controls-git-handoff-receipt.json`

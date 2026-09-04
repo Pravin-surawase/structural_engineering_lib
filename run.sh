@@ -215,7 +215,7 @@ _cmd_session() {
         brief)
             bash "$SCRIPTS/agent_brief.sh" "$@"
             ;;
-        costs|usage|compact|trust)
+        costs|usage|compact|trust|recurrence)
             _require_venv
             "$VENV" "$SCRIPTS/session.py" "$subcmd" "$@"
             ;;
@@ -243,6 +243,7 @@ Subcommands:
   check      Check session docs for issues
   context    Dump compact orientation context (tasks, brief, git status)
   brief      Fast 20-line agent brief (--agent <name> | --handoff)
+  recurrence Show compact issue counts, observed time, prevention, and detail links
   usage      Record/show model, reasoning, agent, and usage checkpoints
   costs      Show legacy Git-activity proxies (not billing or tokens)
   compact    Archive old SESSION_LOG entries
@@ -252,6 +253,7 @@ Examples:
   ./run.sh session begin --task-id TASK-XXX --agent governance
   ./run.sh session start      # Compatibility entry without automatic timing
   ./run.sh session context    # Quick orientation mid-session
+  ./run.sh session recurrence # Compact recurring issue counts and controls
   ./run.sh session usage --help
   ./run.sh session end        # Validate closeout without hidden writes
   ./run.sh session sync --fix # Explicitly fix stale numbers when required
@@ -1074,7 +1076,7 @@ _run_sh() {
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--candidate-integrity' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
-    local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
+    local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust' 'recurrence')
     local -a task_subs=('brief')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')

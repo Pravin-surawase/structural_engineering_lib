@@ -747,6 +747,34 @@
       },
       "permission": "ReadOnlyTerminal"
     },
+    "session recurrence": {
+      "group": "Session",
+      "description": "Show canonical recurring issue counts, observed time, prevention controls, and deep-detail links",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/session.py recurrence",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/session.py",
+              "recurrence"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--id RR-NNN": "Show one recurring root-cause pattern",
+        "--json": "Machine-readable canonical rows"
+      },
+      "aliases": [
+        "rework index",
+        "recurrence index",
+        "repeated issues"
+      ]
+    },
     "check git state": {
       "group": "Git",
       "description": "Report typed local Git state, holds, base, upstream, operations, and locks without network or mutation",

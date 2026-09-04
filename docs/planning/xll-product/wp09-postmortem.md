@@ -80,6 +80,11 @@ removing any engineering assurance.
 
 ## Detailed issue and recurrence ledger
 
+The compact [rework and recurrence index](../../verification/rework-recurrence-index.json)
+stores each recurring pattern's ID, count, observed-time basis, short control,
+and links back to this detailed record. Future session logs reference the ID and
+current count/time rather than copying the explanation or solution again.
+
 No source records active minutes per defect. The cost column therefore records
 retries, invalidated evidence, or repeated repair stages instead of invented
 durations. A product defect is a useful acceptance finding. A process mistake
