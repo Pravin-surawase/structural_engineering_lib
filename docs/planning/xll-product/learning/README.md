@@ -15,7 +15,7 @@ Started again on 3 September 2026. The user implements; the assistant explains, 
 
 **Current lesson:** [01 — Excel, C# and the XLL](01-excel-xll-foundations.md).
 
-**Current product stage:** the shell-only packet within original XLL P0, before implementation acceptance. Existing preflight was recorded previously; no user exercise or installed XLL acceptance is marked complete here. The architecture's broader CSI/runtime, engineering, ETABS, solver and delivery proof remains separate and outstanding.
+**Current product stage:** WP09 product implementation and installed XLL acceptance are complete. The shell-only P0 lessons remain a separate user-led teaching sequence, and no user exercise is marked complete here. Getter-only ETABS acquisition begins in WP10; copied-model reanalysis and release readiness remain later work.
 
 ## P0 lesson sequence
 

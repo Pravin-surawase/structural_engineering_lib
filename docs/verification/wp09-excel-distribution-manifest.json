@@ -1,0 +1,74 @@
+{
+    "schema_version":  "structautomate.excel-distribution/v1",
+    "product":  "StructAutomate Excel",
+    "version":  "0.1.0",
+    "source_commit":  "6d03be23ec4964034def3b74492f9722cfdd3bee",
+    "source_tree":  "000807f80d8356aaac63b48b6e777f88b3564c47",
+    "target":  "win-x64",
+    "excel_target":  "Microsoft 365 Excel 64-bit on Windows 11",
+    "runtime_target":  ".NET 10 Desktop Runtime x64",
+    "excel_dna_version":  "1.9.0",
+    "workbook_template_version":  "structural-excel-workbook/v1",
+    "file_digest_algorithm":  "SHA-256",
+    "pre_sign_xll_sha256":  "954ba454bef6d476c183dc454a994fca32504bb28fa9d743a57a5cf1f120680c",
+    "signed_xll":  {
+                       "name":  "StructAutomate.xll",
+                       "length_bytes":  1519920,
+                       "sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5"
+                   },
+    "pe_machine":  "AMD64",
+    "signature":  {
+                      "status":  "Valid",
+                      "status_message":  "Signature verified.",
+                      "signature_type":  "Authenticode",
+                      "subject":  "CN=StructAutomate WP09 Validation",
+                      "thumbprint":  "8F5460BE9356A3A2103266687229389BB9DDE972",
+                      "authenticode_file_digest_algorithm":  "SHA-256",
+                      "certificate_signature_algorithm":  "sha256RSA",
+                      "timestamp_subject":  null,
+                      "purpose":  "WP09 local installed candidate"
+                  },
+    "files":  [
+                  {
+                      "name":  "Common.ps1",
+                      "length_bytes":  9116,
+                      "sha256":  "938b337e1f1368c266d43a67da0b0e24943ab627b1bb15b029b5135205a7b180"
+                  },
+                  {
+                      "name":  "Install-PerUser.ps1",
+                      "length_bytes":  4953,
+                      "sha256":  "b6658d935660f82178edcbab97eeefa5bdc2e30c7e83fe3afb8010a6da1e96df"
+                  },
+                  {
+                      "name":  "README.md",
+                      "length_bytes":  11385,
+                      "sha256":  "af4b7215b69c02633ce0fbb0bd4a5bc5a08ce4bff987db19fc49567ac3f316f1"
+                  },
+                  {
+                      "name":  "Repair-PerUser.ps1",
+                      "length_bytes":  1643,
+                      "sha256":  "77111e4d5ab038e2fc418369eaf907c331c9c0d758bfb1f825801aac0083cd07"
+                  },
+                  {
+                      "name":  "StructAutomate-Standalone-Beam.xlsx",
+                      "length_bytes":  49586,
+                      "sha256":  "2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9"
+                  },
+                  {
+                      "name":  "StructAutomate.xll",
+                      "length_bytes":  1519920,
+                      "sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5"
+                  },
+                  {
+                      "name":  "Test-Preflight.ps1",
+                      "length_bytes":  6086,
+                      "sha256":  "d58aee32cc853605ff6dec66a429aacb23d9bda45a8ac38865d01c75dd505949"
+                  },
+                  {
+                      "name":  "Uninstall-PerUser.ps1",
+                      "length_bytes":  3701,
+                      "sha256":  "3278753af07b23808e1f959dd792fddaff62b4bca5dee137d9706e05561a3941"
+                  }
+              ],
+    "public_release_authorized":  false
+}

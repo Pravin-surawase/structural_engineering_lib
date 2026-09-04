@@ -116,6 +116,11 @@ external_data/
 # -----------------------------------------------------------------------------
 VBA/
 Excel/
+!CSharp/packaging/
+!CSharp/packaging/excel/
+!CSharp/packaging/excel/**
+!docs/library/excel/
+!docs/library/excel/**
 
 # -----------------------------------------------------------------------------
 # Local runtime logs (keep out of git)

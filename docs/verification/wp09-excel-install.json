@@ -1,0 +1,36 @@
+{
+    "schema_version":  "structautomate.excel-install/v1",
+    "operation":  "install_or_repair",
+    "completed_at_utc":  "2026-09-04T09:27:23.4140044+00:00",
+    "source_commit":  "6d03be23ec4964034def3b74492f9722cfdd3bee",
+    "version":  "0.1.0",
+    "install_directory":  "C:\\Users\\P\\AppData\\Local\\StructAutomate\\Excel\\0.1.0",
+    "xll":  {
+                "name":  "StructAutomate.xll",
+                "length_bytes":  1519920,
+                "sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5"
+            },
+    "installed_manifest":  {
+                               "name":  "manifest.json",
+                               "length_bytes":  3603,
+                               "sha256":  "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae"
+                           },
+    "signature_thumbprint":  "8F5460BE9356A3A2103266687229389BB9DDE972",
+    "registration":  {
+                         "requested":  true,
+                         "succeeded":  true,
+                         "addin_name":  "StructAutomate.xll",
+                         "addin_full_name":  "C:\\Users\\P\\AppData\\Local\\StructAutomate\\Excel\\0.1.0\\StructAutomate.xll",
+                         "startup":  {
+                                         "registry_path":  "HKCU:\\Software\\Microsoft\\Office\\16.0\\Excel\\Options",
+                                         "value_name":  "OPEN",
+                                         "value":  "/R \"C:\\Users\\P\\AppData\\Local\\StructAutomate\\Excel\\0.1.0\\StructAutomate.xll\"",
+                                         "created":  true
+                                     }
+                     },
+    "preflight_receipt":  {
+                              "name":  "excel-install-preflight.json",
+                              "length_bytes":  9913,
+                              "sha256":  "9e6a44b66412db968911f904b6aa837d9902784924506dcc9dcda18bfa489ab3"
+                          }
+}

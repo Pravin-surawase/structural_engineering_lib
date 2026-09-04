@@ -2,7 +2,7 @@
   <PropertyGroup><TargetFramework>net10.0-windows</TargetFramework><IsTestProject>true</IsTestProject><OutputType>Exe</OutputType><IsPackable>false</IsPackable></PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/StructAutomate.Application/StructAutomate.Application.csproj" />
-    <ProjectReference Include="../../src/StructAutomate.Excel/StructAutomate.Excel.csproj" />
+    <ProjectReference Include="../../src/StructuralEngineering.ExcelDna/StructuralEngineering.ExcelDna.csproj" />
     <PackageReference Include="xunit.v3" />
   </ItemGroup>
   <ItemGroup><None Include="../../examples/*.json" Link="examples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>

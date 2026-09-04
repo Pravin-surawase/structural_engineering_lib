@@ -1,0 +1,161 @@
+{
+    "schema_version":  "structautomate.excel-repair/v1",
+    "completed_at_utc":  "2026-09-04T09:29:36.9787226+00:00",
+    "source_commit":  "6d03be23ec4964034def3b74492f9722cfdd3bee",
+    "distribution_manifest":  {
+                                  "name":  "manifest.json",
+                                  "length_bytes":  3603,
+                                  "sha256":  "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae"
+                              },
+    "install_directory":  "C:\\Users\\P\\AppData\\Local\\StructAutomate\\Excel\\0.1.0",
+    "files_before":  [
+                         {
+                             "name":  "Common.ps1",
+                             "length_bytes":  9116,
+                             "sha256":  "938b337e1f1368c266d43a67da0b0e24943ab627b1bb15b029b5135205a7b180"
+                         },
+                         {
+                             "name":  "Install-PerUser.ps1",
+                             "length_bytes":  4953,
+                             "sha256":  "b6658d935660f82178edcbab97eeefa5bdc2e30c7e83fe3afb8010a6da1e96df"
+                         },
+                         {
+                             "name":  "install-receipt.json",
+                             "length_bytes":  2015,
+                             "sha256":  "dc1d836db9b216722c8fb1740b7f5cc84d2058ace318c9ca506b2cb273afe230"
+                         },
+                         {
+                             "name":  "manifest.json",
+                             "length_bytes":  3603,
+                             "sha256":  "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae"
+                         },
+                         {
+                             "name":  "README.md",
+                             "length_bytes":  11385,
+                             "sha256":  "af4b7215b69c02633ce0fbb0bd4a5bc5a08ce4bff987db19fc49567ac3f316f1"
+                         },
+                         {
+                             "name":  "Repair-PerUser.ps1",
+                             "length_bytes":  1643,
+                             "sha256":  "77111e4d5ab038e2fc418369eaf907c331c9c0d758bfb1f825801aac0083cd07"
+                         },
+                         {
+                             "name":  "SHA256SUMS",
+                             "length_bytes":  773,
+                             "sha256":  "ae80a96a099ef9c3ad4a294610595bef56f40103483d7c10a3cb167abf2d9750"
+                         },
+                         {
+                             "name":  "StructAutomate-Standalone-Beam.xlsx",
+                             "length_bytes":  49586,
+                             "sha256":  "2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9"
+                         },
+                         {
+                             "name":  "StructAutomate.xll",
+                             "length_bytes":  1519920,
+                             "sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5"
+                         },
+                         {
+                             "name":  "Test-Preflight.ps1",
+                             "length_bytes":  6086,
+                             "sha256":  "d58aee32cc853605ff6dec66a429aacb23d9bda45a8ac38865d01c75dd505949"
+                         },
+                         {
+                             "name":  "Uninstall-PerUser.ps1",
+                             "length_bytes":  3701,
+                             "sha256":  "3278753af07b23808e1f959dd792fddaff62b4bca5dee137d9706e05561a3941"
+                         }
+                     ],
+    "files_after":  [
+                        {
+                            "name":  "Common.ps1",
+                            "length_bytes":  9116,
+                            "sha256":  "938b337e1f1368c266d43a67da0b0e24943ab627b1bb15b029b5135205a7b180"
+                        },
+                        {
+                            "name":  "Install-PerUser.ps1",
+                            "length_bytes":  4953,
+                            "sha256":  "b6658d935660f82178edcbab97eeefa5bdc2e30c7e83fe3afb8010a6da1e96df"
+                        },
+                        {
+                            "name":  "install-receipt.json",
+                            "length_bytes":  2017,
+                            "sha256":  "dbdeadb3356110dc8c42f2ee2f23ffcbac31956e205f040ea75970949350deb6"
+                        },
+                        {
+                            "name":  "manifest.json",
+                            "length_bytes":  3603,
+                            "sha256":  "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae"
+                        },
+                        {
+                            "name":  "README.md",
+                            "length_bytes":  11385,
+                            "sha256":  "af4b7215b69c02633ce0fbb0bd4a5bc5a08ce4bff987db19fc49567ac3f316f1"
+                        },
+                        {
+                            "name":  "Repair-PerUser.ps1",
+                            "length_bytes":  1643,
+                            "sha256":  "77111e4d5ab038e2fc418369eaf907c331c9c0d758bfb1f825801aac0083cd07"
+                        },
+                        {
+                            "name":  "SHA256SUMS",
+                            "length_bytes":  773,
+                            "sha256":  "ae80a96a099ef9c3ad4a294610595bef56f40103483d7c10a3cb167abf2d9750"
+                        },
+                        {
+                            "name":  "StructAutomate-Standalone-Beam.xlsx",
+                            "length_bytes":  49586,
+                            "sha256":  "2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9"
+                        },
+                        {
+                            "name":  "StructAutomate.xll",
+                            "length_bytes":  1519920,
+                            "sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5"
+                        },
+                        {
+                            "name":  "Test-Preflight.ps1",
+                            "length_bytes":  6086,
+                            "sha256":  "d58aee32cc853605ff6dec66a429aacb23d9bda45a8ac38865d01c75dd505949"
+                        },
+                        {
+                            "name":  "Uninstall-PerUser.ps1",
+                            "length_bytes":  3701,
+                            "sha256":  "3278753af07b23808e1f959dd792fddaff62b4bca5dee137d9706e05561a3941"
+                        }
+                    ],
+    "install_receipt":  {
+                            "schema_version":  "structautomate.excel-install/v1",
+                            "operation":  "install_or_repair",
+                            "completed_at_utc":  "2026-09-04T09:29:36.8395964+00:00",
+                            "source_commit":  "6d03be23ec4964034def3b74492f9722cfdd3bee",
+                            "version":  "0.1.0",
+                            "install_directory":  "C:\\Users\\P\\AppData\\Local\\StructAutomate\\Excel\\0.1.0",
+                            "xll":  {
+                                        "name":  "StructAutomate.xll",
+                                        "length_bytes":  1519920,
+                                        "sha256":  "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5"
+                                    },
+                            "installed_manifest":  {
+                                                       "name":  "manifest.json",
+                                                       "length_bytes":  3603,
+                                                       "sha256":  "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae"
+                                                   },
+                            "signature_thumbprint":  "8F5460BE9356A3A2103266687229389BB9DDE972",
+                            "registration":  {
+                                                 "requested":  true,
+                                                 "succeeded":  true,
+                                                 "addin_name":  "StructAutomate.xll",
+                                                 "addin_full_name":  "C:\\Users\\P\\AppData\\Local\\StructAutomate\\Excel\\0.1.0\\StructAutomate.xll",
+                                                 "startup":  {
+                                                                 "registry_path":  "HKCU:\\Software\\Microsoft\\Office\\16.0\\Excel\\Options",
+                                                                 "value_name":  "OPEN",
+                                                                 "value":  "/R \"C:\\Users\\P\\AppData\\Local\\StructAutomate\\Excel\\0.1.0\\StructAutomate.xll\"",
+                                                                 "created":  false
+                                                             }
+                                             },
+                            "preflight_receipt":  {
+                                                      "name":  "excel-install-preflight.json",
+                                                      "length_bytes":  10300,
+                                                      "sha256":  "b9d05cf239f9c9930d8305cf7b95ea4cf1643a013ed8182f206f2394a80fcd93"
+                                                  }
+                        }
+}

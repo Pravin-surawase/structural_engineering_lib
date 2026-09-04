@@ -18,6 +18,11 @@ The first implementation milestone is WP01-WP08:
 7. fabrication, quantities, cost, and calculation packages;
 8. deterministic candidate ranking and optimization.
 
+WP09 adds the standalone Windows Excel application over those same native .NET
+operations: pure worksheet functions, versioned workbook commands, a sample,
+signed per-user packaging, rollback/freshness, and installed performance
+evidence. See the [Excel user and function reference](excel/README.md).
+
 See [Getting started](getting-started.md), [WP01 reference](reference/wp01-flexure.md),
 [WP02 reference](reference/wp02-shear-torsion.md),
 [WP03 reference](reference/wp03-actions-analysis-topology.md),

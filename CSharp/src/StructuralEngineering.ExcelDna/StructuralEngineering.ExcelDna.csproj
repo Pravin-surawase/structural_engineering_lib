@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ExcelDnaCreate32BitAddIn>false</ExcelDnaCreate32BitAddIn>
+    <ExcelDnaCreate64BitAddIn>true</ExcelDnaCreate64BitAddIn>
+    <ExcelDnaPack>true</ExcelDnaPack>
+    <AssemblyName>StructuralEngineering.ExcelDna</AssemblyName>
+    <ExcelDnaAddInName>StructAutomate</ExcelDnaAddInName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../StructuralEngineering.Contracts/StructuralEngineering.Contracts.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Core/StructuralEngineering.Core.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Reinforcement/StructuralEngineering.Reinforcement.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Codes.IS456/StructuralEngineering.Codes.IS456.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Beam/StructuralEngineering.Beam.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Analysis/StructuralEngineering.Analysis.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Construction/StructuralEngineering.Construction.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Optimization/StructuralEngineering.Optimization.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Reporting/StructuralEngineering.Reporting.csproj" />
+    <PackageReference Include="ExcelDna.AddIn" />
+  </ItemGroup>
+</Project>

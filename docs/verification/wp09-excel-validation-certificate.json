@@ -1,0 +1,19 @@
+{
+    "schema_version":  "structautomate.validation-certificate/v1",
+    "created":  true,
+    "subject":  "CN=StructAutomate WP09 Validation",
+    "thumbprint":  "8F5460BE9356A3A2103266687229389BB9DDE972",
+    "serial_number":  "42166A5A2C07458D4486378E2F774D05",
+    "not_before":  "2026-09-04T08:24:45.0000000Z",
+    "not_after":  "2028-09-04T08:34:44.0000000Z",
+    "public_certificate":  {
+                               "name":  "StructAutomate-WP09-Validation.cer",
+                               "length_bytes":  1062,
+                               "sha256":  "b1ec55dcd877e2da016f5de4139c5c85387e9c4ec290420c3f22a5c0a495c746"
+                           },
+    "trusted_current_user_stores":  [
+                                        "Cert:\\CurrentUser\\Root",
+                                        "Cert:\\CurrentUser\\TrustedPublisher"
+                                    ],
+    "purpose":  "Local WP09 installed-behaviour evidence; not a public-distribution certificate."
+}

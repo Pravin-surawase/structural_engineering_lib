@@ -1,0 +1,139 @@
+{
+  "schema_version": "structautomate.excel-distribution-evidence/v3",
+  "observed_at_utc": "2026-09-04T10:15:40.9841187+00:00",
+  "source_candidate": {
+    "commit": "6d03be23ec4964034def3b74492f9722cfdd3bee",
+    "tree": "000807f80d8356aaac63b48b6e777f88b3564c47",
+    "independent_source_audit": "PASS",
+    "final_evidence_audit": "PASS"
+  },
+  "distribution_zip": {
+    "name": "wp09-distribution.zip",
+    "length_bytes": 965162,
+    "sha256": "0d2a33dee0ff7041bb1b35dcfdeca66643114e7ff3179711b454087c6b36b0d4"
+  },
+  "package_manifest": {
+    "name": "manifest.json",
+    "length_bytes": 3603,
+    "sha256": "5b25f555238baa7fb9d312aecf4c900f95a7b68f757089aa5a20db03a66e7cae"
+  },
+  "checked_in_manifest_receipt": {
+    "name": "wp09-excel-distribution-manifest.json",
+    "length_bytes": 3529,
+    "sha256": "593094861f75166ac37428cd4c16b38127848a3cc22eb8ab81bd52e9a1de113c"
+  },
+  "signed_xll": {
+    "name": "StructAutomate.xll",
+    "length_bytes": 1519920,
+    "sha256": "36da1b297ae20e50629e3e8168c2af68356296b8f0ee61409598a47aaf2fd1d5",
+    "pe_machine": "AMD64"
+  },
+  "signature": {
+    "status": "Valid",
+    "subject": "CN=StructAutomate WP09 Validation",
+    "thumbprint": "8F5460BE9356A3A2103266687229389BB9DDE972",
+    "file_digest_algorithm": "SHA-256",
+    "certificate_signature_algorithm": "sha256RSA",
+    "purpose": "WP09 local installed candidate"
+  },
+  "validation_certificate_receipt": {
+    "name": "wp09-excel-validation-certificate.json",
+    "length_bytes": 990,
+    "sha256": "2ca829e4a3c732fb5ac022861a97b4a4bb1f40b07dbe8128dab538ed32524bb5"
+  },
+  "lifecycle_receipts": {
+    "package_preflight": {
+      "name": "wp09-excel-preflight.json",
+      "length_bytes": 9748,
+      "sha256": "cc44e38ff320552b11363873a55b29ef601e1a69970e6573001c7a93d3eac948"
+    },
+    "clean_install_preflight": {
+      "name": "wp09-excel-install-preflight.json",
+      "length_bytes": 9748,
+      "sha256": "2a4091332b419428580c84f55de4a781f1ea502f11e7a790264c1614ba55dee3"
+    },
+    "install": {
+      "name": "wp09-excel-install.json",
+      "length_bytes": 1979,
+      "sha256": "6ab9acf5ff2d741302711e6a80fc9ae93ab8adf3d39e5aeba0d76e7aefb5391c"
+    },
+    "repair": {
+      "name": "wp09-excel-repair.json",
+      "length_bytes": 9473,
+      "sha256": "006c2007b39c83eac048940022e6e241b75e1a32b271b69bd31657ecd829d944"
+    },
+    "installed_acceptance": {
+      "name": "wp09-excel-installed-acceptance.json",
+      "length_bytes": 330655,
+      "sha256": "5b7ed4b035d7780e3d0dd59373d7a685792e4aea908dd9c8e10711ceb27cd401"
+    },
+    "rollback": {
+      "name": "wp09-excel-rollback-probe.json",
+      "length_bytes": 1268,
+      "sha256": "bc0cf19c0fe5e87554f72659d81bc143c7215d75edc06f09d2e73d7b7c3aa042"
+    },
+    "uninstall": {
+      "name": "wp09-excel-uninstall.json",
+      "length_bytes": 4507,
+      "sha256": "1b0796cf74112f76cb9286af2a50f79997ce2a43d078311d987da7b5deede985"
+    },
+    "cleanup": {
+      "name": "wp09-excel-cleanup.json",
+      "length_bytes": 1012,
+      "sha256": "8459a1e3cc3a96b04a5a6fa666d51a148a8b78c92fbeeb2cf1bc2b11d1cb8436"
+    }
+  },
+  "acceptance_bound_rollback_probe": {
+    "name": "excel-rollback-probe.json",
+    "length_bytes": 1267,
+    "sha256": "61d5dc8376a17f5837db2f6273784262a4e523db7ebfbff9e2f2c9d5fcda88a1",
+    "relationship": "Byte-exact raw probe generated and bound by installed acceptance before repository EOF normalization."
+  },
+  "installed_acceptance": {
+    "passed": true,
+    "schema_version": "structautomate.excel-installed-acceptance/v3",
+    "observed_at_utc": "2026-09-04T15:17:06.7095287+05:30",
+    "workload": {
+      "members": 20,
+      "operations": 200,
+      "description": "Twenty member rows repeat one frozen physical beam scenario to exercise the batch/workbook path; this is performance and workflow evidence, not engineering-case diversity."
+    },
+    "initial_full_calculation_ms": 7352.117,
+    "warm_sample_count": 30,
+    "warm_median_ms": 356.715,
+    "warm_p95_ms": 413.457,
+    "cold_sample_count": 10,
+    "cold_ready_max_ms": 2018.668,
+    "memory_delta_mib": 202.059,
+    "progress_response_ms": 2.4877,
+    "cancellation_response_ms": 23.4521,
+    "legacy_output_schema_upgrade": true,
+    "restart_runtime_fingerprint_invalidation": true,
+    "all_checks_passed": true
+  },
+  "repeat_observation": {
+    "exact_candidate_runs": 3,
+    "passing_runs": 2,
+    "locked_memory_budget_mib": 256,
+    "memory_delta_mib": [
+      136.418,
+      275.438,
+      202.059
+    ],
+    "cold_ready_max_ms": [
+      2342.52,
+      2241.405,
+      2018.668
+    ],
+    "nonpassing_repeat": {
+      "run": 2,
+      "failed_check": "memory_delta_budget",
+      "observed_mib": 275.438,
+      "all_other_checks_passed": true
+    },
+    "selected_receipt": "Run 3 is the latest exact-candidate run and passed every unchanged gate. The repeat variance is retained here; no budget or measurement boundary was changed."
+  },
+  "repository_serialization": "Checked-in JSON evidence uses repository-required LF line endings and final newlines. package_manifest and acceptance_bound_rollback_probe record byte-exact installed artifacts; checked_in_manifest_receipt and lifecycle_receipts.rollback record their repository-normalized semantic copies.",
+  "cleanup_verified": true,
+  "public_release_authorized": false
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "structautomate.excel-cleanup/v1",
+  "observed_at_utc": "2026-09-04T09:54:14.0419770+00:00",
+  "source_commit": "6d03be23ec4964034def3b74492f9722cfdd3bee",
+  "source_tree": "000807f80d8356aaac63b48b6e777f88b3564c47",
+  "install_directory": "C:\\Users\\P\\AppData\\Local\\StructAutomate\\Excel\\0.1.0",
+  "install_directory_absent": true,
+  "startup_registration_count": 0,
+  "excel_process_count": 0,
+  "validation_certificate": {
+    "thumbprint": "8F5460BE9356A3A2103266687229389BB9DDE972",
+    "stores": [
+      "CurrentUser/My",
+      "CurrentUser/Root",
+      "CurrentUser/TrustedPublisher"
+    ],
+    "cleanup_method": "X509Store removed CurrentUser/My; Windows confirmation prevented noninteractive X509Store removal from CurrentUser/Root and CurrentUser/TrustedPublisher, so their exact thumbprint registry subkeys were removed through Microsoft.Win32.Registry.",
+    "store_counts_after": {
+      "My": 0,
+      "Root": 0,
+      "TrustedPublisher": 0
+    }
+  },
+  "passed": true
+}
