@@ -8,14 +8,17 @@ complexity: advanced
 
 # StructAutomate — current plan
 
-Updated 3 September 2026 for the owner's direction to complete the library definition before further implementation. The first product workflow is standalone beam design in Windows Excel; the complete automation path includes ETABS forces, design/checking, candidate search, reanalysis, detailing and construction outputs.
+Updated 4 September 2026 after completion of PF0–PF11 and the WP01–WP08 native
+library milestone. The first product workflow is standalone beam design in
+Windows Excel; the complete automation path includes ETABS forces,
+design/checking, candidate search, reanalysis, detailing and construction
+outputs.
 
-[PF0's product and library charter](library-definition/pf0/README.md) is
-complete. It selects native Python and native .NET libraries for a deliberately
-maintained common semantic set, fixes the standalone Excel workflow as the
-first product journey, and assigns measurable outcomes and decision owners.
-PF1 workflow discovery and PF2 existing-asset audit are the next definition
-work.
+[PF0's product and library charter](library-definition/pf0/README.md) through
+[PF11's implementation blueprint](library-definition/pf11/README.md) are
+complete. WP01–WP08 now implement the shared native Python and .NET beam
+libraries. [WP09](wp09-standalone-excel.md) is the active milestone and delivers
+the standalone Excel product over those libraries before live ETABS work.
 
 **Use the original architecture's P0–P6 phase meanings.** My earlier v2 synthesis changed those meanings and compared the older optimizer roadmap instead of this document. That comparison is superseded.
 
@@ -23,10 +26,12 @@ work.
 
 1. [Library definition programme PF0–PF11](library-definition/README.md), with machine-readable phase, capability, deliverable and decision controls. This is the current work authority.
 2. [Automation requirements and delivery sequence](automation/README.md), with operation contracts, examples, source crosswalk and member/check schemas.
-3. [Working C# foundation](../../../CSharp/README.md), its exact build/test commands and implemented boundaries. It is executable evidence, not permission to skip the definition programme.
-4. [Reusable Python/.NET library research](reusable-library-research.md), covering proposed library boundaries, peer libraries, public signatures and ETABS result semantics.
-5. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
-6. [Original XLL architecture decision](../excel-dna-xll-product-architecture-decision.md) and [phase review](phase-review.md), retained for architectural history. [Source provenance](source-manifest.json) records the supplied and publication hashes.
+3. [WP09 standalone Excel plan](wp09-standalone-excel.md), with the canonical
+   adapter decision, delivery slices and acceptance evidence.
+4. [Working C# foundation](../../../CSharp/README.md), its exact build/test commands and implemented boundaries.
+5. [Reusable Python/.NET library research](reusable-library-research.md), covering proposed library boundaries, peer libraries, public signatures and ETABS result semantics.
+6. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
+7. [Original XLL architecture decision](../excel-dna-xll-product-architecture-decision.md) and [phase review](phase-review.md), retained for architectural history. [Source provenance](source-manifest.json) records the supplied and publication hashes.
 
 ## Original phases, retained
 
@@ -42,9 +47,15 @@ work.
 
 The original shell-only Windows P0 packet remains historical evidence of the first narrow exercise: preservation and environment checks, x64 Excel-DNA 1.9.0/net48, About/Diagnostics/Open Panel, and pure SA_HELLO/SA_ADD functions. It did not authorize or establish ETABS calls, structural calculations, solver work, or installed acceptance.
 
-The C# solution now provides typed force normalization, beam-line analysis, reinforcement geometry, bar-path quantities and candidate ranking, with an Excel-DNA x64 build. The automation specification defines full member checks, ETABS adapters, candidate evaluation, detailing and workbook/report delivery. Installed Excel and ETABS behavior is verified with the actual applications as those interfaces are implemented.
+The C# solution now implements the native WP01–WP08 contracts, beam checks,
+analysis, topology, serviceability, detailing, member aggregation, bar paths,
+construction outputs, calculation packages and bounded candidate search. WP09
+replaces the earlier four-function Excel demo with the canonical Excel-DNA
+adapter, versioned workbook commands and installed Excel evidence.
 
-Implementation sequencing now follows the blueprint produced by PF11. That blueprint must reconcile the reusable-library definition, the original P0–P6 XLL meanings and the separate six-phase beam programme. Until then, the existing implementations and the automation catalogue are evidence and inputs to planning rather than a default porting order.
+Implementation sequencing follows PF11: WP09 is the standalone Excel milestone,
+WP10 adds getter-only ETABS acquisition, WP11 adds controlled copied-model
+reanalysis, and WP12 completes migration and release readiness.
 
 ## Learning and evidence status
 

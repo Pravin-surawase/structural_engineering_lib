@@ -4,11 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-04
-- Focus: Implement the first library milestone from the approved PF1–PF11
-- Git receipt: docs/verification/wp01-wp08-native-libraries-git-handoff-receipt.json | sha256:b7697e0a873f294cab951c13a2c52e87e4ecfd865929d92a18cd3bd1a551b418 | HOLD
-- Git identity: codex/wp01-wp08-native-libraries@c39a95819628a976efd6d96555194ad4889065a7 | upstream=NONE@UNKNOWN | base=origin/main@24f116f7c7d99205516eb2d95f6a1009e7a32855 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: HOLD_FOR_EXACT_EVIDENCE
+- Focus: Deliver WP09 standalone Windows Excel over the completed native libraries
+- Git receipt: WP01–WP08 merged by PR 962 at `1b9da3165cc4fed12a87af9bca553ed51f04fa57`
+- Current branch: `codex/wp09-standalone-excel`
+- Next action: implement and qualify the WP09 function, command, workbook, package, installed-lifecycle and performance slices
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -39,11 +38,12 @@ standalone Windows Excel product around those libraries.
 ## Required Reading
 
 1. [PF11 implementation blueprint](xll-product/library-definition/pf11/README.md)
-2. [WP01–WP08 library status](../library/implementation-status.md)
-3. [Library getting started](../library/getting-started.md)
-4. [Structural Library Definition Programme](xll-product/library-definition/README.md)
-5. [Decision register](xll-product/library-definition/decision-register.json)
-6. [Current XLL plan](xll-product/current-plan.md)
-7. [Automation requirements](xll-product/automation/README.md)
-8. [Newest session entry](../SESSION_LOG.md)
-9. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+2. [WP09 standalone Excel plan](xll-product/wp09-standalone-excel.md)
+3. [WP01–WP08 library status](../library/implementation-status.md)
+4. [Library getting started](../library/getting-started.md)
+5. [Structural Library Definition Programme](xll-product/library-definition/README.md)
+6. [Decision register](xll-product/library-definition/decision-register.json)
+7. [Current XLL plan](xll-product/current-plan.md)
+8. [Automation requirements](xll-product/automation/README.md)
+9. [Newest session entry](../SESSION_LOG.md)
+10. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
