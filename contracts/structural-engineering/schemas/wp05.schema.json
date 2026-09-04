@@ -1,0 +1,331 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/wp05/v1",
+  "title": "WP05 portable detailing and constructability requests",
+  "$defs": {
+    "qualifiedCheckReference": {
+      "type": "object",
+      "required": ["operation_semantic_id", "result_id", "execution", "applicability", "engineering", "completeness", "freshness"],
+      "properties": {
+        "operation_semantic_id": {"type": "string", "minLength": 1},
+        "result_id": {"type": "string", "minLength": 1},
+        "execution": {"enum": ["completed", "rejected_input", "not_run", "software_error", "cancelled"]},
+        "applicability": {"enum": ["applicable", "not_applicable", "unknown"]},
+        "engineering": {"enum": ["pass", "fail", "not_evaluated"]},
+        "completeness": {"enum": ["complete_for_scope", "partial"]},
+        "freshness": {"enum": ["current", "stale", "unbound"]}
+      },
+      "additionalProperties": false
+    },
+    "developmentLengthRequest": {
+      "type": "object",
+      "required": ["profile_id", "bar_diameter_mm", "bar_stress_n_per_mm2", "steel_yield_strength_n_per_mm2", "concrete_grade_n_per_mm2", "bar_surface", "stress_state", "bundle_size", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "bar_diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "bar_stress_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "steel_yield_strength_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "concrete_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "bar_surface": {"enum": ["plain", "deformed", "fusion_bonded_epoxy_deformed"]},
+        "stress_state": {"enum": ["tension", "compression"]},
+        "bundle_size": {"type": "integer", "minimum": 1, "maximum": 4},
+        "code_data_revision_id": {"const": "is456-amd6-wp05-v1"}
+      },
+      "additionalProperties": false
+    },
+    "anchorageBend": {
+      "type": "object",
+      "required": ["bend_id", "angle_degrees"],
+      "properties": {
+        "bend_id": {"type": "string", "minLength": 1},
+        "angle_degrees": {"enum": [45, 90, 135, 180]}
+      },
+      "additionalProperties": false
+    },
+    "simpleSupportEvidence": {
+      "type": "object",
+      "required": ["moment_resistance_nmm", "support_shear_n", "action_row_ids"],
+      "properties": {
+        "moment_resistance_nmm": {"type": "number", "minimum": 0},
+        "support_shear_n": {"type": "number", "exclusiveMinimum": 0},
+        "action_row_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "anchoragePath": {
+      "type": "object",
+      "required": ["bar_id", "critical_section_id", "location", "direction", "path_start_x_mm", "path_end_x_mm", "critical_section_x_mm", "support_id", "support_near_face_x_mm", "support_centre_x_mm", "bends", "bend_schedule_reference", "development", "simple_support_evidence"],
+      "properties": {
+        "bar_id": {"type": "string", "minLength": 1},
+        "critical_section_id": {"type": "string", "minLength": 1},
+        "location": {"enum": ["simple_support", "continuous_support", "discontinuity"]},
+        "direction": {"enum": ["increasing_x", "decreasing_x"]},
+        "path_start_x_mm": {"type": "number"},
+        "path_end_x_mm": {"type": "number"},
+        "critical_section_x_mm": {"type": "number"},
+        "support_id": {"type": ["string", "null"]},
+        "support_near_face_x_mm": {"type": ["number", "null"]},
+        "support_centre_x_mm": {"type": ["number", "null"]},
+        "bends": {"type": "array", "items": {"$ref": "#/$defs/anchorageBend"}},
+        "bend_schedule_reference": {"type": ["string", "null"]},
+        "development": {"$ref": "#/$defs/developmentLengthRequest"},
+        "simple_support_evidence": {"oneOf": [{"$ref": "#/$defs/simpleSupportEvidence"}, {"type": "null"}]}
+      },
+      "additionalProperties": false
+    },
+    "anchorageCheckRequest": {
+      "type": "object",
+      "required": ["profile_id", "member_id", "reinforcement_revision_id", "paths", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "member_id": {"type": "string", "minLength": 1},
+        "reinforcement_revision_id": {"type": "string", "minLength": 1},
+        "paths": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/anchoragePath"}},
+        "code_data_revision_id": {"const": "is456-amd6-wp05-v1"}
+      },
+      "additionalProperties": false
+    },
+    "longitudinalBarPath": {
+      "type": "object",
+      "required": ["bar_id", "bar_mark", "role", "diameter_mm", "layer", "x_from_left_mm", "y_from_top_mm", "start_station_mm", "end_station_mm", "design_stress_n_per_mm2", "bundle_size"],
+      "properties": {
+        "bar_id": {"type": "string", "minLength": 1},
+        "bar_mark": {"type": "string", "minLength": 1},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "corner"]},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "layer": {"type": "integer", "minimum": 1},
+        "x_from_left_mm": {"type": "number"},
+        "y_from_top_mm": {"type": "number"},
+        "start_station_mm": {"type": "number"},
+        "end_station_mm": {"type": "number"},
+        "design_stress_n_per_mm2": {"type": "number", "minimum": 0},
+        "bundle_size": {"type": "integer", "minimum": 1, "maximum": 4}
+      },
+      "additionalProperties": false
+    },
+    "stationSteelDemand": {
+      "type": "object",
+      "required": ["station_id", "station_x_mm", "role", "required_area_mm2", "shear_demand_n", "shear_capacity_n", "action_row_id"],
+      "properties": {
+        "station_id": {"type": "string", "minLength": 1},
+        "station_x_mm": {"type": "number"},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "corner"]},
+        "required_area_mm2": {"type": "number", "minimum": 0},
+        "shear_demand_n": {"type": "number", "minimum": 0},
+        "shear_capacity_n": {"type": "number", "minimum": 0},
+        "action_row_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "spliceDetail": {
+      "type": "object",
+      "required": ["splice_id", "kind", "bar_ids", "start_x_mm", "end_x_mm", "stress_state", "direct_tension", "percentage_spliced_at_section", "stagger_group", "coupler_qualification_reference", "installation_reference"],
+      "properties": {
+        "splice_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["lap", "qualified_coupler"]},
+        "bar_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "start_x_mm": {"type": "number"},
+        "end_x_mm": {"type": "number"},
+        "stress_state": {"enum": ["tension", "compression"]},
+        "direct_tension": {"type": "boolean"},
+        "percentage_spliced_at_section": {"type": "number", "exclusiveMinimum": 0, "maximum": 100},
+        "stagger_group": {"type": "string", "minLength": 1},
+        "coupler_qualification_reference": {"type": ["string", "null"]},
+        "installation_reference": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "stationZone": {
+      "type": "object",
+      "required": ["zone_id", "start_x_mm", "end_x_mm"],
+      "properties": {
+        "zone_id": {"type": "string", "minLength": 1},
+        "start_x_mm": {"type": "number"},
+        "end_x_mm": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "curtailmentDetail": {
+      "type": "object",
+      "required": ["cutoff_id", "bar_id", "theoretical_cutoff_x_mm", "actual_end_x_mm", "direction", "demand_station_id", "required_extension_mm", "continuing_bar_ids", "anchorage_check", "shear_cutoff_check", "extra_links_required", "extra_links_check"],
+      "properties": {
+        "cutoff_id": {"type": "string", "minLength": 1},
+        "bar_id": {"type": "string", "minLength": 1},
+        "theoretical_cutoff_x_mm": {"type": "number"},
+        "actual_end_x_mm": {"type": "number"},
+        "direction": {"enum": ["increasing_x", "decreasing_x"]},
+        "demand_station_id": {"type": "string", "minLength": 1},
+        "required_extension_mm": {"type": "number", "exclusiveMinimum": 0},
+        "continuing_bar_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "anchorage_check": {"$ref": "#/$defs/qualifiedCheckReference"},
+        "shear_cutoff_check": {"$ref": "#/$defs/qualifiedCheckReference"},
+        "extra_links_required": {"type": "boolean"},
+        "extra_links_check": {"oneOf": [{"$ref": "#/$defs/qualifiedCheckReference"}, {"type": "null"}]}
+      },
+      "additionalProperties": false
+    },
+    "lapCurtailmentCheckRequest": {
+      "type": "object",
+      "required": ["profile_id", "member_id", "physical_span_id", "demand_revision_id", "reinforcement_revision_id", "member_start_x_mm", "member_end_x_mm", "effective_depth_mm", "concrete_grade_n_per_mm2", "steel_yield_strength_n_per_mm2", "bar_surface", "bars", "demands", "splices", "curtailments", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "member_id": {"type": "string", "minLength": 1},
+        "physical_span_id": {"type": "string", "minLength": 1},
+        "demand_revision_id": {"type": "string", "minLength": 1},
+        "reinforcement_revision_id": {"type": "string", "minLength": 1},
+        "member_start_x_mm": {"type": "number"},
+        "member_end_x_mm": {"type": "number"},
+        "effective_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "concrete_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "steel_yield_strength_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "bar_surface": {"enum": ["plain", "deformed", "fusion_bonded_epoxy_deformed"]},
+        "bars": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/longitudinalBarPath"}},
+        "demands": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/stationSteelDemand"}},
+        "splices": {"type": "array", "items": {"$ref": "#/$defs/spliceDetail"}},
+        "curtailments": {"type": "array", "items": {"$ref": "#/$defs/curtailmentDetail"}},
+        "prohibited_splice_zones": {"type": "array", "items": {"$ref": "#/$defs/stationZone"}},
+        "code_data_revision_id": {"const": "is456-amd6-wp05-v1"}
+      },
+      "additionalProperties": false
+    },
+    "seismicLinkZone": {
+      "type": "object",
+      "required": ["zone_id", "start_x_mm", "end_x_mm", "spacing_mm", "link_diameter_mm", "closed", "hook_angle_degrees", "first_hoop_offset_from_joint_face_mm"],
+      "properties": {
+        "zone_id": {"type": "string", "minLength": 1},
+        "start_x_mm": {"type": "number"},
+        "end_x_mm": {"type": "number"},
+        "spacing_mm": {"type": "number", "exclusiveMinimum": 0},
+        "link_diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "closed": {"type": "boolean"},
+        "hook_angle_degrees": {"type": "integer"},
+        "first_hoop_offset_from_joint_face_mm": {"type": ["number", "null"], "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "seismicAnchorageCheck": {
+      "type": "object",
+      "required": ["beam_end", "role", "check"],
+      "properties": {
+        "beam_end": {"enum": ["left", "right"]},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal"]},
+        "check": {"$ref": "#/$defs/qualifiedCheckReference"}
+      },
+      "additionalProperties": false
+    },
+    "dependentJointCheck": {
+      "type": "object",
+      "required": ["joint_id", "check"],
+      "properties": {
+        "joint_id": {"type": "string", "minLength": 1},
+        "check": {"$ref": "#/$defs/qualifiedCheckReference"}
+      },
+      "additionalProperties": false
+    },
+    "seismicBeamContext": {
+      "type": "object",
+      "required": ["system_id", "seismic_design_revision_id", "member_id", "physical_span_id", "left_joint_id", "right_joint_id", "left_joint_face_x_mm", "right_joint_face_x_mm", "width_mm", "overall_depth_mm", "effective_depth_mm", "concrete_grade_n_per_mm2", "steel_yield_strength_n_per_mm2", "bars", "link_zones", "splices", "imported_analysis_shear_n", "gravity_shear_n", "left_positive_probable_moment_nmm", "left_negative_probable_moment_nmm", "right_positive_probable_moment_nmm", "right_negative_probable_moment_nmm", "provided_shear_capacity_n", "shear_check", "anchorage_checks", "dependent_joint_checks"],
+      "properties": {
+        "system_id": {"type": "string", "minLength": 1},
+        "seismic_design_revision_id": {"type": "string", "minLength": 1},
+        "member_id": {"type": "string", "minLength": 1},
+        "physical_span_id": {"type": "string", "minLength": 1},
+        "left_joint_id": {"type": "string", "minLength": 1},
+        "right_joint_id": {"type": "string", "minLength": 1},
+        "left_joint_face_x_mm": {"type": "number"},
+        "right_joint_face_x_mm": {"type": "number"},
+        "width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "overall_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "effective_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "concrete_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "steel_yield_strength_n_per_mm2": {"enum": [415, 500, 550]},
+        "bars": {"type": "array", "minItems": 4, "items": {"$ref": "#/$defs/longitudinalBarPath"}},
+        "link_zones": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/seismicLinkZone"}},
+        "splices": {"type": "array", "items": {"$ref": "#/$defs/spliceDetail"}},
+        "imported_analysis_shear_n": {"type": "number"},
+        "gravity_shear_n": {"type": "number"},
+        "left_positive_probable_moment_nmm": {"type": "number", "minimum": 0},
+        "left_negative_probable_moment_nmm": {"type": "number", "minimum": 0},
+        "right_positive_probable_moment_nmm": {"type": "number", "minimum": 0},
+        "right_negative_probable_moment_nmm": {"type": "number", "minimum": 0},
+        "provided_shear_capacity_n": {"type": "number", "exclusiveMinimum": 0},
+        "shear_check": {"$ref": "#/$defs/qualifiedCheckReference"},
+        "anchorage_checks": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"$ref": "#/$defs/seismicAnchorageCheck"}},
+        "dependent_joint_checks": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/dependentJointCheck"}}
+      },
+      "additionalProperties": false
+    },
+    "seismicDetailingCheckRequest": {
+      "type": "object",
+      "required": ["profile_id", "applicability", "context", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "applicability": {"enum": ["ordinary_is456", "is13920_2016"]},
+        "context": {"oneOf": [{"$ref": "#/$defs/seismicBeamContext"}, {"type": "null"}]},
+        "code_data_revision_id": {"const": "is13920-2016-amd2-wp05-v1"}
+      },
+      "additionalProperties": false
+    },
+    "linkCage": {
+      "type": "object",
+      "required": ["link_id", "diameter_mm", "left_centre_x_mm", "right_centre_x_mm", "top_centre_y_mm", "bottom_centre_y_mm", "internal_bend_radius_mm", "closed"],
+      "properties": {
+        "link_id": {"type": "string", "minLength": 1},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "left_centre_x_mm": {"type": "number"},
+        "right_centre_x_mm": {"type": "number"},
+        "top_centre_y_mm": {"type": "number"},
+        "bottom_centre_y_mm": {"type": "number"},
+        "internal_bend_radius_mm": {"type": "number", "minimum": 0},
+        "closed": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "circularObstacle": {
+      "type": "object",
+      "required": ["obstacle_id", "x_from_left_mm", "y_from_top_mm", "diameter_mm", "required_clearance_mm"],
+      "properties": {
+        "obstacle_id": {"type": "string", "minLength": 1},
+        "x_from_left_mm": {"type": "number"},
+        "y_from_top_mm": {"type": "number"},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "required_clearance_mm": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "placementOpening": {
+      "type": "object",
+      "required": ["opening_id", "clear_width_mm", "clear_height_mm", "sequence_reference"],
+      "properties": {
+        "opening_id": {"type": "string", "minLength": 1},
+        "clear_width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "clear_height_mm": {"type": "number", "exclusiveMinimum": 0},
+        "sequence_reference": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "reinforcementArrangementCheckRequest": {
+      "type": "object",
+      "required": ["profile_id", "member_id", "station_id", "reinforcement_revision_id", "section_width_mm", "section_depth_mm", "nominal_cover_mm", "maximum_aggregate_size_mm", "bars", "links", "required_roles", "vertical_alignment_tolerance_mm", "obstacles", "placement_opening", "require_placement_plan", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "member_id": {"type": "string", "minLength": 1},
+        "station_id": {"type": "string", "minLength": 1},
+        "reinforcement_revision_id": {"type": "string", "minLength": 1},
+        "section_width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "section_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "nominal_cover_mm": {"type": "number", "exclusiveMinimum": 0},
+        "maximum_aggregate_size_mm": {"type": "number", "exclusiveMinimum": 0},
+        "bars": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/longitudinalBarPath"}},
+        "links": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/linkCage"}},
+        "required_roles": {"type": "array", "minItems": 2, "items": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "corner"]}},
+        "vertical_alignment_tolerance_mm": {"type": "number", "minimum": 0},
+        "obstacles": {"type": "array", "items": {"$ref": "#/$defs/circularObstacle"}},
+        "placement_opening": {"oneOf": [{"$ref": "#/$defs/placementOpening"}, {"type": "null"}]},
+        "require_placement_plan": {"type": "boolean"},
+        "code_data_revision_id": {"const": "is456-amd6-wp05-v1"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

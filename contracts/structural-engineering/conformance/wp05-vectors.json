@@ -1,0 +1,79 @@
+{
+  "schema_version": "structural-conformance/v1",
+  "work_packet": "WP05",
+  "tolerance": {"absolute": 1e-9, "relative": 1e-9},
+  "vectors": [
+    {
+      "id": "wp05-development-deformed-tension",
+      "operation_semantic_id": "is456.reinforcement.development_length/v1",
+      "input": {"profile_id": "IS456-WP05", "bar_diameter_mm": 20, "bar_stress_n_per_mm2": 361.05, "steel_yield_strength_n_per_mm2": 415, "concrete_grade_n_per_mm2": 20, "bar_surface": "deformed", "stress_state": "tension", "bundle_size": 1, "code_data_revision_id": "is456-amd6-wp05-v1"},
+      "expected": {"plain_bar_tension_bond_stress_n_per_mm2": 1.2, "surface_factor": 1.6, "stress_state_factor": 1.0, "design_bond_stress_n_per_mm2": 1.92, "required_development_length_mm": 940.234375}
+    },
+    {
+      "id": "wp05-development-epoxy",
+      "operation_semantic_id": "is456.reinforcement.development_length/v1",
+      "input": {"bar_diameter_mm": 20, "bar_stress_n_per_mm2": 361.05, "concrete_grade_n_per_mm2": 20, "bar_surface": "fusion_bonded_epoxy_deformed", "stress_state": "tension", "bundle_size": 1},
+      "expected": {"surface_factor": 1.28, "design_bond_stress_n_per_mm2": 1.536, "required_development_length_mm": 1175.29296875}
+    },
+    {
+      "id": "wp05-development-overstress",
+      "operation_semantic_id": "is456.reinforcement.development_length/v1",
+      "input": {"bar_stress_n_per_mm2": 373.5, "steel_yield_strength_n_per_mm2": 415},
+      "expected": {"execution": "rejected_input", "diagnostic": "STRESS.OUTSIDE_PROFILE"}
+    },
+    {
+      "id": "wp05-simple-support-anchorage",
+      "operation_semantic_id": "is456.beam.anchorage.check/v1",
+      "input": {"critical_section_x_mm": 5800, "support_near_face_x_mm": 5800, "support_centre_x_mm": 5900, "path_end_x_mm": 6000, "moment_resistance_nmm": 85000000, "support_shear_n": 100000},
+      "expected": {"required_development_length_mm": 940.234375, "moment_shear_contribution_mm": 850, "anchorage_beyond_support_centre_mm": 100, "available_for_criterion_mm": 950, "engineering": "pass"}
+    },
+    {
+      "id": "wp05-support-face-required",
+      "operation_semantic_id": "is456.beam.anchorage.check/v1",
+      "input": {"critical_section_x_mm": 5900, "support_near_face_x_mm": 5800, "support_centre_x_mm": 5900},
+      "expected": {"execution": "rejected_input", "diagnostic": "SUPPORT.FACE_REQUIRED"}
+    },
+    {
+      "id": "wp05-lap-curtailment-pass",
+      "operation_semantic_id": "is456.beam.lap_curtailment.check/v1",
+      "input": {"lap_actual_length_mm": 1000, "lap_bar_diameter_mm": 20, "stress_state": "tension", "direct_tension": false, "percentage_spliced_at_section": 50, "cutoff_actual_extension_mm": 1000, "cutoff_required_extension_mm": 600, "continuing_bar_diameters_mm": [20, 20], "station_required_area_mm2": 600},
+      "expected": {"lap_required_length_mm": 940.234375, "continuing_area_mm2": 628.3185307179587, "lap_passed": true, "curtailment_passed": true, "engineering": "pass"}
+    },
+    {
+      "id": "wp05-lap-prohibited-zone",
+      "operation_semantic_id": "is456.beam.lap_curtailment.check/v1",
+      "input": {"splice_zone_mm": [200, 1200], "prohibited_zone_mm": [0, 1000]},
+      "expected": {"execution": "completed", "engineering": "fail", "zone_allowed": false, "diagnostic": "SPLICE.NONCOMPLIANT"}
+    },
+    {
+      "id": "wp05-qualified-coupler-large-bar",
+      "operation_semantic_id": "is456.beam.lap_curtailment.check/v1",
+      "input": {"kind": "qualified_coupler", "bar_diameter_mm": 40, "percentage_spliced_at_section": 50, "coupler_qualification_reference": "coupler:qualification:R1", "installation_reference": "coupler:installation:R1", "extra_links_required": false, "extra_links_check": null},
+      "expected": {"required_length_mm": null, "lap_permitted_for_diameter": true, "qualification_and_installation_evidence": true, "extra_links_ok": true, "engineering": "pass"}
+    },
+    {
+      "id": "wp05-seismic-complete",
+      "operation_semantic_id": "is456.beam.seismic_detailing.check/v1",
+      "input": {"joint_faces_mm": [200, 5800], "section_mm": [300, 500, 450], "fck_n_per_mm2": 30, "fy_n_per_mm2": 415, "top_bar_diameters_mm": [20, 20], "bottom_bar_diameters_mm": [20, 20], "end_link_spacing_mm": 100, "gravity_shear_n": 20000, "imported_analysis_shear_n": 60000, "probable_end_moments_nmm": [100000000, 100000000, 100000000, 100000000], "provided_shear_capacity_n": 100000},
+      "expected": {"minimum_longitudinal_ratio": 0.0031675521397889123, "maximum_longitudinal_ratio": 0.025, "required_end_zone_length_mm": 900, "maximum_end_link_spacing_mm": 100, "capacity_shear_positive_n": 70000, "capacity_shear_negative_n": 70000, "governing_shear_n": 70000, "engineering": "pass"}
+    },
+    {
+      "id": "wp05-seismic-geometry-only",
+      "operation_semantic_id": "is456.beam.seismic_detailing.check/v1",
+      "input": {"applicability": "is13920_2016", "context": null},
+      "expected": {"execution": "completed", "engineering": "not_evaluated", "completeness": "partial", "diagnostic": "EVIDENCE.REQUIRED"}
+    },
+    {
+      "id": "wp05-arrangement-complete",
+      "operation_semantic_id": "structural.reinforcement_arrangement.check/v1",
+      "input": {"section_mm": [300, 500], "nominal_cover_mm": 25, "aggregate_mm": 20, "link": {"diameter_mm": 8, "centrelines_mm": [29, 271, 29, 471], "internal_bend_radius_mm": 16}, "top_bars": [{"diameter_mm": 16, "x_mm": 60, "y_mm": 60}, {"diameter_mm": 16, "x_mm": 240, "y_mm": 60}], "bottom_bars": [{"diameter_mm": 16, "x_mm": 60, "y_mm": 440}, {"diameter_mm": 16, "x_mm": 240, "y_mm": 440}], "placement_opening_mm": [260, 460]},
+      "expected": {"link_surface_covers_mm": [25, 25, 25, 25], "horizontal_clearances_mm": [164, 164], "required_horizontal_clearance_mm": 25, "top_centroid_y_mm": 60, "bottom_centroid_y_mm": 440, "required_placement_opening_mm": [250, 450], "engineering": "pass"}
+    },
+    {
+      "id": "wp05-arrangement-tension-only",
+      "operation_semantic_id": "structural.reinforcement_arrangement.check/v1",
+      "input": {"required_roles": ["top_longitudinal"], "bottom_bars": []},
+      "expected": {"execution": "completed", "engineering": "not_evaluated", "completeness": "partial", "diagnostic": "EVIDENCE.REQUIRED"}
+    }
+  ]
+}

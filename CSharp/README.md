@@ -14,7 +14,7 @@ dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- beam
 dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- benchmark
 ```
 
-The packed add-in is `src/StructAutomate.Excel/bin/Release/net10.0-windows/publish/StructAutomate.Excel-AddIn64-packed.xll`. It contains managed dependencies and requires 64-bit Windows Excel and the matching .NET 10 Desktop Runtime. Compiler and numerical tests verify this build. Loading in Excel, installation/signing, workbook save/reopen and ETABS compatibility have separate application tests. The solution does not currently connect to ETABS or implement the full IS-code member design operations.
+The packed add-in is `src/StructAutomate.Excel/bin/Release/net10.0-windows/publish/StructAutomate.Excel-AddIn64-packed.xll`. It contains managed dependencies and requires 64-bit Windows Excel and the matching .NET 10 Desktop Runtime. Compiler and numerical tests verify this build. Loading in Excel, installation/signing, workbook save/reopen and ETABS compatibility have separate application tests. The solution does not currently connect to ETABS; the reusable native packages implement the bounded WP01-WP08 beam workflow.
 
 Worksheet examples:
 
@@ -37,10 +37,11 @@ Worksheet examples:
 | Engineering | `QuantityCalculator.Calculate` | Resolved straight/arc bar lengths and mass; explicit net concrete and formwork faces; optional dated direct rates |
 | Engineering | `BeamLineSolver.Solve` | Planar Euler–Bernoulli bending, prismatic elements, UDL and nodal forces/moments, springs and settlements |
 | Application | `CandidateRanker.Rank` | Feasibility and deterministic minimum-objective ranking of evaluated candidates from one fixed analysis revision |
+| Native optimization | `CandidateRankingOperations.Rank`, `BeamOptimizationOperations.Optimize` | Profile-derived complete evidence, bounded physical domains, fixed/coupled analysis semantics, and completeness-supported claims |
 
 Compiled request types generate the five schemas in [schemas](schemas). Export after a deliberate contract change with `dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- schemas schemas`. Schemas validate structure; engineering services validate values, geometry and identities. A schema-valid payload alone does not establish engineering suitability.
 
-Forces stay in the supplied right-handed local basis. Normalization does not map axes to physical top/bottom faces or verify the supplied export hash against a live ETABS model. The acquisition adapter owns those observations. Hashes identify these .NET-serialized records; they are not a cross-language canonical JSON standard.
+Forces stay in the supplied right-handed local basis. Normalization does not map axes to physical top/bottom faces or verify the supplied export hash against a live ETABS model. The acquisition adapter owns those observations. The native `StructuralEngineering.*` packages use the shared PF4 canonical JSON identity contract; the earlier `StructAutomate.*` schemas retain their existing .NET serialization identities.
 
 The beam-line model has 2–201 ordered nodes, with one element per adjacent interval. Add nodes at point loads, stiffness changes and supports. Positive displacement/load is downward; rotation is dw/dx and reported moment is sagging-positive. Internal stiffness uses N and mm; API loads are kN, kNm and kN/m. UDL includes whatever self weight the caller selected; the solver adds none. Stations include requested positions, element ends and interior zero-shear points. Deflections include the exact prismatic UDL interior correction. Deflection extrema between requested stations are not automatically searched.
 
@@ -52,4 +53,4 @@ Geometry fit here is a group calculation. Full member fit additionally evaluates
 
 `Contracts` has no engineering formulas or host dependencies. `Engineering` references Contracts and Math.NET Numerics. `Application` composes pure services. `Excel` references Application and Excel-DNA. Tests cover library behavior and Excel argument conversion; the command-line example runner references Application. CSI references belong in an adapter project, keeping version and apartment constraints out of the pure kernel.
 
-Versions are pinned in `global.json` and `Directory.Packages.props`; package content is recorded by each `packages.lock.json`. Runtime packages are Excel-DNA 1.9.0 and Math.NET Numerics 5.0.0. xUnit v3 4.0.0 uses Microsoft.Testing.Platform. No optimization package is installed yet: finite candidate evaluation/ranking is deterministic, and a search engine should be added for a demonstrated search problem. See [dependency decisions](dependencies.json).
+Versions are pinned in `global.json` and `Directory.Packages.props`; package content is recorded by each `packages.lock.json`. Runtime packages are Excel-DNA 1.9.0 and Math.NET Numerics 5.0.0. xUnit v3 4.0.0 uses Microsoft.Testing.Platform. WP08 implements bounded deterministic candidate enumeration and ranking directly, with no external optimization dependency. See [dependency decisions](dependencies.json).

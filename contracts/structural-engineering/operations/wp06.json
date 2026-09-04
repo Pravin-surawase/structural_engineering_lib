@@ -1,0 +1,69 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP06",
+  "profile_id": "IS456-WP06",
+  "operations": [
+    {
+      "catalogue_id": "AO14",
+      "semantic_id": "structural.beam_project.create/v1",
+      "kind": "service",
+      "purpose": "Create an immutable project basis from explicit units, code data, catalogues, criteria, applicability, and required-check rules.",
+      "required_inputs": [
+        {"name": "project/profile identities", "unit": "identity"},
+        {"name": "unit_basis", "unit": "mm/N/Nmm/N/mm2"},
+        {"name": "code_data_revisions/catalogue_revisions", "unit": "identity"},
+        {"name": "check_rules/criteria", "unit": "typed profile"}
+      ],
+      "outputs": [
+        {"name": "project_basis_id", "unit": "semantic identity"},
+        {"name": "project/profile/revision basis", "unit": "typed records"}
+      ],
+      "python_projection": "structural_lib.beam.create_beam_project",
+      "dotnet_projection": "StructuralEngineering.Core.BeamProjectOperations.Create",
+      "valid_example": "wp06-project-ordinary",
+      "non_success_example": "wp06-project-seismic-conflict"
+    },
+    {
+      "catalogue_id": "AO17",
+      "semantic_id": "is456.beam_member.design/v1",
+      "kind": "design",
+      "purpose": "Aggregate the complete profile-derived member leaf set and actual-depth iteration without repeating leaf formulas.",
+      "required_inputs": [
+        {"name": "project/member/topology/action/reinforcement/scope revisions", "unit": "identity"},
+        {"name": "scope_instances", "unit": "typed topology scope"},
+        {"name": "depth_iterations", "unit": "mm and result identities"},
+        {"name": "leaf_results", "unit": "qualified semantic result summaries"}
+      ],
+      "outputs": [
+        {"name": "expected_leaves/leaf_qualifications", "unit": "typed records"},
+        {"name": "required/selected/supplied leaf values", "unit": "operation-specific"},
+        {"name": "governing leaf/utilization and qualification", "unit": "identity/ratio/boolean"}
+      ],
+      "python_projection": "structural_lib.beam.design_member",
+      "dotnet_projection": "StructuralEngineering.Beam.MemberDesignOperations.Design",
+      "valid_example": "wp06-member-complete",
+      "non_success_example": "wp06-member-stale-leaf"
+    },
+    {
+      "catalogue_id": "AO18",
+      "semantic_id": "structural.reinforcement_paths.resolve/v1",
+      "kind": "design",
+      "purpose": "Resolve every selected physical bar into marked tangent straights and bend arcs in a versioned member-local coordinate system.",
+      "required_inputs": [
+        {"name": "profile/project/criteria/member/topology/detail revisions", "unit": "identity"},
+        {"name": "coordinate_system/member and section bounds", "unit": "mm"},
+        {"name": "physical bar path seeds and detail references", "unit": "centreline coordinates"},
+        {"name": "stock_lengths_mm", "unit": "mm"}
+      ],
+      "outputs": [
+        {"name": "resolved physical paths", "unit": "mm coordinates and length"},
+        {"name": "bar mark summaries", "unit": "count/mm"},
+        {"name": "compatible stock length and pass state", "unit": "mm/boolean"}
+      ],
+      "python_projection": "structural_lib.beam.resolve_bar_paths",
+      "dotnet_projection": "StructuralEngineering.Reinforcement.BarPathOperations.Resolve",
+      "valid_example": "wp06-bar-path-bend",
+      "non_success_example": "wp06-bar-path-stock-exceeded"
+    }
+  ]
+}

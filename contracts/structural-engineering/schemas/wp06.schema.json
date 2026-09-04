@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/wp06/v1",
+  "title": "WP06 portable project, complete-member, and reinforcement-path requests",
+  "$defs": {
+    "unitBasis": {
+      "type": "object",
+      "required": ["length_unit", "force_unit", "moment_unit", "stress_unit"],
+      "properties": {
+        "length_unit": {"const": "mm"},
+        "force_unit": {"const": "N"},
+        "moment_unit": {"const": "Nmm"},
+        "stress_unit": {"const": "N/mm2"}
+      },
+      "additionalProperties": false
+    },
+    "revisionBinding": {
+      "type": "object",
+      "required": ["binding_id", "revision_id", "source_reference"],
+      "properties": {
+        "binding_id": {"type": "string", "minLength": 1},
+        "revision_id": {"type": "string", "minLength": 1},
+        "source_reference": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "designCriterion": {
+      "type": "object",
+      "required": ["criterion_id", "value", "unit", "source_reference"],
+      "properties": {
+        "criterion_id": {"type": "string", "minLength": 1},
+        "value": {"type": "number"},
+        "unit": {"type": "string", "minLength": 1},
+        "source_reference": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "checkRule": {
+      "type": "object",
+      "required": ["rule_id", "operation_semantic_id", "scope", "expected_applicability", "source_reference", "code_data_binding_id"],
+      "properties": {
+        "rule_id": {"type": "string", "minLength": 1, "pattern": "^[^@]+$"},
+        "operation_semantic_id": {"type": "string", "minLength": 1},
+        "scope": {"enum": ["member", "span", "station", "face", "axis", "bar_end", "arrangement"]},
+        "expected_applicability": {"enum": ["applicable", "not_applicable"]},
+        "source_reference": {"type": "string", "minLength": 1},
+        "code_data_binding_id": {"type": ["string", "null"], "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "projectDefinition": {
+      "type": "object",
+      "required": ["project_id", "name", "revision_id"],
+      "properties": {
+        "project_id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "revision_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "designProfile": {
+      "type": "object",
+      "required": ["profile_id", "revision_id", "design_code", "seismic_design_profile", "check_rules", "criteria"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "revision_id": {"type": "string", "minLength": 1},
+        "design_code": {"type": "string", "minLength": 1},
+        "seismic_design_profile": {"enum": ["ordinary_is456", "is13920_2016"]},
+        "check_rules": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/checkRule"}},
+        "criteria": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/designCriterion"}}
+      },
+      "additionalProperties": false
+    },
+    "beamProjectRequest": {
+      "type": "object",
+      "required": ["project", "unit_basis", "code_data_revisions", "catalogue_revisions", "profile"],
+      "properties": {
+        "project": {"$ref": "#/$defs/projectDefinition"},
+        "unit_basis": {"$ref": "#/$defs/unitBasis"},
+        "code_data_revisions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/revisionBinding"}},
+        "catalogue_revisions": {"type": "array", "items": {"$ref": "#/$defs/revisionBinding"}},
+        "profile": {"$ref": "#/$defs/designProfile"}
+      },
+      "additionalProperties": false
+    },
+    "beamProject": {
+      "type": "object",
+      "required": ["project_basis_id", "project", "unit_basis", "code_data_revisions", "catalogue_revisions", "profile"],
+      "properties": {
+        "project_basis_id": {"type": "string", "minLength": 1},
+        "project": {"$ref": "#/$defs/projectDefinition"},
+        "unit_basis": {"$ref": "#/$defs/unitBasis"},
+        "code_data_revisions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/revisionBinding"}},
+        "catalogue_revisions": {"type": "array", "items": {"$ref": "#/$defs/revisionBinding"}},
+        "profile": {"$ref": "#/$defs/designProfile"}
+      },
+      "additionalProperties": false
+    },
+    "scopeInstance": {
+      "type": "object",
+      "required": ["scope_id", "scope", "source_revision_id"],
+      "properties": {
+        "scope_id": {"type": "string", "minLength": 1, "pattern": "^[^@]+$"},
+        "scope": {"enum": ["span", "station", "face", "axis", "bar_end", "arrangement"]},
+        "source_revision_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "depthIteration": {
+      "type": "object",
+      "required": ["iteration_number", "reinforcement_revision_id", "effective_depth_mm", "dependent_result_ids", "converged"],
+      "properties": {
+        "iteration_number": {"type": "integer", "minimum": 1},
+        "reinforcement_revision_id": {"type": "string", "minLength": 1},
+        "effective_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "dependent_result_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "converged": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "leafEvidence": {
+      "type": "object",
+      "required": ["leaf_id", "operation_semantic_id", "result_id", "execution", "applicability", "engineering", "completeness", "freshness", "code_data_revision_id", "method_revision_id", "normalized_input_id", "calculation_id", "required_value", "selected_value", "supplied_value", "unit", "governing_utilization", "diagnostic_codes"],
+      "properties": {
+        "leaf_id": {"type": "string", "minLength": 1},
+        "operation_semantic_id": {"type": "string", "minLength": 1},
+        "result_id": {"type": "string", "minLength": 1},
+        "execution": {"enum": ["completed", "rejected_input", "not_run", "software_error", "cancelled"]},
+        "applicability": {"enum": ["applicable", "not_applicable", "unknown"]},
+        "engineering": {"enum": ["pass", "fail", "not_evaluated"]},
+        "completeness": {"enum": ["complete_for_scope", "partial"]},
+        "freshness": {"enum": ["current", "stale", "unbound"]},
+        "code_data_revision_id": {"type": "string", "minLength": 1},
+        "method_revision_id": {"type": "string", "minLength": 1},
+        "normalized_input_id": {"type": "string", "minLength": 1},
+        "calculation_id": {"type": "string"},
+        "required_value": {"type": ["number", "null"]},
+        "selected_value": {"type": ["number", "null"]},
+        "supplied_value": {"type": ["number", "null"]},
+        "unit": {"type": ["string", "null"], "minLength": 1},
+        "governing_utilization": {"type": ["number", "null"], "minimum": 0},
+        "diagnostic_codes": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "memberDesignRequest": {
+      "type": "object",
+      "required": ["project", "member_id", "topology_revision_id", "action_revision_id", "reinforcement_revision_id", "design_scope_revision_id", "scope_instances", "depth_iterations", "leaf_results"],
+      "properties": {
+        "project": {"$ref": "#/$defs/beamProject"},
+        "member_id": {"type": "string", "minLength": 1, "pattern": "^[^@]+$"},
+        "topology_revision_id": {"type": "string", "minLength": 1},
+        "action_revision_id": {"type": "string", "minLength": 1},
+        "reinforcement_revision_id": {"type": "string", "minLength": 1},
+        "design_scope_revision_id": {"type": "string", "minLength": 1},
+        "scope_instances": {"type": "array", "items": {"$ref": "#/$defs/scopeInstance"}},
+        "depth_iterations": {"type": "array", "items": {"$ref": "#/$defs/depthIteration"}},
+        "leaf_results": {"type": "array", "items": {"$ref": "#/$defs/leafEvidence"}}
+      },
+      "additionalProperties": false
+    },
+    "localCoordinateSystem": {
+      "type": "object",
+      "required": ["datum_id", "station_axis", "section_horizontal_axis", "section_vertical_axis"],
+      "properties": {
+        "datum_id": {"type": "string", "minLength": 1},
+        "station_axis": {"const": "member_station_x"},
+        "section_horizontal_axis": {"const": "section_x_from_left"},
+        "section_vertical_axis": {"const": "section_y_from_top"}
+      },
+      "additionalProperties": false
+    },
+    "pathPoint": {
+      "type": "object",
+      "required": ["station_x_mm", "section_x_from_left_mm", "section_y_from_top_mm"],
+      "properties": {
+        "station_x_mm": {"type": "number"},
+        "section_x_from_left_mm": {"type": "number"},
+        "section_y_from_top_mm": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "pathNode": {
+      "type": "object",
+      "required": ["node_id", "point", "bend_radius_mm", "bend_kind"],
+      "properties": {
+        "node_id": {"type": "string", "minLength": 1},
+        "point": {"$ref": "#/$defs/pathPoint"},
+        "bend_radius_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "bend_kind": {"oneOf": [{"enum": ["standard_bend", "hook", "transition"]}, {"type": "null"}]}
+      },
+      "additionalProperties": false
+    },
+    "barPathSeed": {
+      "type": "object",
+      "required": ["bar_id", "bar_mark", "role", "layer", "diameter_mm", "steel_grade_n_per_mm2", "nodes", "closed", "bundle_size", "anchorage_requirement_ids", "splice_ids"],
+      "properties": {
+        "bar_id": {"type": "string", "minLength": 1},
+        "bar_mark": {"type": "string", "minLength": 1},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link"]},
+        "layer": {"type": "integer", "minimum": 1},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "nodes": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/pathNode"}},
+        "closed": {"type": "boolean"},
+        "bundle_size": {"type": "integer", "minimum": 1, "maximum": 4},
+        "anchorage_requirement_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "splice_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "barPathRequest": {
+      "type": "object",
+      "required": ["profile_id", "project_basis_id", "criteria_revision_id", "member_id", "physical_span_id", "topology_revision_id", "detail_revision_id", "coordinate_system", "member_start_x_mm", "member_end_x_mm", "section_width_mm", "section_depth_mm", "paths", "stock_lengths_mm", "geometry_tolerance_mm"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "project_basis_id": {"type": "string", "minLength": 1},
+        "criteria_revision_id": {"type": "string", "minLength": 1},
+        "member_id": {"type": "string", "minLength": 1},
+        "physical_span_id": {"type": "string", "minLength": 1},
+        "topology_revision_id": {"type": "string", "minLength": 1},
+        "detail_revision_id": {"type": "string", "minLength": 1},
+        "coordinate_system": {"$ref": "#/$defs/localCoordinateSystem"},
+        "member_start_x_mm": {"type": "number"},
+        "member_end_x_mm": {"type": "number"},
+        "section_width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "section_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "paths": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/barPathSeed"}},
+        "stock_lengths_mm": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "number", "exclusiveMinimum": 0}},
+        "geometry_tolerance_mm": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    }
+  }
+}

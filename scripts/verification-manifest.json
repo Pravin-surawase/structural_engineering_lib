@@ -89,6 +89,10 @@
       "domains": ["dotnet", "docs"]
     },
     {
+      "paths": ["contracts/structural-engineering/**"],
+      "domains": ["python", "dotnet", "docs"]
+    },
+    {
       "paths": ["scripts/verification.py", "scripts/verification-manifest.json", "scripts/verification-manifest.schema.json", "scripts/check_all.py", "scripts/control_plane/**", ".github/workflows/fast-checks.yml", ".github/actions/verification-evidence/**"],
       "domains": ["python", "fastapi", "react", "excel", "dotnet", "control_plane", "docs", "repository"]
     },

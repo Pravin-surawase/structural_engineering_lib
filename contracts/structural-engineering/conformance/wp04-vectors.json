@@ -1,0 +1,79 @@
+{
+  "schema_version": "structural-conformance/v1",
+  "work_packet": "WP04",
+  "tolerance": {"absolute": 1e-9, "relative": 1e-9},
+  "vectors": [
+    {
+      "id": "wp04-total-deflection-limit",
+      "operation_semantic_id": "is456.beam.deflection_limit/v1",
+      "input": {"profile_id": "IS456-WP04", "span_mm": 6000, "criterion": "total_final", "selected_source": "code", "code_data_revision_id": "is456-wp04-v1"},
+      "expected": {"limit_mm": 24, "code_limit_mm": 24, "selected_source": "code"}
+    },
+    {
+      "id": "wp04-after-finishes-limit",
+      "operation_semantic_id": "is456.beam.deflection_limit/v1",
+      "input": {"profile_id": "IS456-WP04", "span_mm": 6000, "criterion": "after_finishes", "selected_source": "code", "code_data_revision_id": "is456-wp04-v1"},
+      "expected": {"limit_mm": 17.142857142857142, "code_limit_mm": 17.142857142857142, "selected_source": "code"}
+    },
+    {
+      "id": "wp04-deflection-limit-conflict",
+      "operation_semantic_id": "is456.beam.deflection_limit/v1",
+      "input": {"profile_id": "IS456-WP04", "span_mm": 6000, "criterion": "total_final", "selected_source": "code", "project_limit_mm": 20, "code_data_revision_id": "is456-wp04-v1"},
+      "expected": {"execution": "rejected_input", "diagnostic": "INPUT.CONFLICT"}
+    },
+    {
+      "id": "wp04-crack-limit-exposure",
+      "operation_semantic_id": "is456.beam.crack_width_limit/v1",
+      "input": {"profile_id": "IS456-WP04", "cases": [{"exposure_class": "mild", "cracking_harmful": false}, {"exposure_class": "moderate", "cracking_harmful": false}, {"exposure_class": "very_severe", "cracking_harmful": true}], "selected_source": "code", "code_data_revision_id": "is456-wp04-v1"},
+      "expected": {"limits_mm": [0.3, 0.2, 0.1]}
+    },
+    {
+      "id": "wp04-crack-limit-weakened",
+      "operation_semantic_id": "is456.beam.crack_width_limit/v1",
+      "input": {"profile_id": "IS456-WP04", "exposure_class": "very_severe", "cracking_harmful": true, "selected_source": "project", "project_limit_mm": 0.2, "code_data_revision_id": "is456-wp04-v1"},
+      "expected": {"execution": "rejected_input", "diagnostic": "LIMIT.EXCEEDS_CODE"}
+    },
+    {
+      "id": "wp04-span-depth-screening",
+      "operation_semantic_id": "is456.beam.deflection.check/v1",
+      "input": {"profile_id": "IS456-WP04", "method": "span_depth_screening", "screening": {"effective_span_mm": 5000, "effective_depth_mm": 500, "support_condition": "simply_supported", "tension_steel_modification_factor": 1.2, "compression_steel_modification_factor": 1.1, "flanged_section_modification_factor": 1, "span_support_reference": "topology:S1", "modification_factors_reference": "reviewed-figure-factors:1"}, "code_data_revision_id": "is456-wp04-v1"},
+      "expected": {"result_kind": "screening_not_calculated_displacement", "actual_span_depth_ratio": 10, "allowable_span_depth_ratio": 26.4, "engineering": "pass"}
+    },
+    {
+      "id": "wp04-calculated-deflection",
+      "operation_semantic_id": "is456.beam.deflection.check/v1",
+      "input": {"effective_span_mm": 6000, "instantaneous_total_deflection_mm": 8, "instantaneous_sustained_deflection_mm": 5, "creep_multiplier": 1.2, "shrinkage_deflection_mm": 1, "deflection_at_finish_installation_mm": 4, "age_at_loading_days": 28, "finish_installation_age_days": 90, "assessment_age_days": 1853, "sustained_duration_days": 1825, "relative_humidity_percent": 60, "notional_size_mm": 150},
+      "expected": {"creep_additional_deflection_mm": 6, "total_final_deflection_mm": 15, "after_finishes_deflection_mm": 11, "total_limit_mm": 24, "after_finishes_limit_mm": 17.142857142857142, "engineering": "pass"}
+    },
+    {
+      "id": "wp04-calculated-missing-duration",
+      "operation_semantic_id": "is456.beam.deflection.check/v1",
+      "input": {"sustained_duration_days": null},
+      "expected": {"execution": "completed", "engineering": "not_evaluated", "completeness": "partial", "diagnostic": "EVIDENCE.REQUIRED"}
+    },
+    {
+      "id": "wp04-annex-f-actual-bars",
+      "operation_semantic_id": "is456.beam.crack_width.check/v1",
+      "input": {"section_width_mm": 300, "section_depth_mm": 500, "neutral_axis_depth_from_compression_face_mm": 200, "tension_face": "bottom", "surface_point_x_from_left_mm": 150, "bars": [{"bar_id": "BL", "diameter_mm": 20, "x_from_left_mm": 75, "y_from_top_mm": 450, "face": "bottom", "layer": 1}, {"bar_id": "BR", "diameter_mm": 20, "x_from_left_mm": 225, "y_from_top_mm": 450, "face": "bottom", "layer": 1}], "service_steel_stress_n_per_mm2": 200, "steel_yield_strength_n_per_mm2": 415, "steel_modulus_n_per_mm2": 200000, "mean_strain_at_tension_surface": 0.0006},
+      "expected": {"effective_depth_mm": 450, "cmin_mm": 40, "acr_mm": 80.13878188659973, "denominator": 1.2675918792439982, "calculated_crack_width_mm": 0.11379830508373975, "nearest_bar_id": "BL", "engineering": "pass"}
+    },
+    {
+      "id": "wp04-annex-f-arrangement-sensitive",
+      "operation_semantic_id": "is456.beam.crack_width.check/v1",
+      "input": {"wide_bar_x_mm": [75, 225], "close_bar_x_mm": [130, 170], "same_diameter_mm": 20, "same_y_from_top_mm": 450},
+      "expected": {"wide_crack_width_mm": 0.11379830508373975, "close_crack_width_mm": 0.0769568940449222, "wide_exceeds_close": true}
+    },
+    {
+      "id": "wp04-annex-f-very-severe",
+      "operation_semantic_id": "is456.beam.crack_width.check/v1",
+      "input": {"calculated_crack_width_mm": 0.11379830508373975, "exposure_class": "very_severe", "cracking_harmful": true},
+      "expected": {"execution": "completed", "engineering": "fail", "limit_mm": 0.1, "diagnostic": "CRACK_WIDTH.LIMIT_EXCEEDED"}
+    },
+    {
+      "id": "wp04-annex-f-missing-bars",
+      "operation_semantic_id": "is456.beam.crack_width.check/v1",
+      "input": {"bars": []},
+      "expected": {"execution": "completed", "engineering": "not_evaluated", "completeness": "partial", "diagnostic": "EVIDENCE.REQUIRED"}
+    }
+  ]
+}

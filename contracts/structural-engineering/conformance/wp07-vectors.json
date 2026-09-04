@@ -1,0 +1,67 @@
+{
+  "schema_version": "structural-conformance/v1",
+  "work_packet": "WP07",
+  "tolerance": {"absolute": 1e-9, "relative": 1e-9},
+  "vectors": [
+    {
+      "id": "wp07-reference-quantities",
+      "operation_semantic_id": "structural.construction_quantities.calculate/v1",
+      "input": {
+        "bars": {"diameter_mm": 20, "length_each_mm": 6000, "count": 4, "density_kg_per_m3": 7850},
+        "concrete": {"cross_section_mm": [300, 500], "length_mm": 6000},
+        "formwork_contact_widths_mm": [300, 500, 500],
+        "formwork_length_mm": 6000,
+        "rates": null
+      },
+      "expected": {"steel_mass_kg": 59.187605588935, "concrete_volume_m3": 0.9, "formwork_area_m2": 7.8, "direct_cost": null}
+    },
+    {
+      "id": "wp07-bend-centreline",
+      "operation_semantic_id": "structural.bbs.create/v1",
+      "input": {"diameter_mm": 16, "internal_radius_mm": 32, "bend_angle_degrees": 90},
+      "expected": {"centreline_radius_mm": 40, "bend_centreline_length_mm": 62.83185307179586, "cut_and_centreline_fields_are_distinct": true}
+    },
+    {
+      "id": "wp07-cutting-reconciliation",
+      "operation_semantic_id": "structural.bbs.create/v1",
+      "input": {"cuts_mm": [5000, 5000], "stock_lengths_mm": [9000], "kerf_each_mm": 3, "reusable_offcut_min_mm": 500},
+      "expected": {"stock_piece_count": 2, "stock_length_mm": 18000, "scheduled_cut_length_mm": 10000, "kerf_length_mm": 6, "reusable_offcut_length_mm": 7994, "waste_length_mm": 0, "optimality": "heuristic_first_fit_decreasing"}
+    },
+    {
+      "id": "wp07-link-boundary-duplicate",
+      "operation_semantic_id": "structural.bbs.create/v1",
+      "input": {"zones": [{"start_mm": 0, "end_mm": 100, "spacing_mm": 100, "include_start": true, "include_end": true}, {"start_mm": 100, "end_mm": 200, "spacing_mm": 100, "include_start": true, "include_end": true}]},
+      "expected": {"execution": "rejected_input", "diagnostic": "BBS.LINK_BOUNDARY_DUPLICATE"}
+    },
+    {
+      "id": "wp07-duplicate-concrete-ownership",
+      "operation_semantic_id": "structural.construction_quantities.calculate/v1",
+      "input": {"segment_ownership_ids": ["VOL-1", "VOL-1"]},
+      "expected": {"execution": "rejected_input", "diagnostic": "QUANTITY.CONCRETE_OWNERSHIP"}
+    },
+    {
+      "id": "wp07-dated-direct-cost",
+      "operation_semantic_id": "structural.construction_cost.estimate/v1",
+      "input": {"currency": "INR", "valuation_date": "2026-09-04", "steel": [10, 5], "concrete": [2, 100], "formwork": [3, 10], "overhead_percent": 10, "tax_percent": 18},
+      "expected": {"direct_subtotal_decimal": "280.00", "overhead_decimal": "28.00", "pre_tax_total_decimal": "308.00", "tax_decimal": "55.44", "total_decimal": "363.44"}
+    },
+    {
+      "id": "wp07-cost-waste-double-count",
+      "operation_semantic_id": "structural.construction_cost.estimate/v1",
+      "input": {"waste_pricing_basis": "scheduled_steel", "steel_rate_basis": "steel_stock_mass_kg"},
+      "expected": {"execution": "rejected_input", "diagnostic": "COST.WASTE_DOUBLE_COUNT"}
+    },
+    {
+      "id": "wp07-calculation-package-current",
+      "operation_semantic_id": "structural.calculation_package.create/v1",
+      "input": {"dependency_states": ["completed/current/complete_for_scope"], "required_leaf_qualified": true, "human_action": "prepared"},
+      "expected": {"execution": "completed", "completeness": "complete_for_scope", "issue_state": "issue_ready", "active_approval": false}
+    },
+    {
+      "id": "wp07-calculation-package-stale",
+      "operation_semantic_id": "structural.calculation_package.create/v1",
+      "input": {"member_freshness": "stale", "recorded_human_action": "approved"},
+      "expected": {"execution": "completed", "freshness": "stale", "completeness": "partial", "issue_state": "draft", "active_approval": false, "diagnostic": "PACKAGE.EVIDENCE_INCOMPLETE"}
+    }
+  ]
+}

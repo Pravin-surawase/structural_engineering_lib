@@ -1,0 +1,24 @@
+{
+  "schema_version": "structural-code-data/v1",
+  "code_data_revision_id": "is456-wp01-v1",
+  "subject": "reinforced-concrete beam flexure",
+  "source": {"standard": "IS 456:2000", "scope": ["6.2", "26.5.1", "38.1", "Annex G"]},
+  "coefficients": {
+    "concrete_compression_force": 0.36,
+    "rectangular_resultant_depth_ratio": 0.42,
+    "flange_force": 0.45,
+    "design_steel_stress_ratio": 0.87,
+    "compression_strain": 0.0035,
+    "displaced_concrete_stress_ratio": 0.446,
+    "minimum_tension_steel_ratio_numerator": 0.85,
+    "maximum_longitudinal_steel_ratio": 0.04
+  },
+  "limiting_neutral_axis_ratios": {"250": 0.53, "415": 0.48, "500": 0.46},
+  "rules": {
+    "other_grade_ratio": "700/(1100+0.87*fy)",
+    "flange_block_depth": "min(Df,0.15*xu+0.65*Df)",
+    "reverse_bending_flanged_section": "web rectangle when the flange is in tension",
+    "axial_interaction": "not_applicable in WP01"
+  },
+  "distribution_permission": "docs/verification/is456-public-distribution-permission.json"
+}

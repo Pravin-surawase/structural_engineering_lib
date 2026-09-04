@@ -2,7 +2,7 @@
   "_comment": "GENERATED compatibility projection from scripts/control-plane.json; do not edit directly",
   "_usage": "Use ./run.sh find <query> or ./run.sh control find <query>",
   "_source": "scripts/control-plane.json",
-  "_coverage": "106/106 top-level scripts registered",
+  "_coverage": "107/107 top-level scripts registered",
   "tasks": {
     "resolve python runtime": {
       "script": "./scripts/python_runtime.sh --version",
@@ -476,6 +476,16 @@
       "group": "Quality",
       "description": "API contract testing — request/response schemas, status codes",
       "permission": "ReadOnlyTerminal"
+    },
+    "validate structural engineering contracts": {
+      "script": "./scripts/python_runtime.sh scripts/validate_structural_engineering_contracts.py",
+      "group": "Quality",
+      "description": "Validate the native Python/.NET structural operation manifests, schemas, code data, and conformance vectors",
+      "permission": "ReadOnlyTerminal",
+      "aliases": [
+        "validate structural contracts",
+        "structural engineering contracts"
+      ]
     },
     "validate schema snapshots": {
       "script": "./scripts/python_runtime.sh scripts/validate_schema_snapshots.py",

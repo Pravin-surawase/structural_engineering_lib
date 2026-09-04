@@ -1,0 +1,70 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP03",
+  "profile_id": "STRUCTURAL-ANALYSIS-WP03",
+  "operations": [
+    {
+      "catalogue_id": "AO01",
+      "semantic_id": "structural.action_snapshot.normalize/v1",
+      "kind": "service",
+      "purpose": "Normalize a declared source snapshot to mm, N, and Nmm without losing same-row identity, axes, or concurrency.",
+      "required_inputs": [
+        {"name": "source/model/analysis/result identities", "unit": "identity"},
+        {"name": "force/moment/station units", "unit": "enum"},
+        {"name": "right-handed local axes", "unit": "direction cosines"},
+        {"name": "same-row P/V2/V3/T/M2/M3 actions", "unit": "declared source units"}
+      ],
+      "outputs": [
+        {"name": "rows", "unit": "mm, N, Nmm"},
+        {"name": "row_id", "unit": "semantic identity"},
+        {"name": "snapshot_id", "unit": "semantic identity"}
+      ],
+      "python_projection": "structural_lib.beam.normalize_action_snapshot",
+      "dotnet_projection": "StructuralEngineering.Analysis.ActionNormalizer.NormalizeSnapshot",
+      "valid_example": "wp03-action-six-components",
+      "non_success_example": "wp03-action-left-handed-axes"
+    },
+    {
+      "catalogue_id": "AO02",
+      "semantic_id": "structural.beam_line.solve/v1",
+      "kind": "analysis",
+      "purpose": "Solve a bounded planar Euler-Bernoulli beam line for local V2/M3 response, including prescribed support movement.",
+      "required_inputs": [
+        {"name": "ordered nodes and restraints", "unit": "mm, rad"},
+        {"name": "mapped prismatic elements", "unit": "N/mm2, mm4"},
+        {"name": "concurrent load case", "unit": "N, Nmm, N/mm"},
+        {"name": "station_intervals", "unit": "count"}
+      ],
+      "outputs": [
+        {"name": "reactions", "unit": "N, Nmm"},
+        {"name": "stations", "unit": "mm, rad, N, Nmm"},
+        {"name": "equilibrium", "unit": "N, Nmm"}
+      ],
+      "python_projection": "structural_lib.beam.solve_beam_line",
+      "dotnet_projection": "StructuralEngineering.Analysis.PlanarBeamSolver.Solve",
+      "valid_example": "wp03-simply-supported-udl",
+      "non_success_example": "wp03-unstable-beam"
+    },
+    {
+      "catalogue_id": "AO15",
+      "semantic_id": "structural.beam_topology.define/v1",
+      "kind": "service",
+      "purpose": "Bind physical support faces, centreline/clear/design spans, section regions, and analysis-element identities.",
+      "required_inputs": [
+        {"name": "member and local axes", "unit": "identity/direction cosines"},
+        {"name": "support left-face/centre/right-face stations", "unit": "mm"},
+        {"name": "physical spans and effective depths", "unit": "mm"},
+        {"name": "section regions and analysis mappings", "unit": "mm"}
+      ],
+      "outputs": [
+        {"name": "physical spans", "unit": "mm"},
+        {"name": "effective_span_mm", "unit": "mm"},
+        {"name": "topology_id", "unit": "semantic identity"}
+      ],
+      "python_projection": "structural_lib.beam.define_beam_topology",
+      "dotnet_projection": "StructuralEngineering.Analysis.BeamTopologyBuilder.Build",
+      "valid_example": "wp03-two-span-topology",
+      "non_success_example": "wp03-topology-region-gap"
+    }
+  ]
+}

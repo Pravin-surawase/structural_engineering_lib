@@ -1,0 +1,50 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP08",
+  "profile_id": "IS456-WP08",
+  "operations": [
+    {
+      "catalogue_id": "AO05",
+      "semantic_id": "structural.candidate.rank/v1",
+      "kind": "service",
+      "purpose": "Rank a canonical prefix of evaluated physical beam candidates only after every profile-derived engineering leaf and selected objective has qualified evidence.",
+      "required_inputs": [
+        {"name": "ranking_context_and_reference_member", "unit": "AO17 semantic identity"},
+        {"name": "canonical_finite_candidate_domain", "unit": "typed physical definitions"},
+        {"name": "ordered_objectives_and_tie_breakers", "unit": "versioned policy"},
+        {"name": "member_quantity_cost_and_optional_reanalysis_evidence", "unit": "bound semantic results"},
+        {"name": "evaluation_budget_and_stop_reason", "unit": "deterministic work count/state"}
+      ],
+      "outputs": [
+        {"name": "ranked_candidates_and_objective_metrics", "unit": "ordered typed values"},
+        {"name": "every_evaluation_exclusion_and_reason", "unit": "semantic evidence"},
+        {"name": "enumeration_and_optimality_state", "unit": "explicit claim state"}
+      ],
+      "python_projection": "structural_lib.beam_optimization.rank_candidates",
+      "dotnet_projection": "StructuralEngineering.Optimization.CandidateRankingOperations.Rank",
+      "valid_example": "wp08-complete-third-feasible",
+      "non_success_example": "wp08-required-not-applicable"
+    },
+    {
+      "catalogue_id": "AO21",
+      "semantic_id": "structural.beam.optimize/v1",
+      "kind": "service",
+      "purpose": "Expand a bounded discrete beam domain, classify analysis coupling, and return only completeness-supported best-candidate, optimum, or infeasibility claims.",
+      "required_inputs": [
+        {"name": "project_profile_member_topology_action_scope_and_analysis_context", "unit": "revision identity"},
+        {"name": "finite_section_longitudinal_and_transverse_choices", "unit": "mm/N per mm2/count"},
+        {"name": "fixed_actions_or_coupled_reanalysis_mode", "unit": "declared analysis semantics"},
+        {"name": "candidate_evaluations_budget_and_stop_reason", "unit": "AO17/AO04/AO20 evidence"}
+      ],
+      "outputs": [
+        {"name": "canonical_domain_and_physical_duplicate_ledger", "unit": "semantic identity"},
+        {"name": "candidate_coupling_classification", "unit": "fixed/reanalysis/unresolved"},
+        {"name": "ranking_with_truthful_optimality_scope", "unit": "complete/provisional/infeasible"}
+      ],
+      "python_projection": "structural_lib.beam_optimization.optimize_beam",
+      "dotnet_projection": "StructuralEngineering.Optimization.BeamOptimizationOperations.Optimize",
+      "valid_example": "wp08-fixed-actions-complete",
+      "non_success_example": "wp08-coupled-reanalysis-missing"
+    }
+  ]
+}

@@ -1,0 +1,741 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/wp07/v1",
+  "title": "WP07 portable construction and calculation-package requests",
+  "$defs": {
+    "identity": {"type": "string", "minLength": 1},
+    "nonnegativeDecimalString": {"type": "string", "pattern": "^(0|[0-9]+)(\\.[0-9]+)?$"},
+    "nullableNumber": {"type": ["number", "null"]},
+    "pathPoint": {
+      "type": "object",
+      "required": ["station_x_mm", "section_x_from_left_mm", "section_y_from_top_mm"],
+      "properties": {
+        "station_x_mm": {"type": "number"},
+        "section_x_from_left_mm": {"type": "number"},
+        "section_y_from_top_mm": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "memberLocalVector": {
+      "type": "object",
+      "required": ["station_component", "section_horizontal_component", "section_vertical_component"],
+      "properties": {
+        "station_component": {"type": "number"},
+        "section_horizontal_component": {"type": "number"},
+        "section_vertical_component": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "memberLocalCoordinateSystem": {
+      "type": "object",
+      "required": ["datum_id", "station_axis", "section_horizontal_axis", "section_vertical_axis"],
+      "properties": {
+        "datum_id": {"$ref": "#/$defs/identity"},
+        "station_axis": {"$ref": "#/$defs/identity"},
+        "section_horizontal_axis": {"$ref": "#/$defs/identity"},
+        "section_vertical_axis": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "resolvedSegment": {
+      "type": "object",
+      "required": ["segment_id", "kind", "start", "end", "centreline_length_mm", "bend_centre", "bend_radius_mm", "bend_angle_degrees", "bend_plane_normal", "bend_sweep_degrees", "bend_kind"],
+      "properties": {
+        "segment_id": {"$ref": "#/$defs/identity"},
+        "kind": {"enum": ["tangent_straight", "bend_arc"]},
+        "start": {"$ref": "#/$defs/pathPoint"},
+        "end": {"$ref": "#/$defs/pathPoint"},
+        "centreline_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "bend_centre": {"oneOf": [{"$ref": "#/$defs/pathPoint"}, {"type": "null"}]},
+        "bend_radius_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "bend_angle_degrees": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "bend_plane_normal": {"oneOf": [{"$ref": "#/$defs/memberLocalVector"}, {"type": "null"}]},
+        "bend_sweep_degrees": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "bend_kind": {"oneOf": [{"enum": ["standard_bend", "hook", "transition"]}, {"type": "null"}]}
+      },
+      "additionalProperties": false
+    },
+    "resolvedPath": {
+      "type": "object",
+      "required": ["bar_id", "bar_mark", "role", "layer", "diameter_mm", "steel_grade_n_per_mm2", "bundle_size", "closed", "node_ids", "segments", "developed_centreline_length_mm", "compatible_stock_length_mm", "anchorage_requirement_ids", "splice_ids"],
+      "properties": {
+        "bar_id": {"$ref": "#/$defs/identity"},
+        "bar_mark": {"$ref": "#/$defs/identity"},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link"]},
+        "layer": {"type": "integer", "minimum": 1},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "bundle_size": {"type": "integer", "minimum": 1, "maximum": 4},
+        "closed": {"type": "boolean"},
+        "node_ids": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "segments": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/resolvedSegment"}},
+        "developed_centreline_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "compatible_stock_length_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "anchorage_requirement_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "splice_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}}
+      },
+      "additionalProperties": false
+    },
+    "markSummary": {
+      "type": "object",
+      "required": ["bar_mark", "role", "diameter_mm", "steel_grade_n_per_mm2", "bundle_size", "closed", "bar_ids", "count", "developed_centreline_length_mm", "compatible_stock_length_mm"],
+      "properties": {
+        "bar_mark": {"$ref": "#/$defs/identity"},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link"]},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "bundle_size": {"type": "integer", "minimum": 1, "maximum": 4},
+        "closed": {"type": "boolean"},
+        "bar_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "count": {"type": "integer", "minimum": 1},
+        "developed_centreline_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "compatible_stock_length_mm": {"type": ["number", "null"], "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "scheduleOutput": {
+      "type": "object",
+      "required": ["profile_id", "project_basis_id", "criteria_revision_id", "member_id", "physical_span_id", "topology_revision_id", "detail_revision_id", "coordinate_system", "paths", "marks", "passed"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "criteria_revision_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "physical_span_id": {"$ref": "#/$defs/identity"},
+        "topology_revision_id": {"$ref": "#/$defs/identity"},
+        "detail_revision_id": {"$ref": "#/$defs/identity"},
+        "coordinate_system": {"$ref": "#/$defs/memberLocalCoordinateSystem"},
+        "paths": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/resolvedPath"}},
+        "marks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/markSummary"}},
+        "passed": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "shapeConvention": {
+      "type": "object",
+      "required": ["convention_id", "revision_id", "length_basis"],
+      "properties": {
+        "convention_id": {"$ref": "#/$defs/identity"},
+        "revision_id": {"$ref": "#/$defs/identity"},
+        "length_basis": {"const": "resolved_centreline_v1"}
+      },
+      "additionalProperties": false
+    },
+    "cuttingPolicy": {
+      "type": "object",
+      "required": ["policy_id", "revision_id", "stock_lengths_mm", "kerf_mm", "reusable_offcut_min_mm", "allocation_method"],
+      "properties": {
+        "policy_id": {"$ref": "#/$defs/identity"},
+        "revision_id": {"$ref": "#/$defs/identity"},
+        "stock_lengths_mm": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "number", "exclusiveMinimum": 0}},
+        "kerf_mm": {"type": "number", "minimum": 0},
+        "reusable_offcut_min_mm": {"type": "number", "minimum": 0},
+        "allocation_method": {"const": "first_fit_decreasing_v1"}
+      },
+      "additionalProperties": false
+    },
+    "spliceRecord": {
+      "type": "object",
+      "required": ["splice_id", "kind", "station_x_mm", "qualification_reference", "coupler_count"],
+      "properties": {
+        "splice_id": {"$ref": "#/$defs/identity"},
+        "kind": {"enum": ["lap", "coupler"]},
+        "station_x_mm": {"type": "number"},
+        "qualification_reference": {"$ref": "#/$defs/identity"},
+        "coupler_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "linkZone": {
+      "type": "object",
+      "required": ["zone_id", "bar_mark", "start_station_x_mm", "end_station_x_mm", "spacing_mm", "include_start", "include_end"],
+      "properties": {
+        "zone_id": {"$ref": "#/$defs/identity"},
+        "bar_mark": {"$ref": "#/$defs/identity"},
+        "start_station_x_mm": {"type": "number"},
+        "end_station_x_mm": {"type": "number"},
+        "spacing_mm": {"type": "number", "exclusiveMinimum": 0},
+        "include_start": {"type": "boolean"},
+        "include_end": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "shapeDimension": {
+      "type": "object",
+      "required": ["dimension_id", "segment_kind", "centreline_length_mm", "bend_radius_mm", "bend_angle_degrees"],
+      "properties": {
+        "dimension_id": {"$ref": "#/$defs/identity"},
+        "segment_kind": {"enum": ["tangent_straight", "bend_arc"]},
+        "centreline_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "bend_radius_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "bend_angle_degrees": {"type": ["number", "null"], "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "bbsRow": {
+      "type": "object",
+      "required": ["bar_mark", "role", "diameter_mm", "steel_grade_n_per_mm2", "bundle_size", "placement_count", "scheduled_bar_count", "shape_code", "dimensions", "centreline_developed_length_each_mm", "fabrication_cut_length_each_mm", "scheduled_cut_length_mm", "theoretical_mass_kg", "source_path_ids", "splice_ids"],
+      "properties": {
+        "bar_mark": {"$ref": "#/$defs/identity"},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link"]},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "bundle_size": {"type": "integer", "minimum": 1, "maximum": 4},
+        "placement_count": {"type": "integer", "minimum": 1},
+        "scheduled_bar_count": {"type": "integer", "minimum": 1},
+        "shape_code": {"$ref": "#/$defs/identity"},
+        "dimensions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/shapeDimension"}},
+        "centreline_developed_length_each_mm": {"type": "number", "exclusiveMinimum": 0},
+        "fabrication_cut_length_each_mm": {"type": "number", "exclusiveMinimum": 0},
+        "scheduled_cut_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "theoretical_mass_kg": {"type": "number", "exclusiveMinimum": 0},
+        "source_path_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "splice_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}}
+      },
+      "additionalProperties": false
+    },
+    "stockCut": {
+      "type": "object",
+      "required": ["cut_id", "bar_mark", "length_mm"],
+      "properties": {
+        "cut_id": {"$ref": "#/$defs/identity"},
+        "bar_mark": {"$ref": "#/$defs/identity"},
+        "length_mm": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "stockPiece": {
+      "type": "object",
+      "required": ["stock_piece_id", "diameter_mm", "steel_grade_n_per_mm2", "stock_length_mm", "cuts", "kerf_length_mm", "reusable_offcut_length_mm", "waste_length_mm"],
+      "properties": {
+        "stock_piece_id": {"$ref": "#/$defs/identity"},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "stock_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "cuts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/stockCut"}},
+        "kerf_length_mm": {"type": "number", "minimum": 0},
+        "reusable_offcut_length_mm": {"type": "number", "minimum": 0},
+        "waste_length_mm": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "placedLinkZone": {
+      "type": "object",
+      "required": ["zone_id", "bar_mark", "stations_x_mm", "count"],
+      "properties": {
+        "zone_id": {"$ref": "#/$defs/identity"},
+        "bar_mark": {"$ref": "#/$defs/identity"},
+        "stations_x_mm": {"type": "array", "items": {"type": "number"}},
+        "count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "couplerItem": {
+      "type": "object",
+      "required": ["splice_id", "station_x_mm", "count", "qualification_reference"],
+      "properties": {
+        "splice_id": {"$ref": "#/$defs/identity"},
+        "station_x_mm": {"type": "number"},
+        "count": {"type": "integer", "minimum": 1},
+        "qualification_reference": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "bbsOutput": {
+      "type": "object",
+      "required": ["profile_id", "project_basis_id", "member_id", "detail_revision_id", "schedule_result_id", "shape_convention_revision_id", "cutting_policy_revision_id", "rows", "link_zones", "stock_pieces", "couplers", "scheduled_cut_length_mm", "stock_length_mm", "kerf_length_mm", "reusable_offcut_length_mm", "waste_length_mm", "scheduled_steel_mass_kg", "purchased_stock_mass_kg", "allocation_optimality", "passed"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "detail_revision_id": {"$ref": "#/$defs/identity"},
+        "schedule_result_id": {"$ref": "#/$defs/identity"},
+        "shape_convention_revision_id": {"$ref": "#/$defs/identity"},
+        "cutting_policy_revision_id": {"$ref": "#/$defs/identity"},
+        "rows": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/bbsRow"}},
+        "link_zones": {"type": "array", "items": {"$ref": "#/$defs/placedLinkZone"}},
+        "stock_pieces": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/stockPiece"}},
+        "couplers": {"type": "array", "items": {"$ref": "#/$defs/couplerItem"}},
+        "scheduled_cut_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "stock_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "kerf_length_mm": {"type": "number", "minimum": 0},
+        "reusable_offcut_length_mm": {"type": "number", "minimum": 0},
+        "waste_length_mm": {"type": "number", "minimum": 0},
+        "scheduled_steel_mass_kg": {"type": "number", "exclusiveMinimum": 0},
+        "purchased_stock_mass_kg": {"type": "number", "exclusiveMinimum": 0},
+        "allocation_optimality": {"const": "heuristic_first_fit_decreasing"},
+        "passed": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "bbsRequest": {
+      "type": "object",
+      "required": ["profile_id", "project_basis_id", "member_id", "detail_revision_id", "schedule_result_id", "schedule_output_payload_id", "schedule", "shape_convention", "stock_policy", "steel_density_kg_per_m3", "splice_records", "link_zones", "station_tolerance_mm"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "detail_revision_id": {"$ref": "#/$defs/identity"},
+        "schedule_result_id": {"$ref": "#/$defs/identity"},
+        "schedule_output_payload_id": {"$ref": "#/$defs/identity"},
+        "schedule": {"$ref": "#/$defs/scheduleOutput"},
+        "shape_convention": {"$ref": "#/$defs/shapeConvention"},
+        "stock_policy": {"$ref": "#/$defs/cuttingPolicy"},
+        "steel_density_kg_per_m3": {"type": "number", "exclusiveMinimum": 0},
+        "splice_records": {"type": "array", "items": {"$ref": "#/$defs/spliceRecord"}},
+        "link_zones": {"type": "array", "items": {"$ref": "#/$defs/linkZone"}},
+        "station_tolerance_mm": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "volumeDeduction": {
+      "type": "object",
+      "required": ["deduction_id", "volume_m3", "ownership_id", "reason"],
+      "properties": {
+        "deduction_id": {"$ref": "#/$defs/identity"},
+        "volume_m3": {"type": "number", "minimum": 0},
+        "ownership_id": {"$ref": "#/$defs/identity"},
+        "reason": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "concreteSegment": {
+      "type": "object",
+      "required": ["segment_id", "member_id", "material_id", "ownership_id", "cross_section_area_mm2", "physical_length_mm", "owns_monolithic_interface", "deductions"],
+      "properties": {
+        "segment_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "material_id": {"$ref": "#/$defs/identity"},
+        "ownership_id": {"$ref": "#/$defs/identity"},
+        "cross_section_area_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "physical_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "owns_monolithic_interface": {"type": "boolean"},
+        "deductions": {"type": "array", "items": {"$ref": "#/$defs/volumeDeduction"}}
+      },
+      "additionalProperties": false
+    },
+    "areaDeduction": {
+      "type": "object",
+      "required": ["deduction_id", "area_mm2", "ownership_id", "reason"],
+      "properties": {
+        "deduction_id": {"$ref": "#/$defs/identity"},
+        "area_mm2": {"type": "number", "minimum": 0},
+        "ownership_id": {"$ref": "#/$defs/identity"},
+        "reason": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "formworkFace": {
+      "type": "object",
+      "required": ["face_id", "member_id", "category", "ownership_id", "gross_area_mm2", "measurement_state", "exclusion_reason", "deductions"],
+      "properties": {
+        "face_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "category": {"enum": ["soffit", "side_left", "side_right", "end_bulkhead", "slab_interface", "support_interface", "other_declared"]},
+        "ownership_id": {"$ref": "#/$defs/identity"},
+        "gross_area_mm2": {"type": "number", "minimum": 0},
+        "measurement_state": {"enum": ["included", "excluded"]},
+        "exclusion_reason": {"type": ["string", "null"], "minLength": 1},
+        "deductions": {"type": "array", "items": {"$ref": "#/$defs/areaDeduction"}}
+      },
+      "additionalProperties": false
+    },
+    "quantityRequest": {
+      "type": "object",
+      "required": ["profile_id", "project_basis_id", "member_id", "detail_revision_id", "bbs_result_id", "bbs_output_payload_id", "bbs", "concrete_overlap_policy_id", "formwork_measurement_policy_id", "concrete_segments", "formwork_faces"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "detail_revision_id": {"$ref": "#/$defs/identity"},
+        "bbs_result_id": {"$ref": "#/$defs/identity"},
+        "bbs_output_payload_id": {"$ref": "#/$defs/identity"},
+        "bbs": {"$ref": "#/$defs/bbsOutput"},
+        "concrete_overlap_policy_id": {"$ref": "#/$defs/identity"},
+        "formwork_measurement_policy_id": {"$ref": "#/$defs/identity"},
+        "concrete_segments": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concreteSegment"}},
+        "formwork_faces": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/formworkFace"}}
+      },
+      "additionalProperties": false
+    },
+    "quantitySteelItem": {
+      "type": "object",
+      "required": ["bar_mark", "diameter_mm", "steel_grade_n_per_mm2", "scheduled_bar_count", "scheduled_cut_length_mm", "scheduled_mass_kg"],
+      "properties": {
+        "bar_mark": {"$ref": "#/$defs/identity"},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "scheduled_bar_count": {"type": "integer", "minimum": 1},
+        "scheduled_cut_length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "scheduled_mass_kg": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "concreteQuantity": {
+      "type": "object",
+      "required": ["segment_id", "material_id", "ownership_id", "gross_volume_m3", "deduction_volume_m3", "net_volume_m3", "owns_monolithic_interface"],
+      "properties": {
+        "segment_id": {"$ref": "#/$defs/identity"},
+        "material_id": {"$ref": "#/$defs/identity"},
+        "ownership_id": {"$ref": "#/$defs/identity"},
+        "gross_volume_m3": {"type": "number", "exclusiveMinimum": 0},
+        "deduction_volume_m3": {"type": "number", "minimum": 0},
+        "net_volume_m3": {"type": "number", "minimum": 0},
+        "owns_monolithic_interface": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "formworkQuantity": {
+      "type": "object",
+      "required": ["face_id", "category", "ownership_id", "measurement_state", "gross_area_m2", "deduction_area_m2", "net_area_m2", "exclusion_reason"],
+      "properties": {
+        "face_id": {"$ref": "#/$defs/identity"},
+        "category": {"enum": ["soffit", "side_left", "side_right", "end_bulkhead", "slab_interface", "support_interface", "other_declared"]},
+        "ownership_id": {"$ref": "#/$defs/identity"},
+        "measurement_state": {"enum": ["included", "excluded"]},
+        "gross_area_m2": {"type": "number", "minimum": 0},
+        "deduction_area_m2": {"type": "number", "minimum": 0},
+        "net_area_m2": {"type": "number", "minimum": 0},
+        "exclusion_reason": {"type": ["string", "null"], "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "quantityOutput": {
+      "type": "object",
+      "required": ["profile_id", "project_basis_id", "member_id", "detail_revision_id", "bbs_result_id", "concrete_overlap_policy_id", "formwork_measurement_policy_id", "steel_items", "concrete_items", "formwork_items", "waste", "steel_scheduled_mass_kg", "steel_stock_mass_kg", "concrete_volume_m3", "formwork_area_m2", "coupler_count", "direct_cost"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "detail_revision_id": {"$ref": "#/$defs/identity"},
+        "bbs_result_id": {"$ref": "#/$defs/identity"},
+        "concrete_overlap_policy_id": {"$ref": "#/$defs/identity"},
+        "formwork_measurement_policy_id": {"$ref": "#/$defs/identity"},
+        "steel_items": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/quantitySteelItem"}},
+        "concrete_items": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concreteQuantity"}},
+        "formwork_items": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/formworkQuantity"}},
+        "waste": {
+          "type": "object",
+          "required": ["kerf_length_mm", "reusable_offcut_length_mm", "unreusable_waste_length_mm"],
+          "properties": {
+            "kerf_length_mm": {"type": "number", "minimum": 0},
+            "reusable_offcut_length_mm": {"type": "number", "minimum": 0},
+            "unreusable_waste_length_mm": {"type": "number", "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "steel_scheduled_mass_kg": {"type": "number", "exclusiveMinimum": 0},
+        "steel_stock_mass_kg": {"type": "number", "exclusiveMinimum": 0},
+        "concrete_volume_m3": {"type": "number", "minimum": 0},
+        "formwork_area_m2": {"type": "number", "minimum": 0},
+        "coupler_count": {"type": "integer", "minimum": 0},
+        "direct_cost": {"type": "null"}
+      },
+      "additionalProperties": false
+    },
+    "costRate": {
+      "type": "object",
+      "required": ["rate_id", "category", "basis", "description", "unit_rate_decimal", "source_reference"],
+      "properties": {
+        "rate_id": {"$ref": "#/$defs/identity"},
+        "category": {"enum": ["material", "formwork", "coupler", "labour", "plant"]},
+        "basis": {"enum": ["steel_scheduled_mass_kg", "steel_stock_mass_kg", "concrete_volume_m3", "formwork_area_m2", "coupler_count"]},
+        "description": {"$ref": "#/$defs/identity"},
+        "unit_rate_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"},
+        "source_reference": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "rateProfile": {
+      "type": "object",
+      "required": ["profile_id", "revision_id", "currency", "valuation_date", "time_zone", "geography", "source", "scope", "rates", "waste_pricing_basis", "overhead_percent_decimal", "tax_percent_decimal"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "revision_id": {"$ref": "#/$defs/identity"},
+        "currency": {"type": "string", "pattern": "^[A-Za-z]{3}$"},
+        "valuation_date": {"type": "string", "format": "date"},
+        "time_zone": {"$ref": "#/$defs/identity"},
+        "geography": {"$ref": "#/$defs/identity"},
+        "source": {"$ref": "#/$defs/identity"},
+        "scope": {
+          "type": "object",
+          "required": ["included_categories", "excluded_categories"],
+          "properties": {
+            "included_categories": {"type": "array", "uniqueItems": true, "items": {"enum": ["material", "formwork", "coupler", "labour", "plant"]}},
+            "excluded_categories": {"type": "array", "uniqueItems": true, "items": {"enum": ["material", "formwork", "coupler", "labour", "plant"]}}
+          },
+          "additionalProperties": false
+        },
+        "rates": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/costRate"}},
+        "waste_pricing_basis": {"enum": ["scheduled_steel", "purchased_stock"]},
+        "overhead_percent_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"},
+        "tax_percent_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"}
+      },
+      "additionalProperties": false
+    },
+    "costRequest": {
+      "type": "object",
+      "required": ["profile_id", "project_basis_id", "member_id", "detail_revision_id", "quantity_result_id", "quantity_output_payload_id", "quantities", "rate_profile"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "detail_revision_id": {"$ref": "#/$defs/identity"},
+        "quantity_result_id": {"$ref": "#/$defs/identity"},
+        "quantity_output_payload_id": {"$ref": "#/$defs/identity"},
+        "quantities": {"$ref": "#/$defs/quantityOutput"},
+        "rate_profile": {"$ref": "#/$defs/rateProfile"}
+      },
+      "additionalProperties": false
+    },
+    "costLine": {
+      "type": "object",
+      "required": ["rate_id", "category", "basis", "description", "source_quantity_result_id", "quantity_decimal", "unit", "unit_rate_decimal", "amount_decimal"],
+      "properties": {
+        "rate_id": {"$ref": "#/$defs/identity"},
+        "category": {"enum": ["material", "formwork", "coupler", "labour", "plant"]},
+        "basis": {"enum": ["steel_scheduled_mass_kg", "steel_stock_mass_kg", "concrete_volume_m3", "formwork_area_m2", "coupler_count"]},
+        "description": {"$ref": "#/$defs/identity"},
+        "source_quantity_result_id": {"$ref": "#/$defs/identity"},
+        "quantity_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"},
+        "unit": {"enum": ["kg", "m3", "m2", "count"]},
+        "unit_rate_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"},
+        "amount_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"}
+      },
+      "additionalProperties": false
+    },
+    "costOutput": {
+      "type": "object",
+      "required": ["profile_id", "project_basis_id", "member_id", "detail_revision_id", "quantity_result_id", "rate_profile_id", "rate_profile_revision_id", "currency", "valuation_date", "geography", "source", "lines", "included_categories", "excluded_categories", "direct_subtotal_decimal", "overhead_decimal", "pre_tax_total_decimal", "tax_decimal", "total_decimal"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "detail_revision_id": {"$ref": "#/$defs/identity"},
+        "quantity_result_id": {"$ref": "#/$defs/identity"},
+        "rate_profile_id": {"$ref": "#/$defs/identity"},
+        "rate_profile_revision_id": {"$ref": "#/$defs/identity"},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "valuation_date": {"type": "string", "format": "date"},
+        "geography": {"$ref": "#/$defs/identity"},
+        "source": {"$ref": "#/$defs/identity"},
+        "lines": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/costLine"}},
+        "included_categories": {"type": "array", "uniqueItems": true, "items": {"enum": ["material", "formwork", "coupler", "labour", "plant"]}},
+        "excluded_categories": {"type": "array", "uniqueItems": true, "items": {"enum": ["material", "formwork", "coupler", "labour", "plant"]}},
+        "direct_subtotal_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"},
+        "overhead_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"},
+        "pre_tax_total_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"},
+        "tax_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"},
+        "total_decimal": {"$ref": "#/$defs/nonnegativeDecimalString"}
+      },
+      "additionalProperties": false
+    },
+    "resultBinding": {
+      "type": "object",
+      "required": ["operation_semantic_id", "result_id", "normalized_input_id", "calculation_id", "execution", "applicability", "engineering", "completeness", "freshness", "output_payload_id"],
+      "properties": {
+        "operation_semantic_id": {"$ref": "#/$defs/identity"},
+        "result_id": {"$ref": "#/$defs/identity"},
+        "normalized_input_id": {"$ref": "#/$defs/identity"},
+        "calculation_id": {"$ref": "#/$defs/identity"},
+        "execution": {"enum": ["completed", "rejected_input", "not_run", "software_error", "cancelled"]},
+        "applicability": {"enum": ["applicable", "not_applicable", "unknown"]},
+        "engineering": {"enum": ["pass", "fail", "not_evaluated"]},
+        "completeness": {"enum": ["complete_for_scope", "partial"]},
+        "freshness": {"enum": ["current", "stale", "unbound"]}
+        ,"output_payload_id": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "humanAction": {
+      "type": "object",
+      "required": ["action_id", "actor_id", "actor_display_name", "professional_role", "action", "recorded_at_utc", "scope_id", "bound_result_id"],
+      "properties": {
+        "action_id": {"$ref": "#/$defs/identity"},
+        "actor_id": {"$ref": "#/$defs/identity"},
+        "actor_display_name": {"$ref": "#/$defs/identity"},
+        "professional_role": {"$ref": "#/$defs/identity"},
+        "action": {"enum": ["prepared", "checked", "approved", "rejected"]},
+        "recorded_at_utc": {"type": "string", "format": "date-time"},
+        "scope_id": {"$ref": "#/$defs/identity"},
+        "bound_result_id": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "memberLeafExpectation": {
+      "type": "object",
+      "required": ["leaf_id", "rule_id", "operation_semantic_id", "scope_id", "scope", "expected_applicability", "code_data_revision_id"],
+      "properties": {
+        "leaf_id": {"$ref": "#/$defs/identity"},
+        "rule_id": {"$ref": "#/$defs/identity"},
+        "operation_semantic_id": {"$ref": "#/$defs/identity"},
+        "scope_id": {"$ref": "#/$defs/identity"},
+        "scope": {"enum": ["member", "span", "station", "face", "axis", "bar_end", "arrangement"]},
+        "expected_applicability": {"enum": ["applicable", "not_applicable"]},
+        "code_data_revision_id": {"type": ["string", "null"], "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "memberLeafEvidence": {
+      "type": "object",
+      "required": ["leaf_id", "operation_semantic_id", "result_id", "execution", "applicability", "engineering", "completeness", "freshness", "code_data_revision_id", "method_revision_id", "normalized_input_id", "calculation_id", "required_value", "selected_value", "supplied_value", "unit", "governing_utilization", "diagnostic_codes"],
+      "properties": {
+        "leaf_id": {"$ref": "#/$defs/identity"},
+        "operation_semantic_id": {"$ref": "#/$defs/identity"},
+        "result_id": {"$ref": "#/$defs/identity"},
+        "execution": {"enum": ["completed", "rejected_input", "not_run", "software_error", "cancelled"]},
+        "applicability": {"enum": ["applicable", "not_applicable", "unknown"]},
+        "engineering": {"enum": ["pass", "fail", "not_evaluated"]},
+        "completeness": {"enum": ["complete_for_scope", "partial"]},
+        "freshness": {"enum": ["current", "stale", "unbound"]},
+        "code_data_revision_id": {"$ref": "#/$defs/identity"},
+        "method_revision_id": {"$ref": "#/$defs/identity"},
+        "normalized_input_id": {"$ref": "#/$defs/identity"},
+        "calculation_id": {"type": "string"},
+        "required_value": {"$ref": "#/$defs/nullableNumber"},
+        "selected_value": {"$ref": "#/$defs/nullableNumber"},
+        "supplied_value": {"$ref": "#/$defs/nullableNumber"},
+        "unit": {"type": ["string", "null"], "minLength": 1},
+        "governing_utilization": {"type": ["number", "null"], "minimum": 0},
+        "diagnostic_codes": {"type": "array", "items": {"$ref": "#/$defs/identity"}}
+      },
+      "additionalProperties": false
+    },
+    "memberLeafQualification": {
+      "type": "object",
+      "required": ["expectation", "evidence", "qualified", "reason_codes"],
+      "properties": {
+        "expectation": {"$ref": "#/$defs/memberLeafExpectation"},
+        "evidence": {"oneOf": [{"$ref": "#/$defs/memberLeafEvidence"}, {"type": "null"}]},
+        "qualified": {"type": "boolean"},
+        "reason_codes": {"type": "array", "items": {"$ref": "#/$defs/identity"}}
+      },
+      "additionalProperties": false
+    },
+    "depthIteration": {
+      "type": "object",
+      "required": ["iteration_number", "reinforcement_revision_id", "effective_depth_mm", "dependent_result_ids", "converged"],
+      "properties": {
+        "iteration_number": {"type": "integer", "minimum": 1},
+        "reinforcement_revision_id": {"$ref": "#/$defs/identity"},
+        "effective_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "dependent_result_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "converged": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "memberDesignOutput": {
+      "type": "object",
+      "required": ["project_basis_id", "profile_revision_id", "member_id", "topology_revision_id", "action_revision_id", "reinforcement_revision_id", "design_scope_revision_id", "expected_leaves", "leaf_qualifications", "depth_iterations", "governing_leaf_id", "governing_result_id", "governing_utilization", "qualified"],
+      "properties": {
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "profile_revision_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "topology_revision_id": {"$ref": "#/$defs/identity"},
+        "action_revision_id": {"$ref": "#/$defs/identity"},
+        "reinforcement_revision_id": {"$ref": "#/$defs/identity"},
+        "design_scope_revision_id": {"$ref": "#/$defs/identity"},
+        "expected_leaves": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/memberLeafExpectation"}},
+        "leaf_qualifications": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/memberLeafQualification"}},
+        "depth_iterations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/depthIteration"}},
+        "governing_leaf_id": {"type": ["string", "null"], "minLength": 1},
+        "governing_result_id": {"type": ["string", "null"], "minLength": 1},
+        "governing_utilization": {"type": ["number", "null"], "minimum": 0},
+        "qualified": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "packageMetadata": {
+      "type": "object",
+      "required": ["project_id", "project_name", "project_revision_id", "member_id", "package_revision_id", "engine_build", "dataset_revision_ids", "issued_at_utc"],
+      "properties": {
+        "project_id": {"$ref": "#/$defs/identity"},
+        "project_name": {"$ref": "#/$defs/identity"},
+        "project_revision_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "package_revision_id": {"$ref": "#/$defs/identity"},
+        "engine_build": {"$ref": "#/$defs/identity"},
+        "dataset_revision_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "issued_at_utc": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "packageProfile": {
+      "type": "object",
+      "required": ["profile_id", "revision_id", "template_id", "required_leaf_ids", "required_section_ids"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "revision_id": {"$ref": "#/$defs/identity"},
+        "template_id": {"$ref": "#/$defs/identity"},
+        "required_leaf_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "required_section_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}}
+      },
+      "additionalProperties": false
+    },
+    "calculationTrace": {
+      "type": "object",
+      "required": ["trace_id", "leaf_id", "rule_reference", "formula_reference", "normalized_substitution", "required_value", "provided_value", "selected_value", "unit", "utilization", "governing"],
+      "properties": {
+        "trace_id": {"$ref": "#/$defs/identity"},
+        "leaf_id": {"$ref": "#/$defs/identity"},
+        "rule_reference": {"$ref": "#/$defs/identity"},
+        "formula_reference": {"$ref": "#/$defs/identity"},
+        "normalized_substitution": {"$ref": "#/$defs/identity"},
+        "required_value": {"$ref": "#/$defs/nullableNumber"},
+        "provided_value": {"$ref": "#/$defs/nullableNumber"},
+        "selected_value": {"$ref": "#/$defs/nullableNumber"},
+        "unit": {"type": ["string", "null"], "minLength": 1},
+        "utilization": {"type": ["number", "null"], "minimum": 0},
+        "governing": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "drawingDatum": {
+      "type": "object",
+      "required": ["datum_id", "source_identity", "label", "value", "unit"],
+      "properties": {
+        "datum_id": {"$ref": "#/$defs/identity"},
+        "source_identity": {"$ref": "#/$defs/identity"},
+        "label": {"$ref": "#/$defs/identity"},
+        "value": {"$ref": "#/$defs/identity"},
+        "unit": {"type": ["string", "null"], "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "drawingView": {
+      "type": "object",
+      "required": ["view_id", "kind", "detail_revision_id", "data"],
+      "properties": {
+        "view_id": {"$ref": "#/$defs/identity"},
+        "kind": {"$ref": "#/$defs/identity"},
+        "detail_revision_id": {"$ref": "#/$defs/identity"},
+        "data": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/drawingDatum"}}
+      },
+      "additionalProperties": false
+    },
+    "calculationPackageRequest": {
+      "type": "object",
+      "required": ["metadata", "package_profile", "member_result", "member_binding", "schedule", "schedule_binding", "bbs", "bbs_binding", "quantities", "quantity_binding", "cost", "cost_binding", "assumptions", "traces", "drawings", "limitations", "human_actions"],
+      "properties": {
+        "metadata": {"$ref": "#/$defs/packageMetadata"},
+        "package_profile": {"$ref": "#/$defs/packageProfile"},
+        "member_result": {"$ref": "#/$defs/memberDesignOutput"},
+        "member_binding": {"$ref": "#/$defs/resultBinding"},
+        "schedule": {"$ref": "#/$defs/scheduleOutput"},
+        "schedule_binding": {"$ref": "#/$defs/resultBinding"},
+        "bbs": {"$ref": "#/$defs/bbsOutput"},
+        "bbs_binding": {"$ref": "#/$defs/resultBinding"},
+        "quantities": {"$ref": "#/$defs/quantityOutput"},
+        "quantity_binding": {"$ref": "#/$defs/resultBinding"},
+        "cost": {"oneOf": [{"$ref": "#/$defs/costOutput"}, {"type": "null"}]},
+        "cost_binding": {"oneOf": [{"$ref": "#/$defs/resultBinding"}, {"type": "null"}]},
+        "assumptions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/identity"}},
+        "traces": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/calculationTrace"}},
+        "drawings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/drawingView"}},
+        "limitations": {"type": "array", "items": {"$ref": "#/$defs/identity"}},
+        "human_actions": {"type": "array", "items": {"$ref": "#/$defs/humanAction"}}
+      },
+      "additionalProperties": false
+    }
+  }
+}

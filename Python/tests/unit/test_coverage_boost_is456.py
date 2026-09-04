@@ -2530,7 +2530,7 @@ class TestServiceabilityUncoveredBranches:
         from structural_lib.codes.is456.beam.serviceability import check_crack_width
 
         result = check_crack_width(
-            exposure_class="extreme",
+            exposure_class="unrecognized",
             acr_mm=50,
             cmin_mm=25,
             h_mm=500,
@@ -3546,7 +3546,7 @@ class TestServiceabilityBranchCoverage:
             x_mm=150,
             fs_service_nmm2=150,
         )
-        assert result.computed.get("limit_mm") == 0.2
+        assert result.computed.get("limit_mm") == 0.1
 
     def test_cracking_moment_custom_yt(self):
         """Cracking moment with explicit yt_mm."""

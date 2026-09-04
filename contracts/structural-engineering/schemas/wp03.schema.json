@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/wp03/v1",
+  "title": "WP03 portable action, topology, and beam-line requests",
+  "$defs": {
+    "vector3": {
+      "type": "object",
+      "required": ["x", "y", "z"],
+      "properties": {"x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"}},
+      "additionalProperties": false
+    },
+    "localAxes": {
+      "type": "object",
+      "required": ["axis_id", "e1", "e2", "e3"],
+      "properties": {
+        "axis_id": {"type": "string", "minLength": 1},
+        "e1": {"$ref": "#/$defs/vector3"},
+        "e2": {"$ref": "#/$defs/vector3"},
+        "e3": {"$ref": "#/$defs/vector3"}
+      },
+      "additionalProperties": false
+    },
+    "actionRow": {
+      "type": "object",
+      "required": ["source_row_id", "member_id", "physical_span_id", "object_id", "analysis_element_id", "axis_id", "object_station", "element_station", "load_case_id", "step_type", "concurrency", "p", "v2", "v3", "t", "m2", "m3"],
+      "properties": {
+        "source_row_id": {"type": "string", "minLength": 1},
+        "member_id": {"type": "string", "minLength": 1},
+        "physical_span_id": {"type": "string", "minLength": 1},
+        "object_id": {"type": "string", "minLength": 1},
+        "analysis_element_id": {"type": "string", "minLength": 1},
+        "axis_id": {"type": "string", "minLength": 1},
+        "object_station": {"type": "number"},
+        "element_station": {"type": "number"},
+        "load_case_id": {"type": "string", "minLength": 1},
+        "step_type": {"type": "string", "minLength": 1},
+        "step_number": {"type": ["number", "null"]},
+        "concurrency": {"enum": ["static_concurrent", "staged_step", "response_result", "component_envelope", "design_envelope"]},
+        "p": {"type": "number"}, "v2": {"type": "number"}, "v3": {"type": "number"},
+        "t": {"type": "number"}, "m2": {"type": "number"}, "m3": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "actionSnapshot": {
+      "type": "object",
+      "required": ["source_id", "model_id", "analysis_epoch_id", "result_epoch_id", "force_unit", "moment_unit", "station_unit", "local_axes", "rows"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "minLength": 1},
+        "analysis_epoch_id": {"type": "string", "minLength": 1},
+        "result_epoch_id": {"type": "string", "minLength": 1},
+        "force_unit": {"enum": ["n", "kn"]},
+        "moment_unit": {"enum": ["n_mm", "n_m", "kn_mm", "kn_m"]},
+        "station_unit": {"enum": ["mm", "m"]},
+        "local_axes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/localAxes"}},
+        "rows": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/actionRow"}}
+      },
+      "additionalProperties": false
+    },
+    "support": {
+      "type": "object",
+      "required": ["support_id", "centre_x_mm", "left_face_x_mm", "right_face_x_mm"],
+      "properties": {
+        "support_id": {"type": "string", "minLength": 1},
+        "centre_x_mm": {"type": "number"}, "left_face_x_mm": {"type": "number"}, "right_face_x_mm": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "sectionRegion": {
+      "type": "object",
+      "required": ["region_id", "section_id", "start_x_mm", "end_x_mm"],
+      "properties": {
+        "region_id": {"type": "string", "minLength": 1}, "section_id": {"type": "string", "minLength": 1},
+        "start_x_mm": {"type": "number"}, "end_x_mm": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "physicalSpan": {
+      "type": "object",
+      "required": ["span_id", "start_support_id", "end_support_id", "effective_depth_mm", "section_regions"],
+      "properties": {
+        "span_id": {"type": "string", "minLength": 1}, "start_support_id": {"type": "string", "minLength": 1}, "end_support_id": {"type": "string", "minLength": 1},
+        "effective_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "section_regions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sectionRegion"}}
+      },
+      "additionalProperties": false
+    },
+    "analysisMapping": {
+      "type": "object",
+      "required": ["analysis_element_id", "physical_span_id", "start_x_mm", "end_x_mm"],
+      "properties": {
+        "analysis_element_id": {"type": "string", "minLength": 1}, "physical_span_id": {"type": "string", "minLength": 1},
+        "start_x_mm": {"type": "number"}, "end_x_mm": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "topologyRequest": {
+      "type": "object",
+      "required": ["member_id", "local_axes", "supports", "spans", "analysis_elements"],
+      "properties": {
+        "member_id": {"type": "string", "minLength": 1}, "local_axes": {"$ref": "#/$defs/localAxes"},
+        "supports": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/support"}},
+        "spans": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/physicalSpan"}},
+        "analysis_elements": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/analysisMapping"}}
+      },
+      "additionalProperties": false
+    },
+    "beamNode": {
+      "type": "object",
+      "required": ["node_id", "x_mm", "vertical_restraint", "rotation_restraint"],
+      "properties": {
+        "node_id": {"type": "string", "minLength": 1}, "x_mm": {"type": "number"},
+        "vertical_restraint": {"type": "boolean"}, "rotation_restraint": {"type": "boolean"},
+        "vertical_displacement_mm": {"type": "number", "default": 0}, "prescribed_rotation_rad": {"type": "number", "default": 0},
+        "nodal_force_n": {"type": "number", "default": 0}, "nodal_moment_nmm": {"type": "number", "default": 0}
+      },
+      "additionalProperties": false
+    },
+    "beamElement": {
+      "type": "object",
+      "required": ["analysis_element_id", "physical_span_id", "start_node_id", "end_node_id", "elastic_modulus_n_per_mm2", "second_moment_mm4"],
+      "properties": {
+        "analysis_element_id": {"type": "string", "minLength": 1}, "physical_span_id": {"type": "string", "minLength": 1},
+        "start_node_id": {"type": "string", "minLength": 1}, "end_node_id": {"type": "string", "minLength": 1},
+        "elastic_modulus_n_per_mm2": {"type": "number", "exclusiveMinimum": 0}, "second_moment_mm4": {"type": "number", "exclusiveMinimum": 0},
+        "uniform_load_n_per_mm": {"type": "number", "default": 0}
+      },
+      "additionalProperties": false
+    },
+    "pointLoad": {
+      "type": "object",
+      "required": ["analysis_element_id", "distance_from_start_mm", "vertical_force_n"],
+      "properties": {
+        "analysis_element_id": {"type": "string", "minLength": 1}, "distance_from_start_mm": {"type": "number"}, "vertical_force_n": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "beamLineRequest": {
+      "type": "object",
+      "required": ["model_id", "load_case_id", "nodes", "elements", "point_loads", "station_intervals"],
+      "properties": {
+        "model_id": {"type": "string", "minLength": 1}, "load_case_id": {"type": "string", "minLength": 1},
+        "nodes": {"type": "array", "minItems": 2, "maxItems": 20, "items": {"$ref": "#/$defs/beamNode"}},
+        "elements": {"type": "array", "minItems": 1, "maxItems": 19, "items": {"$ref": "#/$defs/beamElement"}},
+        "point_loads": {"type": "array", "items": {"$ref": "#/$defs/pointLoad"}},
+        "station_intervals": {"type": "integer", "minimum": 2, "maximum": 100}
+      },
+      "additionalProperties": false
+    }
+  }
+}

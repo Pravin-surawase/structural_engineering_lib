@@ -4,9 +4,19 @@
     <Project Path="src/StructAutomate.Engineering/StructAutomate.Engineering.csproj" />
     <Project Path="src/StructAutomate.Application/StructAutomate.Application.csproj" />
     <Project Path="src/StructAutomate.Excel/StructAutomate.Excel.csproj" />
+    <Project Path="src/StructuralEngineering.Contracts/StructuralEngineering.Contracts.csproj" />
+    <Project Path="src/StructuralEngineering.Core/StructuralEngineering.Core.csproj" />
+    <Project Path="src/StructuralEngineering.Reinforcement/StructuralEngineering.Reinforcement.csproj" />
+    <Project Path="src/StructuralEngineering.Codes.IS456/StructuralEngineering.Codes.IS456.csproj" />
+    <Project Path="src/StructuralEngineering.Beam/StructuralEngineering.Beam.csproj" />
+    <Project Path="src/StructuralEngineering.Analysis/StructuralEngineering.Analysis.csproj" />
+    <Project Path="src/StructuralEngineering.Construction/StructuralEngineering.Construction.csproj" />
+    <Project Path="src/StructuralEngineering.Reporting/StructuralEngineering.Reporting.csproj" />
+    <Project Path="src/StructuralEngineering.Optimization/StructuralEngineering.Optimization.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/StructAutomate.Tests/StructAutomate.Tests.csproj" />
+    <Project Path="tests/StructuralEngineering.Tests/StructuralEngineering.Tests.csproj" />
   </Folder>
   <Folder Name="/tools/"><Project Path="tools/StructAutomate.Examples/StructAutomate.Examples.csproj" /></Folder>
 </Solution>

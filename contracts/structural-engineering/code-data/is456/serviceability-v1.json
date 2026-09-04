@@ -1,0 +1,23 @@
+{
+  "schema_version": "structural-code-data/v1",
+  "code_data_revision_id": "is456-wp04-v1",
+  "source": "IS 456:2000 serviceability provisions, Amendment 4 exposure ceiling, and Annex F flexural crack-width method",
+  "deflection": {
+    "basic_span_depth_ratios": {"cantilever": 7, "simply_supported": 20, "continuous": 26},
+    "screening_maximum_effective_span_mm": 10000,
+    "total_final_limit": {"span_divisor": 250},
+    "after_finishes_limit": {"span_divisor": 350, "absolute_maximum_mm": 20},
+    "calculated_component_sign": "positive_downward",
+    "component_aggregation": "instantaneous_total + instantaneous_sustained * creep_multiplier + shrinkage",
+    "after_finishes_aggregation": "max(0, total_final - deflection_at_finish_installation)"
+  },
+  "crack_width": {
+    "ceilings_mm": {"non_harmful_mild": 0.3, "harmful_or_weather_or_moderate_severe": 0.2, "very_severe_extreme": 0.1},
+    "formula": "3 * acr * mean_strain / (1 + 2 * (acr - cmin) / (h - x))",
+    "acr": "distance from checked tension-surface point to nearest actual longitudinal bar surface",
+    "cmin": "minimum tension-face clear cover to actual longitudinal bar surface",
+    "stress_profile_limit": "service steel stress <= 0.8 fy",
+    "strain_profile_limit": "supplied mean strain <= fs/Es * (h-x)/(d-x)"
+  },
+  "exclusions": ["ULS-to-SLS inference", "automatic Figure 4/5 factor interpolation", "automatic creep/shrinkage prediction", "thermal/restrained-shrinkage/shear cracking", "professional acceptance"]
+}

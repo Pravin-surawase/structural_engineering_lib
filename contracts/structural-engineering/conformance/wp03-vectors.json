@@ -1,0 +1,68 @@
+{
+  "schema_version": "structural-conformance/v1",
+  "work_packet": "WP03",
+  "tolerance": {"absolute": 1e-6, "relative": 1e-9},
+  "vectors": [
+    {
+      "id": "wp03-action-six-components",
+      "operation_semantic_id": "structural.action_snapshot.normalize/v1",
+      "input": {
+        "source_id": "source-1", "model_id": "model-1", "analysis_epoch_id": "analysis-epoch-1", "result_epoch_id": "result-epoch-1",
+        "force_unit": "kn", "moment_unit": "kn_m", "station_unit": "m", "axis_id": "local-123",
+        "source_row_id": "source-row-1", "member_id": "member-1", "physical_span_id": "span-1", "object_id": "object-1", "analysis_element_id": "element-1",
+        "object_station": 2.5, "element_station": 0.5, "load_case_id": "ULS-1", "step_type": "maximum", "step_number": 1,
+        "concurrency": "component_envelope", "p": 1, "v2": 2, "v3": 3, "t": 4, "m2": 5, "m3": 6
+      },
+      "expected": {
+        "p_n": 1000, "v2_n": 2000, "v3_n": 3000, "t_nmm": 4000000, "m2_nmm": 5000000, "m3_nmm": 6000000,
+        "row_id": "action_row_id:pf4-canonical-json-v1:2667bdfe26231eea46cf6f1ad5bfaf585b42470997ef6a2427a76e29c6f14c38",
+        "snapshot_id": "action_snapshot_id:pf4-canonical-json-v1:c9f8fd88900595bc769f6c4750ede9879adc24e3c89271f069213d80fc5a9612"
+      }
+    },
+    {
+      "id": "wp03-action-left-handed-axes",
+      "operation_semantic_id": "structural.action_snapshot.normalize/v1",
+      "input": {"e1": [1, 0, 0], "e2": [0, 1, 0], "e3": [0, 0, -1]},
+      "expected": {"execution": "rejected_input", "diagnostic": "AXIS.INVALID"}
+    },
+    {
+      "id": "wp03-two-span-topology",
+      "operation_semantic_id": "structural.beam_topology.define/v1",
+      "input": {
+        "support_centres_mm": [0, 5000, 10000], "support_faces_mm": [[-200, 200], [4800, 5200], [9800, 10200]],
+        "effective_depths_mm": [300, 450], "analysis_element_ids": ["E1", "E2"]
+      },
+      "expected": {"centreline_spans_mm": [5000, 5000], "clear_spans_mm": [4600, 4600], "effective_spans_mm": [4900, 5000]}
+    },
+    {
+      "id": "wp03-topology-region-gap",
+      "operation_semantic_id": "structural.beam_topology.define/v1",
+      "input": {"span_limits_mm": [0, 5000], "section_region_limits_mm": [10, 5000]},
+      "expected": {"execution": "rejected_input", "diagnostic": "REGION.COVERAGE"}
+    },
+    {
+      "id": "wp03-simply-supported-udl",
+      "operation_semantic_id": "structural.beam_line.solve/v1",
+      "input": {"length_mm": 5000, "elastic_modulus_n_per_mm2": 200000, "second_moment_mm4": 1000000000, "uniform_load_n_per_mm": -10},
+      "expected": {"left_reaction_n": 25000, "right_reaction_n": 25000, "midspan_m3_nmm": 31250000, "midspan_displacement_mm": -0.4069010416666667, "force_residual_n": 0, "moment_residual_nmm": 0}
+    },
+    {
+      "id": "wp03-point-load-jump",
+      "operation_semantic_id": "structural.beam_line.solve/v1",
+      "input": {"length_mm": 5000, "point_station_mm": 2500, "point_force_n": -10000},
+      "expected": {"left_v2_n": 5000, "right_v2_n": -5000, "jump_n": -10000}
+    },
+    {
+      "id": "wp03-support-settlement",
+      "operation_semantic_id": "structural.beam_line.solve/v1",
+      "input": {"span_lengths_mm": [5000, 5000], "support_vertical_displacements_mm": [0, -10, 0], "elastic_modulus_n_per_mm2": 200000, "second_moment_mm4": 1000000000},
+      "expected": {"support_reactions_n": [48000, -96000, 48000], "middle_displacement_mm": -10, "force_residual_n": 0, "moment_residual_nmm": 0}
+    },
+    {
+      "id": "wp03-unstable-beam",
+      "operation_semantic_id": "structural.beam_line.solve/v1",
+      "input": {"vertical_restraints": [false, false], "rotation_restraints": [false, false]},
+      "expected": {"execution": "rejected_input", "diagnostic": "ANALYSIS.UNSTABLE"}
+    }
+  ]
+}

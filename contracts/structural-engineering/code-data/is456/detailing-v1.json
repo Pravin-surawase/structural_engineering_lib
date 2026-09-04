@@ -1,0 +1,55 @@
+{
+  "schema_version": "structural-code-data/v1",
+  "code_data_revision_id": "is456-amd6-wp05-v1",
+  "seismic_code_data_revision_id": "is13920-2016-amd2-wp05-v1",
+  "source": "Normalized IS 456:2000 Amendment 6 and IS 13920:2016 Amendments 1 and 2 beam detailing data",
+  "development_length": {
+    "formula": "bar_diameter * bar_stress / (4 * design_bond_stress)",
+    "plain_bar_tension_bond_stress_n_per_mm2": {"20": 1.2, "25": 1.4, "30": 1.5, "35": 1.7, "40_or_higher": 1.9},
+    "deformed_bar_factor": 1.6,
+    "fusion_bonded_epoxy_factor_relative_to_deformed": 0.8,
+    "compression_factor": 1.25,
+    "bundle_factors": {"1": 1.0, "2": 1.1, "3": 1.2, "4": 1.33},
+    "maximum_profile_bar_stress": "0.87 fy"
+  },
+  "anchorage": {
+    "bend_credit_mm": "4 bar diameters per 45 degrees",
+    "maximum_bend_credit_bar_diameters": 16,
+    "simple_support_criterion": "Ld <= M1/V + Lo",
+    "support_reference": "physical near face with support centre retained separately"
+  },
+  "splices": {
+    "flexural_tension_lap_minimum": "max(Ld, 30 bar diameters)",
+    "direct_tension_lap_minimum": "max(2 Ld, 30 bar diameters)",
+    "compression_lap_minimum": "max(compression Ld, 24 bar diameters)",
+    "maximum_lapped_bar_diameter_mm": 36,
+    "maximum_percentage_spliced_at_section": 50,
+    "mechanical_splice_evidence": ["qualification_reference", "installation_reference"]
+  },
+  "curtailment": {
+    "required_extension_source": "explicit reviewed criterion supplied with each cutoff",
+    "required_dependency_operations": {"anchorage": "is456.beam.anchorage.check/v1", "shear_at_cutoff": "is456.beam.shear.check/v1", "conditional_extra_links": "is456.beam.shear.check/v1"},
+    "extra_links_evidence": "required only when extra_links_required is true"
+  },
+  "seismic_beam": {
+    "minimum_width_mm": 200,
+    "minimum_width_depth_ratio_exclusive": 0.3,
+    "minimum_tension_steel_ratio": "0.24 sqrt(fck) / fy",
+    "maximum_tension_steel_ratio": 0.025,
+    "supported_steel_grades_n_per_mm2": [415, 500, 550],
+    "minimum_continuous_top_bars": 2,
+    "minimum_continuous_bottom_bars": 2,
+    "end_close_link_zone_length": "2 effective depths from joint face",
+    "end_close_link_maximum_spacing": "min(d/4, 6 times minimum longitudinal bar diameter, 100 mm)",
+    "maximum_first_hoop_offset_from_joint_face_mm": 50,
+    "minimum_hook_angle_degrees": 135,
+    "capacity_shear_factor": 1.4
+  },
+  "arrangement": {
+    "horizontal_clear_distance": "max(larger bar diameter, maximum aggregate size + 5 mm)",
+    "vertical_clear_distance": "max(15 mm, two-thirds maximum aggregate size, larger bar diameter)",
+    "cover_reference": "surface of outermost reinforcement including links",
+    "centroid_rule": "calculate each reinforcement role separately"
+  },
+  "exclusions": ["temporary-works formwork design", "automatic unsourced curtailment criterion", "unqualified mechanical splices", "joint design calculation", "professional acceptance"]
+}

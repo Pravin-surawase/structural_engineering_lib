@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><ItemGroup><ProjectReference Include="../StructuralEngineering.Codes.IS456/StructuralEngineering.Codes.IS456.csproj" /><ProjectReference Include="../StructuralEngineering.Reinforcement/StructuralEngineering.Reinforcement.csproj" /></ItemGroup></Project>

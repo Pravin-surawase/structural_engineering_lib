@@ -1,0 +1,55 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP04",
+  "profile_id": "IS456-WP04",
+  "operations": [
+    {
+      "catalogue_id": "FO07",
+      "semantic_id": "is456.beam.deflection_limit/v1",
+      "kind": "value",
+      "purpose": "Resolve a total-final or after-finishes deflection limit from effective span and an explicit source.",
+      "required_inputs": [{"name": "span_mm", "unit": "mm"}, {"name": "criterion", "unit": "enum"}, {"name": "selected_source", "unit": "enum"}],
+      "outputs": [{"name": "limit_mm", "unit": "mm"}, {"name": "code_limit_mm", "unit": "mm"}, {"name": "selected_source", "unit": "enum"}],
+      "python_projection": "structural_lib.beam.deflection_limit",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Serviceability.DeflectionLimit",
+      "valid_example": "wp04-total-deflection-limit",
+      "non_success_example": "wp04-deflection-limit-conflict"
+    },
+    {
+      "catalogue_id": "FO08",
+      "semantic_id": "is456.beam.crack_width_limit/v1",
+      "kind": "value",
+      "purpose": "Resolve the crack-width ceiling from exposure, harmful-cracking classification, and an explicit source.",
+      "required_inputs": [{"name": "exposure_class", "unit": "enum"}, {"name": "cracking_harmful", "unit": "boolean"}, {"name": "selected_source", "unit": "enum"}],
+      "outputs": [{"name": "limit_mm", "unit": "mm"}, {"name": "code_ceiling_mm", "unit": "mm"}, {"name": "selected_source", "unit": "enum"}],
+      "python_projection": "structural_lib.beam.crack_width_limit",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Serviceability.CrackWidthLimit",
+      "valid_example": "wp04-crack-limit-exposure",
+      "non_success_example": "wp04-crack-limit-weakened"
+    },
+    {
+      "catalogue_id": "AO09",
+      "semantic_id": "is456.beam.deflection.check/v1",
+      "kind": "check",
+      "purpose": "Check an explicitly identified span-depth screen or calculated short/long-term deflection basis.",
+      "required_inputs": [{"name": "method", "unit": "enum"}, {"name": "screening or calculated basis", "unit": "typed branch"}, {"name": "service/analysis/reinforcement evidence", "unit": "identity"}],
+      "outputs": [{"name": "result_kind", "unit": "enum"}, {"name": "component deflections", "unit": "mm"}, {"name": "limit comparisons", "unit": "mm/ratio"}],
+      "python_projection": "structural_lib.beam.check_deflection",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Serviceability.CheckDeflection",
+      "valid_example": "wp04-calculated-deflection",
+      "non_success_example": "wp04-calculated-missing-duration"
+    },
+    {
+      "catalogue_id": "AO10",
+      "semantic_id": "is456.beam.crack_width.check/v1",
+      "kind": "check",
+      "purpose": "Calculate and check Annex F flexural crack width at a physical surface point from actual positioned tension bars and a service strain basis.",
+      "required_inputs": [{"name": "service and reinforcement identities", "unit": "identity"}, {"name": "section/surface/neutral-axis geometry", "unit": "mm"}, {"name": "actual bars", "unit": "positioned geometry"}, {"name": "service stress and supplied mean strain", "unit": "N/mm2, strain"}],
+      "outputs": [{"name": "acr_mm/cmin_mm/effective_depth_mm", "unit": "mm"}, {"name": "calculated_crack_width_mm", "unit": "mm"}, {"name": "limit_mm/utilization", "unit": "mm/ratio"}],
+      "python_projection": "structural_lib.beam.check_crack_width",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Serviceability.CheckCrackWidth",
+      "valid_example": "wp04-annex-f-actual-bars",
+      "non_success_example": "wp04-annex-f-missing-bars"
+    }
+  ]
+}
