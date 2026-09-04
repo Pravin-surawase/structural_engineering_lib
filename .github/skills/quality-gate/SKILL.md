@@ -1,6 +1,6 @@
 ---
 name: quality-gate
-description: "Apply the project verification ladder without duplicating gates: implementation first, necessary narrow diagnostics, one consolidated focused selection, one quick pre-commit gate, the required PR Gate, one cumulative full gate, and release preflight only for releases."
+description: "Apply the executable project verification ladder without duplicating gates: implementation first, changed-path formatting, consolidated focused evidence, one read-only candidate-integrity check, the required PR Gate, one cumulative full gate, and release preflight only for releases."
 ---
 
 # Quality Gate
@@ -37,20 +37,25 @@ npm --prefix react_app run lint
 
 Choose commands from the affected component's skill or existing project automation. Do not add tests during a review-only task.
 
-### 3. After content freeze: focused evidence together
+### 3. After content freeze: format and focused evidence together
 
 After all intended versioned writes are complete, run the affected focused
 tests, benchmarks, and architecture/import checks as one consolidated
-selection. Validate live repository context before this selection when routing
-or repository structure is affected; this check is read-only.
+selection. First run `./run.sh format --write`; it selects only changed Python,
+FastAPI, and C# paths and fails if formatter bytes escape that scope. Validate
+live repository context before this selection when routing or repository
+structure is affected; this check is read-only.
 
-### 4. Before commit: quick gate once
+### 4. Accepted candidate: integrity once
 
 ```bash
-./run.sh check --quick
+./run.sh check --candidate-integrity
 ```
 
-If it fails, diagnose the first relevant failure, fix its root cause, rerun that narrow check, then rerun the quick gate once.
+Run this read-only hosted-equivalent file check only after the independent audit
+accepts the immutable candidate. If it fails, the candidate is not immutable:
+return to the writer state, repair the root cause, and create the one allowed
+repair candidate. Do not run `check --quick` as a ritual before every commit.
 
 ### 5. PR acceptance: required CI
 

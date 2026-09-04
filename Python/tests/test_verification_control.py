@@ -192,6 +192,44 @@ def test_live_verification_manifest_is_strict_and_covers_every_path():
     }
 
 
+def test_changed_formatter_selects_only_owned_source_paths():
+    selected = verification._format_selection(
+        (
+            "Python/structural_lib/core.py",
+            "scripts/session.py",
+            "fastapi_app/main.py",
+            "CSharp/src/Adapter.cs",
+            "docs/guide.md",
+        ),
+        ("python", "fastapi", "dotnet"),
+    )
+
+    assert selected == {
+        "python": ["Python/structural_lib/core.py", "scripts/session.py"],
+        "fastapi": ["fastapi_app/main.py"],
+        "dotnet": ["CSharp/src/Adapter.cs"],
+    }
+
+
+def test_consolidated_file_integrity_is_read_only_and_reports_exact_failures(
+    tmp_path: Path,
+):
+    (tmp_path / "bad.json").write_bytes(b'{"missing": true}')
+    (tmp_path / "conflict.py").write_bytes(b"<<<<<<< ours\nvalue = 1 \n")
+    before = {
+        path.name: path.read_bytes() for path in tmp_path.iterdir() if path.is_file()
+    }
+
+    failures = verification.file_integrity(("bad.json", "conflict.py"), root=tmp_path)
+
+    assert any("bad.json: final-newline" in failure for failure in failures)
+    assert any("conflict.py: merge-marker" in failure for failure in failures)
+    assert any("conflict.py: trailing-whitespace" in failure for failure in failures)
+    assert before == {
+        path.name: path.read_bytes() for path in tmp_path.iterdir() if path.is_file()
+    }
+
+
 def test_manifest_rejects_duplicate_keys_and_unknown_fields(tmp_path):
     duplicate = tmp_path / "duplicate.json"
     duplicate.write_text('{"schema_version": 1, "schema_version": 1}\n')

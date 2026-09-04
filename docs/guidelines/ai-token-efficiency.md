@@ -165,13 +165,15 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    rerun quick, full, or unchanged suites after each edit.
 4. Freeze the packet content and validate the live repository-context manifest;
    generic committed folder indexes require no refresh.
-5. Run the affected formatter/linter, focused tests, benchmarks, and
-   architecture/import checks together as one consolidated selection.
+5. Enter `CONTENT_FROZEN`, run `./run.sh format --write` once, and then run the
+   affected focused tests, benchmarks, and architecture/import checks together
+   as one consolidated selection. The formatter owns only changed Python,
+   FastAPI, and C# paths and fails if bytes change outside that set.
 6. Add one or two independent reviews only when risk justifies them. Before the
-   final candidate commit, run `./run.sh check --candidate-integrity`; it uses
-   the hosted manual all-files hooks and may normalize files. If it writes,
-   recompute only affected repository-facing evidence identities and rerun the
-   command to a clean pass. Preserve separately named raw artifact identities.
+   final candidate commit and independent acceptance, run
+   `./run.sh check --candidate-integrity` exactly once; its consolidated manual
+   all-files owner is read-only. A failure invalidates the candidate and returns
+   to the one allowed repair path. Preserve separately named raw artifact identities.
    Ordinary commits run only conflict, large-file, and live Git-operation
    safety guards; comprehensive assurance belongs to the PR.
 7. If verification exposes an outcome-changing defect, repair its root cause,
@@ -241,23 +243,19 @@ publication-surface and target-authorization checks on that packet; do not rerun
 Weekly verification for those metadata-only changes. The TestPyPI rehearsal and
 tag-triggered production workflow remain distinct publication gates.
 
-Use non-overlapping timing labels: `contract/intake`, `writer implementation +
-focused verification`, `independent local audit`, `writer rework`, `final local
-closeout`, `hosted/network wait`, and `merge + post-merge verification`. Report
-their sum as `total wall time`; do not count idle or network time in another
-interval. At closeout report `candidate_heads`, `audit_rejections`,
-`repair_batches`, `focused_gate_retries`, `full_gate_runs`,
-`hosted_validation_runs`, `rework_minutes`, and `network_wait_minutes`.
-`session begin` records the start before orientation in the Git-common ignored
-ledger. Quick/full checks and `session end` add automatic step durations while
-that task remains open. Closeout derives actual elapsed time from the unmatched
-task start, rejects a phase sum with more than 0.1 minute unallocated or
-over-counted, requires resolvable 40-character candidate commits and retry/run
-counters, and never infers a model or reasoning profile. Hosted closeout also
-binds the PR and merge commit and proves equality between the final candidate
-and merged trees. That successor external observation prevents a merged task's
-frozen pre-push row from appearing active in later compact briefs.
-The read-only `session end` command does not consume the start checkpoint.
+The ignored Git-common ledger persists the executable sequence
+`INTAKE → BOUNDED_UNITS → CONTENT_FROZEN → FORMATTED → FOCUSED_VERIFIED →
+PREPARED → CANDIDATE → AUDIT_ACCEPTED → INTEGRITY_VERIFIED → FINAL_CLOSED →
+PUSHED → HOSTED_PASSED → MERGED`. One rejection enters `REPAIR` and permits one
+`REPAIRED_CANDIDATE`; a second enters `REPLAN` and blocks until an acceptance
+file changes. Transitions, timed commands, candidate heads, audit failures,
+repair batches, focused retries, full-gate runs, the single hosted run, and total
+elapsed time are machine-derived rather than caller-entered. Closeout derives
+the seven non-overlapping phase intervals from transition timestamps, binds the
+PR/merge commit, and proves accepted-candidate/merged-tree equality. It also
+reports rework and network ratios. The read-only `session end` command does not
+consume the start checkpoint or write a timing event; the pre-push guard records
+its one successful `FINAL_CLOSED` transition.
 Record closeout after exact post-merge verification and before starting the
 next task; inspect an unexpected open task with `session usage --active --json`.
 
@@ -291,22 +289,21 @@ records no elapsed-time, efficiency, candidate, PR, or integration claim.
 
 ```bash
 ./run.sh session begin --task-id TASK-XXX --agent governance --task "bounded scope"
+./run.sh session delivery --to BOUNDED_UNITS --acceptance-path docs/task-contract.md
+./run.sh session delivery --to CONTENT_FROZEN
+./run.sh format --write
+./run.sh session delivery --to FORMATTED
+./run.sh session delivery --to FOCUSED_VERIFIED --evidence "targeted tests pass"
+./run.sh session delivery --to PREPARED --evidence "owned docs and projections complete"
+# Commit the candidate, record CANDIDATE, obtain independent audit acceptance,
+# run candidate integrity once, push, record hosted PASS, then merge.
 ./run.sh session usage --checkpoint milestone --elapsed-min 120 \
   --verification "targeted tests pass" --notes "no subagents"
 ./run.sh session usage --active --json
 ./run.sh session usage --checkpoint superseded --task-id STALE-TASK \
   --notes "Exact successor task owns current work; no timing claim"
 ./run.sh session usage --checkpoint closeout --task-id TASK-XXX \
-  --candidate-head <40-character-candidate-sha> \
-  --pr-number <number> --merge-commit <40-character-merge-sha> \
-  --audit-rejections 0 --repair-batches 0 \
-  --focused-gate-retries 0 --full-gate-runs 1 --hosted-validation-runs 1 \
-  --phase "contract/intake=15" \
-  --phase "writer implementation + focused verification=90" \
-  --phase "independent local audit=20" --phase "writer rework=0" \
-  --phase "final local closeout=35" --phase "hosted/network wait=40" \
-  --phase "merge + post-merge verification=10" \
-  --verification "quick and full gates pass"
+  --verification "delivery state MERGED; required hosted checks pass"
 ./run.sh session usage --summary --hours 24
 ```
 

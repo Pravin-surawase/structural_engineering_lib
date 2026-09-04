@@ -152,8 +152,11 @@ device, fetch the advertised branch explicitly into its remote-tracking ref
 before binding a worktree. Do not silently broaden another clone's fetch
 configuration, move its checkout or treat an unqueried Mac as synchronized.
 
-Before implementation, the maintained `session begin` preflight verifies
-source binding, local Git state and the active standard pre-commit hook. Use
+Before implementation, the maintained `session begin` performs read-only
+admission before opening the timer and verifies source binding, local Git state,
+and the active standard pre-commit and pre-push hooks. A clean synchronized
+default branch is valid for intake only; create the feature branch before
+`BOUNDED_UNITS` or any write. Use
 `./run.sh preflight --environment-only --json` for a standalone read-only
 diagnostic. A missing/custom hook is an inspection hold, never authority to
 overwrite it. Host-local environment setup must preserve cwd unless an exact
@@ -173,28 +176,29 @@ Use three roles for work that needs independent acceptance:
   the frozen contract rather than writer fixtures, and audits one exact commit
   and tree across every acceptance row before reporting.
 
-The stage gates are:
+The persisted stage gates are:
 
-1. **Contract freeze:** record the complete acceptance and schema/cross-field
+1. **INTAKE → BOUNDED_UNITS:** record the complete acceptance and schema/cross-field
    matrices, adversarial cases, maintained callers, non-goals, path ownership,
    focused commands, and evidence expected at closeout.
-2. **Focused implementation:** use focused checks while writing. After content
-   freezes, the sole writer updates already-maintained generated projections
-   and reruns the affected focused checks.
-3. **Immutable local audit:** only then commit a clean local candidate and pause
+2. **CONTENT_FROZEN → FORMATTED → FOCUSED_VERIFIED → PREPARED:** finish every
+   intended write, run `./run.sh format --write` once, and then run the affected
+   focused checks. The formatter selects changed source paths and fails if it
+   changes bytes outside them.
+3. **CANDIDATE and immutable local audit:** only then commit a clean local candidate and pause
    before push. Give the auditor its exact base, head, tree, diff, focused
    evidence, and any explicit risk-driven local-gate result.
 4. **Consolidated decision:** the auditor returns either `PASS <head> <tree>` or
    one deduplicated blocker list with reproduction, main-process impact, and
    required outcome after completing the whole matrix.
-5. **Candidate ceiling:** allow the initial candidate and at most one
-   consolidated repair candidate. A second rejection triggers contract/design
-   re-planning; do not start another patch cycle.
-6. **Final local gate:** after local PASS on the unchanged head, use the
-   verification ladder in `AGENTS.md`: full gate once at cumulative milestone
-   closeout, or earlier for repository-wide risk. Do not interpret this step as
-   an additional full-suite run for every dependency-stable packet.
-7. **Hosted closeout and merge:** push once, complete one hosted CI/review
+5. **Candidate ceiling:** the first rejection enters `REPAIR` and allows one
+   `REPAIRED_CANDIDATE`. A second enters `REPLAN`; the delivery guard blocks
+   more patching until an acceptance file changes.
+6. **AUDIT_ACCEPTED → INTEGRITY_VERIFIED → FINAL_CLOSED:** run the consolidated
+   read-only candidate-integrity owner exactly once on the unchanged accepted
+   head. A failure invalidates the candidate. The pre-push hook runs the one
+   final read-only `session end` and records `FINAL_CLOSED` idempotently.
+7. **PUSHED → HOSTED_PASSED → MERGED:** push once, complete one hosted CI/review
    closeout, and immediately recheck the exact head/tree, base, required checks,
    reviews, unresolved threads, conflicts, and mergeability. Merge only the
    unchanged auditor-approved head; a changed head returns to local audit.
@@ -203,19 +207,16 @@ The stage gates are:
    integrated checks, and task/handoff/receipt truth. Retain branches and
    worktrees unless deletion is separately authorized.
 
-At closeout, record the seven non-overlapping wall-time phases, exact candidate
-heads, rejection/repair/retry counters, full-gate count, and hosted-run count in
-the Git-common ignored `session usage` ledger. The total is derived from the
-task's unmatched `session begin` timestamp, not entered independently. Hosted
-closeout binds the PR and reachable merge commit and requires final
-candidate/merged-tree equality; this successor external observation can mask a
-frozen pre-push task row from later compact briefs without changing the
-candidate.
+At closeout, the Git-common ignored delivery ledger derives the seven
+non-overlapping wall-time phases, exact candidate heads,
+rejection/repair/retry counters, full-gate count, hosted-run count, and rework
+ratio from transitions and timed commands. Hosted closeout binds the PR and
+reachable merge commit and requires accepted-candidate/merged-tree equality.
 
 The mutation cutoff is strict: finish versioned session/task/handoff records,
-local evidence, and the pre-commit receipt first; refresh only affected
-maintained indexes once as the final repository write; then commit the immutable
-candidate. PR numbers, hosted-check results, and merge identities are external
+local evidence, and any boundary-required receipt first; refresh only affected
+maintained projections before `PREPARED`; then commit the immutable candidate.
+PR numbers, hosted-check results, and merge identities are external
 facts and must not be appended to that same candidate after push. A material
 post-push defect creates an explicit repair candidate and invalidates the prior
 audit; routine status reporting never creates a second documentation commit.
@@ -272,7 +273,10 @@ independent Git classification.
 
 ## Durable task-to-Git handoff
 
-Use `scripts/git_handoff_receipt.py` for a versioned machine-readable handoff.
+Use `scripts/git_handoff_receipt.py` for a versioned machine-readable handoff
+only when state crosses a device, worktree, installed-artifact, or external
+authority boundary. Routine same-checkout delivery uses the ignored executable
+lifecycle ledger and does not create a receipt.
 It consumes local facts only from `scripts/git_state.py`; remote, PR, review,
 check, integration, retention, authorization, and next-action facts must be
 caller-supplied and identity-bound. The receipt records its
@@ -301,10 +305,10 @@ squash-merged PR requires reviewed-tree/merged-tree equivalence and never makes
 ancestry or task archive state into retirement authority. Receipt validation is
 read-only and performs no fetch, prune, ref/worktree mutation, or GitHub query.
 
-Session handoff validates the versioned receipt, embeds its path/hash and exact
-identity summary into `next-session-brief.md`, and fails closed if the receipt
-is missing or invalid. The full JSON remains the audit contract; prose and PR
-numbers alone are not a durable Git receipt.
+When a receipt is declared, session handoff validates it and embeds its
+path/hash and exact identity summary into `next-session-brief.md`, failing
+closed if it is invalid. An undeclared receipt is valid only for same-checkout
+delivery; it never represents cross-boundary authority.
 
 A task-to-Git handoff receipt is a time-bound transition observation, not a
 permanent final-merge receipt. Its external authorization, retention, remote,
@@ -315,8 +319,8 @@ checks, merge commit, and merged tree. This separation is unavoidable for a
 squash merge because the unchanged pre-merge candidate cannot know its future
 merge identity.
 
-Run the final read-only session closeout while the transition receipt is fresh,
-before push. A later freshness failure means that the retained observation has
+The pre-push delivery guard runs the final read-only session closeout while any
+declared transition receipt is fresh. A later freshness failure means that the retained observation has
 aged; it does not corrupt the historical artifact or authorize a candidate
 rewrite. Final hosted and merge facts belong only to the successor external
 closeout observation.

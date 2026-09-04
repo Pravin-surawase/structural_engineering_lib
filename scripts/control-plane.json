@@ -399,30 +399,18 @@
     },
     "format code": {
       "group": "Infrastructure",
-      "description": "Auto-format Python code with black + ruff",
+      "description": "Format only changed source paths with an outside-scope byte guard",
       "status": "active",
       "command": {
-        "display": "cd Python && ../scripts/python_runtime.sh -m black . && ../scripts/python_runtime.sh -m ruff check --fix .",
+        "display": "./run.sh format --write",
         "steps": [
           {
             "argv": [
-              "../scripts/python_runtime.sh",
-              "-m",
-              "black",
-              "."
+              "./run.sh",
+              "format",
+              "--write"
             ],
-            "cwd": "Python"
-          },
-          {
-            "argv": [
-              "../scripts/python_runtime.sh",
-              "-m",
-              "ruff",
-              "check",
-              "--fix",
-              "."
-            ],
-            "cwd": "Python"
+            "cwd": "."
           }
         ]
       },
@@ -553,7 +541,7 @@
     },
     "start session": {
       "group": "Session",
-      "description": "Start one shared task timer before the compact brief and environment preflight without Git/GitHub lifecycle actions",
+      "description": "Admit a safe local intake, then start one shared task timer before the compact brief without Git/GitHub lifecycle actions",
       "status": "active",
       "command": {
         "display": "./run.sh session begin --task-id <task> --agent <role>",
@@ -612,9 +600,30 @@
           }
         ]
       },
+      "permission": "ReadOnly"
+    },
+    "delivery state": {
+      "group": "Session",
+      "description": "Inspect or advance the bounded fail-closed delivery lifecycle; the pre-push mode runs the one final read-only closeout",
+      "status": "active",
+      "command": {
+        "display": "./run.sh session delivery --status",
+        "steps": [
+          {
+            "argv": [
+              "./run.sh",
+              "session",
+              "delivery",
+              "--status"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
       "permission": "ReadOnly",
       "permission_modes": {
-        "--fix": "WorkspaceWrite"
+        "--to <state>": "WorkspaceWrite",
+        "--guard-push": "WorkspaceWrite"
       }
     },
     "session summary": {

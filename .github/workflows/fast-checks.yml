@@ -53,6 +53,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v7
@@ -78,9 +80,10 @@ jobs:
 
       - name: Format and lint
         if: steps.evidence.outputs.valid != 'true'
-        run: |
-          python -m black --check Python
-          python -m ruff check Python
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python scripts/verification.py format --check --scope python --base "$BASE_SHA" --head "$HEAD_SHA" --no-worktree
 
       - name: Type check
         if: steps.evidence.outputs.valid != 'true'
@@ -130,6 +133,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v7
@@ -158,9 +163,10 @@ jobs:
 
       - name: Format and lint
         if: steps.evidence.outputs.valid != 'true'
-        run: |
-          python -m black --check fastapi_app
-          python -m ruff check fastapi_app
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python scripts/verification.py format --check --scope fastapi --base "$BASE_SHA" --head "$HEAD_SHA" --no-worktree
 
       - name: Security, API, and deployment contracts
         if: steps.evidence.outputs.valid != 'true'
@@ -303,6 +309,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up .NET SDK
         uses: actions/setup-dotnet@v5
@@ -312,6 +320,12 @@ jobs:
       - name: Restore locked solution
         working-directory: CSharp
         run: dotnet restore StructAutomate.slnx --locked-mode
+
+      - name: Verify changed C# formatting
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python scripts/verification.py format --check --scope dotnet --base "$env:BASE_SHA" --head "$env:HEAD_SHA" --no-worktree
 
       - name: Build Release solution
         working-directory: CSharp

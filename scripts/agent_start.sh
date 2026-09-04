@@ -44,6 +44,7 @@ QUICK=""
 WORKTREE=""
 SKIP_PREFLIGHT=""
 PREFLIGHT_ONLY=""
+ALLOW_CLEAN_MAIN_INTAKE=""
 while [[ $# -gt 0 ]]; do
     case $1 in
         --agent)
@@ -66,6 +67,10 @@ while [[ $# -gt 0 ]]; do
             PREFLIGHT_ONLY="true"
             shift
             ;;
+        --allow-clean-main-intake)
+            ALLOW_CLEAN_MAIN_INTAKE="true"
+            shift
+            ;;
         --help|-h)
             echo "Usage: ./scripts/agent_start.sh [OPTIONS]"
             echo ""
@@ -75,6 +80,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --worktree NAME   Display worktree-specific guidance"
             echo "  --skip-preflight  Skip pre-flight checks (for recovery)"
             echo "  --preflight-only  Stop after environment preflight; no session/context output"
+            echo "  --allow-clean-main-intake  Admit clean synchronized main for read-only intake"
             echo ""
             echo "Agents: ./scripts/python_runtime.sh scripts/agent_context.py --list"
             echo ""
@@ -111,6 +117,9 @@ export PAGER=cat
 PREFLIGHT_ARGS=(--expected-root "$PROJECT_ROOT")
 if [ -n "$QUICK" ] || [ -n "$SKIP_PREFLIGHT" ]; then
     PREFLIGHT_ARGS+=(--environment-only)
+fi
+if [ -n "$ALLOW_CLEAN_MAIN_INTAKE" ]; then
+    PREFLIGHT_ARGS+=(--allow-clean-main-intake)
 fi
 "$PYTHON_RUNTIME" "$SCRIPT_DIR/preflight.py" "${PREFLIGHT_ARGS[@]}"
 
