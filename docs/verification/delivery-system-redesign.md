@@ -79,6 +79,7 @@ exact run ID after push.
 | Second rejection forces design change | `REPLAN` cannot advance until an acceptance-file digest changes |
 | One final closeout per pushed candidate | idempotent pre-push transition counts one `FINAL_CLOSED` state for each distinct published head |
 | One hosted verdict per pushed candidate | a failed exact run records `HOSTED_REJECTED` before repair; a candidate cannot receive two verdicts |
+| Bounded instruction owner | strict composition tests require `AGENTS.md` to remain at or below 24,000 bytes; local warnings are not acceptance evidence |
 | Merged content is reviewed content | merge commit must be reachable from `origin/main` and its tree must equal the accepted candidate tree |
 | Exact efficiency report | phases and counters derive from transition timestamps, timed commands, and Git objects; caller-entered counters are rejected for managed tasks |
 

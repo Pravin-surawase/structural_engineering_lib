@@ -299,31 +299,23 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 ./run.sh session end
 ```
 
-**Executable delivery lifecycle:** Persist and enforce
+**Executable delivery lifecycle:** Enforce
 `INTAKE → BOUNDED_UNITS → CONTENT_FROZEN → FORMATTED → FOCUSED_VERIFIED →
 PREPARED → CANDIDATE → AUDIT_ACCEPTED → INTEGRITY_VERIFIED → FINAL_CLOSED →
-PUSHED → HOSTED_PASSED → MERGED`. The first audit rejection admits one
-`REPAIR → REPAIRED_CANDIDATE`; the second enters `REPLAN` and blocks more
-patching until the acceptance digest changes. Run `./run.sh format --write`
-once after content freeze, then focused checks. After independent acceptance,
-run the read-only `./run.sh check --candidate-integrity` exactly once. The
-`INTEGRITY_REJECTED` transition sends the first failed candidate to the same
-single repair path; a failure on the repair candidate enters `REPLAN`. The
-pre-push hook runs the one final read-only `session end` and records
-`FINAL_CLOSED`; repeated push attempts at the same head do not rerun it.
-Each pushed candidate receives one hosted verdict. Record a failed run with
-`HOSTED_REJECTED`; it enters the current design revision's repair path (or
-`REPLAN` after its repair candidate) and preserves the failed run in closeout
-metrics. A replacement candidate repeats integrity and final closeout exactly
-once for its new head.
+PUSHED → HOSTED_PASSED → MERGED`. One rejection admits
+`REPAIR → REPAIRED_CANDIDATE`; the next enters digest-gated `REPLAN`.
+Format once after freeze and run focused checks. After independent acceptance,
+run read-only candidate integrity once. `INTEGRITY_REJECTED` uses the same
+repair ceiling. Pre-push runs one read-only `session end` and records
+`FINAL_CLOSED` idempotently. Record each hosted verdict by exact run ID;
+`HOSTED_REJECTED` enters repair or, after its repair candidate, `REPLAN`.
 
 Finish all versioned task, handoff, documentation, test, generated projection,
 and repository evidence writes before `CANDIDATE`. A Git handoff receipt is
 required only for a real cross-device, cross-worktree, installed-artifact, or
 authority transition; routine same-checkout delivery uses the lifecycle ledger.
-After push, keep hosted and merge facts outside the candidate and advance their
-states with exact run/PR/merge identities. A material post-push defect requires
-the one repair candidate or a changed-contract replan.
+After push, keep hosted/merge facts external and bind exact run, PR, and merge
+IDs. Post-push defects use the repair candidate or a changed-contract replan.
 
 Log feedback only when a concrete stale instruction or missing control was found. `session summary`, `session sync`, and `session end` are read-only; preparation writes happen explicitly before `PREPARED`. Agent evolution is scheduled governance work, not a mandatory session-end mutation.
 

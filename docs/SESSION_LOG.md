@@ -77,6 +77,9 @@ state machine without changing WP10 product behavior.
   documentation but failed repository validation because the manual hook could
   not find the hosted Python interpreter, and failed control-plane validation
   on two stale tests that still described the retired hook/formatter owners.
+- The replacement hosted run passed every product and repository job but failed
+  the two strict instruction-composition tests because `AGENTS.md` was 24,302
+  bytes, above its enforced 24,000-byte owner limit.
 - The first push created the remote branch and branch config but the repository's
   intentionally narrow fetch refspec did not classify the new remote-tracking
   branch as an upstream until its exact refspec was added and fetched.
@@ -169,6 +172,12 @@ state machine without changing WP10 product behavior.
   remote-tracking ref eligible as an upstream. Resolution: add and fetch the
   exact task-branch refspec; `git_state.py` then reports upstream `equal`.
   (`RR-009`)
+- Confirmed root cause: the first hosted-failure guidance duplicated detail
+  already owned by the acceptance contract, and local efficiency validation
+  warned instead of enforcing the hosted 24,000-byte limit. Resolution: make
+  the size ceiling explicit acceptance evidence and compress the owner while
+  retaining every lifecycle invariant. Proof: rerun the two failed strict
+  instruction-composition tests and the efficiency check.
 
 ### Rework and recurrence
 
