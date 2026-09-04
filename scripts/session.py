@@ -202,6 +202,9 @@ def add_session_log_entry() -> bool:
         "### Root causes and resolutions",
         "- None encountered.",
         "",
+        "### Rework and recurrence",
+        "- No repeated issue or prevention change identified.",
+        "",
         "### Notes",
         "-",
         "",
@@ -1172,6 +1175,14 @@ def cmd_usage(args: argparse.Namespace) -> int:
                 f"{active_start['task_id']}",
                 file=sys.stderr,
             )
+            print(
+                "session end validates repository state but does not close task "
+                "timing. Inspect the active task with "
+                "'./run.sh session usage --active --json'; after integration record "
+                "its closeout, or record an explicit superseded checkpoint if it "
+                "was abandoned.",
+                file=sys.stderr,
+            )
             return 1
         if args.checkpoint == "superseded":
             if active_start is None:
@@ -1438,6 +1449,7 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
         has_root_causes = any(
             line == "### Root causes and resolutions" for line in block
         )
+        has_rework = bool(_parse_rework_and_recurrence(block))
 
         if not has_focus:
             issues.append("SESSION_LOG: Focus not filled in")
@@ -1447,6 +1459,8 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
             issues.append("SESSION_LOG: Missing 'Issues encountered' section")
         if not has_root_causes:
             issues.append("SESSION_LOG: Missing 'Root causes and resolutions' section")
+        if not has_rework:
+            issues.append("SESSION_LOG: Missing or empty 'Rework and recurrence' section")
 
         return len(issues) == 0, issues
     except Exception as e:
@@ -1682,6 +1696,11 @@ def cmd_end(args: argparse.Namespace) -> int:
             print("   Exit status 2: final read-only validation is still required.")
     elif all_passed:
         print("✅ All checks passed! Safe to end session.")
+        print(
+            "ℹ️  session end is read-only and does not close timed task usage. "
+            "After integration, record the closeout checkpoint before beginning "
+            "another task."
+        )
     else:
         print("⚠️  Some issues found. Consider fixing before handoff.")
         if not args.fix:
@@ -1725,29 +1744,48 @@ def _latest_session_block(lines: list[str]) -> tuple[str, list[str]]:
 
 
 def _parse_focus(block: list[str]) -> str:
-    for line in block:
+    for index, line in enumerate(block):
         if line.startswith("**Focus:**"):
-            return line.split("**Focus:**", 1)[1].strip()
+            parts = [line.split("**Focus:**", 1)[1].strip()]
+            for continuation in block[index + 1 :]:
+                stripped = continuation.strip()
+                if not stripped:
+                    break
+                if stripped.startswith(("**", "#", "- ")):
+                    break
+                parts.append(stripped)
+            return " ".join(part for part in parts if part)
     return ""
 
 
-def _parse_completed(block: list[str]) -> list[str]:
-    completed: list[str] = []
-    in_completed = False
+def _parse_section_bullets(block: list[str], heading: str) -> list[str]:
+    items: list[str] = []
+    in_section = False
     for line in block:
-        if line.startswith("**Completed:**"):
-            in_completed = True
+        if line.startswith(heading):
+            in_section = True
             continue
-        if in_completed:
-            if line.startswith("### ") or line.startswith("## "):
+        if in_section:
+            stripped = line.strip()
+            if stripped.startswith(("### ", "## ", "**")):
                 break
-            if line.strip().startswith("-"):
-                item = line.strip().lstrip("-").strip()
+            if stripped.startswith("-"):
+                item = stripped.lstrip("-").strip()
                 if item:
-                    completed.append(item)
-            elif line.strip() == "" and completed:
+                    items.append(item)
+            elif not stripped and items:
                 break
-    return completed
+            elif stripped and items:
+                items[-1] = f"{items[-1]} {stripped}"
+    return items
+
+
+def _parse_completed(block: list[str]) -> list[str]:
+    return _parse_section_bullets(block, "**Completed:**")
+
+
+def _parse_rework_and_recurrence(block: list[str]) -> list[str]:
+    return _parse_section_bullets(block, "### Rework and recurrence")
 
 
 def _parse_prs(block: list[str]) -> list[str]:
@@ -1899,12 +1937,15 @@ def _build_handoff_lines(
 ) -> list[str]:
     focus = _parse_focus(block)
     completed = _parse_completed(block)[:3]
+    recurrence = _parse_rework_and_recurrence(block)[:3]
     prs = _parse_prs(block)[:6]
     lines = [f"- Date: {date_str}"]
     if focus:
         lines.append(f"- Focus: {focus}")
     if completed:
         lines.append(f"- Completed: {'; '.join(completed)}")
+    if recurrence:
+        lines.append(f"- Recurrence controls: {'; '.join(recurrence)}")
     if prs:
         lines.append(f"- PRs: {', '.join(prs)}")
     if receipt is not None and receipt_path is not None:
@@ -2152,6 +2193,12 @@ def cmd_check(args: argparse.Namespace) -> int:
         print(
             f"ERROR: SESSION_LOG.md entry for {date_str} missing "
             "'Root causes and resolutions' section"
+        )
+        return 1
+    if not _parse_rework_and_recurrence(session_block):
+        print(
+            f"ERROR: SESSION_LOG.md entry for {date_str} missing or empty "
+            "'Rework and recurrence' section"
         )
         return 1
 

@@ -39,7 +39,13 @@ def test_agent_brief_filters_multiline_closed_task_ids_without_awk_failure(tmp_p
         encoding="utf-8",
     )
     brief = tmp_path / "brief.md"
-    brief.write_text("# Brief\n", encoding="utf-8")
+    brief.write_text(
+        "# Brief\n"
+        "- Focus: prepare the next bounded task\n"
+        "- Completed: repaired the prior candidate\n"
+        "- Recurrence controls: normalize evidence before freezing hashes\n",
+        encoding="utf-8",
+    )
     env = os.environ.copy()
     env.update(
         {
@@ -63,6 +69,7 @@ def test_agent_brief_filters_multiline_closed_task_ids_without_awk_failure(tmp_p
     assert "awk:" not in result.stderr
     assert "LIVE-1: active packet [ready]" in result.stdout
     assert "CLOSED-1: completed packet" not in result.stdout
+    assert "Repeat control: normalize evidence before freezing hashes" in result.stdout
 
 
 def test_run_sh_routes_receipt_bound_handoff_help():
@@ -417,6 +424,7 @@ def test_session_end_reuses_one_clean_authority_query_and_validates_context(
     assert "Working tree clean (scripts/git_state.py)" in output
     assert "Repository Context" in output
     assert "context validator produced no output" in output
+    assert "session end is read-only and does not close timed task usage" in output
 
 
 def test_session_end_fix_never_writes_indexes_or_claims_final_closeout(
@@ -1102,6 +1110,24 @@ def _write_usage_start(
     )
 
 
+def test_new_usage_start_explains_how_to_close_the_active_task(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log, task_id="WP09-STANDALONE-EXCEL")
+    args = session.build_parser().parse_args(
+        ["usage", "--checkpoint", "start", "--task-id", "WP10-01"]
+    )
+
+    assert session.cmd_usage(args) == 1
+    output = capsys.readouterr().err
+    assert "WP09-STANDALONE-EXCEL" in output
+    assert "session end validates repository state but does not close task timing" in output
+    assert "./run.sh session usage --active --json" in output
+    assert len(usage_log.read_text(encoding="utf-8").splitlines()) == 1
+
+
 def _complete_efficiency_closeout_args() -> list[str]:
     arguments = [
         "usage",
@@ -1506,6 +1532,41 @@ def test_session_end_preserves_current_same_day_handoff(
     assert next_brief.read_text(encoding="utf-8") == expected
 
 
+def test_handoff_parsers_preserve_wrapped_focus_and_completed_items():
+    block = [
+        "## 2026-09-04 — Session",
+        "**Focus:** Reconstruct the delivery and distinguish necessary",
+        "installed qualification from preventable rework.",
+        "",
+        "**Completed:**",
+        "",
+        "- Reconstructed the commit and hosted-check timeline, duration",
+        "  limits, and repair classes.",
+        "- Added the candidate-integrity command and explicit",
+        "  closeout guidance.",
+        "",
+        "### Rework and recurrence",
+        "",
+        "- Normalize evidence before freezing",
+        "  repository-facing hashes.",
+        "",
+        "### Issues encountered",
+    ]
+
+    assert session._parse_focus(block) == (
+        "Reconstruct the delivery and distinguish necessary installed "
+        "qualification from preventable rework."
+    )
+    assert session._parse_completed(block) == [
+        "Reconstructed the commit and hosted-check timeline, duration limits, "
+        "and repair classes.",
+        "Added the candidate-integrity command and explicit closeout guidance.",
+    ]
+    assert session._parse_rework_and_recurrence(block) == [
+        "Normalize evidence before freezing repository-facing hashes."
+    ]
+
+
 def test_brief_receipt_identity_rejects_artifact_hash_substitution():
     receipt = {
         "local_state_receipt_hash": "sha256:" + "a" * 64,
@@ -1797,6 +1858,9 @@ def test_session_log_completeness_accepts_explicit_issue_record(
 
 ### Root causes and resolutions
 - Registry construction skipped uniqueness validation; validation now fails closed and the duplicate regression passes.
+
+### Rework and recurrence
+- Validate registry uniqueness before accepting generated entries.
 """,
         encoding="utf-8",
     )
@@ -1807,6 +1871,43 @@ def test_session_log_completeness_accepts_explicit_issue_record(
 
     assert complete is True
     assert issues == []
+
+
+def test_session_log_completeness_rejects_missing_recurrence_record(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    class SessionDate(date):
+        @classmethod
+        def today(cls) -> date:
+            return cls(2026, 8, 10)
+
+    session_log = tmp_path / "SESSION_LOG.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-10 — Session
+**Focus:** finish the bounded packet
+
+**Completed:**
+- Completed the owned packet.
+
+### Issues encountered
+- None encountered.
+
+### Root causes and resolutions
+- None encountered.
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "date", SessionDate)
+
+    complete, issues = session.check_session_log_complete()
+
+    assert complete is False
+    assert issues == [
+        "SESSION_LOG: Missing or empty 'Rework and recurrence' section"
+    ]
 
 
 def test_repeated_session_compaction_indexes_existing_archives(

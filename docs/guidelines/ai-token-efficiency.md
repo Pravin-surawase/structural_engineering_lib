@@ -131,6 +131,9 @@ Then:
 
 - Treat the compact brief and environment result as the default orientation;
   do not reopen files or rerun Git queries that they already answered.
+- Read the bounded recurrence controls shown by `session begin`. Each task's
+  newest session entry records issues, root causes, and repeat-prevention rules;
+  subagent findings are deduplicated by the parent into that one entry.
 - Use `./run.sh context show <area>` only for a concrete unresolved routing
   question, then targeted
   `rg`; request a bounded live inventory with
@@ -161,9 +164,13 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    generic committed folder indexes require no refresh.
 5. Run the affected focused tests, benchmarks, and architecture/import checks
    together as one consolidated selection.
-6. Add one or two independent reviews only when risk justifies them, then create
-   coherent commits. Ordinary commits run only conflict, large-file, and live
-   Git-operation safety guards; comprehensive assurance belongs to the PR.
+6. Add one or two independent reviews only when risk justifies them. Before the
+   final candidate commit, run `./run.sh check --candidate-integrity`; it uses
+   the hosted manual all-files hooks and may normalize files. If it writes,
+   recompute only affected repository-facing evidence identities and rerun the
+   command to a clean pass. Preserve separately named raw artifact identities.
+   Ordinary commits run only conflict, large-file, and live Git-operation
+   safety guards; comprehensive assurance belongs to the PR.
 7. If verification exposes an outcome-changing defect, repair its root cause,
    rerun the failed or affected narrow evidence, and repeat the consolidated
    gate once for the new frozen candidate.
@@ -247,6 +254,9 @@ counters, and never infers a model or reasoning profile. Hosted closeout also
 binds the PR and merge commit and proves equality between the final candidate
 and merged trees. That successor external observation prevents a merged task's
 frozen pre-push row from appearing active in later compact briefs.
+The read-only `session end` command does not consume the start checkpoint.
+Record closeout after exact post-merge verification and before starting the
+next task; inspect an unexpected open task with `session usage --active --json`.
 
 Safety-critical structural calculations still require independent reference
 validation. Token efficiency never replaces practicing-engineer review or the

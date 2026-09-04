@@ -101,19 +101,17 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
   newest task-owned `docs/SESSION_LOG.md` entry. A material issue is one that
   changes the main-process outcome, blocks a required command, exposes a stale
   instruction/contract, or would cause the same work to be repeated.
-- Every session entry must contain `### Issues encountered` and
-  `### Root causes and resolutions`. For each material issue, record the visible
-  symptom and impact, the confirmed root cause (or explicitly `unconfirmed`), the
-  implemented solution, and the command/test/live evidence that proved the
-  corrected outcome. Write `- None encountered.` when that is true.
+- Every entry must contain `### Issues encountered`, `### Root causes and
+  resolutions`, and `### Rework and recurrence`. Record each material issue's
+  symptom/impact, confirmed root cause (or `unconfirmed`), solution, proof, and
+  repeat-prevention rule. Write `- None encountered.` when appropriate.
 - Do not log secrets, transient noise, speculative hardening, or failures outside
   the owned scope that did not affect the work. Do not claim a root cause from an
   error message alone; trace the failing path and distinguish evidence from
   inference.
-- Subagents include the same issue/root-cause/evidence fields in their return;
-  the parent owns the single versioned session record and removes duplicates.
-  `./run.sh session end --agent <role>` must fail if the newest entry omits either
-  required section.
+- `session begin` shows the latest bounded recurrence controls. Subagents receive
+  relevant controls and return issue/root-cause/evidence fields; the parent owns
+  one deduplicated record. `session end` fails if a required section is absent.
 
 ## Git and GitHub — Codex Native
 
@@ -302,13 +300,15 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 ```
 
 **Closeout freeze:** Finish every owned session/task/handoff/evidence update and
-the pre-commit Git handoff receipt before the immutable candidate commit. Folder
-indexes are retired; `./run.sh context validate` is read-only and requires no
-final generated write. Run the final read-only `session end` on that clean
-local commit, then push. After push or PR creation, keep hosted-check and merge
-facts in GitHub and the external handoff; never append them to the same
-candidate and restart CI. A material post-push defect requires an explicit
-repair candidate, not a routine status/documentation commit.
+the pre-commit Git handoff receipt. Before freezing repository-facing evidence
+identities, run `./run.sh check --candidate-integrity`; if it writes, review,
+rebind only affected repository identities, and rerun clean. Preserve separately
+declared raw installed-artifact identities. Folder indexes are retired;
+`./run.sh context validate` is read-only and requires no final generated write.
+Create the immutable candidate commit, run final read-only `session end`, then
+push. After push or PR creation, keep hosted-check and merge facts in GitHub and
+the external handoff; never append them to the same candidate and restart CI. A
+material post-push defect requires a repair candidate.
 
 `session end --fix` is preparation mode, not final validation. It must run
 before candidate freeze when explicitly needed. Review all resulting writes,

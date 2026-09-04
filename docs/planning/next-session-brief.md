@@ -4,10 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-04
-- Focus: Complete WP09 standalone Excel and freeze the getter-only WP10 plan.
-- Completed: Implemented native .NET Excel-DNA functions, commands, workbook, packaging, and installed lifecycle over WP01–WP08.; Qualified one exact signed package in installed Windows Excel with source, performance, migration, and lifecycle evidence.; Corrected the one-candidate claims, passed two independent audits, and froze the getter-only WP10-01 starting packet.
-- Git receipt: docs/verification/wp09-standalone-excel-git-handoff-receipt.json | sha256:d3a6d8ae9c80a205a52ee4875cb08d11e5b06e6ea034901d5f023f080258eee7 | HOLD
-- Git identity: codex/wp09-standalone-excel@6d03be23ec4964034def3b74492f9722cfdd3bee | upstream=NONE@UNKNOWN | base=origin/main@1b9da3165cc4fed12a87af9bca553ed51f04fa57 | tree=dirty | operation=none
+- Focus: Reconstruct why WP09 consumed about 6.5 hours, distinguish necessary installed-product qualification from preventable rework, implement controls that would have changed the delivery outcome, and re-sequence WP10 without weakening Excel or ETABS acceptance.
+- Completed: Reconstructed the WP09 scope, commit and hosted-check timeline, duration limits, repair classes, and the root causes behind repeated candidate cycles.; Added a hosted-equivalent pre-freeze candidate-integrity command and explicit timed-task closeout guidance, with focused regression coverage.; Recorded the postmortem and updated the WP09/WP10 plans so later host work uses bounded slices, an early host micro-probe, staged acceptance, and one consolidated repair boundary.
+- Recurrence controls: WP09's repeated families were late acceptance boundaries, host assumptions, evidence normalization/rebinding, session/handoff state, and Windows command shapes. The postmortem now records each small issue and its prevention rule, including valid product defects that must remain in acceptance.; Every future `session begin` reads the bounded recurrence controls generated from the newest entry. Closeout fails if the entry omits issues, root causes, or recurrence controls.; Subagents receive the relevant controls in their bounded packet and return issues, root causes, and proof. The parent writes one deduplicated versioned entry so parallel agents do not create conflicting log blocks.
+- Git receipt: docs/verification/wp09-postmortem-controls-git-handoff-receipt.json | sha256:e1d3c72274ae596288d7eff1483b2d5f1510fc9c6f1e6323376d1ce82188f021 | HOLD
+- Git identity: codex/wp09-postmortem-controls@ac1bd2b3e38f61b165504331ea35e5642cd49860 | upstream=NONE@UNKNOWN | base=origin/main@ac1bd2b3e38f61b165504331ea35e5642cd49860 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

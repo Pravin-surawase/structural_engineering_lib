@@ -1,0 +1,133 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "e1d3c72274ae596288d7eff1483b2d5f1510fc9c6f1e6323376d1ce82188f021",
+    "state": {
+      "branch": "codex/wp09-postmortem-controls",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ac1bd2b3e38f61b165504331ea35e5642cd49860",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 256.711,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "head_sha": "ac1bd2b3e38f61b165504331ea35e5642cd49860",
+      "hold_reasons": [
+        "changed paths: 13"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-09-04T11:13:12.713823+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 13,
+        "modified_paths": [],
+        "staged_paths": [
+          "AGENTS.md",
+          "Python/tests/test_agent_governance_automation.py",
+          "Python/tests/test_session_automation.py",
+          "Python/tests/test_verification_control.py",
+          "docs/SESSION_LOG.md",
+          "docs/guidelines/ai-token-efficiency.md",
+          "docs/planning/xll-product/README.md",
+          "docs/planning/xll-product/wp09-postmortem.md",
+          "docs/planning/xll-product/wp09-standalone-excel.md",
+          "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+          "run.sh",
+          "scripts/check_all.py",
+          "scripts/session.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:e1d3c72274ae596288d7eff1483b2d5f1510fc9c6f1e6323376d1ce82188f021",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-04T11:13:12.713823+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "MAIN",
+    "owned_paths": [
+      "AGENTS.md",
+      "Python/tests/test_agent_governance_automation.py",
+      "Python/tests/test_session_automation.py",
+      "Python/tests/test_verification_control.py",
+      "docs/guidelines/ai-token-efficiency.md",
+      "docs/planning/xll-product",
+      "run.sh",
+      "scripts/check_all.py",
+      "scripts/session.py",
+      "docs/verification/wp09-postmortem-controls-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "WP09-POSTMORTEM-CONTROLS"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

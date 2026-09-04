@@ -84,6 +84,32 @@ process/model identity, and partial canonical output after a failed getter.
    PF8 E5-02 through E5-04 and the small/medium
    `PERF-ETABS-ACQUISITION` datasets.
 
+## Execution controls carried forward from WP09
+
+The six delivery slices are separate bounded tasks. They are not one combined
+implementation and acceptance session. `WP10-01` remains host-free. Before the
+exact getter adapter begins, a read-only host micro-probe must establish the
+installed assembly and ETABS versions, attachment path, approved getter
+signatures, return shapes, active-model identity, and deterministic cleanup.
+The probe records no compatibility claim and changes no ETABS state.
+
+Each slice freezes its request/result contract, failure rows, acceptance
+examples, non-goals, and focused commands before implementation. Offline
+fixtures and replay qualify the portable logic first. Live work then advances
+through host preflight, one getter smoke path, the functional getter matrix,
+postflight state equality, Excel import, and performance in that order. A later
+stage does not run while a cheaper earlier stage is failing.
+
+Independent review starts only after the slice's acceptance matrix passes and
+returns one consolidated blocker list. The initial reviewed candidate may have
+one consolidated repair candidate; a second rejection triggers contract or
+design re-planning before more implementation. Installed evidence is generated
+only after the functional source candidate is stable. Before the final commit,
+run `./run.sh check --candidate-integrity`, rebind any repository-facing
+identity affected by normalization, and rerun the command clean. The final
+read-only `session end` precedes the push; the task timing closeout follows
+post-merge verification.
+
 ## Frozen performance workloads
 
 `BENCH-ETABS-SMALL` contains 100 physical members and 10,000 force rows;

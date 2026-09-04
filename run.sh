@@ -98,7 +98,10 @@ Options:
   (no args)            Run ALL checks (parallel by category)
   --quick              Fast subset: links, imports, hygiene (<30s)
   --changed            Run categories for whole-candidate impact domains
-  --pre-commit         Run pre-commit hooks (black, ruff, mypy, bandit)
+  --pre-commit         Run the three ordinary commit-safety hooks
+  --candidate-integrity
+                       Run hosted-equivalent file checks before candidate freeze;
+                       may normalize files, so rerun to a clean pass
   --category <name>    Run one category: api|docs|arch|governance|fastapi|git|stale|code
   --fix                Auto-fix what's fixable (sync numbers, etc.)
   --json               Machine-readable JSON output
@@ -120,6 +123,7 @@ Examples:
   ./run.sh check --quick              # Fast validation
   ./run.sh check --category api       # API checks only
   ./run.sh check --category docs --fix  # Fix doc issues
+  ./run.sh check --candidate-integrity  # Prepare final candidate file bytes
   ./run.sh check --json               # CI-friendly output
 EOF
 }
@@ -232,7 +236,7 @@ Manage agent work sessions.
 Subcommands:
   begin      Timed compact brief + environment start for one exact task
   start      Begin session (verify env, read priorities)
-  end        Validate closeout; --fix updates handoff, --log-cost records a proxy
+  end        Validate closeout without closing task timing; --fix updates handoff
   handoff    Write a receipt-bound durable task handoff
   summary    Preview summary from git log; pass --write to update docs
   sync       Check stale doc numbers; pass --fix to update them
@@ -1068,7 +1072,7 @@ _run_sh() {
         'efficiency:Validate low-token controls'
         'model:Recommend model and reasoning profile'
     )
-    local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
+    local -a check_opts=('--quick' '--changed' '--pre-commit' '--candidate-integrity' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
     local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
     local -a task_subs=('brief')

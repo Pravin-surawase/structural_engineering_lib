@@ -136,6 +136,7 @@ def test_failed_check_json_retains_actionable_output_without_rerunning(capsys):
     [
         (["--quick"], "check quick"),
         (["--pre-commit"], "check pre-commit"),
+        (["--candidate-integrity"], "check candidate integrity"),
         (["--changed"], "check changed"),
         (["--category", "docs"], "check category"),
         ([], "check full"),
