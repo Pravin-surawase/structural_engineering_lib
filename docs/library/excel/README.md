@@ -21,7 +21,7 @@ The shipped workbook demonstrates 20 beams and 200 versioned topology and check
 rows. It covers flexure, shear, torsion, deflection, crack width, development
 length, anchorage, lap and curtailment, reinforcement arrangement, bar paths,
 BBS, concrete/steel/formwork quantities, illustrative cost, calculation
-packages, and bounded fixed-action candidate search.
+packages, and evaluation of one declared current physical candidate.
 
 ## Supported installation
 
@@ -127,7 +127,7 @@ The Ribbon invokes these stable command bindings:
 | --- | --- | --- |
 | Create / Validate | `STR_XL_CMD_01_CREATE_VALIDATE` | Validate version, identities, schemas, topology, and declared check rows |
 | Calculate Workbook | `STR_XL_CMD_03_CALCULATE_WORKBOOK` | Calculate every member and write one atomic current result set |
-| Optimize Beams | `STR_XL_CMD_04_OPTIMIZE_BEAMS` | Run the bounded fixed-action candidate domain for every member |
+| Evaluate Current Candidate | `STR_XL_CMD_04_OPTIMIZE_BEAMS` | Evaluate and rank the one declared current physical candidate for every member; the command identifier remains stable for compatibility |
 | Export Packages | `STR_XL_CMD_06_EXPORT_PACKAGES` | Export one hash-bound JSON bundle containing one current package per member |
 | Measure / Diagnose | `STR_XL_CMD_07_MEASURE_DIAGNOSE` | Record runtime identity, reconstruction timing, and a benchmark receipt |
 

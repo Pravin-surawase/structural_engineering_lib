@@ -12,7 +12,7 @@ public sealed class StructAutomateRibbon : ExcelRibbon
                 <group id="StructAutomateWorkflow" label="Beam workflow">
                   <button id="StructAutomateValidate" label="Create / Validate" size="large" imageMso="FileCheckIn" onAction="OnCreateValidate" />
                   <button id="StructAutomateCalculate" label="Calculate Workbook" size="large" imageMso="CalculateNow" onAction="OnCalculate" />
-                  <button id="StructAutomateOptimize" label="Optimize Beams" imageMso="SolverOptions" onAction="OnOptimize" />
+                  <button id="StructAutomateOptimize" label="Evaluate Current Candidate" imageMso="SolverOptions" onAction="OnOptimize" />
                   <button id="StructAutomateExport" label="Export Packages" imageMso="FileSaveAs" onAction="OnExport" />
                   <button id="StructAutomateDiagnose" label="Measure / Diagnose" imageMso="HappyFace" onAction="OnDiagnose" />
                 </group>

@@ -23,7 +23,7 @@ public static class WorkbookCommands
     [ExcelCommand(Name = CalculateName, Description = "Calculate every beam from the current versioned input tables.")]
     public static string CalculateWorkbook() => RunBatch(WorkbookCommandKind.Calculate);
 
-    [ExcelCommand(Name = OptimizeName, Description = "Run the bounded fixed-action search for every current beam.")]
+    [ExcelCommand(Name = OptimizeName, Description = "Evaluate the one declared current physical candidate for every beam.")]
     public static string OptimizeBeams() => RunBatch(WorkbookCommandKind.Optimize);
 
     [ExcelCommand(Name = ExportName, Description = "Export one verified JSON calculation-package bundle.")]
@@ -280,6 +280,9 @@ public static class WorkbookCommands
             current = result.Freshness.IsCurrent,
             member_count = inputs.Count,
             operation_result_count = result.Results.Count,
+            operation_scope = command == WorkbookCommandKind.Optimize
+                ? "current_physical_candidate_evaluation"
+                : null,
             reused_current_results = result.Results.Count == 0 &&
                                      result.Freshness.Reason == "current_calculation_reused",
             elapsed_ms = timer.Elapsed.TotalMilliseconds
@@ -358,7 +361,7 @@ public static class WorkbookCommands
             {
                 { "StructAutomate standalone beam workbook", null! },
                 { "Template", WorkbookContract.TemplateId },
-                { "Workflow", "Validate -> Calculate -> Optimize -> Export -> Diagnose" },
+                { "Workflow", "Validate -> Calculate -> Evaluate current candidate -> Export -> Diagnose" },
                 { "Members", SampleWorkbookData.TypicalMemberCount },
                 { "Operation rows", SampleWorkbookData.TypicalOperationRowCount },
                 { "Adapter", null! },
