@@ -86,9 +86,10 @@ state machine without changing WP10 product behavior.
 - ⚠️ TERMINAL ISSUE: PowerShell interpreted part of an `rg` alternation as a
   command, wildcard-like path arguments were invalid, a guessed `session active`
   subcommand did not exist, Git-Bash `/tmp` did not map to the Windows Python
-  path, and an unquoted `@{upstream}` probe was parsed as a PowerShell hash
-  literal. Exact paths, one quoted Bash command, `session usage --active
-  --json`, and literal remote-ref queries resolved the probes. (`RR-005`)
+  path, and unquoted revision syntax (`@{upstream}` and `HEAD^{tree}`) was
+  parsed by PowerShell. Exact paths, one quoted Bash command, `session usage
+  --active --json`, and `git show -s --format=%T HEAD` resolved the probes.
+  (`RR-005`)
 
 ### Root causes and resolutions
 
@@ -183,7 +184,7 @@ state machine without changing WP10 product behavior.
 
 - `RR-004`, occurrences=6, minutes=unknown — preflight now admits safe intake
   before the task timer and preserves the feature-branch write boundary.
-- `RR-005`, occurrences=17, minutes=unknown — use exact paths, maintained
+- `RR-005`, occurrences=18, minutes=unknown — use exact paths, maintained
   discovery, and one shell shape per probe.
 - `RR-008`, occurrences=1, minutes=unknown — executable transitions now enforce
   candidate, audit, repair, closeout, hosted-run, and merge-tree limits.

@@ -71,7 +71,7 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 17,
+      "occurrences": 18,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
