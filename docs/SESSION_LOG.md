@@ -33,6 +33,10 @@ state machine without changing WP10 product behavior.
   with an outside-scope byte guard, aligned hosted formatting, corrected exact
   pytest path routing, and updated the canonical registry/projection, tests,
   skills, workflow, and governing documentation.
+- Closed the first hosted run's two failed owners by binding the Actions Python
+  runtime, replacing stale hook/formatter coverage with current behavior
+  assertions, and making failed hosted verdicts and replacement-candidate
+  closeouts explicit and mechanically counted.
 
 ### Issues encountered
 
@@ -69,11 +73,19 @@ state machine without changing WP10 product behavior.
 - Independent re-audit rejected the repaired candidate because one Git lesson
   contains a deliberate, fenced three-marker conflict example that remained
   indistinguishable from an unresolved conflict to the all-files checker.
+- The first hosted PR run passed Python, FastAPI, React, Excel, .NET, and
+  documentation but failed repository validation because the manual hook could
+  not find the hosted Python interpreter, and failed control-plane validation
+  on two stale tests that still described the retired hook/formatter owners.
+- The first push created the remote branch and branch config but the repository's
+  intentionally narrow fetch refspec did not classify the new remote-tracking
+  branch as an upstream until its exact refspec was added and fetched.
 - ⚠️ TERMINAL ISSUE: PowerShell interpreted part of an `rg` alternation as a
   command, wildcard-like path arguments were invalid, a guessed `session active`
-  subcommand did not exist, and Git-Bash `/tmp` did not map to the Windows Python
-  path. Exact paths, one quoted Bash command, `session usage --active --json`,
-  and direct output resolved the probes. (`RR-005`)
+  subcommand did not exist, Git-Bash `/tmp` did not map to the Windows Python
+  path, and an unquoted `@{upstream}` probe was parsed as a PowerShell hash
+  literal. Exact paths, one quoted Bash command, `session usage --active
+  --json`, and literal remote-ref queries resolved the probes. (`RR-005`)
 
 ### Root causes and resolutions
 
@@ -139,15 +151,35 @@ state machine without changing WP10 product behavior.
   outside fences and in executable text. Proof: the narrow test covers both
   Markdown contexts and Python, and the exact historical reproducer plus the
   repository-wide read-only integrity command form the new candidate evidence.
+- Confirmed root cause: the hosted repository step invoked the local hook
+  without setting `STRUCTURAL_LIB_PYTHON`, while two maintained governance
+  consumers retained the previous eight-manual-hook and whole-tree Black/Ruff
+  tokens. Resolution: bind the Actions interpreter explicitly, replace the
+  stale hook inventory with commit/manual/pre-push behavior assertions, and
+  update validation coverage to the consolidated integrity and changed-path
+  formatter owners without raw entry counts. Proof: rerun only the two failed
+  hosted-equivalent selections before the replacement candidate.
+- Confirmed root cause: `HOSTED_PASSED` was the only executable hosted verdict,
+  so a failed published candidate could neither enter repair nor be counted at
+  closeout. Resolution: add exact-run `HOSTED_REJECTED`, preserve every hosted
+  attempt, allow one repair candidate per design revision, and require one
+  integrity run, final closeout, and hosted verdict per pushed candidate.
+- Confirmed root cause: `remote.origin.fetch` listed only maintained exact
+  branches, so `git push -u` wrote branch configuration without making the new
+  remote-tracking ref eligible as an upstream. Resolution: add and fetch the
+  exact task-branch refspec; `git_state.py` then reports upstream `equal`.
+  (`RR-009`)
 
 ### Rework and recurrence
 
 - `RR-004`, occurrences=6, minutes=unknown — preflight now admits safe intake
   before the task timer and preserves the feature-branch write boundary.
-- `RR-005`, occurrences=16, minutes=unknown — use exact paths, maintained
+- `RR-005`, occurrences=17, minutes=unknown — use exact paths, maintained
   discovery, and one shell shape per probe.
 - `RR-008`, occurrences=1, minutes=unknown — executable transitions now enforce
   candidate, audit, repair, closeout, hosted-run, and merge-tree limits.
+- `RR-009`, occurrences=1, minutes=unknown — add and fetch the task branch's
+  exact refspec before relying on upstream equality in a narrow-fetch checkout.
 
 **Git handoff:** No receipt is required; this is a same-checkout delivery and no
 device, worktree, installed-artifact, or authority boundary was crossed.

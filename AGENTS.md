@@ -311,6 +311,11 @@ run the read-only `./run.sh check --candidate-integrity` exactly once. The
 single repair path; a failure on the repair candidate enters `REPLAN`. The
 pre-push hook runs the one final read-only `session end` and records
 `FINAL_CLOSED`; repeated push attempts at the same head do not rerun it.
+Each pushed candidate receives one hosted verdict. Record a failed run with
+`HOSTED_REJECTED`; it enters the current design revision's repair path (or
+`REPLAN` after its repair candidate) and preserves the failed run in closeout
+metrics. A replacement candidate repeats integrity and final closeout exactly
+once for its new head.
 
 Finish all versioned task, handoff, documentation, test, generated projection,
 and repository evidence writes before `CANDIDATE`. A Git handoff receipt is

@@ -56,13 +56,15 @@ INTAKE → BOUNDED_UNITS → CONTENT_FROZEN → FORMATTED
 first rejection:  CANDIDATE → REPAIR → ... → REPAIRED_CANDIDATE
 second rejection: REPAIRED_CANDIDATE → REPLAN
 integrity failure: AUDIT_ACCEPTED → REPAIR (or REPLAN after the repair candidate)
+hosted failure: PUSHED --HOSTED_REJECTED(run-id)→ REPAIR (or REPLAN after the repair candidate)
 REPLAN → BOUNDED_UNITS only after the acceptance digest changes
 ```
 
 The ignored Git-common ledger stores transitions, so the guard survives process
-boundaries without changing the candidate. `FINAL_CLOSED` is recorded once by
-pre-push after read-only `session end`; a repeated push of the same head reuses
-that transition. Hosted and merge identities are recorded only after push.
+boundaries without changing the candidate. `FINAL_CLOSED` is recorded once per
+candidate head by pre-push after read-only `session end`; a repeated push of the
+same head reuses that transition. Hosted failures and successes are recorded by
+exact run ID after push.
 
 ## Acceptance contract
 
@@ -75,12 +77,14 @@ that transition. Hosted and merge identities are recorded only after push.
 | One independent decision | audit transition is bound to the latest exact candidate head and evidence |
 | Initial plus one repair candidate | audit or integrity rejection uses the same repair allowance; a third candidate in one design revision is rejected |
 | Second rejection forces design change | `REPLAN` cannot advance until an acceptance-file digest changes |
-| One final closeout | idempotent pre-push transition counts exactly one `FINAL_CLOSED` state |
-| One hosted cycle | a second `HOSTED_PASSED` transition is rejected |
+| One final closeout per pushed candidate | idempotent pre-push transition counts one `FINAL_CLOSED` state for each distinct published head |
+| One hosted verdict per pushed candidate | a failed exact run records `HOSTED_REJECTED` before repair; a candidate cannot receive two verdicts |
 | Merged content is reviewed content | merge commit must be reachable from `origin/main` and its tree must equal the accepted candidate tree |
 | Exact efficiency report | phases and counters derive from transition timestamps, timed commands, and Git objects; caller-entered counters are rejected for managed tasks |
 
 The target operating envelope is one candidate, zero repair batches, one
 integrity run, one final closeout, one hosted run, and less than ten percent of
 elapsed time in the writer-rework phase. An essential failure may use the one
-repair candidate; the target is diagnostic, not permission to hide a defect.
+repair candidate and therefore records another integrity, closeout, and hosted
+attempt for that new head; the target is diagnostic, not permission to hide a
+defect or its failed attempt.

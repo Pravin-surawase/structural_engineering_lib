@@ -1,50 +1,22 @@
 {
   "schema_version": 1,
-  "source": ".pre-commit-config.yaml@fa0284ef457071c8d7064cf4acb7af641dfda7a2",
+  "source": ".pre-commit-config.yaml@b454b3f4e298fb5b38b983cff477aa126780599f",
   "target_commit_hook_ids": [
     "check-merge-conflict",
     "check-added-large-files",
     "git-operation-guard"
   ],
   "target_manual_hook_ids": [
-    "check-yaml",
-    "check-toml",
-    "check-json",
-    "end-of-file-fixer",
-    "trailing-whitespace",
-    "mixed-line-ending",
-    "check-merge-conflict",
-    "check-added-large-files"
+    "file-integrity-read-only"
+  ],
+  "target_pre_push_hook_ids": [
+    "delivery-state-guard"
   ],
   "entries": [
     {
-      "key": "check-yaml",
-      "source_id": "check-yaml",
-      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
-    },
-    {
-      "key": "check-toml",
-      "source_id": "check-toml",
-      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
-    },
-    {
-      "key": "check-json",
-      "source_id": "check-json",
-      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
-    },
-    {
-      "key": "end-of-file-fixer",
-      "source_id": "end-of-file-fixer",
-      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
-    },
-    {
-      "key": "trailing-whitespace",
-      "source_id": "trailing-whitespace",
-      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
-    },
-    {
-      "key": "mixed-line-ending",
-      "source_id": "mixed-line-ending",
+      "key": "file-integrity-read-only",
+      "source_id": "file-integrity-read-only",
+      "target_manual_id": "file-integrity-read-only",
       "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
     },
     {
@@ -57,27 +29,33 @@
       "key": "check-added-large-files",
       "source_id": "check-added-large-files",
       "target_commit_id": "check-added-large-files",
-      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+      "local_only": "Rejects newly added files before commit; hosted candidate integrity does not rescan historical large artifacts."
+    },
+    {
+      "key": "delivery-state-guard",
+      "source_id": "delivery-state-guard",
+      "target_pre_push_id": "delivery-state-guard",
+      "local_only": "Requires live local delivery and upstream state that a hosted checkout cannot observe."
     },
     {
       "key": "black-python",
       "source_id": "black",
-      "hosted_checks": [{"job": "python-validation", "token": "python -m black --check Python"}]
+      "hosted_checks": [{"job": "python-validation", "token": "python scripts/verification.py format --check --scope python"}]
     },
     {
       "key": "black-fastapi",
       "source_id": "black",
-      "hosted_checks": [{"job": "fastapi-validation", "token": "python -m black --check fastapi_app"}]
+      "hosted_checks": [{"job": "fastapi-validation", "token": "python scripts/verification.py format --check --scope fastapi"}]
     },
     {
       "key": "ruff-python",
       "source_id": "ruff",
-      "hosted_checks": [{"job": "python-validation", "token": "python -m ruff check Python"}]
+      "hosted_checks": [{"job": "python-validation", "token": "python scripts/verification.py format --check --scope python"}]
     },
     {
       "key": "ruff-fastapi",
       "source_id": "ruff",
-      "hosted_checks": [{"job": "fastapi-validation", "token": "python -m ruff check fastapi_app"}]
+      "hosted_checks": [{"job": "fastapi-validation", "token": "python scripts/verification.py format --check --scope fastapi"}]
     },
     {
       "key": "mypy-python",

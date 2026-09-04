@@ -203,7 +203,10 @@ The persisted stage gates are:
 7. **PUSHED → HOSTED_PASSED → MERGED:** push once, complete one hosted CI/review
    closeout, and immediately recheck the exact head/tree, base, required checks,
    reviews, unresolved threads, conflicts, and mergeability. Merge only the
-   unchanged auditor-approved head; a changed head returns to local audit.
+   unchanged auditor-approved head. Record a failed exact run as
+   `HOSTED_REJECTED`; it enters the one repair path (or `REPLAN` after the repair
+   candidate), and a replacement head repeats audit, integrity, closeout, and
+   one hosted verdict without erasing the failed attempt.
 8. **Post-merge verification:** refresh `main` without destructive cleanup and
    verify the merge identity, reviewed-tree equivalence where relevant,
    integrated checks, and task/handoff/receipt truth. Retain branches and

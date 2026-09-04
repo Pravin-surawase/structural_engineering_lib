@@ -2267,3 +2267,150 @@ def test_delivery_prepush_closeout_is_idempotent(
     assert session.cmd_delivery(args) == 0
     assert session.cmd_delivery(args) == 0
     assert calls == ["end"]
+
+
+def test_delivery_hosted_rejection_records_attempt_and_reenters_repair(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "task_id": "DELIVERY-TEST",
+        "state": "PUSHED",
+        "design_revision": 2,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40},
+        "audit_rejections": 1,
+        "design_candidate_count": 1,
+        "design_audit_rejections": 0,
+        "repair_batches": 3,
+        "hosted_validation_runs": 0,
+        "hosted_run_ids": [],
+        "latest_candidate_head": "a" * 40,
+        "latest_candidate_tree": "b" * 40,
+    }
+    entries = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": "DELIVERY-TEST",
+        },
+        {
+            "timestamp": "2026-09-04T10:01:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": "DELIVERY-TEST",
+            "delivery": snapshot,
+        },
+    ]
+    ledger.write_text("\n".join(json.dumps(row) for row in entries) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    args = session.build_parser().parse_args(
+        [
+            "delivery",
+            "--task-id",
+            "DELIVERY-TEST",
+            "--to",
+            "HOSTED_REJECTED",
+            "--run-id",
+            "12345",
+            "--evidence",
+            "required hosted job failed",
+        ]
+    )
+
+    assert session.cmd_delivery(args) == 0
+    repaired = session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")
+    assert repaired["state"] == "REPAIR"
+    assert repaired["repair_batches"] == 4
+    assert repaired["hosted_validation_runs"] == 1
+    assert repaired["hosted_run_ids"] == ["12345"]
+
+
+def test_automatic_delivery_closeout_counts_each_published_candidate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    ledger = tmp_path / "usage.jsonl"
+    task_id = "DELIVERY-TEST"
+    rows: list[dict[str, object]] = [
+        {
+            "timestamp": "2026-09-04T10:00:00+00:00",
+            "checkpoint": "start",
+            "task_id": task_id,
+        }
+    ]
+    timeline = (
+        ("10:01:00", "BOUNDED_UNITS"),
+        ("10:10:00", "CANDIDATE"),
+        ("10:11:00", "AUDIT_ACCEPTED"),
+        ("10:13:00", "FINAL_CLOSED"),
+        ("10:14:00", "PUSHED"),
+        ("10:16:00", "REPAIR"),
+        ("10:20:00", "REPAIRED_CANDIDATE"),
+        ("10:21:00", "AUDIT_ACCEPTED"),
+        ("10:23:00", "FINAL_CLOSED"),
+        ("10:24:00", "PUSHED"),
+        ("10:26:00", "HOSTED_PASSED"),
+    )
+    for clock, state in timeline:
+        rows.append(
+            {
+                "timestamp": f"2026-09-04T{clock}+00:00",
+                "checkpoint": "delivery",
+                "task_id": task_id,
+                "delivery": {"state": state},
+            }
+        )
+    for clock in ("10:12:00", "10:22:00"):
+        rows.append(
+            {
+                "timestamp": f"2026-09-04T{clock}+00:00",
+                "checkpoint": "event",
+                "task_id": task_id,
+                "event": "check candidate integrity",
+                "result_code": 0,
+            }
+        )
+    final_snapshot = {
+        "task_id": task_id,
+        "state": "MERGED",
+        "design_revision": 2,
+        "acceptance_digest": "digest",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40, "c" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40, "c" * 40: "d" * 40},
+        "audit_rejections": 0,
+        "design_candidate_count": 2,
+        "design_audit_rejections": 0,
+        "repair_batches": 1,
+        "hosted_validation_runs": 2,
+        "hosted_run_ids": ["failed", "passed"],
+        "latest_candidate_head": "c" * 40,
+        "latest_candidate_tree": "d" * 40,
+        "pr_number": 1,
+        "merge_commit": "e" * 40,
+        "merged_tree": "d" * 40,
+    }
+    rows.append(
+        {
+            "timestamp": "2026-09-04T10:27:00+00:00",
+            "checkpoint": "delivery",
+            "task_id": task_id,
+            "delivery": final_snapshot,
+        }
+    )
+    ledger.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+
+    result = session._automatic_delivery_efficiency(
+        task_id,
+        entries=session._read_jsonl(ledger),
+        observed_at=datetime.fromisoformat("2026-09-04T10:28:00+00:00"),
+    )
+
+    assert result["candidate_integrity_runs"] == 2
+    assert result["final_session_end_runs"] == 2
+    assert result["hosted_validation_runs"] == 2
+    assert result["phase_timings_min"]["final local closeout"] == 6
+    assert result["phase_timings_min"]["hosted/network wait"] == 4
+    assert result["phase_total_min"] == result["total_wall_time_min"] == 28

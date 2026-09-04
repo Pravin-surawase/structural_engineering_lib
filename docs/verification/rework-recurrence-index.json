@@ -71,11 +71,11 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 16,
+      "occurrences": 17,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "At least sixteen retries are explicit across WP09, WP10-01, and the delivery redesign. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
+        "basis": "At least seventeen retries are explicit across WP09, WP10-01, and the delivery redesign. WP09 events are contained within its 30 to 60 minute environment and coordination range; later retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
       "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",
@@ -131,6 +131,22 @@
       "aggregate_parent": null,
       "details": [
         "docs/verification/delivery-system-redesign.md"
+      ]
+    },
+    {
+      "id": "RR-009",
+      "pattern": "Narrow fetch refspec leaves a newly pushed task branch without a recognized upstream",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "The first delivery-redesign push wrote branch configuration, but upstream equality remained unavailable until the exact branch refspec was added and fetched; the retry was not separately timed."
+      },
+      "short_solution": "Add and fetch the exact task-branch refspec before relying on upstream equality in a narrow-fetch checkout.",
+      "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
       ]
     }
   ]

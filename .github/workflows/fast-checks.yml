@@ -525,7 +525,7 @@ jobs:
 
       - name: Validate candidate file integrity
         if: steps.evidence.outputs.valid != 'true'
-        run: python -m pre_commit run --hook-stage manual --all-files
+        run: STRUCTURAL_LIB_PYTHON="$(command -v python)" python -m pre_commit run --hook-stage manual --all-files
 
       - name: Validate Python version consistency
         if: steps.evidence.outputs.valid != 'true'

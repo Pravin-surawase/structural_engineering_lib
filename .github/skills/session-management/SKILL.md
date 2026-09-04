@@ -67,7 +67,9 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
 6. Push normally. The pre-push hook runs one read-only `session end`, records
    `FINAL_CLOSED`, and does not rerun on a repeated push of the same head. After
    one hosted run passes, record `HOSTED_PASSED`, merge, record `MERGED`, and
-   create the automatically derived usage closeout.
+   create the automatically derived usage closeout. If the run fails, record
+   `HOSTED_REJECTED` with its exact run ID before entering repair; the
+   replacement head receives one new closeout and hosted verdict.
 
 Do not run global doc syncing, legacy index generation, evolution fixes, release
 checks, or a second documentation commit by default. After push or PR creation,

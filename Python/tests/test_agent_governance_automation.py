@@ -5,7 +5,6 @@ from __future__ import annotations
 import importlib
 import json
 import os
-import re
 import subprocess
 import sys
 from datetime import date
@@ -249,7 +248,7 @@ def test_control_paths_use_python_runtime_launcher():
     assert install_offset < smoke_offset
 
 
-def test_pre_commit_contract_has_three_commit_guards_and_eight_manual_checks():
+def test_pre_commit_contract_has_three_commit_guards_and_bounded_later_stages():
     config = yaml.safe_load(
         (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
     )
@@ -257,15 +256,11 @@ def test_pre_commit_contract_has_three_commit_guards_and_eight_manual_checks():
     by_id = {hook["id"]: hook for hook in hooks}
 
     assert set(by_id) == {
-        "check-yaml",
-        "check-toml",
-        "check-json",
-        "end-of-file-fixer",
-        "trailing-whitespace",
-        "mixed-line-ending",
         "check-merge-conflict",
         "check-added-large-files",
         "git-operation-guard",
+        "file-integrity-read-only",
+        "delivery-state-guard",
     }
     commit_hooks = {
         hook["id"]
@@ -278,16 +273,11 @@ def test_pre_commit_contract_has_three_commit_guards_and_eight_manual_checks():
         "check-added-large-files",
         "git-operation-guard",
     }
-    assert manual_hooks == {
-        "check-yaml",
-        "check-toml",
-        "check-json",
-        "end-of-file-fixer",
-        "trailing-whitespace",
-        "mixed-line-ending",
-        "check-merge-conflict",
-        "check-added-large-files",
+    pre_push_hooks = {
+        hook["id"] for hook in hooks if "pre-push" in hook.get("stages", [])
     }
+    assert manual_hooks == {"file-integrity-read-only"}
+    assert pre_push_hooks == {"delivery-state-guard"}
     operation_guard = by_id["git-operation-guard"]
     assert operation_guard["always_run"] is True
     assert operation_guard["pass_filenames"] is False
@@ -296,38 +286,19 @@ def test_pre_commit_contract_has_three_commit_guards_and_eight_manual_checks():
         "--allow-operation-completion"
     )
 
-    check_json = by_id["check-json"]
-    jsonc_exclude = re.compile(check_json["exclude"])
-    assert jsonc_exclude.match("react_app/tsconfig.app.json")
-    assert jsonc_exclude.match("react_app/tsconfig.node.json")
-    assert not jsonc_exclude.match("react_app/package.json")
-    assert not jsonc_exclude.match("docs/reference/api-manifest.json")
-
-    normalizers = {
-        hook["id"]: re.compile(hook["exclude"])
-        for hook in hooks
-        if hook["id"]
-        in {"end-of-file-fixer", "trailing-whitespace", "mixed-line-ending"}
-    }
-    assert set(normalizers) == {
-        "end-of-file-fixer",
-        "trailing-whitespace",
-        "mixed-line-ending",
-    }
-    preserved = (
-        "VBA/legacy.bas",
-        "Excel/frozen.xlsm",
-        "docs/_archive/historical.md",
-        "docs/reference/vendor/etabs/help.html",
-        ".vite/deps/_metadata.json",
-        "Python/tests/data/golden_vectors_is456.json",
-        "Python/tests/fixtures/frozen.txt",
-        "react_app/src/__fixtures__/migration/SampleWidget.tsx",
-        "tests/fixtures/migration/golden/sample.txt",
+    integrity_guard = by_id["file-integrity-read-only"]
+    assert integrity_guard["entry"] == (
+        "./scripts/python_runtime.sh scripts/verification.py integrity --all-files"
     )
-    for matcher in normalizers.values():
-        assert all(matcher.match(path) for path in preserved)
-        assert not matcher.match("docs/contributing/development-guide.md")
+    assert integrity_guard["always_run"] is True
+    assert integrity_guard["pass_filenames"] is False
+
+    delivery_guard = by_id["delivery-state-guard"]
+    assert delivery_guard["entry"] == (
+        "./scripts/python_runtime.sh scripts/session.py delivery --guard-push"
+    )
+    assert delivery_guard["always_run"] is True
+    assert delivery_guard["pass_filenames"] is False
 
     assert not ({"black", "ruff", "mypy", "bandit", "pytest"} & set(by_id))
 

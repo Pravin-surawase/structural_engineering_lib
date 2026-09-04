@@ -612,6 +612,7 @@ def _delivery_snapshot(entries: list[dict], task_id: str) -> dict[str, object]:
         "design_audit_rejections": 0,
         "repair_batches": 0,
         "hosted_validation_runs": 0,
+        "hosted_run_ids": [],
         "latest_candidate_head": None,
         "latest_candidate_tree": None,
     }
@@ -1243,16 +1244,16 @@ def _automatic_delivery_efficiency(
         for state, timestamp in timeline
         if state in {"CANDIDATE", "REPAIRED_CANDIDATE"}
     )
-    accepted_at = max(
-        timestamp for state, timestamp in timeline if state == "AUDIT_ACCEPTED"
-    )
-    pushed_at = first_time("PUSHED")
     hosted_at = first_time("HOSTED_PASSED")
 
     audit_minutes = 0.0
     rework_minutes = 0.0
+    local_closeout_minutes = 0.0
+    network_wait_minutes = 0.0
     audit_started: datetime | None = None
     rework_started: datetime | None = None
+    local_closeout_started: datetime | None = None
+    network_wait_started: datetime | None = None
     for state, timestamp in timeline:
         if state in {"CANDIDATE", "REPAIRED_CANDIDATE"}:
             if rework_started is not None:
@@ -1265,6 +1266,29 @@ def _automatic_delivery_efficiency(
                 audit_started = None
             if state in {"REPAIR", "REPLAN"}:
                 rework_started = timestamp
+        if state == "AUDIT_ACCEPTED":
+            local_closeout_started = timestamp
+        elif state == "PUSHED":
+            if local_closeout_started is not None:
+                local_closeout_minutes += _minutes_between(
+                    local_closeout_started, timestamp
+                )
+                local_closeout_started = None
+            network_wait_started = timestamp
+        elif state in {"REPAIR", "REPLAN"}:
+            if local_closeout_started is not None:
+                local_closeout_minutes += _minutes_between(
+                    local_closeout_started, timestamp
+                )
+                local_closeout_started = None
+            if network_wait_started is not None:
+                network_wait_minutes += _minutes_between(
+                    network_wait_started, timestamp
+                )
+                network_wait_started = None
+        elif state == "HOSTED_PASSED" and network_wait_started is not None:
+            network_wait_minutes += _minutes_between(network_wait_started, timestamp)
+            network_wait_started = None
 
     phases = {
         "contract/intake": _minutes_between(started_at, bounded_at),
@@ -1273,8 +1297,8 @@ def _automatic_delivery_efficiency(
         ),
         "independent local audit": audit_minutes,
         "writer rework": rework_minutes,
-        "final local closeout": _minutes_between(accepted_at, pushed_at),
-        "hosted/network wait": _minutes_between(pushed_at, hosted_at),
+        "final local closeout": local_closeout_minutes,
+        "hosted/network wait": network_wait_minutes,
         "merge + post-merge verification": _minutes_between(hosted_at, observed_at),
     }
     rounded_phases = {name: round(value, 3) for name, value in phases.items()}
@@ -1299,11 +1323,15 @@ def _automatic_delivery_efficiency(
         for entry in history
         if entry.get("delivery", {}).get("state") == "FINAL_CLOSED"
     )
-    if int(snapshot["hosted_validation_runs"]) != 1:
-        raise ValueError("closeout requires exactly one hosted validation run")
-    if integrity_runs != 1 or final_closeout_runs != 1:
+    push_runs = sum(
+        1 for entry in history if entry.get("delivery", {}).get("state") == "PUSHED"
+    )
+    if int(snapshot["hosted_validation_runs"]) != push_runs:
+        raise ValueError("closeout requires one hosted verdict per pushed candidate")
+    if integrity_runs != push_runs or final_closeout_runs != push_runs:
         raise ValueError(
-            "closeout requires exactly one candidate-integrity run and one final session end"
+            "closeout requires one candidate-integrity run and one final session end "
+            "per pushed candidate"
         )
     integration = {
         "pr_number": snapshot.get("pr_number"),
@@ -1777,10 +1805,7 @@ def cmd_delivery(args: argparse.Namespace) -> int:
             snapshot["design_audit_rejections"] = (
                 int(snapshot["design_audit_rejections"]) + 1
             )
-            if (
-                int(snapshot["design_candidate_count"]) == 1
-                and int(snapshot["repair_batches"]) == 0
-            ):
+            if int(snapshot["design_candidate_count"]) == 1:
                 target = "REPAIR"
                 snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
             else:
@@ -1796,10 +1821,25 @@ def cmd_delivery(args: argparse.Namespace) -> int:
                 )
             if not evidence:
                 raise ValueError("integrity rejection requires --evidence")
-            if (
-                int(snapshot["design_candidate_count"]) == 1
-                and int(snapshot["repair_batches"]) == 0
-            ):
+            if int(snapshot["design_candidate_count"]) == 1:
+                target = "REPAIR"
+                snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
+            else:
+                target = "REPLAN"
+        elif requested == "HOSTED_REJECTED":
+            if state != "PUSHED":
+                raise ValueError(f"hosted rejection is invalid from {state}")
+            if not args.run_id or not evidence:
+                raise ValueError("hosted rejection requires --run-id and --evidence")
+            run_ids = list(snapshot.get("hosted_run_ids", []))
+            if args.run_id in run_ids:
+                raise ValueError("hosted run id is already recorded")
+            run_ids.append(args.run_id)
+            snapshot["hosted_run_ids"] = run_ids
+            snapshot["hosted_validation_runs"] = (
+                int(snapshot["hosted_validation_runs"]) + 1
+            )
+            if int(snapshot["design_candidate_count"]) == 1:
                 target = "REPAIR"
                 snapshot["repair_batches"] = int(snapshot["repair_batches"]) + 1
             else:
@@ -1897,9 +1937,14 @@ def cmd_delivery(args: argparse.Namespace) -> int:
         elif target == "HOSTED_PASSED":
             if not args.run_id:
                 raise ValueError("HOSTED_PASSED requires --run-id")
-            if int(snapshot["hosted_validation_runs"]) != 0:
-                raise ValueError("only one hosted validation run is permitted")
-            snapshot["hosted_validation_runs"] = 1
+            run_ids = list(snapshot.get("hosted_run_ids", []))
+            if args.run_id in run_ids:
+                raise ValueError("hosted run id is already recorded")
+            run_ids.append(args.run_id)
+            snapshot["hosted_run_ids"] = run_ids
+            snapshot["hosted_validation_runs"] = (
+                int(snapshot["hosted_validation_runs"]) + 1
+            )
             snapshot["hosted_run_id"] = args.run_id
         elif target == "MERGED":
             if not args.pr_number or not args.merge_commit:
@@ -3906,7 +3951,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_delivery.add_argument("--task-id", default="")
     p_delivery.add_argument(
         "--to",
-        choices=(*DELIVERY_STATES, "AUDIT_REJECTED", "INTEGRITY_REJECTED"),
+        choices=(
+            *DELIVERY_STATES,
+            "AUDIT_REJECTED",
+            "INTEGRITY_REJECTED",
+            "HOSTED_REJECTED",
+        ),
     )
     p_delivery.add_argument("--status", action="store_true")
     p_delivery.add_argument("--guard-push", action="store_true")

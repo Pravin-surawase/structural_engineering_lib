@@ -259,6 +259,10 @@ PR/merge commit, and proves accepted-candidate/merged-tree equality. It also
 reports rework and network ratios. The read-only `session end` command does not
 consume the start checkpoint or write a timing event; the pre-push guard records
 its one successful `FINAL_CLOSED` transition.
+If a published candidate fails hosted validation, record its exact run with
+`HOSTED_REJECTED`. The replacement head receives its own single integrity,
+final-closeout, and hosted verdict; automatic closeout counts every attempt and
+requires one of each boundary per pushed candidate.
 Record closeout after exact post-merge verification and before starting the
 next task; inspect an unexpected open task with `session usage --active --json`.
 

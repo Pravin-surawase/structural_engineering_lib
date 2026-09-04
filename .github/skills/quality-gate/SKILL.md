@@ -61,7 +61,7 @@ commit.
 
 ### 5. PR acceptance: required CI
 
-The GitHub check named `PR Gate` is the authoritative merge gate. Inspect the check for the current commit. Do not rerun an equivalent local suite merely because CI already passed it. A failing or stale check blocks acceptance; bypass flags and admin merges are forbidden.
+The GitHub check named `PR Gate` is the authoritative merge gate. Inspect the check for the current commit. Do not rerun an equivalent local suite merely because CI already passed it. A failing or stale check blocks acceptance; bypass flags and admin merges are forbidden. Record a failed hosted run as `HOSTED_REJECTED` before repairing its confirmed root cause. The replacement candidate must repeat exact-head audit, integrity, pre-push closeout, and one hosted verdict; retain the failed run in closeout metrics.
 
 ### 6. Cumulative implementation closeout: full gate once
 
