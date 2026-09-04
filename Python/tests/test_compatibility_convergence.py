@@ -91,7 +91,14 @@ def test_generator_writes_lf_without_platform_translation(monkeypatch, tmp_path)
         ],
     )
     monkeypatch.setattr(classification, "_untracked_caller_paths", list)
-    monkeypatch.setattr(classification, "build_registry", lambda: {"test": "registry"})
+    monkeypatch.setattr(
+        classification,
+        "build_registry",
+        lambda: {
+            "documentation_contract": {"unbaselined_debt": []},
+            "test": "registry",
+        },
+    )
     monkeypatch.setattr(
         classification, "build_compatibility_ledger", lambda _: {"test": "ledger"}
     )

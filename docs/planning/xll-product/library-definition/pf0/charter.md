@@ -1,7 +1,8 @@
 ---
 owner: Product owner
+status: active
 last_updated: 2026-09-03
-doc_type: charter
+doc_type: spec
 phase_id: PF0
 deliverable_id: PF0-D1-charter
 ---

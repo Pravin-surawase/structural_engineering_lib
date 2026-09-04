@@ -83,3 +83,12 @@ concrete overlap ownership, formwork contact faces, commercial scope, and real
 human actions stay explicit. See the
 [WP07 reference](reference/wp07-construction-calculation-package.md) for the
 public signatures and reconciliation rules.
+
+WP08 expands an explicit finite section/bar/link domain, binds each candidate
+to the complete profile-derived member result and physical WP07 quantities,
+and ranks only candidates with complete evidence. Fixed-action studies retain
+their common-force assumption; coupled section, stiffness, release, offset,
+self-weight, load, support, mesh, or analysis-setting changes require a fresh
+candidate analysis snapshot. See the
+[WP08 reference](reference/wp08-beam-optimization.md) for signatures,
+objectives, tie breakers, cancellation, and optimum-claim rules.

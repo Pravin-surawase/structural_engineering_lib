@@ -1074,6 +1074,28 @@
       },
       "permission": "ReadOnlyTerminal"
     },
+    "validate structural engineering contracts": {
+      "group": "Quality",
+      "description": "Validate the native Python/.NET structural operation manifests, schemas, code data, and conformance vectors",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/validate_structural_engineering_contracts.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/validate_structural_engineering_contracts.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "aliases": [
+        "validate structural contracts",
+        "structural engineering contracts"
+      ]
+    },
     "validate schema snapshots": {
       "group": "Quality",
       "description": "Validate OpenAPI schema snapshots haven't changed unexpectedly",

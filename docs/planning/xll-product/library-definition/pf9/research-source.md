@@ -1,7 +1,8 @@
 ---
 owner: Main Agent
+status: active
 last_updated: 2026-09-04
-doc_type: research
+doc_type: reference
 phase_id: PF9
 ---
 

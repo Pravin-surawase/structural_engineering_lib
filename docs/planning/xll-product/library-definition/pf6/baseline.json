@@ -60,7 +60,7 @@
         {"name": "structural_lib.beam", "owns": ["section/member requests and results", "flexure/shear/torsion/SLS/detailing orchestration"], "depends_on": ["structural_lib.core", "structural_lib.codes.is456", "structural_lib.analysis"]},
         {"name": "structural_lib.reinforcement", "owns": ["catalogues", "arrangements", "fit", "bar-path resolution"], "depends_on": ["structural_lib.core", "structural_lib.codes.is456"]},
         {"name": "structural_lib.construction", "owns": ["BBS data", "concrete/formwork/steel quantities", "rates and direct cost"], "depends_on": ["structural_lib.core", "structural_lib.reinforcement"]},
-        {"name": "structural_lib.optimization", "owns": ["candidate generation", "evaluation coordination", "deterministic ranking", "search completeness"], "depends_on": ["structural_lib.beam", "structural_lib.reinforcement", "structural_lib.construction"]},
+        {"name": "structural_lib.beam_optimization", "owns": ["candidate generation", "evaluation coordination", "deterministic ranking", "search completeness"], "depends_on": ["structural_lib.beam", "structural_lib.reinforcement", "structural_lib.construction"]},
         {"name": "structural_lib.reporting", "owns": ["calculation package semantic records", "report/drawing/schedule models"], "depends_on": ["structural_lib.beam", "structural_lib.construction"]},
         {"name": "structural_lib.interchange", "owns": ["strict JSON transport", "schema/version negotiation", "fixture replay"], "depends_on": ["structural_lib.core"]},
         {"name": "structural_lib.compat", "owns": ["published-name translations", "deprecation diagnostics"], "depends_on": ["all normative public packages but no adapter"]},

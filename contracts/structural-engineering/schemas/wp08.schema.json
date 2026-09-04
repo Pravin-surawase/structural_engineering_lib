@@ -1,0 +1,375 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/wp08/v1",
+  "title": "WP08 portable beam candidate optimization contracts",
+  "$defs": {
+    "identity": {"type": "string", "minLength": 1},
+    "nullableIdentity": {"type": ["string", "null"], "minLength": 1},
+    "analysisMode": {"enum": ["fixed_actions", "coupled_reanalysis"]},
+    "objectiveKind": {"enum": ["cost", "steel_mass", "section_depth", "carbon", "concrete_volume", "formwork_area", "congestion", "utilization_reserve"]},
+    "tieBreaker": {"enum": ["lower_utilization", "fewer_bar_marks", "lower_section_depth", "candidate_id"]},
+    "changeCategory": {"enum": ["actual_bars", "detailing", "bar_paths", "bbs", "rates_cost", "report_options", "section_dimensions_property", "material_stiffness", "releases", "offsets", "mass_self_weight", "applied_load", "load_case_combination", "support_restraint", "meshing", "analysis_settings", "unknown"]},
+    "couplingClass": {"enum": ["fixed_action", "reanalysis_required", "unresolved"]},
+    "stopReason": {"enum": ["completed", "evaluation_budget_reached", "cancelled"]},
+    "terminalState": {"enum": ["complete_enumeration", "budget_exhausted_incomplete", "cancelled_incomplete", "evidence_incomplete", "no_feasible_candidate"]},
+    "disposition": {"enum": ["feasible", "engineering_fail", "incomplete", "not_evaluated", "duplicate_physical_definition"]},
+    "resultBinding": {
+      "type": "object",
+      "required": ["operation_semantic_id", "result_id", "normalized_input_id", "calculation_id", "execution", "applicability", "engineering", "completeness", "freshness", "output_payload_id"],
+      "properties": {
+        "operation_semantic_id": {"$ref": "#/$defs/identity"},
+        "result_id": {"$ref": "#/$defs/identity"},
+        "normalized_input_id": {"$ref": "#/$defs/identity"},
+        "calculation_id": {"$ref": "#/$defs/identity"},
+        "execution": {"enum": ["completed", "rejected_input", "not_run", "software_error", "cancelled"]},
+        "applicability": {"enum": ["applicable", "not_applicable", "unknown"]},
+        "engineering": {"enum": ["pass", "fail", "not_evaluated"]},
+        "completeness": {"enum": ["complete_for_scope", "partial"]},
+        "freshness": {"enum": ["current", "stale", "unbound"]},
+        "output_payload_id": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "objectiveProfile": {
+      "type": "object",
+      "required": ["profile_id", "revision_id", "objectives", "tie_breakers"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identity"},
+        "revision_id": {"$ref": "#/$defs/identity"},
+        "objectives": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/objectiveKind"}},
+        "tie_breakers": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/tieBreaker"}}
+      },
+      "additionalProperties": false
+    },
+    "sectionChoice": {
+      "type": "object",
+      "required": ["choice_id", "width_mm", "overall_depth_mm", "concrete_strength_n_per_mm2", "additional_change_categories"],
+      "properties": {
+        "choice_id": {"$ref": "#/$defs/identity"},
+        "width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "overall_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "concrete_strength_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "additional_change_categories": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/changeCategory"}}
+      },
+      "additionalProperties": false
+    },
+    "longitudinalChoice": {
+      "type": "object",
+      "required": ["choice_id", "top_bar_count", "top_bar_diameter_mm", "top_layer_count", "bottom_bar_count", "bottom_bar_diameter_mm", "bottom_layer_count", "steel_grade_n_per_mm2"],
+      "properties": {
+        "choice_id": {"$ref": "#/$defs/identity"},
+        "top_bar_count": {"type": "integer", "minimum": 1},
+        "top_bar_diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "top_layer_count": {"type": "integer", "minimum": 1},
+        "bottom_bar_count": {"type": "integer", "minimum": 1},
+        "bottom_bar_diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "bottom_layer_count": {"type": "integer", "minimum": 1},
+        "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "transverseChoice": {
+      "type": "object",
+      "required": ["choice_id", "link_diameter_mm", "steel_grade_n_per_mm2", "legs", "spacing_mm"],
+      "properties": {
+        "choice_id": {"$ref": "#/$defs/identity"},
+        "link_diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "legs": {"type": "integer", "minimum": 1},
+        "spacing_mm": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "discreteDomain": {
+      "type": "object",
+      "required": ["domain_id", "revision_id", "project_basis_id", "profile_revision_id", "member_id", "topology_revision_id", "action_revision_id", "design_scope_revision_id", "baseline_analysis_revision_id", "baseline_section_choice_id", "section_choices", "longitudinal_choices", "transverse_choices", "maximum_domain_candidates", "source_references", "limitations"],
+      "properties": {
+        "domain_id": {"$ref": "#/$defs/identity"},
+        "revision_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "profile_revision_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "topology_revision_id": {"$ref": "#/$defs/identity"},
+        "action_revision_id": {"$ref": "#/$defs/identity"},
+        "design_scope_revision_id": {"$ref": "#/$defs/identity"},
+        "baseline_analysis_revision_id": {"$ref": "#/$defs/identity"},
+        "baseline_section_choice_id": {"$ref": "#/$defs/identity"},
+        "section_choices": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sectionChoice"}},
+        "longitudinal_choices": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/longitudinalChoice"}},
+        "transverse_choices": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/transverseChoice"}},
+        "maximum_domain_candidates": {"type": "integer", "minimum": 1, "maximum": 100000},
+        "source_references": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "limitations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/identity"}}
+      },
+      "additionalProperties": false
+    },
+    "physicalDefinition": {
+      "type": "object",
+      "required": ["width_mm", "overall_depth_mm", "concrete_strength_n_per_mm2", "top_bar_count", "top_bar_diameter_mm", "top_layer_count", "bottom_bar_count", "bottom_bar_diameter_mm", "bottom_layer_count", "longitudinal_steel_grade_n_per_mm2", "link_diameter_mm", "link_steel_grade_n_per_mm2", "link_legs", "link_spacing_mm"],
+      "properties": {
+        "width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "overall_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "concrete_strength_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "top_bar_count": {"type": "integer", "minimum": 1},
+        "top_bar_diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "top_layer_count": {"type": "integer", "minimum": 1},
+        "bottom_bar_count": {"type": "integer", "minimum": 1},
+        "bottom_bar_diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "bottom_layer_count": {"type": "integer", "minimum": 1},
+        "longitudinal_steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "link_diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "link_steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "link_legs": {"type": "integer", "minimum": 1},
+        "link_spacing_mm": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "candidateDefinition": {
+      "type": "object",
+      "required": ["candidate_id", "physical_definition_id", "domain_id", "domain_revision_id", "section", "longitudinal", "transverse", "physical", "change_categories", "coupling_class"],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/identity"},
+        "physical_definition_id": {"$ref": "#/$defs/identity"},
+        "domain_id": {"$ref": "#/$defs/identity"},
+        "domain_revision_id": {"$ref": "#/$defs/identity"},
+        "section": {"$ref": "#/$defs/sectionChoice"},
+        "longitudinal": {"$ref": "#/$defs/longitudinalChoice"},
+        "transverse": {"$ref": "#/$defs/transverseChoice"},
+        "physical": {"$ref": "#/$defs/physicalDefinition"},
+        "change_categories": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/changeCategory"}},
+        "coupling_class": {"$ref": "#/$defs/couplingClass"}
+      },
+      "additionalProperties": false
+    },
+    "domainOutput": {
+      "type": "object",
+      "required": ["domain_id", "domain_revision_id", "domain_semantic_id", "project_basis_id", "profile_revision_id", "member_id", "topology_revision_id", "action_revision_id", "design_scope_revision_id", "baseline_analysis_revision_id", "baseline_section_choice_id", "traversal_order", "candidates", "generated_count"],
+      "properties": {
+        "domain_id": {"$ref": "#/$defs/identity"},
+        "domain_revision_id": {"$ref": "#/$defs/identity"},
+        "domain_semantic_id": {"$ref": "#/$defs/identity"},
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "profile_revision_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "topology_revision_id": {"$ref": "#/$defs/identity"},
+        "action_revision_id": {"$ref": "#/$defs/identity"},
+        "design_scope_revision_id": {"$ref": "#/$defs/identity"},
+        "baseline_analysis_revision_id": {"$ref": "#/$defs/identity"},
+        "baseline_section_choice_id": {"$ref": "#/$defs/identity"},
+        "traversal_order": {"const": "candidate_id_ordinal_ascending"},
+        "candidates": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/candidateDefinition"}},
+        "generated_count": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "rankingContext": {
+      "type": "object",
+      "required": ["project_basis_id", "profile_revision_id", "member_id", "topology_revision_id", "action_revision_id", "design_scope_revision_id", "baseline_analysis_revision_id", "reference_member_result_id", "reference_member_binding", "reference_member"],
+      "properties": {
+        "project_basis_id": {"$ref": "#/$defs/identity"},
+        "profile_revision_id": {"$ref": "#/$defs/identity"},
+        "member_id": {"$ref": "#/$defs/identity"},
+        "topology_revision_id": {"$ref": "#/$defs/identity"},
+        "action_revision_id": {"$ref": "#/$defs/identity"},
+        "design_scope_revision_id": {"$ref": "#/$defs/identity"},
+        "baseline_analysis_revision_id": {"$ref": "#/$defs/identity"},
+        "reference_member_result_id": {"$ref": "#/$defs/identity"},
+        "reference_member_binding": {"$ref": "#/$defs/resultBinding"},
+        "reference_member": {"$ref": "wp06.schema.json#/$defs/memberDesignOutput"}
+      },
+      "additionalProperties": false
+    },
+    "reanalysisPolicy": {
+      "type": "object",
+      "required": ["policy_id", "revision_id", "owned_copy_required", "source_reference"],
+      "properties": {
+        "policy_id": {"$ref": "#/$defs/identity"},
+        "revision_id": {"$ref": "#/$defs/identity"},
+        "owned_copy_required": {"type": "boolean"},
+        "source_reference": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "reanalysisEvidence": {
+      "type": "object",
+      "required": ["candidate_id", "candidate_definition_id", "baseline_analysis_revision_id", "candidate_analysis_revision_id", "snapshot_result_id", "snapshot_output_payload_id", "execution_completed", "freshness_current"],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/identity"},
+        "candidate_definition_id": {"$ref": "#/$defs/identity"},
+        "baseline_analysis_revision_id": {"$ref": "#/$defs/identity"},
+        "candidate_analysis_revision_id": {"$ref": "#/$defs/identity"},
+        "snapshot_result_id": {"$ref": "#/$defs/identity"},
+        "snapshot_output_payload_id": {"$ref": "#/$defs/identity"},
+        "execution_completed": {"type": "boolean"},
+        "freshness_current": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "candidateEvaluation": {
+      "type": "object",
+      "required": ["candidate_id", "analysis_revision_id", "member_binding", "member_result", "quantity_binding", "quantities", "cost_binding", "cost", "embodied_carbon_kg_co2e", "carbon_basis_id", "congestion_score", "congestion_basis_id", "reanalysis_evidence"],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/identity"},
+        "analysis_revision_id": {"$ref": "#/$defs/identity"},
+        "member_binding": {"$ref": "#/$defs/resultBinding"},
+        "member_result": {"$ref": "wp06.schema.json#/$defs/memberDesignOutput"},
+        "quantity_binding": {"$ref": "#/$defs/resultBinding"},
+        "quantities": {"$ref": "wp07.schema.json#/$defs/quantityOutput"},
+        "cost_binding": {"oneOf": [{"$ref": "#/$defs/resultBinding"}, {"type": "null"}]},
+        "cost": {"oneOf": [{"$ref": "wp07.schema.json#/$defs/costOutput"}, {"type": "null"}]},
+        "embodied_carbon_kg_co2e": {"type": ["number", "null"], "minimum": 0},
+        "carbon_basis_id": {"$ref": "#/$defs/nullableIdentity"},
+        "congestion_score": {"type": ["number", "null"], "minimum": 0},
+        "congestion_basis_id": {"$ref": "#/$defs/nullableIdentity"},
+        "reanalysis_evidence": {"oneOf": [{"$ref": "#/$defs/reanalysisEvidence"}, {"type": "null"}]}
+      },
+      "additionalProperties": false
+    },
+    "rankingRequest": {
+      "type": "object",
+      "required": ["ranking_id", "context", "domain", "objective_profile", "analysis_mode", "reanalysis_policy", "evaluation_budget", "stop_reason", "evaluations"],
+      "properties": {
+        "ranking_id": {"$ref": "#/$defs/identity"},
+        "context": {"$ref": "#/$defs/rankingContext"},
+        "domain": {"$ref": "#/$defs/domainOutput"},
+        "objective_profile": {"$ref": "#/$defs/objectiveProfile"},
+        "analysis_mode": {"$ref": "#/$defs/analysisMode"},
+        "reanalysis_policy": {"oneOf": [{"$ref": "#/$defs/reanalysisPolicy"}, {"type": "null"}]},
+        "evaluation_budget": {"type": "integer", "minimum": 1, "maximum": 100000},
+        "stop_reason": {"$ref": "#/$defs/stopReason"},
+        "evaluations": {"type": "array", "items": {"$ref": "#/$defs/candidateEvaluation"}}
+      },
+      "additionalProperties": false
+    },
+    "optimizationRequest": {
+      "type": "object",
+      "required": ["search_id", "context", "domain", "objective_profile", "analysis_mode", "reanalysis_policy", "evaluation_budget", "stop_reason", "evaluations"],
+      "properties": {
+        "search_id": {"$ref": "#/$defs/identity"},
+        "context": {"$ref": "#/$defs/rankingContext"},
+        "domain": {"$ref": "#/$defs/discreteDomain"},
+        "objective_profile": {"$ref": "#/$defs/objectiveProfile"},
+        "analysis_mode": {"$ref": "#/$defs/analysisMode"},
+        "reanalysis_policy": {"oneOf": [{"$ref": "#/$defs/reanalysisPolicy"}, {"type": "null"}]},
+        "evaluation_budget": {"type": "integer", "minimum": 1, "maximum": 100000},
+        "stop_reason": {"$ref": "#/$defs/stopReason"},
+        "evaluations": {"type": "array", "items": {"$ref": "#/$defs/candidateEvaluation"}}
+      },
+      "additionalProperties": false
+    },
+    "objectiveMetric": {
+      "type": "object",
+      "required": ["kind", "value", "unit", "source_identity"],
+      "properties": {
+        "kind": {"$ref": "#/$defs/objectiveKind"},
+        "value": {"type": "number"},
+        "unit": {"$ref": "#/$defs/identity"},
+        "source_identity": {"$ref": "#/$defs/identity"}
+      },
+      "additionalProperties": false
+    },
+    "evaluationRecord": {
+      "type": "object",
+      "required": ["candidate_id", "physical_definition_id", "disposition", "analysis_revision_id", "member_binding", "quantity_binding", "cost_binding", "objective_metrics", "reason_codes"],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/identity"},
+        "physical_definition_id": {"$ref": "#/$defs/identity"},
+        "disposition": {"$ref": "#/$defs/disposition"},
+        "analysis_revision_id": {"$ref": "#/$defs/nullableIdentity"},
+        "member_binding": {"oneOf": [{"$ref": "#/$defs/resultBinding"}, {"type": "null"}]},
+        "quantity_binding": {"oneOf": [{"$ref": "#/$defs/resultBinding"}, {"type": "null"}]},
+        "cost_binding": {"oneOf": [{"$ref": "#/$defs/resultBinding"}, {"type": "null"}]},
+        "objective_metrics": {"type": "array", "items": {"$ref": "#/$defs/objectiveMetric"}},
+        "reason_codes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}}
+      },
+      "additionalProperties": false
+    },
+    "rankedCandidate": {
+      "type": "object",
+      "required": ["rank", "candidate_id", "physical_definition_id", "coupling_class", "analysis_revision_id", "member_result_id", "quantity_result_id", "cost_result_id", "objective_metrics"],
+      "properties": {
+        "rank": {"type": "integer", "minimum": 1},
+        "candidate_id": {"$ref": "#/$defs/identity"},
+        "physical_definition_id": {"$ref": "#/$defs/identity"},
+        "coupling_class": {"$ref": "#/$defs/couplingClass"},
+        "analysis_revision_id": {"$ref": "#/$defs/identity"},
+        "member_result_id": {"$ref": "#/$defs/identity"},
+        "quantity_result_id": {"$ref": "#/$defs/identity"},
+        "cost_result_id": {"$ref": "#/$defs/nullableIdentity"},
+        "objective_metrics": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/objectiveMetric"}}
+      },
+      "additionalProperties": false
+    },
+    "candidateExclusion": {
+      "type": "object",
+      "required": ["candidate_id", "disposition", "reason_codes", "member_result_id"],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/identity"},
+        "disposition": {"$ref": "#/$defs/disposition"},
+        "reason_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "member_result_id": {"$ref": "#/$defs/nullableIdentity"}
+      },
+      "additionalProperties": false
+    },
+    "searchPerformance": {
+      "type": "object",
+      "required": ["domain_candidate_count", "unique_physical_candidate_count", "duplicate_physical_candidate_count", "evaluation_budget", "evaluated_count", "feasible_count", "engineering_fail_count", "incomplete_count"],
+      "properties": {
+        "domain_candidate_count": {"type": "integer", "minimum": 0},
+        "unique_physical_candidate_count": {"type": "integer", "minimum": 0},
+        "duplicate_physical_candidate_count": {"type": "integer", "minimum": 0},
+        "evaluation_budget": {"type": "integer", "minimum": 1},
+        "evaluated_count": {"type": "integer", "minimum": 0},
+        "feasible_count": {"type": "integer", "minimum": 0},
+        "engineering_fail_count": {"type": "integer", "minimum": 0},
+        "incomplete_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "rankingOutput": {
+      "type": "object",
+      "required": ["ranking_id", "domain_id", "domain_semantic_id", "expected_leaf_set_id", "analysis_mode", "baseline_analysis_revision_id", "objective_profile_id", "objective_profile_revision_id", "effective_tie_breakers", "evaluation_records", "ranked_candidates", "exclusions", "performance", "terminal_state", "enumeration_complete", "best_evaluated_candidate_id", "selected_candidate_id", "optimality_claimed", "infeasible_claimed", "provisional_shortlist", "optimality_scope"],
+      "properties": {
+        "ranking_id": {"$ref": "#/$defs/identity"},
+        "domain_id": {"$ref": "#/$defs/identity"},
+        "domain_semantic_id": {"$ref": "#/$defs/identity"},
+        "expected_leaf_set_id": {"$ref": "#/$defs/identity"},
+        "analysis_mode": {"$ref": "#/$defs/analysisMode"},
+        "baseline_analysis_revision_id": {"$ref": "#/$defs/identity"},
+        "objective_profile_id": {"$ref": "#/$defs/identity"},
+        "objective_profile_revision_id": {"$ref": "#/$defs/identity"},
+        "effective_tie_breakers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/tieBreaker"}},
+        "evaluation_records": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evaluationRecord"}},
+        "ranked_candidates": {"type": "array", "items": {"$ref": "#/$defs/rankedCandidate"}},
+        "exclusions": {"type": "array", "items": {"$ref": "#/$defs/candidateExclusion"}},
+        "performance": {"$ref": "#/$defs/searchPerformance"},
+        "terminal_state": {"$ref": "#/$defs/terminalState"},
+        "enumeration_complete": {"type": "boolean"},
+        "best_evaluated_candidate_id": {"$ref": "#/$defs/nullableIdentity"},
+        "selected_candidate_id": {"$ref": "#/$defs/nullableIdentity"},
+        "optimality_claimed": {"type": "boolean"},
+        "infeasible_claimed": {"type": "boolean"},
+        "provisional_shortlist": {"type": "boolean"},
+        "optimality_scope": {"enum": ["finite_domain_fixed_actions_common_force_assumption", "finite_domain_candidate_specific_coupled_reanalysis"]}
+      },
+      "additionalProperties": false
+    },
+    "optimizationOutput": {
+      "type": "object",
+      "required": ["search_id", "domain", "ranking"],
+      "properties": {
+        "search_id": {"$ref": "#/$defs/identity"},
+        "domain": {"$ref": "#/$defs/domainOutput"},
+        "ranking": {"$ref": "#/$defs/rankingOutput"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/rankingRequest"},
+    {"$ref": "#/$defs/optimizationRequest"},
+    {"$ref": "#/$defs/domainOutput"},
+    {"$ref": "#/$defs/rankingOutput"},
+    {"$ref": "#/$defs/optimizationOutput"}
+  ]
+}

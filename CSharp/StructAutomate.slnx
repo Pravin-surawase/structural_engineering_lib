@@ -12,6 +12,7 @@
     <Project Path="src/StructuralEngineering.Analysis/StructuralEngineering.Analysis.csproj" />
     <Project Path="src/StructuralEngineering.Construction/StructuralEngineering.Construction.csproj" />
     <Project Path="src/StructuralEngineering.Reporting/StructuralEngineering.Reporting.csproj" />
+    <Project Path="src/StructuralEngineering.Optimization/StructuralEngineering.Optimization.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/StructAutomate.Tests/StructAutomate.Tests.csproj" />

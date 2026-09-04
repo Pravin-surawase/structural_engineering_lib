@@ -40,3 +40,9 @@ formwork quantities, dated decimal construction cost, and the immutable
 renderer-neutral calculation package. Its signatures and reconciliation rules
 are documented in
 `docs/library/reference/wp07-construction-calculation-package.md`.
+
+WP08 adds a bounded deterministic candidate domain, profile-derived complete
+engineering evidence, fixed-action and coupled-reanalysis classifications,
+typed construction objectives, and truthful optimum/infeasibility claims. Its
+signatures and search-state rules are documented in
+`docs/library/reference/wp08-beam-optimization.md`.

@@ -56,6 +56,10 @@ EXPECTED_MANIFESTS = {
         "AO20": "structural.construction_cost.estimate/v1",
         "AO24": "structural.calculation_package.create/v1",
     },
+    "wp08": {
+        "AO05": "structural.candidate.rank/v1",
+        "AO21": "structural.beam.optimize/v1",
+    },
 }
 
 
@@ -197,6 +201,20 @@ def validate() -> None:
     }:
         fail("WP05 dependent joint bindings changed")
 
+    wp08_schema = load(CONTRACT_ROOT / "schemas" / "wp08.schema.json")
+    domain_properties = wp08_schema["$defs"]["discreteDomain"]["properties"]
+    if domain_properties["maximum_domain_candidates"] != {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100000,
+    }:
+        fail("WP08 finite-domain bound changed")
+    ranking_properties = wp08_schema["$defs"]["rankingOutput"]["properties"]
+    if ranking_properties["terminal_state"] != {
+        "$ref": "#/$defs/terminalState"
+    }:
+        fail("WP08 terminal-state contract changed")
+
     all_vectors = []
     for packet in EXPECTED_MANIFESTS:
         conformance = load(
@@ -222,6 +240,25 @@ def validate() -> None:
         "2667bdfe26231eea46cf6f1ad5bfaf585b42470997ef6a2427a76e29c6f14c38"
     ):
         fail("WP03 action-row canonical identity changed")
+    budget_vector = next(
+        item for item in all_vectors if item["id"] == "wp08-budget-truncation"
+    )
+    if budget_vector["expected"] != {
+        "terminal_state": "budget_exhausted_incomplete",
+        "best_evaluated_allowed": True,
+        "selected_candidate_id": None,
+        "optimality_claimed": False,
+        "infeasible_claimed": False,
+    }:
+        fail("WP08 partial-search truthfulness vector changed")
+    identity_vector = next(
+        item for item in all_vectors if item["id"] == "wp08-cross-language-identity"
+    )
+    if identity_vector["expected"]["domain_semantic_id"] != (
+        "candidate_domain_id:pf4-canonical-json-v1:"
+        "cf3a07c34d286a5336bd7f1a3c1d8a748cecc31e66f3a849539ae4f251917807"
+    ):
+        fail("WP08 cross-language domain identity changed")
     crack_vector = next(
         item for item in all_vectors if item["id"] == "wp04-annex-f-actual-bars"
     )

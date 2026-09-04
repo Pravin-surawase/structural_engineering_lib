@@ -165,6 +165,13 @@
           "StructuralEngineering.Contracts": "[0.1.0, )"
         }
       },
+      "structuralengineering.optimization": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )",
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
       "structuralengineering.reinforcement": {
         "type": "Project",
         "dependencies": {

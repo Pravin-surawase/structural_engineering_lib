@@ -5,6 +5,201 @@
 
 ---
 
+## 2026-09-04 — Session: WP01–WP08 native structural libraries
+
+**Agent:** Codex (`MAIN`) with bounded implementation and independent review
+packets.
+
+**Task:** `WP01-WP08-NATIVE-LIBRARIES`.
+
+**Branch:** `codex/wp01-wp08-native-libraries`.
+
+**Focus:** Implement the first library milestone from the approved PF1–PF11
+definition as native Python and native .NET packages: portable result semantics,
+IS 456 beam calculations, actions and bounded analysis, serviceability,
+detailing and fit, member/bar paths, construction quantities/cost/calculation
+packages, and deterministic finite-domain beam optimization. Excel-DNA and live
+ETABS adapters remain the following host packets.
+
+### Summary
+
+- WP01 established common operation/result contracts, canonical identities,
+  explicit units and provenance, then implemented rectangular singly and doubly
+  reinforced flexure with domain and ductility checks.
+- WP02 added shear and torsion actions, section capacity, transverse
+  reinforcement and governing design checks with portable request schemas.
+- WP03 added typed load/action rows, combinations, envelopes and a bounded
+  determinate beam solver while preserving station, source and combination
+  identities.
+- WP04 added deflection, crack-width and serviceability orchestration with
+  explicit applicability, completeness and evidence states.
+- WP05 added longitudinal/transverse arrangement, cover, clear-spacing,
+  layer-fit, development/anchorage, lap, curtailment and seismic-detailing
+  checks without mixing host or drawing behavior into the calculation layer.
+- WP06 added project/member topology, full beam-member design orchestration,
+  profile-derived leaf expectations, reinforcement revision binding, bar paths
+  and schedule-ready physical records.
+- WP07 added concrete, reinforcement and formwork quantities, dated decimal
+  construction cost, reconciliation ledgers and immutable renderer-neutral
+  calculation packages.
+- WP08 added AO05 candidate ranking and AO21 finite beam optimization. It
+  canonicalizes physical/domain/candidate identities, retains reason-coded
+  duplicates and exclusions, derives the complete expected evidence set from
+  AO17, binds exact AO17/AO04/AO20 outputs, distinguishes fixed-action studies
+  from coupled reanalysis, ranks typed numeric objectives deterministically and
+  makes optimum or infeasibility claims only after complete finite enumeration.
+- Python and .NET expose matching semantics, records, units and adversarial
+  conformance fixtures through WP08. The .NET solution produces the existing
+  packed Windows x64 XLL while the new packages remain usable independently of
+  Excel.
+
+### Issues encountered
+
+- PowerShell rejected shell chaining and wildcard forms used in early focused
+  commands; invoking the repository Bash/Python wrapper directly from
+  PowerShell also returned no useful output on this Windows host.
+- Several cross-language implementation details failed at compile time during
+  the packets: .NET lacked the assumed `Math.Hypot`, local names shadowed outer
+  variables, tuple/vector and nullable forms differed from their contracts,
+  and WP07 initially duplicated `SpliceKind` and used array `Count` as a
+  property.
+- WP02 initially treated one combined shear/torsion envelope as if maxima from
+  different stations could form one physical governing action.
+- WP07 review found three incomplete main-path outcomes in reconciliation and
+  calculation-package evidence, and one review read raced a concurrent edit.
+- The first WP08 Python draft depended upward on a reporting-layer result type.
+  Its first C# pass compiled but did not preserve all ranking/evidence outcomes
+  and had only nominal tests.
+- Independent WP08 parity review found that Python could treat a stale or
+  partial failed required leaf as sufficient infeasibility evidence, accepted a
+  negative coupler count, and accepted blank currency for a cost objective.
+- One focused closeout command used the obsolete validator filename
+  `validate_structural_contracts.py`.
+- The first session preparation check found that the maintained structural
+  contract validator was absent from the canonical control registry.
+- A read-only reviewer could not start another repository session timer while
+  the parent task checkpoint was active.
+- The first cumulative Python gate reported 33 failures after WP08 introduced a
+  package directory named `structural_lib.optimization`; that directory
+  shadowed the established compatibility module of the same name. The same
+  gate exposed stale verification routing, control-plane fixtures, two IS 456
+  regression expectations and one calculation-review fixture.
+- The first 32-check repository gate passed 29 checks. API classification
+  correctly rejected the untracked candidate files, two planning documents had
+  invalid front matter, and the first repaired optimizer location placed a
+  service below logical beam/construction packages in the dependency graph.
+- Relocating the optimizer to its final package changed the canonical service
+  identity hashes in the frozen Excel calculation-review fixture.
+
+### Root causes and resolutions
+
+- Confirmed root cause: commands mixed PowerShell and Bash grammar, and the
+  `.sh` launcher needs Bash on this host. Resolution: run repository shell
+  entry points as `bash ./run.sh ...` and Python through
+  `bash ./scripts/python_runtime.sh ...`; use exact paths instead of Windows
+  wildcard arguments. All intended commands then returned observable results.
+  ⚠️ TERMINAL ISSUE: mixed shell syntax and a direct `.sh` invocation obscured
+  focused results → reran through Bash with exact paths.
+- Confirmed root cause: the first C# translations assumed APIs and collection
+  shapes that were not present in the selected .NET contracts. Resolution:
+  replace the norm calculation explicitly, rename shadowed locals, align
+  tuple/vector/nullability use with the records, remove the duplicate enum and
+  use array `Length`. Each affected packet then built warning-free and passed
+  its focused C# tests.
+- Confirmed root cause: the WP02 envelope combined independently governing
+  ordinates. Resolution: preserve compatible station/action tuples and select
+  the governing physical row; the adversarial envelope fixture passes in both
+  languages.
+- Confirmed root cause: WP07 initially trusted supplied aggregate identities
+  and did not require every physical/result binding needed by its public claim.
+  Resolution: validate exact typed payload identities, reconciliation rows and
+  package dependencies, then reread the frozen files after concurrent work
+  ended. The repaired adversarial tests pass and the final review found no
+  remaining main-process defect.
+- Confirmed root cause: WP08 reused an application/reporting binding instead of
+  owning a portable optimization evidence record. Resolution: define
+  `CandidateResultBinding` in the WP08 contracts and validate operation, result,
+  normalized input, calculation, state and typed payload identities directly.
+- Confirmed root cause: the initial C# optimizer used simplified string sorting
+  and partial gating that could change selection, fixed-action eligibility and
+  unresolved-candidate preservation. Resolution: implement numeric ordered
+  objectives with candidate ID as the final tie, profile-derived leaf parity,
+  complete typed bindings, fixed/coupled analysis rules and a full result
+  ledger; expand C# WP08 coverage to 19 focused cases.
+- Confirmed root cause: the three Python parity gaps applied engineering-fail
+  precedence before evidence qualification and omitted two physical data
+  guards. Resolution: require current complete failed-leaf evidence before an
+  infeasibility claim, reject negative coupler quantities and require nonblank
+  currency whenever cost is ranked. Matching Python/C# regression cases pass,
+  and the independent reviewer confirmed all three corrections.
+- Confirmed root cause: the validator was renamed to
+  `validate_structural_engineering_contracts.py`. Resolution: run the maintained
+  exact path; it validates WP01–WP08 manifests, schemas, code data and
+  conformance vectors. ⚠️ TERMINAL ISSUE: an obsolete validator path failed →
+  used the maintained validator filename.
+- Confirmed root cause: the definition milestone added the validator script
+  without adding its read-only operation to `control-plane.json`. Resolution:
+  register the operation and aliases in the canonical control plane, regenerate
+  its compatibility projection and rerun validation; all 121 active operations
+  and 107 top-level scripts now reconcile.
+- Confirmed root cause: the session store permits one task-bound timer in the
+  shared checkout. Resolution: retain the parent timer and have bounded
+  reviewers return findings without opening another repository session.
+- Confirmed root cause: Python resolves a package directory before a sibling
+  module with the same import name, so the new WP08 directory replaced the
+  legacy public optimization facade at import time. Resolution: move the new
+  implementation to `structural_lib.beam_optimization`, update its operation
+  projections and documentation, and verify that `structural_lib.optimization`
+  again resolves to the original module and exports its historical API. The
+  full Python suite then passed.
+- Confirmed root cause: the new contract family was missing from the
+  verification path manifest, frozen control-plane tests still represented the
+  previous registered-operation count, two tests encoded outdated valid-domain
+  values, and the planning documents used invalid metadata values. Resolution:
+  route all structural contract paths, regenerate the control projection,
+  update the maintained fixtures to current contracts and correct the document
+  metadata. Verification, control, documentation and governance checks pass.
+- Confirmed root cause: the intermediate optimizer location imported logical
+  root packages from the service layer, reversing the planned dependency
+  direction. Resolution: use the dedicated root package
+  `structural_lib.beam_optimization`; the 259-file architecture check reports
+  zero violations and all 831 scanned internal imports resolve.
+- Confirmed root cause: canonical calculation identities include the complete
+  service identity set, so the final package layout changed nested hashes while
+  leaving the engineering values unchanged. Resolution: regenerate the frozen
+  fixture from the final namespace and replay it in isolated and WP08-first
+  import orders; both Python replays and all 53 Excel add-in Node tests pass.
+
+### Validation through content freeze
+
+- Focused Python WP01–WP08 union: 110 passed.
+- Focused .NET structural library suite: 91 passed; WP08 contributes 19 cases.
+- WP08 Ruff and configured mypy: clean.
+- Structural contract validator: WP01–WP08 semantic manifests, schemas, code
+  data and conformance vectors passed, including exact cross-language physical,
+  candidate and domain identities.
+- Control-plane validation: 121 active operations and all 107 top-level scripts
+  passed coverage and compatibility-projection checks.
+- Full cumulative Python suite: 7,793 passed, 17 skipped and 6 deselected.
+- Excel add-in calculation-review and task-pane Node suite: 53 passed.
+- Architecture, all-import, governance, documentation and verification-routing
+  checks pass; the two governance redirect-stub warnings predate this packet.
+- Full .NET Release solution build: zero warnings and zero errors; the packed
+  Excel-DNA x64 artifact was produced as part of the existing solution build.
+- Locked .NET restore/build/test evidence passed: 91 structural-library tests
+  and 25 StructAutomate tests.
+- Complete repository gate: 32/32 checks passed against the staged candidate,
+  including API classification, API contracts, architecture, imports,
+  governance, documentation, Git-state and stale-reference controls.
+- `git diff --check`: no whitespace errors; Git reported only configured
+  line-ending conversion notices.
+- The immutable commit/closeout, hosted PR checks and integration are the
+  remaining closeout sequence for this frozen milestone candidate.
+
+**Git handoff receipt:** docs/verification/wp01-wp08-native-libraries-git-handoff-receipt.json
+
+---
+
 ## 2026-09-04 — Session: Complete structural library definition PF1–PF11
 
 **Agent:** Codex (`MAIN`) with bounded read-only PF7 and PF8 review packets.

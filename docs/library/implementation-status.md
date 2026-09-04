@@ -345,7 +345,58 @@ WP08 plan update:
   physical steel, concrete, formwork, cost, depth, congestion, and utilization
   values. Every excluded candidate will retain reason codes and result
   identities.
-- A global-optimum claim will require complete enumeration of the declared
+- A finite-domain optimum claim will require complete enumeration of the declared
   finite domain. Cancelled, timed-out, bounded, or heuristic searches will
   report their actual completeness and best-known candidate without upgrading
   it to a proven optimum.
+
+## WP08 review
+
+State: implemented and focused verification passing.
+
+Confirmed outcomes:
+
+- AO21 expands a bounded Cartesian product of section, longitudinal-bar, and
+  transverse-link choices and creates canonical candidate, physical-definition,
+  and domain identities in deterministic traversal order.
+- Physical duplicates remain visible and reason coded, while only one physical
+  definition consumes evaluation budget. Every evaluation must follow the
+  canonical prefix.
+- AO05 freezes the expected leaf set from the profile-bound reference AO17
+  result. Required applicable leaves need completed, current, complete, passing
+  evidence; a required `not_applicable` result is incomplete, while a
+  profile-expected `not_applicable` result can qualify.
+- Candidate member, quantity, cost, and optional reanalysis outputs are bound
+  by exact operation, result, calculation, normalized-input, and output-payload
+  identities. WP07 quantities and cost supply their corresponding objective
+  values.
+- Changes to section/property, stiffness/material, releases, offsets,
+  self-weight/mass, loads/combinations, supports, mesh, or analysis settings
+  retain `reanalysis_required`. Fixed-action ranking names its common-force
+  assumption; coupled ranking requires fresh candidate-specific evidence from
+  an owned model copy.
+- Ordered objectives and explicit tie breakers produce deterministic results.
+  Candidate ID is always the final tie. Performance uses deterministic work
+  counts rather than elapsed time.
+- Complete finite enumeration alone may select a candidate and claim optimum
+  or infeasibility. Budget, cancellation, unresolved coupling, and incomplete
+  evidence retain only a provisional best evaluated candidate and reason-coded
+  exclusions.
+- Python and .NET expose the same semantic operations, records, enum values,
+  identities, units, and adversarial fixtures. Excel integration, ETABS model
+  mutation, and search heuristics remain later host concerns.
+
+Corrections made during review:
+
+- Removed the optimization dependency on the reporting layer by defining a
+  portable candidate-result binding owned by the WP08 contract.
+- Separated physical-definition identity from caller choice labels so duplicate
+  physical beams cannot consume budget or appear as distinct design options.
+- Bound the domain output back to project, profile, topology, actions, scope,
+  baseline analysis, and baseline section, and revalidated its semantic identity
+  before ranking.
+- Preserved fixed-action section studies as explicitly scoped comparisons while
+  requiring fresh analysis evidence for the same section change in coupled mode.
+- Replaced scalar application-supplied pass lists with the complete AO17 leaf
+  set and retained all feasible, failed, incomplete, unevaluated, and duplicate
+  records in the result ledger.

@@ -11,7 +11,7 @@
     "Use .NET 10 Desktop Runtime matching Excel bitness. Existing add-ins and the target ETABS API need host compatibility tests.",
     "CSI assemblies come from the supported installed product/API SDK when its adapter is implemented; none are redistributed here.",
     "System.Text.Json supplies strict contracts and generated schemas.",
-    "Use explicit finite candidate evaluation before adding an optimization package.",
+    "Use explicit finite candidate enumeration and deterministic ranking without an external optimization package; add one only for a demonstrated search problem.",
     "Repository permission already covers approved normalized IS data distribution; migration retains rule/table/example provenance."
   ]
 }
