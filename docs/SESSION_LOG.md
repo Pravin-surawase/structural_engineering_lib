@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-09-05 — Session: WP10-04 preparation and predecessor review
+
+**Task:** WP10-04-PREP
+**Agent:** codex (one parent; no subagents)
+**Branch:** `codex/wp10-04-prep`, from fetched `origin/main`
+`31974b34d6bfc589d506648cd73ac5431b095638`.
+
+**Focus:** Review delivered WP10-03 and prepare the executable WP10-04 offline
+normalization card. This is documentation and read-only evidence inspection;
+no product implementation, new tests, COM, Excel, or workflow redesign.
+
+### Completed
+
+- Verified PR 970 merged the reviewed `9d3cf00a` head with identical tree
+  `ae92ea494173264343ad48338bf35eaec904e44b`; hosted run `33916559572`
+  succeeded. Historical candidate-stage notes are not a pending delivery gate.
+- Verified both retained WP10-03 durable artifact files against the committed
+  byte counts and SHA-256 values. Inspected getter facts without attaching to
+  ETABS or invoking the configured live broker test.
+- Reviewed production contracts and validators, the current getter matrix,
+  source-discovered test names, scripts/hooks, scoped documentation rules,
+  beam-automation skill, and relevant recurrence controls.
+- Added the WP10-04 entry matrix, bounded paths, nine acceptance/proof rows,
+  ordered implementation units, command shapes and stop conditions to the
+  existing WP10 plan. Identified material classification, axis/face convention,
+  revision context and complete projected record accounting as semantic entry
+  decisions rather than assumptions to defer until audit.
+- Recorded the predecessor's measured 21.17% rework against the ten-percent
+  target, alongside its successful one-live-run/one-hosted-run boundary.
+  No token or cost estimates were invented.
+- Updated the maintained next-session handoff to point to the WP10-04 card.
+
+### Issues encountered
+
+- Initial session admission returned `HOLD_DIVERGED` on the clean predecessor
+  branch. Ordinary `git fetch origin` then failed because local configuration
+  still requested the absent remote `codex/wp10-completion` branch. (`RR-017`)
+
+### Root causes and resolutions
+
+- Confirmed: the predecessor used a squash merge, so its feature history
+  diverged even though its tree matched merged main. Connected GitHub verified
+  the merge and successful hosted run; exact tree comparison confirmed equality.
+  Started the planning branch from fetched main without resetting or deleting
+  the old branch.
+- Confirmed: `remote.origin.fetch` contains an explicit obsolete branch
+  refspec. An explicit fetch of the existing main and WP10-03 branch refs
+  succeeded; session admission then passed on the new branch. Configuration
+  and branch cleanup remain outside this preparation scope. (`RR-017`)
+
+### Rework and recurrence
+
+- `RR-017`, occurrences=1, minutes=unknown — inspect narrow fetch configuration
+  and fetch exact required refs when an obsolete branch blocks ordinary fetch;
+  never treat the failed fetch as current remote proof.
+
+### Validation and delivery boundary
+
+- Read-only predecessor proof: merged PR, successful exact-head hosted run,
+  candidate/merge tree equality, and two retained-artifact byte/hash matches.
+- This packet changes only the WP10 plan, session log, recurrence index and
+  generated handoff. Its frozen verification is documentation checks, session
+  check, efficiency policy, changed-path formatting and file integrity. Product
+  and installed tests are not repeated for planning-only edits.
+- Same-checkout delivery uses the executable lifecycle ledger; no cross-device
+  writer or installed-artifact handoff is claimed. New WP10-04 implementation
+  must bind its own fetched base and pass the semantic entry matrix first.
+
+**Next:** Begin WP10-04 semantic intake from the executable plan card; resolve
+the named mappings before any product write. Keep all normalization offline.
+
+---
+
 ## 2026-09-05 — Session: WP10-03 bounded ETABS operation broker
 
 **Agent:** Codex (`orchestrator`); no subagents.

@@ -250,8 +250,9 @@ project-wide control plane; that promotion is a separate maintenance scope.
 
 ### WP10-03 implementation review — 2026-09-05
 
-State: implemented locally with offline and exact-host evidence passing; final
-candidate and hosted PR acceptance remain delivery gates.
+State: merged in [PR 970](https://github.com/Pravin-surawase/structural_engineering_lib/pull/970).
+The WP10-04 preparation review below verifies the delivered identity and records
+the measured outcome; the implementation observations here remain historical.
 
 Confirmed outcomes:
 
@@ -307,22 +308,186 @@ source, not narrative labels.
 
 ### WP10-04 next-plan review after WP10-03
 
-WP10-04 remains an offline-only task. Its entry card must bind the exact
-WP10-03 artifact schema and receipt hashes, then project vendor-specific getter
-records into the already frozen `RawAnalysisCapture` contract before pure
-normalization. `StructuralEngineering.Analysis` must not reference the optional
-ETABS assembly; the adapter may project to portable records, while canonical
-unit conversion, axes/mapping validation, row conservation, and snapshot
-identity stay in the host-free layer.
+#### Delivered-work check — 2026-09-05
 
-Before WP10-04 product writes, freeze explicit mappings for ETABS unit enum `6`,
-load-case/combination enums, `SimilarToStory` nulls, section/material facts,
-local-axis and physical-face evidence, object/element/physical stations, action
-basis and step-number rules, and every raw-model/force-row disposition. Its
-focused matrix must first replay the retained WP10-03 artifact, prove the same
-snapshot identity without COM, and make unresolved mappings or axes block the
-whole snapshot. WP10-04 must not attach to ETABS, write Excel, or reopen the
-completed broker design unless its input contract is shown to be insufficient.
+Preparation task `WP10-04-PREP` checked the predecessor before any product work:
+
+| Check | Observed evidence |
+| --- | --- |
+| Integration | PR 970 is merged. Reviewed head `9d3cf00aef3c772d4e37df080fa850318b1acf5a` and fetched merge `31974b34d6bfc589d506648cd73ac5431b095638` have identical tree `ae92ea494173264343ad48338bf35eaec904e44b`. |
+| Hosted proof | [PR Validation 33916559572](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/33916559572) completed successfully on the reviewed head. |
+| Product evidence | The committed [broker receipt](../../verification/wp10-03-operation-broker-evidence.json) records 410 calls, 48 getter operations, 820 journal records, 13 force rows, unchanged protected state, and cleanup. The prior focused result is 12 broker and 10 getter cases; this planning review does not rerun installed tests. |
+| Retained input | Both external artifact files are present and their byte counts and SHA-256 match the receipt. Preparation inspects JSON offline; WP10-04 must still invoke the production artifact validator before projection. |
+| Efficiency | The Git-common usage closeout under historical task ID `WP10-COMPLETION` records 74.699 minutes, one audit rejection/repair, 15.817 rework minutes (21.17%), zero focused-gate retries, zero broad local gates, one integrity gate, one final closeout, and one hosted run. |
+
+The bounded slice, exact replay, one installed run, source-bound receipt, and
+single hosted cycle worked well. The less-than-ten-percent rework target was
+not met. Several formatter invocations and command corrections also occurred;
+zero recorded focused-gate retries does not mean zero repeated work. Preserve
+the useful controls and move semantic decisions, dependency projections, exact
+test selectors, and lifecycle argument discovery before content freeze.
+
+The essential audit lesson is **production ownership of completeness**. A test
+callback must not be able to make an incomplete projection look successful.
+WP10-04's public normalization path must itself enforce coverage, row accounting,
+and no accepted partial snapshot. A test independently checks those invariants.
+
+#### WP10-04 executable plan card
+
+Status: preparation complete; **semantic intake must pass before product
+writes**. The retained capture is usable input, but the choices in the entry
+matrix below are not all established by getter bytes. Do not describe this as
+an already implemented normalizer or an unconditional implementation go-ahead.
+
+| Plan row | WP10-04 value |
+| --- | --- |
+| Outcome | An offline production path validates the durable acquisition, projects complete portable raw records, and emits a deterministic validated `structural.analysis_snapshot/v1`, or a typed failure with no accepted snapshot. |
+| Non-goals | No COM attachment, broker/STA execution, installed application work, Excel import, ETABS setters, engineering design, performance qualification, WP11, release, or generic workflow redesign. |
+| Starting identity | This preparation starts at merged `31974b34d6bfc589d506648cd73ac5431b095638` on clean `codex/wp10-04-prep`. Implementation must fetch and bind its own exact current default base, clean `codex/wp10-04-*` head/tree, writer device, and candidate-overlap disposition; the preparation base is not a permanent implementation base. |
+| Authority and reuse | PF11 and AO16; existing `AnalysisSnapshotContracts.cs`, `AnalysisSnapshotCodec`, `operations/wp10.json`, `schemas/wp10.schema.json`, and `conformance/wp10-vectors.json`; `EtabsAcquisitionArtifactCodec.ParseAndValidate`, getter matrix, and broker receipt. Preserve WP10-01 meanings and golden identities. |
+| Layer ownership | Optional ETABS package decodes vendor records offline. Contracts carry typed portable inputs; Analysis owns unit conversion, topology/axis/face checks, row dispositions, and canonical construction. Analysis must never reference Etabs or Excel. |
+| Expected impact | `dotnet`, `python` for shared conformance checks if affected, `docs`, and `repository`; the maintained verification plan decides actual domains. A shared-contract edit may route more domains and must not be overridden manually. |
+| Inputs | Exact durable artifact plus receipt, AO16 scope/source context, explicit normalization policy and any required evidence mapping. Files are read-only; output uses a new external task directory. No lookup against today's ETABS process, model file, or clock. |
+| Bounded writes | Existing Contracts/Analysis/Etabs projects only for required projection and normalization; focused tests in the two existing C# test projects; additive shared conformance vectors and affected Python WP10 tests only when needed; this plan, implementation status, one safe WP10-04 receipt, newest session entry and maintained handoff. Dependency locks only for actual graph changes. |
+| Proposed new files | `CSharp/src/StructuralEngineering.Etabs/EtabsCaptureProjector.cs`, `CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotNormalizer.cs`, `CSharp/tests/StructAutomate.Tests/Wp10CaptureProjectionTests.cs`, and `CSharp/tests/StructuralEngineering.Tests/Wp10NormalizationTests.cs`. These names are planned, not existing callable APIs. Freeze any required context type in Contracts during intake. |
+| Control ownership | Reuse `session`, `verification plan`, changed-path `format`, docs checks, hooks, candidate integrity and required hosted checks. No WP10-specific Git wrapper, scheduler, duplicate impact map, or new agent infrastructure. |
+| Skill and roles | Use the beam-automation skill and scoped C#/documentation rules. One parent performs implementation, verification, essential review and operations passes; no automatic agent fan-out. Separate read-only audit only if explicitly delegated, using a compact acceptance packet and exact candidate identity. |
+| Efficiency | One candidate, zero repair batches/command corrections, one frozen focused matrix, one integrity gate, one final closeout, one hosted cycle, zero live runs; rework target below ten percent. Report actuals honestly. |
+
+#### Input and semantic entry matrix
+
+The primary input is `external:WP10-03/wp10-03-live-broker-artifact.json`,
+schema `structural.etabs_durable_raw_artifact/v1`, 1,268,036 bytes, file SHA-256
+`5a24ef94ca511a248d4897c54cf5e779c2cdc5eef9753c14795e055540f39135` and
+embedded artifact SHA-256
+`193a3c84cf52af1be4426c53a0e8f603c137be90144aea3532f91892e8a207c5`.
+The receipt separately binds its journal and the secondary offline replay
+artifact. Resolve the device-local file location at intake; never commit the
+raw capture, model paths, vendor binaries, or private project data as fixtures.
+
+Freeze the following in one acceptance record before implementation. A source
+fact and a chosen interpretation must remain distinguishable.
+
+| Topic | Observed input / required decision | Acceptance consequence |
+| --- | --- | --- |
+| Artifact boundary | Use the durable artifact validator, then bind every projected getter to the retained call ID, operation, inputs, outputs, signature digest and ordinal. `EtabsRecordedGetterHost.Load` accepts the earlier getter-capture format, not this durable envelope. | Consume the durable content directly offline; do not start a broker merely to normalize it. Reject wrong file/hash/schema, incomplete or failed ledger, changed identity, or missing cleanup proof. |
+| Coverage before projection | 410 calls across 48 operations include repeated pre/post observations and catalogs beyond the selected scope. The portable record-kind set has no separate story/load-pattern/insertion/spring record. | Freeze a complete getter-output-to-field/evidence/disposition map, grouping repeated observations without losing provenance. Freeze the expected projected model-record count. Never drop unsupported facts before the portable row ledger and call that conservation. |
+| Units | Captured present/database enum is `6`; the component-unit getters must agree. CSI documents `6` as `kN_m_C`. Dimensional conversion is m→mm ×1000, kN→kN ×1, kNm→kNm ×1, stress kN/m²→N/mm² ×0.001, area ×10^6, fourth moments ×10^12. | Bind the mass-density unit independently to the getter's mass output and use its force/length/time basis; do not infer mass from weight using an assumed gravity. Freeze every quantity factor before code. |
+| Existing normalizer | `ActionNormalizer` implements the WP03 N/Nmm output contract; AO16 action rows require kN/kNm. | Reuse validation ideas, not its unit-labelled output as an AO16 row. Prevent both double conversion and mixed-unit reuse. |
+| Section/material | Rectangle dimensions and `GetMaterial` are explicit; section and material names differ and cannot prove grades or material kind. `GetMPIsotropic`/`GetWeightAndMass` do not provide a material-type enum. | Use returned dimensions/properties, not name parsing. Bind material kind to approved retained evidence or explicit typed mapping; unresolved required classification blocks. No invented concrete grade. |
+| Assignments | Preserve object and section modifiers separately, offsets, insertion point, mirroring and release spring values. Only boolean releases have direct portable fields. | Define whether each extra fact is represented in raw fields/provenance or requires blocking for the chosen scope; nonzero springs or eccentric/mirrored assignments cannot silently become a simple centered member. |
+| Stories | `SimilarToStory` contains six CLR nulls; `IsMasterStory` is true for those captured rows. | Preserve null in raw evidence. Freeze its semantic handling; do not turn it into an empty string or fabricate a story reference. |
+| Selection and enums | There are 15 case-type records and 62 combination definitions; the selected combination lists five case factors. | Map case type/subtype, combination type and case/combo reference enum explicitly; follow the selected dependency closure with ordered factors. No name-based inference of linearity or concurrency. Freeze disposition of out-of-scope definitions. |
+| Steps and concurrent actions | All 13 captured force rows have `Single Value` and numeric step `0`. The portable validator requires null for a non-step action and equality between portable raw and normalized step. | After proving static concurrency from the dependency graph, project the vendor sentinel to null in both portable rows; retain original `0` in immutable getter evidence and record the rule. Step-based/envelope rows need their own explicit basis or a blocking result. |
+| Axes and faces | Retained element matrix is `[0,0,1,1,0,0,0,1,0]`. Endpoint direction is global +Y. Both a matrix and its transpose can pass an orthonormality check. | Freeze matrix layout with exact-version documentation and geometry. Check e1 against I→J and transform unit vectors; explicitly define physical top/left and viewing direction. An orthonormal matrix alone does not prove axis meaning. |
+| Stations | The retained member is about 2.75 m between its endpoints, with 0.225 m end offsets; 13 object/element stations run from about 0.225 to 2.525 m. `LineElm.GetObj` supplies parent and relative distances. | Define physical origin, interval and ratio using topology. Preserve separate object/element stations. Never set the first force station to zero or equate a meshed element station to the physical station by default. |
+| Identity and freshness | Capture has acquisition, model, protected-state and selection evidence, but does not supply a portable project ID or a native analysis revision/epoch identifier. | Freeze project/source context and deterministic evidence-derived revision/epoch rules, labelled as such. No random ID, current timestamp or claim to know today's live-model state. |
+| Exclusions | Every projected model record and force row needs exactly one accepted/approved-exclusion/blocked disposition. | Freeze exclusion reasons and real approval references. For this selected beam, expect 13 accepted same-row actions; do not manufacture approval to discard a difficult row. Any required blocked row withholds the whole snapshot. |
+
+The material-kind evidence, axis/physical-face convention, deterministic
+revision context and complete projection/disposition count are explicit entry
+decisions. If retained evidence cannot settle one, produce a bounded revised
+contract or a precise missing-input request before product writes; do not
+reopen live acquisition under WP10-04. Historical CSI documentation is a
+semantic cross-check, not proof of the installed 2.16 signature:
+[eUnits](https://docs.csiamerica.com/help-files/etabs-api-2016/html/cff40d28-9b1a-7f00-cfb9-0386da2464cc.htm).
+
+#### Acceptance-to-proof map and ordered units
+
+| ID | Required proof on the production path |
+| --- | --- |
+| N1 | Exact-file hash plus production durable validation; wrong bytes/schema/ledger/state fail before any portable output. |
+| N2 | All getter facts have traceable coverage and projected raw records have deterministic IDs; deleting a required fact cannot be masked by a smaller projected input count. |
+| N3 | Independent dimensional examples cover geometry, section properties, elastic modulus, density and all six signed force components; no rounding, absolute-value conversion or cross-row envelope is introduced. |
+| N4 | Geometry verifies transform layout, I/J direction, faces and physical/object/element station relationships; reversed and meshed examples expose transposition or origin errors. |
+| N5 | Selection dependency closure proves action basis; vendor zero→portable null is explicit for non-step rows; unsupported/ambiguous selections or steps block. |
+| N6 | Model records plus force rows equal accepted + approved exclusions + blocked, each source identity exactly once. One blocked required row yields no accepted snapshot. The normalizer enforces this without harness assistance. |
+| N7 | Repeating the same validated artifact with identical context/policy/build inputs yields identical raw, row, snapshot and canonical-byte hashes. Live and replay artifacts have distinct acquisition identities, so their snapshot hashes need not match. |
+| N8 | Both Python and .NET accept the emitted portable snapshot and agree on canonical identity. Existing WP10-01 vectors remain unchanged; additive synthetic vectors cover new normalization behavior without private raw data. |
+| N9 | Exact 13-row retained-input normalization runs with no COM/Excel access and binds artifact, policy, projected counts and output hashes in a safe receipt. This proves offline normalization only. |
+
+1. **Semantic intake:** resolve the entry decisions and bind every N1–N9 row
+   to a named test/example or exact retained-artifact observation. Inspect the
+   graph, nullable fields and unsupported facts before building a projector.
+2. **Projection and normalization:** implement one complete production route,
+   typed context/policy, synthetic fixtures and failure results. Use only a
+   narrow diagnostic when it answers a current implementation question.
+3. **Offline retained-input proof:** invoke the new production route on the
+   exact primary artifact, compare repeat identities, then independently
+   validate the portable output with Python. Preserve source files unchanged.
+4. **Finish writes:** complete tests, receipt, docs, session/issues, actual
+   dependency locks and generated handoff. Run the live impact plan from the
+   original task-base SHA; reconcile every changed path. Freeze content.
+5. **Verify and deliver once:** changed-path formatter, consolidated focused
+   matrix, immutable candidate, consolidated essential audit, one read-only
+   integrity check, pre-push closeout, required hosted checks and merge proof.
+   Keep post-push status external. One rejection admits one repair; a second
+   requires a changed acceptance digest before further implementation.
+
+#### Command and recurrence controls
+
+These are the command shapes for the implementation card. Run shell examples
+from repository root unless `workdir: CSharp` is stated. In this Windows
+checkout, use literal PowerShell paths and explicit `bash` for repository
+launchers. Fetch exact refs if a stale narrow refspec blocks ordinary fetch;
+never modify refspec configuration or delete old branches as incidental cleanup.
+
+```text
+git fetch origin refs/heads/main:refs/remotes/origin/main
+bash scripts/python_runtime.sh scripts/git_state.py --json --worktrees
+bash run.sh session begin --task-id WP10-04 --agent codex
+bash run.sh session delivery --help
+bash run.sh verification plan --base <exact-task-base-sha>
+bash run.sh format --write --base <exact-task-base-sha>
+
+workdir: CSharp
+dotnet restore StructAutomate.slnx --locked-mode
+dotnet build StructAutomate.slnx -c Release --no-restore
+dotnet test --project tests/StructuralEngineering.Tests/StructuralEngineering.Tests.csproj -c Release --no-build --filter FullyQualifiedName~Wp10
+dotnet test --project tests/StructAutomate.Tests/StructAutomate.Tests.csproj -c Release --no-build --filter FullyQualifiedName~Wp10CaptureProjectionTests
+
+workdir: repository root
+bash scripts/python_runtime.sh scripts/validate_structural_engineering_contracts.py
+bash scripts/python_runtime.sh -m pytest Python/tests/unit/test_structural_engineering_wp10.py -q
+bash run.sh check --category docs
+git diff --check
+bash run.sh session check
+bash run.sh efficiency check
+```
+
+The new projection selector becomes executable only after its named source
+exists. Discover exact names with `rg` before freezing the test command. Require
+a positive test count and evidence that the retained-artifact case actually ran;
+an optional environment-gated test returning early is not acceptance. Bind the
+new offline test's input/output arguments during semantic intake. Do not run
+the entire broker test class: it contains
+`ConfiguredExactEtabsHostCompletesOneFinalBrokerAcquisition`. Existing getter or
+broker regression cases are added only if affected, with an explicit exclusion
+of live entry points. Default .NET build must need no vendor installation.
+
+Use `session delivery --to <state> --evidence <proof>` for every transition,
+`--acceptance-path` at bounded intake, and exact head/run/PR/merge arguments
+where required by the current CLI. Poll yielded terminal sessions to completion
+before advancing the state. After audit acceptance, run
+`bash run.sh check --candidate-integrity` exactly once; pre-push owns the final
+`session end`. Record the seven non-overlapping timing phases and actual retry,
+candidate, repair, broad-gate and hosted counts through `session usage`.
+The broad Python suite and full 32-check gate remain at the named cumulative
+programme gate unless a demonstrated cross-domain change requires them sooner.
+
+Apply [recurrence controls](../../verification/rework-recurrence-index.json)
+RR-001/002 for bounded scope and entry evidence; RR-003/011/012/013 for locks,
+formatting and full-task-base hygiene; RR-005/015/016 for exact commands,
+nonzero test discovery and complete lifecycle arguments; RR-007/014 for
+canonical Unicode and UTC identities; RR-004/006/008 for one governed closeout
+and the repair ceiling; RR-010 for consistent issue provenance. These references
+reuse the maintained controls rather than copying their counters into the card.
+
+Stop/replan on a changed WP10-01 meaning, unavailable semantic evidence,
+unaccounted input, required COM call, hidden unit/axis assumption, unexpected
+write outside the path budget, or a second rejected candidate. The review
+question stays: would fixing this change the main normalization outcome?
+Ignore adjacent hardening and do not add tests during the audit pass.
 
 ## WP10-02 single-session execution contract
 

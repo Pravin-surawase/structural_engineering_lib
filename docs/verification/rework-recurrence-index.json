@@ -266,6 +266,22 @@
       "details": [
         "docs/SESSION_LOG.md"
       ]
+    },
+    {
+      "id": "RR-017",
+      "pattern": "An obsolete explicit fetch refspec blocks refreshing required remote refs",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-04-PREP ordinary fetch failed because remote.origin.fetch still requested absent codex/wp10-completion. Explicitly fetching the existing main and WP10-03 refs succeeded; the correction was not separately timed."
+      },
+      "short_solution": "Inspect configured refspecs and fetch exact required existing refs; preserve configuration and branches unless cleanup is separately authorized.",
+      "last_seen_task": "WP10-04-PREP",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
     }
   ]
 }
