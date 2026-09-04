@@ -68,16 +68,45 @@ function Get-InstalledAddinState {
 
 function Start-InstalledExcel {
     param([Parameter(Mandatory)][string]$XllPath)
+    $startupRegistrations = @(Get-StructAutomateExcelStartupRegistrations -XllPath $XllPath)
+    if ($startupRegistrations.Count -eq 0) { throw "The installed XLL has no exact per-user Excel startup registration: $XllPath" }
     $excel = New-Object -ComObject Excel.Application
+    $workbooks = $null
+    $bootstrapWorkbook = $null
+    $succeeded = $false
     try {
         $excel.Visible = $false
         $excel.DisplayAlerts = $false
         $excel.AskToUpdateLinks = $false
+        $workbooks = $excel.Workbooks
+        $bootstrapWorkbook = $workbooks.Add()
+        if (-not [bool]$excel.RegisterXLL($XllPath)) { throw "Excel automation could not load the installed XLL: $XllPath" }
         $state = Get-InstalledAddinState -Excel $excel -XllPath $XllPath
         if (-not $state.found -or -not $state.installed) { throw "The signed installed XLL is not registered and loaded by Excel: $XllPath" }
-        return [pscustomobject]@{ Excel = $excel; Addin = $state }
+        $versionProbe = [string]$excel.Run('STR.INFO.VERSION')
+        if ([string]::IsNullOrWhiteSpace($versionProbe)) { throw 'The installed XLL version probe returned no value.' }
+        $succeeded = $true
+        return [pscustomobject]@{
+            Excel = $excel
+            Addin = [ordered]@{
+                found = $state.found
+                installed = $state.installed
+                name = $state.name
+                full_name = $state.full_name
+                startup_registrations = $startupRegistrations
+                automation_load_verified = $true
+                version_probe = $versionProbe
+            }
+        }
     }
-    catch { Close-StructAutomateExcelApplication $excel; throw }
+    finally {
+        if ($bootstrapWorkbook) {
+            try { $bootstrapWorkbook.Close($false) }
+            finally { Release-StructAutomateComObject $bootstrapWorkbook }
+        }
+        Release-StructAutomateComObject $workbooks
+        if (-not $succeeded) { Close-StructAutomateExcelApplication $excel }
+    }
 }
 
 function Invoke-ExcelCommand {
@@ -107,7 +136,12 @@ function Get-ObjectSha256 {
     param([AllowNull()][object]$Value)
     $json = $Value | ConvertTo-Json -Depth 20 -Compress
     $bytes = [Text.Encoding]::UTF8.GetBytes($json)
-    return [Convert]::ToHexStringLower([Security.Cryptography.SHA256]::HashData($bytes))
+    $algorithm = [Security.Cryptography.SHA256]::Create()
+    try {
+        $hash = $algorithm.ComputeHash($bytes)
+        return -join @($hash | ForEach-Object { $_.ToString('x2') })
+    }
+    finally { $algorithm.Dispose() }
 }
 
 function Get-TableColumnDigest {
@@ -367,16 +401,13 @@ try {
     Wait-ForExcelExit
     $coldSamples = @()
     for ($index = 1; $index -le $ColdLaunchCount; $index++) {
-        $timer = [Diagnostics.Stopwatch]::StartNew(); $coldSession = $null; $coldBook = $null; $coldBooks = $null
+        $timer = [Diagnostics.Stopwatch]::StartNew(); $coldSession = $null
         try {
-            $coldSession = Start-InstalledExcel -XllPath $xll; $coldBooks = $coldSession.Excel.Workbooks
-            $coldBook = $coldBooks.Open($workbookCopy, 0, $true); Wait-ForExcelReady -Excel $coldSession.Excel
-            Get-WorkbookTables -Workbook $coldBook -RequiredNames @('StructuralProject', 'StructuralMembers', 'StructuralOperations') | Out-Null
+            $coldSession = Start-InstalledExcel -XllPath $xll
+            $timer.Stop()
         }
         finally {
-            $timer.Stop()
-            if ($coldBook) { try { $coldBook.Close($false) } finally { Release-StructAutomateComObject $coldBook } }
-            Release-StructAutomateComObject $coldBooks
+            if ($timer.IsRunning) { $timer.Stop() }
             if ($coldSession) { Close-StructAutomateExcelApplication $coldSession.Excel }
         }
         Wait-ForExcelExit; $coldSamples += [Math]::Round($timer.Elapsed.TotalMilliseconds, 3)

@@ -43,7 +43,9 @@ unpacked distribution directory, run:
 ```
 
 The per-user installation is placed under
-`%LOCALAPPDATA%\StructAutomate\Excel\0.1.0`. Open
+`%LOCALAPPDATA%\StructAutomate\Excel\0.1.0` and adds an exact per-user Excel
+startup entry for that XLL. Uninstall removes that entry and only that version's
+files. Open
 `StructAutomate-Standalone-Beam.xlsx` after installation. The **StructAutomate**
 Ribbon tab exposes the normal workflow.
 

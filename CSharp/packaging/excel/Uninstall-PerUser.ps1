@@ -49,6 +49,9 @@ if (Test-Path -LiteralPath $installedXll -PathType Leaf) {
         Close-StructAutomateExcelApplication $excel
     }
 }
+$startupRegistrations = @(Unregister-StructAutomateExcelStartup -XllPath $installedXll)
+$registration.startup_registrations_removed = $startupRegistrations
+$registration.startup_removed = $startupRegistrations.Count -gt 0
 
 $removedFiles = @()
 if (Test-Path -LiteralPath $installDirectory) {

@@ -69,7 +69,9 @@ write set.
    identities, raw samples, and the PF9 budget verdict: warm median at most
    750 ms, warm p95 at most 1 s, cold ready at most 3 s,
    progress/cancellation response at most 250 ms, and Excel working-set growth
-   at most 256 MiB.
+   at most 256 MiB. A cold-ready sample ends when a new Excel process returns
+   the installed XLL version probe; opening and inspecting a workbook remains
+   separate functional evidence.
 
 ## Acceptance
 

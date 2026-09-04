@@ -55,6 +55,61 @@ function Get-StructAutomateExcelEnvironment {
     }
 }
 
+function Get-StructAutomateExcelStartupRegistrations {
+    param([Parameter(Mandatory)][string]$XllPath)
+
+    $optionsPath = 'HKCU:\Software\Microsoft\Office\16.0\Excel\Options'
+    $expectedValue = '/R "' + [System.IO.Path]::GetFullPath($XllPath) + '"'
+    $properties = Get-ItemProperty -Path $optionsPath -ErrorAction SilentlyContinue
+    if (-not $properties) { return @() }
+    return @($properties.PSObject.Properties | Where-Object {
+        $_.Name -match '^OPEN\d*$' -and
+        [string]::Equals([string]$_.Value, $expectedValue, [System.StringComparison]::OrdinalIgnoreCase)
+    } | ForEach-Object {
+        [ordered]@{ registry_path = $optionsPath; value_name = $_.Name; value = [string]$_.Value }
+    })
+}
+
+function Register-StructAutomateExcelStartup {
+    param([Parameter(Mandatory)][string]$XllPath)
+
+    $existing = @(Get-StructAutomateExcelStartupRegistrations -XllPath $XllPath)
+    if ($existing.Count -gt 0) {
+        return [ordered]@{
+            registry_path = $existing[0].registry_path
+            value_name = $existing[0].value_name
+            value = $existing[0].value
+            created = $false
+        }
+    }
+
+    $optionsPath = 'HKCU:\Software\Microsoft\Office\16.0\Excel\Options'
+    [void](New-Item -Path $optionsPath -Force)
+    $properties = Get-ItemProperty -Path $optionsPath
+    $usedNames = @($properties.PSObject.Properties | Where-Object Name -Match '^OPEN\d*$' | ForEach-Object Name)
+    $valueName = 'OPEN'
+    if ($usedNames -contains $valueName) {
+        for ($index = 1; $index -le 999; $index++) {
+            $candidate = "OPEN$index"
+            if ($usedNames -notcontains $candidate) { $valueName = $candidate; break }
+        }
+        if ($usedNames -contains $valueName) { throw 'No free Excel OPEN registration slot was found.' }
+    }
+    $value = '/R "' + [System.IO.Path]::GetFullPath($XllPath) + '"'
+    [void](New-ItemProperty -Path $optionsPath -Name $valueName -PropertyType String -Value $value -Force)
+    return [ordered]@{ registry_path = $optionsPath; value_name = $valueName; value = $value; created = $true }
+}
+
+function Unregister-StructAutomateExcelStartup {
+    param([Parameter(Mandatory)][string]$XllPath)
+
+    $registrations = @(Get-StructAutomateExcelStartupRegistrations -XllPath $XllPath)
+    foreach ($registration in $registrations) {
+        Remove-ItemProperty -Path $registration.registry_path -Name $registration.value_name -ErrorAction Stop
+    }
+    return $registrations
+}
+
 function Get-StructAutomateDesktopRuntimes {
     $lines = & dotnet --list-runtimes 2>&1
     if ($LASTEXITCODE -ne 0) { throw "dotnet --list-runtimes failed: $lines" }

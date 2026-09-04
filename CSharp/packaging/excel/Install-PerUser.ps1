@@ -32,51 +32,63 @@ foreach ($file in Get-ChildItem -LiteralPath $distribution -File) {
 }
 
 $installedXll = Join-Path $installDirectory 'StructAutomate.xll'
+$startupRegistration = $null
 $registration = [ordered]@{
     requested = -not $SkipExcelRegistration
     succeeded = $false
     addin_name = $null
     addin_full_name = $null
+    startup = $startupRegistration
 }
 if (-not $SkipExcelRegistration) {
-    $excel = New-Object -ComObject Excel.Application
-    $addIns = $null
-    $addin = $null
-    $workbooks = $null
-    $bootstrapWorkbook = $null
+    $startupRegistration = Register-StructAutomateExcelStartup -XllPath $installedXll
+    $registration.startup = $startupRegistration
     try {
-        $excel.Visible = $false
-        $excel.DisplayAlerts = $false
-        $workbooks = $excel.Workbooks
-        $bootstrapWorkbook = $workbooks.Add()
-        $addIns = $excel.AddIns
-        for ($index = 1; $index -le $addIns.Count; $index++) {
-            $candidate = $null
-            try {
-                $candidate = $addIns.Item($index)
-                if ([string]::Equals([string]$candidate.FullName, $installedXll, [System.StringComparison]::OrdinalIgnoreCase)) {
-                    $addin = $candidate
-                    $candidate = $null
-                    break
+        $excel = New-Object -ComObject Excel.Application
+        $addIns = $null
+        $addin = $null
+        $workbooks = $null
+        $bootstrapWorkbook = $null
+        try {
+            $excel.Visible = $false
+            $excel.DisplayAlerts = $false
+            $workbooks = $excel.Workbooks
+            $bootstrapWorkbook = $workbooks.Add()
+            $addIns = $excel.AddIns
+            for ($index = 1; $index -le $addIns.Count; $index++) {
+                $candidate = $null
+                try {
+                    $candidate = $addIns.Item($index)
+                    if ([string]::Equals([string]$candidate.FullName, $installedXll, [System.StringComparison]::OrdinalIgnoreCase)) {
+                        $addin = $candidate
+                        $candidate = $null
+                        break
+                    }
                 }
+                finally { Release-StructAutomateComObject $candidate }
             }
-            finally { Release-StructAutomateComObject $candidate }
+            if (-not $addin) { $addin = $addIns.Add($installedXll, $false) }
+            $addin.Installed = $true
+            $registration.addin_name = [string]$addin.Name
+            $registration.addin_full_name = [string]$addin.FullName
+            $registration.succeeded = [bool]$addin.Installed
         }
-        if (-not $addin) { $addin = $addIns.Add($installedXll, $false) }
-        $addin.Installed = $true
-        $registration.addin_name = [string]$addin.Name
-        $registration.addin_full_name = [string]$addin.FullName
-        $registration.succeeded = [bool]$addin.Installed
+        finally {
+            if ($bootstrapWorkbook) {
+                try { $bootstrapWorkbook.Close($false) }
+                finally { Release-StructAutomateComObject $bootstrapWorkbook }
+            }
+            Release-StructAutomateComObject $workbooks
+            Release-StructAutomateComObject $addin
+            Release-StructAutomateComObject $addIns
+            Close-StructAutomateExcelApplication $excel
+        }
     }
-    finally {
-        if ($bootstrapWorkbook) {
-            try { $bootstrapWorkbook.Close($false) }
-            finally { Release-StructAutomateComObject $bootstrapWorkbook }
+    catch {
+        if ($startupRegistration.created) {
+            [void](Unregister-StructAutomateExcelStartup -XllPath $installedXll)
         }
-        Release-StructAutomateComObject $workbooks
-        Release-StructAutomateComObject $addin
-        Release-StructAutomateComObject $addIns
-        Close-StructAutomateExcelApplication $excel
+        throw
     }
     if (-not $registration.succeeded) { throw 'Excel did not report the add-in as installed.' }
 }
