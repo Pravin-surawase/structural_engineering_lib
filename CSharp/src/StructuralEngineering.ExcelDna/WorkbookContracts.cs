@@ -10,7 +10,7 @@ namespace StructuralEngineering.ExcelDna;
 public static class WorkbookContract
 {
     public const string TemplateId = "structural-excel-workbook/v1";
-    public const string CalculationEngineRevision = "structural-engineering-excel-dna/wp09-r1";
+    public const string CalculationEngineRevision = "structural-engineering-excel-dna/wp09-r2";
     public const string ProjectTable = "StructuralProject";
     public const string MembersTable = "StructuralMembers";
     public const string OperationsTable = "StructuralOperations";
@@ -207,6 +207,7 @@ public sealed record WorkbookFreshnessLedger(
     string ProjectId,
     string MemberId,
     string InputRevisionSha256,
+    string ExecutionFingerprint,
     string? OutputRevisionSha256,
     bool IsCurrent,
     IReadOnlyList<string> ResultIds,
@@ -222,6 +223,7 @@ public sealed record WorkbookCommandReceipt(
     string MemberId,
     string RequestId,
     string InputRevisionSha256,
+    string ExecutionFingerprint,
     string? OutputRevisionSha256,
     string IssuedAtUtc,
     IReadOnlyList<string> DeclaredOutputTables,

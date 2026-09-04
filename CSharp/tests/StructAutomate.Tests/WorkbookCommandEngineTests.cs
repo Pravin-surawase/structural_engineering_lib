@@ -180,6 +180,48 @@ public class WorkbookCommandEngineTests
     }
 
     [Fact]
+    public void ChangedExecutionFingerprintRejectsPersistedResultsAndForcesRecalculation()
+    {
+        var store = new MemoryStore(SampleWorkbookData.CreateTypicalTables(1));
+        var inputs = WorkbookInputReader.Read(store);
+        var originalEngine = new WorkbookCommandEngine(executionFingerprint: "runtime-a");
+        var calculated = originalEngine.ExecuteBatch(WorkbookCommandKind.Calculate, inputs, store,
+            "2026-09-04T00:00:00Z");
+        Assert.True(store.TryRead(WorkbookContract.FreshnessTable, out var originalFreshness));
+        store.Replace(originalFreshness with
+        {
+            Rows = [.. originalFreshness.Rows.Select((row, index) => index == 0
+                ? row
+                : row.Select((cell, column) => column == 4
+                    ? new WorkbookCell("runtime-z")
+                    : cell).ToArray())]
+        });
+        var tampered = originalEngine.InspectBatchFreshness(inputs, store,
+            "2026-09-04T00:00:30Z");
+
+        var upgradedEngine = new WorkbookCommandEngine(executionFingerprint: "runtime-b");
+        var stale = upgradedEngine.InspectBatchFreshness(inputs, store,
+            "2026-09-04T00:01:00Z");
+        var recalculated = upgradedEngine.ExecuteBatch(WorkbookCommandKind.Calculate, inputs, store,
+            "2026-09-04T00:02:00Z");
+
+        Assert.Equal("runtime-a", calculated.Freshness.ExecutionFingerprint);
+        Assert.Equal("runtime-a", calculated.Receipt.ExecutionFingerprint);
+        Assert.False(tampered.IsCurrent);
+        Assert.False(stale.IsCurrent);
+        Assert.Equal("persisted_batch_not_current", stale.Reason);
+        Assert.NotEmpty(recalculated.Results);
+        Assert.Equal("batch_completed", recalculated.Freshness.Reason);
+        Assert.Equal("runtime-b", recalculated.Freshness.ExecutionFingerprint);
+        Assert.Equal("runtime-b", recalculated.Receipt.ExecutionFingerprint);
+        Assert.NotEqual(calculated.Freshness.InputRevisionSha256,
+            recalculated.Freshness.InputRevisionSha256);
+        Assert.True(store.TryRead(WorkbookContract.FreshnessTable, out var freshness));
+        Assert.Equal("execution_fingerprint", freshness.Rows[0][4].Value);
+        Assert.All(freshness.Rows.Skip(1), row => Assert.Equal("runtime-b", row[4].Value));
+    }
+
+    [Fact]
     public void CreateValidateDoesNotSubstituteForTheFirstCompleteCalculation()
     {
         var store = new MemoryStore(SampleWorkbookData.CreateTypicalTables(1));

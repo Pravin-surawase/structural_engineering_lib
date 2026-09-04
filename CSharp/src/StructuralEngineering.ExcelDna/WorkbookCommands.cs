@@ -34,7 +34,9 @@ public static class WorkbookCommands
             ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "StructAutomate Packages")
             : Path.Combine((string)workbook.Path, "StructAutomate Packages");
         var sink = new FileWorkbookArtifactSink(folder);
-        var result = new WorkbookCommandEngine().ExportBatch(inputs, store, Timestamp(), sink);
+        var executionFingerprint = RuntimeFingerprint(application);
+        var result = new WorkbookCommandEngine(executionFingerprint: executionFingerprint)
+            .ExportBatch(inputs, store, Timestamp(), sink);
         Ensure(result);
         return Json(new
         {
@@ -42,6 +44,7 @@ public static class WorkbookCommands
             command = "XL-CMD-06",
             receipt_id = result.Receipt.ReceiptId,
             input_revision_sha256 = result.Receipt.InputRevisionSha256,
+            execution_fingerprint = result.Receipt.ExecutionFingerprint,
             output_revision_sha256 = result.Receipt.OutputRevisionSha256,
             artifact_path = sink.LastCommittedPath,
             artifact_sha256 = result.Receipt.ArtifactSha256,
@@ -53,14 +56,16 @@ public static class WorkbookCommands
     public static string MeasureDiagnose() => WithApplication((application, workbook, store) =>
     {
         var inputs = WorkbookInputReader.Read(store);
+        var executionFingerprint = RuntimeFingerprint(application);
+        var engine = new WorkbookCommandEngine(executionFingerprint: executionFingerprint);
         var timer = Stopwatch.StartNew();
-        var inspected = new WorkbookCommandEngine().InspectBatchFreshness(inputs, store, Timestamp());
+        var inspected = engine.InspectBatchFreshness(inputs, store, Timestamp());
         timer.Stop();
         if (!inspected.IsCurrent)
             throw new InvalidOperationException("The workbook is not current; calculate it before measuring.");
-        var request = new WorkbookBenchmarkRequest(RuntimeFingerprint(application),
+        var request = new WorkbookBenchmarkRequest(executionFingerprint,
             new[] { timer.Elapsed.TotalMilliseconds }, "BENCH-EXCEL-TYPICAL/v1");
-        var result = new WorkbookCommandEngine().RecordBatchBenchmark(inputs, store, Timestamp(), request);
+        var result = engine.RecordBatchBenchmark(inputs, store, Timestamp(), request);
         Ensure(result);
         return Json(new
         {
@@ -78,14 +83,16 @@ public static class WorkbookCommands
     public static string ReconstructCurrent() => WithApplication((application, workbook, store) =>
     {
         var inputs = WorkbookInputReader.Read(store);
-        var ledger = new WorkbookCommandEngine().InspectBatchFreshness(inputs, store, Timestamp());
+        var executionFingerprint = RuntimeFingerprint(application);
+        var ledger = new WorkbookCommandEngine(executionFingerprint: executionFingerprint)
+            .InspectBatchFreshness(inputs, store, Timestamp());
         if (!ledger.IsCurrent)
             throw new InvalidOperationException("Saved results do not reconstruct from the current versioned inputs.");
         return Json(new
         {
             state = "completed",
             command = "XL-CMD-07-RECONSTRUCT",
-            runtime = RuntimeFingerprint(application),
+            runtime = executionFingerprint,
             ledger.InputRevisionSha256,
             ledger.OutputRevisionSha256,
             result_count = ledger.ResultIds.Count,
@@ -167,7 +174,8 @@ public static class WorkbookCommands
         if (!store.TryRead(WorkbookContract.ResultsTable, out var before))
             throw new InvalidOperationException("Calculate the sample before the rollback probe.");
         var beforeHash = WorkbookContract.HashJson(before);
-        var result = new WorkbookCommandEngine().ExecuteBatch(WorkbookCommandKind.Calculate,
+        var result = new WorkbookCommandEngine(executionFingerprint: RuntimeFingerprint(application))
+            .ExecuteBatch(WorkbookCommandKind.Calculate,
             inputs, store, Timestamp());
         var restored = store.TryRead(WorkbookContract.ResultsTable, out var after);
         var afterHash = restored ? WorkbookContract.HashJson(after) : null;
@@ -215,7 +223,8 @@ public static class WorkbookCommands
             ? WorkbookContract.HashJson(table)
             : null;
         var timer = Stopwatch.StartNew();
-        var result = new WorkbookCommandEngine().ExecuteBatch(WorkbookCommandKind.Calculate,
+        var result = new WorkbookCommandEngine(executionFingerprint: RuntimeFingerprint(application))
+            .ExecuteBatch(WorkbookCommandKind.Calculate,
             inputs, store, Timestamp(), () => true);
         timer.Stop();
         var after = store.TryRead(WorkbookContract.ResultsTable, out var afterTable)
@@ -234,6 +243,7 @@ public static class WorkbookCommands
             !store.TryRead(WorkbookContract.OperationsTable, out _))
             store.BulkWrite(SampleWorkbookData.CreateTypicalTables(1, "standalone-beam-starter-r1"));
         var inputs = WorkbookInputReader.Read(store);
+        var executionFingerprint = RuntimeFingerprint(application);
         var timer = Stopwatch.StartNew();
         var checks = 0;
         bool CancellationRequested()
@@ -247,7 +257,8 @@ public static class WorkbookCommands
             }
             return (GetAsyncKeyState(0x1B) & 0x8000) != 0;
         }
-        var result = new WorkbookCommandEngine().ExecuteBatch(command, inputs, store,
+        var result = new WorkbookCommandEngine(executionFingerprint: executionFingerprint)
+            .ExecuteBatch(command, inputs, store,
             Timestamp(), CancellationRequested);
         timer.Stop();
         application.StatusBar = false;
@@ -264,6 +275,7 @@ public static class WorkbookCommands
             },
             receipt_id = result.Receipt.ReceiptId,
             input_revision_sha256 = result.Receipt.InputRevisionSha256,
+            execution_fingerprint = result.Receipt.ExecutionFingerprint,
             output_revision_sha256 = result.Receipt.OutputRevisionSha256,
             current = result.Freshness.IsCurrent,
             member_count = inputs.Count,

@@ -171,15 +171,16 @@ source cell within Excel's character limit.
 | Table | Purpose |
 | --- | --- |
 | `StructuralResults` | Result states, identities, provenance, diagnostics, and chunked output JSON for every member operation |
-| `StructuralFreshness` | One row per distinct result ID bound to workbook, project, batch input revision, and output-table SHA-256 |
-| `StructuralReceipts` | Append-only command history, declared write set, input/output revisions, artifact hash, and diagnostics |
+| `StructuralFreshness` | One row per distinct result ID bound to workbook, project, batch input revision, exact execution fingerprint, and output-table SHA-256 |
+| `StructuralReceipts` | Append-only command history, declared write set, execution fingerprint, input/output revisions, artifact hash, and diagnostics |
 | `StructuralBenchmark` | Named environment/workload, sample count, median, p95, and maximum |
 | `StructuralHostEffects` | Installed acceptance capture proving worksheet-function host-effect count |
 
 Large output JSON is split into ordered chunks of at most 30,000 characters.
-Freshness is reconstructed from the exact input revision, result-table hash,
-and set of result IDs. Editing a controlled result or freshness cell prevents
-export and current-result reconstruction.
+Freshness is reconstructed from the exact execution fingerprint, input revision,
+result-table hash, and set of result IDs. An add-in/runtime change or an edit to
+a controlled result or freshness cell prevents export, cache reuse, and
+current-result reconstruction until a full calculation succeeds.
 
 Calculation-package bundles are written beside the workbook under
 `StructAutomate Packages`. The returned command receipt binds the file SHA-256.

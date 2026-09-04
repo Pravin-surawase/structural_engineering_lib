@@ -182,8 +182,9 @@ function Get-ReceiptBindings {
 
     $commands = @(Get-TableColumnValues -Table $Table -ColumnName 'command')
     $artifacts = @(Get-TableColumnValues -Table $Table -ColumnName 'artifact_sha256')
-    if ($commands.Count -ne $artifacts.Count) { throw 'StructuralReceipts command and artifact columns have inconsistent row counts.' }
-    return @(for ($index = 0; $index -lt $commands.Count; $index++) { [ordered]@{ command = $commands[$index]; artifact_sha256 = $artifacts[$index] } })
+    $fingerprints = @(Get-TableColumnValues -Table $Table -ColumnName 'execution_fingerprint')
+    if ($commands.Count -ne $artifacts.Count -or $commands.Count -ne $fingerprints.Count) { throw 'StructuralReceipts command, artifact, and execution-fingerprint columns have inconsistent row counts.' }
+    return @(for ($index = 0; $index -lt $commands.Count; $index++) { [ordered]@{ command = $commands[$index]; artifact_sha256 = $artifacts[$index]; execution_fingerprint = $fingerprints[$index] } })
 }
 
 function Get-WorkbookTables {
@@ -210,6 +211,7 @@ function Get-WorkbookTables {
                             result_id_sha256 = if ([string]$table.Name -eq 'StructuralResults') { Get-TableColumnDigest -Table $table -ColumnName 'result_id' } else { $null }
                             freshness_result_id_sha256 = if ([string]$table.Name -eq 'StructuralFreshness') { Get-TableColumnDigest -Table $table -ColumnName 'result_id' } else { $null }
                             freshness_current_values = if ([string]$table.Name -eq 'StructuralFreshness') { @(Get-TableColumnValues -Table $table -ColumnName 'is_current') } else { @() }
+                            freshness_execution_fingerprint_values = if ([string]$table.Name -eq 'StructuralFreshness') { @(Get-TableColumnValues -Table $table -ColumnName 'execution_fingerprint') } else { @() }
                             receipt_bindings = if ([string]$table.Name -eq 'StructuralReceipts') { @(Get-ReceiptBindings -Table $table) } else { @() }
                         }
                     }
@@ -251,6 +253,41 @@ function Get-TableCellValue {
     }
     finally { Release-StructAutomateComObject $worksheets }
     throw "Rollback sentinel table is missing: $TableName"
+}
+
+function Set-TableColumnValue {
+    param(
+        [Parameter(Mandatory)][object]$Workbook,
+        [Parameter(Mandatory)][string]$TableName,
+        [Parameter(Mandatory)][string]$ColumnName,
+        [Parameter(Mandatory)][string]$Value
+    )
+    $worksheets = $null
+    try {
+        $worksheets = $Workbook.Worksheets
+        for ($sheetIndex = 1; $sheetIndex -le $worksheets.Count; $sheetIndex++) {
+            $worksheet = $null; $tables = $null
+            try {
+                $worksheet = $worksheets.Item($sheetIndex); $tables = $worksheet.ListObjects
+                for ($tableIndex = 1; $tableIndex -le $tables.Count; $tableIndex++) {
+                    $table = $null; $columns = $null; $rows = $null; $column = $null; $data = $null
+                    try {
+                        $table = $tables.Item($tableIndex)
+                        if ([string]$table.Name -ne $TableName) { continue }
+                        $rows = $table.ListRows; $columns = $table.ListColumns
+                        $column = $columns.Item($ColumnName); $data = $column.DataBodyRange
+                        if ($null -eq $data -or $rows.Count -lt 1) { throw "Table $TableName has no data for required column $ColumnName." }
+                        $data.Value2 = $Value
+                        return [int]$rows.Count
+                    }
+                    finally { Release-StructAutomateComObject $data; Release-StructAutomateComObject $column; Release-StructAutomateComObject $columns; Release-StructAutomateComObject $rows; Release-StructAutomateComObject $table }
+                }
+            }
+            finally { Release-StructAutomateComObject $tables; Release-StructAutomateComObject $worksheet }
+        }
+    }
+    finally { Release-StructAutomateComObject $worksheets }
+    throw "Required workbook table is missing: $TableName"
 }
 
 function Set-UdfPurityProbe {
@@ -393,8 +430,30 @@ try {
         $workbook = $workbooks.Open($workbookCopy, 0, $false); Wait-ForExcelReady -Excel $excel
         $diagnostic = Invoke-ExcelCommand -Excel $excel -Name $DiagnosticReconstructionCommand; Assert-CommandState -Evidence $diagnostic -AllowedStates @('completed') | Out-Null
         $postReopen = Get-WorkbookTables -Workbook $workbook -RequiredNames @('StructuralResults', 'StructuralFreshness', 'StructuralReceipts')
-        $reconstructionMatches = [bool]($preReopen.StructuralResults.result_id_sha256 -eq $postReopen.StructuralResults.result_id_sha256 -and $preReopen.StructuralFreshness.freshness_result_id_sha256 -eq $postReopen.StructuralFreshness.freshness_result_id_sha256 -and @($postReopen.StructuralFreshness.freshness_current_values | Where-Object { $_ -ne 'TRUE' -and $_ -ne 'True' -and $_ -ne 'true' }).Count -eq 0)
+        $liveExecutionFingerprint = [string]$diagnostic.json.runtime
+        if ([string]::IsNullOrWhiteSpace($liveExecutionFingerprint)) { throw 'Diagnostic reconstruction did not return the live execution fingerprint.' }
+        $reconstructionMatches = [bool]($preReopen.StructuralResults.result_id_sha256 -eq $postReopen.StructuralResults.result_id_sha256 -and $preReopen.StructuralFreshness.freshness_result_id_sha256 -eq $postReopen.StructuralFreshness.freshness_result_id_sha256 -and @($postReopen.StructuralFreshness.freshness_current_values | Where-Object { $_ -ne 'TRUE' -and $_ -ne 'True' -and $_ -ne 'true' }).Count -eq 0 -and @($postReopen.StructuralFreshness.freshness_execution_fingerprint_values | Where-Object { $_ -cne $liveExecutionFingerprint }).Count -eq 0)
         if (-not $reconstructionMatches) { throw 'Diagnostic/current-reconstruction did not preserve a current freshness ledger and result identity after reopen.' }
+
+        $syntheticPriorFingerprint = 'structautomate.synthetic-prior-runtime/v1'
+        $driftedRowCount = Set-TableColumnValue -Workbook $workbook -TableName 'StructuralFreshness' -ColumnName 'execution_fingerprint' -Value $syntheticPriorFingerprint
+        $preDriftRestart = Get-WorkbookTables -Workbook $workbook -RequiredNames @('StructuralResults', 'StructuralFreshness')
+        if ($driftedRowCount -ne $preDriftRestart.StructuralFreshness.row_count -or @($preDriftRestart.StructuralFreshness.freshness_execution_fingerprint_values | Where-Object { $_ -cne $syntheticPriorFingerprint }).Count -gt 0) { throw 'The runtime-drift probe did not persist its synthetic prior fingerprint in every freshness row.' }
+        $workbook.Save(); $workbook.Close($true); Release-StructAutomateComObject $workbook; $workbook = $null
+        $workbook = $workbooks.Open($workbookCopy, 0, $false); Wait-ForExcelReady -Excel $excel
+        $postDriftRestart = Get-WorkbookTables -Workbook $workbook -RequiredNames @('StructuralResults', 'StructuralFreshness')
+        $driftDiagnostic = Invoke-ExcelCommand -Excel $excel -Name $DiagnosticReconstructionCommand; Assert-CommandState -Evidence $driftDiagnostic -AllowedStates @('rejected') | Out-Null
+        $recalculatedAfterDrift = Invoke-ExcelCommand -Excel $excel -Name $CalculateCommand; Assert-CommandState -Evidence $recalculatedAfterDrift -AllowedStates @('completed') | Out-Null
+        $postDriftRecalculation = Get-WorkbookTables -Workbook $workbook -RequiredNames @('StructuralResults', 'StructuralFreshness', 'StructuralReceipts')
+        $runtimeFingerprintInvalidation = [bool](
+            @($postDriftRestart.StructuralFreshness.freshness_execution_fingerprint_values | Where-Object { $_ -cne $syntheticPriorFingerprint }).Count -eq 0 -and
+            -not [bool]$recalculatedAfterDrift.json.reused_current_results -and
+            [int]$recalculatedAfterDrift.json.operation_result_count -gt 0 -and
+            [string]$recalculatedAfterDrift.json.execution_fingerprint -ceq $liveExecutionFingerprint -and
+            @($postDriftRecalculation.StructuralFreshness.freshness_current_values | Where-Object { $_ -ne 'TRUE' -and $_ -ne 'True' -and $_ -ne 'true' }).Count -eq 0 -and
+            @($postDriftRecalculation.StructuralFreshness.freshness_execution_fingerprint_values | Where-Object { $_ -cne $liveExecutionFingerprint }).Count -eq 0)
+        if (-not $runtimeFingerprintInvalidation) { throw 'A saved prior runtime fingerprint was reused or was not replaced by a full calculation under the live runtime.' }
+        $workbook.Save()
         $lifecycle = $session.Addin
     }
     finally {
@@ -426,17 +485,19 @@ try {
         xl_cmd_03_warm_p95_budget = $warmP95 -le $WarmP95BudgetMs; cold_ready_budget = $coldMax -le $ColdReadyBudgetMs; optimize_export_measure_receipts = $true; export_package_bound = $true; forced_mid_write_rollback = $preimage -ceq $postimage -and $preRollbackResultsSha256 -eq $postRollbackResultsSha256
         progress_budget = [double]$progress.json.response_ms -le $ProgressAndCancellationBudgetMs; cancellation_budget = [double]$cancel.json.response_ms -le $ProgressAndCancellationBudgetMs
         memory_delta_budget = $workingSetDeltaMiB -le $ExcelWorkingSetDeltaBudgetMiB; save_reopen_current_reconstruction = $reconstructionMatches
+        restart_runtime_fingerprint_invalidation = $runtimeFingerprintInvalidation
     }
     $receipt = [ordered]@{
-        schema_version = 'structautomate.excel-installed-acceptance/v2'; passed = -not ($checks.GetEnumerator() | Where-Object { -not [bool]$_.Value }); observed_at_utc = [DateTimeOffset]::UtcNow.ToString('o')
+        schema_version = 'structautomate.excel-installed-acceptance/v3'; passed = -not ($checks.GetEnumerator() | Where-Object { -not [bool]$_.Value }); observed_at_utc = [DateTimeOffset]::UtcNow.ToString('o')
         source_commit = [string]$manifest.source_commit; installed_manifest = Get-StructAutomateFileIdentity $installedManifestPath; xll = $xllIdentity
         authenticode = [ordered]@{ status = [string]$signature.Status; thumbprint = $signature.SignerCertificate.Thumbprint; package_file_digest_algorithm = [string]$manifest.file_digest_algorithm; authenticode_file_digest_algorithm = [string]$manifest.signature.authenticode_file_digest_algorithm; certificate_signature_algorithm = [string]$manifest.signature.certificate_signature_algorithm }
         sample = [ordered]@{ input = $sampleIdentity; evidence_copy = Get-StructAutomateFileIdentity $workbookCopy; setup = $sampleSetup; tables = $inputTables }; lifecycle = $lifecycle
         udf_purity = [ordered]@{ formula = '=STR.REBAR.AREA(20)'; value = $udfProbeValue; reset = $hostEffectReset; capture = $hostEffectCapture; total_effects = [Int64]$hostEffectCapture.json.total_effects }
-        commands = [ordered]@{ create_validate = $createValidate; xl_cmd_03 = [ordered]@{ initial_full_calculation_ms = $warmups[0]; warmups_ms = $warmups; warmup_reused_current_results = $warmupReuse; samples_ms = $warmSamples; samples_reused_current_results = $warmSampleReuse; cache_verified = -not ($warmSampleReuse | Where-Object { -not $_ }); median_ms = $warmMedian; p95_ms = $warmP95 }; optimize = $optimize; export = $export; measure_diagnose = $measureDiagnose; rollback = $rollback; progress = $progress; cancellation = $cancel; reconstruction = $diagnostic }
+        commands = [ordered]@{ create_validate = $createValidate; xl_cmd_03 = [ordered]@{ initial_full_calculation_ms = $warmups[0]; warmups_ms = $warmups; warmup_reused_current_results = $warmupReuse; samples_ms = $warmSamples; samples_reused_current_results = $warmSampleReuse; cache_verified = -not ($warmSampleReuse | Where-Object { -not $_ }); median_ms = $warmMedian; p95_ms = $warmP95 }; optimize = $optimize; export = $export; measure_diagnose = $measureDiagnose; rollback = $rollback; progress = $progress; cancellation = $cancel; reconstruction = $diagnostic; drift_reconstruction = $driftDiagnostic; drift_recalculation = $recalculatedAfterDrift }
         export_package = [ordered]@{ artifact = $exportIdentity; schema_version = [string]$exportBundle.schema_version; member_package_count = @($exportBundle.packages).Count; receipt_bound = $true }
         rollback = [ordered]@{ table = $RollbackSentinelTable; column = $RollbackSentinelColumn; row = $RollbackSentinelRow; preimage = $preimage; postimage = $postimage; structural_results_preimage_sha256 = $preRollbackResultsSha256; structural_results_postimage_sha256 = $postRollbackResultsSha256; probe_receipt = Get-StructAutomateFileIdentity $rollbackReceiptPath; probe_receipt_state = [string]$rollbackReceipt.state }
         reconstruction = [ordered]@{ before = $preReopen; after = $postReopen; result_identity_preserved = $reconstructionMatches }
+        runtime_fingerprint_invalidation = [ordered]@{ synthetic_prior_fingerprint = $syntheticPriorFingerprint; mutated_row_count = $driftedRowCount; before_restart = $preDriftRestart; after_restart = $postDriftRestart; rejected_reconstruction = $driftDiagnostic; recalculation = $recalculatedAfterDrift; after_recalculation = $postDriftRecalculation; prior_live_evidence_reused = [bool]$recalculatedAfterDrift.json.reused_current_results; passed = $runtimeFingerprintInvalidation }
         performance = [ordered]@{ workload = [ordered]@{ members = 20; operations = 200; command = 'XL-CMD-03' }; cold_ready_measurement_boundary = 'Fresh Excel automation start through installed STR.INFO.VERSION response; registry precondition, host configuration, and AddIns lifecycle enumeration are verified outside the timed interval.'; cold_launch_samples_ms = $coldSamples; cold_ready_max_ms = $coldMax; memory_baseline_bytes = $memoryBaselineBytes; memory_after_commands_bytes = $memoryAfterCommandsBytes; memory_delta_mib = $workingSetDeltaMiB }
         budgets = [ordered]@{ warm_median_ms = $WarmMedianBudgetMs; warm_p95_ms = $WarmP95BudgetMs; cold_ready_ms = $ColdReadyBudgetMs; progress_and_cancellation_ms = $ProgressAndCancellationBudgetMs; memory_delta_mib = $ExcelWorkingSetDeltaBudgetMiB }; checks = $checks
     }
@@ -444,7 +505,7 @@ try {
 }
 catch {
     $failure = $_.Exception.Message
-    if ($null -eq $receipt) { $receipt = [ordered]@{ schema_version = 'structautomate.excel-installed-acceptance/v2'; passed = $false; observed_at_utc = [DateTimeOffset]::UtcNow.ToString('o'); failure = $failure } }
+    if ($null -eq $receipt) { $receipt = [ordered]@{ schema_version = 'structautomate.excel-installed-acceptance/v3'; passed = $false; observed_at_utc = [DateTimeOffset]::UtcNow.ToString('o'); failure = $failure } }
 }
 
 Write-StructAutomateJson -Value $receipt -Path $receiptPath

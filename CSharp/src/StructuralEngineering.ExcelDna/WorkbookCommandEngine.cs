@@ -10,9 +10,17 @@ namespace StructuralEngineering.ExcelDna;
 public sealed class WorkbookCommandEngine
 {
     private readonly WorkbookOperationDispatcher _dispatcher;
+    private readonly string _executionFingerprint;
 
-    public WorkbookCommandEngine(WorkbookOperationDispatcher? dispatcher = null) =>
+    public WorkbookCommandEngine(
+        WorkbookOperationDispatcher? dispatcher = null,
+        string? executionFingerprint = null)
+    {
+        if (executionFingerprint is not null && string.IsNullOrWhiteSpace(executionFingerprint))
+            throw new ArgumentException("The execution fingerprint cannot be blank.", nameof(executionFingerprint));
         _dispatcher = dispatcher ?? new WorkbookOperationDispatcher();
+        _executionFingerprint = executionFingerprint ?? WorkbookContract.CalculationEngineRevision;
+    }
 
     public WorkbookFreshnessLedger InspectFreshness(
         WorkbookInputSnapshot input,
@@ -20,14 +28,18 @@ public sealed class WorkbookCommandEngine
         string suppliedTimestampUtc)
     {
         var revision = InputRevision(input);
-        var current = prior is not null && prior.IsCurrent &&
+        var executionMatches = prior?.ExecutionFingerprint == _executionFingerprint;
+        var current = prior is not null && prior.IsCurrent && executionMatches &&
             prior.InputRevisionSha256 == revision &&
             prior.WorkbookId == input.WorkbookId && prior.ProjectId == input.ProjectId &&
             prior.MemberId == input.MemberId;
         return new(input.WorkbookId, input.ProjectId, input.MemberId, revision,
+            _executionFingerprint,
             current ? prior!.OutputRevisionSha256 : null, current,
             current ? prior!.ResultIds : [], suppliedTimestampUtc,
-            current ? "input_revision_matches" : "input_revision_changed");
+            current ? "input_revision_matches" : executionMatches || prior is null
+                ? "input_revision_changed"
+                : "execution_fingerprint_changed");
     }
 
     public WorkbookCommandResult Execute(
@@ -166,11 +178,13 @@ public sealed class WorkbookCommandEngine
                 item.Receipt.State != WorkbookReceiptState.Completed || !item.Freshness.IsCurrent))
         {
             diagnostics.Add(new("EXCEL.BATCH_ABORTED", "error", "No workbook table was changed because one batch member was cancelled, rejected, or not current."));
-            var stale = new WorkbookFreshnessLedger(first.WorkbookId, first.ProjectId, "batch", inputRevision, null, false, [], suppliedTimestampUtc, "batch_aborted");
+            var stale = new WorkbookFreshnessLedger(first.WorkbookId, first.ProjectId, "batch", inputRevision,
+                _executionFingerprint, null, false, [], suppliedTimestampUtc, "batch_aborted");
             return Finish(command, WorkbookReceiptState.RejectedInput, null, stale, results, diagnostics, declared, first with { RequestId = "batch:" + first.RequestId, MemberId = "batch" }, suppliedTimestampUtc);
         }
 
-        var ledger = new WorkbookFreshnessLedger(first.WorkbookId, first.ProjectId, "batch", inputRevision, null, true,
+        var ledger = new WorkbookFreshnessLedger(first.WorkbookId, first.ProjectId, "batch", inputRevision,
+            _executionFingerprint, null, true,
             results.Where(result => result.ResultId is not null).Select(result => result.ResultId!)
                 .Distinct(StringComparer.Ordinal).ToArray(), suppliedTimestampUtc, "batch_completed");
         var resultTables = ResultTables(results, null);
@@ -191,7 +205,7 @@ public sealed class WorkbookCommandEngine
         return TryCurrentTables(first.WorkbookId, first.ProjectId, "batch", revision,
                 suppliedTimestampUtc, store, out _, out _, out var ledger)
             ? ledger with { Reason = "persisted_batch_reconstructed" }
-            : new(first.WorkbookId, first.ProjectId, "batch", revision, null, false, [],
+            : new(first.WorkbookId, first.ProjectId, "batch", revision, _executionFingerprint, null, false, [],
                 suppliedTimestampUtc, "persisted_batch_not_current");
     }
 
@@ -219,7 +233,7 @@ public sealed class WorkbookCommandEngine
             diagnostics.Add(new("EXCEL.PACKAGE_NOT_EXPORTED", "error",
                 packageError ?? "XL-CMD-06 requires a current, untampered AO24 package for every batch member."));
             var stale = new WorkbookFreshnessLedger(first.WorkbookId, first.ProjectId, "batch",
-                inputRevision, null, false, [], suppliedTimestampUtc, "package_export_rejected");
+                inputRevision, _executionFingerprint, null, false, [], suppliedTimestampUtc, "package_export_rejected");
             return Finish(WorkbookCommandKind.ExportPackage, WorkbookReceiptState.RejectedInput,
                 null, stale, [], diagnostics, declared, batchInput, suppliedTimestampUtc);
         }
@@ -230,6 +244,7 @@ public sealed class WorkbookCommandEngine
             workbook_id = first.WorkbookId,
             project_id = first.ProjectId,
             input_revision_sha256 = inputRevision,
+            execution_fingerprint = _executionFingerprint,
             exported_at_utc = suppliedTimestampUtc,
             packages
         };
@@ -264,7 +279,7 @@ public sealed class WorkbookCommandEngine
             diagnostics.Add(new("EXCEL.BENCHMARK_NOT_RECORDED", "error",
                 "XL-CMD-07 requires finite samples and one current reconstructed batch."));
             var stale = new WorkbookFreshnessLedger(first.WorkbookId, first.ProjectId, "batch",
-                inputRevision, null, false, [], suppliedTimestampUtc, "benchmark_rejected");
+                inputRevision, _executionFingerprint, null, false, [], suppliedTimestampUtc, "benchmark_rejected");
             return Finish(WorkbookCommandKind.MeasureDiagnose, WorkbookReceiptState.RejectedInput,
                 null, stale, [], diagnostics, declared, batchInput, suppliedTimestampUtc);
         }
@@ -520,7 +535,7 @@ public sealed class WorkbookCommandEngine
             throw new ArgumentException("A batch requires one workbook/project and unique member/request identities.", nameof(inputs));
     }
 
-    private static bool TryCurrentTables(
+    private bool TryCurrentTables(
         string workbookId,
         string projectId,
         string memberId,
@@ -533,7 +548,7 @@ public sealed class WorkbookCommandEngine
     {
         results = new(WorkbookContract.ResultsTable, []);
         freshness = new(WorkbookContract.FreshnessTable, []);
-        ledger = new(workbookId, projectId, memberId, inputRevision, null, false, [],
+        ledger = new(workbookId, projectId, memberId, inputRevision, _executionFingerprint, null, false, [],
             timestamp, "not_current");
         if (!store.TryRead(WorkbookContract.ResultsTable, out results) ||
             !store.TryRead(WorkbookContract.FreshnessTable, out freshness) ||
@@ -544,26 +559,29 @@ public sealed class WorkbookCommandEngine
             "calculation_id", "code_data_revision_id", "method_revision_id",
             "payload_chunk_index", "payload_chunk_count", "output_json_chunk", "diagnostics"];
         string?[] expectedFreshnessHeader = ["workbook_id", "project_id", "member_id",
-            "input_revision", "output_revision", "is_current", "updated_at_utc", "reason", "result_id"];
+            "input_revision", "execution_fingerprint", "output_revision", "is_current",
+            "updated_at_utc", "reason", "result_id"];
         if (!HeaderMatches(results, expectedResultHeader) ||
             !HeaderMatches(freshness, expectedFreshnessHeader)) return false;
         var rows = freshness.Rows.Skip(1).ToArray();
         if (rows.Any(row => row.Count != expectedFreshnessHeader.Length ||
             row[0].Value != workbookId || row[1].Value != projectId || row[2].Value != memberId ||
-            row[3].Value != inputRevision || row[5].Value != bool.TrueString)) return false;
-        var outputRevision = rows[0][4].Value;
+            row[3].Value != inputRevision || row[4].Value != _executionFingerprint ||
+            row[6].Value != bool.TrueString)) return false;
+        var outputRevision = rows[0][5].Value;
         if (string.IsNullOrWhiteSpace(outputRevision) ||
-            rows.Any(row => row[4].Value != outputRevision) ||
+            rows.Any(row => row[5].Value != outputRevision) ||
             WorkbookContract.HashTables([results]) != outputRevision) return false;
         var resultIds = results.Rows.Skip(1).Select(row => row[7].Value)
             .Where(value => !string.IsNullOrWhiteSpace(value)).Select(value => value!)
             .Distinct(StringComparer.Ordinal).ToArray();
-        var freshnessIds = rows.Select(row => row[8].Value)
+        var freshnessIds = rows.Select(row => row[9].Value)
             .Where(value => !string.IsNullOrWhiteSpace(value)).Select(value => value!).ToArray();
         if (freshnessIds.Length != freshnessIds.Distinct(StringComparer.Ordinal).Count() ||
             !resultIds.ToHashSet(StringComparer.Ordinal).SetEquals(freshnessIds)) return false;
-        ledger = new(workbookId, projectId, memberId, inputRevision, outputRevision, true,
-            freshnessIds, rows[0][6].Value ?? timestamp, rows[0][7].Value ?? "command_completed");
+        ledger = new(workbookId, projectId, memberId, inputRevision, _executionFingerprint,
+            outputRevision, true, freshnessIds, rows[0][7].Value ?? timestamp,
+            rows[0][8].Value ?? "command_completed");
         return true;
     }
 
@@ -644,7 +662,7 @@ public sealed class WorkbookCommandEngine
         return true;
     }
 
-    private static bool TryCurrentPackage(WorkbookInputSnapshot input, IWorkbookTableStore store,
+    private bool TryCurrentPackage(WorkbookInputSnapshot input, IWorkbookTableStore store,
         string inputRevision, string timestamp, out string packageId, out string packageJson,
         out IReadOnlyList<WorkbookTable> currentTables, out WorkbookFreshnessLedger ledger)
     {
@@ -652,7 +670,7 @@ public sealed class WorkbookCommandEngine
         packageJson = string.Empty;
         currentTables = [];
         ledger = new(input.WorkbookId, input.ProjectId, input.MemberId, inputRevision,
-            null, false, [], timestamp, "not_current");
+            _executionFingerprint, null, false, [], timestamp, "not_current");
         if (!TryCurrentTables(input.WorkbookId, input.ProjectId, input.MemberId, inputRevision,
                 timestamp, store, out var results, out var freshness, out ledger)) return false;
         var packageRows = results.Rows.Skip(1).Where(row =>
@@ -687,7 +705,8 @@ public sealed class WorkbookCommandEngine
             result.Completeness == CompletenessState.CompleteForScope &&
             result.Freshness == FreshnessState.Current);
         var ledger = new WorkbookFreshnessLedger(input.WorkbookId, input.ProjectId, input.MemberId,
-            inputRevision, null, allSuccessful, results.Where(result => result.ResultId is not null).Select(result => result.ResultId!)
+            inputRevision, _executionFingerprint, null, allSuccessful,
+            results.Where(result => result.ResultId is not null).Select(result => result.ResultId!)
                 .Distinct(StringComparer.Ordinal).ToArray(),
             timestamp, allSuccessful ? "command_completed" : "operation_incomplete");
         var outputRevision = WorkbookContract.HashTables(baseTables);
@@ -801,11 +820,21 @@ public sealed class WorkbookCommandEngine
 
     private static bool Cancelled(Func<bool>? requested) => requested?.Invoke() == true;
 
-    private static string InputRevision(WorkbookInputSnapshot input) =>
-        WorkbookContract.HashJson(new { WorkbookContract.CalculationEngineRevision, Input = input });
+    private string InputRevision(WorkbookInputSnapshot input) =>
+        WorkbookContract.HashJson(new
+        {
+            WorkbookContract.CalculationEngineRevision,
+            ExecutionFingerprint = _executionFingerprint,
+            Input = input
+        });
 
-    private static string BatchInputRevision(IReadOnlyList<WorkbookInputSnapshot> inputs) =>
-        WorkbookContract.HashJson(new { WorkbookContract.CalculationEngineRevision, Inputs = inputs });
+    private string BatchInputRevision(IReadOnlyList<WorkbookInputSnapshot> inputs) =>
+        WorkbookContract.HashJson(new
+        {
+            WorkbookContract.CalculationEngineRevision,
+            ExecutionFingerprint = _executionFingerprint,
+            Inputs = inputs
+        });
 
     private static IReadOnlyList<string> DeclaredTables(WorkbookCommandKind command) => command switch
     {
@@ -854,20 +883,20 @@ public sealed class WorkbookCommandEngine
     {
         var resultIds = ledger.ResultIds.Count == 0 ? new string?[] { null } : ledger.ResultIds.Cast<string?>().ToArray();
         return new(WorkbookContract.FreshnessTable,
-            [[new("workbook_id"), new("project_id"), new("member_id"), new("input_revision"), new("output_revision"), new("is_current"), new("updated_at_utc"), new("reason"), new("result_id")],
-             .. resultIds.Select(resultId => (IReadOnlyList<WorkbookCell>)[new(ledger.WorkbookId), new(ledger.ProjectId), new(ledger.MemberId), new(ledger.InputRevisionSha256), new(ledger.OutputRevisionSha256), new(ledger.IsCurrent.ToString()), new(ledger.UpdatedAtUtc), new(ledger.Reason), new(resultId)])]);
+            [[new("workbook_id"), new("project_id"), new("member_id"), new("input_revision"), new("execution_fingerprint"), new("output_revision"), new("is_current"), new("updated_at_utc"), new("reason"), new("result_id")],
+             .. resultIds.Select(resultId => (IReadOnlyList<WorkbookCell>)[new(ledger.WorkbookId), new(ledger.ProjectId), new(ledger.MemberId), new(ledger.InputRevisionSha256), new(ledger.ExecutionFingerprint), new(ledger.OutputRevisionSha256), new(ledger.IsCurrent.ToString()), new(ledger.UpdatedAtUtc), new(ledger.Reason), new(resultId)])]);
     }
 
     private static WorkbookTable BenchmarkTable(WorkbookBenchmarkSummary summary) => new(WorkbookContract.BenchmarkTable,
         [[new("environment"), new("workload_revision"), new("sample_count"), new("p50_ms"), new("p95_ms"), new("max_ms")], [new(summary.EnvironmentFingerprint), new(summary.WorkloadRevision), new(summary.SampleCount.ToString(System.Globalization.CultureInfo.InvariantCulture)), new(summary.P50Milliseconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture)), new(summary.P95Milliseconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture)), new(summary.MaximumMilliseconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture))]]);
 
     private static WorkbookCommandReceipt Receipt(WorkbookCommandKind command, WorkbookReceiptState state, string? outputRevision, WorkbookFreshnessLedger ledger, IReadOnlyList<WorkbookDiagnostic> diagnostics, IReadOnlyList<string> declared, WorkbookInputSnapshot input, string timestamp, string? artifactHash) =>
-        new("workbook_receipt:" + WorkbookContract.HashJson(new { input.RequestId, command, state, outputRevision, timestamp }), command, state, input.WorkbookId, input.ProjectId, input.MemberId, input.RequestId, ledger.InputRevisionSha256, outputRevision, timestamp, declared, artifactHash, diagnostics);
+        new("workbook_receipt:" + WorkbookContract.HashJson(new { input.RequestId, command, state, outputRevision, ledger.ExecutionFingerprint, timestamp }), command, state, input.WorkbookId, input.ProjectId, input.MemberId, input.RequestId, ledger.InputRevisionSha256, ledger.ExecutionFingerprint, outputRevision, timestamp, declared, artifactHash, diagnostics);
 
     private static WorkbookTable ReceiptTable(WorkbookCommandReceipt receipt, WorkbookTable? prior = null)
     {
-        IReadOnlyList<WorkbookCell> header = [new("receipt_id"), new("command"), new("state"), new("workbook_id"), new("project_id"), new("member_id"), new("request_id"), new("input_revision"), new("output_revision"), new("issued_at_utc"), new("artifact_sha256"), new("declared_output_tables"), new("diagnostics")];
-        IReadOnlyList<WorkbookCell> row = [new(receipt.ReceiptId), new(receipt.Command.ToString()), new(receipt.State.ToString()), new(receipt.WorkbookId), new(receipt.ProjectId), new(receipt.MemberId), new(receipt.RequestId), new(receipt.InputRevisionSha256), new(receipt.OutputRevisionSha256), new(receipt.IssuedAtUtc), new(receipt.ArtifactSha256), new(string.Join(",", receipt.DeclaredOutputTables)), new(JsonSerializer.Serialize(receipt.Diagnostics, WorkbookContract.Json))];
+        IReadOnlyList<WorkbookCell> header = [new("receipt_id"), new("command"), new("state"), new("workbook_id"), new("project_id"), new("member_id"), new("request_id"), new("input_revision"), new("execution_fingerprint"), new("output_revision"), new("issued_at_utc"), new("artifact_sha256"), new("declared_output_tables"), new("diagnostics")];
+        IReadOnlyList<WorkbookCell> row = [new(receipt.ReceiptId), new(receipt.Command.ToString()), new(receipt.State.ToString()), new(receipt.WorkbookId), new(receipt.ProjectId), new(receipt.MemberId), new(receipt.RequestId), new(receipt.InputRevisionSha256), new(receipt.ExecutionFingerprint), new(receipt.OutputRevisionSha256), new(receipt.IssuedAtUtc), new(receipt.ArtifactSha256), new(string.Join(",", receipt.DeclaredOutputTables)), new(JsonSerializer.Serialize(receipt.Diagnostics, WorkbookContract.Json))];
         var retained = prior is not null && prior.Rows.Count > 0 &&
             prior.Rows[0].Select(cell => cell.Value).SequenceEqual(header.Select(cell => cell.Value), StringComparer.Ordinal)
                 ? prior.Rows.Skip(1)
