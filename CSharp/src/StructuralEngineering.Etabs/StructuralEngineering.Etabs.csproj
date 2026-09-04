@@ -2,4 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../StructuralEngineering.Analysis/StructuralEngineering.Analysis.csproj" />
+    <ProjectReference Include="../StructuralEngineering.Contracts/StructuralEngineering.Contracts.csproj" />
+  </ItemGroup>
 </Project>

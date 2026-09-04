@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text.Json;
 
@@ -67,7 +66,7 @@ public static class EtabsLiveGetterProbe
         var started = DateTimeOffset.UtcNow;
         var adapter = new EtabsGetterAdapter(host);
         var calls = new List<EtabsRawGetterCall>();
-        var preflight = CaptureProtectedState(adapter, host.Identity, request, calls, cancellationToken);
+        var preflight = CaptureProtectedState(adapter, host, request, calls, cancellationToken);
         ValidateReadiness(preflight, request);
 
         Call(adapter, request, calls, "Story.GetStories_2", [], cancellationToken);
@@ -180,7 +179,7 @@ public static class EtabsLiveGetterProbe
             Call(adapter, request, calls, "RespCombo.GetCaseList", [name], cancellationToken);
         }
 
-        var postflight = CaptureProtectedState(adapter, host.Identity, request, calls, cancellationToken);
+        var postflight = CaptureProtectedState(adapter, host, request, calls, cancellationToken);
         RequireEqual("protected-state SHA-256", preflight.Sha256, postflight.Sha256);
 
         return new EtabsLiveGetterProbeCapture(
@@ -205,12 +204,15 @@ public static class EtabsLiveGetterProbe
 
     private static EtabsProtectedState CaptureProtectedState(
         EtabsGetterAdapter adapter,
-        EtabsHostIdentity identity,
+        IEtabsGetterHost host,
         EtabsLiveGetterProbeRequest request,
         List<EtabsRawGetterCall> calls,
         CancellationToken cancellationToken)
     {
+        var identity = host.InspectIdentity();
         var modelPath = Direct<string>(Call(adapter, request, calls, "SapModel.GetModelFilename", [true], cancellationToken));
+        if (!string.Equals(Path.GetFullPath(modelPath), Path.GetFullPath(identity.ModelPath), StringComparison.OrdinalIgnoreCase))
+            throw new EtabsLiveGetterProbeException("The getter model path differs from the inspected host identity.");
         var locked = Direct<bool>(Call(adapter, request, calls, "SapModel.GetModelIsLocked", [], cancellationToken));
         var presentUnits = Direct<int>(Call(adapter, request, calls, "SapModel.GetPresentUnits", [], cancellationToken));
         var databaseUnits = Direct<int>(Call(adapter, request, calls, "SapModel.GetDatabaseUnits", [], cancellationToken));
@@ -238,9 +240,6 @@ public static class EtabsLiveGetterProbe
             combinationSelections[name] = Scalar<bool>(
                 Call(adapter, request, calls, "Results.Setup.GetComboSelectedForOutput", [name], cancellationToken), 0);
 
-        var model = new FileInfo(modelPath);
-        var modelHash = Sha256File(modelPath);
-        using var process = Process.GetProcessById(identity.ProcessId);
         var protectedValues = new SortedDictionary<string, object?>(StringComparer.Ordinal)
         {
             ["api_version"] = version,
@@ -249,15 +248,15 @@ public static class EtabsLiveGetterProbe
             ["case_statuses"] = statuses,
             ["combination_selections"] = combinationSelections,
             ["database_units"] = databaseUnits,
-            ["model_bytes"] = model.Length,
+            ["model_bytes"] = identity.ModelBytes,
             ["model_locked"] = locked,
-            ["model_modified_utc"] = model.LastWriteTimeUtc.ToString("O"),
+            ["model_modified_utc"] = identity.ModelModifiedUtc.UtcDateTime.ToString("O"),
             ["model_path"] = Path.GetFullPath(modelPath),
-            ["model_sha256"] = modelHash,
+            ["model_sha256"] = identity.ModelSha256,
             ["present_units"] = presentUnits,
-            ["process_executable"] = process.MainModule?.FileName,
-            ["process_id"] = process.Id,
-            ["process_started_utc"] = process.StartTime.ToUniversalTime().ToString("O"),
+            ["process_executable"] = identity.ExecutablePath,
+            ["process_id"] = identity.ProcessId,
+            ["process_started_utc"] = identity.ProcessStartedUtc.UtcDateTime.ToString("O"),
             ["run_case_flags"] = runFlags
         };
         var digest = Convert.ToHexStringLower(SHA256.HashData(
@@ -265,9 +264,9 @@ public static class EtabsLiveGetterProbe
         return new EtabsProtectedState(
             digest,
             modelPath,
-            model.Length,
-            new DateTimeOffset(model.LastWriteTimeUtc, TimeSpan.Zero),
-            modelHash,
+            identity.ModelBytes,
+            identity.ModelModifiedUtc,
+            identity.ModelSha256,
             locked,
             presentUnits,
             databaseUnits,
@@ -338,12 +337,6 @@ public static class EtabsLiveGetterProbe
     private static object?[] ArrayValues(EtabsRawGetterCall call, int index) =>
         call.Outputs[index] as object?[]
         ?? throw new EtabsLiveGetterProbeException($"{call.Operation} output {index} is not an array.");
-
-    private static string Sha256File(string path)
-    {
-        using var stream = File.OpenRead(path);
-        return Convert.ToHexStringLower(SHA256.HashData(stream));
-    }
 
     private static void ValidateElementTopology(
         IReadOnlyList<string> framePoints,

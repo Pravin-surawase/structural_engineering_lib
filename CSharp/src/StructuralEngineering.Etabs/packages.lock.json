@@ -1,6 +1,23 @@
 {
   "version": 2,
   "dependencies": {
-    "net10.0-windows7.0": {}
+    "net10.0-windows7.0": {
+      "structuralengineering.analysis": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )",
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.contracts": {
+        "type": "Project"
+      },
+      "structuralengineering.core": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )"
+        }
+      }
+    }
   }
 }
