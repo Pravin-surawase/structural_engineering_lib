@@ -60,6 +60,9 @@ EXPECTED_MANIFESTS = {
         "AO05": "structural.candidate.rank/v1",
         "AO21": "structural.beam.optimize/v1",
     },
+    "wp10": {
+        "AO16": "etabs.beam_snapshot.import/v1",
+    },
 }
 
 
@@ -88,9 +91,7 @@ def validate() -> None:
     for packet, expected in EXPECTED_MANIFESTS.items():
         manifest = load(CONTRACT_ROOT / "operations" / f"{packet}.json")
         operations = manifest["operations"]
-        actual = {
-            item["catalogue_id"]: item["semantic_id"] for item in operations
-        }
+        actual = {item["catalogue_id"]: item["semantic_id"] for item in operations}
         if actual != expected:
             fail(f"{packet.upper()} semantic catalogue mismatch: {actual!r}")
         for item in operations:
@@ -111,9 +112,7 @@ def validate() -> None:
     }:
         fail("WP01 limiting neutral-axis ratios changed")
 
-    shear_data = load(
-        CONTRACT_ROOT / "code-data" / "is456" / "shear-torsion-v1.json"
-    )
+    shear_data = load(CONTRACT_ROOT / "code-data" / "is456" / "shear-torsion-v1.json")
     if shear_data["code_data_revision_id"] != "is456-wp02-v1":
         fail("WP02 code-data revision mismatch")
     if len(shear_data["table_19"]["longitudinal_percentage_rows"]) != 13:
@@ -128,9 +127,7 @@ def validate() -> None:
     }:
         fail("WP02 Table 19 grade columns are incomplete")
 
-    analysis_data = load(
-        CONTRACT_ROOT / "code-data" / "analysis" / "beam-line-v1.json"
-    )
+    analysis_data = load(CONTRACT_ROOT / "code-data" / "analysis" / "beam-line-v1.json")
     if analysis_data["method_revision_id"] != "structural-analysis-wp03-v1":
         fail("WP03 analysis-method revision mismatch")
     if analysis_data["degrees_of_freedom_per_node"] != [
@@ -164,23 +161,21 @@ def validate() -> None:
     }:
         fail("WP04 crack-width ceilings changed")
 
-    detailing_data = load(
-        CONTRACT_ROOT / "code-data" / "is456" / "detailing-v1.json"
-    )
+    detailing_data = load(CONTRACT_ROOT / "code-data" / "is456" / "detailing-v1.json")
     if detailing_data["code_data_revision_id"] != "is456-amd6-wp05-v1":
         fail("WP05 IS 456 code-data revision mismatch")
-    if (
-        detailing_data["seismic_code_data_revision_id"]
-        != "is13920-2016-amd2-wp05-v1"
-    ):
+    if detailing_data["seismic_code_data_revision_id"] != "is13920-2016-amd2-wp05-v1":
         fail("WP05 IS 13920 code-data revision mismatch")
     if detailing_data["development_length"][
         "plain_bar_tension_bond_stress_n_per_mm2"
     ] != {"20": 1.2, "25": 1.4, "30": 1.5, "35": 1.7, "40_or_higher": 1.9}:
         fail("WP05 design-bond-stress table changed")
-    if detailing_data["development_length"][
-        "fusion_bonded_epoxy_factor_relative_to_deformed"
-    ] != 0.8:
+    if (
+        detailing_data["development_length"][
+            "fusion_bonded_epoxy_factor_relative_to_deformed"
+        ]
+        != 0.8
+    ):
         fail("WP05 Amendment 6 epoxy factor changed")
     if detailing_data["seismic_beam"]["capacity_shear_factor"] != 1.4:
         fail("WP05 IS 13920 capacity-shear factor changed")
@@ -210,16 +205,12 @@ def validate() -> None:
     }:
         fail("WP08 finite-domain bound changed")
     ranking_properties = wp08_schema["$defs"]["rankingOutput"]["properties"]
-    if ranking_properties["terminal_state"] != {
-        "$ref": "#/$defs/terminalState"
-    }:
+    if ranking_properties["terminal_state"] != {"$ref": "#/$defs/terminalState"}:
         fail("WP08 terminal-state contract changed")
 
     all_vectors = []
     for packet in EXPECTED_MANIFESTS:
-        conformance = load(
-            CONTRACT_ROOT / "conformance" / f"{packet}-vectors.json"
-        )
+        conformance = load(CONTRACT_ROOT / "conformance" / f"{packet}-vectors.json")
         all_vectors.extend(conformance["vectors"])
     vector_ids = [item["id"] for item in all_vectors]
     if len(vector_ids) != len(set(vector_ids)):
@@ -259,23 +250,62 @@ def validate() -> None:
         "cf3a07c34d286a5336bd7f1a3c1d8a748cecc31e66f3a849539ae4f251917807"
     ):
         fail("WP08 cross-language domain identity changed")
+    wp10_vectors = load(CONTRACT_ROOT / "conformance" / "wp10-vectors.json")
+    wp10_schema = load(CONTRACT_ROOT / "schemas" / "wp10.schema.json")
+    for definition, value in (
+        ("importRequest", wp10_vectors["valid_request"]),
+        ("analysisSnapshot", wp10_vectors["valid_snapshot"]),
+    ):
+        Draft202012Validator(
+            {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "$ref": f"#/$defs/{definition}",
+                "$defs": wp10_schema["$defs"],
+            }
+        ).validate(value)
+    expected_snapshot = wp10_vectors["expected"]
+    snapshot = wp10_vectors["valid_snapshot"]
+    canonical_snapshot = json.dumps(
+        snapshot,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    if expected_snapshot["snapshot_id"] != snapshot["snapshot_id"]:
+        fail("WP10 snapshot identity expectation changed")
+    if expected_snapshot["raw_capture_id"] != snapshot["raw_capture"]["raw_capture_id"]:
+        fail("WP10 raw-capture identity expectation changed")
+    if expected_snapshot["canonical_json_byte_count"] != len(canonical_snapshot):
+        fail("WP10 canonical snapshot byte count changed")
+    if (
+        expected_snapshot["canonical_json_sha256"]
+        != hashlib.sha256(canonical_snapshot).hexdigest()
+    ):
+        fail("WP10 canonical snapshot digest changed")
+    invalid_ids = [item["id"] for item in wp10_vectors["invalid_vectors"]]
+    if len(invalid_ids) != len(set(invalid_ids)):
+        fail("duplicate WP10 invalid conformance vector id")
     crack_vector = next(
         item for item in all_vectors if item["id"] == "wp04-annex-f-actual-bars"
     )
-    if abs(
-        crack_vector["expected"]["calculated_crack_width_mm"]
-        - 0.11379830508373975
-    ) > 1e-15:
+    if (
+        abs(crack_vector["expected"]["calculated_crack_width_mm"] - 0.11379830508373975)
+        > 1e-15
+    ):
         fail("WP04 Annex F reference result changed")
     development_vector = next(
         item
         for item in all_vectors
         if item["id"] == "wp05-development-deformed-tension"
     )
-    if abs(
-        development_vector["expected"]["required_development_length_mm"]
-        - 940.234375
-    ) > 1e-12:
+    if (
+        abs(
+            development_vector["expected"]["required_development_length_mm"]
+            - 940.234375
+        )
+        > 1e-12
+    ):
         fail("WP05 development-length reference result changed")
     project_vector = next(
         item for item in all_vectors if item["id"] == "wp06-project-ordinary"
@@ -305,10 +335,13 @@ def validate() -> None:
     path_vector = next(
         item for item in all_vectors if item["id"] == "wp06-bar-path-bend"
     )
-    if abs(
-        path_vector["expected"]["developed_centreline_length_mm"]
-        - 1157.0796326794897
-    ) > 1e-12:
+    if (
+        abs(
+            path_vector["expected"]["developed_centreline_length_mm"]
+            - 1157.0796326794897
+        )
+        > 1e-12
+    ):
         fail("WP06 tangent-and-arc path result changed")
     quantity_vector = next(
         item for item in all_vectors if item["id"] == "wp07-reference-quantities"
@@ -353,7 +386,9 @@ def main() -> int:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
     packets = ", ".join(packet.upper() for packet in EXPECTED_MANIFESTS)
-    print(f"OK: {packets} semantic manifests, schemas, code data, and conformance vectors")
+    print(
+        f"OK: {packets} semantic manifests, schemas, code data, and conformance vectors"
+    )
     return 0
 
 

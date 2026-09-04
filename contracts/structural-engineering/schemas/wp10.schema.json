@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/wp10/v1",
+  "title": "WP10-01 portable ETABS request, raw capture, and analysis snapshot contracts",
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonEmpty": {"type": "string", "minLength": 1},
+    "optionalText": {
+      "type": "object",
+      "required": ["state", "value", "reason_code"],
+      "properties": {
+        "state": {"enum": ["supplied", "not_requested", "unavailable", "not_applicable"]},
+        "value": {"type": ["string", "null"]},
+        "reason_code": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {"if": {"properties": {"state": {"const": "supplied"}}}, "then": {"properties": {"value": {"type": "string", "minLength": 1}, "reason_code": {"type": "null"}}}},
+        {"if": {"properties": {"state": {"not": {"const": "supplied"}}}}, "then": {"properties": {"value": {"type": "null"}, "reason_code": {"type": "string", "minLength": 1}}}}
+      ]
+    },
+    "optionalSha256": {
+      "allOf": [
+        {"$ref": "#/$defs/optionalText"},
+        {"if": {"properties": {"state": {"const": "supplied"}}}, "then": {"properties": {"value": {"$ref": "#/$defs/sha256"}}}}
+      ]
+    },
+    "sourceExpectation": {
+      "type": "object",
+      "required": ["source_system", "source_version", "model_revision_id", "process_identity", "model_file_sha256"],
+      "properties": {
+        "source_system": {"const": "etabs"},
+        "source_version": {"$ref": "#/$defs/nonEmpty"},
+        "model_revision_id": {"$ref": "#/$defs/nonEmpty"},
+        "process_identity": {"$ref": "#/$defs/optionalText"},
+        "model_file_sha256": {"$ref": "#/$defs/optionalSha256"}
+      },
+      "additionalProperties": false
+    },
+    "memberSelection": {
+      "type": "object",
+      "required": ["mode", "member_ids"],
+      "properties": {"mode": {"enum": ["all_beams", "explicit"]}, "member_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}}},
+      "additionalProperties": false,
+      "allOf": [
+        {"if": {"properties": {"mode": {"const": "explicit"}}}, "then": {"properties": {"member_ids": {"minItems": 1}}}},
+        {"if": {"properties": {"mode": {"const": "all_beams"}}}, "then": {"properties": {"member_ids": {"maxItems": 0}}}}
+      ]
+    },
+    "stationSelection": {
+      "type": "object",
+      "required": ["mode", "station_ids"],
+      "properties": {"mode": {"enum": ["all_available", "explicit"]}, "station_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}}},
+      "additionalProperties": false,
+      "allOf": [
+        {"if": {"properties": {"mode": {"const": "explicit"}}}, "then": {"properties": {"station_ids": {"minItems": 1}}}},
+        {"if": {"properties": {"mode": {"const": "all_available"}}}, "then": {"properties": {"station_ids": {"maxItems": 0}}}}
+      ]
+    },
+    "importScope": {
+      "type": "object",
+      "required": ["project_id", "members", "result_selection_ids", "result_kinds", "stations"],
+      "properties": {
+        "project_id": {"$ref": "#/$defs/nonEmpty"},
+        "members": {"$ref": "#/$defs/memberSelection"},
+        "result_selection_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}},
+        "result_kinds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["frame_force"]}},
+        "stations": {"$ref": "#/$defs/stationSelection"}
+      },
+      "additionalProperties": false
+    },
+    "importRequest": {
+      "type": "object",
+      "required": ["schema_version", "operation_semantic_id", "request_id", "source_expectation", "scope", "required_provenance", "deadline_utc"],
+      "properties": {
+        "schema_version": {"const": "etabs.beam_snapshot.import-request/v1"},
+        "operation_semantic_id": {"const": "etabs.beam_snapshot.import/v1"},
+        "request_id": {"$ref": "#/$defs/nonEmpty"},
+        "source_expectation": {"$ref": "#/$defs/sourceExpectation"},
+        "scope": {"$ref": "#/$defs/importScope"},
+        "required_provenance": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}},
+        "deadline_utc": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "sourceUnits": {
+      "type": "object",
+      "required": ["length", "force", "moment", "stress", "mass_density"],
+      "properties": {"length": {"$ref": "#/$defs/nonEmpty"}, "force": {"$ref": "#/$defs/nonEmpty"}, "moment": {"$ref": "#/$defs/nonEmpty"}, "stress": {"$ref": "#/$defs/nonEmpty"}, "mass_density": {"$ref": "#/$defs/nonEmpty"}},
+      "additionalProperties": false
+    },
+    "unitConversion": {
+      "type": "object",
+      "required": ["length_to_mm", "force_to_kn", "moment_to_knm", "stress_to_n_per_mm2", "mass_density_to_kg_per_m3"],
+      "properties": {"length_to_mm": {"type": "number", "exclusiveMinimum": 0}, "force_to_kn": {"type": "number", "exclusiveMinimum": 0}, "moment_to_knm": {"type": "number", "exclusiveMinimum": 0}, "stress_to_n_per_mm2": {"type": "number", "exclusiveMinimum": 0}, "mass_density_to_kg_per_m3": {"type": "number", "exclusiveMinimum": 0}},
+      "additionalProperties": false
+    },
+    "unitBasis": {
+      "type": "object",
+      "required": ["length", "force", "moment", "stress", "mass_density", "original_source_units", "conversion_to_canonical"],
+      "properties": {
+        "length": {"const": "mm"}, "force": {"const": "kN"}, "moment": {"const": "kNm"}, "stress": {"const": "N/mm2"}, "mass_density": {"const": "kg/m3"},
+        "original_source_units": {"$ref": "#/$defs/sourceUnits"}, "conversion_to_canonical": {"$ref": "#/$defs/unitConversion"}
+      },
+      "additionalProperties": false
+    },
+    "callRecord": {
+      "type": "object",
+      "required": ["schema_version", "operation_id", "call_id", "sequence", "previous_record_sha256", "stage", "method", "signature_authority_sha256", "effect", "arguments_sha256", "return_code", "raw_shape", "recorded_at_utc", "record_sha256"],
+      "properties": {
+        "schema_version": {"const": "structural.analysis_call_record/v1"}, "operation_id": {"$ref": "#/$defs/nonEmpty"}, "call_id": {"$ref": "#/$defs/nonEmpty"}, "sequence": {"type": "integer", "minimum": 1},
+        "previous_record_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}, "stage": {"enum": ["started", "returned"]}, "method": {"$ref": "#/$defs/nonEmpty"},
+        "signature_authority_sha256": {"$ref": "#/$defs/sha256"}, "effect": {"const": "getter"}, "arguments_sha256": {"$ref": "#/$defs/sha256"}, "return_code": {"type": ["integer", "null"]},
+        "raw_shape": {"type": ["string", "null"]}, "recorded_at_utc": {"type": "string", "format": "date-time"}, "record_sha256": {"$ref": "#/$defs/sha256"}
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {"if": {"properties": {"stage": {"const": "started"}}}, "then": {"properties": {"return_code": {"type": "null"}, "raw_shape": {"type": "null"}}}},
+        {"if": {"properties": {"stage": {"const": "returned"}}}, "then": {"properties": {"return_code": {"type": "integer"}, "raw_shape": {"type": "string", "minLength": 1}}}}
+      ]
+    },
+    "callLedger": {
+      "type": "object",
+      "required": ["schema_version", "operation_id", "record_count", "head_record_sha256", "ledger_sha256", "records"],
+      "properties": {"schema_version": {"const": "structural.analysis_call_ledger/v1"}, "operation_id": {"$ref": "#/$defs/nonEmpty"}, "record_count": {"type": "integer", "minimum": 0}, "head_record_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}, "ledger_sha256": {"$ref": "#/$defs/sha256"}, "records": {"type": "array", "items": {"$ref": "#/$defs/callRecord"}}},
+      "additionalProperties": false
+    },
+    "rawModelRecord": {
+      "type": "object",
+      "required": ["record_kind", "source_record_id", "fields"],
+      "properties": {"record_kind": {"enum": ["model_metadata", "point", "material", "section", "member", "load_case", "load_combination", "result_selection", "station"]}, "source_record_id": {"$ref": "#/$defs/nonEmpty"}, "fields": {"type": "object"}},
+      "additionalProperties": false
+    },
+    "rawForceRow": {
+      "type": "object",
+      "required": ["source_row_id", "source_row_index", "object_id", "analysis_element_id", "object_station", "element_station", "output_case_name", "step_type", "step_number", "p", "v2", "v3", "t", "m2", "m3"],
+      "properties": {"source_row_id": {"$ref": "#/$defs/nonEmpty"}, "source_row_index": {"type": "integer", "minimum": 0}, "object_id": {"$ref": "#/$defs/nonEmpty"}, "analysis_element_id": {"$ref": "#/$defs/nonEmpty"}, "object_station": {"type": "number"}, "element_station": {"type": "number"}, "output_case_name": {"$ref": "#/$defs/nonEmpty"}, "step_type": {"$ref": "#/$defs/nonEmpty"}, "step_number": {"type": ["number", "null"]}, "p": {"type": "number"}, "v2": {"type": "number"}, "v3": {"type": "number"}, "t": {"type": "number"}, "m2": {"type": "number"}, "m3": {"type": "number"}},
+      "additionalProperties": false
+    },
+    "rawCapture": {
+      "type": "object",
+      "required": ["schema_version", "raw_capture_id", "raw_capture_sha256", "acquisition_id", "model_revision_id", "analysis_revision_id", "result_epoch_id", "source_units", "call_ledger", "model_records", "force_rows"],
+      "properties": {"schema_version": {"const": "structural.analysis_raw_capture/v1"}, "raw_capture_id": {"$ref": "#/$defs/nonEmpty"}, "raw_capture_sha256": {"$ref": "#/$defs/sha256"}, "acquisition_id": {"$ref": "#/$defs/nonEmpty"}, "model_revision_id": {"$ref": "#/$defs/nonEmpty"}, "analysis_revision_id": {"$ref": "#/$defs/nonEmpty"}, "result_epoch_id": {"$ref": "#/$defs/nonEmpty"}, "source_units": {"$ref": "#/$defs/sourceUnits"}, "call_ledger": {"$ref": "#/$defs/callLedger"}, "model_records": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/rawModelRecord"}}, "force_rows": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/rawForceRow"}}},
+      "additionalProperties": false
+    },
+    "sourceIdentity": {
+      "type": "object",
+      "required": ["source_system", "source_version", "adapter_semantic_id", "adapter_build_id", "acquisition_id", "raw_capture_id", "raw_capture_sha256", "model_revision_id", "analysis_revision_id", "result_epoch_id", "runtime_fingerprint", "process_identity", "model_file_sha256"],
+      "properties": {"source_system": {"const": "etabs"}, "source_version": {"$ref": "#/$defs/nonEmpty"}, "adapter_semantic_id": {"const": "etabs.beam_snapshot.import/v1"}, "adapter_build_id": {"$ref": "#/$defs/nonEmpty"}, "acquisition_id": {"$ref": "#/$defs/nonEmpty"}, "raw_capture_id": {"$ref": "#/$defs/nonEmpty"}, "raw_capture_sha256": {"$ref": "#/$defs/sha256"}, "model_revision_id": {"$ref": "#/$defs/nonEmpty"}, "analysis_revision_id": {"$ref": "#/$defs/nonEmpty"}, "result_epoch_id": {"$ref": "#/$defs/nonEmpty"}, "runtime_fingerprint": {"$ref": "#/$defs/nonEmpty"}, "process_identity": {"$ref": "#/$defs/optionalText"}, "model_file_sha256": {"$ref": "#/$defs/optionalSha256"}},
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object", "required": ["project_id", "model_name", "model_guid", "model_locked", "analysis_status", "evidence_reference"],
+      "properties": {"project_id": {"$ref": "#/$defs/nonEmpty"}, "model_name": {"$ref": "#/$defs/nonEmpty"}, "model_guid": {"$ref": "#/$defs/optionalText"}, "model_locked": {"type": "boolean"}, "analysis_status": {"enum": ["finished", "not_finished"]}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false
+    },
+    "vector3": {"type": "object", "required": ["x", "y", "z"], "properties": {"x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"}}, "additionalProperties": false},
+    "matrix3": {"type": "object", "required": ["row_1", "row_2", "row_3"], "properties": {"row_1": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}, "row_2": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}, "row_3": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}}, "additionalProperties": false},
+    "axis": {
+      "type": "object", "required": ["axis_id", "e1", "e2", "e3", "source_to_common", "physical_top_face", "physical_left_face", "evidence_reference"],
+      "properties": {"axis_id": {"$ref": "#/$defs/nonEmpty"}, "e1": {"$ref": "#/$defs/vector3"}, "e2": {"$ref": "#/$defs/vector3"}, "e3": {"$ref": "#/$defs/vector3"}, "source_to_common": {"$ref": "#/$defs/matrix3"}, "physical_top_face": {"enum": ["positive_local_2", "negative_local_2"]}, "physical_left_face": {"enum": ["positive_local_3", "negative_local_3"]}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false
+    },
+    "point": {"type": "object", "required": ["point_id", "source_name", "x_mm", "y_mm", "z_mm", "story_id", "evidence_reference"], "properties": {"point_id": {"$ref": "#/$defs/nonEmpty"}, "source_name": {"$ref": "#/$defs/nonEmpty"}, "x_mm": {"type": "number"}, "y_mm": {"type": "number"}, "z_mm": {"type": "number"}, "story_id": {"$ref": "#/$defs/nonEmpty"}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "material": {"type": "object", "required": ["material_id", "source_name", "material_kind", "elastic_modulus_n_per_mm2", "poisson_ratio", "mass_density_kg_per_m3", "evidence_reference"], "properties": {"material_id": {"$ref": "#/$defs/nonEmpty"}, "source_name": {"$ref": "#/$defs/nonEmpty"}, "material_kind": {"$ref": "#/$defs/nonEmpty"}, "elastic_modulus_n_per_mm2": {"type": "number", "exclusiveMinimum": 0}, "poisson_ratio": {"type": "number", "exclusiveMinimum": -1, "exclusiveMaximum": 0.5}, "mass_density_kg_per_m3": {"type": "number", "minimum": 0}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "section": {"type": "object", "required": ["section_id", "source_name", "shape", "material_id", "area_mm2", "torsional_constant_mm4", "inertia_2_mm4", "inertia_3_mm4", "width_mm", "depth_mm", "evidence_reference"], "properties": {"section_id": {"$ref": "#/$defs/nonEmpty"}, "source_name": {"$ref": "#/$defs/nonEmpty"}, "shape": {"enum": ["rectangular", "general"]}, "material_id": {"$ref": "#/$defs/nonEmpty"}, "area_mm2": {"type": "number", "exclusiveMinimum": 0}, "torsional_constant_mm4": {"type": "number", "exclusiveMinimum": 0}, "inertia_2_mm4": {"type": "number", "exclusiveMinimum": 0}, "inertia_3_mm4": {"type": "number", "exclusiveMinimum": 0}, "width_mm": {"type": ["number", "null"]}, "depth_mm": {"type": ["number", "null"]}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "modifiers": {"type": "object", "required": ["axial_area", "shear_area_2", "shear_area_3", "torsion", "inertia_2", "inertia_3", "mass", "weight"], "properties": {"axial_area": {"type": "number", "minimum": 0}, "shear_area_2": {"type": "number", "minimum": 0}, "shear_area_3": {"type": "number", "minimum": 0}, "torsion": {"type": "number", "minimum": 0}, "inertia_2": {"type": "number", "minimum": 0}, "inertia_3": {"type": "number", "minimum": 0}, "mass": {"type": "number", "minimum": 0}, "weight": {"type": "number", "minimum": 0}}, "additionalProperties": false},
+    "offsets": {"type": "object", "required": ["automatic", "end_i_mm", "end_j_mm", "rigid_zone_factor"], "properties": {"automatic": {"type": "boolean"}, "end_i_mm": {"type": "number", "minimum": 0}, "end_j_mm": {"type": "number", "minimum": 0}, "rigid_zone_factor": {"type": "number", "minimum": 0, "maximum": 1}}, "additionalProperties": false},
+    "endReleases": {"type": "object", "required": ["u1", "u2", "u3", "r1", "r2", "r3"], "properties": {"u1": {"type": "boolean"}, "u2": {"type": "boolean"}, "u3": {"type": "boolean"}, "r1": {"type": "boolean"}, "r2": {"type": "boolean"}, "r3": {"type": "boolean"}}, "additionalProperties": false},
+    "releases": {"type": "object", "required": ["end_i", "end_j"], "properties": {"end_i": {"$ref": "#/$defs/endReleases"}, "end_j": {"$ref": "#/$defs/endReleases"}}, "additionalProperties": false},
+    "member": {"type": "object", "required": ["member_id", "object_id", "source_label", "story_id", "point_i_id", "point_j_id", "section_id", "axis_id", "assignment_kind", "auto_select_list_id", "modifiers", "offsets", "releases", "analysis_element_ids", "evidence_reference"], "properties": {"member_id": {"$ref": "#/$defs/nonEmpty"}, "object_id": {"$ref": "#/$defs/nonEmpty"}, "source_label": {"$ref": "#/$defs/nonEmpty"}, "story_id": {"$ref": "#/$defs/nonEmpty"}, "point_i_id": {"$ref": "#/$defs/nonEmpty"}, "point_j_id": {"$ref": "#/$defs/nonEmpty"}, "section_id": {"$ref": "#/$defs/nonEmpty"}, "axis_id": {"$ref": "#/$defs/nonEmpty"}, "assignment_kind": {"enum": ["direct", "auto_select"]}, "auto_select_list_id": {"type": ["string", "null"]}, "modifiers": {"$ref": "#/$defs/modifiers"}, "offsets": {"$ref": "#/$defs/offsets"}, "releases": {"$ref": "#/$defs/releases"}, "analysis_element_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "loadCase": {"type": "object", "required": ["case_id", "source_name", "case_kind", "status", "evidence_reference"], "properties": {"case_id": {"$ref": "#/$defs/nonEmpty"}, "source_name": {"$ref": "#/$defs/nonEmpty"}, "case_kind": {"enum": ["linear_static", "modal", "response_spectrum", "other"]}, "status": {"enum": ["finished", "not_finished"]}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "combinationFactor": {"type": "object", "required": ["ordinal", "source_kind", "source_id", "scale_factor"], "properties": {"ordinal": {"type": "integer", "minimum": 0}, "source_kind": {"enum": ["load_case", "load_combination"]}, "source_id": {"$ref": "#/$defs/nonEmpty"}, "scale_factor": {"type": "number"}}, "additionalProperties": false},
+    "loadCombination": {"type": "object", "required": ["combination_id", "source_name", "combination_kind", "factors", "evidence_reference"], "properties": {"combination_id": {"$ref": "#/$defs/nonEmpty"}, "source_name": {"$ref": "#/$defs/nonEmpty"}, "combination_kind": {"enum": ["linear_add", "envelope", "other"]}, "factors": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/combinationFactor"}}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "resultSelection": {"type": "object", "required": ["selection_id", "kind", "source_id", "source_name", "selected_for_output", "action_basis", "result_epoch_id", "evidence_reference"], "properties": {"selection_id": {"$ref": "#/$defs/nonEmpty"}, "kind": {"enum": ["load_case", "load_combination"]}, "source_id": {"$ref": "#/$defs/nonEmpty"}, "source_name": {"$ref": "#/$defs/nonEmpty"}, "selected_for_output": {"type": "boolean"}, "action_basis": {"enum": ["static_concurrent", "staged_step", "response_result", "component_envelope", "design_envelope"]}, "result_epoch_id": {"$ref": "#/$defs/nonEmpty"}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "station": {"type": "object", "required": ["station_id", "member_id", "object_id", "analysis_element_id", "physical_station_mm", "object_station_mm", "element_station_mm", "normalized_ratio", "side", "evidence_reference"], "properties": {"station_id": {"$ref": "#/$defs/nonEmpty"}, "member_id": {"$ref": "#/$defs/nonEmpty"}, "object_id": {"$ref": "#/$defs/nonEmpty"}, "analysis_element_id": {"$ref": "#/$defs/nonEmpty"}, "physical_station_mm": {"type": "number", "minimum": 0}, "object_station_mm": {"type": "number", "minimum": 0}, "element_station_mm": {"type": "number", "minimum": 0}, "normalized_ratio": {"type": "number", "minimum": 0, "maximum": 1}, "side": {"enum": ["continuous", "before", "after"]}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "forceProvenance": {"type": "object", "required": ["getter_method", "signature_authority_sha256", "call_id", "source_row_index", "concurrency_basis", "evidence_reference"], "properties": {"getter_method": {"$ref": "#/$defs/nonEmpty"}, "signature_authority_sha256": {"$ref": "#/$defs/sha256"}, "call_id": {"$ref": "#/$defs/nonEmpty"}, "source_row_index": {"type": "integer", "minimum": 0}, "concurrency_basis": {"$ref": "#/$defs/nonEmpty"}, "evidence_reference": {"$ref": "#/$defs/nonEmpty"}}, "additionalProperties": false},
+    "actionRow": {"type": "object", "required": ["row_id", "source_row_id", "member_id", "object_id", "analysis_element_id", "station_id", "selection_id", "output_case_name", "step_type", "step_number", "action_basis", "p_kn", "v2_kn", "v3_kn", "t_knm", "m2_knm", "m3_knm", "force_unit", "moment_unit", "provenance"], "properties": {"row_id": {"$ref": "#/$defs/nonEmpty"}, "source_row_id": {"$ref": "#/$defs/nonEmpty"}, "member_id": {"$ref": "#/$defs/nonEmpty"}, "object_id": {"$ref": "#/$defs/nonEmpty"}, "analysis_element_id": {"$ref": "#/$defs/nonEmpty"}, "station_id": {"$ref": "#/$defs/nonEmpty"}, "selection_id": {"$ref": "#/$defs/nonEmpty"}, "output_case_name": {"$ref": "#/$defs/nonEmpty"}, "step_type": {"$ref": "#/$defs/nonEmpty"}, "step_number": {"type": ["number", "null"]}, "action_basis": {"enum": ["static_concurrent", "staged_step", "response_result", "component_envelope", "design_envelope"]}, "p_kn": {"type": "number"}, "v2_kn": {"type": "number"}, "v3_kn": {"type": "number"}, "t_knm": {"type": "number"}, "m2_knm": {"type": "number"}, "m3_knm": {"type": "number"}, "force_unit": {"const": "kN"}, "moment_unit": {"const": "kNm"}, "provenance": {"$ref": "#/$defs/forceProvenance"}}, "additionalProperties": false},
+    "rowDisposition": {"type": "object", "required": ["source_record_id", "record_kind", "disposition", "canonical_id", "reason_code", "approval_reference", "diagnostic_codes"], "properties": {"source_record_id": {"$ref": "#/$defs/nonEmpty"}, "record_kind": {"$ref": "#/$defs/nonEmpty"}, "disposition": {"enum": ["accepted", "approved_exclusion", "blocked"]}, "canonical_id": {"type": ["string", "null"]}, "reason_code": {"type": ["string", "null"]}, "approval_reference": {"type": ["string", "null"]}, "diagnostic_codes": {"type": "array", "items": {"$ref": "#/$defs/nonEmpty"}}}, "additionalProperties": false},
+    "rowLedger": {"type": "object", "required": ["source_row_count", "accepted_count", "approved_exclusion_count", "blocked_count", "rows"], "properties": {"source_row_count": {"type": "integer", "minimum": 0}, "accepted_count": {"type": "integer", "minimum": 0}, "approved_exclusion_count": {"type": "integer", "minimum": 0}, "blocked_count": {"type": "integer", "minimum": 0}, "rows": {"type": "array", "items": {"$ref": "#/$defs/rowDisposition"}}}, "additionalProperties": false},
+    "normalization": {"type": "object", "required": ["rule_id", "conversion_performed_once", "source_units_sha256"], "properties": {"rule_id": {"const": "structural.analysis_snapshot.normalize/v1"}, "conversion_performed_once": {"const": true}, "source_units_sha256": {"$ref": "#/$defs/sha256"}}, "additionalProperties": false},
+    "freshness": {"type": "object", "required": ["state", "model_revision_id", "analysis_revision_id", "result_epoch_id", "selection_ids"], "properties": {"state": {"enum": ["current", "stale", "unbound"]}, "model_revision_id": {"$ref": "#/$defs/nonEmpty"}, "analysis_revision_id": {"$ref": "#/$defs/nonEmpty"}, "result_epoch_id": {"$ref": "#/$defs/nonEmpty"}, "selection_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}}}, "additionalProperties": false},
+    "diagnostic": {"type": "object", "required": ["code", "severity", "field_or_location", "message", "remediation"], "properties": {"code": {"$ref": "#/$defs/nonEmpty"}, "severity": {"enum": ["error", "warning", "info"]}, "field_or_location": {"$ref": "#/$defs/nonEmpty"}, "message": {"$ref": "#/$defs/nonEmpty"}, "remediation": {"type": ["string", "null"]}}, "additionalProperties": false},
+    "provenance": {"type": "object", "required": ["contract_revision_id", "source_references", "limitations"], "properties": {"contract_revision_id": {"const": "wp10-analysis-snapshot-contract-v1"}, "source_references": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonEmpty"}}, "limitations": {"type": "array", "items": {"$ref": "#/$defs/nonEmpty"}}}, "additionalProperties": false},
+    "analysisSnapshot": {
+      "type": "object",
+      "required": ["schema_version", "operation_semantic_id", "snapshot_id", "snapshot_sha256", "created_at_utc", "source_identity", "metadata", "units", "axes", "points", "materials", "sections", "members", "load_cases", "load_combinations", "result_selections", "stations", "action_rows", "row_ledger", "normalization", "freshness", "diagnostics", "provenance", "evidence_manifest_sha256", "raw_capture"],
+      "properties": {
+        "schema_version": {"const": "structural.analysis_snapshot/v1"}, "operation_semantic_id": {"const": "etabs.beam_snapshot.import/v1"}, "snapshot_id": {"$ref": "#/$defs/nonEmpty"}, "snapshot_sha256": {"$ref": "#/$defs/sha256"}, "created_at_utc": {"type": "string", "format": "date-time"},
+        "source_identity": {"$ref": "#/$defs/sourceIdentity"}, "metadata": {"$ref": "#/$defs/metadata"}, "units": {"$ref": "#/$defs/unitBasis"},
+        "axes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/axis"}}, "points": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/point"}}, "materials": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/material"}}, "sections": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/section"}}, "members": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/member"}}, "load_cases": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/loadCase"}}, "load_combinations": {"type": "array", "items": {"$ref": "#/$defs/loadCombination"}}, "result_selections": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/resultSelection"}}, "stations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/station"}}, "action_rows": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/actionRow"}},
+        "row_ledger": {"$ref": "#/$defs/rowLedger"}, "normalization": {"$ref": "#/$defs/normalization"}, "freshness": {"$ref": "#/$defs/freshness"}, "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}, "provenance": {"$ref": "#/$defs/provenance"}, "evidence_manifest_sha256": {"$ref": "#/$defs/sha256"}, "raw_capture": {"$ref": "#/$defs/rawCapture"}
+      },
+      "additionalProperties": false
+    },
+    "snapshotResult": {
+      "type": "object", "required": ["schema_version", "operation_semantic_id", "operation_state", "execution", "applicability", "engineering", "completeness", "freshness", "approval", "request_id", "snapshot", "diagnostics", "provenance"],
+      "properties": {"schema_version": {"const": "etabs.beam_snapshot.import-result/v1"}, "operation_semantic_id": {"const": "etabs.beam_snapshot.import/v1"}, "operation_state": {"enum": ["preflight_accepted", "completed", "preflight_rejected", "fenced", "transaction_uncertain", "cancelled"]}, "execution": {"enum": ["completed", "rejected_input", "not_run", "software_error", "cancelled"]}, "applicability": {"enum": ["applicable", "not_applicable", "unknown"]}, "engineering": {"enum": ["pass", "fail", "not_evaluated"]}, "completeness": {"enum": ["complete_for_scope", "partial"]}, "freshness": {"enum": ["current", "stale", "unbound"]}, "approval": {"enum": ["unreviewed", "checked", "approved", "rejected"]}, "request_id": {"type": ["string", "null"]}, "snapshot": {"oneOf": [{"$ref": "#/$defs/analysisSnapshot"}, {"type": "null"}]}, "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}, "provenance": {"$ref": "#/$defs/provenance"}}, "additionalProperties": false
+    }
+  }
+}

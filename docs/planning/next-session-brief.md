@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-04
-- Focus: Reconstruct why WP09 consumed about 6.5 hours, distinguish necessary installed-product qualification from preventable rework, implement controls that would have changed the delivery outcome, and re-sequence WP10 without weakening Excel or ETABS acceptance.
-- Completed: Reconstructed the WP09 scope, commit and hosted-check timeline, duration limits, repair classes, and the root causes behind repeated candidate cycles.; Added a hosted-equivalent pre-freeze candidate-integrity command and explicit timed-task closeout guidance, with focused regression coverage.; Recorded the postmortem and updated the WP09/WP10 plans so later host work uses bounded slices, an early host micro-probe, staged acceptance, and one consolidated repair boundary.
-- Recurrence controls: RR-001 x1 / 120-165m: Keep one milestone branch, but execute contracts, host work, integration, and qualification as bounded tasks.; RR-002 x7 / unknown: Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.; RR-003 x4 / unknown: Stabilize behavior, run changed-domain format/lint, normalize files, rebind affected identities, then push once.
-- Git receipt: docs/verification/wp09-postmortem-controls-git-handoff-receipt.json | sha256:b0d1abc4e6fc91c0f496c5507f5f872ab55ca71981cd021c183c3cf4de7dcd73 | HOLD
-- Git identity: codex/wp09-postmortem-controls@f8a7957b7bb3fa35db9a4e8c812a9ab11a64d982 | upstream=NONE@UNKNOWN | base=origin/main@ac1bd2b3e38f61b165504331ea35e5642cd49860 | tree=dirty | operation=none
+- Focus: Freeze and implement the host-free AO16 request, raw acquisition, normalized analysis-snapshot, deterministic identity, replay-result, and Python/.NET conformance boundary without CSI, COM, installed ETABS/Excel, model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
+- Completed: Reconciled PF4/PF8/PF11 semantics, the WP10 plan, existing Python ETABS evidence models, native .NET contracts, public API conventions, units, provenance, result states, optional evidence, and cross-language identity.; Added strict pure Python and .NET contracts and offline replay validators for metadata, units, axes/faces, geometry, assignments, releases/offsets, cases/combinations, result selections, stations, same-row forces, call/source provenance, raw-row disposition, and freshness.; Added the AO16 manifest, strict JSON Schema, one shared valid fixture, adversarial mutations, canonical identities, public examples, focused tests, and the WP10-01 library/reference/status documentation.
+- Recurrence controls: RR-004 x5 / unknown: Use session begin, compact RR references, preparation closeout, clean closeout, and post-merge usage closeout in order.; RR-005 x10 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-006 x2 / unknown: Require every printed preparation check to pass, then use the clean read-only session-end verdict as final authority.
+- Git receipt: docs/verification/wp10-01-git-handoff-receipt.json | sha256:442b20db19502f24c6a471e4283bef18ee520ae1f394ce3a5ac8030acaaee0c9 | HOLD
+- Git identity: codex/wp10-01-etabs-snapshot-contracts@798229fd387115d2c58f50516c588b5345ece9c2 | upstream=NONE@UNKNOWN | base=origin/main@798229fd387115d2c58f50516c588b5345ece9c2 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -22,11 +22,11 @@ product in WP09. The next packet is WP10's getter-only ETABS read adapter.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | IMP-M1 WP01–WP08 and IMP-M2 WP09 are implemented and qualified. The native Python/.NET libraries now feed the standalone Excel-DNA XLL, versioned workbook tables, explicit bulk commands, rollback/freshness, sample workbook and installed lifecycle. |
-| **Next** | Execute WP10-01 from the ready WP10 plan: freeze portable ETABS snapshot contracts and shared Python/.NET fixtures before adding the optional Windows CSI adapter. |
+| **Current** | IMP-M1 WP01–WP08 and IMP-M2 WP09 are implemented and qualified. WP10-01 now freezes AO16's host-free request, raw-capture, getter-ledger, normalized snapshot, result-state, diagnostic, provenance, canonical identity, and shared Python/.NET conformance boundary. |
+| **Next** | Begin WP10-02 only from the frozen version-1 schemas and fixtures. First run the read-only exact-host micro-probe, then bind the installed 2.16.0.0 getter signatures without changing units, result selection, model state, or analysis state. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |
-| Implementation boundary | WP10 reads model metadata, geometry, assignments and selected analysis results through a getter-only STA broker. It must not alter units, result selection, the attached model or analysis state. |
+| Implementation boundary | WP10-01 is pure offline validation. WP10-02 adds the exact getter adapter after its micro-probe; CSI/COM must remain outside the pure libraries and must not alter units, result selection, the attached model, or analysis state. |
 | Release boundary | Package publication and GitHub releases retain the repository's separate per-release authorization and evidence process. |
 
 ## Implementation order

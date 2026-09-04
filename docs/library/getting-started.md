@@ -92,3 +92,41 @@ self-weight, load, support, mesh, or analysis-setting changes require a fresh
 candidate analysis snapshot. See the
 [WP08 reference](reference/wp08-beam-optimization.md) for signatures,
 objectives, tie breakers, cancellation, and optimum-claim rules.
+
+WP10-01 accepts an immutable JSON snapshot produced by a later adapter and
+validates it without opening ETABS. Python callers can replay the shared
+conformance artifact through the normal public module:
+
+```python
+import json
+from pathlib import Path
+
+from structural_lib.analysis_snapshot import parse_analysis_snapshot_json
+
+fixture = json.loads(
+    Path("contracts/structural-engineering/conformance/wp10-vectors.json")
+    .read_text(encoding="utf-8")
+)
+result = parse_analysis_snapshot_json(json.dumps(fixture["valid_snapshot"]))
+assert result.execution == "completed"
+assert result.snapshot is not None
+```
+
+The native .NET library replays the identical bytes and identities:
+
+```csharp
+using StructuralEngineering.Analysis;
+
+var result = AnalysisSnapshotCodec.ParseAndValidate(snapshotJson);
+if (result.Execution == ExecutionState.Completed)
+    Console.WriteLine(result.Snapshot!.SnapshotId);
+```
+
+The snapshot keeps original units and one-time conversion factors, model and
+result epochs, axes and physical faces, object/element/physical stations,
+cases/combinations, all six signed force components from one source row, and
+the getter call/source-row evidence. Inspect execution, completeness,
+freshness, approval, and diagnostics independently. Offline replay establishes
+portable integrity and mapping consistency; it is not a live-host compatibility
+check, structural analysis, or engineering approval. See the
+[WP10-01 reference](reference/wp10-analysis-snapshot.md).

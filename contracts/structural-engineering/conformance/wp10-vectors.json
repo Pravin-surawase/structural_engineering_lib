@@ -1,0 +1,200 @@
+{
+  "schema_version": "structural-conformance/v1",
+  "work_packet": "WP10-01",
+  "operation_semantic_id": "etabs.beam_snapshot.import/v1",
+  "valid_request": {
+    "schema_version": "etabs.beam_snapshot.import-request/v1",
+    "operation_semantic_id": "etabs.beam_snapshot.import/v1",
+    "request_id": "wp10-request-001",
+    "source_expectation": {
+      "source_system": "etabs",
+      "source_version": "23.3.1.4563",
+      "model_revision_id": "model-revision-001",
+      "process_identity": {"state": "supplied", "value": "pid:4242;started:2026-09-04T11:59:00Z", "reason_code": null},
+      "model_file_sha256": {"state": "supplied", "value": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "reason_code": null}
+    },
+    "scope": {
+      "project_id": "project-001",
+      "members": {"mode": "explicit", "member_ids": ["member-b1"]},
+      "result_selection_ids": ["selection-uls"],
+      "result_kinds": ["frame_force"],
+      "stations": {"mode": "all_available", "station_ids": []}
+    },
+    "required_provenance": ["axes", "force_rows", "geometry", "load_definitions", "material_assignments", "model_metadata", "result_selection", "section_assignments", "stations", "units"],
+    "deadline_utc": "2026-09-04T12:05:00Z"
+  },
+  "valid_snapshot": {
+    "schema_version": "structural.analysis_snapshot/v1",
+    "operation_semantic_id": "etabs.beam_snapshot.import/v1",
+    "snapshot_id": "analysis_snapshot_id:pf4-canonical-json-v1:507541e2d462d528649733c8155e24c2996f5430c08d9f865ef48b293ae708fe",
+    "snapshot_sha256": "507541e2d462d528649733c8155e24c2996f5430c08d9f865ef48b293ae708fe",
+    "created_at_utc": "2026-09-04T12:00:00Z",
+    "source_identity": {
+      "source_system": "etabs",
+      "source_version": "23.3.1.4563",
+      "adapter_semantic_id": "etabs.beam_snapshot.import/v1",
+      "adapter_build_id": "wp10-01-fixture",
+      "acquisition_id": "acquisition-001",
+      "raw_capture_id": "raw_capture_id:pf4-canonical-json-v1:db53b43367c74108180536955e4308bdc263b978639d6eb78c4b30d736760615",
+      "raw_capture_sha256": "db53b43367c74108180536955e4308bdc263b978639d6eb78c4b30d736760615",
+      "model_revision_id": "model-revision-001",
+      "analysis_revision_id": "analysis-revision-001",
+      "result_epoch_id": "result-epoch-001",
+      "runtime_fingerprint": "windows-x64;net10;adapter-wp10-01",
+      "process_identity": {"state": "supplied", "value": "pid:4242;started:2026-09-04T11:59:00Z", "reason_code": null},
+      "model_file_sha256": {"state": "supplied", "value": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "reason_code": null}
+    },
+    "metadata": {
+      "project_id": "project-001",
+      "model_name": "WP10 Portable Fixture",
+      "model_guid": {"state": "unavailable", "value": null, "reason_code": "SOURCE_GUID_NOT_EXPOSED"},
+      "model_locked": true,
+      "analysis_status": "finished",
+      "evidence_reference": "raw-metadata"
+    },
+    "units": {
+      "length": "mm",
+      "force": "kN",
+      "moment": "kNm",
+      "stress": "N/mm2",
+      "mass_density": "kg/m3",
+      "original_source_units": {"length": "m", "force": "N", "moment": "N.m", "stress": "MPa", "mass_density": "kg/m3"},
+      "conversion_to_canonical": {"length_to_mm": 1000, "force_to_kn": 0.001, "moment_to_knm": 0.001, "stress_to_n_per_mm2": 1, "mass_density_to_kg_per_m3": 1}
+    },
+    "axes": [
+      {
+        "axis_id": "axis-b1",
+        "e1": {"x": 1, "y": 0, "z": 0},
+        "e2": {"x": 0, "y": 0, "z": 1},
+        "e3": {"x": 0, "y": -1, "z": 0},
+        "source_to_common": {"row_1": [1, 0, 0], "row_2": [0, 1, 0], "row_3": [0, 0, 1]},
+        "physical_top_face": "positive_local_2",
+        "physical_left_face": "positive_local_3",
+        "evidence_reference": "raw-member-b1"
+      }
+    ],
+    "points": [
+      {"point_id": "point-a", "source_name": "P1", "x_mm": 0, "y_mm": 0, "z_mm": 3000, "story_id": "story-1", "evidence_reference": "raw-point-a"},
+      {"point_id": "point-b", "source_name": "P2", "x_mm": 5000, "y_mm": 0, "z_mm": 3000, "story_id": "story-1", "evidence_reference": "raw-point-b"}
+    ],
+    "materials": [
+      {"material_id": "material-c30", "source_name": "M30", "material_kind": "concrete", "elastic_modulus_n_per_mm2": 27386.12787525831, "poisson_ratio": 0.2, "mass_density_kg_per_m3": 2500, "evidence_reference": "raw-material-c30"}
+    ],
+    "sections": [
+      {"section_id": "section-r300x500", "source_name": "R300X500", "shape": "rectangular", "material_id": "material-c30", "area_mm2": 150000, "torsional_constant_mm4": 2812500000, "inertia_2_mm4": 1125000000, "inertia_3_mm4": 3125000000, "width_mm": 300, "depth_mm": 500, "evidence_reference": "raw-section-r300x500"}
+    ],
+    "members": [
+      {
+        "member_id": "member-b1", "object_id": "object-b1", "source_label": "B1", "story_id": "story-1", "point_i_id": "point-a", "point_j_id": "point-b", "section_id": "section-r300x500", "axis_id": "axis-b1",
+        "assignment_kind": "direct", "auto_select_list_id": null,
+        "modifiers": {"axial_area": 1, "shear_area_2": 1, "shear_area_3": 1, "torsion": 1, "inertia_2": 0.7, "inertia_3": 0.7, "mass": 1, "weight": 1},
+        "offsets": {"automatic": false, "end_i_mm": 0, "end_j_mm": 0, "rigid_zone_factor": 0},
+        "releases": {"end_i": {"u1": false, "u2": false, "u3": false, "r1": false, "r2": false, "r3": false}, "end_j": {"u1": false, "u2": false, "u3": false, "r1": false, "r2": false, "r3": false}},
+        "analysis_element_ids": ["element-b1-1"],
+        "evidence_reference": "raw-member-b1"
+      }
+    ],
+    "load_cases": [
+      {"case_id": "case-dl", "source_name": "DEAD", "case_kind": "linear_static", "status": "finished", "evidence_reference": "raw-case-dl"}
+    ],
+    "load_combinations": [
+      {"combination_id": "combo-uls", "source_name": "ULS-1", "combination_kind": "linear_add", "factors": [{"ordinal": 0, "source_kind": "load_case", "source_id": "case-dl", "scale_factor": 1.5}], "evidence_reference": "raw-combo-uls"}
+    ],
+    "result_selections": [
+      {"selection_id": "selection-uls", "kind": "load_combination", "source_id": "combo-uls", "source_name": "ULS-1", "selected_for_output": true, "action_basis": "static_concurrent", "result_epoch_id": "result-epoch-001", "evidence_reference": "raw-selection-uls"}
+    ],
+    "stations": [
+      {"station_id": "station-b1-mid", "member_id": "member-b1", "object_id": "object-b1", "analysis_element_id": "element-b1-1", "physical_station_mm": 2500, "object_station_mm": 2500, "element_station_mm": 500, "normalized_ratio": 0.5, "side": "continuous", "evidence_reference": "raw-station-mid"}
+    ],
+    "action_rows": [
+      {
+        "row_id": "analysis_action_row_id:pf4-canonical-json-v1:c8e4e39b4e905f4c95f1d92930584ab7a531ff81df5d9d86af452a018cf3ddce",
+        "source_row_id": "raw-force-0", "member_id": "member-b1", "object_id": "object-b1", "analysis_element_id": "element-b1-1", "station_id": "station-b1-mid", "selection_id": "selection-uls", "output_case_name": "ULS-1", "step_type": "single", "step_number": null, "action_basis": "static_concurrent",
+        "p_kn": -12, "v2_kn": 45, "v3_kn": -3, "t_knm": 4, "m2_knm": -5, "m3_knm": 125, "force_unit": "kN", "moment_unit": "kNm",
+        "provenance": {"getter_method": "Results.FrameForce", "signature_authority_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "call_id": "call-frame-force", "source_row_index": 0, "concurrency_basis": "same returned FrameForce row", "evidence_reference": "raw-force-0"}
+      }
+    ],
+    "row_ledger": {
+      "source_row_count": 12, "accepted_count": 11, "approved_exclusion_count": 1, "blocked_count": 0,
+      "rows": [
+        {"source_record_id": "raw-case-dl", "record_kind": "load_case", "disposition": "accepted", "canonical_id": "case-dl", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-combo-uls", "record_kind": "load_combination", "disposition": "accepted", "canonical_id": "combo-uls", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-force-0", "record_kind": "force_row", "disposition": "accepted", "canonical_id": "analysis_action_row_id:pf4-canonical-json-v1:c8e4e39b4e905f4c95f1d92930584ab7a531ff81df5d9d86af452a018cf3ddce", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-force-1", "record_kind": "force_row", "disposition": "approved_exclusion", "canonical_id": null, "reason_code": "NON_BEAM_FRAME", "approval_reference": "approval:wp10-fixture-nonbeam", "diagnostic_codes": []},
+        {"source_record_id": "raw-material-c30", "record_kind": "material", "disposition": "accepted", "canonical_id": "material-c30", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-member-b1", "record_kind": "member", "disposition": "accepted", "canonical_id": "member-b1", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-metadata", "record_kind": "model_metadata", "disposition": "accepted", "canonical_id": "project-001", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-point-a", "record_kind": "point", "disposition": "accepted", "canonical_id": "point-a", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-point-b", "record_kind": "point", "disposition": "accepted", "canonical_id": "point-b", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-section-r300x500", "record_kind": "section", "disposition": "accepted", "canonical_id": "section-r300x500", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-selection-uls", "record_kind": "result_selection", "disposition": "accepted", "canonical_id": "selection-uls", "reason_code": null, "approval_reference": null, "diagnostic_codes": []},
+        {"source_record_id": "raw-station-mid", "record_kind": "station", "disposition": "accepted", "canonical_id": "station-b1-mid", "reason_code": null, "approval_reference": null, "diagnostic_codes": []}
+      ]
+    },
+    "normalization": {"rule_id": "structural.analysis_snapshot.normalize/v1", "conversion_performed_once": true, "source_units_sha256": "86986c375e8e50acb98f09d6660e5ef2c923331b7f8e450c9628ca6e4cc570c6"},
+    "freshness": {"state": "current", "model_revision_id": "model-revision-001", "analysis_revision_id": "analysis-revision-001", "result_epoch_id": "result-epoch-001", "selection_ids": ["selection-uls"]},
+    "diagnostics": [],
+    "provenance": {
+      "contract_revision_id": "wp10-analysis-snapshot-contract-v1",
+      "source_references": ["PF4 engineering semantic model", "PF8 portable analysis snapshot contract", "WP10-01 shared conformance fixture"],
+      "limitations": ["Offline fixture; no installed ETABS compatibility claim.", "Frame force evidence is retained, not independently validated analysis."]
+    },
+    "evidence_manifest_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "raw_capture": {
+      "schema_version": "structural.analysis_raw_capture/v1",
+      "raw_capture_id": "raw_capture_id:pf4-canonical-json-v1:db53b43367c74108180536955e4308bdc263b978639d6eb78c4b30d736760615",
+      "raw_capture_sha256": "db53b43367c74108180536955e4308bdc263b978639d6eb78c4b30d736760615",
+      "acquisition_id": "acquisition-001", "model_revision_id": "model-revision-001", "analysis_revision_id": "analysis-revision-001", "result_epoch_id": "result-epoch-001",
+      "source_units": {"length": "m", "force": "N", "moment": "N.m", "stress": "MPa", "mass_density": "kg/m3"},
+      "call_ledger": {
+        "schema_version": "structural.analysis_call_ledger/v1", "operation_id": "acquisition-001", "record_count": 2,
+        "head_record_sha256": "53fc5da7f245e7ce189d72a6bf87e1c7418b1b8a6872c97ef2a7bba7045fdec3", "ledger_sha256": "224f7a30c78546a9862c19010e152b823185fcf2f59c837cbfe6c3606779457d",
+        "records": [
+          {"schema_version": "structural.analysis_call_record/v1", "operation_id": "acquisition-001", "call_id": "call-frame-force", "sequence": 1, "previous_record_sha256": null, "stage": "started", "method": "Results.FrameForce", "signature_authority_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "effect": "getter", "arguments_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "return_code": null, "raw_shape": null, "recorded_at_utc": "2026-09-04T12:00:00Z", "record_sha256": "7af247f0252fbe19a38e50f100eef0b83604263355bc9a1977e72a96cbb2665b"},
+          {"schema_version": "structural.analysis_call_record/v1", "operation_id": "acquisition-001", "call_id": "call-frame-force", "sequence": 2, "previous_record_sha256": "7af247f0252fbe19a38e50f100eef0b83604263355bc9a1977e72a96cbb2665b", "stage": "returned", "method": "Results.FrameForce", "signature_authority_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "effect": "getter", "arguments_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "return_code": 0, "raw_shape": "count=2;parallel_arrays=14;length=2", "recorded_at_utc": "2026-09-04T12:00:01Z", "record_sha256": "53fc5da7f245e7ce189d72a6bf87e1c7418b1b8a6872c97ef2a7bba7045fdec3"}
+        ]
+      },
+      "model_records": [
+        {"record_kind": "load_case", "source_record_id": "raw-case-dl", "fields": {"name": "DEAD", "status": "finished", "type": "linear_static"}},
+        {"record_kind": "load_combination", "source_record_id": "raw-combo-uls", "fields": {"factors": "1.5*DEAD", "name": "ULS-1", "type": "linear_add"}},
+        {"record_kind": "material", "source_record_id": "raw-material-c30", "fields": {"elastic_modulus_mpa": 27386.12787525831, "name": "M30"}},
+        {"record_kind": "member", "source_record_id": "raw-member-b1", "fields": {"axis_rotation_deg": 0, "label": "B1", "object": "object-b1", "section": "R300X500"}},
+        {"record_kind": "model_metadata", "source_record_id": "raw-metadata", "fields": {"analysis_status": "finished", "locked": true, "name": "WP10 Portable Fixture"}},
+        {"record_kind": "point", "source_record_id": "raw-point-a", "fields": {"name": "P1", "x_m": 0, "y_m": 0, "z_m": 3}},
+        {"record_kind": "point", "source_record_id": "raw-point-b", "fields": {"name": "P2", "x_m": 5, "y_m": 0, "z_m": 3}},
+        {"record_kind": "section", "source_record_id": "raw-section-r300x500", "fields": {"depth_m": 0.5, "material": "M30", "name": "R300X500", "width_m": 0.3}},
+        {"record_kind": "result_selection", "source_record_id": "raw-selection-uls", "fields": {"kind": "load_combination", "name": "ULS-1", "selected": true}},
+        {"record_kind": "station", "source_record_id": "raw-station-mid", "fields": {"element": "element-b1-1", "element_station_m": 0.5, "object": "object-b1", "object_station_m": 2.5}}
+      ],
+      "force_rows": [
+        {"source_row_id": "raw-force-0", "source_row_index": 0, "object_id": "object-b1", "analysis_element_id": "element-b1-1", "object_station": 2.5, "element_station": 0.5, "output_case_name": "ULS-1", "step_type": "single", "step_number": null, "p": -12000, "v2": 45000, "v3": -3000, "t": 4000, "m2": -5000, "m3": 125000},
+        {"source_row_id": "raw-force-1", "source_row_index": 1, "object_id": "object-column-1", "analysis_element_id": "element-column-1", "object_station": 0, "element_station": 0, "output_case_name": "ULS-1", "step_type": "single", "step_number": null, "p": -900000, "v2": 0, "v3": 0, "t": 0, "m2": 0, "m3": 0}
+      ]
+    }
+  },
+  "expected": {
+    "snapshot_id": "analysis_snapshot_id:pf4-canonical-json-v1:507541e2d462d528649733c8155e24c2996f5430c08d9f865ef48b293ae708fe",
+    "snapshot_sha256": "507541e2d462d528649733c8155e24c2996f5430c08d9f865ef48b293ae708fe",
+    "raw_capture_id": "raw_capture_id:pf4-canonical-json-v1:db53b43367c74108180536955e4308bdc263b978639d6eb78c4b30d736760615",
+    "raw_capture_sha256": "db53b43367c74108180536955e4308bdc263b978639d6eb78c4b30d736760615",
+    "canonical_json_sha256": "3a56e0c0e024a10d9266622c18da020ce8c33507c4efabf921ed7c8143de8523",
+    "canonical_json_byte_count": 12658,
+    "states": {"operation_state": "completed", "execution": "completed", "applicability": "applicable", "engineering": "not_evaluated", "completeness": "complete_for_scope", "freshness": "current", "approval": "unreviewed"}
+  },
+  "invalid_vectors": [
+    {"id": "wp10-portable-snapshot-tampered", "mutations": [{"operation": "replace", "path": "/metadata/model_name", "value": "Tampered model"}], "expected": {"operation_state": "preflight_rejected", "execution": "rejected_input", "diagnostic": "SNAPSHOT.HASH_MISMATCH"}},
+    {"id": "wp10-portable-raw-capture-tampered", "mutations": [{"operation": "replace", "path": "/raw_capture/model_records/0/fields/status", "value": "changed"}], "expected": {"operation_state": "preflight_rejected", "execution": "rejected_input", "diagnostic": "RAW_CAPTURE.HASH_MISMATCH"}},
+    {"id": "wp10-portable-axis-left-handed", "mutations": [{"operation": "replace", "path": "/axes/0/e3/y", "value": 1}], "expected": {"operation_state": "fenced", "execution": "completed", "diagnostic": "AXIS.UNRESOLVED"}},
+    {"id": "wp10-portable-mapping-unresolved", "mutations": [{"operation": "replace", "path": "/stations/0/analysis_element_id", "value": "missing-element"}], "expected": {"operation_state": "fenced", "execution": "completed", "diagnostic": "ETABS.MAPPING_UNRESOLVED"}},
+    {"id": "wp10-portable-force-row-recombined", "mutations": [{"operation": "replace", "path": "/action_rows/0/output_case_name", "value": "OTHER-CASE"}], "expected": {"operation_state": "fenced", "execution": "completed", "diagnostic": "ETABS.MAPPING_UNRESOLVED"}},
+    {"id": "wp10-portable-result-epoch-drift", "mutations": [{"operation": "replace", "path": "/result_selections/0/result_epoch_id", "value": "result-epoch-stale"}], "expected": {"operation_state": "fenced", "execution": "completed", "diagnostic": "ETABS.RESULT_EPOCH_INVALID"}},
+    {"id": "wp10-portable-blocked-row", "mutations": [{"operation": "replace", "path": "/row_ledger/approved_exclusion_count", "value": 0}, {"operation": "replace", "path": "/row_ledger/blocked_count", "value": 1}, {"operation": "replace", "path": "/row_ledger/rows/3/disposition", "value": "blocked"}, {"operation": "replace", "path": "/row_ledger/rows/3/approval_reference", "value": null}, {"operation": "replace", "path": "/row_ledger/rows/3/diagnostic_codes", "value": ["ETABS.NON_BEAM_BLOCKED"]}], "expected": {"operation_state": "fenced", "execution": "completed", "diagnostic": "ETABS.ROW_BLOCKED"}},
+    {"id": "wp10-portable-ledger-unfinalized", "mutations": [{"operation": "remove", "path": "/raw_capture/call_ledger/records/1"}], "expected": {"operation_state": "transaction_uncertain", "execution": "not_run", "diagnostic": "ETABS.LEDGER_UNFINALIZED"}},
+    {"id": "wp10-portable-model-file-hash-invalid", "mutations": [{"operation": "replace", "path": "/source_identity/model_file_sha256/value", "value": "NOT-A-SHA256"}], "expected": {"operation_state": "preflight_rejected", "execution": "rejected_input", "diagnostic": "INPUT.SCHEMA"}},
+    {"id": "wp10-portable-unknown-field", "mutations": [{"operation": "add", "path": "/metadata/vendor_object", "value": "forbidden"}], "expected": {"operation_state": "preflight_rejected", "execution": "rejected_input", "diagnostic": "INPUT.SCHEMA"}}
+  ],
+  "vectors": [
+    {"id": "wp10-portable-snapshot-valid", "operation_semantic_id": "etabs.beam_snapshot.import/v1", "input_reference": "valid_snapshot", "expected_reference": "expected"},
+    {"id": "wp10-portable-snapshot-tampered", "operation_semantic_id": "etabs.beam_snapshot.import/v1", "input_reference": "valid_snapshot+invalid_vectors/wp10-portable-snapshot-tampered", "expected": {"execution": "rejected_input", "diagnostic": "SNAPSHOT.HASH_MISMATCH"}}
+  ]
+}

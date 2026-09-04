@@ -46,3 +46,11 @@ engineering evidence, fixed-action and coupled-reanalysis classifications,
 typed construction objectives, and truthful optimum/infeasibility claims. Its
 signatures and search-state rules are documented in
 `docs/library/reference/wp08-beam-optimization.md`.
+
+WP10-01 adds AO16's host-free request, raw-capture, normalized analysis
+snapshot, getter-call ledger, and replay-result contracts. The shared fixture
+freezes model and result-epoch identity, units, axes and physical faces,
+geometry and assignments, cases/combinations, stations, same-row force
+provenance, row accounting, optional evidence, canonical hashes, and
+fail-closed diagnostics. It does not connect to ETABS. See
+`docs/library/reference/wp10-analysis-snapshot.md`.
