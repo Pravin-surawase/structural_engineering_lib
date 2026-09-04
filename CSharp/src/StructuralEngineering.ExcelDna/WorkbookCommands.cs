@@ -295,7 +295,11 @@ public static class WorkbookCommands
                 message = error.Message
             });
         }
-        finally { ExcelWorkbookTableStore.ReleaseCom(workbook); }
+        finally
+        {
+            ExcelWorkbookTableStore.ReleaseCom(workbook);
+            ExcelWorkbookTableStore.ReleaseCom(application);
+        }
     }
 
     private static void Ensure(WorkbookCommandResult result)

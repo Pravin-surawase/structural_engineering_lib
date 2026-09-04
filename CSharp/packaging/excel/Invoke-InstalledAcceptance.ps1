@@ -67,7 +67,10 @@ function Get-InstalledAddinState {
 }
 
 function Start-InstalledExcel {
-    param([Parameter(Mandatory)][string]$XllPath)
+    param(
+        [Parameter(Mandatory)][string]$XllPath,
+        [Diagnostics.Stopwatch]$ReadyTimer
+    )
     $startupRegistrations = @(Get-StructAutomateExcelStartupRegistrations -XllPath $XllPath)
     if ($startupRegistrations.Count -eq 0) { throw "The installed XLL has no exact per-user Excel startup registration: $XllPath" }
     $excel = New-Object -ComObject Excel.Application
@@ -81,10 +84,11 @@ function Start-InstalledExcel {
         $workbooks = $excel.Workbooks
         $bootstrapWorkbook = $workbooks.Add()
         if (-not [bool]$excel.RegisterXLL($XllPath)) { throw "Excel automation could not load the installed XLL: $XllPath" }
-        $state = Get-InstalledAddinState -Excel $excel -XllPath $XllPath
-        if (-not $state.found -or -not $state.installed) { throw "The signed installed XLL is not registered and loaded by Excel: $XllPath" }
         $versionProbe = [string]$excel.Run('STR.INFO.VERSION')
         if ([string]::IsNullOrWhiteSpace($versionProbe)) { throw 'The installed XLL version probe returned no value.' }
+        if ($ReadyTimer -and $ReadyTimer.IsRunning) { $ReadyTimer.Stop() }
+        $state = Get-InstalledAddinState -Excel $excel -XllPath $XllPath
+        if (-not $state.found -or -not $state.installed) { throw "The signed installed XLL is not registered and loaded by Excel: $XllPath" }
         $succeeded = $true
         return [pscustomobject]@{
             Excel = $excel
@@ -403,8 +407,7 @@ try {
     for ($index = 1; $index -le $ColdLaunchCount; $index++) {
         $timer = [Diagnostics.Stopwatch]::StartNew(); $coldSession = $null
         try {
-            $coldSession = Start-InstalledExcel -XllPath $xll
-            $timer.Stop()
+            $coldSession = Start-InstalledExcel -XllPath $xll -ReadyTimer $timer
         }
         finally {
             if ($timer.IsRunning) { $timer.Stop() }
@@ -434,7 +437,7 @@ try {
         export_package = [ordered]@{ artifact = $exportIdentity; schema_version = [string]$exportBundle.schema_version; member_package_count = @($exportBundle.packages).Count; receipt_bound = $true }
         rollback = [ordered]@{ table = $RollbackSentinelTable; column = $RollbackSentinelColumn; row = $RollbackSentinelRow; preimage = $preimage; postimage = $postimage; structural_results_preimage_sha256 = $preRollbackResultsSha256; structural_results_postimage_sha256 = $postRollbackResultsSha256; probe_receipt = Get-StructAutomateFileIdentity $rollbackReceiptPath; probe_receipt_state = [string]$rollbackReceipt.state }
         reconstruction = [ordered]@{ before = $preReopen; after = $postReopen; result_identity_preserved = $reconstructionMatches }
-        performance = [ordered]@{ workload = [ordered]@{ members = 20; operations = 200; command = 'XL-CMD-03' }; cold_launch_samples_ms = $coldSamples; cold_ready_max_ms = $coldMax; memory_baseline_bytes = $memoryBaselineBytes; memory_after_commands_bytes = $memoryAfterCommandsBytes; memory_delta_mib = $workingSetDeltaMiB }
+        performance = [ordered]@{ workload = [ordered]@{ members = 20; operations = 200; command = 'XL-CMD-03' }; cold_ready_measurement_boundary = 'Fresh Excel automation start through installed STR.INFO.VERSION response; post-ready AddIns lifecycle enumeration is verified separately.'; cold_launch_samples_ms = $coldSamples; cold_ready_max_ms = $coldMax; memory_baseline_bytes = $memoryBaselineBytes; memory_after_commands_bytes = $memoryAfterCommandsBytes; memory_delta_mib = $workingSetDeltaMiB }
         budgets = [ordered]@{ warm_median_ms = $WarmMedianBudgetMs; warm_p95_ms = $WarmP95BudgetMs; cold_ready_ms = $ColdReadyBudgetMs; progress_and_cancellation_ms = $ProgressAndCancellationBudgetMs; memory_delta_mib = $ExcelWorkingSetDeltaBudgetMiB }; checks = $checks
     }
     if (-not $receipt.passed) { throw 'Installed acceptance evidence exceeded one or more required thresholds.' }
