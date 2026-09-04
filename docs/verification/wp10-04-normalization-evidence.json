@@ -1,0 +1,95 @@
+{
+  "schema_version": "wp10-04-normalization-evidence/v1",
+  "task_id": "WP10-04",
+  "receipt_grants_authority": false,
+  "verdict": "OFFLINE_NORMALIZATION_AND_CROSS_RUNTIME_REPLAY_PASS",
+  "source_base_commit": "e95a11414cfbb43cc7fecd0581720447d7b83798",
+  "branch": "codex/wp10-04-normalization",
+  "artifact": {
+    "reference": "external:WP10-03/wp10-03-live-broker-artifact.json",
+    "byte_count": 1268036,
+    "file_sha256": "5a24ef94ca511a248d4897c54cf5e779c2cdc5eef9753c14795e055540f39135",
+    "artifact_sha256": "193a3c84cf52af1be4426c53a0e8f603c137be90144aea3532f91892e8a207c5",
+    "original_source_unchanged": true
+  },
+  "normalization": {
+    "policy_id": "wp10-offline-horizontal-frame/v1",
+    "adapter_build_id": "wp10-normalizer/v1",
+    "reference": "external:WP10-04/snapshot-parity.json",
+    "byte_count": 1669798,
+    "canonical_json_sha256": "b0379473f0e195c4a8e947b89218e0af4e1294f80e72824bd731d7fa65af627c",
+    "snapshot_sha256": "92e5538c8764249893405eb5d2ad21f13699b2ba3e406cfc7034242c4ce9509d",
+    "raw_capture_sha256": "d1f7d583779b8bd1f8ea29c3cc03eecdf53c166dfb117e6c2f8a88e3f5564d10",
+    "repeat_identity_equal": true,
+    "python_replay_accepted": true,
+    "python_canonical_bytes_equal": true,
+    "json_schema_valid": true
+  },
+  "accounting": {
+    "getter_calls": 410,
+    "getter_operations": 48,
+    "call_ledger_records": 820,
+    "model_records": 97,
+    "model_record_kinds": {
+      "load_case": 15,
+      "load_combination": 62,
+      "material": 1,
+      "member": 1,
+      "model_metadata": 1,
+      "point": 2,
+      "result_selection": 1,
+      "section": 1,
+      "station": 13
+    },
+    "force_rows": 13,
+    "accepted": 110,
+    "approved_exclusions": 0,
+    "blocked": 0
+  },
+  "semantic_decisions": {
+    "material_kind": "owner-declared concrete; no captured enum or inferred strength grade",
+    "matrix": "row-major local-to-global; columns checked against endpoint geometry and global Z",
+    "physical_top": "global +Z",
+    "physical_left": "cross(global +Z, I-to-J), viewed I toward J",
+    "cardinal_insertion": 8,
+    "cardinal_insertion_preserved_in_typed_raw_member": true,
+    "centroid_relocation_performed": false,
+    "section_and_object_modifiers_retained_separately": true,
+    "mass_density_factor_to_kg_per_m3": 1000,
+    "mass_density_derived_from_weight": false,
+    "physical_station_origin": "object I; full object length is ratio denominator",
+    "portable_step": "Single Value/0 -> null only on accepted static-concurrent path; original zero retained",
+    "revision_identity": "deterministic evidence-derived; no native ETABS analysis-revision claim",
+    "freshness": "internally consistent at capture; no current live-model assertion",
+    "original_ledger_retained": true,
+    "portable_ledger_utc_z_rehashed": true,
+    "durable_v1_numeric_encoding_preserved": true
+  },
+  "documentation": {
+    "installed_api_file_version": "2.16.0.0",
+    "help_sha256": "0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88",
+    "matrix_interpretation": "bounded cross-interface convention plus geometry; LineElm help has no equation"
+  },
+  "proof_owners": {
+    "N1": "Wp10CaptureProjectionTests.ExactBytesAndExplicitMaterialEvidenceAreRequired; InvalidSourceNeverExposesPartialSnapshot; DurableV1EncodingPreservesExistingNumericSpelling",
+    "N2": "SyntheticCompleteCaptureNormalizesDeterministically; NormalizerEnforcesConservationWithoutCallerAccounting",
+    "N3": "SourceDimensionsAndAllSixSignedComponentsHaveIndependentExpectedValues; Python test_wp10_04_emitted_snapshot_matches_dotnet_and_independent_dimensions",
+    "N4": "ReversingMemberDirectionChangesGlobalAxesAndPreservesViewingConvention; MeshedElementStationUsesItsOwnOriginAndPhysicalMemberLength; transpose rejection",
+    "N5": "InvalidSourceNeverExposesPartialSnapshot; RequiredAmbiguityWithholdsTheWholeSnapshot",
+    "N6": "NormalizerEnforcesConservationWithoutCallerAccounting; RetainedArtifactNormalizesWithoutHostAccess",
+    "N7": "SyntheticCompleteCaptureNormalizesDeterministically; RetainedArtifactNormalizesWithoutHostAccess",
+    "N8": "SharedSyntheticVectorReplaysWithExactCanonicalIdentity; Python emitted-snapshot test and independent retained replay",
+    "N9": "RetainedArtifactNormalizesWithoutHostAccess with explicit external paths; this receipt"
+  },
+  "claim_boundary": {
+    "live_com_calls": 0,
+    "excel_calls": 0,
+    "broker_executions": 0,
+    "installed_qualification": false,
+    "performance_qualification": false,
+    "engineering_design_or_approval": false,
+    "wp10_05_started": false,
+    "release_or_publication": false
+  },
+  "delivery": "This receipt is prepublication evidence. Exact candidate, hosted run, PR and merge identities are maintained externally in GitHub and the task delivery ledger."
+}

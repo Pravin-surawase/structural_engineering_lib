@@ -5,6 +5,111 @@
 
 ---
 
+## 2026-09-05 — Session: WP10-04 offline normalization
+
+**Task:** WP10-04
+**Agent:** MAIN (one parent; no subagents)
+**Branch:** `codex/wp10-04-normalization`, from freshly fetched main
+`e95a11414cfbb43cc7fecd0581720447d7b83798`.
+
+**Focus:** Complete the offline durable-capture projection and portable
+normalization boundary, including exact retained input and Python/.NET parity.
+The owner supplied the material classification and delegated remaining
+implementation decisions. No live acquisition or Excel work is included.
+
+### Completed
+
+- Resolved semantic intake against the exact retained capture, installed API
+  2.16 help, endpoint geometry and explicit owner-declared concrete material
+  classification. Preserved the difference between source fact, policy and
+  evidence-derived revision identity; inferred no strength grade.
+- Added typed normalization inputs, `EtabsCaptureProjector` and the pure
+  `AnalysisSnapshotNormalizer`. The production path validates complete getter
+  coverage, units, physical axes/stations, assignments, selected static
+  dependency closure, same-row force components and complete dispositions.
+- Normalized the unchanged 410-call/820-ledger-record acquisition to 97 model
+  records and 13 action rows, accepting all 110 without exclusions. Repeated
+  normalization returned identical canonical bytes. Source files remained
+  unchanged and no COM, broker or Excel entry point was used.
+- Independently replayed the retained snapshot with Python and the shared JSON
+  Schema; Python canonical bytes exactly equal the emitted .NET bytes. Added
+  an entirely synthetic shared fixture, independent dimensional assertions,
+  reversal/mesh examples and whole-output rejection tests. Original WP10-01
+  golden fixture bytes remain unchanged.
+- Corrected portable UTC timestamp and scientific-number representation while
+  preserving original ledger evidence and durable artifact v1 numeric encoding.
+  Both synthetic and exact retained production paths then passed; the initial
+  twelve pure normalizer examples also passed before the final frozen matrix.
+- Added the safe normalization receipt, public API/reference-line guidance,
+  implementation status and WP10-05 handoff. Registered only this task's exact
+  fetch mapping so the required upstream-equality delivery transition can work;
+  no historical refspec, branch or worktree was removed.
+
+### Issues encountered
+
+- Portable validation rejected the retained broker's offset timestamp spelling
+  although its instants were valid. (`RR-014`)
+- Python replay rejected the raw digest at the first .NET uppercase scientific
+  exponent. (`RR-019`)
+- Intake searches used a stale status path, unsupported Windows glob path and
+  absent usage helper before returning to maintained paths. (`RR-005`)
+- Windows `hh -decompile` exited zero without extracted help, and `tar` did
+  not recognize CHM. (`RR-020`)
+
+### Root causes and resolutions
+
+- Confirmed: broker timestamps preserve local offsets, while the portable
+  contract requires `Z`. Retain the original ledger in acquisition evidence,
+  convert the same instants to UTC and rehash the portable chain. The exact
+  retained production route and Python replay pass. (`RR-014`)
+- Confirmed: the .NET canonical serializer delegated numeric spelling to its
+  platform encoder (`1E-05`), while PF4/Python uses `1e-05`. Normalize portable
+  numbers explicitly; keep durable v1 encoding in its own codec. Cross-runtime
+  canonical byte equality now passes without changing the historical capture
+  hash or original golden fixture. (`RR-019`)
+- Confirmed: guessed locations and shell wildcard syntax did not match the
+  maintained repository/PowerShell context. Bounded `rg --files`, exact paths
+  and the known `scripts/session.py` owner resolved the searches. (`RR-005`)
+- The `hh` no-output cause is unconfirmed; `tar` explicitly lacks CHM format
+  support. An externally extracted official portable 7-Zip executable decoded
+  the installed help, whose SHA and exact API version were verified. No tool
+  installation, vendor help or binary was added to the repository. (`RR-020`)
+
+### Rework and recurrence
+
+- `RR-005`: occurrences=38, minutes=unknown. Use exact maintained paths and
+  shell-compatible searches; no timer was reset.
+- `RR-014`: occurrences=2, minutes=unknown. Preserve source timestamps and bind
+  a separate portable UTC representation.
+- `RR-019`: occurrences=1, minutes=unknown. Separate frozen durable encoding
+  from portable numeric identity, then replay both runtimes.
+- `RR-020`: occurrences=1, minutes=unknown. Check extraction output, not only
+  exit status; use a proven CHM-capable extractor.
+
+### Implementation diagnostics
+
+- Two production success-path diagnostics failed on UTC spelling and one
+  Python parity diagnostic failed on exponent spelling before content freeze.
+  Corrections occurred before any candidate; their time is not independently
+  measured. Candidate/repair/hosted counters and seven non-overlapping phase
+  timings are derived by the external delivery ledger at closeout.
+
+### Verification and handoff
+
+- [Normalization receipt](verification/wp10-04-normalization-evidence.json)
+  binds the exact source, policy, 110 dispositions and canonical output hashes.
+- Final matrix: locked .NET restore/build; `Wp10` pure tests; projection tests
+  with the explicit retained input; affected offline broker codec regression;
+  Python WP10 tests; contract, docs, efficiency and session checks. Broad gates
+  remain at the programme's named cumulative qualification gate.
+- WP10-05 is next, with installed Excel/workbook intake, transactional import,
+  readback, rollback and freshness. No WP10-05 implementation has started.
+
+⚠️ TERMINAL ISSUE: stale paths/Windows glob syntax and nonproductive CHM
+extraction → discovered literal paths and an external CHM-capable extractor.
+
+---
+
 ## 2026-09-05 — Session: WP10-04 preparation and predecessor review
 
 **Task:** WP10-04-PREP

@@ -78,7 +78,7 @@ public static class EtabsAcquisitionArtifactCodec
     {
         ArgumentNullException.ThrowIfNull(content);
         var sha256 = Convert.ToHexStringLower(SHA256.HashData(
-            AnalysisSnapshotCodec.CanonicalJsonBytes(new ArtifactHashBasis(SchemaVersion, content))));
+            CanonicalArtifactBytes(new ArtifactHashBasis(SchemaVersion, content))));
         return new(
             SchemaVersion,
             sha256,
@@ -101,7 +101,24 @@ public static class EtabsAcquisitionArtifactCodec
     }
 
     public static byte[] CanonicalJsonBytes(EtabsDurableRawArtifact artifact) =>
-        AnalysisSnapshotCodec.CanonicalJsonBytes(artifact);
+        CanonicalArtifactBytes(artifact);
+
+    // Durable artifact v1 predates portable numeric normalization. Keep its exact
+    // numeric spelling so already retained captures remain verifiable by their hashes.
+    private static byte[] CanonicalArtifactBytes(object value)
+    {
+        var element = JsonSerializer.SerializeToElement(value, JsonOptions);
+        string Canonical(JsonElement item) => item.ValueKind switch
+        {
+            JsonValueKind.Object => "{" + string.Join(',', item.EnumerateObject().OrderBy(property => property.Name, StringComparer.Ordinal)
+                .Select(property => Canonical(JsonSerializer.SerializeToElement(property.Name)) + ":" + Canonical(property.Value))) + "}",
+            JsonValueKind.Array => "[" + string.Join(',', item.EnumerateArray().Select(Canonical)) + "]",
+            JsonValueKind.Number => item.GetDouble() == 0 ? "0" : item.GetRawText(),
+            JsonValueKind.String => Encoding.UTF8.GetString(AnalysisSnapshotCodec.CanonicalJsonBytes(item.GetString()!)),
+            _ => item.GetRawText()
+        };
+        return Encoding.UTF8.GetBytes(Canonical(element));
+    }
 
     private static void ValidateContent(EtabsRawAcquisitionContent content)
     {

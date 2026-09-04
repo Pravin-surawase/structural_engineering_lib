@@ -24,6 +24,36 @@ FIXTURE_PATH = (
 FIXTURE = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
 
 
+def test_wp10_04_emitted_snapshot_matches_dotnet_and_independent_dimensions() -> None:
+    fixture = json.loads(
+        FIXTURE_PATH.with_name("wp10-normalization-vectors.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    result = parse_analysis_snapshot_json(json.dumps(fixture["valid_snapshot"]))
+    assert result.snapshot is not None, result.diagnostics
+    snapshot = result.snapshot
+    assert snapshot.snapshot_id == fixture["expected"]["snapshot_id"]
+    assert snapshot.raw_capture.raw_capture_id == fixture["expected"]["raw_capture_id"]
+    canonical = canonical_analysis_snapshot_json(snapshot).encode("utf-8")
+    assert (
+        hashlib.sha256(canonical).hexdigest()
+        == fixture["expected"]["canonical_json_sha256"]
+    )
+    assert len(snapshot.action_rows) == 3
+    assert snapshot.row_ledger.accepted_count == 15
+    assert snapshot.row_ledger.blocked_count == 0
+    assert snapshot.materials[0].elastic_modulus_n_per_mm2 == 30000
+    assert snapshot.materials[0].mass_density_kg_per_m3 == 2400
+    assert snapshot.sections[0].width_mm == 200
+    assert snapshot.sections[0].depth_mm == 400
+    assert snapshot.sections[0].area_mm2 == 80000
+    assert all(
+        record.recorded_at_utc.endswith("Z")
+        for record in snapshot.raw_capture.call_ledger.records
+    )
+
+
 def _mutate(document: dict[str, object], mutations: list[dict[str, object]]) -> None:
     for mutation in mutations:
         parts = str(mutation["path"]).lstrip("/").split("/")

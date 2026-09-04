@@ -566,6 +566,19 @@ public static class AnalysisSnapshotCodec
             if (!double.IsFinite(number))
                 throw new ArgumentException("Canonical snapshot numbers must be finite.", nameof(value));
             if (number == 0) return "0";
+            if (Math.Truncate(number) == number && Math.Abs(number) <= 9_007_199_254_740_991)
+                return number.ToString("0", CultureInfo.InvariantCulture);
+            var token = number.ToString("R", CultureInfo.InvariantCulture).ToLowerInvariant();
+            // Match the frozen Python/PF4 shortest-roundtrip representation.
+            if (!token.Contains('e') && Math.Abs(number) >= 1e16)
+            {
+                var sign = token.StartsWith('-') ? "-" : "";
+                var digits = token.TrimStart('-');
+                var exponent = digits.Length - 1;
+                var significant = digits.TrimEnd('0');
+                token = sign + significant[0] + (significant.Length == 1 ? "" : "." + significant[1..]) + $"e+{exponent:D2}";
+            }
+            return token;
         }
         return value.ToJsonString(JsonOptions);
     }

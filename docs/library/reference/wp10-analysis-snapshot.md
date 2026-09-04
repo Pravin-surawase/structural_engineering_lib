@@ -1,4 +1,4 @@
-# WP10-01 portable analysis snapshot
+# WP10 portable analysis snapshot and offline normalization
 
 WP10-01 freezes AO16, `etabs.beam_snapshot.import/v1`, as a reusable offline
 contract. It defines what a later getter-only adapter must supply, and what
@@ -11,6 +11,56 @@ COM, or CSI assemblies.
 |---|---|---|
 | Python | `structural_lib.analysis_snapshot.parse_etabs_import_request_json` | `structural_lib.analysis_snapshot.parse_analysis_snapshot_json` |
 | .NET | `AnalysisSnapshotCodec.ParseImportRequest` | `AnalysisSnapshotCodec.ParseAndValidate` |
+
+WP10-04 adds the production offline normalization route:
+
+```csharp
+// Bytes are supplied by the caller; neither operation attaches to a host.
+var options = new EtabsNormalizationOptions(
+    projectId, adapterBuildId, sourceEvidenceReference, materialClassifications);
+EtabsSnapshotResult result = EtabsCaptureProjector.Normalize(
+    capturedBytes, expectedFileSha256, options);
+// result.Snapshot is supplied only after complete normalization and validation.
+```
+
+The optional ETABS assembly owns durable vendor decoding.
+`EtabsCaptureProjector.Project` returns the complete hash-bound portable raw
+projection or throws on invalid acquisition evidence. Raw projection alone
+does not establish snapshot acceptance. `AnalysisSnapshotNormalizer.Normalize`
+accepts that raw projection in the pure Analysis assembly and returns a typed
+all-or-nothing result. The same raw input and context reproduce the same output;
+neither operation consults an application, filesystem or current clock.
+
+Supply a material-name mapping to `SnapshotMaterialClassification` with an
+explicit kind and evidence reference. Classification is separate from captured
+elastic properties and does not establish concrete or reinforcement strength.
+
+The current `wp10-offline-horizontal-frame/v1` policy uses m/kN/kNm/kN/m2/
+kN*s2/m4 source units, horizontal geometry, row-major local-to-global matrices,
+global +Z as top, and left as viewed from I toward J. It proves the selected
+linear-static dependency closure before accepting `Single Value` rows with
+portable null steps. All six signed force components remain from one source row.
+Physical stations originate at object I, even when the first available result
+is inside an end offset; element station origins remain independent.
+
+Raw metadata contains a complete projection manifest and original acquisition
+evidence. Every getter is bound to its ledger ID, ordinal, arguments, return,
+outputs, timing, signature and destination record. Catalogue/story/pattern
+facts remain metadata evidence; all captured case/combination definitions are
+retained. No exclusion approval is invented. Raw member data retains insertion
+cardinal point and stiffness-transform state; raw section data retains section
+modifiers separately from canonical object modifiers. Consumers must honor
+that reference line and those assignments: the normalizer performs no centroid
+relocation. Mirroring, nonzero joint offsets or springs, transformed stiffness
+and unresolved axes/topology are blocked by this policy.
+
+The original durable ledger stays intact in acquisition evidence. A portable
+ledger represents the same instants with UTC `Z` and its own recomputed chain.
+Portable numbers use PF4/Python shortest-roundtrip scientific spelling with
+lowercase `e`; the existing durable-artifact v1 serializer retains its original
+numeric spelling so old captures still validate. Snapshot revision and epoch
+IDs are deterministic evidence-derived identities. `current` means internally
+consistent at capture, without asserting current live-model freshness.
 
 The language-neutral manifest is
 `contracts/structural-engineering/operations/wp10.json`; the strict JSON Schema
