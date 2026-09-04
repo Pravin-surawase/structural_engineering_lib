@@ -27,22 +27,25 @@ WP10-04 normalization, Excel, performance, or release work.
 - Added `StructuralEngineering.Etabs` as an optional `net10.0-windows` project
   with no compile-time CSI binary. It loads and validates the exact installed
   assembly at runtime, attaches by exact PID, rejects identity/version/file
-  drift, exposes only the 48-entry frozen getter matrix, and deterministically
-  releases acquired COM references.
+  drift, exposes the 48-entry frozen getter matrix through a runtime read-only
+  dictionary, validates exact reflected parameter names, and attempts every
+  acquired COM release even when an earlier release fails.
 - Added strict direct/CSI-return handling, counted and fixed-array validation,
   one-dispatch deadline/cancellation handling, whitelist rejection, and no
   accepted raw call after failure, timeout, unequal arrays, or identity drift.
-- Added ten focused fake-host tests for the matrix, host-free assembly,
+- Added ten focused fake-host tests for the immutable matrix, host-free assembly,
   scalar, counted-list, complete parallel result arrays, nonzero CSI status,
   unequal arrays, timeout, identity drift, expired deadline, and unknown call.
 - Completed one installed run for object `82` (beam label `B1`, story `Ground`)
   and selected combination `117.(1.5DL+1.5LL)`: all 48 operations were exercised
-  through 410 calls, and `FrameForce` retained 13 rows with exact object,
-  element, station, selection, step, and six signed component arrays.
+  through 410 calls. The repaired probe enforces exact force-row object and
+  selected-case identity, connected element/frame-endpoint topology, matching
+  case-type overloads, section/material agreement, and retains all 13 rows with
+  exact object, element, station, step, and six signed component arrays.
 - Protected process/file/lock/units/status/run-flag/selection preflight and
-  postflight digests are identical. The exact 792,173-byte raw capture stays
+  postflight digests are identical. The exact 792,151-byte raw capture stays
   outside Git with SHA-256
-  `c4cec2f18170171d86ace4a4314c03bbe1a89d1e81f7f39c619fc07f12f92fbe`;
+  `5e47bfeeeedc7949792e9cc6c7c87e6efb0bed429791f4a9bb146900c0609552`;
   the safe committed manifest is
   `docs/verification/wp10-02-host-microprobe-evidence.json`.
 
@@ -68,6 +71,15 @@ WP10-04 normalization, Excel, performance, or release work.
   findings in unrelated C# projects. The guarded formatter had already proved
   all five admitted changed source paths formatted with a clean scope guard.
   (`RR-011`)
+- Consolidated review rejected the first candidate once: the exposed whitelist
+  could be down-cast and mutated, the proved nullable-array exception was not
+  part of the matrix hash, reflection omitted parameter-name checks, the live
+  probe recorded but did not enforce five cross-getter consistency relations,
+  and one COM release exception could skip later releases. One repair batch was
+  admitted; no second repair cycle was used.
+- Two focused-test commands were started from the repository root, outside the
+  `CSharp/global.json` Microsoft.Testing.Platform context. The maintained
+  CSharp-root command with an exact class filter passed all ten tests. (`RR-005`)
 - ⚠️ TERMINAL ISSUE: six command shapes required correction: a reused
   JavaScript binding, a PowerShell body supplied where the tool required
   JavaScript, two malformed inline reflection pipelines, one Windows-invalid
@@ -107,6 +119,19 @@ WP10-04 normalization, Excel, performance, or release work.
   with `./run.sh format --check --scope dotnet`, leave unrelated files
   untouched, and log the concrete stale instruction for the improvement loop.
   (`RR-011`)
+- Confirmed root cause: the first candidate separately proved the relevant raw
+  values but did not make every evidence relationship and immutability premise
+  executable. Resolution: use a real read-only dictionary, include the only
+  nullable string-array index in the matrix digest, validate exact reflected
+  parameter names, enforce force-object/selection, connected endpoint topology,
+  overload and material agreement during the live run, and aggregate cleanup
+  failures only after attempting all references. The repaired build, ten tests,
+  and refreshed 410-call installed capture pass with identical state digests.
+- Confirmed root cause: the .NET 10 runner selection is scoped by
+  `CSharp/global.json`; starting from the repository root selected the legacy
+  VSTest command path. Resolution: run the maintained test command with
+  `CSharp` as the explicit working directory and filter the exact WP10 class.
+  (`RR-005`)
 - Confirmed root cause: long mixed-language one-liners and shell-specific path
   syntax bypassed the repository's literal-command rule. Resolution: keep the
   execution wrapper in JavaScript, use one literal PowerShell command per
@@ -118,7 +143,7 @@ WP10-04 normalization, Excel, performance, or release work.
 - `RR-002`, occurrences=9, minutes=unknown — require successful model-specific
   getter return/shape proof, not only installed static reflection, before
   admitting a host-sensitive operation.
-- `RR-005`, occurrences=26, minutes=unknown — use maintained launchers, literal
+- `RR-005`, occurrences=28, minutes=unknown — use maintained launchers, literal
   PowerShell blocks, exact paths, native output tools, unique JavaScript
   bindings, and non-reserved task-specific variable names.
 - `RR-011`, occurrences=1, minutes=unknown — use the maintained changed-path

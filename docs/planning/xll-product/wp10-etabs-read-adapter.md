@@ -267,6 +267,21 @@ scalar strings, other string arrays, or value-type arrays remain invalid, and
 WP10-04 must explicitly normalize or block the semantic destination. A focused
 fake-host case freezes this exact raw-shape rule.
 
+### WP10-02 candidate audit repair — 2026-09-04
+
+The first immutable candidate was rejected once by the consolidated essential
+review. One bounded repair now backs the public whitelist with a true read-only
+dictionary, binds the sole nullable string-array index into the matrix digest,
+checks exact installed parameter names as well as type and direction, attempts
+release of every acquired COM reference before aggregating any cleanup errors,
+and makes the live matrix enforce its cross-getter evidence rather than merely
+record it. The force rows must all name the requested object and exact selected
+case/combo set; returned analysis elements must form one connected graph across
+the two frame endpoints; the basic and extended case-type getters must agree;
+and the section/material getters must agree. The repaired candidate must repeat
+only its affected build, ten fake-host tests, changed-path formatting, and one
+final installed matrix. A second rejection still requires `REPLAN`.
+
 ### Focused freeze matrix
 
 Run this union only after content freezes; use a narrow reproducer earlier only

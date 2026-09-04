@@ -150,8 +150,7 @@ public sealed class EtabsGetterAdapter(IEtabsGetterHost host)
         for (var index = 0; index < invocation.Outputs.Count; index++)
         {
             var allowNullArray = countedZero && definition.ParallelArrays.Contains(index);
-            var allowNullStringElements = definition.Operation == "Story.GetStories_2" &&
-                definition.OutputNames[index] == "SimilarToStory";
+            var allowNullStringElements = definition.NullableStringArrays.Contains(index);
             if (!HasExactKind(
                     invocation.Outputs[index],
                     definition.OutputKinds[index],

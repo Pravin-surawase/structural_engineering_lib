@@ -2,7 +2,7 @@
   "schema_version": "wp10-02-host-microprobe-evidence/v1",
   "task_id": "WP10-02",
   "verdict": "LIVE_GETTER_MATRIX_COMPLETED_NO_GENERAL_COMPATIBILITY_CLAIM",
-  "observed_at_utc": "2026-09-04T17:42:23.2155234Z",
+  "observed_at_utc": "2026-09-04T18:00:52.3365870Z",
   "source": {
     "base_commit": "419941c7d361c6ad2ba240b3c4d7662923ef59d5",
     "branch": "codex/wp10-02-getter-adapter",
@@ -37,6 +37,7 @@
     },
     "api_version_returned": "23.3.1",
     "cleanup_completed_without_error": true,
+    "all_acquired_references_attempted_even_if_one_release_fails": true,
     "process_remained_alive_after_cleanup": true
   },
   "model": {
@@ -66,16 +67,18 @@
       "frame_force"
     ],
     "frame_item_type_elm": 0,
-    "deadline_utc": "2026-09-04T17:52:18.5171194Z",
+    "deadline_utc": "2026-09-04T18:10:47.0964089Z",
     "raw_evidence_destination": "external:WP10-02/wp10-02-live-getter-capture.json"
   },
   "getter_matrix": {
     "definition_source": "CSharp/src/StructuralEngineering.Etabs/EtabsGetterMatrix.cs",
-    "sha256": "7664d6b02b4a89cc76b4919023d90dc3652e23199acaded02140f95252599ee3",
+    "sha256": "18eb4d2886306e96d5b96021139441f599b6d8d848a2a7efd230322c68a7d751",
     "allowed_operation_count": 48,
     "every_allowed_operation_reflected_exactly": true,
     "every_allowed_operation_called_live": true,
-    "parameter_order_direction_type_and_output_shape_frozen_per_entry": true,
+    "parameter_name_order_direction_type_and_output_shape_frozen_per_entry": true,
+    "whitelist_dictionary_is_runtime_read_only": true,
+    "nullable_string_array_indexes_are_matrix_bound_and_hashed": true,
     "return_code_position": "managed return value; direct-value exceptions are explicitly tagged",
     "allowed_operations": [
       "Analyze.GetCaseStatus",
@@ -155,8 +158,8 @@
     "uninterpreted_enum_values_retained_as_exact_int32": true
   },
   "live_functional_matrix": {
-    "started_utc": "2026-09-04T17:42:18.6632427Z",
-    "completed_utc": "2026-09-04T17:42:23.2155234Z",
+    "started_utc": "2026-09-04T18:00:47.3300248Z",
+    "completed_utc": "2026-09-04T18:00:52.3365870Z",
     "completed_call_count": 410,
     "unique_operation_count": 48,
     "preflight_state_sha256": "21709db82c0c9a95d1885dae30f8d0d318323f2574b0809b0d88fa0a8eb80c0c",
@@ -168,14 +171,19 @@
     "material_name": "M25FE500",
     "frame_force_rows": 13,
     "frame_force_output_identity": "117.(1.5DL+1.5LL)",
+    "every_frame_force_object_matched_requested_object": true,
+    "frame_force_case_set_matched_exact_output_selection": true,
+    "analysis_element_topology_connected_exact_frame_endpoints": true,
+    "load_case_type_overloads_agreed": true,
+    "section_material_getters_agreed": true,
     "all_signed_components_retained_per_source_row": true,
     "normalization_performed": false,
     "partial_capture_accepted": false
   },
   "external_raw_capture": {
     "tracked_in_git": false,
-    "byte_count": 792173,
-    "sha256": "c4cec2f18170171d86ace4a4314c03bbe1a89d1e81f7f39c619fc07f12f92fbe",
+    "byte_count": 792151,
+    "sha256": "5e47bfeeeedc7949792e9cc6c7c87e6efb0bed429791f4a9bb146900c0609552",
     "contains_exact_inputs_direct_returns_outputs_statuses_and_timestamps": true
   },
   "replan_evidence": {
@@ -198,6 +206,20 @@
     "resolution": "Retain null only for this proved managed string-array output; do not coerce or interpret it in WP10-02.",
     "focused_fake_host_case_added": true,
     "final_candidate_bound_matrix_completed": true
+  },
+  "candidate_review_repair": {
+    "initial_candidate_commit": "74785ea6adc6cf5df9e3271c9742acea26a0158f",
+    "initial_candidate_tree": "1707da2774555e8b8152eca9d02a404bf2421e58",
+    "consolidated_audit_rejections": 1,
+    "repair_batches": 1,
+    "guards_added": [
+      "immutable getter whitelist backing",
+      "matrix-hashed SimilarToStory nullable-array exception",
+      "exact reflected parameter-name validation",
+      "live object, selection, topology, overload, and material consistency",
+      "best-effort release of every acquired COM reference with aggregated failure"
+    ],
+    "repaired_live_matrix_completed": true
   },
   "scope": {
     "getter_only": true,

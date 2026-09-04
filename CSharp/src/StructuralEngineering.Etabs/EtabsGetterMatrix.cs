@@ -35,12 +35,15 @@ public sealed record EtabsGetterDefinition(
     string EvidenceDestination,
     int? CountOutputIndex = null,
     IReadOnlyList<int>? ParallelArrayOutputIndexes = null,
-    IReadOnlyDictionary<int, int>? FixedArrayLengths = null)
+    IReadOnlyDictionary<int, int>? FixedArrayLengths = null,
+    IReadOnlyList<int>? NullableStringArrayOutputIndexes = null)
 {
     public IReadOnlyList<int> ParallelArrays { get; } =
         ParallelArrayOutputIndexes ?? Array.AsReadOnly(Array.Empty<int>());
     public IReadOnlyDictionary<int, int> FixedArrays { get; } =
         FixedArrayLengths ?? new ReadOnlyDictionary<int, int>(new Dictionary<int, int>());
+    public IReadOnlyList<int> NullableStringArrays { get; } =
+        NullableStringArrayOutputIndexes ?? Array.AsReadOnly(Array.Empty<int>());
     public EtabsRawValueKind DirectValueKind { get; } =
         ReturnSemantics is EtabsReturnSemantics.DirectValue
             ? EtabsManagedSignature.ValueKind(ManagedSignature.Split(' ', 2)[0])
@@ -91,7 +94,7 @@ internal static class EtabsManagedSignature
 public static class EtabsGetterMatrix
 {
     private static readonly IReadOnlyDictionary<string, EtabsGetterDefinition> Definitions =
-        Array.AsReadOnly(
+        new ReadOnlyDictionary<string, EtabsGetterDefinition>(Array.AsReadOnly(
         [
             Direct("SapModel.GetModelFilename", "SapModel", "cSapModel", "GetModelFilename", "System.String GetModelFilename(Boolean)", ["IncludePath"], "model.metadata"),
             Direct("SapModel.GetModelIsLocked", "SapModel", "cSapModel", "GetModelIsLocked", "Boolean GetModelIsLocked()", [], "model.metadata"),
@@ -100,7 +103,7 @@ public static class EtabsGetterMatrix
             Status("SapModel.GetPresentUnits_2", "SapModel", "cSapModel", "GetPresentUnits_2", "Int32 GetPresentUnits_2(ETABSv1.eForce ByRef, ETABSv1.eLength ByRef, ETABSv1.eTemperature ByRef)", [], ["forceUnits", "lengthUnits", "temperatureUnits"], "model.units"),
             Status("SapModel.GetDatabaseUnits_2", "SapModel", "cSapModel", "GetDatabaseUnits_2", "Int32 GetDatabaseUnits_2(ETABSv1.eForce ByRef, ETABSv1.eLength ByRef, ETABSv1.eTemperature ByRef)", [], ["forceUnits", "lengthUnits", "temperatureUnits"], "model.units"),
             Status("SapModel.GetVersion", "SapModel", "cSapModel", "GetVersion", "Int32 GetVersion(System.String ByRef, Double ByRef)", [], ["Version", "MyVersionNumber"], "source.runtime"),
-            Status("Story.GetStories_2", "Story", "cStory", "GetStories_2", "Int32 GetStories_2(Double ByRef, Int32 ByRef, System.String[] ByRef, Double[] ByRef, Double[] ByRef, Boolean[] ByRef, System.String[] ByRef, Boolean[] ByRef, Double[] ByRef, Int32[] ByRef)", [], ["BaseElevation", "NumberStories", "StoryNames", "StoryElevations", "StoryHeights", "IsMasterStory", "SimilarToStory", "SpliceAbove", "SpliceHeight", "color"], "model.stories", 1, [2, 3, 4, 5, 6, 7, 8, 9]),
+            Status("Story.GetStories_2", "Story", "cStory", "GetStories_2", "Int32 GetStories_2(Double ByRef, Int32 ByRef, System.String[] ByRef, Double[] ByRef, Double[] ByRef, Boolean[] ByRef, System.String[] ByRef, Boolean[] ByRef, Double[] ByRef, Int32[] ByRef)", [], ["BaseElevation", "NumberStories", "StoryNames", "StoryElevations", "StoryHeights", "IsMasterStory", "SimilarToStory", "SpliceAbove", "SpliceHeight", "color"], "model.stories", 1, [2, 3, 4, 5, 6, 7, 8, 9], nullableStringArrays: [6]),
             Status("FrameObj.GetNameList", "FrameObj", "cFrameObj", "GetNameList", "Int32 GetNameList(Int32 ByRef, System.String[] ByRef)", [], ["NumberNames", "MyName"], "model.members", 0, [1]),
             Status("FrameObj.GetLabelFromName", "FrameObj", "cFrameObj", "GetLabelFromName", "Int32 GetLabelFromName(System.String, System.String ByRef, System.String ByRef)", ["Name"], ["Label", "Story"], "model.members"),
             Status("FrameObj.GetPoints", "FrameObj", "cFrameObj", "GetPoints", "Int32 GetPoints(System.String, System.String ByRef, System.String ByRef)", ["Name"], ["Point1", "Point2"], "model.topology"),
@@ -141,7 +144,7 @@ public static class EtabsGetterMatrix
             Status("Results.Setup.GetCaseSelectedForOutput", "Results.Setup", "cAnalysisResultsSetup", "GetCaseSelectedForOutput", "Int32 GetCaseSelectedForOutput(System.String, Boolean ByRef)", ["Name"], ["Selected"], "source.result_selection"),
             Status("Results.Setup.GetComboSelectedForOutput", "Results.Setup", "cAnalysisResultsSetup", "GetComboSelectedForOutput", "Int32 GetComboSelectedForOutput(System.String, Boolean ByRef)", ["Name"], ["Selected"], "source.result_selection"),
             Status("Results.FrameForce", "Results", "cAnalysisResults", "FrameForce", "Int32 FrameForce(System.String, ETABSv1.eItemTypeElm, Int32 ByRef, System.String[] ByRef, Double[] ByRef, System.String[] ByRef, Double[] ByRef, System.String[] ByRef, System.String[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef)", ["Name", "ItemTypeElm"], ["NumberResults", "Obj", "ObjSta", "Elm", "ElmSta", "LoadCase", "StepType", "StepNum", "P", "V2", "V3", "T", "M2", "M3"], "results.frame_force", 0, Enumerable.Range(1, 13).ToArray())
-        ]).ToDictionary(item => item.Operation, StringComparer.Ordinal);
+        ]).ToDictionary(item => item.Operation, StringComparer.Ordinal));
 
     public static IReadOnlyDictionary<string, EtabsGetterDefinition> Allowed { get; } =
         Definitions;
@@ -167,7 +170,8 @@ public static class EtabsGetterMatrix
                     item.EvidenceDestination, item.CountOutputIndex?.ToString() ?? "none",
                     string.Join(',', item.ParallelArrays),
                     string.Join(',', item.FixedArrays.OrderBy(pair => pair.Key)
-                        .Select(pair => $"{pair.Key}:{pair.Value}"))))
+                        .Select(pair => $"{pair.Key}:{pair.Value}")),
+                    string.Join(',', item.NullableStringArrays)))
                 .Concat(DeniedMutationFamilies.Select(item => $"deny|{item}"))))));
 
     private static EtabsGetterDefinition Direct(
@@ -182,7 +186,8 @@ public static class EtabsGetterMatrix
     private static EtabsGetterDefinition Status(
         string operation, string path, string type, string member, string signature,
         string[] inputs, string[] outputs, string destination, int? count = null,
-        int[]? arrays = null, IReadOnlyDictionary<int, int>? fixedArrays = null) =>
+        int[]? arrays = null, IReadOnlyDictionary<int, int>? fixedArrays = null,
+        int[]? nullableStringArrays = null) =>
         new(operation, path, $"ETABSv1.{type}", member, signature,
             EtabsReturnSemantics.FinalCsiReturnCode,
             Array.AsReadOnly(inputs),
@@ -190,7 +195,8 @@ public static class EtabsGetterMatrix
             destination,
             count,
             arrays is null ? null : Array.AsReadOnly(arrays),
-            fixedArrays);
+            fixedArrays,
+            nullableStringArrays is null ? null : Array.AsReadOnly(nullableStringArrays));
 
     private static IReadOnlyDictionary<int, int> Fixed(params (int Index, int Length)[] values) =>
         new ReadOnlyDictionary<int, int>(values.ToDictionary(item => item.Index, item => item.Length));

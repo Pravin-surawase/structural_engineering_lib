@@ -527,10 +527,12 @@ Confirmed outcomes:
   a compile-time CSI reference. The default locked solution restores, builds,
   and runs fake-host tests without ETABS installed.
 - The live boundary loads and hashes the exact ETABSv1 assembly, validates all
-  48 frozen managed signatures, attaches only through the exact existing PID,
+  48 frozen managed signatures including parameter names, attaches only through
+  the exact existing PID,
   and verifies process start, executable version, API version, saved model
   identity, lock, and units before exposing a getter host.
-- The whitelist records each allowed member, parameter order/direction/type,
+- The runtime read-only whitelist records each allowed member, parameter name,
+  order/direction/type,
   direct-value versus CSI-status semantics, output names, counted parallel
   arrays, fixed arrays, and evidence destination. Calls outside the whitelist
   fail closed; setters, unlock, analysis, design, save, close, and exit remain
@@ -539,10 +541,14 @@ Confirmed outcomes:
   unequal array, timeout/cancellation, unknown call, or host identity drift.
   Fake scalar, counted-list, parallel-array, failure, timeout, and drift cases
   prove single-dispatch behavior with no partial accepted call.
-- One installed run used frame object `82` (label `B1`, story `Ground`) and the
+- One repaired installed run used frame object `82` (label `B1`, story
+  `Ground`) and the
   preselected combination `117.(1.5DL+1.5LL)`. All 48 getter identities were
   exercised through 410 calls; 13 `FrameForce` rows retained the same-row
-  object/element/station and P/V2/V3/T/M2/M3 arrays.
+  object/element/station and P/V2/V3/T/M2/M3 arrays. It also proves every force
+  row belongs to object `82` and the exact selected combination, the returned
+  analysis-element graph joins both frame endpoints, the two case-type getters
+  agree, and the section/material getters agree.
 - Protected process, file, lock, present/database units, 15 case statuses, run
   flags, and all 77 output-selection flags have identical preflight/postflight
   SHA-256. Exact raw output remains outside Git under a hash-bound evidence
@@ -555,6 +561,15 @@ Installed finding and bounded replan:
   `Results.FrameForce` object/element identities are instead verified with
   `LineElm.GetObj`, `GetPoints`, `GetLocalAxes`, and
   `GetTransformationMatrix`. No failed getter output became accepted evidence.
+
+Candidate review and one bounded repair:
+
+- The first candidate was rejected once because five executable premises were
+  incomplete: whitelist immutability, digest-bound nullable-array metadata,
+  exact reflected parameter names, cross-getter live consistency, and
+  best-effort release of every acquired COM reference. One consolidated repair
+  closed all five, and the refreshed 410-call installed matrix retained the
+  same protected-state digest with no second repair cycle.
 
 WP10-03 remains separate. It owns the STA broker, operation lease, durable
 hash-chained call ledger, deadline/uncertain-call fencing, durable raw artifact,

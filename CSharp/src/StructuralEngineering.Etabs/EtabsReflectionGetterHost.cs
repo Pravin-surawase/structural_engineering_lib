@@ -137,11 +137,13 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
                 presentUnits);
             return new EtabsReflectionGetterHost(assembly, helper, oapi, sapModel, identity);
         }
-        catch
+        catch (Exception attachException)
         {
-            Release(sapModel);
-            Release(oapi);
-            Release(helper);
+            var cleanupErrors = ReleaseAll([sapModel, oapi, helper]);
+            if (cleanupErrors.Count > 0)
+                throw new AggregateException(
+                    "ETABS attachment failed and one or more acquired COM references could not be released.",
+                    [attachException, .. cleanupErrors]);
             throw;
         }
     }
@@ -203,11 +205,14 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
         if (_disposed)
             return;
         _disposed = true;
-        for (var index = _releaseOrder.Count - 1; index >= 0; index--)
-            Release(_releaseOrder[index]);
+        var cleanupErrors = ReleaseAll(_releaseOrder.AsEnumerable().Reverse());
         _objectCache.Clear();
         GC.Collect();
         GC.WaitForPendingFinalizers();
+        if (cleanupErrors.Count > 0)
+            throw new AggregateException(
+                "One or more acquired ETABS COM references could not be released.",
+                cleanupErrors);
     }
 
     private object ResolveObject(string path)
@@ -260,6 +265,15 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
             var outputs = method.GetParameters().Count(parameter => parameter.ParameterType.IsByRef);
             if (inputs != definition.InputNames.Count || outputs != definition.OutputNames.Count)
                 throw new InvalidOperationException($"Frozen parameter-direction drift for {definition.Operation}.");
+            var inputNames = method.GetParameters()
+                .Where(parameter => !parameter.ParameterType.IsByRef)
+                .Select(parameter => parameter.Name ?? string.Empty);
+            var outputNames = method.GetParameters()
+                .Where(parameter => parameter.ParameterType.IsByRef)
+                .Select(parameter => parameter.Name ?? string.Empty);
+            if (!inputNames.SequenceEqual(definition.InputNames, StringComparer.Ordinal) ||
+                !outputNames.SequenceEqual(definition.OutputNames, StringComparer.Ordinal))
+                throw new InvalidOperationException($"Frozen parameter-name drift for {definition.Operation}.");
         }
     }
 
@@ -358,9 +372,21 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
             throw new InvalidOperationException($"Exact {label} mismatch: expected {expected}; observed {actual}.");
     }
 
-    private static void Release(object? value)
+    private static List<Exception> ReleaseAll(IEnumerable<object?> values)
     {
-        if (value is not null && Marshal.IsComObject(value))
-            Marshal.FinalReleaseComObject(value);
+        var errors = new List<Exception>();
+        foreach (var value in values)
+        {
+            try
+            {
+                if (value is not null && Marshal.IsComObject(value))
+                    Marshal.FinalReleaseComObject(value);
+            }
+            catch (Exception exception)
+            {
+                errors.Add(exception);
+            }
+        }
+        return errors;
     }
 }

@@ -101,10 +101,26 @@ public static class EtabsLiveGetterProbe
             [request.MemberObjectName, request.FrameItemTypeElm],
             cancellationToken);
         var frameForceRows = Scalar<int>(frameForce, 0);
+        var resultObjects = Strings(frameForce, 1);
         var elementNames = Strings(frameForce, 3).Distinct(StringComparer.Ordinal).ToArray();
         if (frameForceRows == 0 || elementNames.Length == 0)
             throw new EtabsLiveGetterProbeException(
                 "Results.FrameForce returned no object/element mapping rows for the explicit member and output selection.");
+        if (resultObjects.Any(name => !string.Equals(name, request.MemberObjectName, StringComparison.Ordinal)))
+            throw new EtabsLiveGetterProbeException(
+                "Results.FrameForce returned a row owned by a different frame object.");
+        var expectedResultCases = request.SelectedCases
+            .Concat(request.SelectedCombinations)
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal)
+            .ToArray();
+        var actualResultCases = Strings(frameForce, 5)
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal)
+            .ToArray();
+        if (!actualResultCases.SequenceEqual(expectedResultCases, StringComparer.Ordinal))
+            throw new EtabsLiveGetterProbeException(
+                "Results.FrameForce load-case rows differ from the exact frozen output selection.");
 
         foreach (var pointName in pointNames.Distinct(StringComparer.Ordinal))
         {
@@ -117,18 +133,22 @@ public static class EtabsLiveGetterProbe
             Call(adapter, request, calls, "PointObj.GetTransformationMatrix", [pointName, true], cancellationToken);
         }
 
+        var elementPoints = new List<(string Point1, string Point2)>();
         foreach (var elementName in elementNames)
         {
             var owner = Call(adapter, request, calls, "LineElm.GetObj", [elementName], cancellationToken);
             RequireEqual("analysis-element owner", request.MemberObjectName, Scalar<string>(owner, 0));
-            Call(adapter, request, calls, "LineElm.GetPoints", [elementName], cancellationToken);
+            var elementPointCall = Call(adapter, request, calls, "LineElm.GetPoints", [elementName], cancellationToken);
+            elementPoints.Add((Scalar<string>(elementPointCall, 0), Scalar<string>(elementPointCall, 1)));
             Call(adapter, request, calls, "LineElm.GetLocalAxes", [elementName], cancellationToken);
             Call(adapter, request, calls, "LineElm.GetTransformationMatrix", [elementName], cancellationToken);
         }
+        ValidateElementTopology(pointNames, elementPoints);
 
         var materialCall = Call(adapter, request, calls, "PropFrame.GetMaterial", [sectionName], cancellationToken);
         var materialName = Scalar<string>(materialCall, 0);
-        Call(adapter, request, calls, "PropFrame.GetRectangle", [sectionName], cancellationToken);
+        var rectangleCall = Call(adapter, request, calls, "PropFrame.GetRectangle", [sectionName], cancellationToken);
+        RequireEqual("section material", materialName, Scalar<string>(rectangleCall, 1));
         Call(adapter, request, calls, "PropFrame.GetSectProps", [sectionName], cancellationToken);
         Call(adapter, request, calls, "PropFrame.GetModifiers", [sectionName], cancellationToken);
         Call(adapter, request, calls, "PropMaterial.GetMPIsotropic", [materialName, 0d], cancellationToken);
@@ -143,8 +163,10 @@ public static class EtabsLiveGetterProbe
 
         foreach (var name in preflight.CaseNames)
         {
-            Call(adapter, request, calls, "LoadCases.GetTypeOAPI", [name], cancellationToken);
+            var basicType = Call(adapter, request, calls, "LoadCases.GetTypeOAPI", [name], cancellationToken);
             var type = Call(adapter, request, calls, "LoadCases.GetTypeOAPI_1", [name], cancellationToken);
+            RequireEqual("load-case type", Scalar<int>(basicType, 0), Scalar<int>(type, 0));
+            RequireEqual("load-case subtype", Scalar<int>(basicType, 1), Scalar<int>(type, 1));
             if (Scalar<int>(type, 0) == 1)
             {
                 Call(adapter, request, calls, "LoadCases.StaticLinear.GetInitialCase", [name], cancellationToken);
@@ -321,6 +343,46 @@ public static class EtabsLiveGetterProbe
     {
         using var stream = File.OpenRead(path);
         return Convert.ToHexStringLower(SHA256.HashData(stream));
+    }
+
+    private static void ValidateElementTopology(
+        IReadOnlyList<string> framePoints,
+        IReadOnlyList<(string Point1, string Point2)> elementPoints)
+    {
+        if (framePoints.Count != 2 || framePoints.Any(string.IsNullOrWhiteSpace))
+            throw new EtabsLiveGetterProbeException("The frame object must have two exact nonblank endpoint names.");
+
+        var adjacency = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
+        foreach (var (point1, point2) in elementPoints)
+        {
+            if (string.IsNullOrWhiteSpace(point1) || string.IsNullOrWhiteSpace(point2))
+                throw new EtabsLiveGetterProbeException("An analysis element returned a blank endpoint name.");
+            if (!adjacency.TryGetValue(point1, out var point1Links))
+                adjacency[point1] = point1Links = new HashSet<string>(StringComparer.Ordinal);
+            if (!adjacency.TryGetValue(point2, out var point2Links))
+                adjacency[point2] = point2Links = new HashSet<string>(StringComparer.Ordinal);
+            point1Links.Add(point2);
+            point2Links.Add(point1);
+        }
+
+        if (!adjacency.ContainsKey(framePoints[0]) || !adjacency.ContainsKey(framePoints[1]))
+            throw new EtabsLiveGetterProbeException(
+                "The force-returned analysis elements do not include both frame-object endpoints.");
+
+        var visited = new HashSet<string>(StringComparer.Ordinal) { framePoints[0] };
+        var pending = new Queue<string>();
+        pending.Enqueue(framePoints[0]);
+        while (pending.TryDequeue(out var point))
+        {
+            foreach (var neighbor in adjacency[point])
+            {
+                if (visited.Add(neighbor))
+                    pending.Enqueue(neighbor);
+            }
+        }
+        if (!visited.Contains(framePoints[1]) || visited.Count != adjacency.Count)
+            throw new EtabsLiveGetterProbeException(
+                "The force-returned analysis-element topology is disconnected from the frame object.");
     }
 
     private static void RequireEqual<T>(string label, T expected, T actual)

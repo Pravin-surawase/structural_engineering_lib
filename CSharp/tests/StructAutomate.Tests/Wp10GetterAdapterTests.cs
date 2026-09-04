@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using StructuralEngineering.Etabs;
 using Xunit;
 
@@ -23,6 +24,14 @@ public sealed class Wp10GetterAdapterTests
         Assert.DoesNotContain("FrameObj.GetElm", EtabsGetterMatrix.Allowed.Keys);
         Assert.Equal(64, EtabsGetterMatrix.Sha256.Length);
         Assert.Contains("*.Set*", EtabsGetterMatrix.DeniedMutationFamilies);
+        var mutableView = Assert.IsAssignableFrom<IDictionary<string, EtabsGetterDefinition>>(
+            EtabsGetterMatrix.Allowed);
+        Assert.IsType<ReadOnlyDictionary<string, EtabsGetterDefinition>>(EtabsGetterMatrix.Allowed);
+        Assert.Throws<NotSupportedException>(() =>
+            mutableView["SapModel.GetPresentUnits"] = EtabsGetterMatrix.Allowed["SapModel.GetPresentUnits"]);
+        Assert.Equal(
+            [6],
+            EtabsGetterMatrix.Allowed["Story.GetStories_2"].NullableStringArrays);
         Assert.DoesNotContain(
             typeof(EtabsGetterAdapter).Assembly.GetReferencedAssemblies(),
             reference => reference.Name?.Contains("ETABS", StringComparison.OrdinalIgnoreCase) is true);
