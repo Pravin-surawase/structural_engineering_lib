@@ -19,6 +19,12 @@ Microsoft Excel, and correct the product boundary. Live ETABS calls,
 copied-model mutation, multi-option Excel search, public package publication,
 and a GitHub Release remain outside WP09.
 
+**Completed:**
+
+- Implemented native .NET Excel-DNA functions, commands, workbook, packaging, and installed lifecycle over WP01–WP08.
+- Qualified one exact signed package in installed Windows Excel with source, performance, migration, and lifecycle evidence.
+- Corrected the one-candidate claims, passed two independent audits, and froze the getter-only WP10-01 starting packet.
+
 ### Issues encountered
 
 - The initial WP09 plan still treated the Excel adapter as an active future
@@ -70,6 +76,8 @@ and a GitHub Release remain outside WP09.
 - The first clean session closeout could not bind the Latest Handoff to the WP09
   Git receipt because the WP09 session record had been inserted inside the
   older E1 entry instead of at the top of this reverse-chronological log.
+- The next clean closeout found that the detailed WP09 record still omitted the
+  exact `**Completed:**` list required by the session validator.
 
 ### Root causes and resolutions
 
@@ -155,6 +163,10 @@ and a GitHub Release remain outside WP09.
   canonical top position, restore the uninterrupted E1 entry, and regenerate
   the Latest Handoff with the versioned WP09 Git receipt. The session document
   check now selects the WP09 focus and exact local-state receipt identity.
+- Confirmed root cause: completion was recorded only under validation prose,
+  while `scripts/session.py` reads the explicit completion marker. Resolution:
+  add three outcome-level completed items and regenerate the receipt-bound
+  Latest Handoff. The session document check accepts the completed-item shape.
 
 ### Validation through content freeze
 
