@@ -50,12 +50,8 @@ def _capacity(
         "steel_yield_strength_n_per_mm2": 415,
         "bars": _bars(),
         "tension_face": Face.BOTTOM,
-        "flange_width_mm": 800
-        if section is not SectionKind.RECTANGULAR
-        else None,
-        "flange_thickness_mm": 100
-        if section is not SectionKind.RECTANGULAR
-        else None,
+        "flange_width_mm": 800 if section is not SectionKind.RECTANGULAR else None,
+        "flange_thickness_mm": 100 if section is not SectionKind.RECTANGULAR else None,
     }
     values.update(changes)
     return FlexuralCapacityRequest(**values)  # type: ignore[arg-type]
@@ -101,9 +97,7 @@ def test_geometry_uses_actual_multilayer_coordinates_and_reports_spacing() -> No
         for bar in bars
         if bar.face is Face.BOTTOM
     ) / sum(
-        math.pi * bar.diameter_mm**2 / 4
-        for bar in bars
-        if bar.face is Face.BOTTOM
+        math.pi * bar.diameter_mm**2 / 4 for bar in bars if bar.face is Face.BOTTOM
     )
     assert bottom["effective_depth_mm"] == expected_y
     assert result.outputs["bar_count"] == 7

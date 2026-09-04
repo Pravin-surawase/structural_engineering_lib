@@ -23,8 +23,12 @@ def _link(*, closed: bool = True, spacing_mm: float = 100) -> TransverseLink:
     return TransverseLink("L1", 8, 2, 2, spacing_mm, 415, closed, 230, 420)
 
 
-def _capacity(axis: ShearAxis = ShearAxis.V2, link: TransverseLink | None = None) -> ShearCapacityRequest:
-    return ShearCapacityRequest("IS456-WP02", axis, 300, 450, 25, 942.4777960769379, link or _link())
+def _capacity(
+    axis: ShearAxis = ShearAxis.V2, link: TransverseLink | None = None
+) -> ShearCapacityRequest:
+    return ShearCapacityRequest(
+        "IS456-WP02", axis, 300, 450, 25, 942.4777960769379, link or _link()
+    )
 
 
 def _bars() -> tuple[BarPosition, ...]:
@@ -39,7 +43,9 @@ def _bars() -> tuple[BarPosition, ...]:
 
 
 def _flexure() -> FlexuralCapacityRequest:
-    return FlexuralCapacityRequest("IS456-WP02", SectionKind.RECTANGULAR, 300, 500, 25, 415, _bars(), Face.BOTTOM)
+    return FlexuralCapacityRequest(
+        "IS456-WP02", SectionKind.RECTANGULAR, 300, 500, 25, 415, _bars(), Face.BOTTOM
+    )
 
 
 def _action(basis: ActionBasis = ActionBasis.STATIC_CONCURRENT) -> ConcurrentActionRow:
@@ -60,7 +66,10 @@ def test_shear_check_handles_both_axes_and_station_signs() -> None:
     result = check_shear(
         ShearCheckRequest(
             (_capacity(ShearAxis.V2), _capacity(ShearAxis.V3)),
-            (ShearDemand("S1", ShearAxis.V2, -100), ShearDemand("S1", ShearAxis.V3, 80)),
+            (
+                ShearDemand("S1", ShearAxis.V2, -100),
+                ShearDemand("S1", ShearAxis.V3, 80),
+            ),
         )
     )
     assert result.engineering == "pass"
@@ -80,7 +89,13 @@ def test_missing_actual_link_is_not_evaluated() -> None:
 
 
 def test_torsion_rejects_nonconcurrent_component_envelope() -> None:
-    request = TorsionCheckRequest("IS456-WP02", _action(ActionBasis.COMPONENT_ENVELOPE), _flexure(), _link(), ("TL", "TR", "BL", "BR"))
+    request = TorsionCheckRequest(
+        "IS456-WP02",
+        _action(ActionBasis.COMPONENT_ENVELOPE),
+        _flexure(),
+        _link(),
+        ("TL", "TR", "BL", "BR"),
+    )
     result = check_torsion(request)
     assert result.execution == "rejected_input"
     assert result.diagnostics[0].code == "ACTION.CONCURRENCY"
@@ -90,14 +105,18 @@ def test_torsion_does_not_ignore_minor_axis_interaction() -> None:
     action = ConcurrentActionRow(
         "R1", "S1", ActionBasis.STATIC_CONCURRENT, 50, 4, 5, 3, 50, "analysis:one"
     )
-    request = TorsionCheckRequest("IS456-WP02", action, _flexure(), _link(), ("TL", "TR", "BL", "BR"))
+    request = TorsionCheckRequest(
+        "IS456-WP02", action, _flexure(), _link(), ("TL", "TR", "BL", "BR")
+    )
     result = check_torsion(request)
     assert result.applicability == "not_applicable"
     assert result.diagnostics[0].code == "PROFILE.UNSUPPORTED"
 
 
 def test_torsion_checks_equivalent_actions_links_and_perimeter_bars() -> None:
-    request = TorsionCheckRequest("IS456-WP02", _action(), _flexure(), _link(), ("TL", "TR", "BL", "BR"))
+    request = TorsionCheckRequest(
+        "IS456-WP02", _action(), _flexure(), _link(), ("TL", "TR", "BL", "BR")
+    )
     result = check_torsion(request)
     assert result.engineering == "pass"
     assert result.outputs["action_row_id"] == "R1"
@@ -108,7 +127,13 @@ def test_torsion_checks_equivalent_actions_links_and_perimeter_bars() -> None:
 
 
 def test_open_link_is_completed_engineering_failure() -> None:
-    request = TorsionCheckRequest("IS456-WP02", _action(), _flexure(), _link(closed=False), ("TL", "TR", "BL", "BR"))
+    request = TorsionCheckRequest(
+        "IS456-WP02",
+        _action(),
+        _flexure(),
+        _link(closed=False),
+        ("TL", "TR", "BL", "BR"),
+    )
     result = check_torsion(request)
     assert result.execution == "completed"
     assert result.engineering == "fail"

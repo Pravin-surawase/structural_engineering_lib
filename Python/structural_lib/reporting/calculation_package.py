@@ -203,11 +203,30 @@ def _provenance() -> Provenance:
 
 
 def _error(code: str, message: str, field: str, remediation: str) -> Diagnostic:
-    return Diagnostic(code, "error", message, CREATE_CALCULATION_PACKAGE_OPERATION, field, "calculation-package", remediation)
+    return Diagnostic(
+        code,
+        "error",
+        message,
+        CREATE_CALCULATION_PACKAGE_OPERATION,
+        field,
+        "calculation-package",
+        remediation,
+    )
 
 
-def _reject(inputs: dict[str, dict[str, object]], code: str, message: str, field: str, remediation: str) -> OperationResult:
-    return rejected_result(CREATE_CALCULATION_PACKAGE_OPERATION, inputs, (_error(code, message, field, remediation),), provenance=_provenance())
+def _reject(
+    inputs: dict[str, dict[str, object]],
+    code: str,
+    message: str,
+    field: str,
+    remediation: str,
+) -> OperationResult:
+    return rejected_result(
+        CREATE_CALCULATION_PACKAGE_OPERATION,
+        inputs,
+        (_error(code, message, field, remediation),),
+        provenance=_provenance(),
+    )
 
 
 def _timestamp(value: str) -> bool:
@@ -220,7 +239,16 @@ def _timestamp(value: str) -> bool:
 
 def _binding_valid(binding: ResultBinding) -> bool:
     return (
-        all(_text(value) for value in (binding.operation_semantic_id, binding.result_id, binding.normalized_input_id, binding.calculation_id, binding.output_payload_id))
+        all(
+            _text(value)
+            for value in (
+                binding.operation_semantic_id,
+                binding.result_id,
+                binding.normalized_input_id,
+                binding.calculation_id,
+                binding.output_payload_id,
+            )
+        )
         and isinstance(binding.execution, ExecutionState)
         and isinstance(binding.applicability, ApplicabilityState)
         and isinstance(binding.engineering, EngineeringState)
@@ -267,37 +295,74 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
     inputs = effective_inputs(request=request)
     metadata = request.metadata
     profile = request.package_profile
-    if not all(
-        _text(value)
-        for value in (
-            metadata.project_id,
-            metadata.project_name,
-            metadata.project_revision_id,
-            metadata.member_id,
-            metadata.package_revision_id,
-            metadata.engine_build,
-            metadata.issued_at_utc,
-            profile.profile_id,
-            profile.revision_id,
-            profile.template_id,
+    if (
+        not all(
+            _text(value)
+            for value in (
+                metadata.project_id,
+                metadata.project_name,
+                metadata.project_revision_id,
+                metadata.member_id,
+                metadata.package_revision_id,
+                metadata.engine_build,
+                metadata.issued_at_utc,
+                profile.profile_id,
+                profile.revision_id,
+                profile.template_id,
+            )
         )
-    ) or not metadata.dataset_revision_ids or not all(_text(value) for value in metadata.dataset_revision_ids) or not _timestamp(metadata.issued_at_utc):
-        return _reject(inputs, "PACKAGE.METADATA", "Complete project/member/revision/engine/dataset metadata and a timezone-aware issue time are required.", "metadata", "Supply the reproducible package metadata.")
+        or not metadata.dataset_revision_ids
+        or not all(_text(value) for value in metadata.dataset_revision_ids)
+        or not _timestamp(metadata.issued_at_utc)
+    ):
+        return _reject(
+            inputs,
+            "PACKAGE.METADATA",
+            "Complete project/member/revision/engine/dataset metadata and a timezone-aware issue time are required.",
+            "metadata",
+            "Supply the reproducible package metadata.",
+        )
     if (
         not profile.required_leaf_ids
         or not profile.required_section_ids
         or len(profile.required_leaf_ids) != len(set(profile.required_leaf_ids))
         or len(profile.required_section_ids) != len(set(profile.required_section_ids))
-        or not all(_text(value) for value in (*profile.required_leaf_ids, *profile.required_section_ids))
+        or not all(
+            _text(value)
+            for value in (*profile.required_leaf_ids, *profile.required_section_ids)
+        )
     ):
-        return _reject(inputs, "PACKAGE.PROFILE", "The package profile requires unique leaf and semantic section identities.", "package_profile", "Correct the versioned package profile.")
+        return _reject(
+            inputs,
+            "PACKAGE.PROFILE",
+            "The package profile requires unique leaf and semantic section identities.",
+            "package_profile",
+            "Correct the versioned package profile.",
+        )
 
-    bindings = [request.member_binding, request.schedule_binding, request.bbs_binding, request.quantity_binding]
+    bindings = [
+        request.member_binding,
+        request.schedule_binding,
+        request.bbs_binding,
+        request.quantity_binding,
+    ]
     if request.cost is None:
         if request.cost_binding is not None:
-            return _reject(inputs, "PACKAGE.COST_BINDING", "A cost binding cannot be supplied without a cost result.", "cost_binding", "Remove the binding or supply its exact cost result.")
+            return _reject(
+                inputs,
+                "PACKAGE.COST_BINDING",
+                "A cost binding cannot be supplied without a cost result.",
+                "cost_binding",
+                "Remove the binding or supply its exact cost result.",
+            )
     elif request.cost_binding is None:
-        return _reject(inputs, "PACKAGE.COST_BINDING", "A supplied cost result requires its exact semantic binding.", "cost_binding", "Supply the current AO20 result binding.")
+        return _reject(
+            inputs,
+            "PACKAGE.COST_BINDING",
+            "A supplied cost result requires its exact semantic binding.",
+            "cost_binding",
+            "Supply the current AO20 result binding.",
+        )
     else:
         bindings.append(request.cost_binding)
     expected_operations = [
@@ -305,9 +370,20 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
         "structural.reinforcement_paths.resolve/v1",
         "structural.bbs.create/v1",
         "structural.construction_quantities.calculate/v1",
-    ] + (["structural.construction_cost.estimate/v1"] if request.cost is not None else [])
-    if any(not _binding_valid(binding) for binding in bindings) or [item.operation_semantic_id for item in bindings] != expected_operations:
-        return _reject(inputs, "PACKAGE.BINDING", "Every dependency requires its exact valid operation and semantic result binding.", "dependency_bindings", "Bind the current AO17, AO18, AO19, AO04, and optional AO20 results in order.")
+    ] + (
+        ["structural.construction_cost.estimate/v1"] if request.cost is not None else []
+    )
+    if (
+        any(not _binding_valid(binding) for binding in bindings)
+        or [item.operation_semantic_id for item in bindings] != expected_operations
+    ):
+        return _reject(
+            inputs,
+            "PACKAGE.BINDING",
+            "Every dependency requires its exact valid operation and semantic result binding.",
+            "dependency_bindings",
+            "Bind the current AO17, AO18, AO19, AO04, and optional AO20 results in order.",
+        )
     payloads: list[object] = [
         request.member_result,
         request.schedule,
@@ -315,11 +391,16 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
         request.quantities,
     ] + ([request.cost] if request.cost is not None else [])
     if any(
-        binding.output_payload_id
-        != semantic_hash("output_payload_id", plain(payload))
+        binding.output_payload_id != semantic_hash("output_payload_id", plain(payload))
         for binding, payload in zip(bindings, payloads, strict=True)
     ):
-        return _reject(inputs, "PACKAGE.PAYLOAD_BINDING", "A dependency binding does not identify the supplied semantic output payload.", "dependency_bindings", "Create bindings directly from the unchanged operation results.")
+        return _reject(
+            inputs,
+            "PACKAGE.PAYLOAD_BINDING",
+            "A dependency binding does not identify the supplied semantic output payload.",
+            "dependency_bindings",
+            "Create bindings directly from the unchanged operation results.",
+        )
 
     member = request.member_result
     schedule = request.schedule
@@ -345,14 +426,34 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
             or request.cost.quantity_result_id != request.quantity_binding.result_id
         )
     ):
-        return _reject(inputs, "PACKAGE.IDENTITY_CONFLICT", "Package dependencies must describe one project, member, detail, and result chain.", "request", "Rebuild dependent results from one current design chain.")
+        return _reject(
+            inputs,
+            "PACKAGE.IDENTITY_CONFLICT",
+            "Package dependencies must describe one project, member, detail, and result chain.",
+            "request",
+            "Rebuild dependent results from one current design chain.",
+        )
 
     expected_leaf_ids = tuple(item.leaf_id for item in member.expected_leaves)
     if set(profile.required_leaf_ids) != set(expected_leaf_ids):
-        return _reject(inputs, "PACKAGE.LEAF_PROFILE", "The package profile must retain the complete profile-derived member leaf set.", "package_profile.required_leaf_ids", "Use the AO17 expected leaf identities exactly.")
-    qualifications = {item.expectation.leaf_id: item for item in member.leaf_qualifications}
+        return _reject(
+            inputs,
+            "PACKAGE.LEAF_PROFILE",
+            "The package profile must retain the complete profile-derived member leaf set.",
+            "package_profile.required_leaf_ids",
+            "Use the AO17 expected leaf identities exactly.",
+        )
+    qualifications = {
+        item.expectation.leaf_id: item for item in member.leaf_qualifications
+    }
     if set(qualifications) != set(expected_leaf_ids):
-        return _reject(inputs, "PACKAGE.LEAF_SET", "Member leaf qualifications do not match the expected leaf set.", "member_result.leaf_qualifications", "Regenerate the whole-member result.")
+        return _reject(
+            inputs,
+            "PACKAGE.LEAF_SET",
+            "Member leaf qualifications do not match the expected leaf set.",
+            "member_result.leaf_qualifications",
+            "Regenerate the whole-member result.",
+        )
 
     traces = {item.leaf_id: item for item in request.traces}
     trace_ids = [item.trace_id for item in request.traces]
@@ -361,13 +462,38 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
         or len(request.traces) != len(expected_leaf_ids)
         or set(traces) != set(expected_leaf_ids)
         or any(
-            not all(_text(value) for value in (item.trace_id, item.leaf_id, item.rule_reference, item.formula_reference, item.normalized_substitution))
+            not all(
+                _text(value)
+                for value in (
+                    item.trace_id,
+                    item.leaf_id,
+                    item.rule_reference,
+                    item.formula_reference,
+                    item.normalized_substitution,
+                )
+            )
             for item in request.traces
         )
     ):
-        return _reject(inputs, "PACKAGE.TRACE", "Every required member leaf needs one unique rule/formula/substitution trace.", "traces", "Supply one semantic calculation trace per AO17 leaf.")
-    if not request.assumptions or not all(_text(value) for value in request.assumptions) or not all(_text(value) for value in request.limitations):
-        return _reject(inputs, "PACKAGE.NARRATIVE", "At least one explicit assumption and only nonblank limitations are required.", "assumptions,limitations", "Record the calculation basis and applicable limitations.")
+        return _reject(
+            inputs,
+            "PACKAGE.TRACE",
+            "Every required member leaf needs one unique rule/formula/substitution trace.",
+            "traces",
+            "Supply one semantic calculation trace per AO17 leaf.",
+        )
+    if (
+        not request.assumptions
+        or not all(_text(value) for value in request.assumptions)
+        or not all(_text(value) for value in request.limitations)
+    ):
+        return _reject(
+            inputs,
+            "PACKAGE.NARRATIVE",
+            "At least one explicit assumption and only nonblank limitations are required.",
+            "assumptions,limitations",
+            "Record the calculation basis and applicable limitations.",
+        )
 
     drawing_ids = [item.view_id for item in request.drawings]
     datum_ids = [datum.datum_id for view in request.drawings for datum in view.data]
@@ -376,25 +502,62 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
         or len(drawing_ids) != len(set(drawing_ids))
         or len(datum_ids) != len(set(datum_ids))
         or any(
-            not all(_text(value) for value in (view.view_id, view.kind, view.detail_revision_id))
+            not all(
+                _text(value)
+                for value in (view.view_id, view.kind, view.detail_revision_id)
+            )
             or view.detail_revision_id != schedule.detail_revision_id
             or not view.data
-            or any(not all(_text(value) for value in (datum.datum_id, datum.source_identity, datum.label, datum.value)) for datum in view.data)
+            or any(
+                not all(
+                    _text(value)
+                    for value in (
+                        datum.datum_id,
+                        datum.source_identity,
+                        datum.label,
+                        datum.value,
+                    )
+                )
+                for datum in view.data
+            )
             for view in request.drawings
         )
     ):
-        return _reject(inputs, "PACKAGE.DRAWING", "Drawing views require unique identities, current detail revision, and sourced semantic data.", "drawings", "Supply current elevation, section, or schedule view data.")
+        return _reject(
+            inputs,
+            "PACKAGE.DRAWING",
+            "Drawing views require unique identities, current detail revision, and sourced semantic data.",
+            "drawings",
+            "Supply current elevation, section, or schedule view data.",
+        )
 
     dependency_ids = {item.result_id for item in bindings}
     action_ids = [item.action_id for item in request.human_actions]
     if len(action_ids) != len(set(action_ids)) or any(
-        not all(_text(value) for value in (item.action_id, item.actor_id, item.actor_display_name, item.professional_role, item.recorded_at_utc, item.scope_id, item.bound_result_id))
+        not all(
+            _text(value)
+            for value in (
+                item.action_id,
+                item.actor_id,
+                item.actor_display_name,
+                item.professional_role,
+                item.recorded_at_utc,
+                item.scope_id,
+                item.bound_result_id,
+            )
+        )
         or not isinstance(item.action, HumanActionKind)
         or not _timestamp(item.recorded_at_utc)
         or item.bound_result_id not in dependency_ids
         for item in request.human_actions
     ):
-        return _reject(inputs, "PACKAGE.HUMAN_ACTION", "Prepared, checked, approved, or rejected fields require a real actor, time, scope, and exact dependency identity.", "human_actions", "Record only actual identity-bound human actions.")
+        return _reject(
+            inputs,
+            "PACKAGE.HUMAN_ACTION",
+            "Prepared, checked, approved, or rejected fields require a real actor, time, scope, and exact dependency identity.",
+            "human_actions",
+            "Record only actual identity-bound human actions.",
+        )
 
     package_leaves: list[PackageLeaf] = []
     for leaf_id in profile.required_leaf_ids:
@@ -426,8 +589,18 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
             or trace.utilization != leaf.utilization
             or trace.governing != leaf.governing
         ):
-            return _reject(inputs, "PACKAGE.TRACE_VALUE", "Calculation traces must reproduce the exact required, provided, selected, unit, utilization, and governing leaf evidence.", f"traces[{leaf.leaf_id}]", "Build trace substitutions from the unchanged qualified leaf result.")
-    current = member.qualified and all(_binding_current(item) for item in bindings) and all(item.qualified for item in leaves)
+            return _reject(
+                inputs,
+                "PACKAGE.TRACE_VALUE",
+                "Calculation traces must reproduce the exact required, provided, selected, unit, utilization, and governing leaf evidence.",
+                f"traces[{leaf.leaf_id}]",
+                "Build trace substitutions from the unchanged qualified leaf result.",
+            )
+    current = (
+        member.qualified
+        and all(_binding_current(item) for item in bindings)
+        and all(item.qualified for item in leaves)
+    )
     member_actions = sorted(
         (
             item
@@ -436,8 +609,9 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
             and item.bound_result_id == request.member_binding.result_id
         ),
         key=lambda item: (
-            datetime.fromisoformat(item.recorded_at_utc.replace("Z", "+00:00"))
-            .astimezone(UTC),
+            datetime.fromisoformat(
+                item.recorded_at_utc.replace("Z", "+00:00")
+            ).astimezone(UTC),
             item.action_id,
         ),
     )
@@ -500,9 +674,30 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
         active_approval,
     )
     if current:
-        return completed_result(CREATE_CALCULATION_PACKAGE_OPERATION, inputs, {"calculation_package": output}, provenance=_provenance())
+        return completed_result(
+            CREATE_CALCULATION_PACKAGE_OPERATION,
+            inputs,
+            {"calculation_package": output},
+            provenance=_provenance(),
+        )
     diagnostics = (
-        _error("PACKAGE.EVIDENCE_INCOMPLETE", "The semantic package is a draft because required engineering evidence is incomplete or stale.", "dependency_bindings,leaves", "Refresh every required result and qualified member leaf before issue."),
+        _error(
+            "PACKAGE.EVIDENCE_INCOMPLETE",
+            "The semantic package is a draft because required engineering evidence is incomplete or stale.",
+            "dependency_bindings,leaves",
+            "Refresh every required result and qualified member leaf before issue.",
+        ),
     )
-    freshness = FreshnessState.STALE if any(item.freshness is FreshnessState.STALE for item in bindings) else FreshnessState.CURRENT
-    return partial_result(CREATE_CALCULATION_PACKAGE_OPERATION, inputs, {"calculation_package": output}, diagnostics, provenance=_provenance(), freshness=freshness)
+    freshness = (
+        FreshnessState.STALE
+        if any(item.freshness is FreshnessState.STALE for item in bindings)
+        else FreshnessState.CURRENT
+    )
+    return partial_result(
+        CREATE_CALCULATION_PACKAGE_OPERATION,
+        inputs,
+        {"calculation_package": output},
+        diagnostics,
+        provenance=_provenance(),
+        freshness=freshness,
+    )

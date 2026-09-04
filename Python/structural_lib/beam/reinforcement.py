@@ -287,9 +287,7 @@ def effective_depth(
         EFFECTIVE_DEPTH_OPERATION, request
     )
     inputs = dict(inputs)
-    inputs["tension_face"] = effective_inputs(tension_face=tension_face)[
-        "tension_face"
-    ]
+    inputs["tension_face"] = effective_inputs(tension_face=tension_face)["tension_face"]
     if diagnostics:
         return rejected_result(
             EFFECTIVE_DEPTH_OPERATION, inputs, diagnostics, provenance=provenance

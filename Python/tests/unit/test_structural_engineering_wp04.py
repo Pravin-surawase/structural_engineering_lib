@@ -23,14 +23,10 @@ from structural_lib.beam import (
 
 def test_deflection_limits_distinguish_total_and_after_finishes() -> None:
     total = deflection_limit(
-        DeflectionLimitRequest(
-            "IS456-WP04", 6000, DeflectionCriterion.TOTAL_FINAL
-        )
+        DeflectionLimitRequest("IS456-WP04", 6000, DeflectionCriterion.TOTAL_FINAL)
     )
     finishes = deflection_limit(
-        DeflectionLimitRequest(
-            "IS456-WP04", 6000, DeflectionCriterion.AFTER_FINISHES
-        )
+        DeflectionLimitRequest("IS456-WP04", 6000, DeflectionCriterion.AFTER_FINISHES)
     )
 
     assert total.outputs["limit_mm"] == pytest.approx(24)
@@ -188,15 +184,11 @@ def test_calculated_deflection_retains_short_long_term_and_finish_components() -
     assert result.outputs["after_finishes_limit_mm"] == pytest.approx(6000 / 350)
     assert result.outputs["service_action_snapshot_id"] == "snapshot:SLS-1"
     assert result.outputs["total_service_action_row_ids"] == ["row:total"]
-    assert result.outputs["sustained_service_action_row_ids"] == [
-        "row:sustained"
-    ]
+    assert result.outputs["sustained_service_action_row_ids"] == ["row:sustained"]
 
 
 def test_calculated_deflection_missing_duration_is_not_evaluated() -> None:
-    result = check_deflection(
-        _calculated_request(_calculated_basis(duration=None))
-    )
+    result = check_deflection(_calculated_request(_calculated_basis(duration=None)))
 
     assert result.execution == "completed"
     assert result.engineering == "not_evaluated"
@@ -246,9 +238,7 @@ def test_annex_f_crack_width_uses_actual_bar_surface_geometry() -> None:
     assert result.engineering == "pass"
     assert result.outputs["effective_depth_mm"] == pytest.approx(450)
     assert result.outputs["cmin_mm"] == pytest.approx(40)
-    assert result.outputs["acr_mm"] == pytest.approx(
-        (75**2 + 50**2) ** 0.5 - 10
-    )
+    assert result.outputs["acr_mm"] == pytest.approx((75**2 + 50**2) ** 0.5 - 10)
     assert result.outputs["calculated_crack_width_mm"] == pytest.approx(
         0.11379830508373975
     )
@@ -259,9 +249,10 @@ def test_equal_steel_area_with_different_spacing_changes_crack_width() -> None:
     wide = check_crack_width(_crack_request(_bars(75, 225)))
     close = check_crack_width(_crack_request(_bars(130, 170)))
 
-    assert wide.outputs["calculated_crack_width_mm"] > close.outputs[
-        "calculated_crack_width_mm"
-    ]
+    assert (
+        wide.outputs["calculated_crack_width_mm"]
+        > close.outputs["calculated_crack_width_mm"]
+    )
     assert wide.outputs["effective_depth_mm"] == close.outputs["effective_depth_mm"]
 
 
@@ -285,9 +276,7 @@ def test_missing_actual_bars_is_not_evaluated() -> None:
 
 
 def test_missing_mean_strain_is_not_inferred_from_stress() -> None:
-    result = check_crack_width(
-        _crack_request(_bars(75, 225), mean_strain=None)
-    )
+    result = check_crack_width(_crack_request(_bars(75, 225), mean_strain=None))
 
     assert result.execution == "completed"
     assert result.engineering == "not_evaluated"

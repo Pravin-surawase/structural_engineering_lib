@@ -90,6 +90,13 @@ ETABS adapters remain the following host packets.
   service below logical beam/construction packages in the dependency graph.
 - Relocating the optimizer to its final package changed the canonical service
   identity hashes in the frozen Excel calculation-review fixture.
+- The first hosted PR run failed Python formatting and repository file-integrity
+  jobs: Black identified 23 WP01–WP08 Python files, while the manual pre-commit
+  hooks identified missing final newlines and mixed line endings in the new
+  .NET lock files and solution manifest.
+- Attempting to open a separate hosted-gate repair timer reported that the
+  original task checkpoint remained active after the successful read-only
+  closeout.
 
 ### Root causes and resolutions
 
@@ -169,6 +176,22 @@ ETABS adapters remain the following host packets.
   leaving the engineering values unchanged. Resolution: regenerate the frozen
   fixture from the final namespace and replay it in isolated and WP08-first
   import orders; both Python replays and all 53 Excel add-in Node tests pass.
+- Confirmed root cause: packet-level Ruff/type checks and the local 32-check
+  gate did not invoke the hosted workflow's repository-wide Black or manual
+  pre-commit commands, so formatting and newline normalization were absent from
+  the first immutable candidate. Resolution: run Black across `Python`, apply
+  the complete manual pre-commit hook set, and rerun both exact hosted commands
+  to a clean result. The changes are canonical formatting and line endings.
+- Confirmed root cause: source text is part of the signed service identity, so
+  canonical Black formatting changed the expected calculation-review hashes.
+  Resolution: regenerate the frozen fixture from the formatted source and
+  replay it after WP08 import; Python and all 53 Excel add-in Node tests pass.
+- Confirmed root cause: the successful read-only session closeout validates but
+  does not consume the active task timing checkpoint. Resolution: continue the
+  existing `WP01-WP08-NATIVE-LIBRARIES` checkpoint for the hosted repair rather
+  than starting a competing timer.
+  ⚠️ TERMINAL ISSUE: a second `session begin` was rejected because the original
+  checkpoint remained active → continued the existing task checkpoint.
 
 ### Validation through content freeze
 
@@ -191,6 +214,10 @@ ETABS adapters remain the following host packets.
 - Complete repository gate: 32/32 checks passed against the staged candidate,
   including API classification, API contracts, architecture, imports,
   governance, documentation, Git-state and stale-reference controls.
+- Hosted-gate repair replay: repository-wide Black and Ruff checks pass; all
+  eight manual pre-commit hooks pass; the 110 WP01–WP08 Python tests pass, and
+  the signed calculation-review replay passes after fixture regeneration.
+- The 32-check repository gate passed again after the hosted-gate repair.
 - `git diff --check`: no whitespace errors; Git reported only configured
   line-ending conversion notices.
 - The immutable commit/closeout, hosted PR checks and integration are the

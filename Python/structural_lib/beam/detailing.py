@@ -369,11 +369,15 @@ def _provenance(
     seismic: bool = False,
 ) -> Provenance:
     references = (
-        "IS 13920:2016 with Amendments 1 and 2; bounded beam detailing profile",
-        "IS 456:2000 with Amendment 6; development, anchorage, laps and spacing",
-    ) if seismic else (
-        "IS 456:2000 with Amendment 6 (2024)",
-        "IS 456 clauses 26.2, 26.3 and 26.4 normalized for WP05",
+        (
+            "IS 13920:2016 with Amendments 1 and 2; bounded beam detailing profile",
+            "IS 456:2000 with Amendment 6; development, anchorage, laps and spacing",
+        )
+        if seismic
+        else (
+            "IS 456:2000 with Amendment 6 (2024)",
+            "IS 456 clauses 26.2, 26.3 and 26.4 normalized for WP05",
+        )
     )
     return Provenance(revision, method, references)
 
@@ -488,9 +492,7 @@ def development_length(request: DevelopmentLengthRequest) -> OperationResult:
             ),
             provenance=provenance,
         )
-    plain_tension = _bond_stress_plain_tension(
-        request.concrete_grade_n_per_mm2
-    )
+    plain_tension = _bond_stress_plain_tension(request.concrete_grade_n_per_mm2)
     if plain_tension is None:
         return not_applicable_result(
             DEVELOPMENT_LENGTH_OPERATION,
@@ -552,8 +554,7 @@ def _anchorage_bend_value(
             "Bind the bends to the current fabrication detail.",
         )
     if any(
-        not bend.bend_id
-        or bend.angle_degrees not in (45, 90, 135, 180)
+        not bend.bend_id or bend.angle_degrees not in (45, 90, 135, 180)
         for bend in path.bends
     ):
         return 0.0, _diagnostic(
@@ -564,9 +565,7 @@ def _anchorage_bend_value(
             "Correct the actual bend schedule.",
         )
     diameter = path.development.bar_diameter_mm
-    value = math.fsum(
-        4 * diameter * bend.angle_degrees / 45 for bend in path.bends
-    )
+    value = math.fsum(4 * diameter * bend.angle_degrees / 45 for bend in path.bends)
     return min(16 * diameter, value), None
 
 
@@ -631,9 +630,7 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
             )
             or path.path_start_x_mm >= path.path_end_x_mm
             or not (
-                path.path_start_x_mm
-                <= path.critical_section_x_mm
-                <= path.path_end_x_mm
+                path.path_start_x_mm <= path.critical_section_x_mm <= path.path_end_x_mm
             )
         ):
             return rejected_result(
@@ -660,7 +657,9 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
         )
         if at_support and (
             not path.support_id
-            or any(value is None or not math.isfinite(value) for value in support_values)
+            or any(
+                value is None or not math.isfinite(value) for value in support_values
+            )
             or not math.isclose(
                 path.critical_section_x_mm,
                 float(path.support_near_face_x_mm),
@@ -704,9 +703,7 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
                 development.diagnostics[0],
                 provenance=provenance,
             )
-        required = float(
-            development.outputs["required_development_length_mm"]
-        )
+        required = float(development.outputs["required_development_length_mm"])
         if path.direction is AnchorageDirection.INCREASING_X:
             straight = path.path_end_x_mm - path.critical_section_x_mm
         else:
@@ -839,9 +836,7 @@ def _lap_required_length(
             profile_id=request.profile_id,
             bar_diameter_mm=bar.diameter_mm,
             bar_stress_n_per_mm2=0.87 * request.steel_yield_strength_n_per_mm2,
-            steel_yield_strength_n_per_mm2=(
-                request.steel_yield_strength_n_per_mm2
-            ),
+            steel_yield_strength_n_per_mm2=(request.steel_yield_strength_n_per_mm2),
             concrete_grade_n_per_mm2=request.concrete_grade_n_per_mm2,
             bar_surface=request.bar_surface,
             stress_state=stress_state,
@@ -853,9 +848,7 @@ def _lap_required_length(
         return None, development
     if development.applicability is not ApplicabilityState.APPLICABLE:
         return None, development
-    required_development = float(
-        development.outputs["required_development_length_mm"]
-    )
+    required_development = float(development.outputs["required_development_length_mm"])
     if stress_state is StressState.COMPRESSION:
         return max(required_development, 24 * bar.diameter_mm), development
     development_factor = 2.0 if direct_tension else 1.0
@@ -953,9 +946,7 @@ def check_laps_and_curtailment(
         not demand.action_row_id
         or not isinstance(demand.role, ReinforcementRole)
         or not (
-            request.member_start_x_mm
-            <= demand.station_x_mm
-            <= request.member_end_x_mm
+            request.member_start_x_mm <= demand.station_x_mm <= request.member_end_x_mm
         )
         or not _nonnegative(demand.required_area_mm2)
         or not _nonnegative(demand.shear_demand_n)
@@ -1007,13 +998,14 @@ def check_laps_and_curtailment(
             or len(splice.bar_ids) != len(set(splice.bar_ids))
             or any(bar_id not in bar_by_id for bar_id in splice.bar_ids)
             or not all(
-                math.isfinite(value)
-                for value in (splice.start_x_mm, splice.end_x_mm)
+                math.isfinite(value) for value in (splice.start_x_mm, splice.end_x_mm)
             )
             or splice.start_x_mm >= splice.end_x_mm
             or not (0 < splice.percentage_spliced_at_section <= 100)
             or not splice.stagger_group
-            or (splice.direct_tension and splice.stress_state is not StressState.TENSION)
+            or (
+                splice.direct_tension and splice.stress_state is not StressState.TENSION
+            )
             or not (
                 request.member_start_x_mm
                 <= splice.start_x_mm
@@ -1085,14 +1077,10 @@ def check_laps_and_curtailment(
             qualification_ok = actual_length + 1e-9 >= required_length
         else:
             qualification_ok = bool(
-                splice.coupler_qualification_reference
-                and splice.installation_reference
+                splice.coupler_qualification_reference and splice.installation_reference
             )
         passed = (
-            zone_allowed
-            and percentage_allowed
-            and lap_permitted
-            and qualification_ok
+            zone_allowed and percentage_allowed and lap_permitted and qualification_ok
         )
         if not passed:
             diagnostics.append(
@@ -1130,12 +1118,8 @@ def check_laps_and_curtailment(
             or not isinstance(cutoff.direction, AnchorageDirection)
             or not _positive(cutoff.required_extension_mm)
             or not cutoff.continuing_bar_ids
-            or len(cutoff.continuing_bar_ids)
-            != len(set(cutoff.continuing_bar_ids))
-            or any(
-                bar_id not in bar_by_id
-                for bar_id in cutoff.continuing_bar_ids
-            )
+            or len(cutoff.continuing_bar_ids) != len(set(cutoff.continuing_bar_ids))
+            or any(bar_id not in bar_by_id for bar_id in cutoff.continuing_bar_ids)
             or cutoff.bar_id in cutoff.continuing_bar_ids
             or not isinstance(cutoff.extra_links_required, bool)
             or not all(
@@ -1161,13 +1145,9 @@ def check_laps_and_curtailment(
                 provenance=provenance,
             )
         if cutoff.direction is AnchorageDirection.INCREASING_X:
-            actual_extension = (
-                cutoff.actual_end_x_mm - cutoff.theoretical_cutoff_x_mm
-            )
+            actual_extension = cutoff.actual_end_x_mm - cutoff.theoretical_cutoff_x_mm
         else:
-            actual_extension = (
-                cutoff.theoretical_cutoff_x_mm - cutoff.actual_end_x_mm
-            )
+            actual_extension = cutoff.theoretical_cutoff_x_mm - cutoff.actual_end_x_mm
         demand = demand_by_id[cutoff.demand_station_id]
         continuing = [bar_by_id[bar_id] for bar_id in cutoff.continuing_bar_ids]
         continuing_area = math.fsum(
@@ -1424,12 +1404,9 @@ def check_seismic_detailing(
         (BeamEnd.RIGHT, ReinforcementRole.BOTTOM_LONGITUDINAL),
     }
     actual_anchorage_locations = [
-        (binding.beam_end, binding.role)
-        for binding in context.anchorage_checks
+        (binding.beam_end, binding.role) for binding in context.anchorage_checks
     ]
-    actual_joint_ids = [
-        binding.joint_id for binding in context.dependent_joint_checks
-    ]
+    actual_joint_ids = [binding.joint_id for binding in context.dependent_joint_checks]
     if (
         len(actual_anchorage_locations) != 4
         or set(actual_anchorage_locations) != expected_anchorage_locations
@@ -1496,8 +1473,7 @@ def check_seismic_detailing(
             or not splice.bar_ids
             or any(bar_id not in bar_ids for bar_id in splice.bar_ids)
             or not all(
-                math.isfinite(value)
-                for value in (splice.start_x_mm, splice.end_x_mm)
+                math.isfinite(value) for value in (splice.start_x_mm, splice.end_x_mm)
             )
             or splice.start_x_mm >= splice.end_x_mm
             or not (0 < splice.percentage_spliced_at_section <= 100)
@@ -1650,14 +1626,12 @@ def check_seismic_detailing(
         zone
         for zone in context.link_zones
         if zone.start_x_mm <= context.left_joint_face_x_mm
-        and zone.end_x_mm
-        >= context.left_joint_face_x_mm + required_zone_length
+        and zone.end_x_mm >= context.left_joint_face_x_mm + required_zone_length
     ]
     right_zones = [
         zone
         for zone in context.link_zones
-        if zone.start_x_mm
-        <= context.right_joint_face_x_mm - required_zone_length
+        if zone.start_x_mm <= context.right_joint_face_x_mm - required_zone_length
         and zone.end_x_mm >= context.right_joint_face_x_mm
     ]
     for side, zones in (("LEFT", left_zones), ("RIGHT", right_zones)):
@@ -1690,8 +1664,7 @@ def check_seismic_detailing(
         for binding in context.anchorage_checks
     )
     joint_checks_ok = all(
-        binding.check.qualifies()
-        for binding in context.dependent_joint_checks
+        binding.check.qualifies() for binding in context.dependent_joint_checks
     )
     add_rule(
         "ANCHORAGE_RESULTS",
@@ -1746,12 +1719,8 @@ def check_seismic_detailing(
             )
         )
         percentage_ok = 0 < splice.percentage_spliced_at_section <= 50
-        evidence_ok = (
-            splice.kind is SpliceKind.LAP
-            or bool(
-                splice.coupler_qualification_reference
-                and splice.installation_reference
-            )
+        evidence_ok = splice.kind is SpliceKind.LAP or bool(
+            splice.coupler_qualification_reference and splice.installation_reference
         )
         passed = outside_end_zones and percentage_ok and evidence_ok
         splice_checks.append(
@@ -1773,14 +1742,24 @@ def check_seismic_detailing(
         )
 
     clear_span = context.right_joint_face_x_mm - context.left_joint_face_x_mm
-    capacity_shear_positive_n = abs(context.gravity_shear_n) + 1.4 * (
-        context.left_positive_probable_moment_nmm
-        + context.right_negative_probable_moment_nmm
-    ) / clear_span
-    capacity_shear_negative_n = abs(context.gravity_shear_n) + 1.4 * (
-        context.left_negative_probable_moment_nmm
-        + context.right_positive_probable_moment_nmm
-    ) / clear_span
+    capacity_shear_positive_n = (
+        abs(context.gravity_shear_n)
+        + 1.4
+        * (
+            context.left_positive_probable_moment_nmm
+            + context.right_negative_probable_moment_nmm
+        )
+        / clear_span
+    )
+    capacity_shear_negative_n = (
+        abs(context.gravity_shear_n)
+        + 1.4
+        * (
+            context.left_negative_probable_moment_nmm
+            + context.right_positive_probable_moment_nmm
+        )
+        / clear_span
+    )
     governing_shear_n = max(
         abs(context.imported_analysis_shear_n),
         capacity_shear_positive_n,
@@ -1790,16 +1769,12 @@ def check_seismic_detailing(
         context.shear_check,
         "is456.beam.shear.check/v1",
     )
-    shear_capacity_ok = (
-        context.provided_shear_capacity_n + 1e-9 >= governing_shear_n
-    )
+    shear_capacity_ok = context.provided_shear_capacity_n + 1e-9 >= governing_shear_n
     add_rule(
         "CAPACITY_SHEAR",
         shear_reference_ok and shear_capacity_ok,
         {
-            "imported_analysis_shear_n": abs(
-                context.imported_analysis_shear_n
-            ),
+            "imported_analysis_shear_n": abs(context.imported_analysis_shear_n),
             "capacity_shear_positive_n": capacity_shear_positive_n,
             "capacity_shear_negative_n": capacity_shear_negative_n,
             "governing_shear_n": governing_shear_n,
@@ -1853,9 +1828,7 @@ def _point_to_segment_distance(
     length_squared = dx * dx + dy * dy
     if length_squared == 0:
         return math.hypot(point_x - start_x, point_y - start_y)
-    projection = (
-        (point_x - start_x) * dx + (point_y - start_y) * dy
-    ) / length_squared
+    projection = ((point_x - start_x) * dx + (point_y - start_y) * dy) / length_squared
     parameter = min(1.0, max(0.0, projection))
     nearest_x = start_x + parameter * dx
     nearest_y = start_y + parameter * dy
@@ -1940,8 +1913,7 @@ def check_reinforcement_arrangement(
         or len(link_ids) != len(set(link_ids))
         or len(obstacle_ids) != len(set(obstacle_ids))
         or any(
-            not isinstance(role, ReinforcementRole)
-            for role in request.required_roles
+            not isinstance(role, ReinforcementRole) for role in request.required_roles
         )
         or len(request.required_roles) != len(set(request.required_roles))
     ):
@@ -2008,18 +1980,14 @@ def check_reinforcement_arrangement(
         radius = link.diameter_mm / 2
         surface_covers = {
             "left": link.left_centre_x_mm - radius,
-            "right": request.section_width_mm
-            - (link.right_centre_x_mm + radius),
+            "right": request.section_width_mm - (link.right_centre_x_mm + radius),
             "top": link.top_centre_y_mm - radius,
-            "bottom": request.section_depth_mm
-            - (link.bottom_centre_y_mm + radius),
+            "bottom": request.section_depth_mm - (link.bottom_centre_y_mm + radius),
         }
         cover_ok = min(surface_covers.values()) + 1e-9 >= request.nominal_cover_mm
         centreline_width = link.right_centre_x_mm - link.left_centre_x_mm
         centreline_height = link.bottom_centre_y_mm - link.top_centre_y_mm
-        minimum_bend_extent = 2 * (
-            link.internal_bend_radius_mm + link.diameter_mm / 2
-        )
+        minimum_bend_extent = 2 * (link.internal_bend_radius_mm + link.diameter_mm / 2)
         bend_fit_ok = (
             centreline_width + 1e-9 >= minimum_bend_extent
             and centreline_height + 1e-9 >= minimum_bend_extent
@@ -2048,7 +2016,9 @@ def check_reinforcement_arrangement(
         )
 
     missing_roles = [
-        role for role in request.required_roles if not any(bar.role is role for bar in request.bars)
+        role
+        for role in request.required_roles
+        if not any(bar.role is role for bar in request.bars)
     ]
     if missing_roles:
         fail(
@@ -2121,9 +2091,7 @@ def check_reinforcement_arrangement(
             )
 
     horizontal_clearance_checks: list[dict[str, object]] = []
-    grouped_layers: dict[
-        tuple[ReinforcementRole, int], list[LongitudinalBarPath]
-    ] = {}
+    grouped_layers: dict[tuple[ReinforcementRole, int], list[LongitudinalBarPath]] = {}
     for bar in request.bars:
         grouped_layers.setdefault((bar.role, bar.layer), []).append(bar)
     for index, first in enumerate(request.bars):
@@ -2133,9 +2101,10 @@ def check_reinforcement_arrangement(
                 > request.vertical_alignment_tolerance_mm + 1e-9
             ):
                 continue
-            actual = abs(second.x_from_left_mm - first.x_from_left_mm) - (
-                first.diameter_mm + second.diameter_mm
-            ) / 2
+            actual = (
+                abs(second.x_from_left_mm - first.x_from_left_mm)
+                - (first.diameter_mm + second.diameter_mm) / 2
+            )
             required = max(
                 first.diameter_mm,
                 second.diameter_mm,
@@ -2171,9 +2140,10 @@ def check_reinforcement_arrangement(
                 > request.vertical_alignment_tolerance_mm + 1e-9
             ):
                 continue
-            actual = abs(second.y_from_top_mm - first.y_from_top_mm) - (
-                first.diameter_mm + second.diameter_mm
-            ) / 2
+            actual = (
+                abs(second.y_from_top_mm - first.y_from_top_mm)
+                - (first.diameter_mm + second.diameter_mm) / 2
+            )
             required = max(
                 15.0,
                 2 * request.maximum_aggregate_size_mm / 3,
@@ -2204,28 +2174,18 @@ def check_reinforcement_arrangement(
         physical_rows = sorted(
             (
                 (layer, grouped_layers[(role, layer)])
-                for layer in {
-                    bar.layer for bar in request.bars if bar.role is role
-                }
+                for layer in {bar.layer for bar in request.bars if bar.role is role}
             ),
-            key=lambda item: math.fsum(
-                bar.y_from_top_mm for bar in item[1]
-            )
+            key=lambda item: math.fsum(bar.y_from_top_mm for bar in item[1])
             / len(item[1]),
         )
         for (upper_layer, upper), (lower_layer, lower) in zip(
             physical_rows, physical_rows[1:], strict=False
         ):
-            upper_bottom = max(
-                bar.y_from_top_mm + bar.diameter_mm / 2 for bar in upper
-            )
-            lower_top = min(
-                bar.y_from_top_mm - bar.diameter_mm / 2 for bar in lower
-            )
+            upper_bottom = max(bar.y_from_top_mm + bar.diameter_mm / 2 for bar in upper)
+            lower_top = min(bar.y_from_top_mm - bar.diameter_mm / 2 for bar in lower)
             actual = lower_top - upper_bottom
-            largest_diameter = max(
-                bar.diameter_mm for bar in (*upper, *lower)
-            )
+            largest_diameter = max(bar.diameter_mm for bar in (*upper, *lower))
             required = max(
                 15.0,
                 2 * request.maximum_aggregate_size_mm / 3,
@@ -2252,9 +2212,7 @@ def check_reinforcement_arrangement(
             )
 
     role_centroids: list[dict[str, object]] = []
-    for role in sorted(
-        {bar.role for bar in request.bars}, key=lambda item: item.value
-    ):
+    for role in sorted({bar.role for bar in request.bars}, key=lambda item: item.value):
         bars = [bar for bar in request.bars if bar.role is role]
         area = math.fsum(bar.area_mm2 for bar in bars)
         role_centroids.append(
@@ -2394,15 +2352,11 @@ def check_reinforcement_arrangement(
                 provenance=provenance,
             )
         required_width = max(
-            link.right_centre_x_mm
-            - link.left_centre_x_mm
-            + link.diameter_mm
+            link.right_centre_x_mm - link.left_centre_x_mm + link.diameter_mm
             for link in request.links
         )
         required_height = max(
-            link.bottom_centre_y_mm
-            - link.top_centre_y_mm
-            + link.diameter_mm
+            link.bottom_centre_y_mm - link.top_centre_y_mm + link.diameter_mm
             for link in request.links
         )
         passed = (

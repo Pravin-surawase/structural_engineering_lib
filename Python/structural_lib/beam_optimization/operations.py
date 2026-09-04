@@ -162,7 +162,11 @@ def _validate_domain(domain: DiscreteCandidateDomain) -> None:
     )
     if not all(_text(item) for item in identities):
         raise ValueError("DOMAIN.IDENTITY")
-    if not domain.section_choices or not domain.longitudinal_choices or not domain.transverse_choices:
+    if (
+        not domain.section_choices
+        or not domain.longitudinal_choices
+        or not domain.transverse_choices
+    ):
         raise ValueError("DOMAIN.EMPTY_AXIS")
     axes = (
         domain.section_choices,
@@ -285,7 +289,9 @@ def build_candidate_domain(domain: DiscreteCandidateDomain) -> CandidateDomainOu
                     transverse.legs,
                     transverse.spacing_mm,
                 )
-                physical_id = semantic_hash("candidate_physical_definition_id", physical)
+                physical_id = semantic_hash(
+                    "candidate_physical_definition_id", physical
+                )
                 changes = {
                     CandidateChangeCategory.ACTUAL_BARS,
                     CandidateChangeCategory.DETAILING,
@@ -446,7 +452,9 @@ def _profile_reasons(profile: CandidateObjectiveProfile) -> list[str]:
     reasons: list[str] = []
     if not _text(profile.profile_id) or not _text(profile.revision_id):
         reasons.append("OBJECTIVE_PROFILE.IDENTITY")
-    if not profile.objectives or len(set(profile.objectives)) != len(profile.objectives):
+    if not profile.objectives or len(set(profile.objectives)) != len(
+        profile.objectives
+    ):
         reasons.append("OBJECTIVE_PROFILE.OBJECTIVES")
     if len(set(profile.tie_breakers)) != len(profile.tie_breakers):
         reasons.append("OBJECTIVE_PROFILE.TIE_BREAKERS")
@@ -557,7 +565,9 @@ def _domain_context_reasons(
         "traversal_order": domain.traversal_order,
         "candidate_ids": tuple(item.candidate_id for item in domain.candidates),
     }
-    if domain.domain_semantic_id != semantic_hash("candidate_domain_id", semantic_payload):
+    if domain.domain_semantic_id != semantic_hash(
+        "candidate_domain_id", semantic_payload
+    ):
         reasons.append("DOMAIN.SEMANTIC_ID_MISMATCH")
     if (
         domain.project_basis_id != context.project_basis_id
@@ -566,8 +576,7 @@ def _domain_context_reasons(
         or domain.topology_revision_id != context.topology_revision_id
         or domain.action_revision_id != context.action_revision_id
         or domain.design_scope_revision_id != context.design_scope_revision_id
-        or domain.baseline_analysis_revision_id
-        != context.baseline_analysis_revision_id
+        or domain.baseline_analysis_revision_id != context.baseline_analysis_revision_id
     ):
         reasons.append("DOMAIN.CONTEXT_MISMATCH")
     return reasons
@@ -581,11 +590,17 @@ def _reanalysis_reasons(
     if candidate.coupling_class is CandidateCouplingClass.UNRESOLVED:
         return ["COUPLING.UNRESOLVED"]
     if request.analysis_mode is AnalysisMode.FIXED_ACTIONS:
-        if evaluation.analysis_revision_id != request.context.baseline_analysis_revision_id:
+        if (
+            evaluation.analysis_revision_id
+            != request.context.baseline_analysis_revision_id
+        ):
             return ["ANALYSIS.FIXED_ACTION_REVISION_MISMATCH"]
         return []
     if candidate.coupling_class is CandidateCouplingClass.FIXED_ACTION:
-        if evaluation.analysis_revision_id != request.context.baseline_analysis_revision_id:
+        if (
+            evaluation.analysis_revision_id
+            != request.context.baseline_analysis_revision_id
+        ):
             return ["ANALYSIS.FIXED_CHANGE_REVISION_MISMATCH"]
         return []
     policy = request.reanalysis_policy
@@ -680,8 +695,7 @@ def _member_evidence_reasons(
             and evidence.operation_semantic_id == expectation.operation_semantic_id
             and (
                 expectation.code_data_revision_id is None
-                or evidence.code_data_revision_id
-                == expectation.code_data_revision_id
+                or evidence.code_data_revision_id == expectation.code_data_revision_id
             )
             and all(
                 _text(value)
@@ -735,9 +749,11 @@ def _member_evidence_reasons(
     expected_engineering = (
         EngineeringState.PASS
         if member.qualified
-        else EngineeringState.FAIL
-        if engineering_fail
-        else EngineeringState.NOT_EVALUATED
+        else (
+            EngineeringState.FAIL
+            if engineering_fail
+            else EngineeringState.NOT_EVALUATED
+        )
     )
     if evaluation.member_binding.engineering is not expected_engineering:
         reasons.append("MEMBER.ENGINEERING_STATE_MISMATCH")
@@ -989,7 +1005,9 @@ def _validate_search_shape(
     evaluation_ids = tuple(item.candidate_id for item in request.evaluations)
     if len(set(evaluation_ids)) != len(evaluation_ids):
         raise ValueError("EVALUATION.DUPLICATE_CANDIDATE")
-    if evaluation_ids != tuple(item.candidate_id for item in evaluable[: len(evaluation_ids)]):
+    if evaluation_ids != tuple(
+        item.candidate_id for item in evaluable[: len(evaluation_ids)]
+    ):
         raise ValueError("EVALUATION.NOT_CANONICAL_PREFIX")
     if (
         request.evaluation_budget <= 0
@@ -1002,12 +1020,15 @@ def _validate_search_shape(
         if len(request.evaluations) != len(evaluable):
             raise ValueError("SEARCH.COMPLETED_WITHOUT_FULL_EVALUATION")
     elif request.stop_reason is SearchStopReason.EVALUATION_BUDGET_REACHED:
-        if (
-            len(request.evaluations) != request.evaluation_budget
-            or len(request.evaluations) >= len(evaluable)
-        ):
+        if len(request.evaluations) != request.evaluation_budget or len(
+            request.evaluations
+        ) >= len(evaluable):
             raise ValueError("SEARCH.BUDGET_STOP_INVALID")
-    return evaluable, {item.candidate_id: item for item in request.evaluations}, exclusions
+    return (
+        evaluable,
+        {item.candidate_id: item for item in request.evaluations},
+        exclusions,
+    )
 
 
 def _rank_output(request: CandidateRankingRequest) -> CandidateRankingOutput:
@@ -1015,7 +1036,9 @@ def _rank_output(request: CandidateRankingRequest) -> CandidateRankingOutput:
     profile_reasons = _profile_reasons(request.objective_profile)
     domain_reasons = _domain_context_reasons(request.context, request.domain)
     if context_reasons or profile_reasons or domain_reasons:
-        raise ValueError(";".join((*context_reasons, *profile_reasons, *domain_reasons)))
+        raise ValueError(
+            ";".join((*context_reasons, *profile_reasons, *domain_reasons))
+        )
     evaluable, evaluation_by_id, exclusions = _validate_search_shape(request)
     tie_breakers = (
         *(
@@ -1143,10 +1166,9 @@ def _rank_output(request: CandidateRankingRequest) -> CandidateRankingOutput:
         )
         for index, (candidate, evaluation, metrics) in enumerate(feasible, start=1)
     )
-    stop_complete = (
-        request.stop_reason is SearchStopReason.COMPLETED
-        and len(request.evaluations) == len(evaluable)
-    )
+    stop_complete = request.stop_reason is SearchStopReason.COMPLETED and len(
+        request.evaluations
+    ) == len(evaluable)
     has_unresolved = any(
         item.coupling_class is CandidateCouplingClass.UNRESOLVED
         for item in request.domain.candidates
@@ -1297,7 +1319,8 @@ def optimize_beam(request: BeamOptimizationRequest) -> OperationResult:
             request.domain.project_basis_id != request.context.project_basis_id
             or request.domain.profile_revision_id != request.context.profile_revision_id
             or request.domain.member_id != request.context.member_id
-            or request.domain.topology_revision_id != request.context.topology_revision_id
+            or request.domain.topology_revision_id
+            != request.context.topology_revision_id
             or request.domain.action_revision_id != request.context.action_revision_id
             or request.domain.design_scope_revision_id
             != request.context.design_scope_revision_id

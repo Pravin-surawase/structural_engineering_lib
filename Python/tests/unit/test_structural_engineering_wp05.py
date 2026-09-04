@@ -106,9 +106,7 @@ def test_development_length_reports_all_modifiers_and_amendment_6_epoxy() -> Non
     epoxy = development_length(
         _development(surface=BarSurface.FUSION_BONDED_EPOXY_DEFORMED)
     )
-    compression = development_length(
-        _development(stress_state=StressState.COMPRESSION)
-    )
+    compression = development_length(_development(stress_state=StressState.COMPRESSION))
     bundle = development_length(_development(bundle_size=4))
 
     assert deformed.outputs["design_bond_stress_n_per_mm2"] == pytest.approx(1.92)
@@ -354,9 +352,7 @@ def test_curtailment_rejects_unrelated_passing_result_as_evidence() -> None:
 def test_qualified_coupler_allows_large_bar_and_extra_links_are_conditional() -> None:
     request = _lap_curtailment_request()
     large_bars = tuple(
-        replace(bar, diameter_mm=40)
-        if bar.bar_id in {"B1", "B2"}
-        else bar
+        replace(bar, diameter_mm=40) if bar.bar_id in {"B1", "B2"} else bar
         for bar in request.bars
     )
     coupler = replace(
@@ -381,9 +377,7 @@ def test_qualified_coupler_allows_large_bar_and_extra_links_are_conditional() ->
 
     assert result.engineering == "pass"
     assert result.outputs["splice_checks"][0]["required_length_mm"] is None
-    assert result.outputs["splice_checks"][0][
-        "lap_permitted_for_diameter"
-    ] is True
+    assert result.outputs["splice_checks"][0]["lap_permitted_for_diameter"] is True
     assert result.outputs["curtailment_checks"][0]["extra_links_ok"] is True
 
 
@@ -597,13 +591,11 @@ def test_full_arrangement_checks_surfaces_spacing_centroids_and_placement() -> N
         "bottom": 25,
     }
     assert len(result.outputs["horizontal_clearance_checks"]) == 2
-    centroids = {
-        item["role"]: item for item in result.outputs["role_centroids"]
-    }
+    centroids = {item["role"]: item for item in result.outputs["role_centroids"]}
     assert centroids["top_longitudinal"]["centroid_y_from_top_mm"] == pytest.approx(60)
-    assert centroids["bottom_longitudinal"][
-        "centroid_y_from_top_mm"
-    ] == pytest.approx(440)
+    assert centroids["bottom_longitudinal"]["centroid_y_from_top_mm"] == pytest.approx(
+        440
+    )
     assert result.outputs["placement_check"]["passed"] is True
 
 
@@ -632,9 +624,7 @@ def test_tension_layer_only_cannot_qualify_full_arrangement() -> None:
 
 def test_arrangement_obstacle_clash_is_completed_failure() -> None:
     result = check_reinforcement_arrangement(
-        _arrangement_request(
-            obstacles=(CircularObstacle("COUPLER", 60, 60, 20, 5),)
-        )
+        _arrangement_request(obstacles=(CircularObstacle("COUPLER", 60, 60, 20, 5),))
     )
 
     assert result.execution == "completed"
@@ -679,9 +669,7 @@ def test_arrangement_orders_face_relative_layers_by_physical_y() -> None:
 
 def test_arrangement_checks_obstacles_against_link_segments() -> None:
     result = check_reinforcement_arrangement(
-        _arrangement_request(
-            obstacles=(CircularObstacle("SLEEVE", 150, 29, 10, 0),)
-        )
+        _arrangement_request(obstacles=(CircularObstacle("SLEEVE", 150, 29, 10, 0),))
     )
 
     assert result.engineering == "fail"

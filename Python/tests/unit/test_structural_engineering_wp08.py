@@ -89,17 +89,14 @@ def _member(
             if applicability is ApplicabilityState.NOT_APPLICABLE
             else state
         )
-        qualifies = (
-            applicability is expectation.expected_applicability
-            and (
-                (
-                    applicability is ApplicabilityState.APPLICABLE
-                    and evidence_state is EngineeringState.PASS
-                )
-                or (
-                    applicability is ApplicabilityState.NOT_APPLICABLE
-                    and evidence_state is EngineeringState.NOT_EVALUATED
-                )
+        qualifies = applicability is expectation.expected_applicability and (
+            (
+                applicability is ApplicabilityState.APPLICABLE
+                and evidence_state is EngineeringState.PASS
+            )
+            or (
+                applicability is ApplicabilityState.NOT_APPLICABLE
+                and evidence_state is EngineeringState.NOT_EVALUATED
             )
         )
         any_fail |= evidence_state is EngineeringState.FAIL
@@ -124,11 +121,17 @@ def _member(
                 expectation,
                 evidence,
                 qualifies,
-                () if qualifies else ("LEAF.FAIL" if any_fail else "LEAF.APPLICABILITY_MISMATCH",),
+                (
+                    ()
+                    if qualifies
+                    else ("LEAF.FAIL" if any_fail else "LEAF.APPLICABILITY_MISMATCH",)
+                ),
             )
         )
-    qualified = not any_fail and not any_incomplete and all(
-        item.qualified for item in qualifications
+    qualified = (
+        not any_fail
+        and not any_incomplete
+        and all(item.qualified for item in qualifications)
     )
     return MemberDesignOutput(
         "project-r1",
@@ -158,7 +161,9 @@ def _envelope(payload: object, operation: str, engineering: EngineeringState):
     )
 
 
-def _quantities(candidate_id: str, steel_kg: float = 100.0) -> ConstructionQuantityOutput:
+def _quantities(
+    candidate_id: str, steel_kg: float = 100.0
+) -> ConstructionQuantityOutput:
     return ConstructionQuantityOutput(
         "profile-r1",
         "project-r1",
@@ -222,8 +227,7 @@ def _domain(
         "scope-r1",
         "analysis-r1",
         "S1",
-        sections
-        or (SectionCandidateChoice("S1", 300, 500, 25),),
+        sections or (SectionCandidateChoice("S1", 300, 500, 25),),
         longitudinal
         or (
             LongitudinalCandidateChoice("L1", 2, 16, 1, 3, 20, 1, 500),
@@ -241,9 +245,7 @@ def _context(
     expected: tuple[MemberLeafExpectation, ...] | None = None,
 ) -> CandidateRankingContext:
     reference = _member("reference", expected=expected)
-    result = _envelope(
-        reference, "is456.beam_member.design/v1", EngineeringState.PASS
-    )
+    result = _envelope(reference, "is456.beam_member.design/v1", EngineeringState.PASS)
     return CandidateRankingContext(
         "project-r1",
         "profile-r1",
@@ -294,7 +296,11 @@ def _evaluation(
     member_envelope = _envelope(
         member,
         "is456.beam_member.design/v1",
-        engineering if engineering is not EngineeringState.NOT_EVALUATED else engineering,
+        (
+            engineering
+            if engineering is not EngineeringState.NOT_EVALUATED
+            else engineering
+        ),
     )
     quantities = _quantities(candidate_id, steel_kg)
     quantity_envelope = _envelope(
@@ -361,7 +367,10 @@ def test_domain_is_canonical_and_duplicate_physical_labels_are_retained() -> Non
     assert tuple(item.candidate_id for item in output.candidates) == tuple(
         sorted(item.candidate_id for item in output.candidates)
     )
-    assert output.candidates[0].physical_definition_id == output.candidates[1].physical_definition_id
+    assert (
+        output.candidates[0].physical_definition_id
+        == output.candidates[1].physical_definition_id
+    )
     assert ranking["performance"]["duplicate_physical_candidate_count"] == 1
     assert any(
         item["disposition"] == CandidateDisposition.DUPLICATE_PHYSICAL_DEFINITION
@@ -619,7 +628,8 @@ def test_wp07_quantity_and_cost_outputs_drive_objectives() -> None:
 
     assert ranking["ranked_candidates"][0]["candidate_id"] == candidates[1].candidate_id
     assert [
-        metric["value"] for metric in ranking["ranked_candidates"][0]["objective_metrics"]
+        metric["value"]
+        for metric in ranking["ranked_candidates"][0]["objective_metrics"]
     ] == [70, 1100]
 
 
@@ -641,9 +651,10 @@ def test_optimize_operation_returns_domain_and_ranking_with_same_identity() -> N
     )
     optimization = result.outputs["optimization"]
 
-    assert optimization["domain"]["domain_semantic_id"] == optimization["ranking"][
-        "domain_semantic_id"
-    ]
+    assert (
+        optimization["domain"]["domain_semantic_id"]
+        == optimization["ranking"]["domain_semantic_id"]
+    )
     assert optimization["ranking"]["selected_candidate_id"] == candidate.candidate_id
 
 
@@ -658,9 +669,10 @@ def test_changed_typed_output_with_old_binding_is_rejected_as_incomplete() -> No
     result = _rank(domain, (detached,))
 
     assert result.outputs["ranking"]["terminal_state"] == "evidence_incomplete"
-    assert "QUANTITY.PAYLOAD_MISMATCH" in result.outputs["ranking"]["exclusions"][0][
-        "reason_codes"
-    ]
+    assert (
+        "QUANTITY.PAYLOAD_MISMATCH"
+        in result.outputs["ranking"]["exclusions"][0]["reason_codes"]
+    )
 
 
 def test_cost_objective_rejects_nonportable_decimal_notation() -> None:
@@ -682,22 +694,19 @@ def test_cost_objective_rejects_nonportable_decimal_notation() -> None:
     result = _rank(domain, (detached,))
 
     assert result.outputs["ranking"]["terminal_state"] == "evidence_incomplete"
-    assert "COST.TOTAL_INVALID" in result.outputs["ranking"]["exclusions"][0][
-        "reason_codes"
-    ]
+    assert (
+        "COST.TOTAL_INVALID"
+        in result.outputs["ranking"]["exclusions"][0]["reason_codes"]
+    )
 
 
 def test_stale_failed_leaf_cannot_support_infeasibility_claim() -> None:
     domain = _domain(longitudinal=(_domain().longitudinal_choices[0],))
     candidate = build_candidate_domain(domain).candidates[0]
-    evaluation = _evaluation(
-        candidate.candidate_id, engineering=EngineeringState.FAIL
-    )
+    evaluation = _evaluation(candidate.candidate_id, engineering=EngineeringState.FAIL)
     qualification = evaluation.member_result.leaf_qualifications[0]
     assert qualification.evidence is not None
-    stale_evidence = replace(
-        qualification.evidence, freshness=FreshnessState.STALE
-    )
+    stale_evidence = replace(qualification.evidence, freshness=FreshnessState.STALE)
     stale_member = replace(
         evaluation.member_result,
         leaf_qualifications=(replace(qualification, evidence=stale_evidence),),
@@ -750,9 +759,10 @@ def test_negative_coupler_count_is_incomplete_quantity_evidence() -> None:
     )
 
     assert result.outputs["ranking"]["terminal_state"] == "evidence_incomplete"
-    assert "QUANTITY.NONFINITE" in result.outputs["ranking"]["exclusions"][0][
-        "reason_codes"
-    ]
+    assert (
+        "QUANTITY.NONFINITE"
+        in result.outputs["ranking"]["exclusions"][0]["reason_codes"]
+    )
 
 
 def test_cost_objective_requires_nonblank_currency() -> None:
@@ -774,6 +784,7 @@ def test_cost_objective_requires_nonblank_currency() -> None:
     result = _rank(domain, (invalid,))
 
     assert result.outputs["ranking"]["terminal_state"] == "evidence_incomplete"
-    assert "OBJECTIVE.COST_MISSING" in result.outputs["ranking"]["exclusions"][
-        0
-    ]["reason_codes"]
+    assert (
+        "OBJECTIVE.COST_MISSING"
+        in result.outputs["ranking"]["exclusions"][0]["reason_codes"]
+    )

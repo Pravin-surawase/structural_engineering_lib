@@ -227,14 +227,37 @@ def test_bbs_and_quantity_independent_reference_fixture() -> None:
             "contact-face-v1",
             (ConcreteNetSegment("C1", "B1", "M25", "VOL-B1", 300 * 500, 6000, False),),
             (
-                FormworkContactFace("F-S", "B1", FormworkFaceCategory.SOFFIT, "FACE-S", 300 * 6000, FormworkMeasurementState.INCLUDED),
-                FormworkContactFace("F-L", "B1", FormworkFaceCategory.SIDE_LEFT, "FACE-L", 500 * 6000, FormworkMeasurementState.INCLUDED),
-                FormworkContactFace("F-R", "B1", FormworkFaceCategory.SIDE_RIGHT, "FACE-R", 500 * 6000, FormworkMeasurementState.INCLUDED),
+                FormworkContactFace(
+                    "F-S",
+                    "B1",
+                    FormworkFaceCategory.SOFFIT,
+                    "FACE-S",
+                    300 * 6000,
+                    FormworkMeasurementState.INCLUDED,
+                ),
+                FormworkContactFace(
+                    "F-L",
+                    "B1",
+                    FormworkFaceCategory.SIDE_LEFT,
+                    "FACE-L",
+                    500 * 6000,
+                    FormworkMeasurementState.INCLUDED,
+                ),
+                FormworkContactFace(
+                    "F-R",
+                    "B1",
+                    FormworkFaceCategory.SIDE_RIGHT,
+                    "FACE-R",
+                    500 * 6000,
+                    FormworkMeasurementState.INCLUDED,
+                ),
             ),
         )
     )
 
-    assert quantity.outputs["quantities"]["steel_scheduled_mass_kg"] == pytest.approx(59.18760559)
+    assert quantity.outputs["quantities"]["steel_scheduled_mass_kg"] == pytest.approx(
+        59.18760559
+    )
     assert quantity.outputs["quantities"]["concrete_volume_m3"] == pytest.approx(0.9)
     assert quantity.outputs["quantities"]["formwork_area_m2"] == pytest.approx(7.8)
     assert quantity.outputs["quantities"]["direct_cost"] is None
@@ -279,11 +302,47 @@ def test_bend_centreline_and_cut_lengths_are_separate_fields() -> None:
     centreline_radius = 32 + diameter / 2
     arc = centreline_radius * pi / 2
     segments = (
-        ResolvedPathSegment("B1:001", PathSegmentKind.TANGENT_STRAIGHT, PathPoint(0, 50, 50), PathPoint(100, 50, 50), 100),
-        ResolvedPathSegment("B1:002", PathSegmentKind.BEND_ARC, PathPoint(100, 50, 50), PathPoint(100, 50, 150), arc, PathPoint(60, 50, 90), centreline_radius, 90),
-        ResolvedPathSegment("B1:003", PathSegmentKind.TANGENT_STRAIGHT, PathPoint(100, 50, 150), PathPoint(100, 50, 250), 100),
+        ResolvedPathSegment(
+            "B1:001",
+            PathSegmentKind.TANGENT_STRAIGHT,
+            PathPoint(0, 50, 50),
+            PathPoint(100, 50, 50),
+            100,
+        ),
+        ResolvedPathSegment(
+            "B1:002",
+            PathSegmentKind.BEND_ARC,
+            PathPoint(100, 50, 50),
+            PathPoint(100, 50, 150),
+            arc,
+            PathPoint(60, 50, 90),
+            centreline_radius,
+            90,
+        ),
+        ResolvedPathSegment(
+            "B1:003",
+            PathSegmentKind.TANGENT_STRAIGHT,
+            PathPoint(100, 50, 150),
+            PathPoint(100, 50, 250),
+            100,
+        ),
     )
-    path = ResolvedBarPath("B1", "M16", BarPathRole.TOP_LONGITUDINAL, 1, diameter, 415, 1, False, ("N1", "N2", "N3"), segments, 200 + arc, 6000, (), ())
+    path = ResolvedBarPath(
+        "B1",
+        "M16",
+        BarPathRole.TOP_LONGITUDINAL,
+        1,
+        diameter,
+        415,
+        1,
+        False,
+        ("N1", "N2", "N3"),
+        segments,
+        200 + arc,
+        6000,
+        (),
+        (),
+    )
     result = create_bbs(_bbs_request(_schedule(path)))
     row = result.outputs["bbs"]["rows"][0]
 
@@ -336,7 +395,10 @@ def test_link_zone_boundary_has_one_owner_and_matches_physical_paths() -> None:
     )
     result = create_bbs(_bbs_request(_schedule(*paths), link_zones=zones))
 
-    assert [item["stations_x_mm"] for item in result.outputs["bbs"]["link_zones"]] == [[0, 100], [200]]
+    assert [item["stations_x_mm"] for item in result.outputs["bbs"]["link_zones"]] == [
+        [0, 100],
+        [200],
+    ]
     duplicated = create_bbs(
         _bbs_request(
             _schedule(*paths),
@@ -372,7 +434,9 @@ def test_lap_and_coupler_are_explicit_without_added_cut_length() -> None:
             _schedule(path),
             splice_records=(
                 SpliceRecord("S-LAP", SpliceKind.LAP, 2500, "lap-check-1"),
-                SpliceRecord("S-COUPLER", SpliceKind.COUPLER, 5000, "coupler-cert-1", 1),
+                SpliceRecord(
+                    "S-COUPLER", SpliceKind.COUPLER, 5000, "coupler-cert-1", 1
+                ),
             ),
         )
     )
@@ -418,9 +482,30 @@ def _rate_profile(**changes: object) -> MeasuredRateProfile:
             (CostCategory.COUPLER, CostCategory.LABOUR, CostCategory.PLANT),
         ),
         "rates": (
-            CostRate("steel", CostCategory.MATERIAL, CostBasis.STEEL_SCHEDULED_MASS_KG, "reinforcement", "5", "Q-17 steel"),
-            CostRate("concrete", CostCategory.MATERIAL, CostBasis.CONCRETE_VOLUME_M3, "M25 concrete", "100", "Q-17 concrete"),
-            CostRate("formwork", CostCategory.FORMWORK, CostBasis.FORMWORK_AREA_M2, "beam formwork", "10", "Q-17 formwork"),
+            CostRate(
+                "steel",
+                CostCategory.MATERIAL,
+                CostBasis.STEEL_SCHEDULED_MASS_KG,
+                "reinforcement",
+                "5",
+                "Q-17 steel",
+            ),
+            CostRate(
+                "concrete",
+                CostCategory.MATERIAL,
+                CostBasis.CONCRETE_VOLUME_M3,
+                "M25 concrete",
+                "100",
+                "Q-17 concrete",
+            ),
+            CostRate(
+                "formwork",
+                CostCategory.FORMWORK,
+                CostBasis.FORMWORK_AREA_M2,
+                "beam formwork",
+                "10",
+                "Q-17 formwork",
+            ),
         ),
         "waste_pricing_basis": WastePricingBasis.SCHEDULED_STEEL,
         "overhead_percent_decimal": "10",
@@ -450,15 +535,38 @@ def test_dated_itemized_cost_uses_decimal_arithmetic_and_explicit_scope() -> Non
     assert output["pre_tax_total_decimal"] == "308.00"
     assert output["tax_decimal"] == "55.44"
     assert output["total_decimal"] == "363.44"
-    assert {item["source_quantity_result_id"] for item in output["lines"]} == {"quantity-result-1"}
+    assert {item["source_quantity_result_id"] for item in output["lines"]} == {
+        "quantity-result-1"
+    }
 
 
 def test_cost_rejects_incomplete_identity_and_double_priced_waste() -> None:
     quantities = _quantity_output()
-    request = ConstructionCostRequest("PROFILE-1", "project-basis-1", "B1", "detail-r1", "quantity-result-1", semantic_hash("output_payload_id", quantities), quantities, _rate_profile())
-    missing_geography = estimate_construction_cost(replace(request, rate_profile=replace(request.rate_profile, geography="")))
-    stock_rate = replace(request.rate_profile.rates[0], basis=CostBasis.STEEL_STOCK_MASS_KG)
-    double_count = estimate_construction_cost(replace(request, rate_profile=replace(request.rate_profile, rates=(stock_rate, *request.rate_profile.rates[1:]))))
+    request = ConstructionCostRequest(
+        "PROFILE-1",
+        "project-basis-1",
+        "B1",
+        "detail-r1",
+        "quantity-result-1",
+        semantic_hash("output_payload_id", quantities),
+        quantities,
+        _rate_profile(),
+    )
+    missing_geography = estimate_construction_cost(
+        replace(request, rate_profile=replace(request.rate_profile, geography=""))
+    )
+    stock_rate = replace(
+        request.rate_profile.rates[0], basis=CostBasis.STEEL_STOCK_MASS_KG
+    )
+    double_count = estimate_construction_cost(
+        replace(
+            request,
+            rate_profile=replace(
+                request.rate_profile,
+                rates=(stock_rate, *request.rate_profile.rates[1:]),
+            ),
+        )
+    )
     cross_project = estimate_construction_cost(
         replace(
             request,
@@ -494,8 +602,22 @@ def test_cost_displayed_lines_reconcile_after_currency_rounding() -> None:
             ),
         ),
         rates=(
-            CostRate("a", CostCategory.MATERIAL, CostBasis.STEEL_SCHEDULED_MASS_KG, "steel", "0.005", "rate-a"),
-            CostRate("b", CostCategory.MATERIAL, CostBasis.CONCRETE_VOLUME_M3, "concrete", "0.005", "rate-b"),
+            CostRate(
+                "a",
+                CostCategory.MATERIAL,
+                CostBasis.STEEL_SCHEDULED_MASS_KG,
+                "steel",
+                "0.005",
+                "rate-a",
+            ),
+            CostRate(
+                "b",
+                CostCategory.MATERIAL,
+                CostBasis.CONCRETE_VOLUME_M3,
+                "concrete",
+                "0.005",
+                "rate-b",
+            ),
         ),
         overhead_percent_decimal="0",
         tax_percent_decimal="0",
@@ -525,39 +647,174 @@ def _binding(
     *,
     freshness: FreshnessState = FreshnessState.CURRENT,
 ) -> ResultBinding:
-    return ResultBinding(operation, result_id, f"input:{result_id}", f"calculation:{result_id}", ExecutionState.COMPLETED, ApplicabilityState.APPLICABLE, EngineeringState.PASS, CompletenessState.COMPLETE_FOR_SCOPE, freshness, semantic_hash("output_payload_id", payload))
+    return ResultBinding(
+        operation,
+        result_id,
+        f"input:{result_id}",
+        f"calculation:{result_id}",
+        ExecutionState.COMPLETED,
+        ApplicabilityState.APPLICABLE,
+        EngineeringState.PASS,
+        CompletenessState.COMPLETE_FOR_SCOPE,
+        freshness,
+        semantic_hash("output_payload_id", payload),
+    )
 
 
 def _member_output() -> MemberDesignOutput:
-    expectation = MemberLeafExpectation("flexure@B1", "flexure", "is456.beam.flexure.check/v1", "B1", CheckScope.MEMBER, ApplicabilityState.APPLICABLE, "is456-r1")
-    evidence = MemberLeafEvidence("flexure@B1", expectation.operation_semantic_id, "leaf-result-1", ExecutionState.COMPLETED, ApplicabilityState.APPLICABLE, EngineeringState.PASS, CompletenessState.COMPLETE_FOR_SCOPE, FreshnessState.CURRENT, "is456-r1", "flexure-r1", "input:leaf", "calculation:leaf", 100, 120, 120, "kNm", 0.8333333333)
-    iteration = EffectiveDepthIteration(1, "reinforcement-r1", 450, (evidence.result_id,), True)
-    return MemberDesignOutput("project-basis-1", "profile-r1", "B1", "topology-r1", "actions-r1", "reinforcement-r1", "scope-r1", (expectation,), (MemberLeafQualification(expectation, evidence, True, ()),), (iteration,), expectation.leaf_id, evidence.result_id, evidence.governing_utilization, True)
+    expectation = MemberLeafExpectation(
+        "flexure@B1",
+        "flexure",
+        "is456.beam.flexure.check/v1",
+        "B1",
+        CheckScope.MEMBER,
+        ApplicabilityState.APPLICABLE,
+        "is456-r1",
+    )
+    evidence = MemberLeafEvidence(
+        "flexure@B1",
+        expectation.operation_semantic_id,
+        "leaf-result-1",
+        ExecutionState.COMPLETED,
+        ApplicabilityState.APPLICABLE,
+        EngineeringState.PASS,
+        CompletenessState.COMPLETE_FOR_SCOPE,
+        FreshnessState.CURRENT,
+        "is456-r1",
+        "flexure-r1",
+        "input:leaf",
+        "calculation:leaf",
+        100,
+        120,
+        120,
+        "kNm",
+        0.8333333333,
+    )
+    iteration = EffectiveDepthIteration(
+        1, "reinforcement-r1", 450, (evidence.result_id,), True
+    )
+    return MemberDesignOutput(
+        "project-basis-1",
+        "profile-r1",
+        "B1",
+        "topology-r1",
+        "actions-r1",
+        "reinforcement-r1",
+        "scope-r1",
+        (expectation,),
+        (MemberLeafQualification(expectation, evidence, True, ()),),
+        (iteration,),
+        expectation.leaf_id,
+        evidence.result_id,
+        evidence.governing_utilization,
+        True,
+    )
 
 
 def _package_request() -> CalculationPackageRequest:
     schedule = _schedule(_straight_path("B1", "M1", 6000))
-    bbs = BbsOutput("PROFILE-1", "project-basis-1", "B1", "detail-r1", "schedule-result-1", "shape-r1", "cut-r1", (), (), (), (), 6000, 6000, 0, 0, 0, 14.7969014, 14.7969014, "heuristic_first_fit_decreasing", True)
+    bbs = BbsOutput(
+        "PROFILE-1",
+        "project-basis-1",
+        "B1",
+        "detail-r1",
+        "schedule-result-1",
+        "shape-r1",
+        "cut-r1",
+        (),
+        (),
+        (),
+        (),
+        6000,
+        6000,
+        0,
+        0,
+        0,
+        14.7969014,
+        14.7969014,
+        "heuristic_first_fit_decreasing",
+        True,
+    )
     quantities = _quantity_output()
     member = _member_output()
     return CalculationPackageRequest(
-        CalculationPackageMetadata("PROJECT-1", "Office", "project-r1", "B1", "package-r1", "engine-1", ("is456-r1", "rebar-r1"), "2026-09-04T10:00:00+05:30"),
-        CalculationPackageProfile("CALC-PROFILE", "calc-profile-r1", "beam-template-r1", ("flexure@B1",), ("inputs", "calculations", "reinforcement", "quantities", "drawings", "signatures")),
+        CalculationPackageMetadata(
+            "PROJECT-1",
+            "Office",
+            "project-r1",
+            "B1",
+            "package-r1",
+            "engine-1",
+            ("is456-r1", "rebar-r1"),
+            "2026-09-04T10:00:00+05:30",
+        ),
+        CalculationPackageProfile(
+            "CALC-PROFILE",
+            "calc-profile-r1",
+            "beam-template-r1",
+            ("flexure@B1",),
+            (
+                "inputs",
+                "calculations",
+                "reinforcement",
+                "quantities",
+                "drawings",
+                "signatures",
+            ),
+        ),
         member,
         _binding("is456.beam_member.design/v1", "member-result-1", member),
         schedule,
-        _binding("structural.reinforcement_paths.resolve/v1", "schedule-result-1", schedule),
+        _binding(
+            "structural.reinforcement_paths.resolve/v1", "schedule-result-1", schedule
+        ),
         bbs,
         _binding("structural.bbs.create/v1", "bbs-result-1", bbs),
         quantities,
-        _binding("structural.construction_quantities.calculate/v1", "quantity-result-1", quantities),
+        _binding(
+            "structural.construction_quantities.calculate/v1",
+            "quantity-result-1",
+            quantities,
+        ),
         None,
         None,
         ("Loads are supplied at the stated design revision.",),
-        (CalculationTrace("TRACE-1", "flexure@B1", "IS456-flexure", "rectangular-flexure-v1", "Mu=100 kNm; capacity=120 kNm", 100, 120, 120, "kNm", 0.8333333333, True),),
-        (DrawingView("ELEV-1", "beam_elevation", "detail-r1", (DrawingDatum("D1", "B1", "bar mark", "M1"),)),),
+        (
+            CalculationTrace(
+                "TRACE-1",
+                "flexure@B1",
+                "IS456-flexure",
+                "rectangular-flexure-v1",
+                "Mu=100 kNm; capacity=120 kNm",
+                100,
+                120,
+                120,
+                "kNm",
+                0.8333333333,
+                True,
+            ),
+        ),
+        (
+            DrawingView(
+                "ELEV-1",
+                "beam_elevation",
+                "detail-r1",
+                (DrawingDatum("D1", "B1", "bar mark", "M1"),),
+            ),
+        ),
         ("Valid for the declared ordinary beam profile.",),
-        (HumanAction("ACT-1", "PE-123", "A. Engineer", "structural engineer", HumanActionKind.PREPARED, "2026-09-04T10:30:00+05:30", "B1", "member-result-1"),),
+        (
+            HumanAction(
+                "ACT-1",
+                "PE-123",
+                "A. Engineer",
+                "structural engineer",
+                HumanActionKind.PREPARED,
+                "2026-09-04T10:30:00+05:30",
+                "B1",
+                "member-result-1",
+            ),
+        ),
     )
 
 
@@ -570,8 +827,17 @@ def test_calculation_package_is_replayable_and_keeps_real_human_actions() -> Non
     assert output["active_approval"] is False
     assert output["leaves"][0]["result_id"] == "leaf-result-1"
     assert output["human_actions"][0]["actor_id"] == "PE-123"
-    assert output["calculation_package_id"].startswith("calculation_package_id:pf4-canonical-json-v1:")
-    assert {item["section_id"] for item in output["render_sections"]} == {"inputs", "calculations", "reinforcement", "quantities", "drawings", "signatures"}
+    assert output["calculation_package_id"].startswith(
+        "calculation_package_id:pf4-canonical-json-v1:"
+    )
+    assert {item["section_id"] for item in output["render_sections"]} == {
+        "inputs",
+        "calculations",
+        "reinforcement",
+        "quantities",
+        "drawings",
+        "signatures",
+    }
 
 
 def test_stale_package_is_visible_draft_and_cannot_activate_approval() -> None:
@@ -580,7 +846,9 @@ def test_stale_package_is_visible_draft_and_cannot_activate_approval() -> None:
     result = create_calculation_package(
         replace(
             request,
-            member_binding=replace(request.member_binding, freshness=FreshnessState.STALE),
+            member_binding=replace(
+                request.member_binding, freshness=FreshnessState.STALE
+            ),
             human_actions=(approved,),
         )
     )
@@ -605,9 +873,7 @@ def test_package_rejects_detached_payload_and_changed_trace_values() -> None:
         )
     )
     changed_trace = replace(request.traces[0], provided_value=999)
-    mismatched = create_calculation_package(
-        replace(request, traces=(changed_trace,))
-    )
+    mismatched = create_calculation_package(replace(request, traces=(changed_trace,)))
 
     assert detached.diagnostics[0].code == "PACKAGE.PAYLOAD_BINDING"
     assert mismatched.diagnostics[0].code == "PACKAGE.TRACE_VALUE"
@@ -680,6 +946,4 @@ def test_approval_uses_absolute_time_and_requires_passing_bindings() -> None:
 
     assert current.outputs["calculation_package"]["active_approval"] is True
     assert failed_dependency.outputs["calculation_package"]["issue_state"] == "draft"
-    assert (
-        failed_dependency.outputs["calculation_package"]["active_approval"] is False
-    )
+    assert failed_dependency.outputs["calculation_package"]["active_approval"] is False

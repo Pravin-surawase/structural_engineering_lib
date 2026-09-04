@@ -269,9 +269,7 @@ def create_beam_project(request: BeamProjectRequest) -> OperationResult:
             ),
             provenance=provenance,
         )
-    code_binding_ids = {
-        binding.binding_id for binding in request.code_data_revisions
-    }
+    code_binding_ids = {binding.binding_id for binding in request.code_data_revisions}
     if any(
         not _text(rule.operation_semantic_id)
         or not _text(rule.source_reference)
@@ -316,15 +314,17 @@ def create_beam_project(request: BeamProjectRequest) -> OperationResult:
     seismic_rules = [
         rule
         for rule in profile.check_rules
-        if rule.operation_semantic_id
-        == "is456.beam.seismic_detailing.check/v1"
+        if rule.operation_semantic_id == "is456.beam.seismic_detailing.check/v1"
     ]
     expected_seismic = (
         ApplicabilityState.NOT_APPLICABLE
         if profile.seismic_design_profile is SeismicDesignProfile.ORDINARY_IS456
         else ApplicabilityState.APPLICABLE
     )
-    if len(seismic_rules) != 1 or seismic_rules[0].expected_applicability is not expected_seismic:
+    if (
+        len(seismic_rules) != 1
+        or seismic_rules[0].expected_applicability is not expected_seismic
+    ):
         return rejected_result(
             CREATE_BEAM_PROJECT_OPERATION,
             inputs,
@@ -339,11 +339,15 @@ def create_beam_project(request: BeamProjectRequest) -> OperationResult:
             provenance=provenance,
         )
 
-    if not profile.criteria or not _unique_text(profile.criteria, "criterion_id") or any(
-        not math.isfinite(criterion.value)
-        or not _text(criterion.unit)
-        or not _text(criterion.source_reference)
-        for criterion in profile.criteria
+    if (
+        not profile.criteria
+        or not _unique_text(profile.criteria, "criterion_id")
+        or any(
+            not math.isfinite(criterion.value)
+            or not _text(criterion.unit)
+            or not _text(criterion.source_reference)
+            for criterion in profile.criteria
+        )
     ):
         return rejected_result(
             CREATE_BEAM_PROJECT_OPERATION,

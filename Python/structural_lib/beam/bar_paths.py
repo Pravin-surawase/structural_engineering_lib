@@ -287,7 +287,10 @@ def _bend_at(
 ) -> _BendGeometry | None:
     incoming = _unit(_subtract(node.point, previous), tolerance)
     outgoing = _unit(_subtract(following, node.point), tolerance)
-    dot = max(-1.0, min(1.0, math.fsum(a * b for a, b in zip(incoming, outgoing, strict=True))))
+    dot = max(
+        -1.0,
+        min(1.0, math.fsum(a * b for a, b in zip(incoming, outgoing, strict=True))),
+    )
     angle = math.acos(dot)
     has_bend_data = node.bend_radius_mm is not None or node.bend_kind is not None
     if angle <= 1e-10:
@@ -376,12 +379,8 @@ def _resolve_seed(
     for index in range(edge_count):
         following = (index + 1) % count
         available = _distance(points[index], points[following])
-        used = (
-            bends[index].tangent_offset_mm if bends[index] is not None else 0
-        ) + (
-            bends[following].tangent_offset_mm
-            if bends[following] is not None
-            else 0
+        used = (bends[index].tangent_offset_mm if bends[index] is not None else 0) + (
+            bends[following].tangent_offset_mm if bends[following] is not None else 0
         )
         if used + tolerance >= available:
             raise _PathError(
@@ -432,11 +431,7 @@ def _resolve_seed(
 
     developed = math.fsum(segment.centreline_length_mm for segment in segments)
     stock = next(
-        (
-            length
-            for length in stock_lengths
-            if length + tolerance >= developed
-        ),
+        (length for length in stock_lengths if length + tolerance >= developed),
         None,
     )
     return ResolvedBarPath(
@@ -465,8 +460,7 @@ def _same_shape(
     if (
         first.role is not second.role
         or abs(first.diameter_mm - second.diameter_mm) > tolerance
-        or abs(first.steel_grade_n_per_mm2 - second.steel_grade_n_per_mm2)
-        > tolerance
+        or abs(first.steel_grade_n_per_mm2 - second.steel_grade_n_per_mm2) > tolerance
         or first.bundle_size != second.bundle_size
         or first.closed != second.closed
         or len(first.segments) != len(second.segments)
@@ -475,29 +469,20 @@ def _same_shape(
     for left, right in zip(first.segments, second.segments, strict=True):
         if (
             left.kind is not right.kind
-            or abs(left.centreline_length_mm - right.centreline_length_mm)
-            > tolerance
+            or abs(left.centreline_length_mm - right.centreline_length_mm) > tolerance
             or left.bend_kind is not right.bend_kind
-            or (
-                left.bend_radius_mm is None
-            ) != (right.bend_radius_mm is None)
+            or (left.bend_radius_mm is None) != (right.bend_radius_mm is None)
             or left.bend_radius_mm is not None
             and right.bend_radius_mm is not None
             and abs(left.bend_radius_mm - right.bend_radius_mm) > tolerance
-            or (
-                left.bend_angle_degrees is None
-            ) != (right.bend_angle_degrees is None)
+            or (left.bend_angle_degrees is None) != (right.bend_angle_degrees is None)
             or left.bend_angle_degrees is not None
             and right.bend_angle_degrees is not None
-            and abs(left.bend_angle_degrees - right.bend_angle_degrees)
-            > tolerance
-            or (
-                left.bend_sweep_degrees is None
-            ) != (right.bend_sweep_degrees is None)
+            and abs(left.bend_angle_degrees - right.bend_angle_degrees) > tolerance
+            or (left.bend_sweep_degrees is None) != (right.bend_sweep_degrees is None)
             or left.bend_sweep_degrees is not None
             and right.bend_sweep_degrees is not None
-            and abs(left.bend_sweep_degrees - right.bend_sweep_degrees)
-            > tolerance
+            and abs(left.bend_sweep_degrees - right.bend_sweep_degrees) > tolerance
         ):
             return False
     first_normals = tuple(
@@ -514,28 +499,34 @@ def _same_shape(
         return False
     for left_index in range(len(first_normals)):
         for right_index in range(left_index + 1, len(first_normals)):
-            if abs(
-                _vector_dot(first_normals[left_index], first_normals[right_index])
-                - _vector_dot(
-                    second_normals[left_index], second_normals[right_index]
+            if (
+                abs(
+                    _vector_dot(first_normals[left_index], first_normals[right_index])
+                    - _vector_dot(
+                        second_normals[left_index], second_normals[right_index]
+                    )
                 )
-            ) > tolerance:
+                > tolerance
+            ):
                 return False
     for first_index in range(len(first_normals)):
         for second_index in range(first_index + 1, len(first_normals)):
             for third_index in range(second_index + 1, len(first_normals)):
-                if abs(
-                    _vector_triple(
-                        first_normals[first_index],
-                        first_normals[second_index],
-                        first_normals[third_index],
+                if (
+                    abs(
+                        _vector_triple(
+                            first_normals[first_index],
+                            first_normals[second_index],
+                            first_normals[third_index],
+                        )
+                        - _vector_triple(
+                            second_normals[first_index],
+                            second_normals[second_index],
+                            second_normals[third_index],
+                        )
                     )
-                    - _vector_triple(
-                        second_normals[first_index],
-                        second_normals[second_index],
-                        second_normals[third_index],
-                    )
-                ) > tolerance:
+                    > tolerance
+                ):
                     return False
     return True
 
@@ -624,8 +615,7 @@ def resolve_bar_paths(request: BarPathRequest) -> OperationResult:
         not request.paths
         or not request.stock_lengths_mm
         or any(
-            not math.isfinite(value) or value <= 0
-            for value in request.stock_lengths_mm
+            not math.isfinite(value) or value <= 0 for value in request.stock_lengths_mm
         )
         or len(request.stock_lengths_mm) != len(set(request.stock_lengths_mm))
     ):
@@ -700,12 +690,10 @@ def resolve_bar_paths(request: BarPathRequest) -> OperationResult:
             < request.member_start_x_mm - request.geometry_tolerance_mm
             or node.point.station_x_mm
             > request.member_end_x_mm + request.geometry_tolerance_mm
-            or node.point.section_x_from_left_mm
-            < -request.geometry_tolerance_mm
+            or node.point.section_x_from_left_mm < -request.geometry_tolerance_mm
             or node.point.section_x_from_left_mm
             > request.section_width_mm + request.geometry_tolerance_mm
-            or node.point.section_y_from_top_mm
-            < -request.geometry_tolerance_mm
+            or node.point.section_y_from_top_mm < -request.geometry_tolerance_mm
             or node.point.section_y_from_top_mm
             > request.section_depth_mm + request.geometry_tolerance_mm
             for node in seed.nodes

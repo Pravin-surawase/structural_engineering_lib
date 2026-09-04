@@ -101,7 +101,9 @@ def _zone_stations(zone: object, tolerance: float) -> tuple[float, ...]:
     return tuple(stations)
 
 
-def _stock_plan(request: BbsRequest, rows: tuple[BbsRow, ...]) -> tuple[StockPiece, ...] | None:
+def _stock_plan(
+    request: BbsRequest, rows: tuple[BbsRow, ...]
+) -> tuple[StockPiece, ...] | None:
     policy = request.stock_policy
     stock_lengths = tuple(sorted(policy.stock_lengths_mm))
     cuts: list[tuple[float, str, float, float, str]] = []
@@ -121,17 +123,11 @@ def _stock_plan(request: BbsRequest, rows: tuple[BbsRow, ...]) -> tuple[StockPie
     for length, mark, diameter, grade, cut_id in cuts:
         selected: _OpenStock | None = None
         for piece in opened:
-            if (
-                piece.diameter_mm != diameter
-                or piece.steel_grade_n_per_mm2 != grade
-            ):
+            if piece.diameter_mm != diameter or piece.steel_grade_n_per_mm2 != grade:
                 continue
             used = sum(item.length_mm for item in piece.cuts)
             kerf = len(piece.cuts) * policy.kerf_mm
-            if (
-                used + kerf + length + policy.kerf_mm
-                <= piece.stock_length_mm + 1e-9
-            ):
+            if used + kerf + length + policy.kerf_mm <= piece.stock_length_mm + 1e-9:
                 selected = piece
                 break
         if selected is None:
@@ -155,7 +151,9 @@ def _stock_plan(request: BbsRequest, rows: tuple[BbsRow, ...]) -> tuple[StockPie
         stock = piece.stock_length_mm
         kerf = len(piece_cuts) * policy.kerf_mm
         remainder = stock - math.fsum(cut.length_mm for cut in piece_cuts) - kerf
-        reusable = remainder if remainder + 1e-9 >= policy.reusable_offcut_min_mm else 0.0
+        reusable = (
+            remainder if remainder + 1e-9 >= policy.reusable_offcut_min_mm else 0.0
+        )
         waste = 0.0 if reusable else remainder
         pieces.append(
             StockPiece(
@@ -257,7 +255,13 @@ def create_bbs(request: BbsRequest) -> OperationResult:
         policy.revision_id,
     )
     if not all(_text(value) for value in identities):
-        return _reject(inputs, "BBS.IDENTITY", "Complete schedule and policy identities are required.", "request", "Supply every current identity.")
+        return _reject(
+            inputs,
+            "BBS.IDENTITY",
+            "Complete schedule and policy identities are required.",
+            "request",
+            "Supply every current identity.",
+        )
     if (
         schedule.profile_id != request.profile_id
         or schedule.project_basis_id != request.project_basis_id
@@ -265,22 +269,48 @@ def create_bbs(request: BbsRequest) -> OperationResult:
         or schedule.detail_revision_id != request.detail_revision_id
         or not schedule.passed
     ):
-        return _reject(inputs, "BBS.SCHEDULE_STALE", "The BBS request must bind the current passing resolved schedule.", "schedule", "Re-resolve reinforcement paths for the active detail revision.")
+        return _reject(
+            inputs,
+            "BBS.SCHEDULE_STALE",
+            "The BBS request must bind the current passing resolved schedule.",
+            "schedule",
+            "Re-resolve reinforcement paths for the active detail revision.",
+        )
     if request.schedule_output_payload_id != semantic_hash(
         "output_payload_id", schedule
     ):
-        return _reject(inputs, "BBS.SCHEDULE_BINDING", "The schedule payload does not match its canonical output identity.", "schedule_output_payload_id", "Bind the unchanged AO18 output payload.")
+        return _reject(
+            inputs,
+            "BBS.SCHEDULE_BINDING",
+            "The schedule payload does not match its canonical output identity.",
+            "schedule_output_payload_id",
+            "Bind the unchanged AO18 output payload.",
+        )
     if not _schedule_reconciles(request):
-        return _reject(inputs, "BBS.SCHEDULE_RECONCILIATION", "Resolved paths, mark summaries, counts, materials, and developed lengths must reconcile exactly.", "schedule", "Use the unchanged passing AO18 output.")
+        return _reject(
+            inputs,
+            "BBS.SCHEDULE_RECONCILIATION",
+            "Resolved paths, mark summaries, counts, materials, and developed lengths must reconcile exactly.",
+            "schedule",
+            "Use the unchanged passing AO18 output.",
+        )
     if convention.length_basis != "resolved_centreline_v1":
-        return _reject(inputs, "BBS.CONVENTION", "WP07 accepts the resolved-centreline fabrication convention only.", "shape_convention.length_basis", "Use the versioned resolved centreline basis.")
+        return _reject(
+            inputs,
+            "BBS.CONVENTION",
+            "WP07 accepts the resolved-centreline fabrication convention only.",
+            "shape_convention.length_basis",
+            "Use the versioned resolved centreline basis.",
+        )
     if (
         not math.isfinite(request.steel_density_kg_per_m3)
         or request.steel_density_kg_per_m3 <= 0
         or policy.allocation_method != "first_fit_decreasing_v1"
         or not policy.stock_lengths_mm
         or len(policy.stock_lengths_mm) != len(set(policy.stock_lengths_mm))
-        or any(not math.isfinite(value) or value <= 0 for value in policy.stock_lengths_mm)
+        or any(
+            not math.isfinite(value) or value <= 0 for value in policy.stock_lengths_mm
+        )
         or not math.isfinite(policy.kerf_mm)
         or policy.kerf_mm < 0
         or not math.isfinite(policy.reusable_offcut_min_mm)
@@ -288,10 +318,18 @@ def create_bbs(request: BbsRequest) -> OperationResult:
         or not math.isfinite(request.station_tolerance_mm)
         or request.station_tolerance_mm <= 0
     ):
-        return _reject(inputs, "BBS.POLICY", "Density, stock lengths, kerf, offcut threshold, tolerance, and allocation method must be valid.", "stock_policy", "Correct the explicit fabrication policy.")
+        return _reject(
+            inputs,
+            "BBS.POLICY",
+            "Density, stock lengths, kerf, offcut threshold, tolerance, and allocation method must be valid.",
+            "stock_policy",
+            "Correct the explicit fabrication policy.",
+        )
 
     splice_ids = [item.splice_id for item in request.splice_records]
-    referenced_splices = sorted({item for path in schedule.paths for item in path.splice_ids})
+    referenced_splices = sorted(
+        {item for path in schedule.paths for item in path.splice_ids}
+    )
     if (
         len(splice_ids) != len(set(splice_ids))
         or sorted(splice_ids) != referenced_splices
@@ -305,58 +343,104 @@ def create_bbs(request: BbsRequest) -> OperationResult:
             for item in request.splice_records
         )
     ):
-        return _reject(inputs, "BBS.SPLICE", "Every path splice must have exactly one qualified lap or coupler record.", "splice_records", "Bind each referenced splice; model lap length in the physical path and couplers as hardware.")
+        return _reject(
+            inputs,
+            "BBS.SPLICE",
+            "Every path splice must have exactly one qualified lap or coupler record.",
+            "splice_records",
+            "Bind each referenced splice; model lap length in the physical path and couplers as hardware.",
+        )
 
     zone_ids = [item.zone_id for item in request.link_zones]
     if len(zone_ids) != len(set(zone_ids)) or any(
         not _text(item.zone_id)
         or not _text(item.bar_mark)
-        or not all(math.isfinite(value) for value in (item.start_station_x_mm, item.end_station_x_mm, item.spacing_mm))
+        or not all(
+            math.isfinite(value)
+            for value in (
+                item.start_station_x_mm,
+                item.end_station_x_mm,
+                item.spacing_mm,
+            )
+        )
         or item.start_station_x_mm > item.end_station_x_mm
         or item.spacing_mm <= 0
         or abs(
             (item.end_station_x_mm - item.start_station_x_mm) / item.spacing_mm
-            - round(
-                (item.end_station_x_mm - item.start_station_x_mm)
-                / item.spacing_mm
-            )
+            - round((item.end_station_x_mm - item.start_station_x_mm) / item.spacing_mm)
         )
         > request.station_tolerance_mm
         for item in request.link_zones
     ):
-        return _reject(inputs, "BBS.LINK_ZONE", "Link zones require unique identities, ordered bounds, and positive spacing.", "link_zones", "Correct the explicit first/last placement convention.")
+        return _reject(
+            inputs,
+            "BBS.LINK_ZONE",
+            "Link zones require unique identities, ordered bounds, and positive spacing.",
+            "link_zones",
+            "Correct the explicit first/last placement convention.",
+        )
 
     placed_zones: list[PlacedLinkZone] = []
     expected_by_mark: dict[str, list[float]] = defaultdict(list)
-    for zone in sorted(request.link_zones, key=lambda item: (item.bar_mark, item.start_station_x_mm, item.zone_id)):
+    for zone in sorted(
+        request.link_zones,
+        key=lambda item: (item.bar_mark, item.start_station_x_mm, item.zone_id),
+    ):
         stations = _zone_stations(zone, request.station_tolerance_mm)
         for station in stations:
-            if any(abs(station - prior) <= request.station_tolerance_mm for prior in expected_by_mark[zone.bar_mark]):
-                return _reject(inputs, "BBS.LINK_BOUNDARY_DUPLICATE", "Adjacent link zones assign the same physical station more than once.", f"link_zones[{zone.zone_id}]", "Give the shared boundary to exactly one zone.")
+            if any(
+                abs(station - prior) <= request.station_tolerance_mm
+                for prior in expected_by_mark[zone.bar_mark]
+            ):
+                return _reject(
+                    inputs,
+                    "BBS.LINK_BOUNDARY_DUPLICATE",
+                    "Adjacent link zones assign the same physical station more than once.",
+                    f"link_zones[{zone.zone_id}]",
+                    "Give the shared boundary to exactly one zone.",
+                )
             expected_by_mark[zone.bar_mark].append(station)
-        placed_zones.append(PlacedLinkZone(zone.zone_id, zone.bar_mark, stations, len(stations)))
+        placed_zones.append(
+            PlacedLinkZone(zone.zone_id, zone.bar_mark, stations, len(stations))
+        )
     transverse_marks = {
         path.bar_mark
         for path in schedule.paths
         if path.role is BarPathRole.TRANSVERSE_LINK
     }
     if transverse_marks != set(expected_by_mark):
-        return _reject(inputs, "BBS.LINK_ZONE_REQUIRED", "Every resolved transverse-link mark requires explicit placement-zone ownership, with no unused zone mark.", "link_zones", "Supply boundary conventions for every physical link mark.")
+        return _reject(
+            inputs,
+            "BBS.LINK_ZONE_REQUIRED",
+            "Every resolved transverse-link mark requires explicit placement-zone ownership, with no unused zone mark.",
+            "link_zones",
+            "Supply boundary conventions for every physical link mark.",
+        )
     for mark_name, expected in expected_by_mark.items():
         actual = sorted(
             path.segments[0].start.station_x_mm
             for path in schedule.paths
-            if path.bar_mark == mark_name
-            and path.role is BarPathRole.TRANSVERSE_LINK
+            if path.bar_mark == mark_name and path.role is BarPathRole.TRANSVERSE_LINK
         )
         expected_sorted = sorted(expected)
         if len(actual) != len(expected_sorted) or any(
             abs(left - right) > request.station_tolerance_mm
             for left, right in zip(actual, expected_sorted, strict=True)
         ):
-            return _reject(inputs, "BBS.LINK_PATH_MISMATCH", "Link-zone stations must match the resolved physical link paths exactly.", f"link_zones[mark={mark_name}]", "Resolve one link path at every owned placement station.")
+            return _reject(
+                inputs,
+                "BBS.LINK_PATH_MISMATCH",
+                "Link-zone stations must match the resolved physical link paths exactly.",
+                f"link_zones[mark={mark_name}]",
+                "Resolve one link path at every owned placement station.",
+            )
 
-    paths_by_mark = {mark.bar_mark: [path for path in schedule.paths if path.bar_mark == mark.bar_mark] for mark in schedule.marks}
+    paths_by_mark = {
+        mark.bar_mark: [
+            path for path in schedule.paths if path.bar_mark == mark.bar_mark
+        ]
+        for mark in schedule.marks
+    }
     rows: list[BbsRow] = []
     for summary in sorted(schedule.marks, key=lambda item: item.bar_mark):
         paths = paths_by_mark[summary.bar_mark]
@@ -364,7 +448,14 @@ def create_bbs(request: BbsRequest) -> OperationResult:
         scheduled_count = summary.count * summary.bundle_size
         cut_each = summary.developed_centreline_length_mm
         total_cut = cut_each * scheduled_count
-        mass = math.pi / 4 * summary.diameter_mm**2 * total_cut / 1e9 * request.steel_density_kg_per_m3
+        mass = (
+            math.pi
+            / 4
+            * summary.diameter_mm**2
+            * total_cut
+            / 1e9
+            * request.steel_density_kg_per_m3
+        )
         dimensions = tuple(
             ShapeDimension(
                 segment.segment_id.split(":")[-1],
@@ -384,7 +475,10 @@ def create_bbs(request: BbsRequest) -> OperationResult:
                 summary.bundle_size,
                 summary.count,
                 scheduled_count,
-                "-".join("B" if item.kind is PathSegmentKind.BEND_ARC else "S" for item in exemplar.segments),
+                "-".join(
+                    "B" if item.kind is PathSegmentKind.BEND_ARC else "S"
+                    for item in exemplar.segments
+                ),
                 dimensions,
                 summary.developed_centreline_length_mm,
                 cut_each,
@@ -397,7 +491,13 @@ def create_bbs(request: BbsRequest) -> OperationResult:
     row_items = tuple(rows)
     stock_pieces = _stock_plan(request, row_items)
     if stock_pieces is None:
-        return _reject(inputs, "BBS.STOCK_LENGTH", "At least one scheduled cut plus its required kerf exceeds every stock length.", "stock_policy.stock_lengths_mm", "Provide a compatible stock length or a qualified explicit splice.")
+        return _reject(
+            inputs,
+            "BBS.STOCK_LENGTH",
+            "At least one scheduled cut plus its required kerf exceeds every stock length.",
+            "stock_policy.stock_lengths_mm",
+            "Provide a compatible stock length or a qualified explicit splice.",
+        )
 
     scheduled_length = math.fsum(item.scheduled_cut_length_mm for item in row_items)
     stock_length = math.fsum(item.stock_length_mm for item in stock_pieces)
@@ -405,13 +505,29 @@ def create_bbs(request: BbsRequest) -> OperationResult:
     reusable = math.fsum(item.reusable_offcut_length_mm for item in stock_pieces)
     waste = math.fsum(item.waste_length_mm for item in stock_pieces)
     if abs(stock_length - scheduled_length - kerf_length - reusable - waste) > 1e-6:
-        return _reject(inputs, "BBS.RECONCILIATION", "Stock length does not reconcile to cuts, kerf, reusable offcuts, and waste.", "stock_pieces", "Correct the cutting allocation.")
+        return _reject(
+            inputs,
+            "BBS.RECONCILIATION",
+            "Stock length does not reconcile to cuts, kerf, reusable offcuts, and waste.",
+            "stock_pieces",
+            "Correct the cutting allocation.",
+        )
     purchased_mass = math.fsum(
-        math.pi / 4 * item.diameter_mm**2 * item.stock_length_mm / 1e9 * request.steel_density_kg_per_m3
+        math.pi
+        / 4
+        * item.diameter_mm**2
+        * item.stock_length_mm
+        / 1e9
+        * request.steel_density_kg_per_m3
         for item in stock_pieces
     )
     couplers = tuple(
-        CouplerItem(item.splice_id, item.station_x_mm, item.coupler_count, item.qualification_reference)
+        CouplerItem(
+            item.splice_id,
+            item.station_x_mm,
+            item.coupler_count,
+            item.qualification_reference,
+        )
         for item in sorted(request.splice_records, key=lambda value: value.splice_id)
         if item.kind is SpliceKind.COUPLER
     )

@@ -137,9 +137,7 @@ def _concrete_block(
     yf = min(df, 0.15 * x_mm + 0.65 * df)
     web_force = 0.36 * fck * bw * x_mm
     flange_force = 0.45 * fck * (bf - bw) * yf
-    moment = web_force * (d_mm - 0.42 * x_mm) + flange_force * (
-        d_mm - 0.5 * yf
-    )
+    moment = web_force * (d_mm - 0.42 * x_mm) + flange_force * (d_mm - 0.5 * yf)
     return web_force + flange_force, moment, True
 
 
@@ -153,9 +151,7 @@ def _compression_steel(
     if d_prime_mm is None or area_mm2 <= 0 or x_mm <= d_prime_mm:
         return 0.0, 0.0
     strain = 0.0035 * (x_mm - d_prime_mm) / x_mm
-    steel_stress = get_steel_stress(
-        strain, request.steel_yield_strength_n_per_mm2
-    )
+    steel_stress = get_steel_stress(strain, request.steel_yield_strength_n_per_mm2)
     displaced_concrete_stress = 0.446 * request.concrete_strength_n_per_mm2
     net_stress = max(0.0, steel_stress - displaced_concrete_stress)
     force = net_stress * area_mm2
@@ -312,9 +308,7 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
         )
     ast = sum(_bar_area(bar) for bar in tension)
     asc = sum(_bar_area(bar) for bar in compression)
-    d_mm = _depth_from_compression_face(
-        request.depth_mm, request.tension_face, tension
-    )
+    d_mm = _depth_from_compression_face(request.depth_mm, request.tension_face, tension)
     d_prime_mm = (
         _depth_from_compression_face(
             request.depth_mm, request.tension_face, compression
@@ -345,9 +339,7 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
 
     def residual(x_mm: float) -> float:
         concrete_force, _, _ = _concrete_block(request, x_mm, d_mm)
-        steel_force, _ = _compression_steel(
-            request, x_mm, d_mm, d_prime_mm, asc
-        )
+        steel_force, _ = _compression_steel(request, x_mm, d_mm, d_prime_mm, asc)
         return concrete_force + steel_force - tension_force
 
     low = 1e-9
@@ -416,9 +408,7 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
             "over_reinforced": over_reinforced,
             "uses_compression_flange": uses_flange,
         },
-        engineering=EngineeringState.FAIL
-        if over_reinforced
-        else EngineeringState.PASS,
+        engineering=EngineeringState.FAIL if over_reinforced else EngineeringState.PASS,
         diagnostics=diagnostics,
         provenance=provenance,
     )
@@ -431,9 +421,7 @@ def check_flexure(request: FlexureCheckRequest) -> OperationResult:
         positive_design_moment_knm=request.positive_design_moment_knm,
         negative_design_moment_knm=request.negative_design_moment_knm,
     )
-    provenance = _provenance(
-        base.code_data_revision_id, "is456-flexure-check-wp01-v1"
-    )
+    provenance = _provenance(base.code_data_revision_id, "is456-flexure-check-wp01-v1")
     demands: list[tuple[str, Face, float]] = []
     if request.positive_design_moment_knm is not None:
         value = request.positive_design_moment_knm
@@ -506,12 +494,8 @@ def check_flexure(request: FlexureCheckRequest) -> OperationResult:
         output = capacity.outputs
         ast = float(output["tension_steel_area_mm2"])
         total_area = ast + float(output["compression_steel_area_mm2"])
-        minimum_ok = ast + 1e-9 >= float(
-            output["minimum_tension_steel_area_mm2"]
-        )
-        maximum_ok = total_area <= float(
-            output["maximum_total_steel_area_mm2"]
-        ) + 1e-9
+        minimum_ok = ast + 1e-9 >= float(output["minimum_tension_steel_area_mm2"])
+        maximum_ok = total_area <= float(output["maximum_total_steel_area_mm2"]) + 1e-9
         capacity_value = float(output["capacity_knm"])
         utilization = demand / capacity_value if capacity_value > 0 else math.inf
         passed = (

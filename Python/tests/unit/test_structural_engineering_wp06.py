@@ -74,11 +74,7 @@ def _project_request() -> BeamProjectRequest:
                     "is456",
                 ),
             ),
-            (
-                DesignCriterion(
-                    "nominal-cover", 25, "mm", "project durability basis"
-                ),
-            ),
+            (DesignCriterion("nominal-cover", 25, "mm", "project durability basis"),),
         ),
         (RevisionBinding("rebar", "rebar-r1", "project bar catalogue"),),
     )
@@ -171,7 +167,9 @@ def _axes() -> MemberLocalCoordinateSystem:
     )
 
 
-def _path_request(*paths: BarPathSeed, stock: tuple[float, ...] = (12000,)) -> BarPathRequest:
+def _path_request(
+    *paths: BarPathSeed, stock: tuple[float, ...] = (12000,)
+) -> BarPathRequest:
     return BarPathRequest(
         "PROFILE-1",
         "project-basis-1",
@@ -218,9 +216,10 @@ def test_create_project_freezes_profile_units_and_revisions() -> None:
     second = create_beam_project(request)
 
     assert first.engineering == "pass"
-    assert first.outputs["project"]["project_basis_id"] == second.outputs["project"][
-        "project_basis_id"
-    ]
+    assert (
+        first.outputs["project"]["project_basis_id"]
+        == second.outputs["project"]["project_basis_id"]
+    )
     assert first.outputs["project"]["unit_basis"] == {
         "length_unit": "mm",
         "force_unit": "N",
@@ -236,9 +235,11 @@ def test_create_project_rejects_conflicting_profile_and_seismic_rule() -> None:
         criteria=(request.profile.criteria[0], request.profile.criteria[0]),
     )
     conflict_rules = tuple(
-        replace(rule, expected_applicability=ApplicabilityState.APPLICABLE)
-        if rule.rule_id == "seismic"
-        else rule
+        (
+            replace(rule, expected_applicability=ApplicabilityState.APPLICABLE)
+            if rule.rule_id == "seismic"
+            else rule
+        )
         for rule in request.profile.check_rules
     )
 
@@ -298,7 +299,9 @@ def test_project_and_member_reject_ambiguous_or_unbound_scope_ids() -> None:
         replace(
             member_request,
             scope_instances=(
-                replace(member_request.scope_instances[0], source_revision_id="old-scope"),
+                replace(
+                    member_request.scope_instances[0], source_revision_id="old-scope"
+                ),
             ),
         )
     )
@@ -326,9 +329,7 @@ def test_member_rejects_project_changed_after_basis_identity() -> None:
     request = _member_request()
     changed_profile = replace(
         request.project.profile,
-        criteria=(
-            replace(request.project.profile.criteria[0], value=40),
-        ),
+        criteria=(replace(request.project.profile.criteria[0], value=40),),
     )
     changed_project = replace(request.project, profile=changed_profile)
 
@@ -457,18 +458,14 @@ def test_open_bar_resolves_tangent_straights_and_exact_bend_arc() -> None:
     assert bend_centre["station_x_mm"] == pytest.approx(900)
     assert bend_centre["section_x_from_left_mm"] == pytest.approx(50)
     assert bend_centre["section_y_from_top_mm"] == pytest.approx(150)
-    assert resolved["segments"][1]["centreline_length_mm"] == pytest.approx(
-        50 * pi
-    )
+    assert resolved["segments"][1]["centreline_length_mm"] == pytest.approx(50 * pi)
     assert resolved["segments"][1]["bend_plane_normal"] == {
         "station_component": 0,
         "section_horizontal_component": -1,
         "section_vertical_component": 0,
     }
     assert resolved["segments"][1]["bend_sweep_degrees"] == pytest.approx(90)
-    assert resolved["developed_centreline_length_mm"] == pytest.approx(
-        1000 + 50 * pi
-    )
+    assert resolved["developed_centreline_length_mm"] == pytest.approx(1000 + 50 * pi)
 
 
 def test_closed_link_is_continuous_and_has_four_bend_arcs() -> None:

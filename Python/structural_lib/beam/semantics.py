@@ -148,7 +148,9 @@ def effective_inputs(**values: Any) -> dict[str, dict[str, Any]]:
     """Wrap effective engineering values with state and origin."""
 
     return {
-        key: plain(value if isinstance(value, EffectiveValue) else EffectiveValue(value))
+        key: plain(
+            value if isinstance(value, EffectiveValue) else EffectiveValue(value)
+        )
         for key, value in values.items()
     }
 

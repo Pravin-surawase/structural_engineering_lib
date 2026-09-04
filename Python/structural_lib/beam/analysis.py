@@ -220,12 +220,23 @@ def _vector_values(vector: Vector3) -> tuple[float, float, float]:
 def _validate_axes(axes: LocalAxes) -> str | None:
     if not axes.axis_id:
         return "axis_id is required"
-    vectors = (_vector_values(axes.e1), _vector_values(axes.e2), _vector_values(axes.e3))
+    vectors = (
+        _vector_values(axes.e1),
+        _vector_values(axes.e2),
+        _vector_values(axes.e3),
+    )
     if not all(_finite(value) for vector in vectors for value in vector):
         return "local axes must contain finite components"
-    if any(abs(math.sqrt(math.fsum(value * value for value in vector)) - 1.0) > 1e-9 for vector in vectors):
+    if any(
+        abs(math.sqrt(math.fsum(value * value for value in vector)) - 1.0) > 1e-9
+        for vector in vectors
+    ):
         return "each local axis must be a unit vector"
-    if any(abs(math.fsum(a * b for a, b in zip(vectors[i], vectors[j], strict=True))) > 1e-9 for i, j in ((0, 1), (0, 2), (1, 2))):
+    if any(
+        abs(math.fsum(a * b for a, b in zip(vectors[i], vectors[j], strict=True)))
+        > 1e-9
+        for i, j in ((0, 1), (0, 2), (1, 2))
+    ):
         return "local axes must be mutually perpendicular"
     cross = (
         vectors[0][1] * vectors[1][2] - vectors[0][2] * vectors[1][1],
@@ -279,7 +290,14 @@ def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
         return rejected_result(
             ACTION_NORMALIZE_OPERATION,
             inputs,
-            (_diagnostic(ACTION_NORMALIZE_OPERATION, "INPUT.REQUIRED", "Snapshot identities, axes, and at least one row are required.", "snapshot"),),
+            (
+                _diagnostic(
+                    ACTION_NORMALIZE_OPERATION,
+                    "INPUT.REQUIRED",
+                    "Snapshot identities, axes, and at least one row are required.",
+                    "snapshot",
+                ),
+            ),
             provenance=provenance,
         )
     axis_by_id: dict[str, LocalAxes] = {}
@@ -289,14 +307,28 @@ def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
             return rejected_result(
                 ACTION_NORMALIZE_OPERATION,
                 inputs,
-                (_diagnostic(ACTION_NORMALIZE_OPERATION, "AXIS.INVALID", issue, f"local_axes[{axes.axis_id}]"),),
+                (
+                    _diagnostic(
+                        ACTION_NORMALIZE_OPERATION,
+                        "AXIS.INVALID",
+                        issue,
+                        f"local_axes[{axes.axis_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
         if axes.axis_id in axis_by_id:
             return rejected_result(
                 ACTION_NORMALIZE_OPERATION,
                 inputs,
-                (_diagnostic(ACTION_NORMALIZE_OPERATION, "IDENTITY.DUPLICATE", "Local axis ids must be unique.", "local_axes"),),
+                (
+                    _diagnostic(
+                        ACTION_NORMALIZE_OPERATION,
+                        "IDENTITY.DUPLICATE",
+                        "Local axis ids must be unique.",
+                        "local_axes",
+                    ),
+                ),
                 provenance=provenance,
             )
         axis_by_id[axes.axis_id] = axes
@@ -335,21 +367,42 @@ def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
             return rejected_result(
                 ACTION_NORMALIZE_OPERATION,
                 inputs,
-                (_diagnostic(ACTION_NORMALIZE_OPERATION, "INPUT.INVALID", "Every row requires finite components/stations and complete identity.", f"rows[{source.source_row_id}]"),),
+                (
+                    _diagnostic(
+                        ACTION_NORMALIZE_OPERATION,
+                        "INPUT.INVALID",
+                        "Every row requires finite components/stations and complete identity.",
+                        f"rows[{source.source_row_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
         if source.source_row_id in seen_source_rows:
             return rejected_result(
                 ACTION_NORMALIZE_OPERATION,
                 inputs,
-                (_diagnostic(ACTION_NORMALIZE_OPERATION, "IDENTITY.DUPLICATE", "Source row ids must be unique within a snapshot.", "rows"),),
+                (
+                    _diagnostic(
+                        ACTION_NORMALIZE_OPERATION,
+                        "IDENTITY.DUPLICATE",
+                        "Source row ids must be unique within a snapshot.",
+                        "rows",
+                    ),
+                ),
                 provenance=provenance,
             )
         if source.axis_id not in axis_by_id:
             return rejected_result(
                 ACTION_NORMALIZE_OPERATION,
                 inputs,
-                (_diagnostic(ACTION_NORMALIZE_OPERATION, "AXIS.MISSING", "The row axis id is not declared by the snapshot.", f"rows[{source.source_row_id}].axis_id"),),
+                (
+                    _diagnostic(
+                        ACTION_NORMALIZE_OPERATION,
+                        "AXIS.MISSING",
+                        "The row axis id is not declared by the snapshot.",
+                        f"rows[{source.source_row_id}].axis_id",
+                    ),
+                ),
                 provenance=provenance,
             )
         seen_source_rows.add(source.source_row_id)
@@ -391,7 +444,10 @@ def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
     return completed_result(
         ACTION_NORMALIZE_OPERATION,
         inputs,
-        {**snapshot_value, "snapshot_id": semantic_hash("action_snapshot_id", snapshot_value)},
+        {
+            **snapshot_value,
+            "snapshot_id": semantic_hash("action_snapshot_id", snapshot_value),
+        },
         provenance=provenance,
     )
 
@@ -406,56 +462,115 @@ def define_beam_topology(request: BeamTopologyRequest) -> OperationResult:
         return rejected_result(
             TOPOLOGY_OPERATION,
             inputs,
-            (_diagnostic(TOPOLOGY_OPERATION, "AXIS.INVALID" if axis_issue else "INPUT.REQUIRED", axis_issue or "member_id is required", "local_axes" if axis_issue else "member_id"),),
+            (
+                _diagnostic(
+                    TOPOLOGY_OPERATION,
+                    "AXIS.INVALID" if axis_issue else "INPUT.REQUIRED",
+                    axis_issue or "member_id is required",
+                    "local_axes" if axis_issue else "member_id",
+                ),
+            ),
             provenance=provenance,
         )
     if len(request.supports) < 2 or len(request.spans) != len(request.supports) - 1:
         return rejected_result(
             TOPOLOGY_OPERATION,
             inputs,
-            (_diagnostic(TOPOLOGY_OPERATION, "TOPOLOGY.UNSUPPORTED", "An ordered beam line requires one span between every adjacent support.", "supports/spans"),),
+            (
+                _diagnostic(
+                    TOPOLOGY_OPERATION,
+                    "TOPOLOGY.UNSUPPORTED",
+                    "An ordered beam line requires one span between every adjacent support.",
+                    "supports/spans",
+                ),
+            ),
             provenance=provenance,
         )
-    if len({support.support_id for support in request.supports}) != len(request.supports) or len({span.span_id for span in request.spans}) != len(request.spans):
+    if len({support.support_id for support in request.supports}) != len(
+        request.supports
+    ) or len({span.span_id for span in request.spans}) != len(request.spans):
         return rejected_result(
             TOPOLOGY_OPERATION,
             inputs,
-            (_diagnostic(TOPOLOGY_OPERATION, "IDENTITY.DUPLICATE", "Support and span ids must be unique.", "supports/spans"),),
+            (
+                _diagnostic(
+                    TOPOLOGY_OPERATION,
+                    "IDENTITY.DUPLICATE",
+                    "Support and span ids must be unique.",
+                    "supports/spans",
+                ),
+            ),
             provenance=provenance,
         )
     supports = {support.support_id: support for support in request.supports}
     ordered = sorted(request.supports, key=lambda item: item.centre_x_mm)
     for support in ordered:
         values = (support.left_face_x_mm, support.centre_x_mm, support.right_face_x_mm)
-        if not all(_finite(value) for value in values) or not values[0] < values[1] < values[2]:
+        if (
+            not all(_finite(value) for value in values)
+            or not values[0] < values[1] < values[2]
+        ):
             return rejected_result(
                 TOPOLOGY_OPERATION,
                 inputs,
-                (_diagnostic(TOPOLOGY_OPERATION, "SUPPORT.GEOMETRY", "Each support needs ordered finite left-face, centre, and right-face coordinates.", f"supports[{support.support_id}]"),),
+                (
+                    _diagnostic(
+                        TOPOLOGY_OPERATION,
+                        "SUPPORT.GEOMETRY",
+                        "Each support needs ordered finite left-face, centre, and right-face coordinates.",
+                        f"supports[{support.support_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
     if tuple(ordered) != request.supports:
         return rejected_result(
             TOPOLOGY_OPERATION,
             inputs,
-            (_diagnostic(TOPOLOGY_OPERATION, "TOPOLOGY.ORDER", "Supports must be supplied in increasing centre coordinate order.", "supports"),),
+            (
+                _diagnostic(
+                    TOPOLOGY_OPERATION,
+                    "TOPOLOGY.ORDER",
+                    "Supports must be supplied in increasing centre coordinate order.",
+                    "supports",
+                ),
+            ),
             provenance=provenance,
         )
     mapped_by_span: dict[str, list[AnalysisElementMapping]] = {}
     element_ids: set[str] = set()
     for item in request.analysis_elements:
-        if item.analysis_element_id in element_ids or item.physical_span_id not in {span.span_id for span in request.spans}:
+        if item.analysis_element_id in element_ids or item.physical_span_id not in {
+            span.span_id for span in request.spans
+        }:
             return rejected_result(
                 TOPOLOGY_OPERATION,
                 inputs,
-                (_diagnostic(TOPOLOGY_OPERATION, "ANALYSIS_MAPPING.INVALID", "Analysis element ids must be unique and reference a declared physical span.", "analysis_elements"),),
+                (
+                    _diagnostic(
+                        TOPOLOGY_OPERATION,
+                        "ANALYSIS_MAPPING.INVALID",
+                        "Analysis element ids must be unique and reference a declared physical span.",
+                        "analysis_elements",
+                    ),
+                ),
                 provenance=provenance,
             )
-        if not all(_finite(value) for value in (item.start_x_mm, item.end_x_mm)) or item.end_x_mm <= item.start_x_mm:
+        if (
+            not all(_finite(value) for value in (item.start_x_mm, item.end_x_mm))
+            or item.end_x_mm <= item.start_x_mm
+        ):
             return rejected_result(
                 TOPOLOGY_OPERATION,
                 inputs,
-                (_diagnostic(TOPOLOGY_OPERATION, "ANALYSIS_MAPPING.INVALID", "Analysis element limits must be finite and increasing.", f"analysis_elements[{item.analysis_element_id}]"),),
+                (
+                    _diagnostic(
+                        TOPOLOGY_OPERATION,
+                        "ANALYSIS_MAPPING.INVALID",
+                        "Analysis element limits must be finite and increasing.",
+                        f"analysis_elements[{item.analysis_element_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
         element_ids.add(item.analysis_element_id)
@@ -464,13 +579,10 @@ def define_beam_topology(request: BeamTopologyRequest) -> OperationResult:
     region_ids = [
         region.region_id for span in request.spans for region in span.section_regions
     ]
-    if (
-        len(region_ids) != len(set(region_ids))
-        or any(
-            not region.region_id or not region.section_id
-            for span in request.spans
-            for region in span.section_regions
-        )
+    if len(region_ids) != len(set(region_ids)) or any(
+        not region.region_id or not region.section_id
+        for span in request.spans
+        for region in span.section_regions
     ):
         return rejected_result(
             TOPOLOGY_OPERATION,
@@ -487,13 +599,30 @@ def define_beam_topology(request: BeamTopologyRequest) -> OperationResult:
         )
     tolerance = 1e-6
     for index, span in enumerate(request.spans):
-        start, end = supports.get(span.start_support_id), supports.get(span.end_support_id)
-        expected_start, expected_end = request.supports[index], request.supports[index + 1]
-        if start != expected_start or end != expected_end or not _finite(span.effective_depth_mm) or span.effective_depth_mm <= 0:
+        start, end = supports.get(span.start_support_id), supports.get(
+            span.end_support_id
+        )
+        expected_start, expected_end = (
+            request.supports[index],
+            request.supports[index + 1],
+        )
+        if (
+            start != expected_start
+            or end != expected_end
+            or not _finite(span.effective_depth_mm)
+            or span.effective_depth_mm <= 0
+        ):
             return rejected_result(
                 TOPOLOGY_OPERATION,
                 inputs,
-                (_diagnostic(TOPOLOGY_OPERATION, "SPAN.IDENTITY", "Each span must join its adjacent ordered supports and have positive effective depth.", f"spans[{span.span_id}]"),),
+                (
+                    _diagnostic(
+                        TOPOLOGY_OPERATION,
+                        "SPAN.IDENTITY",
+                        "Each span must join its adjacent ordered supports and have positive effective depth.",
+                        f"spans[{span.span_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
         centreline = end.centre_x_mm - start.centre_x_mm
@@ -502,16 +631,41 @@ def define_beam_topology(request: BeamTopologyRequest) -> OperationResult:
             return rejected_result(
                 TOPOLOGY_OPERATION,
                 inputs,
-                (_diagnostic(TOPOLOGY_OPERATION, "SPAN.GEOMETRY", "Opposing support faces leave no positive clear span.", f"spans[{span.span_id}]"),),
+                (
+                    _diagnostic(
+                        TOPOLOGY_OPERATION,
+                        "SPAN.GEOMETRY",
+                        "Opposing support faces leave no positive clear span.",
+                        f"spans[{span.span_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
-        for label, regions in (("section_regions", list(span.section_regions)), ("analysis_elements", mapped_by_span.get(span.span_id, []))):
+        for label, regions in (
+            ("section_regions", list(span.section_regions)),
+            ("analysis_elements", mapped_by_span.get(span.span_id, [])),
+        ):
             regions.sort(key=lambda item: item.start_x_mm)
-            if not regions or abs(regions[0].start_x_mm - start.centre_x_mm) > tolerance or abs(regions[-1].end_x_mm - end.centre_x_mm) > tolerance or any(abs(a.end_x_mm - b.start_x_mm) > tolerance for a, b in zip(regions, regions[1:], strict=False)):
+            if (
+                not regions
+                or abs(regions[0].start_x_mm - start.centre_x_mm) > tolerance
+                or abs(regions[-1].end_x_mm - end.centre_x_mm) > tolerance
+                or any(
+                    abs(a.end_x_mm - b.start_x_mm) > tolerance
+                    for a, b in zip(regions, regions[1:], strict=False)
+                )
+            ):
                 return rejected_result(
                     TOPOLOGY_OPERATION,
                     inputs,
-                    (_diagnostic(TOPOLOGY_OPERATION, "REGION.COVERAGE", f"{label} must cover the centreline span exactly without gaps or overlap.", f"spans[{span.span_id}].{label}"),),
+                    (
+                        _diagnostic(
+                            TOPOLOGY_OPERATION,
+                            "REGION.COVERAGE",
+                            f"{label} must cover the centreline span exactly without gaps or overlap.",
+                            f"spans[{span.span_id}].{label}",
+                        ),
+                    ),
                     provenance=provenance,
                 )
         outputs.append(
@@ -544,15 +698,24 @@ def define_beam_topology(request: BeamTopologyRequest) -> OperationResult:
 
 
 def _stiffness(length: float, ei: float) -> list[list[float]]:
-    a, b, c, d = 12 * ei / length**3, 6 * ei / length**2, 4 * ei / length, 2 * ei / length
+    a, b, c, d = (
+        12 * ei / length**3,
+        6 * ei / length**2,
+        4 * ei / length,
+        2 * ei / length,
+    )
     return [[a, b, -a, b], [b, c, -b, d], [-a, -b, a, -b], [b, d, -b, c]]
 
 
 def _matvec(matrix: list[list[float]], vector: list[float]) -> list[float]:
-    return [math.fsum(a * b for a, b in zip(row, vector, strict=True)) for row in matrix]
+    return [
+        math.fsum(a * b for a, b in zip(row, vector, strict=True)) for row in matrix
+    ]
 
 
-def _solve_positive_definite(matrix: list[list[float]], rhs: list[float]) -> list[float]:
+def _solve_positive_definite(
+    matrix: list[list[float]], rhs: list[float]
+) -> list[float]:
     size = len(rhs)
     if not size:
         return []
@@ -562,19 +725,27 @@ def _solve_positive_definite(matrix: list[list[float]], rhs: list[float]) -> lis
     lower = [[0.0] * size for _ in range(size)]
     for i in range(size):
         for j in range(i + 1):
-            value = matrix[i][j] / scale[i] / scale[j] - math.fsum(lower[i][k] * lower[j][k] for k in range(j))
+            value = matrix[i][j] / scale[i] / scale[j] - math.fsum(
+                lower[i][k] * lower[j][k] for k in range(j)
+            )
             if i == j:
                 if not _finite(value) or value <= 1e-12:
-                    raise ValueError("scaled stiffness pivot indicates an unstable model")
+                    raise ValueError(
+                        "scaled stiffness pivot indicates an unstable model"
+                    )
                 lower[i][j] = math.sqrt(value)
             else:
                 lower[i][j] = value / lower[j][j]
     forward = [0.0] * size
     solved = [0.0] * size
     for i in range(size):
-        forward[i] = (rhs[i] / scale[i] - math.fsum(lower[i][j] * forward[j] for j in range(i))) / lower[i][i]
+        forward[i] = (
+            rhs[i] / scale[i] - math.fsum(lower[i][j] * forward[j] for j in range(i))
+        ) / lower[i][i]
     for i in reversed(range(size)):
-        solved[i] = (forward[i] - math.fsum(lower[j][i] * solved[j] for j in range(i + 1, size))) / lower[i][i]
+        solved[i] = (
+            forward[i] - math.fsum(lower[j][i] * solved[j] for j in range(i + 1, size))
+        ) / lower[i][i]
     return [solved[i] / scale[i] for i in range(size)]
 
 
@@ -583,11 +754,24 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
 
     inputs = effective_inputs(request=request)
     provenance = _provenance("euler-bernoulli-direct-stiffness-wp03-v1")
-    if not request.model_id or not request.load_case_id or not 2 <= len(request.nodes) <= 20 or len(request.elements) != len(request.nodes) - 1 or not 2 <= request.station_intervals <= 100:
+    if (
+        not request.model_id
+        or not request.load_case_id
+        or not 2 <= len(request.nodes) <= 20
+        or len(request.elements) != len(request.nodes) - 1
+        or not 2 <= request.station_intervals <= 100
+    ):
         return rejected_result(
             BEAM_LINE_SOLVE_OPERATION,
             inputs,
-            (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "PROFILE.UNSUPPORTED", "Require 2-20 ordered nodes, one element per adjacent node pair, and 2-100 station intervals.", "request"),),
+            (
+                _diagnostic(
+                    BEAM_LINE_SOLVE_OPERATION,
+                    "PROFILE.UNSUPPORTED",
+                    "Require 2-20 ordered nodes, one element per adjacent node pair, and 2-100 station intervals.",
+                    "request",
+                ),
+            ),
             provenance=provenance,
         )
     if (
@@ -603,15 +787,31 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
         return rejected_result(
             BEAM_LINE_SOLVE_OPERATION,
             inputs,
-            (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "IDENTITY.DUPLICATE", "Node and analysis-element ids must be unique.", "nodes/elements"),),
+            (
+                _diagnostic(
+                    BEAM_LINE_SOLVE_OPERATION,
+                    "IDENTITY.DUPLICATE",
+                    "Node and analysis-element ids must be unique.",
+                    "nodes/elements",
+                ),
+            ),
             provenance=provenance,
         )
     nodes = request.nodes
-    if any(not _finite(node.x_mm) for node in nodes) or any(b.x_mm <= a.x_mm for a, b in zip(nodes, nodes[1:], strict=False)):
+    if any(not _finite(node.x_mm) for node in nodes) or any(
+        b.x_mm <= a.x_mm for a, b in zip(nodes, nodes[1:], strict=False)
+    ):
         return rejected_result(
             BEAM_LINE_SOLVE_OPERATION,
             inputs,
-            (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "TOPOLOGY.ORDER", "Node coordinates must be finite and strictly increasing.", "nodes"),),
+            (
+                _diagnostic(
+                    BEAM_LINE_SOLVE_OPERATION,
+                    "TOPOLOGY.ORDER",
+                    "Node coordinates must be finite and strictly increasing.",
+                    "nodes",
+                ),
+            ),
             provenance=provenance,
         )
     node_index = {node.node_id: i for i, node in enumerate(nodes)}
@@ -622,48 +822,112 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
     matrix = [[0.0] * size for _ in range(size)]
     force = [0.0] * size
     for i, node in enumerate(nodes):
-        values = (node.vertical_displacement_mm, node.prescribed_rotation_rad, node.nodal_force_n, node.nodal_moment_nmm)
-        if not all(_finite(value) for value in values) or (not node.vertical_restraint and node.vertical_displacement_mm != 0) or (not node.rotation_restraint and node.prescribed_rotation_rad != 0):
+        values = (
+            node.vertical_displacement_mm,
+            node.prescribed_rotation_rad,
+            node.nodal_force_n,
+            node.nodal_moment_nmm,
+        )
+        if (
+            not all(_finite(value) for value in values)
+            or (not node.vertical_restraint and node.vertical_displacement_mm != 0)
+            or (not node.rotation_restraint and node.prescribed_rotation_rad != 0)
+        ):
             return rejected_result(
                 BEAM_LINE_SOLVE_OPERATION,
                 inputs,
-                (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "SUPPORT.INVALID", "Prescribed movement requires its matching restraint and all node values must be finite.", f"nodes[{node.node_id}]"),),
+                (
+                    _diagnostic(
+                        BEAM_LINE_SOLVE_OPERATION,
+                        "SUPPORT.INVALID",
+                        "Prescribed movement requires its matching restraint and all node values must be finite.",
+                        f"nodes[{node.node_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
         force[2 * i] += node.nodal_force_n
         force[2 * i + 1] += node.nodal_moment_nmm
     element_data: list[dict[str, Any]] = []
     for index, element in enumerate(request.elements):
-        if (element.start_node_id, element.end_node_id) != (nodes[index].node_id, nodes[index + 1].node_id) or not element.physical_span_id:
+        if (element.start_node_id, element.end_node_id) != (
+            nodes[index].node_id,
+            nodes[index + 1].node_id,
+        ) or not element.physical_span_id:
             return rejected_result(
                 BEAM_LINE_SOLVE_OPERATION,
                 inputs,
-                (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "TOPOLOGY.UNSUPPORTED", "Elements must connect each adjacent ordered node pair and retain physical-span identity.", f"elements[{element.analysis_element_id}]"),),
+                (
+                    _diagnostic(
+                        BEAM_LINE_SOLVE_OPERATION,
+                        "TOPOLOGY.UNSUPPORTED",
+                        "Elements must connect each adjacent ordered node pair and retain physical-span identity.",
+                        f"elements[{element.analysis_element_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
         length = nodes[index + 1].x_mm - nodes[index].x_mm
-        values = (element.elastic_modulus_n_per_mm2, element.second_moment_mm4, element.uniform_load_n_per_mm)
-        if not all(_finite(value) for value in values) or values[0] <= 0 or values[1] <= 0:
+        values = (
+            element.elastic_modulus_n_per_mm2,
+            element.second_moment_mm4,
+            element.uniform_load_n_per_mm,
+        )
+        if (
+            not all(_finite(value) for value in values)
+            or values[0] <= 0
+            or values[1] <= 0
+        ):
             return rejected_result(
                 BEAM_LINE_SOLVE_OPERATION,
                 inputs,
-                (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "ELEMENT.INVALID", "E and I must be finite and positive and UDL must be finite.", f"elements[{element.analysis_element_id}]"),),
+                (
+                    _diagnostic(
+                        BEAM_LINE_SOLVE_OPERATION,
+                        "ELEMENT.INVALID",
+                        "E and I must be finite and positive and UDL must be finite.",
+                        f"elements[{element.analysis_element_id}]",
+                    ),
+                ),
                 provenance=provenance,
             )
-        k = _stiffness(length, element.elastic_modulus_n_per_mm2 * element.second_moment_mm4)
+        k = _stiffness(
+            length, element.elastic_modulus_n_per_mm2 * element.second_moment_mm4
+        )
         q = element.uniform_load_n_per_mm
-        equivalent = [q * length / 2, q * length**2 / 12, q * length / 2, -q * length**2 / 12]
+        equivalent = [
+            q * length / 2,
+            q * length**2 / 12,
+            q * length / 2,
+            -q * length**2 / 12,
+        ]
         points = points_by_element.pop(element.analysis_element_id, [])
         for point in points:
-            if not _finite(point.distance_from_start_mm) or not _finite(point.vertical_force_n) or not 0 < point.distance_from_start_mm < length:
+            if (
+                not _finite(point.distance_from_start_mm)
+                or not _finite(point.vertical_force_n)
+                or not 0 < point.distance_from_start_mm < length
+            ):
                 return rejected_result(
                     BEAM_LINE_SOLVE_OPERATION,
                     inputs,
-                    (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "LOAD.POSITION", "Point loads must be finite and strictly inside their element.", f"point_loads[{element.analysis_element_id}]"),),
+                    (
+                        _diagnostic(
+                            BEAM_LINE_SOLVE_OPERATION,
+                            "LOAD.POSITION",
+                            "Point loads must be finite and strictly inside their element.",
+                            f"point_loads[{element.analysis_element_id}]",
+                        ),
+                    ),
                     provenance=provenance,
                 )
             ratio = point.distance_from_start_mm / length
-            shape = (1 - 3 * ratio**2 + 2 * ratio**3, length * (ratio - 2 * ratio**2 + ratio**3), 3 * ratio**2 - 2 * ratio**3, length * (-(ratio**2) + ratio**3))
+            shape = (
+                1 - 3 * ratio**2 + 2 * ratio**3,
+                length * (ratio - 2 * ratio**2 + ratio**3),
+                3 * ratio**2 - 2 * ratio**3,
+                length * (-(ratio**2) + ratio**3),
+            )
             for local in range(4):
                 equivalent[local] += point.vertical_force_n * shape[local]
         dofs = (2 * index, 2 * index + 1, 2 * index + 2, 2 * index + 3)
@@ -671,12 +935,28 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
             force[dofs[a]] += equivalent[a]
             for b in range(4):
                 matrix[dofs[a]][dofs[b]] += k[a][b]
-        element_data.append({"element": element, "length": length, "stiffness": k, "equivalent": equivalent, "points": points, "dofs": dofs})
+        element_data.append(
+            {
+                "element": element,
+                "length": length,
+                "stiffness": k,
+                "equivalent": equivalent,
+                "points": points,
+                "dofs": dofs,
+            }
+        )
     if points_by_element:
         return rejected_result(
             BEAM_LINE_SOLVE_OPERATION,
             inputs,
-            (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "LOAD.IDENTITY", "A point load references an unknown analysis element.", "point_loads"),),
+            (
+                _diagnostic(
+                    BEAM_LINE_SOLVE_OPERATION,
+                    "LOAD.IDENTITY",
+                    "A point load references an unknown analysis element.",
+                    "point_loads",
+                ),
+            ),
             provenance=provenance,
         )
     prescribed: dict[int, float] = {}
@@ -689,19 +969,34 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
     displacement = [0.0] * size
     for dof, value in prescribed.items():
         displacement[dof] = value
-    rhs = [force[i] - math.fsum(matrix[i][j] * displacement[j] for j in prescribed) for i in free]
+    rhs = [
+        force[i] - math.fsum(matrix[i][j] * displacement[j] for j in prescribed)
+        for i in free
+    ]
     try:
-        values = _solve_positive_definite([[matrix[i][j] for j in free] for i in free], rhs)
+        values = _solve_positive_definite(
+            [[matrix[i][j] for j in free] for i in free], rhs
+        )
     except (ArithmeticError, ValueError):
         return rejected_result(
             BEAM_LINE_SOLVE_OPERATION,
             inputs,
-            (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "ANALYSIS.UNSTABLE", "The declared restraints do not produce a stable positive-definite beam system.", "nodes"),),
+            (
+                _diagnostic(
+                    BEAM_LINE_SOLVE_OPERATION,
+                    "ANALYSIS.UNSTABLE",
+                    "The declared restraints do not produce a stable positive-definite beam system.",
+                    "nodes",
+                ),
+            ),
             provenance=provenance,
         )
     for dof, value in zip(free, values, strict=True):
         displacement[dof] = value
-    residual = [value - applied for value, applied in zip(_matvec(matrix, displacement), force, strict=True)]
+    residual = [
+        value - applied
+        for value, applied in zip(_matvec(matrix, displacement), force, strict=True)
+    ]
     origin = nodes[0].x_mm
     node_results = []
     for index, node in enumerate(nodes):
@@ -711,28 +1006,73 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
                 "x_mm": node.x_mm,
                 "vertical_displacement_mm": displacement[2 * index],
                 "rotation_rad": displacement[2 * index + 1],
-                "vertical_reaction_n": residual[2 * index] if node.vertical_restraint else 0.0,
-                "reaction_moment_nmm": residual[2 * index + 1] if node.rotation_restraint else 0.0,
+                "vertical_reaction_n": (
+                    residual[2 * index] if node.vertical_restraint else 0.0
+                ),
+                "reaction_moment_nmm": (
+                    residual[2 * index + 1] if node.rotation_restraint else 0.0
+                ),
             }
         )
     station_results: list[dict[str, Any]] = []
     for data in element_data:
         element: BeamElement = data["element"]
         local_d = [displacement[dof] for dof in data["dofs"]]
-        end_actions = [a - b for a, b in zip(_matvec(data["stiffness"], local_d), data["equivalent"], strict=True)]
-        positions = {data["length"] * i / request.station_intervals for i in range(request.station_intervals + 1)}
+        end_actions = [
+            a - b
+            for a, b in zip(
+                _matvec(data["stiffness"], local_d), data["equivalent"], strict=True
+            )
+        ]
+        positions = {
+            data["length"] * i / request.station_intervals
+            for i in range(request.station_intervals + 1)
+        }
         point_positions = {point.distance_from_start_mm for point in data["points"]}
         positions.update(point_positions)
         for x in sorted(positions):
-            moment = -end_actions[1] + end_actions[0] * x + element.uniform_load_n_per_mm * x**2 / 2
-            rotation = local_d[1] + (-end_actions[1] * x + end_actions[0] * x**2 / 2 + element.uniform_load_n_per_mm * x**3 / 6) / (element.elastic_modulus_n_per_mm2 * element.second_moment_mm4)
-            vertical = local_d[0] + local_d[1] * x + (-end_actions[1] * x**2 / 2 + end_actions[0] * x**3 / 6 + element.uniform_load_n_per_mm * x**4 / 24) / (element.elastic_modulus_n_per_mm2 * element.second_moment_mm4)
+            moment = (
+                -end_actions[1]
+                + end_actions[0] * x
+                + element.uniform_load_n_per_mm * x**2 / 2
+            )
+            rotation = local_d[1] + (
+                -end_actions[1] * x
+                + end_actions[0] * x**2 / 2
+                + element.uniform_load_n_per_mm * x**3 / 6
+            ) / (element.elastic_modulus_n_per_mm2 * element.second_moment_mm4)
+            vertical = (
+                local_d[0]
+                + local_d[1] * x
+                + (
+                    -end_actions[1] * x**2 / 2
+                    + end_actions[0] * x**3 / 6
+                    + element.uniform_load_n_per_mm * x**4 / 24
+                )
+                / (element.elastic_modulus_n_per_mm2 * element.second_moment_mm4)
+            )
             shear = end_actions[0] + element.uniform_load_n_per_mm * x
             for point in data["points"]:
                 delta = max(0.0, x - point.distance_from_start_mm)
                 moment += point.vertical_force_n * delta
-                rotation += point.vertical_force_n * delta**2 / (2 * element.elastic_modulus_n_per_mm2 * element.second_moment_mm4)
-                vertical += point.vertical_force_n * delta**3 / (6 * element.elastic_modulus_n_per_mm2 * element.second_moment_mm4)
+                rotation += (
+                    point.vertical_force_n
+                    * delta**2
+                    / (
+                        2
+                        * element.elastic_modulus_n_per_mm2
+                        * element.second_moment_mm4
+                    )
+                )
+                vertical += (
+                    point.vertical_force_n
+                    * delta**3
+                    / (
+                        6
+                        * element.elastic_modulus_n_per_mm2
+                        * element.second_moment_mm4
+                    )
+                )
                 if point.distance_from_start_mm < x:
                     shear += point.vertical_force_n
             base = {
@@ -747,16 +1087,64 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
             }
             if x in point_positions:
                 station_results.append({**base, "side": "left"})
-                station_results.append({**base, "side": "right", "v2_n": shear + math.fsum(point.vertical_force_n for point in data["points"] if point.distance_from_start_mm == x)})
+                station_results.append(
+                    {
+                        **base,
+                        "side": "right",
+                        "v2_n": shear
+                        + math.fsum(
+                            point.vertical_force_n
+                            for point in data["points"]
+                            if point.distance_from_start_mm == x
+                        ),
+                    }
+                )
             else:
                 station_results.append({**base, "side": "continuous"})
-    applied_force = math.fsum(node.nodal_force_n for node in nodes) + math.fsum(element.uniform_load_n_per_mm * data["length"] for element, data in zip(request.elements, element_data, strict=True)) + math.fsum(point.vertical_force_n for point in request.point_loads)
+    applied_force = (
+        math.fsum(node.nodal_force_n for node in nodes)
+        + math.fsum(
+            element.uniform_load_n_per_mm * data["length"]
+            for element, data in zip(request.elements, element_data, strict=True)
+        )
+        + math.fsum(point.vertical_force_n for point in request.point_loads)
+    )
     reaction_force = math.fsum(item["vertical_reaction_n"] for item in node_results)
     force_residual = reaction_force + applied_force
-    applied_moment = math.fsum(node.nodal_moment_nmm + node.nodal_force_n * (node.x_mm - origin) for node in nodes)
-    applied_moment += math.fsum(element.uniform_load_n_per_mm * data["length"] * (nodes[index].x_mm - origin + data["length"] / 2) for index, (element, data) in enumerate(zip(request.elements, element_data, strict=True)))
-    applied_moment += math.fsum(point.vertical_force_n * (nodes[node_index[next(element.start_node_id for element in request.elements if element.analysis_element_id == point.analysis_element_id)]].x_mm - origin + point.distance_from_start_mm) for point in request.point_loads)
-    reaction_moment = math.fsum(item["reaction_moment_nmm"] + item["vertical_reaction_n"] * (item["x_mm"] - origin) for item in node_results)
+    applied_moment = math.fsum(
+        node.nodal_moment_nmm + node.nodal_force_n * (node.x_mm - origin)
+        for node in nodes
+    )
+    applied_moment += math.fsum(
+        element.uniform_load_n_per_mm
+        * data["length"]
+        * (nodes[index].x_mm - origin + data["length"] / 2)
+        for index, (element, data) in enumerate(
+            zip(request.elements, element_data, strict=True)
+        )
+    )
+    applied_moment += math.fsum(
+        point.vertical_force_n
+        * (
+            nodes[
+                node_index[
+                    next(
+                        element.start_node_id
+                        for element in request.elements
+                        if element.analysis_element_id == point.analysis_element_id
+                    )
+                ]
+            ].x_mm
+            - origin
+            + point.distance_from_start_mm
+        )
+        for point in request.point_loads
+    )
+    reaction_moment = math.fsum(
+        item["reaction_moment_nmm"]
+        + item["vertical_reaction_n"] * (item["x_mm"] - origin)
+        for item in node_results
+    )
     moment_residual = reaction_moment + applied_moment
     force_tolerance = max(1e-6, 1e-9 * max(1.0, abs(applied_force)))
     moment_tolerance = max(1e-3, 1e-9 * max(1.0, abs(applied_moment)))
@@ -775,7 +1163,14 @@ def solve_beam_line(request: BeamLineRequest) -> OperationResult:
         return rejected_result(
             BEAM_LINE_SOLVE_OPERATION,
             inputs,
-            (_diagnostic(BEAM_LINE_SOLVE_OPERATION, "ANALYSIS.EQUILIBRIUM", "The solved response failed force, moment, or free-DOF equilibrium.", "result"),),
+            (
+                _diagnostic(
+                    BEAM_LINE_SOLVE_OPERATION,
+                    "ANALYSIS.EQUILIBRIUM",
+                    "The solved response failed force, moment, or free-DOF equilibrium.",
+                    "result",
+                ),
+            ),
             provenance=provenance,
         )
     return completed_result(

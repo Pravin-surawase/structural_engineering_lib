@@ -193,24 +193,50 @@ def _select_limit(
     ceiling: float | None = None,
 ) -> tuple[float, str] | Diagnostic:
     if not isinstance(source, LimitSource):
-        return _diagnostic(operation, "INPUT.ENUM", "selected_source is invalid.", "selected_source", "Select code, project, or supplied.")
+        return _diagnostic(
+            operation,
+            "INPUT.ENUM",
+            "selected_source is invalid.",
+            "selected_source",
+            "Select code, project, or supplied.",
+        )
     if source is LimitSource.CODE:
         if project_limit is not None or supplied_limit is not None:
-            return _diagnostic(operation, "INPUT.CONFLICT", "Code source cannot be selected while an override value is supplied.", "selected_source", "Remove overrides or explicitly select their source.")
+            return _diagnostic(
+                operation,
+                "INPUT.CONFLICT",
+                "Code source cannot be selected while an override value is supplied.",
+                "selected_source",
+                "Remove overrides or explicitly select their source.",
+            )
         return code_limit, "code"
     selected = project_limit if source is LimitSource.PROJECT else supplied_limit
     other = supplied_limit if source is LimitSource.PROJECT else project_limit
     field = "project_limit_mm" if source is LimitSource.PROJECT else "supplied_limit_mm"
     if not _positive(selected) or other is not None:
-        return _diagnostic(operation, "INPUT.CONFLICT", "Exactly one positive limit must match the explicitly selected source.", field, "Supply one limit and select its source.")
+        return _diagnostic(
+            operation,
+            "INPUT.CONFLICT",
+            "Exactly one positive limit must match the explicitly selected source.",
+            field,
+            "Supply one limit and select its source.",
+        )
     if ceiling is not None and selected > ceiling:
-        return _diagnostic(operation, "LIMIT.EXCEEDS_CODE", "The selected limit exceeds the applicable code ceiling.", field, "Use the code ceiling or a stricter project limit.")
+        return _diagnostic(
+            operation,
+            "LIMIT.EXCEEDS_CODE",
+            "The selected limit exceeds the applicable code ceiling.",
+            field,
+            "Use the code ceiling or a stricter project limit.",
+        )
     return float(selected), source.value
 
 
 def deflection_limit(request: DeflectionLimitRequest) -> OperationResult:
     inputs = effective_inputs(request=request)
-    provenance = _provenance("is456-deflection-limit-wp04-v1", request.code_data_revision_id)
+    provenance = _provenance(
+        "is456-deflection-limit-wp04-v1", request.code_data_revision_id
+    )
     if (
         not request.profile_id
         or request.code_data_revision_id != CODE_DATA_REVISION
@@ -220,7 +246,15 @@ def deflection_limit(request: DeflectionLimitRequest) -> OperationResult:
         return rejected_result(
             DEFLECTION_LIMIT_OPERATION,
             inputs,
-            (_diagnostic(DEFLECTION_LIMIT_OPERATION, "INPUT.INVALID", "Profile, code revision, positive span, and criterion are required.", "request", "Supply the complete limit request."),),
+            (
+                _diagnostic(
+                    DEFLECTION_LIMIT_OPERATION,
+                    "INPUT.INVALID",
+                    "Profile, code revision, positive span, and criterion are required.",
+                    "request",
+                    "Supply the complete limit request.",
+                ),
+            ),
             provenance=provenance,
         )
     code_limit = (
@@ -267,7 +301,9 @@ def _crack_ceiling(request: CrackWidthLimitRequest) -> float:
 
 def crack_width_limit(request: CrackWidthLimitRequest) -> OperationResult:
     inputs = effective_inputs(request=request)
-    provenance = _provenance("is456-crack-width-limit-wp04-v1", request.code_data_revision_id)
+    provenance = _provenance(
+        "is456-crack-width-limit-wp04-v1", request.code_data_revision_id
+    )
     if (
         not request.profile_id
         or request.code_data_revision_id != CODE_DATA_REVISION
@@ -277,7 +313,15 @@ def crack_width_limit(request: CrackWidthLimitRequest) -> OperationResult:
         return rejected_result(
             CRACK_WIDTH_LIMIT_OPERATION,
             inputs,
-            (_diagnostic(CRACK_WIDTH_LIMIT_OPERATION, "INPUT.INVALID", "Profile, code revision, exposure, and harmful-cracking classification are required.", "request", "Supply the complete crack-limit request."),),
+            (
+                _diagnostic(
+                    CRACK_WIDTH_LIMIT_OPERATION,
+                    "INPUT.INVALID",
+                    "Profile, code revision, exposure, and harmful-cracking classification are required.",
+                    "request",
+                    "Supply the complete crack-limit request.",
+                ),
+            ),
             provenance=provenance,
         )
     ceiling = _crack_ceiling(request)
@@ -321,24 +365,50 @@ def _not_evaluated(
     return not_evaluated_result(
         operation,
         inputs,
-        _diagnostic(operation, "EVIDENCE.REQUIRED", message, field, "Supply the named serviceability evidence."),
+        _diagnostic(
+            operation,
+            "EVIDENCE.REQUIRED",
+            message,
+            field,
+            "Supply the named serviceability evidence.",
+        ),
         provenance=provenance,
     )
 
 
 def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
     inputs = effective_inputs(request=request)
-    provenance = _provenance("is456-deflection-check-wp04-v1", request.code_data_revision_id)
-    if not request.profile_id or request.code_data_revision_id != CODE_DATA_REVISION or not isinstance(request.method, DeflectionMethod):
+    provenance = _provenance(
+        "is456-deflection-check-wp04-v1", request.code_data_revision_id
+    )
+    if (
+        not request.profile_id
+        or request.code_data_revision_id != CODE_DATA_REVISION
+        or not isinstance(request.method, DeflectionMethod)
+    ):
         return rejected_result(
             DEFLECTION_CHECK_OPERATION,
             inputs,
-            (_diagnostic(DEFLECTION_CHECK_OPERATION, "INPUT.INVALID", "Profile, method, and code-data revision are required.", "request", "Supply the complete deflection request."),),
+            (
+                _diagnostic(
+                    DEFLECTION_CHECK_OPERATION,
+                    "INPUT.INVALID",
+                    "Profile, method, and code-data revision are required.",
+                    "request",
+                    "Supply the complete deflection request.",
+                ),
+            ),
             provenance=provenance,
         )
     if request.method is DeflectionMethod.SPAN_DEPTH_SCREENING:
         if request.screening is None:
-            return _not_evaluated(DEFLECTION_CHECK_OPERATION, inputs, provenance, "The screening basis is missing.", "screening")
+            return _not_evaluated(
+                DEFLECTION_CHECK_OPERATION,
+                inputs,
+                provenance,
+                "The screening basis is missing.",
+                "screening",
+            )
         if (
             request.calculated is not None
             or request.total_limit is not None
@@ -347,7 +417,15 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
             return rejected_result(
                 DEFLECTION_CHECK_OPERATION,
                 inputs,
-                (_diagnostic(DEFLECTION_CHECK_OPERATION, "INPUT.CONFLICT", "A screening request cannot also contain calculated-deflection inputs or displacement limits.", "calculated/limits", "Select one method and its matching input branch."),),
+                (
+                    _diagnostic(
+                        DEFLECTION_CHECK_OPERATION,
+                        "INPUT.CONFLICT",
+                        "A screening request cannot also contain calculated-deflection inputs or displacement limits.",
+                        "calculated/limits",
+                        "Select one method and its matching input branch.",
+                    ),
+                ),
                 provenance=provenance,
             )
         basis = request.screening
@@ -368,7 +446,15 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
             return rejected_result(
                 DEFLECTION_CHECK_OPERATION,
                 inputs,
-                (_diagnostic(DEFLECTION_CHECK_OPERATION, "SCREENING.INVALID", "Screening requires an eligible span, depth, support, explicit positive factors, and references.", "screening", "Correct the bounded screening basis."),),
+                (
+                    _diagnostic(
+                        DEFLECTION_CHECK_OPERATION,
+                        "SCREENING.INVALID",
+                        "Screening requires an eligible span, depth, support, explicit positive factors, and references.",
+                        "screening",
+                        "Correct the bounded screening basis.",
+                    ),
+                ),
                 provenance=provenance,
             )
         basic = {
@@ -379,8 +465,18 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
         actual = basis.effective_span_mm / basis.effective_depth_mm
         allowable = basic * math.prod(factors)
         passed = actual <= allowable
-        diagnostics = () if passed else (
-            _diagnostic(DEFLECTION_CHECK_OPERATION, "DEFLECTION.SCREENING_EXCEEDED", "The actual span/depth ratio exceeds the declared modified limit.", "screening", "Increase effective depth or revise the supported design."),
+        diagnostics = (
+            ()
+            if passed
+            else (
+                _diagnostic(
+                    DEFLECTION_CHECK_OPERATION,
+                    "DEFLECTION.SCREENING_EXCEEDED",
+                    "The actual span/depth ratio exceeds the declared modified limit.",
+                    "screening",
+                    "Increase effective depth or revise the supported design.",
+                ),
+            )
         )
         return completed_result(
             DEFLECTION_CHECK_OPERATION,
@@ -401,11 +497,29 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
         return rejected_result(
             DEFLECTION_CHECK_OPERATION,
             inputs,
-            (_diagnostic(DEFLECTION_CHECK_OPERATION, "INPUT.CONFLICT", "A calculated request cannot also contain screening inputs.", "screening", "Select one method and its matching input branch."),),
+            (
+                _diagnostic(
+                    DEFLECTION_CHECK_OPERATION,
+                    "INPUT.CONFLICT",
+                    "A calculated request cannot also contain screening inputs.",
+                    "screening",
+                    "Select one method and its matching input branch.",
+                ),
+            ),
             provenance=provenance,
         )
-    if request.calculated is None or request.total_limit is None or request.after_finishes_limit is None:
-        return _not_evaluated(DEFLECTION_CHECK_OPERATION, inputs, provenance, "Calculated deflection requires component evidence and both limits.", "calculated/limits")
+    if (
+        request.calculated is None
+        or request.total_limit is None
+        or request.after_finishes_limit is None
+    ):
+        return _not_evaluated(
+            DEFLECTION_CHECK_OPERATION,
+            inputs,
+            provenance,
+            "Calculated deflection requires component evidence and both limits.",
+            "calculated/limits",
+        )
     basis = request.calculated
     required_strings = (
         basis.service_action_snapshot_id,
@@ -433,7 +547,13 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
         or not all(basis.sustained_service_action_row_ids)
         or any(value is None for value in history)
     ):
-        return _not_evaluated(DEFLECTION_CHECK_OPERATION, inputs, provenance, "The calculated route is missing action, method, load-history, environment, finish, or reinforcement evidence.", "calculated")
+        return _not_evaluated(
+            DEFLECTION_CHECK_OPERATION,
+            inputs,
+            provenance,
+            "The calculated route is missing action, method, load-history, environment, finish, or reinforcement evidence.",
+            "calculated",
+        )
     components = (
         basis.instantaneous_total_deflection_mm,
         basis.instantaneous_sustained_deflection_mm,
@@ -454,29 +574,70 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
         return rejected_result(
             DEFLECTION_CHECK_OPERATION,
             inputs,
-            (_diagnostic(DEFLECTION_CHECK_OPERATION, "CALCULATION_BASIS.INVALID", "Deflection components/history must be finite, nonnegative, and chronologically valid.", "calculated", "Correct the explicit calculation basis."),),
+            (
+                _diagnostic(
+                    DEFLECTION_CHECK_OPERATION,
+                    "CALCULATION_BASIS.INVALID",
+                    "Deflection components/history must be finite, nonnegative, and chronologically valid.",
+                    "calculated",
+                    "Correct the explicit calculation basis.",
+                ),
+            ),
             provenance=provenance,
         )
     total_limit_result = deflection_limit(request.total_limit)
     finish_limit_result = deflection_limit(request.after_finishes_limit)
-    if total_limit_result.execution != "completed" or finish_limit_result.execution != "completed":
-        diagnostic = next(iter(total_limit_result.diagnostics or finish_limit_result.diagnostics))
-        return rejected_result(DEFLECTION_CHECK_OPERATION, inputs, (diagnostic,), provenance=provenance)
-    if request.total_limit.criterion is not DeflectionCriterion.TOTAL_FINAL or request.after_finishes_limit.criterion is not DeflectionCriterion.AFTER_FINISHES or request.total_limit.span_mm != request.after_finishes_limit.span_mm or request.total_limit.span_mm != basis.effective_span_mm:
+    if (
+        total_limit_result.execution != "completed"
+        or finish_limit_result.execution != "completed"
+    ):
+        diagnostic = next(
+            iter(total_limit_result.diagnostics or finish_limit_result.diagnostics)
+        )
+        return rejected_result(
+            DEFLECTION_CHECK_OPERATION, inputs, (diagnostic,), provenance=provenance
+        )
+    if (
+        request.total_limit.criterion is not DeflectionCriterion.TOTAL_FINAL
+        or request.after_finishes_limit.criterion
+        is not DeflectionCriterion.AFTER_FINISHES
+        or request.total_limit.span_mm != request.after_finishes_limit.span_mm
+        or request.total_limit.span_mm != basis.effective_span_mm
+    ):
         return rejected_result(
             DEFLECTION_CHECK_OPERATION,
             inputs,
-            (_diagnostic(DEFLECTION_CHECK_OPERATION, "LIMIT.CONFLICT", "Calculated deflection requires matching-span total-final and after-finishes limits.", "limits", "Supply both criteria for the same effective span."),),
+            (
+                _diagnostic(
+                    DEFLECTION_CHECK_OPERATION,
+                    "LIMIT.CONFLICT",
+                    "Calculated deflection requires matching-span total-final and after-finishes limits.",
+                    "limits",
+                    "Supply both criteria for the same effective span.",
+                ),
+            ),
             provenance=provenance,
         )
     creep = basis.instantaneous_sustained_deflection_mm * basis.creep_multiplier
-    total = basis.instantaneous_total_deflection_mm + creep + basis.shrinkage_deflection_mm
+    total = (
+        basis.instantaneous_total_deflection_mm + creep + basis.shrinkage_deflection_mm
+    )
     after_finishes = max(0.0, total - float(basis.deflection_at_finish_installation_mm))
     total_limit_mm = float(total_limit_result.outputs["limit_mm"])
     finish_limit_mm = float(finish_limit_result.outputs["limit_mm"])
     passed = total <= total_limit_mm and after_finishes <= finish_limit_mm
-    diagnostics = () if passed else (
-        _diagnostic(DEFLECTION_CHECK_OPERATION, "DEFLECTION.LIMIT_EXCEEDED", "A calculated total or after-finishes deflection exceeds its limit.", "calculated", "Revise stiffness, geometry, reinforcement, or service response."),
+    diagnostics = (
+        ()
+        if passed
+        else (
+            _diagnostic(
+                DEFLECTION_CHECK_OPERATION,
+                "DEFLECTION.LIMIT_EXCEEDED",
+                "A calculated total or after-finishes deflection exceeds its limit.",
+                "calculated",
+                "Revise stiffness, geometry, reinforcement, or service response.",
+            ),
+        )
     )
     return completed_result(
         DEFLECTION_CHECK_OPERATION,
@@ -510,7 +671,9 @@ def check_deflection(request: DeflectionCheckRequest) -> OperationResult:
 
 def check_crack_width(request: CrackWidthCheckRequest) -> OperationResult:
     inputs = effective_inputs(request=request)
-    provenance = _provenance("is456-annex-f-crack-width-wp04-v1", request.code_data_revision_id)
+    provenance = _provenance(
+        "is456-annex-f-crack-width-wp04-v1", request.code_data_revision_id
+    )
     identity = (
         request.profile_id,
         request.member_id,
@@ -519,14 +682,37 @@ def check_crack_width(request: CrackWidthCheckRequest) -> OperationResult:
         request.reinforcement_revision_id,
     )
     if not all(identity) or request.code_data_revision_id != CODE_DATA_REVISION:
-        return _not_evaluated(CRACK_WIDTH_CHECK_OPERATION, inputs, provenance, "Member, service-row, and reinforcement-revision evidence is required.", "identity")
+        return _not_evaluated(
+            CRACK_WIDTH_CHECK_OPERATION,
+            inputs,
+            provenance,
+            "Member, service-row, and reinforcement-revision evidence is required.",
+            "identity",
+        )
     if request.mean_strain_at_tension_surface is None:
-        return _not_evaluated(CRACK_WIDTH_CHECK_OPERATION, inputs, provenance, "A supplied mean tension-surface strain is required; it is not inferred from fs/Es.", "mean_strain_at_tension_surface")
+        return _not_evaluated(
+            CRACK_WIDTH_CHECK_OPERATION,
+            inputs,
+            provenance,
+            "A supplied mean tension-surface strain is required; it is not inferred from fs/Es.",
+            "mean_strain_at_tension_surface",
+        )
     if not request.bars:
-        return _not_evaluated(CRACK_WIDTH_CHECK_OPERATION, inputs, provenance, "Actual positioned reinforcement is required.", "bars")
+        return _not_evaluated(
+            CRACK_WIDTH_CHECK_OPERATION,
+            inputs,
+            provenance,
+            "Actual positioned reinforcement is required.",
+            "bars",
+        )
     limit_result = crack_width_limit(request.limit)
     if limit_result.execution != "completed":
-        return rejected_result(CRACK_WIDTH_CHECK_OPERATION, inputs, limit_result.diagnostics, provenance=provenance)
+        return rejected_result(
+            CRACK_WIDTH_CHECK_OPERATION,
+            inputs,
+            limit_result.diagnostics,
+            provenance=provenance,
+        )
     dimensions = (
         request.section_width_mm,
         request.section_depth_mm,
@@ -534,41 +720,94 @@ def check_crack_width(request: CrackWidthCheckRequest) -> OperationResult:
         request.steel_yield_strength_n_per_mm2,
         request.steel_modulus_n_per_mm2,
     )
-    if not all(_positive(value) for value in dimensions) or not _nonnegative(request.service_steel_stress_n_per_mm2) or not _nonnegative(request.mean_strain_at_tension_surface) or not isinstance(request.tension_face, Face) or not 0 <= request.surface_point_x_from_left_mm <= request.section_width_mm:
+    if (
+        not all(_positive(value) for value in dimensions)
+        or not _nonnegative(request.service_steel_stress_n_per_mm2)
+        or not _nonnegative(request.mean_strain_at_tension_surface)
+        or not isinstance(request.tension_face, Face)
+        or not 0 <= request.surface_point_x_from_left_mm <= request.section_width_mm
+    ):
         return rejected_result(
             CRACK_WIDTH_CHECK_OPERATION,
             inputs,
-            (_diagnostic(CRACK_WIDTH_CHECK_OPERATION, "INPUT.INVALID", "Section, material, stress/strain, tension face, and surface point must be finite and physically valid.", "request", "Correct the declared crack calculation inputs."),),
+            (
+                _diagnostic(
+                    CRACK_WIDTH_CHECK_OPERATION,
+                    "INPUT.INVALID",
+                    "Section, material, stress/strain, tension face, and surface point must be finite and physically valid.",
+                    "request",
+                    "Correct the declared crack calculation inputs.",
+                ),
+            ),
             provenance=provenance,
         )
-    tension_bars = tuple(bar for bar in request.bars if bar.face is request.tension_face)
+    tension_bars = tuple(
+        bar for bar in request.bars if bar.face is request.tension_face
+    )
     if not tension_bars:
-        return _not_evaluated(CRACK_WIDTH_CHECK_OPERATION, inputs, provenance, "No actual bars are assigned to the physical tension face.", "bars")
+        return _not_evaluated(
+            CRACK_WIDTH_CHECK_OPERATION,
+            inputs,
+            provenance,
+            "No actual bars are assigned to the physical tension face.",
+            "bars",
+        )
     for bar in request.bars:
         radius = bar.diameter_mm / 2.0
-        if not bar.bar_id or not isinstance(bar.face, Face) or not _positive(bar.diameter_mm) or bar.layer < 1 or not radius <= bar.x_from_left_mm <= request.section_width_mm - radius or not radius <= bar.y_from_top_mm <= request.section_depth_mm - radius:
+        if (
+            not bar.bar_id
+            or not isinstance(bar.face, Face)
+            or not _positive(bar.diameter_mm)
+            or bar.layer < 1
+            or not radius <= bar.x_from_left_mm <= request.section_width_mm - radius
+            or not radius <= bar.y_from_top_mm <= request.section_depth_mm - radius
+        ):
             return rejected_result(
                 CRACK_WIDTH_CHECK_OPERATION,
                 inputs,
-                (_diagnostic(CRACK_WIDTH_CHECK_OPERATION, "BAR.GEOMETRY", "Every bar surface must fit within the section and retain identity/layer.", f"bars[{bar.bar_id}]", "Correct the actual reinforcement arrangement."),),
+                (
+                    _diagnostic(
+                        CRACK_WIDTH_CHECK_OPERATION,
+                        "BAR.GEOMETRY",
+                        "Every bar surface must fit within the section and retain identity/layer.",
+                        f"bars[{bar.bar_id}]",
+                        "Correct the actual reinforcement arrangement.",
+                    ),
+                ),
                 provenance=provenance,
             )
     areas = [math.pi * bar.diameter_mm**2 / 4.0 for bar in tension_bars]
     if request.tension_face is Face.BOTTOM:
         depths = [bar.y_from_top_mm for bar in tension_bars]
-        covers = [request.section_depth_mm - bar.y_from_top_mm - bar.diameter_mm / 2.0 for bar in tension_bars]
+        covers = [
+            request.section_depth_mm - bar.y_from_top_mm - bar.diameter_mm / 2.0
+            for bar in tension_bars
+        ]
         surface_y = request.section_depth_mm
     else:
         depths = [request.section_depth_mm - bar.y_from_top_mm for bar in tension_bars]
         covers = [bar.y_from_top_mm - bar.diameter_mm / 2.0 for bar in tension_bars]
         surface_y = 0.0
-    effective_depth = math.fsum(area * depth for area, depth in zip(areas, depths, strict=True)) / math.fsum(areas)
+    effective_depth = math.fsum(
+        area * depth for area, depth in zip(areas, depths, strict=True)
+    ) / math.fsum(areas)
     neutral_axis = request.neutral_axis_depth_from_compression_face_mm
-    if not 0 < neutral_axis < effective_depth < request.section_depth_mm or min(covers) <= 0:
+    if (
+        not 0 < neutral_axis < effective_depth < request.section_depth_mm
+        or min(covers) <= 0
+    ):
         return rejected_result(
             CRACK_WIDTH_CHECK_OPERATION,
             inputs,
-            (_diagnostic(CRACK_WIDTH_CHECK_OPERATION, "SECTION.GEOMETRY", "Require 0 < neutral-axis depth < tension-steel effective depth < section depth and positive cover.", "neutral_axis/bars", "Correct the service section analysis or reinforcement geometry."),),
+            (
+                _diagnostic(
+                    CRACK_WIDTH_CHECK_OPERATION,
+                    "SECTION.GEOMETRY",
+                    "Require 0 < neutral-axis depth < tension-steel effective depth < section depth and positive cover.",
+                    "neutral_axis/bars",
+                    "Correct the service section analysis or reinforcement geometry.",
+                ),
+            ),
             provenance=provenance,
         )
     stress_limit = 0.8 * request.steel_yield_strength_n_per_mm2
@@ -576,7 +815,15 @@ def check_crack_width(request: CrackWidthCheckRequest) -> OperationResult:
         return rejected_result(
             CRACK_WIDTH_CHECK_OPERATION,
             inputs,
-            (_diagnostic(CRACK_WIDTH_CHECK_OPERATION, "STRESS.OUTSIDE_PROFILE", "Service steel stress exceeds the bounded 0.8fy profile.", "service_steel_stress_n_per_mm2", "Supply a supported service state or use another method."),),
+            (
+                _diagnostic(
+                    CRACK_WIDTH_CHECK_OPERATION,
+                    "STRESS.OUTSIDE_PROFILE",
+                    "Service steel stress exceeds the bounded 0.8fy profile.",
+                    "service_steel_stress_n_per_mm2",
+                    "Supply a supported service state or use another method.",
+                ),
+            ),
             provenance=provenance,
         )
     elastic_surface_strain = (
@@ -589,12 +836,24 @@ def check_crack_width(request: CrackWidthCheckRequest) -> OperationResult:
         return rejected_result(
             CRACK_WIDTH_CHECK_OPERATION,
             inputs,
-            (_diagnostic(CRACK_WIDTH_CHECK_OPERATION, "STRAIN.OUTSIDE_PROFILE", "Mean strain exceeds the unmodified elastic tension-surface strain.", "mean_strain_at_tension_surface", "Reconcile the supplied strain with the service section analysis."),),
+            (
+                _diagnostic(
+                    CRACK_WIDTH_CHECK_OPERATION,
+                    "STRAIN.OUTSIDE_PROFILE",
+                    "Mean strain exceeds the unmodified elastic tension-surface strain.",
+                    "mean_strain_at_tension_surface",
+                    "Reconcile the supplied strain with the service section analysis.",
+                ),
+            ),
             provenance=provenance,
         )
     distances = [
         (
-            math.hypot(bar.x_from_left_mm - request.surface_point_x_from_left_mm, bar.y_from_top_mm - surface_y) - bar.diameter_mm / 2.0,
+            math.hypot(
+                bar.x_from_left_mm - request.surface_point_x_from_left_mm,
+                bar.y_from_top_mm - surface_y,
+            )
+            - bar.diameter_mm / 2.0,
             bar,
         )
         for bar in tension_bars
@@ -606,14 +865,32 @@ def check_crack_width(request: CrackWidthCheckRequest) -> OperationResult:
         return rejected_result(
             CRACK_WIDTH_CHECK_OPERATION,
             inputs,
-            (_diagnostic(CRACK_WIDTH_CHECK_OPERATION, "CRACK_GEOMETRY.INVALID", "Derived surface-to-bar geometry is outside the Annex F profile.", "surface_point/bars", "Correct the surface point and actual bar geometry."),),
+            (
+                _diagnostic(
+                    CRACK_WIDTH_CHECK_OPERATION,
+                    "CRACK_GEOMETRY.INVALID",
+                    "Derived surface-to-bar geometry is outside the Annex F profile.",
+                    "surface_point/bars",
+                    "Correct the surface point and actual bar geometry.",
+                ),
+            ),
             provenance=provenance,
         )
     width = 3.0 * acr * request.mean_strain_at_tension_surface / denominator
     limit_mm = float(limit_result.outputs["limit_mm"])
     passed = width <= limit_mm
-    diagnostics = () if passed else (
-        _diagnostic(CRACK_WIDTH_CHECK_OPERATION, "CRACK_WIDTH.LIMIT_EXCEEDED", "Calculated flexural crack width exceeds the selected limit.", "calculated_crack_width_mm", "Revise the actual reinforcement arrangement or section/service response."),
+    diagnostics = (
+        ()
+        if passed
+        else (
+            _diagnostic(
+                CRACK_WIDTH_CHECK_OPERATION,
+                "CRACK_WIDTH.LIMIT_EXCEEDED",
+                "Calculated flexural crack width exceeds the selected limit.",
+                "calculated_crack_width_mm",
+                "Revise the actual reinforcement arrangement or section/service response.",
+            ),
+        )
     )
     return completed_result(
         CRACK_WIDTH_CHECK_OPERATION,

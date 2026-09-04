@@ -130,9 +130,7 @@ def _diagnostic(code: str, message: str, field: str, remediation: str) -> Diagno
 
 
 def _provenance(project: BeamProject) -> Provenance:
-    revisions = ",".join(
-        binding.revision_id for binding in project.code_data_revisions
-    )
+    revisions = ",".join(binding.revision_id for binding in project.code_data_revisions)
     return Provenance(
         revisions or "project-bound-code-data",
         MEMBER_METHOD_REVISION,
@@ -200,8 +198,7 @@ def _validate_leaf_evidence(evidence: MemberLeafEvidence) -> bool:
     )
     numerics_valid = all(value is None or math.isfinite(value) for value in values)
     utilization_valid = (
-        evidence.governing_utilization is None
-        or evidence.governing_utilization >= 0
+        evidence.governing_utilization is None or evidence.governing_utilization >= 0
     )
     has_numeric = any(value is not None for value in values[:3])
     return (
@@ -210,8 +207,7 @@ def _validate_leaf_evidence(evidence: MemberLeafEvidence) -> bool:
         and isinstance(evidence.engineering, EngineeringState)
         and isinstance(evidence.completeness, CompletenessState)
         and isinstance(evidence.freshness, FreshnessState)
-        and
-        _text(evidence.leaf_id)
+        and _text(evidence.leaf_id)
         and _text(evidence.operation_semantic_id)
         and _text(evidence.result_id)
         and _text(evidence.code_data_revision_id)
@@ -441,12 +437,9 @@ def design_member(request: MemberDesignRequest) -> OperationResult:
         item.evidence.result_id
         for item in qualifications
         if item.evidence is not None
-        and item.expectation.expected_applicability
-        is ApplicabilityState.APPLICABLE
+        and item.expectation.expected_applicability is ApplicabilityState.APPLICABLE
     }
-    final_iteration = (
-        request.depth_iterations[-1] if request.depth_iterations else None
-    )
+    final_iteration = request.depth_iterations[-1] if request.depth_iterations else None
     depth_result_binding_complete = (
         final_iteration is not None
         and set(final_iteration.dependent_result_ids) == current_depth_result_ids
@@ -513,15 +506,15 @@ def design_member(request: MemberDesignRequest) -> OperationResult:
         if reason != "LEAF.FAIL"
     }
     if partial_reasons or not depth_complete:
-        leaf_freshness = {
-            item.freshness for item in request.leaf_results
-        }
+        leaf_freshness = {item.freshness for item in request.leaf_results}
         freshness = (
             FreshnessState.STALE
             if FreshnessState.STALE in leaf_freshness
-            else FreshnessState.UNBOUND
-            if FreshnessState.UNBOUND in leaf_freshness
-            else FreshnessState.CURRENT
+            else (
+                FreshnessState.UNBOUND
+                if FreshnessState.UNBOUND in leaf_freshness
+                else FreshnessState.CURRENT
+            )
         )
         return partial_result(
             DESIGN_MEMBER_OPERATION,
@@ -534,9 +527,7 @@ def design_member(request: MemberDesignRequest) -> OperationResult:
 
     engineering = (
         EngineeringState.FAIL
-        if any(
-            "LEAF.FAIL" in item.reason_codes for item in qualifications
-        )
+        if any("LEAF.FAIL" in item.reason_codes for item in qualifications)
         else EngineeringState.PASS
     )
     return completed_result(

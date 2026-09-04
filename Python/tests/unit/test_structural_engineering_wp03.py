@@ -238,7 +238,9 @@ def test_solver_applies_prescribed_support_settlement() -> None:
     assert result.execution == "completed"
     middle = next(item for item in result.outputs["nodes"] if item["node_id"] == "B")
     assert middle["vertical_displacement_mm"] == -10
-    assert sum(item["vertical_reaction_n"] for item in result.outputs["nodes"]) == pytest.approx(0)
+    assert sum(
+        item["vertical_reaction_n"] for item in result.outputs["nodes"]
+    ) == pytest.approx(0)
 
 
 def test_solver_rejects_unstable_beam() -> None:
@@ -247,8 +249,7 @@ def test_solver_rejects_unstable_beam() -> None:
         request.model_id,
         request.load_case_id,
         tuple(
-            BeamNode(node.node_id, node.x_mm, False, False)
-            for node in request.nodes
+            BeamNode(node.node_id, node.x_mm, False, False) for node in request.nodes
         ),
         request.elements,
         request.point_loads,
