@@ -187,7 +187,11 @@
         }
       },
       "structuralengineering.etabs": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Analysis": "[0.1.0, )",
+          "StructuralEngineering.Contracts": "[0.1.0, )"
+        }
       },
       "structuralengineering.exceldna": {
         "type": "Project",

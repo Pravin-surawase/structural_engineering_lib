@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-04
+last_updated: 2026-09-05
 doc_type: guide
 complexity: intermediate
 tags: [excel-dna, xll, planning, handoff]
@@ -21,11 +21,12 @@ reconciles the existing Python library, C# foundation, three-project evidence,
 standalone Excel workflow and later ETABS automation into twelve implementation
 packets. Its PF11 blueprint is the authority for new library work.
 
-**Implemented through WP09:** the native Python/.NET beam libraries and the
-standalone Windows Excel XLL are complete. The signed local candidate passed
+**Implemented through WP10-03:** the native Python/.NET beam libraries, the
+standalone Windows Excel XLL, portable analysis-snapshot contract, exact ETABS
+getter adapter, and bounded STA acquisition broker are complete. The Excel candidate passed
 preflight, install, repair, installed Excel acceptance, performance, uninstall,
-and cleanup. [WP10 read-only ETABS acquisition](wp10-etabs-read-adapter.md) is
-the next implementation unit.
+and cleanup. [WP10 read-only ETABS acquisition](wp10-etabs-read-adapter.md) next
+continues with offline capture normalization in WP10-04.
 
 **Owner-selected workflow:** [Standalone Excel beam requirements and contract proposal](requirements-first/README.md) records the 3 September requirements-first research across all three projects. It supplements this plan; its proposed delivery packets do not rename P0–P6 or change the Windows shell exercise.
 
@@ -34,7 +35,7 @@ the next implementation unit.
 3. [Current plan](current-plan.md): the source hierarchy and present scope.
 4. [WP09 completion record](wp09-standalone-excel.md): the shipped Excel surface and installed evidence.
 5. [WP09 postmortem](wp09-postmortem.md) and [compact recurrence index](../../verification/rework-recurrence-index.json): deep evidence plus stable issue IDs, counts, time, and short controls.
-6. [WP10 execution plan](wp10-etabs-read-adapter.md): the next getter-only ETABS unit.
+6. [WP10 execution plan](wp10-etabs-read-adapter.md): completed broker evidence and the next offline-normalization unit.
 7. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
 8. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
 9. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.

@@ -58,6 +58,26 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
 
     public EtabsHostIdentity Identity { get; }
 
+    public EtabsHostIdentity InspectIdentity()
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        using var process = Process.GetProcessById(Identity.ProcessId);
+        var executable = process.MainModule?.FileName
+            ?? throw new InvalidOperationException("The ETABS executable path is unavailable.");
+        var model = new FileInfo(Identity.ModelPath);
+        return Identity with
+        {
+            ProcessStartedUtc = new DateTimeOffset(process.StartTime.ToUniversalTime(), TimeSpan.Zero),
+            ExecutablePath = executable,
+            ExecutableFileVersion = FileVersionInfo.GetVersionInfo(executable).FileVersion ?? string.Empty,
+            ExecutableBytes = new FileInfo(executable).Length,
+            ExecutableSha256 = Sha256File(executable),
+            ModelBytes = model.Length,
+            ModelModifiedUtc = new DateTimeOffset(model.LastWriteTimeUtc, TimeSpan.Zero),
+            ModelSha256 = Sha256File(model.FullName)
+        };
+    }
+
     public static EtabsReflectionGetterHost Attach(EtabsHostExpectation expected)
     {
         ArgumentNullException.ThrowIfNull(expected);

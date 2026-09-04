@@ -5,6 +5,207 @@
 
 ---
 
+## 2026-09-05 — Session: WP10-03 bounded ETABS operation broker
+
+**Agent:** Codex (`orchestrator`); no subagents.
+
+**Branch:** `codex/wp10-03-broker`, from fetched `origin/main` commit
+`c3dd989bacd55f2c3c811013fa6b3e5a41faaeb7`.
+
+**Focus:** Implement only WP10-03: the process lease, STA/message-pump broker,
+deadlines, durable hash-chained call journal, atomic raw artifact, postflight
+fence, exact recorded replay, and deterministic cleanup around the accepted
+WP10-02 getter adapter. Normalization, Excel, performance qualification, ETABS
+mutation, release, and general compatibility claims remain excluded.
+
+**Completed:**
+
+- Checked the exact open ETABS model before implementation: process `7316`,
+  ETABS `23.3.1.4563`, the saved 703,208-byte
+  `vasant sawale - Copy.EDB`, model SHA-256
+  `e84918e042ce466d73066796186cdbd4bfd4102919b58dbd3c890149d4efa96f`,
+  x64 ETABSv1 API/type library, lock/unit expectation, and selected combination
+  matched the accepted WP10-02 evidence.
+- Added one process-keyed exclusive lease and dedicated STA worker with explicit
+  Windows message pumping. Deadline/cancellation returns without waiting for a
+  stuck call, publishes no final artifact, and retains the lease until the host
+  call and cleanup quiesce; automatic retries remain zero.
+- Added write-through `started`/`returned` getter journaling, continuous
+  WP10-01 canonical record hashes, paired final ledger validation, strict
+  artifact hashing/tamper checks, and a no-overwrite atomic final move only
+  after postflight, disposal, and lease-release proof.
+- Moved process/file inspection behind the getter-host port so offline replay
+  requires no live process or model file. The reflection host refreshes the
+  process, executable, and model-file identity at each protected-state fence.
+- Added exact-SHA, ordered, typed replay of the accepted WP10-02 capture. The
+  410 calls replayed without ETABS and reproduced protected-state digest
+  `21709db82c0c9a95d1885dae30f8d0d318323f2574b0809b0d88fa0a8eb80c0c`.
+- Completed one final live acquisition: 410 calls across 48 getters and 820
+  paired call records on STA. Preflight/postflight digests are identical; the
+  host was disposed, the lease released, ETABS remained alive, and model bytes,
+  SHA-256, lock, units, result state, and output selection remained unchanged.
+- Added the committed hash-only receipt
+  `docs/verification/wp10-03-operation-broker-evidence.json`; the raw replay,
+  live artifact, and journals remain outside Git under their recorded hashes.
+- Reviewed WP10-04 after WP10-03. It remains offline-only and must project the
+  ETABS-specific raw artifact to the portable contract without making the pure
+  analysis package depend on the optional ETABS assembly.
+
+### Issues encountered
+
+- ⚠️ TERMINAL ISSUE: one source-reference search again passed Windows wildcard
+  paths directly to `rg`; directory-based matching returned the intended
+  project-reference inventory. (`RR-005`)
+- ⚠️ TERMINAL ISSUE: one handoff inspection used the guessed
+  `docs/planning/xll-product/next-session-brief.md` path; the maintained file is
+  `docs/planning/next-session-brief.md`, which the corrected exact-path read
+  inspected successfully. (`RR-005`)
+- ⚠️ TERMINAL ISSUE: the dotnet formatter outlived the first tool yield with no
+  output; an intermediate status read preceded its chained delivery transition,
+  so a redundant `FORMATTED` request was rejected after the original transition
+  completed. The final state was inspected once and retained. (`RR-005`)
+- ⚠️ TERMINAL ISSUE: one verification-command search again passed `scripts/*.py`
+  and `scripts/*.sh` directly to Windows `rg`; the corrected search used the
+  literal `scripts` directory with `--glob` filters. (`RR-005`)
+- ⚠️ TERMINAL ISSUE: the first type-library check guessed the ETABS root instead
+  of reading the recorded `NativeAPI/x64` path; bounded discovery found the
+  exact installed file. A later inline PowerShell COM preflight was rejected by
+  the execution host before launch, so the compiled getter-only broker path was
+  used for the live state check.
+- The first configured replay result hid its broker diagnostic, and the next
+  run showed that the test callback incorrectly expected the raw replay host
+  even though the broker deliberately passes its ledger decorator.
+- The first complete offline replay produced a different protected-state hash
+  even though every state value and UTC instant was unchanged. (`RR-014`)
+- The first frozen locked restore found that the new project references had not
+  yet been projected into the two affected NuGet lock files. The required
+  force-evaluate restore also rewrote unchanged lock-file working bytes under
+  Windows before exact LF/EOF normalization removed that unrelated churn.
+  (`RR-003`)
+- The first immutable-candidate audit found that complete recorded-source
+  consumption was asserted only by the configured replay test callback. A
+  different callback could return early and publish a partial replay as if it
+  had consumed the accepted source.
+- The first affected getter-test command used the stale selector
+  `EtabsGetterAdapterTests`, so the test platform correctly exited with zero
+  tests. Source discovery showed the maintained class is
+  `Wp10GetterAdapterTests`. (`RR-015`)
+- The first `FOCUSED_VERIFIED` transition omitted its required evidence text
+  and was rejected without changing delivery state. The subsequent chained
+  `PREPARED` transition repeated the omission after `FOCUSED_VERIFIED` advanced;
+  it too was rejected without changing state. (`RR-016`)
+- An imprecise recurrence-index patch intended to increment `RR-016` changed
+  `RR-001` instead. The immediate diff inspection caught it before validation,
+  commit, or handoff use. (`RR-010`)
+- Two zero-byte failed replay journals and the first superseded replay artifact
+  were removed from the task-owned external evidence directory before their
+  replacements. They were generated by this session, contained no accepted
+  evidence, and are not recoverable; the retained artifacts are hash-bound in
+  the committed receipt.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the search reused a POSIX wildcard path in PowerShell.
+  The later handoff inspection also guessed an obsolete nested path. Resolution:
+  use exact repository paths already returned by Git/status and directory-based
+  `rg` with `--glob` filtering; the recurrence index includes those path-shape
+  events and the later formatter-session event below.
+  (`RR-005`)
+- Confirmed root cause: a yielded long-running formatter command was treated as
+  complete before its returned terminal session was polled, while its chained
+  state transition continued normally. Resolution: poll the returned session to
+  completion before inspecting or advancing delivery state; the rejected
+  duplicate made no repository or lifecycle change. (`RR-005`)
+- Confirmed root cause: the verification lookup repeated the already recorded
+  POSIX-wildcard-on-Windows pattern. Resolution: search literal directories and
+  express filename filters only with `rg --glob`; the corrected command ran
+  without path expansion. (`RR-005`)
+- Confirmed root cause: the type-library location was assumed instead of read
+  from accepted host identity, while the inline COM command shape was not
+  admitted by the execution wrapper. Resolution: bind the live expectation to
+  the exact paths in the accepted capture and run all COM through the compiled,
+  tested STA broker. No COM call was issued by the rejected inline command.
+- Confirmed root cause: the configured replay harness cast the broker-supplied
+  ledger decorator to `EtabsRecordedGetterHost`. Resolution: capture the
+  underlying replay host in the factory, execute through the decorator, and
+  assert complete source consumption on the captured host. The diagnostic is
+  now included in the assertion, and the full 410-call replay passes.
+- Confirmed root cause: `DateTimeOffset.ToString("O")` emitted `+00:00`, while
+  the accepted hash basis used `DateTime.ToString("O")` and emitted `Z` for the
+  same UTC instant. Resolution: normalize both protected timestamps through
+  `UtcDateTime` before hashing and assert the replay digest equals the source
+  digest before any live run. (`RR-014`)
+- Confirmed root cause: the project compiled from existing assets during
+  implementation, so the changed project-reference graph was not exercised by
+  locked restore before content freeze. Resolution: force-evaluate the derived
+  locks, retain only the two semantic lock changes, normalize the exact lock
+  files to repository LF/EOF policy, and repeat the affected locked
+  restore/build/test and documentation gates. (`RR-003`)
+- Confirmed root cause: `AssertComplete` belonged to the configured harness,
+  while the generic broker accepted any successful callback result. Resolution:
+  expose replay completion as a host capability and make the broker enforce it
+  before postflight, ledger finalization, or artifact publication. The new
+  early-return test proves a fenced result and no final artifact; the normal
+  configured replay now passes without a callback-owned assertion.
+- Confirmed root cause: the verification selector was copied from a descriptive
+  note instead of discovered from the current test source. Resolution: locate
+  exact class names with `rg` before invocation; the corrected focused command
+  ran all 10 maintained getter cases. (`RR-015`)
+- Confirmed root cause: the delivery transition was invoked from a shorthand
+  note instead of the current CLI contract, and the next chained transition did
+  not carry forward the same requirement. Resolution: pass explicit evidence on
+  every non-status delivery transition and the required identity fields for
+  candidate/hosted/merge states; both rejected calls made no state change.
+  (`RR-016`)
+- Confirmed root cause: the JSON patch matched a generic `occurrences: 1` line
+  rather than the `RR-016` object. Resolution: restore `RR-001`, update `RR-016`
+  with its ID in patch context, and inspect the exact index diff before reuse.
+  (`RR-010`)
+
+### Rework and recurrence
+
+- `RR-003`, occurrences=5, minutes=unknown — refresh dependency locks and other
+  generated projections before content freeze, then format and verify once.
+- `RR-005`, occurrences=35, minutes=unknown — use repository launchers, exact
+  installed paths from accepted identity, directory-based `rg`, and one shell
+  shape per operation.
+- `RR-010`, occurrences=3, minutes=unknown — patch recurrence counts with their
+  ID in context and inspect coupled count, basis, last-seen, session, and handoff
+  facts together.
+- `RR-014`, occurrences=1, minutes=unknown — normalize UTC timestamps to one
+  `Z` spelling and require source/replay digest equality before live work.
+- `RR-015`, occurrences=1, minutes=unknown — discover exact focused test class
+  names from current source and reject zero-test evidence.
+- `RR-016`, occurrences=2, minutes=unknown — consult the current delivery CLI
+  contract and freeze required evidence/head/run identifiers before transition.
+
+### Validation through content freeze
+
+- The source project and Windows test project build with zero warnings. The
+  final affected matrix passes all 10 getter tests and 12 broker tests. The
+  broker union includes the added expired-deadline, deny-listed-effect,
+  incomplete-replay, and tamper cases.
+- The exact accepted WP10-02 source replay completed once after the UTC fix;
+  its 820-record ledger, final artifact, source digest, cleanup, and lease proof
+  passed. One final live broker run then completed with the same protected-state
+  digest and no ETABS/model drift.
+- Planned versus actual scope stayed within the ETABS project, one focused test
+  file, WP10 plan/status/receipt, session log, and recurrence index. No generic
+  hook, script, prompt, control-plane, Python, FastAPI, React, Excel, or contract
+  schema was changed.
+
+**Git handoff:** No receipt is required for routine same-checkout delivery.
+
+**Candidate audit:** The first candidate was rejected once for harness-owned
+replay completeness. The single repair makes completeness broker-owned; its
+affected focused verification, repaired-candidate audit, integrity check,
+hosted checks, and merge remain the closeout sequence.
+
+**Next:** Publish this repaired WP10-03 candidate in one PR, then begin a
+separate WP10-04 session from its offline-normalization entry card.
+
+---
+
 ## 2026-09-05 — Session: WP10 plan-driven delivery contract
 
 **Agent:** Codex (`orchestrator`); no subagents.

@@ -30,10 +30,17 @@ public interface IEtabsGetterHost : IDisposable
 {
     EtabsHostIdentity Identity { get; }
 
+    EtabsHostIdentity InspectIdentity() => Identity;
+
     EtabsInvocation Invoke(
         EtabsGetterDefinition definition,
         IReadOnlyList<object?> inputs,
         CancellationToken cancellationToken);
+}
+
+public interface IEtabsGetterHostCompletionVerifier
+{
+    void AssertComplete();
 }
 
 public enum EtabsGetterState
