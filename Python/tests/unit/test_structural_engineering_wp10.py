@@ -12,6 +12,7 @@ import pytest
 
 from structural_lib.analysis_snapshot import (
     canonical_analysis_snapshot_json,
+    canonical_snapshot_json_bytes,
     parse_analysis_snapshot_json,
     parse_etabs_import_request_json,
 )
@@ -98,6 +99,15 @@ def test_invalid_json_transport_is_rejected(kind: str) -> None:
     assert result.operation_state.value == "preflight_rejected"
     assert result.execution == "rejected_input"
     assert result.diagnostics[0].code == "INPUT.SCHEMA"
+
+
+def test_canonical_json_normalizes_negative_zero_and_preserves_unicode() -> None:
+    assert (
+        canonical_snapshot_json_bytes(
+            {"negative_zero": -0.0, "model": "Bâtiment मराठी"}
+        )
+        == '{"model":"Bâtiment मराठी","negative_zero":0}'.encode()
+    )
 
 
 @pytest.mark.parametrize(

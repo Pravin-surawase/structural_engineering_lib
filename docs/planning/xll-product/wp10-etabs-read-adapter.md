@@ -179,7 +179,8 @@ The snapshot contract freezes these boundaries:
   any blocked row prevents `complete_for_scope` and exposes no partial
   canonical snapshot.
 - Snapshot and raw-capture SHA-256 values use PF4 canonical UTF-8 JSON with
-  ordered keys, preserved array order, canonical enum strings, and their own
+  ordered keys, preserved array order, canonical enum strings, unescaped
+  non-ASCII text, negative zero normalized to `0`, and their own
   derived id/digest fields omitted from the corresponding hash basis. Arrays
   use deterministic identity/ordinal ordering. Acquisition time remains in the
   artifact identity but does not become a normalized engineering input.

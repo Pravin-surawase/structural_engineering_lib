@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "442b20db19502f24c6a471e4283bef18ee520ae1f394ce3a5ac8030acaaee0c9",
+    "receipt_sha256": "8a0c1b42d76c87ab3d61ba16aecf77bf75f32c00688c16c7105598d0a96aa109",
     "state": {
       "branch": "codex/wp10-01-etabs-snapshot-contracts",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "798229fd387115d2c58f50516c588b5345ece9c2",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 292.298,
+      "duration_ms": 288.776,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
-      "head_sha": "798229fd387115d2c58f50516c588b5345ece9c2",
+      "head_sha": "3b83e5be756f365734ec8566dec4c9dafec2532a",
       "hold_reasons": [
-        "changed paths: 22"
+        "changed paths: 11"
       ],
       "linked_worktree": false,
       "locks": [],
-      "observed_at_utc": "2026-09-04T12:59:59.683875+00:00",
+      "observed_at_utc": "2026-09-04T13:16:40.586248+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,31 +53,20 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 22,
+        "dirty_count": 11,
         "modified_paths": [],
         "staged_paths": [
-          "CSharp/README.md",
           "CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotCodec.cs",
-          "CSharp/src/StructuralEngineering.Contracts/AnalysisSnapshotContracts.cs",
           "CSharp/tests/StructuralEngineering.Tests/Wp10Tests.cs",
-          "Python/structural_lib/analysis_snapshot.py",
-          "Python/structural_lib/core/analysis_snapshot.py",
           "Python/structural_lib/services/analysis_snapshot.py",
           "Python/tests/unit/test_structural_engineering_wp10.py",
-          "contracts/structural-engineering/README.md",
           "contracts/structural-engineering/conformance/wp10-vectors.json",
-          "contracts/structural-engineering/operations/wp10.json",
-          "contracts/structural-engineering/schemas/wp10.schema.json",
           "docs/SESSION_LOG.md",
-          "docs/library/README.md",
-          "docs/library/getting-started.md",
-          "docs/library/implementation-status.md",
           "docs/library/reference/wp10-analysis-snapshot.md",
           "docs/planning/next-session-brief.md",
           "docs/planning/xll-product/wp10-etabs-read-adapter.md",
           "docs/verification/rework-recurrence-index.json",
-          "docs/verification/wp10-01-git-handoff-receipt.json",
-          "scripts/validate_structural_engineering_contracts.py"
+          "docs/verification/wp10-01-git-handoff-receipt.json"
         ],
         "untracked_paths": []
       },
@@ -91,9 +80,9 @@
       "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:442b20db19502f24c6a471e4283bef18ee520ae1f394ce3a5ac8030acaaee0c9",
+  "local_state_receipt_hash": "sha256:8a0c1b42d76c87ab3d61ba16aecf77bf75f32c00688c16c7105598d0a96aa109",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-04T12:59:59.683875+00:00",
+  "observed_at_utc": "2026-09-04T13:16:40.586248+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"

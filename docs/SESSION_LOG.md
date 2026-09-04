@@ -28,6 +28,9 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
 - Added the AO16 manifest, strict JSON Schema, one shared valid fixture,
   adversarial mutations, canonical identities, public examples, focused tests,
   and the WP10-01 library/reference/status documentation.
+- Repaired independent-review findings so Python/.NET canonical JSON agrees for
+  Unicode and negative zero, and every accepted model-ledger row proves its
+  record kind and canonical identity.
 
 ### Issues encountered
 
@@ -37,7 +40,9 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
   rejected a second start.
 - Several read-only commands used guessed paths or shell shapes: an unknown
   context area, the wrong solution and validator/test filenames, and
-  PowerShell-incompatible recursive project globs. No repository data changed.
+  PowerShell-incompatible recursive project globs. A later root-relative mypy
+  target also appeared under both `Python.structural_lib` and `structural_lib`.
+  No repository data changed.
 - The first .NET replay rejected strict JSON fields such as
   `inertia_2_mm4`, and Python's first public canonical serialization retained
   `.0` for integer-valued model fields even though its identity basis normalized
@@ -47,6 +52,14 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
   object/element, and converted object/element stations came from that same row.
 - Preparation closeout passed every printed check and named its expected
   nonfinal exit as `2`, while the outer command result again surfaced exit `1`.
+- Independent review first raised two Python schema concerns that the existing
+  strict models and focused reproducers disproved, then identified two real
+  parity defects: .NET emitted escaped Unicode and negative zero differently
+  from Python, and accepted model-ledger rows did not prove their canonical
+  kind and identity.
+- The solution-level .NET format command rewrote pre-existing style across
+  unrelated C# files even though the WP10 additions were the only intended
+  formatting scope.
 
 ### Root causes and resolutions
 
@@ -59,7 +72,8 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
 - ⚠️ TERMINAL ISSUE: guessed filenames/globs and a nonexistent context routing
   key did not match the active Windows workspace. Resolution: use `rg --files`,
   `Get-ChildItem -LiteralPath`, repository-root paths, and the actual
-  `CSharp/StructAutomate.slnx` and maintained validator/test paths. (`RR-005`)
+  `CSharp/StructAutomate.slnx` and maintained validator/test paths; run mypy
+  from `Python/` so the package has one module identity. (`RR-005`)
 - Confirmed root cause: .NET's snake-case policy does not insert an underscore
   before all numeric suffixes, and Python returned `model_dump` before applying
   recursive PF4 numeric normalization. Resolution: bind ambiguous .NET wire
@@ -77,6 +91,22 @@ model mutation, reanalysis, solver/optimization expansion, or WP10-02 host work.
   `2`. Resolution: verify every printed preparation check, preserve the
   nonfinal status, and use the later clean read-only session-end result as the
   final authority. (`RR-006`)
+- Confirmed root cause: the .NET serializer used its default encoder and
+  negative-zero rendering instead of the full PF4 cross-runtime rules.
+  Resolution: retain non-ASCII UTF-8 and normalize every numeric zero before
+  serialization. Proof: focused Python/.NET tests assert the same canonical
+  `Bâtiment मराठी` and negative-zero bytes.
+- Confirmed root cause: the first row-accounting validator bound force rows but
+  treated model-row ledger identities as generic accepted text. Resolution:
+  require every raw model record to bind exactly one normalized fact of the
+  same record kind and exact canonical identity. Proof: the shared tampered
+  point-ledger vector is fenced as `ETABS.ROW_ACCOUNTING` in both languages.
+- Confirmed root cause: `dotnet format` selected the whole solution and applied
+  its current style rules beyond the changed domain. Resolution: reverse only
+  the formatter-created diffs outside the two WP10 C# files, normalize the
+  resulting line-ending-only status through the index, and verify the staged
+  C# paths are exactly the codec and WP10 test. Proof: `git diff --cached
+  --name-only` contains only those two C# paths.
 
 ### Rework and recurrence
 
@@ -85,14 +115,14 @@ Counts, time bases, short controls, and detail links live once in the
 
 - `RR-004` occurrences=5; minutes=unknown; includes the WP10-01 main-start
   preflight event.
-- `RR-005` occurrences=10; minutes=unknown; includes three bounded WP10-01
+- `RR-005` occurrences=12; minutes=unknown; includes five bounded WP10-01
   command-shape/path corrections.
 - `RR-006` occurrences=2; minutes=unknown; includes this preparation closeout.
 
 ### Validation through candidate preparation
 
-- All 16 Python WP10 tests and all 13 focused .NET WP10 tests pass, including the
-  shared valid identity/replay fixture, ten fail-closed mutations, duplicate
+- All 18 Python WP10 tests and all 17 focused .NET WP10 tests pass, including the
+  shared valid identity/replay fixture, eleven fail-closed mutations, duplicate
   keys/non-finite transport, explicit request scope/optional evidence, and
   host-dependency checks.
 - The structural-engineering contract validator accepts WP01–WP08 and WP10

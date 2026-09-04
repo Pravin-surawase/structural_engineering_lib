@@ -90,6 +90,21 @@ public sealed class Wp10Tests
         }
     }
 
+    [Fact]
+    public void CanonicalJsonNormalizesNegativeZeroAndPreservesUnicode()
+    {
+        var value = new Dictionary<string, object>
+        {
+            ["negative_zero"] = -0.0,
+            ["model"] = "Bâtiment मराठी"
+        };
+
+        Assert.Equal(
+            "{\"model\":\"Bâtiment मराठी\",\"negative_zero\":0}",
+            System.Text.Encoding.UTF8.GetString(
+                AnalysisSnapshotCodec.CanonicalJsonBytes(value)));
+    }
+
     public static TheoryData<string, string, string, string> InvalidVectors()
     {
         var data = new TheoryData<string, string, string, string>();

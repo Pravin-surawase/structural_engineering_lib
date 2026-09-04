@@ -67,7 +67,8 @@ reference. Any blocked row prevents snapshot acceptance.
 Identity-bearing arrays are unique and sorted; force rows retain source ordinal
 order. Canonicalization is PF4 compact UTF-8 JSON: object keys sort
 lexicographically, arrays preserve declared order, enum values are strings,
-numbers are finite, and integer-valued floats serialize as integers. The
+numbers are finite, negative zero serializes as `0`, integer-valued floats
+serialize as integers, and non-ASCII text remains unescaped UTF-8. The
 record, call-ledger, raw-capture, action-row, and snapshot hashes exclude only
 their own derived identity/digest fields.
 

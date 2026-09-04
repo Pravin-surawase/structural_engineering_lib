@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -309,12 +310,40 @@ public static class AnalysisSnapshotCodec
         var ledgerIds = ledger.Rows.Select(item => item.SourceRecordId).ToArray();
         if (ledgerIds.Length != ledgerIds.Distinct(StringComparer.Ordinal).Count() || !sourceIds.SetEquals(ledgerIds))
             return Blocked("ETABS.ROW_ACCOUNTING", "row_ledger.rows", "The row ledger does not account for every raw record exactly once.", "Reconcile raw and disposition identities without omission or duplication.");
+        if (snapshot.ActionRows.Select(item => item.SourceRowId).Distinct(StringComparer.Ordinal).Count() != snapshot.ActionRows.Count)
+            return Blocked("ETABS.ROW_ACCOUNTING", "action_rows.source_row_id", "More than one canonical action row is bound to the same raw force row.", "Bind every raw force row to at most one canonical action row.");
         var actionBySource = snapshot.ActionRows.ToDictionary(item => item.SourceRowId, item => item.RowId, StringComparer.Ordinal);
+        var expectedModelRows = new Dictionary<string, (string RecordKind, string CanonicalId)>(StringComparer.Ordinal);
+        foreach (var raw in snapshot.RawCapture.ModelRecords)
+        {
+            IEnumerable<(string EvidenceReference, string CanonicalId)> candidates = raw.RecordKind switch
+            {
+                RawModelRecordKind.ModelMetadata => [(snapshot.Metadata.EvidenceReference, snapshot.Metadata.ProjectId)],
+                RawModelRecordKind.Point => snapshot.Points.Select(item => (item.EvidenceReference, item.PointId)),
+                RawModelRecordKind.Material => snapshot.Materials.Select(item => (item.EvidenceReference, item.MaterialId)),
+                RawModelRecordKind.Section => snapshot.Sections.Select(item => (item.EvidenceReference, item.SectionId)),
+                RawModelRecordKind.Member => snapshot.Members.Select(item => (item.EvidenceReference, item.MemberId)),
+                RawModelRecordKind.LoadCase => snapshot.LoadCases.Select(item => (item.EvidenceReference, item.CaseId)),
+                RawModelRecordKind.LoadCombination => snapshot.LoadCombinations.Select(item => (item.EvidenceReference, item.CombinationId)),
+                RawModelRecordKind.ResultSelection => snapshot.ResultSelections.Select(item => (item.EvidenceReference, item.SelectionId)),
+                RawModelRecordKind.Station => snapshot.Stations.Select(item => (item.EvidenceReference, item.StationId)),
+                _ => []
+            };
+            var matches = candidates.Where(item => item.EvidenceReference == raw.SourceRecordId).ToArray();
+            if (matches.Length != 1)
+                return Blocked("ETABS.ROW_ACCOUNTING", "row_ledger.rows", "A raw model row is not bound to exactly one canonical model fact.", "Bind each raw model row to one fact of the matching record kind.");
+            expectedModelRows[raw.SourceRecordId] = (RawRecordKindToken(raw.RecordKind), matches[0].CanonicalId);
+        }
         foreach (var item in ledger.Rows)
         {
-            if (actionBySource.TryGetValue(item.SourceRecordId, out var actionId))
+            if (expectedModelRows.TryGetValue(item.SourceRecordId, out var expectedModel))
             {
-                if (item.Disposition != SnapshotRowDisposition.Accepted || item.CanonicalId != actionId)
+                if (item.RecordKind != expectedModel.RecordKind || item.Disposition != SnapshotRowDisposition.Accepted || item.CanonicalId != expectedModel.CanonicalId)
+                    return Blocked("ETABS.ROW_ACCOUNTING", "row_ledger.rows", "An accepted model row is not bound to its canonical kind and identity.", "Bind each accepted raw model row to its matching canonical model fact.");
+            }
+            else if (actionBySource.TryGetValue(item.SourceRecordId, out var actionId))
+            {
+                if (item.RecordKind != "force_row" || item.Disposition != SnapshotRowDisposition.Accepted || item.CanonicalId != actionId)
                     return Blocked("ETABS.ROW_ACCOUNTING", "row_ledger.rows", "An accepted action row is not bound to its canonical identity.", "Bind each accepted raw force row to its action-row identity.");
             }
             else if (item.RecordKind == "force_row" && item.Disposition == SnapshotRowDisposition.Accepted)
@@ -322,6 +351,20 @@ public static class AnalysisSnapshotCodec
         }
         return null;
     }
+
+    private static string RawRecordKindToken(RawModelRecordKind recordKind) => recordKind switch
+    {
+        RawModelRecordKind.ModelMetadata => "model_metadata",
+        RawModelRecordKind.Point => "point",
+        RawModelRecordKind.Material => "material",
+        RawModelRecordKind.Section => "section",
+        RawModelRecordKind.Member => "member",
+        RawModelRecordKind.LoadCase => "load_case",
+        RawModelRecordKind.LoadCombination => "load_combination",
+        RawModelRecordKind.ResultSelection => "result_selection",
+        RawModelRecordKind.Station => "station",
+        _ => throw new ArgumentOutOfRangeException(nameof(recordKind), recordKind, null)
+    };
 
     private static EtabsSnapshotResult? ValidateUnitsAndAxes(AnalysisSnapshot snapshot)
     {
@@ -508,16 +551,29 @@ public static class AnalysisSnapshotCodec
 
     private static string Canonical(JsonNode? node) => node switch
     {
-        JsonObject obj => "{" + string.Join(",", obj.OrderBy(pair => pair.Key, StringComparer.Ordinal).Select(pair => JsonSerializer.Serialize(pair.Key) + ":" + Canonical(pair.Value))) + "}",
+        JsonObject obj => "{" + string.Join(",", obj.OrderBy(pair => pair.Key, StringComparer.Ordinal).Select(pair => JsonSerializer.Serialize(pair.Key, JsonOptions) + ":" + Canonical(pair.Value))) + "}",
         JsonArray array => "[" + string.Join(",", array.Select(Canonical)) + "]",
+        JsonValue value => CanonicalValue(value),
         _ => node?.ToJsonString(JsonOptions) ?? "null"
     };
+
+    private static string CanonicalValue(JsonValue value)
+    {
+        if (value.TryGetValue<double>(out var number))
+        {
+            if (!double.IsFinite(number))
+                throw new ArgumentException("Canonical snapshot numbers must be finite.", nameof(value));
+            if (number == 0) return "0";
+        }
+        return value.ToJsonString(JsonOptions);
+    }
 
     private static JsonSerializerOptions CreateOptions()
     {
         var options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = false,
             WriteIndented = false,
             UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,

@@ -71,11 +71,11 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 10,
+      "occurrences": 12,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "At least ten retries are explicit across WP09 and WP10-01. WP09 events are contained within its 30 to 60 minute environment and coordination range; WP10-01 retries were not separately timed."
+        "basis": "At least twelve retries are explicit across WP09 and WP10-01. WP09 events are contained within its 30 to 60 minute environment and coordination range; WP10-01 retries were not separately timed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
       "last_seen_task": "WP10-01",

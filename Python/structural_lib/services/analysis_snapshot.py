@@ -775,13 +775,84 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
             "The row ledger does not account for every raw record exactly once.",
             "Reconcile raw and disposition identities without omission or duplication.",
         )
+    action_source_ids = [item.source_row_id for item in snapshot.action_rows]
+    if len(action_source_ids) != len(set(action_source_ids)):
+        return _blocked(
+            "ETABS.ROW_ACCOUNTING",
+            "action_rows.source_row_id",
+            "More than one canonical action row is bound to the same raw force row.",
+            "Bind every raw force row to at most one canonical action row.",
+        )
     action_by_source = {
         item.source_row_id: item.row_id for item in snapshot.action_rows
     }
+    model_bindings = {
+        RawModelRecordKind.MODEL_METADATA: (
+            (snapshot.metadata.evidence_reference, snapshot.metadata.project_id),
+        ),
+        RawModelRecordKind.POINT: tuple(
+            (item.evidence_reference, item.point_id) for item in snapshot.points
+        ),
+        RawModelRecordKind.MATERIAL: tuple(
+            (item.evidence_reference, item.material_id) for item in snapshot.materials
+        ),
+        RawModelRecordKind.SECTION: tuple(
+            (item.evidence_reference, item.section_id) for item in snapshot.sections
+        ),
+        RawModelRecordKind.MEMBER: tuple(
+            (item.evidence_reference, item.member_id) for item in snapshot.members
+        ),
+        RawModelRecordKind.LOAD_CASE: tuple(
+            (item.evidence_reference, item.case_id) for item in snapshot.load_cases
+        ),
+        RawModelRecordKind.LOAD_COMBINATION: tuple(
+            (item.evidence_reference, item.combination_id)
+            for item in snapshot.load_combinations
+        ),
+        RawModelRecordKind.RESULT_SELECTION: tuple(
+            (item.evidence_reference, item.selection_id)
+            for item in snapshot.result_selections
+        ),
+        RawModelRecordKind.STATION: tuple(
+            (item.evidence_reference, item.station_id) for item in snapshot.stations
+        ),
+    }
+    expected_model_rows: dict[str, tuple[str, str]] = {}
+    for raw in snapshot.raw_capture.model_records:
+        matches = [
+            canonical_id
+            for evidence_reference, canonical_id in model_bindings[raw.record_kind]
+            if evidence_reference == raw.source_record_id
+        ]
+        if len(matches) != 1:
+            return _blocked(
+                "ETABS.ROW_ACCOUNTING",
+                "row_ledger.rows",
+                "A raw model row is not bound to exactly one canonical model fact.",
+                "Bind each raw model row to one fact of the matching record kind.",
+            )
+        expected_model_rows[raw.source_record_id] = (
+            raw.record_kind.value,
+            matches[0],
+        )
     for item in ledger.rows:
-        if item.source_record_id in action_by_source:
+        if item.source_record_id in expected_model_rows:
+            expected_kind, expected_id = expected_model_rows[item.source_record_id]
             if (
-                item.disposition is not RowDisposition.ACCEPTED
+                item.record_kind != expected_kind
+                or item.disposition is not RowDisposition.ACCEPTED
+                or item.canonical_id != expected_id
+            ):
+                return _blocked(
+                    "ETABS.ROW_ACCOUNTING",
+                    "row_ledger.rows",
+                    "An accepted model row is not bound to its canonical kind and identity.",
+                    "Bind each accepted raw model row to its matching canonical model fact.",
+                )
+        elif item.source_record_id in action_by_source:
+            if (
+                item.record_kind != "force_row"
+                or item.disposition is not RowDisposition.ACCEPTED
                 or item.canonical_id != action_by_source[item.source_record_id]
             ):
                 return _blocked(
