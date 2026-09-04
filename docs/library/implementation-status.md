@@ -570,6 +570,10 @@ Candidate review and one bounded repair:
   best-effort release of every acquired COM reference. One consolidated repair
   closed all five, and the refreshed 410-call installed matrix retained the
   same protected-state digest with no second repair cycle.
+- The repaired candidate's read-only integrity gate then rejected four text
+  hygiene defects inherited from the original candidate. Design revision 2
+  normalized only those solution/project/lock paths against the original task
+  base; no product behavior or live ETABS evidence changed.
 
 WP10-03 remains separate. It owns the STA broker, operation lease, durable
 hash-chained call ledger, deadline/uncertain-call fencing, durable raw artifact,

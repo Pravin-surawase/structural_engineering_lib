@@ -282,6 +282,17 @@ and the section/material getters must agree. The repaired candidate must repeat
 only its affected build, ten fake-host tests, changed-path formatting, and one
 final installed matrix. A second rejection still requires `REPLAN`.
 
+The first repaired candidate then reached the mandatory read-only integrity
+gate, which found mixed line endings in the solution, test project, and test
+lock file plus a missing final newline in the adapter lock file. Those files
+entered with the original candidate, while the repair formatter correctly
+selected only the five source files changed since that candidate. This is a
+delivery-path defect, not an ETABS behavior defect. Design revision 2 therefore
+adds the full task base (`419941c7d361c6ad2ba240b3c4d7662923ef59d5`) to the
+text-hygiene selection, normalizes only the four reported files to repository
+LF/EOF policy, repeats only the affected build/test/session evidence, and then
+creates one replacement candidate. Another rejection remains a hard stop.
+
 ### Focused freeze matrix
 
 Run this union only after content freezes; use a narrow reproducer earlier only

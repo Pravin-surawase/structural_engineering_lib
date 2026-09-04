@@ -48,6 +48,9 @@ WP10-04 normalization, Excel, performance, or release work.
   `5e47bfeeeedc7949792e9cc6c7c87e6efb0bed429791f4a9bb146900c0609552`;
   the safe committed manifest is
   `docs/verification/wp10-02-host-microprobe-evidence.json`.
+- Design revision 2 normalized only the four integrity-reported
+  solution/project/lock files to repository LF/EOF policy. No product or live
+  ETABS behavior changed, and no failing candidate was published.
 
 ### Issues encountered
 
@@ -80,6 +83,15 @@ WP10-04 normalization, Excel, performance, or release work.
 - Two focused-test commands were started from the repository root, outside the
   `CSharp/global.json` Microsoft.Testing.Platform context. The maintained
   CSharp-root command with an exact class filter passed all ten tests. (`RR-005`)
+- The repaired candidate's single read-only integrity gate found mixed CRLF/LF
+  bytes in the solution, test project, and test lock file plus a missing final
+  LF in the adapter lock file. These files entered with the first candidate and
+  were outside the repair-only formatter selection. The lifecycle correctly
+  entered digest-gated `REPLAN`; no failing candidate was pushed. (`RR-012`)
+- ⚠️ TERMINAL ISSUE: two later read-only PowerShell probes required correction:
+  an unquoted `HEAD^{tree}` revision was parsed as an encoded command, and a
+  direct `foreach` pipeline was rejected by the parser. Quoting the revision
+  and collecting rows before piping resolved both. (`RR-005`)
 - ⚠️ TERMINAL ISSUE: six command shapes required correction: a reused
   JavaScript binding, a PowerShell body supplied where the tool required
   JavaScript, two malformed inline reflection pipelines, one Windows-invalid
@@ -132,6 +144,17 @@ WP10-04 normalization, Excel, performance, or release work.
   VSTest command path. Resolution: run the maintained test command with
   `CSharp` as the explicit working directory and filter the exact WP10 class.
   (`RR-005`)
+- Confirmed root cause: the repair formatter selected paths changed after the
+  first candidate rather than the complete task diff from its base; therefore
+  it could not normalize four original-candidate text files before the first
+  integrity run. Resolution: change the acceptance digest, bind design revision
+  2 to the original task base, normalize exactly the four reported paths to the
+  repository LF/EOF contract, and repeat only their affected verification
+  before one replacement candidate. (`RR-012`)
+- Confirmed root cause: PowerShell requires braces in Git revision expressions
+  to be quoted and does not accept that direct statement-pipeline form.
+  Resolution: quote `HEAD^{tree}` and accumulate loop output before piping.
+  (`RR-005`)
 - Confirmed root cause: long mixed-language one-liners and shell-specific path
   syntax bypassed the repository's literal-command rule. Resolution: keep the
   execution wrapper in JavaScript, use one literal PowerShell command per
@@ -143,12 +166,15 @@ WP10-04 normalization, Excel, performance, or release work.
 - `RR-002`, occurrences=9, minutes=unknown — require successful model-specific
   getter return/shape proof, not only installed static reflection, before
   admitting a host-sensitive operation.
-- `RR-005`, occurrences=28, minutes=unknown — use maintained launchers, literal
+- `RR-005`, occurrences=30, minutes=unknown — use maintained launchers, literal
   PowerShell blocks, exact paths, native output tools, unique JavaScript
   bindings, and non-reserved task-specific variable names.
 - `RR-011`, occurrences=1, minutes=unknown — use the maintained changed-path
   formatter for focused verification; do not invoke repo-wide formatting from
   a bounded packet.
+- `RR-012`, occurrences=1, minutes=unknown — on a repair or replan, bind text
+  hygiene to the original task base so paths from earlier candidates are not
+  omitted from the replacement candidate.
 
 **Git handoff:** No receipt is required for routine same-checkout delivery.
 The external raw capture is evidence retained by this task, not an authority or

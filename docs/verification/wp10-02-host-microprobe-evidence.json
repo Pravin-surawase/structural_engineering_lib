@@ -221,6 +221,20 @@
     ],
     "repaired_live_matrix_completed": true
   },
+  "candidate_integrity_replan": {
+    "rejected_candidate_commit": "d9d6f07075ea5a44891468e82a3771f80e57a7e1",
+    "rejected_candidate_tree": "f7c92572e7ee47740c55f13b835d25fa79301e34",
+    "product_or_live_etabs_behavior_changed": false,
+    "reported_path_count": 4,
+    "normalized_paths": [
+      "CSharp/StructAutomate.slnx",
+      "CSharp/src/StructuralEngineering.Etabs/packages.lock.json",
+      "CSharp/tests/StructAutomate.Tests/StructAutomate.Tests.csproj",
+      "CSharp/tests/StructAutomate.Tests/packages.lock.json"
+    ],
+    "lf_and_final_newline_verified": true,
+    "resolution": "Design revision 2 normalized only the reported text files against the original task base before one replacement candidate."
+  },
   "scope": {
     "getter_only": true,
     "setters": 0,
