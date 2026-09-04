@@ -21,6 +21,9 @@
 *.mjs text eol=lf
 *.jsx text eol=lf
 *.css text eol=lf
+*.cs text eol=lf
+*.csproj text eol=lf
+*.slnx text eol=lf
 *.sh text eol=lf
 
 # Binary files — do not modify

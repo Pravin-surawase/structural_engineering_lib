@@ -293,6 +293,15 @@ text-hygiene selection, normalizes only the four reported files to repository
 LF/EOF policy, repeats only the affected build/test/session evidence, and then
 creates one replacement candidate. Another rejection remains a hard stop.
 
+Hosted run `33905189848` then reproduced the remaining platform boundary: the
+Windows checkout converted the five changed `.cs` files to CRLF because
+`.gitattributes` declared them only through `text=auto`, while the maintained
+.NET formatter requires LF. Local source files had been LF and all product
+checks passed, so this was not a source-format or ETABS behavior defect. The
+bounded hosted repair adds explicit LF policy for `.cs`, `.csproj`, and `.slnx`
+files, renormalizes the full task diff, repeats only changed-.NET formatting and
+the directly affected build/tests, then republishes one replacement head.
+
 ### Focused freeze matrix
 
 Run this union only after content freezes; use a narrow reproducer earlier only

@@ -235,6 +235,17 @@
     "lf_and_final_newline_verified": true,
     "resolution": "Design revision 2 normalized only the reported text files against the original task base before one replacement candidate."
   },
+  "hosted_format_repair": {
+    "failed_run_id": 33905189848,
+    "failed_job_id": 101128410618,
+    "failed_step": "Verify changed C# formatting",
+    "repository_validation_passed": true,
+    "documentation_validation_passed": true,
+    "product_tests_started": false,
+    "product_or_live_etabs_behavior_changed": false,
+    "root_cause": "Windows checkout used text=auto CRLF for changed C# files while the maintained dotnet formatter requires LF.",
+    "resolution": "Declare explicit LF attributes for .cs, .csproj, and .slnx and renormalize the full task diff."
+  },
   "scope": {
     "getter_only": true,
     "setters": 0,

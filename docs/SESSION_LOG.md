@@ -51,6 +51,10 @@ WP10-04 normalization, Excel, performance, or release work.
 - Design revision 2 normalized only the four integrity-reported
   solution/project/lock files to repository LF/EOF policy. No product or live
   ETABS behavior changed, and no failing candidate was published.
+- Hosted run `33905189848` passed repository and documentation validation but
+  its .NET job stopped at changed-C# formatting before build/tests: Windows
+  checkout produced CRLF for the five changed `.cs` files while the maintained
+  formatter requires LF. The failing head was not merged. (`RR-013`)
 
 ### Issues encountered
 
@@ -151,6 +155,12 @@ WP10-04 normalization, Excel, performance, or release work.
   2 to the original task base, normalize exactly the four reported paths to the
   repository LF/EOF contract, and repeat only their affected verification
   before one replacement candidate. (`RR-012`)
+- Confirmed root cause: `.gitattributes` left `.cs`, `.csproj`, and `.slnx`
+  under platform-dependent `text=auto`, so a clean Windows hosted checkout
+  changed locally verified LF source bytes to CRLF before `dotnet format
+  --verify-no-changes`. Resolution: declare explicit LF policy for those three
+  maintained .NET extensions, renormalize the full task diff, and repeat only
+  the failed .NET formatting/build/test evidence. (`RR-013`)
 - Confirmed root cause: PowerShell requires braces in Git revision expressions
   to be quoted and does not accept that direct statement-pipeline form.
   Resolution: quote `HEAD^{tree}` and accumulate loop output before piping.
@@ -175,6 +185,9 @@ WP10-04 normalization, Excel, performance, or release work.
 - `RR-012`, occurrences=1, minutes=unknown — on a repair or replan, bind text
   hygiene to the original task base so paths from earlier candidates are not
   omitted from the replacement candidate.
+- `RR-013`, occurrences=1, minutes=unknown — declare LF explicitly for
+  maintained .NET source/project/solution extensions so local and hosted
+  Windows checkouts run the same formatter bytes.
 
 **Git handoff:** No receipt is required for routine same-checkout delivery.
 The external raw capture is evidence retained by this task, not an authority or

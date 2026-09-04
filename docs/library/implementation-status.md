@@ -574,6 +574,10 @@ Candidate review and one bounded repair:
   hygiene defects inherited from the original candidate. Design revision 2
   normalized only those solution/project/lock paths against the original task
   base; no product behavior or live ETABS evidence changed.
+- The first hosted run exposed platform-dependent CRLF checkout for changed C#
+  files. Explicit LF attributes for `.cs`, `.csproj`, and `.slnx` now align
+  local and hosted formatter bytes; the failed run never reached or invalidated
+  product tests and was not merged.
 
 WP10-03 remains separate. It owns the STA broker, operation lease, durable
 hash-chained call ledger, deadline/uncertain-call fencing, durable raw artifact,
