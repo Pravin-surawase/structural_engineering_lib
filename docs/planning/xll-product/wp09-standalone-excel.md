@@ -1,3 +1,10 @@
+**Type:** Architecture
+**Audience:** Developers
+**Status:** Active
+**Importance:** Critical
+**Created:** 2026-09-04
+**Last Updated:** 2026-09-04
+
 # WP09 — standalone Windows Excel product
 
 WP09 delivers the first complete application over the native
@@ -52,10 +59,17 @@ write set.
    current results, export a calculation package, and uninstall/repair. Retain
    source, artifact, runtime, workbook, receipt, and evidence hashes.
 5. **Performance.** Freeze `BENCH-EXCEL-TYPICAL` at 20 members and 200 action or
-   check rows. Run five untimed warm-ups, thirty warm measurements, and ten cold
-   Excel launches. Report median, p95, maximum, progress/cancellation response,
-   working-set change, exact machine/runtime identities, raw samples, and the
-   PF9 budget verdict.
+   check rows. The first warm-up must perform the full calculation after sample
+   creation. Later unchanged calls may use the calculation engine's verified,
+   content-addressed current-result cache; every measured warm call must prove
+   that reuse in its command response. Run five untimed warm-ups, thirty warm
+   measurements, and ten cold Excel launches. Report the initial full-compute
+   time separately from the cache-backed warm median, p95, maximum,
+   progress/cancellation response, working-set change, exact machine/runtime
+   identities, raw samples, and the PF9 budget verdict: warm median at most
+   750 ms, warm p95 at most 1 s, cold ready at most 3 s,
+   progress/cancellation response at most 250 ms, and Excel working-set growth
+   at most 256 MiB.
 
 ## Acceptance
 

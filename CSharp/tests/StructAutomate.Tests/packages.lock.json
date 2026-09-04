@@ -150,11 +150,75 @@
           "StructAutomate.Contracts": "[0.1.0, )"
         }
       },
-      "structautomate.excel": {
+      "structuralengineering.analysis": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )",
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.beam": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Codes.IS456": "[0.1.0, )",
+          "StructuralEngineering.Reinforcement": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.codes.is456": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.construction": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Core": "[0.1.0, )",
+          "StructuralEngineering.Reinforcement": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.contracts": {
+        "type": "Project"
+      },
+      "structuralengineering.core": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.exceldna": {
         "type": "Project",
         "dependencies": {
           "ExcelDna.AddIn": "[1.9.0, )",
-          "StructAutomate.Application": "[0.1.0, )"
+          "StructuralEngineering.Analysis": "[0.1.0, )",
+          "StructuralEngineering.Beam": "[0.1.0, )",
+          "StructuralEngineering.Codes.IS456": "[0.1.0, )",
+          "StructuralEngineering.Construction": "[0.1.0, )",
+          "StructuralEngineering.Contracts": "[0.1.0, )",
+          "StructuralEngineering.Core": "[0.1.0, )",
+          "StructuralEngineering.Optimization": "[0.1.0, )",
+          "StructuralEngineering.Reinforcement": "[0.1.0, )",
+          "StructuralEngineering.Reporting": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.optimization": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )",
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.reinforcement": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.reporting": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Beam": "[0.1.0, )",
+          "StructuralEngineering.Construction": "[0.1.0, )"
         }
       },
       "ExcelDna.AddIn": {

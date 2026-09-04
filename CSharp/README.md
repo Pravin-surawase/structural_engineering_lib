@@ -14,18 +14,18 @@ dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- beam
 dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- benchmark
 ```
 
-The packed add-in is `src/StructAutomate.Excel/bin/Release/net10.0-windows/publish/StructAutomate.Excel-AddIn64-packed.xll`. It contains managed dependencies and requires 64-bit Windows Excel and the matching .NET 10 Desktop Runtime. Compiler and numerical tests verify this build. Loading in Excel, installation/signing, workbook save/reopen and ETABS compatibility have separate application tests. The solution does not currently connect to ETABS; the reusable native packages implement the bounded WP01-WP08 beam workflow.
+The packed add-in is `src/StructuralEngineering.ExcelDna/bin/Release/net10.0-windows/publish/StructuralEngineering.ExcelDna-AddIn64-packed.xll`. It contains its managed dependencies and requires 64-bit Windows Excel and the matching .NET 10 Desktop Runtime. The WP09 packaging scripts under `packaging/excel` create a signed, checksummed distribution and exercise per-user preflight, installation, repair, installed Excel acceptance, and uninstall. The solution does not connect to ETABS yet; the reusable native packages and standalone workbook implement the bounded WP01-WP08 beam workflow.
 
 Worksheet examples:
 
 ```excel
-=SA.VERSION()
-=SA.BAR.MASS(20,6000,4,7850)
-=SA.BEAM.SS.UDL(6000,10,25000,3125000000)
-=SA.REBAR.GEOMETRY(300,500,25,8,25,"bottom",A2:C4)
+=STR.INFO.VERSION()
+=STR.REBAR.AREA(20)
+=STR.REBAR.MASS_PER_LENGTH(20,7850)
+=STR.IS456.DETAIL.DEVELOPMENT_LENGTH(A2)
 ```
 
-`A2:C4` contains tension-group bar diameter, x from left and y from top, all in mm. Use one tension group per geometry call. Blank cells produce a field error; an entered zero remains zero. Array functions spill labelled results, so leave the output range clear. Functions are pure and perform no model, workbook or file mutations.
+Complex functions accept one strict `snake_case` JSON request and spill labelled result states, identities, provenance, output, and diagnostics. Blank cells produce a field error; an entered zero remains zero. Functions are pure and perform no model, workbook, file, process, network, or ETABS mutation. The four earlier `SA.*` names remain compatibility delegates. See the [Excel user and function reference](../docs/library/excel/README.md) and the shipped [20-member sample workbook](samples/StructAutomate-Standalone-Beam.xlsx).
 
 ## Contracts and boundaries
 
@@ -51,6 +51,6 @@ Geometry fit here is a group calculation. Full member fit additionally evaluates
 
 ## Dependencies and architecture
 
-`Contracts` has no engineering formulas or host dependencies. `Engineering` references Contracts and Math.NET Numerics. `Application` composes pure services. `Excel` references Application and Excel-DNA. Tests cover library behavior and Excel argument conversion; the command-line example runner references Application. CSI references belong in an adapter project, keeping version and apartment constraints out of the pure kernel.
+`StructAutomate.Contracts` has no engineering formulas or host dependencies. `StructAutomate.Engineering` references those contracts and Math.NET Numerics, while `StructAutomate.Application` composes the earlier services. The reusable requirements-first implementation lives in the `StructuralEngineering.*` projects. `StructuralEngineering.ExcelDna` references the native operation packages and Excel-DNA; host effects enter only through its command/table/file adapters. Tests cover library behavior, strict Excel projection, workbook transactions, freshness, packaging, and native operation dispatch. CSI references belong in a later adapter project, keeping version and apartment constraints out of the pure kernel.
 
-Versions are pinned in `global.json` and `Directory.Packages.props`; package content is recorded by each `packages.lock.json`. Runtime packages are Excel-DNA 1.9.0 and Math.NET Numerics 5.0.0. xUnit v3 4.0.0 uses Microsoft.Testing.Platform. WP08 implements bounded deterministic candidate enumeration and ranking directly, with no external optimization dependency. See [dependency decisions](dependencies.json).
+Versions are pinned in `global.json` and `Directory.Packages.props`; every project records resolved package content in its NuGet lock file. Runtime packages are Excel-DNA 1.9.0 and Math.NET Numerics 5.0.0. xUnit v3 4.0.0 uses Microsoft.Testing.Platform. WP08 implements bounded deterministic candidate enumeration and ranking directly, with no external optimization dependency. See [dependency decisions](dependencies.json).

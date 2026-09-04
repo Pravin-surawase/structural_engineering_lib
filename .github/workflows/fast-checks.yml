@@ -324,13 +324,13 @@ jobs:
       - name: Assert packed x64 XLL artifact
         shell: pwsh
         run: |
-          [xml]$project = Get-Content CSharp/src/StructAutomate.Excel/StructAutomate.Excel.csproj
+          [xml]$project = Get-Content CSharp/src/StructuralEngineering.ExcelDna/StructuralEngineering.ExcelDna.csproj
           $properties = $project.Project.PropertyGroup
           if ($properties.ExcelDnaPack -ne 'true' -or $properties.ExcelDnaCreate64BitAddIn -ne 'true' -or $properties.ExcelDnaCreate32BitAddIn -ne 'false') {
             throw 'Excel project must pack a 64-bit-only XLL artifact.'
           }
-          $publish = 'CSharp/src/StructAutomate.Excel/bin/Release/net10.0-windows/publish'
-          $xll = Join-Path $publish 'StructAutomate.Excel-AddIn64-packed.xll'
+          $publish = 'CSharp/src/StructuralEngineering.ExcelDna/bin/Release/net10.0-windows/publish'
+          $xll = Join-Path $publish 'StructuralEngineering.ExcelDna-AddIn64-packed.xll'
           if (-not (Test-Path -LiteralPath $xll -PathType Leaf)) {
             throw "Packed x64 XLL artifact is missing: $xll"
           }

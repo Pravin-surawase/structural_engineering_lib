@@ -1,0 +1,77 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0-windows7.0": {
+      "ExcelDna.AddIn": {
+        "type": "Direct",
+        "requested": "[1.9.0, )",
+        "resolved": "1.9.0",
+        "contentHash": "+jxXXswl6ds2ZGTwsuKWwO8crfzqvBFqd/t3PmEtg2YR6EN9F2pA97hiXblckhWZ6AKBlSGEC/ONTrCON2O33A==",
+        "dependencies": {
+          "ExcelDna.Integration": "[1.9.0]"
+        }
+      },
+      "ExcelDna.Integration": {
+        "type": "Transitive",
+        "resolved": "1.9.0",
+        "contentHash": "A1nbeRWa+rg3RoO9NV9iqNwQxWb9eVNG+Ki3uCfo8D3U8CT11/fzTIvVT3y2LoCTzqRIPwTysqp9sj42MKYw5Q=="
+      },
+      "structuralengineering.analysis": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )",
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.beam": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Codes.IS456": "[0.1.0, )",
+          "StructuralEngineering.Reinforcement": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.codes.is456": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.construction": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Core": "[0.1.0, )",
+          "StructuralEngineering.Reinforcement": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.contracts": {
+        "type": "Project"
+      },
+      "structuralengineering.core": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.optimization": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )",
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.reinforcement": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
+      "structuralengineering.reporting": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Beam": "[0.1.0, )",
+          "StructuralEngineering.Construction": "[0.1.0, )"
+        }
+      }
+    }
+  }
+}

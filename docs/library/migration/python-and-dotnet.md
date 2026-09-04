@@ -5,9 +5,11 @@ the semantic operations under `structural_lib.beam`; compatibility wrappers may
 translate older scalar inputs only when physical meaning is unambiguous.
 
 The corresponding .NET namespaces begin with `StructuralEngineering.*`.
-`StructAutomate.*` remains the earlier Excel-DNA learning/application surface
-while the reusable native packages are established. Application code should
-move by semantic operation identifier rather than by similarly named helper.
+`StructuralEngineering.ExcelDna` is the canonical Windows Excel adapter over
+those packages. The earlier `StructAutomate.Excel` project has been replaced;
+its four `SA.*` worksheet names remain compatibility delegates in the canonical
+XLL. Application code should move by semantic operation identifier rather than
+by similarly named helper.
 
 Migration requires callers to resolve previously implicit information:
 
