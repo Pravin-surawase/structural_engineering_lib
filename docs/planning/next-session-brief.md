@@ -3,10 +3,10 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-09-04
-- Focus: Implement the exact-version, getter-only C# ETABS boundary and prove one bounded installed matrix without combining WP10-03 broker/ledger work, WP10-04 normalization, Excel, performance, or release work.
-- Completed: Admitted a clean current lane, bound the fixed WP10 plan and WP10-01 authority, and kept one parent session with no subagents.; Freshly verified .NET 10.0.400, the one ETABS 23.3.1.4563 process, exact PID and process start, ETABSv1 2.16.0.0 assembly identity/hash, x64 type-library hash, saved copied-model path/hash/size/mtime, lock, unit enum 6, 15 finished analysis cases, and the one intended output combination.; Added `StructuralEngineering.Etabs` as an optional `net10.0-windows` project with no compile-time CSI binary. It loads and validates the exact installed assembly at runtime, attaches by exact PID, rejects identity/version/file drift, exposes the 48-entry frozen getter matrix through a runtime read-only dictionary, validates exact reflected parameter names, and attempts every acquired COM release even when an earlier release fails.
-- Recurrence controls: RR-002 x9 / unknown: Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.; RR-005 x30 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-011 x1 / unknown: Use ./run.sh format --check with the affected scope so the outside-scope byte guard and changed-path selection remain authoritative.
+- Date: 2026-09-05
+- Focus: Update the remaining WP10 plan so each slice begins from one compact plan that binds the existing session, verification, formatting, hook, hosted, and recurrence controls without creating a WP10-only delivery framework.
+- Completed: Marked WP10-02 complete and WP10-03 next while preserving WP10-02's detailed execution and repair history.; Added one-owner boundaries for task state, change routing, command discovery, formatting/integrity, installed-host evidence, recurrence, and hosted assurance. ETABS/model/workbook facts remain in WP10 evidence and do not enter the generic control plane.; Added the reusable eleven-row executable plan card and the exact existing automation sequence. It binds one immutable task-base SHA across formatting, validation, repair, and replan and does not claim that a future consolidated preparation command already exists.
+- Recurrence controls: RR-005 x31 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
 <!-- HANDOFF:END -->
 
 ## Current boundary
