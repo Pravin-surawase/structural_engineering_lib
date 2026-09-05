@@ -204,14 +204,14 @@
     {
       "id": "RR-013",
       "pattern": "Platform-dependent C# checkout line endings disagree with the hosted dotnet formatter",
-      "occurrences": 2,
+      "occurrences": 3,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed. WP10-05 C# formatting did not normalize mixed endings in edited csproj/PowerShell files; normalize all changed text owners before candidate integrity."
+        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed. WP10-05 C# formatting did not normalize mixed endings in edited csproj/PowerShell files; normalize all changed text owners before candidate integrity. WP10-05B candidate integrity found that the newly generated worker packages.lock.json lacked a final newline, outside the selected CSharp formatter paths. Normalize the generated lock text final LF before freezing; no dependency or product-code change was needed. This repair was untimed."
       },
       "short_solution": "Declare LF explicitly for maintained .cs, .csproj, and .slnx files and renormalize the full candidate diff.",
-      "last_seen_task": "WP10-05",
+      "last_seen_task": "WP10-05B",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-02-candidate-audit-repair--2026-09-04",
