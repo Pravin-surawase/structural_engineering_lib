@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 40,
+      "occurrences": 42,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included a stale implementation-status path, Windows rg glob paths and an absent usage-helper guess. WP10-05-PREP added two absent filename guesses for a broker receipt and packaging README. Discovered receipt paths and actual script parameter blocks succeeded; correction time was not isolated."
+        "basis": "WP10-04 intake included a stale implementation-status path, Windows rg glob paths and an absent usage-helper guess. WP10-05-PREP added two absent filename guesses for a broker receipt and packaging README. WP10-REACT-REUSE added an exported-hook filename assumption and an absent test-directory search; discovered source paths succeeded. Correction time was not isolated."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-05-PREP",
+      "last_seen_task": "WP10-REACT-REUSE",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -270,14 +270,14 @@
     {
       "id": "RR-017",
       "pattern": "An obsolete explicit fetch refspec blocks refreshing required remote refs",
-      "occurrences": 1,
+      "occurrences": 2,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04-PREP ordinary fetch failed because remote.origin.fetch still requested absent codex/wp10-completion. Explicitly fetching the existing main and WP10-03 refs succeeded; the correction was not separately timed."
+        "basis": "WP10-04-PREP ordinary fetch failed because remote.origin.fetch still requested absent codex/wp10-completion. WP10-REACT-REUSE encountered the same retained setting. Explicit fetches of the required existing refs succeeded; correction time was not separately measured."
       },
       "short_solution": "Inspect configured refspecs and fetch exact required existing refs; preserve configuration and branches unless cleanup is separately authorized.",
-      "last_seen_task": "WP10-04-PREP",
+      "last_seen_task": "WP10-REACT-REUSE",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"

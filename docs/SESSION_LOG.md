@@ -5,6 +5,66 @@
 
 ---
 
+## 2026-09-05 — Session: React geometry reuse review
+
+**Task:** WP10-REACT-REUSE
+**Agent:** RESEARCHER (one parent; no subagents)
+**Branch:** `codex/wp10-react-reuse-review`; reviewed product source is merged
+main `973cea8c39edf347ccfb19561cf10a06b48bf770`.
+
+**Focus:** Check whether the existing React geometry workflow can support the
+whole-model capture discussion. Source review only; preserve findings without
+changing product code or treating a proposed acquisition sequence as approved.
+
+### Completed
+
+- Traced imported endpoints through `useCSVImport.ts`, `importAdapter.ts`,
+  `buildGeometrySpaceV1`, `Viewport3D` and `BuildingScene`. The current viewer
+  builds rectangular member meshes in memory, with explicit coordinate
+  conversion, source identities, revision tracking, filtering and selection.
+- Confirmed separate reusable rebar/stirrup renderers and the Python geometry
+  service. The building API/hook also exists, but the active building viewport
+  constructs its renderer contract locally rather than calling that hook.
+- Identified the future integration boundaries: the beam-row import hardcodes
+  beam classification; neighbour detail uses a 0.1 m endpoint-proximity rule;
+  the renderer contract lacks source joint identities, support faces, insertion
+  offsets and complete section axes. Reinforcement previews regenerate from
+  area inputs and defaults, so they cannot establish actual issued bar lengths.
+  Reuse the presentation components with a source-backed model projection;
+  keep authoritative topology and detailing in the engineering services.
+- Existing Python geometry-space/building tests passed (3 tests). Existing
+  React test sources were inspected, but execution could not start because
+  this checkout has no `react_app/node_modules`. No fresh browser, rendering
+  performance, ETABS, Excel or C#-to-React integration pass is claimed.
+
+### Issues encountered
+
+- Two optional source searches used absent paths: the hook is in
+  `useCSVImport.ts`, not a file named after its exported function, and there is
+  no `react_app/tests` directory. Frontend test execution also found that its
+  dependency directory is absent.
+- Ordinary `git fetch origin` requested the already-absent
+  `codex/wp10-completion` branch through the retained explicit fetch settings.
+
+### Root causes and resolutions
+
+- Filename assumptions caused the optional search errors; `rg --files` and
+  the discovered `src/**/__tests__` locations resolved them. The React test
+  command could not load Vitest because dependencies are not installed; this
+  remains an explicit verification limit for this source-review task.
+- Inspection of `remote.origin.fetch` confirmed the obsolete branch request.
+  Fetching `refs/heads/main:refs/remotes/origin/main` succeeded; configuration
+  and branches were preserved, and the reviewed main SHA did not change.
+
+### Rework and recurrence
+
+- RR-005, occurrences=42, minutes=unknown: two additional absent-path searches;
+  resolve exported symbols and actual directories before constructing paths.
+- RR-017, occurrences=2, minutes=unknown: obsolete explicit fetch refspec;
+  inspect settings and fetch only the required existing refs.
+
+---
+
 ## 2026-09-05 — Session: WP10-05 source-backed preparation
 
 **Task:** WP10-05-PREP
