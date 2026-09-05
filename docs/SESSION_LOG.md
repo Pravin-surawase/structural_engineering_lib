@@ -5,6 +5,68 @@
 
 ---
 
+## 2026-09-05 — Session: Staged XLL automation and demo inputs
+
+**Task:** XLL-AUTOMATION-PRODUCT
+**Agent:** RESEARCHER (one parent and one bounded read-only engineering reviewer)
+**Branch:** `codex/wp10-react-reuse-review`, continuing local product discussion.
+
+**Focus:** Refine the owner's overnight automation draft, populate development
+inputs, and show explicit ribbon stages sharing one future orchestrator.
+
+### Completed
+
+- Added demo-beam-preset.json with editable example material, cover, exposure,
+  fire, aggregate, bar/layer/stock, section catalogue and synthetic rate inputs.
+  The preset retains demo provenance and cannot overwrite actual model facts or
+  establish a real-project design approval.
+- Updated excel-ui-review.md and etabs-design-workflow.md: Connect ETABS, Get
+  Forces, Design, Optimise, Solver Check, Update & Recheck, Auto Run, Compare Runs
+  and Assumptions. Manual and unattended paths share services; ordinary inputs
+  and a bounded run scope replace technical controls and per-iteration prompts.
+- Defined separate context/result capture, copied-model analysis preparation,
+  complete design dependencies, qualified local solver comparisons, distinct
+  analysis/data/design failures, bounded overnight operation and small durable
+  per-frame/check history while heavy data stays in memory. Updated current-plan
+  and WP10 preparation; no immutable capability baseline was expanded.
+- The bounded reviewer examined overnight ownership, failure and recovery
+  semantics. The parent independently checked PF8 ownership and official CSI
+  concrete design, locking and member-verification guidance. Broad importer,
+  copied-model coupling and unattended installed acceptance remain future work.
+- Created and browser-checked the revised conversation preview: prefilled
+  assumptions, disabled premature actions, connection without forces, shared
+  Auto Run simulation, three example trials and rejected-trial details. Cover
+  editing changes origin and invalidates dependent design/update state. The
+  final input repair retained keyboard focus and the requested value.
+- No actual Excel/ETABS operation, engineering calculation, XLL source change or
+  overnight job occurred. Trial quantities/outcomes in the preview are explicitly
+  fixed illustrative data. This is local planning and UI demonstration work.
+
+### Issues encountered
+
+- The draft's Get Forces action included missing-result analysis without naming
+  the analysis model's ownership; applying this to the attached source would
+  contradict the accepted getter-only contract.
+- The first preview input handler rebuilt the sheet on each change, replacing
+  the active input and losing focus during editing.
+
+### Root causes and resolutions
+
+- PF8 distinguishes attached observation from owned-copy operations. One visible
+  Get Forces action may orchestrate a separately qualified owned-copy service;
+  it never promotes the attached source or expands the WP10 getter adapter.
+  The UI and workflow documents now state that same boundary explicitly.
+- The preview's full render replaced input nodes. The change handler now updates
+  ribbon state and revision labels without replacing the sheet. A browser edit
+  from 30 to 35 retained both the input value and focus, with Edited demo origin.
+
+### Rework and recurrence
+
+- No recurring issue identified. One preview interaction repair; no engineering
+  implementation, frozen delivery candidate or hosted validation retry.
+
+---
+
 ## 2026-09-05 — Session: Overall XLL product workflow and simple UI
 
 **Task:** XLL-PRODUCT-WORKFLOW

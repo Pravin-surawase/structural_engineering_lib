@@ -1,0 +1,52 @@
+{
+  "preset_id": "demo-rc-beam-v1",
+  "status": "development_example_not_project_approval",
+  "purpose": "Editable starting inputs for synthetic examples and identified disposable demo models.",
+  "origin": "Owner-authorized illustrative development choices, 2026-09-05; not universal industry values or market quotations.",
+  "production_issuance_allowed": false,
+  "overwrite_imported_model_facts": false,
+  "design_basis": {
+    "code": "IS 456:2000",
+    "profile": "ordinary_prismatic_rc_beam_demo",
+    "seismic_basis": "non_seismic_demo_only",
+    "concrete_strength_n_per_mm2": 25,
+    "longitudinal_steel_yield_n_per_mm2": 500,
+    "link_steel_yield_n_per_mm2": 500,
+    "nominal_cover_to_outermost_reinforcement_mm": 30,
+    "exposure": "mild_demo_assumption",
+    "fire_resistance_minutes": 60,
+    "nominal_max_aggregate_mm": 20
+  },
+  "detailing_preferences": {
+    "longitudinal_bar_diameters_mm": [12, 16, 20, 25, 32],
+    "link_diameters_mm": [8, 10],
+    "preferred_longitudinal_layers": 2,
+    "stock_length_mm": 12000,
+    "uniform_section_scope": "physical_span",
+    "section_widths_mm": [250, 300, 350, 400, 450, 500, 550, 600],
+    "section_depths_mm": [300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900],
+    "catalogue_note": "Search choices, not code minima/maxima. Preserve fixed geometry and check every selected arrangement."
+  },
+  "illustrative_rates": {
+    "currency": "INR",
+    "concrete_per_m3": 7500,
+    "reinforcement_per_kg": 75,
+    "formwork_per_m2": 900,
+    "note": "Synthetic direct-cost inputs only; no market-rate, labor, waste or realized-saving claim."
+  },
+  "automation_example_limits": {
+    "maximum_hours": 8,
+    "maximum_etabs_analysis_runs": 20,
+    "maximum_candidate_evaluations": 10000,
+    "stop_after_non_improving_verified_trials": 3,
+    "solver_comparison_criteria": "qualified_profile_required_not_user_tuned"
+  },
+  "review_before_real_project_use": [
+    "Actual member-specific materials and verified strengths",
+    "Project design profile, exposure, fire, cover and seismic basis",
+    "Geometry, supports, loads and complete required case/combination coverage",
+    "Available bars, stock, section catalogue and architectural constraints",
+    "Applicable detailing limits, current rates and quantity conventions"
+  ],
+  "behavior": "Retained defaults remain labelled demo. Checks may reject any starting value; prefilled inputs do not imply a passing design."
+}

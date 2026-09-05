@@ -2,9 +2,10 @@
 
 Date: 2026-09-05. Task: WP10-WORKFLOW-REFINEMENT.
 Status: revised overall product proposal, not an implemented automatic loop.
-Latest owner refinement: one transparent Assumptions sheet, heavy data in memory
-for v1, physical-span sizing and a simpler five-action ribbon. Durable full-project
-storage remains a later improvement, replacing its earlier prerequisite here.
+Latest owner refinement: populated demo assumptions, separate connection/force/
+design/optimisation/solver controls and an overnight orchestrator using those same
+stages. Heavy data stays in memory; small durable run history is required for
+morning review. Full-project storage remains a later improvement.
 
 ## Direction and authority
 
@@ -40,6 +41,29 @@ Keep the attached source getter-only: no unit/selection setters, unlock, analysi
 or save. Any required selection/analysis preparation belongs to a separately
 identified owned-copy operation. Broad acquisition cannot silently extend the
 accepted getter matrix or change result selections on the attached source.
+
+### Connect and Get Forces are separate actions
+
+Connect attaches to a uniquely identified running model or opens a connection
+dialog. With no suitable instance, the launch path starts installed ETABS and
+lets the engineer choose a model using ETABS' own Open dialog. Finish this
+interactive setup before an unattended run. Launch/open/API compatibility still
+requires installed qualification; a launched process is not permission to mutate
+an original model. Show source and active working-copy paths distinctly.
+
+Connect reads model name/path, runtime, source/display units, stories, section/
+material definitions, object classifications, joints, axes, offsets, releases and
+connectivity needed for model understanding and physical spans. It does not read
+force arrays or start analysis. Local 3D/context views use this same graph.
+
+Get Forces verifies required case completion, result epoch/currentness, selected
+combination dependency closure and data coverage. Locked state or a result file
+alone does not establish current complete results. If results are usable, capture
+them once. If missing/stale, the UI may continue automatically through a separate
+owned-copy preparation/analysis capability within the bound run authority, then
+acquire its results. Do not promote the attached source to owned mode or call
+analysis/setters on it. The UI needs no extra technical ownership button.
+Keep that effectful service separate from WP10's accepted read-only adapter.
 
 ## 2. Acquire once per source revision, then interpret locally
 
@@ -83,6 +107,13 @@ evidence-derived revision semantics where ETABS supplies no native epoch.
 | Requested outputs | Results, quantities or savings and small identity records; preserved by ordinary workbook Save |
 | Existing external evidence | Required acquisition journals and later model-copy transaction records; no new general-purpose runtime force archive |
 
+Auto Run additionally persists a compact trial history after each state/trial:
+source/copy and run/candidate identities, assumptions/profile/catalogue revisions,
+changed assignments, stage and per-frame/check outcomes, quantities and stop
+reasons. Store baseline assignments once and reconstruct trial assignments from
+bound changes where useful. This is not a heavy force/joint database. Morning
+review must not depend on a final Excel Save succeeding.
+
 "Does not change" means unchanged within a verified revision. Materials,
 sections, units and criteria are versioned too. The Assumptions sheet is an input
 owner with typed validation; result summaries are projections. Design reads and
@@ -91,8 +122,8 @@ validates inputs in one action, with no separate Apply control. See the
 
 This is an intentionally session-based first version. Closing Excel/workbook,
 unloading the add-in or a crash loses its heavy working data. Reopening restores
-assumptions and historical reports, shows No model loaded, and requires Read
-ETABS before design or update. It does not resume a coupled run from saved cells.
+assumptions and historical reports, shows No model loaded, and requires Connect
+ETABS/Get Forces before design or update. It does not resume a coupled run from saved cells.
 Compare candidates with the in-memory B0 during a run; saved comparison summaries
 remain identified historical outputs. Reestablish a baseline explicitly after
 restart rather than silently treating the current candidate as the original.
@@ -115,6 +146,11 @@ portable snapshot/evidence contracts; qualify the new session lifecycle honestly
 
 ## 4. Design the baseline and freeze a practical search
 
+The [development preset](demo-beam-preset.json) supplies transparent example
+inputs for demo models. It is not an approval of a connected real model. Keep
+demo/source/override values distinct and include effective input origins in
+every run. Demo reports stay labelled demo even if example checks pass.
+
 Evaluate B0 using the same complete beam profile, detailing, quantity conventions
 and rates as the candidates. Resolve required missing inputs before search;
 baseline failures remain visible. Remediation differs from optimizing a feasible
@@ -131,6 +167,15 @@ bars, stock lengths and explicit construction constraints. Complete designs use
 actual bars, spacing, anchorage, laps and stirrup zones. Rank feasible candidates
 by the declared objective, including supported concrete, steel, formwork,
 labor/waste components. Smallest section alone does not imply lowest cost.
+
+Design is a dependency-driven sequence: validate basis and actions, design
+flexure, choose longitudinal bars and layers, resolve actual effective depths,
+design shear/torsion reinforcement, then complete serviceability, detailing,
+anchorage/laps, continuity and applicable seismic/joint checks. Bar/link/layer
+changes can alter effective depth or fit and must trigger affected rechecks.
+Only a consistent complete arrangement produces qualified BBS/quantities.
+The UI may show these stages one by one; it must not freeze an early flexural
+pass while later detailing invalidates its geometry.
 
 ## 5. A fast library loop, followed by an ETABS loop
 
@@ -179,6 +224,14 @@ not a set of applied loads from which that solver reconstructs the building.
 Qualified local models can help search order. Heuristic pruning means incomplete
 search unless exclusions are proven valid for the final coupled problem.
 
+Solver Check is a bounded local comparison, not a second whole-building solver.
+First establish compatible topology, restraints, loads, stiffness/modifiers,
+units, signs and stations against a reference ETABS case. Compare using qualified
+criteria that are not tuned until a candidate passes. An unsupported local model
+shows Not applicable and may use an explicitly allowed ETABS-only route. An
+unexpected disagreement on a supposedly equivalent case requires investigation;
+it blocks solver-led acceptance. Do not repair a mismatch by increasing sizes.
+
 **ETABS loop:** combine compatible shortlisted changes into a model candidate
 and evaluate their interaction together. Analyse selected model candidates, not
 every bar option. Each iteration:
@@ -199,6 +252,14 @@ every bar option. Each iteration:
    otherwise retain the previous best. A further proposed analysis change starts
    another iteration, not a final-design claim.
 
+Maintain separate verdicts for analysis execution, force freshness/coverage,
+local-solver comparison and engineering checks. ETABS completing analysis is not
+a strength/detailing pass; execute required ETABS design/global checks where they
+are part of the declared profile, plus the library's complete member checks.
+An engineering failure may justify another section/bar candidate. A known failed
+candidate can be rejected and search can continue from a verified parent; unknown
+model/API state or a solver/data mismatch must stop for diagnosis instead.
+
 CSI's [concrete frame procedure](https://docs.csiamerica.com/help-files/etabs/Getting_Started/Concrete_Frame_Design_Procedure.htm)
 requires final-size analysis followed by design using those actions. Its
 [locking guidance](https://docs.csiamerica.com/help-files/etabs/Menus/Analyze/Lock_Model.htm)
@@ -206,6 +267,26 @@ explains that unlocking removes results and describes preserving the original
 before changes. Future transaction API calls need installed-version qualification.
 
 ## 6. Stop with a verified result and recoverable state
+
+### One orchestrator for manual and overnight work
+
+Auto Run uses the same Get Forces, Design, Optimise, Solver Check and Update &
+Recheck services as the manual buttons. Bind the model/copy, eligible spans,
+assumptions, allowed changes, objective and limits once. The demo preset uses
+8 hours, 20 ETABS analyses and 10,000 local evaluations, whichever limit is met
+first. These are adjustable run-policy examples, not a runtime guarantee.
+Do not expose low-level numerical tolerances or per-check bypasses.
+
+Freeze input revisions for a run. Worksheet edits either apply to the next run or
+pause at a safe boundary; they never change the active run halfway through an
+analysis. Pause stops scheduling new operations after the current non-interruptible
+call; Stop finalizes history and preserves the last verified state. Neither
+control promises to abort an in-flight ETABS call instantly.
+
+The supported overnight environment needs an awake host, available ETABS license,
+completed model selection and no unresolved input/modal state. Missing runtime
+capability is an explicit preflight outcome, not an overnight retry loop. No
+Codex scheduled automation is created by this product-design decision.
 
 Keep the best verified feasible model and previously evaluated candidate IDs.
 Stop on completed finite search, no accepted improvement under the stopping rule,
@@ -235,6 +316,21 @@ settled; unattended behavior still needs actual application qualification.
 
 ## 7. Compare savings on a common basis
 
+Compare Runs provides a concise run table and on-demand per-frame details for
+all trials, including rejected/incomplete ones. Each frame record includes:
+source ID/label/story and physical span/group; old/proposed/verified dimensions;
+longitudinal bars/layers and link zones; steel mass/concrete volume/formwork;
+required check statuses with governing case/station, demand/capacity and reasons;
+analysis/solver status; input/run identity and comparable cost/quantity changes.
+Unavailable values are null with reasons, never zero or an invented pass.
+
+Keep raw trial history separate from the best verified feasible shortlist. The
+engineer can inspect why a cheaper trial failed, whether an unchanged frame became
+governing, and which saved ETABS copy matches the selected report. Persist detailed
+per-check summaries and governing evidence alongside compact history; render large
+Excel reports on demand. Do not fill worksheets with thousands of rejected trials
+during the search or claim a summary alone reconstructs the heavy source snapshot.
+
 Show final-versus-B0 and final-versus-previous-accepted values separately. Use
 matching member identities/scope, design requirements, rates, stock/waste rules
 and concrete/formwork interface deductions. Include all changed quantities in
@@ -254,11 +350,11 @@ estimates do not establish whole-building or realized site savings.
 
 | Increment | Exit condition |
 |---|---|
-| WP10 session/context replan | One Assumptions sheet, typed defaults/overrides, memory lifecycle and required acquisition coverage fixed |
+| WP10 session/context replan | Connect/metadata and Get Forces contracts, demo preset, typed inputs, memory lifecycle and required acquisition coverage fixed |
 | WP10 import and scale | Multiple beam selections from one capture with zero additional ETABS calls; units/axes/coverage validated; reopen requires reacquisition; memory measured |
 | WP11 local search | Complete physical-span/group candidates from one snapshot; no setter; truthful provisional and incomplete-search states |
 | WP11 one coupled change | One beam/group candidate applied to a copy, read back, reanalysed and redesigned; original unchanged and required effects evaluated |
-| WP11 bounded repeated loop | Retained B0/best model, no duplicate cycles, safe recovery and final saved-model/results agreement |
+| WP11 bounded repeated loop | Shared manual/Auto Run services, retained B0/best model, durable per-frame trial history, no duplicate cycles, safe pause/stop and final saved-model/results agreement |
 | Integrated outputs | Comparable baseline/final quantities; requested sheets refresh without duplication; actual Excel/ETABS proof |
 
 These are internal increments, not programme renumbering. Supported beams remain

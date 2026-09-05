@@ -599,6 +599,11 @@ the intended broad-model capture, local filtering and session-based storage,
 and its later WP11 design/reanalysis loop. Required result coverage and all
 getters still need qualification; the one-member evidence is not full-model proof.
 
+The later automation refinement separates metadata connection from force capture.
+Get Forces may request missing analysis through an independently qualified owned-
+copy capability; it never adds analysis/setters to the attached WP10 getter path.
+Demo defaults and overnight trial history do not establish those capabilities.
+
 Preparation base: `0d790b56ba92a059b2cac574be970a2cf9106821`, the merged
 [WP10-04 PR #972](https://github.com/Pravin-surawase/structural_engineering_lib/pull/972).
 This is a source-backed implementation plan, not installed acceptance of a

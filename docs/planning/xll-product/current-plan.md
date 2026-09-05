@@ -30,8 +30,11 @@ created only on demand**. The [UI review and proposed workflow](excel-ui-review.
 records actual sample inspection, current input/feedback gaps and this decision.
 The latest refinement permits one transparent Assumptions sheet and memory-only
 heavy model/force data for v1. Ordinary workbook Save retains inputs and reports;
-reopen needs a fresh ETABS read. Five ribbon actions cover read, assumptions,
-design/optimisation, update/recheck and reports. Reconcile this session lifecycle
+reopen needs a fresh ETABS read. The latest automation draft separates Connect,
+Get Forces, Design, Optimise, Solver Check and Update & Recheck; Auto Run reuses
+those stages, and Compare Runs exposes history. A labelled demo preset supplies
+initial values. Overnight work needs compact durable trial/check records while
+heavy force data stays in memory. Reconcile this session lifecycle
 with WP10-05; mandatory snapshot sheets and a new durable project store are no
 longer prerequisites. No new UI or WP10-05 implementation is claimed complete.
 
