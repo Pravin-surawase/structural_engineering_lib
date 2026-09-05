@@ -6,7 +6,7 @@
 **Importance:** High
 **Created:** 2026-09-04
 **Last Updated:** 2026-09-05
-**Related Tasks:** WP09, WP10-05
+**Related Tasks:** WP09, WP10-05, WP10-05B
 **Abstract:** Install, use, diagnose, and integrate the standalone Windows Excel XLL over the native .NET beam library.
 
 ---
@@ -15,7 +15,8 @@
 StructAutomate Excel is a packed AMD64 Excel-DNA XLL for standalone reinforced
 concrete beam work in 64-bit Microsoft Excel on Windows. It calls the reusable
 `StructuralEngineering.*` .NET libraries directly and needs no Python,
-FastAPI, Node, ETABS, or network connection at runtime.
+FastAPI, Node, ETABS, or network connection for offline work. The optional
+Connect ETABS command requires the supported running ETABS host.
 
 The shipped workbook demonstrates 20 beams and 200 versioned topology and check
 rows. It covers flexure, shear, torsion, deflection, crack width, development
@@ -25,7 +26,7 @@ packages, and evaluation of one declared current physical candidate.
 
 ## Supported installation
 
-The WP10-05 workspace adds three main ribbon actions without creating sheets at
+The workspace adds four main ribbon actions without creating sheets at
 XLL load:
 
 1. **Assumptions** creates one sheet with editable demo inputs and explicit
@@ -41,13 +42,27 @@ XLL load:
    Switching members uses memory. **Write member review** in that window creates
    or updates the requested Beam Review sheet; editing assumptions marks an
    earlier report historical. This is evidence review, not an approved design.
+4. **Connect ETABS** attaches to a running model and reads its source geometry
+   in a separate packaged worker. If several ETABS processes are running, choose
+   one. The window shows model identity, path, units, frame/joint counts and
+   capture time. Selecting a frame reviews its source endpoints, section and
+   connected frame IDs from memory. This creates no worksheet.
 
 Save the workbook normally to retain assumptions and artifact references.
 Reopening permits offline review after the saved artifact is revalidated. Keep
 the referenced project folder when transferring the workbook; a missing or
 corrupt artifact is rejected. Save As retains document identity. If two open
 copies share that identity, close one before continuing. Closing the workbook
-evicts its memory session. There is no live ETABS connection or automatic replay.
+evicts its memory session. Live source context is session-only: reopening a
+workbook requires Connect ETABS again. It is separate from an offline snapshot.
+
+The first connection profile covers the installed ETABS 23.3.1 API with
+present/database units kN-m-C (unit code 6); coordinates are normalized to mm.
+It reads frames, points, source orientation and referenced section/material IDs.
+It does not infer material strengths, physical spans or supports, and does not
+acquire forces or run analysis. Raw getter evidence and context artifacts stay
+outside Excel. Closing the requesting workbook cancels and discards its pending
+result; the status window reports any remaining worker cleanup.
 
 The separate **Standalone examples** menu retains the WP09 workflow below.
 Use it in a separate workbook: this new workspace does not yet map assumptions
@@ -55,17 +70,17 @@ and imported actions into a complete design/check request. All command outcomes
 are shown in a persistent status window, including rejected operations.
 
 The import admission bounds are 16 MiB, 1,000 members and 10,000 actions. Those
-limits do not qualify whole-model acquisition or its performance. Connect,
+limits do not qualify whole-model result acquisition or its performance.
 Get Forces, automatic Design, optimisation, solver comparison and Auto Run
 remain later application work. The active packet and exact installed acceptance
-contract are in [WP10-05](../../planning/xll-product/wp10-etabs-read-adapter.md#wp10-05-active-packet-ab--2026-09-05).
+contracts are in the [WP10 read-adapter plan](../../planning/xll-product/wp10-etabs-read-adapter.md).
 
 The WP09 package targets:
 
 - 64-bit Windows and 64-bit Microsoft 365 Excel;
 - the Microsoft .NET 10 Desktop Runtime for x64;
 - an AMD64 `StructAutomate.xll` signed with the certificate identified in
-  `manifest.json`; and
+  `manifest.json`, plus its signed `StructAutomate.EtabsWorker.exe`; and
 - the unchanged files and SHA-256 values recorded by `manifest.json` and
   `SHA256SUMS`.
 

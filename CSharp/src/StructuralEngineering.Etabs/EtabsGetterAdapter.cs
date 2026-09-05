@@ -70,15 +70,17 @@ public sealed record EtabsGetterResult(
         new(EtabsGetterState.Rejected, code, message, null);
 }
 
-public sealed class EtabsGetterAdapter(IEtabsGetterHost host)
+public sealed class EtabsGetterAdapter(IEtabsGetterHost host, IReadOnlyDictionary<string, EtabsGetterDefinition>? allowed = null)
 {
+    private readonly IReadOnlyDictionary<string, EtabsGetterDefinition> _allowed = allowed ?? EtabsGetterMatrix.Allowed;
+
     public EtabsGetterResult Read(
         string operation,
         IReadOnlyList<object?> inputs,
         DateTimeOffset deadlineUtc,
         CancellationToken cancellationToken = default)
     {
-        if (!EtabsGetterMatrix.Allowed.TryGetValue(operation, out var definition))
+        if (!_allowed.TryGetValue(operation, out var definition))
             return EtabsGetterResult.Rejected(
                 "ETABS.CALL_NOT_ALLOWED",
                 $"Operation '{operation}' is outside the frozen getter whitelist.");
@@ -184,9 +186,13 @@ public sealed class EtabsGetterAdapter(IEtabsGetterHost host)
                 csiCode,
                 started,
                 completed,
-                EtabsGetterMatrix.Sha256,
+                MatrixSha256(),
                 before));
     }
+
+    private string MatrixSha256() => ReferenceEquals(_allowed, EtabsContextGetterMatrix.Allowed)
+        ? EtabsContextGetterMatrix.Sha256
+        : EtabsGetterMatrix.Sha256;
 
     private static (string Code, string Message)? ValidateArrays(
         EtabsGetterDefinition definition,

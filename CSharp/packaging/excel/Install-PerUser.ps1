@@ -101,6 +101,7 @@ $receipt = [ordered]@{
     version = [string]$manifest.version
     install_directory = $installDirectory
     xll = Get-StructAutomateFileIdentity $installedXll
+    worker = Get-StructAutomateFileIdentity (Join-Path $installDirectory 'StructAutomate.EtabsWorker.exe')
     installed_manifest = Get-StructAutomateFileIdentity (Join-Path $installDirectory 'manifest.json')
     signature_thumbprint = [string]$manifest.signature.thumbprint
     registration = $registration

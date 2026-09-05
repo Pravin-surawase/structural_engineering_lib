@@ -5,6 +5,77 @@
 
 ---
 
+## 2026-09-05 — Session: WP10-05B running-model connection
+
+**Task:** WP10-05B
+**Agent:** DEV (one parent; two bounded Terra High implementation/review agents)
+**Branch:** `codex/wp10-05b-live-connection`
+
+**Focus:** Deliver Connect ETABS and source-context review as the first bounded
+WP10-05B unit, aligned with the complete beam design and automation product.
+
+### Completed
+
+- Updated the active plan to deliver connection/context and existing-force
+  handoff before actual-bar design orchestration. The B1–B8 contract limits this
+  unit to running-model source geometry, preserving later span mapping, result
+  coverage, controlled reanalysis and overnight-run gates.
+- Added typed context contracts, a separate exact getter matrix, verified
+  process discovery, bulk source capture, durable raw provenance, a shared
+  process lease and the packaged STA worker. The original force artifact and
+  getter matrix remain compatible.
+- Added asynchronous Connect ETABS, model details and local frame review with
+  source-ID adjacency. Workbook identity and request identity fence completion;
+  close/unload cancels and evicts context. Heavy data stays in memory and
+  external evidence; connection creates no worksheets and is session-only.
+- Added worker signing/manifest identity and a maintained installed connection
+  harness. External development evidence under WP10-05B includes getter
+  preflight, worker-smoke-1 and excel-development-3: 225 frames (153 beams,
+  72 columns), 189 points, two referenced sections, unchanged source file and
+  normal owned Excel/worker exit. Development-package evidence is explicitly
+  not installed acceptance. Final checks, independent candidate acceptance,
+  signed installed qualification and hosted delivery are bound externally by
+  the executable delivery ledger and exact receipts.
+- Final focused verification passed 78 C# tests with zero skips, locked restore
+  and Release build with zero warnings/errors, eight documentation checks,
+  efficiency validation, changed PowerShell parsing and the session-log check.
+
+### Issues encountered
+
+| Symptom / impact | Root cause, resolution and proof |
+|---|---|
+| Initial intake held the old squash-merged branch as diverged. | The branch and main had distinct commit histories. Verified merged PR 974 and equal candidate/merge trees, fast-forwarded main, then began this task on its own branch. The failed intake did not start a timer. |
+| Generic fetch stopped at an absent old remote branch. | Local narrow-fetch configuration still named codex/wp10-completion. Removed only that obsolete fetch mapping; the explicit main fetch succeeded at the unchanged base. No branch or historical worktree was deleted. |
+| Git tree syntax and rg path searches failed in PowerShell; the getter micro-probe rejected an orientation by-ref argument. | RR-005: quote Git brace expressions, pass rg glob filters rather than wildcard paths, and use the exact boxed API enum. Corrected commands and the actual getter preflight passed. A later owner lookup repeated the rg wildcard mistake and a guessed formatter filename was absent; discovered folder filters and registry search resolved them. |
+| Initial worker lease crossed threads but used a thread-owned Mutex. | RR-002: caller acquisition and STA disposal have different thread identities. Replaced it with an exclusive file-handle lease plus the same-process semaphore; shared legacy/context broker tests passed. |
+| Excel development harness invalidated workbook B and initially obscured the primary error with cleanup failure. | RR-002: FinalReleaseComObject on ActiveWorkbook also destroyed the owned bookB RCW alias. Release the borrowed alias once; retain primary and cleanup diagnostics separately. excel-development-3 passed the same workbook-switch/close flow without product changes. |
+
+### Root causes and resolutions
+
+The shared ETABS lease must be releasable by the owning operation across its
+caller/STA boundary. Workbook COM aliases likewise need ownership-aware release:
+the harness now balances its borrowed ActiveWorkbook reference without destroying
+the independently owned workbook. Exact installed API signatures, source units,
+raw outputs and cleanup are exercised before candidate freeze. Final installed
+receipts remain distinct from the passing development trials.
+
+### Rework and recurrence
+
+- RR-002, occurrences=18, minutes=unknown: cross-thread lease ownership and
+  acceptance-harness workbook RCW alias release; verify real ownership boundaries.
+- RR-005, occurrences=61, minutes=unknown: PowerShell Git braces, repeated rg
+  wildcard paths and exact by-ref enum binding; use discovered literal paths and
+  installed API parameter types.
+
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: PowerShell brace/glob and COM enum
+argument shapes failed → quoted Git expressions, rg filters and the exact enum
+type worked. Provider/token usage is not inferred.
+
+**Next:** Finish exact candidate/installed/hosted gates, then the remaining
+WP10-05B existing-force handoff and WP10-05C result coverage before design.
+
+---
+
 ## 2026-09-05 — Session: WP10-05 offline beam workspace
 
 **Task:** WP10-05

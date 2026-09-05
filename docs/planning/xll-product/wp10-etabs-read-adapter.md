@@ -582,6 +582,60 @@ and a missing recovery transition. Its separate maintained authority is
 That repair shares this unpublished planning branch and original task history;
 it changes no WP10 engineering contract and does not start normalization.
 
+## WP10-05B active connection packet — 2026-09-05
+
+**Product goal:** a ribbon-led Excel product with transparent assumptions,
+one source capture per verified revision, heavy data in memory/external evidence,
+complete actual-bar beam design, practical span/group search, owned-copy ETABS
+reanalysis and bounded recoverable unattended work with comparable run history.
+At each packet intake, check this goal, implemented capabilities, active source,
+host constraints and recurrence controls before updating this plan.
+
+**Owner priority:** bring live ETABS connection before automatic design.
+This packet delivers Connect ETABS and a reusable source geometry inventory.
+It is the first bounded unit of 05B. Existing-force handoff remains the next
+05B unit, followed by 05C broad result coverage; no force/design button is
+advertised until its own complete public path is qualified.
+
+**Base/authority:** merged WP10-05 PR 974; preserve the v1 analysis snapshot,
+durable raw artifact, 48-getter matrix and existing installed offline behavior.
+Windows is the sole writer for `codex/wp10-05b-live-connection` in this packet.
+No other device or historical WP09 worktree is assumed synchronized.
+
+| Acceptance | Required behavior and evidence |
+|---|---|
+| B1 | Connect selects a unique running ETABS process or asks the user to choose among identified processes. Bind PID/start/executable and the actual model path/runtime/units; never silently attach to another process. No running model produces an actionable outcome. Launch/open remains later; no unexpected modal automation. |
+| B2 | A versioned context contract exists without results, including unlocked models. Capture all source frames and points through separately frozen bulk getters, explicit source/global coordinates converted once to mm, frame orientation/section/story and source-ID adjacency. Read referenced section/material identity once per definition. Preserve unclassified/unsupported context and declare absent support/offset/release/analysis coverage; do not infer physical spans, strengths or design readiness. |
+| B3 | Context has an independent matrix/profile/hash. Validate exact installed signatures, scalar/parallel shapes, finite coordinates, unique IDs, endpoint coverage and pre/post model/units/bulk-context equality. No Results, Analyze, selection setters, save, open, run or model mutation. A changed or incomplete capture cannot become accepted context. |
+| B4 | A packaged worker uses the shared bounded STA execution/lease machinery, with versioned request/response identities and exact target binding. Preserve legacy broker/artifact semantics. A deadline/cancel outcome differs from quiescence; the same PID remains unavailable while cleanup runs. Add a process-wide lease for separate workers. Never kill ETABS or repeat an uncertain operation. |
+| B5 | Excel stays responsive; capture the initiating workbook before background launch, and return all Excel access to its main thread. Completion may update only that still-open workbook/session. Close/unload cancels/discards pending application work; duplicate work is rejected. Connect creates no worksheet and does not overwrite offline snapshots or claim current force results. A status/model view displays identity, units, counts, capture time and coverage. |
+| B6 | Heavy context and provenance live outside Excel and in a workbook-bound indexed memory session. The running connection is session-only: closing/reopening requires Connect again. Switching frame views uses zero additional ETABS reads. Connection artifacts are immutable and hash-bound; malformed/wrong-request/wrong-target responses are rejected before accepting context. |
+| B7 | Qualification includes exact installed API metadata and a getter-only model smoke before candidate freeze, host-free tests for identity/shape/context fences and broker quiescence, then signed installed Excel + worker acceptance against the exact accepted head. Verify zero automatic sheets, asynchronous completion, correct target, local selection, workbook-close handling, preserved source file/lock/units, normal owned Excel/worker cleanup, and unchanged offline acceptance. |
+| B8 | After intended code/docs/locks/records freeze: affected formatter, union of focused C# tests and documentation checks, direct session-log validator, one immutable independent review and one candidate integrity check. Final signed package binds source/XLL/worker/receipt identities externally. One hosted PR cycle, no broad Python/React suite unless impact expands. Pre-push owns final session end; delivery-managed usage derives PR/merge counters from its ledger. |
+
+**Implementation ownership:** parent freezes plans, then one bounded writer
+implements context/broker/worker contracts. Parent remains read-only on source
+until that handoff, then integrates Excel, packaging, acceptance and records.
+Independent auditor remains read-only. No simultaneous edits to shared owners.
+
+**Non-goals:** force capture, analysis, launching ETABS, changing output selection,
+automatic design, physical support/span classification, whole-building context
+completeness, optimizer, database, overnight run, release publication or new
+Git/session automation. The context inventory is a foundation for these later
+capabilities, not a substitute for their required data and checks.
+
+**Focused commands:** run from `CSharp`: locked restore/build, affected WP10
+context/broker/offline/Excel adapter tests (exclude opt-in configured live tests).
+Run installed diagnostics through maintained explicit-path helpers on owned
+Excel workbooks and the uniquely bound read-only ETABS source. Preserve all
+failed receipts. Use `rg --files`/`rg -g`, quote Git tree expressions in PowerShell,
+and never pass manual PR/merge arguments to delivery-managed usage closeout.
+
+**Stop/replan:** source or workbook identity ambiguity, outside-scope host effect,
+unverified cleanup, unsupported getter semantics, or a second rejected candidate.
+Retain truthful terminal evidence and resolve the cause within this contract;
+do not weaken the legacy schemas or hide a capture failure.
+
 ## WP10-05 active packet A/B — 2026-09-05
 
 This executable contract replaces the historical chunk-table card below.

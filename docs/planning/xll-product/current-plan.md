@@ -41,8 +41,11 @@ prerequisites. Keep the typed kernels and transaction/freshness guarantees; add
 the missing design/candidate orchestration and public mapper. Stage the eventual
 ribbon by implemented capability, with local Solver Check in applicable details.
 The first implemented UI exposes Assumptions, Open Snapshot and Review Snapshot,
-with legacy tools in their own menu. Automatic design orchestration is next
-(audit increment C); live acquisition follows only after its own host contract.
+with legacy tools in their own menu. The owner has now brought live connection
+ahead of automatic design: WP10-05B first delivers the running-model connection
+and source context (audit increment D), then existing-force handoff and WP10-05C
+broad capture. Increment C follows that verified data path. This changes delivery
+order, not engineering acceptance or the final product goal.
 Source completion alone does not assert an installed acceptance pass.
 
 The subsequent [end-to-end workflow refinement](etabs-design-workflow.md) defines

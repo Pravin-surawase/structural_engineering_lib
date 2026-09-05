@@ -14,7 +14,16 @@ dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- beam
 dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- benchmark
 ```
 
-The packed add-in is `src/StructuralEngineering.ExcelDna/bin/Release/net10.0-windows/publish/StructuralEngineering.ExcelDna-AddIn64-packed.xll`. It contains its managed dependencies and requires 64-bit Windows Excel and the matching .NET 10 Desktop Runtime. The WP09 packaging scripts under `packaging/excel` create a signed, checksummed distribution and exercise per-user preflight, installation, repair, installed Excel acceptance, and uninstall. WP10-01 adds the host-free AO16 request and snapshot contracts; WP10-02 and WP10-03 add the optional exact-version getter-only ETABS adapter, bounded STA broker, durable call journal, offline replay, postflight fence, and cleanup evidence. WP10-04 adds bounded offline normalization and cross-runtime replay. WP10-05 A/B adds the Assumptions / Open Snapshot / Review Snapshot ribbon, immutable external snapshot storage and workbook-bound offline sessions. No worksheet function calls ETABS. Production handoff, broad capture and automatic design remain later work; see the [whole-product audit](../docs/planning/xll-product/etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05).
+The packed add-in is `src/StructuralEngineering.ExcelDna/bin/Release/net10.0-windows/publish/StructuralEngineering.ExcelDna-AddIn64-packed.xll`. It contains its managed dependencies and requires 64-bit Windows Excel and the matching .NET 10 Desktop Runtime. The packaging scripts under `packaging/excel` create a signed, checksummed distribution and exercise per-user preflight, installation, repair, installed Excel acceptance, and uninstall. WP10-01 adds the host-free AO16 request and snapshot contracts; WP10-02 and WP10-03 add the optional exact-version getter-only ETABS adapter, bounded STA broker, durable call journal, offline replay, postflight fence, and cleanup evidence. WP10-04 adds bounded offline normalization and cross-runtime replay. WP10-05 A/B adds the Assumptions / Open Snapshot / Review Snapshot ribbon, immutable external snapshot storage and workbook-bound offline sessions.
+
+WP10-05B adds Connect ETABS through the separately signed, framework-dependent
+win-x64 `StructAutomate.EtabsWorker.exe`. The XLL verifies its manifest hash and
+exchanges typed files; the worker owns exact-process COM attachment, STA pumping,
+the shared process lease, deadline/cancellation, raw getter evidence and cleanup.
+The first profile is source geometry in ETABS 23.3.1 kN-m-C, with ID adjacency in
+memory and no worksheet creation or saved live connection. No worksheet function
+calls ETABS. Existing-force handoff, broad result coverage and automatic design
+remain later work; see the [whole-product audit](../docs/planning/xll-product/etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05).
 
 Worksheet examples:
 
