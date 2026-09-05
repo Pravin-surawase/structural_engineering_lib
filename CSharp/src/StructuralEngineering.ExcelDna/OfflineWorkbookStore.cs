@@ -121,6 +121,8 @@ internal sealed class OfflineWorkbookStore(object workbook)
         dynamic? range = null;
         dynamic? app = null;
         object? preimage = null;
+        object? preimageValues = null;
+        var formulaAreas = new List<(string Address, object Formula)>();
         var created = false;
         var changed = false;
         try
@@ -138,25 +140,27 @@ internal sealed class OfflineWorkbookStore(object workbook)
                 }
                 if ((bool)sheet.ProtectContents) throw new InvalidOperationException($"Unprotect '{sheetName}' before updating it.");
                 var height = Math.Max(oldRows, values.GetLength(0));
-                range = sheet.Range["A1"].Resize[height, values.GetLength(1)];
+                range = SizedRange(sheet, "A1", height, values.GetLength(1));
                 if (!created && height > oldRows)
                 {
                     dynamic? extra = null;
                     try
                     {
-                        extra = sheet.Range[$"A{oldRows + 1}"].Resize[height - oldRows, values.GetLength(1)];
+                        extra = SizedRange(sheet, $"A{oldRows + 1}", height - oldRows, values.GetLength(1));
                         if (HasContent(extra.Formula)) throw new InvalidOperationException("The report would overwrite content outside its owned footprint.");
                     }
                     finally { Release(extra); }
                 }
                 preimage = range.Formula;
+                preimageValues = range.Value2;
+                CaptureFormulaAreas(range, formulaAreas);
                 if (created) FormatNewSheet(sheet, height, values.GetLength(1), sheetName == OfflineAssumptions.SheetName);
                 changed = true;
                 range.ClearContents();
                 dynamic? target = null;
                 try
                 {
-                    target = sheet.Range["A1"].Resize[values.GetLength(0), values.GetLength(1)];
+                    target = SizedRange(sheet, "A1", values.GetLength(0), values.GetLength(1));
                     target.Value2 = values;
                     if (!SameValues(target.Value2, values)) throw new InvalidOperationException("Projection readback failed.");
                 }
@@ -183,8 +187,17 @@ internal sealed class OfflineWorkbookStore(object workbook)
                 }
                 else if (changed && range is not null)
                 {
-                    range.Formula = preimage;
-                    if (!SameMatrix(range.Formula, preimage)) throw new InvalidOperationException("Projection rollback readback differs.");
+                    // Formula returns empty text for blank cells. Restoring that matrix
+                    // alone changes genuinely empty cells into stored empty strings.
+                    range.Value2 = preimageValues;
+                    foreach (var area in formulaAreas)
+                    {
+                        dynamic restored = sheet!.Range[area.Address];
+                        try { restored.Formula = area.Formula; }
+                        finally { Release(restored); }
+                    }
+                    if (!SameMatrix(range.Formula, preimage) || !SameStoredValues(range.Value2, preimageValues))
+                        throw new InvalidOperationException("Projection rollback readback differs.");
                 }
                 if (ReadXml() != oldXml) throw new InvalidOperationException("Metadata rollback readback differs.");
             }
@@ -272,12 +285,32 @@ internal sealed class OfflineWorkbookStore(object workbook)
         finally { Release(cell); }
     }
 
+    private static void CaptureFormulaAreas(dynamic range, List<(string Address, object Formula)> result)
+    {
+        object? hasFormula = range.HasFormula;
+        if (hasFormula is false) return;
+        dynamic? formulas = null;
+        dynamic? areas = null;
+        try
+        {
+            formulas = range.SpecialCells(-4123); // xlCellTypeFormulas, actual formulas only.
+            areas = formulas.Areas;
+            for (var i = 1; i <= (int)areas.Count; i++)
+            {
+                dynamic area = areas.Item(i);
+                try { result.Add(((string)area.Address, (object)area.Formula)); }
+                finally { Release(area); }
+            }
+        }
+        finally { Release(areas); Release(formulas); }
+    }
+
     private static void FormatNewSheet(dynamic sheet, int rows, int columns, bool assumptions)
     {
         dynamic? range = null; dynamic? font = null; dynamic? header = null; dynamic? fill = null;
         try
         {
-            range = sheet.Range["A1"].Resize[rows, columns];
+            range = SizedRange(sheet, "A1", rows, columns);
             range.NumberFormat = "@";
             font = range.Font; font.Name = "Aptos"; font.Size = 11;
             range.ColumnWidth = assumptions ? 29 : 18;
@@ -297,6 +330,13 @@ internal sealed class OfflineWorkbookStore(object workbook)
         finally { Release(fill); Release(header); Release(font); Release(range); }
     }
 
+    private static dynamic SizedRange(dynamic sheet, string address, int rows, int columns)
+    {
+        dynamic anchor = sheet.Range[address];
+        try { return anchor.Resize[rows, columns]; }
+        finally { Release(anchor); }
+    }
+
     private static bool HasContent(object? value) => value is object[,] matrix
         ? matrix.Cast<object?>().Any(item => !string.IsNullOrEmpty(Text(item))) : !string.IsNullOrEmpty(Text(value));
     private static bool SameValues(object actual, object[,] expected)
@@ -310,6 +350,9 @@ internal sealed class OfflineWorkbookStore(object workbook)
     private static bool SameMatrix(object? actual, object? expected) => actual is object[,] a && expected is object[,] b
         ? a.GetLength(0) == b.GetLength(0) && a.GetLength(1) == b.GetLength(1) && a.Cast<object?>().Select(Text).SequenceEqual(b.Cast<object?>().Select(Text))
         : Text(actual) == Text(expected);
+    private static bool SameStoredValues(object? actual, object? expected) => actual is object[,] a && expected is object[,] b
+        ? a.GetLength(0) == b.GetLength(0) && a.GetLength(1) == b.GetLength(1) && a.Cast<object?>().SequenceEqual(b.Cast<object?>())
+        : Equals(actual, expected);
     private static string Text(object? value) => Convert.ToString(value, CultureInfo.InvariantCulture) ?? "";
     internal static void Release(object? value) => ExcelWorkbookTableStore.ReleaseCom(value);
 }

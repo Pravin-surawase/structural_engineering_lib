@@ -23,11 +23,11 @@
     {
       "id": "RR-002",
       "pattern": "Host or acceptance boundary discovered after implementation",
-      "occurrences": 10,
+      "occurrences": 16,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Seven explicit WP09 incidents are recorded. WP10-02 then admitted FrameObj.GetElm from static evidence before its model-specific live return was proved, and a later strict pass showed that managed String[] reflection did not prove SimilarToStory element nullability. The WP09 minutes overlap RR-001 and the two WP10-02 stop/replan events were not separately timed. WP10-05 discovered that Office CustomXMLPart.LoadXML cannot replace an already-loaded part; owned-part replacement with verified rollback worked in the pre-candidate diagnostic. This correction was not separately timed."
+        "basis": "Seven explicit WP09 incidents are recorded. WP10-02 then admitted FrameObj.GetElm from static evidence before its model-specific live return was proved, and a later strict pass showed that managed String[] reflection did not prove SimilarToStory element nullability. The WP09 minutes overlap RR-001 and the two WP10-02 stop/replan events were not separately timed. WP10-05 discovered that Office CustomXMLPart.LoadXML cannot replace an already-loaded part; owned-part replacement with verified rollback worked in the pre-candidate diagnostic. This correction was not separately timed. WP10-05 full-footprint rollback also exposed that Formula restoration changes absent cells into stored empty strings. Restoring Value2 plus actual formula areas passed both injected boundaries in Excel. Native Excel then revealed that group-only size attributes on menu buttons suppressed the ribbon; removing them restored the tab and callback. An installed onLoad probe now complements macro checks. The harness then attempted to hash a workbook while Excel held its file lock; fingerprinting after close resolves that boundary. Three later WP10-05 host-boundary events were confirmed but not separately timed: command cleanup released the shared Application RCW and disconnected the close-event sink; ClearContents/Resize left the legacy host-effect table without a DataBodyRange; and Excel-DNA AutoClose was not invoked during Excel shutdown. A unique event-sink RCW and explicit A2 body anchor resolve the first two boundaries. Lifecycle-8 traced the remaining shutdown retention to leaked intermediate Range.Resize anchors and an unreleased WorkbookBeforeClose callback workbook RCW; explicit SizedRange anchor try/finally and callback release made owned Excel PID 14692 exit normally. The temporary ribbon-disconnection trace was removed. This ongoing RR-002 event remains untimed; lifecycle-8 is development evidence, while final signed installed-candidate qualification remains pending."
       },
       "short_solution": "Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.",
       "last_seen_task": "WP10-05",
@@ -72,11 +72,11 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 49,
+      "occurrences": 56,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated."
+        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
       "last_seen_task": "WP10-05",
@@ -204,14 +204,14 @@
     {
       "id": "RR-013",
       "pattern": "Platform-dependent C# checkout line endings disagree with the hosted dotnet formatter",
-      "occurrences": 1,
+      "occurrences": 2,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed."
+        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed. WP10-05 C# formatting did not normalize mixed endings in edited csproj/PowerShell files; normalize all changed text owners before candidate integrity."
       },
       "short_solution": "Declare LF explicitly for maintained .cs, .csproj, and .slnx files and renormalize the full candidate diff.",
-      "last_seen_task": "WP10-02",
+      "last_seen_task": "WP10-05",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-02-candidate-audit-repair--2026-09-04",
@@ -255,14 +255,14 @@
     {
       "id": "RR-016",
       "pattern": "Delivery transition is invoked without its required evidence or identity argument",
-      "occurrences": 2,
+      "occurrences": 3,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-03's first FOCUSED_VERIFIED transition and the next chained PREPARED transition each omitted --evidence and were rejected without corrupting lifecycle state; the corrections were not separately timed."
+        "basis": "WP10-03's first FOCUSED_VERIFIED transition and the next chained PREPARED transition each omitted --evidence and were rejected without corrupting lifecycle state; the corrections were not separately timed. WP10-05 attempted explicit REPAIR after INTEGRITY_REJECTED had already derived that state; read the transition result instead."
       },
       "short_solution": "Consult the current delivery CLI contract and freeze required evidence, head, run, PR, and merge identifiers before each transition.",
-      "last_seen_task": "WP10-03",
+      "last_seen_task": "WP10-05",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"

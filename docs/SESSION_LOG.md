@@ -34,6 +34,24 @@ external snapshots, workbook-bound offline review and visible command outcomes.
   review found no confirmed main-process C# defect. Final focused verification,
   candidate acceptance/integrity, installed and hosted results are recorded by
   the delivery ledger and exact external artifacts after source freeze.
+- Candidate 1d5b595f was rejected by local file integrity (mixed endings in
+  two non-C# text files) and installed acceptance. One combined repair corrected
+  PowerShell COM calls/index arithmetic and exact Excel rollback. Actual Excel
+  showed that restoring Formula alone turns truly empty cells into stored empty
+  strings. Rollback now restores Value2 plus captured formula areas and compares
+  typed values; the full report footprint passed both injected boundaries in
+  the repair diagnostic. The repaired candidate must rerun its exact gates.
+- The native Excel check caught a missing ribbon despite working startup UDFs.
+  Menu children retained unsupported size attributes when moved from a group;
+  removing them made the tab visible and its Assumptions callback work. The
+  controller is explicitly COM-visible and installed acceptance now checks
+  Office's ribbon-loaded callback in addition to the native visual check. The
+  owned host is briefly visible for that check, then hidden for workbook tests.
+- Development lifecycle-8 exercised all 22 macros, reopen, duplicate,
+  rollback and legacy/UDF paths, then observed normal exit of owned Excel PID
+  14692. Its external receipt is
+  C:/CodexWork/wp10-evidence/WP10-05-development-lifecycle-8/receipt.json;
+  it is development evidence, not final signed installed-candidate acceptance.
 - Updated the public user guide, current plan and implementation status. No
   live ETABS calls, model mutation, design orchestration, broad performance
   qualification, public release or engineering approval is claimed.
@@ -46,6 +64,15 @@ external snapshots, workbook-bound offline review and visible command outcomes.
 | Initial compile diagnostics found the embedded preset outside the repository, a dynamic extension-method call and a test helper shadowing System.IO.Path. | Corrected the relative resource path and explicit static types/qualified Path owner. Release build passed with zero warnings/errors; no failed or zero-discovery test run was counted as proof. |
 | Installed metadata replacement returned `This custom XML part has already been loaded`. | RR-002: Office LoadXML is initial-load-only for an existing part in this host. Replace only the owned part under preimage/readback rollback; actual import, injected metadata failure and reopen now worked. |
 | A guessed delivery-script filename failed; Excel SaveAs rejected a forward-slash path. | RR-005: source discovery located session.py; normalized native paths worked for Office SaveAs/Open. Installed PIA reflection additionally required loading its Office dependency first. |
+| The final test CLI rejected --project when launched from repository root. | RR-005: CSharp/global.json selects Microsoft.Testing.Platform only when the working directory is under CSharp. Run the existing exact test command from CSharp; the root-launched attempt did not run tests. |
+| Final integrity rejected mixed line endings; installed harness stopped on Range indexing and multidimensional index arithmetic. | RR-013 / RR-005: normalize the actual non-C# text owners; use maintained PowerShell COM Range calls and parenthesized row/column arithmetic. Parser success alone does not prove COM execution. |
+| Full rollback fingerprint differed although displayed values matched. | RR-002: Formula converts absent cells to empty text. Restoring Value2 and actual formula areas preserved exact types and formulas at both injected boundaries in real Excel. |
+| An explicit REPAIR transition was rejected after INTEGRITY_REJECTED already entered repair. | RR-016: rejection derives REPAIR; inspect the returned state and continue there. |
+| Excel loaded the XLL's UDFs but showed no StructAutomate tab. | RR-002: menu buttons used group-only size attributes. COM visibility alone did not fix it; removing the invalid attributes produced the ribbon and a working Assumptions button. Check Office's onLoad callback and the visible installed controls. |
+| Saved-workbook fingerprint failed while Excel held its file lock. | RR-002: the harness hashed an open workbook. Close the saved owned workbook before calculating its artifact hash. |
+| With EnableEvents=true, the resident offline session count remained one after closing its workbook. | RR-002: normal command cleanup released the same Application RCW used by the close-event sink, disconnecting that sink. Holding the shared RCW proved eviction; the final repair instead gives ComEventsHelper a unique owned RCW from Marshal.GetUniqueObjectForIUnknown, isolated from command releases. |
+| The legacy host-effect capture lost its declared table body after a later command reset the table footprint. | RR-002: after ClearContents and Resize, DataBodyRange is null, so the existing writer had no body anchor. ExcelWorkbookTableStore now writes from the explicit A2 anchor and its Resize body, releasing the intermediate COM objects. |
+| The owned hidden Excel process remained after Quit. | RR-002: Excel-DNA does not call IExcelAddIn.AutoClose on Excel shutdown. Lifecycle-8 traced the remaining retention to leaked intermediate COM Range.Resize anchors and an unreleased WorkbookBeforeClose callback workbook RCW. Explicit SizedRange anchor try/finally release plus callback-workbook release made owned Excel PID 14692 exit normally; the temporary ribbon-disconnection trace was removed. |
 
 ### Root causes and resolutions
 
@@ -53,15 +80,32 @@ The typed input revision owns only effective input data, never its computed
 digest. Office persistence uses the actual host's part replacement semantics,
 with exact restoration/readback; a command is not completed until the workbook
 reference is committed. File paths supplied to Office use native full paths.
-The installed harness tests the main lifecycle independently of unit tests.
+The Excel event sink has an RCW lifetime distinct from per-command Application
+cleanup, legacy table bodies use the explicit A2 post-header anchor, and ribbon
+disconnection invokes the idempotent shutdown release. Explicit SizedRange
+anchor lifetime and callback-workbook RCW release complete the owned-process
+shutdown repair. The installed harness tests the main lifecycle independently
+of unit tests. Lifecycle-8 is development evidence only; final signed
+installed-candidate gates remain external and pending.
 
 ### Rework and recurrence
 
-- RR-002, occurrences=10, minutes=unknown: one additional custom XML host
-  boundary discovered in an implementation diagnostic before candidate freeze.
-- RR-005, occurrences=49, minutes=unknown: two additional command/path events
-  (guessed source owner and Office SaveAs path syntax); use discovered owners
-  and native full paths. Their correction time was not separately measured.
+- RR-002, occurrences=16, minutes=unknown: custom XML replacement, exact
+  Formula/Value2 rollback, ribbon XML, open-workbook file locks, event-sink RCW
+  lifetime, legacy table body anchoring, and Excel-DNA shutdown ownership
+  including Range.Resize/callback RCW release;
+  qualify actual Office behaviour.
+- RR-005, occurrences=56, minutes=unknown: guessed source owner, Office path
+  spelling, PowerShell COM indexing and multidimensional arithmetic; use the
+  maintained host-specific syntax. Later ribbon inspection repeated a Windows
+  rg wildcard path and guessed a historical receipt path; later source-owner
+  guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved by
+  rg/source discovery. The test runner also required the CSharp working
+  directory to load its global.json. Time was not separately measured.
+- RR-013, occurrences=2, minutes=unknown: mixed non-C# text escaped the C#
+  formatter selection; normalize all changed text owners before integrity.
+- RR-016, occurrences=3, minutes=unknown: use the rejection's derived repair
+  state rather than attempting to enter it again.
 - No other recurrence was established. Build/type and revision recursion
   repairs are recorded above without creating speculative recurring patterns.
 

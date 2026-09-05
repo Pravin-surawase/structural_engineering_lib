@@ -193,9 +193,11 @@ public sealed class ExcelWorkbookTableStore : IWorkbookTableStore
             if (table.Rows.Count > 1)
             {
                 stage = "existing_data_range";
-                newDataRange = listObject.DataBodyRange;
-                if (newDataRange is null)
-                    throw new InvalidOperationException($"Existing table {table.TableId} has no data range after resize.");
+                // A cleared table resized to one empty data row has a null DataBodyRange
+                // until that row is populated. Write the declared body rectangle directly.
+                dynamic dataAnchor = worksheet.Range["A2"];
+                try { newDataRange = dataAnchor.Resize[table.Rows.Count - 1, table.Rows[0].Count]; }
+                finally { ReleaseCom(dataAnchor); }
                 stage = "existing_write_data";
                 newDataRange.NumberFormat = "@";
                 newDataRange.Value2 = DataValues(table);

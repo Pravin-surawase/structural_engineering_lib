@@ -120,7 +120,8 @@ public static class OfflineCommands
 
     private static void OnBeforeClose(object workbook, ref bool cancel)
     {
-        if (Entries.Remove(Key(workbook), out var entry)) entry.Window?.Dispose();
+        try { if (Entries.Remove(Key(workbook), out var entry)) entry.Window?.Dispose(); }
+        finally { OfflineWorkbookStore.Release(workbook); }
         // A cancelled close merely requires reloading validated evidence on the next review.
     }
 
@@ -213,7 +214,10 @@ public static class OfflineCommands
             if (workbook is null) throw new InvalidOperationException("The initiating workbook is closed. Open a workbook and try again.");
             if (_eventApplication is null)
             {
-                _eventApplication = ExcelDnaUtil.Application;
+                // Keep the event sink on its own RCW so command cleanup cannot disconnect it.
+                var pointer = Marshal.GetIUnknownForObject((object)app);
+                try { _eventApplication = Marshal.GetUniqueObjectForIUnknown(pointer); }
+                finally { Marshal.Release(pointer); }
                 ComEventsHelper.Combine(_eventApplication, AppEvents, 1570, CloseHandler);
             }
             var key = Key(workbook);

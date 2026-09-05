@@ -88,7 +88,7 @@ function Get-OfflineCellSentinel {
     param([Parameter(Mandatory)][object]$Worksheet, [Parameter(Mandatory)][string]$Address)
     $cell = $null; $comment = $null
     try {
-        $cell = $Worksheet.Range[$Address]
+        $cell = $Worksheet.Range($Address)
         $comment = $cell.Comment
         return [ordered]@{
             formula = [string]$cell.Formula
@@ -116,7 +116,7 @@ function Get-OfflineRangeFingerprint {
     param([Parameter(Mandatory)][object]$Worksheet, [Parameter(Mandatory)][string]$Address)
     $range = $null
     try {
-        $range = $Worksheet.Range[$Address]
+        $range = $Worksheet.Range($Address)
         return [ordered]@{
             formula_sha256 = Get-OfflineObjectSha256 $range.Formula
             value_sha256 = Get-OfflineObjectSha256 $range.Value2
@@ -142,7 +142,7 @@ function Assert-OfflineReviewRows {
     param([Parameter(Mandatory)][object]$Worksheet, [Parameter(Mandatory)][object]$Source)
     $range = $null
     try {
-        $range = $Worksheet.Range['A10:M22']
+        $range = $Worksheet.Range('A10:M22')
         $actual = $range.Value2
         Assert-OfflineAcceptance ($actual -is [Array] -and $actual.GetLength(0) -eq 13 -and $actual.GetLength(1) -eq 13) 'Beam Review does not contain the exact thirteen-row action footprint.'
         $stations = @{}
@@ -169,7 +169,7 @@ function Assert-OfflineReviewRows {
                 [string]$row.source_row_id
             )
             for ($column = 0; $column -lt $expected.Count; $column++) {
-                Assert-OfflineAcceptance ([string]$actual[$index + 1, $column + 1] -ceq $expected[$column]) "Beam Review action row $index column $column does not preserve the source action, station, or provenance value."
+                Assert-OfflineAcceptance ([string]$actual[($index + 1), ($column + 1)] -ceq $expected[$column]) "Beam Review action row $index column $column does not preserve the source action, station, or provenance value."
             }
         }
     }
@@ -272,7 +272,8 @@ function Start-OfflineAcceptanceExcel {
         Assert-OfflineAcceptance ([int]$excel.Workbooks.Count -eq $before) 'Loading the XLL created a workbook or worksheet unexpectedly.'
         $version = [string]$excel.Run('STR.INFO.VERSION')
         Assert-OfflineAcceptance (-not [string]::IsNullOrWhiteSpace($version)) 'The loaded XLL version probe returned no value.'
-        $excel.Visible = $false
+        # Office creates ribbon UI only when the owned host has a visible window.
+        $excel.Visible = $true
         $excel.DisplayAlerts = $false
         $excel.AskToUpdateLinks = $false
         return [pscustomobject]@{
@@ -375,11 +376,14 @@ try {
     $receipt.xll.version_probe = $session.version_probe
     $workbooks = $excel.Workbooks
     $workbook = $workbooks.Add()
+    Assert-OfflineAcceptance ([bool]$excel.Run('STR_XL_TEST_RIBBON_LOADED')) 'Excel did not load the ribbon XML and its callbacks.'
+    $checks.Add([ordered]@{ name = 'ribbon_loaded_callback'; passed = $true })
+    $excel.Visible = $false
     $sheet = $null; $sentinelCell = $null
     try {
         $sheet = Get-OfflineSheet -Workbook $workbook -Name 'Sheet1'
         Assert-OfflineAcceptance ($null -ne $sheet) 'The bootstrap workbook did not contain Sheet1.'
-        $sentinelCell = $sheet.Range['H3']
+        $sentinelCell = $sheet.Range('H3')
         $sentinelCell.Formula = '=SUM(19,23)'
         $sentinelCell.NumberFormat = '0.0000'
         [void]$sentinelCell.AddComment('offline acceptance sentinel')
@@ -417,7 +421,7 @@ try {
     $assumptionSheet = Get-OfflineSheet -Workbook $workbook -Name 'Assumptions'
     $cover = $null
     try {
-        $cover = $assumptionSheet.Range['B11']
+        $cover = $assumptionSheet.Range('B11')
         Assert-OfflineAcceptance ([double]$cover.Value2 -eq 30.0) 'The canonical demo cover default at Assumptions!B11 must be 30 mm.'
         $cover.Value2 = 40.0
     }
@@ -427,7 +431,7 @@ try {
     Assert-OfflineMacroState -Evidence $assumptionsRepeat -ExpectedState 'completed'
     $assumptionSheet = Get-OfflineSheet -Workbook $workbook -Name 'Assumptions'
     try {
-        $cover = $assumptionSheet.Range['B11']
+        $cover = $assumptionSheet.Range('B11')
         Assert-OfflineAcceptance ([double]$cover.Value2 -eq 40.0) 'Repeated Assumptions reset the edited B11 value.'
     }
     finally { Release-StructAutomateComObject $cover; Release-StructAutomateComObject $assumptionSheet }
@@ -486,7 +490,7 @@ try {
     }
     $assumptionSheet = Get-OfflineSheet -Workbook $workbook -Name 'Assumptions'
     try {
-        $cover = $assumptionSheet.Range['B11']
+        $cover = $assumptionSheet.Range('B11')
         $cover.Value2 = 41.0
     }
     finally { Release-StructAutomateComObject $cover; Release-StructAutomateComObject $assumptionSheet }
@@ -494,13 +498,13 @@ try {
     $reviewSheet = Get-OfflineSheet -Workbook $workbook -Name 'Beam Review'
     $historical = $null
     try {
-        $historical = $reviewSheet.Range['A2']
+        $historical = $reviewSheet.Range('A2')
         Assert-OfflineAcceptance ([string]$historical.Value2 -ceq 'Historical review — assumptions changed; review again') 'Changing an assumption did not mark the prior review historical.'
     }
     finally { Release-StructAutomateComObject $historical; Release-StructAutomateComObject $reviewSheet }
     $assumptionSheet = Get-OfflineSheet -Workbook $workbook -Name 'Assumptions'
     try {
-        $cover = $assumptionSheet.Range['B11']
+        $cover = $assumptionSheet.Range('B11')
         $cover.Value2 = 40.0
     }
     finally { Release-StructAutomateComObject $cover; Release-StructAutomateComObject $assumptionSheet }
@@ -540,9 +544,9 @@ try {
     $macros.Add($unsupportedCalculate)
     Assert-OfflineMacroState -Evidence $unsupportedCalculate -ExpectedState 'rejected'
     $workbook.Save()
-    $receipt.saved_workbook = Get-StructAutomateFileIdentity $workbookPath
     Close-OfflineWorkbook -Workbook $workbook -Save:$true
     $workbook = $null
+    $receipt.saved_workbook = Get-StructAutomateFileIdentity $workbookPath
     Assert-OfflineAcceptance ((Get-OfflineSessionCount -Excel $excel) -eq 0) 'Closing the snapshot workbook did not evict its in-memory session.'
 
     $missingArtifact = $artifactPath + '.missing'
@@ -606,7 +610,7 @@ try {
     $legacySheet = Get-OfflineSheet -Workbook $legacyWorkbook -Name 'Sheet1'
     $udfCell = $null
     try {
-        $udfCell = $legacySheet.Range['J3']
+        $udfCell = $legacySheet.Range('J3')
         $udfCell.Formula = '=STR.REBAR.AREA(20)'
     }
     finally { Release-StructAutomateComObject $udfCell; Release-StructAutomateComObject $legacySheet }
@@ -616,7 +620,7 @@ try {
     $excel.CalculateFullRebuild()
     $legacySheet = Get-OfflineSheet -Workbook $legacyWorkbook -Name 'Sheet1'
     try {
-        $udfCell = $legacySheet.Range['J3']
+        $udfCell = $legacySheet.Range('J3')
         Assert-OfflineAcceptance ([Math]::Abs(([double]$udfCell.Value2) - ([Math]::PI * 100.0)) -lt 0.000001) 'STR.REBAR.AREA did not calculate the expected 20 mm bar area.'
     }
     finally { Release-StructAutomateComObject $udfCell; Release-StructAutomateComObject $legacySheet }

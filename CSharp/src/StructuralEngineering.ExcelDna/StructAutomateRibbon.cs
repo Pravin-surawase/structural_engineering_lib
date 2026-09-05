@@ -1,11 +1,29 @@
+using System.Runtime.InteropServices;
+using ExcelDna.Integration;
 using ExcelDna.Integration.CustomUI;
+using ExcelDna.Integration.Extensibility;
 
 namespace StructuralEngineering.ExcelDna;
 
+[ComVisible(true)]
 public sealed class StructAutomateRibbon : ExcelRibbon
 {
+    private static bool _loaded;
+
+    [ExcelFunction(Name = "STR_XL_TEST_RIBBON_LOADED", IsHidden = true)]
+    public static bool IsLoaded() => _loaded;
+
+    public void OnRibbonLoad(IRibbonUI ribbon) => _loaded = true;
+
+    public override void OnDisconnection(ext_DisconnectMode removeMode, ref Array custom)
+    {
+        _loaded = false;
+        OfflineCommands.Unload();
+        base.OnDisconnection(removeMode, ref custom);
+    }
+
     public override string GetCustomUI(string ribbonId) => """
-        <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+        <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="OnRibbonLoad">
           <ribbon>
             <tabs>
               <tab id="StructAutomateTab" label="StructAutomate">
@@ -16,8 +34,8 @@ public sealed class StructAutomateRibbon : ExcelRibbon
                 </group>
                 <group id="StructAutomateStandalone" label="Standalone tools">
                  <menu id="StructAutomateLegacyMenu" label="Standalone examples" imageMso="CalculateNow">
-                  <button id="StructAutomateValidate" label="Create / Validate" size="large" imageMso="FileCheckIn" onAction="OnCreateValidate" />
-                  <button id="StructAutomateCalculate" label="Calculate Workbook" size="large" imageMso="CalculateNow" onAction="OnCalculate" />
+                  <button id="StructAutomateValidate" label="Create / Validate" imageMso="FileCheckIn" onAction="OnCreateValidate" />
+                  <button id="StructAutomateCalculate" label="Calculate Workbook" imageMso="CalculateNow" onAction="OnCalculate" />
                   <button id="StructAutomateOptimize" label="Evaluate Current Candidate" imageMso="SolverOptions" onAction="OnOptimize" />
                   <button id="StructAutomateExport" label="Export Packages" imageMso="FileSaveAs" onAction="OnExport" />
                   <button id="StructAutomateDiagnose" label="Measure / Diagnose" imageMso="HappyFace" onAction="OnDiagnose" />

@@ -626,7 +626,7 @@ immutable artifact, but cannot replace the accepted workbook reference/session.
 | --- | --- |
 | AB1 | `Wp10OfflineSessionTests`: exact byte identity/provenance, digest/schema/scope/project failures, immutable deduplication, corruption on reopen, indexed member selection without host/file access. |
 | AB2 | Public assumption contract tests: preset values/origins/units, strict cells, blank versus zero, stable effective-input revision and edited-value origin. |
-| AB3 | `Invoke-OfflineSessionAcceptance.ps1`: exact candidate XLL loads in actual x64 Excel, creates no sheets on load; Assumptions creates only its owned sheet, preserves user sheets, and never silently resets edits. |
+| AB3 | `Invoke-OfflineSessionAcceptance.ps1`: exact candidate XLL loads in actual x64 Excel, creates no sheets on load; Office's ribbon-loaded callback and a native visual check prove the public controls. Assumptions creates only its owned sheet, preserves user sheets, and never silently resets edits. |
 | AB4 | Same installed harness: retained snapshot import, readable signed rows, external store identity, memory review, save/reopen, missing/corrupt artifact rejection, no live ETABS calls. |
 | AB5 | Same installed harness: initiating workbook ownership, duplicate-document rejection, changed assumptions mark prior reports historical, representative existing/new-sheet failure rollback and unchanged external sentinels/host settings. |
 | AB6 | Existing workbook/Excel adapter tests and legacy installed command smoke: standalone behavior and pure UDF host-effect boundary remain intact. |
