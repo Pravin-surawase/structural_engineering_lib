@@ -631,6 +631,14 @@ immutable artifact, but cannot replace the accepted workbook reference/session.
 | AB5 | Same installed harness: initiating workbook ownership, duplicate-document rejection, changed assumptions mark prior reports historical, representative existing/new-sheet failure rollback and unchanged external sentinels/host settings. |
 | AB6 | Existing workbook/Excel adapter tests and legacy installed command smoke: standalone behavior and pure UDF host-effect boundary remain intact. |
 | AB7 | Candidate-bound installed receipt records exact source/XLL/workbook/artifact hashes and owned application cleanup. Python independently validates the same immutable retained snapshot. |
+| AB8 | Before candidate creation, call the maintained `scripts.session.check_session_log_complete()` read-only validator and require success. Every bullet in Rework and recurrence is a single keyed occurrence record; explanatory text is prose. Pre-push still performs the final full read-only closeout. |
+
+The documentation-only closeout replan follows c6dc7e3c, whose signed installed
+XLL passed 22 commands and normal Excel exit; its normal-startup ribbon was
+also observed. That head's pre-push closeout rejected an unkeyed explanatory
+bullet in the recurrence section. Correct the record, run AB8, and rebind the
+exact final package/installed receipt. C# product bytes remain unchanged; its
+70 focused tests are retained rather than repeated for this documentation fix.
 
 Finish implementation, meaningful tests, harness and versioned records before
 candidate freeze; run locked restore/build and the affected .NET tests together,

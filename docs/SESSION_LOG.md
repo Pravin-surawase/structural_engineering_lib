@@ -74,6 +74,8 @@ external snapshots, workbook-bound offline review and visible command outcomes.
 | The legacy host-effect capture lost its declared table body after a later command reset the table footprint. | RR-002: after ClearContents and Resize, DataBodyRange is null, so the existing writer had no body anchor. ExcelWorkbookTableStore now writes from the explicit A2 anchor and its Resize body, releasing the intermediate COM objects. |
 | The owned hidden Excel process remained after Quit. | RR-002: Excel-DNA does not call IExcelAddIn.AutoClose on Excel shutdown. Lifecycle-8 traced the remaining retention to leaked intermediate COM Range.Resize anchors and an unreleased WorkbookBeforeClose callback workbook RCW. Explicit SizedRange anchor try/finally release plus callback-workbook release made owned Excel PID 14692 exit normally; the temporary ribbon-disconnection trace was removed. |
 
+| Pre-push closeout rejected the reviewed candidate's session record. | An unkeyed explanatory bullet in Rework and recurrence was parsed as a required RR record. Converted it to prose and added the maintained session-log validator to pre-candidate acceptance; product source remains unchanged. |
+
 ### Root causes and resolutions
 
 The typed input revision owns only effective input data, never its computed
@@ -106,8 +108,9 @@ installed-candidate gates remain external and pending.
   formatter selection; normalize all changed text owners before integrity.
 - RR-016, occurrences=3, minutes=unknown: use the rejection's derived repair
   state rather than attempting to enter it again.
-- No other recurrence was established. Build/type and revision recursion
-  repairs are recorded above without creating speculative recurring patterns.
+
+Build/type and revision recursion repairs are recorded above without creating
+speculative recurring patterns. Explanatory prose stays outside recurrence bullets.
 
 **Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed script/Office path spelling and
 an unbuilt test target failed → discovered owners, successful-build guards and
