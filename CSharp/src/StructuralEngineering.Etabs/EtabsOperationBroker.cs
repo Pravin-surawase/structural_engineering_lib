@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -223,7 +222,6 @@ public static class EtabsAcquisitionArtifactCodec
 
 public sealed class EtabsOperationBroker
 {
-    private static readonly ConcurrentDictionary<int, SemaphoreSlim> ProcessLeases = new();
     private readonly TimeProvider _timeProvider;
 
     public EtabsOperationBroker(TimeProvider? timeProvider = null) =>
@@ -275,8 +273,7 @@ public sealed class EtabsOperationBroker
                 true,
                 null));
 
-        var processLease = ProcessLeases.GetOrAdd(request.ProcessId, static _ => new SemaphoreSlim(1, 1));
-        if (!processLease.Wait(0))
+        if (!EtabsProcessLease.TryAcquire(request.ProcessId, out var processLease))
             return CompletedHandle(new(
                 EtabsBrokerState.LeaseUnavailable,
                 "ETABS.LEASE_UNAVAILABLE",
@@ -452,7 +449,7 @@ public sealed class EtabsOperationBroker
                 }
             }
 
-            processLease.Release();
+            processLease!.Dispose();
             try
             {
                 lock (completionGate)
@@ -748,7 +745,7 @@ public sealed class EtabsOperationBroker
         }
     }
 
-    private static class StaMessagePump
+    internal static class StaMessagePump
     {
         private const uint RemoveMessage = 0x0001;
         public const string Name = "win32-peekmessage/v1";

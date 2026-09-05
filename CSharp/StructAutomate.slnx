@@ -19,5 +19,5 @@
     <Project Path="tests/StructAutomate.Tests/StructAutomate.Tests.csproj" />
     <Project Path="tests/StructuralEngineering.Tests/StructuralEngineering.Tests.csproj" />
   </Folder>
-  <Folder Name="/tools/"><Project Path="tools/StructAutomate.Examples/StructAutomate.Examples.csproj" /></Folder>
+  <Folder Name="/tools/"><Project Path="tools/StructAutomate.Examples/StructAutomate.Examples.csproj" /><Project Path="tools/StructAutomate.EtabsWorker/StructAutomate.EtabsWorker.csproj" /></Folder>
 </Solution>

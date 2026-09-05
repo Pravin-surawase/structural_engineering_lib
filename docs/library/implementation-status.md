@@ -1,4 +1,4 @@
-# WP01-WP10-05 implementation status
+# WP01-WP10-05B implementation status
 
 This record captures the review performed after each work packet and any change
 to the next packet before implementation continues.
@@ -661,8 +661,8 @@ public inputs, explicit session/source/member binding, cache invalidation and
 real Excel projection/save/reopen/rollback proof. The replacement contract must
 be frozen before coding. `XL-CMD-02` is not implemented yet. Earlier WP09 installed
 evidence does not qualify the new session/import UI.
-The production acquisition entry point and PF9-sized multi-member acquisition
-also remain unimplemented; WP10-05B/05C now own these prerequisites before
+The production force-acquisition entry point and PF9-sized multi-member results
+remain unimplemented; WP10-05B/05C own these prerequisites before
 WP10-06. No whole-model compatibility or performance pass is inferred from
 the retained one-member capture.
 
@@ -695,5 +695,37 @@ workbook/adapter tests. The new `Invoke-OfflineSessionAcceptance.ps1` owns actua
 Excel load, assumptions, import, report, rollback, copy/reopen, corruption,
 session eviction, legacy and UDF proof. Its exact candidate-bound results and
 proprietary workbook/snapshot bytes remain external; this source record does
-not substitute for that installed receipt. Live capture and automatic design
-remain later increments in the whole-product audit.
+not substitute for that installed receipt. Automatic design remains a later
+increment in the whole-product audit.
+
+## WP10-05B running-model connection
+
+Connect ETABS now starts a packaged worker for source geometry acquisition.
+Exact PID/start/executable identity, saved model identity, API version, lock and
+units are bound before and after capture. A separate context getter matrix
+preserves the original 48-getter force profile. Bulk frame/point arrays, source
+orientation and deduplicated section/material references produce a typed
+inventory; its external raw journal is hashed into the artifact.
+
+The Excel command stays asynchronous and binds completion to the requesting
+workbook entry and operation ID. Close/unload cancels and discards pending data;
+normal shutdown waits for worker quiescence independently of deadline reporting.
+Frame, point, section and source-ID adjacency indices remain in memory. The
+context is session-only, creates no sheets and remains distinct from an offline
+force snapshot. It does not establish supports, physical spans, strengths,
+offsets, releases, loads, analysis readiness or current design actions.
+
+The getter preflight and development worker/Excel trials used the installed
+ETABS 23.3.1 profile with present/database unit code 6 (kN-m-C): 225 frames,
+189 points and two referenced sections. Source coordinates normalize to mm.
+The Excel trial verified workbook switching, duplicate rejection, local review,
+cancellation/eviction, source-file preservation and normal process shutdown.
+These are development observations; signed installed qualification binds the
+accepted source, XLL, worker and proprietary evidence through external receipts.
+The maintained connection harness also distinguishes development-package runs
+explicitly. No general model-size or runtime performance qualification follows.
+
+The owner-approved order is connection/context, existing-force handoff and
+WP10-05C multi-member result qualification, then actual-bar design orchestration.
+Controlled copied-model reanalysis and overnight optimization remain subsequent
+work under the whole-product workflow.

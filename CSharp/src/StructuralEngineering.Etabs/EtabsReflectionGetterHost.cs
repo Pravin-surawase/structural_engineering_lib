@@ -98,7 +98,7 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
 
         var assembly = Assembly.LoadFrom(Path.GetFullPath(expected.ApiAssemblyPath));
         RequireEqual("API assembly identity", expected.ApiAssemblyIdentity, assembly.FullName ?? string.Empty);
-        ValidateMatrix(assembly);
+        ValidateMatrix(assembly, EtabsGetterMatrix.Allowed.Values);
 
         object? helper = null;
         object? oapi = null;
@@ -168,6 +168,21 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
         }
     }
 
+    public static EtabsReflectionGetterHost AttachContext(EtabsHostExpectation expected)
+    {
+        var host = Attach(expected);
+        try
+        {
+            ValidateMatrix(Assembly.LoadFrom(expected.ApiAssemblyPath), EtabsContextGetterMatrix.Allowed.Values);
+            return host;
+        }
+        catch
+        {
+            host.Dispose();
+            throw;
+        }
+    }
+
     public EtabsInvocation Invoke(
         EtabsGetterDefinition definition,
         IReadOnlyList<object?> inputs,
@@ -175,7 +190,8 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         cancellationToken.ThrowIfCancellationRequested();
-        if (!EtabsGetterMatrix.Allowed.TryGetValue(definition.Operation, out var frozen) || frozen != definition)
+        if ((!EtabsGetterMatrix.Allowed.TryGetValue(definition.Operation, out var frozen) || frozen != definition) &&
+            (!EtabsContextGetterMatrix.Allowed.TryGetValue(definition.Operation, out frozen) || frozen != definition))
             throw new InvalidOperationException("Only an unchanged frozen getter definition may be invoked.");
 
         var target = ResolveObject(definition.ObjectPath);
@@ -272,9 +288,9 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
             _releaseOrder.Add(value);
     }
 
-    private static void ValidateMatrix(Assembly assembly)
+    internal static void ValidateMatrix(Assembly assembly, IEnumerable<EtabsGetterDefinition> definitions)
     {
-        foreach (var definition in EtabsGetterMatrix.Allowed.Values)
+        foreach (var definition in definitions)
         {
             var type = RequireType(assembly, definition.InterfaceType);
             var method = SingleMethod(type, definition.Member);
@@ -316,6 +332,8 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
             return null;
         if (type == typeof(string))
             return string.Empty;
+        if (type.IsEnum)
+            return Enum.ToObject(type, 0);
         return type.IsValueType ? Activator.CreateInstance(type) : null;
     }
 

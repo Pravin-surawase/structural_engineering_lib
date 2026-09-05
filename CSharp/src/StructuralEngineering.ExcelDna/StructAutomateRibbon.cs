@@ -29,6 +29,7 @@ public sealed class StructAutomateRibbon : ExcelRibbon
               <tab id="StructAutomateTab" label="StructAutomate">
                 <group id="StructAutomateOffline" label="Beam workspace">
                   <button id="StructAutomateAssumptions" label="Assumptions" size="large" imageMso="TableProperties" onAction="OnAssumptions" screentip="Editable demo assumptions" supertip="Creates one Assumptions sheet only when requested. Values remain labelled demo until a supported project basis exists." />
+                  <button id="StructAutomateConnect" label="Connect ETABS" size="large" imageMso="DatabaseInsert" onAction="OnConnectEtabs" screentip="Read the running model" supertip="Capture source frame and joint geometry in the background. No analysis, force capture or model changes are performed." />
                   <button id="StructAutomateSnapshot" label="Open Snapshot" size="large" imageMso="FileOpen" onAction="OnOpenSnapshot" screentip="Open saved analysis evidence" supertip="Validate a completed portable snapshot and keep its heavy data outside the workbook. No live ETABS connection is made." />
                   <button id="StructAutomateReview" label="Review Snapshot" size="large" imageMso="ViewForm" onAction="OnReviewSnapshot" screentip="Review captured members and forces" supertip="Review offline evidence in memory. Write a member review sheet only on request." />
                 </group>
@@ -48,6 +49,7 @@ public sealed class StructAutomateRibbon : ExcelRibbon
         """;
 
     public void OnAssumptions(IRibbonControl control) => OfflineCommands.Assumptions();
+    public void OnConnectEtabs(IRibbonControl control) => OfflineCommands.ConnectEtabs();
     public void OnOpenSnapshot(IRibbonControl control) => OfflineCommands.OpenSnapshot();
     public void OnReviewSnapshot(IRibbonControl control) => OfflineCommands.ReviewSnapshot();
     public void OnCreateValidate(IRibbonControl control) => OfflineCommands.ShowLegacyOutcome(WorkbookCommands.CreateValidate);

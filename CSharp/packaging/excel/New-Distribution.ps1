@@ -26,6 +26,8 @@ if (-not $SkipBuild) {
         if ($LASTEXITCODE -ne 0) { throw 'Locked .NET restore failed.' }
         & dotnet build StructAutomate.slnx -c $Configuration --no-restore
         if ($LASTEXITCODE -ne 0) { throw 'Release .NET build failed.' }
+        & dotnet publish tools/StructAutomate.EtabsWorker/StructAutomate.EtabsWorker.csproj -c $Configuration --no-restore
+        if ($LASTEXITCODE -ne 0) { throw 'ETABS worker publication failed.' }
     }
     finally { Pop-Location }
 }
@@ -53,6 +55,13 @@ $verifiedSignature = Get-AuthenticodeSignature -LiteralPath $xll
 if (-not $verifiedSignature.SignerCertificate) { throw 'The packed XLL has no Authenticode signer after signing.' }
 if ([string]$verifiedSignature.Status -ne 'Valid') { throw "The packed XLL signature is not valid: $($verifiedSignature.Status) $($verifiedSignature.StatusMessage)" }
 
+$workerSource = Join-Path $csharp "tools\StructAutomate.EtabsWorker\bin\$Configuration\net10.0-windows\win-x64\publish\StructAutomate.EtabsWorker.exe"
+if (-not (Test-Path -LiteralPath $workerSource -PathType Leaf)) { throw 'The single-file ETABS worker is missing.' }
+$worker = Join-Path $output 'StructAutomate.EtabsWorker.exe'
+Copy-Item -LiteralPath $workerSource -Destination $worker
+$workerSignature = Set-AuthenticodeSignature -LiteralPath $worker -Certificate $certificate -HashAlgorithm SHA256
+if ([string]$workerSignature.Status -ne 'Valid' -or (Get-StructAutomatePeMachine $worker) -ne 'AMD64') { throw 'The ETABS worker must be signed and AMD64.' }
+
 $sample = Join-Path $csharp 'samples\StructAutomate-Standalone-Beam.xlsx'
 $help = Join-Path $repository 'docs\library\excel\README.md'
 foreach ($required in @($sample, $help)) {
@@ -66,6 +75,7 @@ foreach ($scriptName in @(
     'Install-PerUser.ps1',
     'Repair-PerUser.ps1',
     'Invoke-OfflineSessionAcceptance.ps1',
+    'Invoke-EtabsConnectionAcceptance.ps1',
     'Uninstall-PerUser.ps1')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $scriptName) `
         -Destination (Join-Path $output $scriptName)
@@ -88,6 +98,9 @@ $manifest = [ordered]@{
     file_digest_algorithm = 'SHA-256'
     pre_sign_xll_sha256 = $preSign.sha256
     signed_xll = Get-StructAutomateFileIdentity $xll
+    worker = Get-StructAutomateFileIdentity $worker
+    worker_runtime = '.NET 10 x64, framework-dependent single-file executable'
+    context_profile = 'ETABS 23.3.1 source geometry, kN-m-C; no forces or model mutations'
     pe_machine = Get-StructAutomatePeMachine $xll
     signature = [ordered]@{
         status = [string]$verifiedSignature.Status

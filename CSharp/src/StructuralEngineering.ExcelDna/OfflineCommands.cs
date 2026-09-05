@@ -13,13 +13,16 @@ public sealed class OfflineAddIn : IExcelAddIn
 }
 
 /// <summary>Commands bind the initiating workbook before dialogs; UDFs never enter this boundary.</summary>
-public static class OfflineCommands
+public static partial class OfflineCommands
 {
     private sealed class Entry
     {
         public OfflineSnapshotSession? Session { get; set; }
         public OfflineReviewWindow? Window { get; set; }
         public string LastOutcome { get; set; } = "{}";
+        public EtabsConnectionSession? Context { get; set; }
+        public string? ConnectionRequestId { get; set; }
+        public CancellationTokenSource? ConnectionCancellation { get; set; }
     }
     private static readonly Dictionary<long, Entry> Entries = [];
     private static readonly Guid AppEvents = new("00024413-0000-0000-C000-000000000046");
@@ -108,7 +111,7 @@ public static class OfflineCommands
 
     internal static void Unload()
     {
-        foreach (var entry in Entries.Values) entry.Window?.Dispose();
+        foreach (var entry in Entries.Values) { CancelEntryConnection(entry); entry.Window?.Dispose(); }
         Entries.Clear();
         if (_eventApplication is not null)
         {
@@ -120,7 +123,7 @@ public static class OfflineCommands
 
     private static void OnBeforeClose(object workbook, ref bool cancel)
     {
-        try { if (Entries.Remove(Key(workbook), out var entry)) entry.Window?.Dispose(); }
+        try { if (Entries.Remove(Key(workbook), out var entry)) { CancelEntryConnection(entry); entry.Window?.Dispose(); } }
         finally { OfflineWorkbookStore.Release(workbook); }
         // A cancelled close merely requires reloading validated evidence on the next review.
     }

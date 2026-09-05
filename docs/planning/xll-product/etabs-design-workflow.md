@@ -241,6 +241,14 @@ new users. A persistent status/reason is more valuable than another control.
 | G — One coupled change | Apply one proposal to a copy, read back, analyse, reacquire, redesign, check required effects and save matching evidence/model | Original unchanged; final dimensions equal analysed dimensions; unqualified effects prevent wider acceptance |
 | H — Bounded unattended work | Same manual services, retained baseline/best, each ETABS trial recorded, no duplicate loops, stop budgets, safe pause and morning review after process loss | Qualify real application/modal/error behavior; no automatic replay of uncertain setters or global-optimum promise |
 
+Owner sequencing update (2026-09-05): A/B is merged. Bring D's running-model
+connection and context ahead of C so engineers can check actual model intake
+first, then qualify existing-force handoff and E's broader capture before C.
+The letters identify capabilities, not mandatory dependency order. The active
+WP10-05B plan card owns the current bounded connection packet. Recheck this
+whole-product goal and dependency order at each packet intake; change only the
+affected canonical plans when evidence or owner priorities change.
+
 These are implementation increments within the existing WP10/WP11 programme,
 not a renumbering or a claim that one session can cross every installed gate.
 The first coding packet should implement A/B with exact acceptance, not all
