@@ -9,6 +9,7 @@
     <ExcelDnaAddInName>StructAutomate</ExcelDnaAddInName>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="../../../docs/planning/xll-product/demo-beam-preset.json" LogicalName="StructAutomate.DemoPreset.json" />
     <ProjectReference Include="../StructuralEngineering.Contracts/StructuralEngineering.Contracts.csproj" />
     <ProjectReference Include="../StructuralEngineering.Core/StructuralEngineering.Core.csproj" />
     <ProjectReference Include="../StructuralEngineering.Reinforcement/StructuralEngineering.Reinforcement.csproj" />

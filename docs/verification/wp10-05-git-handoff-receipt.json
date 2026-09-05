@@ -1,0 +1,136 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "bd56e028c2f104be93a5fe2dae708e88c98430c0e8cf18ba94ecf5b82c79cb39",
+    "state": {
+      "branch": "codex/wp10-05-offline-session",
+      "default_base": {
+        "ahead": 8,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "973cea8c39edf347ccfb19561cf10a06b48bf770",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 292.467,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "head_sha": "ac60595d6d03a57c0ae5a909ac0f0f393e1069e1",
+      "hold_reasons": [
+        "changed paths: 22"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-09-05T10:37:10.664962+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 22,
+        "modified_paths": [
+          "CSharp/README.md",
+          "CSharp/packaging/excel/New-Distribution.ps1",
+          "CSharp/src/StructuralEngineering.ExcelDna/StructAutomateRibbon.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/StructuralEngineering.ExcelDna.csproj",
+          "CSharp/src/StructuralEngineering.ExcelDna/WorkbookCommands.cs",
+          "docs/SESSION_LOG.md",
+          "docs/library/excel/README.md",
+          "docs/library/implementation-status.md",
+          "docs/planning/xll-product/current-plan.md",
+          "docs/planning/xll-product/excel-ui-review.md",
+          "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+          "docs/verification/rework-recurrence-index.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "CSharp/packaging/excel/Invoke-OfflineSessionAcceptance.ps1",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineAssumptions.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineCommands.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineReviewWindow.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineSnapshotSession.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineSnapshotStore.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineWorkbookStore.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp10AssumptionTests.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp10OfflineSessionTests.cs",
+          "docs/verification/wp10-05-offline-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:bd56e028c2f104be93a5fe2dae708e88c98430c0e8cf18ba94ecf5b82c79cb39",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-05T10:37:10.666189+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Windows WP10-05 parent; installed transition follows exact candidate ledger",
+    "owned_paths": [
+      "CSharp/src/StructuralEngineering.ExcelDna",
+      "CSharp/tests/StructAutomate.Tests",
+      "CSharp/packaging/excel"
+    ],
+    "shared_paths": [
+      "docs/planning/xll-product",
+      "docs/SESSION_LOG.md"
+    ],
+    "task_id": "WP10-05"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

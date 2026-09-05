@@ -5,8 +5,8 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-04
-**Related Tasks:** WP09
+**Last Updated:** 2026-09-05
+**Related Tasks:** WP09, WP10-05
 **Abstract:** Install, use, diagnose, and integrate the standalone Windows Excel XLL over the native .NET beam library.
 
 ---
@@ -24,6 +24,41 @@ BBS, concrete/steel/formwork quantities, illustrative cost, calculation
 packages, and evaluation of one declared current physical candidate.
 
 ## Supported installation
+
+The WP10-05 workspace adds three main ribbon actions without creating sheets at
+XLL load:
+
+1. **Assumptions** creates one sheet with editable demo inputs and explicit
+   units/origins. Initial cover is 30 mm to the outermost reinforcement, concrete
+   strength is 25 N/mm² and steel yield strength is 500 N/mm². These illustrative
+   values come from the shared development preset; they do not replace imported
+   materials or approve a real project. Repeating the command preserves edits.
+2. **Open Snapshot** opens a completed portable analysis snapshot JSON file.
+   Its full geometry, actions and provenance are verified and stored outside the
+   workbook, under `%LOCALAPPDATA%\StructAutomate\Projects`. Excel keeps only
+   a small document and artifact reference. A raw ETABS capture is not this file.
+3. **Review Snapshot** opens a member selector and the captured signed forces.
+   Switching members uses memory. **Write member review** in that window creates
+   or updates the requested Beam Review sheet; editing assumptions marks an
+   earlier report historical. This is evidence review, not an approved design.
+
+Save the workbook normally to retain assumptions and artifact references.
+Reopening permits offline review after the saved artifact is revalidated. Keep
+the referenced project folder when transferring the workbook; a missing or
+corrupt artifact is rejected. Save As retains document identity. If two open
+copies share that identity, close one before continuing. Closing the workbook
+evicts its memory session. There is no live ETABS connection or automatic replay.
+
+The separate **Standalone examples** menu retains the WP09 workflow below.
+Use it in a separate workbook: this new workspace does not yet map assumptions
+and imported actions into a complete design/check request. All command outcomes
+are shown in a persistent status window, including rejected operations.
+
+The import admission bounds are 16 MiB, 1,000 members and 10,000 actions. Those
+limits do not qualify whole-model acquisition or its performance. Connect,
+Get Forces, automatic Design, optimisation, solver comparison and Auto Run
+remain later application work. The active packet and exact installed acceptance
+contract are in [WP10-05](../../planning/xll-product/wp10-etabs-read-adapter.md#wp10-05-active-packet-ab--2026-09-05).
 
 The WP09 package targets:
 

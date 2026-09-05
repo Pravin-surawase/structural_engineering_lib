@@ -23,17 +23,18 @@
     {
       "id": "RR-002",
       "pattern": "Host or acceptance boundary discovered after implementation",
-      "occurrences": 9,
+      "occurrences": 10,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Seven explicit WP09 incidents are recorded. WP10-02 then admitted FrameObj.GetElm from static evidence before its model-specific live return was proved, and a later strict pass showed that managed String[] reflection did not prove SimilarToStory element nullability. The WP09 minutes overlap RR-001 and the two WP10-02 stop/replan events were not separately timed."
+        "basis": "Seven explicit WP09 incidents are recorded. WP10-02 then admitted FrameObj.GetElm from static evidence before its model-specific live return was proved, and a later strict pass showed that managed String[] reflection did not prove SimilarToStory element nullability. The WP09 minutes overlap RR-001 and the two WP10-02 stop/replan events were not separately timed. WP10-05 discovered that Office CustomXMLPart.LoadXML cannot replace an already-loaded part; owned-part replacement with verified rollback worked in the pre-candidate diagnostic. This correction was not separately timed."
       },
       "short_solution": "Freeze acceptance rows and run an exact-host micro-probe before building the host adapter or package.",
-      "last_seen_task": "WP10-02",
+      "last_seen_task": "WP10-05",
       "aggregate_parent": "RR-001",
       "details": [
-        "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger"
+        "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
+        "docs/SESSION_LOG.md"
       ]
     },
     {
@@ -71,14 +72,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 47,
+      "occurrences": 49,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated."
+        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "XLL-PRODUCT-ARCHITECTURE-AUDIT",
+      "last_seen_task": "WP10-05",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",

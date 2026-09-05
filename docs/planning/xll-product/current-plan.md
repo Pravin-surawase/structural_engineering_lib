@@ -10,8 +10,8 @@ complexity: advanced
 
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.
-The next implementation unit is WP10-05 application/session and public-input
-reconciliation, followed by completed-snapshot review; the complete
+WP10-05 A/B now implements application/session ownership, transparent demo
+assumptions and completed-snapshot offline review; the complete
 automation path includes ETABS forces,
 design/checking, candidate search, reanalysis, detailing and construction
 outputs.
@@ -22,8 +22,9 @@ complete. WP01–WP08 implement the shared native Python and .NET beam libraries
 and [WP09](wp09-standalone-excel.md) now supplies the signed, installed-tested
 standalone Excel product. [WP10](wp10-etabs-read-adapter.md) has frozen its
 portable contract, exact getter adapter, bounded STA broker and offline
-normalization. WP10-05 requires a reconciled session/storage contract and real
-Excel input/import/save/reopen/rollback proof for that contract.
+normalization. WP10-05's active A/B contract replaces the old chunk-table plan.
+Its candidate is qualified by the new installed Excel harness and external exact
+XLL/source/workbook receipt, not by the previous WP09 receipt.
 The reviewed plan identifies production acquisition handoff (WP10-05B) and
 multi-member support (WP10-05C) as prerequisites to final WP10-06 qualification.
 
@@ -39,7 +40,10 @@ model binding. Heavy workbook snapshot tables and a new database are not default
 prerequisites. Keep the typed kernels and transaction/freshness guarantees; add
 the missing design/candidate orchestration and public mapper. Stage the eventual
 ribbon by implemented capability, with local Solver Check in applicable details.
-No new UI, full design orchestrator or WP10-05 implementation is claimed complete.
+The first implemented UI exposes Assumptions, Open Snapshot and Review Snapshot,
+with legacy tools in their own menu. Automatic design orchestration is next
+(audit increment C); live acquisition follows only after its own host contract.
+Source completion alone does not assert an installed acceptance pass.
 
 The subsequent [end-to-end workflow refinement](etabs-design-workflow.md) defines
 broad capture with local filtering, session-based heavy data, transparent defaults,

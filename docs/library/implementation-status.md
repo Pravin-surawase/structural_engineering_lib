@@ -1,4 +1,4 @@
-# WP01-WP10-04 implementation status
+# WP01-WP10-05 implementation status
 
 This record captures the review performed after each work packet and any change
 to the next packet before implementation continues.
@@ -649,8 +649,8 @@ revision/epoch identities describe the capture, not today's live model state.
 
 Evidence: [WP10-04 normalization receipt](../verification/wp10-04-normalization-evidence.json).
 The synthetic shared vector contains invented data only; proprietary capture,
-API help and emitted retained snapshot remain external. WP10-05 Excel import
-is next and has not started. No live acquisition, installed application test,
+API help and emitted retained snapshot remain external. At WP10-04 closeout,
+WP10-05 had not started. No live acquisition, installed application test,
 performance qualification, mutation, release or engineering approval is claimed.
 
 WP10-05 preparation checked the actual Excel command, table-store, transaction
@@ -672,3 +672,28 @@ WP08 builds/ranks supplied candidate evaluations. Source-to-support/span mapping
 actual-bar synthesis, execution of every required dependent check and group-level
 candidate evaluation remain integration work. Packet completion does not claim
 that the proposed Design or Auto Run button already has that orchestration.
+
+## WP10-05 A/B implementation
+
+The new public workspace implements one transparent Assumptions sheet, a
+strict completed-snapshot importer, immutable external storage, workbook-bound
+memory sessions, a member/force review window and a requested member report.
+It embeds the existing canonical demo preset without inferring source strength
+from material names. The old snapshot-chunk worksheet proposal is historical.
+
+Small versioned custom XML metadata stores document identity, artifact reference
+and effective-input/report revisions. The complete portable payload stays in
+the external content-addressed folder, including its original provenance.
+Reopen validates exact bytes and semantic identities; member/station/action
+indices serve the active session without another ETABS or file read. Reports
+are explicitly offline/unreviewed and become historical on input/source change.
+Existing standalone commands reject new workspace inputs until the supported
+design mapper exists, and remain available in separate legacy workbooks.
+
+Source verification includes strict input and artifact tests plus the maintained
+workbook/adapter tests. The new `Invoke-OfflineSessionAcceptance.ps1` owns actual
+Excel load, assumptions, import, report, rollback, copy/reopen, corruption,
+session eviction, legacy and UDF proof. Its exact candidate-bound results and
+proprietary workbook/snapshot bytes remain external; this source record does
+not substitute for that installed receipt. Live capture and automatic design
+remain later increments in the whole-product audit.

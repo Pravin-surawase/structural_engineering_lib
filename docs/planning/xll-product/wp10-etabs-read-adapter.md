@@ -582,6 +582,63 @@ and a missing recovery transition. Its separate maintained authority is
 That repair shares this unpublished planning branch and original task history;
 it changes no WP10 engineering contract and does not start normalization.
 
+## WP10-05 active packet A/B — 2026-09-05
+
+This executable contract replaces the historical chunk-table card below.
+The Windows task `WP10-05` is the sole writer of
+`codex/wp10-05-offline-session`, based on the local audit predecessor
+`ac60595d6d03a57c0ae5a909ac0f0f393e1069e1`. Its eight unpublished planning
+commits travel with this candidate; no sibling candidate is advanced separately.
+
+The first public workflow has **Assumptions**, **Open Snapshot**, and
+**Review Snapshot**. Existing standalone commands remain in a labelled menu.
+Loading the XLL creates no worksheets. Assumptions creates one owned sheet on
+request, with the canonical demo preset, explicit units, editable values and
+origins. Snapshot review uses a workbook-bound modeless window with member
+selection and signed action rows; a member report is written only on request.
+All command outcomes remain visible, including rejection and cancellation.
+
+The completed portable snapshot is validated with the existing codec and saved
+byte-for-byte outside Excel in an immutable, content-addressed project folder.
+The input admission bounds are 16 MiB, 1,000 members and 10,000 actions; these
+are limits, not performance qualification. The workbook stores only a versioned
+document identity, project identity, exact artifact reference/store location and
+assumption/report revisions. A reopened workbook has no live ETABS connection;
+review reloads and validates the referenced artifact. Missing or corrupt files
+produce an explicit rejection. Member switching uses the loaded index.
+
+Document identity is distinct from project and analysis identity. Commands bind
+the initiating live workbook once. Simultaneously open document copies are
+rejected as ambiguous until one copy is closed; Save As preserves the document
+identity and shared immutable evidence. Close/unload evicts memory. There is no
+setter replay, inference of material strength, automatic design, or export of
+an offline review as an approved calculation package. Legacy calculations in a
+new beam workspace are blocked until a supported action/design mapping
+exists; separate legacy workbooks remain supported.
+
+Public sheet updates preflight ownership and the exact controlled footprint;
+they preserve user formulas/formatting outside it. New sheets are removed on
+failure; existing controlled values and metadata are restored and read back.
+Formatting is applied on creation only. A failed import may leave an unreferenced
+immutable artifact, but cannot replace the accepted workbook reference/session.
+
+| Proof | Acceptance and executable owner |
+| --- | --- |
+| AB1 | `Wp10OfflineSessionTests`: exact byte identity/provenance, digest/schema/scope/project failures, immutable deduplication, corruption on reopen, indexed member selection without host/file access. |
+| AB2 | Public assumption contract tests: preset values/origins/units, strict cells, blank versus zero, stable effective-input revision and edited-value origin. |
+| AB3 | `Invoke-OfflineSessionAcceptance.ps1`: exact candidate XLL loads in actual x64 Excel, creates no sheets on load; Assumptions creates only its owned sheet, preserves user sheets, and never silently resets edits. |
+| AB4 | Same installed harness: retained snapshot import, readable signed rows, external store identity, memory review, save/reopen, missing/corrupt artifact rejection, no live ETABS calls. |
+| AB5 | Same installed harness: initiating workbook ownership, duplicate-document rejection, changed assumptions mark prior reports historical, representative existing/new-sheet failure rollback and unchanged external sentinels/host settings. |
+| AB6 | Existing workbook/Excel adapter tests and legacy installed command smoke: standalone behavior and pure UDF host-effect boundary remain intact. |
+| AB7 | Candidate-bound installed receipt records exact source/XLL/workbook/artifact hashes and owned application cleanup. Python independently validates the same immutable retained snapshot. |
+
+Finish implementation, meaningful tests, harness and versioned records before
+candidate freeze; run locked restore/build and the affected .NET tests together,
+then candidate review/integrity and real installed acceptance. Keep proprietary
+workbooks and snapshots outside Git. Source receipt declares this installed
+transition before the final candidate; observed application results remain
+external. Later packets C–H retain the ordering in the whole-product audit.
+
 ## WP10-05 preparation review and executable plan — 2026-09-05
 
 **Superseded executable card:** the

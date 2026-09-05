@@ -1,0 +1,18 @@
+{
+  "schema_version": "structautomate.offline-installed-transition/v1",
+  "task_id": "WP10-05",
+  "source_branch": "codex/wp10-05-offline-session",
+  "predecessor_commit": "ac60595d6d03a57c0ae5a909ac0f0f393e1069e1",
+  "authority": "Owner requested implementation of audit increments A/B; Windows is the sole writer of this task branch.",
+  "transition": "Clean accepted source candidate to signed local x64 Excel validation installation",
+  "candidate_binding": "New-Distribution.ps1 records exact source_commit, source_tree and signed XLL SHA-256 after the final candidate commit. Invoke-OfflineSessionAcceptance.ps1 checks that installed manifest and emits the external receipt.",
+  "acceptance_owner": "CSharp/packaging/excel/Invoke-OfflineSessionAcceptance.ps1",
+  "retained_snapshot_file_sha256": "b0379473f0e195c4a8e947b89218e0af4e1294f80e72824bd731d7fa65af627c",
+  "retained_scope": { "members": 1, "action_rows": 13, "accepted_records": 110 },
+  "application_boundary": "Task-owned Excel workbooks and snapshot store; existing ETABS process/model untouched",
+  "workbook_schema": "structural-excel-offline/v1",
+  "input_admission": { "maximum_bytes": 16777216, "maximum_members": 1000, "maximum_actions": 10000 },
+  "observed_installed_verdict": "External candidate-bound receipt is required; this source declaration is not a pass.",
+  "distribution": "Local development validation only; no public release or engineering issuance",
+  "recovery": "Missing or corrupt saved artifacts reject reopening; there is no setter replay or live model restoration."
+}

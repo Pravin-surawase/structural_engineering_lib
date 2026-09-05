@@ -5,6 +5,75 @@
 
 ---
 
+## 2026-09-05 — Session: WP10-05 offline beam workspace
+
+**Task:** WP10-05
+**Agent:** DEV (one parent; two bounded Terra High implementation/review agents)
+**Branch:** `codex/wp10-05-offline-session`
+
+**Focus:** Implement audit increments A/B: transparent assumptions, immutable
+external snapshots, workbook-bound offline review and visible command outcomes.
+
+### Completed
+
+- Replaced the obsolete chunk-sheet plan with the active A/B contract before
+  implementation. Carried the eight local planning/audit predecessor commits
+  together; no sibling worktree was mutated or separately published.
+- Added Assumptions, Open Snapshot and Review Snapshot. Canonical demo inputs
+  remain explicit and editable; only requested projections create sheets.
+  Small custom XML references identify the document/artifact; the complete
+  snapshot and raw provenance stay external, with in-memory member/station
+  indices. Legacy tools remain usable in separate standalone workbooks.
+- Added strict input/artifact tests and a maintained installed acceptance
+  harness. Twelve new host-free checks passed during implementation. A narrow
+  real Excel diagnostic exercised import, review, report, metadata-failure
+  rollback, save/reopen and session eviction (zero resident sessions on close).
+  These diagnostics guide implementation; final qualification must bind the
+  accepted source and signed installed XLL through the external receipt.
+- Parent inspected delegated storage and harness changes. A separate read-only
+  review found no confirmed main-process C# defect. Final focused verification,
+  candidate acceptance/integrity, installed and hosted results are recorded by
+  the delivery ledger and exact external artifacts after source freeze.
+- Updated the public user guide, current plan and implementation status. No
+  live ETABS calls, model mutation, design orchestration, broad performance
+  qualification, public release or engineering approval is claimed.
+
+### Issues encountered
+
+| Symptom / impact | Root cause / resolution and proof |
+| --- | --- |
+| New assumption revision calculation overflowed the test process stack. | The computed Revision getter serialized itself while hashing its containing record. Excluded the computed property from JSON; all 12 new host-free tests passed. |
+| Initial compile diagnostics found the embedded preset outside the repository, a dynamic extension-method call and a test helper shadowing System.IO.Path. | Corrected the relative resource path and explicit static types/qualified Path owner. Release build passed with zero warnings/errors; no failed or zero-discovery test run was counted as proof. |
+| Installed metadata replacement returned `This custom XML part has already been loaded`. | RR-002: Office LoadXML is initial-load-only for an existing part in this host. Replace only the owned part under preimage/readback rollback; actual import, injected metadata failure and reopen now worked. |
+| A guessed delivery-script filename failed; Excel SaveAs rejected a forward-slash path. | RR-005: source discovery located session.py; normalized native paths worked for Office SaveAs/Open. Installed PIA reflection additionally required loading its Office dependency first. |
+
+### Root causes and resolutions
+
+The typed input revision owns only effective input data, never its computed
+digest. Office persistence uses the actual host's part replacement semantics,
+with exact restoration/readback; a command is not completed until the workbook
+reference is committed. File paths supplied to Office use native full paths.
+The installed harness tests the main lifecycle independently of unit tests.
+
+### Rework and recurrence
+
+- RR-002, occurrences=10, minutes=unknown: one additional custom XML host
+  boundary discovered in an implementation diagnostic before candidate freeze.
+- RR-005, occurrences=49, minutes=unknown: two additional command/path events
+  (guessed source owner and Office SaveAs path syntax); use discovered owners
+  and native full paths. Their correction time was not separately measured.
+- No other recurrence was established. Build/type and revision recursion
+  repairs are recorded above without creating speculative recurring patterns.
+
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed script/Office path spelling and
+an unbuilt test target failed → discovered owners, successful-build guards and
+native full Office paths worked. Provider/token usage is not inferred.
+
+**Next:** Complete the exact candidate gates, then implement audit increment C
+(actual-bar design/check orchestration) before live Connect/Get Forces or Auto Run.
+
+---
+
 ## 2026-09-05 — Session: Whole-product XLL architecture audit
 
 **Task:** XLL-PRODUCT-ARCHITECTURE-AUDIT

@@ -1,8 +1,15 @@
 # Excel/XLL UI review and proposed workflow
 
-Date: 2026-09-05. Status: revised overall product proposal; UI changes are not implemented.
+Date: 2026-09-05. Status: historical review with WP10-05 A/B implementation update.
 Task: WP09-UI-REVIEW. The owner asked to inspect the Excel/XLL experience and
 plan a simpler interface before continuing implementation.
+
+WP10-05 now implements the first part of this proposal: Assumptions, Open
+Snapshot and Review Snapshot, workbook-bound visible outcomes, external heavy
+data and an on-demand member review. The former five controls remain in the
+Standalone examples menu. The [active A/B contract](wp10-etabs-read-adapter.md#wp10-05-active-packet-ab--2026-09-05)
+owns its new acceptance. The WP09 observations below describe the earlier UI;
+the remaining full-design and automation proposal is still future work.
 
 The subsequent [ETABS workflow refinement](etabs-design-workflow.md) connects
 this UI to capture, local design/search, copied-model reanalysis and savings.
