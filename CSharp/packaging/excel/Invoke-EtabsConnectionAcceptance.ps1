@@ -82,8 +82,9 @@ try {
     $ownedExcelId=$owned[0].Id
     $books=$excel.Workbooks
     Require-Connection ($books.Count -eq 0) 'Add-in load created an unsolicited workbook.'
+    Require-Connection ([bool]$excel.RegisterXLL($xll)) 'Excel could not load the exact verified XLL.'
+    Require-Connection ($books.Count -eq 0) 'Loading the verified XLL created an unsolicited workbook.'
     $bookA=$books.Add()
-    if ($DevelopmentPackage) { Require-Connection ([bool]$excel.RegisterXLL($xll)) 'Development XLL did not register.' }
     Await-Connection { [bool](Macro 'STR_XL_TEST_RIBBON_LOADED') } 'Ribbon onLoad was not observed.' 15
     $sheets=$bookA.Worksheets
     try { $initialSheets=[int]$sheets.Count } finally { Release-StructAutomateComObject $sheets }

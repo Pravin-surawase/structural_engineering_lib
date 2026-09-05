@@ -47,6 +47,7 @@ WP10-05B unit, aligned with the complete beam design and automation product.
 | Initial intake held the old squash-merged branch as diverged. | The branch and main had distinct commit histories. Verified merged PR 974 and equal candidate/merge trees, fast-forwarded main, then began this task on its own branch. The failed intake did not start a timer. |
 | Generic fetch stopped at an absent old remote branch. | Local narrow-fetch configuration still named codex/wp10-completion. Removed only that obsolete fetch mapping; the explicit main fetch succeeded at the unchanged base. No branch or historical worktree was deleted. |
 | Accepted candidate integrity found one missing final newline. | RR-013: the generated worker packages.lock.json was outside the changed C# formatter selection. Normalize its final LF, retaining identical dependency data and product source; the repair candidate gets exact integrity verification. |
+| Signed installed connection trial could not find the ribbon probe macro. | RR-002: COM-created Excel did not automatically load the startup-registered XLL; the new harness omitted the explicit RegisterXLL used by the maintained offline harness. Replan B7 to bind the installed path/signature/startup entry, explicitly load it, verify zero automatic workbooks, then test onLoad. The failed receipt retained zero ETABS calls and successful cleanup. bootstrap-development-1 then passed the complete connection lifecycle against the unchanged installed binaries, confirming the harness root cause; final candidate qualification remains separate. |
 | Git tree syntax and rg path searches failed in PowerShell; the getter micro-probe rejected an orientation by-ref argument. | RR-005: quote Git brace expressions, pass rg glob filters rather than wildcard paths, and use the exact boxed API enum. Corrected commands and the actual getter preflight passed. A later owner lookup repeated the rg wildcard mistake and a guessed formatter filename was absent; discovered folder filters and registry search resolved them. |
 | Initial worker lease crossed threads but used a thread-owned Mutex. | RR-002: caller acquisition and STA disposal have different thread identities. Replaced it with an exclusive file-handle lease plus the same-process semaphore; shared legacy/context broker tests passed. |
 | Excel development harness invalidated workbook B and initially obscured the primary error with cleanup failure. | RR-002: FinalReleaseComObject on ActiveWorkbook also destroyed the owned bookB RCW alias. Release the borrowed alias once; retain primary and cleanup diagnostics separately. excel-development-3 passed the same workbook-switch/close flow without product changes. |
@@ -62,8 +63,9 @@ receipts remain distinct from the passing development trials.
 
 ### Rework and recurrence
 
-- RR-002, occurrences=18, minutes=unknown: cross-thread lease ownership and
-  acceptance-harness workbook RCW alias release; verify real ownership boundaries.
+- RR-002, occurrences=19, minutes=unknown: cross-thread lease ownership,
+  acceptance-harness workbook RCW alias release and explicit COM-host XLL loading;
+  verify real ownership and bootstrap boundaries.
 - RR-005, occurrences=61, minutes=unknown: PowerShell Git braces, repeated rg
   wildcard paths and exact by-ref enum binding; use discovered literal paths and
   installed API parameter types.

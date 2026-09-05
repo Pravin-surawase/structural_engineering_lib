@@ -613,6 +613,17 @@ No other device or historical WP09 worktree is assumed synchronized.
 | B7 | Qualification includes exact installed API metadata and a getter-only model smoke before candidate freeze, host-free tests for identity/shape/context fences and broker quiescence, then signed installed Excel + worker acceptance against the exact accepted head. Verify zero automatic sheets, asynchronous completion, correct target, local selection, workbook-close handling, preserved source file/lock/units, normal owned Excel/worker cleanup, and unchanged offline acceptance. |
 | B8 | After intended code/docs/locks/records freeze: affected formatter, union of focused C# tests and documentation checks, direct session-log validator, one immutable independent review and one candidate integrity check. Final signed package binds source/XLL/worker/receipt identities externally. One hosted PR cycle, no broad Python/React suite unless impact expands. Pre-push owns final session end; delivery-managed usage derives PR/merge counters from its ledger. |
 
+**Installed bootstrap replan — 2026-09-05:** the first signed installed trial
+stopped before any ETABS call because a COM-created Excel instance did not load
+the startup-registered XLL. B7 additionally requires the maintained offline
+harness bootstrap: verify the exact installed startup entry and signed package,
+create the owned Excel instance, explicitly RegisterXLL from that verified path,
+verify zero automatic workbooks, then create a visible test workbook and verify
+ribbon onLoad before connection tests. Apply the same explicit load in development
+mode. This distinguishes controlled COM-host loading from normal Excel startup;
+it changes no product, getter or engineering acceptance. Retain the failed
+receipt and requalify both connection and offline flows on the final package.
+
 **Implementation ownership:** parent freezes plans, then one bounded writer
 implements context/broker/worker contracts. Parent remains read-only on source
 until that handoff, then integrates Excel, packaging, acceptance and records.
@@ -629,7 +640,7 @@ context/broker/offline/Excel adapter tests (exclude opt-in configured live tests
 Run installed diagnostics through maintained explicit-path helpers on owned
 Excel workbooks and the uniquely bound read-only ETABS source. Preserve all
 failed receipts. Use `rg --files`/`rg -g`, quote Git tree expressions in PowerShell,
-and never pass manual PR/merge arguments to delivery-managed usage closeout.
+  and never pass manual PR/merge arguments to delivery-managed usage closeout.
 
 **Stop/replan:** source or workbook identity ambiguity, outside-scope host effect,
 unverified cleanup, unsupported getter semantics, or a second rejected candidate.
