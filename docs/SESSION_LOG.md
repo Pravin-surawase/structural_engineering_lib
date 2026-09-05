@@ -5,6 +5,44 @@
 
 ---
 
+## 2026-09-05 — Session: ETABS design workflow refinement
+
+**Task:** WP10-WORKFLOW-REFINEMENT
+**Agent:** RESEARCHER (one parent; no subagents)
+**Branch:** `codex/wp10-react-reuse-review`, continuing local discussion notes.
+
+**Focus:** Refine the owner's capture, local model, design/search, ETABS
+reanalysis and savings workflow before implementing the next product packet.
+
+### Completed
+
+- Reviewed PF8/PF11 coupling and transaction contracts, current native solver
+  and candidate-ranking source, WP10 capture boundaries and PF9 performance
+  workloads. Checked CSI's official final-size analysis/design and locking
+  guidance. No Excel or ETABS action was performed in this planning task.
+- Wrote etabs-design-workflow.md: acquire required broad context once per
+  revision, filter in C# memory, preserve heavy snapshots outside worksheets,
+  use fast local search followed by bounded ETABS copy reanalysis, and retain
+  a fixed baseline for comparable savings. Clarified scope, stop/recovery states,
+  actual-bar quantity requirements and implementation exit conditions.
+- Linked the refinement from current-plan, UI review and WP10 preparation.
+  The ribbon remains the entry point; small summaries are optional and heavy
+  model/joint/force data do not become worksheets. Product code is unchanged.
+
+### Issues encountered
+
+- None encountered.
+
+### Root causes and resolutions
+
+- None encountered.
+
+### Rework and recurrence
+
+- None encountered.
+
+---
+
 ## 2026-09-05 — Session: Excel/XLL UI review
 
 **Task:** WP09-UI-REVIEW

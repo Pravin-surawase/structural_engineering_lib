@@ -593,6 +593,11 @@ acceptance; save/reopen must work independently of output sheets. The source
 acquisition evidence remains valid, but the old storage mapping is not the new
 implementation contract.
 
+The [end-to-end workflow refinement](etabs-design-workflow.md) further specifies
+the intended broad-model capture, local filtering and durable storage boundary,
+and its later WP11 design/reanalysis loop. Required result coverage and all
+getters still need qualification; the one-member evidence is not full-model proof.
+
 Preparation base: `0d790b56ba92a059b2cac574be970a2cf9106821`, the merged
 [WP10-04 PR #972](https://github.com/Pravin-surawase/structural_engineering_lib/pull/972).
 This is a source-backed implementation plan, not installed acceptance of a

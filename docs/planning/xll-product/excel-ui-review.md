@@ -4,6 +4,11 @@ Date: 2026-09-05. Status: reviewed proposal; product UI changes are not implemen
 Task: WP09-UI-REVIEW. The owner asked to inspect the Excel/XLL experience and
 plan a simpler interface before continuing implementation.
 
+The subsequent [ETABS workflow refinement](etabs-design-workflow.md) connects
+this UI to capture, local model storage, design/search, copied-model reanalysis
+and savings comparison. Small useful summaries remain optional output sheets;
+heavy model/joint/force data remain outside worksheets.
+
 ## What exists
 
 The WP09 XLL loads the native C# libraries through Excel-DNA. It provides pure

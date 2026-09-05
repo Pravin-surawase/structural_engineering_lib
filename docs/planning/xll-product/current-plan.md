@@ -34,6 +34,12 @@ this storage boundary and the discussed whole-model contract with WP10-05
 before implementation. Its earlier mandatory snapshot-sheet proposal is
 superseded on that point. No new UI or WP10-05 implementation is claimed complete.
 
+The subsequent [end-to-end workflow refinement](etabs-design-workflow.md) defines
+broad capture with local filtering, durable heavy data outside worksheets, a
+fast local design/search loop, bounded ETABS copied-model reanalysis and a fixed
+baseline for comparable savings. It refines the upcoming WP10/WP11 work; it
+does not claim those integrations complete or expand beam design to the building.
+
 **Use the original architecture's P0–P6 phase meanings.** My earlier v2 synthesis changed those meanings and compared the older optimizer roadmap instead of this document. That comparison is superseded.
 
 ## Read these in order
