@@ -65,6 +65,7 @@ foreach ($scriptName in @(
     'Test-Preflight.ps1',
     'Install-PerUser.ps1',
     'Repair-PerUser.ps1',
+    'Invoke-OfflineSessionAcceptance.ps1',
     'Uninstall-PerUser.ps1')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $scriptName) `
         -Destination (Join-Path $output $scriptName)

@@ -4,9 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-05
-- Focus: Review the next work against implemented code and installed evidence, correct the plan's current state, and define an executable WP10-05 Excel-import packet with truthful later acquisition and scale requirements. Planning only; no product changes, added tests, COM attachment or workbook writes.
-- Completed: Confirmed WP10-04's merged output and traced missing XL-CMD-02 through the workbook enum, command/ribbon, input reader, transaction and freshness owners. Distinguished real WP09 Excel and WP10-02/03 ETABS evidence from WP10-04's offline replay and from future installed proof.; Added a source-backed WP10-05 plan with bounded text-chunk storage, explicit project/member bindings, atomic readback/rollback, stale-result prevention, target identity/cancellation rules and X1–X10 software/installed acceptance. An in-memory 93-chunk round-trip of the exact 1,669,798-byte retained output preserved its receipt SHA; this proves storage feasibility only.; Named the missing production acquisition/file handoff as WP10-05B and multi-member profile/dataset preparation as WP10-05C before WP10-06. Preserved the original PF9 100/1,000-member workload sizes, p95 limits and memory limit. Updated current plan entry points and the next-session handoff accordingly.
-- Recurrence controls: RR-021 x1 / unknown: Trace every acceptance workload through real source callers; assign missing consumer and scale work before qualification, keeping original budgets intact.; RR-005 x40 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
+- Focus: Implement audit increments A/B: transparent assumptions, immutable external snapshots, workbook-bound offline review and visible command outcomes.
+- Completed: Replaced the obsolete chunk-sheet plan with the active A/B contract before implementation. Carried the eight local planning/audit predecessor commits together; no sibling worktree was mutated or separately published.; Added Assumptions, Open Snapshot and Review Snapshot. Canonical demo inputs remain explicit and editable; only requested projections create sheets. Small custom XML references identify the document/artifact; the complete snapshot and raw provenance stay external, with in-memory member/station indices. Legacy tools remain usable in separate standalone workbooks.; Added strict input/artifact tests and a maintained installed acceptance harness. Twelve new host-free checks passed during implementation. A narrow real Excel diagnostic exercised import, review, report, metadata-failure rollback, save/reopen and session eviction (zero resident sessions on close). These diagnostics guide implementation; final qualification must bind the accepted source and signed installed XLL through the external receipt.
+- Git receipt: docs/verification/wp10-05-git-handoff-receipt.json | sha256:bd56e028c2f104be93a5fe2dae708e88c98430c0e8cf18ba94ecf5b82c79cb39 | HOLD
+- Git identity: codex/wp10-05-offline-session@ac60595d6d03a57c0ae5a909ac0f0f393e1069e1 | upstream=NONE@UNKNOWN | base=origin/main@973cea8c39edf347ccfb19561cf10a06b48bf770 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
+- Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -16,14 +19,14 @@ remains the implementation authority. IMP-M1 implements WP01–WP08 as native
 Python and .NET libraries, and IMP-M2 completes the standalone Windows Excel
 product in WP09. WP10-01 freezes AO16, WP10-02 adds the exact getter port, and
 WP10-03 adds bounded operation control and WP10-04 adds offline normalization;
-the next packet is WP10-05 transactional Excel import. Its reviewed executable
-card now separates installed Excel proof from later production acquisition
-handoff, multi-member support and final paired qualification.
+WP10-05 A/B now adds transparent assumptions and external-snapshot offline
+review. Its active contract separates exact installed Excel proof from later
+design orchestration, production acquisition and multi-member qualification.
 
 | State | Next action / claim boundary |
 |---|---|
 | **Current** | WP10-04 normalizes the unchanged retained WP10-03 artifact to 97 model records plus 13 action rows, with all getter evidence retained and Python/.NET canonical parity. Its [receipt](../verification/wp10-04-normalization-evidence.json) records offline proof; inspect the exact PR and delivery ledger for subsequent delivery facts. |
-| **Next** | Implement WP10-05 from its [reviewed plan card](xll-product/wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05): bounded chunked storage, explicit source binding, shared transaction, cache invalidation and actual Excel save/reopen/rollback. Preserve cardinal insertion and separate modifiers; import readiness does not establish design readiness or live freshness. The new XLL must be installed/preflighted; earlier WP09 cleanup removed its test installation. WP10-05 implementation has not started. |
+| **Next** | Check WP10-05's delivery ledger and exact external installed receipt against its [active A/B contract](xll-product/wp10-etabs-read-adapter.md#wp10-05-active-packet-ab--2026-09-05). It implements transparent assumptions, external immutable storage, memory indices, visible review and transactional requested projections. After acceptance, implement audit increment C: actual-bar design/check orchestration. Snapshot integrity does not establish design readiness or live freshness. |
 | **Then** | WP10-05B supplies the missing production acquisition/file handoff; WP10-05C supplies a compatible multi-member profile and real PF9 dataset manifests. WP10-06 qualifies the integrated path only after those prerequisites; a single-member capture does not prove the 100/1,000-member workloads. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |

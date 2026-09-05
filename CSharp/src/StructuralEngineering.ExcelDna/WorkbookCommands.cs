@@ -298,6 +298,7 @@ public static class WorkbookCommands
         try
         {
             HostEffectLedger.Record("excel.command.invoke");
+            OfflineCommands.RequireStandalone((object)workbook);
             return action(application, workbook, new ExcelWorkbookTableStore(workbook));
         }
         catch (Exception error)

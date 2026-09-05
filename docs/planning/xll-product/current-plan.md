@@ -10,7 +10,8 @@ complexity: advanced
 
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.
-The next implementation unit is WP10-05 completed-snapshot Excel import; the complete
+WP10-05 A/B now implements application/session ownership, transparent demo
+assumptions and completed-snapshot offline review; the complete
 automation path includes ETABS forces,
 design/checking, candidate search, reanalysis, detailing and construction
 outputs.
@@ -21,9 +22,35 @@ complete. WP01–WP08 implement the shared native Python and .NET beam libraries
 and [WP09](wp09-standalone-excel.md) now supplies the signed, installed-tested
 standalone Excel product. [WP10](wp10-etabs-read-adapter.md) has frozen its
 portable contract, exact getter adapter, bounded STA broker and offline
-normalization. WP10-05 requires real Excel import/save/reopen/rollback proof.
+normalization. WP10-05's active A/B contract replaces the old chunk-table plan.
+Its candidate is qualified by the new installed Excel harness and external exact
+XLL/source/workbook receipt, not by the previous WP09 receipt.
 The reviewed plan identifies production acquisition handoff (WP10-05B) and
 multi-member support (WP10-05C) as prerequisites to final WP10-06 qualification.
+
+The owner subsequently requested a **ribbon-first interface with worksheets
+created only on demand**. The [UI review and proposed workflow](excel-ui-review.md)
+records actual sample inspection, current input/feedback gaps and this decision.
+The [whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)
+compares the original architecture, implemented packages and recent proposal.
+It recommends a hybrid: one transparent Assumptions sheet and requested outputs,
+active model/force data in memory, and external replayable snapshots/journals/run
+history. Saved snapshots support offline work; live actions require current
+model binding. Heavy workbook snapshot tables and a new database are not default
+prerequisites. Keep the typed kernels and transaction/freshness guarantees; add
+the missing design/candidate orchestration and public mapper. Stage the eventual
+ribbon by implemented capability, with local Solver Check in applicable details.
+The first implemented UI exposes Assumptions, Open Snapshot and Review Snapshot,
+with legacy tools in their own menu. Automatic design orchestration is next
+(audit increment C); live acquisition follows only after its own host contract.
+Source completion alone does not assert an installed acceptance pass.
+
+The subsequent [end-to-end workflow refinement](etabs-design-workflow.md) defines
+broad capture with local filtering, session-based heavy data, transparent defaults,
+physical-span/group sizing, bounded ETABS copy reanalysis and a fixed baseline
+for comparable savings. A general-purpose indexed project store is a later improvement. It
+refines overall product behavior and the upcoming WP10/WP11 work; it
+does not claim those integrations complete or expand beam design to the building.
 
 **Use the original architecture's P0–P6 phase meanings.** My earlier v2 synthesis changed those meanings and compared the older optimizer roadmap instead of this document. That comparison is superseded.
 

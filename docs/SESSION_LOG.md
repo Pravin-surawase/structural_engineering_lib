@@ -5,6 +5,526 @@
 
 ---
 
+## 2026-09-05 — Session: WP10-05 offline beam workspace
+
+**Task:** WP10-05
+**Agent:** DEV (one parent; two bounded Terra High implementation/review agents)
+**Branch:** `codex/wp10-05-offline-session`
+
+**Focus:** Implement audit increments A/B: transparent assumptions, immutable
+external snapshots, workbook-bound offline review and visible command outcomes.
+
+### Completed
+
+- Replaced the obsolete chunk-sheet plan with the active A/B contract before
+  implementation. Carried the eight local planning/audit predecessor commits
+  together; no sibling worktree was mutated or separately published.
+- Added Assumptions, Open Snapshot and Review Snapshot. Canonical demo inputs
+  remain explicit and editable; only requested projections create sheets.
+  Small custom XML references identify the document/artifact; the complete
+  snapshot and raw provenance stay external, with in-memory member/station
+  indices. Legacy tools remain usable in separate standalone workbooks.
+- Added strict input/artifact tests and a maintained installed acceptance
+  harness. Twelve new host-free checks passed during implementation. A narrow
+  real Excel diagnostic exercised import, review, report, metadata-failure
+  rollback, save/reopen and session eviction (zero resident sessions on close).
+  These diagnostics guide implementation; final qualification must bind the
+  accepted source and signed installed XLL through the external receipt.
+- Parent inspected delegated storage and harness changes. A separate read-only
+  review found no confirmed main-process C# defect. Final focused verification,
+  candidate acceptance/integrity, installed and hosted results are recorded by
+  the delivery ledger and exact external artifacts after source freeze.
+- Candidate 1d5b595f was rejected by local file integrity (mixed endings in
+  two non-C# text files) and installed acceptance. One combined repair corrected
+  PowerShell COM calls/index arithmetic and exact Excel rollback. Actual Excel
+  showed that restoring Formula alone turns truly empty cells into stored empty
+  strings. Rollback now restores Value2 plus captured formula areas and compares
+  typed values; the full report footprint passed both injected boundaries in
+  the repair diagnostic. The repaired candidate must rerun its exact gates.
+- The native Excel check caught a missing ribbon despite working startup UDFs.
+  Menu children retained unsupported size attributes when moved from a group;
+  removing them made the tab visible and its Assumptions callback work. The
+  controller is explicitly COM-visible and installed acceptance now checks
+  Office's ribbon-loaded callback in addition to the native visual check. The
+  owned host is briefly visible for that check, then hidden for workbook tests.
+- Development lifecycle-8 exercised all 22 macros, reopen, duplicate,
+  rollback and legacy/UDF paths, then observed normal exit of owned Excel PID
+  14692. Its external receipt is
+  C:/CodexWork/wp10-evidence/WP10-05-development-lifecycle-8/receipt.json;
+  it is development evidence, not final signed installed-candidate acceptance.
+- Updated the public user guide, current plan and implementation status. No
+  live ETABS calls, model mutation, design orchestration, broad performance
+  qualification, public release or engineering approval is claimed.
+
+### Issues encountered
+
+| Symptom / impact | Root cause / resolution and proof |
+| --- | --- |
+| New assumption revision calculation overflowed the test process stack. | The computed Revision getter serialized itself while hashing its containing record. Excluded the computed property from JSON; all 12 new host-free tests passed. |
+| Initial compile diagnostics found the embedded preset outside the repository, a dynamic extension-method call and a test helper shadowing System.IO.Path. | Corrected the relative resource path and explicit static types/qualified Path owner. Release build passed with zero warnings/errors; no failed or zero-discovery test run was counted as proof. |
+| Installed metadata replacement returned `This custom XML part has already been loaded`. | RR-002: Office LoadXML is initial-load-only for an existing part in this host. Replace only the owned part under preimage/readback rollback; actual import, injected metadata failure and reopen now worked. |
+| A guessed delivery-script filename failed; Excel SaveAs rejected a forward-slash path. | RR-005: source discovery located session.py; normalized native paths worked for Office SaveAs/Open. Installed PIA reflection additionally required loading its Office dependency first. |
+| The final test CLI rejected --project when launched from repository root. | RR-005: CSharp/global.json selects Microsoft.Testing.Platform only when the working directory is under CSharp. Run the existing exact test command from CSharp; the root-launched attempt did not run tests. |
+| Final integrity rejected mixed line endings; installed harness stopped on Range indexing and multidimensional index arithmetic. | RR-013 / RR-005: normalize the actual non-C# text owners; use maintained PowerShell COM Range calls and parenthesized row/column arithmetic. Parser success alone does not prove COM execution. |
+| Full rollback fingerprint differed although displayed values matched. | RR-002: Formula converts absent cells to empty text. Restoring Value2 and actual formula areas preserved exact types and formulas at both injected boundaries in real Excel. |
+| An explicit REPAIR transition was rejected after INTEGRITY_REJECTED already entered repair. | RR-016: rejection derives REPAIR; inspect the returned state and continue there. |
+| Excel loaded the XLL's UDFs but showed no StructAutomate tab. | RR-002: menu buttons used group-only size attributes. COM visibility alone did not fix it; removing the invalid attributes produced the ribbon and a working Assumptions button. Check Office's onLoad callback and the visible installed controls. |
+| Saved-workbook fingerprint failed while Excel held its file lock. | RR-002: the harness hashed an open workbook. Close the saved owned workbook before calculating its artifact hash. |
+| With EnableEvents=true, the resident offline session count remained one after closing its workbook. | RR-002: normal command cleanup released the same Application RCW used by the close-event sink, disconnecting that sink. Holding the shared RCW proved eviction; the final repair instead gives ComEventsHelper a unique owned RCW from Marshal.GetUniqueObjectForIUnknown, isolated from command releases. |
+| The legacy host-effect capture lost its declared table body after a later command reset the table footprint. | RR-002: after ClearContents and Resize, DataBodyRange is null, so the existing writer had no body anchor. ExcelWorkbookTableStore now writes from the explicit A2 anchor and its Resize body, releasing the intermediate COM objects. |
+| The owned hidden Excel process remained after Quit. | RR-002: Excel-DNA does not call IExcelAddIn.AutoClose on Excel shutdown. Lifecycle-8 traced the remaining retention to leaked intermediate COM Range.Resize anchors and an unreleased WorkbookBeforeClose callback workbook RCW. Explicit SizedRange anchor try/finally release plus callback-workbook release made owned Excel PID 14692 exit normally; the temporary ribbon-disconnection trace was removed. |
+
+| Pre-push closeout rejected the reviewed candidate's session record. | An unkeyed explanatory bullet in Rework and recurrence was parsed as a required RR record. Converted it to prose and added the maintained session-log validator to pre-candidate acceptance; product source remains unchanged. |
+
+### Root causes and resolutions
+
+The typed input revision owns only effective input data, never its computed
+digest. Office persistence uses the actual host's part replacement semantics,
+with exact restoration/readback; a command is not completed until the workbook
+reference is committed. File paths supplied to Office use native full paths.
+The Excel event sink has an RCW lifetime distinct from per-command Application
+cleanup, legacy table bodies use the explicit A2 post-header anchor, and ribbon
+disconnection invokes the idempotent shutdown release. Explicit SizedRange
+anchor lifetime and callback-workbook RCW release complete the owned-process
+shutdown repair. The installed harness tests the main lifecycle independently
+of unit tests. Lifecycle-8 is development evidence only; final signed
+installed-candidate gates remain external and pending.
+
+### Rework and recurrence
+
+- RR-002, occurrences=16, minutes=unknown: custom XML replacement, exact
+  Formula/Value2 rollback, ribbon XML, open-workbook file locks, event-sink RCW
+  lifetime, legacy table body anchoring, and Excel-DNA shutdown ownership
+  including Range.Resize/callback RCW release;
+  qualify actual Office behaviour.
+- RR-005, occurrences=56, minutes=unknown: guessed source owner, Office path
+  spelling, PowerShell COM indexing and multidimensional arithmetic; use the
+  maintained host-specific syntax. Later ribbon inspection repeated a Windows
+  rg wildcard path and guessed a historical receipt path; later source-owner
+  guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved by
+  rg/source discovery. The test runner also required the CSharp working
+  directory to load its global.json. Time was not separately measured.
+- RR-013, occurrences=2, minutes=unknown: mixed non-C# text escaped the C#
+  formatter selection; normalize all changed text owners before integrity.
+- RR-016, occurrences=3, minutes=unknown: use the rejection's derived repair
+  state rather than attempting to enter it again.
+
+Build/type and revision recursion repairs are recorded above without creating
+speculative recurring patterns. Explanatory prose stays outside recurrence bullets.
+
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed script/Office path spelling and
+an unbuilt test target failed → discovered owners, successful-build guards and
+native full Office paths worked. Provider/token usage is not inferred.
+
+**Next:** Complete the exact candidate gates, then implement audit increment C
+(actual-bar design/check orchestration) before live Connect/Get Forces or Auto Run.
+
+---
+
+## 2026-09-05 — Session: Whole-product XLL architecture audit
+
+**Task:** XLL-PRODUCT-ARCHITECTURE-AUDIT
+**Agent:** RESEARCHER (one parent; two bounded Terra High read-only reviewers)
+**Branch:** `codex/wp10-react-reuse-review`
+
+**Focus:** Compare the original architecture, WP01-WP10-04 implementation and
+recent UI/workflow proposal fairly; decide storage and the next coding sequence.
+
+### Completed
+
+- Audited source at e4d1a940457d99635ea5e9806f5c5651f38cff69, implementation
+  status, existing acceptance receipts and official Microsoft/CSI/SQLite sources.
+  Bounded reviewers inspected the engineering chain and Excel input/session
+  boundary; the parent independently inspected decisive methods and ran evidence.
+- Updated etabs-design-workflow.md in place with the full audit, packet capability
+  matrix, old/new trade-offs, data ownership/lifecycle, source context, worker,
+  solver/UI decisions and A-H implementation order. Kept scope distinct from
+  formula recertification, whole-building approval and new installed acceptance.
+- Recommend hybrid storage: active data in memory, small Excel inputs/outputs,
+  external immutable snapshots/journals and per-trial evidence. Offline replay
+  remains possible; live work needs fresh binding. No new database is required.
+  Superseded both workbook-resident heavy snapshots and reacquire-only RAM policy.
+- Identified the missing application layer: member design consumes supplied leaf
+  evidence, optimization ranks supplied evaluations, and topology/solver require
+  explicit semantics/loads. Preserve those kernels; add actual-bar synthesis,
+  dependent check orchestration, source-to-span mapping and candidate evaluation.
+- Reconciled current-plan, UI review, WP10 preparation and entry documentation.
+  The older chunk-table card is clearly historical. Next coding starts with the
+  application/session/input contracts and public offline review, followed by
+  complete baseline design and qualified live handoff, broad capture and coupling.
+- Locked restore and Release build passed with zero warnings/errors. Existing
+  native tests passed 121/121; focused workbook/Excel/WP10 offline tests 58/58;
+  separately configured retained-artifact normalization 1/1; Python WP10 tests
+  19/19. Live/configured acquisition tests were explicitly excluded.
+- Original artifact hashes matched receipts. Fresh retained normalization and
+  independent Python replay produced the same b0379473...af627c canonical hash,
+  one member, 13 force rows and 110 accepted records. Fresh private output is
+  retained under C:/CodexWork/wp10-evidence/XLL-PRODUCT-ARCHITECTURE-AUDIT.
+  No product source or tests changed; no actual Excel/ETABS instance was operated.
+
+### Issues encountered
+
+- The recent proposal could be read as nine buttons over an already automated
+  design engine, or RAM summaries sufficient for replay. Actual contracts require
+  application orchestration and retained input evidence for those outcomes.
+- Confirmed the already-recorded ribbon feedback limitation: callbacks discard
+  structured command responses. Legacy blank setup seeds a sample; new public
+  setup requires explicit DEMO behavior rather than inheriting that path silently.
+- One source search passed an unexpanded wildcard filename to rg in PowerShell.
+
+### Root causes and resolutions
+
+- Operation-level decomposition is intentional: Design accepts LeafResults and
+  OptimizeBeam accepts Evaluations. The audit distinguishes reusable components
+  from missing orchestration and sets explicit implementation/acceptance stages.
+- RAM-only summaries lose exact inputs on process loss. The recommendation keeps
+  existing external acquisition/snapshot contracts and makes per-analysis replay
+  evidence part of unattended acceptance, with workbook projections remaining small.
+- Ribbon callbacks use discarded return values; the new public adapter must own
+  persistent workbook-bound outcomes and explicit sample creation. Runtime repair
+  belongs to the next coding packet, not this architecture-only audit.
+- ⚠️ TERMINAL ISSUE: rg rejected a wildcard path argument → rg --files located
+  docs/library/implementation-status.md; exact paths and rg -g filters worked.
+
+### Rework and recurrence
+
+- RR-005, occurrences=47, minutes=unknown: discover actual filenames and use rg
+  file filters; do not pass unexpanded PowerShell wildcard paths as search roots.
+
+---
+
+## 2026-09-05 — Session: XLL readiness and audit recommendation
+
+**Task:** XLL-READINESS-DECISION
+**Agent:** RESEARCHER (one parent; no subagents)
+**Branch:** `codex/wp10-react-reuse-review`
+
+**Focus:** Decide whether to proceed immediately or first audit WP01 through
+WP10-04 against the owner's revised product workflow.
+
+### Completed
+
+- Reviewed current-plan.md, the WP10 stage boundaries and retained WP10-04
+  normalization evidence. Existing completion records remain evidence for their
+  bounded scopes; this session did not rerun or independently recertify them.
+- Confirmed the already-declared need to replan WP10-05: its earlier executable
+  card stores snapshot chunks in workbook tables and reconstructs them on reopen,
+  while the newer product decision keeps heavy data in memory and reacquires it.
+  The current plan explicitly requires reconciliation before implementation.
+- Recommend one focused readiness audit across WP01-WP10-04: inspect essential
+  engineering/result completeness, Excel input/transaction/freshness boundaries,
+  ETABS coverage/units/axes/row conservation and alignment with the revised UI.
+  Trace supported existing paths; identify unimplemented handoffs explicitly.
+- Reuse valid retained installed evidence. Run only affected focused checks
+  justified by the audit; do not restart every package, introduce review tests,
+  repeat unrelated broad suites or infer full-model qualification from one beam.
+  Close with an evidence/gap matrix and a reconciled next implementation packet.
+- This was a bounded decision review, not the recommended full readiness audit.
+  No product source, application state, external artifact or release changed.
+
+### Issues encountered
+
+- None encountered.
+
+### Root causes and resolutions
+
+- None encountered.
+
+### Rework and recurrence
+
+- None encountered.
+
+---
+
+## 2026-09-05 — Session: Staged XLL automation and demo inputs
+
+**Task:** XLL-AUTOMATION-PRODUCT
+**Agent:** RESEARCHER (one parent and one bounded read-only engineering reviewer)
+**Branch:** `codex/wp10-react-reuse-review`, continuing local product discussion.
+
+**Focus:** Refine the owner's overnight automation draft, populate development
+inputs, and show explicit ribbon stages sharing one future orchestrator.
+
+### Completed
+
+- Added demo-beam-preset.json with editable example material, cover, exposure,
+  fire, aggregate, bar/layer/stock, section catalogue and synthetic rate inputs.
+  The preset retains demo provenance and cannot overwrite actual model facts or
+  establish a real-project design approval.
+- Updated excel-ui-review.md and etabs-design-workflow.md: Connect ETABS, Get
+  Forces, Design, Optimise, Solver Check, Update & Recheck, Auto Run, Compare Runs
+  and Assumptions. Manual and unattended paths share services; ordinary inputs
+  and a bounded run scope replace technical controls and per-iteration prompts.
+- Defined separate context/result capture, copied-model analysis preparation,
+  complete design dependencies, qualified local solver comparisons, distinct
+  analysis/data/design failures, bounded overnight operation and small durable
+  per-frame/check history while heavy data stays in memory. Updated current-plan
+  and WP10 preparation; no immutable capability baseline was expanded.
+- The bounded reviewer examined overnight ownership, failure and recovery
+  semantics. The parent independently checked PF8 ownership and official CSI
+  concrete design, locking and member-verification guidance. Broad importer,
+  copied-model coupling and unattended installed acceptance remain future work.
+- Created and browser-checked the revised conversation preview: prefilled
+  assumptions, disabled premature actions, connection without forces, shared
+  Auto Run simulation, three example trials and rejected-trial details. Cover
+  editing changes origin and invalidates dependent design/update state. The
+  final input repair retained keyboard focus and the requested value.
+- No actual Excel/ETABS operation, engineering calculation, XLL source change or
+  overnight job occurred. Trial quantities/outcomes in the preview are explicitly
+  fixed illustrative data. This is local planning and UI demonstration work.
+
+### Issues encountered
+
+- The draft's Get Forces action included missing-result analysis without naming
+  the analysis model's ownership; applying this to the attached source would
+  contradict the accepted getter-only contract.
+- The first preview input handler rebuilt the sheet on each change, replacing
+  the active input and losing focus during editing.
+- Local closeout rejected a free-form no-recurrence sentence; its schema expects
+  the exact empty marker or indexed recurrence rows. A follow-up source search
+  also passed unexpanded wildcard paths to rg in PowerShell.
+
+### Root causes and resolutions
+
+- PF8 distinguishes attached observation from owned-copy operations. One visible
+  Get Forces action may orchestrate a separately qualified owned-copy service;
+  it never promotes the attached source or expands the WP10 getter adapter.
+  The UI and workflow documents now state that same boundary explicitly.
+- The preview's full render replaced input nodes. The change handler now updates
+  ribbon state and revision labels without replacing the sheet. A browser edit
+  from 30 to 35 retained both the input value and focus, with Edited demo origin.
+- Replaced the noncanonical recurrence prose with indexed rows and synchronized
+  their counts and task provenance. Source lookup used rg's -g file filter.
+- ⚠️ TERMINAL ISSUE: session end flagged noncanonical recurrence prose, and rg
+  rejected wildcard path arguments → canonical recurrence rows and rg -g worked.
+
+### Rework and recurrence
+
+- RR-004, occurrences=10, minutes=unknown: use the exact empty recurrence marker
+  when none exists, or indexed rows when recurrence is observed.
+- RR-005, occurrences=46, minutes=unknown: use rg -g for filename patterns instead
+  of passing unexpanded PowerShell wildcard paths as literal rg search roots.
+
+---
+
+## 2026-09-05 — Session: Overall XLL product workflow and simple UI
+
+**Task:** XLL-PRODUCT-WORKFLOW
+**Agent:** RESEARCHER (one parent and one bounded read-only engineering reviewer)
+**Branch:** `codex/wp10-react-reuse-review`, continuing local product discussion.
+
+**Focus:** Review the owner's Assumptions sheet, memory-only first version,
+physical-span sizing and simple ribbon as overall product decisions.
+
+### Completed
+
+- Reconciled the proposal with PF4 input origins, PF5 result semantics, PF8
+  coupling and actual CSI meshing/final-size analysis guidance. One bounded
+  reviewer examined span/group sizing and defaults; the parent independently
+  checked the cited source contracts and official CSI pages.
+- Updated excel-ui-review.md and etabs-design-workflow.md in place: one visible
+  Assumptions sheet; named editable defaults and required project facts; v1
+  heavy data in memory; historical saved outputs and reacquisition after reopen;
+  section-pair/actual-bar search across physical spans and construction groups.
+  Required checks and copied-model reanalysis remain explicit product behavior.
+- Reduced the proposed ribbon to Read ETABS, Assumptions, Design & Optimise,
+  Update & Recheck, and Reports. Design validates inputs without an extra Apply
+  button. Updated current-plan and WP10 preparation to remove the earlier durable
+  heavy-data-store prerequisite. Product implementation and installed acceptance
+  remain separate; no Excel/ETABS operation or engineering code changed here.
+- Created the revised illustrative UI. Browser checks confirmed the no-model
+  design gate, edited preference and origin, one Results tab, missing-input
+  feedback and invalidation after an assumption edit. Example strengths/sizes
+  are labelled illustrative; no capacity, design or savings was calculated.
+
+### Issues encountered
+
+- Two optional source reads used unsupported assumptions: a nonexistent
+  ProjectContracts.cs name and Bash brace expansion in a PowerShell command.
+
+### Root causes and resolutions
+
+- Source file naming was guessed rather than discovered; rg --files identified
+  Wp06Contracts.cs and its actual BeamProjectDefinition/BeamDesignProfile owners.
+  The reviewer used explicit PF4/PF5 file paths after the shell syntax mismatch.
+  The source review completed using the maintained owners; no product defect
+  or absent capability was inferred from the failed commands.
+- ⚠️ TERMINAL ISSUE: guessed contract filename and Bash-style brace expansion
+  in PowerShell failed → discovered paths and explicit PowerShell file reads worked.
+
+### Rework and recurrence
+
+- RR-005, occurrences=45, minutes=unknown: two additional source-path/shell
+  assumptions; discover filenames and use explicit paths in the active shell.
+
+---
+
+## 2026-09-05 — Session: ETABS design workflow refinement
+
+**Task:** WP10-WORKFLOW-REFINEMENT
+**Agent:** RESEARCHER (one parent; no subagents)
+**Branch:** `codex/wp10-react-reuse-review`, continuing local discussion notes.
+
+**Focus:** Refine the owner's capture, local model, design/search, ETABS
+reanalysis and savings workflow before implementing the next product packet.
+
+### Completed
+
+- Reviewed PF8/PF11 coupling and transaction contracts, current native solver
+  and candidate-ranking source, WP10 capture boundaries and PF9 performance
+  workloads. Checked CSI's official final-size analysis/design and locking
+  guidance. No Excel or ETABS action was performed in this planning task.
+- Wrote etabs-design-workflow.md: acquire required broad context once per
+  revision, filter in C# memory, preserve heavy snapshots outside worksheets,
+  use fast local search followed by bounded ETABS copy reanalysis, and retain
+  a fixed baseline for comparable savings. Clarified scope, stop/recovery states,
+  actual-bar quantity requirements and implementation exit conditions.
+- Linked the refinement from current-plan, UI review and WP10 preparation.
+  The ribbon remains the entry point; small summaries are optional and heavy
+  model/joint/force data do not become worksheets. Product code is unchanged.
+
+### Issues encountered
+
+- None encountered.
+
+### Root causes and resolutions
+
+- None encountered.
+
+### Rework and recurrence
+
+- None encountered.
+
+---
+
+## 2026-09-05 — Session: Excel/XLL UI review
+
+**Task:** WP09-UI-REVIEW
+**Agent:** RESEARCHER (one parent; no subagents)
+**Branch:** `codex/wp10-react-reuse-review`, continuing local discussion notes.
+
+**Focus:** Inspect the existing Excel workbook and XLL interface, explain its
+completion boundary, and propose a simple daily workflow before implementation.
+
+### Completed
+
+- Read the ribbon, workbook commands, controlled table mapping, sample inputs
+  and installed WP09 evidence. The XLL provides native standalone commands;
+  ETABS import remains pending. Its five ribbon callbacks were reviewed in
+  source because the validated test installation was removed after WP09.
+- Opened the exact shipped sample in actual Excel and inspected the overview
+  and SA_Members sheets. Closed it without saving and confirmed its unchanged
+  SHA-256 `2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9`.
+  Excel subsequently exited and its workbook lock file disappeared normally.
+  No XLL was installed/loaded, and ETABS was not attached or modified.
+- Wrote excel-ui-review.md and incorporated the owner's subsequent decision:
+  one ribbon, native selection/input dialogs, and worksheets only on explicit
+  request. Proposed C# memory plus versioned project persistence replaces the
+  mandatory-sheet assumption; WP10-05 storage requires replan before implementation.
+  Existing engineering owners and legacy workbook compatibility are preserved.
+- Revised the illustrative in-conversation UI proposal around ribbon menus
+  and an initially blank ordinary Excel sheet, with optional output creation.
+  Browser inspection confirmed only Sheet1 initially, one explicit check-results
+  sheet, refresh without another tab, and beam inputs opening in a dialog.
+  It performs no engineering calculation and is not a screenshot of a completed
+  Excel feature. Product source and the sample workbook remain unchanged.
+
+### Issues encountered
+
+- The everyday workbook input path exposes JSON requests, and its ribbon
+  callbacks discard structured command results/errors. The shipped overview
+  still says Optimize although the implemented scope evaluates one candidate.
+- One optional search assumed an absent ExcelAdapter project folder.
+- The documentation check found a broken link in the generated next-session
+  brief after a relative link was copied from the session completion summary.
+
+### Root causes and resolutions
+
+- The current sample and acceptance harness target technical command/table
+  contracts. Ribbon callbacks ignore returned JSON, while WorkbookCommands
+  catches errors into that returned value. The proposal adds a visible result
+  presenter and ordinary input mapping; this review does not claim those fixes
+  implemented. Source references and installed/UI acceptance conditions are
+  recorded in the linked plan.
+- File discovery showed the maintained adapter is StructuralEngineering.ExcelDna;
+  searches using its actual paths succeeded. The absent folder was a lookup
+  error and did not indicate a missing Excel implementation.
+- The handoff projection copies completion prose into a different directory
+  without rebasing relative links. Use a plain document name in projected
+  summary prose and regenerate the handoff; the maintained current-plan link
+  retains navigation to the review. Recheck documentation after this correction.
+
+### Rework and recurrence
+
+- RR-004, occurrences=9, minutes=unknown: a projected relative link broke the
+  next-session brief; remove the location-dependent link from copied prose.
+- RR-005, occurrences=43, minutes=unknown: one additional absent project-folder
+  assumption; discover concrete source paths before optional reads.
+- RR-022, occurrences=1, minutes=unknown: ribbon callbacks discard command
+  outcomes; qualify the actual UI entry action and present completion/errors.
+
+---
+
+## 2026-09-05 — Session: React geometry reuse review
+
+**Task:** WP10-REACT-REUSE
+**Agent:** RESEARCHER (one parent; no subagents)
+**Branch:** `codex/wp10-react-reuse-review`; reviewed product source is merged
+main `973cea8c39edf347ccfb19561cf10a06b48bf770`.
+
+**Focus:** Check whether the existing React geometry workflow can support the
+whole-model capture discussion. Source review only; preserve findings without
+changing product code or treating a proposed acquisition sequence as approved.
+
+### Completed
+
+- Traced imported endpoints through `useCSVImport.ts`, `importAdapter.ts`,
+  `buildGeometrySpaceV1`, `Viewport3D` and `BuildingScene`. The current viewer
+  builds rectangular member meshes in memory, with explicit coordinate
+  conversion, source identities, revision tracking, filtering and selection.
+- Confirmed separate reusable rebar/stirrup renderers and the Python geometry
+  service. The building API/hook also exists, but the active building viewport
+  constructs its renderer contract locally rather than calling that hook.
+- Identified the future integration boundaries: the beam-row import hardcodes
+  beam classification; neighbour detail uses a 0.1 m endpoint-proximity rule;
+  the renderer contract lacks source joint identities, support faces, insertion
+  offsets and complete section axes. Reinforcement previews regenerate from
+  area inputs and defaults, so they cannot establish actual issued bar lengths.
+  Reuse the presentation components with a source-backed model projection;
+  keep authoritative topology and detailing in the engineering services.
+- Existing Python geometry-space/building tests passed (3 tests). Existing
+  React test sources were inspected, but execution could not start because
+  this checkout has no `react_app/node_modules`. No fresh browser, rendering
+  performance, ETABS, Excel or C#-to-React integration pass is claimed.
+
+### Issues encountered
+
+- Two optional source searches used absent paths: the hook is in
+  `useCSVImport.ts`, not a file named after its exported function, and there is
+  no `react_app/tests` directory. Frontend test execution also found that its
+  dependency directory is absent.
+- Ordinary `git fetch origin` requested the already-absent
+  `codex/wp10-completion` branch through the retained explicit fetch settings.
+
+### Root causes and resolutions
+
+- Filename assumptions caused the optional search errors; `rg --files` and
+  the discovered `src/**/__tests__` locations resolved them. The React test
+  command could not load Vitest because dependencies are not installed; this
+  remains an explicit verification limit for this source-review task.
+- Inspection of `remote.origin.fetch` confirmed the obsolete branch request.
+  Fetching `refs/heads/main:refs/remotes/origin/main` succeeded; configuration
+  and branches were preserved, and the reviewed main SHA did not change.
+
+### Rework and recurrence
+
+- RR-005, occurrences=42, minutes=unknown: two additional absent-path searches;
+  resolve exported symbols and actual directories before constructing paths.
+- RR-017, occurrences=2, minutes=unknown: obsolete explicit fetch refspec;
+  inspect settings and fetch only the required existing refs.
+
+---
+
 ## 2026-09-05 — Session: WP10-05 source-backed preparation
 
 **Task:** WP10-05-PREP
