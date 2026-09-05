@@ -26,10 +26,11 @@ standalone Windows Excel XLL, portable analysis-snapshot contract, exact ETABS
 getter adapter, bounded STA acquisition broker and offline normalization are complete. The Excel candidate passed
 preflight, install, repair, installed Excel acceptance, performance, uninstall,
 and cleanup. [WP10 read-only ETABS acquisition](wp10-etabs-read-adapter.md) next
-continues with WP10-05 completed-snapshot import and new installed Excel proof.
-The [reviewed next plan](wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05)
-also names the missing production acquisition handoff and multi-member
-prerequisites before final ETABS/Excel qualification.
+continues with the audited WP10-05 session/public-input and snapshot-review
+contract, followed by new installed Excel proof. The
+[whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)
+compares old/new storage and UI, identifies missing design orchestration, and
+orders production handoff, broad capture, search and coupled qualification.
 
 **Owner-selected workflow:** [Standalone Excel beam requirements and contract proposal](requirements-first/README.md) records the 3 September requirements-first research across all three projects. It supplements this plan; its proposed delivery packets do not rename P0–P6 or change the Windows shell exercise.
 

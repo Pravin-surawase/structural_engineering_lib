@@ -1,11 +1,12 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
-Date: 2026-09-05. Task: WP10-WORKFLOW-REFINEMENT.
-Status: revised overall product proposal, not an implemented automatic loop.
-Latest owner refinement: populated demo assumptions, separate connection/force/
-design/optimisation/solver controls and an overnight orchestrator using those same
-stages. Heavy data stays in memory; small durable run history is required for
-morning review. Full-project storage remains a later improvement.
+Date: 2026-09-05. Latest task: XLL-PRODUCT-ARCHITECTURE-AUDIT.
+Status: source-reviewed architecture recommendation; automatic product integration
+is not implemented. The owner requested a fair comparison of the original,
+implemented and proposed workflows before further coding. The audit below
+supersedes the recent RAM-only/reacquire-only recommendation and the older
+workbook-resident snapshot plan. Use memory for active work, small Excel inputs/
+outputs, and external replayable evidence. A general-purpose database remains optional.
 
 ## Direction and authority
 
@@ -23,6 +24,251 @@ This refinement follows [PF8](library-definition/pf8/baseline.json),
 owned-copy transaction after the read/import path is qualified. This review
 performs no live acquisition, setter, model copy or analysis and changes no
 engineering code, approved design scope or original P0-P6 meaning.
+
+## Whole-product audit and decisions — 2026-09-05
+
+### Verdict and audit boundary
+
+Keep the existing engineering and evidence foundation; add the missing
+application services and a simpler public UI. Neither the old sample-workbook
+layout nor a RAM-only overnight application is the recommended final product.
+The original architecture already called for reusable in-memory sessions and
+durable identities/evidence. Much of the new direction improves its presentation
+and integration, rather than replacing its engineering architecture.
+
+This audit inspected the source at `e4d1a940457d99635ea5e9806f5c5651f38cff69`,
+the WP01-WP10-04 implementation record and retained acceptance receipts. Two
+bounded read-only reviews covered the engineering chain and Excel session/UI;
+the parent independently inspected the decisive source paths and performed the
+verification below. It is an architecture/integration audit with existing
+regression evidence, not a clause-by-clause recertification of every formula,
+an installed acceptance of new commands, or approval of a building design.
+
+| Approach | What was good | What is insufficient for the intended product | Decision |
+|---|---|---|---|
+| Original XLL architecture | Pure C# ownership, bounded solver, explicit commands, reusable memory and durable evidence | Many proposed controls; early single-process/runtime assumptions preceded installed work | Retain the principles; use current qualified runtime and later host boundary |
+| Implemented WP01-WP08 | Explicit units, real reinforcement geometry, scoped checks, identities, complete-result aggregation and deterministic ranking | Operations require caller-supplied engineering inputs/evidence; they do not yet automate the whole design journey | Reuse; build orchestration instead of rewriting kernels |
+| Implemented WP09 | Strict inputs, controlled writes, readback/rollback, freshness, save/reopen and installed evidence | Technical JSON tables, one-candidate evaluation and discarded ribbon feedback | Preserve engine guarantees and legacy compatibility; replace ordinary input/output presentation |
+| Older WP10-05 proposal | Exact portable snapshot storage/replay and explicit import/mapping | Heavy chunked workbook tables are an awkward model/result store for repeated runs | Keep the snapshot contract; retire workbook-resident heavy storage as the new default |
+| Recent UI and RAM proposal | Transparent assumptions, separate capture stages, physical-span decisions, fewer manual steps | Summary-only persistence cannot replay lost inputs; nine buttons do not supply the missing services; mandatory local-solver comparison is too broad | Retain the useful UI; use hybrid storage, capability-based controls and qualified solver applicability |
+
+### What WP01-WP10-04 actually provides
+
+The [implementation record](../../library/implementation-status.md) remains the
+packet-by-packet source. Completion means its declared scope, not every future
+workflow that may call it.
+
+| Packet | Reusable implementation | Boundary relevant to this product |
+|---|---|---|
+| WP01 | Canonical contracts, actual bar geometry, flexural operations | Imported actions and reinforcement choices still need mapping/synthesis |
+| WP02 | Actual-link shear/torsion checks with concurrent actions | Unsupported interaction components cannot be discarded to obtain a pass |
+| WP03 | Action normalization, support-face/span topology validation, planar beam solver | Callers supply support/span semantics and applied loads; a source graph is not reconstructed automatically |
+| WP04 | Explicit SLS screening/component aggregation/crack checks | Required strain, chronology, stiffness and displacement evidence must be obtained or calculated; forces alone are insufficient |
+| WP05 | Detailing, anchorage/lap, seismic/fit operations within declared scope | Applicable inputs and actual arrangements must be produced and rechecked |
+| WP06 | Validated project basis and complete-member evidence aggregation | `MemberDesignOperations.Design` consumes `LeafResults`; it does not run all leaf calculations or choose bars |
+| WP07 | Bar paths, schedules, quantities, cost and calculation packages | Resolved actual paths and concrete/formwork ownership are inputs; required steel area is not a BBS |
+| WP08 | Finite candidate generation/ranking and fixed/coupled result semantics | `OptimizeBeam` ranks supplied `Evaluations`; evaluator execution and common-section group search remain to be built |
+| WP09 | Qualified standalone Excel functions/commands and controlled outputs | No connected-model session, public one-sheet mapper, new ribbon or unattended loop is accepted |
+| WP10-01 | Portable request/snapshot, units, identities and row dispositions | A generic schema is not a qualified producer for every model/result type |
+| WP10-02 | Exact-version getter matrix and retained one-member live capture | Not broad geometry capture, all-model results, or a launch/analysis service |
+| WP10-03 | STA lease, deadline/fence, journal, postflight and durable artifact | Broker library is not a packaged production host; timeout completion does not imply COM quiescence |
+| WP10-04 | Offline projection, conservation and Python/.NET replay | Accepted projector/normalizer is bounded to the declared horizontal-frame, kN_m_C, static-concurrent policy |
+
+Decisive source paths:
+
+- [MemberDesign.cs](../../../CSharp/src/StructuralEngineering.Beam/MemberDesign.cs):
+  `Design`, `ExpectedLeaves`, `ValidEvidence` and depth-iteration validation.
+- [OptimizationOperations.cs](../../../CSharp/src/StructuralEngineering.Optimization/OptimizationOperations.cs):
+  `OptimizeBeam` builds a domain and supplies request evaluations to `Rank`.
+- [BeamTopologyBuilder.cs](../../../CSharp/src/StructuralEngineering.Analysis/BeamTopologyBuilder.cs):
+  `Define` requires supplied ordered supports, spans, regions and mappings.
+- [PlanarBeamSolver.cs](../../../CSharp/src/StructuralEngineering.Analysis/PlanarBeamSolver.cs):
+  solver inputs include actual applied loads, restraints and stiffness.
+- [WorkbookInputReader.cs](../../../CSharp/src/StructuralEngineering.ExcelDna/WorkbookInputReader.cs)
+  and [WorkbookCommandEngine.cs](../../../CSharp/src/StructuralEngineering.ExcelDna/WorkbookCommandEngine.cs):
+  strict legacy tables and transactional/freshness behavior to preserve.
+- [EtabsLiveGetterProbe.cs](../../../CSharp/src/StructuralEngineering.Etabs/EtabsLiveGetterProbe.cs),
+  [EtabsCaptureProjector.cs](../../../CSharp/src/StructuralEngineering.Etabs/EtabsCaptureProjector.cs)
+  and [AnalysisSnapshotNormalizer.cs](../../../CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotNormalizer.cs):
+  explicit one-member and policy boundaries, not a generic full-model importer.
+
+No numerical kernel defect was demonstrated by this audit. Two existing UI
+limitations are confirmed: ribbon callbacks discard returned results, and blank
+legacy setup seeds a sample. The new adapter must present command outcomes and
+make sample creation explicitly DEMO; do not silently convert that sample into
+a connected project's design basis. Those runtime changes belong to the first
+UI implementation packet and are not claimed fixed by this document.
+
+### Data decision: memory for work, files for replay, Excel for people
+
+| Option | Strength | Cost / failure mode | Verdict |
+|---|---|---|---|
+| Everything in workbook tables | One portable workbook; useful for the existing small standalone workflow | Excel formatting/serialization and repeated heavy writes; opaque chunk tables; workbook save becomes a data checkpoint | Retain legacy support; reject as default connected-model storage |
+| Everything only in RAM | Fast transient prototype and local filtering | Process loss loses exact trial inputs; summary rows cannot reconstruct forces or a baseline | Allow disposable development runs; insufficient for unattended acceptance |
+| RAM plus immutable external snapshots/journals and compact workbook | Fast local work, inspectable history and replay using existing codecs | Must bind storage/project identity and support export/relocation | Recommended next implementation |
+| Embedded SQLite project store | Transactions and indexed cross-run queries without a server | New dependency, schema migration and packaging/backup work | Reconsider when measured history/query needs justify it; not required to begin |
+
+SQLite is a credible later application-file format, not a mandatory service or
+current performance claim. Its own [usage guidance](https://www.sqlite.org/whentouse.html)
+supports local application storage. Begin with maintained canonical JSON codecs
+and immutable per-run files; avoid implementing a custom relational database.
+
+The proposed storage contract is:
+
+| Owner | Persisted / live content | Lifecycle |
+|---|---|---|
+| Workbook | Assumptions with units/origins, small model summary, document/project IDs, selected run reference and requested Results/reports | Ordinary Save; outputs identify historical or current basis |
+| Session memory | Immutable model context, indexed required force rows, effective inputs, active designs and bounded candidate summaries | Reuse across selections; release on close; no workbook force/joint dump |
+| Private local project working folder | Manifest, frozen input/profile/catalogue versions, acquisition journals/raw artifacts, validated snapshots, run/transaction records and detailed review evidence | Successful capture/trial checkpoints do not depend on final workbook Save |
+| ETABS files | Preserved original/baseline, identified candidate copies, retained best/final copies | Owned-copy mutation only; uncertain copies cannot be treated as accepted parents |
+
+Use a project-owned local folder, initially under the existing per-user evidence/
+application-data convention; persist only its locator and identity in Excel.
+An unsaved workbook may edit assumptions, but a durable run must have a resolved
+project identity and writable storage. Moving/sending only the workbook is not
+project transfer: provide an explicit portable export later and report missing
+external artifacts honestly. Keep live journals local, with a single owning
+writer; shared/network project collaboration is separate scope.
+
+Retain each actual ETABS analysis snapshot used in a run, not a duplicate full
+snapshot for every local bar/size candidate. Preserve baseline and verified
+best/final inputs, all ETABS trial assignments/outcomes, candidate input deltas,
+check reasons and governing evidence references. Reuse immutable artifacts by
+content identity. Do not strip raw/provenance fields from the current canonical
+snapshot to save space; a leaner runtime projection may reference that intact
+artifact. Compression/partitioning requires byte-equivalent replay proof.
+
+On reopen, restore assumptions and historical summaries. Validated saved
+snapshots can support explicitly offline review/recalculation without ETABS;
+they do not establish current live-model state. Reconnect/revalidate before new
+live capture or mutation, reacquiring whenever coverage or freshness cannot be
+proved. A crash does not resume setters automatically. This distinction retains
+the old replay benefit without placing heavy snapshots in Excel.
+
+Document identity, project identity, analysis identity and the initiating live
+workbook object are separate. Save As/duplicate opening must resolve that binding
+without transferring model-mutation ownership accidentally. A filename change
+alone need not invalidate identical physics; ambiguous document/session binding
+does block writes. Specify and qualify these cases before adding long commands.
+
+### Acquisition and model understanding
+
+Connect needs an additive model-context contract that can exist before analysis.
+Do not weaken `analysis_snapshot/v1` to call a context-only or unlocked model a
+complete force snapshot. Preserve source objects, analysis elements and derived
+physical spans as separate identities. Geometry for beams/columns/joints and
+relevant support objects is shared by design, group formation and a later 3D view.
+Slab/wall presence may matter for support/loading context even when their design
+is unsupported; absent context must remain an explicit scope limit.
+
+Acquire the declared model context once per verified revision and the required
+result domain once per analysis revision; then filter/index locally. Repeating
+the one-member probe for every beam would repeat shared catalogs and pre/post
+work and is not the broad-model implementation. Prefer qualified bulk getters/
+tables plus deduplicated property reads. CSI documents
+[GetAllFrames](https://docs.csiamerica.com/help-files/etabs-api-2015/html/9241fd9f-23d8-89c9-f4be-d6f7066a95a4.htm)
+as a bulk interface in an older API; that is evidence to investigate, not proof
+of the installed 23.3.1 signature, completeness or speed.
+
+The retained one-member snapshot is 1,669,798 bytes with 13 force rows and shared
+catalog/ledger data. Do not linearly extrapolate that size or its 410 calls to
+1,000 members. Measure API, normalization, indexing, disk and Excel times
+separately on PF9's 100-member/10,000-row and 1,000-member/100,000-row workloads.
+Do not replace concurrent force rows with independently maximized components.
+
+The source-to-topology service must classify real supports and derive faces,
+spans and candidate construction groups from IDs, connectivity, axes, section
+orientation, offsets, releases and member roles. Coordinate proximity alone is
+insufficient. A 3D rendering is a projection of this shared model, not proof of
+support conditions, actual load paths or design suitability.
+
+### Application, host and solver decisions
+
+Add a host-free application layer that maps a frozen source/project basis to
+real requests, invokes the engineering operations, selects actual reinforcement,
+rechecks affected leaves and creates current quantities/evaluations. Excel calls
+this layer; it does not calculate structural formulas or ask users to populate
+internal leaf-result JSON. The same layer must support standalone/offline use,
+manual stages and the later Auto Run.
+
+For live handoff, retain WP10's versioned file/message boundary and target a
+packaged, bounded ETABS worker using the existing STA broker. Keep it a product
+component with no permanent service or separate normal user UI. Qualify its
+actual launch, lifetime, lease, progress, timeout/quiescence and cleanup before
+shipping it. This updates the original single-product-process preference;
+single XLL distribution and a worker executable are different packaging claims.
+The pure engineering libraries remain usable without that worker.
+
+All Excel object-model access/writes return to the initiating Excel thread.
+Long computation and ETABS calls must not block that thread. Microsoft's
+[Excel threading guidance](https://learn.microsoft.com/en-us/office/client-developer/excel/multithreading-and-memory-contention-in-excel)
+explains the command/main-thread boundary. The broker's completion and quiescence
+tasks are distinct: a timeout can return while cleanup still holds the lease.
+Neither an overnight retry nor another workbook may ignore that state.
+
+Solver comparison is conditional on a qualified equivalent local model. It is
+not a universal extra pass required for every real ETABS beam. Acquire actual
+loads, supports, modifiers and comparison criteria where the profile supports
+them; source output forces cannot reconstruct those inputs. An explicitly
+supported ETABS-only analysis route may continue when local comparison is not
+applicable. An unexpected disagreement on a claimed equivalent model needs
+diagnosis, not a larger beam or a widened tolerance.
+
+Global ETABS analysis, required global/other-member checks and actual-bar beam
+checks remain distinct. Neither the solver nor a green analysis status permits
+the product to claim an entire building is safe. Final-size reanalysis and
+redesign are required by CSI's
+[concrete frame procedure](https://docs.csiamerica.com/help-files/etabs/Getting_Started/Concrete_Frame_Design_Procedure.htm).
+
+### UI decision and implementation order
+
+Keep Assumptions, Connect ETABS, Get Forces, Design, Optimise, Update & Recheck,
+Auto Run and Compare Runs as the eventual routine actions. Keep Solver Check
+available in the Optimise/diagnostics detail for applicable models rather than
+requiring an extra manual step in every run. Show only implemented capabilities
+in the shipping ribbon; the nine-button illustration remains a proposal.
+Legacy commands stay usable without forcing their technical worksheet layout on
+new users. A persistent status/reason is more valuable than another control.
+
+| Increment | Concrete outcome and acceptance | Boundary |
+|---|---|---|
+| A — Reconcile WP10-05 contracts | Freeze session/project/document IDs, context versus force snapshot, typed input mapper, external-artifact lifecycle, output ownership and invalidation matrix | Retire the old chunk-table/reconstruct-in-workbook card; preserve current wire schemas and legacy behavior |
+| B — Public input and offline review | One DEMO-labelled Assumptions sheet, explicit one-beam input/detail entry when needed, validated saved-snapshot review in memory, visible command outcomes and on-demand Results | No live ETABS or claim that imported forces alone constitute a complete design |
+| C — Complete supported baseline design | One explicit supported beam basis drives actual bars/layers/links, all required leaf requests, consistent depth iteration and current detailed outputs | Use standalone/retained fixtures; unresolved SLS/detailing inputs remain blocked; no profile weakening to force a pass |
+| D — Live handoff and model context | WP10-05B worker and separate Connect/Get Forces services; qualify exact target, progress/cleanup, required metadata and existing-result capture | Missing analysis initially returns Analysis needed; automatic preparation appears only after an owned-copy capability is qualified |
+| E — Broad capture and read qualification | WP10-05C supports representative multiple members, context-to-span mapping and local filtering; WP10-06 passes installed Excel/ETABS and PF9 workloads | Multiple beam selections cause zero extra acquisition calls within the same complete current snapshot |
+| F — Practical search | A span/group evaluator invokes the baseline design service, feeds WP08 ranking and shows complete/incomplete fixed-action alternatives | Qualified local Solver Check is optional by profile; all section changes remain provisional |
+| G — One coupled change | Apply one proposal to a copy, read back, analyse, reacquire, redesign, check required effects and save matching evidence/model | Original unchanged; final dimensions equal analysed dimensions; unqualified effects prevent wider acceptance |
+| H — Bounded unattended work | Same manual services, retained baseline/best, each ETABS trial recorded, no duplicate loops, stop budgets, safe pause and morning review after process loss | Qualify real application/modal/error behavior; no automatic replay of uncertain setters or global-optimum promise |
+
+These are implementation increments within the existing WP10/WP11 programme,
+not a renumbering or a claim that one session can cross every installed gate.
+The first coding packet should implement A/B with exact acceptance, not all
+eight increments or all eventual ribbon callbacks at once. C supplies the missing
+engineering orchestration; it is substantial work, not a UI rename.
+
+### Verification performed and readiness conclusion
+
+- Locked .NET restore and Release solution build passed with zero warnings/errors.
+- Existing native WP01-WP10 tests: 121 passed. Existing Excel/workbook and WP10
+  offline host tests: 58 passed. Environment-dependent live/configured tests were
+  explicitly excluded; they are not counted as a new installed pass.
+- The separately configured retained-artifact normalization test passed. The
+  newly emitted snapshot replayed in Python with identical canonical bytes and
+  SHA-256 `b0379473f0e195c4a8e947b89218e0af4e1294f80e72824bd731d7fa65af627c`:
+  one member, 13 force rows and 110 accepted model/action records.
+- Existing Python WP10 contract/conformance tests: 19 passed. Original raw and
+  retained snapshot file hashes matched their WP10-04 receipt. No new tests were
+  added and no live Excel or ETABS instance was operated.
+- WP09's retained installed receipt records its 20-member/200-operation
+  standalone acceptance. It remains evidence for that scope, not the proposed
+  public mapper, connected session or overnight run. New performance, whole-model
+  and installed workflow claims remain unqualified.
+
+Proceed with the reconciled application/session and public-input packet. Reuse
+the accepted kernels and receipts. The principal remaining work is orchestration,
+source completeness, topology, live handoff and recovery; changing storage or
+ribbon labels alone cannot complete the automation product.
 
 ## 1. Connect and preserve a baseline
 
@@ -98,21 +344,22 @@ existing STA broker; bounded parallelism is for pure library work. Pre/post
 source checks reject mixed-revision captures. Preserve the current explicitly
 evidence-derived revision semantics where ETABS supplies no native epoch.
 
-## 3. Start with memory-only heavy data
+## 3. Keep active data in memory and replay evidence outside Excel
 
 | Location | Contents and behavior |
 |---|---|
 | C# memory | Model graph, source/current/baseline forces, active inputs and candidate calculations; reused within this session |
 | Assumptions sheet | Small visible typed project inputs, source facts and named defaults, with units, origin and missing/override state |
 | Requested outputs | Results, quantities or savings and small identity records; preserved by ordinary workbook Save |
-| Existing external evidence | Required acquisition journals and later model-copy transaction records; no new general-purpose runtime force archive |
+| External working folder | Required acquisition journals/raw artifacts, validated per-analysis snapshots, frozen inputs and run/model-copy transaction records; no workbook force database |
 
 Auto Run additionally persists a compact trial history after each state/trial:
 source/copy and run/candidate identities, assumptions/profile/catalogue revisions,
 changed assignments, stage and per-frame/check outcomes, quantities and stop
 reasons. Store baseline assignments once and reconstruct trial assignments from
-bound changes where useful. This is not a heavy force/joint database. Morning
-review must not depend on a final Excel Save succeeding.
+bound changes where useful. Retain the corresponding replayable analysis inputs
+once per actual ETABS trial, not once per local candidate. Morning review must
+not depend on a final Excel Save succeeding.
 
 "Does not change" means unchanged within a verified revision. Materials,
 sections, units and criteria are versioned too. The Assumptions sheet is an input
@@ -120,19 +367,19 @@ owner with typed validation; result summaries are projections. Design reads and
 validates inputs in one action, with no separate Apply control. See the
 [default policy](excel-ui-review.md#one-transparent-assumptions-sheet).
 
-This is an intentionally session-based first version. Closing Excel/workbook,
-unloading the add-in or a crash loses its heavy working data. Reopening restores
-assumptions and historical reports, shows No model loaded, and requires Connect
-ETABS/Get Forces before design or update. It does not resume a coupled run from saved cells.
-Compare candidates with the in-memory B0 during a run; saved comparison summaries
-remain identified historical outputs. Reestablish a baseline explicitly after
-restart rather than silently treating the current candidate as the original.
+Closing Excel/workbook, unloading the add-in or a crash releases its heavy working
+memory. Reopening restores assumptions and historical reports, with no active
+ETABS connection. Validated external snapshots permit offline review and
+recalculation; fresh live binding is required before live operations. Missing or
+stale required data needs reacquisition. Saved cells never resume a coupled run.
+Compare with the identified B0; restore its validated saved identity or establish
+a new baseline explicitly, rather than calling the current candidate the original.
 
 Use indexed arrays, shared property records and bounded candidate summaries.
 Retain all required force rows in the supported workload; an envelope cannot
 replace concurrent governing data. If the complete workload cannot fit, report
 the supported limit instead of dropping rows. A durable partitioned project
-store and cross-session replay/resume can be added later behind this same model.
+store and automatic cross-session continuation can be added later behind this same model.
 
 Share unchanged geometry/properties by verified content identity. After an
 analysis change, old forces are stale even if member IDs are unchanged: refresh
@@ -140,7 +387,8 @@ the complete required result domain. Initial implementation compares the full
 required model manifest; incremental acquisition needs a proven change detector.
 
 Resolve input-sheet ownership, workbook/session binding, closure behavior and
-memory limits before implementation. Full project persistence is not a v1 gate.
+memory limits before implementation. A general-purpose database is not a v1 gate;
+the replay/history contract is a prerequisite to unattended acceptance.
 No hidden data sheets are used. Preserve legacy WP09 workbooks and existing
 portable snapshot/evidence contracts; qualify the new session lifecycle honestly.
 
@@ -306,8 +554,9 @@ to the same model/member revision; do not claim those were written into ETABS.
 
 Within one session, validated state supports bounded unattended work. Later
 mutation keeps durable transaction stages; it does not require a full v1 force
-archive. After process loss, reacquire required source data and reconcile model
-state; no automatic cross-session continuation is claimed. An uncertain setter,
+archive in Excel. After process loss, validate saved inputs, reacquire missing or
+stale live data and reconcile model state; no automatic cross-session continuation
+is claimed. An uncertain setter,
 analysis or save is never blindly
 replayed: record the last confirmed stage and isolate the uncertain copy. A hung
 call, unresolved popup, changed model or missing required fact stops with a useful
@@ -350,8 +599,9 @@ estimates do not establish whole-building or realized site savings.
 
 | Increment | Exit condition |
 |---|---|
-| WP10 session/context replan | Connect/metadata and Get Forces contracts, demo preset, typed inputs, memory lifecycle and required acquisition coverage fixed |
-| WP10 import and scale | Multiple beam selections from one capture with zero additional ETABS calls; units/axes/coverage validated; reopen requires reacquisition; memory measured |
+| WP10 session/context replan | Audit increments A/B: typed input/session/projection and external replay ownership; context/force contracts and required coverage fixed |
+| Supported baseline design | Audit increment C: application service executes the required checks and synthesizes/rechecks actual bars, rather than accepting fabricated leaf results |
+| WP10 import and scale | Audit increments D/E: multiple selections from one capture with zero extra ETABS calls; units/axes/coverage validated; offline replay and fresh live binding distinguished; memory measured |
 | WP11 local search | Complete physical-span/group candidates from one snapshot; no setter; truthful provisional and incomplete-search states |
 | WP11 one coupled change | One beam/group candidate applied to a copy, read back, reanalysed and redesigned; original unchanged and required effects evaluated |
 | WP11 bounded repeated loop | Shared manual/Auto Run services, retained B0/best model, durable per-frame trial history, no duplicate cycles, safe pause/stop and final saved-model/results agreement |

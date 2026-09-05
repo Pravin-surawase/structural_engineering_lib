@@ -4,8 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-05
-- Focus: Decide whether to proceed immediately or first audit WP01 through WP10-04 against the owner's revised product workflow.
-- Completed: Reviewed current-plan.md, the WP10 stage boundaries and retained WP10-04 normalization evidence. Existing completion records remain evidence for their bounded scopes; this session did not rerun or independently recertify them.; Confirmed the already-declared need to replan WP10-05: its earlier executable card stores snapshot chunks in workbook tables and reconstructs them on reopen, while the newer product decision keeps heavy data in memory and reacquires it. The current plan explicitly requires reconciliation before implementation.; Recommend one focused readiness audit across WP01-WP10-04: inspect essential engineering/result completeness, Excel input/transaction/freshness boundaries, ETABS coverage/units/axes/row conservation and alignment with the revised UI. Trace supported existing paths; identify unimplemented handoffs explicitly.
+- Focus: Compare the original architecture, WP01-WP10-04 implementation and recent UI/workflow proposal fairly; decide storage and the next coding sequence.
+- Completed: Audited source at e4d1a940457d99635ea5e9806f5c5651f38cff69, implementation status, existing acceptance receipts and official Microsoft/CSI/SQLite sources. Bounded reviewers inspected the engineering chain and Excel input/session boundary; the parent independently inspected decisive methods and ran evidence.; Updated etabs-design-workflow.md in place with the full audit, packet capability matrix, old/new trade-offs, data ownership/lifecycle, source context, worker, solver/UI decisions and A-H implementation order. Kept scope distinct from formula recertification, whole-building approval and new installed acceptance.; Recommend hybrid storage: active data in memory, small Excel inputs/outputs, external immutable snapshots/journals and per-trial evidence. Offline replay remains possible; live work needs fresh binding. No new database is required. Superseded both workbook-resident heavy snapshots and reacquire-only RAM policy.
+- Recurrence controls: RR-005 x47 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
 <!-- HANDOFF:END -->
 
 ## Current boundary

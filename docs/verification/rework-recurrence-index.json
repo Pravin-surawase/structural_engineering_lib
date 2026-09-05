@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 46,
+      "occurrences": 47,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. Correction time was not isolated."
+        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "XLL-AUTOMATION-PRODUCT",
+      "last_seen_task": "XLL-PRODUCT-ARCHITECTURE-AUDIT",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",

@@ -654,11 +654,21 @@ is next and has not started. No live acquisition, installed application test,
 performance qualification, mutation, release or engineering approval is claimed.
 
 WP10-05 preparation checked the actual Excel command, table-store, transaction
-and freshness owners. Its [executable plan](../planning/xll-product/wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05)
-requires bounded chunk storage, explicit source/member binding, cache
-invalidation, real Excel save/reopen and forced rollback. `XL-CMD-02` is not
-implemented yet. Earlier WP09 installed evidence does not qualify this command.
+and freshness owners. Its earlier chunk-storage card is superseded by the
+[whole-product audit](../planning/xll-product/etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05):
+retain active data in memory and replayable snapshots outside Excel, with typed
+public inputs, explicit session/source/member binding, cache invalidation and
+real Excel projection/save/reopen/rollback proof. The replacement contract must
+be frozen before coding. `XL-CMD-02` is not implemented yet. Earlier WP09 installed
+evidence does not qualify the new session/import UI.
 The production acquisition entry point and PF9-sized multi-member acquisition
 also remain unimplemented; WP10-05B/05C now own these prerequisites before
 WP10-06. No whole-model compatibility or performance pass is inferred from
 the retained one-member capture.
+
+The audit found no demonstrated numerical kernel defect, but it confirms a
+missing application layer. WP06 member design aggregates supplied leaf evidence;
+WP08 builds/ranks supplied candidate evaluations. Source-to-support/span mapping,
+actual-bar synthesis, execution of every required dependent check and group-level
+candidate evaluation remain integration work. Packet completion does not claim
+that the proposed Design or Auto Run button already has that orchestration.

@@ -10,7 +10,8 @@ complexity: advanced
 
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.
-The next implementation unit is WP10-05 completed-snapshot Excel import; the complete
+The next implementation unit is WP10-05 application/session and public-input
+reconciliation, followed by completed-snapshot review; the complete
 automation path includes ETABS forces,
 design/checking, candidate search, reanalysis, detailing and construction
 outputs.
@@ -21,27 +22,29 @@ complete. WP01–WP08 implement the shared native Python and .NET beam libraries
 and [WP09](wp09-standalone-excel.md) now supplies the signed, installed-tested
 standalone Excel product. [WP10](wp10-etabs-read-adapter.md) has frozen its
 portable contract, exact getter adapter, bounded STA broker and offline
-normalization. WP10-05 requires real Excel import/save/reopen/rollback proof.
+normalization. WP10-05 requires a reconciled session/storage contract and real
+Excel input/import/save/reopen/rollback proof for that contract.
 The reviewed plan identifies production acquisition handoff (WP10-05B) and
 multi-member support (WP10-05C) as prerequisites to final WP10-06 qualification.
 
 The owner subsequently requested a **ribbon-first interface with worksheets
 created only on demand**. The [UI review and proposed workflow](excel-ui-review.md)
 records actual sample inspection, current input/feedback gaps and this decision.
-The latest refinement permits one transparent Assumptions sheet and memory-only
-heavy model/force data for v1. Ordinary workbook Save retains inputs and reports;
-reopen needs a fresh ETABS read. The latest automation draft separates Connect,
-Get Forces, Design, Optimise, Solver Check and Update & Recheck; Auto Run reuses
-those stages, and Compare Runs exposes history. A labelled demo preset supplies
-initial values. Overnight work needs compact durable trial/check records while
-heavy force data stays in memory. Reconcile this session lifecycle
-with WP10-05; mandatory snapshot sheets and a new durable project store are no
-longer prerequisites. No new UI or WP10-05 implementation is claimed complete.
+The [whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)
+compares the original architecture, implemented packages and recent proposal.
+It recommends a hybrid: one transparent Assumptions sheet and requested outputs,
+active model/force data in memory, and external replayable snapshots/journals/run
+history. Saved snapshots support offline work; live actions require current
+model binding. Heavy workbook snapshot tables and a new database are not default
+prerequisites. Keep the typed kernels and transaction/freshness guarantees; add
+the missing design/candidate orchestration and public mapper. Stage the eventual
+ribbon by implemented capability, with local Solver Check in applicable details.
+No new UI, full design orchestrator or WP10-05 implementation is claimed complete.
 
 The subsequent [end-to-end workflow refinement](etabs-design-workflow.md) defines
 broad capture with local filtering, session-based heavy data, transparent defaults,
 physical-span/group sizing, bounded ETABS copy reanalysis and a fixed baseline
-for comparable savings. Durable project storage is a later improvement. It
+for comparable savings. A general-purpose indexed project store is a later improvement. It
 refines overall product behavior and the upcoming WP10/WP11 work; it
 does not claim those integrations complete or expand beam design to the building.
 

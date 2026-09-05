@@ -7,9 +7,11 @@ plan a simpler interface before continuing implementation.
 The subsequent [ETABS workflow refinement](etabs-design-workflow.md) connects
 this UI to capture, local design/search, copied-model reanalysis and savings.
 The latest owner decision adds explicit connection/force/design/search/solver
-steps, prefilled demo inputs and an overnight Auto Run. Heavy model/results data
-stay in memory for v1; a small durable trial history supports morning review.
-This replaces the earlier combined five-action proposal with grouped controls.
+steps, prefilled demo inputs and an overnight Auto Run. The later
+[whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)
+recommends active data in memory plus external replayable snapshots/history,
+and shipping controls only as their services become qualified. The nine-button
+mockup is exploratory; Solver Check moves to applicable optimisation details.
 
 ## What exists
 
@@ -76,7 +78,7 @@ stage buttons do not require a click for every automated step.
 | Model | Get Forces | Check required case results/currentness; if missing, prepare an owned analysis copy and analyse it, then acquire complete required actions |
 | Design | Design | Validate inputs; design current sections, resolve actual bars/layers and every required member check; show Results |
 | Design | Optimise | Search permitted section/bar alternatives per physical span/group; old-action resizing remains provisional |
-| Design | Solver Check | Evaluate qualified local beam models and compare compatible actions; record unsupported or disagreement separately |
+| Design / details | Solver Check | Available within optimisation/diagnostics for qualified local models; record unsupported or disagreement separately; no mandatory extra click |
 | Run | Update & Recheck | Apply an eligible proposal to an owned ETABS copy, analyse, reacquire and redesign; return a verified candidate or explicit failure |
 | Run | Auto Run | Execute the same bounded loop unattended; show Stop/Pause while relevant |
 | Review | Compare Runs | Per-run/per-frame history, best verified choice, quantities and check reasons; a compact menu contains reports/export/help |
@@ -169,13 +171,12 @@ operation and starts no actual overnight job. It is not installed acceptance.
   Imported facts, user overrides and calculated outputs must remain distinct.
 - Keep heavy model/joint/action data in memory for v1. Save only assumptions,
   requested outputs and small identity/state records in the workbook. A reopened
-  workbook has no loaded force snapshot and requests Connect/Get Forces; saved results
-  remain historical until the source and inputs are revalidated. A full durable
-  project store and automatic cross-session optimization resume are later improvements.
-  Auto Run does persist small per-run/per-frame/check records outside worksheets
-  after each trial so morning review survives a workbook/process failure.
-  Retain existing acquisition/transaction evidence obligations and legacy WP09
-  compatibility; this removes the new runtime archive prerequisite, not evidence.
+  workbook has no active ETABS binding. Validated external snapshots permit
+  offline review/recalculation; live operations require a current binding and
+  reacquisition when data is missing/stale. Automatic cross-session optimisation
+  continuation is later work. Retain acquisition snapshots and per-run/frame/check
+  evidence outside worksheets so morning investigation survives process loss.
+  Reuse existing codecs and transaction evidence; no new database is required.
 - Add a typed public-input mapper that generates the existing operation
   requests. No ordinary user should compose request JSON. Missing grades,
   cover, supports or reinforcement remain missing; sample defaults must never
@@ -198,28 +199,29 @@ operation and starts no actual overnight job. It is not installed acceptance.
 
 ## Proposed implementation order and acceptance
 
-1. **Connection and assumptions:** one transparent sheet and demo preset, typed
-   input mapping, exact model details and lightweight geometry; preserve legacy use.
-2. **Forces and design:** current result checks and memory capture; baseline design,
-   actual bar arrangements and all required checks. Missing-analysis preparation
-   uses a separate owned-copy service once qualified; it is not a WP10 getter.
-3. **Practical optimisation and solver:** bounded section-pair/bar
-   alternatives, uniform physical spans, explicit group exceptions and Results.
-   Qualify local solver applicability and discrepancy handling before using it.
-4. **Update and overnight operation:** one copied-model transaction first, then
-   a bounded orchestrator reusing all stage commands, durable trial history,
-   safe pause/stop and actual unattended acceptance.
-5. **Comparison and construction outputs:** complete per-frame/check records,
-   quantities and supported exports from the same accepted result identities.
+Follow audit increments A-H in the linked workflow rather than implementing all
+eventual buttons together:
+
+1. **Session, assumptions and offline review:** typed input mapping, explicit
+   demo/legacy behavior, external snapshot binding and visible command feedback.
+2. **Baseline design service:** synthesize actual reinforcement, execute required
+   operations and converge dependent checks for one supported beam/profile.
+3. **Live context and forces:** qualified worker/Connect/Get Forces, source-to-span
+   mapping, broad capture and installed performance. Missing analysis initially
+   reports Analysis needed until owned-copy preparation is separately qualified.
+4. **Practical optimisation and optional solver comparison:** evaluator-fed
+   section-pair/bar search over physical spans/groups, qualified local comparisons
+   and explicit provisional Results.
+5. **Update, comparison and overnight:** prove one copied-model transaction,
+   matching detailed outputs/history, then bounded repeats and interruption recovery.
 6. **Visual geometry:** add a section/span sketch when source axes,
    insertion and support-face mappings are resolved; assess a 3D viewer as a
    separate UI decision after the ribbon workflow works.
 
-Replan WP10-05 around the declared memory-only v1 lifecycle and one Assumptions
-sheet. Retain canonical identities, safe acquisition, workbook-write recovery,
-freshness, performance and installed proof. A new durable heavy-data store is
-not a prerequisite. Later coupled mutation retains its own durable transaction
-records and original model; those records are not a workbook force database.
+Replan WP10-05 around the audited hybrid lifecycle and one Assumptions sheet.
+Retain canonical identities, safe acquisition, workbook-write recovery,
+freshness, performance and installed proof. Durable external snapshots/history
+support replay; a general-purpose database is not a prerequisite.
 
 For each bounded implementation, run affected mapper/command checks, then
 qualify the integrated frozen candidate in actual Excel. Acceptance must show:
@@ -235,16 +237,17 @@ qualify the integrated frozen candidate in actual Excel. Acceptance must show:
 - Editing an input marks old results stale and prevents a current export.
 - A failed write restores every declared controlled value; unrelated cells,
   formulas and formatting survive.
-- Workbook save/reopen preserves assumptions and historical output. Heavy memory
-  is released on close; design/update needs a newly validated source snapshot.
-  A stale or mismatched binding never restores a current-result claim.
+- Workbook save/reopen preserves assumptions and historical output. Memory is
+  released on close; validated external snapshots permit offline calculations,
+  while live updates require current source binding. A stale/mismatched binding
+  never restores a current live-result claim.
 - Span/group section candidates satisfy every required station/member check;
   fixed-action size proposals cannot appear as ETABS-verified final designs.
 - Connect alone reads no forces and never analyses. Get Forces reuses only
   complete current case results; missing analysis operates on an identified copy.
 - Demo defaults are explicit and cannot masquerade as imported or approved data.
-- Auto Run and manual stages share one implementation; per-trial records survive
-  interruption, while lost heavy memory requires reacquisition. Solver mismatch,
+- Auto Run and manual stages share one implementation; replayable trial inputs
+  survive interruption, while missing/stale data needs reacquisition. Solver mismatch,
   analysis failure and engineering failure have distinct outcomes.
 - Excel at normal laptop scaling has readable headings, usable keyboard/tab
   navigation and no clipped essential fields or actions.

@@ -5,6 +5,78 @@
 
 ---
 
+## 2026-09-05 — Session: Whole-product XLL architecture audit
+
+**Task:** XLL-PRODUCT-ARCHITECTURE-AUDIT
+**Agent:** RESEARCHER (one parent; two bounded Terra High read-only reviewers)
+**Branch:** `codex/wp10-react-reuse-review`
+
+**Focus:** Compare the original architecture, WP01-WP10-04 implementation and
+recent UI/workflow proposal fairly; decide storage and the next coding sequence.
+
+### Completed
+
+- Audited source at e4d1a940457d99635ea5e9806f5c5651f38cff69, implementation
+  status, existing acceptance receipts and official Microsoft/CSI/SQLite sources.
+  Bounded reviewers inspected the engineering chain and Excel input/session
+  boundary; the parent independently inspected decisive methods and ran evidence.
+- Updated etabs-design-workflow.md in place with the full audit, packet capability
+  matrix, old/new trade-offs, data ownership/lifecycle, source context, worker,
+  solver/UI decisions and A-H implementation order. Kept scope distinct from
+  formula recertification, whole-building approval and new installed acceptance.
+- Recommend hybrid storage: active data in memory, small Excel inputs/outputs,
+  external immutable snapshots/journals and per-trial evidence. Offline replay
+  remains possible; live work needs fresh binding. No new database is required.
+  Superseded both workbook-resident heavy snapshots and reacquire-only RAM policy.
+- Identified the missing application layer: member design consumes supplied leaf
+  evidence, optimization ranks supplied evaluations, and topology/solver require
+  explicit semantics/loads. Preserve those kernels; add actual-bar synthesis,
+  dependent check orchestration, source-to-span mapping and candidate evaluation.
+- Reconciled current-plan, UI review, WP10 preparation and entry documentation.
+  The older chunk-table card is clearly historical. Next coding starts with the
+  application/session/input contracts and public offline review, followed by
+  complete baseline design and qualified live handoff, broad capture and coupling.
+- Locked restore and Release build passed with zero warnings/errors. Existing
+  native tests passed 121/121; focused workbook/Excel/WP10 offline tests 58/58;
+  separately configured retained-artifact normalization 1/1; Python WP10 tests
+  19/19. Live/configured acquisition tests were explicitly excluded.
+- Original artifact hashes matched receipts. Fresh retained normalization and
+  independent Python replay produced the same b0379473...af627c canonical hash,
+  one member, 13 force rows and 110 accepted records. Fresh private output is
+  retained under C:/CodexWork/wp10-evidence/XLL-PRODUCT-ARCHITECTURE-AUDIT.
+  No product source or tests changed; no actual Excel/ETABS instance was operated.
+
+### Issues encountered
+
+- The recent proposal could be read as nine buttons over an already automated
+  design engine, or RAM summaries sufficient for replay. Actual contracts require
+  application orchestration and retained input evidence for those outcomes.
+- Confirmed the already-recorded ribbon feedback limitation: callbacks discard
+  structured command responses. Legacy blank setup seeds a sample; new public
+  setup requires explicit DEMO behavior rather than inheriting that path silently.
+- One source search passed an unexpanded wildcard filename to rg in PowerShell.
+
+### Root causes and resolutions
+
+- Operation-level decomposition is intentional: Design accepts LeafResults and
+  OptimizeBeam accepts Evaluations. The audit distinguishes reusable components
+  from missing orchestration and sets explicit implementation/acceptance stages.
+- RAM-only summaries lose exact inputs on process loss. The recommendation keeps
+  existing external acquisition/snapshot contracts and makes per-analysis replay
+  evidence part of unattended acceptance, with workbook projections remaining small.
+- Ribbon callbacks use discarded return values; the new public adapter must own
+  persistent workbook-bound outcomes and explicit sample creation. Runtime repair
+  belongs to the next coding packet, not this architecture-only audit.
+- ⚠️ TERMINAL ISSUE: rg rejected a wildcard path argument → rg --files located
+  docs/library/implementation-status.md; exact paths and rg -g filters worked.
+
+### Rework and recurrence
+
+- RR-005, occurrences=47, minutes=unknown: discover actual filenames and use rg
+  file filters; do not pass unexpanded PowerShell wildcard paths as search roots.
+
+---
+
 ## 2026-09-05 — Session: XLL readiness and audit recommendation
 
 **Task:** XLL-READINESS-DECISION

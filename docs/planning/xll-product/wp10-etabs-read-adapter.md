@@ -38,9 +38,10 @@ controls; it does not create a second WP10-only delivery system.
   call ledger, artifact writes, postflight, and process cleanup. Excel invokes
   the broker through a versioned file/message contract; CSI COM never runs in a
   worksheet function or leaks into the pure packages.
-- `StructuralEngineering.ExcelDna` adds only the explicit `XL-CMD-02` adapter.
-  The command imports a completed snapshot through controlled workbook tables,
-  readback, rollback, freshness, and a hash-bound receipt.
+- `StructuralEngineering.ExcelDna` adds the explicit snapshot-review adapter.
+  The audited direction imports validated snapshots into session memory, binds
+  external evidence, and writes only declared public projections with readback,
+  rollback, freshness and a hash-bound receipt. Heavy workbook tables are historical.
 
 ## Review of the previous ETABS work
 
@@ -84,9 +85,9 @@ process/model identity, and partial canonical output after a failed getter.
    P/V2/V3/T/M2/M3 from the same result row, preserve case/combo/step and both
    station identities, resolve axes/faces from evidence, account for every raw
    row, and emit no partial accepted snapshot when any required row is blocked.
-5. **Excel import.** Add `XL-CMD-02`, declared snapshot/action/mapping tables,
-   transactional table writes, exact readback/rollback, freshness, progress,
-   cancellation, and a receipt that binds raw and normalized artifact hashes.
+5. **Excel import.** Reconcile `XL-CMD-02` with the audited session/public-input
+   lifecycle, external snapshots and declared visible projections. Retain exact
+   readback/rollback, freshness, progress/cancellation and source artifact hashes.
 6. **Installed qualification.** Replay captured artifacts without CSI, then run
    the unchanged candidate against the exact installed ETABS/Excel tuple for
    PF8 E5-02 through E5-04 and the small/medium
@@ -583,16 +584,23 @@ it changes no WP10 engineering contract and does not start normalization.
 
 ## WP10-05 preparation review and executable plan — 2026-09-05
 
-**Later owner decision:** the [ribbon-first UI decision](excel-ui-review.md#owner-decision-ribbon-first-worksheets-on-demand)
-now allows one Assumptions sheet on explicit setup and memory-only heavy data for
-v1. The mandatory snapshot-sheet/chunk-table proposal below is earlier preparation
-and is superseded on storage/lifecycle. Replan WP10-05's input ownership, session
-binding, memory limits and reopened-workbook state. Save retains assumptions and
-historical outputs; heavy data requires reacquisition. Preserve canonical snapshot
-identities, acquisition evidence, safe writes, freshness and installed proof.
-Neither a new full project store nor automatic cross-session resume is a v1 gate.
-The source acquisition evidence remains valid; old storage mapping is not the new
-implementation contract or acceptance claim.
+**Superseded executable card:** the
+[whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)
+evaluated the old and proposed approaches. It recommends one Assumptions sheet,
+active data in memory, external replayable snapshots/history and requested public
+outputs. Valid saved snapshots support offline work; live operations require
+current source binding. The chunk-table/reconstruct-in-workbook plan below is
+historical preparation, not an executable contract for the next implementation.
+Its source evidence and transaction lessons remain reusable. No database or
+automatic cross-session mutation resume is required.
+
+Audit increments A/B define the next coding packet: freeze session/project/
+document ownership, context versus analysis snapshots, typed public inputs,
+external-artifact location/reopen behavior and visible output transactions; then
+implement one-sheet setup and offline snapshot review. Preserve existing wire
+contracts and legacy workbooks. Replace this historical card's X1-X9 proof map
+with those exact outcomes before implementation. Subsequent complete baseline
+design needs an application orchestrator; relabelling WP06/WP08 calls is insufficient.
 
 The [end-to-end workflow refinement](etabs-design-workflow.md) further specifies
 the intended broad-model capture, local filtering and session-based storage,
@@ -606,8 +614,9 @@ Demo defaults and overnight trial history do not establish those capabilities.
 
 Preparation base: `0d790b56ba92a059b2cac574be970a2cf9106821`, the merged
 [WP10-04 PR #972](https://github.com/Pravin-surawase/structural_engineering_lib/pull/972).
-This is a source-backed implementation plan, not installed acceptance of a
-command that does not exist yet. It changes no PF8/PF9 engineering requirement.
+The following original card is retained as source-backed historical preparation,
+not installed acceptance or the replacement implementation authority. Its
+engineering evidence does not change PF8/PF9 requirements.
 
 ### What has actually used the applications
 
@@ -655,7 +664,7 @@ inventory only, not model readiness or a current installation verdict.
 
 ### WP10-05 plan card
 
-| Plan row | Accepted planning decision |
+| Plan row | Historical planning decision — superseded on storage/lifecycle |
 | --- | --- |
 | Outcome | `XL-CMD-02` imports one completed portable snapshot into a compatible saved workbook, displays its member/action/source facts, and reconstructs the same snapshot after save/reopen. Import completeness and design readiness remain separate. |
 | Start | Open task `WP10-05`; fetch main explicitly, inspect canonical Git state, upstream, PR and sibling candidates, bind the then-current base SHA and create `codex/wp10-05-*`. Preparation's base is historical, not the future implementation base. |
