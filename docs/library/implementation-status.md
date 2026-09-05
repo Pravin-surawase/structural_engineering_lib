@@ -619,9 +619,10 @@ the exact installed-version claim.
 
 ## WP10-04 offline projection and normalization
 
-State: implemented; exact retained-input normalization and independent Python
-replay pass. Publication and merge facts belong to the exact task delivery
-ledger and PR; this versioned record describes prepublication evidence.
+State: complete; exact retained-input normalization and independent Python
+replay passed and [PR #972](https://github.com/Pravin-surawase/structural_engineering_lib/pull/972)
+merged as `0d790b56ba92a059b2cac574be970a2cf9106821`. The task delivery ledger
+binds the reviewed tree and required hosted run.
 
 `EtabsCaptureProjector.Normalize` validates exact durable bytes and all 48
 getter operations before producing a complete typed source projection.
@@ -651,3 +652,13 @@ The synthetic shared vector contains invented data only; proprietary capture,
 API help and emitted retained snapshot remain external. WP10-05 Excel import
 is next and has not started. No live acquisition, installed application test,
 performance qualification, mutation, release or engineering approval is claimed.
+
+WP10-05 preparation checked the actual Excel command, table-store, transaction
+and freshness owners. Its [executable plan](../planning/xll-product/wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05)
+requires bounded chunk storage, explicit source/member binding, cache
+invalidation, real Excel save/reopen and forced rollback. `XL-CMD-02` is not
+implemented yet. Earlier WP09 installed evidence does not qualify this command.
+The production acquisition entry point and PF9-sized multi-member acquisition
+also remain unimplemented; WP10-05B/05C now own these prerequisites before
+WP10-06. No whole-model compatibility or performance pass is inferred from
+the retained one-member capture.

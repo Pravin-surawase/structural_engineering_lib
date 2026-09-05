@@ -21,12 +21,15 @@ reconciles the existing Python library, C# foundation, three-project evidence,
 standalone Excel workflow and later ETABS automation into twelve implementation
 packets. Its PF11 blueprint is the authority for new library work.
 
-**Implemented through WP10-03:** the native Python/.NET beam libraries, the
+**Implemented through WP10-04:** the native Python/.NET beam libraries, the
 standalone Windows Excel XLL, portable analysis-snapshot contract, exact ETABS
-getter adapter, and bounded STA acquisition broker are complete. The Excel candidate passed
+getter adapter, bounded STA acquisition broker and offline normalization are complete. The Excel candidate passed
 preflight, install, repair, installed Excel acceptance, performance, uninstall,
 and cleanup. [WP10 read-only ETABS acquisition](wp10-etabs-read-adapter.md) next
-continues with offline capture normalization in WP10-04.
+continues with WP10-05 completed-snapshot import and new installed Excel proof.
+The [reviewed next plan](wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05)
+also names the missing production acquisition handoff and multi-member
+prerequisites before final ETABS/Excel qualification.
 
 **Owner-selected workflow:** [Standalone Excel beam requirements and contract proposal](requirements-first/README.md) records the 3 September requirements-first research across all three projects. It supplements this plan; its proposed delivery packets do not rename P0–P6 or change the Windows shell exercise.
 
@@ -35,7 +38,7 @@ continues with offline capture normalization in WP10-04.
 3. [Current plan](current-plan.md): the source hierarchy and present scope.
 4. [WP09 completion record](wp09-standalone-excel.md): the shipped Excel surface and installed evidence.
 5. [WP09 postmortem](wp09-postmortem.md) and [compact recurrence index](../../verification/rework-recurrence-index.json): deep evidence plus stable issue IDs, counts, time, and short controls.
-6. [WP10 execution plan](wp10-etabs-read-adapter.md): completed broker evidence and the next offline-normalization unit.
+6. [WP10 execution plan](wp10-etabs-read-adapter.md): completed normalization evidence, next Excel import and subsequent acquisition/scale qualification gates.
 7. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
 8. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
 9. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.
