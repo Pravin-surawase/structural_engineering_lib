@@ -583,6 +583,16 @@ it changes no WP10 engineering contract and does not start normalization.
 
 ## WP10-05 preparation review and executable plan — 2026-09-05
 
+**Later owner decision:** the [ribbon-first UI decision](excel-ui-review.md#owner-decision-ribbon-first-worksheets-on-demand)
+requires zero automatically created product worksheets. The mandatory snapshot
+worksheet/chunk-table storage proposal below is retained as earlier preparation,
+and is superseded on its worksheet requirement. Replan project persistence and
+optional Excel output mapping before implementing WP10-05. Preserve canonical
+snapshot bytes, identities, recovery, freshness, performance and real installed
+acceptance; save/reopen must work independently of output sheets. The source
+acquisition evidence remains valid, but the old storage mapping is not the new
+implementation contract.
+
 Preparation base: `0d790b56ba92a059b2cac574be970a2cf9106821`, the merged
 [WP10-04 PR #972](https://github.com/Pravin-surawase/structural_engineering_lib/pull/972).
 This is a source-backed implementation plan, not installed acceptance of a

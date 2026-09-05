@@ -5,6 +5,74 @@
 
 ---
 
+## 2026-09-05 — Session: Excel/XLL UI review
+
+**Task:** WP09-UI-REVIEW
+**Agent:** RESEARCHER (one parent; no subagents)
+**Branch:** `codex/wp10-react-reuse-review`, continuing local discussion notes.
+
+**Focus:** Inspect the existing Excel workbook and XLL interface, explain its
+completion boundary, and propose a simple daily workflow before implementation.
+
+### Completed
+
+- Read the ribbon, workbook commands, controlled table mapping, sample inputs
+  and installed WP09 evidence. The XLL provides native standalone commands;
+  ETABS import remains pending. Its five ribbon callbacks were reviewed in
+  source because the validated test installation was removed after WP09.
+- Opened the exact shipped sample in actual Excel and inspected the overview
+  and SA_Members sheets. Closed it without saving and confirmed its unchanged
+  SHA-256 `2c9385900b2d9e1f5b66f315f1e7928d6e83f602d1c559653bec7bebdcaf5ae9`.
+  Excel subsequently exited and its workbook lock file disappeared normally.
+  No XLL was installed/loaded, and ETABS was not attached or modified.
+- Wrote excel-ui-review.md and incorporated the owner's subsequent decision:
+  one ribbon, native selection/input dialogs, and worksheets only on explicit
+  request. Proposed C# memory plus versioned project persistence replaces the
+  mandatory-sheet assumption; WP10-05 storage requires replan before implementation.
+  Existing engineering owners and legacy workbook compatibility are preserved.
+- Revised the illustrative in-conversation UI proposal around ribbon menus
+  and an initially blank ordinary Excel sheet, with optional output creation.
+  Browser inspection confirmed only Sheet1 initially, one explicit check-results
+  sheet, refresh without another tab, and beam inputs opening in a dialog.
+  It performs no engineering calculation and is not a screenshot of a completed
+  Excel feature. Product source and the sample workbook remain unchanged.
+
+### Issues encountered
+
+- The everyday workbook input path exposes JSON requests, and its ribbon
+  callbacks discard structured command results/errors. The shipped overview
+  still says Optimize although the implemented scope evaluates one candidate.
+- One optional search assumed an absent ExcelAdapter project folder.
+- The documentation check found a broken link in the generated next-session
+  brief after a relative link was copied from the session completion summary.
+
+### Root causes and resolutions
+
+- The current sample and acceptance harness target technical command/table
+  contracts. Ribbon callbacks ignore returned JSON, while WorkbookCommands
+  catches errors into that returned value. The proposal adds a visible result
+  presenter and ordinary input mapping; this review does not claim those fixes
+  implemented. Source references and installed/UI acceptance conditions are
+  recorded in the linked plan.
+- File discovery showed the maintained adapter is StructuralEngineering.ExcelDna;
+  searches using its actual paths succeeded. The absent folder was a lookup
+  error and did not indicate a missing Excel implementation.
+- The handoff projection copies completion prose into a different directory
+  without rebasing relative links. Use a plain document name in projected
+  summary prose and regenerate the handoff; the maintained current-plan link
+  retains navigation to the review. Recheck documentation after this correction.
+
+### Rework and recurrence
+
+- RR-004, occurrences=9, minutes=unknown: a projected relative link broke the
+  next-session brief; remove the location-dependent link from copied prose.
+- RR-005, occurrences=43, minutes=unknown: one additional absent project-folder
+  assumption; discover concrete source paths before optional reads.
+- RR-022, occurrences=1, minutes=unknown: ribbon callbacks discard command
+  outcomes; qualify the actual UI entry action and present completion/errors.
+
+---
+
 ## 2026-09-05 — Session: React geometry reuse review
 
 **Task:** WP10-REACT-REUSE

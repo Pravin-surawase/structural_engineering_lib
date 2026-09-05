@@ -55,14 +55,14 @@
     {
       "id": "RR-004",
       "pattern": "Session or handoff lifecycle contract missed",
-      "occurrences": 8,
+      "occurrences": 9,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale next-session handoff projection after a new dated session entry. WP10-04-PREP used a Completed heading accepted by early validation but omitted by handoff and rejected by final closeout; the parsers now share outcome rules. Only partial timestamps exist."
+        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. Correction time was not isolated."
       },
-      "short_solution": "Admit intake, use shared completion parsing in early checks and closeout, refresh the handoff, and preserve persisted delivery history.",
-      "last_seen_task": "WP10-04-PREP",
+      "short_solution": "Admit intake, use shared completion parsing, keep projected prose location-independent, refresh the handoff, and preserve delivery history.",
+      "last_seen_task": "WP09-UI-REVIEW",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 42,
+      "occurrences": 43,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included a stale implementation-status path, Windows rg glob paths and an absent usage-helper guess. WP10-05-PREP added two absent filename guesses for a broker receipt and packaging README. WP10-REACT-REUSE added an exported-hook filename assumption and an absent test-directory search; discovered source paths succeeded. Correction time was not isolated."
+        "basis": "WP10-04 intake included a stale implementation-status path, Windows rg glob paths and an absent usage-helper guess. WP10-05-PREP added two absent filename guesses for a broker receipt and packaging README. WP10-REACT-REUSE added an exported-hook filename assumption and an absent test-directory search. WP09-UI-REVIEW added an absent adapter project-folder assumption; discovered source paths succeeded. Correction time was not isolated."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-REACT-REUSE",
+      "last_seen_task": "WP09-UI-REVIEW",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -349,6 +349,23 @@
       "details": [
         "docs/SESSION_LOG.md",
         "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05"
+      ]
+    },
+    {
+      "id": "RR-022",
+      "pattern": "UI callback discards the structured command outcome",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP09-UI-REVIEW traced five ribbon callbacks that discard command return values while the command wrapper returns failures as JSON. Source inspection proves the missing presenter; the XLL was not loaded in this review and repair is proposed, not implemented."
+      },
+      "short_solution": "Present typed completion and failure outcomes at the UI entry point, and qualify that real user action separately from the command contract.",
+      "last_seen_task": "WP09-UI-REVIEW",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/excel-ui-review.md#main-process-ui-findings",
+        "docs/SESSION_LOG.md"
       ]
     }
   ]

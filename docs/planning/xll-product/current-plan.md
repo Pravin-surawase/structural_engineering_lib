@@ -25,6 +25,15 @@ normalization. WP10-05 requires real Excel import/save/reopen/rollback proof.
 The reviewed plan identifies production acquisition handoff (WP10-05B) and
 multi-member support (WP10-05C) as prerequisites to final WP10-06 qualification.
 
+The owner subsequently requested a **ribbon-first interface with worksheets
+created only on demand**. The [UI review and proposed workflow](excel-ui-review.md)
+records actual sample inspection, current input/feedback gaps and this decision.
+The working C# project and proposed save/open storage must be independent of
+mandatory worksheets; small dialogs provide selection and input. Reconcile
+this storage boundary and the discussed whole-model contract with WP10-05
+before implementation. Its earlier mandatory snapshot-sheet proposal is
+superseded on that point. No new UI or WP10-05 implementation is claimed complete.
+
 **Use the original architecture's P0–P6 phase meanings.** My earlier v2 synthesis changed those meanings and compared the older optimizer roadmap instead of this document. That comparison is superseded.
 
 ## Read these in order
