@@ -6,6 +6,7 @@
 - Date: 2026-09-05
 - Focus: Refine the owner's overnight automation draft, populate development inputs, and show explicit ribbon stages sharing one future orchestrator.
 - Completed: Added demo-beam-preset.json with editable example material, cover, exposure, fire, aggregate, bar/layer/stock, section catalogue and synthetic rate inputs. The preset retains demo provenance and cannot overwrite actual model facts or establish a real-project design approval.; Updated excel-ui-review.md and etabs-design-workflow.md: Connect ETABS, Get Forces, Design, Optimise, Solver Check, Update & Recheck, Auto Run, Compare Runs and Assumptions. Manual and unattended paths share services; ordinary inputs and a bounded run scope replace technical controls and per-iteration prompts.; Defined separate context/result capture, copied-model analysis preparation, complete design dependencies, qualified local solver comparisons, distinct analysis/data/design failures, bounded overnight operation and small durable per-frame/check history while heavy data stays in memory. Updated current-plan and WP10 preparation; no immutable capability baseline was expanded.
+- Recurrence controls: RR-004 x10 / unknown: Admit intake, use shared completion parsing, keep projected prose location-independent, refresh the handoff, and preserve delivery history.; RR-005 x46 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
 <!-- HANDOFF:END -->
 
 ## Current boundary

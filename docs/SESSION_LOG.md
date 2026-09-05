@@ -49,6 +49,9 @@ inputs, and show explicit ribbon stages sharing one future orchestrator.
   contradict the accepted getter-only contract.
 - The first preview input handler rebuilt the sheet on each change, replacing
   the active input and losing focus during editing.
+- Local closeout rejected a free-form no-recurrence sentence; its schema expects
+  the exact empty marker or indexed recurrence rows. A follow-up source search
+  also passed unexpanded wildcard paths to rg in PowerShell.
 
 ### Root causes and resolutions
 
@@ -59,11 +62,17 @@ inputs, and show explicit ribbon stages sharing one future orchestrator.
 - The preview's full render replaced input nodes. The change handler now updates
   ribbon state and revision labels without replacing the sheet. A browser edit
   from 30 to 35 retained both the input value and focus, with Edited demo origin.
+- Replaced the noncanonical recurrence prose with indexed rows and synchronized
+  their counts and task provenance. Source lookup used rg's -g file filter.
+- ⚠️ TERMINAL ISSUE: session end flagged noncanonical recurrence prose, and rg
+  rejected wildcard path arguments → canonical recurrence rows and rg -g worked.
 
 ### Rework and recurrence
 
-- No recurring issue identified. One preview interaction repair; no engineering
-  implementation, frozen delivery candidate or hosted validation retry.
+- RR-004, occurrences=10, minutes=unknown: use the exact empty recurrence marker
+  when none exists, or indexed rows when recurrence is observed.
+- RR-005, occurrences=46, minutes=unknown: use rg -g for filename patterns instead
+  of passing unexpanded PowerShell wildcard paths as literal rg search roots.
 
 ---
 
