@@ -584,17 +584,18 @@ it changes no WP10 engineering contract and does not start normalization.
 ## WP10-05 preparation review and executable plan — 2026-09-05
 
 **Later owner decision:** the [ribbon-first UI decision](excel-ui-review.md#owner-decision-ribbon-first-worksheets-on-demand)
-requires zero automatically created product worksheets. The mandatory snapshot
-worksheet/chunk-table storage proposal below is retained as earlier preparation,
-and is superseded on its worksheet requirement. Replan project persistence and
-optional Excel output mapping before implementing WP10-05. Preserve canonical
-snapshot bytes, identities, recovery, freshness, performance and real installed
-acceptance; save/reopen must work independently of output sheets. The source
-acquisition evidence remains valid, but the old storage mapping is not the new
-implementation contract.
+now allows one Assumptions sheet on explicit setup and memory-only heavy data for
+v1. The mandatory snapshot-sheet/chunk-table proposal below is earlier preparation
+and is superseded on storage/lifecycle. Replan WP10-05's input ownership, session
+binding, memory limits and reopened-workbook state. Save retains assumptions and
+historical outputs; heavy data requires reacquisition. Preserve canonical snapshot
+identities, acquisition evidence, safe writes, freshness and installed proof.
+Neither a new full project store nor automatic cross-session resume is a v1 gate.
+The source acquisition evidence remains valid; old storage mapping is not the new
+implementation contract or acceptance claim.
 
 The [end-to-end workflow refinement](etabs-design-workflow.md) further specifies
-the intended broad-model capture, local filtering and durable storage boundary,
+the intended broad-model capture, local filtering and session-based storage,
 and its later WP11 design/reanalysis loop. Required result coverage and all
 getters still need qualification; the one-member evidence is not full-model proof.
 

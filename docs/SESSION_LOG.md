@@ -5,6 +5,58 @@
 
 ---
 
+## 2026-09-05 — Session: Overall XLL product workflow and simple UI
+
+**Task:** XLL-PRODUCT-WORKFLOW
+**Agent:** RESEARCHER (one parent and one bounded read-only engineering reviewer)
+**Branch:** `codex/wp10-react-reuse-review`, continuing local product discussion.
+
+**Focus:** Review the owner's Assumptions sheet, memory-only first version,
+physical-span sizing and simple ribbon as overall product decisions.
+
+### Completed
+
+- Reconciled the proposal with PF4 input origins, PF5 result semantics, PF8
+  coupling and actual CSI meshing/final-size analysis guidance. One bounded
+  reviewer examined span/group sizing and defaults; the parent independently
+  checked the cited source contracts and official CSI pages.
+- Updated excel-ui-review.md and etabs-design-workflow.md in place: one visible
+  Assumptions sheet; named editable defaults and required project facts; v1
+  heavy data in memory; historical saved outputs and reacquisition after reopen;
+  section-pair/actual-bar search across physical spans and construction groups.
+  Required checks and copied-model reanalysis remain explicit product behavior.
+- Reduced the proposed ribbon to Read ETABS, Assumptions, Design & Optimise,
+  Update & Recheck, and Reports. Design validates inputs without an extra Apply
+  button. Updated current-plan and WP10 preparation to remove the earlier durable
+  heavy-data-store prerequisite. Product implementation and installed acceptance
+  remain separate; no Excel/ETABS operation or engineering code changed here.
+- Created the revised illustrative UI. Browser checks confirmed the no-model
+  design gate, edited preference and origin, one Results tab, missing-input
+  feedback and invalidation after an assumption edit. Example strengths/sizes
+  are labelled illustrative; no capacity, design or savings was calculated.
+
+### Issues encountered
+
+- Two optional source reads used unsupported assumptions: a nonexistent
+  ProjectContracts.cs name and Bash brace expansion in a PowerShell command.
+
+### Root causes and resolutions
+
+- Source file naming was guessed rather than discovered; rg --files identified
+  Wp06Contracts.cs and its actual BeamProjectDefinition/BeamDesignProfile owners.
+  The reviewer used explicit PF4/PF5 file paths after the shell syntax mismatch.
+  The source review completed using the maintained owners; no product defect
+  or absent capability was inferred from the failed commands.
+- ⚠️ TERMINAL ISSUE: guessed contract filename and Bash-style brace expansion
+  in PowerShell failed → discovered paths and explicit PowerShell file reads worked.
+
+### Rework and recurrence
+
+- RR-005, occurrences=45, minutes=unknown: two additional source-path/shell
+  assumptions; discover filenames and use explicit paths in the active shell.
+
+---
+
 ## 2026-09-05 — Session: ETABS design workflow refinement
 
 **Task:** WP10-WORKFLOW-REFINEMENT

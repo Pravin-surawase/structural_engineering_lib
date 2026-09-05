@@ -1,13 +1,14 @@
 # Excel/XLL UI review and proposed workflow
 
-Date: 2026-09-05. Status: reviewed proposal; product UI changes are not implemented.
+Date: 2026-09-05. Status: revised overall product proposal; UI changes are not implemented.
 Task: WP09-UI-REVIEW. The owner asked to inspect the Excel/XLL experience and
 plan a simpler interface before continuing implementation.
 
 The subsequent [ETABS workflow refinement](etabs-design-workflow.md) connects
-this UI to capture, local model storage, design/search, copied-model reanalysis
-and savings comparison. Small useful summaries remain optional output sheets;
-heavy model/joint/force data remain outside worksheets.
+this UI to capture, local design/search, copied-model reanalysis and savings.
+The latest owner decision permits one Assumptions sheet and memory-only heavy
+model/results data for the first version. This document replaces the six-menu
+proposal and mandatory durable project-store prerequisite with that simpler plan.
 
 ## What exists
 
@@ -59,52 +60,84 @@ the engineering kernel or revoke the bounded WP09 software acceptance.
 
 ## Owner decision: ribbon first, worksheets on demand
 
-The owner explicitly requested one ribbon with no automatically created
-StructAutomate worksheets. This supersedes the initial five-sheet UI proposal.
-Excel's existing blank sheet and the user's own worksheets remain ordinary
-Excel content. Loading the XLL, opening a project, selecting a beam or running
-a check must not create product sheets, including hidden technical sheets.
+Loading the XLL creates no sheets. The first explicit Read ETABS or Assumptions
+command creates one small **Assumptions** sheet if absent. Design & Optimise
+creates/refreshes **Results** when needed; requested reports create only their
+own outputs. Existing user sheets remain intact. There are no mandatory hidden
+model, joint, force, operation or JSON-request sheets in the new workflow.
 
-Use the existing native C# engine behind a compact ribbon. Proposed menus:
+Use five primary actions, with one compact Reports menu:
 
-| Menu | User purpose |
+| Ribbon action | Behavior |
 |---|---|
-| Project | New, open and save; project identity, units and design basis in a small dialog |
-| ETABS | Explicit live capture or saved-snapshot import when implemented; no automatic capture at startup |
-| Beam | Select a beam and edit inputs/reinforcement in small native dialogs |
-| Check | Check selected or all; show progress, cancellation and persistent completion or missing-input feedback |
-| Outputs | Explicitly create or refresh a requested member list, input sheet, check results, BBS or quantities sheet; supported exports only |
-| Help | Usage, settings and advanced diagnostics |
+| Read ETABS | Identify the model, acquire required data into memory and refresh the same session; select a process only when the target is ambiguous |
+| Assumptions | Open/create the transparent input sheet and focus any field needing attention |
+| Design & Optimise | Validate sheet inputs, design current sizes, evaluate permitted alternatives and show provisional proposals; never mutate ETABS |
+| Update & Recheck | Apply eligible proposed changes to an owned ETABS copy, read back, analyse and redesign; execute a bounded loop within the already authorized run scope |
+| Reports | Requested check details, BBS, quantities, savings and supported export formats; only implemented capabilities are active |
 
-Selected-member execution and these dialogs are proposed routes, not current
-ribbon capabilities. Keep routine completion compact; open detailed results
-only when needed. A permanent task pane, embedded browser or 3D viewer is not
-required. Use visible units: mm, kN, kNm and N/mm2, with explicit conversion to
-existing kernel contracts, which can use N/Nmm internally.
+Use Excel's ordinary Save/Open for the workbook. Remove the separate Project,
+Beam and Check menus, separate Apply button, permanent task pane and tuning
+dashboard. A small help/diagnostics entry belongs inside Reports. Cancellation
+appears only during a running command. Display one compact model/scope/status
+line, including **No model loaded**, **In memory**, **Needs input**,
+**Provisional sizes**, **Recheck required** or **Verified for stated scope**.
 
-An output command creates only its requested worksheet. Repeating it refreshes
-the owned output by identity, without multiplying tabs or overwriting user
-content. An optional editable input sheet must have a declared apply/validation
-route; editing an output is not an implicit change to authoritative project data.
-Fewer automatic sheets simplify the interface; startup time, memory and output
-write performance still need measurement.
+Results carry a physical span/group row, existing/proposed section, bar summary,
+governing reason, quantity/cost difference and state. Select rows to scope an
+update; absent a selection, the update summary names the eligible proposed set.
+Show the exact target and changes once per run, honoring standing authorization;
+do not request a click for each internal candidate. Group details/exceptions open
+only when needed. Unsupported or unresolved groups show a reason instead of
+silently joining an automatic update.
 
-The conversation mockup is an illustrative proposal, not an Excel screenshot
-or calculated engineering result. Its example data must not enter a real
-project. The revised mockup starts with only Excel's ordinary Sheet1 and
-demonstrates ribbon menus, a beam dialog and explicitly creating or refreshing
-a check-results worksheet. It performs no engineering calculation.
+## One transparent Assumptions sheet
+
+Use five columns: **Item | Value | Unit | Basis | State**. Organize rows into
+project/model facts, design basis, practical design preferences and optional
+rates. Normal worksheet cells support editing, tab navigation and copying.
+Use clear read-only styling for source facts and derived requirements, editable
+styling for supported overrides, and text labels for missing/conflicting inputs.
+
+| Kind | Examples | Resolution rule |
+|---|---|---|
+| Imported facts | Member material assignment, verified strengths, model units, case definitions | Show verified ETABS source; never infer strength from a material name; proposed material changes are separate design overrides |
+| Required project basis | Exposure, fire basis, architectural limits, seismic/system context when applicable | Use verified project/profile values; missing required facts remain visible |
+| Named editable defaults | Display units, available section/bar catalogue, constant section per physical span, grouping preference | Identify office/product template and revision; retained values remain explicitly defaulted |
+| Derived code requirements | Cover requirement, mandatory detailing limits and applicability | Show the governing basis; proposed inputs cannot bypass enforced checks |
+| Project rates | Concrete, steel, formwork and supported labor/waste costs | Use sourced rates; if absent, quantities remain available but monetary savings are unavailable |
+
+"Industry default" is not a universal source. Qualify any numeric engineering
+preset against the named project/profile and supplier basis before use. Do not
+ship universal concrete/steel grades, exposure, cover or seismic assumptions.
+A proposed 50 mm section-size step in the UI is an editable product/office
+catalogue preference, not a code minimum or a claim of universal practice.
+
+Resolve explicit scoped overrides over named defaults only for fields that
+permit overrides. Preserve imported facts separately and return effective values
+with origin. Preserve member/material-specific assignments when the model uses
+multiple grades; a global default must not replace heterogeneous source facts.
+Blank never becomes zero. One bad field prevents accepting the
+affected input snapshot. Design & Optimise reads and validates the sheet itself;
+no separate Apply/Validate ribbon action is needed. Edits immediately mark
+dependent displayed results stale; a run uses its frozen input revision.
+Mandatory checks and internal search tolerances are not routine user toggles.
+
+The revised conversation mockup illustrates these actions, editable assumptions
+and missing-input Results. It uses example data and performs no engineering or
+ETABS operation. It is not an installed Excel screenshot or feature acceptance.
 
 ## Data and command ownership
 
 - Preserve existing stable source/member identities and result provenance.
   Imported facts, user overrides and calculated outputs must remain distinct.
-- Keep the working project in C# memory. Design a versioned save/open project
-  format outside worksheets, with explicit workbook/project association,
-  recovery and source freshness. The exact format and lifecycle must be resolved
-  before implementation; this review does not claim that storage exists.
-  Preserve the existing WP09 controlled-table path for compatible legacy
-  workbooks. New projects must not require hidden worksheet storage.
+- Keep heavy model/joint/action data in memory for v1. Save only assumptions,
+  requested outputs and small identity/state records in the workbook. A reopened
+  workbook has no loaded force snapshot and requests Read ETABS; saved results
+  remain historical until the source and inputs are revalidated. A full durable
+  project store and cross-session optimization resume are later improvements.
+  Retain existing acquisition/transaction evidence obligations and legacy WP09
+  compatibility; this removes the new runtime archive prerequisite, not evidence.
 - Add a typed public-input mapper that generates the existing operation
   requests. No ordinary user should compose request JSON. Missing grades,
   cover, supports or reinforcement remain missing; sample defaults must never
@@ -127,12 +160,11 @@ a check-results worksheet. It performs no engineering calculation.
 
 ## Proposed implementation order and acceptance
 
-1. **Ribbon and project context:** resolve save/open/recovery and project-to-
-   workbook binding; separate the current table-dependent commands from the
-   project model and optional output projection. Preserve legacy workbook use.
-2. **Manual beam first:** native input dialogs, explicit example mode, typed
-   mapping, selected/all command feedback and readable results in a dialog.
-   Create a check-results sheet only on request. Preserve result identities.
+1. **Ribbon and assumptions:** one transparent sheet, typed input mapping,
+   model/workbook binding and in-memory lifecycle; preserve legacy workbook use.
+2. **Design and practical grouping:** baseline design, bounded section-pair/bar
+   alternatives, uniform physical spans, explicit group exceptions and Results.
+   Prove normal inputs, required checks and feedback through the native kernel.
 3. **ETABS source integration:** the agreed whole-model/snapshot contract,
    supported capture/import commands, provenance, source/override separation
    and stale-state handling. Existing WP10-05/05B/05C qualification remains
@@ -144,28 +176,31 @@ a check-results worksheet. It performs no engineering calculation.
    insertion and support-face mappings are resolved; assess a 3D viewer as a
    separate UI decision after the ribbon workflow works.
 
-The earlier WP10-05 chunk/table storage proposal assumed mandatory snapshot
-worksheets. Replan that persistence boundary before implementation: retain
-canonical bytes, identities, recovery, freshness, performance and installed
-acceptance, while removing the mandatory-sheet assumption. This is an
-architectural dependency, not a ribbon-label-only change.
+Replan WP10-05 around the declared memory-only v1 lifecycle and one Assumptions
+sheet. Retain canonical identities, safe acquisition, workbook-write recovery,
+freshness, performance and installed proof. A new durable heavy-data store is
+not a prerequisite. Later coupled mutation retains its own durable transaction
+records and original model; those records are not a workbook force database.
 
 For each bounded implementation, run affected mapper/command checks, then
 qualify the integrated frozen candidate in actual Excel. Acceptance must show:
 
 - A new user can enter and check one beam without JSON editing.
-- XLL load, project open, beam selection and checks create zero product sheets.
+- XLL load creates no sheets; first setup creates Assumptions only; design
+  creates Results when needed. No hidden heavy-data sheets appear.
 - An explicit output creates only the requested sheet; repeating it refreshes
   the same owned output. Existing unrelated sheets remain intact.
 - Selected/all scope is explicit; a second workbook cannot receive the result.
-- A missing input points to its dialog field or optional input cell; rejection
+- A missing input points to its assumption cell or member-detail field; rejection
   and cancellation are visible.
 - Editing an input marks old results stale and prevents a current export.
 - A failed write restores every declared controlled value; unrelated cells,
   formulas and formatting survive.
-- Project save/reopen reconstructs state with the existing runtime/result
-  identities independently of optional output sheets; interrupted writes and
-  stale or mismatched project/workbook bindings have explicit recovery behavior.
+- Workbook save/reopen preserves assumptions and historical output. Heavy memory
+  is released on close; design/update needs a newly validated source snapshot.
+  A stale or mismatched binding never restores a current-result claim.
+- Span/group section candidates satisfy every required station/member check;
+  fixed-action size proposals cannot appear as ETABS-verified final designs.
 - Excel at normal laptop scaling has readable headings, usable keyboard/tab
   navigation and no clipped essential fields or actions.
 - Columns used for context never appear as passed beam designs, and pending

@@ -1,16 +1,20 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
 Date: 2026-09-05. Task: WP10-WORKFLOW-REFINEMENT.
-Status: source-backed proposal, not an implemented automatic loop.
+Status: revised overall product proposal, not an implemented automatic loop.
+Latest owner refinement: one transparent Assumptions sheet, heavy data in memory
+for v1, physical-span sizing and a simpler five-action ribbon. Durable full-project
+storage remains a later improvement, replacing its earlier prerequisite here.
 
 ## Direction and authority
 
 The owner wants to acquire the required ETABS model data, interpret it in the
 library, keep heavy data out of Excel, design and search for practical changes,
 update sizes in ETABS, reanalyse and repeat, then compare savings. Small useful
-tables may be written when requested. Retain the
+tables may be written when requested, including the default Assumptions sheet
+on first explicit setup. Retain the
 [ribbon-first decision](excel-ui-review.md#owner-decision-ribbon-first-worksheets-on-demand):
-loading the add-in or reading a model does not automatically create sheets.
+loading the add-in creates no sheets; setup creates only Assumptions.
 
 This refinement follows [PF8](library-definition/pf8/baseline.json),
 [PF11](library-definition/pf11/baseline.json) and the
@@ -26,8 +30,9 @@ saved-file relationship, model state, analysis availability and result selection
 An unsaved or changed open model cannot silently share its disk-file identity.
 Resolve that relationship before binding a reconstructible baseline B0.
 
-Preserve B0's model copy, source data, design basis, units, case/combination
-definitions, analysis evidence and quantity/rate basis throughout the run. Record
+Preserve the original model and keep B0's source data, design basis, units,
+case/combination definitions and quantity/rate basis in memory throughout the
+run. Keep required acquisition/transaction evidence separately. Record
 the parent accepted iteration separately: original-model and previous-iteration
 comparisons have different meanings.
 
@@ -69,34 +74,44 @@ existing STA broker; bounded parallelism is for pure library work. Pre/post
 source checks reject mixed-revision captures. Preserve the current explicitly
 evidence-derived revision semantics where ETABS supplies no native epoch.
 
-## 3. Keep heavy data out of worksheets, but preserve it
+## 3. Start with memory-only heavy data
 
 | Location | Contents and behavior |
 |---|---|
-| C# memory | Model graph, reusable properties, active inputs and result partitions; fast filtering and design |
-| Versioned local project storage | Settings, facts/overrides, immutable baseline, canonical snapshots, accepted iterations and recoverable model-copy references; heavy payloads outside worksheets |
-| Optional Excel sheets | Project/design-basis summary, member inputs, checks, changes, quantities or savings; explicit create/refresh only |
+| C# memory | Model graph, source/current/baseline forces, active inputs and candidate calculations; reused within this session |
+| Assumptions sheet | Small visible typed project inputs, source facts and named defaults, with units, origin and missing/override state |
+| Requested outputs | Results, quantities or savings and small identity records; preserved by ordinary workbook Save |
+| Existing external evidence | Required acquisition journals and later model-copy transaction records; no new general-purpose runtime force archive |
 
 "Does not change" means unchanged within a verified revision. Materials,
-sections, units and criteria are versioned too. Excel summaries are projections;
-optional editable input tables need an explicit apply/validate route.
+sections, units and criteria are versioned too. The Assumptions sheet is an input
+owner with typed validation; result summaries are projections. Design reads and
+validates inputs in one action, with no separate Apply control. See the
+[default policy](excel-ui-review.md#one-transparent-assumptions-sheet).
 
-RAM-only storage would lose comparison and recovery evidence when Excel closes.
-Persist reconstructible baseline and accepted results. Partition heavy results
-by analysis revision, case and member group; load active partitions into memory.
-Retain raw records needed for canonical replay and concurrent governing rows;
-envelopes alone are insufficient. Baseline and accepted evidence are durable
-project records, not disposable cache. Evict optional caches only when their
-inputs remain reconstructible.
+This is an intentionally session-based first version. Closing Excel/workbook,
+unloading the add-in or a crash loses its heavy working data. Reopening restores
+assumptions and historical reports, shows No model loaded, and requires Read
+ETABS before design or update. It does not resume a coupled run from saved cells.
+Compare candidates with the in-memory B0 during a run; saved comparison summaries
+remain identified historical outputs. Reestablish a baseline explicitly after
+restart rather than silently treating the current candidate as the original.
+
+Use indexed arrays, shared property records and bounded candidate summaries.
+Retain all required force rows in the supported workload; an envelope cannot
+replace concurrent governing data. If the complete workload cannot fit, report
+the supported limit instead of dropping rows. A durable partitioned project
+store and cross-session replay/resume can be added later behind this same model.
 
 Share unchanged geometry/properties by verified content identity. After an
 analysis change, old forces are stale even if member IDs are unchanged: refresh
 the complete required result domain. Initial implementation compares the full
 required model manifest; incremental acquisition needs a proven change detector.
 
-Resolve the exact format, atomic save/recovery, portable packaging, retention and
-workbook association before implementation. No mandatory hidden sheets are used.
-Preserve the existing WP09 path for compatible legacy workbooks.
+Resolve input-sheet ownership, workbook/session binding, closure behavior and
+memory limits before implementation. Full project persistence is not a v1 gate.
+No hidden data sheets are used. Preserve legacy WP09 workbooks and existing
+portable snapshot/evidence contracts; qualify the new session lifecycle honestly.
 
 ## 4. Design the baseline and freeze a practical search
 
@@ -118,6 +133,38 @@ by the declared objective, including supported concrete, steel, formwork,
 labor/waste components. Smallest section alone does not imply lowest cost.
 
 ## 5. A fast library loop, followed by an ETABS loop
+
+### Physical spans, feasible sizes and construction groups
+
+Distinguish an analysis element, a physical span between verified supports and a
+continuous beam line containing several spans. Grouping is derived from source
+IDs, support faces, releases, offsets and member roles, not station spacing or
+coordinate proximity alone. CSI's [frame meshing guidance](https://docs.csiamerica.com/help-files/etabs/Menus/Assign/Frame/Frame_Auto_Mesh_Options.htm)
+confirms that internal analysis meshing does not change object definitions.
+
+For ordinary prismatic beams, default to one width/depth pair throughout each
+physical span. This is our construction policy, not a universal code mandate.
+Continuity needs its own detailing checks; it does not force every adjacent span
+to have identical dimensions. A continuous-line or repeated-beam group may use
+a common section for constructability when all members permit it. Preserve fixed
+sections, haunches, transfer/deep beams and other exceptions as explicit special
+scope; do not flatten them automatically. Unresolved groups cannot be optimized.
+
+Generate allowed `(width, overall depth)` pairs and actual bar arrangements.
+Find each span's feasible candidate set across every required station/case/check,
+then evaluate common pairs across every member of a proposed construction group.
+Rank total group quantities/cost and practicality; if no common pair works,
+report the exception rather than silently enlarging/splitting the group.
+Independent minimum width and depth do not establish a feasible or optimal pair.
+Station minima and capacity checks are screening aids, not finished span designs.
+
+Keep mandatory strength/interaction, shear/torsion, serviceability/crack control,
+bar fit/cover/spacing, anchorage/laps/curtailment, continuity and applicable seismic
+or joint checks in the profile. Available actions, support geometry and actual
+bars determine whether each check can complete. Do not expose routine switches
+to disable required checks. All required leaves must pass before qualification.
+
+### Local search and global reanalysis
 
 **Local loop:** generate a deterministic candidate domain, perform cheap
 applicability/geometry checks and evaluate complete member designs. Cache by full
@@ -176,8 +223,11 @@ Deliver an identified optimized ETABS copy and matching design data. Bar details
 that ETABS cannot represent remain in the authoritative project schedule, bound
 to the same model/member revision; do not claim those were written into ETABS.
 
-Durable stages support unattended work. Pure reads/calculations can resume from
-validated checkpoints. An uncertain setter, analysis or save is never blindly
+Within one session, validated state supports bounded unattended work. Later
+mutation keeps durable transaction stages; it does not require a full v1 force
+archive. After process loss, reacquire required source data and reconcile model
+state; no automatic cross-session continuation is claimed. An uncertain setter,
+analysis or save is never blindly
 replayed: record the last confirmed stage and isolate the uncertain copy. A hung
 call, unresolved popup, changed model or missing required fact stops with a useful
 reason. Ordinary iterations require no human click once scope and inputs are
@@ -204,9 +254,9 @@ estimates do not establish whole-building or realized site savings.
 
 | Increment | Exit condition |
 |---|---|
-| WP10 storage/context replan | Versioned save/reopen/recovery and acquisition coverage fixed; zero mandatory worksheets |
-| WP10 import and scale | Multiple beam selections from one capture with zero additional ETABS calls; units/axes/coverage validated and medium workload measured |
-| WP11 local search | Multi-option design and estimate comparison from one snapshot; no setter; truthful cancellation/incomplete-search states |
+| WP10 session/context replan | One Assumptions sheet, typed defaults/overrides, memory lifecycle and required acquisition coverage fixed |
+| WP10 import and scale | Multiple beam selections from one capture with zero additional ETABS calls; units/axes/coverage validated; reopen requires reacquisition; memory measured |
+| WP11 local search | Complete physical-span/group candidates from one snapshot; no setter; truthful provisional and incomplete-search states |
 | WP11 one coupled change | One beam/group candidate applied to a copy, read back, reanalysed and redesigned; original unchanged and required effects evaluated |
 | WP11 bounded repeated loop | Retained B0/best model, no duplicate cycles, safe recovery and final saved-model/results agreement |
 | Integrated outputs | Comparable baseline/final quantities; requested sheets refresh without duplication; actual Excel/ETABS proof |
