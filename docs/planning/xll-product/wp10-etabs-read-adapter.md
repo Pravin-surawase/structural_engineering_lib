@@ -18,10 +18,11 @@ The primary installed tuple is Windows x64, ETABS `23.3.1.4563`,
 `CSiAPIv1.dll`/ETABSv1 `2.16.0.0`, .NET 10, and the WP09 64-bit Excel host.
 Other ETABS versions do not inherit this compatibility claim.
 
-WP10-01 through WP10-03 are complete. WP10-02 proved the exact-version getter
+WP10-01 through WP10-04 are complete. WP10-02 proved the exact-version getter
 boundary and one unchanged-model live matrix; WP10-03 added the bounded STA
-operation-control and durable evidence boundary. WP10-04 is the next bounded
-slice. The remaining slices use the plan-driven delivery contract below as a
+operation-control and durable evidence boundary; WP10-04 added offline
+normalization and cross-runtime replay. WP10-05 Excel import is next. The
+remaining slices use the plan-driven delivery contract below as a
 pilot of the repository-wide workflow. That contract orchestrates existing
 controls; it does not create a second WP10-only delivery system.
 
@@ -93,7 +94,9 @@ process/model identity, and partial canonical output after a failed getter.
 
 ## Execution controls carried forward from WP09
 
-The six delivery slices are separate bounded tasks. They are not one combined
+The six delivery slices are separate bounded scopes. The WP10-05 preparation
+review below adds explicit production-handoff and multi-member prerequisites
+before qualification; these each receive their own bounded task. They are not one combined
 implementation and acceptance session. `WP10-01` remains host-free. Before the
 exact getter adapter begins, a read-only host micro-probe must establish the
 installed assembly and ETABS versions, attachment path, approved getter
@@ -126,7 +129,8 @@ one coding session would recreate WP09's oversized-packet failure mode.
 
 For delivery purposes, **one session** therefore means that each remaining
 slice starts and closes one parent task without carrying repair work into a
-later session. WP10-03 completed this boundary; WP10-04 is next. Later slices
+later session where feasible; an application hold never becomes a fabricated
+pass to meet this target. WP10-04 completed this boundary; WP10-05 is next. Later slices
 may share the IMP-M3 milestone branch only when their accepted authority and
 installed-host gate are unchanged; they retain separate task timers and
 acceptance decisions.
@@ -135,9 +139,11 @@ acceptance decisions.
 | --- | --- | --- | --- |
 | WP10-02 | Complete | exact-version getter port, binding, fake-host proof, and one live getter-only matrix | broker retries, normalization, Excel, performance |
 | WP10-03 | Complete | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
-| WP10-04 | Implemented; delivery candidate | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
-| WP10-05 | Planned | transactional `XL-CMD-02` import, readback, rollback, and freshness | ETABS mutation and qualification claims |
-| WP10-06 | Planned | E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
+| WP10-04 | Complete, PR #972 | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
+| WP10-05 | Next; plan below | transactional completed-file `XL-CMD-02` import, installed Excel readback/rollback, and freshness | live acquisition, automatic design-input synthesis and acquisition performance claims |
+| WP10-05B | Planned prerequisite | production acquisition host and versioned file handoff to the same Excel importer | ETABS setters, automatic reconnect/retry and scale claims |
+| WP10-05C | Planned prerequisite | multi-member acquisition/normalization profile and representative datasets for PF9 | silently weakening source contracts or performance budgets |
+| WP10-06 | After all prerequisites | integrated E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
 
 The operating target for every session is one candidate, zero repair batches,
 zero focused-check retries, one candidate-integrity run, one final closeout,
@@ -574,6 +580,272 @@ and a missing recovery transition. Its separate maintained authority is
 [closeout recovery and early-check parity](../../verification/delivery-system-redesign.md#closeout-recovery-and-early-check-parity--2026-09-05).
 That repair shares this unpublished planning branch and original task history;
 it changes no WP10 engineering contract and does not start normalization.
+
+## WP10-05 preparation review and executable plan — 2026-09-05
+
+Preparation base: `0d790b56ba92a059b2cac574be970a2cf9106821`, the merged
+[WP10-04 PR #972](https://github.com/Pravin-surawase/structural_engineering_lib/pull/972).
+This is a source-backed implementation plan, not installed acceptance of a
+command that does not exist yet. It changes no PF8/PF9 engineering requirement.
+
+### What has actually used the applications
+
+| Boundary | Evidence already retained | Next proof still required |
+| --- | --- | --- |
+| WP09 standalone Excel | [Installed acceptance](../../verification/wp09-excel-installed-acceptance.json) passed command, saved/reopened reconstruction, rollback and runtime-invalidation checks. The later [cleanup receipt](../../verification/wp09-excel-cleanup.json) records uninstall and removal of startup registration. | Load the new candidate XLL and test the new import in real Excel; do not assume the old XLL is installed. |
+| WP10-02/03 ETABS | [Broker receipt](../../verification/wp10-03-operation-broker-evidence.json) binds a real getter-only acquisition: 410 calls, 48 operations, 820 journal records, 13 force rows, equal protected pre/post state and cleanup. | New live runs require fresh target/runtime/model/selection evidence; an old process ID is not current permission or identity proof. |
+| WP10-04 normalization | [Receipt](../../verification/wp10-04-normalization-evidence.json) binds all 110 records and exact Python/.NET canonical replay without either application. | WP10-05 must preserve those bytes through Excel storage, reopening and reconstruction. |
+
+Offline tests isolate conversion and failure logic; real application tests
+prove the host boundary. Neither substitutes for the other. The review observed
+an ETABS process and no Excel process, without attaching to either. This is
+inventory only, not model readiness or a current installation verdict.
+
+### Confirmed plan gaps and decisions
+
+1. `WorkbookCommandKind`, `WorkbookCommands` and `StructAutomateRibbon` contain
+   no `XL-CMD-02`. `WorkbookInputReader` reads only the three WP09 input tables.
+   The private `WorkbookCommandEngine.Transaction` is reusable behavior, not
+   a public importer. Implement the missing path and reuse one transaction
+   owner; do not write an unrelated second rollback algorithm.
+2. The retained snapshot is **1,669,798 bytes**, including large raw metadata.
+   Microsoft specifies **32,767 characters per cell** and 15-digit numeric
+   precision ([Excel limits](https://support.microsoft.com/en-us/excel/excel-specifications-and-limits)).
+   Store canonical UTF-8 bytes as ordered base64 text chunks, at most 24,000
+   characters each; do not put whole JSON in a cell or coerce canonical values
+   through Excel numbers. An in-memory preparation diagnostic produced 93
+   chunks and reconstructed SHA-256
+   `b0379473f0e195c4a8e947b89218e0af4e1294f80e72824bd731d7fa65af627c`,
+   equal to the receipt. This is byte-storage feasibility, not an Excel test.
+3. Current WP09 cache identity covers its input records and runtime. A new
+   snapshot must enter the linked-member input identity and all calculate,
+   optimize, export and reconstruction checks. Merely writing an additional
+   table would leave the existing cache unaware of the imported source.
+4. The ETABS project is a library; source callers do not yet provide the
+   versioned external acquisition host promised in the architecture above.
+   WP10-05 imports a completed snapshot file. **WP10-05B** must provide the
+   production acquisition entry point and connect its completed output to that
+   importer before claiming the integrated Excel-to-ETABS workflow.
+5. The current capture request names one member, and the projector requires
+   one force getter. PF9 requires 100-member/10,000-row and
+   1,000-member/100,000-row workloads. **WP10-05C** must freeze and implement
+   a compatible multi-member profile and datasets before WP10-06 qualification.
+   A repeated one-member fixture cannot satisfy either workload.
+
+### WP10-05 plan card
+
+| Plan row | Accepted planning decision |
+| --- | --- |
+| Outcome | `XL-CMD-02` imports one completed portable snapshot into a compatible saved workbook, displays its member/action/source facts, and reconstructs the same snapshot after save/reopen. Import completeness and design readiness remain separate. |
+| Start | Open task `WP10-05`; fetch main explicitly, inspect canonical Git state, upstream, PR and sibling candidates, bind the then-current base SHA and create `codex/wp10-05-*`. Preparation's base is historical, not the future implementation base. |
+| Scope | Initially one snapshot per workbook, with explicit snapshot-member to workbook-member bindings. Reimport atomically replaces the whole snapshot set; no mixed epochs. Preserve unrelated standalone members and user sheets. |
+| Input | Canonical completed snapshot JSON, explicit expected file SHA-256, workbook/project identity and explicit member mapping. Use the exact WP10-04 retained output plus the invented shared normalization vector. A raw acquisition file or incomplete AO16 result is rejected, not normalized silently by Excel. |
+| Reuse | `AnalysisSnapshotCodec.ParseAndValidate` and canonical hashing; WP09 table store, transaction/readback/rollback, input reader, cache checks, host-effect ledger, command/ribbon conventions and packaging helpers. Excel has no dependency on the optional ETABS assembly. |
+| Product writes | Existing `StructuralEngineering.ExcelDna` project: contracts, table store, input reader, command engine, commands and ribbon; narrowly named snapshot reader/importer files and a shared transaction helper if extraction is needed. Existing Analysis API is consumed unchanged unless a confirmed blocking defect is separately planned. |
+| Proof writes | `CSharp/tests/StructAutomate.Tests/Wp10WorkbookImportTests.cs` (planned), affected existing workbook tests, an additive `CSharp/packaging/excel/Invoke-SnapshotImportAcceptance.ps1` (planned) reusing `Common.ps1`, and a synthetic sample only if required. No private capture enters Git. Update only affected locks if the graph changes. |
+| Records | This plan, implementation status, task/session/handoff and an installed-transition source declaration before final candidate. Candidate-bound installed receipts, workbook copies and hashes stay external after candidate. No post-push documentation commit. |
+| Impact | .NET product/tests, documentation and repository checks; `verification plan` is authoritative when paths exist. Python WP10 evidence is included for reconstructed-snapshot parity, without unrelated Python/FastAPI/React suites. |
+| Roles | One parent performs implementation, verification, essential review and delivery. No automatic subagents, new workflow engine, recurring automation or broad skill changes. |
+| Non-goals | Live attachment, changing ETABS units/selections/lock/model, automatic design/check generation from material names, inferred strengths, centered geometry, automatic save of user workbooks, performance qualification, WP11 and release. |
+
+### Storage, identity and transaction contract
+
+Use an additive workbook extension ID `structural-excel-analysis-import/v1`;
+keep WP09's standalone template usable. The following are planned controlled
+tables, not names already supported by `ExcelWorkbookTableStore`:
+
+| Table | Required role |
+| --- | --- |
+| `StructuralSnapshots` | Extension version, workbook/project and snapshot IDs, canonical/file/raw hashes, acquisition/model/analysis/epoch identities, chunk count/byte count, source version, import state and limitations. |
+| `StructuralSnapshotChunks` | Snapshot ID, zero-based chunk index, base64 text and chunk digest. Reassembly requires contiguous unique indices, exact total length/hash and successful canonical snapshot validation. |
+| `StructuralSnapshotMembers` | Member/object/element/section/material/axis and station mapping for review; preserve references to raw insertion point, releases, offsets and separate modifiers. |
+| `StructuralSnapshotActions` | Every source row and canonical row ID, member/element/station/selection, action basis, step and all six signed components in explicit units. Numeric text uses invariant canonical spelling. |
+| `StructuralSnapshotBindings` | Explicit source-member/workbook-member mapping, snapshot/action revision, binding state and unresolved design prerequisites. No label/name-based automatic match. |
+
+Assign fixed `SA_` sheet names in the existing table-store registry, below Excel's
+31-character sheet-name limit. The tables are projections of the canonical
+payload. Readback must both reconstruct and validate the payload and rederive
+the projected tables/bindings; matching chunks alone cannot approve edited
+action cells. Persist references and bounded columns, not the oversized raw
+metadata JSON. Blank/null and `Single Value`/null step semantics remain frozen.
+
+The public command accepts a source file picker or explicit path/digest for the
+installed harness and binds the target workbook once. Picker cancellation is
+a no-write result. Read and validate the entire bounded file and build all
+table values before the first mutation. Bind the limits below in the typed
+importer contract; the initial profile admits the retained 1.67 MB file and the
+synthetic vector and explicitly rejects larger unqualified scope, with no
+truncation. Excel worksheet limits are not a
+performance budget.
+
+The initial file limit is 16 MiB, one source member and at most 10,000 action
+rows; reject before mutation when any limit is exceeded. These are bounded
+import admission limits, not qualified speed claims. Decode chunks only after
+validating their total encoded length/count against those limits.
+
+Preflight requires a saved writable local workbook, compatible template,
+explicit project/member mapping, editable dedicated controlled ranges, and
+room for every declared table. Reject conflicting sheets, unexpected table
+headers/locations, formulas or unrelated content in a write footprint before
+mutation. `IWorkbookTableStore` snapshots values; do not promise restoration of
+arbitrary formulas/formatting by that interface. Preserve sentinel formulas,
+comments and unrelated sheet content outside the declared footprint in the
+installed proof.
+
+One transaction covers the five snapshot tables, affected freshness records
+and the receipt. Capture existing values and absent-table state, bulk-write,
+read back, reconstruct, compare hashes/identities and only then return
+`completed`. Failure restores every existing controlled value/table and
+removes newly created controlled sheets; verify the restored state. Failed
+restoration is `restoration_unverified`, never current or successful. Keep
+failure receipts externally if writing a receipt would violate exact rollback.
+Detect target closure or identity/content drift after progress yielding and
+before commit; retain the original target rather than looking up a new
+`ActiveWorkbook` midway through the operation.
+
+Reuse the command's progress/cancellation mechanism on Excel's main thread.
+Any background parsing must return to a macro context before Office access
+([Excel-DNA guidance](https://excel-dna.net/docs/guides-advanced/performing-asynchronous-work/)).
+Cancellation before mutation leaves all tables unchanged; during controlled
+writes it completes verified rollback at the next safe boundary. Do not abort
+inside a COM call or launch a second import from progress message processing.
+
+### Freshness and engineering meaning
+
+`import_verified` means the workbook matches a validated captured snapshot;
+it does not mean the live model is current, or that the member design passes.
+The existing source's owner-declared concrete classification contains no
+proved concrete/rebar strength, cover, support design scope or selected bars.
+Retain those missing prerequisites explicitly. Import may complete for review
+while design readiness is blocked.
+
+Linked calculations must bind the snapshot digest, mapping digest, action
+revision and execution fingerprint into `WorkbookInputSnapshot`/cache identity.
+Changing any binding, chunk, action projection, project or runtime invalidates
+linked results, optimization and export. Existing WP09 standalone inputs with
+no snapshot binding retain their behavior. Until a supported explicit action
+mapping and complete design basis exist, linked Calculate/Optimize/Export
+must return an actionable not-ready result; they may not run old sample actions
+and label them as an ETABS-derived result. Automatic AO16-to-leaf-check request
+synthesis is a separate later feature, not a hidden dependency of import.
+
+### Acceptance-to-proof matrix
+
+The class and harness named below are implementation deliverables; they do not
+exist at preparation. Each test name/filter must be verified from source before
+the freeze run. No zero-discovery or skipped retained-input pass is accepted.
+
+| ID | Required proof |
+| --- | --- |
+| X1 | Public importer rejects wrong file SHA, corrupt/incomplete snapshot, incompatible workbook and ambiguous mapping before any table write. |
+| X2 | Synthetic and exact retained inputs reconstruct identical canonical bytes from bounded text chunks; all 110 retained records and 13 actions remain accounted for. Missing/duplicate/edited chunks and edited projections block acceptance. |
+| X3 | All six signs/units, source IDs, static step sentinel, stations, faces, insertion and separate modifiers survive import and reconstruction without another unit conversion. |
+| X4 | Memory-store fault injection at each mutation boundary proves existing-table and new-table rollback, receipt behavior and explicit unverified restoration. Installed Excel repeats representative existing and newly created table failures. |
+| X5 | Reimport and edited mapping/source/runtime invalidate linked calculate/optimize/export caches; incomplete design basis blocks linked operations. Existing standalone workbook cases remain passing. |
+| X6 | Picker/prewrite cancellation has zero writes; cancellation after mutation rolls back; a second command or changed active workbook cannot redirect writes. Progress/cancel observations name actual safe boundaries. |
+| X7 | The candidate's actual Ribbon and command registration load in installed x64 Excel. Import the retained file into a disposable saved workbook, save/reopen and reconstruct with the external source unavailable. Snapshot SHA and all projected rows match. |
+| X8 | Installed forced failure preserves outside-scope formula/comment sentinels and existing tables, removes only created controlled sheets, and restores host settings. Record exact workbook/XLL/runtime/source/receipt hashes and owned-process cleanup. |
+| X9 | Reconstructed UTF-8 JSON independently passes the existing Python WP10 validator/canonical replay. This and X7/X8 satisfy the new import's PF8 E5-05/E5-06 portion; fake Office tests alone do not. |
+| X10 | New import causes zero ETABS calls; pure worksheet recalculation still has zero host effects. Evidence states import readiness separately from live freshness, engineering approval and acquisition performance. |
+
+### Ordered implementation and verification
+
+1. Freeze the extension's exact headers, size/scope bounds, typed request/result,
+   receipt, binding/freshness rules and X1–X10 test mapping. Inspect current
+   installed runtime/certificate availability without opening user workbooks.
+2. Implement pure snapshot-to-table projection/reconstruction and the shared
+   transaction use. Implement source binding/cache invalidation before adding
+   the command/ribbon. Use narrow diagnostics only while fixing active issues.
+3. Finish command, sample/harness, declared installed-transition source record
+   and all versioned task docs. The planned harness must use explicit input
+   and output paths and require actual execution of X7/X8; it must not rerun the
+   entire WP09 cold/warm performance campaign. The existing broad
+   `Invoke-InstalledAcceptance.ps1` has no snapshot-import parameters today.
+4. Freeze content, format once from the original task base, and run the focused
+   union below. Commit one immutable candidate after software evidence passes.
+5. Package/sign **that exact clean candidate** using the maintained helpers;
+   their packager already requires committed source. Install/load it, execute
+   X7/X8/X9 against disposable copies, and retain new receipts externally.
+   Versioned docs prepared in step 3 describe the required evidence and locator,
+   not an unobserved installed pass. Installed failure consumes the ordinary
+   consolidated rejection/repair path; never edit the candidate silently.
+6. Review the unchanged candidate using software plus installed evidence,
+   record acceptance, run one read-only integrity gate, let pre-push own final
+   closeout, pass hosted CI, merge unchanged and record derived usage. No
+   task-owned versioned writes follow `CANDIDATE` except explicit repair.
+
+All commands below run from repository root unless the row says `CSharp`:
+
+| Command / owner | Purpose and expectation |
+| --- | --- |
+| `bash ./run.sh verification plan --base <intake-sha>` | Route the entire changed candidate; reconcile all actual paths before freeze. |
+| `bash ./run.sh format --write --base <intake-sha>` | Single affected-source formatting and full-task-base text hygiene. |
+| `dotnet restore StructAutomate.slnx --locked-mode`, then `dotnet build StructAutomate.slnx -c Release --no-restore` in `CSharp` | Locked graph and packed x64 XLL; a build is not installed acceptance. |
+| `dotnet test --project tests/StructAutomate.Tests/StructAutomate.Tests.csproj -c Release --no-build --filter 'FullyQualifiedName~Wp10WorkbookImportTests\|FullyQualifiedName~WorkbookCommandEngineTests\|FullyQualifiedName~WorkbookInputReaderTests\|FullyQualifiedName~ExcelAdapterTests'` in `CSharp` | New importer plus directly affected existing workbook behavior; verify the new class exists and test count is nonzero. The backslash shown before each pipe is Markdown table escaping, not a literal CLI argument. |
+| `dotnet test --project tests/StructuralEngineering.Tests/StructuralEngineering.Tests.csproj -c Release --no-build --filter FullyQualifiedName~Wp10` in `CSharp` | Frozen portable contract and normalization compatibility. |
+| `bash ./scripts/python_runtime.sh scripts/validate_structural_engineering_contracts.py` and `bash ./scripts/python_runtime.sh -m pytest Python/tests/unit/test_structural_engineering_wp10.py -q` | Contract and cross-runtime fixture parity. Separately validate the actual reconstructed installed output through the same production Python codec. |
+| `bash ./run.sh check --category docs`, `bash ./run.sh efficiency check`, `bash ./run.sh session handoff`, `bash ./run.sh session check` | Run handoff/check after final session writes and before candidate; no global doc sync. |
+| Existing packaging scripts under `CSharp/packaging/excel` | `New-Distribution.ps1 -OutputDirectory <fresh-repo-tmp-path> -CertificateThumbprint <verified-current-cert> -SkipBuild`; `Test-Preflight.ps1 -DistributionDirectory <path> -ReceiptPath <per-user-receipt-path>`; `Install-PerUser.ps1 -DistributionDirectory <path>`. Verify the current signatures before execution. |
+| Planned `Invoke-SnapshotImportAcceptance.ps1` | Implement and freeze explicit XLL/workbook/snapshot/digest/receipt arguments in step 1. Default output stays under the permitted per-user receipt root; immutable evidence copies may then be retained externally. Do not call guessed parameters on the existing WP09 harness. |
+
+No entire broker test class runs on this installed workstation: it contains
+live ETABS entry points. No unchanged broad Python/full-32 gate is added here;
+the final WP10 cumulative gate belongs to WP10-06 after prerequisites. Hosted
+required checks are never bypassed.
+
+### Installed entry, unattended work and remaining sequence
+
+At the application gate, establish Windows/Excel x64 build, .NET Desktop runtime,
+actual XLL hash/signature, certificate trust, package manifest and exact saved
+disposable workbook path/hash. Historical validation-certificate and WP09
+installation receipts are not current installation proof. Preserve any existing
+add-in installation and registration preimage before replacement; target only
+the task-owned workbook and Excel process. Preserve source artifacts read-only.
+
+The owner has authorized ordinary in-scope implementation and application work.
+Routine decisions do not require another permission question. Expected file
+pickers are avoided by explicit harness paths. License/sign-in, trust/protected
+view, a locked session, unexpected save/recovery dialogs, busy Excel, unknown
+target identity or user-owned unsaved work are real entry/runtime conditions:
+record a hold, retain evidence, and request assistance only if they cannot be
+resolved within existing authorization. Never click through an unknown dialog,
+alter global trust, or terminate a user application to force unattended success.
+Long waits return status without speculative retries. One implementation
+session is a target after host readiness, not a guarantee of completion while
+the user sleeps.
+
+**WP10-05B** then owns the missing production acquisition host: a small optional
+Windows executable/file protocol around existing broker and normalization APIs,
+exact target/request/output identities, terminal-state/cancellation semantics,
+and handoff into the same importer. No CSI/Office access in worksheet functions;
+no new Git/session automation. Freeze its own plan and tests before coding and
+prove one real getter-only end-to-end smoke run after host preflight. A test
+method is not the released acquisition entry point.
+
+**WP10-05C** owns a separately frozen multi-member profile. Resolve collection
+scope, shared catalogue acquisition, per-member material/geometry/element
+coverage, complete row accounting and one coherent analysis epoch without
+changing the meaning of existing v1 evidence. Create actual small/medium
+dataset manifests with member/row counts and hash-bound source identities;
+do not just loop the retained one-member sample and report a building-scale
+result. Profile stage costs before choosing batch sizes. Any schema extension
+receives explicit compatibility vectors and its own acceptance update.
+
+**WP10-06** starts only after 05/05B/05C have passed their own boundaries. It
+qualifies the unchanged integrated candidate against PF8 E5-02/E5-03/E5-04 and
+rechecks the connected Excel E5-05/E5-06 path. PF9 remains the authority:
+small 100 members/10,000 rows p95 <= 5 s; medium 1,000 members/100,000 rows
+p95 <= 30 s; incremental medium adapter working set <= 512 MB, with getter,
+transfer, normalization and persistence times separate. These are unproved
+targets today. Run the named cumulative broad Python/full-32 gate there once
+the whole candidate freezes; preserve every failed performance verdict and
+profile its cause instead of reducing required counts or weakening correctness.
+
+Stop/replan on an unsupported workbook schema, source/storage ambiguity,
+unresolved linked action semantics, host drift, outside-scope write, failed
+cleanup, absent installed proof or a second rejected candidate. The plan is
+feasible for the supported import boundary; it does not yet prove full-model
+coverage, unattended host operation or the final performance targets.
 
 ## WP10-02 single-session execution contract
 

@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-09-05 — Session: WP10-05 source-backed preparation
+
+**Task:** WP10-05-PREP
+**Agent:** MAIN (one parent; no subagents)
+**Branch:** `codex/wp10-05-plan`, from freshly fetched main
+`0d790b56ba92a059b2cac574be970a2cf9106821`.
+
+**Focus:** Review the next work against implemented code and installed evidence,
+correct the plan's current state, and define an executable WP10-05 Excel-import
+packet with truthful later acquisition and scale requirements. Planning only;
+no product changes, added tests, COM attachment or workbook writes.
+
+### Completed
+
+- Confirmed WP10-04's merged output and traced missing XL-CMD-02 through the
+  workbook enum, command/ribbon, input reader, transaction and freshness owners.
+  Distinguished real WP09 Excel and WP10-02/03 ETABS evidence from WP10-04's
+  offline replay and from future installed proof.
+- Added a source-backed WP10-05 plan with bounded text-chunk storage, explicit
+  project/member bindings, atomic readback/rollback, stale-result prevention,
+  target identity/cancellation rules and X1–X10 software/installed acceptance.
+  An in-memory 93-chunk round-trip of the exact 1,669,798-byte retained output
+  preserved its receipt SHA; this proves storage feasibility only.
+- Named the missing production acquisition/file handoff as WP10-05B and
+  multi-member profile/dataset preparation as WP10-05C before WP10-06. Preserved
+  the original PF9 100/1,000-member workload sizes, p95 limits and memory limit.
+  Updated current plan entry points and the next-session handoff accordingly.
+- Bound existing packaging commands and permitted output roots; the planned
+  installed import harness is explicitly new. Candidate-bound installed
+  observations stay external; no future test or live pass is claimed today.
+
+### Issues encountered
+
+- Active plan entry points still named completed WP10-04 as next. More
+  materially, the remaining sequence skipped the production acquisition caller
+  and multi-member support needed by its stated qualification workload.
+- Two optional reads guessed absent filenames: the broker evidence receipt
+  and a packaging README. Those reads failed; exact file discovery succeeded.
+
+### Root causes and resolutions
+
+- Confirmed: planning had not traced the required user entry point and scale
+  workload through current callers. The broker is a library, source callers
+  are tests, and the capture request/projector admit a single force getter.
+  The revised sequence adds the missing bounded implementation owners before
+  qualification; the exact source symbols and PF9 counts substantiate it.
+- Confirmed: inferred filenames differed from maintained paths. Read
+  `wp10-03-operation-broker-evidence.json` and the actual packaging script
+  parameter blocks after `rg --files`; do not manufacture documentation paths.
+
+### Rework and recurrence
+
+- RR-021, occurrences=1, minutes=unknown: qualification planning omitted
+  required production caller/scale work. Trace each acceptance workload to
+  executable source and assign every missing consumer before implementation.
+- RR-005, occurrences=40, minutes=unknown: two guessed-path read failures;
+  resolved through discovered receipt/script paths. Time was not isolated.
+
+### Verification and delivery boundary
+
+The task uses the documentation category, efficiency/session checks, one
+read-only candidate integrity check and the required hosted gate. No product
+test suite is rerun for planning-only edits. Exact candidate, hosted run, PR,
+merge and automatically derived usage facts stay in the task delivery ledger.
+
+---
+
 ## 2026-09-05 — Session: WP10-04 offline normalization
 
 **Task:** WP10-04

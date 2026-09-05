@@ -71,14 +71,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 38,
+      "occurrences": 40,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included a stale implementation-status path, Windows rg glob paths and an absent usage-helper guess. Direct discovered paths succeeded; command correction time was not isolated."
+        "basis": "WP10-04 intake included a stale implementation-status path, Windows rg glob paths and an absent usage-helper guess. WP10-05-PREP added two absent filename guesses for a broker receipt and packaging README. Discovered receipt paths and actual script parameter blocks succeeded; correction time was not isolated."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-04",
+      "last_seen_task": "WP10-05-PREP",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -332,6 +332,23 @@
       "details": [
         "docs/SESSION_LOG.md",
         "docs/verification/wp10-04-normalization-evidence.json"
+      ]
+    },
+    {
+      "id": "RR-021",
+      "pattern": "Qualification plan omits required production caller or workload implementation",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-05-PREP traced the planned integrated and PF9-sized qualification to source: the acquisition broker has no production command/file host and the retained capture/projector admit one member. Missing implementation owners were added before feature work; review time was not isolated."
+      },
+      "short_solution": "Trace every acceptance workload through real source callers; assign missing consumer and scale work before qualification, keeping original budgets intact.",
+      "last_seen_task": "WP10-05-PREP",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md",
+        "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05"
       ]
     }
   ]
