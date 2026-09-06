@@ -16,6 +16,8 @@ public sealed record OfflineSnapshotReference(
     string SnapshotSha256,
     int ByteCount);
 
+public sealed record OfflineSnapshotImport(OfflineSnapshotReference Reference, AnalysisSnapshot Snapshot);
+
 /// <summary>
 /// Host-free, content-addressed storage for complete portable analysis snapshots.
 /// </summary>
@@ -38,6 +40,10 @@ public sealed class OfflineSnapshotStore
 
     /// <summary>Validates all source bytes before atomically admitting one immutable artifact.</summary>
     public OfflineSnapshotReference Import(string sourcePath, string? expectedSha256 = null)
+        => ImportWithSnapshot(sourcePath, expectedSha256).Reference;
+
+    /// <summary>Returns the already-validated in-memory value so background acquisition need not parse it again.</summary>
+    public OfflineSnapshotImport ImportWithSnapshot(string sourcePath, string? expectedSha256 = null)
     {
         var bytes = ReadBoundedFile(sourcePath);
         var fileSha256 = Sha256(bytes);
@@ -62,7 +68,7 @@ public sealed class OfflineSnapshotStore
         if (File.Exists(target))
         {
             VerifyExisting(target, reference, bytes);
-            return reference;
+            return new(reference, snapshot);
         }
 
         Directory.CreateDirectory(Path.GetDirectoryName(target)!);
@@ -85,7 +91,7 @@ public sealed class OfflineSnapshotStore
             }
 
             VerifyExisting(target, reference, bytes);
-            return reference;
+            return new(reference, snapshot);
         }
         finally
         {
@@ -140,7 +146,8 @@ public sealed class OfflineSnapshotStore
         var bytes = ReadStoredBytes(path, reference);
         if (!bytes.AsSpan().SequenceEqual(expectedBytes))
             throw new InvalidDataException("A different artifact already occupies the requested content-addressed path.");
-        _ = ParseVerified(reference, bytes);
+        // Exact equality to the input bytes already validated in ImportWithSnapshot
+        // proves the stored value without another complete parse/hash traversal.
     }
 
     private static AnalysisSnapshot ParseVerified(OfflineSnapshotReference reference, byte[] bytes)

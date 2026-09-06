@@ -10,7 +10,7 @@ public sealed record EtabsProcessChoice(int ProcessId, DateTimeOffset StartedUtc
 public sealed record EtabsConnectionResult(EtabsContextWorkerResponse Response, EtabsContextArtifact? Artifact, string OperationDirectory);
 
 /// <summary>File/process I/O only. No Excel or CSI object is touched by this background client.</summary>
-public static class EtabsConnectionClient
+public static partial class EtabsConnectionClient
 {
     private static readonly ConcurrentDictionary<int, byte> ActiveProcesses = new();
     public static int ActiveWorkerCount => ActiveProcesses.Count;
@@ -86,7 +86,11 @@ public static class EtabsConnectionClient
                     }
                     return new(response, artifact, directory);
                 }
-                if (worker.HasExited) throw new InvalidOperationException("The ETABS reader exited without a valid response. Its evidence folder has been retained.");
+                if (worker.HasExited)
+                {
+                    if (File.Exists(responsePath) || File.Exists(responsePath + ".terminal")) continue;
+                    throw new InvalidOperationException("The ETABS reader exited without a valid response. Its evidence folder has been retained.");
+                }
                 if (DateTimeOffset.UtcNow > request.DeadlineUtc.AddSeconds(5) || cancellationToken.IsCancellationRequested)
                 {
                     WriteCancellation(requestPath);

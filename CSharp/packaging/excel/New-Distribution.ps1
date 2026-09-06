@@ -101,6 +101,7 @@ $manifest = [ordered]@{
     worker = Get-StructAutomateFileIdentity $worker
     worker_runtime = '.NET 10 x64, framework-dependent single-file executable'
     context_profile = 'ETABS 23.3.1 source geometry, kN-m-C; no forces or model mutations'
+    force_profile = 'wp10-shared-static-frame-capture/v1; existing completed ordinary static results, explicit scope and admission; no model mutations'
     pe_machine = Get-StructAutomatePeMachine $xll
     signature = [ordered]@{
         status = [string]$verifiedSignature.Status

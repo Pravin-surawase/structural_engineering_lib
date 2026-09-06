@@ -18,7 +18,9 @@ public sealed class Wp10OfflineSessionTests
         var source = files.Write("input/snapshot.json", bytes);
         var store = new OfflineSnapshotStore(files.Path("store"));
 
-        var reference = store.Import(source, Sha(bytes));
+        var imported = store.ImportWithSnapshot(source, Sha(bytes));
+        var reference = imported.Reference;
+        Assert.Equal(bytes, AnalysisSnapshotCodec.CanonicalJsonBytes(imported.Snapshot));
         var reopened = new OfflineSnapshotStore(store.RootDirectory).Read(reference);
 
         Assert.Equal("synthetic-project", reference.ProjectId);

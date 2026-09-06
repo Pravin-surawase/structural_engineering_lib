@@ -22,7 +22,9 @@ points. Its measured time and file size require a compact bulk production path
 before full-model Excel/PF9 acceptance; see the
 [live findings](wp10-etabs-read-adapter.md#live-reference-findings--2026-09-07).
 The installed ribbon still has the completed connection/offline capabilities;
-Get Forces handoff and final qualification remain active completion work.
+Get Forces is implemented in the completion candidate, with real worker
+capture/cancellation proof. Signed Excel development proof and the compact
+full-model transport/performance qualification remain active completion work.
 
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.

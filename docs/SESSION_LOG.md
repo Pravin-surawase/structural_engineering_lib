@@ -50,8 +50,21 @@ and integrated qualification against the whole-product goal; learning excluded.
   filter passed 23 tests (one external replay skipped) and all 30 portable WP10
   contract/normalization tests passed. These are internal-unit checks; the
   milestone formatter, focused union and cumulative U5 gates remain later.
+- U3 now connects the ribbon's Get Forces to an exact request/context-bound
+  worker, per-member progress, cancellation and the existing external store.
+  Import returns the already validated graph for background indexing. Workbook
+  callbacks retain initiating document/context/request ownership; a failed or
+  cancelled read does not replace accepted evidence. Twelve focused
+  protocol/client/store tests passed. `force-client-development-1` passed the
+  actual process handoff and cancellation with owned beam 104 / 15 rows.
+  The existing signed Excel acceptance harness now includes optional force
+  ownership, close, cancellation and persistence proof. Its run is next.
 
 ### Issues encountered
+
+- U3 found that the 10,000-action Excel admission limit also conflicts with
+  PF9's 100,000-row medium target. Existing bounds remain enforced until the
+  U4 transport/memory profile is qualified; no partial member import is used.
 
 - Two source-orientation reads guessed filenames that do not exist: a C# scoped
   instruction file and the context-contract filename. This delayed inspection;
@@ -108,7 +121,9 @@ and integrated qualification against the whole-product goal; learning excluded.
   Original and portable ledgers were both embedded in the snapshot. Keep the
   original journal in the external acquisition with a compact inline receipt;
   retain the complete portable ledger. Bulk round-trip reduction and bounded
-  file/memory qualification remain active work, not waived gates.
+  file/memory qualification remain active work, not waived gates. The newly
+  traced 10,000-action store cap is also explicitly assigned to U4; the worker
+  receives the caller's actual limits and rejects complete over-limit data.
 - RR-005: use explicit `[double]0` for the actual reflected Double parameters;
   owned-mesh-point-2 passed. RR-025: bounded signature queries, retained artifact
   inspection and the owned-file harness obtained the needed facts after two
@@ -121,7 +136,7 @@ and integrated qualification against the whole-product goal; learning excluded.
   exact runtime types before dispatch.
 - RR-002, occurrences=23, minutes=unknown: actual result availability, mesh
   identities and empty-table behavior required source-qualified handling.
-- RR-021, occurrences=2, minutes=unknown: enforce the full model's source cost
+- RR-021, occurrences=3, minutes=unknown: enforce the full model's source cost
   and every serialization/store boundary before installed qualification.
 - RR-023, occurrences=1, minutes=unknown: align source readers with the typed
   arrays accepted by their adapter contract.

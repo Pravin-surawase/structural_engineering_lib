@@ -51,14 +51,14 @@ internal sealed class OfflineReviewWindow : Form
         _outcome.BackColor = Color.FromArgb(237, 244, 249);
     }
 
-    public void SetReview(OfflineSnapshotSession session, Action<string> writeMember)
+    public void SetReview(OfflineSnapshotSession session, Action<string> writeMember, bool capturedHere = false)
     {
         _context = null; _session = session; _writeMember = writeMember;
         _selection.Visible = _model.Visible = _actions.Visible = true;
         Width = 1120; Height = 500;
         _model.Height = 66;
         _model.Text = $"{session.Snapshot.Metadata.ModelName} • {session.Snapshot.SourceIdentity.SourceSystem} {session.Snapshot.SourceIdentity.SourceVersion}\n" +
-            $"Offline snapshot • {session.Snapshot.Members.Count} captured members • {session.Snapshot.ActionRows.Count} actions • mm, kN, kNm • engineering not evaluated";
+            $"{(capturedHere ? "Captured forces" : "Offline snapshot")} • {session.Snapshot.Members.Count} captured members • {session.Snapshot.ActionRows.Count} actions • mm, kN, kNm • engineering not evaluated";
         _members.Items.Clear();
         _members.Items.AddRange(session.Snapshot.Members.Select(member => member.MemberId).Cast<object>().ToArray());
         if (_members.Items.Count > 0) _members.SelectedIndex = 0;
@@ -96,9 +96,15 @@ internal sealed class OfflineReviewWindow : Form
 
     public void SetPendingConnection(Action cancel)
     {
-        _cancel = cancel; _cancelConnection.Visible = true;
+        _cancel = cancel; _cancelConnection.Text = "Cancel connection"; _cancelConnection.Visible = true;
         Height = Math.Max(Height, 220);
     }
+    public void SetPendingForces(Action cancel)
+    {
+        _cancel = cancel; _cancelConnection.Text = "Cancel force read"; _cancelConnection.Visible = true;
+        Height = Math.Max(Height, 220);
+    }
+    public void SetForceProgress(string text) => _outcome.Text = text;
     public void EndPendingConnection() { _cancel = null; _cancelConnection.Visible = false; }
     public void SetContext(EtabsConnectionSession context, string? frameId = null)
     {

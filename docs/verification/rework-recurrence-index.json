@@ -339,11 +339,11 @@
     {
       "id": "RR-021",
       "pattern": "Qualification plan omits required production caller or workload implementation",
-      "occurrences": 2,
+      "occurrences": 3,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-05-PREP traced the planned integrated and PF9-sized qualification to source: the acquisition broker has no production command/file host and the retained capture/projector admit one member. Missing implementation owners were added before feature work; review time was not isolated. WP10-COMPLETION direct reference capture measured 6460 getter calls and about 112 seconds for 153 beams after mesh completion. Its initial 36.5 MB portable file exceeded the 25 MB parser and 16 MiB store limits. Duplicate original-ledger embedding was removed from the new batch summary; bulk production capture and file/memory qualification remain explicitly pending. No acceptance gate was relaxed; time was not isolated."
+        "basis": "WP10-05-PREP traced the planned integrated and PF9-sized qualification to source: the acquisition broker has no production command/file host and the retained capture/projector admit one member. Missing implementation owners were added before feature work; review time was not isolated. WP10-COMPLETION direct reference capture measured 6460 getter calls and about 112 seconds for 153 beams after mesh completion. Its initial 36.5 MB portable file exceeded the 25 MB parser and 16 MiB store limits. Duplicate original-ledger embedding was removed from the new batch summary; bulk production capture and file/memory qualification remain explicitly pending. U3 also traced the 10,000-action store cap against the 100,000-row PF9 target; admission stays bounded and U4 owns measured transport/capacity qualification. No acceptance gate was relaxed; time was not isolated."
       },
       "short_solution": "Trace every acceptance workload through real source callers; assign missing consumer and scale work before qualification, keeping original budgets intact.",
       "last_seen_task": "WP10-COMPLETION",

@@ -1,0 +1,103 @@
+using System.Security.Cryptography;
+using System.Text.Json;
+using StructuralEngineering.Contracts;
+using StructuralEngineering.ExcelDna;
+using Xunit;
+
+namespace StructAutomate.Tests;
+
+public sealed class Wp10ForceWorkerTests
+{
+    [Fact]
+    public void RequestBindsModelContextScopeAndCallerAdmission()
+    {
+        var request = Request();
+        var bytes = EtabsForceWorkerCodec.CanonicalRequestJsonBytes(request);
+        Assert.Equal(bytes, EtabsForceWorkerCodec.CanonicalRequestJsonBytes(EtabsForceWorkerCodec.ParseRequest(bytes)));
+        var original = EtabsForceWorkerCodec.RequestSha256(request);
+        foreach (var changed in new[]
+        {
+            request with { ContextArtifactSha256 = new('c', 64) },
+            request with { MemberObjectNames = ["104"] },
+            request with { ProjectId = "another-workbook" },
+            request with { AdmissionLimits = new(1024, 2, 2) }
+        }) Assert.NotEqual(original, EtabsForceWorkerCodec.RequestSha256(changed));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalRequestJsonBytes(request with { MemberObjectNames = [] }));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalRequestJsonBytes(request with { MemberObjectNames = ["100", "100"] }));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalRequestJsonBytes(request with { AdmissionLimits = new(1024, 2, 1) }));
+    }
+
+    [Fact]
+    public void CompletionNeedsQuiescedCleanupAndCannotCrossRequestBoundary()
+    {
+        var request = Request(); var sha = EtabsForceWorkerCodec.RequestSha256(request);
+        var response = new EtabsForceWorkerResponse(request.RequestId, sha, EtabsContextWorkerState.Completed,
+            null, null, "capture.json", new('c', 64), "snapshot.json", new('d', 64), "snapshot-id", new('e', 64), 2, 13, true, true);
+        var bytes = EtabsForceWorkerCodec.CanonicalResponseJsonBytes(response);
+        Assert.Equal(response, EtabsForceWorkerCodec.ParseAndValidateResponse(bytes, request.RequestId, sha));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.ParseAndValidateResponse(bytes, "another", sha));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.ParseAndValidateResponse(bytes, request.RequestId, new('0', 64)));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalResponseJsonBytes(response with { CleanupCompleted = false }));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalResponseJsonBytes(response with { Quiesced = false }));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalResponseJsonBytes(response with { State = EtabsContextWorkerState.Cancelled }));
+    }
+
+    [Fact]
+    public void ProgressCannotBeAppliedToAnotherRequest()
+    {
+        var request = Request(); var sha = EtabsForceWorkerCodec.RequestSha256(request);
+        var progress = new EtabsForceProgress(request.RequestId, sha, EtabsForceStage.Capturing, 1, 2);
+        var bytes = EtabsForceWorkerCodec.CanonicalProgressJsonBytes(progress);
+        Assert.Equal(progress, EtabsForceWorkerCodec.ParseProgress(bytes, request.RequestId, sha));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.ParseProgress(bytes, "another", sha));
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalProgressJsonBytes(progress with { CompletedMembers = 3 }));
+    }
+
+    [Fact]
+    public async Task RealWorkerConnectsCapturesAndCancelsWithoutAcceptedPartialData()
+    {
+        var targetPath = Environment.GetEnvironmentVariable("WP10_FORCE_TARGET_PATH");
+        var package = Environment.GetEnvironmentVariable("WP10_FORCE_PACKAGE");
+        var directory = Environment.GetEnvironmentVariable("WP10_FORCE_EVIDENCE_DIRECTORY");
+        Assert.SkipWhen(string.IsNullOrWhiteSpace(targetPath) || string.IsNullOrWhiteSpace(package) || string.IsNullOrWhiteSpace(directory),
+            "Requires an explicit owned ETABS target, worker package and new external evidence directory.");
+        Assert.False(Directory.Exists(directory)); Directory.CreateDirectory(directory!);
+        var target = JsonSerializer.Deserialize<EtabsProcessTarget>(File.ReadAllBytes(targetPath!))!;
+        var token = TestContext.Current.CancellationToken;
+        var result = await EtabsConnectionClient.ConnectAsync(package!, directory!,
+            new(target.ProcessId, target.ProcessStartedUtc, target.ExecutablePath, "owned qualification"), "context", token);
+        Assert.True(result.Artifact is not null, result.Response.Message);
+        var context = new EtabsConnectionSession(result.Artifact!, result.OperationDirectory);
+        var members = (Environment.GetEnvironmentVariable("WP10_FORCE_MEMBER_IDS") ?? "104").Split(',', StringSplitOptions.TrimEntries);
+        var loaded = await EtabsConnectionClient.GetForcesAsync(package!, directory!, Path.Combine(directory!, "store"),
+            context, "worker-qualification", "forces", token, memberObjectNames: members);
+        Assert.True(loaded.Session is not null, loaded.Response.Message);
+        Assert.Equal(members.Order(StringComparer.Ordinal), loaded.Session!.Snapshot.Members.Select(member => member.ObjectId).Order(StringComparer.Ordinal));
+        var reference = loaded.Session.Reference;
+        var artifact = Path.Combine(directory!, "forces", "snapshot.json");
+        var before = SHA256.HashData(File.ReadAllBytes(artifact));
+        using var cancellation = new CancellationTokenSource();
+        var pending = EtabsConnectionClient.GetForcesAsync(package!, directory!, Path.Combine(directory!, "store"),
+            context, "worker-qualification", "cancelled", cancellation.Token, memberObjectNames: members);
+        cancellation.CancelAfter(TimeSpan.FromMilliseconds(500));
+        var cancelled = await pending;
+        Assert.Null(cancelled.Session);
+        Assert.NotEqual(EtabsContextWorkerState.Completed, cancelled.Response.State);
+        var deadline = DateTimeOffset.UtcNow.AddSeconds(30);
+        while (EtabsConnectionClient.ActiveWorkerCount != 0 && DateTimeOffset.UtcNow < deadline) await Task.Delay(100, token);
+        Assert.Equal(0, EtabsConnectionClient.ActiveWorkerCount);
+        Assert.Equal(before, SHA256.HashData(File.ReadAllBytes(artifact)));
+        Assert.Equal(reference, loaded.Session.Reference);
+        File.WriteAllBytes(Path.Combine(directory!, "receipt.json"), JsonSerializer.SerializeToUtf8Bytes(new
+        {
+            schema_version = "wp10-force-worker-development/v1", installed_acceptance = false, passed = true,
+            target.ProcessId, loaded.Response, cancelled = cancelled.Response, cleanup_completed = true,
+            engineering_state = "not_evaluated"
+        }));
+    }
+
+    private static EtabsForceWorkerRequest Request() => new("force-request",
+        new(123, DateTimeOffset.Parse("2026-09-07T00:00:00Z"), "ETABS.exe", new('a', 64)),
+        DateTimeOffset.Parse("2026-09-07T00:08:00Z"), "context.json", new('b', 64), "project", ["100", "104"],
+        "capture.json", "snapshot.json", new(16 * 1024 * 1024, 10_000, 1000));
+}

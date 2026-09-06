@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-05
+**Last Updated:** 2026-09-07
 **Related Tasks:** WP09, WP10-05, WP10-05B
 **Abstract:** Install, use, diagnose, and integrate the standalone Windows Excel XLL over the native .NET beam library.
 
@@ -16,7 +16,7 @@ StructAutomate Excel is a packed AMD64 Excel-DNA XLL for standalone reinforced
 concrete beam work in 64-bit Microsoft Excel on Windows. It calls the reusable
 `StructuralEngineering.*` .NET libraries directly and needs no Python,
 FastAPI, Node, ETABS, or network connection for offline work. The optional
-Connect ETABS command requires the supported running ETABS host.
+Connect ETABS and Get Forces commands require the supported running ETABS host.
 
 The shipped workbook demonstrates 20 beams and 200 versioned topology and check
 rows. It covers flexure, shear, torsion, deflection, crack width, development
@@ -26,7 +26,7 @@ packages, and evaluation of one declared current physical candidate.
 
 ## Supported installation
 
-The workspace adds four main ribbon actions without creating sheets at
+The completion candidate adds five main ribbon actions without creating sheets at
 XLL load:
 
 1. **Assumptions** creates one sheet with editable demo inputs and explicit
@@ -47,6 +47,13 @@ XLL load:
    one. The window shows model identity, path, units, frame/joint counts and
    capture time. Selecting a frame reviews its source endpoints, section and
    connected frame IDs from memory. This creates no worksheet.
+5. **Get Forces** reads existing completed ordinary static results for all
+   required beams in the connected model. It creates Assumptions if needed,
+   reports background progress and offers Cancel. Verified forces enter the
+   external snapshot store and the in-memory member review. No force worksheet
+   is created. A changed source, unsupported selection, missing analysis or
+   oversized capture is rejected without importing a partial result. It does
+   not start analysis or change ETABS selections, properties or dimensions.
 
 Save the workbook normally to retain assumptions and artifact references.
 Reopening permits offline review after the saved artifact is revalidated. Keep
@@ -71,8 +78,10 @@ are shown in a persistent status window, including rejected operations.
 
 The import admission bounds are 16 MiB, 1,000 members and 10,000 actions. Those
 limits do not qualify whole-model result acquisition or its performance.
-Get Forces, automatic Design, optimisation, solver comparison and Auto Run
-remain later application work. The active packet and exact installed acceptance
+The Get Forces worker handoff has real development proof; the completion
+candidate's signed Excel and full-model performance gates remain in progress.
+Automatic Design, optimisation, solver comparison and Auto Run remain later
+application work. The active packet and exact installed acceptance
 contracts are in the [WP10 read-adapter plan](../../planning/xll-product/wp10-etabs-read-adapter.md).
 
 The WP09 package targets:

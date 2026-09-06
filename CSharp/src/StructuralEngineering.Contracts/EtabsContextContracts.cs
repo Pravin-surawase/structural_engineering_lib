@@ -219,7 +219,7 @@ public static class EtabsContextWorkerCodec
             throw new InvalidDataException("The context provenance reference is invalid.");
     }
 
-    private static byte[] CanonicalBytes<T>(T value) => Encoding.UTF8.GetBytes(Canonical(JsonSerializer.SerializeToElement(value)));
+    internal static byte[] CanonicalBytes<T>(T value) => Encoding.UTF8.GetBytes(Canonical(JsonSerializer.SerializeToElement(value)));
 
     private static string Canonical(JsonElement value) => value.ValueKind switch
     {
