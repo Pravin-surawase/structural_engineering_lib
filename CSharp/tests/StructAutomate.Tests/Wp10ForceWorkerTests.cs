@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text.Json;
+using StructuralEngineering.Analysis;
 using StructuralEngineering.Contracts;
 using StructuralEngineering.ExcelDna;
 using Xunit;
@@ -8,6 +9,32 @@ namespace StructAutomate.Tests;
 
 public sealed class Wp10ForceWorkerTests
 {
+    [Fact]
+    public void RetainedForceSnapshotReplaysWithIdenticalStreamedBytes()
+    {
+        var path = Environment.GetEnvironmentVariable("WP10_FORCE_REPLAY_SNAPSHOT");
+        var output = Environment.GetEnvironmentVariable("WP10_FORCE_REPLAY_RECEIPT");
+        Assert.SkipWhen(string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(output), "Requires retained force snapshot and a new external performance receipt.");
+        Assert.False(File.Exists(output));
+        var bytes = File.ReadAllBytes(path!);
+        var result = AnalysisSnapshotCodec.ParseAndValidate(System.Text.Encoding.UTF8.GetString(bytes));
+        Assert.True(result.Snapshot is not null, string.Join("; ", result.Diagnostics.Select(item => item.Message)));
+        var allocated = GC.GetAllocatedBytesForCurrentThread();
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        using var streamed = new MemoryStream();
+        AnalysisSnapshotCodec.WriteCanonicalJson(streamed, result.Snapshot!);
+        watch.Stop();
+        allocated = GC.GetAllocatedBytesForCurrentThread() - allocated;
+        Assert.Equal(bytes, streamed.ToArray());
+        using var receipt = new FileStream(output!, FileMode.CreateNew, FileAccess.Write);
+        JsonSerializer.Serialize(receipt, new
+        {
+            schema_version = "wp10-streamed-replay-development/v1", pf9_acceptance = false,
+            byte_identity_preserved = true, bytes = bytes.Length, members = result.Snapshot!.Members.Count,
+            rows = result.Snapshot.ActionRows.Count, elapsed_ms = watch.Elapsed.TotalMilliseconds, allocated_bytes = allocated
+        });
+    }
+
     [Fact]
     public void RequestBindsModelContextScopeAndCallerAdmission()
     {

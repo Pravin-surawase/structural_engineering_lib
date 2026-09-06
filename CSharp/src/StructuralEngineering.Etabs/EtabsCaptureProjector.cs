@@ -96,13 +96,16 @@ public static class EtabsCaptureProjector
         }
         var groupedCalls = calls.GroupBy(item => (item.Raw.Operation, Name: item.Inputs.GetArrayLength() > 0 && item.Inputs[0].ValueKind == JsonValueKind.String ? item.Inputs[0].GetString() : null))
             .ToDictionary(group => group.Key, group => group.ToArray());
+        foreach (var matching in groupedCalls.Values.Where(group => group.Length > 1))
+        {
+            var reference = AnalysisSnapshotNormalizer.Digest(new { matching[0].Inputs, matching[0].Outputs, matching[0].Direct });
+            Need(matching.Skip(1).All(item => AnalysisSnapshotNormalizer.Digest(new { item.Inputs, item.Outputs, item.Direct }) == reference),
+                $"Repeated observations disagree: {matching[0].Raw.Operation}.");
+        }
         Call One(string operation, string? name = null)
         {
             Need(groupedCalls.TryGetValue((operation, name), out var matching), $"Required evidence is missing: {operation} ({name}).");
             matching ??= [];
-            Need(matching.All(item => AnalysisSnapshotNormalizer.Digest(new { item.Inputs, item.Outputs, item.Direct }) ==
-                AnalysisSnapshotNormalizer.Digest(new { matching[0].Inputs, matching[0].Outputs, matching[0].Direct })),
-                $"Repeated observations disagree: {operation}.");
             return matching[0];
         }
         var state = capture.Preflight;

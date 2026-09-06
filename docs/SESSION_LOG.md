@@ -58,13 +58,35 @@ and integrated qualification against the whole-product goal; learning excluded.
   protocol/client/store tests passed. `force-client-development-1` passed the
   actual process handoff and cancellation with owned beam 104 / 15 rows.
   The existing signed Excel acceptance harness now includes optional force
-  ownership, close, cancellation and persistence proof. Its run is next.
+  ownership, close, cancellation and persistence proof. It passed in
+  `excel-forces-development-1`, bound to commit `a2dbf17a`: beams 100/104,
+  28 rows, zero force sheets, correct initiating workbook, cancellation and
+  close fencing, exact save/reopen, unchanged source hash, normal Excel/worker
+  exit and restored startup registration. This is signed development proof;
+  final installed acceptance must bind the eventual whole-model candidate.
+- U4 streaming canonical output preserves the existing snapshot bytes/hashes.
+  The 30 portable contract tests and 27 affected batch/projector/worker tests
+  passed (two external tests skipped in that union). An isolated real beam
+  replay preserved all 1,122,355 bytes; Python independently accepted the same
+  stored bytes. Full retained 153-beam normalization remained complete, with
+  3,502 rows and a 26,396,459-byte file. `retained-batch-streamed-2` measured
+  about 8.84 s normalization, 0.35 s stream persistence and 311,226,368 bytes
+  peak test-process working set. This is offline development evidence, not
+  PF9 or the adapter's certified incremental memory metric. Bulk source work
+  and explicit large-snapshot transport remain necessary.
 
 ### Issues encountered
 
 - U3 found that the 10,000-action Excel admission limit also conflicts with
   PF9's 100,000-row medium target. Existing bounds remain enforced until the
   U4 transport/memory profile is qualified; no partial member import is used.
+- Three U4 source searches again used unexpanded Windows wildcard paths or an
+  absent guessed test filename. One bulk probe guessed a table key instead of
+  using the observed catalogue. These blocked diagnostics, not source capture.
+- The first streaming implementation allocated a 16 KiB writer buffer for every
+  tiny row/metadata hash. A full retained replay allocated about 9.18 GB over
+  its lifetime. The initial writer receipt also sampled all process allocations
+  while other tests ran, so it could not attribute writer cost.
 
 - Two source-orientation reads guessed filenames that do not exist: a C# scoped
   instruction file and the context-contract filename. This delayed inspection;
@@ -128,12 +150,27 @@ and integrated qualification against the whole-product goal; learning excluded.
   owned-mesh-point-2 passed. RR-025: bounded signature queries, retained artifact
   inspection and the owned-file harness obtained the needed facts after two
   inline process-launch failures; their underlying Windows cause is unconfirmed.
+- RR-005: `rg --files` and the actual table catalogue resolved the four later
+  lookup failures. The successful `bulk-tables-all-fields-2` probe also proves
+  that an explicit full field list does not populate omitted default columns;
+  it is not a shortcut around source/default qualification.
+- RR-026: use a small buffer for per-record canonical bytes/hashes and retain
+  the large buffer only for final stream output. Full replay allocations fell
+  from 9.18 GB to 3.18 GB and peak test-process working set from 378 MB to 311 MB;
+  both complete snapshot files have the same SHA-256. Isolated synchronous
+  writer receipts now measure current-thread allocations. Overall allocation
+  and runtime remain targets for the planned compact bulk profile.
+- U4 also validates repeated getter observations once when building its index,
+  instead of rehashing an observation against itself on every lookup. The
+  affected reference/projector tests plus complete retained replay passed
+  24 tests (one external legacy replay skipped); the full snapshot SHA-256
+  remains `5964fe59f705b4b22fc530931df4db5ff11c5ab191c81d63d9d2143b2edd711d`.
 
 ### Rework and recurrence
 
-- RR-005, occurrences=75, minutes=unknown: four filename-lookup failures and
-  three PowerShell conversion failures in this task; discover owners and preserve
-  exact runtime types before dispatch.
+- RR-005, occurrences=79, minutes=unknown: eight source-owner/key lookup
+  failures and three PowerShell conversion failures in this task; discover
+  exact names and preserve runtime types before dispatch.
 - RR-002, occurrences=23, minutes=unknown: actual result availability, mesh
   identities and empty-table behavior required source-qualified handling.
 - RR-021, occurrences=3, minutes=unknown: enforce the full model's source cost
@@ -144,6 +181,8 @@ and integrated qualification against the whole-product goal; learning excluded.
   for cross-runtime row ordering.
 - RR-025, occurrences=2, minutes=unknown: inline Windows process launch failed;
   retained evidence and the bounded owned-file harness completed the inspection.
+- RR-026, occurrences=1, minutes=unknown: bound buffer allocation to the size of
+  each hash operation and isolate synchronous allocation measurements.
 
 **Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed paths and implicit PowerShell
 type conversions blocked diagnostics → observed file inventories, explicit

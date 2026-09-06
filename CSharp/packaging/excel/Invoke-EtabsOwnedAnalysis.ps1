@@ -9,6 +9,7 @@ param(
     [string[]]$OutputCombinations = @(),
     [string]$ProbeAnalysisPointId,
     [switch]$InspectBulkTables,
+    [switch]$RequestAllTableFields,
     [string[]]$TableKeys = @(),
     [switch]$KeepExistingAnalysis
 )
@@ -98,10 +99,11 @@ try {
             $fieldArgs = [object[]]@($key.PSObject.BaseObject, 0, 0, $null, $null, $null, $null, $null)
             Check-Status ($tablesType.GetMethod('GetAllFieldsInTable').Invoke($tables, $fieldArgs)) 'DatabaseTables.GetAllFieldsInTable'
             $tableArgs = [object[]]@($key.PSObject.BaseObject, $null, 'All', 0, $null, 0, $null)
+            if ($RequestAllTableFields) { $tableArgs[1] = [string[]]$fieldArgs[3] }
             $timer = [Diagnostics.Stopwatch]::StartNew()
             $tableStatus = $tablesType.GetMethod('GetTableForDisplayArray').Invoke($tables, $tableArgs)
             $timer.Stop()
-            $tableResults += [ordered]@{key=$key;status=$tableStatus;group='All';field_version=$fieldArgs[1];field_count=$fieldArgs[2];field_keys=$fieldArgs[3];field_names=$fieldArgs[4];field_descriptions=$fieldArgs[5];field_units=$fieldArgs[6];field_importable=$fieldArgs[7];returned_field_key_list=$tableArgs[1];version=$tableArgs[3];included=$tableArgs[4];count=$tableArgs[5];data=$tableArgs[6];elapsed_ms=$timer.Elapsed.TotalMilliseconds}
+            $tableResults += [ordered]@{key=$key;status=$tableStatus;group='All';requested_all_fields=[bool]$RequestAllTableFields;field_version=$fieldArgs[1];field_count=$fieldArgs[2];field_keys=$fieldArgs[3];field_names=$fieldArgs[4];field_descriptions=$fieldArgs[5];field_units=$fieldArgs[6];field_importable=$fieldArgs[7];returned_field_key_list=$tableArgs[1];version=$tableArgs[3];included=$tableArgs[4];count=$tableArgs[5];data=$tableArgs[6];elapsed_ms=$timer.Elapsed.TotalMilliseconds}
             $tableResults | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $output 'tables.json')
         }
         if ($tableResults.Count -gt 0) { $tableResults | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $output 'tables.json') }

@@ -59,6 +59,9 @@ public sealed class Wp10Tests
         Assert.Equal(expected["raw_capture_id"]!.GetValue<string>(), snapshot.RawCapture.RawCaptureId);
 
         var canonical = AnalysisSnapshotCodec.CanonicalJsonBytes(snapshot);
+        using var streamed = new MemoryStream();
+        AnalysisSnapshotCodec.WriteCanonicalJson(streamed, snapshot);
+        Assert.Equal(canonical, streamed.ToArray());
         Assert.Equal(expected["canonical_json_byte_count"]!.GetValue<int>(), canonical.Length);
         Assert.Equal(
             expected["canonical_json_sha256"]!.GetValue<string>(),

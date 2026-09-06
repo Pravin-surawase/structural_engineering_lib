@@ -609,7 +609,7 @@ none becomes complete merely because acquisition passes.
 |---|---|---|
 | U1 — Scope and source proof | Freeze force request/result and batch evidence semantics; inspect actual installed getter signatures and a source-model readiness probe; identify all source/model/selection units and material-type evidence without inferring from names. | Reference scope and worker contracts implemented; compact production profile remains part of U4 |
 | U2 — Shared capture and normalization | Add multi-member acquisition with shared catalogs/properties, one coherent pre/post source boundary, exact per-member object/element/station rows, deduplicated projection and complete row accounting. Preserve existing durable and portable v1 compatibility. | Reference path implemented: eight batch tests, live mesh and full 153-beam in-memory normalization passed; production scale/file gates remain open |
-| U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Implemented; real worker capture/cancellation passed on beam 104, signed Excel development acceptance next; full-model admission waits for U4 |
+| U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Implemented; real worker proof and signed Excel development acceptance passed (100/104, 28 rows); full-model admission waits for U4 and final installed proof for U5 |
 | U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Qualify a bulk production path against the direct-getter reference and the actual file/memory limits. Selection from a complete current snapshot causes zero ETABS reads. | Pending; bulk table source inspection started after measured reference cost |
 | U5 — Integrated qualification | Exact signed installed Excel/worker proof; independent Python replay; real source-bound small/medium PF9 datasets, measured getter/transfer/normalization/persistence and adapter memory; named cumulative broad Python/full repository checks. | Pending |
 
@@ -651,6 +651,24 @@ read without accepted partial data. This development receipt is not installed
 Excel or PF9 acceptance. The existing connection acceptance script now also
 exercises force workbook ownership, cancellation, close and save/reopen when
 given explicit source member IDs and independently established row counts.
+`excel-forces-development-1` passed those checks with beams 100/104 and 28 rows,
+bound to source `a2dbf17a` and signed XLL SHA-256
+`6a8fb0c12edeba7cf097deb3dead455c3a5f0167cb08c6dbdaeadfb88d5c4daa`.
+It created no force sheets, retained exact evidence on save/reopen, left the
+source file unchanged and exited Excel/workers normally. The development
+package was loaded without replacing the existing installed package; U5 must
+repeat its applicable checks on the final exact installed candidate.
+
+U4 first removes avoidable canonical JSON graph/text copies while preserving
+v1 bytes and identities. The complete retained 153-beam replay still produces
+26,396,459 bytes after the earlier journal-summary reduction. Its isolated
+streamed replay took about 8.84 s to normalize and 0.35 s to persist; peak test
+process working set was about 311 MB. These observations do not satisfy the
+100,000-row workload or qualify a larger input limit. A separate compact
+transport and bulk source profile remain necessary. Full-field-list table
+probes still omit default columns, so the production policy must qualify
+absent/default semantics explicitly and compare all adopted facts against the
+retained direct getter observations.
 
 Inspection of the previous direct capture measured 6,460 calls: four element
 getters for 937 beam elements account for about 59 seconds. The production

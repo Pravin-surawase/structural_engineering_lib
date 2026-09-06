@@ -9,7 +9,7 @@ using StructuralEngineering.Contracts;
 namespace StructuralEngineering.Analysis;
 
 /// <summary>Strict host-free parsing, validation, identity, and replay for WP10 snapshots.</summary>
-public static class AnalysisSnapshotCodec
+public static partial class AnalysisSnapshotCodec
 {
     public const string Operation = "etabs.beam_snapshot.import/v1";
     public const string SnapshotSchemaVersion = "structural.analysis_snapshot/v1";
@@ -131,36 +131,25 @@ public static class AnalysisSnapshotCodec
 
     public static byte[] CanonicalJsonBytes(object value)
     {
-        var node = JsonSerializer.SerializeToNode(value, JsonOptions)
-            ?? throw new ArgumentException("Canonical value cannot be null.", nameof(value));
-        return Encoding.UTF8.GetBytes(Canonical(node));
+        using var output = new MemoryStream();
+        WriteCanonicalJsonCore(output, value, 128);
+        return output.ToArray();
     }
 
     public static string SnapshotSha256(AnalysisSnapshot snapshot) =>
-        Sha256(HashBasis(snapshot, "snapshot_id", "snapshot_sha256"));
+        CanonicalSha256(snapshot, "snapshot_id", "snapshot_sha256");
 
     public static string RawCaptureSha256(RawAnalysisCapture capture) =>
-        Sha256(HashBasis(capture, "raw_capture_id", "raw_capture_sha256"));
+        CanonicalSha256(capture, "raw_capture_id", "raw_capture_sha256");
 
     public static string CallRecordSha256(SnapshotCallRecord record) =>
-        Sha256(HashBasis(record, "record_sha256"));
+        CanonicalSha256(record, "record_sha256");
 
     public static string CallLedgerSha256(SnapshotCallLedger ledger) =>
-        Sha256(HashBasis(ledger, "ledger_sha256"));
+        CanonicalSha256(ledger, "ledger_sha256");
 
     public static string ActionRowId(SnapshotActionRow row) =>
-        $"analysis_action_row_id:{CanonicalizationVersion}:{Sha256(HashBasis(row, "row_id"))}";
-
-    private static JsonObject HashBasis(object value, params string[] excluded)
-    {
-        var node = JsonSerializer.SerializeToNode(value, JsonOptions) as JsonObject
-            ?? throw new ArgumentException("Identity values must serialize as objects.", nameof(value));
-        foreach (var key in excluded) node.Remove(key);
-        return node;
-    }
-
-    private static string Sha256(object value) =>
-        Convert.ToHexStringLower(SHA256.HashData(CanonicalJsonBytes(value)));
+        $"analysis_action_row_id:{CanonicalizationVersion}:{CanonicalSha256(row, "row_id")}";
 
     private static EtabsSnapshotResult? ValidateRequiredStructure(AnalysisSnapshot snapshot)
     {
@@ -373,7 +362,7 @@ public static class AnalysisSnapshotCodec
         if (units.Length != "mm" || units.Force != "kN" || units.Moment != "kNm" || units.Stress != "N/mm2" || units.MassDensity != "kg/m3" ||
             units.OriginalSourceUnits != snapshot.RawCapture.SourceUnits ||
             !(FinitePositive(conversion.LengthToMm) && FinitePositive(conversion.ForceToKn) && FinitePositive(conversion.MomentToKnm) && FinitePositive(conversion.StressToNPerMm2) && FinitePositive(conversion.MassDensityToKgPerM3)) ||
-            Sha256(units.OriginalSourceUnits) != snapshot.Normalization.SourceUnitsSha256 || !snapshot.Normalization.ConversionPerformedOnce)
+            CanonicalSha256(units.OriginalSourceUnits) != snapshot.Normalization.SourceUnitsSha256 || !snapshot.Normalization.ConversionPerformedOnce)
             return Blocked("UNITS.INVALID", "units", "Source units, conversion factors, or one-time normalization evidence are inconsistent.", "Record source units once and apply a positive declared conversion once.");
         if (snapshot.Axes.Any(axis => !ValidAxes(axis)))
             return Blocked("AXIS.UNRESOLVED", "axes", "An axis or source-to-common transform is not orthonormal and right-handed.", "Resolve axes and physical faces from retained geometry evidence.");
@@ -550,22 +539,10 @@ public static class AnalysisSnapshotCodec
             foreach (var item in element.EnumerateArray()) EnsureNoDuplicateProperties(item);
     }
 
-    private static string Canonical(JsonNode? node) => node switch
+    private static string CanonicalNumber(double number)
     {
-        JsonObject obj => "{" + string.Join(",", obj.OrderBy(pair => pair.Key, StringComparer.Ordinal).Select(pair => CanonicalString(pair.Key) + ":" + Canonical(pair.Value))) + "}",
-        JsonArray array => "[" + string.Join(",", array.Select(Canonical)) + "]",
-        JsonValue value => CanonicalValue(value),
-        _ => node?.ToJsonString(JsonOptions) ?? "null"
-    };
-
-    private static string CanonicalValue(JsonValue value)
-    {
-        if (value.TryGetValue<string>(out var text))
-            return CanonicalString(text);
-        if (value.TryGetValue<double>(out var number))
-        {
             if (!double.IsFinite(number))
-                throw new ArgumentException("Canonical snapshot numbers must be finite.", nameof(value));
+                throw new ArgumentException("Canonical snapshot numbers must be finite.", nameof(number));
             if (number == 0) return "0";
             if (Math.Truncate(number) == number && Math.Abs(number) <= 9_007_199_254_740_991)
                 return number.ToString("0", CultureInfo.InvariantCulture);
@@ -580,8 +557,6 @@ public static class AnalysisSnapshotCodec
                 token = sign + significant[0] + (significant.Length == 1 ? "" : "." + significant[1..]) + $"e+{exponent:D2}";
             }
             return token;
-        }
-        return value.ToJsonString(JsonOptions);
     }
 
     private static string CanonicalString(string value)
@@ -635,6 +610,7 @@ public static class AnalysisSnapshotCodec
             RespectRequiredConstructorParameters = true
         };
         options.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, allowIntegerValues: false));
+        options.MakeReadOnly(populateMissingResolver: true);
         return options;
     }
 

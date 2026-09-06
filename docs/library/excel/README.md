@@ -78,8 +78,9 @@ are shown in a persistent status window, including rejected operations.
 
 The import admission bounds are 16 MiB, 1,000 members and 10,000 actions. Those
 limits do not qualify whole-model result acquisition or its performance.
-The Get Forces worker handoff has real development proof; the completion
-candidate's signed Excel and full-model performance gates remain in progress.
+The Get Forces worker handoff and signed Excel development checks pass for an
+explicit two-beam scope; full-model performance and final installed acceptance
+remain in progress.
 Automatic Design, optimisation, solver comparison and Auto Run remain later
 application work. The active packet and exact installed acceptance
 contracts are in the [WP10 read-adapter plan](../../planning/xll-product/wp10-etabs-read-adapter.md).
