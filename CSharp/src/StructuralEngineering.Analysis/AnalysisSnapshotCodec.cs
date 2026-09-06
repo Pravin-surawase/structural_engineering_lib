@@ -389,7 +389,8 @@ public static class AnalysisSnapshotCodec
             !UniqueOrdered(snapshot.Stations, item => item.StationId) || !UniqueOrdered(snapshot.ActionRows, item => item.RowId))
             return Blocked("SNAPSHOT.ORDER_INVALID", "$", "Portable arrays must have unique identities in deterministic order.", "Sort each identity-bearing collection before serialization.");
         if (!snapshot.RawCapture.ModelRecords.Select(item => item.SourceRecordId).SequenceEqual(snapshot.RawCapture.ModelRecords.Select(item => item.SourceRecordId).Order(StringComparer.Ordinal), StringComparer.Ordinal) ||
-            !snapshot.RawCapture.ForceRows.Select(item => (item.SourceRowIndex, item.SourceRowId)).SequenceEqual(snapshot.RawCapture.ForceRows.Select(item => (item.SourceRowIndex, item.SourceRowId)).Order()))
+            !snapshot.RawCapture.ForceRows.Select(item => (item.SourceRowIndex, item.SourceRowId)).SequenceEqual(snapshot.RawCapture.ForceRows
+                .OrderBy(item => item.SourceRowIndex).ThenBy(item => item.SourceRowId, StringComparer.Ordinal).Select(item => (item.SourceRowIndex, item.SourceRowId))))
             return Blocked("SNAPSHOT.ORDER_INVALID", "raw_capture", "Raw records are not in deterministic source order.", "Sort model identities and preserve force-row ordinal order.");
         var requiredKinds = Enum.GetValues<RawModelRecordKind>().ToHashSet();
         if (!requiredKinds.SetEquals(snapshot.RawCapture.ModelRecords.Select(item => item.RecordKind)))

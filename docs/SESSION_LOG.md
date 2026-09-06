@@ -24,8 +24,32 @@ and integrated qualification against the whole-product goal; learning excluded.
   interpretation and cumulative installed/performance qualification. The owner
   authorized real applications and necessary fixture preparation. Production
   acquisition stays getter-only and required PF9 budgets remain unchanged.
-- U1 is in progress. No remaining force, batch or performance claim is accepted
-  yet. Existing PR #975 connection receipt remains prior evidence only.
+- U1 source preflight passed on an owned copy: ETABS 23.3.1, 225 frames,
+  completed case statuses, source material classifications and unchanged
+  original hash. The failed first preflight exited its owned process cleanly.
+  External receipts: `C:/CodexWork/wp10-evidence/WP10-COMPLETION/source-preflight-1`
+  and `source-preflight-2`. No production launch/open/analyse operation was added.
+- U2 implementation now has a separately versioned batch artifact/profile,
+  shared point/section/material/catalogue capture, per-object force provenance,
+  a shared-PID STA broker with durable call ledger and host-free projection.
+  Eight focused batch tests passed; 41 affected adapter/broker/context/projection
+  tests passed (one external replay skipped). Python independently reproduced
+  both synthetic span variants and the real mesh beam's exact canonical bytes.
+- Live `batch-mesh-development-1` passed for source beam 104 (three analysis
+  elements, 15 rows). `batch-development-3` captured/normalized 153 beams and
+  3,502 rows in memory after actual mesh-point capture. It took about 112 s;
+  its initial 36.5 MB portable file exceeds the 25 MB parser and 16 MiB Excel
+  store limits. Full-file Python replay was correctly rejected. No full-model
+  file/PF9/installed acceptance is claimed. The plan now explicitly requires
+  a compact bulk production path compared against this direct-getter reference.
+- `bulk-tables-2` records actual table/field/unit identities and source return
+  statuses. Displayed precision and omitted/default fields are not yet qualified
+  for engineering normalization. Original source hash remains unchanged; owned
+  ETABS PID 18580 remains open for the next implementation unit.
+- After the compact batch-summary change, the affected batch/legacy projection
+  filter passed 23 tests (one external replay skipped) and all 30 portable WP10
+  contract/normalization tests passed. These are internal-unit checks; the
+  milestone formatter, focused union and cumulative U5 gates remain later.
 
 ### Issues encountered
 
@@ -35,6 +59,25 @@ and integrated qualification against the whole-product goal; learning excluded.
 - The WP10 introduction/status table still described completed offline import
   as next work, and its connection card remained presented as current. This
   could select the wrong next task despite the later owner sequencing update.
+- Two later source lookups again assumed a normalizer folder and Python test
+  filename. A preflight reflection string argument was wrapped as a PSObject;
+  a later process guard compared timestamp text with PowerShell's implicitly
+  parsed DateTime. These blocked diagnostics before product acceptance.
+- Batch tests exposed a getter-reader representation mismatch: validated
+  typed numeric arrays could not pass the reader's object-array-only cast.
+- The portable .NET validator sorted equal local row indexes using the current
+  culture, disagreeing with Python and the explicit ordinal projector order.
+- Completed-status internal cases still returned force status 1. A fresh owned
+  analysis did not resolve it; isolated ordinary case/combination selection did.
+- Real analysis mesh points were absent from the original endpoint-only reader;
+  an empty synthetic story also exposed the portable story identity requirement.
+- Direct per-element calls and duplicated journal serialization exceeded the
+  time/file budgets. The file boundary remains unresolved pending bulk work.
+- The table diagnostic initially stopped at a source-empty modifiers table and
+  lost earlier table observations. It now retains each table and return status.
+- PowerShell `0d` supplied Decimal rather than Double to a by-ref coordinate
+  getter. Two long inline reflection commands also failed process creation with
+  OS access denied; the launch cause is unconfirmed.
 
 ### Root causes and resolutions
 
@@ -45,14 +88,51 @@ and integrated qualification against the whole-product goal; learning excluded.
   changes. Updated their statuses and added one current completion contract,
   preserving the completed connection heading for historical inbound links.
   Final document/link validation will bind the frozen result.
+- RR-005: discovered the actual Analysis and Python test owners; explicit
+  reflection conversion plus PSObject unwrapping passed source-preflight-2.
+  `ConvertFrom-Json -DateKind String` preserves the exact process timestamp;
+  a subsequent identity read confirmed the same PID/start/executable.
+- RR-023: `ArrayValues` assumed every host boxed array elements, although the
+  adapter accepts valid typed arrays. Read validated `Array` values directly
+  and preserve qualified zero-count null arrays. All eight batch tests pass.
+- RR-024: ValueTuple's default string comparison introduced culture ordering
+  only when multiple getters reused local row indexes. Use explicit ordinal
+  secondary ordering; .NET and Python now accept identical batch bytes.
+- RR-002: isolated source cases show Auto=3/5 cannot supply these frame results;
+  the batch now requires Auto=0 throughout the selected static closure. Mesh
+  coordinates use the live-proved PointElm getter, with unique frame-story
+  derivation and retained ownership evidence. The real mesh and full in-memory
+  batch pass. Empty-table diagnostics now record status/data incrementally;
+  emptiness is not silently treated as an assignment default.
+- RR-021: 6,460 direct calls included 937 elements x four getters (about 59 s).
+  Original and portable ledgers were both embedded in the snapshot. Keep the
+  original journal in the external acquisition with a compact inline receipt;
+  retain the complete portable ledger. Bulk round-trip reduction and bounded
+  file/memory qualification remain active work, not waived gates.
+- RR-005: use explicit `[double]0` for the actual reflected Double parameters;
+  owned-mesh-point-2 passed. RR-025: bounded signature queries, retained artifact
+  inspection and the owned-file harness obtained the needed facts after two
+  inline process-launch failures; their underlying Windows cause is unconfirmed.
 
 ### Rework and recurrence
 
-- RR-005, occurrences=70, minutes=unknown: two filename-lookup failures resolved
-  by actual folder inventories; discover exact owners before reading them.
+- RR-005, occurrences=75, minutes=unknown: four filename-lookup failures and
+  three PowerShell conversion failures in this task; discover owners and preserve
+  exact runtime types before dispatch.
+- RR-002, occurrences=23, minutes=unknown: actual result availability, mesh
+  identities and empty-table behavior required source-qualified handling.
+- RR-021, occurrences=2, minutes=unknown: enforce the full model's source cost
+  and every serialization/store boundary before installed qualification.
+- RR-023, occurrences=1, minutes=unknown: align source readers with the typed
+  arrays accepted by their adapter contract.
+- RR-024, occurrences=1, minutes=unknown: use explicit ordinal tie-breaking
+  for cross-runtime row ordering.
+- RR-025, occurrences=2, minutes=unknown: inline Windows process launch failed;
+  retained evidence and the bounded owned-file harness completed the inspection.
 
-**Terminal handoff:** ⚠️ TERMINAL ISSUE: two guessed instruction/contract paths
-were absent → use `rg --files` and read the observed maintained paths.
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed paths and implicit PowerShell
+type conversions blocked diagnostics → observed file inventories, explicit
+reflection types and retained JSON timestamp strings resolved them.
 
 ---
 

@@ -47,7 +47,7 @@ public sealed record EtabsLiveGetterProbeCapture(
 
 public sealed class EtabsLiveGetterProbeException(string message) : InvalidOperationException(message);
 
-public static class EtabsLiveGetterProbe
+public static partial class EtabsLiveGetterProbe
 {
     public static EtabsLiveGetterProbeCapture Run(
         IEtabsGetterHost host,
@@ -75,109 +75,9 @@ public static class EtabsLiveGetterProbe
             throw new EtabsLiveGetterProbeException(
                 $"Requested frame object {request.MemberObjectName} is absent from FrameObj.GetNameList.");
 
-        var label = Call(adapter, request, calls, "FrameObj.GetLabelFromName", [request.MemberObjectName], cancellationToken);
-        RequireEqual("frame label", request.ExpectedMemberLabel, Scalar<string>(label, 0));
-        RequireEqual("frame story", request.ExpectedStory, Scalar<string>(label, 1));
+        var member = ReadMember(adapter, request, calls, cancellationToken);
 
-        var pointsCall = Call(adapter, request, calls, "FrameObj.GetPoints", [request.MemberObjectName], cancellationToken);
-        var pointNames = new[] { Scalar<string>(pointsCall, 0), Scalar<string>(pointsCall, 1) };
-
-        var sectionCall = Call(adapter, request, calls, "FrameObj.GetSection", [request.MemberObjectName], cancellationToken);
-        var sectionName = Scalar<string>(sectionCall, 0);
-        Call(adapter, request, calls, "FrameObj.GetModifiers", [request.MemberObjectName], cancellationToken);
-        Call(adapter, request, calls, "FrameObj.GetEndLengthOffset", [request.MemberObjectName], cancellationToken);
-        Call(adapter, request, calls, "FrameObj.GetInsertionPoint_1", [request.MemberObjectName], cancellationToken);
-        Call(adapter, request, calls, "FrameObj.GetReleases", [request.MemberObjectName], cancellationToken);
-        var frameAxes = Call(adapter, request, calls, "FrameObj.GetLocalAxes", [request.MemberObjectName], cancellationToken);
-        if (Scalar<bool>(frameAxes, 1))
-            throw new EtabsLiveGetterProbeException("Advanced frame local axes are outside the frozen WP10-02 definition.");
-
-        var frameForce = Call(
-            adapter,
-            request,
-            calls,
-            "Results.FrameForce",
-            [request.MemberObjectName, request.FrameItemTypeElm],
-            cancellationToken);
-        var frameForceRows = Scalar<int>(frameForce, 0);
-        var resultObjects = Strings(frameForce, 1);
-        var elementNames = Strings(frameForce, 3).Distinct(StringComparer.Ordinal).ToArray();
-        if (frameForceRows == 0 || elementNames.Length == 0)
-            throw new EtabsLiveGetterProbeException(
-                "Results.FrameForce returned no object/element mapping rows for the explicit member and output selection.");
-        if (resultObjects.Any(name => !string.Equals(name, request.MemberObjectName, StringComparison.Ordinal)))
-            throw new EtabsLiveGetterProbeException(
-                "Results.FrameForce returned a row owned by a different frame object.");
-        var expectedResultCases = request.SelectedCases
-            .Concat(request.SelectedCombinations)
-            .Distinct(StringComparer.Ordinal)
-            .Order(StringComparer.Ordinal)
-            .ToArray();
-        var actualResultCases = Strings(frameForce, 5)
-            .Distinct(StringComparer.Ordinal)
-            .Order(StringComparer.Ordinal)
-            .ToArray();
-        if (!actualResultCases.SequenceEqual(expectedResultCases, StringComparer.Ordinal))
-            throw new EtabsLiveGetterProbeException(
-                "Results.FrameForce load-case rows differ from the exact frozen output selection.");
-
-        foreach (var pointName in pointNames.Distinct(StringComparer.Ordinal))
-        {
-            Call(adapter, request, calls, "PointObj.GetCoordCartesian", [pointName, "Global"], cancellationToken);
-            Call(adapter, request, calls, "PointObj.GetLabelFromName", [pointName], cancellationToken);
-            Call(adapter, request, calls, "PointObj.GetRestraint", [pointName], cancellationToken);
-            var pointAxes = Call(adapter, request, calls, "PointObj.GetLocalAxes", [pointName], cancellationToken);
-            if (Scalar<bool>(pointAxes, 3))
-                throw new EtabsLiveGetterProbeException("Advanced point local axes are outside the frozen WP10-02 definition.");
-            Call(adapter, request, calls, "PointObj.GetTransformationMatrix", [pointName, true], cancellationToken);
-        }
-
-        var elementPoints = new List<(string Point1, string Point2)>();
-        foreach (var elementName in elementNames)
-        {
-            var owner = Call(adapter, request, calls, "LineElm.GetObj", [elementName], cancellationToken);
-            RequireEqual("analysis-element owner", request.MemberObjectName, Scalar<string>(owner, 0));
-            var elementPointCall = Call(adapter, request, calls, "LineElm.GetPoints", [elementName], cancellationToken);
-            elementPoints.Add((Scalar<string>(elementPointCall, 0), Scalar<string>(elementPointCall, 1)));
-            Call(adapter, request, calls, "LineElm.GetLocalAxes", [elementName], cancellationToken);
-            Call(adapter, request, calls, "LineElm.GetTransformationMatrix", [elementName], cancellationToken);
-        }
-        ValidateElementTopology(pointNames, elementPoints);
-
-        var materialCall = Call(adapter, request, calls, "PropFrame.GetMaterial", [sectionName], cancellationToken);
-        var materialName = Scalar<string>(materialCall, 0);
-        var rectangleCall = Call(adapter, request, calls, "PropFrame.GetRectangle", [sectionName], cancellationToken);
-        RequireEqual("section material", materialName, Scalar<string>(rectangleCall, 1));
-        Call(adapter, request, calls, "PropFrame.GetSectProps", [sectionName], cancellationToken);
-        Call(adapter, request, calls, "PropFrame.GetModifiers", [sectionName], cancellationToken);
-        Call(adapter, request, calls, "PropMaterial.GetMPIsotropic", [materialName, 0d], cancellationToken);
-        Call(adapter, request, calls, "PropMaterial.GetWeightAndMass", [materialName, 0d], cancellationToken);
-
-        var loadPatterns = Strings(Call(adapter, request, calls, "LoadPatterns.GetNameList", [], cancellationToken), 1);
-        foreach (var name in loadPatterns)
-        {
-            Call(adapter, request, calls, "LoadPatterns.GetLoadType", [name], cancellationToken);
-            Call(adapter, request, calls, "LoadPatterns.GetSelfWTMultiplier", [name], cancellationToken);
-        }
-
-        foreach (var name in preflight.CaseNames)
-        {
-            var basicType = Call(adapter, request, calls, "LoadCases.GetTypeOAPI", [name], cancellationToken);
-            var type = Call(adapter, request, calls, "LoadCases.GetTypeOAPI_1", [name], cancellationToken);
-            RequireEqual("load-case type", Scalar<int>(basicType, 0), Scalar<int>(type, 0));
-            RequireEqual("load-case subtype", Scalar<int>(basicType, 1), Scalar<int>(type, 1));
-            if (Scalar<int>(type, 0) == 1)
-            {
-                Call(adapter, request, calls, "LoadCases.StaticLinear.GetInitialCase", [name], cancellationToken);
-                Call(adapter, request, calls, "LoadCases.StaticLinear.GetLoads", [name], cancellationToken);
-            }
-        }
-
-        foreach (var name in preflight.CombinationSelections.Keys)
-        {
-            Call(adapter, request, calls, "RespCombo.GetTypeOAPI", [name], cancellationToken);
-            Call(adapter, request, calls, "RespCombo.GetCaseList", [name], cancellationToken);
-        }
+        ReadCatalogue(adapter, request, calls, preflight, cancellationToken);
 
         var postflight = CaptureProtectedState(adapter, host, request, calls, cancellationToken);
         RequireEqual("protected-state SHA-256", preflight.Sha256, postflight.Sha256);
@@ -191,11 +91,11 @@ public static class EtabsLiveGetterProbe
             request,
             preflight,
             postflight,
-            pointNames,
-            elementNames,
-            sectionName,
-            materialName,
-            frameForceRows,
+            member.PointNames,
+            member.ElementNames,
+            member.SectionName,
+            member.MaterialName,
+            member.FrameForceRows,
             calls);
     }
 
@@ -334,9 +234,14 @@ public static class EtabsLiveGetterProbe
             ? item
             : throw new EtabsLiveGetterProbeException($"{call.Operation} contains a non-Boolean array value.")).ToArray();
 
-    private static object?[] ArrayValues(EtabsRawGetterCall call, int index) =>
-        call.Outputs[index] as object?[]
-        ?? throw new EtabsLiveGetterProbeException($"{call.Operation} output {index} is not an array.");
+    private static object?[] ArrayValues(EtabsRawGetterCall call, int index) => call.Outputs[index] switch
+    {
+        object?[] values => values,
+        Array values => values.Cast<object?>().ToArray(),
+        // The adapter accepts a null parallel array only after proving its source count is zero.
+        null => [],
+        _ => throw new EtabsLiveGetterProbeException($"{call.Operation} output {index} is not an array.")
+    };
 
     private static void ValidateElementTopology(
         IReadOnlyList<string> framePoints,
@@ -383,5 +288,35 @@ public static class EtabsLiveGetterProbe
         if (!EqualityComparer<T>.Default.Equals(expected, actual))
             throw new EtabsLiveGetterProbeException(
                 $"Exact {label} mismatch: expected {expected}; observed {actual}.");
+    }
+    private static void ReadCatalogue(EtabsGetterAdapter adapter, EtabsLiveGetterProbeRequest request,
+        List<EtabsRawGetterCall> calls, EtabsProtectedState preflight, CancellationToken cancellationToken)
+    {
+        var loadPatterns = Strings(Call(adapter, request, calls, "LoadPatterns.GetNameList", [], cancellationToken), 1);
+        foreach (var name in loadPatterns)
+        {
+            Call(adapter, request, calls, "LoadPatterns.GetLoadType", [name], cancellationToken);
+            Call(adapter, request, calls, "LoadPatterns.GetSelfWTMultiplier", [name], cancellationToken);
+        }
+
+        foreach (var name in preflight.CaseNames)
+        {
+            var basicType = Call(adapter, request, calls, "LoadCases.GetTypeOAPI", [name], cancellationToken);
+            var type = Call(adapter, request, calls, "LoadCases.GetTypeOAPI_1", [name], cancellationToken);
+            RequireEqual("load-case type", Scalar<int>(basicType, 0), Scalar<int>(type, 0));
+            RequireEqual("load-case subtype", Scalar<int>(basicType, 1), Scalar<int>(type, 1));
+            if (Scalar<int>(type, 0) == 1)
+            {
+                Call(adapter, request, calls, "LoadCases.StaticLinear.GetInitialCase", [name], cancellationToken);
+                Call(adapter, request, calls, "LoadCases.StaticLinear.GetLoads", [name], cancellationToken);
+            }
+        }
+
+        foreach (var name in preflight.CombinationSelections.Keys)
+        {
+            Call(adapter, request, calls, "RespCombo.GetTypeOAPI", [name], cancellationToken);
+            Call(adapter, request, calls, "RespCombo.GetCaseList", [name], cancellationToken);
+        }
+
     }
 }

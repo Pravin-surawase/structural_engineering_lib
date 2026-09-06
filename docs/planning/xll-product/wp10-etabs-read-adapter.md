@@ -608,9 +608,9 @@ none becomes complete merely because acquisition passes.
 | Unit | Outcome and acceptance | State |
 |---|---|---|
 | U1 — Scope and source proof | Freeze force request/result and batch evidence semantics; inspect actual installed getter signatures and a source-model readiness probe; identify all source/model/selection units and material-type evidence without inferring from names. | In progress |
-| U2 — Shared capture and normalization | Add multi-member acquisition with shared catalogs/properties, one coherent pre/post source boundary, exact per-member object/element/station rows, deduplicated projection and complete row accounting. Preserve existing durable and portable v1 compatibility. | Pending |
+| U2 — Shared capture and normalization | Add multi-member acquisition with shared catalogs/properties, one coherent pre/post source boundary, exact per-member object/element/station rows, deduplicated projection and complete row accounting. Preserve existing durable and portable v1 compatibility. | Reference path implemented: eight batch tests, live mesh and full 153-beam in-memory normalization passed; production scale/file gates remain open |
 | U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Pending |
-| U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Use genuine multi-member source evidence; selection from a complete current snapshot causes zero ETABS reads. | Pending |
+| U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Qualify a bulk production path against the direct-getter reference and the actual file/memory limits. Selection from a complete current snapshot causes zero ETABS reads. | Pending; bulk table source inspection started after measured reference cost |
 | U5 — Integrated qualification | Exact signed installed Excel/worker proof; independent Python replay; real source-bound small/medium PF9 datasets, measured getter/transfer/normalization/persistence and adapter memory; named cumulative broad Python/full repository checks. | Pending |
 
 Finish U1-U4 as sequential implementation commits in one milestone candidate
@@ -622,6 +622,43 @@ exact candidate externally. Use one hosted PR cycle for the accepted milestone;
 an outcome-changing host repair follows the maintained repair/replan lifecycle,
 not a hidden post-acceptance source change. Never label a failed PF9 target or
 an absent dataset as qualification.
+
+### Live reference findings — 2026-09-07
+
+The direct-getter batch is correctness/reference evidence, not PF9 acceptance.
+Owned-model `batch-development-3` retained 153 beams and 3,502 force rows and
+normalized them in memory. `batch-mesh-development-1` retained a real three-part
+mesh; independent Python parsing and canonical-byte reproduction passed for
+that snapshot and both synthetic adjacent-span variants. The full direct
+capture took about 112 seconds and its initial portable file was 36,514,911
+bytes. The portable parsers cap input at 25,000,000 bytes; the existing Excel
+store caps input at 16 MiB. Thus neither throughput nor full-model file handoff
+is accepted yet. Do not raise limits or weaken evidence to claim a pass.
+
+Inspection of the previous direct capture measured 6,460 calls: four element
+getters for 937 beam elements account for about 59 seconds. The production
+profile must reduce source round trips and redundant serialized evidence before
+U5 qualification. Batch summaries now retain a receipt for the original journal
+rather than embedding it a second time; the complete original remains in the
+hash-bound external acquisition and the complete portable ledger remains in the
+snapshot. Legacy artifact/snapshot serialization stays unchanged.
+
+Installed bulk table inspection found object/element connectivity and assignment
+tables. Their optional fields, empty-table status, displayed numeric precision,
+and actual field/unit identities need qualification before use. Never fabricate
+direct getter calls from table rows or treat rounded display coordinates as
+exact getter coordinates. Use the direct capture as independent comparison
+evidence for any adopted bulk source/derivation policy.
+
+Readiness also requires an ordinary static dependency closure: actual
+`GetTypeOAPI_1.Auto` values 3 and 5 identified internal cases that returned
+FrameForce status 1 despite finished analysis. Auto=0 is the initial batch
+qualification boundary; unsupported selections are fenced before force calls,
+without changing or dropping user selections. Qualification-only setters were
+used on the owned copy to isolate this source fact. Analysis mesh points are
+read through the observed `PointElm.GetCoordCartesian` signature. Their story
+association is explicitly derived from unique retained frame ownership; source
+point stories continue to come from PointObj evidence.
 
 ### Required data and behavior
 

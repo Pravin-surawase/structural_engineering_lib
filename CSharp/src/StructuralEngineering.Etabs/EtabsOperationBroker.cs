@@ -184,7 +184,7 @@ public static class EtabsAcquisitionArtifactCodec
             throw new InvalidDataException("The durable ledger and raw getter capture disagree.");
     }
 
-    private static JsonSerializerOptions CreateOptions()
+    internal static JsonSerializerOptions CreateOptions()
     {
         var options = new JsonSerializerOptions
         {
@@ -196,7 +196,7 @@ public static class EtabsAcquisitionArtifactCodec
         return options;
     }
 
-    private static void EnsureNoDuplicateProperties(JsonElement value)
+    internal static void EnsureNoDuplicateProperties(JsonElement value)
     {
         if (value.ValueKind == JsonValueKind.Object)
         {
@@ -577,7 +577,7 @@ public sealed class EtabsOperationBroker
     private static EtabsOperationHandle CompletedHandle(EtabsBrokerResult result) =>
         new(Task.FromResult(result), Task.CompletedTask);
 
-    private sealed class LedgerEtabsGetterHost(
+    internal sealed class LedgerEtabsGetterHost(
         IEtabsGetterHost inner,
         EtabsCallJournal journal) : IEtabsGetterHost
     {
@@ -638,19 +638,21 @@ public sealed class EtabsOperationBroker
         }
     }
 
-    private sealed class EtabsCallJournal : IDisposable
+    internal sealed class EtabsCallJournal : IDisposable
     {
         private readonly string _operationId;
         private readonly FileStream _stream;
         private readonly TimeProvider _timeProvider;
+        private readonly string _matrixSha256;
         private readonly List<SnapshotCallRecord> _records = [];
         private string? _head;
         private string? _pendingCallId;
 
-        public EtabsCallJournal(string operationId, string path, TimeProvider timeProvider)
+        public EtabsCallJournal(string operationId, string path, TimeProvider timeProvider, string? matrixSha256 = null)
         {
             _operationId = operationId;
             _timeProvider = timeProvider;
+            _matrixSha256 = matrixSha256 ?? EtabsGetterMatrix.Sha256;
             _stream = new FileStream(
                 path,
                 FileMode.CreateNew,
@@ -675,7 +677,7 @@ public sealed class EtabsOperationBroker
                 _head,
                 SnapshotCallStage.Started,
                 definition.Operation,
-                EtabsGetterMatrix.Sha256,
+                _matrixSha256,
                 SnapshotCallEffect.Getter,
                 argumentsSha,
                 null,
@@ -703,7 +705,7 @@ public sealed class EtabsOperationBroker
                 _head,
                 SnapshotCallStage.Returned,
                 definition.Operation,
-                EtabsGetterMatrix.Sha256,
+                _matrixSha256,
                 SnapshotCallEffect.Getter,
                 started.ArgumentsSha256,
                 returnCode,

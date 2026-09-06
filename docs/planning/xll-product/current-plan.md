@@ -17,6 +17,13 @@ Use sequential commits and one milestone PR where the accepted host boundaries
 permit. Learning is excluded from this completion task. Automatic actual-bar
 design, search and copied-model reanalysis follow WP10's accepted data path.
 
+The direct multi-member reference now works in memory, including real mesh
+points. Its measured time and file size require a compact bulk production path
+before full-model Excel/PF9 acceptance; see the
+[live findings](wp10-etabs-read-adapter.md#live-reference-findings--2026-09-07).
+The installed ribbon still has the completed connection/offline capabilities;
+Get Forces handoff and final qualification remain active completion work.
+
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.
 WP10-05 A/B now implements application/session ownership, transparent demo
@@ -31,9 +38,9 @@ complete. WP01–WP08 implement the shared native Python and .NET beam libraries
 and [WP09](wp09-standalone-excel.md) now supplies the signed, installed-tested
 standalone Excel product. [WP10](wp10-etabs-read-adapter.md) has frozen its
 portable contract, exact getter adapter, bounded STA broker and offline
-normalization. WP10-05's active A/B contract replaces the old chunk-table plan.
-Its candidate is qualified by the new installed Excel harness and external exact
-XLL/source/workbook receipt, not by the previous WP09 receipt.
+normalization. WP10-05's completed A/B contract replaced the old chunk-table
+plan and was qualified with its installed Excel harness and external exact
+XLL/source/workbook receipt.
 The reviewed plan identifies production acquisition handoff (WP10-05B) and
 multi-member support (WP10-05C) as prerequisites to final WP10-06 qualification.
 
@@ -49,11 +56,11 @@ model binding. Heavy workbook snapshot tables and a new database are not default
 prerequisites. Keep the typed kernels and transaction/freshness guarantees; add
 the missing design/candidate orchestration and public mapper. Stage the eventual
 ribbon by implemented capability, with local Solver Check in applicable details.
-The first implemented UI exposes Assumptions, Open Snapshot and Review Snapshot,
-with legacy tools in their own menu. The owner has now brought live connection
-ahead of automatic design: WP10-05B first delivers the running-model connection
-and source context (audit increment D), then existing-force handoff and WP10-05C
-broad capture. Increment C follows that verified data path. This changes delivery
+The installed UI exposes Assumptions, Connect ETABS, Open Snapshot and Review
+Snapshot, with legacy tools in their own menu. The owner brought live connection
+ahead of automatic design: WP10-05B delivered running-model connection and
+source context (audit increment D). Existing-force handoff and WP10-05C broad
+capture are now active. Increment C follows that verified data path. This changes delivery
 order, not engineering acceptance or the final product goal.
 Source completion alone does not assert an installed acceptance pass.
 

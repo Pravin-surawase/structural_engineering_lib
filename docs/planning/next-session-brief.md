@@ -5,7 +5,7 @@
 <!-- HANDOFF:START -->
 - Date: 2026-09-07
 - Focus: Finish the product's read-only ETABS force handoff, multi-member data and integrated qualification against the whole-product goal; learning excluded.
-- Recurrence controls: RR-005 x70 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
+- Recurrence controls: RR-005 x75 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-002 x23 / unknown: Probe exact host boundaries and ownership before acceptance; verify cleanup of owned child processes and resources explicitly.; RR-021 x2 / unknown: Trace every acceptance workload through real source callers; assign missing consumer and scale work before qualification, keeping original budgets intact.
 <!-- HANDOFF:END -->
 
 ## Current boundary

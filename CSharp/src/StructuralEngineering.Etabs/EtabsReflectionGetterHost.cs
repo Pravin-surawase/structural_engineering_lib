@@ -183,6 +183,21 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
         }
     }
 
+    public static EtabsReflectionGetterHost AttachForces(EtabsHostExpectation expected)
+    {
+        var host = Attach(expected);
+        try
+        {
+            ValidateMatrix(Assembly.LoadFrom(expected.ApiAssemblyPath), EtabsForceGetterMatrix.Allowed.Values);
+            return host;
+        }
+        catch
+        {
+            host.Dispose();
+            throw;
+        }
+    }
+
     public EtabsInvocation Invoke(
         EtabsGetterDefinition definition,
         IReadOnlyList<object?> inputs,
@@ -191,7 +206,8 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
         ObjectDisposedException.ThrowIf(_disposed, this);
         cancellationToken.ThrowIfCancellationRequested();
         if ((!EtabsGetterMatrix.Allowed.TryGetValue(definition.Operation, out var frozen) || frozen != definition) &&
-            (!EtabsContextGetterMatrix.Allowed.TryGetValue(definition.Operation, out frozen) || frozen != definition))
+            (!EtabsContextGetterMatrix.Allowed.TryGetValue(definition.Operation, out frozen) || frozen != definition) &&
+            (!EtabsForceGetterMatrix.Allowed.TryGetValue(definition.Operation, out frozen) || frozen != definition))
             throw new InvalidOperationException("Only an unchanged frozen getter definition may be invoked.");
 
         var target = ResolveObject(definition.ObjectPath);

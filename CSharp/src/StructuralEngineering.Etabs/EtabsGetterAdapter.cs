@@ -192,7 +192,7 @@ public sealed class EtabsGetterAdapter(IEtabsGetterHost host, IReadOnlyDictionar
 
     private string MatrixSha256() => ReferenceEquals(_allowed, EtabsContextGetterMatrix.Allowed)
         ? EtabsContextGetterMatrix.Sha256
-        : EtabsGetterMatrix.Sha256;
+        : ReferenceEquals(_allowed, EtabsForceGetterMatrix.Allowed) ? EtabsForceGetterMatrix.Sha256 : EtabsGetterMatrix.Sha256;
 
     private static (string Code, string Message)? ValidateArrays(
         EtabsGetterDefinition definition,
