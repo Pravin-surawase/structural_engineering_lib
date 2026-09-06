@@ -15,8 +15,19 @@ For an engineer who can read basic code and is new to C#/.NET. The assistant pre
 
 ## Start here: current product code
 
+**Current owner direction — 7 September:** learn inside the main product
+solution, using real ETABS/Excel and actual product code as each step needs
+them. Begin with [Lesson 0 — real product in VS Code](product-code/00-real-product-vscode.md)
+and the [product workspace](../../../../CSharp/StructAutomate.code-workspace).
+Acquire the required model/result data into memory before discussing design
+or persistence. The current production Connect command writes transport and
+evidence files, so a memory-only adaptation must precede that live exercise.
+The two earlier invented-data lessons below are optional background; they do
+not substitute for the requested real-product learning sequence.
+
 | Lesson | Outcome | Practice |
 | --- | --- | --- |
+| [0 — Real product in VS Code](product-code/00-real-product-vscode.md) | Verify tools, build the actual solution, check the installed XLL version and trace real connection source | Current product; no live ETABS acquisition in this first exercise |
 | [1 — Model data in memory](product-code/01-model-data.md) | Read C# records, follow exact source IDs, filter frames and find neighbours using the real session class | Invented model; no installed applications needed |
 | [2 — Follow Connect ETABS](product-code/02-connect-workflow.md) | Explain the ribbon, background client, worker and workbook completion; diagnose late results | Deterministic workflow simulation; no installed applications needed |
 
@@ -35,7 +46,7 @@ Acceptance: inspect both palettes, reload persistence, keyboard toggle, readable
 diagram/form controls and narrow layout; run affected documentation and final
 candidate-integrity checks. No C# or installed-application change is needed.
 
-**Product baseline:** the running-model connection packet is merged in PR 975 (main `a36e7f4a`). Connect captures source geometry and builds ID indexes. Existing-force handoff is the next implementation packet; broad result coverage, full design orchestration and controlled reanalysis remain later work. These lessons do not expand that implementation scope. See the [current product workflow](../etabs-design-workflow.md).
+**Product baseline:** the running-model connection packet is merged in PR 975 (main `a36e7f4a`). Connect captures source geometry and builds ID indexes. The owner now wants to learn and adapt this real path for memory-only acquisition before continuing existing-force handoff. Broad result coverage, full design orchestration and controlled reanalysis remain later work. Lesson 0 adds setup/source navigation, not that runtime adaptation. See the [current product workflow](../etabs-design-workflow.md).
 
 Budget about 45–60 minutes per lesson, with a natural break before the exercises. Read only the core path first; answers, debugging tables and source maps are references to return to. The original P0 foundation lesson below remains useful optional background.
 

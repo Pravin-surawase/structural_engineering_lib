@@ -1,0 +1,42 @@
+{
+  "folders": [
+    { "name": "structural_engineering_lib", "path": ".." }
+  ],
+  "settings": {
+    "dotnet.defaultSolution": "CSharp/StructAutomate.slnx"
+  },
+  "extensions": {
+    "recommendations": ["ms-dotnettools.csharp", "ms-dotnettools.csdevkit"]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Product: inspect .NET environment",
+        "type": "process",
+        "command": "dotnet",
+        "args": ["--info"],
+        "options": { "cwd": "${workspaceFolder}/CSharp" },
+        "problemMatcher": []
+      },
+      {
+        "label": "Product: restore locked dependencies",
+        "type": "process",
+        "command": "dotnet",
+        "args": ["restore", "StructAutomate.slnx", "--locked-mode"],
+        "options": { "cwd": "${workspaceFolder}/CSharp" },
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "Product: build Release",
+        "type": "process",
+        "command": "dotnet",
+        "args": ["build", "StructAutomate.slnx", "-c", "Release", "--no-restore"],
+        "options": { "cwd": "${workspaceFolder}/CSharp" },
+        "dependsOn": "Product: restore locked dependencies",
+        "problemMatcher": "$msCompile",
+        "group": { "kind": "build", "isDefault": true }
+      }
+    ]
+  }
+}

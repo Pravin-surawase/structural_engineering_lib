@@ -73,14 +73,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 62,
+      "occurrences": 68,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape. WP10-05B added four untimed events: unquoted PowerShell Git tree braces, two rg wildcard-path owner searches, and an Int32 supplied to an exact by-ref API enum. Quoted expressions, folder glob filters and the installed boxed enum resolved them. A later formatter-owner filename guess was absent; registry/source search found the maintained owner. This fifth event was untimed. WP10-05B-FORCES-PLAN guessed session_delivery.py and session_usage.py while locating the gate owner; bounded rg over scripts found session.py. This owner-lookup event was untimed."
+        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape. WP10-05B added four untimed events: unquoted PowerShell Git tree braces, two rg wildcard-path owner searches, and an Int32 supplied to an exact by-ref API enum. Quoted expressions, folder glob filters and the installed boxed enum resolved them. A later formatter-owner filename guess was absent; registry/source search found the maintained owner. This fifth event was untimed. WP10-05B-FORCES-PLAN guessed session_delivery.py and session_usage.py while locating the gate owner; bounded rg over scripts found session.py. This owner-lookup event was untimed. The ETABS review/setup intake added six untimed events: three unexpanded or absent path queries in the review, an absent .vscode lookup, a guessed formatter owner and an unsupported session prepare subcommand. Folder glob filters, discovered owners and actual CLI help resolved them."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-05B-FORCES-PLAN",
+      "last_seen_task": "etabs-vscode-learning-intake",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -256,14 +256,14 @@
     {
       "id": "RR-016",
       "pattern": "Delivery transition is invoked without its required evidence or identity argument",
-      "occurrences": 3,
+      "occurrences": 5,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-03's first FOCUSED_VERIFIED transition and the next chained PREPARED transition each omitted --evidence and were rejected without corrupting lifecycle state; the corrections were not separately timed. WP10-05 attempted explicit REPAIR after INTEGRITY_REJECTED had already derived that state; read the transition result instead."
+        "basis": "WP10-03's first FOCUSED_VERIFIED transition and the next chained PREPARED transition each omitted --evidence and were rejected without corrupting lifecycle state; the corrections were not separately timed. WP10-05 attempted explicit REPAIR after INTEGRITY_REJECTED had already derived that state; read the transition result instead. etabs-vscode-learning-intake added two untimed rejected BOUNDED_UNITS attempts: missing acceptance paths, then a path whose file had not been created. Existing workspace/lesson paths admitted the transition."
       },
       "short_solution": "Consult the current delivery CLI contract and freeze required evidence, head, run, PR, and merge identifiers before each transition.",
-      "last_seen_task": "WP10-05",
+      "last_seen_task": "etabs-vscode-learning-intake",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
