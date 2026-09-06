@@ -205,14 +205,14 @@
     {
       "id": "RR-013",
       "pattern": "Platform-dependent C# checkout line endings disagree with the hosted dotnet formatter",
-      "occurrences": 3,
+      "occurrences": 4,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed. WP10-05 C# formatting did not normalize mixed endings in edited csproj/PowerShell files; normalize all changed text owners before candidate integrity. WP10-05B candidate integrity found that the newly generated worker packages.lock.json lacked a final newline, outside the selected CSharp formatter paths. Normalize the generated lock text final LF before freezing; no dependency or product-code change was needed. This repair was untimed."
+        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed. WP10-05 C# formatting did not normalize mixed endings in edited csproj/PowerShell files; normalize all changed text owners before candidate integrity. WP10-05B candidate integrity found that the newly generated worker packages.lock.json lacked a final newline, outside the selected CSharp formatter paths. Normalize the generated lock text final LF before freezing; no dependency or product-code change was needed. This repair was untimed. etabs-vscode-learning-intake created a Markdown guide with CRLF and patched LF content into it; the dotnet-scoped formatter selected no files. Candidate integrity rejected the mixed endings. Normalize every task-owned text path before the repaired candidate; correction time was not separately measured."
       },
       "short_solution": "Declare LF explicitly for maintained .cs, .csproj, and .slnx files and renormalize the full candidate diff.",
-      "last_seen_task": "WP10-05B",
+      "last_seen_task": "etabs-vscode-learning-intake",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-02-candidate-audit-repair--2026-09-04",

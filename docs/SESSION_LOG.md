@@ -43,6 +43,8 @@ memory-only acquisition boundary. Design and persistence decisions follow later.
 - Six shell/owner-lookup mistakes across the review/setup intake interrupted
   commands; two delivery transitions supplied absent or nonexistent acceptance
   paths. No candidate was frozen or published by these rejected attempts.
+- Candidate file integrity rejected mixed CRLF/LF in the new guide after the
+  unchanged product solution build and documentation checks had passed.
 
 ### Root causes and resolutions
 
@@ -55,6 +57,11 @@ memory-only acquisition boundary. Design and persistence decisions follow later.
   directory by using a tracked code-workspace file.
 - RR-016: acceptance paths must identify existing files. Supplying the created
   workspace and lesson admitted INTAKE -> BOUNDED_UNITS without weakening gates.
+- RR-013: create_doc emitted CRLF and the content patch introduced LF. The
+  dotnet-scoped formatter selected no files for this documentation packet.
+  Normalize every task-owned text path before freezing the repair; this changes
+  no product behavior or lesson content. Recheck affected document/session
+  evidence and the final repaired candidate's bytes.
 
 ### Rework and recurrence
 
@@ -62,6 +69,8 @@ memory-only acquisition boundary. Design and persistence decisions follow later.
   CLI help before searches or lifecycle calls; six intake events were untimed.
 - RR-016, occurrences=5, minutes=unknown: resolve existing acceptance files
   before requesting the transition; two intake events were untimed.
+- RR-013, occurrences=4, minutes=unknown: normalize all changed text owners,
+  including newly generated Markdown outside the selected formatter scope.
 
 **Terminal handoff:** ⚠️ TERMINAL ISSUE: the old merged branch blocked session
 startup and guessed Windows paths/CLI arguments blocked commands → inspect the
