@@ -4,7 +4,13 @@ The Windows Excel product uses .NET 10 and Excel-DNA 1.9.0. This solution contai
 
 ## Build and use
 
-New to C#? Start with the [two product-code lessons](../docs/planning/xll-product/learning/README.md): model data in memory, then the Connect ETABS workflow. Their console lab and offline visual companion use invented data and require no Excel or ETABS session.
+Start with [the real-product VS Code lesson](../docs/planning/xll-product/learning/product-code/00-real-product-vscode.md)
+and open [StructAutomate.code-workspace](StructAutomate.code-workspace). It
+selects this solution and provides the actual environment/locked restore/build
+tasks. The lesson explains the installed XLL check and real ETABS source path;
+memory-only live acquisition is the next development exercise. The earlier
+[two C# lessons](../docs/planning/xll-product/learning/README.md) and their
+invented-data console/visual lab remain optional background.
 
 Run from `CSharp` with the .NET 10.0.400 SDK:
 

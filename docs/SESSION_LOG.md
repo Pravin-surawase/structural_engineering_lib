@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-09-07 — Session: Learn the real product in VS Code
+
+**Task:** etabs-vscode-learning-intake
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/etabs-vscode-learning`
+
+**Focus:** Start the owner's real-product learning sequence inside the main
+solution: development environment, actual XLL, real connection source and the
+memory-only acquisition boundary. Design and persistence decisions follow later.
+
+### Completed
+
+- Added a portable VS Code workspace opening the repository and selecting its
+  actual C# solution, with pinned restore/build and environment tasks. Added
+  Lesson 0 explaining tools, files, build output, installed XLL version check,
+  source navigation and separate model/result readiness observations.
+- Confirmed SDK 10.0.400, .NET/Desktop Runtime 10.0.11, ETABS 23.3.1.4563 and
+  the existing Excel startup XLL registration. VS Code was not found in the
+  bounded installation checks; the guide includes its official setup route.
+- Incorporated the owner's choice of the main solution and real applications.
+  Removed the task-created separate draft files. The earlier invented-data
+  lessons remain optional. No new C# runtime, live acquisition, Excel operation
+  or installed-package change was performed, and no learner step is complete.
+- Explained that the production Connect path currently writes transport and
+  evidence files. The next live exercise must adapt the real reader for data
+  held in memory while retaining identity, STA, validation and cleanup controls.
+- Focused verification for this packet is the documented locked solution
+  restore/build, workspace task/path inspection, scoped documentation checks,
+  and repository efficiency/session validation. Exact outcomes belong to the
+  delivery evidence, not a claim of installed VS Code or live ETABS acceptance.
+
+### Issues encountered
+
+- Session intake was held on the previous merged task branch. The files were
+  clean, but its squash-merge commit had a different identity from its parent.
+- Six shell/owner-lookup mistakes across the review/setup intake interrupted
+  commands; two delivery transitions supplied absent or nonexistent acceptance
+  paths. No candidate was frozen or published by these rejected attempts.
+- Candidate file integrity rejected mixed CRLF/LF in the new guide after the
+  unchanged product solution build and documentation checks had passed.
+
+### Root causes and resolutions
+
+- Fetched origin, inspected PR 977 as MERGED and proved an empty HEAD-to-main
+  tree diff. Created the new task branch from fetched origin/main; session
+  begin then passed. No reset, rebase, deletion or history rewrite was used.
+- RR-005: unexpanded Windows rg paths and guessed paths/subcommands caused
+  lookup failures. Folder glob filters, discovered owners and actual CLI help
+  resolved the queries. The lesson workspace avoids an absent/ignored .vscode
+  directory by using a tracked code-workspace file.
+- RR-016: acceptance paths must identify existing files. Supplying the created
+  workspace and lesson admitted INTAKE -> BOUNDED_UNITS without weakening gates.
+- RR-013: create_doc emitted CRLF and the content patch introduced LF. The
+  dotnet-scoped formatter selected no files for this documentation packet.
+  Normalize every task-owned text path before freezing the repair; this changes
+  no product behavior or lesson content. Recheck affected document/session
+  evidence and the final repaired candidate's bytes.
+
+### Rework and recurrence
+
+- RR-005, occurrences=68, minutes=unknown: use discovered paths and maintained
+  CLI help before searches or lifecycle calls; six intake events were untimed.
+- RR-016, occurrences=5, minutes=unknown: resolve existing acceptance files
+  before requesting the transition; two intake events were untimed.
+- RR-013, occurrences=4, minutes=unknown: normalize all changed text owners,
+  including newly generated Markdown outside the selected formatter scope.
+
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: the old merged branch blocked session
+startup and guessed Windows paths/CLI arguments blocked commands → inspect the
+merged PR/tree, start from fetched main, and use discovered paths/help.
+
+---
+
 ## 2026-09-07 — Session: Dark theme for the visual lessons
 
 **Task:** LESSON-DARK-THEME
