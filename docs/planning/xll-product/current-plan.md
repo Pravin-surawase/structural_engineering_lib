@@ -1,12 +1,21 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-05
+last_updated: 2026-09-07
 doc_type: guide
 complexity: advanced
 ---
 
 # StructAutomate — current plan
+
+**Active work (7 September):** finish WP10 under the
+[completion contract](wp10-etabs-read-adapter.md#wp10-completion-contract--2026-09-07).
+Assumptions/offline review and running-model connection are complete. Remaining
+units are shared existing-force capture, the worker/Excel handoff, required
+model interpretation and multi-member/installed/performance qualification.
+Use sequential commits and one milestone PR where the accepted host boundaries
+permit. Learning is excluded from this completion task. Automatic actual-bar
+design, search and copied-model reanalysis follow WP10's accepted data path.
 
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.
@@ -93,7 +102,8 @@ Excel evidence. Its workbook evaluates the one declared current physical
 candidate; it does not yet expose a useful multi-option search domain.
 
 Implementation sequencing follows PF11: WP09 and WP10-01 through WP10-04 are
-complete. Finish the WP10-05 import, production handoff and multi-member
+complete, as are WP10-05 offline import and the first WP10-05B connection unit.
+Finish the remaining production force handoff and multi-member
 prerequisites, then WP10-06 integrated qualification. WP11 exposes multi-option fixed-action search in
 Excel before adding controlled copied-model reanalysis, and WP12 completes
 migration and release readiness.
@@ -110,6 +120,6 @@ The [v2 synthesis](history/foundation-and-delivery-plan-v2.md) and its unchanged
 
 The [engineering-depth assessment](research/engineering-depth.md) and [readiness audit](research/foundation-readiness.md) remain dated evidence. They establish neither a completed XLL nor independent engineering approval.
 
-The approved implementation sequence now continues with WP10-05. Model operations
+The approved implementation sequence now follows WP10's completion contract. Model operations
 use an identified application/model and the repository transaction workflow;
 package releases retain their per-release authorization process.

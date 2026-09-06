@@ -3,7 +3,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-05
+**Last Updated:** 2026-09-07
 
 # WP10 — read-only ETABS snapshot adapter
 
@@ -21,7 +21,10 @@ Other ETABS versions do not inherit this compatibility claim.
 WP10-01 through WP10-04 are complete. WP10-02 proved the exact-version getter
 boundary and one unchanged-model live matrix; WP10-03 added the bounded STA
 operation-control and durable evidence boundary; WP10-04 added offline
-normalization and cross-runtime replay. WP10-05 Excel import is next. The
+normalization and cross-runtime replay. WP10-05 assumptions/offline import and
+WP10-05B running-model geometry connection are complete. The remaining work is
+existing-force handoff, multi-member capture and integrated qualification under
+the completion contract below. The
 remaining slices use the plan-driven delivery contract below as a
 pilot of the repository-wide workflow. That contract orchestrates existing
 controls; it does not create a second WP10-only delivery system.
@@ -131,7 +134,8 @@ one coding session would recreate WP09's oversized-packet failure mode.
 For delivery purposes, **one session** therefore means that each remaining
 slice starts and closes one parent task without carrying repair work into a
 later session where feasible; an application hold never becomes a fabricated
-pass to meet this target. WP10-04 completed this boundary; WP10-05 is next. Later slices
+pass to meet this target. WP10-05 and connection/context have since completed;
+the completion contract below owns the remaining units. Later slices
 may share the IMP-M3 milestone branch only when their accepted authority and
 installed-host gate are unchanged; they retain separate task timers and
 acceptance decisions.
@@ -141,8 +145,8 @@ acceptance decisions.
 | WP10-02 | Complete | exact-version getter port, binding, fake-host proof, and one live getter-only matrix | broker retries, normalization, Excel, performance |
 | WP10-03 | Complete | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
 | WP10-04 | Complete, PR #972 | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
-| WP10-05 | Next; plan below | transactional completed-file `XL-CMD-02` import, installed Excel readback/rollback, and freshness | live acquisition, automatic design-input synthesis and acquisition performance claims |
-| WP10-05B | Planned prerequisite | production acquisition host and versioned file handoff to the same Excel importer | ETABS setters, automatic reconnect/retry and scale claims |
+| WP10-05 | Complete, PR #974 | assumptions, external completed-snapshot import, memory review, installed Excel readback/rollback and freshness | live acquisition, automatic design-input synthesis and acquisition performance claims |
+| WP10-05B | Connection complete, PR #975; force handoff remaining | production acquisition host and versioned file handoff to the same Excel importer | ETABS setters, automatic reconnect/retry and scale claims |
 | WP10-05C | Planned prerequisite | multi-member acquisition/normalization profile and representative datasets for PF9 | silently weakening source contracts or performance budgets |
 | WP10-06 | After all prerequisites | integrated E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
 
@@ -582,7 +586,111 @@ and a missing recovery transition. Its separate maintained authority is
 That repair shares this unpublished planning branch and original task history;
 it changes no WP10 engineering contract and does not start normalization.
 
+## WP10 completion contract — 2026-09-07
+
+**Task:** WP10-COMPLETION. **Base:** merged PR #978, `c822809d`.
+The owner explicitly requested completion of WP10, including necessary real
+Excel/ETABS work, plan repairs and root-cause fixes, with multiple commits and
+few PRs. Windows is the sole writer for `codex/wp10-completion`. Learning work
+is excluded. Earlier connection-only and workbook-chunk cards below are retained
+as historical contracts; this section owns the remaining implementation order.
+
+**Product goal:** ribbon-led beam work, one shared source inventory per verified
+revision, required concurrent force rows acquired once and filtered locally,
+heavy data in memory plus immutable external replay evidence, and small visible
+assumptions/requested outputs. This prepares complete actual-bar design and
+practical span/group optimization. Those design services, copied-model coupled
+reanalysis, overnight optimization and release publication remain later work;
+none becomes complete merely because acquisition passes.
+
+### Bounded units and progress
+
+| Unit | Outcome and acceptance | State |
+|---|---|---|
+| U1 — Scope and source proof | Freeze force request/result and batch evidence semantics; inspect actual installed getter signatures and a source-model readiness probe; identify all source/model/selection units and material-type evidence without inferring from names. | In progress |
+| U2 — Shared capture and normalization | Add multi-member acquisition with shared catalogs/properties, one coherent pre/post source boundary, exact per-member object/element/station rows, deduplicated projection and complete row accounting. Preserve existing durable and portable v1 compatibility. | Pending |
+| U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Pending |
+| U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Use genuine multi-member source evidence; selection from a complete current snapshot causes zero ETABS reads. | Pending |
+| U5 — Integrated qualification | Exact signed installed Excel/worker proof; independent Python replay; real source-bound small/medium PF9 datasets, measured getter/transfer/normalization/persistence and adapter memory; named cumulative broad Python/full repository checks. | Pending |
+
+Finish U1-U4 as sequential implementation commits in one milestone candidate
+where their frozen host authority permits. Use narrow affected evidence while
+implementing; no PR or broad suite per internal unit. After all intended
+source/tests/docs/harness writes, freeze, format, run their focused union,
+review and verify immutable candidate bytes. U5 installed receipts bind that
+exact candidate externally. Use one hosted PR cycle for the accepted milestone;
+an outcome-changing host repair follows the maintained repair/replan lifecycle,
+not a hidden post-acceptance source change. Never label a failed PF9 target or
+an absent dataset as qualification.
+
+### Required data and behavior
+
+- Default product scope is the complete required beam set from the accepted
+  source context. One-member operation remains useful as an initial smoke and
+  explicit bounded scope, never as repeated full-model acquisition for every
+  selected beam. Shared property and case catalogs are read once per capture.
+- Bound request, connected context, process/start/executable, model identity,
+  source units, member IDs and selected cases/combinations. A changed context,
+  model or result selection rejects completion and invalidates current live
+  claims. Saved offline snapshots remain identified historical evidence.
+- The initial qualified actions are existing completed linear-static cases and
+  concurrent supported combinations in the exact installed runtime/unit
+  profile. Freeze dependency closure, step policy and coverage before capture.
+  Missing analysis yields Analysis needed; unsupported/envelope/dynamic rows
+  are not silently converted to simultaneous design actions or dropped.
+- Preserve every required signed P/V2/V3/T/M2/M3 row, source object and analysis
+  element, object/element station, axes, source units and one result epoch.
+  Normalize once. Every source record/row has an accepted, explicitly approved
+  excluded, or blocked disposition. Any required blocked item withholds the
+  whole accepted snapshot. Extend schemas with compatibility vectors only if
+  their existing meanings cannot express the required batch.
+- Keep existing input origins and material classifications explicit. New source
+  facts require actual getters/provenance; demo M25/Fe500 does not classify a
+  connected model. Source adjacency does not prove physical support or a
+  construction group. A supported span mapping must name its evidence and
+  scope; ambiguity remains visible before later design.
+- Reuse the existing STA lease, deadline/quiescence, journal, worker-package
+  identity, workbook/request fencing, external snapshot codec and review paths.
+  Progress distinguishes acquisition, normalization and persistence. Cancel,
+  failure, close/unload or late completion publishes no partial current result.
+- Get Forces creates no model/force worksheets. It uses the existing review
+  window and requested reports. A complete result can be browsed by member
+  without another ETABS/file read. Reopening permits verified offline replay;
+  live use requires a new connection and freshness proof.
+
+### Host authority, evidence and focused gates
+
+The owner authorizes launching and using Excel/ETABS for this task. Inspection
+found no running Excel/ETABS at intake. Use owned test Excel workbooks and, when
+needed, an identified ETABS instance; retain original model file hashes. The
+production WP10 adapter stays getter-only. Fixture preparation may create and
+analyse explicitly owned qualification models outside that adapter, recorded
+as test-fixture setup, never as production reanalysis support or fabricated
+engineering evidence. Do not overwrite originals, terminate user applications,
+or change global security settings. Preserve failed receipts and owned-resource
+cleanup; no popup or unavailable input becomes an assumed pass.
+
+U1 records exact signature/source facts before dependent implementation. U2-U4
+use affected tests in the existing C# test projects, including legacy replay,
+batch row/identity/concurrency failures, shared-data call counts, session
+ownership and review. Installed development smoke guides necessary fixes before
+freeze. U5 retains final signed source/XLL/worker/model/receipt bindings and
+actual PF9 manifests; synthetic replication of one retained beam is not a
+100/1,000-member installed workload. Required budgets remain small p95 <= 5 s,
+medium p95 <= 30 s and incremental adapter working set <= 512 MB.
+
+Use the maintained locked restore/build from `CSharp`, affected test filters,
+documentation/session/efficiency checks and installed packaging helpers. Run
+the broad Python suite and full `run.sh check` only at U5's cumulative gate.
+Record material issues, confirmed causes, fixes/proof and recurrence before
+candidate freeze; progress changes update this unit table and the generated
+handoff. Finish all versioned records before candidate acceptance. Keep hosted
+and installed final verdicts external and exact-head bound.
+
 ## WP10-05B active connection packet — 2026-09-05
+
+Historical completed connection contract (PR #975). The WP10 completion contract
+above now owns the remaining implementation; this heading remains for old links.
 
 **Product goal:** a ribbon-led Excel product with transparent assumptions,
 one source capture per verified revision, heavy data in memory/external evidence,

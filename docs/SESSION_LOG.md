@@ -5,6 +5,57 @@
 
 ---
 
+## 2026-09-07 — Session: Complete WP10 product acquisition
+
+**Task:** WP10-COMPLETION
+**Agent:** DEV (one parent; no subagents at intake)
+**Branch:** `codex/wp10-completion`
+
+**Focus:** Finish the product's read-only ETABS force handoff, multi-member data
+and integrated qualification against the whole-product goal; learning excluded.
+
+### Progress
+
+- Verified clean main at PR #978, current origin and repository identity, then
+  opened the sole-writer Windows completion branch. No active product candidate
+  PR overlaps this task. Historical detached worktrees are untouched.
+- Reconciled stale WP10 status summaries and froze a U1-U5 completion contract:
+  source/scope, shared capture/normalization, worker/Excel handoff, model/batch
+  interpretation and cumulative installed/performance qualification. The owner
+  authorized real applications and necessary fixture preparation. Production
+  acquisition stays getter-only and required PF9 budgets remain unchanged.
+- U1 is in progress. No remaining force, batch or performance claim is accepted
+  yet. Existing PR #975 connection receipt remains prior evidence only.
+
+### Issues encountered
+
+- Two source-orientation reads guessed filenames that do not exist: a C# scoped
+  instruction file and the context-contract filename. This delayed inspection;
+  no product behavior or source was affected.
+- The WP10 introduction/status table still described completed offline import
+  as next work, and its connection card remained presented as current. This
+  could select the wrong next task despite the later owner sequencing update.
+
+### Root causes and resolutions
+
+- RR-005: assumed paths instead of discovering maintained owners. Bounded
+  `rg --files` located docs rules and EtabsContextContracts.cs; subsequent reads
+  use observed paths. No C# scoped instruction was found by that inventory.
+- Plan summaries were not reconciled after later implementation/priority
+  changes. Updated their statuses and added one current completion contract,
+  preserving the completed connection heading for historical inbound links.
+  Final document/link validation will bind the frozen result.
+
+### Rework and recurrence
+
+- RR-005, occurrences=70, minutes=unknown: two filename-lookup failures resolved
+  by actual folder inventories; discover exact owners before reading them.
+
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: two guessed instruction/contract paths
+were absent → use `rg --files` and read the observed maintained paths.
+
+---
+
 ## 2026-09-07 — Session: Learn the real product in VS Code
 
 **Task:** etabs-vscode-learning-intake

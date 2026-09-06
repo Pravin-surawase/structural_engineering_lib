@@ -4,9 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-07
-- Focus: Start the owner's real-product learning sequence inside the main solution: development environment, actual XLL, real connection source and the memory-only acquisition boundary. Design and persistence decisions follow later.
-- Completed: Added a portable VS Code workspace opening the repository and selecting its actual C# solution, with pinned restore/build and environment tasks. Added Lesson 0 explaining tools, files, build output, installed XLL version check, source navigation and separate model/result readiness observations.; Confirmed SDK 10.0.400, .NET/Desktop Runtime 10.0.11, ETABS 23.3.1.4563 and the existing Excel startup XLL registration. VS Code was not found in the bounded installation checks; the guide includes its official setup route.; Incorporated the owner's choice of the main solution and real applications. Removed the task-created separate draft files. The earlier invented-data lessons remain optional. No new C# runtime, live acquisition, Excel operation or installed-package change was performed, and no learner step is complete.
-- Recurrence controls: RR-005 x68 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-016 x5 / unknown: Consult the current delivery CLI contract and freeze required evidence, head, run, PR, and merge identifiers before each transition.; RR-013 x4 / unknown: Declare LF explicitly for maintained .cs, .csproj, and .slnx files and renormalize the full candidate diff.
+- Focus: Finish the product's read-only ETABS force handoff, multi-member data and integrated qualification against the whole-product goal; learning excluded.
+- Recurrence controls: RR-005 x70 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
 <!-- HANDOFF:END -->
 
 ## Current boundary
