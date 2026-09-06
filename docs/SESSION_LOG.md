@@ -5,6 +5,55 @@
 
 ---
 
+## 2026-09-07 — Session: Dark theme for the visual lessons
+
+**Task:** LESSON-DARK-THEME
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/lesson-dark-theme`
+
+**Focus:** Make the existing offline lesson companion comfortable for night
+reading, preserving the two lessons and their teaching interactions.
+
+### Completed
+
+- Added a default near-black palette for the page, cards, diagram and controls,
+  with a keyboard-accessible Dark theme toggle and a saved browser preference.
+  Apply the preference before painting; unavailable storage leaves a working
+  toggle for the current visit. Markdown previews retain their reader's theme.
+- Browser checks observed default dark, light preference across a new tab, dark
+  persistence after reload and keyboard toggling. The C1 frame lookup still
+  returns B1 and B2; the switch-workbook scenario still accepts into A only.
+  Dark desktop and 390px layouts were visually inspected without horizontal
+  overflow. Restored the viewport and closed the task's preview tab/server.
+- No C#, Excel, ETABS, model capture or design behavior changed. Existing-force
+  handoff remains the next product implementation packet. Documentation and
+  candidate evidence are bound in the executable delivery ledger.
+
+### Issues encountered
+
+- A previous task's preview Python children survived shell interruption. The
+  current browser reload and HTTP probe failed while old and new preview
+  commands coexisted; this interrupted visual verification.
+
+### Root causes and resolutions
+
+- RR-002: stopping the launcher shell did not establish child-process cleanup.
+  Verified the old owned process command lines before stopping those processes;
+  the HTTP probe then returned 200 and a fresh browser tab loaded normally.
+  After verification, stopped the current owned listener explicitly and proved
+  zero remaining listeners on its preview port. No user application was stopped.
+
+### Rework and recurrence
+
+- RR-002, occurrences=20, minutes=unknown: verify owned preview children and the
+  listener exit; shell interruption alone is insufficient cleanup evidence.
+
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: a prior preview's Python children
+survived shell interruption → stop only verified owned processes, confirm HTTP
+recovery, then verify the current listener exits at cleanup.
+
+---
+
 ## 2026-09-06 — Session: First two C# product-code lessons
 
 **Task:** WP10-05B-FORCES-PLAN
