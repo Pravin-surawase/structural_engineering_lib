@@ -5,6 +5,63 @@
 
 ---
 
+## 2026-09-06 — Session: First two C# product-code lessons
+
+**Task:** WP10-05B-FORCES-PLAN
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/wp10-csharp-lessons-01-02`
+
+**Focus:** Prepare the owner's first two hands-on C#/.NET lessons using the
+accepted Connect ETABS product, before implementing existing-force handoff.
+
+### Completed
+
+- Added two beginner guides under the existing XLL learning owner: real context
+  records/indexes and the ribbon-to-worker-to-workbook connection journey.
+  Each has runnable steps, predictions, worked answers, debugging routes,
+  actual source maps and explicit engineering/product boundaries. Preserved
+  the separate historical P0 lessons and learner completion state.
+- Added a host-free console lab referencing the actual context contracts and
+  linked production session index class, plus a deterministic teaching-only
+  workflow simulator. The solution builds the lesson project without adding
+  NuGet dependencies, production behavior or installed application operations.
+- Added an offline visual companion. Browser checks observed all four frame
+  selections and seven workflow outcomes, keyboard selection/reset/advance,
+  disabled final advance, scenario reset and a 390px responsive viewport with
+  no horizontal overflow. The temporary viewport override was restored.
+- Exercised the documented column filter, three chord lengths, topology edit,
+  async suspension and deliberate entry-identity collision. All produced the
+  predicted results; original lesson source was restored after each exercise.
+  Final stock build, self-check and scoped document evidence are required by
+  the acceptance record and bound in the executable delivery ledger.
+- Existing-force handoff remains the next implementation packet. No live
+  Excel/ETABS, force acquisition, solver/design change or release is claimed.
+  The active task timer includes earlier planning and user discussion; it is
+  not a measurement of active lesson-authoring time or billable usage.
+
+### Issues encountered
+
+- The formatter's outside-scope guard rejected its run because the parent
+  clarified the learning index while formatting was still active. Product and
+  lesson C# behavior were unaffected; the final formatting verdict must be rerun.
+
+### Root causes and resolutions
+
+- RR-003: a documentation write crossed the content-freeze/formatter boundary.
+  Finish that clarification and this issue/handoff record, then rerun the
+  maintained formatter with no concurrent writes. Keep its exact verdict and
+  the subsequent focused checks in the delivery ledger.
+
+### Rework and recurrence
+
+- RR-003, occurrences=6, minutes=unknown: freeze documentation as well as code
+  before formatting; serialize every mutation against the byte-scope guard.
+
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: formatter scope guard caught a concurrent
+learning-index edit → complete documentation first and rerun with frozen files.
+
+---
+
 ## 2026-09-05 — Session: WP10-05B running-model connection
 
 **Task:** WP10-05B

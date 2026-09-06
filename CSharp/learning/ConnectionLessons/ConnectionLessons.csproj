@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/StructuralEngineering.Contracts/StructuralEngineering.Contracts.csproj" />
+    <!-- Teach the actual host-free index class without loading the Excel-DNA host. -->
+    <Compile Include="../../src/StructuralEngineering.ExcelDna/EtabsConnectionSession.cs" Link="Product/EtabsConnectionSession.cs" />
+  </ItemGroup>
+</Project>

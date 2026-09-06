@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-09-05",
+  "updated": "2026-09-06",
   "tracking_rule": "One occurrence is one confirmed event or repair, not one mention. Reuse an existing RR-NNN for the same root-cause pattern, increment occurrences, update cumulative observed minutes when measured, and add only a deep-detail link. Create a new ID only for a distinct root cause.",
   "time_rule": "Numeric bounds are cumulative observed or reconstructed rework minutes. Null bounds mean the pattern was confirmed but not separately timed; explain the evidence boundary in basis. Child patterns whose aggregate_parent is set must not be added to the parent's time.",
   "patterns": [
@@ -40,17 +40,18 @@
     {
       "id": "RR-003",
       "pattern": "Candidate or evidence frozen before normalization and behavior stability",
-      "occurrences": 5,
+      "occurrences": 6,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed."
+        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed. WP10-05B-FORCES-PLAN edited the learning index while the formatter's byte snapshot was active; its outside-scope guard correctly rejected. Complete all documentation and serialize the repeated formatter against mutations. Rework was not separately timed."
       },
-      "short_solution": "Refresh dependency and generated projections before freeze, format only changed source paths, then run one read-only integrity check after audit acceptance.",
-      "last_seen_task": "WP10-03",
+      "short_solution": "Finish code, docs and generated projections before freeze; serialize mutations against formatting, then run read-only integrity after acceptance.",
+      "last_seen_task": "WP10-05B-FORCES-PLAN",
       "aggregate_parent": "RR-001",
       "details": [
-        "docs/planning/xll-product/wp09-postmortem.md#corrected-candidate-sequence"
+        "docs/planning/xll-product/wp09-postmortem.md#corrected-candidate-sequence",
+        "docs/SESSION_LOG.md"
       ]
     },
     {
