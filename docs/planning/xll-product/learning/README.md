@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-06
+last_updated: 2026-09-07
 doc_type: guide
 complexity: intermediate
 tags: [excel-dna, xll, planning, research]
@@ -21,6 +21,19 @@ For an engineer who can read basic code and is new to C#/.NET. The assistant pre
 | [2 — Follow Connect ETABS](product-code/02-connect-workflow.md) | Explain the ribbon, background client, worker and workbook completion; diagnose late results | Deterministic workflow simulation; no installed applications needed |
 
 [Open the visual practice companion](product-code/practice.html) in a browser. It works offline. Its JavaScript simulation illustrates the lessons; the separate console lab runs C# and reuses the actual context contracts and session index code.
+
+The visual companion opens in a dark theme for night reading. Use **Dark theme**
+at the top to switch between dark and light; the browser remembers the choice
+when local storage is available. This controls the companion page; Markdown
+lesson previews use the reading application's own theme.
+
+### Night-reading update — LESSON-DARK-THEME
+
+Scope: default-dark companion, accessible dark/light toggle and saved browser
+preference. Preserve the lesson content and model/workflow interactions.
+Acceptance: inspect both palettes, reload persistence, keyboard toggle, readable
+diagram/form controls and narrow layout; run affected documentation and final
+candidate-integrity checks. No C# or installed-application change is needed.
 
 **Product baseline:** the running-model connection packet is merged in PR 975 (main `a36e7f4a`). Connect captures source geometry and builds ID indexes. Existing-force handoff is the next implementation packet; broad result coverage, full design orchestration and controlled reanalysis remain later work. These lessons do not expand that implementation scope. See the [current product workflow](../etabs-design-workflow.md).
 
