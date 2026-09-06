@@ -695,6 +695,43 @@ read through the observed `PointElm.GetCoordCartesian` signature. Their story
 association is explicitly derived from unique retained frame ownership; source
 point stories continue to come from PointObj evidence.
 
+### Compact transport implementation — U4, 2026-09-07
+
+The new `.sasnap` file uses `structural.analysis_snapshot_gzip/v1`: the exact
+ASCII header `STRUCTSNAP-GZIP-1` plus newline, followed by one complete gzip
+member containing unchanged canonical snapshot-v1 JSON. Raw and normalized
+identities and all source rows/provenance are preserved. The codec ceilings are
+64 MiB encoded, 256 MiB expanded, 1,000 members and 100,000 action rows; they
+are admission ceilings, not performance qualification. The existing Excel
+caller still admits at most 16 MiB encoded and 10,000 actions while the PF9
+medium workload is being implemented. Legacy JSON admission is unchanged.
+
+The .NET reader validates duplicate keys while streaming typed deserialization,
+then the established snapshot/row/ledger hashes. It explicitly validates the
+gzip CRC32 and ISIZE because the installed .NET decompressor otherwise accepted
+a truncated footer. Python independently checks the same transport and v1
+evidence. The workbook stores an optional transport identifier with its small
+reference; legacy JSON references retain their original paths and JSON shape.
+The force request moves to v2 to explicitly bind transport and encoded limits.
+
+Retained full-model proof: `transport-development-1.sasnap` is 4,063,310 bytes
+and expands to the exact 26,396,459-byte snapshot (153 beams / 3,502 actions).
+Independent Python and .NET replay preserve canonical SHA-256
+`5964fe59f705b4b22fc530931df4db5ff11c5ab191c81d63d9d2143b2edd711d`.
+The isolated .NET read/validation took about 4.96 s with peak test-process
+working set 155,766,784 bytes. This does not qualify the 100,000-row target or
+the entire live adapter. `force-client-full-development-1` subsequently passed
+the real worker/store handoff for all 153 beams and 3,502 rows, plus cancellation
+without replacing accepted data. Its complete connection/capture/import/test
+sequence took about 134 s, so source round-trip reduction is still required.
+
+Remaining U4 order: complete compact worker/store handoff; qualify bulk table
+identity, defaults, geometry and assignment derivations against every relevant
+direct source observation; add the qualified batch profile and source-bound
+model interpretation/dispositions; then run actual small/medium PF9 fixtures.
+The first bulk approach keeps each real per-object FrameForce call and reduces
+metadata round trips, avoiding invented per-member force provenance.
+
 ### Required data and behavior
 
 - Default product scope is the complete required beam set from the accepted
@@ -1398,8 +1435,15 @@ assurance remains the single hosted PR run.
 `BENCH-ETABS-MEDIUM` contains 1,000 physical members and 100,000 force rows.
 Rows may not be duplicated or padded to meet those sizes. Before timing, each
 workload freezes the source-model byte identity, analysis/result epoch, output
-selection, requested members, expected raw-row count, and normalized snapshot
-identity. Run at least one untimed acquisition and ten measured acquisitions
+selection, requested members, expected raw-row count, source getter-payload
+fingerprint and normalization profile. Keep the untimed baseline's exact
+snapshot identity, then retain and validate each measured run's own snapshot
+identity. Fresh reads legitimately change operation IDs, timestamps, call-ledger
+hashes and the acquisition-bound result epoch; do not require one literal
+snapshot SHA across fresh acquisitions. Compare the complete engineering source
+getter payloads (operation, arguments, direct/array outputs and return code)
+against the frozen baseline while each run passes the unchanged normalization
+and row-accounting checks. Run at least one untimed acquisition and ten measured acquisitions
 per workload, retain every sample, and calculate p95 by the repository's named
 percentile rule.
 

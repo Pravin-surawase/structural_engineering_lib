@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 using StructuralEngineering.Analysis;
 using StructuralEngineering.Contracts;
 
@@ -14,7 +15,8 @@ public sealed record OfflineSnapshotReference(
     string FileSha256,
     string SnapshotId,
     string SnapshotSha256,
-    int ByteCount);
+    int ByteCount,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? TransportSchemaVersion = null);
 
 public sealed record OfflineSnapshotImport(OfflineSnapshotReference Reference, AnalysisSnapshot Snapshot);
 
@@ -61,7 +63,8 @@ public sealed class OfflineSnapshotStore
             fileSha256,
             snapshot.SnapshotId,
             snapshot.SnapshotSha256,
-            bytes.Length);
+            bytes.Length,
+            AnalysisSnapshotTransport.IsCompressed(bytes) ? AnalysisSnapshotTransport.SchemaVersion : null);
         ValidateReference(reference);
 
         var target = GetArtifactPath(reference);
@@ -110,7 +113,8 @@ public sealed class OfflineSnapshotStore
     public string GetArtifactPath(OfflineSnapshotReference reference)
     {
         ValidateReference(reference);
-        return Path.Combine(RootDirectory, Sha256(StrictUtf8.GetBytes(reference.ProjectId)), $"{reference.FileSha256}.json");
+        var extension = reference.TransportSchemaVersion is null ? ".json" : ".sasnap";
+        return Path.Combine(RootDirectory, Sha256(StrictUtf8.GetBytes(reference.ProjectId)), reference.FileSha256 + extension);
     }
 
     private static byte[] ReadBoundedFile(string sourcePath)
@@ -152,6 +156,8 @@ public sealed class OfflineSnapshotStore
 
     private static AnalysisSnapshot ParseVerified(OfflineSnapshotReference reference, byte[] bytes)
     {
+        if (AnalysisSnapshotTransport.IsCompressed(bytes) != (reference.TransportSchemaVersion == AnalysisSnapshotTransport.SchemaVersion))
+            throw new InvalidDataException("The stored snapshot transport differs from its workbook reference.");
         var snapshot = ParseAccepted(bytes);
         EnforceAdmissionLimits(snapshot);
         if (!string.Equals(snapshot.Metadata.ProjectId, reference.ProjectId, StringComparison.Ordinal) ||
@@ -163,6 +169,14 @@ public sealed class OfflineSnapshotStore
 
     private static AnalysisSnapshot ParseAccepted(byte[] bytes)
     {
+        EtabsSnapshotResult result;
+        if (AnalysisSnapshotTransport.IsCompressed(bytes))
+        {
+            using var stream = new MemoryStream(bytes, writable: false);
+            result = AnalysisSnapshotTransport.Read(stream);
+        }
+        else
+        {
         string json;
         try { json = StrictUtf8.GetString(bytes); }
         catch (DecoderFallbackException exception)
@@ -170,7 +184,8 @@ public sealed class OfflineSnapshotStore
             throw new InvalidDataException("Offline snapshot bytes must be strict UTF-8.", exception);
         }
 
-        var result = AnalysisSnapshotCodec.ParseAndValidate(json);
+        result = AnalysisSnapshotCodec.ParseAndValidate(json);
+        }
         if (result.Snapshot is not AnalysisSnapshot snapshot)
         {
             var detail = string.Join(" | ", result.Diagnostics.Select(item => $"{item.Code}: {item.Message}"));
@@ -190,6 +205,8 @@ public sealed class OfflineSnapshotStore
     internal static void ValidateReference(OfflineSnapshotReference reference)
     {
         ArgumentNullException.ThrowIfNull(reference);
+        if (reference.TransportSchemaVersion is not null and not AnalysisSnapshotTransport.SchemaVersion)
+            throw new ArgumentException("The snapshot reference uses an unsupported transport.", nameof(reference));
         if (string.IsNullOrWhiteSpace(reference.ProjectId) || string.IsNullOrWhiteSpace(reference.SnapshotId) ||
             reference.ByteCount < 1)
             throw new ArgumentException("An offline snapshot reference requires project, snapshot, and positive byte-count identities.", nameof(reference));

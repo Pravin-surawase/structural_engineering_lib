@@ -10,6 +10,25 @@ namespace StructAutomate.Tests;
 public sealed class Wp10OfflineSessionTests
 {
     [Fact]
+    public void CompressedImportReopensThroughExplicitTransportWithoutChangingSnapshotIdentity()
+    {
+        using var files = new TemporaryFiles();
+        var snapshot = SyntheticSnapshot();
+        using var output = new MemoryStream();
+        AnalysisSnapshotTransport.Write(output, snapshot);
+        var bytes = output.ToArray();
+        var source = files.Write("input/snapshot.sasnap", bytes);
+        var store = new OfflineSnapshotStore(files.Path("store"));
+        var imported = store.ImportWithSnapshot(source, Sha(bytes));
+        Assert.Equal(AnalysisSnapshotTransport.SchemaVersion, imported.Reference.TransportSchemaVersion);
+        Assert.EndsWith(".sasnap", store.GetArtifactPath(imported.Reference), StringComparison.Ordinal);
+        var reopened = new OfflineSnapshotStore(store.RootDirectory).Read(imported.Reference);
+        Assert.Equal(snapshot.SnapshotSha256, reopened.SnapshotSha256);
+        Assert.Equal(snapshot.RawCapture.RawCaptureSha256, reopened.RawCapture.RawCaptureSha256);
+        Assert.Equal(bytes, File.ReadAllBytes(store.GetArtifactPath(imported.Reference)));
+    }
+
+    [Fact]
     public void ImportReopensExactPortableIdentityAndRawProvenance()
     {
         using var files = new TemporaryFiles();

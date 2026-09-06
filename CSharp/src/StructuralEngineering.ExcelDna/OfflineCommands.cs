@@ -50,7 +50,7 @@ public static partial class OfflineCommands
         using var picker = new System.Windows.Forms.OpenFileDialog
         {
             Title = "Open completed analysis snapshot",
-            Filter = "Portable snapshot (*.json)|*.json",
+            Filter = "Analysis snapshot (*.sasnap;*.json)|*.sasnap;*.json",
             CheckFileExists = true,
             Multiselect = false,
             RestoreDirectory = true

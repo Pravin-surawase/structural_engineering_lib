@@ -26,6 +26,10 @@ Get Forces is implemented in the completion candidate, with real worker and
 signed Excel development proof for capture, cancellation, workbook ownership
 and save/reopen. Compact full-model transport/performance qualification and the
 final installed milestone proof remain active completion work.
+The compact transport now completes the real worker/store path for all 153
+beams / 3,502 actions in the retained model. It preserves the same semantic
+snapshot evidence and fits existing encoded store limits. Direct acquisition
+remains slow; bulk source qualification and PF9 sizes are the next main work.
 
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.

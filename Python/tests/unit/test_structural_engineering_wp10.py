@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import copy
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -14,6 +15,7 @@ from structural_lib.analysis_snapshot import (
     canonical_analysis_snapshot_json,
     canonical_snapshot_json_bytes,
     parse_analysis_snapshot_json,
+    parse_analysis_snapshot_transport,
     parse_etabs_import_request_json,
 )
 
@@ -22,6 +24,22 @@ FIXTURE_PATH = (
     ROOT / "contracts" / "structural-engineering" / "conformance" / "wp10-vectors.json"
 )
 FIXTURE = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+
+
+def test_compressed_snapshot_replays_identity_and_rejects_bad_evidence() -> None:
+    payload = canonical_snapshot_json_bytes(FIXTURE["valid_snapshot"])
+    header = b"STRUCTSNAP-GZIP-1\n"
+    encoded = header + gzip.compress(payload, mtime=0)
+    result = parse_analysis_snapshot_transport(encoded)
+    assert result.snapshot is not None, result.diagnostics
+    assert canonical_snapshot_json_bytes(result.snapshot) == payload
+    corrupt = bytearray(encoded)
+    corrupt[-8] ^= 1
+    duplicate = header + gzip.compress(b'{"schema_version":"duplicate",' + payload[1:], mtime=0)
+    for bad in (bytes(corrupt), duplicate, b"bad-header", encoded[:-5]):
+        rejected = parse_analysis_snapshot_transport(bad)
+        assert rejected.snapshot is None
+        assert rejected.diagnostics[0].code == "INPUT.SCHEMA"
 
 
 def test_wp10_04_emitted_snapshot_matches_dotnet_and_independent_dimensions() -> None:

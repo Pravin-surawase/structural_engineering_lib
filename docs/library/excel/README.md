@@ -34,7 +34,7 @@ XLL load:
    strength is 25 N/mm² and steel yield strength is 500 N/mm². These illustrative
    values come from the shared development preset; they do not replace imported
    materials or approve a real project. Repeating the command preserves edits.
-2. **Open Snapshot** opens a completed portable analysis snapshot JSON file.
+2. **Open Snapshot** opens a completed `.sasnap` file or legacy snapshot JSON.
    Its full geometry, actions and provenance are verified and stored outside the
    workbook, under `%LOCALAPPDATA%\StructAutomate\Projects`. Excel keeps only
    a small document and artifact reference. A raw ETABS capture is not this file.
@@ -78,6 +78,12 @@ are shown in a persistent status window, including rejected operations.
 
 The import admission bounds are 16 MiB, 1,000 members and 10,000 actions. Those
 limits do not qualify whole-model result acquisition or its performance.
+Compact `.sasnap` files keep the same canonical snapshot-v1 data and all its
+provenance in a versioned gzip transport. Their reader bounds expanded JSON at
+256 MiB and verifies both the complete gzip footer and the existing snapshot
+hashes. The workbook's small reference identifies the transport; old saved JSON
+references remain usable. Full-model transport replay has passed for the
+retained 153-beam / 3,502-action model; the larger PF9 workload remains open.
 The Get Forces worker handoff and signed Excel development checks pass for an
 explicit two-beam scope; full-model performance and final installed acceptance
 remain in progress.

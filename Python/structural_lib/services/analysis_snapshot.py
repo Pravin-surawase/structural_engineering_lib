@@ -4,8 +4,12 @@
 from __future__ import annotations
 
 import hashlib
+import gzip
+import io
 import json
 import math
+import struct
+import zlib
 from collections.abc import Iterable, Mapping
 from enum import StrEnum
 from typing import Any, Literal
@@ -29,6 +33,10 @@ from structural_lib.core.analysis_snapshot import (
 
 CANONICALIZATION_VERSION = "pf4-canonical-json-v1"
 MAXIMUM_SNAPSHOT_BYTES = 25_000_000
+SNAPSHOT_TRANSPORT_SCHEMA = "structural.analysis_snapshot_gzip/v1"
+SNAPSHOT_TRANSPORT_HEADER = b"STRUCTSNAP-GZIP-1\n"
+MAXIMUM_TRANSPORT_BYTES = 64 * 1024 * 1024
+MAXIMUM_EXPANDED_SNAPSHOT_BYTES = 256 * 1024 * 1024
 _PROVENANCE = SnapshotProvenanceV1(
     source_references=(
         "PF4 engineering semantic model",
@@ -247,6 +255,33 @@ def parse_analysis_snapshot_json(payload: str | bytes) -> EtabsSnapshotResultV1:
             f"The portable snapshot does not match the strict version-1 schema: {exc}",
             "Correct the required fields, enum tokens, value types, and unknown fields.",
         )
+    return validate_analysis_snapshot(snapshot)
+
+
+def parse_analysis_snapshot_transport(payload: bytes) -> EtabsSnapshotResultV1:
+    """Replay the versioned gzip transport with bounded expansion and unchanged v1 validation.
+
+    These are transport admission ceilings; they do not assert PF9 performance.
+    The legacy uncompressed JSON input limit remains unchanged.
+    """
+    try:
+        if len(payload) > MAXIMUM_TRANSPORT_BYTES or not payload.startswith(SNAPSHOT_TRANSPORT_HEADER):
+            raise ValueError("unsupported or oversized snapshot transport")
+        with gzip.GzipFile(fileobj=io.BytesIO(payload[len(SNAPSHOT_TRANSPORT_HEADER):])) as reader:
+            expanded = reader.read(MAXIMUM_EXPANDED_SNAPSHOT_BYTES + 1)
+        if len(expanded) > MAXIMUM_EXPANDED_SNAPSHOT_BYTES:
+            raise ValueError("expanded snapshot exceeds its bounded byte limit")
+        crc, size = struct.unpack("<II", payload[-8:])
+        if crc != zlib.crc32(expanded) or size != len(expanded):
+            raise ValueError("snapshot requires one complete gzip member with its matching footer")
+        text = expanded.decode("utf-8")
+        _decode_json(text)
+        snapshot = AnalysisSnapshotV1.model_validate_json(text)
+        if len(snapshot.members) > 1000 or len(snapshot.action_rows) > 100_000:
+            raise ValueError("snapshot exceeds the transport member or action-row limit")
+    except (OSError, EOFError, UnicodeDecodeError, ValueError, ValidationError, zlib.error) as exc:
+        return _rejected("INPUT.SCHEMA", "$", f"The compressed snapshot does not match its bounded v1 schema: {exc}",
+                         "Restore a complete supported snapshot within the transport limits.")
     return validate_analysis_snapshot(snapshot)
 
 

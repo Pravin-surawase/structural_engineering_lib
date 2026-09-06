@@ -66,7 +66,14 @@ internal static class ForceWorker
                 else
                 {
                     CheckActive();
-                    var bytes = AnalysisSnapshotCodec.CanonicalJsonBytes(snapshot);
+                    byte[] bytes;
+                    if (request.AdmissionLimits.SnapshotTransport == EtabsForceWorkerCodec.GzipSnapshotTransport)
+                    {
+                        using var encoded = new MemoryStream();
+                        AnalysisSnapshotTransport.Write(encoded, snapshot);
+                        bytes = encoded.ToArray();
+                    }
+                    else bytes = AnalysisSnapshotCodec.CanonicalJsonBytes(snapshot);
                     var limits = request.AdmissionLimits;
                     if (bytes.Length > limits.MaximumBytes || snapshot.ActionRows.Count > limits.MaximumRows || snapshot.Members.Count > limits.MaximumMembers)
                         response = Failed(request.RequestId, requestSha, EtabsContextWorkerState.Fenced, "ETABS.SNAPSHOT_LIMIT",

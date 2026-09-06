@@ -75,7 +75,35 @@ and integrated qualification against the whole-product goal; learning excluded.
   PF9 or the adapter's certified incremental memory metric. Bulk source work
   and explicit large-snapshot transport remain necessary.
 
+- U4 compact transport is now used by the real force worker and external store.
+  The `.sasnap` header and single gzip member retain unchanged snapshot-v1
+  canonical evidence, with bounded encoded/expanded input and explicit footer
+  validation. Legacy JSON references retain their original serialized shape.
+  The protocol request is v2 so transport and caller limits are explicit.
+  Nine focused worker/store tests passed (three external checks skipped in the
+  ordinary run), as did the 20 Python WP10 tests and the repaired .NET transport
+  test. Independent full retained replay passed in Python and .NET; its 26.4 MB
+  canonical payload compresses to 4.1 MB, and .NET read/validation peaked at
+  155,766,784 bytes test-process working set. `force-client-full-development-1`
+  then passed the actual connection/capture/store/cancel path for all 153 beams
+  and 3,502 rows, producing 5,367,323 encoded bytes. The full test took about
+  134 s; it is development evidence, not PF9 or installed acceptance. Bulk
+  metadata/source qualification remains the next unit. No original model or
+  installed package was replaced by these development checks.
+
 ### Issues encountered
+
+- The compressed format implementation initially let malformed gzip errors
+  escape the .NET diagnostic filter, and its Python rejection call omitted the
+  established remediation argument. Focused invalid-input cases caught both.
+  More significantly, .NET's GZipStream accepted complete JSON with a truncated
+  gzip footer while Python rejected it; transport completion was inconsistent.
+- A later WorkbookContract filename guess was absent; the already inspected
+  workbook-store owner supplied its actual metadata/serialization behavior.
+- The frozen PF9 paragraph required a single normalized snapshot identity
+  across fresh acquisitions, but source code binds result epoch and hashes to
+  operation IDs, capture time and actual journals. This would reject otherwise
+  identical valid reads in every repeat.
 
 - U3 found that the 10,000-action Excel admission limit also conflicts with
   PF9's 100,000-row medium target. Existing bounds remain enforced until the
@@ -115,6 +143,17 @@ and integrated qualification against the whole-product goal; learning excluded.
   OS access denied; the launch cause is unconfirmed.
 
 ### Root causes and resolutions
+
+- RR-027: classify InvalidDataException in the stream parser and use the full
+  established Python rejection signature. Independently verify the single gzip
+  member's CRC32 and ISIZE after bounded expansion. Both runtimes now reject
+  the corrupt/truncated cases and accept identical canonical evidence; the
+  20 Python WP10 tests and focused .NET transport test passed. The full
+  4,063,310-byte transport replays all 153 beams/3,502 rows in both runtimes.
+- RR-021: freeze the complete source getter payload fingerprint and source/
+  normalization scope, retain the exact untimed baseline, and validate each
+  timed capture's own identity and row accounting. Actual operation IDs and
+  timestamps are retained, never rewritten to force artificial hash equality.
 
 - RR-005: assumed paths instead of discovering maintained owners. Bounded
   `rg --files` located docs rules and EtabsContextContracts.cs; subsequent reads
@@ -168,12 +207,12 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Rework and recurrence
 
-- RR-005, occurrences=79, minutes=unknown: eight source-owner/key lookup
+- RR-005, occurrences=80, minutes=unknown: nine source-owner/key lookup
   failures and three PowerShell conversion failures in this task; discover
   exact names and preserve runtime types before dispatch.
 - RR-002, occurrences=23, minutes=unknown: actual result availability, mesh
   identities and empty-table behavior required source-qualified handling.
-- RR-021, occurrences=3, minutes=unknown: enforce the full model's source cost
+- RR-021, occurrences=4, minutes=unknown: enforce the full model's source cost
   and every serialization/store boundary before installed qualification.
 - RR-023, occurrences=1, minutes=unknown: align source readers with the typed
   arrays accepted by their adapter contract.
@@ -183,6 +222,8 @@ and integrated qualification against the whole-product goal; learning excluded.
   retained evidence and the bounded owned-file harness completed the inspection.
 - RR-026, occurrences=1, minutes=unknown: bound buffer allocation to the size of
   each hash operation and isolate synchronous allocation measurements.
+- RR-027, occurrences=1, minutes=unknown: explicit compressed completion and
+  diagnostic checks align the two runtime readers.
 
 **Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed paths and implicit PowerShell
 type conversions blocked diagnostics → observed file inventories, explicit

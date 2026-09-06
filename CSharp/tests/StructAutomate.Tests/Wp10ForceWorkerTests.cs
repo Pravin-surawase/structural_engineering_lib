@@ -36,6 +36,34 @@ public sealed class Wp10ForceWorkerTests
     }
 
     [Fact]
+    public void RetainedCompressedSnapshotPreservesFullCanonicalEvidence()
+    {
+        var path = Environment.GetEnvironmentVariable("WP10_TRANSPORT_REPLAY_FILE");
+        var expected = Environment.GetEnvironmentVariable("WP10_TRANSPORT_CANONICAL_SHA256");
+        var output = Environment.GetEnvironmentVariable("WP10_TRANSPORT_RECEIPT");
+        Assert.SkipWhen(string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(expected) || string.IsNullOrWhiteSpace(output),
+            "Requires retained transport, frozen canonical digest and a new external receipt.");
+        Assert.False(File.Exists(output));
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        using var input = File.OpenRead(path!);
+        var result = AnalysisSnapshotTransport.Read(input);
+        Assert.True(result.Snapshot is not null, string.Join("; ", result.Diagnostics.Select(item => item.Message)));
+        var readMilliseconds = watch.Elapsed.TotalMilliseconds;
+        using var hash = SHA256.Create();
+        using (var sink = new CryptoStream(Stream.Null, hash, CryptoStreamMode.Write))
+            AnalysisSnapshotCodec.WriteCanonicalJson(sink, result.Snapshot!);
+        Assert.Equal(expected, Convert.ToHexStringLower(hash.Hash!));
+        using var receipt = new FileStream(output!, FileMode.CreateNew, FileAccess.Write);
+        JsonSerializer.Serialize(receipt, new
+        {
+            schema_version = "wp10-transport-replay-development/v1", pf9_acceptance = false,
+            canonical_sha256 = expected, encoded_bytes = input.Length, read_validate_ms = readMilliseconds,
+            members = result.Snapshot!.Members.Count, rows = result.Snapshot.ActionRows.Count,
+            peak_process_working_set_bytes = System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64
+        });
+    }
+
+    [Fact]
     public void RequestBindsModelContextScopeAndCallerAdmission()
     {
         var request = Request();
@@ -95,13 +123,15 @@ public sealed class Wp10ForceWorkerTests
             new(target.ProcessId, target.ProcessStartedUtc, target.ExecutablePath, "owned qualification"), "context", token);
         Assert.True(result.Artifact is not null, result.Response.Message);
         var context = new EtabsConnectionSession(result.Artifact!, result.OperationDirectory);
-        var members = (Environment.GetEnvironmentVariable("WP10_FORCE_MEMBER_IDS") ?? "104").Split(',', StringSplitOptions.TrimEntries);
+        var scope = Environment.GetEnvironmentVariable("WP10_FORCE_MEMBER_IDS") ?? "104";
+        var members = scope == "all" ? context.Frames.Values.Where(frame => frame.DesignOrientation == EtabsFrameDesignOrientation.Beam)
+            .Select(frame => frame.SourceFrameId).Order(StringComparer.Ordinal).ToArray() : scope.Split(',', StringSplitOptions.TrimEntries);
         var loaded = await EtabsConnectionClient.GetForcesAsync(package!, directory!, Path.Combine(directory!, "store"),
             context, "worker-qualification", "forces", token, memberObjectNames: members);
         Assert.True(loaded.Session is not null, loaded.Response.Message);
         Assert.Equal(members.Order(StringComparer.Ordinal), loaded.Session!.Snapshot.Members.Select(member => member.ObjectId).Order(StringComparer.Ordinal));
         var reference = loaded.Session.Reference;
-        var artifact = Path.Combine(directory!, "forces", "snapshot.json");
+        var artifact = Path.Combine(directory!, "forces", "snapshot.sasnap");
         var before = SHA256.HashData(File.ReadAllBytes(artifact));
         using var cancellation = new CancellationTokenSource();
         var pending = EtabsConnectionClient.GetForcesAsync(package!, directory!, Path.Combine(directory!, "store"),

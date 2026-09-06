@@ -3,7 +3,8 @@ using System.Text.Json;
 
 namespace StructuralEngineering.Contracts;
 
-public sealed record EtabsForceAdmissionLimits(int MaximumBytes, int MaximumRows, int MaximumMembers);
+public sealed record EtabsForceAdmissionLimits(int MaximumBytes, int MaximumRows, int MaximumMembers,
+    string SnapshotTransport = EtabsForceWorkerCodec.JsonSnapshotTransport);
 
 /// <summary>A force read is bound to an accepted context, explicit members and the caller's qualified store limits.</summary>
 public sealed record EtabsForceWorkerRequest(
@@ -23,7 +24,9 @@ public sealed record EtabsForceProgress(string RequestId, string RequestSha256, 
 
 public static class EtabsForceWorkerCodec
 {
-    public const string RequestSchemaVersion = "structural.etabs_force_worker_request/v1";
+    public const string RequestSchemaVersion = "structural.etabs_force_worker_request/v2";
+    public const string JsonSnapshotTransport = "structural.analysis_snapshot/v1";
+    public const string GzipSnapshotTransport = "structural.analysis_snapshot_gzip/v1";
     public const string ResponseSchemaVersion = "structural.etabs_force_worker_response/v1";
     public const string ProgressSchemaVersion = "structural.etabs_force_worker_progress/v1";
 
@@ -98,7 +101,9 @@ public static class EtabsForceWorkerCodec
             string.IsNullOrWhiteSpace(request.ProjectId) || string.IsNullOrWhiteSpace(request.EvidencePath) || string.IsNullOrWhiteSpace(request.SnapshotPath) ||
             request.MemberObjectNames is null || request.MemberObjectNames.Count is < 1 or > 1000 || request.MemberObjectNames.Any(string.IsNullOrWhiteSpace) ||
             !request.MemberObjectNames.SequenceEqual(request.MemberObjectNames.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)) ||
-            request.AdmissionLimits is null || request.AdmissionLimits.MaximumBytes is < 1 or > 25_000_000 ||
+            request.AdmissionLimits is null || request.AdmissionLimits.MaximumBytes < 1 ||
+            request.AdmissionLimits.MaximumBytes > (request.AdmissionLimits.SnapshotTransport == GzipSnapshotTransport ? 64 * 1024 * 1024 : 25_000_000) ||
+            request.AdmissionLimits.SnapshotTransport is not JsonSnapshotTransport and not GzipSnapshotTransport ||
             request.AdmissionLimits.MaximumRows is < 1 or > 100_000 || request.AdmissionLimits.MaximumMembers is < 1 or > 1000 ||
             request.MemberObjectNames.Count > request.AdmissionLimits.MaximumMembers)
             throw new InvalidDataException("The force request has incomplete scope, identity or qualified admission limits.");

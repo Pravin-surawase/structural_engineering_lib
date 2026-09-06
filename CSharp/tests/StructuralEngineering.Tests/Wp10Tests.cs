@@ -94,6 +94,40 @@ public sealed class Wp10Tests
     }
 
     [Fact]
+    public void CompressedTransportRetainsIdentityAndRejectsMalformedEvidence()
+    {
+        var snapshot = AnalysisSnapshotCodec.ParseAndValidate(Fixture["valid_snapshot"]!.ToJsonString()).Snapshot!;
+        using var encoded = new MemoryStream();
+        AnalysisSnapshotTransport.Write(encoded, snapshot);
+        var bytes = encoded.ToArray();
+        Assert.True(AnalysisSnapshotTransport.IsCompressed(bytes));
+        encoded.Position = 0;
+        var replay = AnalysisSnapshotTransport.Read(encoded);
+        Assert.NotNull(replay.Snapshot);
+        Assert.Equal(AnalysisSnapshotCodec.CanonicalJsonBytes(snapshot), AnalysisSnapshotCodec.CanonicalJsonBytes(replay.Snapshot!));
+
+        var invalidJson = "{\"schema_version\":\"duplicate\"," + AnalysisSnapshotCodec.CanonicalJson(snapshot)[1..];
+        using var duplicate = Compressed(System.Text.Encoding.UTF8.GetBytes(invalidJson));
+        Assert.Equal("INPUT.SCHEMA", Assert.Single(AnalysisSnapshotTransport.Read(duplicate).Diagnostics).Code);
+
+        var corrupted = (byte[])bytes.Clone(); corrupted[^8] ^= 1; // gzip CRC32
+        using var badChecksum = new MemoryStream(corrupted);
+        Assert.Null(AnalysisSnapshotTransport.Read(badChecksum).Snapshot);
+        using var truncated = new MemoryStream(bytes[..^5]);
+        Assert.Null(AnalysisSnapshotTransport.Read(truncated).Snapshot);
+        bytes[0] ^= 1;
+        using var badHeader = new MemoryStream(bytes);
+        Assert.Throws<InvalidDataException>(() => AnalysisSnapshotTransport.Read(badHeader));
+
+        static MemoryStream Compressed(byte[] json)
+        {
+            var stream = new MemoryStream(); stream.Write("STRUCTSNAP-GZIP-1\n"u8);
+            using (var gzip = new System.IO.Compression.GZipStream(stream, System.IO.Compression.CompressionLevel.Fastest, leaveOpen: true)) gzip.Write(json);
+            stream.Position = 0; return stream;
+        }
+    }
+
+    [Fact]
     public void CanonicalJsonNormalizesNegativeZeroAndPreservesUnicode()
     {
         var value = new Dictionary<string, object>
