@@ -44,6 +44,11 @@ accepted Connect ETABS product, before implementing existing-force handoff.
 - The formatter's outside-scope guard rejected its run because the parent
   clarified the learning index while formatting was still active. Product and
   lesson C# behavior were unaffected; the final formatting verdict must be rerun.
+- Lower-level file integrity passed but did not record the lifecycle's required
+  candidate-integrity event. Two guessed session-helper paths were absent, and
+  an audit-rejection command was invalid after audit acceptance. Inspecting the
+  actual session owner identified the correct commands. One documentation-only
+  repair records these observations before publication; lesson bytes are unchanged.
 
 ### Root causes and resolutions
 
@@ -51,14 +56,25 @@ accepted Connect ETABS product, before implementing existing-force handoff.
   Finish that clarification and this issue/handoff record, then rerun the
   maintained formatter with no concurrent writes. Keep its exact verdict and
   the subsequent focused checks in the delivery ledger.
+- RR-004: use `./run.sh check --candidate-integrity` for the timed candidate gate;
+  `verification integrity` is only the lower-level file check. Session delivery
+  state determines the admitted rejection command; inspect it before transition.
+  The canonical candidate check passed. RR-005: targeted folder search located
+  the real owner, `scripts/session.py`, instead of the guessed helper filenames.
 
 ### Rework and recurrence
 
 - RR-003, occurrences=6, minutes=unknown: freeze documentation as well as code
   before formatting; serialize every mutation against the byte-scope guard.
+- RR-004, occurrences=11, minutes=unknown: route through the canonical timed
+  candidate gate and inspect admitted delivery transitions before changing state.
+- RR-005, occurrences=62, minutes=unknown: locate script owners using bounded
+  folder search instead of guessing session-helper paths.
 
 **Terminal handoff:** ⚠️ TERMINAL ISSUE: formatter scope guard caught a concurrent
-learning-index edit → complete documentation first and rerun with frozen files.
+learning-index edit → complete documentation first and rerun with frozen files;
+integrity/lifecycle command and helper-path assumptions → use the canonical timed
+check and the inspected session owner. No lesson-content repair was required.
 
 ---
 
