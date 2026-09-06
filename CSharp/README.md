@@ -4,6 +4,8 @@ The Windows Excel product uses .NET 10 and Excel-DNA 1.9.0. This solution contai
 
 ## Build and use
 
+New to C#? Start with the [two product-code lessons](../docs/planning/xll-product/learning/README.md): model data in memory, then the Connect ETABS workflow. Their console lab and offline visual companion use invented data and require no Excel or ETABS session.
+
 Run from `CSharp` with the .NET 10.0.400 SDK:
 
 ```powershell

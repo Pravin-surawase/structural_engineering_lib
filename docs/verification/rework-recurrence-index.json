@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-09-05",
+  "updated": "2026-09-06",
   "tracking_rule": "One occurrence is one confirmed event or repair, not one mention. Reuse an existing RR-NNN for the same root-cause pattern, increment occurrences, update cumulative observed minutes when measured, and add only a deep-detail link. Create a new ID only for a distinct root cause.",
   "time_rule": "Numeric bounds are cumulative observed or reconstructed rework minutes. Null bounds mean the pattern was confirmed but not separately timed; explain the evidence boundary in basis. Child patterns whose aggregate_parent is set must not be added to the parent's time.",
   "patterns": [
@@ -40,30 +40,31 @@
     {
       "id": "RR-003",
       "pattern": "Candidate or evidence frozen before normalization and behavior stability",
-      "occurrences": 5,
+      "occurrences": 6,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed."
+        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed. WP10-05B-FORCES-PLAN edited the learning index while the formatter's byte snapshot was active; its outside-scope guard correctly rejected. Complete all documentation and serialize the repeated formatter against mutations. Rework was not separately timed."
       },
-      "short_solution": "Refresh dependency and generated projections before freeze, format only changed source paths, then run one read-only integrity check after audit acceptance.",
-      "last_seen_task": "WP10-03",
+      "short_solution": "Finish code, docs and generated projections before freeze; serialize mutations against formatting, then run read-only integrity after acceptance.",
+      "last_seen_task": "WP10-05B-FORCES-PLAN",
       "aggregate_parent": "RR-001",
       "details": [
-        "docs/planning/xll-product/wp09-postmortem.md#corrected-candidate-sequence"
+        "docs/planning/xll-product/wp09-postmortem.md#corrected-candidate-sequence",
+        "docs/SESSION_LOG.md"
       ]
     },
     {
       "id": "RR-004",
       "pattern": "Session or handoff lifecycle contract missed",
-      "occurrences": 10,
+      "occurrences": 11,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. XLL-AUTOMATION-PRODUCT used free-form no-recurrence prose instead of the canonical empty marker or indexed rows; closeout identified the schema mismatch. Correction time was not isolated."
+        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. XLL-AUTOMATION-PRODUCT used free-form no-recurrence prose instead of the canonical empty marker or indexed rows; closeout identified the schema mismatch. Correction time was not isolated. WP10-05B-FORCES-PLAN called the lower-level file integrity CLI instead of the timed candidate gate and then selected an invalid rejection transition after acceptance. Inspect session.py and use check --candidate-integrity plus the admitted delivery transition. File checks passed; a documentation-only repair records the observations. Correction time was not isolated."
       },
-      "short_solution": "Admit intake, use shared completion parsing, keep projected prose location-independent, refresh the handoff, and preserve delivery history.",
-      "last_seen_task": "XLL-AUTOMATION-PRODUCT",
+      "short_solution": "Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.",
+      "last_seen_task": "WP10-05B-FORCES-PLAN",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -72,14 +73,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 61,
+      "occurrences": 62,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape. WP10-05B added four untimed events: unquoted PowerShell Git tree braces, two rg wildcard-path owner searches, and an Int32 supplied to an exact by-ref API enum. Quoted expressions, folder glob filters and the installed boxed enum resolved them. A later formatter-owner filename guess was absent; registry/source search found the maintained owner. This fifth event was untimed."
+        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape. WP10-05B added four untimed events: unquoted PowerShell Git tree braces, two rg wildcard-path owner searches, and an Int32 supplied to an exact by-ref API enum. Quoted expressions, folder glob filters and the installed boxed enum resolved them. A later formatter-owner filename guess was absent; registry/source search found the maintained owner. This fifth event was untimed. WP10-05B-FORCES-PLAN guessed session_delivery.py and session_usage.py while locating the gate owner; bounded rg over scripts found session.py. This owner-lookup event was untimed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-05B",
+      "last_seen_task": "WP10-05B-FORCES-PLAN",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",

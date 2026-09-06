@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/learning/">
+    <Project Path="learning/ConnectionLessons/ConnectionLessons.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/StructAutomate.Contracts/StructAutomate.Contracts.csproj" />
     <Project Path="src/StructAutomate.Engineering/StructAutomate.Engineering.csproj" />

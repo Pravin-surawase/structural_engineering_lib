@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Offline visual practice for the first two StructAutomate C# lessons. Invented geometry and a connection ownership simulation.">
+<title>Inside StructAutomate · Two C# lessons</title>
+<style>
+:root{color-scheme:light;--ink:#18332f;--muted:#536b66;--paper:#f5f6f0;--card:#fff;--line:#d6dfd7;--green:#146553;--lime:#e4f1c3;--purple:#7962ad;--amber:#8a5318}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1180px;margin:auto;padding:44px 28px 60px}header{max-width:850px;margin-bottom:30px}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:750;color:var(--green)}h1{font-size:clamp(32px,5vw,54px);line-height:1.1;letter-spacing:-.035em;margin:14px 0 18px}h2{font-size:25px;line-height:1.2;margin:8px 0 12px}h3{font-size:16px;margin:0 0 12px}p{margin:0 0 14px}.muted{color:var(--muted)}a{color:var(--green);text-underline-offset:3px}nav{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}nav a,.pill{border:1px solid var(--line);border-radius:30px;padding:5px 14px;font-size:14px;background:white}.notice{border-left:3px solid var(--green);padding:10px 16px;background:#e9efe5;font-size:14px;margin:24px 0 36px}.lesson{margin-top:40px;scroll-margin-top:20px}.lesson-head{display:flex;align-items:flex-start;gap:17px;margin-bottom:20px}.number{font-size:21px;background:var(--green);color:white;min-width:44px;height:44px;display:grid;place-items:center;border-radius:13px}.grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;min-width:0}.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}button,select{font:inherit;border:1px solid #acbeb4;background:white;color:var(--ink);border-radius:9px;padding:8px 14px;cursor:pointer}button:hover,select:hover{background:#edf4e9}button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #9254c3;outline-offset:3px}button[aria-pressed=true],button.primary{background:var(--green);color:white;border-color:var(--green)}button:disabled{opacity:.45;cursor:default}.model{width:100%;height:auto;display:block;background:#f8faf5;border-radius:12px;border:1px solid #e4e9df}.model text{font:14px system-ui,sans-serif;fill:var(--ink)}.member{stroke:#a1afa6;stroke-width:7;stroke-linecap:round}.member.neighbour{stroke:#86a974;stroke-width:10}.member.selected{stroke:var(--green);stroke-width:12}.member.separate{stroke-dasharray:12 8}.joint{fill:white;stroke:var(--ink);stroke-width:2}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin-top:10px}.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;background:var(--green)}.dot.neighbour{background:#86a974}.dot.other{background:#a1afa6}.data{display:grid;grid-template-columns:110px minmax(0,1fr);margin:0;font-size:14px;gap:10px 12px}.data dt{color:var(--muted)}.data dd{margin:0;font-weight:650;overflow-wrap:anywhere}.result{background:var(--lime);border-radius:10px;padding:13px 16px;margin:18px 0 0}.result strong{display:block}code,pre{font-family:Consolas,"Cascadia Code",monospace;font-size:13px}pre{background:#19382f;color:#edf5e8;border-radius:12px;padding:16px;overflow:auto;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;margin:16px 0 0}details{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}summary{font-weight:650;cursor:pointer}details p{margin-top:12px;font-size:14px}.stepper{display:flex;gap:5px;margin:20px 0}.step{height:7px;border-radius:4px;background:#e1e7df;flex:1}.step.done{background:var(--green)}.state{font-size:22px;font-weight:720;line-height:1.3;margin-bottom:10px;min-height:57px}.lane{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.lane div{border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px}.lane strong{display:block;font-size:17px}.badge{font-size:12px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.07em}#events{padding-left:22px;font-size:14px;min-height:135px}#events li{margin:6px 0}footer{border-top:1px solid var(--line);padding-top:25px;margin-top:40px;font-size:14px}.question{font-size:18px;font-weight:650}small{font-size:13px;color:var(--muted)}select{max-width:100%}.callout{font-size:14px;margin-top:15px;color:var(--muted)}noscript p{background:#fff2db;padding:18px}
+@media(max-width:760px){main{padding:25px 16px 40px}.grid{grid-template-columns:1fr}.card{padding:18px}.state{min-height:0}h1{font-size:36px}.lesson-head{gap:12px}.lane{grid-template-columns:1fr 1fr}.data{grid-template-columns:95px 1fr}}
+@media(prefers-reduced-motion:no-preference){button{transition:background .15s}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">Engineering intuition → readable C#</div>
+<h1>See the data.<br>Follow the connection.</h1>
+<p class="muted">A hands-on companion to your first two product-code lessons. Predict what happens, try it, then follow the same idea in our real source files.</p>
+<nav aria-label="Lessons"><a href="#model">01 · Model data</a><a href="#workflow">02 · Connection</a><a href="01-model-data.md">Read Lesson 1</a><a href="02-connect-workflow.md">Read Lesson 2</a></nav>
+</header>
+<div class="notice"><strong>Practice only.</strong> Invented model, JavaScript simulation, no external requests. This page does not execute C#, connect to Excel/ETABS, or perform structural design. The separate console lab runs C# and reuses the real model index class.</div>
+<noscript><p>Enable JavaScript for the interactive exercises, or read the two linked lessons for the complete diagrams, examples and answers.</p></noscript>
+
+<section class="lesson" id="model" aria-labelledby="model-title">
+<div class="lesson-head"><span class="number" aria-hidden="true">01</span><div><div class="eyebrow">Capture once · look up locally</div><h2 id="model-title">Which frames share a joint?</h2><p class="muted">Choose a frame. Predict its neighbours before reading the lookup result.</p></div></div>
+<div class="grid">
+<div class="card">
+<h3>Select a source frame</h3>
+<div class="controls" id="frames" aria-label="Select frame">
+<button type="button" data-frame="B1" aria-pressed="true">B1 · beam</button>
+<button type="button" data-frame="B2" aria-pressed="false">B2 · beam</button>
+<button type="button" data-frame="C1" aria-pressed="false">C1 · column</button>
+<button type="button" data-frame="X1" aria-pressed="false">X1 · beam</button>
+</div>
+<svg class="model" viewBox="0 0 660 330" role="img" aria-labelledby="geometry-title geometry-desc">
+<title id="geometry-title">Four source frame centrelines</title>
+<desc id="geometry-desc">B1 and B2 share P2 with column C1. X1 begins at distinct point P5, coincident with P2. The sketch is a projected schematic, not a design model.</desc>
+<line id="line-B1" class="member" x1="65" y1="130" x2="325" y2="130"/>
+<line id="line-B2" class="member" x1="325" y1="130" x2="595" y2="130"/>
+<line id="line-C1" class="member" x1="325" y1="265" x2="325" y2="130"/>
+<line id="line-X1" class="member separate" x1="325" y1="130" x2="445" y2="42"/>
+<circle class="joint" cx="65" cy="130" r="7"/><circle class="joint" cx="325" cy="130" r="7"/>
+<circle class="joint" cx="595" cy="130" r="7"/><circle class="joint" cx="325" cy="265" r="7"/>
+<circle cx="325" cy="130" r="14" fill="none" stroke="#7962ad" stroke-width="2" stroke-dasharray="4 3"/>
+<circle class="joint" cx="445" cy="42" r="7"/>
+<text x="50" y="158">P1</text><text x="570" y="158">P3</text><text x="340" y="272">P4</text><text x="460" y="45">P6</text>
+<text x="180" y="112">B1</text><text x="450" y="112">B2</text><text x="345" y="218">C1</text><text x="365" y="57">X1</text>
+<text x="230" y="168">P2 + P5</text><text x="35" y="307">Same coordinates. Two distinct source IDs.</text>
+</svg>
+<div class="legend"><span><i class="dot"></i>Selected</span><span><i class="dot neighbour"></i>Shares an endpoint ID</span><span><i class="dot other"></i>Other</span></div>
+<p class="callout">Projected centreline sketch, not to scale. The dashed ring marks P5 at P2's location; the IDs remain separate. No support or physical-span interpretation is made.</p>
+<details><summary>Predict: why is X1 not connected to B1?</summary><p>B1 uses P2. X1 uses P5. Equal coordinates do not change their distinct IDs. Automatically merging them would alter the source topology.</p></details>
+</div>
+<div class="card">
+<h3>The in-memory lookup</h3>
+<div id="model-result" aria-live="polite" aria-atomic="true">
+<dl class="data"><dt>Selected ID</dt><dd id="selected-id"></dd><dt>Orientation</dt><dd id="orientation"></dd><dt>Endpoints</dt><dd id="endpoints"></dd><dt>Coordinates</dt><dd id="coordinates"></dd><dt>Section ID</dt><dd id="section-id"></dd><dt>Neighbours</dt><dd id="neighbours"></dd></dl>
+<div class="result"><strong>One inventory stays loaded.</strong><span>Choosing a frame does not reacquire or discard the other frames.</span></div>
+</div>
+<pre id="lookup-code" aria-label="Illustrative C# lookup"></pre>
+<details><summary>Where is the heavy data?</summary><p>The current product holds its captured geometry in a workbook-bound C# session with external evidence files. Frame review creates no worksheet. The assumptions sheet and future review outputs serve different purposes.</p></details>
+<p class="callout">Source geometry and adjacency are available. Forces, supports, physical spans, strengths and design checks are absent from this capture.</p>
+</div>
+</div>
+</section>
+
+<section class="lesson" id="workflow" aria-labelledby="workflow-title">
+<div class="lesson-head"><span class="number" aria-hidden="true">02</span><div><div class="eyebrow">Start · wait · validate ownership · complete</div><h2 id="workflow-title">Who owns the result?</h2><p class="muted">A connection starts in workbook A. Change what happens while it waits.</p></div></div>
+<div class="grid">
+<div class="card">
+<label for="scenario"><strong>Choose a scenario</strong></label>
+<div class="controls"><select id="scenario">
+<option value="success">Success · stay in A</option><option value="switch">Switch to workbook B</option><option value="close">Close workbook A</option><option value="reopen">Close and reopen A</option><option value="stale">A newer request replaces R1</option><option value="cancel">Cancel R1</option><option value="reject">Worker returns a rejected result</option>
+</select></div>
+<div class="stepper" aria-hidden="true"><span class="step"></span><span class="step"></span><span class="step"></span><span class="step"></span><span class="step"></span></div>
+<div id="workflow-result" aria-live="polite" aria-atomic="true"><div class="badge" id="phase"></div><p class="state" id="state"></p><p id="explanation" class="muted"></p></div>
+<div class="controls"><button class="primary" id="next" type="button">Next step</button><button id="reset" type="button">Reset scenario</button></div>
+<div class="lane"><div>Workbook A<strong id="book-a"></strong></div><div>Workbook B<strong id="book-b"></strong></div></div>
+<dl class="data"><dt>Active book</dt><dd id="active-book"></dd><dt>A's entry</dt><dd id="entry"></dd><dt>A's request</dt><dd id="request"></dd><dt>Cleanup</dt><dd id="cleanup"></dd></dl>
+</div>
+<div class="card">
+<h3>Read the operation as a story</h3>
+<ol id="events"></ol>
+<p class="question">Would you accept this result?</p>
+<p class="muted">Check the entry, request and result. A workbook name alone is not enough.</p>
+<pre>Entry still exists?
+Same entry object?
+Same current request?
+Accepted result, cleanup complete?
+→ Publish only if all apply.</pre>
+<details><summary>How does the real product differ?</summary><p>The real client verifies process/request identity, packaged worker and artifact/journal evidence. A separate worker's STA broker owns ETABS getters and cleanup. Excel completion is dispatched to its main thread. This page only simulates the ownership idea; it cannot test COM, files or real cleanup.</p></details>
+<p class="callout">Cancellation requests a stop. It is not proof that cleanup has finished. The real operation retains ownership until its cleanup state is resolved.</p>
+</div>
+</div>
+</section>
+<footer><p><strong>Now try it in C#.</strong> Open PowerShell in the repository's <code>CSharp</code> folder, restore the lesson project, then run:</p><pre>dotnet run --project learning/ConnectionLessons -c Release --no-restore -- model B1
+dotnet run --project learning/ConnectionLessons -c Release --no-restore -- workflow switch
+dotnet run --project learning/ConnectionLessons -c Release --no-restore -- check</pre><p style="margin-top:16px"><a href="01-model-data.md">Lesson 1: setup, code and exercises</a> · <a href="02-connect-workflow.md">Lesson 2: real code trace and answers</a></p><small>Teaching baseline: WP10-05B connection packet / PR 975. No learner completion is recorded. This page works locally without a server or external dependencies.</small></footer>
+</main>
+<script>
+"use strict";
+const points={P1:[0,0,3000],P2:[4000,0,3000],P3:[8000,0,3000],P4:[4000,0,0],P5:[4000,0,3000],P6:[4000,3000,3000]};
+const frames={B1:{ends:["P1","P2"],kind:"Beam",section:"S-BEAM"},B2:{ends:["P2","P3"],kind:"Beam",section:"S-BEAM"},C1:{ends:["P4","P2"],kind:"Column",section:"S-COLUMN"},X1:{ends:["P5","P6"],kind:"Beam",section:"S-BEAM"}};
+const el=id=>document.getElementById(id);
+function selectFrame(id){
+ const frame=frames[id];
+ const neighbours=Object.keys(frames).filter(key=>key!==id&&frames[key].ends.some(point=>frame.ends.includes(point))).sort();
+ el("selected-id").textContent=id;el("orientation").textContent=frame.kind;el("endpoints").textContent=frame.ends.join(" → ");el("section-id").textContent=frame.section;
+ el("coordinates").textContent=frame.ends.map(point=>point+": ("+points[point].join(", ")+") mm").join("; ");
+ el("neighbours").textContent=neighbours.join(", ")||"None by source ID";
+ el("lookup-code").textContent='var frame = session.Frames["'+id+'"];\nvar neighbours = session.Neighbours("'+id+'");\n// '+(neighbours.join(", ")||"No neighbours");
+ document.querySelectorAll("[data-frame]").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.frame===id)));
+ Object.keys(frames).forEach(key=>el("line-"+key).setAttribute("class","member"+(key==="X1"?" separate":"")+(key===id?" selected":neighbours.includes(key)?" neighbour":"")));
+}
+document.querySelectorAll("[data-frame]").forEach(button=>button.addEventListener("click",()=>selectFrame(button.dataset.frame)));
+let phase=0;
+const changes={success:"A stays open with request R1.",switch:"Switch to B. R1 still belongs to A.",close:"A closes: invalidate R1 and evict entry E1.",reopen:"A reopens with a new entry E2, not E1.",stale:"R1 is invalidated. New request R2 owns E1.",cancel:"Cancel R1. Invalidate its request; cleanup is pending.",reject:"Worker cannot provide an accepted context."};
+const outcomes={success:"Accepted into A",switch:"Accepted into A",close:"Ignored: A is closed",reopen:"Ignored: entry replaced",stale:"Ignored: newer request",cancel:"Ignored: R1 cancelled",reject:"Rejected: no context"};
+function renderWorkflow(){
+ const scenario=el("scenario").value,changed=phase>=3,done=phase===5,accepted=done&&(scenario==="success"||scenario==="switch");
+ let active="A",entry="E1",request=phase===0?"None":"R1";
+ if(changed){if(scenario==="switch"||scenario==="close")active="B";if(scenario==="close"){entry="Evicted";request="None";}if(scenario==="reopen"){entry="E2 (new object)";request="None";}if(scenario==="stale")request="R2";if(scenario==="cancel")request="None";}
+ if(done&&(scenario==="success"||scenario==="switch"||scenario==="reject"))request="None";
+ const states=["Ready to start","Request R1 belongs to A","Waiting without blocking the caller",changes[scenario],"Simulated cleanup has finished",outcomes[scenario]];
+ const explanations=["Predict the outcome, then advance one step at a time.","Capture entry E1 and request R1. Started does not mean completed.","The real product uses a background client and a separate worker. This is only a teaching simulation.","The result has not been delivered yet. Which ownership facts changed?","The teaching reply is now ready. Real cleanup requires evidence, not a timer or this display.",accepted?"The entry and request still match. Only A receives context.":"Do not publish this result into a different entry or operation."];
+ el("phase").textContent="Step "+phase+" of 5";el("state").textContent=states[phase];el("explanation").textContent=explanations[phase];
+ el("book-a").textContent=changed&&scenario==="close"?"Closed":accepted?"Context stored":"No context";el("book-b").textContent="No context";
+ el("active-book").textContent=active;el("entry").textContent=entry;el("request").textContent=request;el("cleanup").textContent=phase===0?"Not started":phase>=4?"Complete (simulated)":"Pending";
+ el("next").disabled=done;document.querySelectorAll(".step").forEach((step,index)=>step.classList.toggle("done",index<phase));
+ const events=["Start R1 for workbook A.","Wait for the worker reply.",changes[scenario],"Finish simulated cleanup; make reply available.",outcomes[scenario]];
+ el("events").replaceChildren();events.slice(0,phase).forEach(event=>{const item=document.createElement("li");item.textContent=event;el("events").append(item);});
+}
+el("next").addEventListener("click",()=>{phase=Math.min(5,phase+1);renderWorkflow();});
+el("reset").addEventListener("click",()=>{phase=0;renderWorkflow();});
+el("scenario").addEventListener("change",()=>{phase=0;renderWorkflow();});
+selectFrame("B1");renderWorkflow();
+</script>
+</body>
+</html>
