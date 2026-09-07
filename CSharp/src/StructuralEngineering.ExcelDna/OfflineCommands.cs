@@ -23,6 +23,9 @@ public static partial class OfflineCommands
         public EtabsConnectionSession? Context { get; set; }
         public string? ConnectionRequestId { get; set; }
         public CancellationTokenSource? ConnectionCancellation { get; set; }
+        public string? ForceRequestId { get; set; }
+        public CancellationTokenSource? ForceCancellation { get; set; }
+        public string? ForceContextArtifactSha256 { get; set; }
     }
     private static readonly Dictionary<long, Entry> Entries = [];
     private static readonly Guid AppEvents = new("00024413-0000-0000-C000-000000000046");
@@ -47,7 +50,7 @@ public static partial class OfflineCommands
         using var picker = new System.Windows.Forms.OpenFileDialog
         {
             Title = "Open completed analysis snapshot",
-            Filter = "Portable snapshot (*.json)|*.json",
+            Filter = "Analysis snapshot (*.sasnap;*.json)|*.sasnap;*.json",
             CheckFileExists = true,
             Multiselect = false,
             RestoreDirectory = true
@@ -111,7 +114,7 @@ public static partial class OfflineCommands
 
     internal static void Unload()
     {
-        foreach (var entry in Entries.Values) { CancelEntryConnection(entry); entry.Window?.Dispose(); }
+        foreach (var entry in Entries.Values) { CancelEntryConnection(entry); CancelEntryForces(entry); entry.Window?.Dispose(); }
         Entries.Clear();
         if (_eventApplication is not null)
         {
@@ -123,7 +126,7 @@ public static partial class OfflineCommands
 
     private static void OnBeforeClose(object workbook, ref bool cancel)
     {
-        try { if (Entries.Remove(Key(workbook), out var entry)) { CancelEntryConnection(entry); entry.Window?.Dispose(); } }
+        try { if (Entries.Remove(Key(workbook), out var entry)) { CancelEntryConnection(entry); CancelEntryForces(entry); entry.Window?.Dispose(); } }
         finally { OfflineWorkbookStore.Release(workbook); }
         // A cancelled close merely requires reloading validated evidence on the next review.
     }
@@ -131,13 +134,17 @@ public static partial class OfflineCommands
     private static string ImportInto(object workbook, OfflineWorkbookStore store, Entry entry, string path,
         string? expectedSha256, string directory, int failure)
     {
+        CancelEntryForces(entry);
+        entry.Window?.EndPendingConnection();
+        entry.ForceContextArtifactSha256 = null;
         var state = RequireState(store);
         var assumptions = store.ReadAssumptions(state);
         var artifacts = new OfflineSnapshotStore(directory);
-        var reference = artifacts.Import(path, expectedSha256);
+        var imported = artifacts.ImportWithSnapshot(path, expectedSha256);
+        var reference = imported.Reference;
         if (state.SnapshotReference is not null && state.SnapshotReference.ProjectId != reference.ProjectId)
             throw new InvalidOperationException("This workbook is bound to another project. Use a new workbook for a different project.");
-        var session = new OfflineSnapshotSession(reference, artifacts.Read(reference));
+        var session = new OfflineSnapshotSession(reference, imported.Snapshot);
         store.CommitImport(state, reference, artifacts.RootDirectory, assumptions, failure);
         entry.Session = session;
         entry.Window?.ClearReview();
@@ -298,7 +305,7 @@ public static partial class OfflineCommands
     }
     private static string DefaultStoreDirectory() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StructAutomate", "Projects");
     private static string Result(string state, string message, object? details = null) => JsonSerializer.Serialize(new { state, message, details });
-    private static string Summary(OfflineSnapshotSession session, string message) => Result("completed", message,
+    private static string Summary(OfflineSnapshotSession session, string message, bool connected = false) => Result("completed", message,
         new
         {
             project_id = session.Reference.ProjectId,
@@ -306,7 +313,7 @@ public static partial class OfflineCommands
             file_sha256 = session.Reference.FileSha256,
             member_count = session.Snapshot.Members.Count,
             action_count = session.Snapshot.ActionRows.Count,
-            live_connected = false,
+            live_connected = connected,
             engineering = "not_evaluated"
         });
 }

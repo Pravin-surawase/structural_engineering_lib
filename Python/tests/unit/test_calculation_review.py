@@ -9,6 +9,7 @@ import pytest
 
 from structural_lib.core.calculation_dossier import (
     CalculationDossierBuildRequestV1,
+    CalculationDossierV1,
     DossierArtifactV1,
 )
 from structural_lib.services.calculation_dossier import build_calculation_dossier_v1
@@ -89,7 +90,13 @@ def test_python_export_replays_all_service_identities_and_exact_frozen_node_fixt
     fixture = (
         ROOT / "excel_addin/tests/fixtures/calculation-review-serviceability-v3.json"
     )
-    assert transport == json.loads(fixture.read_text(encoding="utf-8"))
+    frozen_transport = json.loads(fixture.read_text(encoding="utf-8"))
+    # Calculation identities bind the executing library's code/data bytes.
+    # Replay the retained historical dossier exactly; new calculations have new identities.
+    frozen_dossier = CalculationDossierV1.model_validate_json(
+        frozen_transport["dossier_json"]
+    )
+    assert EXPORT.export_review(frozen_dossier) == frozen_transport
     assert (
         hashlib.sha256(transport["dossier_json"].encode()).hexdigest()
         == transport["dossier_content_sha256"]

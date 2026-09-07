@@ -1,4 +1,4 @@
-# WP01-WP10-05B implementation status
+# WP01–WP10 implementation status
 
 This record captures the review performed after each work packet and any change
 to the next packet before implementation continues.
@@ -729,3 +729,29 @@ The owner-approved order is connection/context, existing-force handoff and
 WP10-05C multi-member result qualification, then actual-bar design orchestration.
 Controlled copied-model reanalysis and overnight optimization remain subsequent
 work under the whole-product workflow.
+
+## WP10 complete source acquisition and final qualification
+
+The completion candidate adds a versioned whole-group force capture, source
+model interpretation, production worker and Excel Get Forces handoff. It reads
+the required source force set once, retains context-only rows and exact row
+dispositions, then filters required beams locally. Source orientation, connected
+frames/points, assignments, matrices, unit basis and material classification
+come from qualified source getters; physical spans and supports remain explicit
+needs-input where the source evidence does not establish them.
+
+Heavy data stays in memory and immutable external snapshots. The new rows
+transport preserves canonical v1 identities with bounded encoded/expanded input;
+old JSON/gzip snapshots remain readable. The actual production worker/store
+passed 153 members / 3,502 rows and 1,000 members / 100,000 rows, including exact
+offline reopen and cancellation. Independent Python replay accepted the complete
+medium transport. RR-032 records and fixes the Windows progress-file race found
+by the first medium worker run.
+
+The [WP10 completion contract](../planning/xll-product/wp10-etabs-read-adapter.md#wp10-completion-contract--2026-09-07)
+owns final signed installed Excel, cumulative correctness and hosted acceptance.
+Exact final source/XLL/worker receipts remain external; this source checkpoint
+does not manufacture a future installed or merge verdict. The owner explicitly
+deferred unchanged PF9 timing/working-set certification to project-end
+WP10-PERF-FINAL. Next application work is the design mapper and actual-bar
+orchestration, then bounded search and controlled copied-model reanalysis.

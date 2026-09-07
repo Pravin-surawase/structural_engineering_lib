@@ -3,9 +3,13 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
+import io
 import json
 import math
+import struct
+import zlib
 from collections.abc import Iterable, Mapping
 from enum import StrEnum
 from typing import Any, Literal
@@ -29,6 +33,81 @@ from structural_lib.core.analysis_snapshot import (
 
 CANONICALIZATION_VERSION = "pf4-canonical-json-v1"
 MAXIMUM_SNAPSHOT_BYTES = 25_000_000
+SNAPSHOT_TRANSPORT_SCHEMA = "structural.analysis_snapshot_gzip/v1"
+SNAPSHOT_TRANSPORT_HEADER = b"STRUCTSNAP-GZIP-1\n"
+SNAPSHOT_ROWS_TRANSPORT_HEADER = b"STRUCTSNAP-ROWS-1\n"
+MAXIMUM_TRANSPORT_BYTES = 64 * 1024 * 1024
+MAXIMUM_EXPANDED_SNAPSHOT_BYTES = 256 * 1024 * 1024
+# Frozen rows-1 wire columns. Containers and all raw source evidence remain objects;
+# only these repeated leaf records replace property names with positional columns.
+_PACKED_ACTION_COLUMNS = (
+    "action_basis",
+    "analysis_element_id",
+    "force_unit",
+    "m2_knm",
+    "m3_knm",
+    "member_id",
+    "moment_unit",
+    "object_id",
+    "output_case_name",
+    "p_kn",
+    "provenance",
+    "row_id",
+    "selection_id",
+    "source_row_id",
+    "station_id",
+    "step_number",
+    "step_type",
+    "t_knm",
+    "v2_kn",
+    "v3_kn",
+)
+_PACKED_STATION_COLUMNS = (
+    "analysis_element_id",
+    "element_station_mm",
+    "evidence_reference",
+    "member_id",
+    "normalized_ratio",
+    "object_id",
+    "object_station_mm",
+    "physical_station_mm",
+    "side",
+    "station_id",
+)
+_PACKED_DISPOSITION_COLUMNS = (
+    "approval_reference",
+    "canonical_id",
+    "diagnostic_codes",
+    "disposition",
+    "reason_code",
+    "record_kind",
+    "source_record_id",
+)
+_PACKED_RAW_FORCE_COLUMNS = (
+    "analysis_element_id",
+    "element_station",
+    "m2",
+    "m3",
+    "object_id",
+    "object_station",
+    "output_case_name",
+    "p",
+    "source_row_id",
+    "source_row_index",
+    "step_number",
+    "step_type",
+    "t",
+    "v2",
+    "v3",
+)
+_PACKED_PROVENANCE_COLUMNS = (
+    "call_id",
+    "concurrency_basis",
+    "evidence_reference",
+    "getter_method",
+    "signature_authority_sha256",
+    "source_row_index",
+)
 _PROVENANCE = SnapshotProvenanceV1(
     source_references=(
         "PF4 engineering semantic model",
@@ -248,6 +327,86 @@ def parse_analysis_snapshot_json(payload: str | bytes) -> EtabsSnapshotResultV1:
             "Correct the required fields, enum tokens, value types, and unknown fields.",
         )
     return validate_analysis_snapshot(snapshot)
+
+
+def parse_analysis_snapshot_transport(payload: bytes) -> EtabsSnapshotResultV1:
+    """Replay the versioned gzip transport with bounded expansion and unchanged v1 validation.
+
+    These are transport admission ceilings; they do not assert PF9 performance.
+    The legacy uncompressed JSON input limit remains unchanged.
+    """
+    try:
+        compact = payload.startswith(SNAPSHOT_ROWS_TRANSPORT_HEADER)
+        if len(payload) > MAXIMUM_TRANSPORT_BYTES or not (
+            compact or payload.startswith(SNAPSHOT_TRANSPORT_HEADER)
+        ):
+            raise ValueError("unsupported or oversized snapshot transport")
+        with gzip.GzipFile(
+            fileobj=io.BytesIO(payload[len(SNAPSHOT_TRANSPORT_HEADER) :])
+        ) as reader:
+            expanded = reader.read(MAXIMUM_EXPANDED_SNAPSHOT_BYTES + 1)
+        if len(expanded) > MAXIMUM_EXPANDED_SNAPSHOT_BYTES:
+            raise ValueError("expanded snapshot exceeds its bounded byte limit")
+        crc, size = struct.unpack("<II", payload[-8:])
+        if crc != zlib.crc32(expanded) or size != len(expanded):
+            raise ValueError(
+                "snapshot requires one complete gzip member with its matching footer"
+            )
+        text = expanded.decode("utf-8")
+        document = _decode_json(text)
+        if compact:
+            _expand_snapshot_rows(document)
+            # Strict JSON-mode validation preserves the original enum/type rules.
+            # The bounded wire payload is decoded into the identical logical v1 records.
+            text = json.dumps(
+                document, ensure_ascii=False, allow_nan=False, separators=(",", ":")
+            )
+        del document, expanded
+        snapshot = AnalysisSnapshotV1.model_validate_json(text)
+        if len(snapshot.members) > 1000 or len(snapshot.action_rows) > 100_000:
+            raise ValueError(
+                "snapshot exceeds the transport member or action-row limit"
+            )
+    except (
+        OSError,
+        EOFError,
+        UnicodeDecodeError,
+        ValueError,
+        ValidationError,
+        zlib.error,
+    ) as exc:
+        return _rejected(
+            "INPUT.SCHEMA",
+            "$",
+            f"The compressed snapshot does not match its bounded v1 schema: {exc}",
+            "Restore a complete supported snapshot within the transport limits.",
+        )
+    return validate_analysis_snapshot(snapshot)
+
+
+def _expand_snapshot_rows(document: dict[str, Any]) -> None:
+    def row(value: Any, columns: tuple[str, ...]) -> dict[str, Any]:
+        if not isinstance(value, list) or len(value) != len(columns):
+            raise ValueError(
+                f"a rows-1 record requires exactly {len(columns)} positional columns"
+            )
+        return dict(zip(columns, value, strict=True))
+
+    def collection(
+        container: Any, name: str, columns: tuple[str, ...]
+    ) -> list[dict[str, Any]]:
+        if not isinstance(container, dict) or not isinstance(container.get(name), list):
+            raise ValueError(f"rows-1 requires a complete {name} array")
+        result = [row(value, columns) for value in container[name]]
+        container[name] = result
+        return result
+
+    actions = collection(document, "action_rows", _PACKED_ACTION_COLUMNS)
+    for action in actions:
+        action["provenance"] = row(action["provenance"], _PACKED_PROVENANCE_COLUMNS)
+    collection(document, "stations", _PACKED_STATION_COLUMNS)
+    collection(document.get("row_ledger"), "rows", _PACKED_DISPOSITION_COLUMNS)
+    collection(document.get("raw_capture"), "force_rows", _PACKED_RAW_FORCE_COLUMNS)
 
 
 def _ids(values: Iterable[Any], attribute: str) -> list[str]:
@@ -539,6 +698,8 @@ def _validate_mapping(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 | N
             "Preserve source-row ordinal then identity order.",
         )
     required_kinds = set(RawModelRecordKind)
+    if not snapshot.load_combinations:
+        required_kinds.remove(RawModelRecordKind.LOAD_COMBINATION)
     if {record.record_kind for record in raw_model} != required_kinds:
         return _blocked(
             "ETABS.MAPPING_UNRESOLVED",
@@ -786,44 +947,53 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
     action_by_source = {
         item.source_row_id: item.row_id for item in snapshot.action_rows
     }
-    model_bindings = {
-        RawModelRecordKind.MODEL_METADATA: (
-            (snapshot.metadata.evidence_reference, snapshot.metadata.project_id),
-        ),
-        RawModelRecordKind.POINT: tuple(
-            (item.evidence_reference, item.point_id) for item in snapshot.points
-        ),
-        RawModelRecordKind.MATERIAL: tuple(
-            (item.evidence_reference, item.material_id) for item in snapshot.materials
-        ),
-        RawModelRecordKind.SECTION: tuple(
-            (item.evidence_reference, item.section_id) for item in snapshot.sections
-        ),
-        RawModelRecordKind.MEMBER: tuple(
-            (item.evidence_reference, item.member_id) for item in snapshot.members
-        ),
-        RawModelRecordKind.LOAD_CASE: tuple(
-            (item.evidence_reference, item.case_id) for item in snapshot.load_cases
-        ),
-        RawModelRecordKind.LOAD_COMBINATION: tuple(
-            (item.evidence_reference, item.combination_id)
-            for item in snapshot.load_combinations
-        ),
-        RawModelRecordKind.RESULT_SELECTION: tuple(
-            (item.evidence_reference, item.selection_id)
-            for item in snapshot.result_selections
-        ),
-        RawModelRecordKind.STATION: tuple(
-            (item.evidence_reference, item.station_id) for item in snapshot.stations
-        ),
-    }
+    model_bindings: dict[tuple[RawModelRecordKind, str], list[str]] = {}
+
+    def bind(
+        record_kind: RawModelRecordKind,
+        evidence_reference: str,
+        canonical_id: str,
+    ) -> None:
+        model_bindings.setdefault((record_kind, evidence_reference), []).append(
+            canonical_id
+        )
+
+    bind(
+        RawModelRecordKind.MODEL_METADATA,
+        snapshot.metadata.evidence_reference,
+        snapshot.metadata.project_id,
+    )
+    for point in snapshot.points:
+        bind(RawModelRecordKind.POINT, point.evidence_reference, point.point_id)
+    for material in snapshot.materials:
+        bind(
+            RawModelRecordKind.MATERIAL,
+            material.evidence_reference,
+            material.material_id,
+        )
+    for section in snapshot.sections:
+        bind(RawModelRecordKind.SECTION, section.evidence_reference, section.section_id)
+    for member in snapshot.members:
+        bind(RawModelRecordKind.MEMBER, member.evidence_reference, member.member_id)
+    for case in snapshot.load_cases:
+        bind(RawModelRecordKind.LOAD_CASE, case.evidence_reference, case.case_id)
+    for combination in snapshot.load_combinations:
+        bind(
+            RawModelRecordKind.LOAD_COMBINATION,
+            combination.evidence_reference,
+            combination.combination_id,
+        )
+    for selection in snapshot.result_selections:
+        bind(
+            RawModelRecordKind.RESULT_SELECTION,
+            selection.evidence_reference,
+            selection.selection_id,
+        )
+    for station in snapshot.stations:
+        bind(RawModelRecordKind.STATION, station.evidence_reference, station.station_id)
     expected_model_rows: dict[str, tuple[str, str]] = {}
     for raw in snapshot.raw_capture.model_records:
-        matches = [
-            canonical_id
-            for evidence_reference, canonical_id in model_bindings[raw.record_kind]
-            if evidence_reference == raw.source_record_id
-        ]
+        matches = model_bindings.get((raw.record_kind, raw.source_record_id), [])
         if len(matches) != 1:
             return _blocked(
                 "ETABS.ROW_ACCOUNTING",
@@ -835,13 +1005,15 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
             raw.record_kind.value,
             matches[0],
         )
-    for item in ledger.rows:
-        if item.source_record_id in expected_model_rows:
-            expected_kind, expected_id = expected_model_rows[item.source_record_id]
+    for disposition in ledger.rows:
+        if disposition.source_record_id in expected_model_rows:
+            expected_kind, expected_id = expected_model_rows[
+                disposition.source_record_id
+            ]
             if (
-                item.record_kind != expected_kind
-                or item.disposition is not RowDisposition.ACCEPTED
-                or item.canonical_id != expected_id
+                disposition.record_kind != expected_kind
+                or disposition.disposition is not RowDisposition.ACCEPTED
+                or disposition.canonical_id != expected_id
             ):
                 return _blocked(
                     "ETABS.ROW_ACCOUNTING",
@@ -849,11 +1021,12 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
                     "An accepted model row is not bound to its canonical kind and identity.",
                     "Bind each accepted raw model row to its matching canonical model fact.",
                 )
-        elif item.source_record_id in action_by_source:
+        elif disposition.source_record_id in action_by_source:
             if (
-                item.record_kind != "force_row"
-                or item.disposition is not RowDisposition.ACCEPTED
-                or item.canonical_id != action_by_source[item.source_record_id]
+                disposition.record_kind != "force_row"
+                or disposition.disposition is not RowDisposition.ACCEPTED
+                or disposition.canonical_id
+                != action_by_source[disposition.source_record_id]
             ):
                 return _blocked(
                     "ETABS.ROW_ACCOUNTING",
@@ -862,8 +1035,8 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
                     "Bind each accepted raw force row to its action-row identity.",
                 )
         elif (
-            item.record_kind == "force_row"
-            and item.disposition is RowDisposition.ACCEPTED
+            disposition.record_kind == "force_row"
+            and disposition.disposition is RowDisposition.ACCEPTED
         ):
             return _blocked(
                 "ETABS.ROW_ACCOUNTING",

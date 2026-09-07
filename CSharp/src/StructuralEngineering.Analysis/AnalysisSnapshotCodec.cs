@@ -9,7 +9,7 @@ using StructuralEngineering.Contracts;
 namespace StructuralEngineering.Analysis;
 
 /// <summary>Strict host-free parsing, validation, identity, and replay for WP10 snapshots.</summary>
-public static class AnalysisSnapshotCodec
+public static partial class AnalysisSnapshotCodec
 {
     public const string Operation = "etabs.beam_snapshot.import/v1";
     public const string SnapshotSchemaVersion = "structural.analysis_snapshot/v1";
@@ -62,9 +62,17 @@ public static class AnalysisSnapshotCodec
     }
 
     public static EtabsSnapshotResult Validate(AnalysisSnapshot snapshot)
+        => ValidateCore(snapshot, bindNewSnapshot: false);
+
+    // Only the in-process normalizer binds a new snapshot. Imported artifacts must
+    // use Validate, which compares their claimed identity against these same bytes.
+    internal static EtabsSnapshotResult BindAndValidate(AnalysisSnapshot snapshot)
+        => ValidateCore(snapshot, bindNewSnapshot: true);
+
+    private static EtabsSnapshotResult ValidateCore(AnalysisSnapshot snapshot, bool bindNewSnapshot)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
-        var required = ValidateRequiredStructure(snapshot);
+        var required = ValidateRequiredStructure(snapshot, bindNewSnapshot);
         if (required is not null) return required;
         var values = ValidateDomainValues(snapshot);
         if (values is not null) return values;
@@ -92,7 +100,8 @@ public static class AnalysisSnapshotCodec
 
         var snapshotSha = SnapshotSha256(snapshot);
         var expectedSnapshotId = $"analysis_snapshot_id:{CanonicalizationVersion}:{snapshotSha}";
-        if (snapshot.SnapshotSha256 != snapshotSha || snapshot.SnapshotId != expectedSnapshotId)
+        if (bindNewSnapshot) snapshot = snapshot with { SnapshotSha256 = snapshotSha, SnapshotId = expectedSnapshotId };
+        else if (snapshot.SnapshotSha256 != snapshotSha || snapshot.SnapshotId != expectedSnapshotId)
         {
             return Rejected(
                 "SNAPSHOT.HASH_MISMATCH",
@@ -131,41 +140,33 @@ public static class AnalysisSnapshotCodec
 
     public static byte[] CanonicalJsonBytes(object value)
     {
-        var node = JsonSerializer.SerializeToNode(value, JsonOptions)
-            ?? throw new ArgumentException("Canonical value cannot be null.", nameof(value));
-        return Encoding.UTF8.GetBytes(Canonical(node));
+        using var output = new MemoryStream();
+        WriteCanonicalJsonCore(output, value, 128);
+        return output.ToArray();
     }
 
     public static string SnapshotSha256(AnalysisSnapshot snapshot) =>
-        Sha256(HashBasis(snapshot, "snapshot_id", "snapshot_sha256"));
+        CanonicalSha256(snapshot, "snapshot_id", "snapshot_sha256");
+
+    /// <summary>Hashes canonical bytes without retaining an additional complete byte payload.</summary>
+    public static string CanonicalDigest(object value) => CanonicalSha256(value);
 
     public static string RawCaptureSha256(RawAnalysisCapture capture) =>
-        Sha256(HashBasis(capture, "raw_capture_id", "raw_capture_sha256"));
+        CanonicalSha256(capture, "raw_capture_id", "raw_capture_sha256");
 
     public static string CallRecordSha256(SnapshotCallRecord record) =>
-        Sha256(HashBasis(record, "record_sha256"));
+        CanonicalSha256(record, "record_sha256");
 
     public static string CallLedgerSha256(SnapshotCallLedger ledger) =>
-        Sha256(HashBasis(ledger, "ledger_sha256"));
+        CanonicalSha256(ledger, "ledger_sha256");
 
     public static string ActionRowId(SnapshotActionRow row) =>
-        $"analysis_action_row_id:{CanonicalizationVersion}:{Sha256(HashBasis(row, "row_id"))}";
+        $"analysis_action_row_id:{CanonicalizationVersion}:{CanonicalSha256(row, "row_id")}";
 
-    private static JsonObject HashBasis(object value, params string[] excluded)
-    {
-        var node = JsonSerializer.SerializeToNode(value, JsonOptions) as JsonObject
-            ?? throw new ArgumentException("Identity values must serialize as objects.", nameof(value));
-        foreach (var key in excluded) node.Remove(key);
-        return node;
-    }
-
-    private static string Sha256(object value) =>
-        Convert.ToHexStringLower(SHA256.HashData(CanonicalJsonBytes(value)));
-
-    private static EtabsSnapshotResult? ValidateRequiredStructure(AnalysisSnapshot snapshot)
+    private static EtabsSnapshotResult? ValidateRequiredStructure(AnalysisSnapshot snapshot, bool bindNewSnapshot)
     {
         if (snapshot.SchemaVersion != SnapshotSchemaVersion || snapshot.OperationSemanticId != Operation ||
-            !Text(snapshot.SnapshotId) || !Sha(snapshot.SnapshotSha256) || !Utc(snapshot.CreatedAtUtc) ||
+            (!bindNewSnapshot && (!Text(snapshot.SnapshotId) || !Sha(snapshot.SnapshotSha256))) || !Utc(snapshot.CreatedAtUtc) ||
             snapshot.SourceIdentity is null || snapshot.Metadata is null || snapshot.Units is null ||
             snapshot.RawCapture is null || snapshot.RowLedger is null || snapshot.Normalization is null ||
             snapshot.Freshness is null || snapshot.Provenance is null || !Sha(snapshot.EvidenceManifestSha256) ||
@@ -313,26 +314,28 @@ public static class AnalysisSnapshotCodec
         if (snapshot.ActionRows.Select(item => item.SourceRowId).Distinct(StringComparer.Ordinal).Count() != snapshot.ActionRows.Count)
             return Blocked("ETABS.ROW_ACCOUNTING", "action_rows.source_row_id", "More than one canonical action row is bound to the same raw force row.", "Bind every raw force row to at most one canonical action row.");
         var actionBySource = snapshot.ActionRows.ToDictionary(item => item.SourceRowId, item => item.RowId, StringComparer.Ordinal);
+        var modelBindings = new Dictionary<(RawModelRecordKind RecordKind, string EvidenceReference), List<string>>();
+        void Bind(RawModelRecordKind recordKind, string evidenceReference, string canonicalId)
+        {
+            var key = (recordKind, evidenceReference);
+            if (!modelBindings.TryGetValue(key, out var candidates)) modelBindings[key] = candidates = [];
+            candidates.Add(canonicalId);
+        }
+        Bind(RawModelRecordKind.ModelMetadata, snapshot.Metadata.EvidenceReference, snapshot.Metadata.ProjectId);
+        foreach (var item in snapshot.Points) Bind(RawModelRecordKind.Point, item.EvidenceReference, item.PointId);
+        foreach (var item in snapshot.Materials) Bind(RawModelRecordKind.Material, item.EvidenceReference, item.MaterialId);
+        foreach (var item in snapshot.Sections) Bind(RawModelRecordKind.Section, item.EvidenceReference, item.SectionId);
+        foreach (var item in snapshot.Members) Bind(RawModelRecordKind.Member, item.EvidenceReference, item.MemberId);
+        foreach (var item in snapshot.LoadCases) Bind(RawModelRecordKind.LoadCase, item.EvidenceReference, item.CaseId);
+        foreach (var item in snapshot.LoadCombinations) Bind(RawModelRecordKind.LoadCombination, item.EvidenceReference, item.CombinationId);
+        foreach (var item in snapshot.ResultSelections) Bind(RawModelRecordKind.ResultSelection, item.EvidenceReference, item.SelectionId);
+        foreach (var item in snapshot.Stations) Bind(RawModelRecordKind.Station, item.EvidenceReference, item.StationId);
         var expectedModelRows = new Dictionary<string, (string RecordKind, string CanonicalId)>(StringComparer.Ordinal);
         foreach (var raw in snapshot.RawCapture.ModelRecords)
         {
-            IEnumerable<(string EvidenceReference, string CanonicalId)> candidates = raw.RecordKind switch
-            {
-                RawModelRecordKind.ModelMetadata => [(snapshot.Metadata.EvidenceReference, snapshot.Metadata.ProjectId)],
-                RawModelRecordKind.Point => snapshot.Points.Select(item => (item.EvidenceReference, item.PointId)),
-                RawModelRecordKind.Material => snapshot.Materials.Select(item => (item.EvidenceReference, item.MaterialId)),
-                RawModelRecordKind.Section => snapshot.Sections.Select(item => (item.EvidenceReference, item.SectionId)),
-                RawModelRecordKind.Member => snapshot.Members.Select(item => (item.EvidenceReference, item.MemberId)),
-                RawModelRecordKind.LoadCase => snapshot.LoadCases.Select(item => (item.EvidenceReference, item.CaseId)),
-                RawModelRecordKind.LoadCombination => snapshot.LoadCombinations.Select(item => (item.EvidenceReference, item.CombinationId)),
-                RawModelRecordKind.ResultSelection => snapshot.ResultSelections.Select(item => (item.EvidenceReference, item.SelectionId)),
-                RawModelRecordKind.Station => snapshot.Stations.Select(item => (item.EvidenceReference, item.StationId)),
-                _ => []
-            };
-            var matches = candidates.Where(item => item.EvidenceReference == raw.SourceRecordId).ToArray();
-            if (matches.Length != 1)
+            if (!modelBindings.TryGetValue((raw.RecordKind, raw.SourceRecordId), out var matches) || matches.Count != 1)
                 return Blocked("ETABS.ROW_ACCOUNTING", "row_ledger.rows", "A raw model row is not bound to exactly one canonical model fact.", "Bind each raw model row to one fact of the matching record kind.");
-            expectedModelRows[raw.SourceRecordId] = (RawRecordKindToken(raw.RecordKind), matches[0].CanonicalId);
+            expectedModelRows[raw.SourceRecordId] = (RawRecordKindToken(raw.RecordKind), matches[0]);
         }
         foreach (var item in ledger.Rows)
         {
@@ -373,7 +376,7 @@ public static class AnalysisSnapshotCodec
         if (units.Length != "mm" || units.Force != "kN" || units.Moment != "kNm" || units.Stress != "N/mm2" || units.MassDensity != "kg/m3" ||
             units.OriginalSourceUnits != snapshot.RawCapture.SourceUnits ||
             !(FinitePositive(conversion.LengthToMm) && FinitePositive(conversion.ForceToKn) && FinitePositive(conversion.MomentToKnm) && FinitePositive(conversion.StressToNPerMm2) && FinitePositive(conversion.MassDensityToKgPerM3)) ||
-            Sha256(units.OriginalSourceUnits) != snapshot.Normalization.SourceUnitsSha256 || !snapshot.Normalization.ConversionPerformedOnce)
+            CanonicalSha256(units.OriginalSourceUnits) != snapshot.Normalization.SourceUnitsSha256 || !snapshot.Normalization.ConversionPerformedOnce)
             return Blocked("UNITS.INVALID", "units", "Source units, conversion factors, or one-time normalization evidence are inconsistent.", "Record source units once and apply a positive declared conversion once.");
         if (snapshot.Axes.Any(axis => !ValidAxes(axis)))
             return Blocked("AXIS.UNRESOLVED", "axes", "An axis or source-to-common transform is not orthonormal and right-handed.", "Resolve axes and physical faces from retained geometry evidence.");
@@ -389,9 +392,11 @@ public static class AnalysisSnapshotCodec
             !UniqueOrdered(snapshot.Stations, item => item.StationId) || !UniqueOrdered(snapshot.ActionRows, item => item.RowId))
             return Blocked("SNAPSHOT.ORDER_INVALID", "$", "Portable arrays must have unique identities in deterministic order.", "Sort each identity-bearing collection before serialization.");
         if (!snapshot.RawCapture.ModelRecords.Select(item => item.SourceRecordId).SequenceEqual(snapshot.RawCapture.ModelRecords.Select(item => item.SourceRecordId).Order(StringComparer.Ordinal), StringComparer.Ordinal) ||
-            !snapshot.RawCapture.ForceRows.Select(item => (item.SourceRowIndex, item.SourceRowId)).SequenceEqual(snapshot.RawCapture.ForceRows.Select(item => (item.SourceRowIndex, item.SourceRowId)).Order()))
+            !snapshot.RawCapture.ForceRows.Select(item => (item.SourceRowIndex, item.SourceRowId)).SequenceEqual(snapshot.RawCapture.ForceRows
+                .OrderBy(item => item.SourceRowIndex).ThenBy(item => item.SourceRowId, StringComparer.Ordinal).Select(item => (item.SourceRowIndex, item.SourceRowId))))
             return Blocked("SNAPSHOT.ORDER_INVALID", "raw_capture", "Raw records are not in deterministic source order.", "Sort model identities and preserve force-row ordinal order.");
         var requiredKinds = Enum.GetValues<RawModelRecordKind>().ToHashSet();
+        if (snapshot.LoadCombinations.Count == 0) requiredKinds.Remove(RawModelRecordKind.LoadCombination);
         if (!requiredKinds.SetEquals(snapshot.RawCapture.ModelRecords.Select(item => item.RecordKind)))
             return Blocked("ETABS.MAPPING_UNRESOLVED", "raw_capture.model_records", "The raw capture omits a required model-fact record kind.", "Capture metadata, geometry, assignments, cases, combinations, selections, and stations.");
 
@@ -549,38 +554,24 @@ public static class AnalysisSnapshotCodec
             foreach (var item in element.EnumerateArray()) EnsureNoDuplicateProperties(item);
     }
 
-    private static string Canonical(JsonNode? node) => node switch
+    private static string CanonicalNumber(double number)
     {
-        JsonObject obj => "{" + string.Join(",", obj.OrderBy(pair => pair.Key, StringComparer.Ordinal).Select(pair => CanonicalString(pair.Key) + ":" + Canonical(pair.Value))) + "}",
-        JsonArray array => "[" + string.Join(",", array.Select(Canonical)) + "]",
-        JsonValue value => CanonicalValue(value),
-        _ => node?.ToJsonString(JsonOptions) ?? "null"
-    };
-
-    private static string CanonicalValue(JsonValue value)
-    {
-        if (value.TryGetValue<string>(out var text))
-            return CanonicalString(text);
-        if (value.TryGetValue<double>(out var number))
+        if (!double.IsFinite(number))
+            throw new ArgumentException("Canonical snapshot numbers must be finite.", nameof(number));
+        if (number == 0) return "0";
+        if (Math.Truncate(number) == number && Math.Abs(number) <= 9_007_199_254_740_991)
+            return number.ToString("0", CultureInfo.InvariantCulture);
+        var token = number.ToString("R", CultureInfo.InvariantCulture).ToLowerInvariant();
+        // Match the frozen Python/PF4 shortest-roundtrip representation.
+        if (!token.Contains('e') && Math.Abs(number) >= 1e16)
         {
-            if (!double.IsFinite(number))
-                throw new ArgumentException("Canonical snapshot numbers must be finite.", nameof(value));
-            if (number == 0) return "0";
-            if (Math.Truncate(number) == number && Math.Abs(number) <= 9_007_199_254_740_991)
-                return number.ToString("0", CultureInfo.InvariantCulture);
-            var token = number.ToString("R", CultureInfo.InvariantCulture).ToLowerInvariant();
-            // Match the frozen Python/PF4 shortest-roundtrip representation.
-            if (!token.Contains('e') && Math.Abs(number) >= 1e16)
-            {
-                var sign = token.StartsWith('-') ? "-" : "";
-                var digits = token.TrimStart('-');
-                var exponent = digits.Length - 1;
-                var significant = digits.TrimEnd('0');
-                token = sign + significant[0] + (significant.Length == 1 ? "" : "." + significant[1..]) + $"e+{exponent:D2}";
-            }
-            return token;
+            var sign = token.StartsWith('-') ? "-" : "";
+            var digits = token.TrimStart('-');
+            var exponent = digits.Length - 1;
+            var significant = digits.TrimEnd('0');
+            token = sign + significant[0] + (significant.Length == 1 ? "" : "." + significant[1..]) + $"e+{exponent:D2}";
         }
-        return value.ToJsonString(JsonOptions);
+        return token;
     }
 
     private static string CanonicalString(string value)
@@ -634,6 +625,7 @@ public static class AnalysisSnapshotCodec
             RespectRequiredConstructorParameters = true
         };
         options.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, allowIntegerValues: false));
+        options.MakeReadOnly(populateMissingResolver: true);
         return options;
     }
 

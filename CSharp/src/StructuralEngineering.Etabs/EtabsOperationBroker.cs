@@ -184,7 +184,7 @@ public static class EtabsAcquisitionArtifactCodec
             throw new InvalidDataException("The durable ledger and raw getter capture disagree.");
     }
 
-    private static JsonSerializerOptions CreateOptions()
+    internal static JsonSerializerOptions CreateOptions()
     {
         var options = new JsonSerializerOptions
         {
@@ -196,7 +196,7 @@ public static class EtabsAcquisitionArtifactCodec
         return options;
     }
 
-    private static void EnsureNoDuplicateProperties(JsonElement value)
+    internal static void EnsureNoDuplicateProperties(JsonElement value)
     {
         if (value.ValueKind == JsonValueKind.Object)
         {
@@ -328,18 +328,21 @@ public sealed class EtabsOperationBroker
 
         async Task MonitorDeadlineAsync()
         {
-            var delay = request.DeadlineUtc - _timeProvider.GetUtcNow();
-            if (delay > TimeSpan.Zero)
-                await Task.Delay(delay).ConfigureAwait(false);
-            deadlineCancellation.Cancel();
-            ChooseTerminal(new(
-                EtabsBrokerState.TransactionUncertain,
-                "ETABS.CALL_TIMEOUT",
-                "The acquisition deadline elapsed; no final artifact is accepted and cleanup continues under the held process lease.",
-                evidencePath,
-                journalPath,
-                false,
-                null));
+            try
+            {
+                var delay = request.DeadlineUtc - _timeProvider.GetUtcNow();
+                if (!await WaitForDeadlineAsync(delay, quiescence.Task).ConfigureAwait(false)) return;
+                deadlineCancellation.Cancel();
+                ChooseTerminal(new(
+                    EtabsBrokerState.TransactionUncertain,
+                    "ETABS.CALL_TIMEOUT",
+                    "The acquisition deadline elapsed; no final artifact is accepted and cleanup continues under the held process lease.",
+                    evidencePath,
+                    journalPath,
+                    false,
+                    null));
+            }
+            finally { deadlineCancellation.Dispose(); }
         }
 
         void RunWorker()
@@ -577,7 +580,21 @@ public sealed class EtabsOperationBroker
     private static EtabsOperationHandle CompletedHandle(EtabsBrokerResult result) =>
         new(Task.FromResult(result), Task.CompletedTask);
 
-    private sealed class LedgerEtabsGetterHost(
+    internal static async Task<bool> WaitForDeadlineAsync(TimeSpan delay, Task quiescence)
+    {
+        if (quiescence.IsCompleted) return false;
+        if (delay <= TimeSpan.Zero) return true;
+        using var timerStop = new CancellationTokenSource();
+        var elapsed = Task.Delay(delay, timerStop.Token);
+        if (await Task.WhenAny(elapsed, quiescence).ConfigureAwait(false) == elapsed)
+            return !quiescence.IsCompleted;
+        // Release the timer and its acquisition closure as soon as cleanup ends.
+        // A pending provider call keeps quiescence incomplete and the lease held.
+        await timerStop.CancelAsync().ConfigureAwait(false);
+        return false;
+    }
+
+    internal sealed class LedgerEtabsGetterHost(
         IEtabsGetterHost inner,
         EtabsCallJournal journal) : IEtabsGetterHost
     {
@@ -638,19 +655,21 @@ public sealed class EtabsOperationBroker
         }
     }
 
-    private sealed class EtabsCallJournal : IDisposable
+    internal sealed class EtabsCallJournal : IDisposable
     {
         private readonly string _operationId;
         private readonly FileStream _stream;
         private readonly TimeProvider _timeProvider;
+        private readonly string _matrixSha256;
         private readonly List<SnapshotCallRecord> _records = [];
         private string? _head;
         private string? _pendingCallId;
 
-        public EtabsCallJournal(string operationId, string path, TimeProvider timeProvider)
+        public EtabsCallJournal(string operationId, string path, TimeProvider timeProvider, string? matrixSha256 = null)
         {
             _operationId = operationId;
             _timeProvider = timeProvider;
+            _matrixSha256 = matrixSha256 ?? EtabsGetterMatrix.Sha256;
             _stream = new FileStream(
                 path,
                 FileMode.CreateNew,
@@ -675,7 +694,7 @@ public sealed class EtabsOperationBroker
                 _head,
                 SnapshotCallStage.Started,
                 definition.Operation,
-                EtabsGetterMatrix.Sha256,
+                _matrixSha256,
                 SnapshotCallEffect.Getter,
                 argumentsSha,
                 null,
@@ -703,7 +722,7 @@ public sealed class EtabsOperationBroker
                 _head,
                 SnapshotCallStage.Returned,
                 definition.Operation,
-                EtabsGetterMatrix.Sha256,
+                _matrixSha256,
                 SnapshotCallEffect.Getter,
                 started.ArgumentsSha256,
                 returnCode,

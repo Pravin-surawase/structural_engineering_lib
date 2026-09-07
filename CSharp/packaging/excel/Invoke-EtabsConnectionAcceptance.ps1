@@ -6,6 +6,8 @@ param(
     [Parameter(Mandatory)][int]$ExpectedFrames,
     [Parameter(Mandatory)][int]$ExpectedPoints,
     [Parameter(Mandatory)][string]$OutputDirectory,
+    [string]$ForceMemberIds,
+    [int]$ExpectedForceRows,
     [switch]$DevelopmentPackage
 )
 
@@ -122,6 +124,59 @@ try {
     $receipt.context=$context.details
     $receipt.context_artifact=Get-StructAutomateFileIdentity $artifactPath
     $receipt.getter_evidence=$rawBefore
+    if (-not [string]::IsNullOrWhiteSpace($ForceMemberIds)) {
+        Require-Connection ($ExpectedForceRows -gt 0) 'Force acceptance needs independently established expected row counts.'
+        $scope=@($ForceMemberIds.Split(',') | ForEach-Object { $_.Trim() } | Sort-Object -Unique)
+        Require-Connection ((Json-Macro 'STR_XL_ASSUMPTIONS').state -eq 'completed') 'Demo assumptions were not created.'
+        $sheets=$bookA.Worksheets
+        try { $forceInitialSheets=[int]$sheets.Count } finally { Release-StructAutomateComObject $sheets }
+        $forceStart=Json-Macro 'STR_XL_GET_FORCES_SCOPE' @($ForceMemberIds)
+        Require-Connection ($forceStart.state -eq 'started') 'The explicit force scope did not start.'
+        Require-Connection ($macros[$macros.Count-1].milliseconds -lt 5000) 'Get Forces blocked Excel for five seconds.'
+        Require-Connection ((Json-Macro 'STR_XL_GET_FORCES_SCOPE' @($ForceMemberIds)).state -eq 'rejected') 'A duplicate force read was accepted.'
+        $bookB.Activate()
+        Require-Connection ((Json-Macro 'STR_XL_FORCE_STATUS').state -eq 'not_loaded') 'Another workbook inherited a force read.'
+        # The command queues Task.Run: a zero worker count can precede dispatch.
+        # Observe the accepted session first, using the operation's functional deadline.
+        Await-Connection { [double](Macro 'STR_XL_TEST_FORCE_SESSION_COUNT') -eq 1 } 'Forces did not reach the initiating workbook.' 490
+        Await-Connection { [double](Macro 'STR_XL_TEST_CONNECTION_WORKER_COUNT') -eq 0 } 'Force worker cleanup did not finish.' 15
+        $active=$excel.ActiveWorkbook
+        try { Require-Connection ([string]$active.Name -eq [string]$bookB.Name) 'Force completion changed the active workbook.' }
+        finally { if ([Runtime.InteropServices.Marshal]::IsComObject($active)) { [void][Runtime.InteropServices.Marshal]::ReleaseComObject($active) }; $active=$null }
+        Require-Connection ((Json-Macro 'STR_XL_FORCE_STATUS').state -eq 'not_loaded') 'Forces attached to the wrong workbook.'
+        $bookA.Activate()
+        $force=Json-Macro 'STR_XL_FORCE_STATUS'
+        Require-Connection ($force.state -eq 'completed' -and $force.details.member_count -eq $scope.Count -and $force.details.action_count -eq $ExpectedForceRows) 'The captured member/row scope differs from source evidence.'
+        Require-Connection ($force.details.live_connected -and $force.details.engineering -eq 'not_evaluated') 'Force status misstates connection or engineering completion.'
+        Require-Connection ((Json-Macro 'STR_XL_CONNECTION_STATUS').details.forces_loaded) 'The context does not identify its accepted forces.'
+        $sheets=$bookA.Worksheets
+        try { Require-Connection ($sheets.Count -eq $forceInitialSheets) 'Get Forces created a heavy worksheet dump.' } finally { Release-StructAutomateComObject $sheets }
+        $forceDirectory=Join-Path (Split-Path -Parent (Split-Path -Parent $context.details.operation_directory)) ('ForceReads\' + $forceStart.details.request_id)
+        $forceResponse=Get-Content -LiteralPath (Join-Path $forceDirectory 'response.json') -Raw | ConvertFrom-Json
+        $forceCapture=Get-StructAutomateFileIdentity $forceResponse.Value.ArtifactPath
+        $forceSnapshot=Get-StructAutomateFileIdentity $forceResponse.Value.SnapshotPath
+        Require-Connection ($forceCapture.sha256 -ceq (Get-StructAutomateFileIdentity (Join-Path $forceDirectory 'capture.json')).sha256) 'The force source artifact path differs.'
+        Require-Connection ((Json-Macro 'STR_XL_REVIEW_SNAPSHOT').details.file_sha256 -ceq $force.details.file_sha256) 'Local review selected another snapshot.'
+        Require-Connection ([double](Macro 'STR_XL_TEST_CONNECTION_WORKER_COUNT') -eq 0) 'Local snapshot review launched an ETABS reader.'
+        Require-Connection ((Get-StructAutomateFileIdentity $forceResponse.Value.ArtifactPath).sha256 -ceq $forceCapture.sha256) 'Local review changed the force source evidence.'
+        Require-Connection ((Json-Macro 'STR_XL_GET_FORCES_SCOPE' @($ForceMemberIds)).state -eq 'started') 'The cancellation capture did not start.'
+        Require-Connection ((Json-Macro 'STR_XL_CANCEL_FORCES').state -eq 'cancelled') 'Force cancellation was not acknowledged.'
+        Await-Connection { [double](Macro 'STR_XL_TEST_CONNECTION_WORKER_COUNT') -eq 0 } 'Force cancellation did not reach cleanup.' 45
+        Require-Connection ((Json-Macro 'STR_XL_FORCE_STATUS').details.file_sha256 -ceq $force.details.file_sha256) 'Cancellation replaced the previous force snapshot.'
+        $receipt.forces=[ordered]@{scope=$scope;expected_rows=$ExpectedForceRows;status=$force.details;capture=$forceCapture;snapshot=$forceSnapshot;cancel_preserved_snapshot=$true;wrong_workbook_unchanged=$true;force_sheets_created=0}
+
+        $bookC=$books.Add()
+        Require-Connection ((Json-Macro 'STR_XL_CONNECT_ETABS_PROCESS' @($EtabsProcessId)).state -eq 'started') 'The close-during-forces context did not start.'
+        Await-Connection { (Json-Macro 'STR_XL_CONNECTION_STATUS').state -ne 'started' } 'The close-during-forces context did not complete.'
+        Require-Connection ((Json-Macro 'STR_XL_CONNECTION_STATUS').state -eq 'completed') 'The close-during-forces context failed.'
+        Require-Connection ((Json-Macro 'STR_XL_GET_FORCES_SCOPE' @($ForceMemberIds)).state -eq 'started') 'The close-during-forces read did not start.'
+        Close-ConnectionBook $bookC; $bookC=$null
+        $bookB.Activate()
+        Await-Connection { [double](Macro 'STR_XL_TEST_CONNECTION_WORKER_COUNT') -eq 0 } 'Closing the force workbook left its reader active.' 45
+        Require-Connection ((Json-Macro 'STR_XL_FORCE_STATUS').state -eq 'not_loaded') 'A closed workbook applied its force result elsewhere.'
+        Require-Connection ([double](Macro 'STR_XL_TEST_FORCE_SESSION_COUNT') -eq 1) 'Close-during-forces changed the accepted source snapshot.'
+        $receipt.forces.closed_workbook_fenced=$true
+    }
     $bookC=$books.Add()
     Require-Connection ((Json-Macro 'STR_XL_CONNECT_ETABS_PROCESS' @($EtabsProcessId)).state -eq 'started') 'Close-during-connect did not start.'
     Close-ConnectionBook $bookC; $bookC=$null
@@ -137,6 +192,13 @@ try {
     Require-Connection ([double](Macro 'STR_XL_TEST_CONNECTION_SESSION_COUNT') -eq 0) 'Closing the workbook did not evict context.'
     $bookA=$books.Open($saved,0,$false)
     Require-Connection ((Json-Macro 'STR_XL_CONNECTION_STATUS').state -eq 'disconnected') 'Reopening incorrectly restored a live connection.'
+    if (-not [string]::IsNullOrWhiteSpace($ForceMemberIds)) {
+        Require-Connection ((Json-Macro 'STR_XL_FORCE_STATUS').state -eq 'not_loaded') 'Reopening incorrectly restored live force binding.'
+        $reopened=Json-Macro 'STR_XL_REVIEW_SNAPSHOT'
+        Require-Connection ($reopened.state -eq 'completed' -and $reopened.details.file_sha256 -ceq $force.details.file_sha256) 'Reopening did not restore the exact saved force evidence.'
+        Require-Connection (-not $reopened.details.live_connected) 'Offline reopening claims a live connection.'
+        $receipt.forces.reopened_exact_snapshot=$true
+    }
     $receipt.source_after=Get-StructAutomateFileIdentity $ExpectedModelPath
     Require-Connection ($receipt.source_before.sha256 -ceq $receipt.source_after.sha256) 'The source model file changed.'
     Require-Connection ((Get-Process -Id $EtabsProcessId).StartTime.ToUniversalTime() -eq $etabsStart) 'The ETABS source process changed.'

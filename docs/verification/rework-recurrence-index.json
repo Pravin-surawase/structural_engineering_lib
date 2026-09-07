@@ -23,14 +23,14 @@
     {
       "id": "RR-002",
       "pattern": "Host or acceptance boundary discovered after implementation",
-      "occurrences": 20,
+      "occurrences": 28,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Seven explicit WP09 incidents are recorded. WP10-02 then admitted FrameObj.GetElm from static evidence before its model-specific live return was proved, and a later strict pass showed that managed String[] reflection did not prove SimilarToStory element nullability. The WP09 minutes overlap RR-001 and the two WP10-02 stop/replan events were not separately timed. WP10-05 discovered that Office CustomXMLPart.LoadXML cannot replace an already-loaded part; owned-part replacement with verified rollback worked in the pre-candidate diagnostic. This correction was not separately timed. WP10-05 full-footprint rollback also exposed that Formula restoration changes absent cells into stored empty strings. Restoring Value2 plus actual formula areas passed both injected boundaries in Excel. Native Excel then revealed that group-only size attributes on menu buttons suppressed the ribbon; removing them restored the tab and callback. An installed onLoad probe now complements macro checks. The harness then attempted to hash a workbook while Excel held its file lock; fingerprinting after close resolves that boundary. Three later WP10-05 host-boundary events were confirmed but not separately timed: command cleanup released the shared Application RCW and disconnected the close-event sink; ClearContents/Resize left the legacy host-effect table without a DataBodyRange; and Excel-DNA AutoClose was not invoked during Excel shutdown. A unique event-sink RCW and explicit A2 body anchor resolve the first two boundaries. Lifecycle-8 traced the remaining shutdown retention to leaked intermediate Range.Resize anchors and an unreleased WorkbookBeforeClose callback workbook RCW; explicit SizedRange anchor try/finally and callback release made owned Excel PID 14692 exit normally. The temporary ribbon-disconnection trace was removed. This ongoing RR-002 event remains untimed; lifecycle-8 is development evidence, while final signed installed-candidate qualification remains pending. WP10-05B added two untimed ownership events: a named Mutex acquired by the caller could not be released by the STA worker, resolved with an exclusive file-handle lease; and the Excel harness FinalReleaseComObject on ActiveWorkbook destroyed the owned workbook alias, resolved by one balanced ReleaseComObject. Shared broker tests and excel-development-3 passed. The signed installed WP10-05B connection harness then omitted the explicit RegisterXLL bootstrap used by the maintained offline harness. COM-created Excel had no ribbon probe macro; no ETABS calls occurred and cleanup passed. The B7 replan requires exact installed path/signature/startup verification and explicit XLL loading before workbook/onLoad checks. This third ownership/bootstrap event was untimed. LESSON-DARK-THEME found prior owned preview Python children surviving launcher-shell interruption. Verified command lines and stopped only the stale owned processes; HTTP 200 and a fresh browser tab restored verification. Explicit current-listener cleanup proved no remaining listener. This host/process ownership event was not separately timed."
+        "basis": "Seven explicit WP09 incidents are recorded. WP10-02 then admitted FrameObj.GetElm from static evidence before its model-specific live return was proved, and a later strict pass showed that managed String[] reflection did not prove SimilarToStory element nullability. The WP09 minutes overlap RR-001 and the two WP10-02 stop/replan events were not separately timed. WP10-05 discovered that Office CustomXMLPart.LoadXML cannot replace an already-loaded part; owned-part replacement with verified rollback worked in the pre-candidate diagnostic. This correction was not separately timed. WP10-05 full-footprint rollback also exposed that Formula restoration changes absent cells into stored empty strings. Restoring Value2 plus actual formula areas passed both injected boundaries in Excel. Native Excel then revealed that group-only size attributes on menu buttons suppressed the ribbon; removing them restored the tab and callback. An installed onLoad probe now complements macro checks. The harness then attempted to hash a workbook while Excel held its file lock; fingerprinting after close resolves that boundary. Three later WP10-05 host-boundary events were confirmed but not separately timed: command cleanup released the shared Application RCW and disconnected the close-event sink; ClearContents/Resize left the legacy host-effect table without a DataBodyRange; and Excel-DNA AutoClose was not invoked during Excel shutdown. A unique event-sink RCW and explicit A2 body anchor resolve the first two boundaries. Lifecycle-8 traced the remaining shutdown retention to leaked intermediate Range.Resize anchors and an unreleased WorkbookBeforeClose callback workbook RCW; explicit SizedRange anchor try/finally and callback release made owned Excel PID 14692 exit normally. The temporary ribbon-disconnection trace was removed. This ongoing RR-002 event remains untimed; lifecycle-8 is development evidence, while final signed installed-candidate qualification remains pending. WP10-05B added two untimed ownership events: a named Mutex acquired by the caller could not be released by the STA worker, resolved with an exclusive file-handle lease; and the Excel harness FinalReleaseComObject on ActiveWorkbook destroyed the owned workbook alias, resolved by one balanced ReleaseComObject. Shared broker tests and excel-development-3 passed. The signed installed WP10-05B connection harness then omitted the explicit RegisterXLL bootstrap used by the maintained offline harness. COM-created Excel had no ribbon probe macro; no ETABS calls occurred and cleanup passed. The B7 replan requires exact installed path/signature/startup verification and explicit XLL loading before workbook/onLoad checks. This third ownership/bootstrap event was untimed. LESSON-DARK-THEME found prior owned preview Python children surviving launcher-shell interruption. Verified command lines and stopped only the stale owned processes; HTTP 200 and a fresh browser tab restored verification. Explicit current-listener cleanup proved no remaining listener. This host/process ownership event was not separately timed. WP10-COMPLETION added three untimed source boundaries: Auto=3/5 internal cases returned FrameForce status 1 despite finished analysis (ordinary cases/combinations succeeded); multi-member elements introduced analysis-only points absent from endpoint capture (actual PointElm coordinates and unique owner-story derivation passed the mesh/full in-memory tests); a source-empty table returned status 1 and interrupted diagnostic retention (per-table status/data retention now preserves all observations without inventing defaults). WP10-COMPLETION bulk source qualification found that Objects and Elements - Frames also contains shell-generated line rows with repeated names. Index only explicit ObjType=Frame rows for beam meshes; preserve all other rows in the full getter payload and record scope counts. Full 153-beam bulk/reference comparison and worker/store proof passed; untimed. PF9 owned fixture setup exposed the 6/9 API/database unit pair and an explicit post-analysis Save that switched to the owned intermediate $et model and cleared its analysis lock. Actual force/length checks qualify the unit pair; omit the extra save and verify final active path. Medium 1000/100000 fixture preparation passed; both events untimed. The whole-model group pilot found that ETABS 23 All has zero explicit GetAssignments rows. Actual direct/group equality and complete frame context prove its implicit membership while all required source rows remain accounted. Untimed. The final installed force harness polled zero workers before Task.Run registered dispatch, then timed out after 15 seconds and cancelled the full capture itself. Waiting for the accepted session within the existing functional deadline before cleanup passed the full 153/3502 development path with unchanged installed product code; untimed."
       },
       "short_solution": "Probe exact host boundaries and ownership before acceptance; verify cleanup of owned child processes and resources explicitly.",
-      "last_seen_task": "LESSON-DARK-THEME",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": "RR-001",
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -40,14 +40,14 @@
     {
       "id": "RR-003",
       "pattern": "Candidate or evidence frozen before normalization and behavior stability",
-      "occurrences": 6,
+      "occurrences": 7,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed. WP10-05B-FORCES-PLAN edited the learning index while the formatter's byte snapshot was active; its outside-scope guard correctly rejected. Complete all documentation and serialize the repeated formatter against mutations. Rework was not separately timed."
+        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed. WP10-05B-FORCES-PLAN edited the learning index while the formatter's byte snapshot was active; its outside-scope guard correctly rejected. Complete all documentation and serialize the repeated formatter against mutations. Rework was not separately timed. WP10-COMPLETION ran the tracked-caller cumulative gate before staging two intended new evidence records; stage reviewed records and retry the affected API/docs checks. Untimed."
       },
       "short_solution": "Finish code, docs and generated projections before freeze; serialize mutations against formatting, then run read-only integrity after acceptance.",
-      "last_seen_task": "WP10-05B-FORCES-PLAN",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": "RR-001",
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#corrected-candidate-sequence",
@@ -57,14 +57,14 @@
     {
       "id": "RR-004",
       "pattern": "Session or handoff lifecycle contract missed",
-      "occurrences": 11,
+      "occurrences": 13,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. XLL-AUTOMATION-PRODUCT used free-form no-recurrence prose instead of the canonical empty marker or indexed rows; closeout identified the schema mismatch. Correction time was not isolated. WP10-05B-FORCES-PLAN called the lower-level file integrity CLI instead of the timed candidate gate and then selected an invalid rejection transition after acceptance. Inspect session.py and use check --candidate-integrity plus the admitted delivery transition. File checks passed; a documentation-only repair records the observations. Correction time was not isolated."
+        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. XLL-AUTOMATION-PRODUCT used free-form no-recurrence prose instead of the canonical empty marker or indexed rows; closeout identified the schema mismatch. Correction time was not isolated. WP10-05B-FORCES-PLAN called the lower-level file integrity CLI instead of the timed candidate gate and then selected an invalid rejection transition after acceptance. Inspect session.py and use check --candidate-integrity plus the admitted delivery transition. File checks passed; a documentation-only repair records the observations. Correction time was not isolated. WP10-COMPLETION preparation retained Progress but omitted the parser-required Completed/Summary section. Added exact completed-unit outcomes and regenerated handoff before freeze; untimed. The cumulative Python gate also retained an assertion for superseded manual-timer prose. It now asserts the current derived elapsed time and transition-based phases; affected tests passed, untimed."
       },
       "short_solution": "Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.",
-      "last_seen_task": "WP10-05B-FORCES-PLAN",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -73,14 +73,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 68,
+      "occurrences": 103,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape. WP10-05B added four untimed events: unquoted PowerShell Git tree braces, two rg wildcard-path owner searches, and an Int32 supplied to an exact by-ref API enum. Quoted expressions, folder glob filters and the installed boxed enum resolved them. A later formatter-owner filename guess was absent; registry/source search found the maintained owner. This fifth event was untimed. WP10-05B-FORCES-PLAN guessed session_delivery.py and session_usage.py while locating the gate owner; bounded rg over scripts found session.py. This owner-lookup event was untimed. The ETABS review/setup intake added six untimed events: three unexpanded or absent path queries in the review, an absent .vscode lookup, a guessed formatter owner and an unsupported session prepare subcommand. Folder glob filters, discovered owners and actual CLI help resolved them."
+        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape. WP10-05B added four untimed events: unquoted PowerShell Git tree braces, two rg wildcard-path owner searches, and an Int32 supplied to an exact by-ref API enum. Quoted expressions, folder glob filters and the installed boxed enum resolved them. A later formatter-owner filename guess was absent; registry/source search found the maintained owner. This fifth event was untimed. WP10-05B-FORCES-PLAN guessed session_delivery.py and session_usage.py while locating the gate owner; bounded rg over scripts found session.py. This owner-lookup event was untimed. The ETABS review/setup intake added six untimed events: three unexpanded or absent path queries in the review, an absent .vscode lookup, a guessed formatter owner and an unsupported session prepare subcommand. Folder glob filters, discovered owners and actual CLI help resolved them. WP10-COMPLETION intake guessed a CSharp scoped instruction filename and EtabsContext.cs; both were absent. Bounded folder inventories located the actual docs rules and EtabsContextContracts.cs. These two lookup events were untimed. WP10-COMPLETION implementation added four untimed diagnostic events: two absent normalizer/test path guesses, reflection string arguments wrapped as PSObject, and JSON timestamp strings implicitly parsed as DateTime. Observed file owners, explicit reflected input conversion/unwrapping, and ConvertFrom-Json -DateKind String resolved these boundaries. A later mesh-point probe used PowerShell 0d (Decimal) for reflected Double parameters. Explicit [double]0 passed owned-mesh-point-2. This conversion event was untimed. U4 added four untimed owner/key lookup failures: two unexpanded wildcard paths, one guessed test filename and one guessed ETABS table key. rg --files and the retained table catalogue supplied the exact owners; the corrected full-field table probe passed. One later WorkbookContract filename guess was absent; the observed workbook-store owner established metadata compatibility without assuming that filename. This event was untimed. WP10-COMPLETION added an if-expression unrolling Double[] into Object[], two guessed C# owner paths, a pipe-delimited xUnit class selector selecting zero tests, and forwarded .NET test --help failing its IPC wrapper. Direct typed assignment, path discovery and the test assembly runner with repeated -class filters resolved these five untimed events. One later PF9 document search again supplied an unexpanded Windows wildcard path; reading the exact known acceptance plan resolved it without changing scope. Untimed. Three later parent source searches used a guessed absent filename or unexpanded Windows wildcard; one subagent Python test ran from CSharp instead of repository root. Discovered owners and the repo-root launcher resolved all four untimed events. Three further diagnostics used a mistyped expected source SHA or a guessed receipt/source filename. The source guard stopped before capture; exact retained hashes and discovered paths resolved the reads. Untimed. Three further source-owner reads guessed absent directories or an OfflineSnapshotSession location. Exact rg-discovered owners resolved the reads; untimed. One further guessed status-file path was absent; bounded inventory located docs/library/implementation-status.md. Two later diagnostic lookups repeated an absent filename or Windows glob path; exact maintained owners and directory glob filters resolved them. A later guessed provenance module was absent; the already-discovered evidence.py owner supplied the source-hash definition. Untimed. Final WP10 closeout added three untimed absent owner/subcommand lookups: session_delivery.py, .github/hooks, and session prepare. Known session.py, bounded file inventory and session handoff help resolved them."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "etabs-vscode-learning-intake",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -106,14 +106,14 @@
     {
       "id": "RR-007",
       "pattern": "Cross-runtime canonical JSON string parity was delegated to a platform encoder",
-      "occurrences": 2,
+      "occurrences": 3,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The first WP10-01 Unicode repair covered ordinary non-ASCII text; re-audit reproduced a second mismatch for permitted U+2028/U+2029 separators. Neither correction was separately timed."
+        "basis": "The first WP10-01 Unicode repair covered ordinary non-ASCII text; re-audit reproduced a second mismatch for permitted U+2028/U+2029 separators. Neither correction was separately timed. The WP10 native UTF-8 writer again delegated property-key escaping to a platform encoder, which escaped U+2028. The explicit PF4 encoder and exact retained-byte/Unicode-key checks passed before live timing; untimed."
       },
       "short_solution": "Encode PF4 JSON strings explicitly and test syntax escapes, controls, ordinary Unicode, and U+2028/U+2029 across both runtimes.",
-      "last_seen_task": "WP10-01",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -138,14 +138,14 @@
     {
       "id": "RR-009",
       "pattern": "Narrow fetch refspec leaves a newly pushed task branch without a recognized upstream",
-      "occurrences": 1,
+      "occurrences": 2,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The first delivery-redesign push wrote branch configuration, but upstream equality remained unavailable until the exact branch refspec was added and fetched; the retry was not separately timed."
+        "basis": "The first delivery-redesign push wrote branch configuration, but upstream equality remained unavailable until the exact branch refspec was added and fetched; the retry was not separately timed. WP10 PR981 published successfully, but the narrow fetch configuration omitted its tracking ref. Added and fetched only the exact task mapping; canonical state confirmed equal upstream. Untimed."
       },
       "short_solution": "Add and fetch the exact task-branch refspec before relying on upstream equality in a narrow-fetch checkout.",
-      "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -205,14 +205,14 @@
     {
       "id": "RR-013",
       "pattern": "Platform-dependent C# checkout line endings disagree with the hosted dotnet formatter",
-      "occurrences": 4,
+      "occurrences": 5,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed. WP10-05 C# formatting did not normalize mixed endings in edited csproj/PowerShell files; normalize all changed text owners before candidate integrity. WP10-05B candidate integrity found that the newly generated worker packages.lock.json lacked a final newline, outside the selected CSharp formatter paths. Normalize the generated lock text final LF before freezing; no dependency or product-code change was needed. This repair was untimed. etabs-vscode-learning-intake created a Markdown guide with CRLF and patched LF content into it; the dotnet-scoped formatter selected no files. Candidate integrity rejected the mixed endings. Normalize every task-owned text path before the repaired candidate; correction time was not separately measured."
+        "basis": "WP10-02 hosted run 33905189848 checked out the five changed C# files with CRLF under text=auto, then failed the LF-configured dotnet formatter before build or tests; the repair was not separately timed. WP10-05 C# formatting did not normalize mixed endings in edited csproj/PowerShell files; normalize all changed text owners before candidate integrity. WP10-05B candidate integrity found that the newly generated worker packages.lock.json lacked a final newline, outside the selected CSharp formatter paths. Normalize the generated lock text final LF before freezing; no dependency or product-code change was needed. This repair was untimed. etabs-vscode-learning-intake created a Markdown guide with CRLF and patched LF content into it; the dotnet-scoped formatter selected no files. Candidate integrity rejected the mixed endings. Normalize every task-owned text path before the repaired candidate; correction time was not separately measured. WP10-COMPLETION candidate 6f48c112 passed installed functional checks but immutable integrity found mixed CRLF/LF in two PowerShell packaging scripts. The language formatter excludes .ps1 and no LF attribute covered it. Add explicit PowerShell LF and normalize the complete task-changed PowerShell path union; correction time was not separately measured."
       },
-      "short_solution": "Declare LF explicitly for maintained .cs, .csproj, and .slnx files and renormalize the full candidate diff.",
-      "last_seen_task": "etabs-vscode-learning-intake",
+      "short_solution": "Declare LF for maintained source and PowerShell files; normalize the full task candidate text union before freeze and verify exact bytes before audit.",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp10-etabs-read-adapter.md#wp10-02-candidate-audit-repair--2026-09-04",
@@ -322,14 +322,14 @@
     {
       "id": "RR-020",
       "pattern": "Host help extraction reports success without producing usable evidence",
-      "occurrences": 1,
+      "occurrences": 2,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 hh decompile returned zero without files; tar rejected CHM. A portable official 7-Zip extractor produced the installed API help. hh root cause and separate recovery time remain unconfirmed."
+        "basis": "WP10-04 hh decompile returned zero without files; tar rejected CHM. A portable official 7-Zip extractor produced the installed API help. hh root cause and separate recovery time remain unconfirmed. WP10-COMPLETION again found no extracted files after the Windows help decompiler exited. No help contents were inferred: installed reflection, field metadata and controlled owned-model getter experiments supplied the source evidence. Untimed."
       },
       "short_solution": "Verify extracted files and source hash; use a CHM-capable extractor when the host help command produces no evidence.",
-      "last_seen_task": "WP10-04",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md",
@@ -339,14 +339,14 @@
     {
       "id": "RR-021",
       "pattern": "Qualification plan omits required production caller or workload implementation",
-      "occurrences": 1,
+      "occurrences": 5,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-05-PREP traced the planned integrated and PF9-sized qualification to source: the acquisition broker has no production command/file host and the retained capture/projector admit one member. Missing implementation owners were added before feature work; review time was not isolated."
+        "basis": "WP10-05-PREP traced the planned integrated and PF9-sized qualification to source: the acquisition broker has no production command/file host and the retained capture/projector admit one member. Missing implementation owners were added before feature work; review time was not isolated. WP10-COMPLETION direct reference capture measured 6460 getter calls and about 112 seconds for 153 beams after mesh completion. Its initial 36.5 MB portable file exceeded the 25 MB parser and 16 MiB store limits. Duplicate original-ledger embedding was removed from the new batch summary; bulk production capture and file/memory qualification remain explicitly pending. U3 also traced the 10,000-action store cap against the 100,000-row PF9 target; admission stays bounded and U4 owns measured transport/capacity qualification. No acceptance gate was relaxed; time was not isolated. U4 traced the frozen PF9 snapshot-identity wording to the projector: operation IDs, timestamps and journals legitimately change each fresh snapshot/result epoch. The benchmark now freezes complete getter payloads and normalization scope, retaining and validating each run identity without rewriting provenance. This plan/code reconciliation was untimed. Parent PF9 harness review found broker-only timing and per-run memory baselines understated total cost. Complete production stages, one context-ready baseline, and retained failure diagnostics now expose actual failed small/medium budgets. Untimed repair."
       },
       "short_solution": "Trace every acceptance workload through real source callers; assign missing consumer and scale work before qualification, keeping original budgets intact.",
-      "last_seen_task": "WP10-05-PREP",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md",
@@ -367,6 +367,198 @@
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/excel-ui-review.md#main-process-ui-findings",
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-023",
+      "pattern": "Getter reader assumes boxed arrays despite accepting typed arrays",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "The first shared-batch source tests failed at Analyze.GetCaseStatus because ArrayValues cast valid Int32[] to object[]. The adapter had already accepted the typed array. All six batch tests pass after aligned array reading. Time was not separately measured."
+      },
+      "short_solution": "Read validated Array values; accept null arrays only under the adapter-proved zero-count contract.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-024",
+      "pattern": "Portable tied row indexes use culture-sensitive identity ordering",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "Multi-member acquisition correctly repeats local source row indexes per actual getter. The .NET ValueTuple default comparer then disagreed with ordinal projection and Python. Explicit ordinal tie-breaking passed the two-span/six-row test and independent Python canonical-byte replay. Time was not separately measured."
+      },
+      "short_solution": "Specify ordinal identity comparison after numeric row-index ordering in portable validators.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-025",
+      "pattern": "Inline Windows shell process creation is denied before command execution",
+      "occurrences": 2,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "Two inline reflection commands could not start their PowerShell process (OS access denied). The underlying Windows cause remains unconfirmed. Smaller signature queries, retained-capture inspection and the exact-owned-process file harness returned the required source facts. No user application was terminated and no permission control was changed; time was not measured."
+      },
+      "short_solution": "Retain the launch failure; use bounded observed-source inspection and the maintained owned-file harness, without changing permission controls.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-026",
+      "pattern": "Document-sized buffers allocated for repeated tiny canonical hashes",
+      "occurrences": 3,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-COMPLETION full retained 153-beam/3502-row normalization allocated 9.18 GB with a 16 KiB writer buffer per small identity operation. Small per-record buffers reduced allocations to 3.18 GB and peak test-process working set from about 378 MB to 311 MB, with identical complete snapshot SHA-256. Synchronous writer allocation receipts now use current-thread counts to exclude parallel test activity. This is development profiling, not PF9 acceptance; time was not isolated. A retained sampled runtime trace identified allocation/flush overhead in canonical CryptoStream writes. Synchronous IncrementalHash append and larger full-document buffers preserve identities and reduce warm normalization from 3.16 to 2.52 seconds; repair not separately timed. The initial native UTF-8 stream writer retained its whole document buffer. A pooled IBufferWriter flushes each advanced segment immediately; explicit writer flush precedes final hash. The 33-test portable union and exact 33355603-byte retained canonical replay passed; untimed."
+      },
+      "short_solution": "Stream whole documents and hashes without graph/text copies, size per-record buffers separately, and isolate allocation measurements.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-027",
+      "pattern": "Compressed transport completion and rejection differ across runtime defaults",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10 compressed input tests found an uncaught .NET InvalidDataException and an incomplete Python diagnostic call. More materially, .NET GZipStream returned complete JSON after truncating its footer while Python rejected it. The parser now classifies failures and verifies CRC32 plus ISIZE for one complete gzip member. Focused corrupt/truncated tests and full 153-beam/3502-row independent transport replay pass in both runtimes. Time was not isolated."
+      },
+      "short_solution": "Verify codec completion explicitly and preserve the established structured rejection contract across runtimes.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-028",
+      "pattern": "Derived model view binding inferred from a conformance fixture instead of the producing adapter",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10-COMPLETION independent interpretation review found that supplied process evidence was not compared with context, followed by a fixture-derived process spelling. The actual capture projector defines PID@UTC-start, model-file-sha256 revision and ETABS API version; binding now follows that producer and checks endpoint geometry. Bulk-development-3 and force-client-bulk-development-1 supply positive actual-producer evidence. The repair was not separately timed."
+      },
+      "short_solution": "Trace identity construction to its producing adapter and include an accepted actual-producer path before accepting downstream bindings.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-029",
+      "pattern": "Optional source catalogue rejected by unconditional required-record validation",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "The actual PF9 case-only model exposed unconditional combination-record requirements in both readers, despite the schema allowing an empty catalogue. Matching .NET/Python fixes passed the bulk case-only test and independent complete 10000-row replay; untimed."
+      },
+      "short_solution": "Require raw record kinds according to schema-allowed catalogue presence while preserving exact row and selection bindings.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-030",
+      "pattern": "Canonical source binding repeatedly rescans the complete station collection",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "Actual PF9 workload inspection confirmed quadratic raw-to-canonical station binding (100 million comparisons at 10000 stations; 10 billion at 100000). Indexed .NET/Python methods passed focused tests and retained snapshot identity replay; untimed."
+      },
+      "short_solution": "Build one index by record kind and evidence identity, retaining missing and duplicate cardinality checks.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-031",
+      "pattern": "Completed acquisition graphs retained by uncancelled deadline monitors",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "The WP10 batch deadline Task.Delay retained the shared closure, completed result task and full acquisition until its eight-minute deadline. The same pattern existed in context and single-member brokers. One shared deadline/quiescence wait now cancels the timer after cleanup; a completed-artifact weak-reference regression and 37 broker/context/batch/group tests passed. Live repeated medium memory requalification is still open; repair untimed."
+      },
+      "short_solution": "End and cancel deadline monitors on quiescence while retaining the lease and timeout fence for provider calls still running.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-032",
+      "pattern": "Windows overwrite-move races with readers of replaceable progress files",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10 medium production capture failed after 55 progress updates, with successful getter return and no accepted partial snapshot. A concurrent file reproducer confirmed File.Move(overwrite) access denied. File.Replace plus retry of observed transient progress read-open errors completed 3000 writes and 62879 reads. The corrected signed worker package then passed actual 1000-member/100000-row capture, store admission, exact reopen and cancellation. Repair untimed."
+      },
+      "short_solution": "Publish progress using ReplaceFile and retry only observed transient read-open failures at the next bounded poll; retain strict final-result and protocol validation.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-033",
+      "pattern": "Frozen transport fixture compared with newly source-bound calculation identities",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10 source edits correctly changed get_library_content_identity and downstream calculation/dossier hashes. The old Office.js transport test compared current calculations with a frozen historical identity. Exact historical dossier replay passed without changing hashes or the fixture. The repaired test retains that exact replay plus current-export checks; all 13 tests in the two affected verification modules passed. Untimed."
+      },
+      "short_solution": "Replay historical transport from its exact retained dossier; validate current exports using their own source-bound identities without regenerating or weakening frozen evidence.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-034",
+      "pattern": "A Python binding loop reuses one inferred variable across heterogeneous record types",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10 PR981 hosted run34089055831 reported27 mypy errors in one row-accounting function although runtime tests passed. Reused function-scoped item retained the first point type across material/member/station/ledger loops. Role-specific names preserve semantics and remove the conflict. Untimed."
+      },
+      "short_solution": "Use role-specific variables for heterogeneous typed records and verify the configured mypy owner with affected runtime replay before republishing.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
         "docs/SESSION_LOG.md"
       ]
     }

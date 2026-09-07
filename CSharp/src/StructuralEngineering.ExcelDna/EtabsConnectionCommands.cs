@@ -13,6 +13,7 @@ public static partial class OfflineCommands
     public static string ConnectEtabsProcess(double processId) => Run((app, workbook, store, entry) =>
     {
         if (entry.ConnectionRequestId is not null) throw new InvalidOperationException("A connection is already running for this workbook. Wait or cancel it.");
+        if (entry.ForceRequestId is not null) throw new InvalidOperationException("A force read is already running for this workbook. Wait or cancel it.");
         if (!double.IsFinite(processId) || processId < 0 || processId != Math.Truncate(processId) || processId > int.MaxValue)
             throw new ArgumentException("Enter a valid ETABS process ID.");
         var choices = EtabsConnectionClient.FindRunningModels();
@@ -53,7 +54,7 @@ public static partial class OfflineCommands
         {
             var entry = workbook is null ? null : Entries.GetValueOrDefault(Key((object)workbook));
             return entry?.ConnectionRequestId is { } pending ? Result("started", "ETABS connection is running.", new { request_id = pending })
-                : entry?.Context is { } context ? ContextSummary(context)
+                : entry?.Context is { } context ? ContextSummary(context, entry.Session is not null && entry.ForceContextArtifactSha256 == context.Artifact.ArtifactSha256)
                 : Result("disconnected", "Connect ETABS to read model context. Saved force snapshots are separate.");
         }
         finally { OfflineWorkbookStore.Release(workbook); OfflineWorkbookStore.Release(app); }
@@ -88,6 +89,7 @@ public static partial class OfflineCommands
             if (result?.Artifact is null || result.Response.State != EtabsContextWorkerState.Completed)
                 return Result("rejected", result?.Response.Message ?? "No completed model context was returned.", result?.Response);
             entry.Context = new(result.Artifact, result.OperationDirectory);
+            entry.ForceContextArtifactSha256 = null;
             entry.Window ??= new OfflineReviewWindow();
             entry.Window.SetContext(entry.Context);
             return ContextSummary(entry.Context);
@@ -109,8 +111,9 @@ public static partial class OfflineCommands
         entry.ConnectionRequestId = null;
         entry.ConnectionCancellation?.Cancel(); entry.ConnectionCancellation?.Dispose(); entry.ConnectionCancellation = null;
     }
-    private static string ContextSummary(EtabsConnectionSession context) => Result("completed",
-        "Model context captured. Frame selection uses memory. Forces, physical spans and design checks have not been acquired by this connection.",
+    private static string ContextSummary(EtabsConnectionSession context, bool forcesLoaded = false) => Result("completed",
+        forcesLoaded ? "Model context and captured forces are available in memory. Engineering checks have not run."
+            : "Model context captured. Frame selection uses memory. Forces, physical spans and design checks have not been acquired by this connection.",
         new
         {
             context_id = context.Artifact.ArtifactSha256,
@@ -125,7 +128,7 @@ public static partial class OfflineCommands
             getter_calls = context.Artifact.Inventory.Provenance?.GetterCalls,
             coordinates = "global mm",
             coverage = context.Artifact.Inventory.Coverage,
-            forces_loaded = false,
+            forces_loaded = forcesLoaded,
             engineering = "not_evaluated"
         });
 }

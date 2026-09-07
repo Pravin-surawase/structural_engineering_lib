@@ -199,7 +199,7 @@ public static class EtabsContextWorkerCodec
         ArgumentNullException.ThrowIfNull(inventory);
         if (inventory.Source is null || string.IsNullOrWhiteSpace(inventory.RequestSha256) || inventory.CapturedUtc == default ||
             inventory.Source.ProcessId <= 0 || string.IsNullOrWhiteSpace(inventory.Source.ModelSha256) ||
-            inventory.Source.PresentUnits != 6 || inventory.Source.DatabaseUnits != 6 ||
+            inventory.Source.PresentUnits != 6 || inventory.Source.DatabaseUnits is not (6 or 9) ||
             inventory.Points is null || inventory.Frames is null || inventory.Sections is null ||
             inventory.Points.GroupBy(item => item.SourcePointId, StringComparer.Ordinal).Any(group => string.IsNullOrWhiteSpace(group.Key) || group.Count() != 1) ||
             inventory.Frames.GroupBy(item => item.SourceFrameId, StringComparer.Ordinal).Any(group => string.IsNullOrWhiteSpace(group.Key) || group.Count() != 1) ||
@@ -219,7 +219,7 @@ public static class EtabsContextWorkerCodec
             throw new InvalidDataException("The context provenance reference is invalid.");
     }
 
-    private static byte[] CanonicalBytes<T>(T value) => Encoding.UTF8.GetBytes(Canonical(JsonSerializer.SerializeToElement(value)));
+    internal static byte[] CanonicalBytes<T>(T value) => Encoding.UTF8.GetBytes(Canonical(JsonSerializer.SerializeToElement(value)));
 
     private static string Canonical(JsonElement value) => value.ValueKind switch
     {

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-03
+last_updated: 2026-09-07
 doc_type: guide
 complexity: beginner
 tags: [excel-dna, xll, git, handoff]
@@ -39,8 +39,10 @@ Branch: actual branch
 Commit: full selected/pushed commit ID
 Shared status: local only / remote branch verified / merged and verified
 Start: docs/planning/xll-product/README.md
-Current scope: shell-only Windows P0; see the preserved packet
-Observed learning result: actual result, or pending
+Current scope: read current-plan.md and the exact WP10-COMPLETION delivery/installed receipts
+Next product step: finish any unclosed WP10 acceptance gate, otherwise plan WP11 design orchestration
+Performance: WP10-PERF-FINAL is explicitly deferred to project end; no PF9 pass is implied
+Observed learning result: separate user-led track; do not count it as product delivery
 Open issue / next action: current concrete description
 ```
 

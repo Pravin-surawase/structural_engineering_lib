@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-05
+**Last Updated:** 2026-09-07
 **Related Tasks:** WP09, WP10-05, WP10-05B
 **Abstract:** Install, use, diagnose, and integrate the standalone Windows Excel XLL over the native .NET beam library.
 
@@ -16,7 +16,7 @@ StructAutomate Excel is a packed AMD64 Excel-DNA XLL for standalone reinforced
 concrete beam work in 64-bit Microsoft Excel on Windows. It calls the reusable
 `StructuralEngineering.*` .NET libraries directly and needs no Python,
 FastAPI, Node, ETABS, or network connection for offline work. The optional
-Connect ETABS command requires the supported running ETABS host.
+Connect ETABS and Get Forces commands require the supported running ETABS host.
 
 The shipped workbook demonstrates 20 beams and 200 versioned topology and check
 rows. It covers flexure, shear, torsion, deflection, crack width, development
@@ -26,7 +26,7 @@ packages, and evaluation of one declared current physical candidate.
 
 ## Supported installation
 
-The workspace adds four main ribbon actions without creating sheets at
+The completion candidate adds five main ribbon actions without creating sheets at
 XLL load:
 
 1. **Assumptions** creates one sheet with editable demo inputs and explicit
@@ -34,7 +34,7 @@ XLL load:
    strength is 25 N/mm² and steel yield strength is 500 N/mm². These illustrative
    values come from the shared development preset; they do not replace imported
    materials or approve a real project. Repeating the command preserves edits.
-2. **Open Snapshot** opens a completed portable analysis snapshot JSON file.
+2. **Open Snapshot** opens a completed `.sasnap` file or legacy snapshot JSON.
    Its full geometry, actions and provenance are verified and stored outside the
    workbook, under `%LOCALAPPDATA%\StructAutomate\Projects`. Excel keeps only
    a small document and artifact reference. A raw ETABS capture is not this file.
@@ -47,6 +47,16 @@ XLL load:
    one. The window shows model identity, path, units, frame/joint counts and
    capture time. Selecting a frame reviews its source endpoints, section and
    connected frame IDs from memory. This creates no worksheet.
+5. **Get Forces** reads existing completed ordinary static results for all
+   required beams in the connected model. It creates Assumptions if needed,
+   reports background progress and offers Cancel. Verified forces enter the
+   external snapshot store and the in-memory member review. No force worksheet
+   is created. A changed source, unsupported selection, missing analysis or
+   oversized capture is rejected without importing a partial result. It does
+   not start analysis or change ETABS selections, properties or dimensions.
+   The review also shows neighbouring source beams and connected columns.
+   Support faces and physical span groups remain explicit engineering inputs;
+   analysis mesh segments are not treated as construction spans.
 
 Save the workbook normally to retain assumptions and artifact references.
 Reopening permits offline review after the saved artifact is revalidated. Keep
@@ -56,8 +66,9 @@ copies share that identity, close one before continuing. Closing the workbook
 evicts its memory session. Live source context is session-only: reopening a
 workbook requires Connect ETABS again. It is separate from an offline snapshot.
 
-The first connection profile covers the installed ETABS 23.3.1 API with
-present/database units kN-m-C (unit code 6); coordinates are normalized to mm.
+The connection profile covers the installed ETABS 23.3.1 API with present
+units kN-m-C (code 6) and database units kN-m-C or N-mm-C (6 or 9);
+coordinates are normalized to mm from the explicitly verified source basis.
 It reads frames, points, source orientation and referenced section/material IDs.
 It does not infer material strengths, physical spans or supports, and does not
 acquire forces or run analysis. Raw getter evidence and context artifacts stay
@@ -69,10 +80,22 @@ Use it in a separate workbook: this new workspace does not yet map assumptions
 and imported actions into a complete design/check request. All command outcomes
 are shown in a persistent status window, including rejected operations.
 
-The import admission bounds are 16 MiB, 1,000 members and 10,000 actions. Those
-limits do not qualify whole-model result acquisition or its performance.
-Get Forces, automatic Design, optimisation, solver comparison and Auto Run
-remain later application work. The active packet and exact installed acceptance
+The import admission bounds are 64 MiB encoded, 1,000 members and 100,000 actions.
+Get Forces acquires the full source group once, then filters the required beam
+rows in memory; source column rows remain in the raw evidence. Compact `.sasnap`
+files keep the same snapshot-v1 data and provenance while using positional rows
+inside a versioned gzip transport. The reader bounds the expanded wire JSON at
+256 MiB and verifies both the complete gzip footer and the existing snapshot
+hashes. The workbook's small reference identifies the transport; old saved JSON
+references remain usable. The complete 1,000-member / 100,000-action snapshot
+has passed production worker/store capture, exact offline reopen and cancellation;
+the complete medium transport also passed independent Python replay. These are
+capacity and integrity checks. Final signed installed acceptance for this
+completion candidate is bound through the WP10 plan's external receipts.
+The owner has deferred PF9 timing and incremental-memory certification to the
+end of the project; the measured misses remain recorded.
+Automatic Design, optimisation, solver comparison and Auto Run remain later
+application work. The active packet and exact installed acceptance
 contracts are in the [WP10 read-adapter plan](../../planning/xll-product/wp10-etabs-read-adapter.md).
 
 The WP09 package targets:

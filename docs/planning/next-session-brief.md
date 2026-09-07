@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-07
-- Focus: Start the owner's real-product learning sequence inside the main solution: development environment, actual XLL, real connection source and the memory-only acquisition boundary. Design and persistence decisions follow later.
-- Completed: Added a portable VS Code workspace opening the repository and selecting its actual C# solution, with pinned restore/build and environment tasks. Added Lesson 0 explaining tools, files, build output, installed XLL version check, source navigation and separate model/result readiness observations.; Confirmed SDK 10.0.400, .NET/Desktop Runtime 10.0.11, ETABS 23.3.1.4563 and the existing Excel startup XLL registration. VS Code was not found in the bounded installation checks; the guide includes its official setup route.; Incorporated the owner's choice of the main solution and real applications. Removed the task-created separate draft files. The earlier invented-data lessons remain optional. No new C# runtime, live acquisition, Excel operation or installed-package change was performed, and no learner step is complete.
-- Recurrence controls: RR-005 x68 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-016 x5 / unknown: Consult the current delivery CLI contract and freeze required evidence, head, run, PR, and merge identifiers before each transition.; RR-013 x4 / unknown: Declare LF explicitly for maintained .cs, .csproj, and .slnx files and renormalize the full candidate diff.
+- Focus: Finish the product's read-only ETABS force handoff, multi-member data and integrated qualification against the whole-product goal; learning excluded.
+- Completed: Implemented WP10's complete group acquisition, explicit model interpretation, versioned compact transport and production Excel worker/store handoff.; Verified actual reference and 1,000-member / 100,000-row capture, exact offline reopen and cancellation, plus independent Python replay and source equality.; Reconciled the final functional completion contract and deferred PF9 speed/ memory work to WP10-PERF-FINAL under the owner's amended order.
+- Recurrence controls: RR-034 x1 / unknown: Use role-specific variables for heterogeneous typed records and verify the configured mypy owner with affected runtime replay before republishing.; RR-009 x2 / unknown: Add and fetch the exact task-branch refspec before relying on upstream equality in a narrow-fetch checkout.; RR-013 x5 / unknown: Declare LF for maintained source and PowerShell files; normalize the full task candidate text union before freeze and verify exact bytes before audit.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -17,15 +17,16 @@ Python and .NET libraries, and IMP-M2 completes the standalone Windows Excel
 product in WP09. WP10-01 freezes AO16, WP10-02 adds the exact getter port, and
 WP10-03 adds bounded operation control and WP10-04 adds offline normalization;
 WP10-05 A/B now adds transparent assumptions and external-snapshot offline
-review. WP10-05B now adds running-model connection and source context. Its active
-contract separates exact installed Excel proof from later existing-force
-handoff, multi-member result qualification and design orchestration.
+review. WP10-COMPLETION implements running-model connection, complete group
+force handoff, bounded compact snapshots and source interpretation. Its active
+contract separates exact installed/hosted acceptance from later design
+orchestration and the owner's deferred project-end performance qualification.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | WP10-05B implements Connect ETABS and source-context review through a packaged worker, with source-ID indices in memory and getter evidence outside Excel. Its first profile covers ETABS 23.3.1 kN-m-C geometry; supports, physical spans and forces remain absent. Check the exact delivery ledger and external signed installed receipt before claiming qualification. WP10-05 offline assumptions/snapshot review remains available. |
-| **Next** | Complete the remaining WP10-05B existing-force handoff against the verified source binding, then WP10-05C multi-member result coverage and real PF9 dataset manifests. Recheck the final product goal and active connection contract in the WP10 plan before extending capture. Source geometry alone is not a design-ready model. |
-| **Then** | Implement audit increment C: map verified source/actions/assumptions into actual-bar design and every dependent check. WP10-06 qualifies the integrated path after acquisition prerequisites; source-frame counts do not prove the 100/1,000-member force workloads. Span/group optimization and owned-copy reanalysis follow the accepted whole-product workflow. |
+| **Current** | WP10's complete production group capture and worker/store passed the actual 153/3,502 reference and 1,000/100,000 medium member/row workloads, exact offline reopen and cancellation. Heavy data remains outside worksheets; support/span ambiguities stay explicit. Final signed installed and hosted results are exact-candidate external receipts. |
+| **Next** | Read the WP10-COMPLETION delivery ledger and external installed/PR handoff. If its required gates are unfinished, close them first; after acceptance plan WP11's public assumptions/actions mapper and actual-bar member design orchestration. Do not repeat completed capture implementation or resume deferred timing experiments. |
+| **Then** | Add bounded multi-option design search, supported physical-span/group constraints, controlled owned-copy ETABS reanalysis and baseline comparison. Overnight automation depends on these services. PF9 timing/working-set certification resumes as WP10-PERF-FINAL at project end; existing targets and failed evidence remain unchanged. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |
 | Implementation boundary | WP10-01 is pure offline validation, WP10-02 is the exact getter-only host boundary, and WP10-03 is the bounded acquisition-control boundary. WP10-04 adds offline projection and normalization without COM or Excel. The pure analysis package must not depend on the optional ETABS assembly. |

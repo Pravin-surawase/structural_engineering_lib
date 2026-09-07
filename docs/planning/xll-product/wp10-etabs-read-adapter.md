@@ -3,7 +3,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-05
+**Last Updated:** 2026-09-07
 
 # WP10 — read-only ETABS snapshot adapter
 
@@ -21,7 +21,11 @@ Other ETABS versions do not inherit this compatibility claim.
 WP10-01 through WP10-04 are complete. WP10-02 proved the exact-version getter
 boundary and one unchanged-model live matrix; WP10-03 added the bounded STA
 operation-control and durable evidence boundary; WP10-04 added offline
-normalization and cross-runtime replay. WP10-05 Excel import is next. The
+normalization and cross-runtime replay. WP10-05 assumptions/offline import and
+WP10-05B running-model geometry connection are complete. Existing-force handoff
+and group multi-member capture are implemented. Final caller/installed and
+cumulative correctness qualification follow the completion contract below,
+including the owner's explicit project-end performance deferral. The
 remaining slices use the plan-driven delivery contract below as a
 pilot of the repository-wide workflow. That contract orchestrates existing
 controls; it does not create a second WP10-only delivery system.
@@ -131,7 +135,8 @@ one coding session would recreate WP09's oversized-packet failure mode.
 For delivery purposes, **one session** therefore means that each remaining
 slice starts and closes one parent task without carrying repair work into a
 later session where feasible; an application hold never becomes a fabricated
-pass to meet this target. WP10-04 completed this boundary; WP10-05 is next. Later slices
+pass to meet this target. WP10-05 and connection/context have since completed;
+the completion contract below owns the remaining units. Later slices
 may share the IMP-M3 milestone branch only when their accepted authority and
 installed-host gate are unchanged; they retain separate task timers and
 acceptance decisions.
@@ -141,8 +146,8 @@ acceptance decisions.
 | WP10-02 | Complete | exact-version getter port, binding, fake-host proof, and one live getter-only matrix | broker retries, normalization, Excel, performance |
 | WP10-03 | Complete | STA lease, deadlines, durable raw capture, call ledger, postflight, cleanup | normalization and workbook writes |
 | WP10-04 | Complete, PR #972 | complete offline normalization and row conservation from captured raw artifacts | COM and Excel |
-| WP10-05 | Next; plan below | transactional completed-file `XL-CMD-02` import, installed Excel readback/rollback, and freshness | live acquisition, automatic design-input synthesis and acquisition performance claims |
-| WP10-05B | Planned prerequisite | production acquisition host and versioned file handoff to the same Excel importer | ETABS setters, automatic reconnect/retry and scale claims |
+| WP10-05 | Complete, PR #974 | assumptions, external completed-snapshot import, memory review, installed Excel readback/rollback and freshness | live acquisition, automatic design-input synthesis and acquisition performance claims |
+| WP10-05B | Connection complete, PR #975; force handoff remaining | production acquisition host and versioned file handoff to the same Excel importer | ETABS setters, automatic reconnect/retry and scale claims |
 | WP10-05C | Planned prerequisite | multi-member acquisition/normalization profile and representative datasets for PF9 | silently weakening source contracts or performance budgets |
 | WP10-06 | After all prerequisites | integrated E5-02–E5-04 plus small/medium installed acquisition qualification | WP11 copied-model mutation or release |
 
@@ -582,7 +587,504 @@ and a missing recovery transition. Its separate maintained authority is
 That repair shares this unpublished planning branch and original task history;
 it changes no WP10 engineering contract and does not start normalization.
 
+## WP10 completion contract — 2026-09-07
+
+**Task:** WP10-COMPLETION. **Base:** merged PR #978, `c822809d`.
+The owner explicitly requested completion of WP10, including necessary real
+Excel/ETABS work, plan repairs and root-cause fixes, with multiple commits and
+few PRs. Windows is the sole writer for `codex/wp10-completion`. Learning work
+is excluded. Earlier connection-only and workbook-chunk cards below are retained
+as historical contracts; this section owns the remaining implementation order.
+
+**Product goal:** ribbon-led beam work, one shared source inventory per verified
+revision, required concurrent force rows acquired once and filtered locally,
+heavy data in memory plus immutable external replay evidence, and small visible
+assumptions/requested outputs. This prepares complete actual-bar design and
+practical span/group optimization. Those design services, copied-model coupled
+reanalysis, overnight optimization and release publication remain later work;
+none becomes complete merely because acquisition passes.
+
+### Owner sequencing amendment — 7 September 2026
+
+The owner explicitly changed the completion order: finish WP10's basic functional
+work, review the interrupted candidate, deliver its PR and handoff, and leave
+performance increases until the end of the project. This amendment supersedes
+the earlier requirement to pass PF9 timing and incremental-working-set targets
+before closing this WP10 delivery. It does not claim those targets passed.
+
+**Required now:** complete source-bound capture and interpretation; actual
+1,000-member / 100,000-row transport and caller admission; independent replay;
+correct workbook ownership, cancellation, freshness and external persistence;
+signed installed Excel/worker acceptance; the named cumulative correctness and
+repository gates; one reviewed milestone PR and a reproducible handoff.
+
+**Deferred to the final project qualification:** PF9's unchanged 5 s / 30 s p95
+targets, 512 MiB incremental working-set target, and baseline plus ten measured
+performance samples. Preserve every existing fixture, failed verdict, exact
+measurement boundary and profile. Resume these as `WP10-PERF-FINAL` after the
+functional programme. Stop speculative timing experiments in this delivery.
+Transport ceilings and all engineering, source-integrity and cleanup checks
+remain enforced. No partial import, ignored row or fabricated source value is
+authorized by the sequencing change.
+
+### Bounded units and progress
+
+**Hosted repair — PR #981:** run `34089055831` passed Repository,
+Documentation, FastAPI and .NET but failed Python type validation. Replace the
+row-accounting function's reused heterogeneous loop variable with role-specific
+names, preserving every binding condition and identifier. Verify the configured
+mypy owner, affected snapshot tests and independent retained replay, then bind
+the repair candidate's review, installed evidence and hosted verdict. No new
+feature, broad-suite rerun or performance experiment is required by this repair.
+
+**Integrity replan — 7 September:** the signed `6f48c112` candidate passed
+installed connection/offline acceptance and actual 1,000-member / 100,000-row
+worker admission, but final read-only integrity rejected mixed CRLF/LF in two
+PowerShell packaging scripts. The C# formatter does not select `.ps1`, and Git
+had no explicit LF rule for that extension. The replacement contract requires
+an explicit PowerShell LF attribute, normalization of the task's complete changed
+PowerShell path union, and a focused byte-integrity check before candidate audit.
+Preserve the failed verdict and passing functional evidence. No production logic
+changes are needed. Bind the replacement package and installed receipts to its
+exact new source/tree; repeat no broad suite or PF9 trial for this byte-only fix.
+
+| Unit | Outcome and acceptance | State |
+|---|---|---|
+| U1 — Scope and source proof | Freeze force request/result and batch evidence semantics; inspect actual installed getter signatures and a source-model readiness probe; identify all source/model/selection units and material-type evidence without inferring from names. | Implemented and source-qualified; exact group/rows production identities are in the package manifest |
+| U2 — Shared capture and normalization | Add multi-member acquisition with shared catalogs/properties, one coherent pre/post source boundary, exact per-member object/element/station rows, deduplicated projection and complete row accounting. Preserve existing durable and portable v1 compatibility. | Implemented; direct/group reference equality, real mesh and complete 1,000-member / 100,000-row normalization/replay passed |
+| U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Implemented; signed Excel development proof and actual complete reference/medium worker-store capture, exact reopen and cancellation passed. Final installed proof remains U5 |
+| U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Qualify broad production data against the direct reference and bounded transport/caller admission. Selection from a complete snapshot causes zero ETABS reads. | Implemented and capacity-qualified; complete reference interpretation, 100,000-row independent Python replay and production caller admission passed |
+| U5 — Integrated functional qualification | Exact signed installed Excel/worker proof; independent replay; actual small/medium capacity evidence; named cumulative broad Python/full repository checks; PR and handoff. | Active; PF9 speed/working-set targets explicitly deferred by the owner amendment |
+
+Finish U1-U4 as sequential implementation commits in one milestone candidate
+where their frozen host authority permits. Use narrow affected evidence while
+implementing; no PR or broad suite per internal unit. After all intended
+source/tests/docs/harness writes, freeze, format, run their focused union,
+review and verify immutable candidate bytes. U5 installed receipts bind that
+exact candidate externally. Use one hosted PR cycle for the accepted milestone;
+an outcome-changing host repair follows the maintained repair/replan lifecycle,
+not a hidden post-acceptance source change. Never label a failed PF9 target or
+an absent dataset as qualification.
+
+### Live reference findings — 2026-09-07
+
+The dated development findings below retain failed attempts and superseded
+implementation checkpoints. The unit table and owner amendment above control
+current remaining work; historical instructions to continue timing experiments
+do not reopen deferred performance work.
+
+### Functional delivery checkpoint — 2026-09-07
+
+`force-client-group-reference-1` passed actual production group capture/store,
+exact offline reopen and cancellation for 153 beams / 3,502 actions at
+`2bdf8679`. The corrected signed package at `8927740c` passed the same complete
+path for 1,000 beams / 100,000 actions in `force-client-group-medium-2`.
+The first medium worker attempt is retained as a failed progress-file handoff;
+RR-032 records the reproduced Windows replacement cause and repair. No partial
+snapshot was accepted, and cleanup completed. The passing medium snapshot has
+canonical SHA-256 `033866c1b1634f561bc8913ce168e12ccfbc58fd810afcf64880f9ca312589b6`.
+
+The production request explicitly selects `structural.analysis_snapshot_rows/v1`
+and the group getter profile. Admission is 64 MiB encoded, 256 MiB expanded wire
+JSON, 1,000 members and 100,000 actions. Legacy JSON/gzip readers and canonical
+v1 identities remain compatible. The retained independent medium Python replay
+and exact direct/group reference comparison are described below. These are
+functional/capacity evidence; PF9 remains deferred and has no passing verdict.
+
+Finish U5 with the unchanged signed installed candidate, the maintained
+connection/force and offline/legacy Excel harnesses, broad Python/full-32 gates,
+one immutable review and one required hosted PR cycle. The
+[installed transition declaration](../../verification/wp10-completion-source-evidence.json)
+defines exact candidate/receipt binding. Final receipts and hosted verdicts stay
+external so later tasks can distinguish completed source from actual installed
+and merged evidence.
+
+The cumulative gate also owns two bounded verification repairs: the existing
+timing-policy test must assert the current derived lifecycle contract, and the
+historical Office.js transport test must replay its retained dossier with its
+original source-bound identities while checking new exports separately. No
+production hash, engineering calculation or frozen cross-runtime fixture is
+weakened. These repairs use only their two existing Python test modules and the
+task records; the affected 13-test union passes. They do not expand WP10 into
+the Office.js product or performance work.
+
+Candidate `06d27bde` passed installed offline/legacy acceptance. Its first full
+force acceptance was rejected by the independent audit because the harness
+mistook the zero-worker state before asynchronous dispatch for completed cleanup,
+then timed out after 15 seconds and cancelled the still-running capture.
+The single repair changes only that acceptance sequence and task records:
+wait for the accepted force session within the existing functional deadline,
+then verify cleanup. The separate five-second UI responsiveness check remains.
+The repaired harness passed the full 153/3,502 workflow in explicit development
+mode with unchanged installed product code, including wrong-workbook, cancel,
+close, zero-force-sheet and exact-reopen checks. Final installed proof must bind
+the new immutable repair candidate; the failed receipt remains retained.
+
+The direct-getter batch is correctness/reference evidence, not PF9 acceptance.
+Owned-model `batch-development-3` retained 153 beams and 3,502 force rows and
+normalized them in memory. `batch-mesh-development-1` retained a real three-part
+mesh; independent Python parsing and canonical-byte reproduction passed for
+that snapshot and both synthetic adjacent-span variants. The full direct
+capture took about 112 seconds and its initial portable file was 36,514,911
+bytes. The portable parsers cap input at 25,000,000 bytes; the existing Excel
+store caps input at 16 MiB. Thus neither throughput nor full-model file handoff
+is accepted yet. Do not raise limits or weaken evidence to claim a pass.
+
+The existing Excel store also caps action rows at 10,000. U4 must explicitly
+qualify the transport and admission profile for PF9's 100,000-row medium target,
+including the 512 MB adapter working-set budget. A compressed or otherwise
+compact transport needs bounded expansion and independent replay; a larger
+numeric cap alone is not evidence. Until that qualification, the force worker
+receives the caller's current limits and rejects an oversized complete capture
+without importing a partial beam set. Explicit scope is available for
+qualification/automation; the ribbon continues to request the complete beam set.
+
+The U3 process handoff passed against the owned ETABS host in
+`force-client-development-1`: one real meshed beam, 15 rows, exact context and
+snapshot provenance, independent worker exit and cancellation of a subsequent
+read without accepted partial data. This development receipt is not installed
+Excel or PF9 acceptance. The existing connection acceptance script now also
+exercises force workbook ownership, cancellation, close and save/reopen when
+given explicit source member IDs and independently established row counts.
+`excel-forces-development-1` passed those checks with beams 100/104 and 28 rows,
+bound to source `a2dbf17a` and signed XLL SHA-256
+`6a8fb0c12edeba7cf097deb3dead455c3a5f0167cb08c6dbdaeadfb88d5c4daa`.
+It created no force sheets, retained exact evidence on save/reopen, left the
+source file unchanged and exited Excel/workers normally. The development
+package was loaded without replacing the existing installed package; U5 must
+repeat its applicable checks on the final exact installed candidate.
+
+U4 first removes avoidable canonical JSON graph/text copies while preserving
+v1 bytes and identities. The complete retained 153-beam replay still produces
+26,396,459 bytes after the earlier journal-summary reduction. Its isolated
+streamed replay took about 8.84 s to normalize and 0.35 s to persist; peak test
+process working set was about 311 MB. These observations do not satisfy the
+100,000-row workload or qualify a larger input limit. A separate compact
+transport and bulk source profile remain necessary. Full-field-list table
+probes still omit default columns, so the production policy must qualify
+absent/default semantics explicitly and compare all adopted facts against the
+retained direct getter observations.
+
+Inspection of the previous direct capture measured 6,460 calls: four element
+getters for 937 beam elements account for about 59 seconds. The production
+profile must reduce source round trips and redundant serialized evidence before
+U5 qualification. Batch summaries now retain a receipt for the original journal
+rather than embedding it a second time; the complete original remains in the
+hash-bound external acquisition and the complete portable ledger remains in the
+snapshot. Legacy artifact/snapshot serialization stays unchanged.
+
+Installed bulk table inspection found object/element connectivity and assignment
+tables. Their optional fields, empty-table status, displayed numeric precision,
+and actual field/unit identities need qualification before use. Never fabricate
+direct getter calls from table rows or treat rounded display coordinates as
+exact getter coordinates. Use the direct capture as independent comparison
+evidence for any adopted bulk source/derivation policy.
+
+Readiness also requires an ordinary static dependency closure: actual
+`GetTypeOAPI_1.Auto` values 3 and 5 identified internal cases that returned
+FrameForce status 1 despite finished analysis. Auto=0 is the initial batch
+qualification boundary; unsupported selections are fenced before force calls,
+without changing or dropping user selections. Qualification-only setters were
+used on the owned copy to isolate this source fact. Analysis mesh points are
+read through the observed `PointElm.GetCoordCartesian` signature. Their story
+association is explicitly derived from unique retained frame ownership; source
+point stories continue to come from PointObj evidence.
+
+### Compact transport implementation — U4, 2026-09-07
+
+The new `.sasnap` file uses `structural.analysis_snapshot_gzip/v1`: the exact
+ASCII header `STRUCTSNAP-GZIP-1` plus newline, followed by one complete gzip
+member containing unchanged canonical snapshot-v1 JSON. Raw and normalized
+identities and all source rows/provenance are preserved. The codec ceilings are
+64 MiB encoded, 256 MiB expanded, 1,000 members and 100,000 action rows; they
+are admission ceilings, not performance qualification. The existing Excel
+caller still admits at most 16 MiB encoded and 10,000 actions while the PF9
+medium workload is being implemented. Legacy JSON admission is unchanged.
+
+The .NET reader validates duplicate keys while streaming typed deserialization,
+then the established snapshot/row/ledger hashes. It explicitly validates the
+gzip CRC32 and ISIZE because the installed .NET decompressor otherwise accepted
+a truncated footer. Python independently checks the same transport and v1
+evidence. The workbook stores an optional transport identifier with its small
+reference; legacy JSON references retain their original paths and JSON shape.
+The force request moves to v2 to explicitly bind transport and encoded limits.
+
+Retained full-model proof: `transport-development-1.sasnap` is 4,063,310 bytes
+and expands to the exact 26,396,459-byte snapshot (153 beams / 3,502 actions).
+Independent Python and .NET replay preserve canonical SHA-256
+`5964fe59f705b4b22fc530931df4db5ff11c5ab191c81d63d9d2143b2edd711d`.
+The isolated .NET read/validation took about 4.96 s with peak test-process
+working set 155,766,784 bytes. This does not qualify the 100,000-row target or
+the entire live adapter. `force-client-full-development-1` subsequently passed
+the real worker/store handoff for all 153 beams and 3,502 rows, plus cancellation
+without replacing accepted data. Its complete connection/capture/import/test
+sequence took about 134 s, so source round-trip reduction is still required.
+
+The compact worker/store handoff and bulk source qualification below now pass.
+Remaining U4/U5 order: prepare the real small/medium PF9 fixtures, measure the
+complete capture/normalization/persistence and incremental working set, qualify
+medium caller admission, then freeze the cumulative candidate for final signed
+installed proof and the repository/hosted gates.
+
+### Qualified bulk source profile and interpretation — U4, 2026-09-07
+
+`wp10-bulk-static-frame-capture/v1` uses full-precision assignment export through
+`DatabaseTables.GetTableForEditingArray`. Despite its API name, this is a getter;
+the production whitelist includes no table setters, ApplyEditedTables, unlock,
+analysis, or file-save operations. Display tables supply source identities,
+stories, labels and object/element connectivity only. Their rounded numeric
+coordinates and assignment values do not enter exact engineering geometry.
+
+Controlled owned-copy changes to modifiers, partial fixity, insertion, axes and
+end offsets are retained in `bulk-assignment-experiments-3`. Display export rounded
+0.123456789 m to 0.12346 m; editing export retained the exact source value, as it
+did for modifiers and springs. Its complete importable field sequence also
+retains blank default cells. Source table/version/field/unit checks and explicit
+qualified blank/absent assignment defaults are enforced. `bulk-editing-1` proves
+that the getters left source lock, units, case statuses, exact probe forces and
+model file unchanged. Owned experiment processes exited normally.
+
+Each required beam still has one actual FrameForce call and one actual global
+frame transformation call. Exact GetAllPoints geometry, source frame/element IDs
+and ObjStation-minus-ElmStation origins define a straight horizontal mesh;
+curves, unsupported insertion transforms, nonzero release springs and incomplete
+chains remain fenced. These are analysis meshes, not physical construction spans.
+The frame table also contains shell-generated line records with repeated names:
+only explicit ObjType=Frame rows enter the unique beam-mesh index. Every other
+row remains in the full getter evidence as source context, with scope counts in
+the bulk projection receipt. No direct getter invocation is fabricated.
+
+`bulk-development-3` passed all 153 beams / 937 analysis elements / 3,502 actions
+in about 13.23 seconds of broker capture, compared with the approximately
+112-second direct reference. The independent `compare_bulk_capture.py` replay
+passed: complete signed force payloads and numeric assignments are equal;
+relative element stations and matrices are equal; maximum mesh coordinate
+difference is 3.7588e-12 m (existing tolerance 1e-8 m). Snapshot file SHA-256:
+`5877fe7e9aa7fc4c4e51e09bf0fd0158f340c5625eee56d86828b93f16e4d0da`.
+These development measurements are not PF9 certification.
+
+`force-client-bulk-development-1` then passed the complete connection, bulk
+worker, compressed store, interpreted memory session and cancellation sequence
+in about 36 seconds. The 3,668,829-byte complete transport retains all 153 beams
+and 3,502 actions, with no accepted partial replacement after cancellation.
+The pure interpreter indexes all source frame classifications and exact shared
+point adjacency, binds the actual producer's process/model/version/unit facts,
+and keeps supports, faces and physical-span/group mapping explicitly needs-input.
+The existing review window shows connected beams/columns from memory; it creates
+no new commands or heavy sheets. Retained context supplies the same interpretation
+after offline reopen. Legacy snapshots without context retain their prior review.
+
+### PF9 source fixtures and measured scaling findings — 2026-09-07
+
+The reusable `New-EtabsPerformanceFixture.ps1` now creates owned source models
+with 100 or 1,000 distinct physical frame objects and 100 actual stations per
+object in one ordinary static case. Geometry and uniform loads vary by member.
+Each source result is read from ETABS; station uniqueness and fixed-end force
+values are checked before freezing the fixture. There is no row replication.
+`pf9-small-ready-1` plus `pf9-small-analysis-1` / `pf9-small-units-1` owns the
+prepared small model; `pf9-medium-fixture-1` owns the 1,000/100,000 medium model.
+
+New ETABS metric models use N-mm-C database units (enum 9) with kN-m-C API
+units (enum 6). The new context and batch readers now admit that exact pair as
+well as the original 6/6 pair, retaining both actual unit getters and their
+components. API values still undergo the existing single kN-m conversion.
+The legacy single-member source profile remains unchanged. Source setup and
+independent fixed-end force/length checks prove the distinction, consistent
+with [CSI's InitializeNewModel contract](https://docs.csiamerica.com/help-files/etabs-api-2016/html/592ff586-daba-0591-a52e-ddb6e939f7b9.htm).
+An explicit `Save(FileName)` after analysis switched this owned host to its
+intermediate `$et` model and cleared the analysis lock. The generator now
+freezes the verified analyzed state without that extra save and checks the
+actual active model path. Failed receipts and normal owned-process exits remain
+retained; no original user model was changed.
+
+The source also exposed a portable validation defect: an empty combination
+catalogue is permitted by the schema, but both readers required a combination
+record regardless. Case-only capture now passes without fabricating a source
+combination. Nine bulk tests and the independent 10,000-row Python replay pass.
+The complete replay retains snapshot SHA-256
+`1cc5ff5461f5db9ffce5f6d9f6e205f632d6c581305198b786b8155c7694d77d`.
+
+The opt-in PF9 harness retains each source fingerprint, normalized identity,
+encoded identity, complete raw evidence, failure diagnostics and timing sample.
+Its p95 uses total acquisition/read/normalization/persistence time, with one
+context-ready memory baseline. Individual host invocation/COM boundary time,
+durable getter boundaries, normalization and persistence are separately
+reported. A pilot is never a qualification pass, even if its budget passes.
+
+**The performance gate is still failed.** `pf9-small-pilot-3` measured 15.79 s
+for its warm complete sample. Replacing quadratic station-binding scans in both
+readers with indexed lookups preserved every binding/identity check. A sampled
+runtime trace then identified allocation and flush overhead in canonical hash
+writes; a synchronous incremental hash sink and document-sized buffers preserve
+the same canonical bytes. `pf9-small-pilot-5` measures 10.09 s total (6.59 s
+broker, 2.52 s normalization, 0.95 s persistence), still above 5 s. Its source
+fingerprint remains equal to the earlier pilots.
+
+`pf9-medium-pilot-1` captured and normalized all 1,000 members / 100,000 rows,
+but failed bounded transport output. Before the hash-sink refinement, its
+baseline took 37.45 s broker plus 32.70 s normalization, and incremental process
+working set reached 837,373,952 bytes. Its partial transport is failed evidence,
+never an accepted snapshot. It exceeds the unchanged 512 MiB budget; the
+100,000-row Excel caller is therefore **not admitted**. No ten-sample run,
+installed claim, or final PR is justified by these pilots.
+
+Next bounded scaling unit: use the measured invocation/journal costs to qualify
+fewer actual bulk calls against the direct reference, and remove avoidable
+canonical/evidence graph duplication before reconsidering transport admission.
+Preserve source rows, matrices, assignments and complete provenance; do not
+invent getter calls, remove durability, raise caps alone, pad or replace the
+failed workload to label it passed. Then repeat single pilots, followed by the
+frozen baseline plus ten measured samples once correctness and capacity pass.
+Final signed installed proof and the cumulative repository/hosted gates follow.
+
+### Whole-model force read and compact transport — 2026-09-07
+
+The next scaling unit retains the same frozen physical fixtures. Getter-only
+`Invoke-EtabsBulkForceQualification.ps1` compared `Results.FrameForce("All", 2)`
+against every actual object getter. All 10,000 small-fixture rows matched exactly;
+all 3,718 reference-model rows (153 beams plus 72 columns) also matched. The
+source path, saved hash, lock, units, case statuses and complete group payload
+were unchanged. The built-in `All` group returns **zero explicit assignment
+rows** in this ETABS version; it is not an empty physical model. The qualified
+profile binds its implicit membership to the complete source frame inventory
+and requires every requested beam's selected results.
+
+`wp10-group-static-frame-capture/v1` records one real group result getter,
+preserves its full payload and original global row indices, and filters the
+requested beam objects locally. A source-bound scope record accounts separately
+for required and context-only rows. Column/other non-requested object results
+remain in the complete getter evidence; they are not represented as accepted
+beam actions. Matrices and assignment getters remain real observations. The
+older direct and bulk profiles remain readable reference paths.
+
+Group stations have no native ETABS identifier. This profile uses the first
+actual group row at each exact object/element/station tuple as its compact
+acquisition-local station ID (`station:All:NNNNNNNN`). The raw locations,
+original row indices, full action hashes and whole-snapshot hashes still bind
+the data. Earlier profiles keep their original station-ID algorithm. Indexed
+JSON column arrays prevent a whole-group result from introducing repeated
+linear array walks for every row.
+
+`pf9-small-group-pilot-3` retains 100 members / 10,000 rows, with a warm total
+of 7.59 s (4.93 s broker, 2.15 s normalization, 0.49 s persistence) and an
+incremental working set of 104,673,280 bytes. It is still over the 5 s target.
+The preceding `pf9-medium-group-pilot-1` normalized all 1,000 / 100,000 rows,
+but failed the expanded transport boundary: 59.13 s through the failed write
+and 630,239,232 incremental bytes. These are development failures, not PF9
+acceptance. No medium Excel admission or installed completion is claimed.
+
+The `structural.analysis_snapshot_rows/v1` development transport uses
+`STRUCTSNAP-ROWS-1\n` plus one gzip member. Ordinary snapshot/raw/ledger containers
+remain JSON objects; repeated action, station, force, disposition and action
+provenance records use frozen positional arrays. It preserves every logical
+snapshot-v1 value and canonical identity, uses strict arity/type validation,
+and retains the existing 64 MiB encoded / 256 MiB wire-expanded bounds and
+explicit CRC/ISIZE completion check. Legacy gzip remains supported. This reduces
+repeated field names rather than increasing limits. Both language readers and
+actual retained-payload replay must pass before production writes switch to it.
+
+The first group/rows pilots complete the full frozen payload at both sizes:
+`pf9-small-group-rows-pilot-1` is 7.38 s; `pf9-medium-group-rows-pilot-1` is
+43.72 s with 690,536,448 bytes peak incremental working set. Medium bounded
+file persistence now succeeds. The 33 affected portable .NET tests and 21
+Python tests passed, and independent Python replay of the actual small compact
+artifact preserved snapshot SHA-256
+`1cc5ff5461f5db9ffce5f6d9f6e205f632d6c581305198b786b8155c7694d77d`.
+These results do not pass the timing or medium memory gates.
+
+The repeated-run memory investigation found a lifecycle defect: an uncancelled
+deadline task retained its completed broker result and source graph until the
+original deadline, up to eight minutes. The shared deadline wait now ends on
+quiescence in all three WP10 brokers, while a still-running provider call keeps
+the lease and timeout fence. A weak-reference regression and the 37 affected
+broker/context/batch/group tests passed. Live repeat memory proof remains next.
+The next bounded memory unit also removes reparsing the exact durable artifact
+when its fully validated in-memory graph is already available; exact file/hash
+binding and the same imported-artifact validator remain required.
+
+Disk diagnostics retained per-record `Flush(true)` and found no substantial
+improvement from removing write-through or preallocating the journal, so neither
+was adopted. A specialized action-row hash emitter preserved identity but
+regressed the retained medium replay and was reverted. Keep improvements only
+when measured on the current compiled candidate; diagnostic traces from an older
+binary cannot support acceptance for a later source revision.
+
+Continue with measured canonical serialization and memory-copy repairs, then
+repeat the **same** source fixtures using the new profile/transport. Keep
+context preparation separately visible; do not move required acquisition work
+outside the timer merely to report a pass. Only after complete capacity and
+performance pilots pass should the baseline plus ten measured runs proceed.
+The final signed installed package and cumulative/hosted gates remain U5.
+
+### Required data and behavior
+
+- Default product scope is the complete required beam set from the accepted
+  source context. One-member operation remains useful as an initial smoke and
+  explicit bounded scope, never as repeated full-model acquisition for every
+  selected beam. Shared property and case catalogs are read once per capture.
+- Bound request, connected context, process/start/executable, model identity,
+  source units, member IDs and selected cases/combinations. A changed context,
+  model or result selection rejects completion and invalidates current live
+  claims. Saved offline snapshots remain identified historical evidence.
+- The initial qualified actions are existing completed linear-static cases and
+  concurrent supported combinations in the exact installed runtime/unit
+  profile. Freeze dependency closure, step policy and coverage before capture.
+  Missing analysis yields Analysis needed; unsupported/envelope/dynamic rows
+  are not silently converted to simultaneous design actions or dropped.
+- Preserve every required signed P/V2/V3/T/M2/M3 row, source object and analysis
+  element, object/element station, axes, source units and one result epoch.
+  Normalize once. Every source record/row has an accepted, explicitly approved
+  excluded, or blocked disposition. Any required blocked item withholds the
+  whole accepted snapshot. Extend schemas with compatibility vectors only if
+  their existing meanings cannot express the required batch.
+- Keep existing input origins and material classifications explicit. New source
+  facts require actual getters/provenance; demo M25/Fe500 does not classify a
+  connected model. Source adjacency does not prove physical support or a
+  construction group. A supported span mapping must name its evidence and
+  scope; ambiguity remains visible before later design.
+- Reuse the existing STA lease, deadline/quiescence, journal, worker-package
+  identity, workbook/request fencing, external snapshot codec and review paths.
+  Progress distinguishes acquisition, normalization and persistence. Cancel,
+  failure, close/unload or late completion publishes no partial current result.
+- Get Forces creates no model/force worksheets. It uses the existing review
+  window and requested reports. A complete result can be browsed by member
+  without another ETABS/file read. Reopening permits verified offline replay;
+  live use requires a new connection and freshness proof.
+
+### Host authority, evidence and focused gates
+
+The owner authorizes launching and using Excel/ETABS for this task. Inspection
+found no running Excel/ETABS at intake. Use owned test Excel workbooks and, when
+needed, an identified ETABS instance; retain original model file hashes. The
+production WP10 adapter stays getter-only. Fixture preparation may create and
+analyse explicitly owned qualification models outside that adapter, recorded
+as test-fixture setup, never as production reanalysis support or fabricated
+engineering evidence. Do not overwrite originals, terminate user applications,
+or change global security settings. Preserve failed receipts and owned-resource
+cleanup; no popup or unavailable input becomes an assumed pass.
+
+U1 records exact signature/source facts before dependent implementation. U2-U4
+use affected tests in the existing C# test projects, including legacy replay,
+batch row/identity/concurrency failures, shared-data call counts, session
+ownership and review. Installed development smoke guides necessary fixes before
+freeze. U5 retains final signed source/XLL/worker/model/receipt bindings and
+actual capacity manifests; synthetic replication of one retained beam is not a
+100/1,000-member workload. The unchanged PF9 budgets (small p95 <= 5 s,
+medium p95 <= 30 s, incremental working set <= 512 MiB) belong to the deferred
+WP10-PERF-FINAL gate under the owner amendment above.
+
+Use the maintained locked restore/build from `CSharp`, affected test filters,
+documentation/session/efficiency checks and installed packaging helpers. Run
+the broad Python suite and full `run.sh check` only at U5's cumulative gate.
+Record material issues, confirmed causes, fixes/proof and recurrence before
+candidate freeze; progress changes update this unit table and the generated
+handoff. Finish all versioned records before candidate acceptance. Keep hosted
+and installed final verdicts external and exact-head bound.
+
 ## WP10-05B active connection packet — 2026-09-05
+
+Historical completed connection contract (PR #975). The WP10 completion contract
+above now owns the remaining implementation; this heading remains for old links.
 
 **Product goal:** a ribbon-led Excel product with transparent assumptions,
 one source capture per verified revision, heavy data in memory/external evidence,
@@ -991,7 +1493,7 @@ do not just loop the retained one-member sample and report a building-scale
 result. Profile stage costs before choosing batch sizes. Any schema extension
 receives explicit compatibility vectors and its own acceptance update.
 
-**WP10-06** starts only after 05/05B/05C have passed their own boundaries. It
+**Historical WP10-06 sequencing, amended above on 7 September:** starts only after 05/05B/05C have passed their own boundaries. It
 qualifies the unchanged integrated candidate against PF8 E5-02/E5-03/E5-04 and
 rechecks the connected Excel E5-05/E5-06 path. PF9 remains the authority:
 small 100 members/10,000 rows p95 <= 5 s; medium 1,000 members/100,000 rows
@@ -1218,8 +1720,15 @@ assurance remains the single hosted PR run.
 `BENCH-ETABS-MEDIUM` contains 1,000 physical members and 100,000 force rows.
 Rows may not be duplicated or padded to meet those sizes. Before timing, each
 workload freezes the source-model byte identity, analysis/result epoch, output
-selection, requested members, expected raw-row count, and normalized snapshot
-identity. Run at least one untimed acquisition and ten measured acquisitions
+selection, requested members, expected raw-row count, source getter-payload
+fingerprint and normalization profile. Keep the untimed baseline's exact
+snapshot identity, then retain and validate each measured run's own snapshot
+identity. Fresh reads legitimately change operation IDs, timestamps, call-ledger
+hashes and the acquisition-bound result epoch; do not require one literal
+snapshot SHA across fresh acquisitions. Compare the complete engineering source
+getter payloads (operation, arguments, direct/array outputs and return code)
+against the frozen baseline while each run passes the unchanged normalization
+and row-accounting checks. Run at least one untimed acquisition and ten measured acquisitions
 per workload, retain every sample, and calculate p95 by the repository's named
 percentile rule.
 

@@ -9,6 +9,30 @@ namespace StructAutomate.Tests;
 
 public sealed class Wp10OfflineSessionTests
 {
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void CompressedImportReopensThroughExplicitTransportWithoutChangingSnapshotIdentity(bool compact)
+    {
+        using var files = new TemporaryFiles();
+        var snapshot = SyntheticSnapshot();
+        using var output = new MemoryStream();
+        if (compact) AnalysisSnapshotTransport.WriteCompact(output, snapshot);
+        else AnalysisSnapshotTransport.Write(output, snapshot);
+        var bytes = output.ToArray();
+        var source = files.Write("input/snapshot.sasnap", bytes);
+        var store = new OfflineSnapshotStore(files.Path("store"));
+        var imported = store.ImportWithSnapshot(source, Sha(bytes));
+        Assert.Equal(compact ? AnalysisSnapshotTransport.CompactSchemaVersion : AnalysisSnapshotTransport.SchemaVersion, imported.Reference.TransportSchemaVersion);
+        Assert.EndsWith(".sasnap", store.GetArtifactPath(imported.Reference), StringComparison.Ordinal);
+        var reopened = new OfflineSnapshotStore(store.RootDirectory).Read(imported.Reference);
+        Assert.Equal(snapshot.SnapshotSha256, reopened.SnapshotSha256);
+        Assert.Equal(snapshot.RawCapture.RawCaptureSha256, reopened.RawCapture.RawCaptureSha256);
+        Assert.Equal(bytes, File.ReadAllBytes(store.GetArtifactPath(imported.Reference)));
+        var differentTransport = imported.Reference with { TransportSchemaVersion = compact ? AnalysisSnapshotTransport.SchemaVersion : AnalysisSnapshotTransport.CompactSchemaVersion };
+        Assert.Throws<InvalidDataException>(() => store.Read(differentTransport));
+    }
+
     [Fact]
     public void ImportReopensExactPortableIdentityAndRawProvenance()
     {
@@ -18,7 +42,9 @@ public sealed class Wp10OfflineSessionTests
         var source = files.Write("input/snapshot.json", bytes);
         var store = new OfflineSnapshotStore(files.Path("store"));
 
-        var reference = store.Import(source, Sha(bytes));
+        var imported = store.ImportWithSnapshot(source, Sha(bytes));
+        var reference = imported.Reference;
+        Assert.Equal(bytes, AnalysisSnapshotCodec.CanonicalJsonBytes(imported.Snapshot));
         var reopened = new OfflineSnapshotStore(store.RootDirectory).Read(reference);
 
         Assert.Equal("synthetic-project", reference.ProjectId);

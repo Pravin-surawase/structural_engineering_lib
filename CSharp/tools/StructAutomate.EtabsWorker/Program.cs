@@ -2,6 +2,9 @@ using System.Security.Cryptography;
 using StructuralEngineering.Contracts;
 using StructuralEngineering.Etabs;
 
+if (args.Length == 4 && args[0] == "--forces-request" && args[2] == "--response")
+    return await ForceWorker.Run(args[1], args[3]);
+
 if (args.Length != 4 || args[0] != "--request" || args[2] != "--response")
     return 2;
 

@@ -25,6 +25,7 @@
 *.csproj text eol=lf
 *.slnx text eol=lf
 *.sh text eol=lf
+*.ps1 text eol=lf
 
 # Binary files — do not modify
 *.png binary

@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using StructuralEngineering.Analysis;
 using StructuralEngineering.Contracts;
 
@@ -27,6 +29,7 @@ public sealed class OfflineSnapshotSession
 
         Reference = reference;
         Snapshot = snapshot;
+        ModelInterpretation = InterpretModel(snapshot);
         StationsById = new ReadOnlyDictionary<string, SnapshotStation>(snapshot.Stations.ToDictionary(station => station.StationId, StringComparer.Ordinal));
         _membersById = new ReadOnlyDictionary<string, SnapshotMember>(snapshot.Members.ToDictionary(member => member.MemberId, StringComparer.Ordinal));
         var actionGroups = snapshot.ActionRows
@@ -46,6 +49,7 @@ public sealed class OfflineSnapshotSession
 
     public OfflineSnapshotReference Reference { get; }
     public AnalysisSnapshot Snapshot { get; }
+    public EtabsModelInterpretation? ModelInterpretation { get; }
     public IReadOnlyDictionary<string, SnapshotStation> StationsById { get; }
     public IReadOnlyDictionary<string, SnapshotMember> MembersById => _membersById;
 
@@ -55,5 +59,18 @@ public sealed class OfflineSnapshotSession
         if (string.IsNullOrWhiteSpace(memberId) || !_actionsByMember.TryGetValue(memberId, out var rows))
             throw new KeyNotFoundException($"Member '{memberId}' is not present in this offline snapshot session.");
         return rows;
+    }
+
+    private static EtabsModelInterpretation? InterpretModel(AnalysisSnapshot snapshot)
+    {
+        var metadata = snapshot.RawCapture.ModelRecords.Single(record => record.RecordKind == RawModelRecordKind.ModelMetadata);
+        if (!metadata.Fields.TryGetValue("data", out var value)) return null;
+        foreach (var name in new[] { "projection", "acquisition_evidence", "capture", "context" })
+            if (value.ValueKind != JsonValueKind.Object || !value.TryGetProperty(name, out value)) return null;
+        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower, RespectRequiredConstructorParameters = true };
+        options.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, allowIntegerValues: false));
+        var inventory = value.Deserialize<EtabsContextInventory>(options) ?? throw new InvalidDataException("The retained source context is incomplete.");
+        return EtabsModelInterpreter.Interpret(new(EtabsContextWorkerCodec.CreateArtifact(inventory), snapshot,
+            snapshot.Members.Select(member => member.ObjectId).ToArray()));
     }
 }

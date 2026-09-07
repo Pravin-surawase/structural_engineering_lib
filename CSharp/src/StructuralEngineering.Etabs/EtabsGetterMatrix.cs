@@ -36,7 +36,8 @@ public sealed record EtabsGetterDefinition(
     int? CountOutputIndex = null,
     IReadOnlyList<int>? ParallelArrayOutputIndexes = null,
     IReadOnlyDictionary<int, int>? FixedArrayLengths = null,
-    IReadOnlyList<int>? NullableStringArrayOutputIndexes = null)
+    IReadOnlyList<int>? NullableStringArrayOutputIndexes = null,
+    IReadOnlyDictionary<int, int>? TableArrayFieldIndexes = null)
 {
     public IReadOnlyList<int> ParallelArrays { get; } =
         ParallelArrayOutputIndexes ?? Array.AsReadOnly(Array.Empty<int>());
@@ -44,6 +45,8 @@ public sealed record EtabsGetterDefinition(
         FixedArrayLengths ?? new ReadOnlyDictionary<int, int>(new Dictionary<int, int>());
     public IReadOnlyList<int> NullableStringArrays { get; } =
         NullableStringArrayOutputIndexes ?? Array.AsReadOnly(Array.Empty<int>());
+    public IReadOnlyDictionary<int, int> TableArrays { get; } =
+        TableArrayFieldIndexes ?? new ReadOnlyDictionary<int, int>(new Dictionary<int, int>());
     public EtabsRawValueKind DirectValueKind { get; } =
         ReturnSemantics is EtabsReturnSemantics.DirectValue
             ? EtabsManagedSignature.ValueKind(ManagedSignature.Split(' ', 2)[0])

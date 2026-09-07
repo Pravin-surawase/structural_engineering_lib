@@ -1,0 +1,145 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "ec3be6c11afce308699647311e715e99092de788f94d50eb9a8f017246cc8551",
+    "state": {
+      "branch": "codex/wp10-completion",
+      "default_base": {
+        "ahead": 10,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c822809ddc0252816c71791825c60b2f07aac48c",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 238.927,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "head_sha": "8927740cf7929ea53dab0b4e7f8e1df200825e24",
+      "hold_reasons": [
+        "changed paths: 26"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-09-07T05:30:39.335026+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 26,
+        "modified_paths": [
+          "CSharp/packaging/excel/compare_bulk_capture.py",
+          "CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotCanonicalWriter.cs",
+          "CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotCodec.cs",
+          "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs",
+          "CSharp/src/StructuralEngineering.Etabs/EtabsCaptureProjector.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineSnapshotStore.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp10BatchLiveQualificationTests.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp10BulkCaptureTests.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp10ForceWorkerTests.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp10PerformanceQualificationTests.cs",
+          "CSharp/tests/StructuralEngineering.Tests/Wp10Tests.cs",
+          "Python/structural_lib/services/analysis_snapshot.py",
+          "Python/tests/test_token_efficiency.py",
+          "Python/tests/unit/test_calculation_review.py",
+          "Python/tests/unit/test_structural_engineering_wp10.py",
+          "docs/SESSION_LOG.md",
+          "docs/library/excel/README.md",
+          "docs/library/implementation-status.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/xll-product/README.md",
+          "docs/planning/xll-product/current-plan.md",
+          "docs/planning/xll-product/handoff.md",
+          "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+          "docs/verification/rework-recurrence-index.json"
+        ],
+        "staged_paths": [
+          "docs/verification/wp10-completion-git-handoff-receipt.json",
+          "docs/verification/wp10-completion-source-evidence.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:ec3be6c11afce308699647311e715e99092de788f94d50eb9a8f017246cc8551",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-07T05:30:39.335026+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Windows",
+    "owned_paths": [
+      "CSharp",
+      "Python/structural_lib/analysis_snapshot.py",
+      "Python/structural_lib/services/analysis_snapshot.py",
+      "Python/tests/unit/test_structural_engineering_wp10.py",
+      "Python/tests/test_token_efficiency.py",
+      "Python/tests/unit/test_calculation_review.py"
+    ],
+    "shared_paths": [
+      "docs/planning",
+      "docs/library",
+      "docs/verification",
+      "docs/SESSION_LOG.md"
+    ],
+    "task_id": "WP10-COMPLETION"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import copy
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -14,6 +15,7 @@ from structural_lib.analysis_snapshot import (
     canonical_analysis_snapshot_json,
     canonical_snapshot_json_bytes,
     parse_analysis_snapshot_json,
+    parse_analysis_snapshot_transport,
     parse_etabs_import_request_json,
 )
 
@@ -22,6 +24,61 @@ FIXTURE_PATH = (
     ROOT / "contracts" / "structural-engineering" / "conformance" / "wp10-vectors.json"
 )
 FIXTURE = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+
+
+def test_compressed_snapshot_replays_identity_and_rejects_bad_evidence() -> None:
+    payload = canonical_snapshot_json_bytes(FIXTURE["valid_snapshot"])
+    header = b"STRUCTSNAP-GZIP-1\n"
+    encoded = header + gzip.compress(payload, mtime=0)
+    result = parse_analysis_snapshot_transport(encoded)
+    assert result.snapshot is not None, result.diagnostics
+    assert canonical_snapshot_json_bytes(result.snapshot) == payload
+    corrupt = bytearray(encoded)
+    corrupt[-8] ^= 1
+    duplicate = header + gzip.compress(
+        b'{"schema_version":"duplicate",' + payload[1:], mtime=0
+    )
+    for bad in (bytes(corrupt), duplicate, b"bad-header", encoded[:-5]):
+        rejected = parse_analysis_snapshot_transport(bad)
+        assert rejected.snapshot is None
+        assert rejected.diagnostics[0].code == "INPUT.SCHEMA"
+
+
+def test_compact_rows_replay_identity_and_reject_wrong_arity_or_type() -> None:
+    document = copy.deepcopy(FIXTURE["valid_snapshot"])
+    for action in document["action_rows"]:
+        action["provenance"] = [
+            value for _, value in sorted(action["provenance"].items())
+        ]
+    for container, name in (
+        (document, "action_rows"),
+        (document, "stations"),
+        (document["row_ledger"], "rows"),
+        (document["raw_capture"], "force_rows"),
+    ):
+        container[name] = [
+            [value for _, value in sorted(row.items())] for row in container[name]
+        ]
+
+    def encode(value: dict) -> bytes:
+        return b"STRUCTSNAP-ROWS-1\n" + gzip.compress(
+            json.dumps(value).encode(), mtime=0
+        )
+
+    encoded = encode(document)
+    result = parse_analysis_snapshot_transport(encoded)
+    assert result.snapshot is not None, result.diagnostics
+    assert canonical_snapshot_json_bytes(
+        result.snapshot
+    ) == canonical_snapshot_json_bytes(FIXTURE["valid_snapshot"])
+    wrong_arity = copy.deepcopy(document)
+    wrong_arity["action_rows"][0].append("extra")
+    wrong_type = copy.deepcopy(document)
+    wrong_type["action_rows"][0][9] = True
+    for bad in (encoded[:-4], encode(wrong_arity), encode(wrong_type)):
+        rejected = parse_analysis_snapshot_transport(bad)
+        assert rejected.snapshot is None
+        assert rejected.diagnostics[0].code == "INPUT.SCHEMA"
 
 
 def test_wp10_04_emitted_snapshot_matches_dotnet_and_independent_dimensions() -> None:

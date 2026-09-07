@@ -54,7 +54,7 @@ public sealed class EtabsContextOperationBroker(TimeProvider? timeProvider = nul
             try
             {
                 var delay = request.DeadlineUtc - _timeProvider.GetUtcNow();
-                if (delay > TimeSpan.Zero) await Task.Delay(delay).ConfigureAwait(false);
+                if (!await EtabsOperationBroker.WaitForDeadlineAsync(delay, quiescence.Task).ConfigureAwait(false)) return;
                 if (!quiescence.Task.IsCompleted)
                 {
                     deadline.Cancel();

@@ -5,6 +5,617 @@
 
 ---
 
+## 2026-09-07 — Session: Complete WP10 product acquisition
+
+**Task:** WP10-COMPLETION
+**Agent:** DEV (one parent; no subagents at intake)
+**Branch:** `codex/wp10-completion`
+
+**Focus:** Finish the product's read-only ETABS force handoff, multi-member data
+and integrated qualification against the whole-product goal; learning excluded.
+
+### Completed
+
+- Implemented WP10's complete group acquisition, explicit model interpretation,
+  versioned compact transport and production Excel worker/store handoff.
+- Verified actual reference and 1,000-member / 100,000-row capture, exact offline
+  reopen and cancellation, plus independent Python replay and source equality.
+- Reconciled the final functional completion contract and deferred PF9 speed/
+  memory work to WP10-PERF-FINAL under the owner's amended order.
+
+### Next
+
+- Complete exact-candidate installed Excel and cumulative correctness gates,
+  immutable review, one hosted milestone PR and external final handoff.
+- After acceptance, plan WP11's public input mapper and actual-bar design
+  orchestration; learning and performance tuning remain separate.
+
+### Progress
+
+- PR #981 run `34089055831` passed Repository, Documentation, FastAPI and .NET
+  validation but failed Python mypy with 27 diagnostics in one row-accounting
+  function. One reused loop variable had retained the first record's static
+  type across heterogeneous records. The repair uses typed role-specific names;
+  binding conditions, canonical identities and admission checks are unchanged.
+  Record the failed hosted run and repeat its affected type/replay evidence,
+  exact candidate review/installation and the same PR's required checks.
+- `6f48c112` passed independent source audit, signed installed connection/offline
+  acceptance and actual packaged 1,000-member / 100,000-row worker/store capture.
+  Final integrity rejected mixed endings in two PowerShell packaging scripts.
+  Recorded INTEGRITY_REJECTED and the required REPLAN. The revised acceptance
+  adds the missing `.ps1` LF attribute and full-task PowerShell byte normalization
+  before the replacement candidate; production behavior is unchanged.
+- The exact `06d27bde` candidate passed installed offline/legacy acceptance but
+  failed the force harness: its initial zero-worker poll preceded background
+  dispatch, so a 15-second session wait closed Excel during the full capture.
+  Independent audit found this sole blocker and otherwise accepted the complete
+  main-process coverage. Entered the one permitted repair batch. The harness
+  now waits for the accepted session within the existing functional deadline,
+  then verifies cleanup. `connection-harness-repair-development` passed all
+  153 beams / 3,502 actions, workbook ownership, zero heavy sheets, cancellation,
+  close fencing, exact reopen and normal cleanup using the same installed code.
+  This is explicit development proof; the repair's exact signed installed
+  receipts and final auditor verdict remain external.
+- The broad Python gate finished with 7,850 passes and two failures in retained
+  verification assumptions. Updated the timing-policy assertion to its current
+  machine-derived contract. The historical Office.js transport fixture now
+  replays its own exact dossier rather than comparing a new calculation bound
+  to changed library bytes with an old identity. All 13 affected module tests
+  passed; production hashing and the frozen fixture are unchanged. Repeat only
+  affected formatting/record checks before the immutable candidate.
+- Final changed-path formatting passed for 55 source files with a clean scope
+  guard. Both .NET suites passed (129 portable plus 129 Windows; eight ordinary
+  external-input skips). The cumulative repository run passed 31/32 checks;
+  API classification correctly stopped on two unstaged new evidence records.
+  Stage the reviewed records and repeat the affected API/docs checks. The broad
+  Python gate runs separately; its final verdict remains external.
+- At `8927740c`, the complete production medium worker/store test passed:
+  1,000 members / 100,000 actions, exact saved snapshot reopen, cancellation,
+  unchanged prior accepted artifact and zero active workers. External evidence:
+  `force-client-group-medium-2/receipt.json`; the failed first run is retained.
+  The source manifest, current plan, implementation status and installed transition
+  declaration now identify the group/rows implementation and owner performance
+  deferral. U1–U4 are implemented; final installed and cumulative gates remain U5.
+
+- Production group worker/store capture, exact offline reopen and cancellation
+  passed for all 153 reference beams / 3,502 rows at `2bdf8679`. Medium admission
+  exposed a Windows progress replacement fault before any snapshot was accepted.
+  A standalone 3,000-write / 62,879-read reproducer verified the root fix:
+  ReplaceFile publication and bounded retry of its transient reader errors.
+  Package metadata now names the actual group/rows transport. Medium and installed
+  acceptance will be repeated with the corrected candidate.
+
+- Saved the interrupted group/compact/timer work in `ed86063f` after actual
+  medium replay and reference equality. The next bounded integration uses the
+  group profile in the production worker, explicitly identifies rows-1 in the
+  protocol and workbook reference, and admits the proved 64 MiB / 100,000-row
+  capacity. Functional worker/store and installed verification remain next.
+  Ten focused protocol/store checks passed (three explicit external-input
+  checks skipped in the ordinary run); the worker publishes successfully.
+
+- Owner amendment after the interrupted session: finish basic WP10 delivery,
+  review and PR/handoff now; move performance increases to the project end.
+  Updated the completion contract without claiming a PF9 pass. Functional
+  capacity, exact source/row evidence, installed correctness and cumulative
+  repository gates remain required. Timing experiments stop here.
+- Independent Python accepted the complete 41,028,597-byte medium rows transport,
+  1,000 members / 100,000 rows, preserving snapshot SHA-256
+  `cc00d7e355c2d25561e99cfd754d9df63f2627505b88d93182f97688897f7dc6`.
+  The real reference group capture also passed: 153 beams / 3,502 rows plus the
+  full 225-frame source context. The source-bound in-memory overload passed
+  actual broker-array parity and differently-bound valid-artifact rejection.
+
+- Verified clean main at PR #978, current origin and repository identity, then
+  opened the sole-writer Windows completion branch. No active product candidate
+  PR overlaps this task. Historical detached worktrees are untouched.
+- Reconciled stale WP10 status summaries and froze a U1-U5 completion contract:
+  source/scope, shared capture/normalization, worker/Excel handoff, model/batch
+  interpretation and cumulative installed/performance qualification. The owner
+  authorized real applications and necessary fixture preparation. Production
+  acquisition stays getter-only and required PF9 budgets remain unchanged.
+- U1 source preflight passed on an owned copy: ETABS 23.3.1, 225 frames,
+  completed case statuses, source material classifications and unchanged
+  original hash. The failed first preflight exited its owned process cleanly.
+  External receipts: `C:/CodexWork/wp10-evidence/WP10-COMPLETION/source-preflight-1`
+  and `source-preflight-2`. No production launch/open/analyse operation was added.
+- U2 implementation now has a separately versioned batch artifact/profile,
+  shared point/section/material/catalogue capture, per-object force provenance,
+  a shared-PID STA broker with durable call ledger and host-free projection.
+  Eight focused batch tests passed; 41 affected adapter/broker/context/projection
+  tests passed (one external replay skipped). Python independently reproduced
+  both synthetic span variants and the real mesh beam's exact canonical bytes.
+- Live `batch-mesh-development-1` passed for source beam 104 (three analysis
+  elements, 15 rows). `batch-development-3` captured/normalized 153 beams and
+  3,502 rows in memory after actual mesh-point capture. It took about 112 s;
+  its initial 36.5 MB portable file exceeds the 25 MB parser and 16 MiB Excel
+  store limits. Full-file Python replay was correctly rejected. No full-model
+  file/PF9/installed acceptance is claimed. The plan now explicitly requires
+  a compact bulk production path compared against this direct-getter reference.
+- `bulk-tables-2` records actual table/field/unit identities and source return
+  statuses. Displayed precision and omitted/default fields are not yet qualified
+  for engineering normalization. Original source hash remains unchanged; owned
+  ETABS PID 18580 remains open for the next implementation unit.
+- After the compact batch-summary change, the affected batch/legacy projection
+  filter passed 23 tests (one external replay skipped) and all 30 portable WP10
+  contract/normalization tests passed. These are internal-unit checks; the
+  milestone formatter, focused union and cumulative U5 gates remain later.
+- U3 now connects the ribbon's Get Forces to an exact request/context-bound
+  worker, per-member progress, cancellation and the existing external store.
+  Import returns the already validated graph for background indexing. Workbook
+  callbacks retain initiating document/context/request ownership; a failed or
+  cancelled read does not replace accepted evidence. Twelve focused
+  protocol/client/store tests passed. `force-client-development-1` passed the
+  actual process handoff and cancellation with owned beam 104 / 15 rows.
+  The existing signed Excel acceptance harness now includes optional force
+  ownership, close, cancellation and persistence proof. It passed in
+  `excel-forces-development-1`, bound to commit `a2dbf17a`: beams 100/104,
+  28 rows, zero force sheets, correct initiating workbook, cancellation and
+  close fencing, exact save/reopen, unchanged source hash, normal Excel/worker
+  exit and restored startup registration. This is signed development proof;
+  final installed acceptance must bind the eventual whole-model candidate.
+- U4 streaming canonical output preserves the existing snapshot bytes/hashes.
+  The 30 portable contract tests and 27 affected batch/projector/worker tests
+  passed (two external tests skipped in that union). An isolated real beam
+  replay preserved all 1,122,355 bytes; Python independently accepted the same
+  stored bytes. Full retained 153-beam normalization remained complete, with
+  3,502 rows and a 26,396,459-byte file. `retained-batch-streamed-2` measured
+  about 8.84 s normalization, 0.35 s stream persistence and 311,226,368 bytes
+  peak test-process working set. This is offline development evidence, not
+  PF9 or the adapter's certified incremental memory metric. Bulk source work
+  and explicit large-snapshot transport remain necessary.
+
+- U4 compact transport is now used by the real force worker and external store.
+  The `.sasnap` header and single gzip member retain unchanged snapshot-v1
+  canonical evidence, with bounded encoded/expanded input and explicit footer
+  validation. Legacy JSON references retain their original serialized shape.
+  The protocol request is v2 so transport and caller limits are explicit.
+  Nine focused worker/store tests passed (three external checks skipped in the
+  ordinary run), as did the 20 Python WP10 tests and the repaired .NET transport
+  test. Independent full retained replay passed in Python and .NET; its 26.4 MB
+  canonical payload compresses to 4.1 MB, and .NET read/validation peaked at
+  155,766,784 bytes test-process working set. `force-client-full-development-1`
+  then passed the actual connection/capture/store/cancel path for all 153 beams
+  and 3,502 rows, producing 5,367,323 encoded bytes. The full test took about
+  134 s; it is development evidence, not PF9 or installed acceptance. Bulk
+  metadata/source qualification remains the next unit. No original model or
+  installed package was replaced by these development checks.
+
+- U4 now uses qualified full-precision assignment table getters, bulk source
+  geometry/connectivity and real per-object forces/transformation matrices.
+  Controlled disposable-copy perturbations passed in
+  `bulk-assignment-experiments-3`; `bulk-editing-1` retained unchanged model,
+  lock, units, statuses and probe forces. `bulk-development-3` passed 153 beams,
+  937 mesh elements and 3,502 rows in about 13.23 s broker capture. Independent
+  Python replay/comparison preserved every force component and assignment;
+  mesh coordinates differ from direct getters by at most 3.7588e-12 m.
+- One bounded subagent implemented the pure source interpretation. Parent
+  review repaired its producer binding, inspected the result and integrated
+  retained context into the memory session/review. Connectivity preserves every
+  source frame and exact shared point; support faces/physical spans/fixity are
+  explicit needs-input. The real full-model positive interpretation passed.
+  The 36-test affected adapter/session union passed with one external replay
+  skipped (35 passed); five interpreter tests passed. Final candidate checks
+  remain at U5, not per internal commit.
+- `force-client-bulk-development-1` passed the real complete model worker/store
+  and cancellation path in about 36 s, retaining a 3,668,829-byte transport,
+  exact source context interpretation and no accepted partial replacement.
+  This is development proof, not installed/PF9 qualification. Next: actual
+  100/1,000-member performance datasets, medium admission/memory, final signed
+  installed proof and the cumulative repository/hosted gate.
+- Final U4 checkpoint: independent Python replay also passed the actual compressed
+  worker output against the direct reference. All 36 portable/interpreter tests
+  and 35 adapter/session tests passed (one external-input replay skipped).
+- Committed the qualified bulk/interpreter checkpoint as `98772c0a`. Prepared
+  genuine 100/10,000 and 1,000/100,000 ETABS fixtures using a reusable owned-model
+  generator. The metric API/database pair 6/9 is now explicit alongside 6/6;
+  source lengths and fixed-end forces independently prove the API units.
+- Fixed case-only portable admission in Python and .NET. A 10,000-row Python
+  replay preserved the exact snapshot identity with no invented combination.
+  Nine bulk tests and the 36 portable/interpreter tests passed. One bounded
+  subagent wrote the PF9 harness and then the two row-binding index methods;
+  parent review repaired the measurement boundary, failure reporting and
+  process sampler before use, inspected both language changes, and verified
+  the actual retained 10,000-row snapshot SHA remained unchanged.
+- PF9 remains failed: the small pilot improved from 15.79 s to 10.09 s after
+  indexed station bindings and a measured canonical hash allocation repair.
+  The medium pilot captured and normalized every 100,000 row but failed bounded
+  transport; its incremental working set was 837,373,952 bytes. No medium caller
+  limit was raised, no partial artifact was imported, and no installed/PF9 pass
+  is claimed. Next unit is measured source-call and memory/transport scaling,
+  then the ten-sample runs and final installed/cumulative gates.
+- Qualified one actual `FrameForce(All, GroupElm)` getter against every object
+  result: 100/10,000 small fixture and 225/3,718 reference model, with exact
+  payload equality and unchanged protected source facts. Added a separate group
+  capture profile with original global row indices and explicit required versus
+  context-only scope. Indexed JSON force columns prevent quadratic group access.
+- Reduced duplicated canonical allocations and validation passes while retaining
+  the exact legacy snapshot identity. The small group pilot is 7.59 s overall;
+  the previous medium group pilot still failed transport and 512 MiB memory.
+  A separate compact positional-row wire format is under independent .NET and
+  Python qualification; no admission limit or frozen workload was changed.
+
+- Compact medium persistence now succeeds for all 1,000 members / 100,000 rows.
+  The latest group/rows pilots are 7.38 s small and 43.72 s medium; medium peak
+  incremental memory remains failed at 690,536,448 bytes. Independent Python
+  small compact replay preserved the exact snapshot identity; 33 portable .NET
+  and 21 Python checks passed. No production admission or installed pass is claimed.
+- Fixed completed acquisition retention through the original deadline timer in
+  all three brokers. The deadline monitor now ends when cleanup quiesces. The
+  weak-reference regression and 37 broker/context/batch/group tests passed;
+  actual repeated medium qualification is running. Per-record durable-flush
+  diagnostics showed no useful disk-mode/preallocation gain, so no durability
+  setting changed. A slower specialized row-hash trial was reverted.
+
+### Issues encountered
+
+- Hosted Python type validation rejected the heterogeneous row-binding loops
+  despite passing runtime tests. The original run and all diagnostics are retained.
+- The published branch initially lacked a recognized local upstream because
+  this checkout fetches explicit branch names; the new branch mapping was absent.
+
+- Final read-only integrity rejected mixed CRLF/LF in
+  `Invoke-EtabsConnectionAcceptance.ps1` and `New-Distribution.ps1` after the
+  language formatter passed. Installed functional receipts remained successful.
+- Three final-closeout lookups repeated absent path/subcommand assumptions:
+  `session_delivery.py`, `.github/hooks`, and `session prepare`; the known
+  `session.py`, bounded inventory and `session handoff --help` supplied the owners.
+
+- Installed acceptance observed zero active workers before Task.Run had started
+  the read. It incorrectly treated that as finished cleanup and timed out the
+  complete-model session after 15 seconds. Its own workbook close then cancelled
+  the source read after 152 of 153 progress updates. No product result was lost
+  after acceptance and no partial result was admitted.
+- Broad Python exposed an old timing-policy phrase assertion and a frozen
+  Office.js fixture assertion tied to the entire current library content hash.
+  The latter changed on legitimate WP10 source edits even though calculations
+  and the retained transport remained valid. A bounded recursive comparison
+  traced all differences to calculation identities and their dependent hashes.
+- The cumulative API classifier refused two untracked evidence records because
+  its caller inventory is tracked/staged only. This was a preparation-order
+  failure; stage only the intended records before the affected retry. Two later
+  diagnostic lookups also repeated an absent/glob path assumption.
+- Preparation's session check rejected the progress-only log because its parser
+  requires an explicit completed-outcomes section. The completed U1–U4 outcomes
+  and remaining U5 work now have separate sections before freeze.
+- Medium worker capture stopped after 55 progress updates with access denied.
+  The source getter returned successfully; progress publication failed. No
+  partial snapshot was imported, and worker cleanup completed. A stale package
+  description also named the earlier bulk/gzip profile despite the group/rows
+  production implementation; the manifest producer is corrected.
+- One further status-file lookup guessed an absent planning path; bounded
+  inventory located the maintained `docs/library/implementation-status.md`.
+
+- Completed broker graphs remained reachable through uncancelled deadline tasks
+  for up to eight minutes, accumulating across repeated acquisitions.
+- The first native canonical writer retained a whole document in its stream
+  buffer and escaped Unicode property names differently from PF4. Bounded
+  pooled writes and the explicit PF4 encoder repair both; Unicode-key and exact
+  retained-byte tests passed before live performance measurement.
+- WPR CPU profile startup was rejected with `0xc5585011`; the underlying host
+  restriction was not independently established. EventPipe captured a diagnostic
+  trace without changing privileges. That trace used a pre-revert row-hash
+  binary, so it is retained as diagnostic evidence only.
+
+- The first group-profile pilot assumed `GetAssignments(All)` lists every frame.
+  Both retained live qualification transcripts instead return zero explicit
+  assignments for the built-in whole-model group. Capture correctly fenced;
+  the versioned profile now proves all required owners from the complete source
+  context and conserves the actual returned group rows.
+- Six further diagnostic invocations used a mistyped expected SHA or a guessed
+  receipt/source filename. The source guard prevented any capture under the
+  mistyped identity. Exact retained hashes and discovered owner paths resolved
+  the reads; no source model changed.
+
+- PF9 fixture setup discovered N-mm-C internal database units despite kN-m-C
+  API units, and an explicit final Save switched the owned source to `$et` and
+  cleared analysis readiness. Initial failed receipts are preserved. The PID
+  cleanup guard caught the intermediate path before exit; its exact owned
+  sibling path was verified and PID 8276 then exited normally.
+- A case-only source was rejected because both portable readers required all
+  record kinds even when the allowed combination catalogue was empty.
+- The first PF9 harness timed only the broker and reset the memory baseline per
+  sample. Those measurements could understate full adapter cost. Parent review
+  corrected them before acceptance and added retained normalization failures.
+- Three more source searches used an absent guessed path or unexpanded Windows
+  wildcard, and a subagent chained a Python test from the CSharp directory.
+  The exact discovered owners and repository-root launcher resolved the reads.
+- Actual medium capacity exceeds current encoded/expanded and working-set
+  limits. Profiling confirmed quadratic station binding and synchronous
+  CryptoStream writes allocating through an async implementation; raw source
+  round trips, durable journal cost and overall graph footprint remain material.
+
+- An owned assignment probe passed a Double[] through an if-expression pipeline,
+  which unrolled it to Object[] and blocked a reflected setter on the disposable
+  copy. The failed copy exited cleanly with its source preserved.
+- The initial bulk frame-table index assumed every row was a unique source frame
+  element. ETABS also supplies shell-generated line records with repeated IDs;
+  the whole capture correctly fenced before publication.
+- Parent review found the first derived-view implementation checked only that
+  process evidence was supplied, then used a conformance-fixture spelling that
+  differs from the actual capture producer. This could misbind or reject a model.
+- Two guessed C# owner paths were absent. A pipe-separated xUnit class pattern
+  selected zero tests, and forwarding --help through dotnet test triggered a
+  .NET CLI IPC error. Help extraction also produced no files despite exiting.
+- One later performance-document search again supplied an unexpanded Windows
+  wildcard path. The exact already-known plan supplied the required PF9 contract.
+
+
+- The compressed format implementation initially let malformed gzip errors
+  escape the .NET diagnostic filter, and its Python rejection call omitted the
+  established remediation argument. Focused invalid-input cases caught both.
+  More significantly, .NET's GZipStream accepted complete JSON with a truncated
+  gzip footer while Python rejected it; transport completion was inconsistent.
+- A later WorkbookContract filename guess was absent; the already inspected
+  workbook-store owner supplied its actual metadata/serialization behavior.
+- The frozen PF9 paragraph required a single normalized snapshot identity
+  across fresh acquisitions, but source code binds result epoch and hashes to
+  operation IDs, capture time and actual journals. This would reject otherwise
+  identical valid reads in every repeat.
+
+- U3 found that the 10,000-action Excel admission limit also conflicts with
+  PF9's 100,000-row medium target. Existing bounds remain enforced until the
+  U4 transport/memory profile is qualified; no partial member import is used.
+- Three U4 source searches again used unexpanded Windows wildcard paths or an
+  absent guessed test filename. One bulk probe guessed a table key instead of
+  using the observed catalogue. These blocked diagnostics, not source capture.
+- The first streaming implementation allocated a 16 KiB writer buffer for every
+  tiny row/metadata hash. A full retained replay allocated about 9.18 GB over
+  its lifetime. The initial writer receipt also sampled all process allocations
+  while other tests ran, so it could not attribute writer cost.
+
+- Two source-orientation reads guessed filenames that do not exist: a C# scoped
+  instruction file and the context-contract filename. This delayed inspection;
+  no product behavior or source was affected.
+- The WP10 introduction/status table still described completed offline import
+  as next work, and its connection card remained presented as current. This
+  could select the wrong next task despite the later owner sequencing update.
+- Two later source lookups again assumed a normalizer folder and Python test
+  filename. A preflight reflection string argument was wrapped as a PSObject;
+  a later process guard compared timestamp text with PowerShell's implicitly
+  parsed DateTime. These blocked diagnostics before product acceptance.
+- Batch tests exposed a getter-reader representation mismatch: validated
+  typed numeric arrays could not pass the reader's object-array-only cast.
+- The portable .NET validator sorted equal local row indexes using the current
+  culture, disagreeing with Python and the explicit ordinal projector order.
+- Completed-status internal cases still returned force status 1. A fresh owned
+  analysis did not resolve it; isolated ordinary case/combination selection did.
+- Real analysis mesh points were absent from the original endpoint-only reader;
+  an empty synthetic story also exposed the portable story identity requirement.
+- Direct per-element calls and duplicated journal serialization exceeded the
+  time/file budgets. The file boundary remains unresolved pending bulk work.
+- The table diagnostic initially stopped at a source-empty modifiers table and
+  lost earlier table observations. It now retains each table and return status.
+- PowerShell `0d` supplied Decimal rather than Double to a by-ref coordinate
+  getter. Two long inline reflection commands also failed process creation with
+  OS access denied; the launch cause is unconfirmed.
+
+### Root causes and resolutions
+
+- RR-034: Python loop variables have function scope. Reusing `item` for points,
+  materials, sections and ledger entries caused mypy to retain the first inferred
+  type. Use role-specific names and run the configured mypy owner plus affected
+  snapshot tests/replay; do not suppress types or change binding semantics.
+- RR-009: the new task's fetch refspec was absent from this narrow checkout.
+  Added/fetched only its explicit mapping; canonical Git state now proves local
+  HEAD equals its upstream. No shared history was rewritten.
+
+- RR-013: `.ps1` had no explicit LF checkout attribute and the maintained
+  language formatter selects only Python/C# source. Mixed editor/patch endings
+  therefore survived to immutable integrity. Declare PowerShell LF, normalize
+  all task-changed PowerShell files and verify their exact bytes before the
+  replacement audit; keep the failed original gate and source-bound receipts.
+- RR-005: final-closeout owner lookup again assumed names instead of using the
+  already discovered `session.py` and actual CLI help. Corrected the bounded reads.
+
+- RR-002: an asynchronous dispatch gap invalidated the harness's assumed
+  zero-worker-to-completion ordering. Wait for the accepted session first using
+  the existing 490-second functional limit; then verify zero workers. This does
+  not weaken the separate five-second UI responsiveness assertion or claim a
+  deferred PF9 pass. The repaired full-reference development harness passed.
+- RR-033: the frozen transport test recomputed historical calculation identities
+  with current source bytes. Production evidence correctly binds all package
+  code/data. Replay the frozen dossier byte-for-byte through the exporter and
+  separately retain current-export identity checks. No hash is ignored or
+  replaced, and no historical fixture is regenerated. Both affected Python
+  modules passed all 13 tests.
+- RR-004: the timing-policy test retained wording from the superseded manual
+  timer contract. Its assertions now check the actual machine-derived elapsed
+  time and seven transition-based phases; production session logic is unchanged.
+- RR-003: new intended evidence records were not staged before the cumulative
+  tracked-caller check. Stage the inspected records; rerun the affected check
+  without regenerating unrelated registries or repeating unchanged suites.
+- RR-004: Progress is not a completion marker in the maintained session parser.
+  Added exact completed-unit outcomes and regenerated the handoff projection;
+  the final read-only session check verifies the resulting contract.
+- RR-032: Windows overwrite-move deletes the existing progress path while
+  readers can still hold it. A standalone concurrent reader/writer reproduced
+  access denied in File.Move. File.Replace avoids the writer deletion failure;
+  readers retry only observed missing/access/sharing errors on optional progress
+  at the next bounded poll. Malformed progress, final response validation,
+  cancellation and deadlines remain enforced. The corrected 3,000-update
+  reproducer passed with 62,879 complete reads; actual medium worker/store, exact reopen and cancellation then passed.
+- Package metadata was maintained separately from the producer selection and
+  was not updated during integration. Corrected the manifest's actual group
+  profile and rows transport before final installed-candidate generation.
+
+- RR-031: the deadline monitor's suspended closure retained the completed result
+  task and its complete acquisition. A shared wait now races quiescence against
+  the deadline and cancels the timer after cleanup. The completed-artifact
+  collection regression and 37 affected tests passed; live memory requalification
+  remains open.
+- RR-026 / RR-007: native writer defaults still buffered complete documents and
+  escaped U+2028 property names. Stream each advanced pooled buffer segment,
+  flush before finalizing the hash, and use explicit PF4 key escaping. The
+  33-test portable union and exact 33,355,603-byte retained replay passed.
+- WPR startup cause remains unconfirmed; the non-privileged EventPipe route
+  produced the requested diagnostic trace. No host policy was changed.
+
+- RR-002: implicit built-in group membership is not represented by explicit
+  assignment rows. Use the observed `All` catalogue entry, complete frame
+  context, exact original group row owners and required-member result coverage.
+  Both actual direct/group comparisons and filtered-scope tests conserve rows.
+- RR-005: manual hash transcription and filename inference recurred. Resolve
+  exact retained evidence/owners before invocation; the protected-source guard
+  correctly rejected the mistaken hash before attaching or writing evidence.
+
+- RR-002: InitializeNewModel selects internal N-mm-C database units independently
+  of kN-m-C API units. Explicit 6/9 metadata/component checks and actual fixture
+  force/length evidence extend only the context/batch profile. The final explicit
+  Save changed the analyzed host; omit it, verify the active path and freeze the
+  RunAnalysis result. `pf9-medium-fixture-1` passed 1,000/100,000 preparation;
+  `pf9-small-ready-1` and its analysis/unit receipts supply the small fixture.
+- RR-029: schema-allowed empty combinations conflicted with unconditional
+  all-enum record-kind validation. Both readers now require a combination fact
+  only when that catalogue is populated; raw/canonical accounting and selection
+  references still reject missing required facts. Bulk case-only and Python
+  10,000-row replay pass with identical snapshot identity.
+- RR-021: PF9 now measures total acquisition, raw read/SHA, normalization and
+  durable snapshot persistence, with one context-ready memory baseline and all
+  failed receipts retained. Actual method timing separates host/COM from the
+  durable getter boundary. The failed medium result remains an open capacity
+  gate; numeric limits have not been raised to hide it.
+- RR-030: each raw station binding rescanned all canonical stations (100 million
+  comparisons at small size, 10 billion at medium). Both languages now index
+  by record kind and exact evidence ID, preserving duplicate/missing rejection.
+  Parent replay preserved snapshot SHA `1cc5ff5461f5db9ffce5f6d9f6e205f632d6c581305198b786b8155c7694d77d`.
+- RR-026: the retained sampled trace identified small CryptoStream writes as an
+  allocation/flush cost. Synchronous IncrementalHash writes and larger buffers
+  only for full documents keep per-row buffers small. All 36 portable/interpreter
+  tests pass, and the complete retained canonical identity is unchanged. Warm
+  normalization decreased further from 3.16 s to 2.52 s; PF9 still fails overall.
+
+- RR-005: assign exact typed reflection values directly, outside an expression
+  pipeline. `bulk-assignment-experiments-2/3` passed all mutations/restorations
+  and owned-process cleanup. Discover owners before reads. Inspect the test
+  assembly's own help and use repeated `-class` filters; the affected 36-test
+  union ran with 35 passed / one intentional external skip.
+- RR-002: classify table rows by actual ObjType before unique frame indexing;
+  retain every shell/context row in the complete raw getter and expose scope
+  counts. The repaired full capture, independent reference comparison and real
+  worker/store all passed. No default or repeated shell row became a beam.
+- RR-020: absence of extracted help is not evidence. Installed exact reflection,
+  table metadata and owned getter/perturbation receipts supplied the facts.
+- RR-028: bind process/model/version/units to the actual EtabsCaptureProjector
+  producer and verify source endpoint identities/coordinates. Actual full-model
+  interpretation and worker/session proof passed; legacy fixture spellings
+  cannot substitute for live-producer acceptance.
+
+
+- RR-027: classify InvalidDataException in the stream parser and use the full
+  established Python rejection signature. Independently verify the single gzip
+  member's CRC32 and ISIZE after bounded expansion. Both runtimes now reject
+  the corrupt/truncated cases and accept identical canonical evidence; the
+  20 Python WP10 tests and focused .NET transport test passed. The full
+  4,063,310-byte transport replays all 153 beams/3,502 rows in both runtimes.
+- RR-021: freeze the complete source getter payload fingerprint and source/
+  normalization scope, retain the exact untimed baseline, and validate each
+  timed capture's own identity and row accounting. Actual operation IDs and
+  timestamps are retained, never rewritten to force artificial hash equality.
+
+- RR-005: assumed paths instead of discovering maintained owners. Bounded
+  `rg --files` located docs rules and EtabsContextContracts.cs; subsequent reads
+  use observed paths. No C# scoped instruction was found by that inventory.
+- Plan summaries were not reconciled after later implementation/priority
+  changes. Updated their statuses and added one current completion contract,
+  preserving the completed connection heading for historical inbound links.
+  Final document/link validation will bind the frozen result.
+- RR-005: discovered the actual Analysis and Python test owners; explicit
+  reflection conversion plus PSObject unwrapping passed source-preflight-2.
+  `ConvertFrom-Json -DateKind String` preserves the exact process timestamp;
+  a subsequent identity read confirmed the same PID/start/executable.
+- RR-023: `ArrayValues` assumed every host boxed array elements, although the
+  adapter accepts valid typed arrays. Read validated `Array` values directly
+  and preserve qualified zero-count null arrays. All eight batch tests pass.
+- RR-024: ValueTuple's default string comparison introduced culture ordering
+  only when multiple getters reused local row indexes. Use explicit ordinal
+  secondary ordering; .NET and Python now accept identical batch bytes.
+- RR-002: isolated source cases show Auto=3/5 cannot supply these frame results;
+  the batch now requires Auto=0 throughout the selected static closure. Mesh
+  coordinates use the live-proved PointElm getter, with unique frame-story
+  derivation and retained ownership evidence. The real mesh and full in-memory
+  batch pass. Empty-table diagnostics now record status/data incrementally;
+  emptiness is not silently treated as an assignment default.
+- RR-021: 6,460 direct calls included 937 elements x four getters (about 59 s).
+  Original and portable ledgers were both embedded in the snapshot. Keep the
+  original journal in the external acquisition with a compact inline receipt;
+  retain the complete portable ledger. Bulk round-trip reduction and bounded
+  file/memory qualification remain active work, not waived gates. The newly
+  traced 10,000-action store cap is also explicitly assigned to U4; the worker
+  receives the caller's actual limits and rejects complete over-limit data.
+- RR-005: use explicit `[double]0` for the actual reflected Double parameters;
+  owned-mesh-point-2 passed. RR-025: bounded signature queries, retained artifact
+  inspection and the owned-file harness obtained the needed facts after two
+  inline process-launch failures; their underlying Windows cause is unconfirmed.
+- RR-005: `rg --files` and the actual table catalogue resolved the four later
+  lookup failures. The successful `bulk-tables-all-fields-2` probe also proves
+  that an explicit full field list does not populate omitted default columns;
+  it is not a shortcut around source/default qualification.
+- RR-026: use a small buffer for per-record canonical bytes/hashes and retain
+  the large buffer only for final stream output. Full replay allocations fell
+  from 9.18 GB to 3.18 GB and peak test-process working set from 378 MB to 311 MB;
+  both complete snapshot files have the same SHA-256. Isolated synchronous
+  writer receipts now measure current-thread allocations. Overall allocation
+  and runtime remain targets for the planned compact bulk profile.
+- U4 also validates repeated getter observations once when building its index,
+  instead of rehashing an observation against itself on every lookup. The
+  affected reference/projector tests plus complete retained replay passed
+  24 tests (one external legacy replay skipped); the full snapshot SHA-256
+  remains `5964fe59f705b4b22fc530931df4db5ff11c5ab191c81d63d9d2143b2edd711d`.
+
+### Rework and recurrence
+
+- RR-034, occurrences=1, minutes=unknown: name heterogeneous binding-loop values
+  by their typed roles and verify the configured type checker before republishing.
+- RR-009, occurrences=2, minutes=unknown: admit/fetch the exact task branch in
+  narrow-fetch checkouts before asserting upstream equality.
+- RR-013, occurrences=5, minutes=unknown: explicit PowerShell LF attributes and
+  full-task changed-text normalization before immutable candidate integrity.
+- RR-003, occurrences=7, minutes=unknown: stage reviewed new evidence records
+  before tracked-caller gates and retry only the affected preparation checks.
+- RR-033, occurrences=1, minutes=unknown: replay frozen source-bound evidence
+  from its retained dossier and check current executions with their own identity.
+- RR-004, occurrences=13, minutes=unknown: record completed unit outcomes in the
+  parser-owned section and regenerate the handoff before final freeze.
+- RR-032, occurrences=1, minutes=unknown: use ReplaceFile for progress publication
+  and tolerate only its observed transient read-open errors on bounded polling.
+- RR-005, occurrences=103, minutes=unknown: source-owner/key lookups, typed
+  PowerShell dispatch and test-wrapper/filter forms required correction; use
+  discovered owners, exact types and the runner's observed command grammar.
+- RR-002, occurrences=28, minutes=unknown: actual result availability, mesh
+  identities, empty tables and mixed object-type rows required source handling.
+- RR-021, occurrences=5, minutes=unknown: enforce the full model's source cost
+  and every serialization/store boundary before installed qualification.
+- RR-023, occurrences=1, minutes=unknown: align source readers with the typed
+  arrays accepted by their adapter contract.
+- RR-024, occurrences=1, minutes=unknown: use explicit ordinal tie-breaking
+  for cross-runtime row ordering.
+- RR-025, occurrences=2, minutes=unknown: inline Windows process launch failed;
+  retained evidence and the bounded owned-file harness completed the inspection.
+- RR-026, occurrences=3, minutes=unknown: bound buffer allocation to the size of
+  each hash operation and isolate synchronous allocation measurements.
+- RR-007, occurrences=3, minutes=unknown: preserve PF4 Unicode key bytes with
+  explicit escaping instead of platform defaults.
+- RR-031, occurrences=1, minutes=unknown: terminate completed deadline monitors
+  so their result graphs can be collected before the original timeout.
+- RR-027, occurrences=1, minutes=unknown: explicit compressed completion and
+  diagnostic checks align the two runtime readers.
+- RR-020, occurrences=2, minutes=unknown: verify help extraction output before
+  treating the process exit as evidence.
+- RR-028, occurrences=1, minutes=unknown: downstream model identity binding
+  must follow its actual producer and pass a positive producer-backed path.
+- RR-029, occurrences=1, minutes=unknown: optional empty catalogues must not
+  require fabricated raw records when the versioned schema permits emptiness.
+- RR-030, occurrences=1, minutes=unknown: index canonical fact bindings once
+  while retaining exact missing/duplicate rejection behavior.
+
+**Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed paths and implicit PowerShell
+type conversions blocked diagnostics → observed file inventories, explicit
+reflection types and retained JSON timestamp strings resolved them. Forwarded
+.NET test help failed in the CLI wrapper; direct assembly help plus repeated
+`-class` filters ran the intended focused tests.
+
+---
+
 ## 2026-09-07 — Session: Learn the real product in VS Code
 
 **Task:** etabs-vscode-learning-intake
