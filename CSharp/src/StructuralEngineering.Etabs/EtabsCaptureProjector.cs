@@ -79,11 +79,22 @@ public static partial class EtabsCaptureProjector
         return ProjectCore(new(acquisition.OperationId, acquisition.CompletedUtc, batch.ArtifactSha256,
             acquisition.CallLedger, AnalysisSnapshotNormalizer.SourceData(new
             {
-                Format = "wp10-batch-acquisition-summary/v1", acquisition.OperationId, acquisition.LeaseKey,
-                acquisition.StartedUtc, acquisition.CompletedUtc, acquisition.HostIdentityBefore, acquisition.HostIdentityAfter,
-                acquisition.Cleanup, Capture = source with { Calls = [] },
-                CallLedgerReceipt = new { acquisition.CallLedger.OperationId, acquisition.CallLedger.RecordCount,
-                    acquisition.CallLedger.HeadRecordSha256, acquisition.CallLedger.LedgerSha256 }
+                Format = "wp10-batch-acquisition-summary/v1",
+                acquisition.OperationId,
+                acquisition.LeaseKey,
+                acquisition.StartedUtc,
+                acquisition.CompletedUtc,
+                acquisition.HostIdentityBefore,
+                acquisition.HostIdentityAfter,
+                acquisition.Cleanup,
+                Capture = source with { Calls = [] },
+                CallLedgerReceipt = new
+                {
+                    acquisition.CallLedger.OperationId,
+                    acquisition.CallLedger.RecordCount,
+                    acquisition.CallLedger.HeadRecordSha256,
+                    acquisition.CallLedger.LedgerSha256
+                }
             }),
             source.HostIdentity, source.StartedUtc, source.CompletedUtc, source.Preflight, source.Postflight,
             source.Preflight.CaseSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
@@ -183,26 +194,26 @@ public static partial class EtabsCaptureProjector
         SourceSnapshotBulkProjectionEvidence? bulkEvidence = null;
         void AddProperties(EtabsMemberCaptureSummary member)
         {
-        var rectangle = One("PropFrame.GetRectangle", member.SectionName);
-        var material = One("PropFrame.GetMaterial", member.SectionName).Text(0);
-        Need(material == rectangle.Text(1) && material == member.MaterialName, "The section material getters disagree.");
-        var sectionProperties = One("PropFrame.GetSectProps", member.SectionName);
-        Add(RawModelRecordKind.Section, Source("section", member.SectionName), new SourceSnapshotSection(
-            Id("section", member.SectionName), member.SectionName, Id("material", material),
-            sectionProperties.Number(0), sectionProperties.Number(3), sectionProperties.Number(4), sectionProperties.Number(5),
-            rectangle.Number(3), rectangle.Number(2), One("PropFrame.GetModifiers", member.SectionName).Doubles(0)));
-        var elastic = One("PropMaterial.GetMPIsotropic", material);
-        var mass = One("PropMaterial.GetWeightAndMass", material);
-        Need(elastic.Inputs[1].GetDouble() == 0 && mass.Inputs[1].GetDouble() == 0, "Temperature-dependent material sampling is outside the frozen policy.");
-        Add(RawModelRecordKind.Material, Source("material", material), new SourceSnapshotMaterial(Id("material", material),
-            material, elastic.Number(0), elastic.Number(1), mass.Number(1)));
-        if (capture.Batch)
-        {
-            var classification = One("PropMaterial.GetTypeOAPI", material);
-            Need(classification.Integer(0) == 2, "This beam profile requires a source-classified concrete material.");
-            classifications[material] = new("concrete", $"{options.EvidenceReference}#getter-{classification.Ordinal}");
-            if (!capture.Bulk) Need(One("FrameObj.GetDesignOrientation", member.ObjectName).Integer(0) == 2, "The member is not a source-classified beam.");
-        }
+            var rectangle = One("PropFrame.GetRectangle", member.SectionName);
+            var material = One("PropFrame.GetMaterial", member.SectionName).Text(0);
+            Need(material == rectangle.Text(1) && material == member.MaterialName, "The section material getters disagree.");
+            var sectionProperties = One("PropFrame.GetSectProps", member.SectionName);
+            Add(RawModelRecordKind.Section, Source("section", member.SectionName), new SourceSnapshotSection(
+                Id("section", member.SectionName), member.SectionName, Id("material", material),
+                sectionProperties.Number(0), sectionProperties.Number(3), sectionProperties.Number(4), sectionProperties.Number(5),
+                rectangle.Number(3), rectangle.Number(2), One("PropFrame.GetModifiers", member.SectionName).Doubles(0)));
+            var elastic = One("PropMaterial.GetMPIsotropic", material);
+            var mass = One("PropMaterial.GetWeightAndMass", material);
+            Need(elastic.Inputs[1].GetDouble() == 0 && mass.Inputs[1].GetDouble() == 0, "Temperature-dependent material sampling is outside the frozen policy.");
+            Add(RawModelRecordKind.Material, Source("material", material), new SourceSnapshotMaterial(Id("material", material),
+                material, elastic.Number(0), elastic.Number(1), mass.Number(1)));
+            if (capture.Batch)
+            {
+                var classification = One("PropMaterial.GetTypeOAPI", material);
+                Need(classification.Integer(0) == 2, "This beam profile requires a source-classified concrete material.");
+                classifications[material] = new("concrete", $"{options.EvidenceReference}#getter-{classification.Ordinal}");
+                if (!capture.Bulk) Need(One("FrameObj.GetDesignOrientation", member.ObjectName).Integer(0) == 2, "The member is not a source-classified beam.");
+            }
         }
         if (capture.Bulk)
         {
@@ -218,74 +229,74 @@ public static partial class EtabsCaptureProjector
         }
         else
         {
-        var analysisPointStories = capture.Members.SelectMany(member => member.ElementNames.SelectMany(element =>
-            One("LineElm.GetPoints", element).StringsFromOutputs().Select(point => (Point: point, member.Story))))
-            .GroupBy(item => item.Point, StringComparer.Ordinal).ToDictionary(group => group.Key,
-                group => group.Select(item => item.Story).Distinct(StringComparer.Ordinal).ToArray(), StringComparer.Ordinal);
-        if (capture.Batch)
-            foreach (var coordinate in calls.Where(call => call.Raw.Operation is "PointObj.GetCoordCartesian" or "PointElm.GetCoordCartesian"))
+            var analysisPointStories = capture.Members.SelectMany(member => member.ElementNames.SelectMany(element =>
+                One("LineElm.GetPoints", element).StringsFromOutputs().Select(point => (Point: point, member.Story))))
+                .GroupBy(item => item.Point, StringComparer.Ordinal).ToDictionary(group => group.Key,
+                    group => group.Select(item => item.Story).Distinct(StringComparer.Ordinal).ToArray(), StringComparer.Ordinal);
+            if (capture.Batch)
+                foreach (var coordinate in calls.Where(call => call.Raw.Operation is "PointObj.GetCoordCartesian" or "PointElm.GetCoordCartesian"))
+                {
+                    var pointName = coordinate.Inputs[0].GetString()!;
+                    Need(coordinate.Inputs[1].GetString() == "Global", "All mesh/source point coordinates must be explicitly global.");
+                    // Analysis nodes have no PointObj story. Bind their unique source-frame story;
+                    // the retained LineElm ownership and point getters prove this derivation.
+                    if (coordinate.Raw.Operation == "PointElm.GetCoordCartesian")
+                        Need(analysisPointStories[pointName].Length == 1, "An analysis node has ambiguous source-frame story ownership.");
+                    var story = coordinate.Raw.Operation == "PointObj.GetCoordCartesian" ? One("PointObj.GetLabelFromName", pointName).Text(1) : analysisPointStories[pointName][0];
+                    Add(RawModelRecordKind.Point, Source("point", pointName), new SourceSnapshotPoint(Id("point", pointName), pointName,
+                        coordinate.Number(0), coordinate.Number(1), coordinate.Number(2), story));
+                }
+            foreach (var member in capture.Members)
             {
-                var pointName = coordinate.Inputs[0].GetString()!;
-                Need(coordinate.Inputs[1].GetString() == "Global", "All mesh/source point coordinates must be explicitly global.");
-                // Analysis nodes have no PointObj story. Bind their unique source-frame story;
-                // the retained LineElm ownership and point getters prove this derivation.
-                if (coordinate.Raw.Operation == "PointElm.GetCoordCartesian")
-                    Need(analysisPointStories[pointName].Length == 1, "An analysis node has ambiguous source-frame story ownership.");
-                var story = coordinate.Raw.Operation == "PointObj.GetCoordCartesian" ? One("PointObj.GetLabelFromName", pointName).Text(1) : analysisPointStories[pointName][0];
-                Add(RawModelRecordKind.Point, Source("point", pointName), new SourceSnapshotPoint(Id("point", pointName), pointName,
-                    coordinate.Number(0), coordinate.Number(1), coordinate.Number(2), story));
+                var memberName = member.ObjectName;
+                var memberId = Id("member", memberName);
+                Need(One("FrameObj.GetNameList").Strings(1).Contains(memberName, StringComparer.Ordinal), "The selected member is absent from the source catalogue.");
+                var framePoints = One("FrameObj.GetPoints", memberName);
+                Need(member.PointNames.SequenceEqual([framePoints.Text(0), framePoints.Text(1)]), "Member connectivity disagrees with the capture summary.");
+                var frameLabel = One("FrameObj.GetLabelFromName", memberName);
+                Need(frameLabel.Text(0) == member.Label && frameLabel.Text(1) == member.Story,
+                    "The selected member label or story changed.");
+                var stories = One("Story.GetStories_2");
+                Need(stories.Strings(2).Contains(frameLabel.Text(1), StringComparer.Ordinal), "The member story is absent from the source story table.");
+                for (var index = 0; index < stories.Integer(1); index++)
+                    Need(stories.Outputs[6][index].ValueKind != JsonValueKind.Null || stories.Outputs[5][index].GetBoolean(),
+                        "A non-master story has an unresolved similar-story reference.");
+                foreach (var pointName in member.PointNames.Distinct(StringComparer.Ordinal))
+                {
+                    var coordinate = One("PointObj.GetCoordCartesian", pointName);
+                    Need(coordinate.Inputs[1].GetString() == "Global", "Point coordinates must be explicitly global.");
+                    var label = One("PointObj.GetLabelFromName", pointName);
+                    Need(!One("PointObj.GetLocalAxes", pointName).Bool(3) && One("PointObj.GetTransformationMatrix", pointName).Inputs[1].GetBoolean(),
+                        "Advanced point axes or a nonglobal transform require a different source policy.");
+                    Add(RawModelRecordKind.Point, Source("point", pointName), new SourceSnapshotPoint(Id("point", pointName),
+                        pointName, coordinate.Number(0), coordinate.Number(1), coordinate.Number(2), label.Text(1)));
+                }
+                var assignment = One("FrameObj.GetSection", memberName);
+                Need(assignment.Text(0) == member.SectionName, "The section summary differs from the actual assignment.");
+                AddProperties(member);
+                var elements = new List<SourceSnapshotElement>();
+                Need(!One("FrameObj.GetLocalAxes", memberName).Bool(1), "Advanced member axes require additional source evidence.");
+                foreach (var elementName in member.ElementNames)
+                {
+                    Need(elementOwners.TryAdd(elementName, memberName), "An analysis element has more than one source owner.");
+                    var owner = One("LineElm.GetObj", elementName);
+                    var endpoints = One("LineElm.GetPoints", elementName);
+                    Need(owner.Text(0) == memberName && owner.Integer(1) == 0, "An analysis element does not belong to the selected frame object.");
+                    Need(One("LineElm.GetLocalAxes", elementName).Number(0) == One("FrameObj.GetLocalAxes", memberName).Number(0),
+                        "Object and element local axis angles disagree.");
+                    elements.Add(new(elementName, memberName, Id("point", endpoints.Text(0)), Id("point", endpoints.Text(1)),
+                        owner.Number(2), owner.Number(3), One("LineElm.GetTransformationMatrix", elementName).Doubles(0)));
+                }
+                var offsets = One("FrameObj.GetEndLengthOffset", memberName);
+                var releases = One("FrameObj.GetReleases", memberName);
+                var insertion = One("FrameObj.GetInsertionPoint_1", memberName);
+                Add(RawModelRecordKind.Member, Source("member", memberName), new SourceSnapshotMember(memberId, memberName,
+                    frameLabel.Text(0), frameLabel.Text(1), Id("point", framePoints.Text(0)), Id("point", framePoints.Text(1)),
+                    Id("section", member.SectionName), string.IsNullOrEmpty(assignment.Text(1)) ? null : assignment.Text(1),
+                    One("FrameObj.GetModifiers", memberName).Doubles(0), offsets.Bool(0), offsets.Number(1), offsets.Number(2), offsets.Number(3),
+                    releases.Bools(0), releases.Bools(1), releases.Doubles(2), releases.Doubles(3),
+                    new(insertion.Integer(0), insertion.Bool(1), insertion.Bool(2), insertion.Bool(3), insertion.Doubles(4), insertion.Doubles(5), insertion.Text(6)), elements));
             }
-        foreach (var member in capture.Members)
-        {
-        var memberName = member.ObjectName;
-        var memberId = Id("member", memberName);
-        Need(One("FrameObj.GetNameList").Strings(1).Contains(memberName, StringComparer.Ordinal), "The selected member is absent from the source catalogue.");
-        var framePoints = One("FrameObj.GetPoints", memberName);
-        Need(member.PointNames.SequenceEqual([framePoints.Text(0), framePoints.Text(1)]), "Member connectivity disagrees with the capture summary.");
-        var frameLabel = One("FrameObj.GetLabelFromName", memberName);
-        Need(frameLabel.Text(0) == member.Label && frameLabel.Text(1) == member.Story,
-            "The selected member label or story changed.");
-        var stories = One("Story.GetStories_2");
-        Need(stories.Strings(2).Contains(frameLabel.Text(1), StringComparer.Ordinal), "The member story is absent from the source story table.");
-        for (var index = 0; index < stories.Integer(1); index++)
-            Need(stories.Outputs[6][index].ValueKind != JsonValueKind.Null || stories.Outputs[5][index].GetBoolean(),
-                "A non-master story has an unresolved similar-story reference.");
-        foreach (var pointName in member.PointNames.Distinct(StringComparer.Ordinal))
-        {
-            var coordinate = One("PointObj.GetCoordCartesian", pointName);
-            Need(coordinate.Inputs[1].GetString() == "Global", "Point coordinates must be explicitly global.");
-            var label = One("PointObj.GetLabelFromName", pointName);
-            Need(!One("PointObj.GetLocalAxes", pointName).Bool(3) && One("PointObj.GetTransformationMatrix", pointName).Inputs[1].GetBoolean(),
-                "Advanced point axes or a nonglobal transform require a different source policy.");
-            Add(RawModelRecordKind.Point, Source("point", pointName), new SourceSnapshotPoint(Id("point", pointName),
-                pointName, coordinate.Number(0), coordinate.Number(1), coordinate.Number(2), label.Text(1)));
-        }
-        var assignment = One("FrameObj.GetSection", memberName);
-        Need(assignment.Text(0) == member.SectionName, "The section summary differs from the actual assignment.");
-        AddProperties(member);
-        var elements = new List<SourceSnapshotElement>();
-        Need(!One("FrameObj.GetLocalAxes", memberName).Bool(1), "Advanced member axes require additional source evidence.");
-        foreach (var elementName in member.ElementNames)
-        {
-            Need(elementOwners.TryAdd(elementName, memberName), "An analysis element has more than one source owner.");
-            var owner = One("LineElm.GetObj", elementName);
-            var endpoints = One("LineElm.GetPoints", elementName);
-            Need(owner.Text(0) == memberName && owner.Integer(1) == 0, "An analysis element does not belong to the selected frame object.");
-            Need(One("LineElm.GetLocalAxes", elementName).Number(0) == One("FrameObj.GetLocalAxes", memberName).Number(0),
-                "Object and element local axis angles disagree.");
-            elements.Add(new(elementName, memberName, Id("point", endpoints.Text(0)), Id("point", endpoints.Text(1)),
-                owner.Number(2), owner.Number(3), One("LineElm.GetTransformationMatrix", elementName).Doubles(0)));
-        }
-        var offsets = One("FrameObj.GetEndLengthOffset", memberName);
-        var releases = One("FrameObj.GetReleases", memberName);
-        var insertion = One("FrameObj.GetInsertionPoint_1", memberName);
-        Add(RawModelRecordKind.Member, Source("member", memberName), new SourceSnapshotMember(memberId, memberName,
-            frameLabel.Text(0), frameLabel.Text(1), Id("point", framePoints.Text(0)), Id("point", framePoints.Text(1)),
-            Id("section", member.SectionName), string.IsNullOrEmpty(assignment.Text(1)) ? null : assignment.Text(1),
-            One("FrameObj.GetModifiers", memberName).Doubles(0), offsets.Bool(0), offsets.Number(1), offsets.Number(2), offsets.Number(3),
-            releases.Bools(0), releases.Bools(1), releases.Doubles(2), releases.Doubles(3),
-            new(insertion.Integer(0), insertion.Bool(1), insertion.Bool(2), insertion.Bool(3), insertion.Doubles(4), insertion.Doubles(5), insertion.Text(6)), elements));
-        }
         }
         var patterns = One("LoadPatterns.GetNameList").Strings(1);
         foreach (var pattern in patterns)
@@ -363,40 +374,40 @@ public static partial class EtabsCaptureProjector
         }
         foreach (var member in capture.Members)
         {
-        var memberName = member.ObjectName;
-        var memberId = Id("member", memberName);
-        var force = One("Results.FrameForce", capture.Group ? "All" : memberName);
-        var indices = force.ForceIndices(memberName);
-        Need(force.Inputs[1].GetInt32() == (capture.Group ? 2 : 0) && indices.Length == member.FrameForceRows && indices.Length > 0 &&
-            (capture.Group || indices.Length == force.Integer(0)),
-            "The complete object force getter and summary disagree.");
-        Need(indices.Select(index => force.Column(3)[index].GetString()!).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).SequenceEqual(member.ElementNames.Order(StringComparer.Ordinal)),
-            "Force elements and the retained topology inventory disagree.");
-        Need(indices.Select(index => force.Column(5)[index].GetString()!).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).SequenceEqual(
-            selectedCases.Concat(selectedCombos).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)),
-            "A required member lacks a selected result or contains an unselected result.");
-        foreach (var index in indices)
-        {
-            double Number(int column) => force.Column(column)[index].GetDouble();
-            string Text(int column) => force.Column(column)[index].GetString()!;
-            Need(Text(1) == memberName && Text(6) == "Single Value" && Number(7) == 0,
-                "The bounded source policy requires same-object Single Value/0 rows; unsupported rows cannot be discarded.");
-            var rowId = capture.Group ? $"source:force:All:{index:D8}" : capture.Batch ? $"source:force:{memberName}:{index:D8}" : $"source:force:{index:D8}";
-            rawRows.Add(new(rowId, index, Text(1), Text(3), Number(2), Number(4), Text(5), Text(6), null,
-                Number(8), Number(9), Number(10), Number(11), Number(12), Number(13)));
-            string stationId;
-            if (capture.Group)
+            var memberName = member.ObjectName;
+            var memberId = Id("member", memberName);
+            var force = One("Results.FrameForce", capture.Group ? "All" : memberName);
+            var indices = force.ForceIndices(memberName);
+            Need(force.Inputs[1].GetInt32() == (capture.Group ? 2 : 0) && indices.Length == member.FrameForceRows && indices.Length > 0 &&
+                (capture.Group || indices.Length == force.Integer(0)),
+                "The complete object force getter and summary disagree.");
+            Need(indices.Select(index => force.Column(3)[index].GetString()!).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).SequenceEqual(member.ElementNames.Order(StringComparer.Ordinal)),
+                "Force elements and the retained topology inventory disagree.");
+            Need(indices.Select(index => force.Column(5)[index].GetString()!).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).SequenceEqual(
+                selectedCases.Concat(selectedCombos).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)),
+                "A required member lacks a selected result or contains an unselected result.");
+            foreach (var index in indices)
             {
-                var location = (Text(1), Text(3), Number(2), Number(4));
-                // A station has no native ETABS ID. The first actual group row at its exact
-                // location is a compact acquisition-local ID, bound by the full snapshot hash.
-                if (!groupStationIds.TryGetValue(location, out stationId!))
-                    groupStationIds.Add(location, stationId = $"station:All:{index:D8}");
+                double Number(int column) => force.Column(column)[index].GetDouble();
+                string Text(int column) => force.Column(column)[index].GetString()!;
+                Need(Text(1) == memberName && Text(6) == "Single Value" && Number(7) == 0,
+                    "The bounded source policy requires same-object Single Value/0 rows; unsupported rows cannot be discarded.");
+                var rowId = capture.Group ? $"source:force:All:{index:D8}" : capture.Batch ? $"source:force:{memberName}:{index:D8}" : $"source:force:{index:D8}";
+                rawRows.Add(new(rowId, index, Text(1), Text(3), Number(2), Number(4), Text(5), Text(6), null,
+                    Number(8), Number(9), Number(10), Number(11), Number(12), Number(13)));
+                string stationId;
+                if (capture.Group)
+                {
+                    var location = (Text(1), Text(3), Number(2), Number(4));
+                    // A station has no native ETABS ID. The first actual group row at its exact
+                    // location is a compact acquisition-local ID, bound by the full snapshot hash.
+                    if (!groupStationIds.TryGetValue(location, out stationId!))
+                        groupStationIds.Add(location, stationId = $"station:All:{index:D8}");
+                }
+                else stationId = $"station:{AnalysisSnapshotNormalizer.Digest(new { Object = Text(1), Element = Text(3), ObjectStation = Number(2), ElementStation = Number(4) })}";
+                if (stationKeys.Add(stationId)) Add(RawModelRecordKind.Station, $"source:{stationId}",
+                    new SourceSnapshotStation(stationId, memberId, Text(1), Text(3), Number(2), Number(4)));
             }
-            else stationId = $"station:{AnalysisSnapshotNormalizer.Digest(new { Object = Text(1), Element = Text(3), ObjectStation = Number(2), ElementStation = Number(4) })}";
-            if (stationKeys.Add(stationId)) Add(RawModelRecordKind.Station, $"source:{stationId}",
-                new SourceSnapshotStation(stationId, memberId, Text(1), Text(3), Number(2), Number(4)));
-        }
         }
         rawRows = rawRows.OrderBy(row => row.SourceRowIndex).ThenBy(row => row.SourceRowId, StringComparer.Ordinal).ToList();
         var context = new SnapshotNormalizationContext(options.ProjectId, Path.GetFileNameWithoutExtension(host.ModelPath),

@@ -35,7 +35,9 @@ def test_compressed_snapshot_replays_identity_and_rejects_bad_evidence() -> None
     assert canonical_snapshot_json_bytes(result.snapshot) == payload
     corrupt = bytearray(encoded)
     corrupt[-8] ^= 1
-    duplicate = header + gzip.compress(b'{"schema_version":"duplicate",' + payload[1:], mtime=0)
+    duplicate = header + gzip.compress(
+        b'{"schema_version":"duplicate",' + payload[1:], mtime=0
+    )
     for bad in (bytes(corrupt), duplicate, b"bad-header", encoded[:-5]):
         rejected = parse_analysis_snapshot_transport(bad)
         assert rejected.snapshot is None
@@ -45,20 +47,30 @@ def test_compressed_snapshot_replays_identity_and_rejects_bad_evidence() -> None
 def test_compact_rows_replay_identity_and_reject_wrong_arity_or_type() -> None:
     document = copy.deepcopy(FIXTURE["valid_snapshot"])
     for action in document["action_rows"]:
-        action["provenance"] = [value for _, value in sorted(action["provenance"].items())]
+        action["provenance"] = [
+            value for _, value in sorted(action["provenance"].items())
+        ]
     for container, name in (
-        (document, "action_rows"), (document, "stations"),
-        (document["row_ledger"], "rows"), (document["raw_capture"], "force_rows"),
+        (document, "action_rows"),
+        (document, "stations"),
+        (document["row_ledger"], "rows"),
+        (document["raw_capture"], "force_rows"),
     ):
-        container[name] = [[value for _, value in sorted(row.items())] for row in container[name]]
+        container[name] = [
+            [value for _, value in sorted(row.items())] for row in container[name]
+        ]
 
     def encode(value: dict) -> bytes:
-        return b"STRUCTSNAP-ROWS-1\n" + gzip.compress(json.dumps(value).encode(), mtime=0)
+        return b"STRUCTSNAP-ROWS-1\n" + gzip.compress(
+            json.dumps(value).encode(), mtime=0
+        )
 
     encoded = encode(document)
     result = parse_analysis_snapshot_transport(encoded)
     assert result.snapshot is not None, result.diagnostics
-    assert canonical_snapshot_json_bytes(result.snapshot) == canonical_snapshot_json_bytes(FIXTURE["valid_snapshot"])
+    assert canonical_snapshot_json_bytes(
+        result.snapshot
+    ) == canonical_snapshot_json_bytes(FIXTURE["valid_snapshot"])
     wrong_arity = copy.deepcopy(document)
     wrong_arity["action_rows"][0].append("extra")
     wrong_type = copy.deepcopy(document)

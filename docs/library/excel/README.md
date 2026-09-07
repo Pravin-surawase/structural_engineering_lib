@@ -88,9 +88,10 @@ inside a versioned gzip transport. The reader bounds the expanded wire JSON at
 256 MiB and verifies both the complete gzip footer and the existing snapshot
 hashes. The workbook's small reference identifies the transport; old saved JSON
 references remain usable. The complete 1,000-member / 100,000-action snapshot
-has been captured and independently replayed in Python. These are capacity and
-integrity checks, not a performance certification. Final worker/store and signed
-installed acceptance for this completion candidate are tracked in the WP10 plan.
+has passed production worker/store capture, exact offline reopen and cancellation;
+the complete medium transport also passed independent Python replay. These are
+capacity and integrity checks. Final signed installed acceptance for this
+completion candidate is bound through the WP10 plan's external receipts.
 The owner has deferred PF9 timing and incremental-memory certification to the
 end of the project; the measured misses remain recorded.
 Automatic Design, optimisation, solver comparison and Auto Run remain later

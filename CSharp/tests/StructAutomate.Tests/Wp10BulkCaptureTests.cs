@@ -108,8 +108,11 @@ public sealed class Wp10BulkCaptureTests
     {
         private readonly Wp10BatchCaptureTests.BatchHost _reference = new(variant == "mesh" ? "mesh" : null);
         public EtabsHostIdentity Identity => _reference.Identity with { ProcessId = 94102 };
-        public EtabsContextInventory Context => _reference.Context with { Source = _reference.Context.Source with { ProcessId = 94102, DatabaseUnits = variant is "metric-database" or "wrong-database-components" ? 9 : 6 },
-            Coverage = "source_geometry_only;supports=absent;spans=absent;offsets=absent;releases=absent;loads=absent;analysis=absent;strengths=absent" };
+        public EtabsContextInventory Context => _reference.Context with
+        {
+            Source = _reference.Context.Source with { ProcessId = 94102, DatabaseUnits = variant is "metric-database" or "wrong-database-components" ? 9 : 6 },
+            Coverage = "source_geometry_only;supports=absent;spans=absent;offsets=absent;releases=absent;loads=absent;analysis=absent;strengths=absent"
+        };
         public EtabsInvocation Invoke(EtabsGetterDefinition definition, IReadOnlyList<object?> inputs, CancellationToken token)
         {
             if (definition.Operation == "GroupDef.GetNameList") return new(0, [1, new[] { "All" }]);

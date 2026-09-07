@@ -14,7 +14,44 @@
 **Focus:** Finish the product's read-only ETABS force handoff, multi-member data
 and integrated qualification against the whole-product goal; learning excluded.
 
+### Completed
+
+- Implemented WP10's complete group acquisition, explicit model interpretation,
+  versioned compact transport and production Excel worker/store handoff.
+- Verified actual reference and 1,000-member / 100,000-row capture, exact offline
+  reopen and cancellation, plus independent Python replay and source equality.
+- Reconciled the final functional completion contract and deferred PF9 speed/
+  memory work to WP10-PERF-FINAL under the owner's amended order.
+
+### Next
+
+- Complete exact-candidate installed Excel and cumulative correctness gates,
+  immutable review, one hosted milestone PR and external final handoff.
+- After acceptance, plan WP11's public input mapper and actual-bar design
+  orchestration; learning and performance tuning remain separate.
+
 ### Progress
+
+- The broad Python gate finished with 7,850 passes and two failures in retained
+  verification assumptions. Updated the timing-policy assertion to its current
+  machine-derived contract. The historical Office.js transport fixture now
+  replays its own exact dossier rather than comparing a new calculation bound
+  to changed library bytes with an old identity. All 13 affected module tests
+  passed; production hashing and the frozen fixture are unchanged. Repeat only
+  affected formatting/record checks before the immutable candidate.
+- Final changed-path formatting passed for 55 source files with a clean scope
+  guard. Both .NET suites passed (129 portable plus 129 Windows; eight ordinary
+  external-input skips). The cumulative repository run passed 31/32 checks;
+  API classification correctly stopped on two unstaged new evidence records.
+  Stage the reviewed records and repeat the affected API/docs checks. The broad
+  Python gate runs separately; its final verdict remains external.
+- At `8927740c`, the complete production medium worker/store test passed:
+  1,000 members / 100,000 actions, exact saved snapshot reopen, cancellation,
+  unchanged prior accepted artifact and zero active workers. External evidence:
+  `force-client-group-medium-2/receipt.json`; the failed first run is retained.
+  The source manifest, current plan, implementation status and installed transition
+  declaration now identify the group/rows implementation and owner performance
+  deferral. U1–U4 are implemented; final installed and cumulative gates remain U5.
 
 - Production group worker/store capture, exact offline reopen and cancellation
   passed for all 153 reference beams / 3,502 rows at `2bdf8679`. Medium admission
@@ -187,6 +224,18 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Issues encountered
 
+- Broad Python exposed an old timing-policy phrase assertion and a frozen
+  Office.js fixture assertion tied to the entire current library content hash.
+  The latter changed on legitimate WP10 source edits even though calculations
+  and the retained transport remained valid. A bounded recursive comparison
+  traced all differences to calculation identities and their dependent hashes.
+- The cumulative API classifier refused two untracked evidence records because
+  its caller inventory is tracked/staged only. This was a preparation-order
+  failure; stage only the intended records before the affected retry. Two later
+  diagnostic lookups also repeated an absent/glob path assumption.
+- Preparation's session check rejected the progress-only log because its parser
+  requires an explicit completed-outcomes section. The completed U1–U4 outcomes
+  and remaining U5 work now have separate sections before freeze.
 - Medium worker capture stopped after 55 progress updates with access denied.
   The source getter returned successfully; progress publication failed. No
   partial snapshot was imported, and worker cleanup completed. A stale package
@@ -301,13 +350,28 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Root causes and resolutions
 
+- RR-033: the frozen transport test recomputed historical calculation identities
+  with current source bytes. Production evidence correctly binds all package
+  code/data. Replay the frozen dossier byte-for-byte through the exporter and
+  separately retain current-export identity checks. No hash is ignored or
+  replaced, and no historical fixture is regenerated. Both affected Python
+  modules passed all 13 tests.
+- RR-004: the timing-policy test retained wording from the superseded manual
+  timer contract. Its assertions now check the actual machine-derived elapsed
+  time and seven transition-based phases; production session logic is unchanged.
+- RR-003: new intended evidence records were not staged before the cumulative
+  tracked-caller check. Stage the inspected records; rerun the affected check
+  without regenerating unrelated registries or repeating unchanged suites.
+- RR-004: Progress is not a completion marker in the maintained session parser.
+  Added exact completed-unit outcomes and regenerated the handoff projection;
+  the final read-only session check verifies the resulting contract.
 - RR-032: Windows overwrite-move deletes the existing progress path while
   readers can still hold it. A standalone concurrent reader/writer reproduced
   access denied in File.Move. File.Replace avoids the writer deletion failure;
   readers retry only observed missing/access/sharing errors on optional progress
   at the next bounded poll. Malformed progress, final response validation,
   cancellation and deadlines remain enforced. The corrected 3,000-update
-  reproducer passed with 62,879 complete reads; actual medium proof follows.
+  reproducer passed with 62,879 complete reads; actual medium worker/store, exact reopen and cancellation then passed.
 - Package metadata was maintained separately from the producer selection and
   was not updated during integration. Corrected the manifest's actual group
   profile and rows transport before final installed-candidate generation.
@@ -438,9 +502,15 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Rework and recurrence
 
+- RR-003, occurrences=7, minutes=unknown: stage reviewed new evidence records
+  before tracked-caller gates and retry only the affected preparation checks.
+- RR-033, occurrences=1, minutes=unknown: replay frozen source-bound evidence
+  from its retained dossier and check current executions with their own identity.
+- RR-004, occurrences=13, minutes=unknown: record completed unit outcomes in the
+  parser-owned section and regenerate the handoff before final freeze.
 - RR-032, occurrences=1, minutes=unknown: use ReplaceFile for progress publication
   and tolerate only its observed transient read-open errors on bounded polling.
-- RR-005, occurrences=97, minutes=unknown: source-owner/key lookups, typed
+- RR-005, occurrences=100, minutes=unknown: source-owner/key lookups, typed
   PowerShell dispatch and test-wrapper/filter forms required correction; use
   discovered owners, exact types and the runner's observed command grammar.
 - RR-002, occurrences=27, minutes=unknown: actual result availability, mesh

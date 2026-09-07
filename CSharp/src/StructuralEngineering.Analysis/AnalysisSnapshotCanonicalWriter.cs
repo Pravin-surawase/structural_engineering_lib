@@ -209,7 +209,14 @@ public static partial class AnalysisSnapshotCodec
         {
             var escaped = unicodeScalar switch
             {
-                '"' => "\\\"", '\\' => "\\\\", '\b' => "\\b", '\f' => "\\f", '\n' => "\\n", '\r' => "\\r", '\t' => "\\t", _ => null
+                '"' => "\\\"",
+                '\\' => "\\\\",
+                '\b' => "\\b",
+                '\f' => "\\f",
+                '\n' => "\\n",
+                '\r' => "\\r",
+                '\t' => "\\t",
+                _ => null
             };
             if (escaped is not null)
             {

@@ -22,9 +22,10 @@ WP10-01 through WP10-04 are complete. WP10-02 proved the exact-version getter
 boundary and one unchanged-model live matrix; WP10-03 added the bounded STA
 operation-control and durable evidence boundary; WP10-04 added offline
 normalization and cross-runtime replay. WP10-05 assumptions/offline import and
-WP10-05B running-model geometry connection are complete. The remaining work is
-existing-force handoff, multi-member capture and integrated qualification under
-the completion contract below. The
+WP10-05B running-model geometry connection are complete. Existing-force handoff
+and group multi-member capture are implemented. Final caller/installed and
+cumulative correctness qualification follow the completion contract below,
+including the owner's explicit project-end performance deferral. The
 remaining slices use the plan-driven delivery contract below as a
 pilot of the repository-wide workflow. That contract orchestrates existing
 controls; it does not create a second WP10-only delivery system.
@@ -630,10 +631,10 @@ authorized by the sequencing change.
 
 | Unit | Outcome and acceptance | State |
 |---|---|---|
-| U1 — Scope and source proof | Freeze force request/result and batch evidence semantics; inspect actual installed getter signatures and a source-model readiness probe; identify all source/model/selection units and material-type evidence without inferring from names. | Reference scope and worker contracts implemented; compact production profile remains part of U4 |
-| U2 — Shared capture and normalization | Add multi-member acquisition with shared catalogs/properties, one coherent pre/post source boundary, exact per-member object/element/station rows, deduplicated projection and complete row accounting. Preserve existing durable and portable v1 compatibility. | Reference path implemented: eight batch tests, live mesh and full 153-beam in-memory normalization passed; production scale/file gates remain open |
-| U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Implemented; signed Excel development acceptance passed (100/104, 28 rows); bulk worker/store admission and cancellation passed for all 153 beams/3,502 rows. Final installed proof remains U5 |
-| U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Qualify broad production data against the direct reference and bounded transport/caller admission. Selection from a complete snapshot causes zero ETABS reads. | Group profile and interpretation implemented; complete reference capture and independent 100,000-row Python replay passed. Production caller admission remains to integrate |
+| U1 — Scope and source proof | Freeze force request/result and batch evidence semantics; inspect actual installed getter signatures and a source-model readiness probe; identify all source/model/selection units and material-type evidence without inferring from names. | Implemented and source-qualified; exact group/rows production identities are in the package manifest |
+| U2 — Shared capture and normalization | Add multi-member acquisition with shared catalogs/properties, one coherent pre/post source boundary, exact per-member object/element/station rows, deduplicated projection and complete row accounting. Preserve existing durable and portable v1 compatibility. | Implemented; direct/group reference equality, real mesh and complete 1,000-member / 100,000-row normalization/replay passed |
+| U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Implemented; signed Excel development proof and actual complete reference/medium worker-store capture, exact reopen and cancellation passed. Final installed proof remains U5 |
+| U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Qualify broad production data against the direct reference and bounded transport/caller admission. Selection from a complete snapshot causes zero ETABS reads. | Implemented and capacity-qualified; complete reference interpretation, 100,000-row independent Python replay and production caller admission passed |
 | U5 — Integrated functional qualification | Exact signed installed Excel/worker proof; independent replay; actual small/medium capacity evidence; named cumulative broad Python/full repository checks; PR and handoff. | Active; PF9 speed/working-set targets explicitly deferred by the owner amendment |
 
 Finish U1-U4 as sequential implementation commits in one milestone candidate
@@ -647,6 +648,46 @@ not a hidden post-acceptance source change. Never label a failed PF9 target or
 an absent dataset as qualification.
 
 ### Live reference findings — 2026-09-07
+
+The dated development findings below retain failed attempts and superseded
+implementation checkpoints. The unit table and owner amendment above control
+current remaining work; historical instructions to continue timing experiments
+do not reopen deferred performance work.
+
+### Functional delivery checkpoint — 2026-09-07
+
+`force-client-group-reference-1` passed actual production group capture/store,
+exact offline reopen and cancellation for 153 beams / 3,502 actions at
+`2bdf8679`. The corrected signed package at `8927740c` passed the same complete
+path for 1,000 beams / 100,000 actions in `force-client-group-medium-2`.
+The first medium worker attempt is retained as a failed progress-file handoff;
+RR-032 records the reproduced Windows replacement cause and repair. No partial
+snapshot was accepted, and cleanup completed. The passing medium snapshot has
+canonical SHA-256 `033866c1b1634f561bc8913ce168e12ccfbc58fd810afcf64880f9ca312589b6`.
+
+The production request explicitly selects `structural.analysis_snapshot_rows/v1`
+and the group getter profile. Admission is 64 MiB encoded, 256 MiB expanded wire
+JSON, 1,000 members and 100,000 actions. Legacy JSON/gzip readers and canonical
+v1 identities remain compatible. The retained independent medium Python replay
+and exact direct/group reference comparison are described below. These are
+functional/capacity evidence; PF9 remains deferred and has no passing verdict.
+
+Finish U5 with the unchanged signed installed candidate, the maintained
+connection/force and offline/legacy Excel harnesses, broad Python/full-32 gates,
+one immutable review and one required hosted PR cycle. The
+[installed transition declaration](../../verification/wp10-completion-source-evidence.json)
+defines exact candidate/receipt binding. Final receipts and hosted verdicts stay
+external so later tasks can distinguish completed source from actual installed
+and merged evidence.
+
+The cumulative gate also owns two bounded verification repairs: the existing
+timing-policy test must assert the current derived lifecycle contract, and the
+historical Office.js transport test must replay its retained dossier with its
+original source-bound identities while checking new exports separately. No
+production hash, engineering calculation or frozen cross-runtime fixture is
+weakened. These repairs use only their two existing Python test modules and the
+task records; the affected 13-test union passes. They do not expand WP10 into
+the Office.js product or performance work.
 
 The direct-getter batch is correctness/reference evidence, not PF9 acceptance.
 Owned-model `batch-development-3` retained 153 beams and 3,502 force rows and
@@ -996,9 +1037,10 @@ use affected tests in the existing C# test projects, including legacy replay,
 batch row/identity/concurrency failures, shared-data call counts, session
 ownership and review. Installed development smoke guides necessary fixes before
 freeze. U5 retains final signed source/XLL/worker/model/receipt bindings and
-actual PF9 manifests; synthetic replication of one retained beam is not a
-100/1,000-member installed workload. Required budgets remain small p95 <= 5 s,
-medium p95 <= 30 s and incremental adapter working set <= 512 MB.
+actual capacity manifests; synthetic replication of one retained beam is not a
+100/1,000-member workload. The unchanged PF9 budgets (small p95 <= 5 s,
+medium p95 <= 30 s, incremental working set <= 512 MiB) belong to the deferred
+WP10-PERF-FINAL gate under the owner amendment above.
 
 Use the maintained locked restore/build from `CSharp`, affected test filters,
 documentation/session/efficiency checks and installed packaging helpers. Run
@@ -1420,7 +1462,7 @@ do not just loop the retained one-member sample and report a building-scale
 result. Profile stage costs before choosing batch sizes. Any schema extension
 receives explicit compatibility vectors and its own acceptance update.
 
-**WP10-06** starts only after 05/05B/05C have passed their own boundaries. It
+**Historical WP10-06 sequencing, amended above on 7 September:** starts only after 05/05B/05C have passed their own boundaries. It
 qualifies the unchanged integrated candidate against PF8 E5-02/E5-03/E5-04 and
 rechecks the connected Excel E5-05/E5-06 path. PF9 remains the authority:
 small 100 members/10,000 rows p95 <= 5 s; medium 1,000 members/100,000 rows

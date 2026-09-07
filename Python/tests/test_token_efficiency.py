@@ -77,7 +77,8 @@ def test_session_efficiency_guidance_uses_task_bound_observed_timing() -> None:
     agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
 
     assert "session begin --task-id <task> --agent <role>" in policy
-    assert "derives actual elapsed time from the unmatched" in policy
+    assert "elapsed time are machine-derived rather than caller-entered" in policy
+    assert "seven non-overlapping phase intervals from transition timestamps" in policy
     assert "Git-common" in policy
     assert "session begin --task-id <task> --agent <role>" in agents
 

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-05
+last_updated: 2026-09-07
 doc_type: guide
 complexity: intermediate
 tags: [excel-dna, xll, planning, handoff]
@@ -21,13 +21,12 @@ reconciles the existing Python library, C# foundation, three-project evidence,
 standalone Excel workflow and later ETABS automation into twelve implementation
 packets. Its PF11 blueprint is the authority for new library work.
 
-**Implemented through WP10-04:** the native Python/.NET beam libraries, the
-standalone Windows Excel XLL, portable analysis-snapshot contract, exact ETABS
-getter adapter, bounded STA acquisition broker and offline normalization are complete. The Excel candidate passed
-preflight, install, repair, installed Excel acceptance, performance, uninstall,
-and cleanup. [WP10 read-only ETABS acquisition](wp10-etabs-read-adapter.md) next
-continues with the audited WP10-05 session/public-input and snapshot-review
-contract, followed by new installed Excel proof. The
+**Current implementation:** WP01–WP09 and WP10's portable contracts, broker,
+normalization, assumptions/offline review, running-model connection and complete
+group force handoff are implemented. [WP10 acquisition](wp10-etabs-read-adapter.md#wp10-completion-contract--2026-09-07)
+is completing worker capacity, signed installed and cumulative correctness
+qualification in one milestone PR. The owner deferred timing/memory certification
+to project-end `WP10-PERF-FINAL`; no performance pass is claimed. The
 [whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)
 compares old/new storage and UI, identifies missing design orchestration, and
 orders production handoff, broad capture, search and coupled qualification.
@@ -39,7 +38,7 @@ orders production handoff, broad capture, search and coupled qualification.
 3. [Current plan](current-plan.md): the source hierarchy and present scope.
 4. [WP09 completion record](wp09-standalone-excel.md): the shipped Excel surface and installed evidence.
 5. [WP09 postmortem](wp09-postmortem.md) and [compact recurrence index](../../verification/rework-recurrence-index.json): deep evidence plus stable issue IDs, counts, time, and short controls.
-6. [WP10 execution plan](wp10-etabs-read-adapter.md): completed normalization evidence, next Excel import and subsequent acquisition/scale qualification gates.
+6. [WP10 execution plan](wp10-etabs-read-adapter.md): functional completion contract, exact source/caller/installed evidence and deferred performance qualification.
 7. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
 8. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
 9. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.

@@ -33,12 +33,18 @@ public sealed class Wp10BatchLiveQualificationTests
         allocated = GC.GetAllocatedBytesForCurrentThread() - allocated;
         File.WriteAllBytes(Path.Combine(output!, "receipt.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(new
         {
-            schema_version = "wp10-retained-batch-normalization-development/v1", pf9_acceptance = false,
-            source_sha256 = expected, members = result.Snapshot!.Members.Count, rows = result.Snapshot.ActionRows.Count,
-            normalize_ms = normalizeMilliseconds, persist_ms = watch.Elapsed.TotalMilliseconds,
-            allocated_bytes = allocated, snapshot_bytes = new FileInfo(snapshotPath).Length,
+            schema_version = "wp10-retained-batch-normalization-development/v1",
+            pf9_acceptance = false,
+            source_sha256 = expected,
+            members = result.Snapshot!.Members.Count,
+            rows = result.Snapshot.ActionRows.Count,
+            normalize_ms = normalizeMilliseconds,
+            persist_ms = watch.Elapsed.TotalMilliseconds,
+            allocated_bytes = allocated,
+            snapshot_bytes = new FileInfo(snapshotPath).Length,
             peak_process_working_set_bytes = System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64,
-            source_unchanged = Sha(File.ReadAllBytes(path!)) == expected, engineering_state = "not_evaluated"
+            source_unchanged = Sha(File.ReadAllBytes(path!)) == expected,
+            engineering_state = "not_evaluated"
         }));
     }
 
@@ -94,15 +100,23 @@ public sealed class Wp10BatchLiveQualificationTests
         }
         File.WriteAllBytes(Path.Combine(directory!, "receipt.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(new
         {
-            schema_version = "wp10-batch-development-qualification/v1", installed_acceptance = false,
+            schema_version = "wp10-batch-development-qualification/v1",
+            installed_acceptance = false,
             capture_completed = batchResult.State == EtabsContextWorkerState.Completed,
-            normalized = normalized?.Snapshot is not null, required_members = members.Length,
-            source_frames = context.Frames.Count, source_points = context.Points.Count,
+            normalized = normalized?.Snapshot is not null,
+            required_members = members.Length,
+            source_frames = context.Frames.Count,
+            source_points = context.Points.Count,
             captured_members = batchResult.Artifact?.Content.Capture.Members.Count,
             profile = batchResult.Artifact?.Content.Capture.ProfileId,
-            action_rows = normalized?.Snapshot?.ActionRows.Count, elapsed_ms = watch.Elapsed.TotalMilliseconds,
-            batchResult.State, batchResult.DiagnosticCode, batchResult.Message, batchResult.CleanupCompleted,
-            diagnostics = normalized?.Diagnostics, engineering_state = "not_evaluated"
+            action_rows = normalized?.Snapshot?.ActionRows.Count,
+            elapsed_ms = watch.Elapsed.TotalMilliseconds,
+            batchResult.State,
+            batchResult.DiagnosticCode,
+            batchResult.Message,
+            batchResult.CleanupCompleted,
+            diagnostics = normalized?.Diagnostics,
+            engineering_state = "not_evaluated"
         }));
         var rejection = Environment.GetEnvironmentVariable("WP10_BATCH_EXPECTED_REJECTION");
         if (!string.IsNullOrWhiteSpace(rejection))

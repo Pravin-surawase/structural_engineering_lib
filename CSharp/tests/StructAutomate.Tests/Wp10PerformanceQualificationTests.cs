@@ -28,9 +28,14 @@ public sealed class Wp10PerformanceQualificationTests
         Assert.Equal(original.RootElement.GetProperty("canonical_snapshot_sha256").GetString(), result.Snapshot!.SnapshotSha256);
         File.WriteAllBytes(Path.Combine(output!, "receipt.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(new
         {
-            source_sample = sample, raw_file_sha256 = Sha(raw), snapshot_sha256 = result.Snapshot.SnapshotSha256,
-            snapshot_identity_unchanged = true, normalization_ms = watch.Elapsed.TotalMilliseconds,
-            members = result.Snapshot.Members.Count, rows = result.Snapshot.ActionRows.Count, pf9_acceptance = false
+            source_sample = sample,
+            raw_file_sha256 = Sha(raw),
+            snapshot_sha256 = result.Snapshot.SnapshotSha256,
+            snapshot_identity_unchanged = true,
+            normalization_ms = watch.Elapsed.TotalMilliseconds,
+            members = result.Snapshot.Members.Count,
+            rows = result.Snapshot.ActionRows.Count,
+            pf9_acceptance = false
         }));
     }
 
@@ -62,9 +67,19 @@ public sealed class Wp10PerformanceQualificationTests
         var memberIds = context.Inventory.Frames.Where(frame => frame.DesignOrientation == EtabsFrameDesignOrientation.Beam)
             .Select(frame => frame.SourceFrameId).Order(StringComparer.Ordinal).ToArray();
         Assert.Equal(workload.Members, memberIds.Length);
-        var frozen = new { schema_version = "wp10-pf9-frozen-input/v1", target_sha256 = targetSha,
-            model_sha256 = context.Inventory.Source.ModelSha256, context_sha256 = context.ArtifactSha256,
-            profile, transport, normalization_path = "durable-bound-memory/v1", required_members = workload.Members, required_rows = workload.Rows, samples };
+        var frozen = new
+        {
+            schema_version = "wp10-pf9-frozen-input/v1",
+            target_sha256 = targetSha,
+            model_sha256 = context.Inventory.Source.ModelSha256,
+            context_sha256 = context.ArtifactSha256,
+            profile,
+            transport,
+            normalization_path = "durable-bound-memory/v1",
+            required_members = workload.Members,
+            required_rows = workload.Rows,
+            samples
+        };
         File.WriteAllBytes(Path.Combine(directory!, "frozen-input.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(frozen));
 
         var baseline = await CaptureSample("baseline", 0, target, context.Inventory, memberIds, targetSha, profile, transport, directory!, contextReadyWorkingSet, token);
@@ -83,14 +98,28 @@ public sealed class Wp10PerformanceQualificationTests
             (workload.Name != "MEDIUM" || memoryDelta <= 512L * 1024 * 1024);
         File.WriteAllBytes(Path.Combine(directory!, "qualification-receipt.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(new
         {
-            schema_version = "wp10-pf9-performance-qualification/v1", pf9_acceptance = acceptance,
-            pilot = samples < 10, workload = workload.Name, workload.Members, workload.Rows,
-            samples_requested = samples, samples_retained = timed.Length, percentile_rule = "nearest-rank-ceil(n*0.95)",
-            p95_total_ms = p95, budget_ms = workload.BudgetMilliseconds,
+            schema_version = "wp10-pf9-performance-qualification/v1",
+            pf9_acceptance = acceptance,
+            pilot = samples < 10,
+            workload = workload.Name,
+            workload.Members,
+            workload.Rows,
+            samples_requested = samples,
+            samples_retained = timed.Length,
+            percentile_rule = "nearest-rank-ceil(n*0.95)",
+            p95_total_ms = p95,
+            budget_ms = workload.BudgetMilliseconds,
             maximum_incremental_working_set_bytes = memoryDelta,
-            medium_workingset_budget_bytes = 512L * 1024 * 1024, baseline_payload_fingerprint = baselineFingerprint,
-            source_target_sha256 = targetSha, context_sha256 = context.ArtifactSha256, profile, transport, normalization_path = "durable-bound-memory/v1",
-            payloads_match_baseline = payloadsMatchBaseline, sample_directories = outcomes.Select(item => item.Directory).ToArray(), engineering_state = "not_evaluated"
+            medium_workingset_budget_bytes = 512L * 1024 * 1024,
+            baseline_payload_fingerprint = baselineFingerprint,
+            source_target_sha256 = targetSha,
+            context_sha256 = context.ArtifactSha256,
+            profile,
+            transport,
+            normalization_path = "durable-bound-memory/v1",
+            payloads_match_baseline = payloadsMatchBaseline,
+            sample_directories = outcomes.Select(item => item.Directory).ToArray(),
+            engineering_state = "not_evaluated"
         }));
         Assert.True(acceptance, "PF9 evidence was retained, but the workload did not meet the complete qualification acceptance rule.");
     }
@@ -172,26 +201,50 @@ public sealed class Wp10PerformanceQualificationTests
             normalized?.Snapshot?.ActionRows.Count ?? 0, result?.CleanupCompleted ?? false, postflight, canonicalSnapshotSha, encodedSnapshotSha);
         File.WriteAllBytes(Path.Combine(directory, "receipt.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(new
         {
-            schema_version = "wp10-pf9-performance-sample/v1", kind, index, pf9_acceptance = false,
-            pf9_total_ms = outcome.Pf9TotalMilliseconds, production_broker_getter_com_total_ms = outcome.BrokerGetterComMilliseconds,
-            raw_read_and_sha_ms = outcome.RawReadShaMilliseconds, offline_normalization_ms = outcome.NormalizeMilliseconds, encoded_snapshot_persistence_ms = outcome.PersistMilliseconds,
+            schema_version = "wp10-pf9-performance-sample/v1",
+            kind,
+            index,
+            pf9_acceptance = false,
+            pf9_total_ms = outcome.Pf9TotalMilliseconds,
+            production_broker_getter_com_total_ms = outcome.BrokerGetterComMilliseconds,
+            raw_read_and_sha_ms = outcome.RawReadShaMilliseconds,
+            offline_normalization_ms = outcome.NormalizeMilliseconds,
+            encoded_snapshot_persistence_ms = outcome.PersistMilliseconds,
             host_invoke_and_com_transfer_ms = invocationTimings.Values.Sum(item => item.Milliseconds),
             getter_boundaries_including_durable_journal_ms = artifact?.Content.Capture.Calls.Sum(call => (call.CompletedUtc - call.StartedUtc).TotalMilliseconds),
             host_invocations = invocationTimings.OrderBy(item => item.Key, StringComparer.Ordinal).Select(item => new { operation = item.Key, count = item.Value.Count, milliseconds = item.Value.Milliseconds }).ToArray(),
             timing_note = "PF9 total includes the complete broker acquisition, raw evidence read/SHA-256, offline normalization, WriteThrough persistence, Flush(true), and encoded snapshot SHA-256.",
-            working_set_baseline_bytes = workingSetBaseline, peak_process_working_set_bytes = peak, incremental_working_set_bytes = outcome.PeakWorkingSetDeltaBytes,
-            context_ready_working_set_bytes = contextReadyWorkingSet, context_ready_incremental_working_set_bytes = outcome.PeakContextReadyWorkingSetDeltaBytes,
-            payload_fingerprint = outcome.PayloadFingerprint, canonical_snapshot_sha256 = outcome.CanonicalSnapshotSha256, encoded_snapshot_sha256 = outcome.EncodedSnapshotSha256, normalized = outcome.Normalized,
-            members = outcome.Members, rows = outcome.Rows, completed = outcome.Completed, cleanup_completed = outcome.CleanupCompleted,
-            postflight_unchanged = outcome.PostflightUnchanged, capture_exception = outcome.CaptureException, result?.State, result?.DiagnosticCode, result?.Message,
-            normalization_diagnostics = normalized?.Diagnostics, raw_evidence_path = result?.EvidencePath
+            working_set_baseline_bytes = workingSetBaseline,
+            peak_process_working_set_bytes = peak,
+            incremental_working_set_bytes = outcome.PeakWorkingSetDeltaBytes,
+            context_ready_working_set_bytes = contextReadyWorkingSet,
+            context_ready_incremental_working_set_bytes = outcome.PeakContextReadyWorkingSetDeltaBytes,
+            payload_fingerprint = outcome.PayloadFingerprint,
+            canonical_snapshot_sha256 = outcome.CanonicalSnapshotSha256,
+            encoded_snapshot_sha256 = outcome.EncodedSnapshotSha256,
+            normalized = outcome.Normalized,
+            members = outcome.Members,
+            rows = outcome.Rows,
+            completed = outcome.Completed,
+            cleanup_completed = outcome.CleanupCompleted,
+            postflight_unchanged = outcome.PostflightUnchanged,
+            capture_exception = outcome.CaptureException,
+            result?.State,
+            result?.DiagnosticCode,
+            result?.Message,
+            normalization_diagnostics = normalized?.Diagnostics,
+            raw_evidence_path = result?.EvidencePath
         }));
         return outcome;
     }
 
     private static string PayloadFingerprint(IReadOnlyList<EtabsRawGetterCall> calls) => AnalysisSnapshotCodec.CanonicalDigest(calls.Select(call => new
     {
-        operation = call.Operation, inputs = call.Inputs, direct_value = call.DirectValue, outputs = call.Outputs, return_code = call.CsiReturnCode
+        operation = call.Operation,
+        inputs = call.Inputs,
+        direct_value = call.DirectValue,
+        outputs = call.Outputs,
+        return_code = call.CsiReturnCode
     }).ToArray());
     private static int ParseSamples(string? value) => string.IsNullOrWhiteSpace(value) ? 10 : int.TryParse(value, out var parsed) && parsed >= 1 ? parsed : throw new ArgumentException("WP10_PF9_SAMPLES must be a positive integer.");
     private static string Sha(byte[] bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));

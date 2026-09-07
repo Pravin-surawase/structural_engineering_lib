@@ -31,8 +31,11 @@ public static partial class EtabsLiveGetterProbe
         var calls = new List<EtabsRawGetterCall>();
         var seed = new EtabsLiveGetterProbeRequest(request.MemberObjectNames[0], "", "", [], [], 4, 0, request.DeadlineUtc);
         var preflight = CaptureProtectedState(adapter, host, seed, calls, cancellationToken);
-        seed = seed with { SelectedCases = preflight.CaseSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
-            SelectedCombinations = preflight.CombinationSelections.Where(item => item.Value).Select(item => item.Key).ToArray() };
+        seed = seed with
+        {
+            SelectedCases = preflight.CaseSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
+            SelectedCombinations = preflight.CombinationSelections.Where(item => item.Value).Select(item => item.Key).ToArray()
+        };
         ValidateReadiness(preflight, seed, allowMetricDatabase: true);
         if (seed.SelectedCases.Count + seed.SelectedCombinations.Count == 0) throw new EtabsLiveGetterProbeException("ETABS.SELECTION_EMPTY: select required static output sources in ETABS.");
         var frames = Read("FrameObj.GetAllFrames", ["Global"]);

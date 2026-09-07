@@ -8,64 +8,31 @@ complexity: advanced
 
 # StructAutomate — current plan
 
-**Active work (7 September):** finish WP10 under the
+**Active work (7 September):** complete WP10 under the
 [completion contract](wp10-etabs-read-adapter.md#wp10-completion-contract--2026-09-07).
-The owner's latest amendment prioritizes functional completion, installed proof,
-the PR and handoff. Performance tuning and PF9 timing/working-set certification
-are deferred to `WP10-PERF-FINAL` at the end of the project; their existing
-targets and failed evidence remain unchanged. Finish bounded medium caller
-admission and the installed correctness checks now; do not restart timing trials.
-Assumptions/offline review and running-model connection are complete. Remaining
-units are final multi-member performance/admission qualification and signed
-installed acceptance. Shared force capture, worker/store handoff and required
-source model interpretation now have complete real-model development evidence.
-Use sequential commits and one milestone PR where the accepted host boundaries
-permit. Learning is excluded from this completion task. Automatic actual-bar
-design, search and copied-model reanalysis follow WP10's accepted data path.
+The functional implementation connects Excel to an identified running ETABS
+model, captures its required complete source group, filters beam forces locally,
+normalizes explicit units and provenance, and keeps heavy data in memory and
+external snapshots. Workbook ownership, cancellation, source freshness and
+offline reopen remain mandatory. The current milestone is in final worker,
+installed-Excel and cumulative correctness qualification; completion requires
+its exact candidate receipts and reviewed PR, not this source status alone.
 
-The direct multi-member reference now works in memory, including real mesh
-points. Its measured time and file size require a compact bulk production path
-before full-model Excel/PF9 acceptance; see the
-[live findings](wp10-etabs-read-adapter.md#live-reference-findings--2026-09-07).
-The installed ribbon still has the completed connection/offline capabilities;
-Get Forces is implemented in the completion candidate, with real worker and
-signed Excel development proof for capture, cancellation, workbook ownership
-and save/reopen. Compact full-model transport/performance qualification and the
-final installed milestone proof remain active completion work.
-The compact transport now completes the real worker/store path for all 153
-beams / 3,502 actions in the retained model. It preserves the same semantic
-snapshot evidence and fits existing encoded store limits. Direct acquisition
-was the slow reference. The bulk profile now captures the same full model in
-about 13.23 seconds with independently compared exact forces/assignments and
-qualified mesh geometry. Source connectivity and explicit needs-input support/
-span dispositions are implemented. PF9 small/medium sizes, medium memory and
-admission, final installed proof and cumulative gates are the next main work.
+The owner explicitly deferred PF9 timing and incremental-memory certification
+to **WP10-PERF-FINAL at the end of the project**. Existing 5 s / 30 s p95 and
+512 MiB targets and failed measurements remain unchanged. Do not resume speed
+experiments or imply a performance pass while closing this functional milestone.
+The actual 1,000-member / 100,000-row capacity and complete-source checks remain
+part of WP10. Learning work is excluded.
 
-Actual PF9 source fixtures now exist at both required sizes. The complete small
-pilot is correct but still about 7.38 seconds against the 5-second budget.
-Compact medium transport now completes all 100,000 rows; its 43.72-second pilot
-still exceeds timing and memory limits. Metric database-unit and case-only catalogue defects are fixed, and
-station-binding/hash allocation costs have been reduced without changing
-snapshot identities. Continue measured source-call and memory/transport scaling;
-do not mark PF9, medium caller admission, or WP10 complete. Exact evidence and
-next-step constraints are in the completion contract's PF9 findings section.
-The latest versioned group getter retains all source forces once and filters
-required beams locally; actual direct/group comparisons passed. A compact
-positional-row transport preserves the same canonical snapshot identity in
-.NET and independent Python replay. Complete medium capacity and ten-sample
-performance acceptance remain open; the failed fixtures are retained unchanged.
-Repeated-run investigation also found completed acquisition graphs retained by
-their original deadline timers. All three brokers now end those monitors on
-quiescence; the focused broker regression passed. Actual repeated medium memory
-qualification and removal of duplicated in-memory artifact parsing remain active.
-
-Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
-library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.
-WP10-05 A/B now implements application/session ownership, transparent demo
-assumptions and completed-snapshot offline review; the complete
-automation path includes ETABS forces,
-design/checking, candidate search, reanalysis, detailing and construction
-outputs.
+**Next after WP10 acceptance:** plan the WP11 application mapping and design
+orchestration from accepted assumptions and concurrent snapshot actions into
+actual reinforcement and all applicable member checks. Then expose bounded
+multi-option search and explicit physical-span/group constraints, followed by
+controlled copied-model reanalysis and comparison against a fixed baseline.
+Missing support/span evidence must remain visible. Overnight automation follows
+those verified services and recovery boundaries; it is not available merely
+because Connect ETABS and Get Forces work.
 
 [PF0's product and library charter](library-definition/pf0/README.md) through
 [PF11's implementation blueprint](library-definition/pf11/README.md) are
@@ -91,11 +58,11 @@ model binding. Heavy workbook snapshot tables and a new database are not default
 prerequisites. Keep the typed kernels and transaction/freshness guarantees; add
 the missing design/candidate orchestration and public mapper. Stage the eventual
 ribbon by implemented capability, with local Solver Check in applicable details.
-The installed UI exposes Assumptions, Connect ETABS, Open Snapshot and Review
-Snapshot, with legacy tools in their own menu. The owner brought live connection
+The ribbon exposes Assumptions, Connect ETABS, Get Forces, Open Snapshot and
+Review Snapshot, with legacy tools in their own menu. The owner brought live connection
 ahead of automatic design: WP10-05B delivered running-model connection and
 source context (audit increment D). Existing-force handoff and WP10-05C broad
-capture are now active. Increment C follows that verified data path. This changes delivery
+capture are implemented in this completion candidate. Increment C follows the accepted data path. This changes delivery
 order, not engineering acceptance or the final product goal.
 Source completion alone does not assert an installed acceptance pass.
 
@@ -115,7 +82,7 @@ does not claim those integrations complete or expand beam design to the building
 3. [WP09 standalone Excel record](wp09-standalone-excel.md), with the canonical
    adapter decision and installed acceptance evidence.
 4. [WP10 read-only ETABS plan](wp10-etabs-read-adapter.md), with completed
-   WP10-01 through WP10-04 evidence and the executable Excel-import plan.
+   WP10 completion contract, source/capacity evidence and installed gates.
 5. [Working C# foundation](../../../CSharp/README.md), its exact build/test commands and implemented boundaries.
 6. [Reusable Python/.NET library research](reusable-library-research.md), covering proposed library boundaries, peer libraries, public signatures and ETABS result semantics.
 7. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
@@ -145,8 +112,8 @@ candidate; it does not yet expose a useful multi-option search domain.
 
 Implementation sequencing follows PF11: WP09 and WP10-01 through WP10-04 are
 complete, as are WP10-05 offline import and the first WP10-05B connection unit.
-Finish the remaining production force handoff and multi-member
-prerequisites, then WP10-06 integrated qualification. WP11 exposes multi-option fixed-action search in
+Finish WP10-06 integrated correctness qualification of the complete force path.
+WP11 exposes multi-option fixed-action search in
 Excel before adding controlled copied-model reanalysis, and WP12 completes
 migration and release readiness.
 

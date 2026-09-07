@@ -177,14 +177,14 @@ public sealed class OfflineSnapshotStore
         }
         else
         {
-        string json;
-        try { json = StrictUtf8.GetString(bytes); }
-        catch (DecoderFallbackException exception)
-        {
-            throw new InvalidDataException("Offline snapshot bytes must be strict UTF-8.", exception);
-        }
+            string json;
+            try { json = StrictUtf8.GetString(bytes); }
+            catch (DecoderFallbackException exception)
+            {
+                throw new InvalidDataException("Offline snapshot bytes must be strict UTF-8.", exception);
+            }
 
-        result = AnalysisSnapshotCodec.ParseAndValidate(json);
+            result = AnalysisSnapshotCodec.ParseAndValidate(json);
         }
         if (result.Snapshot is not AnalysisSnapshot snapshot)
         {

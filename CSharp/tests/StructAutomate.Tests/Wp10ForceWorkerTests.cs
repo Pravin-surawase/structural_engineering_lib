@@ -29,9 +29,14 @@ public sealed class Wp10ForceWorkerTests
         using var receipt = new FileStream(output!, FileMode.CreateNew, FileAccess.Write);
         JsonSerializer.Serialize(receipt, new
         {
-            schema_version = "wp10-streamed-replay-development/v1", pf9_acceptance = false,
-            byte_identity_preserved = true, bytes = bytes.Length, members = result.Snapshot!.Members.Count,
-            rows = result.Snapshot.ActionRows.Count, elapsed_ms = watch.Elapsed.TotalMilliseconds, allocated_bytes = allocated
+            schema_version = "wp10-streamed-replay-development/v1",
+            pf9_acceptance = false,
+            byte_identity_preserved = true,
+            bytes = bytes.Length,
+            members = result.Snapshot!.Members.Count,
+            rows = result.Snapshot.ActionRows.Count,
+            elapsed_ms = watch.Elapsed.TotalMilliseconds,
+            allocated_bytes = allocated
         });
     }
 
@@ -56,9 +61,13 @@ public sealed class Wp10ForceWorkerTests
         using var receipt = new FileStream(output!, FileMode.CreateNew, FileAccess.Write);
         JsonSerializer.Serialize(receipt, new
         {
-            schema_version = "wp10-transport-replay-development/v1", pf9_acceptance = false,
-            canonical_sha256 = expected, encoded_bytes = input.Length, read_validate_ms = readMilliseconds,
-            members = result.Snapshot!.Members.Count, rows = result.Snapshot.ActionRows.Count,
+            schema_version = "wp10-transport-replay-development/v1",
+            pf9_acceptance = false,
+            canonical_sha256 = expected,
+            encoded_bytes = input.Length,
+            read_validate_ms = readMilliseconds,
+            members = result.Snapshot!.Members.Count,
+            rows = result.Snapshot.ActionRows.Count,
             peak_process_working_set_bytes = System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64
         });
     }
@@ -154,8 +163,14 @@ public sealed class Wp10ForceWorkerTests
         Assert.Equal(reference, loaded.Session.Reference);
         File.WriteAllBytes(Path.Combine(directory!, "receipt.json"), JsonSerializer.SerializeToUtf8Bytes(new
         {
-            schema_version = "wp10-force-worker-development/v1", installed_acceptance = false, passed = true,
-            target.ProcessId, loaded.Response, cancelled = cancelled.Response, cleanup_completed = true, offline_reopen_exact = true,
+            schema_version = "wp10-force-worker-development/v1",
+            installed_acceptance = false,
+            passed = true,
+            target.ProcessId,
+            loaded.Response,
+            cancelled = cancelled.Response,
+            cleanup_completed = true,
+            offline_reopen_exact = true,
             engineering_state = "not_evaluated"
         }));
     }

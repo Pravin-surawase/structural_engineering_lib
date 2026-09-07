@@ -32,10 +32,16 @@ def main() -> None:
     reference = json.loads(reference_bytes)["content"]["capture"]
     payload = args.snapshot.read_bytes()
     compressed = payload.startswith(b"STRUCTSNAP-GZIP-1\n")
-    replay = parse_analysis_snapshot_transport(payload) if compressed else parse_analysis_snapshot_json(payload.decode("utf-8"))
+    replay = (
+        parse_analysis_snapshot_transport(payload)
+        if compressed
+        else parse_analysis_snapshot_json(payload.decode("utf-8"))
+    )
     if replay.snapshot is None:
         raise ValueError(str(replay.diagnostics))
-    snapshot = replay.snapshot.model_dump(mode="json") if compressed else json.loads(payload)
+    snapshot = (
+        replay.snapshot.model_dump(mode="json") if compressed else json.loads(payload)
+    )
     calls = {
         (call["operation"], call["inputs"][0] if call["inputs"] else ""): call
         for call in reference["calls"]
@@ -76,7 +82,9 @@ def main() -> None:
         error = abs(actual - expected)
         maximum[kind] = max(maximum[kind], error)
         if error > 1e-8:
-            raise ValueError(f"Source derivation exceeds the existing tolerance: {kind}")
+            raise ValueError(
+                f"Source derivation exceeds the existing tolerance: {kind}"
+            )
 
     force_evidence = {
         item["inputs"][0]: item["outputs"]
@@ -84,24 +92,49 @@ def main() -> None:
         if item["operation"] == "Results.FrameForce"
     }
     for name, member in members.items():
-        equal(force_evidence[name], outputs("Results.FrameForce", name), "complete forces")
+        equal(
+            force_evidence[name], outputs("Results.FrameForce", name), "complete forces"
+        )
         row_count += force_evidence[name][0]
-        equal(member["modifiers"], outputs("FrameObj.GetModifiers", name)[0], "modifiers")
+        equal(
+            member["modifiers"], outputs("FrameObj.GetModifiers", name)[0], "modifiers"
+        )
         offsets = outputs("FrameObj.GetEndLengthOffset", name)
         equal(
-            [member[field] for field in ("automatic_offsets", "end_offset_i", "end_offset_j", "rigid_zone_factor")],
+            [
+                member[field]
+                for field in (
+                    "automatic_offsets",
+                    "end_offset_i",
+                    "end_offset_j",
+                    "rigid_zone_factor",
+                )
+            ],
             offsets,
             "offsets",
         )
         equal(
-            [member[field] for field in ("releases_i", "releases_j", "springs_i", "springs_j")],
+            [
+                member[field]
+                for field in ("releases_i", "releases_j", "springs_i", "springs_j")
+            ],
             outputs("FrameObj.GetReleases", name),
             "releases and partial fixity",
         )
         insertion = member["insertion"]
         direct_insertion = outputs("FrameObj.GetInsertionPoint_1", name)
         equal(
-            [insertion[field] for field in ("cardinal_point", "mirror2", "mirror3", "stiffness_transformed", "offset_i", "offset_j")],
+            [
+                insertion[field]
+                for field in (
+                    "cardinal_point",
+                    "mirror2",
+                    "mirror3",
+                    "stiffness_transformed",
+                    "offset_i",
+                    "offset_j",
+                )
+            ],
             direct_insertion[:6],
             "insertion",
         )
@@ -113,14 +146,27 @@ def main() -> None:
             direct_owner = outputs("LineElm.GetObj", element_id)
             equal(element["object_id"], direct_owner[0], "element owner")
             direct_points = outputs("LineElm.GetPoints", element_id)
-            equal([element["point_i_id"], element["point_j_id"]], ["point:" + point for point in direct_points], "mesh connectivity")
+            equal(
+                [element["point_i_id"], element["point_j_id"]],
+                ["point:" + point for point in direct_points],
+                "mesh connectivity",
+            )
             close(element["relative_i"], direct_owner[2], "relative_station")
             close(element["relative_j"], direct_owner[3], "relative_station")
-            for actual, expected in zip(element["local_to_global"], outputs("LineElm.GetTransformationMatrix", element_id)[0], strict=True):
+            for actual, expected in zip(
+                element["local_to_global"],
+                outputs("LineElm.GetTransformationMatrix", element_id)[0],
+                strict=True,
+            ):
                 close(actual, expected, "axis_matrix")
             for point_id in direct_points:
-                call = calls.get(("PointObj.GetCoordCartesian", point_id)) or calls[("PointElm.GetCoordCartesian", point_id)]
-                for field, expected in zip(("x", "y", "z"), call["outputs"], strict=True):
+                call = (
+                    calls.get(("PointObj.GetCoordCartesian", point_id))
+                    or calls[("PointElm.GetCoordCartesian", point_id)]
+                )
+                for field, expected in zip(
+                    ("x", "y", "z"), call["outputs"], strict=True
+                ):
                     close(points[point_id][field], expected, "coordinate_m")
     equal(row_count, len(snapshot["action_rows"]), "complete row accounting")
     receipt = {

@@ -1,0 +1,47 @@
+{
+  "schema_version": "structautomate.wp10-installed-transition/v1",
+  "task_id": "WP10-COMPLETION",
+  "source_branch": "codex/wp10-completion",
+  "base_commit": "c822809ddc0252816c71791825c60b2f07aac48c",
+  "authority": "Owner authorized WP10 completion and necessary Excel/ETABS activity; subsequently deferred performance tuning and PF9 speed/memory certification to project end.",
+  "transition": "Accepted immutable source to signed local x64 Excel and packaged worker installation",
+  "candidate_binding": "New-Distribution.ps1 records exact source_commit, source_tree, signed XLL and worker SHA-256. Installed acceptance verifies the installed manifest, signatures and startup registration; external receipts bind the exact source, application, workbook and model evidence.",
+  "force_profile": "wp10-group-static-frame-capture/v1",
+  "snapshot_transport": "structural.analysis_snapshot_rows/v1",
+  "canonical_snapshot": "structural.analysis_snapshot/v1",
+  "input_admission": {
+    "maximum_encoded_bytes": 67108864,
+    "maximum_expanded_wire_bytes": 268435456,
+    "maximum_members": 1000,
+    "maximum_actions": 100000
+  },
+  "functional_evidence": {
+    "root": "C:/CodexWork/wp10-evidence/WP10-COMPLETION",
+    "reference_worker": "force-client-group-reference-1/receipt.json",
+    "medium_worker": "force-client-group-medium-2/receipt.json",
+    "medium_independent_python": "compact-medium-python-replay-1/receipt.json",
+    "reference_comparison": "group-reference-development-1/reference-comparison.json",
+    "required_reference_counts": { "members": 153, "actions": 3502 },
+    "required_medium_counts": { "members": 1000, "actions": 100000 },
+    "medium_snapshot_sha256": "033866c1b1634f561bc8913ce168e12ccfbc58fd810afcf64880f9ca312589b6"
+  },
+  "final_acceptance_owners": [
+    "CSharp/packaging/excel/Invoke-EtabsConnectionAcceptance.ps1",
+    "CSharp/packaging/excel/Invoke-OfflineSessionAcceptance.ps1"
+  ],
+  "legacy_offline_fixture_file_sha256": "b0379473f0e195c4a8e947b89218e0af4e1294f80e72824bd731d7fa65af627c",
+  "cumulative_gate": "Broad Python package tests and full run.sh check (32 checks), affected .NET union, exact-head audit/integrity and required hosted checks",
+  "observed_final_verdict": "Require external candidate-bound installed and hosted receipts; this source declaration is not a pass.",
+  "deferred": {
+    "task_id": "WP10-PERF-FINAL",
+    "when": "Final project qualification after the functional programme",
+    "small_p95_seconds": 5,
+    "medium_p95_seconds": 30,
+    "maximum_incremental_working_set_bytes": 536870912,
+    "samples": "One untimed baseline plus ten measured samples",
+    "verdict": "Not passed; retain original failures and workload identities"
+  },
+  "recovery": "Failure/cancellation publishes no partial current session; saved snapshots remain historical. No production setter, analysis, save, unlock, source replacement or live mutation retry is added.",
+  "next_scope": "Plan the public assumptions/snapshot-to-design mapper and actual-bar member orchestration before multi-option search, copied-model reanalysis and overnight automation.",
+  "distribution": "Local development validation; no public release or engineering issuance"
+}
