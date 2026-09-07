@@ -42,7 +42,7 @@ public static partial class EtabsLiveGetterProbe
             SelectedCases = preflight.CaseSelections.Where(pair => pair.Value).Select(pair => pair.Key).ToArray(),
             SelectedCombinations = preflight.CombinationSelections.Where(pair => pair.Value).Select(pair => pair.Key).ToArray()
         };
-        ValidateReadiness(preflight, seed);
+        ValidateReadiness(preflight, seed, allowMetricDatabase: true);
         if (seed.SelectedCases.Count + seed.SelectedCombinations.Count == 0)
             throw new EtabsLiveGetterProbeException("ETABS.SELECTION_EMPTY: select the required output cases/combinations in ETABS.");
 

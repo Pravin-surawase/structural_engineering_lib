@@ -178,11 +178,11 @@ public static partial class EtabsLiveGetterProbe
             combinationSelections);
     }
 
-    private static void ValidateReadiness(EtabsProtectedState state, EtabsLiveGetterProbeRequest request)
+    private static void ValidateReadiness(EtabsProtectedState state, EtabsLiveGetterProbeRequest request, bool allowMetricDatabase = false)
     {
         if (!state.ModelLocked)
             throw new EtabsLiveGetterProbeException("The exact ETABS model is not locked.");
-        if (state.PresentUnits != 6 || state.DatabaseUnits != 6)
+        if (state.PresentUnits != 6 || (state.DatabaseUnits != 6 && !(allowMetricDatabase && state.DatabaseUnits == 9)))
             throw new EtabsLiveGetterProbeException("The frozen getter probe requires ETABS unit enum 6 (kN/m/C).");
         if (state.CaseStatuses.Count == 0 || state.CaseStatuses.Any(value => value != request.FinishedCaseStatus))
             throw new EtabsLiveGetterProbeException("Every analysis case must have the exact finished status before force access.");

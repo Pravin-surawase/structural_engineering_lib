@@ -302,26 +302,28 @@ public static partial class AnalysisSnapshotCodec
         if (snapshot.ActionRows.Select(item => item.SourceRowId).Distinct(StringComparer.Ordinal).Count() != snapshot.ActionRows.Count)
             return Blocked("ETABS.ROW_ACCOUNTING", "action_rows.source_row_id", "More than one canonical action row is bound to the same raw force row.", "Bind every raw force row to at most one canonical action row.");
         var actionBySource = snapshot.ActionRows.ToDictionary(item => item.SourceRowId, item => item.RowId, StringComparer.Ordinal);
+        var modelBindings = new Dictionary<(RawModelRecordKind RecordKind, string EvidenceReference), List<string>>();
+        void Bind(RawModelRecordKind recordKind, string evidenceReference, string canonicalId)
+        {
+            var key = (recordKind, evidenceReference);
+            if (!modelBindings.TryGetValue(key, out var candidates)) modelBindings[key] = candidates = [];
+            candidates.Add(canonicalId);
+        }
+        Bind(RawModelRecordKind.ModelMetadata, snapshot.Metadata.EvidenceReference, snapshot.Metadata.ProjectId);
+        foreach (var item in snapshot.Points) Bind(RawModelRecordKind.Point, item.EvidenceReference, item.PointId);
+        foreach (var item in snapshot.Materials) Bind(RawModelRecordKind.Material, item.EvidenceReference, item.MaterialId);
+        foreach (var item in snapshot.Sections) Bind(RawModelRecordKind.Section, item.EvidenceReference, item.SectionId);
+        foreach (var item in snapshot.Members) Bind(RawModelRecordKind.Member, item.EvidenceReference, item.MemberId);
+        foreach (var item in snapshot.LoadCases) Bind(RawModelRecordKind.LoadCase, item.EvidenceReference, item.CaseId);
+        foreach (var item in snapshot.LoadCombinations) Bind(RawModelRecordKind.LoadCombination, item.EvidenceReference, item.CombinationId);
+        foreach (var item in snapshot.ResultSelections) Bind(RawModelRecordKind.ResultSelection, item.EvidenceReference, item.SelectionId);
+        foreach (var item in snapshot.Stations) Bind(RawModelRecordKind.Station, item.EvidenceReference, item.StationId);
         var expectedModelRows = new Dictionary<string, (string RecordKind, string CanonicalId)>(StringComparer.Ordinal);
         foreach (var raw in snapshot.RawCapture.ModelRecords)
         {
-            IEnumerable<(string EvidenceReference, string CanonicalId)> candidates = raw.RecordKind switch
-            {
-                RawModelRecordKind.ModelMetadata => [(snapshot.Metadata.EvidenceReference, snapshot.Metadata.ProjectId)],
-                RawModelRecordKind.Point => snapshot.Points.Select(item => (item.EvidenceReference, item.PointId)),
-                RawModelRecordKind.Material => snapshot.Materials.Select(item => (item.EvidenceReference, item.MaterialId)),
-                RawModelRecordKind.Section => snapshot.Sections.Select(item => (item.EvidenceReference, item.SectionId)),
-                RawModelRecordKind.Member => snapshot.Members.Select(item => (item.EvidenceReference, item.MemberId)),
-                RawModelRecordKind.LoadCase => snapshot.LoadCases.Select(item => (item.EvidenceReference, item.CaseId)),
-                RawModelRecordKind.LoadCombination => snapshot.LoadCombinations.Select(item => (item.EvidenceReference, item.CombinationId)),
-                RawModelRecordKind.ResultSelection => snapshot.ResultSelections.Select(item => (item.EvidenceReference, item.SelectionId)),
-                RawModelRecordKind.Station => snapshot.Stations.Select(item => (item.EvidenceReference, item.StationId)),
-                _ => []
-            };
-            var matches = candidates.Where(item => item.EvidenceReference == raw.SourceRecordId).ToArray();
-            if (matches.Length != 1)
+            if (!modelBindings.TryGetValue((raw.RecordKind, raw.SourceRecordId), out var matches) || matches.Count != 1)
                 return Blocked("ETABS.ROW_ACCOUNTING", "row_ledger.rows", "A raw model row is not bound to exactly one canonical model fact.", "Bind each raw model row to one fact of the matching record kind.");
-            expectedModelRows[raw.SourceRecordId] = (RawRecordKindToken(raw.RecordKind), matches[0].CanonicalId);
+            expectedModelRows[raw.SourceRecordId] = (RawRecordKindToken(raw.RecordKind), matches[0]);
         }
         foreach (var item in ledger.Rows)
         {
@@ -382,6 +384,7 @@ public static partial class AnalysisSnapshotCodec
                 .OrderBy(item => item.SourceRowIndex).ThenBy(item => item.SourceRowId, StringComparer.Ordinal).Select(item => (item.SourceRowIndex, item.SourceRowId))))
             return Blocked("SNAPSHOT.ORDER_INVALID", "raw_capture", "Raw records are not in deterministic source order.", "Sort model identities and preserve force-row ordinal order.");
         var requiredKinds = Enum.GetValues<RawModelRecordKind>().ToHashSet();
+        if (snapshot.LoadCombinations.Count == 0) requiredKinds.Remove(RawModelRecordKind.LoadCombination);
         if (!requiredKinds.SetEquals(snapshot.RawCapture.ModelRecords.Select(item => item.RecordKind)))
             return Blocked("ETABS.MAPPING_UNRESOLVED", "raw_capture.model_records", "The raw capture omits a required model-fact record kind.", "Capture metadata, geometry, assignments, cases, combinations, selections, and stations.");
 

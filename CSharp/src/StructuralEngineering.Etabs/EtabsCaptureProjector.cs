@@ -112,13 +112,13 @@ public static partial class EtabsCaptureProjector
         Need(AnalysisSnapshotNormalizer.Digest(state) == AnalysisSnapshotNormalizer.Digest(capture.Postflight), "Pre/post protected facts differ.");
         Need(state.ModelSha256 == host.ModelSha256 && state.ModelPath == host.ModelPath && state.ModelBytes == host.ModelBytes &&
             state.ModelModifiedUtc == host.ModelModifiedUtc && state.ModelLocked && host.ModelLocked &&
-            state.PresentUnits == 6 && state.DatabaseUnits == 6 && host.PresentUnits == 6,
+            state.PresentUnits == 6 && (state.DatabaseUnits == 6 || capture.Batch && state.DatabaseUnits == 9) && host.PresentUnits == 6,
             "The retained source identity, lock or units are inconsistent.");
         Need(One("SapModel.GetModelFilename").Direct.GetString() == host.ModelPath &&
             One("SapModel.GetModelIsLocked").Direct.GetBoolean() &&
-            One("SapModel.GetPresentUnits").Direct.GetInt32() == 6 && One("SapModel.GetDatabaseUnits").Direct.GetInt32() == 6 &&
+            One("SapModel.GetPresentUnits").Direct.GetInt32() == 6 && One("SapModel.GetDatabaseUnits").Direct.GetInt32() == state.DatabaseUnits &&
             One("SapModel.GetPresentUnits_2").Ints().SequenceEqual([4, 6, 2]) &&
-            One("SapModel.GetDatabaseUnits_2").Ints().SequenceEqual([4, 6, 2]) &&
+            One("SapModel.GetDatabaseUnits_2").Ints().SequenceEqual(state.DatabaseUnits == 9 ? [3, 4, 2] : [4, 6, 2]) &&
             One("SapModel.GetVersion").Text(0) == host.EtabsApiVersion && state.ApiVersion == host.EtabsApiVersion,
             "The actual metadata getters do not prove the source unit and runtime facts.");
         var caseNames = One("LoadCases.GetNameList").Strings(1);

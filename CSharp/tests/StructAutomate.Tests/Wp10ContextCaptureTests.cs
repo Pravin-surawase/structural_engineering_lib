@@ -8,10 +8,12 @@ public sealed class Wp10ContextCaptureTests
 {
     private static readonly DateTimeOffset Deadline = DateTimeOffset.UtcNow.AddMinutes(1);
 
-    [Fact]
-    public void UnlockedNoResultContextIsHashBoundAndUsesNoAnalysisOrResults()
+    [Theory]
+    [InlineData(6)]
+    [InlineData(9)]
+    public void UnlockedNoResultContextIsHashBoundAndUsesNoAnalysisOrResults(int databaseUnits)
     {
-        using var host = new ContextHost(Identity(92001, locked: false));
+        using var host = new ContextHost(Identity(92001, locked: false), databaseUnits: databaseUnits);
         var inventory = EtabsContextCapture.Run(host, new("request-hash", Deadline), TestContext.Current.CancellationToken);
         var artifact = EtabsContextWorkerCodec.CreateArtifact(inventory);
         var bytes = EtabsContextWorkerCodec.CanonicalArtifactJsonBytes(artifact);
@@ -19,6 +21,7 @@ public sealed class Wp10ContextCaptureTests
             new EtabsProcessTarget(92001, inventory.Source.ProcessStartedUtc, inventory.Source.ExecutablePath, inventory.Source.ExecutableSha256), "request-hash");
 
         Assert.False(parsed.Inventory.Source.ModelLocked);
+        Assert.Equal(databaseUnits, parsed.Inventory.Source.DatabaseUnits);
         Assert.Equal(2000d, Assert.Single(parsed.Inventory.Points, point => point.SourcePointId == "p2").Xmm);
         Assert.Equal(EtabsFrameDesignOrientation.Beam, Assert.Single(parsed.Inventory.Frames).DesignOrientation);
         Assert.Equal("mat-1", Assert.Single(parsed.Inventory.Sections).SourceMaterialId);
@@ -89,10 +92,12 @@ public sealed class Wp10ContextCaptureTests
     private sealed class ContextHost : IEtabsGetterHost
     {
         private readonly bool _badFrameShape;
-        public ContextHost(EtabsHostIdentity identity, bool badFrameShape = false)
+        private readonly int _databaseUnits;
+        public ContextHost(EtabsHostIdentity identity, bool badFrameShape = false, int databaseUnits = 6)
         {
             Identity = identity;
             _badFrameShape = badFrameShape;
+            _databaseUnits = databaseUnits;
         }
         public EtabsHostIdentity Identity { get; }
         public List<string> Operations { get; } = [];
@@ -104,7 +109,8 @@ public sealed class Wp10ContextCaptureTests
             {
                 "SapModel.GetModelFilename" => new("model.EDB", []),
                 "SapModel.GetModelIsLocked" => new(Identity.ModelLocked, []),
-                "SapModel.GetPresentUnits" or "SapModel.GetDatabaseUnits" => new(6, []),
+                "SapModel.GetPresentUnits" => new(6, []),
+                "SapModel.GetDatabaseUnits" => new(_databaseUnits, []),
                 "FrameObj.GetAllFrames" => new(0, a(1, _badFrameShape ? a() : a("f1"), a("s1"), a("story"), a("p1"), a("p2"), a(1d), a(0d), a(0d), a(2d), a(0d), a(0d), a(0d), a(0d), a(0d), a(0d), a(0d), a(0d), a(0d), a(2))),
                 "PointObj.GetAllPoints" => new(0, a(2, a("p1", "p2"), a(0d, 2d), a(0d, 0d), a(0d, 0d))),
                 "FrameObj.GetDesignOrientation" => new(0, a(2)),

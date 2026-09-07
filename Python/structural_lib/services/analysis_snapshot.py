@@ -574,6 +574,8 @@ def _validate_mapping(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 | N
             "Preserve source-row ordinal then identity order.",
         )
     required_kinds = set(RawModelRecordKind)
+    if not snapshot.load_combinations:
+        required_kinds.remove(RawModelRecordKind.LOAD_COMBINATION)
     if {record.record_kind for record in raw_model} != required_kinds:
         return _blocked(
             "ETABS.MAPPING_UNRESOLVED",
@@ -821,44 +823,49 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
     action_by_source = {
         item.source_row_id: item.row_id for item in snapshot.action_rows
     }
-    model_bindings = {
-        RawModelRecordKind.MODEL_METADATA: (
-            (snapshot.metadata.evidence_reference, snapshot.metadata.project_id),
-        ),
-        RawModelRecordKind.POINT: tuple(
-            (item.evidence_reference, item.point_id) for item in snapshot.points
-        ),
-        RawModelRecordKind.MATERIAL: tuple(
-            (item.evidence_reference, item.material_id) for item in snapshot.materials
-        ),
-        RawModelRecordKind.SECTION: tuple(
-            (item.evidence_reference, item.section_id) for item in snapshot.sections
-        ),
-        RawModelRecordKind.MEMBER: tuple(
-            (item.evidence_reference, item.member_id) for item in snapshot.members
-        ),
-        RawModelRecordKind.LOAD_CASE: tuple(
-            (item.evidence_reference, item.case_id) for item in snapshot.load_cases
-        ),
-        RawModelRecordKind.LOAD_COMBINATION: tuple(
-            (item.evidence_reference, item.combination_id)
-            for item in snapshot.load_combinations
-        ),
-        RawModelRecordKind.RESULT_SELECTION: tuple(
-            (item.evidence_reference, item.selection_id)
-            for item in snapshot.result_selections
-        ),
-        RawModelRecordKind.STATION: tuple(
-            (item.evidence_reference, item.station_id) for item in snapshot.stations
-        ),
-    }
+    model_bindings: dict[tuple[RawModelRecordKind, str], list[str]] = {}
+
+    def bind(
+        record_kind: RawModelRecordKind,
+        evidence_reference: str,
+        canonical_id: str,
+    ) -> None:
+        model_bindings.setdefault((record_kind, evidence_reference), []).append(
+            canonical_id
+        )
+
+    bind(
+        RawModelRecordKind.MODEL_METADATA,
+        snapshot.metadata.evidence_reference,
+        snapshot.metadata.project_id,
+    )
+    for item in snapshot.points:
+        bind(RawModelRecordKind.POINT, item.evidence_reference, item.point_id)
+    for item in snapshot.materials:
+        bind(RawModelRecordKind.MATERIAL, item.evidence_reference, item.material_id)
+    for item in snapshot.sections:
+        bind(RawModelRecordKind.SECTION, item.evidence_reference, item.section_id)
+    for item in snapshot.members:
+        bind(RawModelRecordKind.MEMBER, item.evidence_reference, item.member_id)
+    for item in snapshot.load_cases:
+        bind(RawModelRecordKind.LOAD_CASE, item.evidence_reference, item.case_id)
+    for item in snapshot.load_combinations:
+        bind(
+            RawModelRecordKind.LOAD_COMBINATION,
+            item.evidence_reference,
+            item.combination_id,
+        )
+    for item in snapshot.result_selections:
+        bind(
+            RawModelRecordKind.RESULT_SELECTION,
+            item.evidence_reference,
+            item.selection_id,
+        )
+    for item in snapshot.stations:
+        bind(RawModelRecordKind.STATION, item.evidence_reference, item.station_id)
     expected_model_rows: dict[str, tuple[str, str]] = {}
     for raw in snapshot.raw_capture.model_records:
-        matches = [
-            canonical_id
-            for evidence_reference, canonical_id in model_bindings[raw.record_kind]
-            if evidence_reference == raw.source_record_id
-        ]
+        matches = model_bindings.get((raw.record_kind, raw.source_record_id), [])
         if len(matches) != 1:
             return _blocked(
                 "ETABS.ROW_ACCOUNTING",

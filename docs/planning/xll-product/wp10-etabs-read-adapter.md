@@ -779,6 +779,69 @@ The existing review window shows connected beams/columns from memory; it creates
 no new commands or heavy sheets. Retained context supplies the same interpretation
 after offline reopen. Legacy snapshots without context retain their prior review.
 
+### PF9 source fixtures and measured scaling findings — 2026-09-07
+
+The reusable `New-EtabsPerformanceFixture.ps1` now creates owned source models
+with 100 or 1,000 distinct physical frame objects and 100 actual stations per
+object in one ordinary static case. Geometry and uniform loads vary by member.
+Each source result is read from ETABS; station uniqueness and fixed-end force
+values are checked before freezing the fixture. There is no row replication.
+`pf9-small-ready-1` plus `pf9-small-analysis-1` / `pf9-small-units-1` owns the
+prepared small model; `pf9-medium-fixture-1` owns the 1,000/100,000 medium model.
+
+New ETABS metric models use N-mm-C database units (enum 9) with kN-m-C API
+units (enum 6). The new context and batch readers now admit that exact pair as
+well as the original 6/6 pair, retaining both actual unit getters and their
+components. API values still undergo the existing single kN-m conversion.
+The legacy single-member source profile remains unchanged. Source setup and
+independent fixed-end force/length checks prove the distinction, consistent
+with [CSI's InitializeNewModel contract](https://docs.csiamerica.com/help-files/etabs-api-2016/html/592ff586-daba-0591-a52e-ddb6e939f7b9.htm).
+An explicit `Save(FileName)` after analysis switched this owned host to its
+intermediate `$et` model and cleared the analysis lock. The generator now
+freezes the verified analyzed state without that extra save and checks the
+actual active model path. Failed receipts and normal owned-process exits remain
+retained; no original user model was changed.
+
+The source also exposed a portable validation defect: an empty combination
+catalogue is permitted by the schema, but both readers required a combination
+record regardless. Case-only capture now passes without fabricating a source
+combination. Nine bulk tests and the independent 10,000-row Python replay pass.
+The complete replay retains snapshot SHA-256
+`1cc5ff5461f5db9ffce5f6d9f6e205f632d6c581305198b786b8155c7694d77d`.
+
+The opt-in PF9 harness retains each source fingerprint, normalized identity,
+encoded identity, complete raw evidence, failure diagnostics and timing sample.
+Its p95 uses total acquisition/read/normalization/persistence time, with one
+context-ready memory baseline. Individual host invocation/COM boundary time,
+durable getter boundaries, normalization and persistence are separately
+reported. A pilot is never a qualification pass, even if its budget passes.
+
+**The performance gate is still failed.** `pf9-small-pilot-3` measured 15.79 s
+for its warm complete sample. Replacing quadratic station-binding scans in both
+readers with indexed lookups preserved every binding/identity check. A sampled
+runtime trace then identified allocation and flush overhead in canonical hash
+writes; a synchronous incremental hash sink and document-sized buffers preserve
+the same canonical bytes. `pf9-small-pilot-5` measures 10.09 s total (6.59 s
+broker, 2.52 s normalization, 0.95 s persistence), still above 5 s. Its source
+fingerprint remains equal to the earlier pilots.
+
+`pf9-medium-pilot-1` captured and normalized all 1,000 members / 100,000 rows,
+but failed bounded transport output. Before the hash-sink refinement, its
+baseline took 37.45 s broker plus 32.70 s normalization, and incremental process
+working set reached 837,373,952 bytes. Its partial transport is failed evidence,
+never an accepted snapshot. It exceeds the unchanged 512 MiB budget; the
+100,000-row Excel caller is therefore **not admitted**. No ten-sample run,
+installed claim, or final PR is justified by these pilots.
+
+Next bounded scaling unit: use the measured invocation/journal costs to qualify
+fewer actual bulk calls against the direct reference, and remove avoidable
+canonical/evidence graph duplication before reconsidering transport admission.
+Preserve source rows, matrices, assignments and complete provenance; do not
+invent getter calls, remove durability, raise caps alone, pad or replace the
+failed workload to label it passed. Then repeat single pilots, followed by the
+frozen baseline plus ten measured samples once correctness and capacity pass.
+Final signed installed proof and the cumulative repository/hosted gates follow.
+
 ### Required data and behavior
 
 - Default product scope is the complete required beam set from the accepted

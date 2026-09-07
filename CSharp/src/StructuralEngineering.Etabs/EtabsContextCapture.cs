@@ -50,8 +50,8 @@ public static class EtabsContextCapture
         var locked = Direct<bool>(adapter, request, "SapModel.GetModelIsLocked", [], token);
         var present = Direct<int>(adapter, request, "SapModel.GetPresentUnits", [], token);
         var database = Direct<int>(adapter, request, "SapModel.GetDatabaseUnits", [], token);
-        if (!string.Equals(Path.GetFullPath(path), Path.GetFullPath(identity.ModelPath), StringComparison.OrdinalIgnoreCase) || present != 6 || database != 6)
-            throw new InvalidOperationException("Context capture supports only the observed saved model in ETABS unit profile 6 (kN-m-C).");
+        if (!string.Equals(Path.GetFullPath(path), Path.GetFullPath(identity.ModelPath), StringComparison.OrdinalIgnoreCase) || present != 6 || database is not (6 or 9))
+            throw new InvalidOperationException("Context capture requires kN-m-C API units and qualified kN-m-C or N-mm-C database units.");
         return new(identity, locked, present, database, Frames(adapter, request, token), Points(adapter, request, token));
     }
 

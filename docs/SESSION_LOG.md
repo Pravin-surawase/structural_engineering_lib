@@ -116,8 +116,44 @@ and integrated qualification against the whole-product goal; learning excluded.
 - Final U4 checkpoint: independent Python replay also passed the actual compressed
   worker output against the direct reference. All 36 portable/interpreter tests
   and 35 adapter/session tests passed (one external-input replay skipped).
+- Committed the qualified bulk/interpreter checkpoint as `98772c0a`. Prepared
+  genuine 100/10,000 and 1,000/100,000 ETABS fixtures using a reusable owned-model
+  generator. The metric API/database pair 6/9 is now explicit alongside 6/6;
+  source lengths and fixed-end forces independently prove the API units.
+- Fixed case-only portable admission in Python and .NET. A 10,000-row Python
+  replay preserved the exact snapshot identity with no invented combination.
+  Nine bulk tests and the 36 portable/interpreter tests passed. One bounded
+  subagent wrote the PF9 harness and then the two row-binding index methods;
+  parent review repaired the measurement boundary, failure reporting and
+  process sampler before use, inspected both language changes, and verified
+  the actual retained 10,000-row snapshot SHA remained unchanged.
+- PF9 remains failed: the small pilot improved from 15.79 s to 10.09 s after
+  indexed station bindings and a measured canonical hash allocation repair.
+  The medium pilot captured and normalized every 100,000 row but failed bounded
+  transport; its incremental working set was 837,373,952 bytes. No medium caller
+  limit was raised, no partial artifact was imported, and no installed/PF9 pass
+  is claimed. Next unit is measured source-call and memory/transport scaling,
+  then the ten-sample runs and final installed/cumulative gates.
 
 ### Issues encountered
+
+- PF9 fixture setup discovered N-mm-C internal database units despite kN-m-C
+  API units, and an explicit final Save switched the owned source to `$et` and
+  cleared analysis readiness. Initial failed receipts are preserved. The PID
+  cleanup guard caught the intermediate path before exit; its exact owned
+  sibling path was verified and PID 8276 then exited normally.
+- A case-only source was rejected because both portable readers required all
+  record kinds even when the allowed combination catalogue was empty.
+- The first PF9 harness timed only the broker and reset the memory baseline per
+  sample. Those measurements could understate full adapter cost. Parent review
+  corrected them before acceptance and added retained normalization failures.
+- Three more source searches used an absent guessed path or unexpanded Windows
+  wildcard, and a subagent chained a Python test from the CSharp directory.
+  The exact discovered owners and repository-root launcher resolved the reads.
+- Actual medium capacity exceeds current encoded/expanded and working-set
+  limits. Profiling confirmed quadratic station binding and synchronous
+  CryptoStream writes allocating through an async implementation; raw source
+  round trips, durable journal cost and overall graph footprint remain material.
 
 - An owned assignment probe passed a Double[] through an if-expression pipeline,
   which unrolled it to Object[] and blocked a reflected setter on the disposable
@@ -185,6 +221,32 @@ and integrated qualification against the whole-product goal; learning excluded.
   OS access denied; the launch cause is unconfirmed.
 
 ### Root causes and resolutions
+
+- RR-002: InitializeNewModel selects internal N-mm-C database units independently
+  of kN-m-C API units. Explicit 6/9 metadata/component checks and actual fixture
+  force/length evidence extend only the context/batch profile. The final explicit
+  Save changed the analyzed host; omit it, verify the active path and freeze the
+  RunAnalysis result. `pf9-medium-fixture-1` passed 1,000/100,000 preparation;
+  `pf9-small-ready-1` and its analysis/unit receipts supply the small fixture.
+- RR-029: schema-allowed empty combinations conflicted with unconditional
+  all-enum record-kind validation. Both readers now require a combination fact
+  only when that catalogue is populated; raw/canonical accounting and selection
+  references still reject missing required facts. Bulk case-only and Python
+  10,000-row replay pass with identical snapshot identity.
+- RR-021: PF9 now measures total acquisition, raw read/SHA, normalization and
+  durable snapshot persistence, with one context-ready memory baseline and all
+  failed receipts retained. Actual method timing separates host/COM from the
+  durable getter boundary. The failed medium result remains an open capacity
+  gate; numeric limits have not been raised to hide it.
+- RR-030: each raw station binding rescanned all canonical stations (100 million
+  comparisons at small size, 10 billion at medium). Both languages now index
+  by record kind and exact evidence ID, preserving duplicate/missing rejection.
+  Parent replay preserved snapshot SHA `1cc5ff5461f5db9ffce5f6d9f6e205f632d6c581305198b786b8155c7694d77d`.
+- RR-026: the retained sampled trace identified small CryptoStream writes as an
+  allocation/flush cost. Synchronous IncrementalHash writes and larger buffers
+  only for full documents keep per-row buffers small. All 36 portable/interpreter
+  tests pass, and the complete retained canonical identity is unchanged. Warm
+  normalization decreased further from 3.16 s to 2.52 s; PF9 still fails overall.
 
 - RR-005: assign exact typed reflection values directly, outside an expression
   pipeline. `bulk-assignment-experiments-2/3` passed all mutations/restorations
@@ -266,12 +328,12 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Rework and recurrence
 
-- RR-005, occurrences=86, minutes=unknown: source-owner/key lookups, typed
+- RR-005, occurrences=90, minutes=unknown: source-owner/key lookups, typed
   PowerShell dispatch and test-wrapper/filter forms required correction; use
   discovered owners, exact types and the runner's observed command grammar.
-- RR-002, occurrences=24, minutes=unknown: actual result availability, mesh
+- RR-002, occurrences=26, minutes=unknown: actual result availability, mesh
   identities, empty tables and mixed object-type rows required source handling.
-- RR-021, occurrences=4, minutes=unknown: enforce the full model's source cost
+- RR-021, occurrences=5, minutes=unknown: enforce the full model's source cost
   and every serialization/store boundary before installed qualification.
 - RR-023, occurrences=1, minutes=unknown: align source readers with the typed
   arrays accepted by their adapter contract.
@@ -279,7 +341,7 @@ and integrated qualification against the whole-product goal; learning excluded.
   for cross-runtime row ordering.
 - RR-025, occurrences=2, minutes=unknown: inline Windows process launch failed;
   retained evidence and the bounded owned-file harness completed the inspection.
-- RR-026, occurrences=1, minutes=unknown: bound buffer allocation to the size of
+- RR-026, occurrences=2, minutes=unknown: bound buffer allocation to the size of
   each hash operation and isolate synchronous allocation measurements.
 - RR-027, occurrences=1, minutes=unknown: explicit compressed completion and
   diagnostic checks align the two runtime readers.
@@ -287,6 +349,10 @@ and integrated qualification against the whole-product goal; learning excluded.
   treating the process exit as evidence.
 - RR-028, occurrences=1, minutes=unknown: downstream model identity binding
   must follow its actual producer and pass a positive producer-backed path.
+- RR-029, occurrences=1, minutes=unknown: optional empty catalogues must not
+  require fabricated raw records when the versioned schema permits emptiness.
+- RR-030, occurrences=1, minutes=unknown: index canonical fact bindings once
+  while retaining exact missing/duplicate rejection behavior.
 
 **Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed paths and implicit PowerShell
 type conversions blocked diagnostics → observed file inventories, explicit

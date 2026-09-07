@@ -36,6 +36,15 @@ qualified mesh geometry. Source connectivity and explicit needs-input support/
 span dispositions are implemented. PF9 small/medium sizes, medium memory and
 admission, final installed proof and cumulative gates are the next main work.
 
+Actual PF9 source fixtures now exist at both required sizes. The complete small
+pilot is correct but still about 10.09 seconds against the 5-second budget.
+The medium pilot normalizes all 100,000 rows but exceeds transport and memory
+limits. Metric database-unit and case-only catalogue defects are fixed, and
+station-binding/hash allocation costs have been reduced without changing
+snapshot identities. Continue measured source-call and memory/transport scaling;
+do not mark PF9, medium caller admission, or WP10 complete. Exact evidence and
+next-step constraints are in the completion contract's PF9 findings section.
+
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.
 WP10-05 A/B now implements application/session ownership, transparent demo

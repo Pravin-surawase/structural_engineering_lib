@@ -11,6 +11,7 @@ param(
     [switch]$InspectBulkTables,
     [switch]$RequestAllTableFields,
     [switch]$ReadEditingTables,
+    [switch]$UseKnMUnits,
     [string[]]$TableKeys = @(),
     [switch]$KeepExistingAnalysis
 )
@@ -43,6 +44,10 @@ try {
     $sapType = $assembly.GetType('ETABSv1.cSapModel', $true)
     $activePath = $sapType.GetMethod('GetModelFilename').Invoke($sap, @($true))
     if ([IO.Path]::GetFullPath($activePath) -ne $model) { throw 'The owned process no longer has the owned model open.' }
+    $receipt.observations.initial_present_units = $sapType.GetMethod('GetPresentUnits').Invoke($sap, $null)
+    if ($UseKnMUnits) {
+        Check-Status ($sapType.GetMethod('SetPresentUnits').Invoke($sap, @([Enum]::ToObject($assembly.GetType('ETABSv1.eUnits', $true), 6)))) 'SetPresentUnits(kN_m_C) on the owned fixture'
+    }
     $analyze = $sapType.GetProperty('Analyze').GetValue($sap)
     $analyzeType = $assembly.GetType('ETABSv1.cAnalyze', $true)
     $flags = [object[]]@(0, $null, $null)

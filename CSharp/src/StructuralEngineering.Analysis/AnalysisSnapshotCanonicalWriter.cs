@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization.Metadata;
+using StructuralEngineering.Contracts;
 
 namespace StructuralEngineering.Analysis;
 
@@ -25,14 +26,32 @@ public static partial class AnalysisSnapshotCodec
 
     private static string CanonicalSha256(object value, params string[] excluded)
     {
-        using var hash = SHA256.Create();
-        using var sink = new CryptoStream(Stream.Null, hash, CryptoStreamMode.Write);
+        using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        using var sink = new CanonicalHashSink(hash);
         // Most identity calls hash one small row. A document-sized buffer per row
         // would allocate gigabytes across a batch even though hashing is streamed.
-        using (var writer = new StreamWriter(sink, new UTF8Encoding(false, true), 128, leaveOpen: true))
+        var bufferSize = value is AnalysisSnapshot or RawAnalysisCapture or SnapshotCallLedger ? 16 * 1024 : 128;
+        using (var writer = new StreamWriter(sink, new UTF8Encoding(false, true), bufferSize, leaveOpen: true))
             WriteCanonical(writer, value, excluded);
-        sink.FlushFinalBlock();
-        return Convert.ToHexStringLower(hash.Hash!);
+        return Convert.ToHexStringLower(hash.GetHashAndReset());
+    }
+
+    // CryptoStream routes even synchronous writes through an async state machine.
+    // A document hash otherwise allocates on every small encoder flush. This sink
+    // appends exactly those UTF-8 bytes synchronously, with no identity-rule change.
+    private sealed class CanonicalHashSink(IncrementalHash hash) : Stream
+    {
+        public override bool CanRead => false;
+        public override bool CanSeek => false;
+        public override bool CanWrite => true;
+        public override long Length => throw new NotSupportedException();
+        public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+        public override void Write(byte[] buffer, int offset, int count) => hash.AppendData(buffer, offset, count);
+        public override void Write(ReadOnlySpan<byte> buffer) => hash.AppendData(buffer);
+        public override void Flush() { }
+        public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+        public override void SetLength(long value) => throw new NotSupportedException();
     }
 
     private static void WriteCanonical(TextWriter writer, object? value, IReadOnlyList<string>? excluded = null)

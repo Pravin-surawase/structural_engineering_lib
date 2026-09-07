@@ -65,7 +65,7 @@ public static class EtabsModelInterpreter
     private static void ValidateInventory(EtabsContextInventory context)
     {
         if (context.Points.Select(point => point.SourcePointId).Distinct(StringComparer.Ordinal).Count() != context.Points.Count ||
-            context.Source.PresentUnits != 6 || context.Source.DatabaseUnits != 6 ||
+            context.Source.PresentUnits != 6 || context.Source.DatabaseUnits is not (6 or 9) ||
             context.Points.Any(point => !double.IsFinite(point.Xmm) || !double.IsFinite(point.Ymm) || !double.IsFinite(point.Zmm)) ||
             context.Frames.Select(frame => frame.SourceFrameId).Distinct(StringComparer.Ordinal).Count() != context.Frames.Count ||
             context.Frames.Any(frame => !context.Points.Any(point => point.SourcePointId == frame.SourcePoint1Id) || !context.Points.Any(point => point.SourcePointId == frame.SourcePoint2Id)))

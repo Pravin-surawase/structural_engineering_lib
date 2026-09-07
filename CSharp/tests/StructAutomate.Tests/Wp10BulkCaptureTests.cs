@@ -11,6 +11,8 @@ public sealed class Wp10BulkCaptureTests
     [Theory]
     [InlineData(null)]
     [InlineData("mesh")]
+    [InlineData("metric-database")]
+    [InlineData("case-only")]
     public async Task BulkPreservesEverySignedActionAndMesh(string? variant)
     {
         var host = new BulkHost(variant);
@@ -24,6 +26,7 @@ public sealed class Wp10BulkCaptureTests
             Assert.True(normalized.Snapshot is not null, string.Join("; ", normalized.Diagnostics.Select(item => item.Message)));
             var snapshot = normalized.Snapshot!;
             Assert.Equal(2, snapshot.Members.Count); Assert.Equal(6, snapshot.ActionRows.Count);
+            if (variant == "case-only") Assert.Empty(snapshot.LoadCombinations);
             Assert.Equal(variant == "mesh" ? 3 : 2, snapshot.Members.Sum(member => member.AnalysisElementIds.Count));
             Assert.Equal(new[] { -80d, -60d, -40d, -40d, -30d, -20d }, snapshot.ActionRows.Select(row => row.PKn).Order().ToArray());
             Assert.Equal(2, snapshot.ActionRows.Select(row => row.Provenance.CallId).Distinct().Count());
@@ -39,6 +42,7 @@ public sealed class Wp10BulkCaptureTests
 
     [Theory]
     [InlineData("wrong-unit", true)]
+    [InlineData("wrong-database-components", true)]
     [InlineData("truncated-table", false)]
     [InlineData("curved", false)]
     [InlineData("duplicate-frame-element", false)]
@@ -75,10 +79,26 @@ public sealed class Wp10BulkCaptureTests
     {
         private readonly Wp10BatchCaptureTests.BatchHost _reference = new(variant == "mesh" ? "mesh" : null);
         public EtabsHostIdentity Identity => _reference.Identity with { ProcessId = 94102 };
-        public EtabsContextInventory Context => _reference.Context with { Source = _reference.Context.Source with { ProcessId = 94102 },
+        public EtabsContextInventory Context => _reference.Context with { Source = _reference.Context.Source with { ProcessId = 94102, DatabaseUnits = variant is "metric-database" or "wrong-database-components" ? 9 : 6 },
             Coverage = "source_geometry_only;supports=absent;spans=absent;offsets=absent;releases=absent;loads=absent;analysis=absent;strengths=absent" };
         public EtabsInvocation Invoke(EtabsGetterDefinition definition, IReadOnlyList<object?> inputs, CancellationToken token)
         {
+            if (variant is "metric-database" or "wrong-database-components")
+            {
+                if (definition.Operation == "SapModel.GetDatabaseUnits") return new(9, []);
+                if (definition.Operation == "SapModel.GetDatabaseUnits_2") return new(0, variant == "metric-database" ? [3, 4, 2] : [4, 6, 2]);
+            }
+            if (variant == "case-only")
+            {
+                if (definition.Operation == "RespCombo.GetNameList") return new(0, [0, Array.Empty<string>()]);
+                if (definition.Operation == "Results.Setup.GetCaseSelectedForOutput") return new(0, [true]);
+                if (definition.Operation == "Results.FrameForce")
+                {
+                    var call = _reference.Invoke(definition, inputs, token);
+                    var outputs = call.Outputs.ToArray(); outputs[5] = Enumerable.Repeat("case", (int)outputs[0]!).ToArray();
+                    return new(call.ReturnValue, outputs);
+                }
+            }
             if (definition.Operation == "FrameObj.GetTransformationMatrix") return new(0, [new[] { 0d, 0d, 1d, 1d, 0d, 0d, 0d, 1d, 0d }]);
             if (!definition.Operation.StartsWith("DatabaseTables.", StringComparison.Ordinal)) return _reference.Invoke(definition, inputs, token);
             var key = (string)inputs[0]!;
