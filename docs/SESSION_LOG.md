@@ -32,6 +32,17 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Progress
 
+- The exact `06d27bde` candidate passed installed offline/legacy acceptance but
+  failed the force harness: its initial zero-worker poll preceded background
+  dispatch, so a 15-second session wait closed Excel during the full capture.
+  Independent audit found this sole blocker and otherwise accepted the complete
+  main-process coverage. Entered the one permitted repair batch. The harness
+  now waits for the accepted session within the existing functional deadline,
+  then verifies cleanup. `connection-harness-repair-development` passed all
+  153 beams / 3,502 actions, workbook ownership, zero heavy sheets, cancellation,
+  close fencing, exact reopen and normal cleanup using the same installed code.
+  This is explicit development proof; the repair's exact signed installed
+  receipts and final auditor verdict remain external.
 - The broad Python gate finished with 7,850 passes and two failures in retained
   verification assumptions. Updated the timing-policy assertion to its current
   machine-derived contract. The historical Office.js transport fixture now
@@ -224,6 +235,11 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Issues encountered
 
+- Installed acceptance observed zero active workers before Task.Run had started
+  the read. It incorrectly treated that as finished cleanup and timed out the
+  complete-model session after 15 seconds. Its own workbook close then cancelled
+  the source read after 152 of 153 progress updates. No product result was lost
+  after acceptance and no partial result was admitted.
 - Broad Python exposed an old timing-policy phrase assertion and a frozen
   Office.js fixture assertion tied to the entire current library content hash.
   The latter changed on legitimate WP10 source edits even though calculations
@@ -350,6 +366,11 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Root causes and resolutions
 
+- RR-002: an asynchronous dispatch gap invalidated the harness's assumed
+  zero-worker-to-completion ordering. Wait for the accepted session first using
+  the existing 490-second functional limit; then verify zero workers. This does
+  not weaken the separate five-second UI responsiveness assertion or claim a
+  deferred PF9 pass. The repaired full-reference development harness passed.
 - RR-033: the frozen transport test recomputed historical calculation identities
   with current source bytes. Production evidence correctly binds all package
   code/data. Replay the frozen dossier byte-for-byte through the exporter and
@@ -513,7 +534,7 @@ and integrated qualification against the whole-product goal; learning excluded.
 - RR-005, occurrences=100, minutes=unknown: source-owner/key lookups, typed
   PowerShell dispatch and test-wrapper/filter forms required correction; use
   discovered owners, exact types and the runner's observed command grammar.
-- RR-002, occurrences=27, minutes=unknown: actual result availability, mesh
+- RR-002, occurrences=28, minutes=unknown: actual result availability, mesh
   identities, empty tables and mixed object-type rows required source handling.
 - RR-021, occurrences=5, minutes=unknown: enforce the full model's source cost
   and every serialization/store boundary before installed qualification.

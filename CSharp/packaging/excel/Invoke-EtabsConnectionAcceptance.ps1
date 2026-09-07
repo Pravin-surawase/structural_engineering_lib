@@ -136,8 +136,10 @@ try {
         Require-Connection ((Json-Macro 'STR_XL_GET_FORCES_SCOPE' @($ForceMemberIds)).state -eq 'rejected') 'A duplicate force read was accepted.'
         $bookB.Activate()
         Require-Connection ((Json-Macro 'STR_XL_FORCE_STATUS').state -eq 'not_loaded') 'Another workbook inherited a force read.'
-        Await-Connection { [double](Macro 'STR_XL_TEST_CONNECTION_WORKER_COUNT') -eq 0 } 'Force worker cleanup did not finish.' 490
-        Await-Connection { [double](Macro 'STR_XL_TEST_FORCE_SESSION_COUNT') -eq 1 } 'Forces did not reach the initiating workbook.' 15
+        # The command queues Task.Run: a zero worker count can precede dispatch.
+        # Observe the accepted session first, using the operation's functional deadline.
+        Await-Connection { [double](Macro 'STR_XL_TEST_FORCE_SESSION_COUNT') -eq 1 } 'Forces did not reach the initiating workbook.' 490
+        Await-Connection { [double](Macro 'STR_XL_TEST_CONNECTION_WORKER_COUNT') -eq 0 } 'Force worker cleanup did not finish.' 15
         $active=$excel.ActiveWorkbook
         try { Require-Connection ([string]$active.Name -eq [string]$bookB.Name) 'Force completion changed the active workbook.' }
         finally { if ([Runtime.InteropServices.Marshal]::IsComObject($active)) { [void][Runtime.InteropServices.Marshal]::ReleaseComObject($active) }; $active=$null }

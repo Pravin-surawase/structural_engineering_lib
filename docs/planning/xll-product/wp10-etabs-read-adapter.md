@@ -689,6 +689,18 @@ weakened. These repairs use only their two existing Python test modules and the
 task records; the affected 13-test union passes. They do not expand WP10 into
 the Office.js product or performance work.
 
+Candidate `06d27bde` passed installed offline/legacy acceptance. Its first full
+force acceptance was rejected by the independent audit because the harness
+mistook the zero-worker state before asynchronous dispatch for completed cleanup,
+then timed out after 15 seconds and cancelled the still-running capture.
+The single repair changes only that acceptance sequence and task records:
+wait for the accepted force session within the existing functional deadline,
+then verify cleanup. The separate five-second UI responsiveness check remains.
+The repaired harness passed the full 153/3,502 workflow in explicit development
+mode with unchanged installed product code, including wrong-workbook, cancel,
+close, zero-force-sheet and exact-reopen checks. Final installed proof must bind
+the new immutable repair candidate; the failed receipt remains retained.
+
 The direct-getter batch is correctness/reference evidence, not PF9 acceptance.
 Owned-model `batch-development-3` retained 153 beams and 3,502 force rows and
 normalized them in memory. `batch-mesh-development-1` retained a real three-part
