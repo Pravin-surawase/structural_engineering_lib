@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-09-07",
+  "updated": "2026-09-08",
   "tracking_rule": "One occurrence is one confirmed event or repair, not one mention. Reuse an existing RR-NNN for the same root-cause pattern, increment occurrences, update cumulative observed minutes when measured, and add only a deep-detail link. Create a new ID only for a distinct root cause.",
   "time_rule": "Numeric bounds are cumulative observed or reconstructed rework minutes. Null bounds mean the pattern was confirmed but not separately timed; explain the evidence boundary in basis. Child patterns whose aggregate_parent is set must not be added to the parent's time.",
   "patterns": [
@@ -57,14 +57,14 @@
     {
       "id": "RR-004",
       "pattern": "Session or handoff lifecycle contract missed",
-      "occurrences": 13,
+      "occurrences": 14,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. XLL-AUTOMATION-PRODUCT used free-form no-recurrence prose instead of the canonical empty marker or indexed rows; closeout identified the schema mismatch. Correction time was not isolated. WP10-05B-FORCES-PLAN called the lower-level file integrity CLI instead of the timed candidate gate and then selected an invalid rejection transition after acceptance. Inspect session.py and use check --candidate-integrity plus the admitted delivery transition. File checks passed; a documentation-only repair records the observations. Correction time was not isolated. WP10-COMPLETION preparation retained Progress but omitted the parser-required Completed/Summary section. Added exact completed-unit outcomes and regenerated handoff before freeze; untimed. The cumulative Python gate also retained an assertion for superseded manual-timer prose. It now asserts the current derived elapsed time and transition-based phases; affected tests passed, untimed."
+        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. XLL-AUTOMATION-PRODUCT used free-form no-recurrence prose instead of the canonical empty marker or indexed rows; closeout identified the schema mismatch. Correction time was not isolated. WP10-05B-FORCES-PLAN called the lower-level file integrity CLI instead of the timed candidate gate and then selected an invalid rejection transition after acceptance. Inspect session.py and use check --candidate-integrity plus the admitted delivery transition. File checks passed; a documentation-only repair records the observations. Correction time was not isolated. WP10-COMPLETION preparation retained Progress but omitted the parser-required Completed/Summary section. Added exact completed-unit outcomes and regenerated handoff before freeze; untimed. The cumulative Python gate also retained an assertion for superseded manual-timer prose. It now asserts the current derived elapsed time and transition-based phases; affected tests passed, untimed. WP11 intake found a completed local VS Code setup had no publication candidate and left its INTAKE timer open. Exact-task supersession, with completed-task evidence and no elapsed/integration claim, admitted the new task. Untimed."
       },
       "short_solution": "Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.",
-      "last_seen_task": "WP10-COMPLETION",
+      "last_seen_task": "WP11-BASELINE-DESIGN",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -73,14 +73,14 @@
     {
       "id": "RR-005",
       "pattern": "Windows shell command shape does not match the active shell",
-      "occurrences": 103,
+      "occurrences": 122,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape. WP10-05B added four untimed events: unquoted PowerShell Git tree braces, two rg wildcard-path owner searches, and an Int32 supplied to an exact by-ref API enum. Quoted expressions, folder glob filters and the installed boxed enum resolved them. A later formatter-owner filename guess was absent; registry/source search found the maintained owner. This fifth event was untimed. WP10-05B-FORCES-PLAN guessed session_delivery.py and session_usage.py while locating the gate owner; bounded rg over scripts found session.py. This owner-lookup event was untimed. The ETABS review/setup intake added six untimed events: three unexpanded or absent path queries in the review, an absent .vscode lookup, a guessed formatter owner and an unsupported session prepare subcommand. Folder glob filters, discovered owners and actual CLI help resolved them. WP10-COMPLETION intake guessed a CSharp scoped instruction filename and EtabsContext.cs; both were absent. Bounded folder inventories located the actual docs rules and EtabsContextContracts.cs. These two lookup events were untimed. WP10-COMPLETION implementation added four untimed diagnostic events: two absent normalizer/test path guesses, reflection string arguments wrapped as PSObject, and JSON timestamp strings implicitly parsed as DateTime. Observed file owners, explicit reflected input conversion/unwrapping, and ConvertFrom-Json -DateKind String resolved these boundaries. A later mesh-point probe used PowerShell 0d (Decimal) for reflected Double parameters. Explicit [double]0 passed owned-mesh-point-2. This conversion event was untimed. U4 added four untimed owner/key lookup failures: two unexpanded wildcard paths, one guessed test filename and one guessed ETABS table key. rg --files and the retained table catalogue supplied the exact owners; the corrected full-field table probe passed. One later WorkbookContract filename guess was absent; the observed workbook-store owner established metadata compatibility without assuming that filename. This event was untimed. WP10-COMPLETION added an if-expression unrolling Double[] into Object[], two guessed C# owner paths, a pipe-delimited xUnit class selector selecting zero tests, and forwarded .NET test --help failing its IPC wrapper. Direct typed assignment, path discovery and the test assembly runner with repeated -class filters resolved these five untimed events. One later PF9 document search again supplied an unexpanded Windows wildcard path; reading the exact known acceptance plan resolved it without changing scope. Untimed. Three later parent source searches used a guessed absent filename or unexpanded Windows wildcard; one subagent Python test ran from CSharp instead of repository root. Discovered owners and the repo-root launcher resolved all four untimed events. Three further diagnostics used a mistyped expected source SHA or a guessed receipt/source filename. The source guard stopped before capture; exact retained hashes and discovered paths resolved the reads. Untimed. Three further source-owner reads guessed absent directories or an OfflineSnapshotSession location. Exact rg-discovered owners resolved the reads; untimed. One further guessed status-file path was absent; bounded inventory located docs/library/implementation-status.md. Two later diagnostic lookups repeated an absent filename or Windows glob path; exact maintained owners and directory glob filters resolved them. A later guessed provenance module was absent; the already-discovered evidence.py owner supplied the source-hash definition. Untimed. Final WP10 closeout added three untimed absent owner/subcommand lookups: session_delivery.py, .github/hooks, and session prepare. Known session.py, bounded file inventory and session handoff help resolved them."
+        "basis": "WP10-04 intake included stale paths, Windows rg glob paths and a usage-helper guess. WP10-05-PREP added two absent filename guesses. WP10-REACT-REUSE added an exported-hook filename assumption and absent test directory. WP09-UI-REVIEW added an absent adapter folder. XLL-PRODUCT-WORKFLOW added a nonexistent ProjectContracts.cs guess and a reviewer's Bash brace expansion in PowerShell; discovered and explicit source paths worked. XLL-AUTOMATION-PRODUCT passed unexpanded wildcard paths to rg; rg -g against scripts resolved the lookup. XLL-PRODUCT-ARCHITECTURE-AUDIT repeated a wildcard path while locating implementation status; rg --files found the maintained owner. Correction time was not isolated. WP10-05 added a nonexistent delivery-script filename guess and an Office SaveAs call with forward-slash paths. Discovery and native full Office paths resolved those two events; correction time was not isolated. The WP10-05 installed harness also used unsupported PowerShell COM Range index syntax and unparenthesized multidimensional-index arithmetic. Maintained Range calls and explicit index arithmetic resolved both events. Ribbon inspection later repeated an rg wildcard path and guessed a historical receipt filename; glob filters and the merged PR source binding supplied the evidence instead. Two later WP10-05 guesses for ExcelWorkbookHost.cs and session_delivery.py were resolved through rg/source discovery; correction time was not separately timed. A root-launched dotnet test also missed CSharp/global.json and its Microsoft.Testing.Platform runner; running from CSharp resolved the CLI shape. WP10-05B added four untimed events: unquoted PowerShell Git tree braces, two rg wildcard-path owner searches, and an Int32 supplied to an exact by-ref API enum. Quoted expressions, folder glob filters and the installed boxed enum resolved them. A later formatter-owner filename guess was absent; registry/source search found the maintained owner. This fifth event was untimed. WP10-05B-FORCES-PLAN guessed session_delivery.py and session_usage.py while locating the gate owner; bounded rg over scripts found session.py. This owner-lookup event was untimed. The ETABS review/setup intake added six untimed events: three unexpanded or absent path queries in the review, an absent .vscode lookup, a guessed formatter owner and an unsupported session prepare subcommand. Folder glob filters, discovered owners and actual CLI help resolved them. WP10-COMPLETION intake guessed a CSharp scoped instruction filename and EtabsContext.cs; both were absent. Bounded folder inventories located the actual docs rules and EtabsContextContracts.cs. These two lookup events were untimed. WP10-COMPLETION implementation added four untimed diagnostic events: two absent normalizer/test path guesses, reflection string arguments wrapped as PSObject, and JSON timestamp strings implicitly parsed as DateTime. Observed file owners, explicit reflected input conversion/unwrapping, and ConvertFrom-Json -DateKind String resolved these boundaries. A later mesh-point probe used PowerShell 0d (Decimal) for reflected Double parameters. Explicit [double]0 passed owned-mesh-point-2. This conversion event was untimed. U4 added four untimed owner/key lookup failures: two unexpanded wildcard paths, one guessed test filename and one guessed ETABS table key. rg --files and the retained table catalogue supplied the exact owners; the corrected full-field table probe passed. One later WorkbookContract filename guess was absent; the observed workbook-store owner established metadata compatibility without assuming that filename. This event was untimed. WP10-COMPLETION added an if-expression unrolling Double[] into Object[], two guessed C# owner paths, a pipe-delimited xUnit class selector selecting zero tests, and forwarded .NET test --help failing its IPC wrapper. Direct typed assignment, path discovery and the test assembly runner with repeated -class filters resolved these five untimed events. One later PF9 document search again supplied an unexpanded Windows wildcard path; reading the exact known acceptance plan resolved it without changing scope. Untimed. Three later parent source searches used a guessed absent filename or unexpanded Windows wildcard; one subagent Python test ran from CSharp instead of repository root. Discovered owners and the repo-root launcher resolved all four untimed events. Three further diagnostics used a mistyped expected source SHA or a guessed receipt/source filename. The source guard stopped before capture; exact retained hashes and discovered paths resolved the reads. Untimed. Three further source-owner reads guessed absent directories or an OfflineSnapshotSession location. Exact rg-discovered owners resolved the reads; untimed. One further guessed status-file path was absent; bounded inventory located docs/library/implementation-status.md. Two later diagnostic lookups repeated an absent filename or Windows glob path; exact maintained owners and directory glob filters resolved them. A later guessed provenance module was absent; the already-discovered evidence.py owner supplied the source-hash definition. Untimed. Final WP10 closeout added three untimed absent owner/subcommand lookups: session_delivery.py, .github/hooks, and session prepare. Known session.py, bounded file inventory and session handoff help resolved them. WP11 baseline work incorporates one held planning lookup, one parent packaging-folder assumption and one auditor PowerShell glob lookup. Exact rg file discovery resolved the owners. Untimed. WP11 development added nine untimed command-shape events: six parent absent-path/glob/cwd lookups, one unsupported same-file patch replacement shape, and two auditor PowerShell copy/quoting calls. Absolute workspace paths, discovered files, literal blocks and supported patch updates resolved them. Parent now uses explicit login-disabled PowerShell commands and serializes edits before diagnostics. WP11 A4 adds seven untimed optional lookup/diagnostic command-shape events: guessed maintained filenames, PowerShell path-glob assumptions and an unavailable optional diagnostic package. Exact file discovery and built-in process inspection resolved them; no source or checks were bypassed."
       },
       "short_solution": "Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.",
-      "last_seen_task": "WP10-COMPLETION",
+      "last_seen_task": "WP11-BASELINE-DESIGN",
       "aggregate_parent": null,
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#detailed-issue-and-recurrence-ledger",
@@ -560,6 +560,57 @@
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-035",
+      "pattern": "Complete-member depth binding treats shared calculation identities as separate scope occurrences",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP11 fixed-layout integration passed every genuine leaf but CSharp member aggregation rejected duplicate result IDs from equal station demands. The broad development search was stopped; a single-arrangement reproducer exposed DEPTH.ITERATION_INVALID. CSharp now matches the existing Python set semantics while retaining separate required scope leaves. Focused WP06 plus real three-beam design tests passed; repair time was not separately isolated."
+      },
+      "short_solution": "Bind unique calculation IDs at the final depth while keeping every required station/scope qualification; qualify a fixed supported arrangement before catalogue search.",
+      "last_seen_task": "WP11-BASELINE-DESIGN",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md",
+        "docs/verification/wp11-baseline-design-acceptance.json"
+      ]
+    },
+    {
+      "id": "RR-036",
+      "pattern": "Atomic pytest cache staging is visible to concurrent source-inventory checks",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP11 docs control/context check encountered Python/pytest-cache-files-phy6ioax/README.md while focused workflow tests created their cache. Pytest source confirms temporary sibling staging before rename; the ignore rule covered only the final .pytest_cache directory. Untimed."
+      },
+      "short_solution": "Ignore the exact pytest-cache-files-* temporary directory pattern at any depth; keep fail-closed routing for actual source paths.",
+      "last_seen_task": "WP11-BASELINE-DESIGN",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md",
+        "docs/verification/wp11-baseline-design-acceptance.json"
+      ]
+    },
+    {
+      "id": "RR-037",
+      "pattern": "Informational check commands are counted as completed full validation",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP11 usage inspection found check --list recorded a zero-duration check full event. check_all.main unconditionally recorded its default label in finally even for help/list early exits. Untimed; original event retained as historical telemetry, not verification evidence."
+      },
+      "short_solution": "Return no timing label for help/list and emit no validation event; retain real check timing and verdicts.",
+      "last_seen_task": "WP11-BASELINE-DESIGN",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md",
+        "docs/verification/wp11-baseline-design-acceptance.json"
       ]
     }
   ]

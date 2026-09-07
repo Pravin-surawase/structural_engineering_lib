@@ -36,6 +36,7 @@ env/
 
 # pytest / coverage / benchmarks
 .pytest_cache/
+pytest-cache-files-*/
 .coverage
 .coverage.*
 coverage.xml

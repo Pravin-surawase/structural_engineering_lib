@@ -1,0 +1,19 @@
+{
+  "schema_version": "structural-code-data/v1",
+  "code_data_revision_id": "is456-baseline-serviceability-v1",
+  "source": "IS 456:2000 printed pages 38, 39 and Annex F printed page 95; controlled PDF SHA-256 6ec8f9033bc521420f2f550123edb6f0f444d9d3b7033a87b1b7ec569c143f8d",
+  "figure_4": {
+    "domain": { "tension_steel_percentage_min_exclusive": 0.0, "tension_steel_percentage_max": 3.0, "actual_service_steel_stress_max_n_per_mm2": 290, "bounding_curve_stress_n_per_mm2": 290 },
+    "service_steel_stress_formula": "0.58 * fy * Ast_required / Ast_provided",
+    "selection": "Conservative engineering-model inference: select the plotted 290 N/mm2 curve as the lower factor envelope for every actual fs not exceeding 290 N/mm2, then select the next higher percentage bracket. This is not exact Figure 4 interpolation or a quoted code formula.",
+    "upper_percentage_brackets": [0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0],
+    "conservative_factors": [1.0, 0.9, 0.8, 0.8, 0.8, 0.7, 0.7, 0.7, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6],
+    "precision": "Factors are rounded downward to 0.1 from visual source readings. The profile is intentionally conservative and must not be presented as exact curve interpolation."
+  },
+  "annex_f": {
+    "concrete_modulus_formula": "5000 * sqrt(fck)",
+    "mean_strain": "epsilon_1 - q * b * (h-x) * (a-x) / (3 * Es * As * (d-x)); when this is negative, the producer reports epsilon_1 as a conservative fully-cracked no-tension-stiffening upper bound, explicitly classified as an engineering-model inference rather than a quoted code formula",
+    "q_n_per_mm2": { "short_term": 1.0, "long_term": 0.55 },
+    "scope": "rectangular singly reinforced cracked section; compression-steel enhancement is not credited"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": "is456-normalized-code-data/v1",
+  "revision_id": "is456-baseline-eligibility-v1",
+  "controlled_source_sha256": "6ec8f9033bc521420f2f550123edb6f0f444d9d3b7033a87b1b7ec569c143f8d",
+  "durability": {"mild":{"minimum_fck":20,"nominal_cover_mm":20},"moderate":{"minimum_fck":25,"nominal_cover_mm":30},"severe":{"minimum_fck":30,"nominal_cover_mm":45},"very_severe":{"minimum_fck":35,"nominal_cover_mm":50},"extreme":{"minimum_fck":40,"nominal_cover_mm":75}},
+  "lateral_stability": {"limit_by_width":"60*b","limit_by_width_squared_over_effective_depth":"250*b*b/d"},
+  "provenance": ["IS 456:2000 Table 5 (printed p. 20)","IS 456:2000 26.4.1, 26.4.2, Table 16 (printed pp. 46-47)","IS 456:2000 23.3 (printed p. 39)"],
+  "policy": "No Table 16 cover reductions are applied."
+}

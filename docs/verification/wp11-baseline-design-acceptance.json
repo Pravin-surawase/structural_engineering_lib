@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "task_id": "WP11-BASELINE-DESIGN",
+  "revision": "A-focused-r4",
+  "base_commit": "9f03bb7ca3c4e103ca3fbe7893a1990c7fcdd118",
+  "owner_authority": "2026-09-08 owner requested completion of the baseline-design plan, necessary plan/script/workflow improvements, and evidence-driven replanning in this Windows task.",
+  "writer": "This task on Windows in codex/wp11-baseline-design; original dirty main and other-device state are preserved.",
+  "milestones": {
+    "A": "Host-free snapshot/project-input mapping, actual reinforcement synthesis and required check execution, bounded deterministic selection, selected-beam batch results and replay.",
+    "B": "Separate successor milestone: installed Excel Design workflow using the accepted A service, exact package/workbook evidence and cumulative qualification."
+  },
+  "intake_replan": [
+    "The 153-beam reference snapshot has nonzero axial force in every member and only one ULS combination. Retain it unchanged as unsupported/missing-SLS evidence; it cannot qualify the zero-axial profile.",
+    "Qualify a small newly owned ETABS reference fixture with explicit independently captured ULS/SLS cases, known loads/restraints/material/input basis and independent expected outcomes. Fixture-only construction/analysis is admitted; product source-model mutation and optimization remain excluded.",
+    "Derive reinforcement-dependent serviceability inputs instead of copying demonstration leaf results. Bind normalized formulas/data to authorized IS456 sources and independent examples.",
+    "Explicitly assess no-splice/no-curtailment full-length arrangements; do not introduce a dummy splice or weaken absent-input rejection in existing contracts.",
+    "Add the omitted portable C# test project to hosted validation; retain all existing Windows/hosted requirements. Existing session supersession is sufficient; no lifecycle redesign.",
+    "A4 observed two verification defects: atomic pytest cache staging appeared as source to parallel inventory, and help/list incremented full-gate timing. Ignore only the actual temporary-cache pattern and suppress informational telemetry; preserve all required checks. Reformat/test only these newly affected Python owners; native engineering evidence remains valid."
+  ],
+  "bounded_units": [
+    {
+      "id": "A1",
+      "outcome": "Source/fixture and engineering/check contracts, explicit input provenance, independent expected values, hosted portable-test correction and exact runner command discovery."
+    },
+    {
+      "id": "A2",
+      "outcome": "Host-free immutable mapper and deterministic actual reinforcement selection at captured fixed dimensions, with genuine leaf calculations and depth/fit rechecks."
+    },
+    {
+      "id": "A3",
+      "outcome": "Complete serviceability/detailing/member evidence, finite termination semantics and replayable current input/result identity."
+    },
+    {
+      "id": "A4",
+      "outcome": "Mixed selected-beam batch, production-caller and independent engineering evidence, all intended documentation/projections, then one frozen candidate and PR."
+    }
+  ],
+  "required_input_owners": {
+    "source": "Validated WP10 snapshot: identities, explicit units/signs/local axes, concurrent full force vectors, stations/cases, sections/material IDs, modifiers, offsets and releases.",
+    "project": "Accepted versioned engineering context: actual material strengths by material ID, cover/exposure/fire basis, catalogues, code/seismic profile, supports/faces/spans, stock/anchorage and service-action roles. Demo edits are not project acceptance.",
+    "derived": "Service owns actual bar geometry and centroids, check-specific depths, service-section/factor calculations, paths/stock assessment, genuine leaf results and final qualification.",
+    "ui": "Milestone B maps inputs and displays outcomes; no formulas or user-authored internal leaf JSON."
+  },
+  "acceptance_rows": [
+    {
+      "id": "A-01",
+      "outcome": "At least one owned real ETABS beam with complete declared basis reaches qualified supported baseline design using all required source rows and actual selected bars/links/paths."
+    },
+    {
+      "id": "A-02",
+      "outcome": "Independent strength, serviceability and detailing examples match predeclared values/tolerances and retain source/example identity; runtime parity alone is insufficient."
+    },
+    {
+      "id": "A-03",
+      "outcome": "Changed layers/link diameter alter physical depth/fit and recompute dependent checks; final aggregate binds exactly the final arrangement and every applicable leaf result."
+    },
+    {
+      "id": "A-04",
+      "outcome": "Concurrent P/V2/V3/T/M2/M3 and physical face/case/station identities are conserved; unsupported nonzero components cannot be zeroed or silently discarded."
+    },
+    {
+      "id": "A-05",
+      "outcome": "Missing strengths/support/SLS/detailing produce exact Needs Input diagnostics; unsupported, failed, stale and incomplete outcomes remain distinct; required checks cannot be disabled."
+    },
+    {
+      "id": "A-06",
+      "outcome": "Finite catalogue/order/budget and repeated-arrangement protection terminate deterministically; incomplete search and exhausted no-feasible domain are distinct."
+    },
+    {
+      "id": "A-07",
+      "outcome": "Every requested batch member has one accounted outcome; serial/batch designs agree; one failure cannot erase or qualify other members."
+    },
+    {
+      "id": "A-08",
+      "outcome": "Snapshot/project/topology/catalogue/code/engine/arrangement changes invalidate affected results; unchanged immutable inputs replay with their recorded identity."
+    },
+    {
+      "id": "A-09",
+      "outcome": "Hosted .NET validation actually executes both portable native and Windows test projects; focused selectors execute nonzero tests on the pinned MTP/xUnit runner."
+    },
+    {
+      "id": "B-01",
+      "outcome": "Successor B acceptance must prove actual signed installed Excel Design action, accepted inputs, correct workbook ownership, progress/cancel/close/change fencing, offline reopen and compact inspectable results."
+    }
+  ],
+  "non_goals": [
+    "Product ETABS setters, source-model mutation, section optimization, copied-model reanalysis or overnight operation",
+    "Full building/seismic/axial-biaxial engineering scope unless separately bounded and qualified",
+    "New database, numerical global solver, issued reports, release/tag/publication",
+    "PF9 timing/memory certification or broad repeated performance experiments",
+    "Unrelated session/lifecycle redesign, dependency upgrades or cleanup of user work"
+  ],
+  "verification": {
+    "implementation": "Narrow diagnostic or affected test only when needed; use observed source owners and pinned MTP filters, reject zero tests.",
+    "A_freeze": "Finish all intended writes; maintained changed-path formatter once; union of affected portable/native and source-fixture checks; workflow-contract check; documentation/session/efficiency checks. One candidate audit/integrity/hosted cycle with the existing one-repair ceiling.",
+    "B_cumulative": "After B content freezes: affected portable/Windows union, exact installed proof, broad Python suite and full run.sh check once, plus required hosted checks. No redundant quick gate.",
+    "performance": "WP10-PERF-FINAL remains at project end with unchanged targets and historical failed measurements."
+  },
+  "implementation_evidence": {
+    "profile": "is456-ordinary-rectangular-simple-span-baseline-v1",
+    "positive_snapshot_sha256": "9ced40204f6db621b4b22c7a8a755d1a77ec77c69aaf9a4d76dc12316a72bf84",
+    "fixture_file": "CSharp/tests/StructuralEngineering.Tests/Fixtures/wp11-owned-snapshot.sasnap",
+    "fixture_file_sha256": "cd04be9d9a7ec41db0714f8259fb17bba14d19e73981e71241149da69d0b78f0",
+    "positive_members": [
+      "member:PF9_B0001",
+      "member:PF9_B0002",
+      "member:PF9_B0003"
+    ],
+    "positive_action_rows": 153,
+    "positive_basis": "BaselineDesignTests.FixtureInputs: explicitly owned nonbuilding fixture with no required fire rating, real end lateral restraints, M25/Fe500/link415, Es200000, accepted support/anchorage context and three explicit action roles.",
+    "negative_reference": "External retained 153-beam building capture, member:82 max axial >0.02 kN; known Unsupported before supplemental input requests; no source values changed.",
+    "development_command": "StructuralEngineering.Tests.exe -class StructuralEngineering.Tests.Baseline* -failSkips -noLogo; WP11_BUILDING_SNAPSHOT points to the external reference capture.",
+    "development_result": "29 passed, zero failed/skipped, 10.986 seconds; design-hook-development-1.json external receipt. Not final candidate evidence.",
+    "positive_arrangement": "All three beams: two 12 mm bars per face, one layer, closed two-leg 8 mm links at 150 mm; d=441 mm with the actual rounded-link/hook layout. Three evaluated candidates per beam in this development run.",
+    "fixed_layout_control": "Equal calculations at distinct stations retain every leaf and bind unique final-depth result IDs once. Fixed-layout reproducer preceded catalogue-search qualification.",
+    "final_leaf_profile": [
+      "flexure",
+      "shear",
+      "torsion",
+      "arrangement",
+      "anchorage",
+      "stirrup_anchorage",
+      "continuity",
+      "durability",
+      "lateral",
+      "paths",
+      "seismic",
+      "fire_scope",
+      "deflection",
+      "crack"
+    ],
+    "native_contract": "docs/library/reference/wp11-baseline-design.md; no new language-neutral operation manifest or Python bridge.",
+    "source_sha256": "6ec8f9033bc521420f2f550123edb6f0f444d9d3b7033a87b1b7ec569c143f8d",
+    "source_pages": "Figure 4 p38, lateral p39, stirrup ends p43, Tables5/16 pp20/46-47, AnnexF p95; protected source pages external only.",
+    "independent_review": "Development review of final mapper, selected geometry, required leaves, SLS, member binding and replay found no outcome-changing blocker. Immutable candidate audit remains required.",
+    "replan_r3": "A complete link selection also needs its actual 135-degree end anchorage and hook space. Required leaf and actual bar/layer geometry now bind that template before freeze; no known check is waived.",
+    "outstanding": "One immutable candidate audit/integrity/required hosted PR integration; then separate installed Excel milestone B and its cumulative gate.",
+    "frozen_native_verification": "Locked solution restore and Release build passed with zero warnings/errors. Portable suite:159 passed,0 skipped,14.304s. Windows suite:129 passed,8 explicit external/live/PF9 gates skipped,23.568s. Workflow contract:56 passed. Shared semantic contracts passed. Docs:7 initially passed and the failed control/context check passed after the cache-ignore fix. Final Python wrapper regression follows. All 54 verification-control tests passed, including help/list entry-point no-event regression. Final control/context, session records, 598-file link check and efficiency check passed. PowerShell fixture syntax passed."
+  }
+}

@@ -3,10 +3,10 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-09-07
-- Focus: Finish the product's read-only ETABS force handoff, multi-member data and integrated qualification against the whole-product goal; learning excluded.
-- Completed: Implemented WP10's complete group acquisition, explicit model interpretation, versioned compact transport and production Excel worker/store handoff.; Verified actual reference and 1,000-member / 100,000-row capture, exact offline reopen and cancellation, plus independent Python replay and source equality.; Reconciled the final functional completion contract and deferred PF9 speed/ memory work to WP10-PERF-FINAL under the owner's amended order.
-- Recurrence controls: RR-034 x1 / unknown: Use role-specific variables for heterogeneous typed records and verify the configured mypy owner with affected runtime replay before republishing.; RR-009 x2 / unknown: Add and fetch the exact task-branch refspec before relying on upstream equality in a narrow-fetch checkout.; RR-013 x5 / unknown: Declare LF for maintained source and PowerShell files; normalize the full task candidate text union before freeze and verify exact bytes before audit.
+- Date: 2026-09-08
+- Focus: Complete baseline-design milestone A and then the installed Excel Design successor B, using the owner-requested plan and necessary bounded workflow corrections. The current Windows task owns its isolated branch; original checkout edits and other-device state remain preserved.
+- Completed: Completed the native supported snapshot-to-reinforcement service, required strength/SLS/detailing/durability/lateral/stirrup checks and immutable replay. The frozen locked solution build passed with zero warnings or errors.; Frozen native tests passed 159/159 without skips. Windows adapter tests passed 129 with eight explicit external/live/PF9 cases skipped. The workflow and verification-control suites passed (56 and 54 tests respectively); shared semantic contracts, docs/control/context, links and efficiency checks passed.; Reconciled the current plans, documented the native contract, added portable tests to hosted CI, and fixed observed cache-inventory and informational-timing defects. No broad local Python/full-check gate or installed Design pass is claimed; milestone B owns those cumulative and application gates.
+- Recurrence controls: RR-004 x14 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.; RR-005 x122 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-035 x1 / unknown: Bind unique calculation IDs at the final depth while keeping every required station/scope qualification; qualify a fixed supported arrangement before catalogue search.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -18,14 +18,15 @@ product in WP09. WP10-01 freezes AO16, WP10-02 adds the exact getter port, and
 WP10-03 adds bounded operation control and WP10-04 adds offline normalization;
 WP10-05 A/B now adds transparent assumptions and external-snapshot offline
 review. WP10-COMPLETION implements running-model connection, complete group
-force handoff, bounded compact snapshots and source interpretation. Its active
-contract separates exact installed/hosted acceptance from later design
-orchestration and the owner's deferred project-end performance qualification.
+force handoff, bounded compact snapshots and source interpretation. It completed
+functional installed/hosted acceptance in PR #981. The active WP11 contract
+qualifies native baseline design and then its installed Excel successor;
+performance certification remains at the owner's project-end gate.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | WP10's complete production group capture and worker/store passed the actual 153/3,502 reference and 1,000/100,000 medium member/row workloads, exact offline reopen and cancellation. Heavy data remains outside worksheets; support/span ambiguities stay explicit. Final signed installed and hosted results are exact-candidate external receipts. |
-| **Next** | Read the WP10-COMPLETION delivery ledger and external installed/PR handoff. If its required gates are unfinished, close them first; after acceptance plan WP11's public assumptions/actions mapper and actual-bar member design orchestration. Do not repeat completed capture implementation or resume deferred timing experiments. |
+| **Current** | WP10 is merged. WP11 milestone A implements the supported native baseline service, real reinforcement and required checks, strict accepted inputs and replay. Its owned 3-beam/153-row ETABS fixture passed 29 focused development tests; frozen checks and exact candidate/hosted facts belong to the WP11 delivery ledger. |
+| **Next** | Finish any outstanding milestone A ledger gates, then implement and qualify the separate installed Excel Design milestone B using the accepted service. Read the baseline acceptance contract and current plan. Do not repeat completed acquisition work or resume deferred speed experiments. |
 | **Then** | Add bounded multi-option design search, supported physical-span/group constraints, controlled owned-copy ETABS reanalysis and baseline comparison. Overnight automation depends on these services. PF9 timing/working-set certification resumes as WP10-PERF-FINAL at project end; existing targets and failed evidence remain unchanged. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |

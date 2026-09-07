@@ -146,6 +146,25 @@ def test_check_orchestrator_timing_labels_are_stable(argv: list[str], label: str
     assert check_all._timing_label(argv) == label
 
 
+@pytest.mark.parametrize("option", ["--list", "--help", "-h"])
+def test_check_information_does_not_record_a_validation_run(
+    option: str, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    calls = []
+    monkeypatch.setattr(check_all.sys, "argv", ["check_all.py", option])
+    monkeypatch.setattr(
+        check_all, "_record_task_timing", lambda *args: calls.append(args)
+    )
+    if option == "--list":
+        assert check_all.main() == 0
+    else:
+        with pytest.raises(SystemExit) as exit_info:
+            check_all.main()
+        assert exit_info.value.code == 0
+    assert capsys.readouterr().out
+    assert calls == []
+
+
 def test_check_timing_telemetry_never_changes_verdict(
     monkeypatch: pytest.MonkeyPatch,
 ):

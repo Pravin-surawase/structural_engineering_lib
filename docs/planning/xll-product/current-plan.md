@@ -1,31 +1,33 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-07
+last_updated: 2026-09-08
 doc_type: guide
 complexity: advanced
 ---
 
 # StructAutomate — current plan
 
-**Active work (7 September):** complete WP10 under the
-[completion contract](wp10-etabs-read-adapter.md#wp10-completion-contract--2026-09-07).
-The functional implementation connects Excel to an identified running ETABS
-model, captures its required complete source group, filters beam forces locally,
-normalizes explicit units and provenance, and keeps heavy data in memory and
-external snapshots. Workbook ownership, cancellation, source freshness and
-offline reopen remain mandatory. The current milestone is in final worker,
-installed-Excel and cumulative correctness qualification; completion requires
-its exact candidate receipts and reviewed PR, not this source status alone.
+**Active work (8 September):** WP11 supported baseline-design service, followed
+by its installed Excel Design integration. WP10 functional acquisition completed
+in [PR #981](https://github.com/Pravin-surawase/structural_engineering_lib/pull/981),
+merged at `9f03bb7ca3c4e103ca3fbe7893a1990c7fcdd118`. Its exact worker/store,
+installed Excel and cumulative correctness evidence remains in that handoff.
+The [baseline acceptance contract](../../verification/wp11-baseline-design-acceptance.json)
+and [execution refinement](etabs-design-workflow.md#wp11-baseline-execution--2026-09-08)
+now own the implementation scope and its first specimen/serviceability replan.
+The owner requested completion of these two milestones in the current Windows
+task. This task is the sole writer of its isolated branch; other-device state
+and the existing main-checkout edit are preserved.
 
 The owner explicitly deferred PF9 timing and incremental-memory certification
 to **WP10-PERF-FINAL at the end of the project**. Existing 5 s / 30 s p95 and
 512 MiB targets and failed measurements remain unchanged. Do not resume speed
 experiments or imply a performance pass while closing this functional milestone.
-The actual 1,000-member / 100,000-row capacity and complete-source checks remain
-part of WP10. Learning work is excluded.
+The actual 1,000-member / 100,000-row capacity and complete-source checks passed
+in WP10. Learning work is excluded.
 
-**Next after WP10 acceptance:** plan the WP11 application mapping and design
+**Current WP11 sequence:** complete the application mapping and design
 orchestration from accepted assumptions and concurrent snapshot actions into
 actual reinforcement and all applicable member checks. Then expose bounded
 multi-option search and explicit physical-span/group constraints, followed by
@@ -43,8 +45,8 @@ portable contract, exact getter adapter, bounded STA broker and offline
 normalization. WP10-05's completed A/B contract replaced the old chunk-table
 plan and was qualified with its installed Excel harness and external exact
 XLL/source/workbook receipt.
-The reviewed plan identifies production acquisition handoff (WP10-05B) and
-multi-member support (WP10-05C) as prerequisites to final WP10-06 qualification.
+Production acquisition handoff (WP10-05B), multi-member support (WP10-05C) and
+WP10-06 functional qualification are complete in the merged handoff.
 
 The owner subsequently requested a **ribbon-first interface with worksheets
 created only on demand**. The [UI review and proposed workflow](excel-ui-review.md)
@@ -62,9 +64,9 @@ The ribbon exposes Assumptions, Connect ETABS, Get Forces, Open Snapshot and
 Review Snapshot, with legacy tools in their own menu. The owner brought live connection
 ahead of automatic design: WP10-05B delivered running-model connection and
 source context (audit increment D). Existing-force handoff and WP10-05C broad
-capture are implemented in this completion candidate. Increment C follows the accepted data path. This changes delivery
+capture are implemented and functionally qualified in PR #981. Increment C follows the accepted data path. This changes delivery
 order, not engineering acceptance or the final product goal.
-Source completion alone does not assert an installed acceptance pass.
+The merged WP10 handoff contains its separate installed acceptance receipt.
 
 The subsequent [end-to-end workflow refinement](etabs-design-workflow.md) defines
 broad capture with local filtering, session-based heavy data, transparent defaults,
@@ -110,12 +112,12 @@ adapter, versioned workbook commands, a sample, signed packaging, and installed
 Excel evidence. Its workbook evaluates the one declared current physical
 candidate; it does not yet expose a useful multi-option search domain.
 
-Implementation sequencing follows PF11: WP09 and WP10-01 through WP10-04 are
-complete, as are WP10-05 offline import and the first WP10-05B connection unit.
-Finish WP10-06 integrated correctness qualification of the complete force path.
-WP11 exposes multi-option fixed-action search in
-Excel before adding controlled copied-model reanalysis, and WP12 completes
-migration and release readiness.
+Implementation sequencing follows the refined PF11 plan: WP09 and WP10
+functional delivery are complete. WP11 first qualifies the reusable supported
+baseline design service, then its installed Excel Design action. Practical
+span/group search follows that accepted service, before controlled copied-model
+reanalysis. WP12 and the remaining product gates cover migration, reporting,
+recovery, final performance and release readiness.
 
 ## Learning and evidence status
 

@@ -17,6 +17,7 @@ Run from `CSharp` with the .NET 10.0.400 SDK:
 ```powershell
 dotnet restore StructAutomate.slnx --locked-mode
 dotnet build StructAutomate.slnx -c Release --no-restore
+dotnet test --project tests/StructuralEngineering.Tests/StructuralEngineering.Tests.csproj -c Release --no-build
 dotnet test --project tests/StructAutomate.Tests/StructAutomate.Tests.csproj -c Release --no-build
 dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- beam examples/beam-line.json
 dotnet run --project tools/StructAutomate.Examples -c Release --no-build -- benchmark
@@ -30,11 +31,14 @@ exchanges typed files; the worker owns exact-process COM attachment, STA pumping
 the shared process lease, deadline/cancellation, raw getter evidence and cleanup.
 The first profile is source geometry in ETABS 23.3.1 kN-m-C, with ID adjacency in
 memory and no worksheet creation or saved live connection. No worksheet function
-calls ETABS. The WP10 completion candidate adds background Get Forces using a
+calls ETABS. Merged WP10 adds background Get Forces using a
 qualified bulk source profile, complete signed force rows, compressed external
 evidence and source-bound neighbour/support-readiness interpretation. Full-model
-worker/store development proof passes; final installed and PF9 qualification
-remain pending. Automatic design follows that accepted acquisition path; see
+worker/store and installed functional qualification passed in PR #981; PF9
+speed/memory certification remains at the project-end gate. The
+[native WP11 baseline service](../docs/library/reference/wp11-baseline-design.md)
+now connects that accepted acquisition path to actual supported beam design;
+its installed Excel Design integration is the next milestone. See
 the [whole-product audit](../docs/planning/xll-product/etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05).
 
 Worksheet examples:
