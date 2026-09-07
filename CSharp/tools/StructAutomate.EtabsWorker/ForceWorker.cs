@@ -58,7 +58,7 @@ internal static class ForceWorker
                     throw new InvalidDataException("The acquired members differ from the complete requested scope.");
                 PublishProgress(EtabsForceStage.Normalizing, request.MemberObjectNames.Count);
                 var rawBytes = await ReadBounded(result.EvidencePath, 256 * 1024 * 1024);
-                var normalized = EtabsCaptureProjector.Normalize(rawBytes, Sha(rawBytes), new(request.ProjectId,
+                var normalized = EtabsCaptureProjector.Normalize(result.Artifact, rawBytes, Sha(rawBytes), new(request.ProjectId,
                     "wp10-force-worker/v1", result.EvidencePath, new Dictionary<string, SnapshotMaterialClassification>()));
                 if (normalized.Snapshot is not { } snapshot)
                     response = Failed(request.RequestId, requestSha, EtabsContextWorkerState.Fenced, "ETABS.NORMALIZATION_REJECTED",

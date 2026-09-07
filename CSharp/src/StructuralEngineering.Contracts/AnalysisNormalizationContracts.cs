@@ -38,7 +38,12 @@ public sealed record SnapshotProjectionManifest(
 public sealed record SourceSnapshotMetadata(
     bool ModelLocked, SnapshotAnalysisCaseStatus AnalysisStatus,
     SnapshotNormalizationContext Context, SnapshotProjectionManifest Projection,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SourceSnapshotBulkProjectionEvidence? BulkProjection = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SourceSnapshotBulkProjectionEvidence? BulkProjection = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SourceSnapshotGroupForceScope? GroupForceScope = null);
+
+public sealed record SourceSnapshotGroupForceScope(
+    string PolicyId, string CallId, IReadOnlyList<string> RequiredObjectIds,
+    int SourceRows, int RequiredRows, int ContextOnlyRows, string ContextDisposition);
 
 public sealed record SourceSnapshotBulkProjectionEvidence(
     string PolicyId, int FrameElementRows, int ContextOnlyElementRows,

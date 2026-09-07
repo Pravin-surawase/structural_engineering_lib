@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using System.Text.Json;
 using StructuralEngineering.Analysis;
 using StructuralEngineering.Contracts;
@@ -19,26 +18,36 @@ public static class EtabsBatchArtifactCodec
     private static readonly JsonSerializerOptions Options = EtabsAcquisitionArtifactCodec.CreateOptions();
 
     public static EtabsBatchArtifact Create(EtabsBatchAcquisitionContent content) =>
-        new(SchemaVersion, Convert.ToHexStringLower(SHA256.HashData(
-            AnalysisSnapshotCodec.CanonicalJsonBytes(new { SchemaVersion, Content = content }))), content);
+        new(SchemaVersion, AnalysisSnapshotCodec.CanonicalDigest(new { SchemaVersion, Content = content }), content);
 
     public static byte[] CanonicalJsonBytes(EtabsBatchArtifact artifact) => AnalysisSnapshotCodec.CanonicalJsonBytes(artifact);
 
     public static EtabsBatchArtifact ParseAndValidate(string json)
+        => ParseAndValidate(System.Text.Encoding.UTF8.GetBytes(json));
+
+    public static EtabsBatchArtifact ParseAndValidate(ReadOnlyMemory<byte> json)
     {
         using (var document = JsonDocument.Parse(json)) EtabsAcquisitionArtifactCodec.EnsureNoDuplicateProperties(document.RootElement);
-        var artifact = JsonSerializer.Deserialize<EtabsBatchArtifact>(json, Options)
+        var artifact = JsonSerializer.Deserialize<EtabsBatchArtifact>(json.Span, Options)
             ?? throw new JsonException("A batch artifact cannot be null.");
+        return Validate(artifact);
+    }
+
+    /// <summary>Validates an in-memory batch artifact with the same complete checks as retained-byte import.</summary>
+    public static EtabsBatchArtifact Validate(EtabsBatchArtifact artifact)
+    {
+        ArgumentNullException.ThrowIfNull(artifact);
         if (artifact.SchemaVersion != SchemaVersion || artifact.Content is null ||
             artifact.ArtifactSha256 != Create(artifact.Content).ArtifactSha256)
             throw new InvalidDataException("The batch artifact identity is invalid.");
         var content = artifact.Content;
         var capture = content.Capture;
         var ledger = content.CallLedger;
-        var matrixSha = capture?.ProfileId == EtabsBulkGetterMatrix.ProfileId ? EtabsBulkGetterMatrix.Sha256 : EtabsForceGetterMatrix.Sha256;
+        var matrixSha = capture?.ProfileId == EtabsGroupGetterMatrix.ProfileId ? EtabsGroupGetterMatrix.Sha256
+            : capture?.ProfileId == EtabsBulkGetterMatrix.ProfileId ? EtabsBulkGetterMatrix.Sha256 : EtabsForceGetterMatrix.Sha256;
         if (string.IsNullOrWhiteSpace(content.OperationId) || string.IsNullOrWhiteSpace(content.LeaseKey) ||
             content.StartedUtc >= content.CompletedUtc || capture is null || ledger is null ||
-            capture.ProfileId is not (EtabsForceGetterMatrix.ProfileId or EtabsBulkGetterMatrix.ProfileId) || capture.GetterMatrixSha256 != matrixSha ||
+            capture.ProfileId is not (EtabsForceGetterMatrix.ProfileId or EtabsBulkGetterMatrix.ProfileId or EtabsGroupGetterMatrix.ProfileId) || capture.GetterMatrixSha256 != matrixSha ||
             content.HostIdentityBefore != content.HostIdentityAfter || capture.HostIdentity != content.HostIdentityBefore ||
             content.StartedUtc > capture.StartedUtc || capture.StartedUtc > capture.CompletedUtc || capture.CompletedUtc > content.CompletedUtc ||
             capture.Preflight.Sha256 != capture.Postflight.Sha256 ||

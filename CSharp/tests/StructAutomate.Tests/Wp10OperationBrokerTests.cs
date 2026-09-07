@@ -14,6 +14,36 @@ public sealed class Wp10OperationBrokerTests
     private static int _nextProcessId = 90_000;
 
     [Fact]
+    public async Task CompletedArtifactIsNotRetainedUntilItsOriginalDeadline()
+    {
+        var testDirectory = NewTestDirectory();
+        try
+        {
+            var artifact = await CompleteAndReleaseAsync();
+            for (var attempt = 0; artifact.IsAlive && attempt < 20; attempt++)
+            {
+                GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
+                await Task.Delay(25, TestContext.Current.CancellationToken);
+            }
+            Assert.False(artifact.IsAlive, "The completed acquisition remains rooted by its original eight-minute deadline.");
+        }
+        finally { Directory.Delete(testDirectory, recursive: true); }
+
+        async Task<WeakReference> CompleteAndReleaseAsync()
+        {
+            var processId = NextProcessId();
+            var request = Request(processId, Path.Combine(testDirectory, "capture.json"), DateTimeOffset.UtcNow.AddMinutes(8));
+            var handle = new EtabsOperationBroker().Start(request,
+                () => new FakeHost(Identity(processId), (_, _) => new EtabsInvocation(6, [])),
+                (host, token) => CaptureOneSuccessfulCall(host, request.DeadlineUtc, token), TestContext.Current.CancellationToken);
+            var result = await handle.Completion;
+            await handle.Quiescence;
+            Assert.Equal(EtabsBrokerState.Completed, result.State);
+            return new WeakReference(result.Artifact!);
+        }
+    }
+
+    [Fact]
     public async Task CompletedOperationUsesStaAndWritesOneValidatedArtifact()
     {
         var testDirectory = NewTestDirectory();

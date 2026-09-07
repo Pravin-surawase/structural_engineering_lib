@@ -48,7 +48,9 @@ public sealed class Wp10PerformanceQualificationTests
         var workload = size switch { "small" => new Workload("SMALL", 100, 10_000, 5_000), "medium" => new Workload("MEDIUM", 1_000, 100_000, 30_000), _ => throw new ArgumentException("WP10_PF9_SIZE must be small or medium.") };
         var samples = ParseSamples(Environment.GetEnvironmentVariable("WP10_PF9_SAMPLES"));
         var profile = (Environment.GetEnvironmentVariable("WP10_PF9_PROFILE") ?? "bulk").ToLowerInvariant();
-        Assert.True(profile is "batch" or "bulk", "WP10_PF9_PROFILE must be batch or bulk.");
+        Assert.True(profile is "batch" or "bulk" or "group", "WP10_PF9_PROFILE must be batch, bulk or group.");
+        var transport = (Environment.GetEnvironmentVariable("WP10_PF9_TRANSPORT") ?? "gzip").ToLowerInvariant();
+        Assert.True(transport is "gzip" or "rows", "WP10_PF9_TRANSPORT must be gzip or rows.");
         var targetBytes = File.ReadAllBytes(targetPath!);
         var target = JsonSerializer.Deserialize<EtabsProcessTarget>(targetBytes) ?? throw new InvalidDataException("PF9 target is invalid.");
         var targetSha = Sha(targetBytes);
@@ -62,15 +64,15 @@ public sealed class Wp10PerformanceQualificationTests
         Assert.Equal(workload.Members, memberIds.Length);
         var frozen = new { schema_version = "wp10-pf9-frozen-input/v1", target_sha256 = targetSha,
             model_sha256 = context.Inventory.Source.ModelSha256, context_sha256 = context.ArtifactSha256,
-            profile, required_members = workload.Members, required_rows = workload.Rows, samples };
+            profile, transport, normalization_path = "durable-bound-memory/v1", required_members = workload.Members, required_rows = workload.Rows, samples };
         File.WriteAllBytes(Path.Combine(directory!, "frozen-input.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(frozen));
 
-        var baseline = await CaptureSample("baseline", 0, target, context.Inventory, memberIds, targetSha, profile, directory!, contextReadyWorkingSet, token);
+        var baseline = await CaptureSample("baseline", 0, target, context.Inventory, memberIds, targetSha, profile, transport, directory!, contextReadyWorkingSet, token);
         var baselineFingerprint = baseline.PayloadFingerprint;
         var outcomes = new List<SampleOutcome> { baseline };
         if (baseline.Qualifies(workload))
             for (var index = 1; index <= samples; index++)
-                outcomes.Add(await CaptureSample("sample", index, target, context.Inventory, memberIds, targetSha, profile, directory!, contextReadyWorkingSet, token));
+                outcomes.Add(await CaptureSample("sample", index, target, context.Inventory, memberIds, targetSha, profile, transport, directory!, contextReadyWorkingSet, token));
 
         var timed = outcomes.Skip(1).ToArray();
         double? p95 = timed.Length == samples ? timed.OrderBy(item => item.Pf9TotalMilliseconds).ElementAt((int)Math.Ceiling(timed.Length * .95) - 1).Pf9TotalMilliseconds : null;
@@ -87,7 +89,7 @@ public sealed class Wp10PerformanceQualificationTests
             p95_total_ms = p95, budget_ms = workload.BudgetMilliseconds,
             maximum_incremental_working_set_bytes = memoryDelta,
             medium_workingset_budget_bytes = 512L * 1024 * 1024, baseline_payload_fingerprint = baselineFingerprint,
-            source_target_sha256 = targetSha, context_sha256 = context.ArtifactSha256, profile,
+            source_target_sha256 = targetSha, context_sha256 = context.ArtifactSha256, profile, transport, normalization_path = "durable-bound-memory/v1",
             payloads_match_baseline = payloadsMatchBaseline, sample_directories = outcomes.Select(item => item.Directory).ToArray(), engineering_state = "not_evaluated"
         }));
         Assert.True(acceptance, "PF9 evidence was retained, but the workload did not meet the complete qualification acceptance rule.");
@@ -106,7 +108,7 @@ public sealed class Wp10PerformanceQualificationTests
     }
 
     private static async Task<SampleOutcome> CaptureSample(string kind, int index, EtabsProcessTarget target, EtabsContextInventory context,
-        IReadOnlyList<string> members, string targetSha, string profile, string root, long contextReadyWorkingSet, CancellationToken token)
+        IReadOnlyList<string> members, string targetSha, string profile, string transport, string root, long contextReadyWorkingSet, CancellationToken token)
     {
         var name = kind == "baseline" ? "baseline" : $"sample-{index:D2}";
         var directory = Path.Combine(root, name); Directory.CreateDirectory(directory);
@@ -123,11 +125,14 @@ public sealed class Wp10PerformanceQualificationTests
             var deadline = DateTimeOffset.UtcNow.AddMinutes(8);
             brokerWatch.Start();
             var handle = new EtabsBatchOperationBroker().Start(new($"pf9-{name}", target.ProcessId, deadline, evidencePath),
-                () => new MeasuredHost(profile == "bulk" ? EtabsReflectionGetterHost.AttachBulk(EtabsHostDiscovery.Discover(target)) : EtabsReflectionGetterHost.AttachForces(EtabsHostDiscovery.Discover(target)), invocationTimings),
-                (host, cancellationToken) => profile == "bulk"
+                () => new MeasuredHost(profile == "group" ? EtabsReflectionGetterHost.AttachGroup(EtabsHostDiscovery.Discover(target))
+                    : profile == "bulk" ? EtabsReflectionGetterHost.AttachBulk(EtabsHostDiscovery.Discover(target)) : EtabsReflectionGetterHost.AttachForces(EtabsHostDiscovery.Discover(target)), invocationTimings),
+                (host, cancellationToken) => profile == "group"
+                    ? EtabsLiveGetterProbe.RunGroup(host, new(targetSha, context, members, deadline), cancellationToken)
+                    : profile == "bulk"
                     ? EtabsLiveGetterProbe.RunBulk(host, new(targetSha, context, members, deadline), cancellationToken)
                     : EtabsLiveGetterProbe.RunBatch(host, new(targetSha, context, members, deadline), cancellationToken), token,
-                profile == "bulk" ? EtabsBulkGetterMatrix.Sha256 : null);
+                profile == "group" ? EtabsGroupGetterMatrix.Sha256 : profile == "bulk" ? EtabsBulkGetterMatrix.Sha256 : null);
             result = await handle.Completion; await handle.Quiescence; brokerWatch.Stop();
             if (result.Artifact is not null)
             {
@@ -135,7 +140,7 @@ public sealed class Wp10PerformanceQualificationTests
                 var raw = File.ReadAllBytes(result.EvidencePath);
                 var rawSha = Sha(raw); rawWatch.Stop(); rawReadShaMilliseconds = rawWatch.Elapsed.TotalMilliseconds;
                 var normalizeWatch = Stopwatch.StartNew();
-                normalized = EtabsCaptureProjector.Normalize(raw, rawSha, new("wp10-pf9", "wp10-shared-capture/v1", result.EvidencePath,
+                normalized = EtabsCaptureProjector.Normalize(result.Artifact, raw, rawSha, new("wp10-pf9", "wp10-shared-capture/v1", result.EvidencePath,
                     new Dictionary<string, SnapshotMaterialClassification>()));
                 normalizeWatch.Stop(); normalizeMilliseconds = normalizeWatch.Elapsed.TotalMilliseconds;
                 if (normalized.Snapshot is not null)
@@ -143,8 +148,14 @@ public sealed class Wp10PerformanceQualificationTests
                     var snapshotPath = Path.Combine(directory, "snapshot.sasnap");
                     var persistWatch = Stopwatch.StartNew();
                     canonicalSnapshotSha = normalized.Snapshot.SnapshotSha256;
-                    using (var stream = new FileStream(snapshotPath, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough)) { AnalysisSnapshotTransport.Write(stream, normalized.Snapshot); stream.Flush(true); }
-                    encodedSnapshotSha = Sha(File.ReadAllBytes(snapshotPath));
+                    using (var stream = new FileStream(snapshotPath, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1024 * 1024, FileOptions.WriteThrough))
+                    {
+                        if (transport == "rows") AnalysisSnapshotTransport.WriteCompact(stream, normalized.Snapshot);
+                        else AnalysisSnapshotTransport.Write(stream, normalized.Snapshot);
+                        stream.Flush(true);
+                    }
+                    using (var stored = File.OpenRead(snapshotPath))
+                        encodedSnapshotSha = Convert.ToHexStringLower(SHA256.HashData(stored));
                     persistWatch.Stop(); persistMilliseconds = persistWatch.Elapsed.TotalMilliseconds;
                 }
             }
@@ -178,10 +189,10 @@ public sealed class Wp10PerformanceQualificationTests
         return outcome;
     }
 
-    private static string PayloadFingerprint(IReadOnlyList<EtabsRawGetterCall> calls) => Sha(AnalysisSnapshotCodec.CanonicalJsonBytes(calls.Select(call => new
+    private static string PayloadFingerprint(IReadOnlyList<EtabsRawGetterCall> calls) => AnalysisSnapshotCodec.CanonicalDigest(calls.Select(call => new
     {
         operation = call.Operation, inputs = call.Inputs, direct_value = call.DirectValue, outputs = call.Outputs, return_code = call.CsiReturnCode
-    }).ToArray()));
+    }).ToArray());
     private static int ParseSamples(string? value) => string.IsNullOrWhiteSpace(value) ? 10 : int.TryParse(value, out var parsed) && parsed >= 1 ? parsed : throw new ArgumentException("WP10_PF9_SAMPLES must be a positive integer.");
     private static string Sha(byte[] bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));
     private sealed class MeasuredHost(IEtabsGetterHost inner, Dictionary<string, (int Count, double Milliseconds)> timings) : IEtabsGetterHost

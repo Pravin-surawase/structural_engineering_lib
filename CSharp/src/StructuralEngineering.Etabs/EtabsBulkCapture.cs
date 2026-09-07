@@ -9,6 +9,14 @@ public static partial class EtabsLiveGetterProbe
     /// <summary>Shared full-precision assignment export, exact source geometry and one real force getter per beam.</summary>
     public static EtabsBatchCapture RunBulk(IEtabsGetterHost host, EtabsBatchCaptureRequest request,
         CancellationToken cancellationToken = default, Action<int, int>? progress = null)
+        => RunBulkCore(host, request, false, cancellationToken, progress);
+
+    public static EtabsBatchCapture RunGroup(IEtabsGetterHost host, EtabsBatchCaptureRequest request,
+        CancellationToken cancellationToken = default, Action<int, int>? progress = null)
+        => RunBulkCore(host, request, true, cancellationToken, progress);
+
+    private static EtabsBatchCapture RunBulkCore(IEtabsGetterHost host, EtabsBatchCaptureRequest request, bool group,
+        CancellationToken cancellationToken, Action<int, int>? progress)
     {
         if (request.MemberObjectNames.Count is < 1 or > 1000 || request.MemberObjectNames.Distinct(StringComparer.Ordinal).Count() != request.MemberObjectNames.Count ||
             string.IsNullOrWhiteSpace(request.RequestSha256)) throw new ArgumentException("A bulk capture requires 1-1000 unique bound beam identities.");
@@ -19,7 +27,7 @@ public static partial class EtabsLiveGetterProbe
             source.ModelModifiedUtc != identity.ModelModifiedUtc || source.EtabsApiVersion != identity.EtabsApiVersion || source.PresentUnits != identity.PresentUnits)
             throw new EtabsLiveGetterProbeException("ETABS.CONTEXT_STALE: reconnect before reading forces.");
         var started = DateTimeOffset.UtcNow;
-        var adapter = new EtabsGetterAdapter(host, EtabsBulkGetterMatrix.Allowed);
+        var adapter = new EtabsGetterAdapter(host, group ? EtabsGroupGetterMatrix.Allowed : EtabsBulkGetterMatrix.Allowed);
         var calls = new List<EtabsRawGetterCall>();
         var seed = new EtabsLiveGetterProbeRequest(request.MemberObjectNames[0], "", "", [], [], 4, 0, request.DeadlineUtc);
         var preflight = CaptureProtectedState(adapter, host, seed, calls, cancellationToken);
@@ -49,6 +57,29 @@ public static partial class EtabsLiveGetterProbe
         var materials = new Dictionary<string, string>(StringComparer.Ordinal);
         var seenMaterials = new HashSet<string>(StringComparer.Ordinal);
         var members = new List<EtabsMemberCaptureSummary>(); var totalRows = 0;
+        EtabsRawGetterCall? groupForces = null;
+        Dictionary<string, int[]>? groupRows = null;
+        if (group)
+        {
+            if (!Strings(Read("GroupDef.GetNameList", []), 1).Contains("All", StringComparer.Ordinal))
+                throw new EtabsLiveGetterProbeException("ETABS.GROUP_UNRESOLVED: the source All group is absent.");
+            var assignments = Read("GroupDef.GetAssignments", ["All"]);
+            var types = Integers(assignments, 1); var names = Strings(assignments, 2);
+            var frameNames = names.Where((_, index) => types[index] == 2).ToArray();
+            var contextFrameNames = request.Context.Frames.Select(frame => frame.SourceFrameId).ToHashSet(StringComparer.Ordinal);
+            // ETABS 23's built-in All group has no explicit assignment rows. Its
+            // implicit whole-source scope is qualified against the complete frame inventory.
+            if (Scalar<int>(assignments, 0) != 0 && (frameNames.Distinct(StringComparer.Ordinal).Count() != frameNames.Length ||
+                !frameNames.ToHashSet(StringComparer.Ordinal).SetEquals(contextFrameNames)))
+                throw new EtabsLiveGetterProbeException("ETABS.GROUP_UNRESOLVED: source group frame assignments differ from the complete context.");
+            groupForces = Read("Results.FrameForce", ["All", 2]);
+            var owners = Strings(groupForces, 1);
+            var knownFrames = contextFrameNames;
+            if (Scalar<int>(groupForces, 0) is < 1 or > 100_000 || owners.Any(name => !knownFrames.Contains(name)))
+                throw new EtabsLiveGetterProbeException("ETABS.SCOPE_LIMIT: the complete group result exceeds 100,000 rows or has an unknown source frame.");
+            groupRows = owners.Select((name, index) => (name, index)).GroupBy(item => item.name, StringComparer.Ordinal)
+                .ToDictionary(items => items.Key, items => items.Select(item => item.index).ToArray(), StringComparer.Ordinal);
+        }
         foreach (var name in request.MemberObjectNames.Order(StringComparer.Ordinal))
         {
             if (!sourceBeams.TryGetValue(name, out var frame)) throw new EtabsLiveGetterProbeException("ETABS.SCOPE_UNSUPPORTED: requested object is not a captured beam.");
@@ -72,15 +103,18 @@ public static partial class EtabsLiveGetterProbe
                 materials.Add(section, material);
             }
             Read("FrameObj.GetTransformationMatrix", [name, true]);
-            var forces = Read("Results.FrameForce", [name, 0]);
-            var count = Scalar<int>(forces, 0);
-            if (count <= 0 || Strings(forces, 1).Any(owner => owner != name) ||
-                !Strings(forces, 5).ToHashSet(StringComparer.Ordinal).SetEquals(seed.SelectedCases.Concat(seed.SelectedCombinations)))
+            var forces = groupForces ?? Read("Results.FrameForce", [name, 0]);
+            var indices = groupRows is null ? Enumerable.Range(0, Scalar<int>(forces, 0)).ToArray()
+                : groupRows.TryGetValue(name, out var found) ? found : [];
+            var count = indices.Length;
+            var resultOwners = (object?[])forces.Outputs[1]!; var resultCases = (object?[])forces.Outputs[5]!;
+            if (count <= 0 || indices.Any(index => (string)resultOwners[index]! != name) ||
+                !indices.Select(index => (string)resultCases[index]!).ToHashSet(StringComparer.Ordinal).SetEquals(seed.SelectedCases.Concat(seed.SelectedCombinations)))
                 throw new EtabsLiveGetterProbeException("ETABS.ROW_ACCOUNTING: incomplete or mismatched same-object result scope.");
             totalRows = checked(totalRows + count);
             if (totalRows > 100_000) throw new EtabsLiveGetterProbeException("ETABS.SCOPE_LIMIT: complete results exceed 100,000 rows.");
             members.Add(new(name, beam.Required("BeamBay"), frame.SourceStoryId, [frame.SourcePoint1Id, frame.SourcePoint2Id],
-                Strings(forces, 3).Distinct(StringComparer.Ordinal).ToArray(), section, materials[section], count));
+                indices.Select(index => (string)((object?[])forces.Outputs[3]!)[index]!).Distinct(StringComparer.Ordinal).ToArray(), section, materials[section], count));
             progress?.Invoke(members.Count, request.MemberObjectNames.Count);
         }
         // Tables may be affected by source assignments without changing the saved file hash.
@@ -95,7 +129,8 @@ public static partial class EtabsLiveGetterProbe
         var postflight = CaptureProtectedState(adapter, host, seed, calls, cancellationToken);
         RequireEqual("protected state", preflight.Sha256, postflight.Sha256);
         RequireEqual("source identity", identity, host.InspectIdentity());
-        return new(EtabsBulkGetterMatrix.ProfileId, request.RequestSha256, EtabsBulkGetterMatrix.Sha256, started, DateTimeOffset.UtcNow,
+        return new(group ? EtabsGroupGetterMatrix.ProfileId : EtabsBulkGetterMatrix.ProfileId, request.RequestSha256,
+            group ? EtabsGroupGetterMatrix.Sha256 : EtabsBulkGetterMatrix.Sha256, started, DateTimeOffset.UtcNow,
             identity, request.Context, preflight, postflight, members, calls);
 
         EtabsRawGetterCall Read(string operation, object?[] inputs) => Call(adapter, seed, calls, operation, inputs, cancellationToken);

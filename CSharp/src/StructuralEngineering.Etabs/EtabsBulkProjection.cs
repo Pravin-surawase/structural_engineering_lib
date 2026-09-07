@@ -66,12 +66,12 @@ public static partial class EtabsCaptureProjector
             var transform = one("FrameObj.GetTransformationMatrix", name);
             Need(transform.Inputs[1].GetBoolean(), "The frame transformation must be explicitly global.");
             var matrix = transform.Doubles(0);
-            var force = one("Results.FrameForce", name);
+            var force = one("Results.FrameForce", capture.Group ? "All" : name);
             var origins = new Dictionary<string, double>(StringComparer.Ordinal);
-            for (var index = 0; index < force.Integer(0); index++)
+            foreach (var index in force.ForceIndices(name))
             {
-                var element = force.Outputs[3][index].GetString()!;
-                var origin = force.Outputs[2][index].GetDouble() - force.Outputs[4][index].GetDouble();
+                var element = force.Column(3)[index].GetString()!;
+                var origin = force.Column(2)[index].GetDouble() - force.Column(4)[index].GetDouble();
                 if (origins.TryGetValue(element, out var prior)) Need(Math.Abs(prior - origin) <= 1e-8, "An element has inconsistent force station origins.");
                 else origins.Add(element, origin);
             }

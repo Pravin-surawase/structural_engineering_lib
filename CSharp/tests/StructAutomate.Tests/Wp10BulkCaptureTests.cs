@@ -9,6 +9,33 @@ namespace StructAutomate.Tests;
 public sealed class Wp10BulkCaptureTests
 {
     [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task GroupPreservesOriginalSourceIndexesAndContextRows(bool filtered)
+    {
+        var host = new BulkHost(null);
+        var directory = Path.Combine(Path.GetTempPath(), "wp10-group-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var result = await Capture(host, directory, group: true, members: filtered ? ["beam2"] : ["beam", "beam2"]);
+            Assert.True(result.State == EtabsContextWorkerState.Completed, result.Message);
+            var bytes = File.ReadAllBytes(result.EvidencePath);
+            var normalized = EtabsCaptureProjector.Normalize(bytes, Convert.ToHexStringLower(SHA256.HashData(bytes)), Wp10SyntheticCapture.Options);
+            Assert.True(normalized.Snapshot is not null, string.Join("; ", normalized.Diagnostics.Select(item => item.Message)));
+            var snapshot = normalized.Snapshot!;
+            Assert.Equal(filtered ? 1 : 2, snapshot.Members.Count);
+            Assert.Equal(filtered ? 3 : 6, snapshot.ActionRows.Count);
+            Assert.Single(snapshot.ActionRows.Select(row => row.Provenance.CallId).Distinct());
+            Assert.Equal(filtered ? [3, 4, 5] : [0, 1, 2, 3, 4, 5], snapshot.RawCapture.ForceRows.Select(row => row.SourceRowIndex));
+            var sourceCall = Assert.Single(result.Artifact!.Content.Capture.Calls, call => call.Operation == "Results.FrameForce");
+            Assert.Equal(new object[] { "All", 2 }, sourceCall.Inputs);
+            Assert.Equal(6, sourceCall.Outputs[0]);
+            Assert.All(snapshot.Stations, station => Assert.StartsWith("station:All:", station.StationId));
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
+    }
+
+    [Theory]
     [InlineData(null)]
     [InlineData("mesh")]
     [InlineData("metric-database")]
@@ -66,12 +93,14 @@ public sealed class Wp10BulkCaptureTests
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
     }
 
-    private static async Task<EtabsBatchBrokerResult> Capture(BulkHost host, string directory)
+    private static async Task<EtabsBatchBrokerResult> Capture(BulkHost host, string directory, bool group = false, string[]? members = null)
     {
         var deadline = DateTimeOffset.UtcNow.AddSeconds(30);
         var handle = new EtabsBatchOperationBroker().Start(new("bulk", host.Identity.ProcessId, deadline, Path.Combine(directory, "capture.json")),
-            () => host, (source, token) => EtabsLiveGetterProbe.RunBulk(source, new("bound-request", host.Context, ["beam", "beam2"], deadline), token),
-            TestContext.Current.CancellationToken, EtabsBulkGetterMatrix.Sha256);
+            () => host, (source, token) => group
+                ? EtabsLiveGetterProbe.RunGroup(source, new("bound-request", host.Context, members ?? ["beam", "beam2"], deadline), token)
+                : EtabsLiveGetterProbe.RunBulk(source, new("bound-request", host.Context, members ?? ["beam", "beam2"], deadline), token),
+            TestContext.Current.CancellationToken, group ? EtabsGroupGetterMatrix.Sha256 : EtabsBulkGetterMatrix.Sha256);
         var result = await handle.Completion; await handle.Quiescence; return result;
     }
 
@@ -83,6 +112,15 @@ public sealed class Wp10BulkCaptureTests
             Coverage = "source_geometry_only;supports=absent;spans=absent;offsets=absent;releases=absent;loads=absent;analysis=absent;strengths=absent" };
         public EtabsInvocation Invoke(EtabsGetterDefinition definition, IReadOnlyList<object?> inputs, CancellationToken token)
         {
+            if (definition.Operation == "GroupDef.GetNameList") return new(0, [1, new[] { "All" }]);
+            if (definition.Operation == "GroupDef.GetAssignments") return new(0, [0, Array.Empty<int>(), Array.Empty<string>()]);
+            if (definition.Operation == "Results.FrameForce" && (int)inputs[1]! == 2)
+            {
+                var first = _reference.Invoke(definition, ["beam", 0], token);
+                var second = _reference.Invoke(definition, ["beam2", 0], token);
+                return new(0, [6, .. Enumerable.Range(1, 13).Select(column =>
+                    ((Array)first.Outputs[column]!).Cast<object?>().Concat(((Array)second.Outputs[column]!).Cast<object?>()).ToArray())]);
+            }
             if (variant is "metric-database" or "wrong-database-components")
             {
                 if (definition.Operation == "SapModel.GetDatabaseUnits") return new(9, []);

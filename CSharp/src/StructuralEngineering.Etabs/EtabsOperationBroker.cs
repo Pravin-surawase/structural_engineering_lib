@@ -328,18 +328,21 @@ public sealed class EtabsOperationBroker
 
         async Task MonitorDeadlineAsync()
         {
-            var delay = request.DeadlineUtc - _timeProvider.GetUtcNow();
-            if (delay > TimeSpan.Zero)
-                await Task.Delay(delay).ConfigureAwait(false);
-            deadlineCancellation.Cancel();
-            ChooseTerminal(new(
-                EtabsBrokerState.TransactionUncertain,
-                "ETABS.CALL_TIMEOUT",
-                "The acquisition deadline elapsed; no final artifact is accepted and cleanup continues under the held process lease.",
-                evidencePath,
-                journalPath,
-                false,
-                null));
+            try
+            {
+                var delay = request.DeadlineUtc - _timeProvider.GetUtcNow();
+                if (!await WaitForDeadlineAsync(delay, quiescence.Task).ConfigureAwait(false)) return;
+                deadlineCancellation.Cancel();
+                ChooseTerminal(new(
+                    EtabsBrokerState.TransactionUncertain,
+                    "ETABS.CALL_TIMEOUT",
+                    "The acquisition deadline elapsed; no final artifact is accepted and cleanup continues under the held process lease.",
+                    evidencePath,
+                    journalPath,
+                    false,
+                    null));
+            }
+            finally { deadlineCancellation.Dispose(); }
         }
 
         void RunWorker()
@@ -576,6 +579,20 @@ public sealed class EtabsOperationBroker
 
     private static EtabsOperationHandle CompletedHandle(EtabsBrokerResult result) =>
         new(Task.FromResult(result), Task.CompletedTask);
+
+    internal static async Task<bool> WaitForDeadlineAsync(TimeSpan delay, Task quiescence)
+    {
+        if (quiescence.IsCompleted) return false;
+        if (delay <= TimeSpan.Zero) return true;
+        using var timerStop = new CancellationTokenSource();
+        var elapsed = Task.Delay(delay, timerStop.Token);
+        if (await Task.WhenAny(elapsed, quiescence).ConfigureAwait(false) == elapsed)
+            return !quiescence.IsCompleted;
+        // Release the timer and its acquisition closure as soon as cleanup ends.
+        // A pending provider call keeps quiescence incomplete and the lease held.
+        await timerStop.CancelAsync().ConfigureAwait(false);
+        return false;
+    }
 
     internal sealed class LedgerEtabsGetterHost(
         IEtabsGetterHost inner,

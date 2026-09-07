@@ -28,6 +28,16 @@ public sealed class Wp10BatchCaptureTests
             var bytes = File.ReadAllBytes(result.EvidencePath);
             var normalized = EtabsCaptureProjector.Normalize(bytes, Sha(bytes), Wp10SyntheticCapture.Options);
             Assert.True(normalized.Snapshot is not null, string.Join("; ", normalized.Diagnostics.Select(item => item.Message)));
+            var artifact = Assert.IsType<EtabsBatchArtifact>(result.Artifact);
+            var inMemory = EtabsCaptureProjector.Normalize(artifact, bytes, Sha(bytes), Wp10SyntheticCapture.Options);
+            Assert.True(inMemory.Snapshot is not null, string.Join("; ", inMemory.Diagnostics.Select(item => item.Message)));
+            Assert.Equal(normalized.Snapshot.SnapshotSha256, inMemory.Snapshot!.SnapshotSha256);
+            Assert.Null(EtabsCaptureProjector.Normalize(artifact with { ArtifactSha256 = new('0', 64) }, bytes, Sha(bytes), Wp10SyntheticCapture.Options).Snapshot);
+            var different = EtabsBatchArtifactCodec.Create(artifact.Content with
+            {
+                Capture = artifact.Content.Capture with { RequestSha256 = "different-but-self-consistent-request" }
+            });
+            Assert.Null(EtabsCaptureProjector.Normalize(different, bytes, Sha(bytes), Wp10SyntheticCapture.Options).Snapshot);
             var snapshot = normalized.Snapshot!;
             Assert.Equal(2, snapshot.Members.Count);
             Assert.Equal(mesh ? 4 : 3, snapshot.Points.Count);

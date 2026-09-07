@@ -45,7 +45,7 @@ public sealed class EtabsBatchOperationBroker(TimeProvider? timeProvider = null)
             try
             {
                 var delay = request.DeadlineUtc - _timeProvider.GetUtcNow();
-                if (delay > TimeSpan.Zero) await Task.Delay(delay).ConfigureAwait(false);
+                if (!await EtabsOperationBroker.WaitForDeadlineAsync(delay, quiescence.Task).ConfigureAwait(false)) return;
                 if (!quiescence.Task.IsCompleted)
                 {
                     deadline.Cancel();
@@ -92,11 +92,14 @@ public sealed class EtabsBatchOperationBroker(TimeProvider? timeProvider = null)
                     var artifact = EtabsBatchArtifactCodec.Create(new(request.OperationId, $"etabs-process:{request.ProcessId}", started,
                         _timeProvider.GetUtcNow(), before, after, ledger, capture,
                         new(disposed, released, EtabsOperationBroker.StaMessagePump.Name, Thread.CurrentThread.GetApartmentState().ToString())));
-                    var bytes = EtabsBatchArtifactCodec.CanonicalJsonBytes(artifact);
                     var temporary = path + $".{Guid.NewGuid():N}.tmp";
                     try
                     {
-                        using (var stream = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough)) { stream.Write(bytes); stream.Flush(true); }
+                        using (var stream = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1024 * 1024, FileOptions.WriteThrough))
+                        {
+                            StructuralEngineering.Analysis.AnalysisSnapshotCodec.WriteCanonicalJson(stream, artifact);
+                            stream.Flush(true);
+                        }
                         lock (gate)
                         {
                             if (!terminal && !linked.IsCancellationRequested && _timeProvider.GetUtcNow() < request.DeadlineUtc)

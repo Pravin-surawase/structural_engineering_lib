@@ -16,6 +16,18 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Progress
 
+- Owner amendment after the interrupted session: finish basic WP10 delivery,
+  review and PR/handoff now; move performance increases to the project end.
+  Updated the completion contract without claiming a PF9 pass. Functional
+  capacity, exact source/row evidence, installed correctness and cumulative
+  repository gates remain required. Timing experiments stop here.
+- Independent Python accepted the complete 41,028,597-byte medium rows transport,
+  1,000 members / 100,000 rows, preserving snapshot SHA-256
+  `cc00d7e355c2d25561e99cfd754d9df63f2627505b88d93182f97688897f7dc6`.
+  The real reference group capture also passed: 153 beams / 3,502 rows plus the
+  full 225-frame source context. The source-bound in-memory overload passed
+  actual broker-array parity and differently-bound valid-artifact rejection.
+
 - Verified clean main at PR #978, current origin and repository identity, then
   opened the sole-writer Windows completion branch. No active product candidate
   PR overlaps this task. Historical detached worktrees are untouched.
@@ -134,8 +146,51 @@ and integrated qualification against the whole-product goal; learning excluded.
   limit was raised, no partial artifact was imported, and no installed/PF9 pass
   is claimed. Next unit is measured source-call and memory/transport scaling,
   then the ten-sample runs and final installed/cumulative gates.
+- Qualified one actual `FrameForce(All, GroupElm)` getter against every object
+  result: 100/10,000 small fixture and 225/3,718 reference model, with exact
+  payload equality and unchanged protected source facts. Added a separate group
+  capture profile with original global row indices and explicit required versus
+  context-only scope. Indexed JSON force columns prevent quadratic group access.
+- Reduced duplicated canonical allocations and validation passes while retaining
+  the exact legacy snapshot identity. The small group pilot is 7.59 s overall;
+  the previous medium group pilot still failed transport and 512 MiB memory.
+  A separate compact positional-row wire format is under independent .NET and
+  Python qualification; no admission limit or frozen workload was changed.
+
+- Compact medium persistence now succeeds for all 1,000 members / 100,000 rows.
+  The latest group/rows pilots are 7.38 s small and 43.72 s medium; medium peak
+  incremental memory remains failed at 690,536,448 bytes. Independent Python
+  small compact replay preserved the exact snapshot identity; 33 portable .NET
+  and 21 Python checks passed. No production admission or installed pass is claimed.
+- Fixed completed acquisition retention through the original deadline timer in
+  all three brokers. The deadline monitor now ends when cleanup quiesces. The
+  weak-reference regression and 37 broker/context/batch/group tests passed;
+  actual repeated medium qualification is running. Per-record durable-flush
+  diagnostics showed no useful disk-mode/preallocation gain, so no durability
+  setting changed. A slower specialized row-hash trial was reverted.
 
 ### Issues encountered
+
+- Completed broker graphs remained reachable through uncancelled deadline tasks
+  for up to eight minutes, accumulating across repeated acquisitions.
+- The first native canonical writer retained a whole document in its stream
+  buffer and escaped Unicode property names differently from PF4. Bounded
+  pooled writes and the explicit PF4 encoder repair both; Unicode-key and exact
+  retained-byte tests passed before live performance measurement.
+- WPR CPU profile startup was rejected with `0xc5585011`; the underlying host
+  restriction was not independently established. EventPipe captured a diagnostic
+  trace without changing privileges. That trace used a pre-revert row-hash
+  binary, so it is retained as diagnostic evidence only.
+
+- The first group-profile pilot assumed `GetAssignments(All)` lists every frame.
+  Both retained live qualification transcripts instead return zero explicit
+  assignments for the built-in whole-model group. Capture correctly fenced;
+  the versioned profile now proves all required owners from the complete source
+  context and conserves the actual returned group rows.
+- Six further diagnostic invocations used a mistyped expected SHA or a guessed
+  receipt/source filename. The source guard prevented any capture under the
+  mistyped identity. Exact retained hashes and discovered owner paths resolved
+  the reads; no source model changed.
 
 - PF9 fixture setup discovered N-mm-C internal database units despite kN-m-C
   API units, and an explicit final Save switched the owned source to `$et` and
@@ -221,6 +276,26 @@ and integrated qualification against the whole-product goal; learning excluded.
   OS access denied; the launch cause is unconfirmed.
 
 ### Root causes and resolutions
+
+- RR-031: the deadline monitor's suspended closure retained the completed result
+  task and its complete acquisition. A shared wait now races quiescence against
+  the deadline and cancels the timer after cleanup. The completed-artifact
+  collection regression and 37 affected tests passed; live memory requalification
+  remains open.
+- RR-026 / RR-007: native writer defaults still buffered complete documents and
+  escaped U+2028 property names. Stream each advanced pooled buffer segment,
+  flush before finalizing the hash, and use explicit PF4 key escaping. The
+  33-test portable union and exact 33,355,603-byte retained replay passed.
+- WPR startup cause remains unconfirmed; the non-privileged EventPipe route
+  produced the requested diagnostic trace. No host policy was changed.
+
+- RR-002: implicit built-in group membership is not represented by explicit
+  assignment rows. Use the observed `All` catalogue entry, complete frame
+  context, exact original group row owners and required-member result coverage.
+  Both actual direct/group comparisons and filtered-scope tests conserve rows.
+- RR-005: manual hash transcription and filename inference recurred. Resolve
+  exact retained evidence/owners before invocation; the protected-source guard
+  correctly rejected the mistaken hash before attaching or writing evidence.
 
 - RR-002: InitializeNewModel selects internal N-mm-C database units independently
   of kN-m-C API units. Explicit 6/9 metadata/component checks and actual fixture
@@ -328,10 +403,10 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Rework and recurrence
 
-- RR-005, occurrences=90, minutes=unknown: source-owner/key lookups, typed
+- RR-005, occurrences=96, minutes=unknown: source-owner/key lookups, typed
   PowerShell dispatch and test-wrapper/filter forms required correction; use
   discovered owners, exact types and the runner's observed command grammar.
-- RR-002, occurrences=26, minutes=unknown: actual result availability, mesh
+- RR-002, occurrences=27, minutes=unknown: actual result availability, mesh
   identities, empty tables and mixed object-type rows required source handling.
 - RR-021, occurrences=5, minutes=unknown: enforce the full model's source cost
   and every serialization/store boundary before installed qualification.
@@ -341,8 +416,12 @@ and integrated qualification against the whole-product goal; learning excluded.
   for cross-runtime row ordering.
 - RR-025, occurrences=2, minutes=unknown: inline Windows process launch failed;
   retained evidence and the bounded owned-file harness completed the inspection.
-- RR-026, occurrences=2, minutes=unknown: bound buffer allocation to the size of
+- RR-026, occurrences=3, minutes=unknown: bound buffer allocation to the size of
   each hash operation and isolate synchronous allocation measurements.
+- RR-007, occurrences=3, minutes=unknown: preserve PF4 Unicode key bytes with
+  explicit escaping instead of platform defaults.
+- RR-031, occurrences=1, minutes=unknown: terminate completed deadline monitors
+  so their result graphs can be collected before the original timeout.
 - RR-027, occurrences=1, minutes=unknown: explicit compressed completion and
   diagnostic checks align the two runtime readers.
 - RR-020, occurrences=2, minutes=unknown: verify help extraction output before

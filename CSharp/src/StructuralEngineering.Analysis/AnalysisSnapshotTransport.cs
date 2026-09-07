@@ -8,11 +8,13 @@ namespace StructuralEngineering.Analysis;
 public static class AnalysisSnapshotTransport
 {
     public const string SchemaVersion = "structural.analysis_snapshot_gzip/v1";
+    public const string CompactSchemaVersion = "structural.analysis_snapshot_rows/v1";
     public const int MaximumEncodedBytes = 64 * 1024 * 1024;
     public const int MaximumExpandedBytes = 256 * 1024 * 1024;
     private static readonly byte[] Header = "STRUCTSNAP-GZIP-1\n"u8.ToArray();
+    private static readonly byte[] CompactHeader = "STRUCTSNAP-ROWS-1\n"u8.ToArray();
 
-    public static bool IsCompressed(ReadOnlySpan<byte> prefix) => prefix.StartsWith(Header);
+    public static bool IsCompressed(ReadOnlySpan<byte> prefix) => prefix.StartsWith(Header) || prefix.StartsWith(CompactHeader);
 
     public static void Write(Stream destination, AnalysisSnapshot snapshot)
     {
@@ -24,16 +26,30 @@ public static class AnalysisSnapshotTransport
         AnalysisSnapshotCodec.WriteCanonicalJson(expanded, snapshot);
     }
 
+    /// <summary>Writes rows-1: ordinary snapshot containers with compact positional repeated records.</summary>
+    public static void WriteCompact(Stream destination, AnalysisSnapshot snapshot)
+    {
+        ArgumentNullException.ThrowIfNull(destination); ArgumentNullException.ThrowIfNull(snapshot);
+        using var encoded = new LimitedStream(destination, MaximumEncodedBytes);
+        encoded.Write(CompactHeader);
+        using var gzip = new GZipStream(encoded, CompressionLevel.Fastest, leaveOpen: true);
+        using var expanded = new LimitedStream(gzip, MaximumExpandedBytes);
+        AnalysisSnapshotCodec.WritePackedJson(expanded, snapshot);
+    }
+
     public static EtabsSnapshotResult Read(Stream source)
     {
         ArgumentNullException.ThrowIfNull(source);
         using var encoded = new LimitedStream(source, MaximumEncodedBytes, retainTail: true);
         Span<byte> header = stackalloc byte[Header.Length];
         encoded.ReadExactly(header);
-        if (!header.SequenceEqual(Header)) throw new InvalidDataException("Unsupported snapshot transport header.");
+        var compact = header.SequenceEqual(CompactHeader);
+        if (!compact && !header.SequenceEqual(Header)) throw new InvalidDataException("Unsupported snapshot transport header.");
         using var gzip = new GZipStream(encoded, CompressionMode.Decompress, leaveOpen: true);
         using var expanded = new LimitedStream(gzip, MaximumExpandedBytes, checksum: true);
-        var result = AnalysisSnapshotCodec.ParseAndValidateStream(expanded, MaximumExpandedBytes);
+        var result = compact
+            ? AnalysisSnapshotCodec.ParseAndValidatePackedStream(expanded, MaximumExpandedBytes)
+            : AnalysisSnapshotCodec.ParseAndValidateStream(expanded, MaximumExpandedBytes);
         // GZipStream may return a complete JSON root after a truncated footer.
         // Check the single gzip member's CRC32 and ISIZE explicitly.
         if (result.Snapshot is not null && (encoded.Position < Header.Length + 18 ||

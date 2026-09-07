@@ -65,11 +65,14 @@ public sealed class Wp10BatchLiveQualificationTests
             ? context.Frames.Where(frame => frame.DesignOrientation == EtabsFrameDesignOrientation.Beam).Select(frame => frame.SourceFrameId).ToArray()
             : explicitMembers.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         var watch = System.Diagnostics.Stopwatch.StartNew();
-        var bulk = Environment.GetEnvironmentVariable("WP10_BATCH_PROFILE") == "bulk";
+        var profile = Environment.GetEnvironmentVariable("WP10_BATCH_PROFILE") ?? "batch";
+        Assert.True(profile is "batch" or "bulk" or "group", "WP10_BATCH_PROFILE must be batch, bulk or group.");
         var batchHandle = new EtabsBatchOperationBroker().Start(new("live-forces", target.ProcessId, deadline, Path.Combine(directory!, "forces.json")),
-            () => bulk ? EtabsReflectionGetterHost.AttachBulk(EtabsHostDiscovery.Discover(target)) : EtabsReflectionGetterHost.AttachForces(EtabsHostDiscovery.Discover(target)),
-            (host, token) => bulk ? EtabsLiveGetterProbe.RunBulk(host, new(requestSha, context, members, deadline), token) : EtabsLiveGetterProbe.RunBatch(host, new(requestSha, context, members, deadline), token),
-            TestContext.Current.CancellationToken, bulk ? EtabsBulkGetterMatrix.Sha256 : null);
+            () => profile == "group" ? EtabsReflectionGetterHost.AttachGroup(EtabsHostDiscovery.Discover(target))
+                : profile == "bulk" ? EtabsReflectionGetterHost.AttachBulk(EtabsHostDiscovery.Discover(target)) : EtabsReflectionGetterHost.AttachForces(EtabsHostDiscovery.Discover(target)),
+            (host, token) => profile == "group" ? EtabsLiveGetterProbe.RunGroup(host, new(requestSha, context, members, deadline), token)
+                : profile == "bulk" ? EtabsLiveGetterProbe.RunBulk(host, new(requestSha, context, members, deadline), token) : EtabsLiveGetterProbe.RunBatch(host, new(requestSha, context, members, deadline), token),
+            TestContext.Current.CancellationToken, profile == "group" ? EtabsGroupGetterMatrix.Sha256 : profile == "bulk" ? EtabsBulkGetterMatrix.Sha256 : null);
         var batchResult = await batchHandle.Completion;
         await batchHandle.Quiescence;
         watch.Stop();
@@ -77,11 +80,12 @@ public sealed class Wp10BatchLiveQualificationTests
         if (batchResult.Artifact is not null)
         {
             var bytes = File.ReadAllBytes(batchResult.EvidencePath);
-            normalized = EtabsCaptureProjector.Normalize(bytes, Sha(bytes), new("live-qualification", "wp10-shared-capture/v1", batchResult.EvidencePath,
+            normalized = EtabsCaptureProjector.Normalize(batchResult.Artifact, bytes, Sha(bytes), new("live-qualification", "wp10-shared-capture/v1", batchResult.EvidencePath,
                 new Dictionary<string, SnapshotMaterialClassification>()));
             if (normalized.Snapshot is not null)
             {
-                File.WriteAllBytes(Path.Combine(directory!, "snapshot.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(normalized.Snapshot));
+                using (var snapshotOutput = File.Create(Path.Combine(directory!, "snapshot.json")))
+                    AnalysisSnapshotCodec.WriteCanonicalJson(snapshotOutput, normalized.Snapshot);
                 var interpretation = EtabsModelInterpreter.Interpret(new(contextResult.Artifact!, normalized.Snapshot, members));
                 Assert.Equal(members.Length, interpretation.Beams.Count);
                 Assert.Equal(context.Frames.Count, interpretation.Frames.Count);

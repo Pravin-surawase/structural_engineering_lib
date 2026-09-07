@@ -62,9 +62,17 @@ public static partial class AnalysisSnapshotCodec
     }
 
     public static EtabsSnapshotResult Validate(AnalysisSnapshot snapshot)
+        => ValidateCore(snapshot, bindNewSnapshot: false);
+
+    // Only the in-process normalizer binds a new snapshot. Imported artifacts must
+    // use Validate, which compares their claimed identity against these same bytes.
+    internal static EtabsSnapshotResult BindAndValidate(AnalysisSnapshot snapshot)
+        => ValidateCore(snapshot, bindNewSnapshot: true);
+
+    private static EtabsSnapshotResult ValidateCore(AnalysisSnapshot snapshot, bool bindNewSnapshot)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
-        var required = ValidateRequiredStructure(snapshot);
+        var required = ValidateRequiredStructure(snapshot, bindNewSnapshot);
         if (required is not null) return required;
         var values = ValidateDomainValues(snapshot);
         if (values is not null) return values;
@@ -92,7 +100,8 @@ public static partial class AnalysisSnapshotCodec
 
         var snapshotSha = SnapshotSha256(snapshot);
         var expectedSnapshotId = $"analysis_snapshot_id:{CanonicalizationVersion}:{snapshotSha}";
-        if (snapshot.SnapshotSha256 != snapshotSha || snapshot.SnapshotId != expectedSnapshotId)
+        if (bindNewSnapshot) snapshot = snapshot with { SnapshotSha256 = snapshotSha, SnapshotId = expectedSnapshotId };
+        else if (snapshot.SnapshotSha256 != snapshotSha || snapshot.SnapshotId != expectedSnapshotId)
         {
             return Rejected(
                 "SNAPSHOT.HASH_MISMATCH",
@@ -139,6 +148,9 @@ public static partial class AnalysisSnapshotCodec
     public static string SnapshotSha256(AnalysisSnapshot snapshot) =>
         CanonicalSha256(snapshot, "snapshot_id", "snapshot_sha256");
 
+    /// <summary>Hashes canonical bytes without retaining an additional complete byte payload.</summary>
+    public static string CanonicalDigest(object value) => CanonicalSha256(value);
+
     public static string RawCaptureSha256(RawAnalysisCapture capture) =>
         CanonicalSha256(capture, "raw_capture_id", "raw_capture_sha256");
 
@@ -151,10 +163,10 @@ public static partial class AnalysisSnapshotCodec
     public static string ActionRowId(SnapshotActionRow row) =>
         $"analysis_action_row_id:{CanonicalizationVersion}:{CanonicalSha256(row, "row_id")}";
 
-    private static EtabsSnapshotResult? ValidateRequiredStructure(AnalysisSnapshot snapshot)
+    private static EtabsSnapshotResult? ValidateRequiredStructure(AnalysisSnapshot snapshot, bool bindNewSnapshot)
     {
         if (snapshot.SchemaVersion != SnapshotSchemaVersion || snapshot.OperationSemanticId != Operation ||
-            !Text(snapshot.SnapshotId) || !Sha(snapshot.SnapshotSha256) || !Utc(snapshot.CreatedAtUtc) ||
+            (!bindNewSnapshot && (!Text(snapshot.SnapshotId) || !Sha(snapshot.SnapshotSha256))) || !Utc(snapshot.CreatedAtUtc) ||
             snapshot.SourceIdentity is null || snapshot.Metadata is null || snapshot.Units is null ||
             snapshot.RawCapture is null || snapshot.RowLedger is null || snapshot.Normalization is null ||
             snapshot.Freshness is null || snapshot.Provenance is null || !Sha(snapshot.EvidenceManifestSha256) ||

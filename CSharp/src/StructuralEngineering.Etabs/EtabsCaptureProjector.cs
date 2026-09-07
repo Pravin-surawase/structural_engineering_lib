@@ -23,30 +23,36 @@ public static partial class EtabsCaptureProjector
         }
     }
 
+    /// <summary>Projects a broker-retained batch only when it is bound byte-for-byte to the durable artifact.</summary>
+    public static EtabsSnapshotResult Normalize(EtabsBatchArtifact artifact, ReadOnlyMemory<byte> persistedBytes, string expectedFileSha256, EtabsNormalizationOptions options)
+    {
+        try
+        {
+            Need(Convert.ToHexStringLower(SHA256.HashData(persistedBytes.Span)) == expectedFileSha256,
+                "The durable artifact bytes do not match the expected file SHA-256.");
+            artifact = EtabsBatchArtifactCodec.Validate(artifact);
+            Need(AnalysisSnapshotCodec.CanonicalDigest(artifact) == expectedFileSha256,
+                "The in-memory batch artifact does not exactly match its durable canonical bytes.");
+            return AnalysisSnapshotNormalizer.Normalize(ProjectValidatedBatch(artifact, expectedFileSha256, options));
+        }
+        catch (Exception error) when (error is InvalidDataException or JsonException or ArgumentException or
+            InvalidOperationException or KeyNotFoundException or NullReferenceException or IndexOutOfRangeException)
+        {
+            return AnalysisSnapshotNormalizer.Failure("ETABS.CAPTURE_INVALID", error.Message);
+        }
+    }
+
     /// <summary>Returns the complete source projection or throws; never dispatches a COM call.</summary>
     public static RawAnalysisCapture Project(ReadOnlyMemory<byte> bytes, string expectedFileSha256, EtabsNormalizationOptions options)
     {
         Need(Convert.ToHexStringLower(SHA256.HashData(bytes.Span)) == expectedFileSha256,
             "The durable artifact bytes do not match the expected file SHA-256.");
-        using var document = JsonDocument.Parse(bytes);
-        if (document.RootElement.GetProperty("schema_version").GetString() == EtabsBatchArtifactCodec.SchemaVersion)
+        string? schemaVersion;
+        using (var document = JsonDocument.Parse(bytes)) schemaVersion = document.RootElement.GetProperty("schema_version").GetString();
+        if (schemaVersion == EtabsBatchArtifactCodec.SchemaVersion)
         {
-            var batch = EtabsBatchArtifactCodec.ParseAndValidate(new UTF8Encoding(false, true).GetString(bytes.Span));
-            var acquisition = batch.Content;
-            var source = acquisition.Capture;
-            return ProjectCore(new(acquisition.OperationId, acquisition.CompletedUtc, batch.ArtifactSha256,
-                acquisition.CallLedger, AnalysisSnapshotNormalizer.SourceData(new
-                {
-                    Format = "wp10-batch-acquisition-summary/v1", acquisition.OperationId, acquisition.LeaseKey,
-                    acquisition.StartedUtc, acquisition.CompletedUtc, acquisition.HostIdentityBefore, acquisition.HostIdentityAfter,
-                    acquisition.Cleanup, Capture = source with { Calls = [] },
-                    CallLedgerReceipt = new { acquisition.CallLedger.OperationId, acquisition.CallLedger.RecordCount,
-                        acquisition.CallLedger.HeadRecordSha256, acquisition.CallLedger.LedgerSha256 }
-                }),
-                source.HostIdentity, source.StartedUtc, source.CompletedUtc, source.Preflight, source.Postflight,
-                source.Preflight.CaseSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
-                source.Preflight.CombinationSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
-                source.Members, source.Calls, true, source.ProfileId == EtabsBulkGetterMatrix.ProfileId, source.Context), expectedFileSha256, options);
+            var batch = EtabsBatchArtifactCodec.ParseAndValidate(bytes);
+            return ProjectValidatedBatch(batch, expectedFileSha256, options);
         }
         var artifact = EtabsAcquisitionArtifactCodec.ParseAndValidate(new UTF8Encoding(false, true).GetString(bytes.Span));
         var content = artifact.Content;
@@ -66,11 +72,32 @@ public static partial class EtabsCaptureProjector
             capture.Calls, false), expectedFileSha256, options);
     }
 
+    private static RawAnalysisCapture ProjectValidatedBatch(EtabsBatchArtifact batch, string expectedFileSha256, EtabsNormalizationOptions options)
+    {
+        var acquisition = batch.Content;
+        var source = acquisition.Capture;
+        return ProjectCore(new(acquisition.OperationId, acquisition.CompletedUtc, batch.ArtifactSha256,
+            acquisition.CallLedger, AnalysisSnapshotNormalizer.SourceData(new
+            {
+                Format = "wp10-batch-acquisition-summary/v1", acquisition.OperationId, acquisition.LeaseKey,
+                acquisition.StartedUtc, acquisition.CompletedUtc, acquisition.HostIdentityBefore, acquisition.HostIdentityAfter,
+                acquisition.Cleanup, Capture = source with { Calls = [] },
+                CallLedgerReceipt = new { acquisition.CallLedger.OperationId, acquisition.CallLedger.RecordCount,
+                    acquisition.CallLedger.HeadRecordSha256, acquisition.CallLedger.LedgerSha256 }
+            }),
+            source.HostIdentity, source.StartedUtc, source.CompletedUtc, source.Preflight, source.Postflight,
+            source.Preflight.CaseSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
+            source.Preflight.CombinationSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
+            source.Members, source.Calls, true, source.ProfileId is EtabsBulkGetterMatrix.ProfileId or EtabsGroupGetterMatrix.ProfileId,
+            source.Context, source.ProfileId == EtabsGroupGetterMatrix.ProfileId), expectedFileSha256, options);
+    }
+
     private sealed record ProjectionInput(string OperationId, DateTimeOffset CompletedUtc, string ArtifactSha256,
         SnapshotCallLedger CallLedger, JsonElement AcquisitionEvidence, EtabsHostIdentity Host,
         DateTimeOffset CaptureStartedUtc, DateTimeOffset CaptureCompletedUtc, EtabsProtectedState Preflight, EtabsProtectedState Postflight,
         IReadOnlyList<string> SelectedCases, IReadOnlyList<string> SelectedCombinations,
-        IReadOnlyList<EtabsMemberCaptureSummary> Members, IReadOnlyList<EtabsRawGetterCall> Calls, bool Batch, bool Bulk = false, EtabsContextInventory? Context = null);
+        IReadOnlyList<EtabsMemberCaptureSummary> Members, IReadOnlyList<EtabsRawGetterCall> Calls, bool Batch, bool Bulk = false,
+        EtabsContextInventory? Context = null, bool Group = false);
 
     private static RawAnalysisCapture ProjectCore(ProjectionInput capture, string expectedFileSha256, EtabsNormalizationOptions options)
     {
@@ -78,8 +105,8 @@ public static partial class EtabsCaptureProjector
         Need(!string.IsNullOrWhiteSpace(options.ProjectId) && !string.IsNullOrWhiteSpace(options.AdapterBuildId) &&
             !string.IsNullOrWhiteSpace(options.EvidenceReference), "Project, build and evidence context must be explicit.");
         Need(host.ApiFileVersion == "2.16.0.0" && host.EtabsApiVersion == "23.3.1", "The runtime version is outside the qualified profile.");
-        var matrix = capture.Bulk ? EtabsBulkGetterMatrix.Allowed : capture.Batch ? EtabsForceGetterMatrix.Allowed : EtabsGetterMatrix.Allowed;
-        var matrixSha = capture.Bulk ? EtabsBulkGetterMatrix.Sha256 : capture.Batch ? EtabsForceGetterMatrix.Sha256 : EtabsGetterMatrix.Sha256;
+        var matrix = capture.Group ? EtabsGroupGetterMatrix.Allowed : capture.Bulk ? EtabsBulkGetterMatrix.Allowed : capture.Batch ? EtabsForceGetterMatrix.Allowed : EtabsGetterMatrix.Allowed;
+        var matrixSha = capture.Group ? EtabsGroupGetterMatrix.Sha256 : capture.Bulk ? EtabsBulkGetterMatrix.Sha256 : capture.Batch ? EtabsForceGetterMatrix.Sha256 : EtabsGetterMatrix.Sha256;
         var calls = capture.Calls.Select((call, index) => new Call(call, index + 1)).ToArray();
         var operations = calls.Select(item => item.Raw.Operation).ToHashSet(StringComparer.Ordinal);
         Need(capture.Batch ? operations.IsSubsetOf(matrix.Keys) : operations.SetEquals(matrix.Keys),
@@ -319,30 +346,54 @@ public static partial class EtabsCaptureProjector
         }
         var rawRows = new List<RawSnapshotForceRow>();
         var stationKeys = new HashSet<string>(StringComparer.Ordinal);
+        var groupStationIds = new Dictionary<(string Object, string Element, double ObjectStation, double ElementStation), string>();
         var forces = calls.Where(item => item.Raw.Operation == "Results.FrameForce").ToArray();
-        Need(forces.Length == capture.Members.Count, "Each required member must have exactly one actual force getter.");
+        Need(forces.Length == (capture.Group ? 1 : capture.Members.Count), "The actual force getter count differs from the declared capture profile.");
+        if (capture.Group)
+        {
+            Need(One("GroupDef.GetNameList").Strings(1).Contains("All", StringComparer.Ordinal), "The source All group is absent.");
+            var assignments = One("GroupDef.GetAssignments", "All");
+            var names = assignments.Strings(2); var types = assignments.Ints(1);
+            var assignedFrames = names.Where((_, index) => types[index] == 2).ToArray();
+            var frameSet = capture.Context!.Frames.Select(frame => frame.SourceFrameId).ToHashSet(StringComparer.Ordinal);
+            Need((assignments.Integer(0) == 0 || assignedFrames.Length == assignedFrames.Distinct(StringComparer.Ordinal).Count() && frameSet.SetEquals(assignedFrames)) &&
+                forces[0].Inputs[0].GetString() == "All" && forces[0].Inputs[1].GetInt32() == 2 &&
+                forces[0].Integer(0) is > 0 and <= 100_000 && forces[0].Column(1).All(value => frameSet.Contains(value.GetString()!)),
+                "The complete group result has unknown owners, a changed group, or an unqualified scope.");
+        }
         foreach (var member in capture.Members)
         {
         var memberName = member.ObjectName;
         var memberId = Id("member", memberName);
-        var force = One("Results.FrameForce", memberName);
-        Need(force.Inputs[1].GetInt32() == 0 && force.Integer(0) == member.FrameForceRows && force.Integer(0) > 0,
+        var force = One("Results.FrameForce", capture.Group ? "All" : memberName);
+        var indices = force.ForceIndices(memberName);
+        Need(force.Inputs[1].GetInt32() == (capture.Group ? 2 : 0) && indices.Length == member.FrameForceRows && indices.Length > 0 &&
+            (capture.Group || indices.Length == force.Integer(0)),
             "The complete object force getter and summary disagree.");
-        Need(force.Strings(3).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).SequenceEqual(member.ElementNames.Order(StringComparer.Ordinal)),
+        Need(indices.Select(index => force.Column(3)[index].GetString()!).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).SequenceEqual(member.ElementNames.Order(StringComparer.Ordinal)),
             "Force elements and the retained topology inventory disagree.");
-        Need(force.Strings(5).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).SequenceEqual(
+        Need(indices.Select(index => force.Column(5)[index].GetString()!).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).SequenceEqual(
             selectedCases.Concat(selectedCombos).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)),
             "A required member lacks a selected result or contains an unselected result.");
-        for (var index = 0; index < force.Integer(0); index++)
+        foreach (var index in indices)
         {
-            double Number(int column) => force.Outputs[column][index].GetDouble();
-            string Text(int column) => force.Outputs[column][index].GetString()!;
+            double Number(int column) => force.Column(column)[index].GetDouble();
+            string Text(int column) => force.Column(column)[index].GetString()!;
             Need(Text(1) == memberName && Text(6) == "Single Value" && Number(7) == 0,
                 "The bounded source policy requires same-object Single Value/0 rows; unsupported rows cannot be discarded.");
-            var rowId = capture.Batch ? $"source:force:{memberName}:{index:D8}" : $"source:force:{index:D8}";
+            var rowId = capture.Group ? $"source:force:All:{index:D8}" : capture.Batch ? $"source:force:{memberName}:{index:D8}" : $"source:force:{index:D8}";
             rawRows.Add(new(rowId, index, Text(1), Text(3), Number(2), Number(4), Text(5), Text(6), null,
                 Number(8), Number(9), Number(10), Number(11), Number(12), Number(13)));
-            var stationId = $"station:{AnalysisSnapshotNormalizer.Digest(new { Object = Text(1), Element = Text(3), ObjectStation = Number(2), ElementStation = Number(4) })}";
+            string stationId;
+            if (capture.Group)
+            {
+                var location = (Text(1), Text(3), Number(2), Number(4));
+                // A station has no native ETABS ID. The first actual group row at its exact
+                // location is a compact acquisition-local ID, bound by the full snapshot hash.
+                if (!groupStationIds.TryGetValue(location, out stationId!))
+                    groupStationIds.Add(location, stationId = $"station:All:{index:D8}");
+            }
+            else stationId = $"station:{AnalysisSnapshotNormalizer.Digest(new { Object = Text(1), Element = Text(3), ObjectStation = Number(2), ElementStation = Number(4) })}";
             if (stationKeys.Add(stationId)) Add(RawModelRecordKind.Station, $"source:{stationId}",
                 new SourceSnapshotStation(stationId, memberId, Text(1), Text(3), Number(2), Number(4)));
         }
@@ -354,7 +405,7 @@ public static partial class EtabsCaptureProjector
             capture.CompletedUtc.UtcDateTime.ToString("O"),
             new(OptionalEvidenceState.Supplied, $"{host.ProcessId}@{host.ProcessStartedUtc.UtcDateTime:O}", null),
             new(OptionalEvidenceState.Supplied, host.ModelSha256, null), classifications,
-            capture.Bulk ? AnalysisSnapshotNormalizer.BulkPolicy : capture.Batch ? AnalysisSnapshotNormalizer.BatchPolicy : AnalysisSnapshotNormalizer.Policy, options.EvidenceReference);
+            capture.Group ? AnalysisSnapshotNormalizer.GroupPolicy : capture.Bulk ? AnalysisSnapshotNormalizer.BulkPolicy : capture.Batch ? AnalysisSnapshotNormalizer.BatchPolicy : AnalysisSnapshotNormalizer.Policy, options.EvidenceReference);
         var recordManifest = sourceRecords.Select(item => new SnapshotProjectionRecord(item.SourceRecordId, item.RecordKind))
             .Append(new(metadataId, RawModelRecordKind.ModelMetadata)).OrderBy(item => item.SourceRecordId, StringComparer.Ordinal).ToArray();
         string Target(Call call)
@@ -379,7 +430,12 @@ public static partial class EtabsCaptureProjector
         var manifest = new SnapshotProjectionManifest(capture.ArtifactSha256, expectedFileSha256,
             capture.AcquisitionEvidence,
             recordManifest, rawRows.Select(item => item.SourceRowId).ToArray(), evidence);
-        Add(RawModelRecordKind.ModelMetadata, metadataId, new SourceSnapshotMetadata(true, SnapshotAnalysisCaseStatus.Finished, context, manifest, bulkEvidence));
+        SourceSnapshotGroupForceScope? groupScope = capture.Group ? new("wp10-group-force-scope/v1",
+            capture.CallLedger.Records[(forces[0].Ordinal - 1) * 2].CallId,
+            capture.Members.Select(member => member.ObjectName).Order(StringComparer.Ordinal).ToArray(),
+            forces[0].Integer(0), rawRows.Count, forces[0].Integer(0) - rawRows.Count,
+            "Rows outside the requested beam objects remain in the complete getter payload as model context; no required beam row is excluded.") : null;
+        Add(RawModelRecordKind.ModelMetadata, metadataId, new SourceSnapshotMetadata(true, SnapshotAnalysisCaseStatus.Finished, context, manifest, bulkEvidence, groupScope));
         var modelRevision = $"model-file-sha256:{host.ModelSha256}";
         var analysisRevision = $"analysis-evidence:{AnalysisSnapshotNormalizer.Digest(new { modelRevision, state.CaseNames, state.CaseStatuses, state.RunCaseFlags })}";
         var epoch = $"result-epoch-evidence:{AnalysisSnapshotNormalizer.Digest(new { capture.OperationId, state.Sha256, Force = capture.Batch ? (object)forces.Select(call => call.Outputs).ToArray() : forces[0].Outputs })}";
@@ -446,11 +502,24 @@ public static partial class EtabsCaptureProjector
     private static void Need(bool condition, string message) { if (!condition) throw new InvalidDataException(message); }
     private sealed class Call(EtabsRawGetterCall raw, int ordinal)
     {
+        private readonly Dictionary<int, JsonElement[]> _columns = new();
+        private Dictionary<string, int[]>? _forceIndices;
         public EtabsRawGetterCall Raw { get; } = raw;
         public int Ordinal { get; } = ordinal;
         public JsonElement Inputs { get; } = JsonSerializer.SerializeToElement(raw.Inputs);
         public JsonElement Outputs { get; } = JsonSerializer.SerializeToElement(raw.Outputs);
         public JsonElement Direct { get; } = JsonSerializer.SerializeToElement(raw.DirectValue);
+        public JsonElement[] Column(int index)
+        {
+            if (!_columns.TryGetValue(index, out var values)) _columns.Add(index, values = Outputs[index].EnumerateArray().ToArray());
+            return values;
+        }
+        public int[] ForceIndices(string name)
+        {
+            _forceIndices ??= Column(1).Select((owner, index) => (Name: owner.GetString()!, index)).GroupBy(item => item.Name, StringComparer.Ordinal)
+                .ToDictionary(group => group.Key, group => group.Select(item => item.index).ToArray(), StringComparer.Ordinal);
+            return _forceIndices.TryGetValue(name, out var indices) ? indices : [];
+        }
         public string Text(int index) => Outputs[index].GetString()!;
         public int Integer(int index) => Outputs[index].GetInt32();
         public double Number(int index) => Outputs[index].GetDouble();

@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using StructuralEngineering.Contracts;
@@ -11,12 +10,12 @@ public static class AnalysisSnapshotNormalizer
     public const string Policy = "wp10-offline-horizontal-frame/v1";
     public const string BatchPolicy = "wp10-shared-horizontal-frames/v1";
     public const string BulkPolicy = "wp10-bulk-horizontal-frames/v1";
+    public const string GroupPolicy = "wp10-group-horizontal-frames/v1";
     private const double Tolerance = 1e-8;
     private static readonly JsonSerializerOptions Options = CreateOptions();
 
     public static JsonElement SourceData<T>(T value) => JsonSerializer.SerializeToElement(value, Options);
-    public static string Digest(object value) => Convert.ToHexStringLower(
-        SHA256.HashData(AnalysisSnapshotCodec.CanonicalJsonBytes(value)));
+    public static string Digest(object value) => AnalysisSnapshotCodec.CanonicalDigest(value);
 
     public static EtabsSnapshotResult Normalize(RawAnalysisCapture raw)
     {
@@ -39,14 +38,14 @@ public static class AnalysisSnapshotNormalizer
 
     private static EtabsSnapshotResult NormalizeCore(RawAnalysisCapture raw)
     {
-        Require(raw.RawCaptureSha256 == AnalysisSnapshotCodec.RawCaptureSha256(raw),
-            "RAW_CAPTURE.HASH_MISMATCH", "The source projection changed after its identity was bound.");
         var metadataRecord = raw.ModelRecords.Single(item => item.RecordKind == RawModelRecordKind.ModelMetadata);
         var sourceMetadata = Read<SourceSnapshotMetadata>(metadataRecord);
         var context = sourceMetadata.Context;
-        Require(context.PolicyId is Policy or BatchPolicy or BulkPolicy && !string.IsNullOrWhiteSpace(context.EvidenceReference),
+        Require(context.PolicyId is Policy or BatchPolicy or BulkPolicy or GroupPolicy && !string.IsNullOrWhiteSpace(context.EvidenceReference),
             "NORMALIZATION.POLICY", "An explicit supported normalization policy and evidence reference are required.");
-        ValidateCoverage(raw, sourceMetadata.Projection, context.PolicyId != Policy);
+        Require((context.PolicyId == GroupPolicy) == (sourceMetadata.GroupForceScope is not null),
+            "ETABS.ROW_ACCOUNTING", "The group force scope and normalization policy must agree.");
+        ValidateCoverage(raw, sourceMetadata.Projection, context.PolicyId != Policy, sourceMetadata.GroupForceScope);
         var sourceUnits = new SnapshotSourceUnits("m", "kN", "kNm", "kN/m2", "kN*s2/m4");
         Require(raw.SourceUnits == sourceUnits, "UNITS.INVALID", "This source policy requires the proved kN_m_C basis including mass density.");
         var conversion = new SnapshotUnitConversion(1000, 1, 1, 0.001, 1000);
@@ -134,8 +133,10 @@ public static class AnalysisSnapshotNormalizer
                 station.ObjectStation * 1000, station.ObjectStation * 1000, station.ElementStation * 1000,
                 station.ObjectStation / length, SnapshotStationSide.Continuous, item.Id);
         }).ToArray();
-        var forcesByObject = sourceMetadata.Projection.GetterEvidence.Where(item => item.Operation == "Results.FrameForce")
-            .ToDictionary(item => item.Inputs[0].GetString()!, StringComparer.Ordinal);
+        var forcesByObject = sourceMetadata.GroupForceScope is { } groupScope
+            ? groupScope.RequiredObjectIds.ToDictionary(name => name, _ => sourceMetadata.Projection.GetterEvidence.Single(item => item.CallId == groupScope.CallId), StringComparer.Ordinal)
+            : sourceMetadata.Projection.GetterEvidence.Where(item => item.Operation == "Results.FrameForce")
+                .ToDictionary(item => item.Inputs[0].GetString()!, StringComparer.Ordinal);
         var stationsByLocation = normalizedStations.ToDictionary(item =>
             (item.ObjectId, item.AnalysisElementId, item.ObjectStationMm, item.ElementStationMm));
         var selectionsByName = normalizedSelections.ToDictionary(item => item.SourceName, StringComparer.Ordinal);
@@ -197,12 +198,12 @@ public static class AnalysisSnapshotNormalizer
                 normalizedSelections.Select(item => item.SelectionId).Order(StringComparer.Ordinal).ToArray()),
             [], Provenance([context.EvidenceReference, $"artifact:{sourceMetadata.Projection.ArtifactSha256}"]),
             Digest(sourceMetadata), raw);
-        var sha = AnalysisSnapshotCodec.SnapshotSha256(snapshot);
-        snapshot = snapshot with { SnapshotSha256 = sha, SnapshotId = $"analysis_snapshot_id:{AnalysisSnapshotCodec.CanonicalizationVersion}:{sha}" };
-        return AnalysisSnapshotCodec.Validate(snapshot);
+        // Full validation verifies the source digest and binds the newly constructed
+        // snapshot once. Import validation still recomputes and compares both identities.
+        return AnalysisSnapshotCodec.BindAndValidate(snapshot);
     }
 
-    private static void ValidateCoverage(RawAnalysisCapture raw, SnapshotProjectionManifest manifest, bool batch)
+    private static void ValidateCoverage(RawAnalysisCapture raw, SnapshotProjectionManifest manifest, bool batch, SourceSnapshotGroupForceScope? scope)
     {
         Require(manifest.ModelRecords.Count == raw.ModelRecords.Count &&
             manifest.ModelRecords.SequenceEqual(raw.ModelRecords.Select(item => new SnapshotProjectionRecord(item.SourceRecordId, item.RecordKind))) &&
@@ -225,17 +226,38 @@ public static class AnalysisSnapshotNormalizer
         }
         var forces = manifest.GetterEvidence.Where(item => item.Operation == "Results.FrameForce")
             .ToDictionary(item => item.Inputs[0].GetString()!, item => item.Outputs, StringComparer.Ordinal);
+        // JsonElement integer indexing walks an array. Index every actual column once;
+        // a 100,000-row group result must not rescan each column for every source row.
+        var columns = forces.ToDictionary(pair => pair.Key, pair => pair.Value.EnumerateArray()
+            .Select(value => value.ValueKind == JsonValueKind.Array ? value.EnumerateArray().ToArray() : Array.Empty<JsonElement>()).ToArray(), StringComparer.Ordinal);
         Require(batch || forces.Count == 1, "ETABS.ROW_ACCOUNTING", "The single-member policy requires exactly one force getter.");
         var groups = raw.ForceRows.GroupBy(row => row.ObjectId).ToDictionary(group => group.Key, group => group.ToArray(), StringComparer.Ordinal);
-        Require(forces.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(groups.Keys) && groups.All(group =>
-            forces[group.Key][0].GetInt32() == group.Value.Length &&
-            group.Value.Select(row => row.SourceRowIndex).Order().SequenceEqual(Enumerable.Range(0, group.Value.Length))),
-            "ETABS.ROW_ACCOUNTING", "The force getter counts and per-object local row indexes disagree.");
+        if (scope is null)
+            Require(forces.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(groups.Keys) && groups.All(group =>
+                forces[group.Key][0].GetInt32() == group.Value.Length &&
+                group.Value.Select(row => row.SourceRowIndex).Order().SequenceEqual(Enumerable.Range(0, group.Value.Length))),
+                "ETABS.ROW_ACCOUNTING", "The force getter counts and per-object local row indexes disagree.");
+        else
+        {
+            var evidence = manifest.GetterEvidence.Single(item => item.CallId == scope.CallId);
+            var required = scope.RequiredObjectIds.ToHashSet(StringComparer.Ordinal);
+            var memberObjects = Records<SourceSnapshotMember>(raw, RawModelRecordKind.Member).Select(item => item.Data.ObjectId).ToHashSet(StringComparer.Ordinal);
+            Require(scope.PolicyId == "wp10-group-force-scope/v1" && forces.Count == 1 && forces.ContainsKey("All") &&
+                evidence.Operation == "Results.FrameForce" && evidence.Inputs[0].GetString() == "All" && evidence.Inputs[1].GetInt32() == 2 &&
+                required.Count == scope.RequiredObjectIds.Count && required.SetEquals(memberObjects) && required.SetEquals(groups.Keys) &&
+                scope.SourceRows == forces["All"][0].GetInt32() && scope.RequiredRows == raw.ForceRows.Count &&
+                scope.ContextOnlyRows == scope.SourceRows - scope.RequiredRows && scope.ContextOnlyRows >= 0 &&
+                !string.IsNullOrWhiteSpace(scope.ContextDisposition) &&
+                raw.ForceRows.Select(row => row.SourceRowIndex).Order().SequenceEqual(columns["All"][1].Select((value, index) => (Owner: value.GetString()!, index))
+                    .Where(item => required.Contains(item.Owner)).Select(item => item.index)),
+                "ETABS.ROW_ACCOUNTING", "The whole-source group scope does not account for every required and context-only original row.");
+        }
         foreach (var row in raw.ForceRows)
         {
-            var force = forces[row.ObjectId];
+            var key = scope is null ? row.ObjectId : "All";
+            var force = columns[key];
             var index = row.SourceRowIndex;
-            Require(index >= 0 && index < force[0].GetInt32() && force[1][index].GetString() == row.ObjectId &&
+            Require(index >= 0 && index < forces[key][0].GetInt32() && force[1][index].GetString() == row.ObjectId &&
                 force[2][index].GetDouble() == row.ObjectStation && force[3][index].GetString() == row.AnalysisElementId &&
                 force[4][index].GetDouble() == row.ElementStation && force[5][index].GetString() == row.OutputCaseName &&
                 force[6][index].GetString() == "Single Value" && force[7][index].GetDouble() == 0 && row.StepNumber is null &&

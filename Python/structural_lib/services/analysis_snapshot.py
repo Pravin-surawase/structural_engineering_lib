@@ -35,8 +35,33 @@ CANONICALIZATION_VERSION = "pf4-canonical-json-v1"
 MAXIMUM_SNAPSHOT_BYTES = 25_000_000
 SNAPSHOT_TRANSPORT_SCHEMA = "structural.analysis_snapshot_gzip/v1"
 SNAPSHOT_TRANSPORT_HEADER = b"STRUCTSNAP-GZIP-1\n"
+SNAPSHOT_ROWS_TRANSPORT_HEADER = b"STRUCTSNAP-ROWS-1\n"
 MAXIMUM_TRANSPORT_BYTES = 64 * 1024 * 1024
 MAXIMUM_EXPANDED_SNAPSHOT_BYTES = 256 * 1024 * 1024
+# Frozen rows-1 wire columns. Containers and all raw source evidence remain objects;
+# only these repeated leaf records replace property names with positional columns.
+_PACKED_ACTION_COLUMNS = (
+    "action_basis", "analysis_element_id", "force_unit", "m2_knm", "m3_knm",
+    "member_id", "moment_unit", "object_id", "output_case_name", "p_kn", "provenance",
+    "row_id", "selection_id", "source_row_id", "station_id", "step_number", "step_type",
+    "t_knm", "v2_kn", "v3_kn",
+)
+_PACKED_STATION_COLUMNS = (
+    "analysis_element_id", "element_station_mm", "evidence_reference", "member_id",
+    "normalized_ratio", "object_id", "object_station_mm", "physical_station_mm", "side", "station_id",
+)
+_PACKED_DISPOSITION_COLUMNS = (
+    "approval_reference", "canonical_id", "diagnostic_codes", "disposition",
+    "reason_code", "record_kind", "source_record_id",
+)
+_PACKED_RAW_FORCE_COLUMNS = (
+    "analysis_element_id", "element_station", "m2", "m3", "object_id", "object_station",
+    "output_case_name", "p", "source_row_id", "source_row_index", "step_number", "step_type", "t", "v2", "v3",
+)
+_PACKED_PROVENANCE_COLUMNS = (
+    "call_id", "concurrency_basis", "evidence_reference", "getter_method",
+    "signature_authority_sha256", "source_row_index",
+)
 _PROVENANCE = SnapshotProvenanceV1(
     source_references=(
         "PF4 engineering semantic model",
@@ -265,7 +290,8 @@ def parse_analysis_snapshot_transport(payload: bytes) -> EtabsSnapshotResultV1:
     The legacy uncompressed JSON input limit remains unchanged.
     """
     try:
-        if len(payload) > MAXIMUM_TRANSPORT_BYTES or not payload.startswith(SNAPSHOT_TRANSPORT_HEADER):
+        compact = payload.startswith(SNAPSHOT_ROWS_TRANSPORT_HEADER)
+        if len(payload) > MAXIMUM_TRANSPORT_BYTES or not (compact or payload.startswith(SNAPSHOT_TRANSPORT_HEADER)):
             raise ValueError("unsupported or oversized snapshot transport")
         with gzip.GzipFile(fileobj=io.BytesIO(payload[len(SNAPSHOT_TRANSPORT_HEADER):])) as reader:
             expanded = reader.read(MAXIMUM_EXPANDED_SNAPSHOT_BYTES + 1)
@@ -275,7 +301,13 @@ def parse_analysis_snapshot_transport(payload: bytes) -> EtabsSnapshotResultV1:
         if crc != zlib.crc32(expanded) or size != len(expanded):
             raise ValueError("snapshot requires one complete gzip member with its matching footer")
         text = expanded.decode("utf-8")
-        _decode_json(text)
+        document = _decode_json(text)
+        if compact:
+            _expand_snapshot_rows(document)
+            # Strict JSON-mode validation preserves the original enum/type rules.
+            # The bounded wire payload is decoded into the identical logical v1 records.
+            text = json.dumps(document, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
+        del document, expanded
         snapshot = AnalysisSnapshotV1.model_validate_json(text)
         if len(snapshot.members) > 1000 or len(snapshot.action_rows) > 100_000:
             raise ValueError("snapshot exceeds the transport member or action-row limit")
@@ -283,6 +315,27 @@ def parse_analysis_snapshot_transport(payload: bytes) -> EtabsSnapshotResultV1:
         return _rejected("INPUT.SCHEMA", "$", f"The compressed snapshot does not match its bounded v1 schema: {exc}",
                          "Restore a complete supported snapshot within the transport limits.")
     return validate_analysis_snapshot(snapshot)
+
+
+def _expand_snapshot_rows(document: dict[str, Any]) -> None:
+    def row(value: Any, columns: tuple[str, ...]) -> dict[str, Any]:
+        if not isinstance(value, list) or len(value) != len(columns):
+            raise ValueError(f"a rows-1 record requires exactly {len(columns)} positional columns")
+        return dict(zip(columns, value, strict=True))
+
+    def collection(container: Any, name: str, columns: tuple[str, ...]) -> list[dict[str, Any]]:
+        if not isinstance(container, dict) or not isinstance(container.get(name), list):
+            raise ValueError(f"rows-1 requires a complete {name} array")
+        result = [row(value, columns) for value in container[name]]
+        container[name] = result
+        return result
+
+    actions = collection(document, "action_rows", _PACKED_ACTION_COLUMNS)
+    for action in actions:
+        action["provenance"] = row(action["provenance"], _PACKED_PROVENANCE_COLUMNS)
+    collection(document, "stations", _PACKED_STATION_COLUMNS)
+    collection(document.get("row_ledger"), "rows", _PACKED_DISPOSITION_COLUMNS)
+    collection(document.get("raw_capture"), "force_rows", _PACKED_RAW_FORCE_COLUMNS)
 
 
 def _ids(values: Iterable[Any], attribute: str) -> list[str]:
