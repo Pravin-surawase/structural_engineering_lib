@@ -629,6 +629,17 @@ authorized by the sequencing change.
 
 ### Bounded units and progress
 
+**Integrity replan — 7 September:** the signed `6f48c112` candidate passed
+installed connection/offline acceptance and actual 1,000-member / 100,000-row
+worker admission, but final read-only integrity rejected mixed CRLF/LF in two
+PowerShell packaging scripts. The C# formatter does not select `.ps1`, and Git
+had no explicit LF rule for that extension. The replacement contract requires
+an explicit PowerShell LF attribute, normalization of the task's complete changed
+PowerShell path union, and a focused byte-integrity check before candidate audit.
+Preserve the failed verdict and passing functional evidence. No production logic
+changes are needed. Bind the replacement package and installed receipts to its
+exact new source/tree; repeat no broad suite or PF9 trial for this byte-only fix.
+
 | Unit | Outcome and acceptance | State |
 |---|---|---|
 | U1 — Scope and source proof | Freeze force request/result and batch evidence semantics; inspect actual installed getter signatures and a source-model readiness probe; identify all source/model/selection units and material-type evidence without inferring from names. | Implemented and source-qualified; exact group/rows production identities are in the package manifest |

@@ -32,6 +32,12 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Progress
 
+- `6f48c112` passed independent source audit, signed installed connection/offline
+  acceptance and actual packaged 1,000-member / 100,000-row worker/store capture.
+  Final integrity rejected mixed endings in two PowerShell packaging scripts.
+  Recorded INTEGRITY_REJECTED and the required REPLAN. The revised acceptance
+  adds the missing `.ps1` LF attribute and full-task PowerShell byte normalization
+  before the replacement candidate; production behavior is unchanged.
 - The exact `06d27bde` candidate passed installed offline/legacy acceptance but
   failed the force harness: its initial zero-worker poll preceded background
   dispatch, so a 15-second session wait closed Excel during the full capture.
@@ -235,6 +241,13 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Issues encountered
 
+- Final read-only integrity rejected mixed CRLF/LF in
+  `Invoke-EtabsConnectionAcceptance.ps1` and `New-Distribution.ps1` after the
+  language formatter passed. Installed functional receipts remained successful.
+- Three final-closeout lookups repeated absent path/subcommand assumptions:
+  `session_delivery.py`, `.github/hooks`, and `session prepare`; the known
+  `session.py`, bounded inventory and `session handoff --help` supplied the owners.
+
 - Installed acceptance observed zero active workers before Task.Run had started
   the read. It incorrectly treated that as finished cleanup and timed out the
   complete-model session after 15 seconds. Its own workbook close then cancelled
@@ -365,6 +378,14 @@ and integrated qualification against the whole-product goal; learning excluded.
   OS access denied; the launch cause is unconfirmed.
 
 ### Root causes and resolutions
+
+- RR-013: `.ps1` had no explicit LF checkout attribute and the maintained
+  language formatter selects only Python/C# source. Mixed editor/patch endings
+  therefore survived to immutable integrity. Declare PowerShell LF, normalize
+  all task-changed PowerShell files and verify their exact bytes before the
+  replacement audit; keep the failed original gate and source-bound receipts.
+- RR-005: final-closeout owner lookup again assumed names instead of using the
+  already discovered `session.py` and actual CLI help. Corrected the bounded reads.
 
 - RR-002: an asynchronous dispatch gap invalidated the harness's assumed
   zero-worker-to-completion ordering. Wait for the accepted session first using
@@ -523,6 +544,8 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Rework and recurrence
 
+- RR-013, occurrences=5, minutes=unknown: explicit PowerShell LF attributes and
+  full-task changed-text normalization before immutable candidate integrity.
 - RR-003, occurrences=7, minutes=unknown: stage reviewed new evidence records
   before tracked-caller gates and retry only the affected preparation checks.
 - RR-033, occurrences=1, minutes=unknown: replay frozen source-bound evidence
@@ -531,7 +554,7 @@ and integrated qualification against the whole-product goal; learning excluded.
   parser-owned section and regenerate the handoff before final freeze.
 - RR-032, occurrences=1, minutes=unknown: use ReplaceFile for progress publication
   and tolerate only its observed transient read-open errors on bounded polling.
-- RR-005, occurrences=100, minutes=unknown: source-owner/key lookups, typed
+- RR-005, occurrences=103, minutes=unknown: source-owner/key lookups, typed
   PowerShell dispatch and test-wrapper/filter forms required correction; use
   discovered owners, exact types and the runner's observed command grammar.
 - RR-002, occurrences=28, minutes=unknown: actual result availability, mesh
