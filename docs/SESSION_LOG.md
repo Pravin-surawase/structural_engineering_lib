@@ -32,6 +32,13 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Progress
 
+- PR #981 run `34089055831` passed Repository, Documentation, FastAPI and .NET
+  validation but failed Python mypy with 27 diagnostics in one row-accounting
+  function. One reused loop variable had retained the first record's static
+  type across heterogeneous records. The repair uses typed role-specific names;
+  binding conditions, canonical identities and admission checks are unchanged.
+  Record the failed hosted run and repeat its affected type/replay evidence,
+  exact candidate review/installation and the same PR's required checks.
 - `6f48c112` passed independent source audit, signed installed connection/offline
   acceptance and actual packaged 1,000-member / 100,000-row worker/store capture.
   Final integrity rejected mixed endings in two PowerShell packaging scripts.
@@ -241,6 +248,11 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Issues encountered
 
+- Hosted Python type validation rejected the heterogeneous row-binding loops
+  despite passing runtime tests. The original run and all diagnostics are retained.
+- The published branch initially lacked a recognized local upstream because
+  this checkout fetches explicit branch names; the new branch mapping was absent.
+
 - Final read-only integrity rejected mixed CRLF/LF in
   `Invoke-EtabsConnectionAcceptance.ps1` and `New-Distribution.ps1` after the
   language formatter passed. Installed functional receipts remained successful.
@@ -378,6 +390,14 @@ and integrated qualification against the whole-product goal; learning excluded.
   OS access denied; the launch cause is unconfirmed.
 
 ### Root causes and resolutions
+
+- RR-034: Python loop variables have function scope. Reusing `item` for points,
+  materials, sections and ledger entries caused mypy to retain the first inferred
+  type. Use role-specific names and run the configured mypy owner plus affected
+  snapshot tests/replay; do not suppress types or change binding semantics.
+- RR-009: the new task's fetch refspec was absent from this narrow checkout.
+  Added/fetched only its explicit mapping; canonical Git state now proves local
+  HEAD equals its upstream. No shared history was rewritten.
 
 - RR-013: `.ps1` had no explicit LF checkout attribute and the maintained
   language formatter selects only Python/C# source. Mixed editor/patch endings
@@ -544,6 +564,10 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Rework and recurrence
 
+- RR-034, occurrences=1, minutes=unknown: name heterogeneous binding-loop values
+  by their typed roles and verify the configured type checker before republishing.
+- RR-009, occurrences=2, minutes=unknown: admit/fetch the exact task branch in
+  narrow-fetch checkouts before asserting upstream equality.
 - RR-013, occurrences=5, minutes=unknown: explicit PowerShell LF attributes and
   full-task changed-text normalization before immutable candidate integrity.
 - RR-003, occurrences=7, minutes=unknown: stage reviewed new evidence records

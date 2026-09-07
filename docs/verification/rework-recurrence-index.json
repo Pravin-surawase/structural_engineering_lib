@@ -138,14 +138,14 @@
     {
       "id": "RR-009",
       "pattern": "Narrow fetch refspec leaves a newly pushed task branch without a recognized upstream",
-      "occurrences": 1,
+      "occurrences": 2,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The first delivery-redesign push wrote branch configuration, but upstream equality remained unavailable until the exact branch refspec was added and fetched; the retry was not separately timed."
+        "basis": "The first delivery-redesign push wrote branch configuration, but upstream equality remained unavailable until the exact branch refspec was added and fetched; the retry was not separately timed. WP10 PR981 published successfully, but the narrow fetch configuration omitted its tracking ref. Added and fetched only the exact task mapping; canonical state confirmed equal upstream. Untimed."
       },
       "short_solution": "Add and fetch the exact task-branch refspec before relying on upstream equality in a narrow-fetch checkout.",
-      "last_seen_task": "DELIVERY-SYSTEM-REDESIGN",
+      "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -540,6 +540,22 @@
         "basis": "WP10 source edits correctly changed get_library_content_identity and downstream calculation/dossier hashes. The old Office.js transport test compared current calculations with a frozen historical identity. Exact historical dossier replay passed without changing hashes or the fixture. The repaired test retains that exact replay plus current-export checks; all 13 tests in the two affected verification modules passed. Untimed."
       },
       "short_solution": "Replay historical transport from its exact retained dossier; validate current exports using their own source-bound identities without regenerating or weakening frozen evidence.",
+      "last_seen_task": "WP10-COMPLETION",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
+    },
+    {
+      "id": "RR-034",
+      "pattern": "A Python binding loop reuses one inferred variable across heterogeneous record types",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "WP10 PR981 hosted run34089055831 reported27 mypy errors in one row-accounting function although runtime tests passed. Reused function-scoped item retained the first point type across material/member/station/ledger loops. Role-specific names preserve semantics and remove the conflict. Untimed."
+      },
+      "short_solution": "Use role-specific variables for heterogeneous typed records and verify the configured mypy owner with affected runtime replay before republishing.",
       "last_seen_task": "WP10-COMPLETION",
       "aggregate_parent": null,
       "details": [

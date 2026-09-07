@@ -6,7 +6,7 @@
 - Date: 2026-09-07
 - Focus: Finish the product's read-only ETABS force handoff, multi-member data and integrated qualification against the whole-product goal; learning excluded.
 - Completed: Implemented WP10's complete group acquisition, explicit model interpretation, versioned compact transport and production Excel worker/store handoff.; Verified actual reference and 1,000-member / 100,000-row capture, exact offline reopen and cancellation, plus independent Python replay and source equality.; Reconciled the final functional completion contract and deferred PF9 speed/ memory work to WP10-PERF-FINAL under the owner's amended order.
-- Recurrence controls: RR-013 x5 / unknown: Declare LF for maintained source and PowerShell files; normalize the full task candidate text union before freeze and verify exact bytes before audit.; RR-003 x7 / unknown: Finish code, docs and generated projections before freeze; serialize mutations against formatting, then run read-only integrity after acceptance.; RR-033 x1 / unknown: Replay historical transport from its exact retained dossier; validate current exports using their own source-bound identities without regenerating or weakening frozen evidence.
+- Recurrence controls: RR-034 x1 / unknown: Use role-specific variables for heterogeneous typed records and verify the configured mypy owner with affected runtime replay before republishing.; RR-009 x2 / unknown: Add and fetch the exact task-branch refspec before relying on upstream equality in a narrow-fetch checkout.; RR-013 x5 / unknown: Declare LF for maintained source and PowerShell files; normalize the full task candidate text union before freeze and verify exact bytes before audit.
 <!-- HANDOFF:END -->
 
 ## Current boundary

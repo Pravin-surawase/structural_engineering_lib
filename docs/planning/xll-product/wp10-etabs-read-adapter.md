@@ -629,6 +629,14 @@ authorized by the sequencing change.
 
 ### Bounded units and progress
 
+**Hosted repair — PR #981:** run `34089055831` passed Repository,
+Documentation, FastAPI and .NET but failed Python type validation. Replace the
+row-accounting function's reused heterogeneous loop variable with role-specific
+names, preserving every binding condition and identifier. Verify the configured
+mypy owner, affected snapshot tests and independent retained replay, then bind
+the repair candidate's review, installed evidence and hosted verdict. No new
+feature, broad-suite rerun or performance experiment is required by this repair.
+
 **Integrity replan — 7 September:** the signed `6f48c112` candidate passed
 installed connection/offline acceptance and actual 1,000-member / 100,000-row
 worker admission, but final read-only integrity rejected mixed CRLF/LF in two

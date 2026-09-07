@@ -963,30 +963,34 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
         snapshot.metadata.evidence_reference,
         snapshot.metadata.project_id,
     )
-    for item in snapshot.points:
-        bind(RawModelRecordKind.POINT, item.evidence_reference, item.point_id)
-    for item in snapshot.materials:
-        bind(RawModelRecordKind.MATERIAL, item.evidence_reference, item.material_id)
-    for item in snapshot.sections:
-        bind(RawModelRecordKind.SECTION, item.evidence_reference, item.section_id)
-    for item in snapshot.members:
-        bind(RawModelRecordKind.MEMBER, item.evidence_reference, item.member_id)
-    for item in snapshot.load_cases:
-        bind(RawModelRecordKind.LOAD_CASE, item.evidence_reference, item.case_id)
-    for item in snapshot.load_combinations:
+    for point in snapshot.points:
+        bind(RawModelRecordKind.POINT, point.evidence_reference, point.point_id)
+    for material in snapshot.materials:
+        bind(
+            RawModelRecordKind.MATERIAL,
+            material.evidence_reference,
+            material.material_id,
+        )
+    for section in snapshot.sections:
+        bind(RawModelRecordKind.SECTION, section.evidence_reference, section.section_id)
+    for member in snapshot.members:
+        bind(RawModelRecordKind.MEMBER, member.evidence_reference, member.member_id)
+    for case in snapshot.load_cases:
+        bind(RawModelRecordKind.LOAD_CASE, case.evidence_reference, case.case_id)
+    for combination in snapshot.load_combinations:
         bind(
             RawModelRecordKind.LOAD_COMBINATION,
-            item.evidence_reference,
-            item.combination_id,
+            combination.evidence_reference,
+            combination.combination_id,
         )
-    for item in snapshot.result_selections:
+    for selection in snapshot.result_selections:
         bind(
             RawModelRecordKind.RESULT_SELECTION,
-            item.evidence_reference,
-            item.selection_id,
+            selection.evidence_reference,
+            selection.selection_id,
         )
-    for item in snapshot.stations:
-        bind(RawModelRecordKind.STATION, item.evidence_reference, item.station_id)
+    for station in snapshot.stations:
+        bind(RawModelRecordKind.STATION, station.evidence_reference, station.station_id)
     expected_model_rows: dict[str, tuple[str, str]] = {}
     for raw in snapshot.raw_capture.model_records:
         matches = model_bindings.get((raw.record_kind, raw.source_record_id), [])
@@ -1001,13 +1005,15 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
             raw.record_kind.value,
             matches[0],
         )
-    for item in ledger.rows:
-        if item.source_record_id in expected_model_rows:
-            expected_kind, expected_id = expected_model_rows[item.source_record_id]
+    for disposition in ledger.rows:
+        if disposition.source_record_id in expected_model_rows:
+            expected_kind, expected_id = expected_model_rows[
+                disposition.source_record_id
+            ]
             if (
-                item.record_kind != expected_kind
-                or item.disposition is not RowDisposition.ACCEPTED
-                or item.canonical_id != expected_id
+                disposition.record_kind != expected_kind
+                or disposition.disposition is not RowDisposition.ACCEPTED
+                or disposition.canonical_id != expected_id
             ):
                 return _blocked(
                     "ETABS.ROW_ACCOUNTING",
@@ -1015,11 +1021,12 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
                     "An accepted model row is not bound to its canonical kind and identity.",
                     "Bind each accepted raw model row to its matching canonical model fact.",
                 )
-        elif item.source_record_id in action_by_source:
+        elif disposition.source_record_id in action_by_source:
             if (
-                item.record_kind != "force_row"
-                or item.disposition is not RowDisposition.ACCEPTED
-                or item.canonical_id != action_by_source[item.source_record_id]
+                disposition.record_kind != "force_row"
+                or disposition.disposition is not RowDisposition.ACCEPTED
+                or disposition.canonical_id
+                != action_by_source[disposition.source_record_id]
             ):
                 return _blocked(
                     "ETABS.ROW_ACCOUNTING",
@@ -1028,8 +1035,8 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
                     "Bind each accepted raw force row to its action-row identity.",
                 )
         elif (
-            item.record_kind == "force_row"
-            and item.disposition is RowDisposition.ACCEPTED
+            disposition.record_kind == "force_row"
+            and disposition.disposition is RowDisposition.ACCEPTED
         ):
             return _blocked(
                 "ETABS.ROW_ACCOUNTING",
