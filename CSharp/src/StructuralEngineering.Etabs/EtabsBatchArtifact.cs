@@ -35,9 +35,10 @@ public static class EtabsBatchArtifactCodec
         var content = artifact.Content;
         var capture = content.Capture;
         var ledger = content.CallLedger;
+        var matrixSha = capture?.ProfileId == EtabsBulkGetterMatrix.ProfileId ? EtabsBulkGetterMatrix.Sha256 : EtabsForceGetterMatrix.Sha256;
         if (string.IsNullOrWhiteSpace(content.OperationId) || string.IsNullOrWhiteSpace(content.LeaseKey) ||
             content.StartedUtc >= content.CompletedUtc || capture is null || ledger is null ||
-            capture.ProfileId != EtabsForceGetterMatrix.ProfileId || capture.GetterMatrixSha256 != EtabsForceGetterMatrix.Sha256 ||
+            capture.ProfileId is not (EtabsForceGetterMatrix.ProfileId or EtabsBulkGetterMatrix.ProfileId) || capture.GetterMatrixSha256 != matrixSha ||
             content.HostIdentityBefore != content.HostIdentityAfter || capture.HostIdentity != content.HostIdentityBefore ||
             content.StartedUtc > capture.StartedUtc || capture.StartedUtc > capture.CompletedUtc || capture.CompletedUtc > content.CompletedUtc ||
             capture.Preflight.Sha256 != capture.Postflight.Sha256 ||
@@ -61,7 +62,7 @@ public static class EtabsBatchArtifactCodec
                 start.PreviousRecordSha256 != previous || end.PreviousRecordSha256 != start.RecordSha256 ||
                 start.ReturnCode is not null || start.RawShape is not null || end.ReturnCode != 0 || string.IsNullOrWhiteSpace(end.RawShape) ||
                 start.ArgumentsSha256 != end.ArgumentsSha256 ||
-                start.SignatureAuthoritySha256 != EtabsForceGetterMatrix.Sha256 || end.SignatureAuthoritySha256 != EtabsForceGetterMatrix.Sha256 ||
+                start.SignatureAuthoritySha256 != matrixSha || end.SignatureAuthoritySha256 != matrixSha ||
                 start.RecordSha256 != AnalysisSnapshotCodec.CallRecordSha256(start) || end.RecordSha256 != AnalysisSnapshotCodec.CallRecordSha256(end))
                 throw new InvalidDataException("The batch ledger is unpaired, failed, or hash-invalid.");
             previous = end.RecordSha256;

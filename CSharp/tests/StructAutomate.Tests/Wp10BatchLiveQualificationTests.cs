@@ -65,9 +65,11 @@ public sealed class Wp10BatchLiveQualificationTests
             ? context.Frames.Where(frame => frame.DesignOrientation == EtabsFrameDesignOrientation.Beam).Select(frame => frame.SourceFrameId).ToArray()
             : explicitMembers.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         var watch = System.Diagnostics.Stopwatch.StartNew();
+        var bulk = Environment.GetEnvironmentVariable("WP10_BATCH_PROFILE") == "bulk";
         var batchHandle = new EtabsBatchOperationBroker().Start(new("live-forces", target.ProcessId, deadline, Path.Combine(directory!, "forces.json")),
-            () => EtabsReflectionGetterHost.AttachForces(EtabsHostDiscovery.Discover(target)),
-            (host, token) => EtabsLiveGetterProbe.RunBatch(host, new(requestSha, context, members, deadline), token), TestContext.Current.CancellationToken);
+            () => bulk ? EtabsReflectionGetterHost.AttachBulk(EtabsHostDiscovery.Discover(target)) : EtabsReflectionGetterHost.AttachForces(EtabsHostDiscovery.Discover(target)),
+            (host, token) => bulk ? EtabsLiveGetterProbe.RunBulk(host, new(requestSha, context, members, deadline), token) : EtabsLiveGetterProbe.RunBatch(host, new(requestSha, context, members, deadline), token),
+            TestContext.Current.CancellationToken, bulk ? EtabsBulkGetterMatrix.Sha256 : null);
         var batchResult = await batchHandle.Completion;
         await batchHandle.Quiescence;
         watch.Stop();
@@ -77,7 +79,14 @@ public sealed class Wp10BatchLiveQualificationTests
             var bytes = File.ReadAllBytes(batchResult.EvidencePath);
             normalized = EtabsCaptureProjector.Normalize(bytes, Sha(bytes), new("live-qualification", "wp10-shared-capture/v1", batchResult.EvidencePath,
                 new Dictionary<string, SnapshotMaterialClassification>()));
-            if (normalized.Snapshot is not null) File.WriteAllBytes(Path.Combine(directory!, "snapshot.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(normalized.Snapshot));
+            if (normalized.Snapshot is not null)
+            {
+                File.WriteAllBytes(Path.Combine(directory!, "snapshot.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(normalized.Snapshot));
+                var interpretation = EtabsModelInterpreter.Interpret(new(contextResult.Artifact!, normalized.Snapshot, members));
+                Assert.Equal(members.Length, interpretation.Beams.Count);
+                Assert.Equal(context.Frames.Count, interpretation.Frames.Count);
+                File.WriteAllBytes(Path.Combine(directory!, "interpretation.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(interpretation));
+            }
         }
         File.WriteAllBytes(Path.Combine(directory!, "receipt.json"), AnalysisSnapshotCodec.CanonicalJsonBytes(new
         {
@@ -86,6 +95,7 @@ public sealed class Wp10BatchLiveQualificationTests
             normalized = normalized?.Snapshot is not null, required_members = members.Length,
             source_frames = context.Frames.Count, source_points = context.Points.Count,
             captured_members = batchResult.Artifact?.Content.Capture.Members.Count,
+            profile = batchResult.Artifact?.Content.Capture.ProfileId,
             action_rows = normalized?.Snapshot?.ActionRows.Count, elapsed_ms = watch.Elapsed.TotalMilliseconds,
             batchResult.State, batchResult.DiagnosticCode, batchResult.Message, batchResult.CleanupCompleted,
             diagnostics = normalized?.Diagnostics, engineering_state = "not_evaluated"

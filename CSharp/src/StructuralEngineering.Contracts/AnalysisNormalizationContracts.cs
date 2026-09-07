@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace StructuralEngineering.Contracts;
 
@@ -36,7 +37,12 @@ public sealed record SnapshotProjectionManifest(
 
 public sealed record SourceSnapshotMetadata(
     bool ModelLocked, SnapshotAnalysisCaseStatus AnalysisStatus,
-    SnapshotNormalizationContext Context, SnapshotProjectionManifest Projection);
+    SnapshotNormalizationContext Context, SnapshotProjectionManifest Projection,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SourceSnapshotBulkProjectionEvidence? BulkProjection = null);
+
+public sealed record SourceSnapshotBulkProjectionEvidence(
+    string PolicyId, int FrameElementRows, int ContextOnlyElementRows,
+    string TableScope, string AssignmentBasis, string GeometryBasis, double CoordinateToleranceM);
 
 // Dimensional values below are in RawAnalysisCapture.SourceUnits, never canonical units.
 public sealed record SourceSnapshotPoint(string Id, string Name, double X, double Y, double Z, string Story);

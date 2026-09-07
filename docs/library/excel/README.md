@@ -54,6 +54,9 @@ XLL load:
    is created. A changed source, unsupported selection, missing analysis or
    oversized capture is rejected without importing a partial result. It does
    not start analysis or change ETABS selections, properties or dimensions.
+   The review also shows neighbouring source beams and connected columns.
+   Support faces and physical span groups remain explicit engineering inputs;
+   analysis mesh segments are not treated as construction spans.
 
 Save the workbook normally to retain assumptions and artifact references.
 Reopening permits offline review after the saved artifact is revalidated. Keep
@@ -84,9 +87,10 @@ provenance in a versioned gzip transport. Their reader bounds expanded JSON at
 hashes. The workbook's small reference identifies the transport; old saved JSON
 references remain usable. Full-model transport replay has passed for the
 retained 153-beam / 3,502-action model; the larger PF9 workload remains open.
-The Get Forces worker handoff and signed Excel development checks pass for an
-explicit two-beam scope; full-model performance and final installed acceptance
-remain in progress.
+The bulk worker/store handoff passes for all 153 beams / 3,502 rows, including
+model interpretation and cancellation. Signed Excel development checks also
+pass for an explicit two-beam scope. PF9 small/medium performance and final
+installed acceptance remain in progress.
 Automatic Design, optimisation, solver comparison and Auto Run remain later
 application work. The active packet and exact installed acceptance
 contracts are in the [WP10 read-adapter plan](../../planning/xll-product/wp10-etabs-read-adapter.md).

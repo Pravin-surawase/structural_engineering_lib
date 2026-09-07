@@ -91,7 +91,49 @@ and integrated qualification against the whole-product goal; learning excluded.
   metadata/source qualification remains the next unit. No original model or
   installed package was replaced by these development checks.
 
+- U4 now uses qualified full-precision assignment table getters, bulk source
+  geometry/connectivity and real per-object forces/transformation matrices.
+  Controlled disposable-copy perturbations passed in
+  `bulk-assignment-experiments-3`; `bulk-editing-1` retained unchanged model,
+  lock, units, statuses and probe forces. `bulk-development-3` passed 153 beams,
+  937 mesh elements and 3,502 rows in about 13.23 s broker capture. Independent
+  Python replay/comparison preserved every force component and assignment;
+  mesh coordinates differ from direct getters by at most 3.7588e-12 m.
+- One bounded subagent implemented the pure source interpretation. Parent
+  review repaired its producer binding, inspected the result and integrated
+  retained context into the memory session/review. Connectivity preserves every
+  source frame and exact shared point; support faces/physical spans/fixity are
+  explicit needs-input. The real full-model positive interpretation passed.
+  The 36-test affected adapter/session union passed with one external replay
+  skipped (35 passed); five interpreter tests passed. Final candidate checks
+  remain at U5, not per internal commit.
+- `force-client-bulk-development-1` passed the real complete model worker/store
+  and cancellation path in about 36 s, retaining a 3,668,829-byte transport,
+  exact source context interpretation and no accepted partial replacement.
+  This is development proof, not installed/PF9 qualification. Next: actual
+  100/1,000-member performance datasets, medium admission/memory, final signed
+  installed proof and the cumulative repository/hosted gate.
+- Final U4 checkpoint: independent Python replay also passed the actual compressed
+  worker output against the direct reference. All 36 portable/interpreter tests
+  and 35 adapter/session tests passed (one external-input replay skipped).
+
 ### Issues encountered
+
+- An owned assignment probe passed a Double[] through an if-expression pipeline,
+  which unrolled it to Object[] and blocked a reflected setter on the disposable
+  copy. The failed copy exited cleanly with its source preserved.
+- The initial bulk frame-table index assumed every row was a unique source frame
+  element. ETABS also supplies shell-generated line records with repeated IDs;
+  the whole capture correctly fenced before publication.
+- Parent review found the first derived-view implementation checked only that
+  process evidence was supplied, then used a conformance-fixture spelling that
+  differs from the actual capture producer. This could misbind or reject a model.
+- Two guessed C# owner paths were absent. A pipe-separated xUnit class pattern
+  selected zero tests, and forwarding --help through dotnet test triggered a
+  .NET CLI IPC error. Help extraction also produced no files despite exiting.
+- One later performance-document search again supplied an unexpanded Windows
+  wildcard path. The exact already-known plan supplied the required PF9 contract.
+
 
 - The compressed format implementation initially let malformed gzip errors
   escape the .NET diagnostic filter, and its Python rejection call omitted the
@@ -143,6 +185,23 @@ and integrated qualification against the whole-product goal; learning excluded.
   OS access denied; the launch cause is unconfirmed.
 
 ### Root causes and resolutions
+
+- RR-005: assign exact typed reflection values directly, outside an expression
+  pipeline. `bulk-assignment-experiments-2/3` passed all mutations/restorations
+  and owned-process cleanup. Discover owners before reads. Inspect the test
+  assembly's own help and use repeated `-class` filters; the affected 36-test
+  union ran with 35 passed / one intentional external skip.
+- RR-002: classify table rows by actual ObjType before unique frame indexing;
+  retain every shell/context row in the complete raw getter and expose scope
+  counts. The repaired full capture, independent reference comparison and real
+  worker/store all passed. No default or repeated shell row became a beam.
+- RR-020: absence of extracted help is not evidence. Installed exact reflection,
+  table metadata and owned getter/perturbation receipts supplied the facts.
+- RR-028: bind process/model/version/units to the actual EtabsCaptureProjector
+  producer and verify source endpoint identities/coordinates. Actual full-model
+  interpretation and worker/session proof passed; legacy fixture spellings
+  cannot substitute for live-producer acceptance.
+
 
 - RR-027: classify InvalidDataException in the stream parser and use the full
   established Python rejection signature. Independently verify the single gzip
@@ -207,11 +266,11 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Rework and recurrence
 
-- RR-005, occurrences=80, minutes=unknown: nine source-owner/key lookup
-  failures and three PowerShell conversion failures in this task; discover
-  exact names and preserve runtime types before dispatch.
-- RR-002, occurrences=23, minutes=unknown: actual result availability, mesh
-  identities and empty-table behavior required source-qualified handling.
+- RR-005, occurrences=86, minutes=unknown: source-owner/key lookups, typed
+  PowerShell dispatch and test-wrapper/filter forms required correction; use
+  discovered owners, exact types and the runner's observed command grammar.
+- RR-002, occurrences=24, minutes=unknown: actual result availability, mesh
+  identities, empty tables and mixed object-type rows required source handling.
 - RR-021, occurrences=4, minutes=unknown: enforce the full model's source cost
   and every serialization/store boundary before installed qualification.
 - RR-023, occurrences=1, minutes=unknown: align source readers with the typed
@@ -224,10 +283,16 @@ and integrated qualification against the whole-product goal; learning excluded.
   each hash operation and isolate synchronous allocation measurements.
 - RR-027, occurrences=1, minutes=unknown: explicit compressed completion and
   diagnostic checks align the two runtime readers.
+- RR-020, occurrences=2, minutes=unknown: verify help extraction output before
+  treating the process exit as evidence.
+- RR-028, occurrences=1, minutes=unknown: downstream model identity binding
+  must follow its actual producer and pass a positive producer-backed path.
 
 **Terminal handoff:** ⚠️ TERMINAL ISSUE: guessed paths and implicit PowerShell
 type conversions blocked diagnostics → observed file inventories, explicit
-reflection types and retained JSON timestamp strings resolved them.
+reflection types and retained JSON timestamp strings resolved them. Forwarded
+.NET test help failed in the CLI wrapper; direct assembly help plus repeated
+`-class` filters ran the intended focused tests.
 
 ---
 

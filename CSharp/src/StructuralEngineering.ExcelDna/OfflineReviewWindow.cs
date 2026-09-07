@@ -21,6 +21,7 @@ internal sealed class OfflineReviewWindow : Form
         RowHeadersVisible = false
     };
     private readonly FlowLayoutPanel _selection = new() { Dock = DockStyle.Top, Height = 48, Padding = new Padding(10) };
+    private readonly Label _connectivity = new() { Dock = DockStyle.Top, Height = 68, Padding = new Padding(12, 4, 12, 4), AutoEllipsis = true, Visible = false };
     private OfflineSnapshotSession? _session;
     private EtabsConnectionSession? _context;
     private Action<string>? _writeMember;
@@ -33,7 +34,7 @@ internal sealed class OfflineReviewWindow : Form
         Font = new Font("Segoe UI", 10); BackColor = Color.White; StartPosition = FormStartPosition.CenterScreen;
         _selection.Controls.Add(new Label { Text = "Member", AutoSize = true, Padding = new Padding(0, 5, 8, 0) });
         _selection.Controls.Add(_members); _selection.Controls.Add(_write);
-        Controls.Add(_actions); Controls.Add(_selection); Controls.Add(_model); Controls.Add(_cancelConnection); Controls.Add(_outcome);
+        Controls.Add(_actions); Controls.Add(_connectivity); Controls.Add(_selection); Controls.Add(_model); Controls.Add(_cancelConnection); Controls.Add(_outcome);
         _selection.Visible = _model.Visible = _actions.Visible = false;
         _members.SelectedIndexChanged += (_, _) => PopulateActions();
         _write.Click += (_, _) => { if (_members.SelectedItem is string member) _writeMember?.Invoke(member); };
@@ -55,7 +56,7 @@ internal sealed class OfflineReviewWindow : Form
     {
         _context = null; _session = session; _writeMember = writeMember;
         _selection.Visible = _model.Visible = _actions.Visible = true;
-        Width = 1120; Height = 500;
+        Width = 1120; Height = 570;
         _model.Height = 66;
         _model.Text = $"{session.Snapshot.Metadata.ModelName} • {session.Snapshot.SourceIdentity.SourceSystem} {session.Snapshot.SourceIdentity.SourceVersion}\n" +
             $"{(capturedHere ? "Captured forces" : "Offline snapshot")} • {session.Snapshot.Members.Count} captured members • {session.Snapshot.ActionRows.Count} actions • mm, kN, kNm • engineering not evaluated";
@@ -68,12 +69,14 @@ internal sealed class OfflineReviewWindow : Form
     {
         _context = null; _session = null; _writeMember = null; _members.Items.Clear(); _actions.Rows.Clear(); _model.Text = ""; _write.Enabled = false;
         _selection.Visible = _model.Visible = _actions.Visible = false;
+        _connectivity.Visible = false;
         Height = 170;
     }
 
     private void PopulateActions()
     {
         _actions.Rows.Clear(); _actions.Columns.Clear(); _write.Enabled = false;
+        _connectivity.Visible = false;
         if (_context is not null && _members.SelectedItem is string frameId)
         {
             var frame = _context.Frames[frameId];
@@ -89,9 +92,18 @@ internal sealed class OfflineReviewWindow : Form
             return;
         }
         if (_session is null || _members.SelectedItem is not string id) return;
+        if (_session.ModelInterpretation is { } interpretation)
+        {
+            var sourceId = _session.MembersById[id].ObjectId;
+            var beam = interpretation.Beams.Single(item => item.SourceBeamId == sourceId);
+            _connectivity.Text = $"Connected beams: {Names(beam.NeighbourBeamIds)} • Connected columns: {Names(beam.ConnectedColumnIds)}\n" +
+                "Support faces and physical span groups need engineering input before design or size optimization.";
+            _connectivity.Visible = true;
+        }
         foreach (var header in OfflineCommands.ActionHeaders) _actions.Columns.Add(header, header);
         foreach (var row in _session.ActionsForMember(id)) _actions.Rows.Add(OfflineCommands.ActionValues(_session, row).Cast<object>().ToArray());
         _write.Enabled = true;
+        static string Names(IReadOnlyList<string> values) => values.Count == 0 ? "none in captured source connectivity" : string.Join(", ", values);
     }
 
     public void SetPendingConnection(Action cancel)

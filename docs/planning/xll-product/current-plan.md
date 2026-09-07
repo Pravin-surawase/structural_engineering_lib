@@ -11,8 +11,9 @@ complexity: advanced
 **Active work (7 September):** finish WP10 under the
 [completion contract](wp10-etabs-read-adapter.md#wp10-completion-contract--2026-09-07).
 Assumptions/offline review and running-model connection are complete. Remaining
-units are shared existing-force capture, the worker/Excel handoff, required
-model interpretation and multi-member/installed/performance qualification.
+units are final multi-member performance/admission qualification and signed
+installed acceptance. Shared force capture, worker/store handoff and required
+source model interpretation now have complete real-model development evidence.
 Use sequential commits and one milestone PR where the accepted host boundaries
 permit. Learning is excluded from this completion task. Automatic actual-bar
 design, search and copied-model reanalysis follow WP10's accepted data path.
@@ -29,7 +30,11 @@ final installed milestone proof remain active completion work.
 The compact transport now completes the real worker/store path for all 153
 beams / 3,502 actions in the retained model. It preserves the same semantic
 snapshot evidence and fits existing encoded store limits. Direct acquisition
-remains slow; bulk source qualification and PF9 sizes are the next main work.
+was the slow reference. The bulk profile now captures the same full model in
+about 13.23 seconds with independently compared exact forces/assignments and
+qualified mesh geometry. Source connectivity and explicit needs-input support/
+span dispositions are implemented. PF9 small/medium sizes, medium memory and
+admission, final installed proof and cumulative gates are the next main work.
 
 Updated 5 September 2026 after completion of PF0–PF11, the WP01–WP08 native
 library milestone, WP09 standalone Windows Excel, and WP10-01 through WP10-04.

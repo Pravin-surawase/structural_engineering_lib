@@ -198,6 +198,13 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
         }
     }
 
+    public static EtabsReflectionGetterHost AttachBulk(EtabsHostExpectation expected)
+    {
+        var host = AttachForces(expected);
+        try { ValidateMatrix(Assembly.LoadFrom(expected.ApiAssemblyPath), EtabsBulkGetterMatrix.Allowed.Values); return host; }
+        catch { host.Dispose(); throw; }
+    }
+
     public EtabsInvocation Invoke(
         EtabsGetterDefinition definition,
         IReadOnlyList<object?> inputs,
@@ -207,7 +214,8 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
         cancellationToken.ThrowIfCancellationRequested();
         if ((!EtabsGetterMatrix.Allowed.TryGetValue(definition.Operation, out var frozen) || frozen != definition) &&
             (!EtabsContextGetterMatrix.Allowed.TryGetValue(definition.Operation, out frozen) || frozen != definition) &&
-            (!EtabsForceGetterMatrix.Allowed.TryGetValue(definition.Operation, out frozen) || frozen != definition))
+            (!EtabsForceGetterMatrix.Allowed.TryGetValue(definition.Operation, out frozen) || frozen != definition) &&
+            (!EtabsBulkGetterMatrix.Allowed.TryGetValue(definition.Operation, out frozen) || frozen != definition))
             throw new InvalidOperationException("Only an unchanged frozen getter definition may be invoked.");
 
         var target = ResolveObject(definition.ObjectPath);
@@ -222,7 +230,7 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
         for (var index = 0; index < parameters.Length; index++)
         {
             var parameter = parameters[index];
-            if (parameter.ParameterType.IsByRef)
+            if (parameter.ParameterType.IsByRef && !definition.InputNames.Contains(parameter.Name, StringComparer.Ordinal))
             {
                 arguments[index] = DefaultFor(parameter.ParameterType.GetElementType()!);
                 continue;
@@ -236,7 +244,7 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
             else
                 throw new ArgumentException(
                     $"{definition.Operation} requires input {parameter.Name}.", nameof(inputs));
-            arguments[index] = CoerceInput(value, parameter.ParameterType, parameter.Name ?? $"arg{index}");
+            arguments[index] = CoerceInput(value, parameter.ParameterType.IsByRef ? parameter.ParameterType.GetElementType()! : parameter.ParameterType, parameter.Name ?? $"arg{index}");
         }
         if (inputIndex != inputs.Count)
             throw new ArgumentException(
@@ -313,12 +321,12 @@ public sealed class EtabsReflectionGetterHost : IEtabsGetterHost
             if (!string.Equals(method.ToString(), definition.ManagedSignature, StringComparison.Ordinal))
                 throw new InvalidOperationException(
                     $"Installed signature drift for {definition.Operation}: {method}.");
-            var inputs = method.GetParameters().Count(parameter => !parameter.ParameterType.IsByRef);
+            var inputs = method.GetParameters().Count(parameter => !parameter.ParameterType.IsByRef || definition.InputNames.Contains(parameter.Name, StringComparer.Ordinal));
             var outputs = method.GetParameters().Count(parameter => parameter.ParameterType.IsByRef);
             if (inputs != definition.InputNames.Count || outputs != definition.OutputNames.Count)
                 throw new InvalidOperationException($"Frozen parameter-direction drift for {definition.Operation}.");
             var inputNames = method.GetParameters()
-                .Where(parameter => !parameter.ParameterType.IsByRef)
+                .Where(parameter => !parameter.ParameterType.IsByRef || definition.InputNames.Contains(parameter.Name, StringComparer.Ordinal))
                 .Select(parameter => parameter.Name ?? string.Empty);
             var outputNames = method.GetParameters()
                 .Where(parameter => parameter.ParameterType.IsByRef)

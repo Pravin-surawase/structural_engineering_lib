@@ -11,7 +11,7 @@ public sealed record EtabsNormalizationOptions(
     IReadOnlyDictionary<string, SnapshotMaterialClassification> MaterialClassifications);
 
 /// <summary>Decodes a durable capture without a getter host, broker, clock, or application.</summary>
-public static class EtabsCaptureProjector
+public static partial class EtabsCaptureProjector
 {
     public static EtabsSnapshotResult Normalize(ReadOnlyMemory<byte> bytes, string expectedFileSha256, EtabsNormalizationOptions options)
     {
@@ -46,7 +46,7 @@ public static class EtabsCaptureProjector
                 source.HostIdentity, source.StartedUtc, source.CompletedUtc, source.Preflight, source.Postflight,
                 source.Preflight.CaseSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
                 source.Preflight.CombinationSelections.Where(item => item.Value).Select(item => item.Key).ToArray(),
-                source.Members, source.Calls, true), expectedFileSha256, options);
+                source.Members, source.Calls, true, source.ProfileId == EtabsBulkGetterMatrix.ProfileId, source.Context), expectedFileSha256, options);
         }
         var artifact = EtabsAcquisitionArtifactCodec.ParseAndValidate(new UTF8Encoding(false, true).GetString(bytes.Span));
         var content = artifact.Content;
@@ -70,7 +70,7 @@ public static class EtabsCaptureProjector
         SnapshotCallLedger CallLedger, JsonElement AcquisitionEvidence, EtabsHostIdentity Host,
         DateTimeOffset CaptureStartedUtc, DateTimeOffset CaptureCompletedUtc, EtabsProtectedState Preflight, EtabsProtectedState Postflight,
         IReadOnlyList<string> SelectedCases, IReadOnlyList<string> SelectedCombinations,
-        IReadOnlyList<EtabsMemberCaptureSummary> Members, IReadOnlyList<EtabsRawGetterCall> Calls, bool Batch);
+        IReadOnlyList<EtabsMemberCaptureSummary> Members, IReadOnlyList<EtabsRawGetterCall> Calls, bool Batch, bool Bulk = false, EtabsContextInventory? Context = null);
 
     private static RawAnalysisCapture ProjectCore(ProjectionInput capture, string expectedFileSha256, EtabsNormalizationOptions options)
     {
@@ -78,8 +78,8 @@ public static class EtabsCaptureProjector
         Need(!string.IsNullOrWhiteSpace(options.ProjectId) && !string.IsNullOrWhiteSpace(options.AdapterBuildId) &&
             !string.IsNullOrWhiteSpace(options.EvidenceReference), "Project, build and evidence context must be explicit.");
         Need(host.ApiFileVersion == "2.16.0.0" && host.EtabsApiVersion == "23.3.1", "The runtime version is outside the qualified profile.");
-        var matrix = capture.Batch ? EtabsForceGetterMatrix.Allowed : EtabsGetterMatrix.Allowed;
-        var matrixSha = capture.Batch ? EtabsForceGetterMatrix.Sha256 : EtabsGetterMatrix.Sha256;
+        var matrix = capture.Bulk ? EtabsBulkGetterMatrix.Allowed : capture.Batch ? EtabsForceGetterMatrix.Allowed : EtabsGetterMatrix.Allowed;
+        var matrixSha = capture.Bulk ? EtabsBulkGetterMatrix.Sha256 : capture.Batch ? EtabsForceGetterMatrix.Sha256 : EtabsGetterMatrix.Sha256;
         var calls = capture.Calls.Select((call, index) => new Call(call, index + 1)).ToArray();
         var operations = calls.Select(item => item.Raw.Operation).ToHashSet(StringComparer.Ordinal);
         Need(capture.Batch ? operations.IsSubsetOf(matrix.Keys) : operations.SetEquals(matrix.Keys),
@@ -153,6 +153,44 @@ public static class EtabsCaptureProjector
         }
         var classifications = new Dictionary<string, SnapshotMaterialClassification>(options.MaterialClassifications, StringComparer.Ordinal);
         var elementOwners = new Dictionary<string, string>(StringComparer.Ordinal);
+        SourceSnapshotBulkProjectionEvidence? bulkEvidence = null;
+        void AddProperties(EtabsMemberCaptureSummary member)
+        {
+        var rectangle = One("PropFrame.GetRectangle", member.SectionName);
+        var material = One("PropFrame.GetMaterial", member.SectionName).Text(0);
+        Need(material == rectangle.Text(1) && material == member.MaterialName, "The section material getters disagree.");
+        var sectionProperties = One("PropFrame.GetSectProps", member.SectionName);
+        Add(RawModelRecordKind.Section, Source("section", member.SectionName), new SourceSnapshotSection(
+            Id("section", member.SectionName), member.SectionName, Id("material", material),
+            sectionProperties.Number(0), sectionProperties.Number(3), sectionProperties.Number(4), sectionProperties.Number(5),
+            rectangle.Number(3), rectangle.Number(2), One("PropFrame.GetModifiers", member.SectionName).Doubles(0)));
+        var elastic = One("PropMaterial.GetMPIsotropic", material);
+        var mass = One("PropMaterial.GetWeightAndMass", material);
+        Need(elastic.Inputs[1].GetDouble() == 0 && mass.Inputs[1].GetDouble() == 0, "Temperature-dependent material sampling is outside the frozen policy.");
+        Add(RawModelRecordKind.Material, Source("material", material), new SourceSnapshotMaterial(Id("material", material),
+            material, elastic.Number(0), elastic.Number(1), mass.Number(1)));
+        if (capture.Batch)
+        {
+            var classification = One("PropMaterial.GetTypeOAPI", material);
+            Need(classification.Integer(0) == 2, "This beam profile requires a source-classified concrete material.");
+            classifications[material] = new("concrete", $"{options.EvidenceReference}#getter-{classification.Ordinal}");
+            if (!capture.Bulk) Need(One("FrameObj.GetDesignOrientation", member.ObjectName).Integer(0) == 2, "The member is not a source-classified beam.");
+        }
+        }
+        if (capture.Bulk)
+        {
+            var model = ProjectBulkModel(capture, One);
+            bulkEvidence = model.Evidence;
+            foreach (var point in model.Points) Add(RawModelRecordKind.Point, Source("point", point.Name), point);
+            foreach (var member in model.Members)
+            {
+                AddProperties(capture.Members.Single(item => item.ObjectName == member.ObjectId));
+                Add(RawModelRecordKind.Member, Source("member", member.ObjectId), member);
+                foreach (var element in member.Elements) Need(elementOwners.TryAdd(element.Id, member.ObjectId), "An analysis element has multiple owners.");
+            }
+        }
+        else
+        {
         var analysisPointStories = capture.Members.SelectMany(member => member.ElementNames.SelectMany(element =>
             One("LineElm.GetPoints", element).StringsFromOutputs().Select(point => (Point: point, member.Story))))
             .GroupBy(item => item.Point, StringComparer.Ordinal).ToDictionary(group => group.Key,
@@ -197,26 +235,7 @@ public static class EtabsCaptureProjector
         }
         var assignment = One("FrameObj.GetSection", memberName);
         Need(assignment.Text(0) == member.SectionName, "The section summary differs from the actual assignment.");
-        var rectangle = One("PropFrame.GetRectangle", member.SectionName);
-        var material = One("PropFrame.GetMaterial", member.SectionName).Text(0);
-        Need(material == rectangle.Text(1) && material == member.MaterialName, "The section material getters disagree.");
-        var sectionProperties = One("PropFrame.GetSectProps", member.SectionName);
-        Add(RawModelRecordKind.Section, Source("section", member.SectionName), new SourceSnapshotSection(
-            Id("section", member.SectionName), member.SectionName, Id("material", material),
-            sectionProperties.Number(0), sectionProperties.Number(3), sectionProperties.Number(4), sectionProperties.Number(5),
-            rectangle.Number(3), rectangle.Number(2), One("PropFrame.GetModifiers", member.SectionName).Doubles(0)));
-        var elastic = One("PropMaterial.GetMPIsotropic", material);
-        var mass = One("PropMaterial.GetWeightAndMass", material);
-        Need(elastic.Inputs[1].GetDouble() == 0 && mass.Inputs[1].GetDouble() == 0, "Temperature-dependent material sampling is outside the frozen policy.");
-        Add(RawModelRecordKind.Material, Source("material", material), new SourceSnapshotMaterial(Id("material", material),
-            material, elastic.Number(0), elastic.Number(1), mass.Number(1)));
-        if (capture.Batch)
-        {
-            var classification = One("PropMaterial.GetTypeOAPI", material);
-            Need(classification.Integer(0) == 2, "This beam profile requires a source-classified concrete material.");
-            classifications[material] = new("concrete", $"{options.EvidenceReference}#getter-{classification.Ordinal}");
-            Need(One("FrameObj.GetDesignOrientation", memberName).Integer(0) == 2, "The member is not a source-classified beam.");
-        }
+        AddProperties(member);
         var elements = new List<SourceSnapshotElement>();
         Need(!One("FrameObj.GetLocalAxes", memberName).Bool(1), "Advanced member axes require additional source evidence.");
         foreach (var elementName in member.ElementNames)
@@ -239,6 +258,7 @@ public static class EtabsCaptureProjector
             One("FrameObj.GetModifiers", memberName).Doubles(0), offsets.Bool(0), offsets.Number(1), offsets.Number(2), offsets.Number(3),
             releases.Bools(0), releases.Bools(1), releases.Doubles(2), releases.Doubles(3),
             new(insertion.Integer(0), insertion.Bool(1), insertion.Bool(2), insertion.Bool(3), insertion.Doubles(4), insertion.Doubles(5), insertion.Text(6)), elements));
+        }
         }
         var patterns = One("LoadPatterns.GetNameList").Strings(1);
         foreach (var pattern in patterns)
@@ -334,7 +354,7 @@ public static class EtabsCaptureProjector
             capture.CompletedUtc.UtcDateTime.ToString("O"),
             new(OptionalEvidenceState.Supplied, $"{host.ProcessId}@{host.ProcessStartedUtc.UtcDateTime:O}", null),
             new(OptionalEvidenceState.Supplied, host.ModelSha256, null), classifications,
-            capture.Batch ? AnalysisSnapshotNormalizer.BatchPolicy : AnalysisSnapshotNormalizer.Policy, options.EvidenceReference);
+            capture.Bulk ? AnalysisSnapshotNormalizer.BulkPolicy : capture.Batch ? AnalysisSnapshotNormalizer.BatchPolicy : AnalysisSnapshotNormalizer.Policy, options.EvidenceReference);
         var recordManifest = sourceRecords.Select(item => new SnapshotProjectionRecord(item.SourceRecordId, item.RecordKind))
             .Append(new(metadataId, RawModelRecordKind.ModelMetadata)).OrderBy(item => item.SourceRecordId, StringComparer.Ordinal).ToArray();
         string Target(Call call)
@@ -359,7 +379,7 @@ public static class EtabsCaptureProjector
         var manifest = new SnapshotProjectionManifest(capture.ArtifactSha256, expectedFileSha256,
             capture.AcquisitionEvidence,
             recordManifest, rawRows.Select(item => item.SourceRowId).ToArray(), evidence);
-        Add(RawModelRecordKind.ModelMetadata, metadataId, new SourceSnapshotMetadata(true, SnapshotAnalysisCaseStatus.Finished, context, manifest));
+        Add(RawModelRecordKind.ModelMetadata, metadataId, new SourceSnapshotMetadata(true, SnapshotAnalysisCaseStatus.Finished, context, manifest, bulkEvidence));
         var modelRevision = $"model-file-sha256:{host.ModelSha256}";
         var analysisRevision = $"analysis-evidence:{AnalysisSnapshotNormalizer.Digest(new { modelRevision, state.CaseNames, state.CaseStatuses, state.RunCaseFlags })}";
         var epoch = $"result-epoch-evidence:{AnalysisSnapshotNormalizer.Digest(new { capture.OperationId, state.Sha256, Force = capture.Batch ? (object)forces.Select(call => call.Outputs).ToArray() : forces[0].Outputs })}";
@@ -404,9 +424,10 @@ public static class EtabsCaptureProjector
         for (var index = 0; index < definition.OutputKinds.Length; index++)
         {
             var value = call.Outputs[index];
-            var nullEmptyArray = count == 0 && definition.ParallelArrays.Contains(index) && value.ValueKind == JsonValueKind.Null;
+            var nullEmptyArray = count == 0 && (definition.ParallelArrays.Contains(index) || definition.TableArrays.ContainsKey(index)) && value.ValueKind == JsonValueKind.Null;
             Need(nullEmptyArray || Kind(value, definition.OutputKinds[index], definition.NullableStringArrays.Contains(index)), "A getter output violates its frozen managed type.");
             if (definition.ParallelArrays.Contains(index)) Need(nullEmptyArray || value.GetArrayLength() == count, "A getter parallel array is truncated.");
+            if (definition.TableArrays.TryGetValue(index, out var fields)) Need(nullEmptyArray || value.GetArrayLength() == (long)count! * call.Outputs[fields].GetArrayLength(), "A flattened table is truncated.");
             if (definition.FixedArrays.TryGetValue(index, out var length)) Need(value.GetArrayLength() == length, "A fixed getter array is truncated.");
         }
     }

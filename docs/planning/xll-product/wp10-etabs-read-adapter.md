@@ -609,8 +609,8 @@ none becomes complete merely because acquisition passes.
 |---|---|---|
 | U1 — Scope and source proof | Freeze force request/result and batch evidence semantics; inspect actual installed getter signatures and a source-model readiness probe; identify all source/model/selection units and material-type evidence without inferring from names. | Reference scope and worker contracts implemented; compact production profile remains part of U4 |
 | U2 — Shared capture and normalization | Add multi-member acquisition with shared catalogs/properties, one coherent pre/post source boundary, exact per-member object/element/station rows, deduplicated projection and complete row accounting. Preserve existing durable and portable v1 compatibility. | Reference path implemented: eight batch tests, live mesh and full 153-beam in-memory normalization passed; production scale/file gates remain open |
-| U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Implemented; real worker proof and signed Excel development acceptance passed (100/104, 28 rows); full-model admission waits for U4 and final installed proof for U5 |
-| U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Qualify a bulk production path against the direct-getter reference and the actual file/memory limits. Selection from a complete current snapshot causes zero ETABS reads. | Pending; bulk table source inspection started after measured reference cost |
+| U3 — Worker and Excel force handoff | Get Forces binds the current context, workbook and request; accepted normalized data enters the existing external store and indexed review. Responsive progress/cancellation, stale-result fencing, correct-workbook completion and zero heavy worksheet dumps. | Implemented; signed Excel development acceptance passed (100/104, 28 rows); bulk worker/store admission and cancellation passed for all 153 beams/3,502 rows. Final installed proof remains U5 |
+| U4 — Model interpretation and batch proof | Preserve required connected-frame/point context, orientations, offsets, releases and explicit support/span mapping or a precise unsupported/needs-input disposition. Qualify a bulk production path against the direct-getter reference and the actual file/memory limits. Selection from a complete current snapshot causes zero ETABS reads. | Bulk profile and source-bound interpretation implemented; complete real-model comparison and Python replay passed. PF9 medium admission/memory qualification remains open |
 | U5 — Integrated qualification | Exact signed installed Excel/worker proof; independent Python replay; real source-bound small/medium PF9 datasets, measured getter/transfer/normalization/persistence and adapter memory; named cumulative broad Python/full repository checks. | Pending |
 
 Finish U1-U4 as sequential implementation commits in one milestone candidate
@@ -725,12 +725,59 @@ the real worker/store handoff for all 153 beams and 3,502 rows, plus cancellatio
 without replacing accepted data. Its complete connection/capture/import/test
 sequence took about 134 s, so source round-trip reduction is still required.
 
-Remaining U4 order: complete compact worker/store handoff; qualify bulk table
-identity, defaults, geometry and assignment derivations against every relevant
-direct source observation; add the qualified batch profile and source-bound
-model interpretation/dispositions; then run actual small/medium PF9 fixtures.
-The first bulk approach keeps each real per-object FrameForce call and reduces
-metadata round trips, avoiding invented per-member force provenance.
+The compact worker/store handoff and bulk source qualification below now pass.
+Remaining U4/U5 order: prepare the real small/medium PF9 fixtures, measure the
+complete capture/normalization/persistence and incremental working set, qualify
+medium caller admission, then freeze the cumulative candidate for final signed
+installed proof and the repository/hosted gates.
+
+### Qualified bulk source profile and interpretation — U4, 2026-09-07
+
+`wp10-bulk-static-frame-capture/v1` uses full-precision assignment export through
+`DatabaseTables.GetTableForEditingArray`. Despite its API name, this is a getter;
+the production whitelist includes no table setters, ApplyEditedTables, unlock,
+analysis, or file-save operations. Display tables supply source identities,
+stories, labels and object/element connectivity only. Their rounded numeric
+coordinates and assignment values do not enter exact engineering geometry.
+
+Controlled owned-copy changes to modifiers, partial fixity, insertion, axes and
+end offsets are retained in `bulk-assignment-experiments-3`. Display export rounded
+0.123456789 m to 0.12346 m; editing export retained the exact source value, as it
+did for modifiers and springs. Its complete importable field sequence also
+retains blank default cells. Source table/version/field/unit checks and explicit
+qualified blank/absent assignment defaults are enforced. `bulk-editing-1` proves
+that the getters left source lock, units, case statuses, exact probe forces and
+model file unchanged. Owned experiment processes exited normally.
+
+Each required beam still has one actual FrameForce call and one actual global
+frame transformation call. Exact GetAllPoints geometry, source frame/element IDs
+and ObjStation-minus-ElmStation origins define a straight horizontal mesh;
+curves, unsupported insertion transforms, nonzero release springs and incomplete
+chains remain fenced. These are analysis meshes, not physical construction spans.
+The frame table also contains shell-generated line records with repeated names:
+only explicit ObjType=Frame rows enter the unique beam-mesh index. Every other
+row remains in the full getter evidence as source context, with scope counts in
+the bulk projection receipt. No direct getter invocation is fabricated.
+
+`bulk-development-3` passed all 153 beams / 937 analysis elements / 3,502 actions
+in about 13.23 seconds of broker capture, compared with the approximately
+112-second direct reference. The independent `compare_bulk_capture.py` replay
+passed: complete signed force payloads and numeric assignments are equal;
+relative element stations and matrices are equal; maximum mesh coordinate
+difference is 3.7588e-12 m (existing tolerance 1e-8 m). Snapshot file SHA-256:
+`5877fe7e9aa7fc4c4e51e09bf0fd0158f340c5625eee56d86828b93f16e4d0da`.
+These development measurements are not PF9 certification.
+
+`force-client-bulk-development-1` then passed the complete connection, bulk
+worker, compressed store, interpreted memory session and cancellation sequence
+in about 36 seconds. The 3,668,829-byte complete transport retains all 153 beams
+and 3,502 actions, with no accepted partial replacement after cancellation.
+The pure interpreter indexes all source frame classifications and exact shared
+point adjacency, binds the actual producer's process/model/version/unit facts,
+and keeps supports, faces and physical-span/group mapping explicitly needs-input.
+The existing review window shows connected beams/columns from memory; it creates
+no new commands or heavy sheets. Retained context supplies the same interpretation
+after offline reopen. Legacy snapshots without context retain their prior review.
 
 ### Required data and behavior
 

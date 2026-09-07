@@ -10,6 +10,7 @@ public static class AnalysisSnapshotNormalizer
 {
     public const string Policy = "wp10-offline-horizontal-frame/v1";
     public const string BatchPolicy = "wp10-shared-horizontal-frames/v1";
+    public const string BulkPolicy = "wp10-bulk-horizontal-frames/v1";
     private const double Tolerance = 1e-8;
     private static readonly JsonSerializerOptions Options = CreateOptions();
 
@@ -43,9 +44,9 @@ public static class AnalysisSnapshotNormalizer
         var metadataRecord = raw.ModelRecords.Single(item => item.RecordKind == RawModelRecordKind.ModelMetadata);
         var sourceMetadata = Read<SourceSnapshotMetadata>(metadataRecord);
         var context = sourceMetadata.Context;
-        Require(context.PolicyId is Policy or BatchPolicy && !string.IsNullOrWhiteSpace(context.EvidenceReference),
+        Require(context.PolicyId is Policy or BatchPolicy or BulkPolicy && !string.IsNullOrWhiteSpace(context.EvidenceReference),
             "NORMALIZATION.POLICY", "An explicit supported normalization policy and evidence reference are required.");
-        ValidateCoverage(raw, sourceMetadata.Projection, context.PolicyId == BatchPolicy);
+        ValidateCoverage(raw, sourceMetadata.Projection, context.PolicyId != Policy);
         var sourceUnits = new SnapshotSourceUnits("m", "kN", "kNm", "kN/m2", "kN*s2/m4");
         Require(raw.SourceUnits == sourceUnits, "UNITS.INVALID", "This source policy requires the proved kN_m_C basis including mass density.");
         var conversion = new SnapshotUnitConversion(1000, 1, 1, 0.001, 1000);

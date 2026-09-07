@@ -92,7 +92,7 @@ public sealed class Wp10BatchCaptureTests
     private static string Sha(byte[] bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));
 
     // Two invented adjacent spans, distinct actions, one shared point/material/section.
-    private sealed class BatchHost(string? fault = null) : IEtabsGetterHost
+    internal sealed class BatchHost(string? fault = null) : IEtabsGetterHost
     {
         private readonly EtabsLiveGetterProbeCapture _seed = Wp10SyntheticCapture.Create().Content.Capture;
         public EtabsHostIdentity Identity => _seed.HostIdentity with { ProcessId = 94101 };

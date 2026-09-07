@@ -18,7 +18,8 @@ public sealed class EtabsBatchOperationBroker(TimeProvider? timeProvider = null)
     private readonly TimeProvider _timeProvider = timeProvider ?? TimeProvider.System;
 
     public EtabsBatchOperationHandle Start(EtabsBrokerRequest request, Func<IEtabsGetterHost> hostFactory,
-        Func<IEtabsGetterHost, CancellationToken, EtabsBatchCapture> acquire, CancellationToken cancellationToken = default)
+        Func<IEtabsGetterHost, CancellationToken, EtabsBatchCapture> acquire, CancellationToken cancellationToken = default,
+        string? getterMatrixSha256 = null)
     {
         ArgumentNullException.ThrowIfNull(request); ArgumentNullException.ThrowIfNull(hostFactory); ArgumentNullException.ThrowIfNull(acquire);
         var path = Path.GetFullPath(request.EvidencePath);
@@ -66,7 +67,7 @@ public sealed class EtabsBatchOperationBroker(TimeProvider? timeProvider = null)
                 EtabsOperationBroker.StaMessagePump.Drain(); linked.Token.ThrowIfCancellationRequested();
                 host = hostFactory(); before = host.InspectIdentity();
                 if (before.ProcessId != request.ProcessId) throw new InvalidOperationException("The attached ETABS process differs from the lease.");
-                using (var journal = new EtabsOperationBroker.EtabsCallJournal(request.OperationId, journalPath, _timeProvider, EtabsForceGetterMatrix.Sha256))
+                using (var journal = new EtabsOperationBroker.EtabsCallJournal(request.OperationId, journalPath, _timeProvider, getterMatrixSha256 ?? EtabsForceGetterMatrix.Sha256))
                 using (var journalHost = new EtabsOperationBroker.LedgerEtabsGetterHost(host, journal))
                 {
                     capture = acquire(journalHost, linked.Token);

@@ -10,6 +10,7 @@ param(
     [string]$ProbeAnalysisPointId,
     [switch]$InspectBulkTables,
     [switch]$RequestAllTableFields,
+    [switch]$ReadEditingTables,
     [string[]]$TableKeys = @(),
     [switch]$KeepExistingAnalysis
 )
@@ -77,6 +78,7 @@ try {
     $receipt.observations.probe_member = $ProbeMemberId
     Check-Status $forceStatus 'FrameForce'
     if ($forceArgs[2] -le 0) { throw 'Fresh analysis returned no force rows for the probe member.' }
+    $protectedBefore = [ordered]@{locked=$sapType.GetMethod('GetModelIsLocked').Invoke($sap,$null); units=$sapType.GetMethod('GetPresentUnits').Invoke($sap,$null); database_units=$sapType.GetMethod('GetDatabaseUnits').Invoke($sap,$null); status=$statuses; forces=$forceArgs; model_sha256=(Get-FileHash -LiteralPath $model -Algorithm SHA256).Hash}
     if (-not [string]::IsNullOrWhiteSpace($ProbeAnalysisPointId)) {
         $pointElm = $sapType.GetProperty('PointElm').GetValue($sap)
         $pointMethod = $assembly.GetType('ETABSv1.cPointElm', $true).GetMethod('GetCoordCartesian')
@@ -103,11 +105,27 @@ try {
             $timer = [Diagnostics.Stopwatch]::StartNew()
             $tableStatus = $tablesType.GetMethod('GetTableForDisplayArray').Invoke($tables, $tableArgs)
             $timer.Stop()
-            $tableResults += [ordered]@{key=$key;status=$tableStatus;group='All';requested_all_fields=[bool]$RequestAllTableFields;field_version=$fieldArgs[1];field_count=$fieldArgs[2];field_keys=$fieldArgs[3];field_names=$fieldArgs[4];field_descriptions=$fieldArgs[5];field_units=$fieldArgs[6];field_importable=$fieldArgs[7];returned_field_key_list=$tableArgs[1];version=$tableArgs[3];included=$tableArgs[4];count=$tableArgs[5];data=$tableArgs[6];elapsed_ms=$timer.Elapsed.TotalMilliseconds}
+            $tableResult = [ordered]@{key=$key;status=$tableStatus;group='All';requested_all_fields=[bool]$RequestAllTableFields;field_version=$fieldArgs[1];field_count=$fieldArgs[2];field_keys=$fieldArgs[3];field_names=$fieldArgs[4];field_descriptions=$fieldArgs[5];field_units=$fieldArgs[6];field_importable=$fieldArgs[7];returned_field_key_list=$tableArgs[1];version=$tableArgs[3];included=$tableArgs[4];count=$tableArgs[5];data=$tableArgs[6];elapsed_ms=$timer.Elapsed.TotalMilliseconds}
+            if ($ReadEditingTables) {
+                $editingArgs = [object[]]@($key.PSObject.BaseObject, 'All', 0, $null, 0, $null)
+                $timer.Restart()
+                $editingStatus = $tablesType.GetMethod('GetTableForEditingArray').Invoke($tables, $editingArgs)
+                $timer.Stop()
+                $tableResult.editing = [ordered]@{status=$editingStatus;version=$editingArgs[2];included=$editingArgs[3];count=$editingArgs[4];data=$editingArgs[5];elapsed_ms=$timer.Elapsed.TotalMilliseconds}
+            }
+            $tableResults += $tableResult
             $tableResults | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $output 'tables.json')
         }
         if ($tableResults.Count -gt 0) { $tableResults | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $output 'tables.json') }
     }
+    $finalStatuses = [object[]]@(0,$null,$null)
+    Check-Status ($analyzeType.GetMethod('GetCaseStatus').Invoke($analyze,$finalStatuses)) 'GetCaseStatus(postflight)'
+    $finalForces = [object[]]::new(16); $finalForces[0]=$ProbeMemberId.PSObject.BaseObject; $finalForces[1]=$forceArgs[1]; $finalForces[2]=0
+    Check-Status ($assembly.GetType('ETABSv1.cAnalysisResults',$true).GetMethod('FrameForce').Invoke($results,$finalForces)) 'FrameForce(postflight)'
+    $protectedAfter = [ordered]@{locked=$sapType.GetMethod('GetModelIsLocked').Invoke($sap,$null); units=$sapType.GetMethod('GetPresentUnits').Invoke($sap,$null); database_units=$sapType.GetMethod('GetDatabaseUnits').Invoke($sap,$null); status=$finalStatuses; forces=$finalForces; model_sha256=(Get-FileHash -LiteralPath $model -Algorithm SHA256).Hash}
+    $receipt.observations.protected_before=$protectedBefore
+    $receipt.observations.protected_after=$protectedAfter
+    if (($protectedBefore | ConvertTo-Json -Depth 8 -Compress) -ne ($protectedAfter | ConvertTo-Json -Depth 8 -Compress)) { throw 'Protected model, units, analysis status or result payload changed during table getters.' }
     $receipt.passed = $true
 } catch { $failure = $_; $receipt.failure = $_.Exception.ToString() }
 finally {

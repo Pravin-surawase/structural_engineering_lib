@@ -30,8 +30,12 @@ exchanges typed files; the worker owns exact-process COM attachment, STA pumping
 the shared process lease, deadline/cancellation, raw getter evidence and cleanup.
 The first profile is source geometry in ETABS 23.3.1 kN-m-C, with ID adjacency in
 memory and no worksheet creation or saved live connection. No worksheet function
-calls ETABS. Existing-force handoff, broad result coverage and automatic design
-remain later work; see the [whole-product audit](../docs/planning/xll-product/etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05).
+calls ETABS. The WP10 completion candidate adds background Get Forces using a
+qualified bulk source profile, complete signed force rows, compressed external
+evidence and source-bound neighbour/support-readiness interpretation. Full-model
+worker/store development proof passes; final installed and PF9 qualification
+remain pending. Automatic design follows that accepted acquisition path; see
+the [whole-product audit](../docs/planning/xll-product/etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05).
 
 Worksheet examples:
 

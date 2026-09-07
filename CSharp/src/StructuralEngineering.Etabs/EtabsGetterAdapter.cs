@@ -158,7 +158,7 @@ public sealed class EtabsGetterAdapter(IEtabsGetterHost host, IReadOnlyDictionar
             invocation.Outputs[countPosition] is int exactCount && exactCount == 0;
         for (var index = 0; index < invocation.Outputs.Count; index++)
         {
-            var allowNullArray = countedZero && definition.ParallelArrays.Contains(index);
+            var allowNullArray = countedZero && (definition.ParallelArrays.Contains(index) || definition.TableArrays.ContainsKey(index));
             var allowNullStringElements = definition.NullableStringArrays.Contains(index);
             if (!HasExactKind(
                     invocation.Outputs[index],
@@ -192,7 +192,8 @@ public sealed class EtabsGetterAdapter(IEtabsGetterHost host, IReadOnlyDictionar
 
     private string MatrixSha256() => ReferenceEquals(_allowed, EtabsContextGetterMatrix.Allowed)
         ? EtabsContextGetterMatrix.Sha256
-        : ReferenceEquals(_allowed, EtabsForceGetterMatrix.Allowed) ? EtabsForceGetterMatrix.Sha256 : EtabsGetterMatrix.Sha256;
+        : ReferenceEquals(_allowed, EtabsForceGetterMatrix.Allowed) ? EtabsForceGetterMatrix.Sha256
+        : ReferenceEquals(_allowed, EtabsBulkGetterMatrix.Allowed) ? EtabsBulkGetterMatrix.Sha256 : EtabsGetterMatrix.Sha256;
 
     private static (string Code, string Message)? ValidateArrays(
         EtabsGetterDefinition definition,
@@ -209,6 +210,12 @@ public sealed class EtabsGetterAdapter(IEtabsGetterHost host, IReadOnlyDictionar
                 if (length != count)
                     return ("ETABS.ARRAY_LENGTH_MISMATCH",
                         $"{definition.Operation} output {definition.OutputNames[index]} has length {length}; expected {count}.");
+            }
+            foreach (var (dataIndex, fieldsIndex) in definition.TableArrays)
+            {
+                var columns = ArrayLength(outputs[fieldsIndex], -1);
+                if (columns <= 0 || ArrayLength(outputs[dataIndex], count) != (long)count * columns)
+                    return ("ETABS.TABLE_SHAPE_INVALID", $"{definition.Operation} flattened data does not match its rows and fields.");
             }
         }
 
