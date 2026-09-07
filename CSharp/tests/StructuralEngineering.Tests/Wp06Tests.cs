@@ -419,6 +419,21 @@ public class Wp06Tests
             utilization,
             []);
 
+    [Fact]
+    public void EqualStationCalculationsBindOnceWhileEveryScopeRemainsRequired()
+    {
+        var request = MemberRequest();
+        var secondStation = request.LeafResults.Single(item => item.LeafId == "shear@S1") with { LeafId = "shear@S2" };
+        var result = MemberDesignOperations.Design(request with
+        {
+            ScopeInstances = [.. request.ScopeInstances, new("S2", CheckScope.Station, "scope-r1")],
+            LeafResults = [.. request.LeafResults, secondStation]
+        });
+        Assert.True(result.Outputs!.Qualified);
+        Assert.Equal(4, result.Outputs.LeafQualifications.Count);
+        Assert.Equal(2, result.Outputs.DepthIterations[0].DependentResultIds.Count);
+    }
+
     private static MemberDesignRequest MemberRequest()
     {
         var leaves = new[]

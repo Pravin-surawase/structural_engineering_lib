@@ -147,6 +147,7 @@ public static class MemberDesignOperations
                 item.Expectation.ExpectedApplicability == ApplicabilityState.Applicable &&
                 item.Evidence is not null)
             .Select(item => item.Evidence!.ResultId)
+            .Distinct(StringComparer.Ordinal)
             .Order(StringComparer.Ordinal)
             .ToArray();
         var finalIteration = request.DepthIterations.LastOrDefault();
