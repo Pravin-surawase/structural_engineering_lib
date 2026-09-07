@@ -16,6 +16,9 @@ public static class AnalysisSnapshotTransport
 
     public static bool IsCompressed(ReadOnlySpan<byte> prefix) => prefix.StartsWith(Header) || prefix.StartsWith(CompactHeader);
 
+    public static string? GetSchemaVersion(ReadOnlySpan<byte> prefix) => prefix.StartsWith(CompactHeader)
+        ? CompactSchemaVersion : prefix.StartsWith(Header) ? SchemaVersion : null;
+
     public static void Write(Stream destination, AnalysisSnapshot snapshot)
     {
         ArgumentNullException.ThrowIfNull(destination); ArgumentNullException.ThrowIfNull(snapshot);

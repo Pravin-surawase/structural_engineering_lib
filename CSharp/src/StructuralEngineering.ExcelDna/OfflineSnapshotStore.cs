@@ -25,8 +25,8 @@ public sealed record OfflineSnapshotImport(OfflineSnapshotReference Reference, A
 /// </summary>
 public sealed class OfflineSnapshotStore
 {
-    public const int MaximumInputBytes = 16 * 1024 * 1024;
-    public const int MaximumActionRows = 10_000;
+    public const int MaximumInputBytes = AnalysisSnapshotTransport.MaximumEncodedBytes;
+    public const int MaximumActionRows = 100_000;
     public const int MaximumMembers = 1_000;
 
     private static readonly UTF8Encoding StrictUtf8 = new(false, true);
@@ -64,7 +64,7 @@ public sealed class OfflineSnapshotStore
             snapshot.SnapshotId,
             snapshot.SnapshotSha256,
             bytes.Length,
-            AnalysisSnapshotTransport.IsCompressed(bytes) ? AnalysisSnapshotTransport.SchemaVersion : null);
+            AnalysisSnapshotTransport.GetSchemaVersion(bytes));
         ValidateReference(reference);
 
         var target = GetArtifactPath(reference);
@@ -156,7 +156,7 @@ public sealed class OfflineSnapshotStore
 
     private static AnalysisSnapshot ParseVerified(OfflineSnapshotReference reference, byte[] bytes)
     {
-        if (AnalysisSnapshotTransport.IsCompressed(bytes) != (reference.TransportSchemaVersion == AnalysisSnapshotTransport.SchemaVersion))
+        if (AnalysisSnapshotTransport.GetSchemaVersion(bytes) != reference.TransportSchemaVersion)
             throw new InvalidDataException("The stored snapshot transport differs from its workbook reference.");
         var snapshot = ParseAccepted(bytes);
         EnforceAdmissionLimits(snapshot);
@@ -205,7 +205,7 @@ public sealed class OfflineSnapshotStore
     internal static void ValidateReference(OfflineSnapshotReference reference)
     {
         ArgumentNullException.ThrowIfNull(reference);
-        if (reference.TransportSchemaVersion is not null and not AnalysisSnapshotTransport.SchemaVersion)
+        if (reference.TransportSchemaVersion is not null and not AnalysisSnapshotTransport.SchemaVersion and not AnalysisSnapshotTransport.CompactSchemaVersion)
             throw new ArgumentException("The snapshot reference uses an unsupported transport.", nameof(reference));
         if (string.IsNullOrWhiteSpace(reference.ProjectId) || string.IsNullOrWhiteSpace(reference.SnapshotId) ||
             reference.ByteCount < 1)

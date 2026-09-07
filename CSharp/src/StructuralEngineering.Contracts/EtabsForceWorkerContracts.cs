@@ -27,6 +27,7 @@ public static class EtabsForceWorkerCodec
     public const string RequestSchemaVersion = "structural.etabs_force_worker_request/v2";
     public const string JsonSnapshotTransport = "structural.analysis_snapshot/v1";
     public const string GzipSnapshotTransport = "structural.analysis_snapshot_gzip/v1";
+    public const string RowsSnapshotTransport = "structural.analysis_snapshot_rows/v1";
     public const string ResponseSchemaVersion = "structural.etabs_force_worker_response/v1";
     public const string ProgressSchemaVersion = "structural.etabs_force_worker_progress/v1";
 
@@ -102,8 +103,8 @@ public static class EtabsForceWorkerCodec
             request.MemberObjectNames is null || request.MemberObjectNames.Count is < 1 or > 1000 || request.MemberObjectNames.Any(string.IsNullOrWhiteSpace) ||
             !request.MemberObjectNames.SequenceEqual(request.MemberObjectNames.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)) ||
             request.AdmissionLimits is null || request.AdmissionLimits.MaximumBytes < 1 ||
-            request.AdmissionLimits.MaximumBytes > (request.AdmissionLimits.SnapshotTransport == GzipSnapshotTransport ? 64 * 1024 * 1024 : 25_000_000) ||
-            request.AdmissionLimits.SnapshotTransport is not JsonSnapshotTransport and not GzipSnapshotTransport ||
+            request.AdmissionLimits.MaximumBytes > (request.AdmissionLimits.SnapshotTransport is GzipSnapshotTransport or RowsSnapshotTransport ? 64 * 1024 * 1024 : 25_000_000) ||
+            request.AdmissionLimits.SnapshotTransport is not JsonSnapshotTransport and not GzipSnapshotTransport and not RowsSnapshotTransport ||
             request.AdmissionLimits.MaximumRows is < 1 or > 100_000 || request.AdmissionLimits.MaximumMembers is < 1 or > 1000 ||
             request.MemberObjectNames.Count > request.AdmissionLimits.MaximumMembers)
             throw new InvalidDataException("The force request has incomplete scope, identity or qualified admission limits.");

@@ -37,9 +37,9 @@ internal static class ForceWorker
             CheckActive();
             PublishProgress(EtabsForceStage.Capturing, 0);
             var handle = new EtabsBatchOperationBroker().Start(new(request.RequestId, request.Target.ProcessId, request.DeadlineUtc, request.EvidencePath),
-                () => EtabsReflectionGetterHost.AttachBulk(EtabsHostDiscovery.Discover(request.Target)),
-                (host, token) => EtabsLiveGetterProbe.RunBulk(host, new(requestSha, context.Inventory, request.MemberObjectNames, request.DeadlineUtc), token,
-                    (completed, _) => PublishProgress(EtabsForceStage.Capturing, completed)), cancellation.Token, EtabsBulkGetterMatrix.Sha256);
+                () => EtabsReflectionGetterHost.AttachGroup(EtabsHostDiscovery.Discover(request.Target)),
+                (host, token) => EtabsLiveGetterProbe.RunGroup(host, new(requestSha, context.Inventory, request.MemberObjectNames, request.DeadlineUtc), token,
+                    (completed, _) => PublishProgress(EtabsForceStage.Capturing, completed)), cancellation.Token, EtabsGroupGetterMatrix.Sha256);
             activeQuiescence = handle.Quiescence;
             var result = acquisitionResult = await handle.Completion;
             try
@@ -67,10 +67,12 @@ internal static class ForceWorker
                 {
                     CheckActive();
                     byte[] bytes;
-                    if (request.AdmissionLimits.SnapshotTransport == EtabsForceWorkerCodec.GzipSnapshotTransport)
+                    if (request.AdmissionLimits.SnapshotTransport is EtabsForceWorkerCodec.GzipSnapshotTransport or EtabsForceWorkerCodec.RowsSnapshotTransport)
                     {
                         using var encoded = new MemoryStream();
-                        AnalysisSnapshotTransport.Write(encoded, snapshot);
+                        if (request.AdmissionLimits.SnapshotTransport == EtabsForceWorkerCodec.RowsSnapshotTransport)
+                            AnalysisSnapshotTransport.WriteCompact(encoded, snapshot);
+                        else AnalysisSnapshotTransport.Write(encoded, snapshot);
                         bytes = encoded.ToArray();
                     }
                     else bytes = AnalysisSnapshotCodec.CanonicalJsonBytes(snapshot);

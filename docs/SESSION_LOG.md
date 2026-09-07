@@ -16,6 +16,14 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Progress
 
+- Saved the interrupted group/compact/timer work in `ed86063f` after actual
+  medium replay and reference equality. The next bounded integration uses the
+  group profile in the production worker, explicitly identifies rows-1 in the
+  protocol and workbook reference, and admits the proved 64 MiB / 100,000-row
+  capacity. Functional worker/store and installed verification remain next.
+  Ten focused protocol/store checks passed (three explicit external-input
+  checks skipped in the ordinary run); the worker publishes successfully.
+
 - Owner amendment after the interrupted session: finish basic WP10 delivery,
   review and PR/handoff now; move performance increases to the project end.
   Updated the completion contract without claiming a PF9 pass. Functional

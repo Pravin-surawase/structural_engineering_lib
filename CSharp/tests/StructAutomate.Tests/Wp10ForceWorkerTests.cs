@@ -80,6 +80,9 @@ public sealed class Wp10ForceWorkerTests
         Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalRequestJsonBytes(request with { MemberObjectNames = [] }));
         Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalRequestJsonBytes(request with { MemberObjectNames = ["100", "100"] }));
         Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalRequestJsonBytes(request with { AdmissionLimits = new(1024, 2, 1) }));
+        var medium = request with { AdmissionLimits = new(64 * 1024 * 1024, 100_000, 1000, EtabsForceWorkerCodec.RowsSnapshotTransport) };
+        Assert.Equal(medium.AdmissionLimits, EtabsForceWorkerCodec.ParseRequest(EtabsForceWorkerCodec.CanonicalRequestJsonBytes(medium)).AdmissionLimits);
+        Assert.Throws<InvalidDataException>(() => EtabsForceWorkerCodec.CanonicalRequestJsonBytes(medium with { AdmissionLimits = medium.AdmissionLimits with { MaximumBytes = 64 * 1024 * 1024 + 1 } }));
     }
 
     [Fact]
@@ -131,6 +134,10 @@ public sealed class Wp10ForceWorkerTests
         Assert.True(loaded.Session is not null, loaded.Response.Message);
         Assert.Equal(members.Order(StringComparer.Ordinal), loaded.Session!.Snapshot.Members.Select(member => member.ObjectId).Order(StringComparer.Ordinal));
         var reference = loaded.Session.Reference;
+        var reopened = new OfflineSnapshotStore(Path.Combine(directory!, "store")).Read(reference);
+        Assert.Equal(loaded.Session.Snapshot.SnapshotSha256, reopened.SnapshotSha256);
+        Assert.Equal(loaded.Session.Snapshot.ActionRows.Count, reopened.ActionRows.Count);
+        Assert.Equal(AnalysisSnapshotTransport.CompactSchemaVersion, reference.TransportSchemaVersion);
         var artifact = Path.Combine(directory!, "forces", "snapshot.sasnap");
         var before = SHA256.HashData(File.ReadAllBytes(artifact));
         using var cancellation = new CancellationTokenSource();
@@ -148,7 +155,7 @@ public sealed class Wp10ForceWorkerTests
         File.WriteAllBytes(Path.Combine(directory!, "receipt.json"), JsonSerializer.SerializeToUtf8Bytes(new
         {
             schema_version = "wp10-force-worker-development/v1", installed_acceptance = false, passed = true,
-            target.ProcessId, loaded.Response, cancelled = cancelled.Response, cleanup_completed = true,
+            target.ProcessId, loaded.Response, cancelled = cancelled.Response, cleanup_completed = true, offline_reopen_exact = true,
             engineering_state = "not_evaluated"
         }));
     }

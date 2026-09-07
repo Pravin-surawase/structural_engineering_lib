@@ -31,7 +31,7 @@ public static partial class EtabsConnectionClient
                 Path.Combine(context.OperationDirectory, "context.json"), context.Artifact.ArtifactSha256, projectId, members,
                 Path.Combine(directory, "capture.json"), Path.Combine(directory, "snapshot.sasnap"),
                 new(OfflineSnapshotStore.MaximumInputBytes, OfflineSnapshotStore.MaximumActionRows, OfflineSnapshotStore.MaximumMembers,
-                    EtabsForceWorkerCodec.GzipSnapshotTransport));
+                    EtabsForceWorkerCodec.RowsSnapshotTransport));
             var requestSha = EtabsForceWorkerCodec.RequestSha256(request);
             Directory.CreateDirectory(directory);
             await using (var file = new FileStream(requestPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))

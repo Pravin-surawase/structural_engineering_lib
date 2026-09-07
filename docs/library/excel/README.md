@@ -66,8 +66,9 @@ copies share that identity, close one before continuing. Closing the workbook
 evicts its memory session. Live source context is session-only: reopening a
 workbook requires Connect ETABS again. It is separate from an offline snapshot.
 
-The first connection profile covers the installed ETABS 23.3.1 API with
-present/database units kN-m-C (unit code 6); coordinates are normalized to mm.
+The connection profile covers the installed ETABS 23.3.1 API with present
+units kN-m-C (code 6) and database units kN-m-C or N-mm-C (6 or 9);
+coordinates are normalized to mm from the explicitly verified source basis.
 It reads frames, points, source orientation and referenced section/material IDs.
 It does not infer material strengths, physical spans or supports, and does not
 acquire forces or run analysis. Raw getter evidence and context artifacts stay
@@ -79,18 +80,19 @@ Use it in a separate workbook: this new workspace does not yet map assumptions
 and imported actions into a complete design/check request. All command outcomes
 are shown in a persistent status window, including rejected operations.
 
-The import admission bounds are 16 MiB, 1,000 members and 10,000 actions. Those
-limits do not qualify whole-model result acquisition or its performance.
-Compact `.sasnap` files keep the same canonical snapshot-v1 data and all its
-provenance in a versioned gzip transport. Their reader bounds expanded JSON at
+The import admission bounds are 64 MiB encoded, 1,000 members and 100,000 actions.
+Get Forces acquires the full source group once, then filters the required beam
+rows in memory; source column rows remain in the raw evidence. Compact `.sasnap`
+files keep the same snapshot-v1 data and provenance while using positional rows
+inside a versioned gzip transport. The reader bounds the expanded wire JSON at
 256 MiB and verifies both the complete gzip footer and the existing snapshot
 hashes. The workbook's small reference identifies the transport; old saved JSON
-references remain usable. Full-model transport replay has passed for the
-retained 153-beam / 3,502-action model; the larger PF9 workload remains open.
-The bulk worker/store handoff passes for all 153 beams / 3,502 rows, including
-model interpretation and cancellation. Signed Excel development checks also
-pass for an explicit two-beam scope. PF9 small/medium performance and final
-installed acceptance remain in progress.
+references remain usable. The complete 1,000-member / 100,000-action snapshot
+has been captured and independently replayed in Python. These are capacity and
+integrity checks, not a performance certification. Final worker/store and signed
+installed acceptance for this completion candidate are tracked in the WP10 plan.
+The owner has deferred PF9 timing and incremental-memory certification to the
+end of the project; the measured misses remain recorded.
 Automatic Design, optimisation, solver comparison and Auto Run remain later
 application work. The active packet and exact installed acceptance
 contracts are in the [WP10 read-adapter plan](../../planning/xll-product/wp10-etabs-read-adapter.md).
