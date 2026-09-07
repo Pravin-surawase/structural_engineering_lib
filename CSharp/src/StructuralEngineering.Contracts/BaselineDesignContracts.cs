@@ -1,0 +1,14 @@
+namespace StructuralEngineering.Contracts;
+
+public enum BaselineDesignState { Supported, NeedsInput, Stale, Unsupported }
+public enum BaselineSelectionRole { Uls, SlsTotal, SlsSustained }
+public sealed record BaselineProjectIdentity(string ProjectId, string RevisionId, string Origin, string EvidenceReference, bool ValuesAccepted, bool ProfessionalApprovalAccepted);
+public sealed record BaselineMaterialMapping(string MaterialId, double ConcreteStrengthNPerMm2, double SteelYieldStrengthNPerMm2, double LinkSteelYieldStrengthNPerMm2, double SteelModulusNPerMm2);
+public sealed record BaselineCatalogue(string RevisionId, IReadOnlyList<double> LongitudinalDiametersMm, IReadOnlyList<double> LinkDiametersMm, IReadOnlyList<double> LinkSpacingsMm, IReadOnlyList<int> BarCounts, IReadOnlyList<int> Layers, IReadOnlyList<double> StockLengthsMm, int MaximumCandidates);
+public enum BaselineSupportCondition { SimplySupported, Continuous, Unknown }
+public sealed record BaselineMemberContext(string MemberId, string SourceMemberId, string PhysicalSpanId, BaselineSupportCondition SupportCondition, double LeftSupportFaceXMm, double RightSupportFaceXMm, double LeftSupportCentreXMm, double RightSupportCentreXMm, double EffectiveSpanMm, double AnchorageStartXMm, double AnchorageEndXMm, double NominalCoverMm, double MaximumAggregateSizeMm, string Exposure, bool CrackingHarmful, bool OrdinarySeismic, bool ScreeningPermitted, bool Horizontal, bool TopMappingNormal, string EvidenceRevisionId, BaselineFireBasis? FireBasis = null, BaselineLateralRestraintBasis? LateralRestraints = null);
+public sealed record BaselineSelectionBinding(string SelectionId, BaselineSelectionRole Role);
+public sealed record BaselineProjectInputs(BaselineProjectIdentity Project, IReadOnlyList<BaselineMaterialMapping> Materials, BaselineCatalogue Catalogue, IReadOnlyList<BaselineMemberContext> MemberContexts, IReadOnlyList<BaselineSelectionBinding> SelectionRoles);
+public sealed record BoundBaselineActionRow(string RowId, string SourceRowId, string StationId, double StationXMm, string SelectionId, string OutputCaseName, string StepType, double? StepNumber, SnapshotActionBasis ActionBasis, BaselineSelectionRole Role, double PKn, double V2Kn, double V3Kn, double TKnm, double M2Knm, double M3Knm, string SourceIdentity);
+public sealed record BoundBaselineBeam(string EffectiveInputId, string SnapshotId, string SnapshotSha256, string MemberId, string SourceMemberId, string PhysicalSpanId, string SectionId, string MaterialId, double WidthMm, double DepthMm, double ConcreteStrengthNPerMm2, double SteelYieldStrengthNPerMm2, double LinkSteelYieldStrengthNPerMm2, double SteelModulusNPerMm2, BaselineMemberContext Context, BaselineCatalogue Catalogue, IReadOnlyList<BoundBaselineActionRow> ActionRows);
+public sealed record BaselineMappingResult(BoundBaselineBeam? Beam, BaselineDesignState State, IReadOnlyList<Diagnostic> Diagnostics);
