@@ -137,7 +137,9 @@ internal static class ForceWorker
             await using (var stream = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough))
             { await stream.WriteAsync(bytes); stream.Flush(true); }
             beforePublish?.Invoke();
-            File.Move(temporary, path, overwrite);
+            // Windows overwrite-move deletes the destination first and can fail while a progress reader holds it.
+            if (overwrite && File.Exists(path)) File.Replace(temporary, path, null);
+            else File.Move(temporary, path);
         }
         finally { if (File.Exists(temporary)) File.Delete(temporary); }
     }

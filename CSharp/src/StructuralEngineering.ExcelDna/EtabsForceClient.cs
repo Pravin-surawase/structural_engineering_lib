@@ -91,12 +91,24 @@ public static partial class EtabsConnectionClient
                 }
                 if (File.Exists(responsePath + ".progress"))
                 {
-                    // The worker atomically replaces progress; a reader must permit replacement while holding the old file.
-                    await using var file = new FileStream(responsePath + ".progress", FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-                    if (file.Length > 64 * 1024) throw new InvalidDataException("Force progress exceeds its input limit.");
-                    var bytes = new byte[checked((int)file.Length)]; await file.ReadExactlyAsync(bytes).ConfigureAwait(false);
-                    var current = EtabsForceWorkerCodec.ParseProgress(bytes, requestId, requestSha);
-                    if (current != previous) { previous = current; progress?.Report(current); }
+                    byte[]? bytes = null;
+                    try
+                    {
+                        // Windows ReplaceFile can briefly make this optional status unavailable to new readers.
+                        await using var file = new FileStream(responsePath + ".progress", FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                        if (file.Length > 64 * 1024) throw new InvalidDataException("Force progress exceeds its input limit.");
+                        bytes = new byte[checked((int)file.Length)]; await file.ReadExactlyAsync(bytes).ConfigureAwait(false);
+                    }
+                    catch (Exception error) when (error is IOException or UnauthorizedAccessException && (error.HResult & 0xffff) is 2 or 5 or 32)
+                    {
+                        bytes = null;
+                        // Retry on the next bounded poll; final response, cancellation and deadline checks still run.
+                    }
+                    if (bytes is not null)
+                    {
+                        var current = EtabsForceWorkerCodec.ParseProgress(bytes, requestId, requestSha);
+                        if (current != previous) { previous = current; progress?.Report(current); }
+                    }
                 }
                 if (worker.HasExited)
                 {

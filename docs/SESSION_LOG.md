@@ -16,6 +16,14 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Progress
 
+- Production group worker/store capture, exact offline reopen and cancellation
+  passed for all 153 reference beams / 3,502 rows at `2bdf8679`. Medium admission
+  exposed a Windows progress replacement fault before any snapshot was accepted.
+  A standalone 3,000-write / 62,879-read reproducer verified the root fix:
+  ReplaceFile publication and bounded retry of its transient reader errors.
+  Package metadata now names the actual group/rows transport. Medium and installed
+  acceptance will be repeated with the corrected candidate.
+
 - Saved the interrupted group/compact/timer work in `ed86063f` after actual
   medium replay and reference equality. The next bounded integration uses the
   group profile in the production worker, explicitly identifies rows-1 in the
@@ -179,6 +187,14 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Issues encountered
 
+- Medium worker capture stopped after 55 progress updates with access denied.
+  The source getter returned successfully; progress publication failed. No
+  partial snapshot was imported, and worker cleanup completed. A stale package
+  description also named the earlier bulk/gzip profile despite the group/rows
+  production implementation; the manifest producer is corrected.
+- One further status-file lookup guessed an absent planning path; bounded
+  inventory located the maintained `docs/library/implementation-status.md`.
+
 - Completed broker graphs remained reachable through uncancelled deadline tasks
   for up to eight minutes, accumulating across repeated acquisitions.
 - The first native canonical writer retained a whole document in its stream
@@ -284,6 +300,17 @@ and integrated qualification against the whole-product goal; learning excluded.
   OS access denied; the launch cause is unconfirmed.
 
 ### Root causes and resolutions
+
+- RR-032: Windows overwrite-move deletes the existing progress path while
+  readers can still hold it. A standalone concurrent reader/writer reproduced
+  access denied in File.Move. File.Replace avoids the writer deletion failure;
+  readers retry only observed missing/access/sharing errors on optional progress
+  at the next bounded poll. Malformed progress, final response validation,
+  cancellation and deadlines remain enforced. The corrected 3,000-update
+  reproducer passed with 62,879 complete reads; actual medium proof follows.
+- Package metadata was maintained separately from the producer selection and
+  was not updated during integration. Corrected the manifest's actual group
+  profile and rows transport before final installed-candidate generation.
 
 - RR-031: the deadline monitor's suspended closure retained the completed result
   task and its complete acquisition. A shared wait now races quiescence against
@@ -411,7 +438,9 @@ and integrated qualification against the whole-product goal; learning excluded.
 
 ### Rework and recurrence
 
-- RR-005, occurrences=96, minutes=unknown: source-owner/key lookups, typed
+- RR-032, occurrences=1, minutes=unknown: use ReplaceFile for progress publication
+  and tolerate only its observed transient read-open errors on bounded polling.
+- RR-005, occurrences=97, minutes=unknown: source-owner/key lookups, typed
   PowerShell dispatch and test-wrapper/filter forms required correction; use
   discovered owners, exact types and the runner's observed command grammar.
 - RR-002, occurrences=27, minutes=unknown: actual result availability, mesh
