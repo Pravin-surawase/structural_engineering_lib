@@ -914,7 +914,9 @@ def _main() -> int:
     return 1 if failed > 0 else 0
 
 
-def _timing_label(argv: list[str]) -> str:
+def _timing_label(argv: list[str]) -> str | None:
+    if any(option in argv for option in ("--list", "--help", "-h")):
+        return None
     if "--candidate-integrity" in argv:
         return "check candidate integrity"
     if "--pre-commit" in argv:
@@ -959,9 +961,9 @@ def main() -> int:
         result_code = _main()
         return result_code
     finally:
-        _record_task_timing(
-            _timing_label(sys.argv[1:]), time.monotonic() - started, result_code
-        )
+        label = _timing_label(sys.argv[1:])
+        if label is not None:
+            _record_task_timing(label, time.monotonic() - started, result_code)
 
 
 if __name__ == "__main__":

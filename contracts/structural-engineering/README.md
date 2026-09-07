@@ -54,3 +54,10 @@ geometry and assignments, cases/combinations, stations, same-row force
 provenance, row accounting, optional evidence, canonical hashes, and
 fail-closed diagnostics. It does not connect to ETABS. See
 `docs/library/reference/wp10-analysis-snapshot.md`.
+
+WP11's first baseline profile is a native C# application service that composes
+these existing contracts. Its supplementary normalized source records under
+`code-data/is456/baseline-*-v1.json` identify their native consumers; they do not
+declare new language-neutral operations or Python projections. Existing
+WP01–WP10 semantic versions and conformance contracts remain authoritative.
+See [the native baseline contract](../../docs/library/reference/wp11-baseline-design.md).

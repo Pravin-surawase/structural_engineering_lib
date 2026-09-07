@@ -5,6 +5,163 @@
 
 ---
 
+## 2026-09-08 — Session: WP11 supported baseline design
+
+**Task:** WP11-BASELINE-DESIGN
+**Agent:** DEV (one parent; two bounded implementation/source-review helpers)
+**Branch:** `codex/wp11-baseline-design`
+
+**Focus:** Complete baseline-design milestone A and then the installed Excel
+Design successor B, using the owner-requested plan and necessary bounded
+workflow corrections. The current Windows task owns its isolated branch;
+original checkout edits and other-device state remain preserved.
+
+### Completed
+
+- Completed the native supported snapshot-to-reinforcement service, required
+  strength/SLS/detailing/durability/lateral/stirrup checks and immutable replay.
+  The frozen locked solution build passed with zero warnings or errors.
+- Frozen native tests passed 159/159 without skips. Windows adapter tests passed
+  129 with eight explicit external/live/PF9 cases skipped. The workflow and
+  verification-control suites passed (56 and 54 tests respectively); shared
+  semantic contracts, docs/control/context, links and efficiency checks passed.
+- Reconciled the current plans, documented the native contract, added portable
+  tests to hosted CI, and fixed observed cache-inventory and informational-timing
+  defects. No broad local Python/full-check gate or installed Design pass is
+  claimed; milestone B owns those cumulative and application gates.
+- Bound the isolated worktree to merged WP10 `9f03bb7c` and admitted the new
+  task after preserving and superseding an obsolete local-setup timer.
+- Audited the actual source specimen, native check contracts and hosted caller
+  routing. Adopted the baseline acceptance contract and intake replan before
+  engineering implementation.
+- Created and independently checked an owned three-beam ETABS fixture with
+  separately analysed ULS/total-SLS/sustained-SLS cases and 153 genuine rows.
+  The unchanged production WP10 capture path passed one selected live test.
+- Implemented native accepted-input mapping, finite actual-bar selection,
+  genuine strength/detailing/serviceability leaves, durability/lateral checks,
+  explicit fire applicability, complete-member binding and offline replay.
+- The latest focused development run passed 29 baseline tests, including all
+  three real beams, a mixed batch, serial/replay equivalence, changed layers and
+  links, actual stirrup hooks, the unchanged negative building capture,
+  missing/stale inputs, cancellation, and budget exhaustion. The earlier
+  WP06 regression run passed 15 tests. These are development receipts, not a
+  frozen candidate, installed acceptance, or performance certification.
+
+### Progress
+
+- A1–A4 source implementation, native-contract documentation and frozen focused
+  verification are complete. One immutable candidate audit, integrity and
+  required hosted lifecycle follow; their exact facts remain external.
+- Successor B remains unimplemented. No installed Design or final release pass
+  is claimed; the earlier numerical tests qualified only their explicit profile.
+
+### Issues encountered
+
+- The first session admission was blocked by the completed VS Code setup
+  task's unmatched INTAKE timer. The source checkout also contains a preserved
+  unrelated whitespace edit, so this task uses a new worktree.
+- The retained building capture cannot qualify the proposed zero-axial
+  envelope: all members have axial force and only a ULS combination is captured.
+- Hosted .NET validation omitted the portable native engineering test project.
+- Full-length no-splice design and reinforcement-dependent SLS inputs lacked
+  producing operations in the proposed orchestration path.
+- Two maintained-owner searches (parent packaging path and auditor PowerShell
+  glob) assumed locations/expansion; file discovery resolved them. One earlier
+  planning-task lookup is carried into the same deduplicated recurrence record.
+- The first owned-fixture expectation used the opposite ETABS section-face V2
+  sign. Source magnitudes/moments matched; the expected sign was corrected, with
+  the failed receipt retained and the original source forces unchanged.
+- Equal station demands reused genuine calculation IDs and exposed a native
+  complete-member binding defect. The long development search was stopped and
+  replaced by a fixed-arrangement reproducer before catalogue search resumed.
+- Source review corrected conservative Figure 4 bounds, multilayer service
+  inertia/stress and an unqualified low-strain zero-crack inference. The final
+  fallback uses a declared conservative fully cracked elastic strain bound.
+- Completion review added missing durability, lateral restraint and fire-basis
+  requirements before freeze. Fire-rated design remains outside this first
+  profile; a missing requirement is not treated as no requirement.
+- The existing arrangement check does not qualify stirrup end anchorage. Final
+  review added a required 135-degree/6phi actual hook template, rounded cage and
+  tail clearance, and fed that geometry into bar positioning and effective depth.
+- Pre-freeze file review found the expanded fixture exceeds the existing 500 KiB
+  commit limit. The maintained WP10 compact transport stores the same validated
+  snapshot in 88,657 bytes; production decoding preserves all 153 rows and its
+  exact semantic identity. The expanded original remains external.
+- A parallel documentation control check observed pytest's temporary cache
+  README as an unclassified source path. The other seven docs checks and all
+  56 workflow tests passed; no product calculation failed.
+- The check-listing command recorded a zero-duration `check full` event despite
+  running no validation. This would overstate the derived full-gate count.
+- Several optional follow-up lookups again assumed filenames or a diagnostic
+  dependency. Bounded file discovery and built-in process inspection resolved
+  them; these are included in the existing command-shape recurrence record.
+- Native compilation caught explicit generic/params typing, a list Count/name
+  mismatch and one unpropagated material-modulus field. A service-stress anchor
+  contained arithmetic error (0.58*415*500/600 = 200.583333333333); its independently
+  recomputed value now passes. None of these candidates was published.
+- A helper briefly patched the primary checkout. Its task-owned file was moved
+  to the intended worktree and removed from primary; inspection reconfirmed that
+  primary retains only the original unrelated whitespace edit.
+
+### Root causes and resolutions
+
+- RR-004: local editor setup was complete without a source/publication candidate,
+  so publication closeout could not finish its timer. The completed task and
+  latest checkpoint were inspected; exact-task supersession retained evidence
+  without elapsed/integration claims. New session admission then passed.
+- The native flexural profile rejects nonzero axial force; the source capture
+  supplies only the selected strength case. The positive qualification fixture
+  is replanned before implementation; original rows remain negative evidence.
+- The hosted job selected only the Windows test project. The portable project
+  is added to the same required job; its proof follows the affected check.
+- The earlier plan assumed aggregation/check APIs supplied missing producers.
+  Required serviceability and full-length detailing assessments are now explicit
+  bounded dependencies; no result or applicability waiver is fabricated.
+- RR-005: guessed parent folder and PowerShell glob semantics. `rg --files`
+  established exact owners. Use discovered paths and runner syntax thereafter.
+- RR-035: C# compared a multiset of referenced result IDs while Python already
+  used a set. Unique final-depth calculation binding now preserves all required
+  station leaves. The fixed-layout/three-beam path and focused WP06 regression
+  pass. The latest rounded-hook layout reaches complete designs in three
+  evaluated candidates per beam, with d=441 mm; earlier sharp-corner layout
+  development receipts remain historical and do not qualify the final template.
+- Source-derived operations retain the controlled PDF hash and normalized
+  formulas/data, with protected rendered pages stored only outside the repo.
+  The nonbuilding fixture explicitly has no fire-rating requirement and its
+  physical end restraints supply the lateral-stability basis.
+- Stirrup-end anchorage is now its own required, source-bound native operation;
+  actual tangent tails are checked against all bars and section space. The
+  latest 29-test run passes and the independent development review reports no
+  outcome-changing blocker. This standard template does not claim a fabrication BBS.
+- RR-036: pytest creates `pytest-cache-files-*` beside the final cache before
+  renaming it to `.pytest_cache`. The existing ignore covered only the final
+  name, so concurrent source inventory briefly failed closed. Ignore the exact
+  temporary-cache pattern at any depth; verify with Git's ignore authority and
+  rerun only the failed control/context check.
+- RR-037: the check wrapper always recorded timing in `finally`, including
+  help/list early returns. Informational calls now return no timing label and
+  emit no validation event; real check verdicts and timing remain intact. The
+  existing historical zero-duration event is retained and explicitly excluded
+  from claims of broad validation; it is not erased or treated as evidence.
+  All 54 verification-control tests pass, including actual help/list entry-point
+  calls that emit no validation event; ordinary timing label tests remain green.
+
+### Rework and recurrence
+
+- RR-004: occurrences=14; minutes=unknown. Exact-task supersession and successful
+  new admission resolve the stale timer; no publication claim was made.
+- RR-005: occurrences=122; minutes=unknown. Exact worktree paths, discovered file
+  owners, supported patch shapes and literal PowerShell blocks resolved the
+  documented command failures. No claim of eliminating future rework is made.
+- RR-035: occurrences=1; minutes=unknown. Fixed-arrangement qualification now
+  precedes catalogue search, and C#/Python final-depth binding semantics agree.
+- RR-036: occurrences=1; minutes=unknown. Ignore pytest's atomic cache staging
+  directories so concurrent read-only inventory cannot classify them as source.
+- RR-037: occurrences=1; minutes=unknown. Help/list execution is not a validation
+  run and must not increment full-gate telemetry.
+
+---
+
 ## 2026-09-07 — Session: Complete WP10 product acquisition
 
 **Task:** WP10-COMPLETION

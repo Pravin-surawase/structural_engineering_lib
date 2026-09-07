@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-07
+last_updated: 2026-09-08
 doc_type: guide
 complexity: intermediate
 tags: [excel-dna, xll, planning, handoff]
@@ -24,8 +24,10 @@ packets. Its PF11 blueprint is the authority for new library work.
 **Current implementation:** WP01–WP09 and WP10's portable contracts, broker,
 normalization, assumptions/offline review, running-model connection and complete
 group force handoff are implemented. [WP10 acquisition](wp10-etabs-read-adapter.md#wp10-completion-contract--2026-09-07)
-is completing worker capacity, signed installed and cumulative correctness
-qualification in one milestone PR. The owner deferred timing/memory certification
+completed worker capacity, signed installed and cumulative correctness
+qualification in [PR #981](https://github.com/Pravin-surawase/structural_engineering_lib/pull/981).
+The active work is [WP11 baseline design and its installed Excel successor](current-plan.md).
+The owner deferred timing/memory certification
 to project-end `WP10-PERF-FINAL`; no performance pass is claimed. The
 [whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)
 compares old/new storage and UI, identifies missing design orchestration, and

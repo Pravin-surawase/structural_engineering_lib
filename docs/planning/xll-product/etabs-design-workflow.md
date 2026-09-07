@@ -636,3 +636,130 @@ permits skipping new forces or required checks.
 
 No new scripts, skills or scheduled jobs are needed for this planning decision.
 Affected implementation tests belong to the later packets; this review adds none.
+
+## WP11 baseline execution — 2026-09-08
+
+The owner requested implementation of the reviewed baseline-design plan, with
+necessary plan/script/workflow corrections and evidence-driven replanning.
+WP10 is functionally complete in PR #981. The current work is two milestones:
+**A**, reusable complete supported baseline design; **B**, its installed Excel
+Design workflow. Each has sequential internal units and one meaningful PR.
+Later search, coupled reanalysis, overnight operation and reporting remain in
+the preceding roadmap. The executable acceptance owner is
+[wp11-baseline-design-acceptance.json](../../verification/wp11-baseline-design-acceptance.json).
+
+Intake exposed three dependencies before engineering implementation:
+
+1. The retained 153-beam building snapshot has nonzero axial force in every
+   member and only one selected strength combination. The current native
+   flexural profile excludes axial interaction. Keep this exact snapshot as
+   unsupported/missing-input evidence; do not zero components or invent SLS
+   rows to make it qualify. A small separately owned ETABS reference fixture
+   will supply explicit compatible ULS/SLS cases and an independent engineering
+   dossier. Only that fixture may be created/analysed for qualification; this
+   does not introduce product model mutation or optimization.
+2. Serviceability requires producers for reinforcement-dependent factors,
+   service neutral axis/stress/strain or calculated components. Freeze the
+   supported method and independent source examples before its implementation.
+   Actual bars and current action identity must feed these producers. A
+   screening result must remain labelled screening. Accepted engineering input
+   is distinct from a precomputed pass or professional approval.
+3. The existing lap/curtailment operation requires at least one actual detail.
+   Full-length unspliced bars need an explicit verified assessment of paths,
+   stock, coverage and anchorage. Preserve the existing missing-input contract;
+   no dummy splice and no empty-list pass.
+
+The first envelope is ordinary prismatic rectangular beams at captured fixed
+dimensions, with verified physical spans/supports and the native operations'
+actual supported action behavior. Every concurrent component, governing
+case/station and physical face is retained. Missing or unsupported behavior
+prevents member qualification. Required strength, SLS, detailing, fit and
+seismic-applicability leaves are frozen before evaluation; real operation
+results feed the existing member aggregator.
+
+A1 binds the specimen, inputs, sources, checks and commands; A2 adds the mapper
+and bounded actual-bar selection; A3 completes SLS/detailing/current-member
+evidence and replay; A4 verifies mixed selected-beam batches and freezes all
+intended content. B then exposes the same service through accepted project
+inputs and the actual ribbon, with initiating-workbook ownership, progress,
+cancellation, stale-result fencing and offline reopen. Heavy evidence remains
+external and worksheets contain compact requested results.
+
+The hosted workflow currently omits `StructuralEngineering.Tests` while
+running `StructAutomate.Tests`. Add the portable native project alongside the
+Windows project so A's engineering evidence actually runs on the PR. The
+pinned runner uses Microsoft.Testing.Platform/xUnit; discover and execute its
+supported nonzero selector rather than copying VSTest filter syntax.
+Existing session supersession safely resolves an obsolete local-task timer;
+no new delivery lifecycle is needed.
+
+Run focused evidence while implementing; after content freeze use the existing
+formatter, union of affected checks, one immutable audit/integrity and required
+hosted cycle. One repair candidate is allowed; another rejection requires
+replanning. B owns the next cumulative broad Python/full repository gate.
+WP10-PERF-FINAL remains at project end with unchanged timing/memory targets.
+Finish versioned task/recurrence/handoff records before the candidate; final
+installed and hosted facts retain exact artifact/run/PR/merge identities.
+
+### Development refinement R2
+
+The owned ETABS fixture now supplies three real 300 × 500 mm beams at 4.0,
+4.25 and 4.5 m, with separately analysed 12/8/5 kN/m strength/total-service/
+sustained-service loads. The retained snapshot identity is
+`9ced40204f6db621b4b22c7a8a755d1a77ec77c69aaf9a4d76dc12316a72bf84`.
+Its 574,685-byte snapshot is a nonproprietary owned test fixture and is retained
+with native tests so hosted CI executes the same path without ETABS installed.
+Proprietary building data and protected standard pages remain external.
+
+The qualified first profile is narrower than all ordinary beams: a direct
+prismatic rectangle, horizontal vertical-local-2 simple span, explicit physical
+supports, no offsets, ordinary seismic basis, no required project fire rating,
+and accepted span/depth screening. It excludes deep beams, sections requiring
+side-face reinforcement, and unsupported axial/minor/torsion demands beyond the
+declared 1e-12 numeric-zero tolerance. Original concurrent values remain intact.
+Exposure-dependent grade/cover and physical lateral-restraint checks are
+required. A required fire rating is Unsupported; an unspecified fire basis or
+restraint basis is Needs Input. Neither can be disabled by a caller leaf flag.
+
+The catalogue uses equal, vertically aligned layers with at least two bars per
+layer, fixed captured section size, full straight unspliced bars, and an actual
+uniform closed-link zone. Full development at support faces is an additional
+conservative condition. Figure 4 uses a documented conservative lower envelope;
+crack calculations retain every service row and critical tension-surface point.
+Where the tension-stiffening approximation predicts negative mean strain, the
+explicit fully cracked elastic upper bound is used instead of an inferred
+zero-crack result. Calculated displacement is not claimed.
+
+A fixed supported arrangement is now qualified before exercising the catalogue
+search. This exposed and repaired the C# final-depth multiset/set mismatch for
+identical station calculations, matching the existing Python semantics while
+retaining every scope qualification. A single validated snapshot index serves
+each selected-beam batch. The latest development set passed 25 native baseline
+tests; frozen-candidate, installed and hosted qualification still follow.
+
+### Development refinement R3 and milestone A freeze
+
+The final required-check review added explicit stirrup end anchorage. The
+selected closed two-leg link now carries a 135-degree/6phi standard template
+with actual tangent tails; rounded cage, bar/tail and section-space checks are
+required. Bar inset and inner-layer spacing accommodate those hooks, and their
+actual centroid changes feed strength and SLS calculations. This closes an
+identified check gap before publication, without claiming a fabrication BBS.
+
+The updated owned-fixture development run passed 29 tests with zero failures or
+skips, including the external negative building reference. All three positive
+beams selected two 12 mm bars per face and 8 mm links at 150 mm after three
+evaluated candidates each, with actual d=441 mm. Earlier R2 layouts and counts
+are historical development evidence. Independent development review found no
+outcome-changing blocker. The native API and scope are documented in
+[WP11 baseline design](../../library/reference/wp11-baseline-design.md).
+
+Saved requests now bind the exact native module/runtime identity, so a rebuild
+cannot leave an earlier design labelled current. Current WP10 entry points
+are reconciled with merged PR #981. The retained fixture uses the existing WP10
+compact transport (88,657 bytes) to meet the repository file-size gate, with
+the same verified snapshot identity and all 153 rows. Milestone A next freezes source/docs,
+formats its changed path union once, runs focused native/contract/workflow
+evidence, and follows the existing immutable candidate/hosted lifecycle.
+Milestone B remains the separate installed Excel successor with the same
+accepted native service and its named cumulative gate.

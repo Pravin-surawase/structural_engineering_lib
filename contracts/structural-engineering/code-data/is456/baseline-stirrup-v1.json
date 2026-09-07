@@ -1,0 +1,14 @@
+{
+  "schema_version": "structural-code-data/v1",
+  "code_data_revision_id": "is456-baseline-stirrup-v1",
+  "native_consumer": "StructuralEngineering.Codes.IS456.BaselineStirrupAnchorage",
+  "source": "IS 456:2000 printed page 43, 26.2.2.4(b); controlled PDF SHA-256 6ec8f9033bc521420f2f550123edb6f0f444d9d3b7033a87b1b7ec569c143f8d",
+  "hook_angle_degrees": 135,
+  "minimum_tail_diameters": 6,
+  "construction_template": {
+    "id": "ordinary-closed-rectangular-135-hook-6phi-v1",
+    "internal_bend_radius_diameters": 2,
+    "maximum_longitudinal_bar_diameters_relative_to_link": 4,
+    "scope": "Bounded selected standard link and projected section fit/anchorage; not a fabrication BBS. Template radius and layout bounds are construction choices, not additional quoted IS456 requirements."
+  }
+}
