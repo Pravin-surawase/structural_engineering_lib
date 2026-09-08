@@ -1,5 +1,59 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## Owner refinement and implementation start — 2026-09-08
+
+A/B are complete within their original baseline scope (PRs
+[#982](https://github.com/Pravin-surawase/structural_engineering_lib/pull/982)
+and [#983](https://github.com/Pravin-surawase/structural_engineering_lib/pull/983)).
+Prioritize dependable core strength/reinforcement review on ordinary models,
+then practical alternatives, copied-model reanalysis, bounded repetition and
+portable review delivery. Detailed crack/long-term deflection and other
+input-intensive checks can follow with independent pending states. Missing
+input is not non-applicability; full verification keeps its stricter meaning.
+Run qualified simple checks when ready. Material, applicable actions and
+actual bar geometry needed for strength remain core dependencies.
+
+The retained building has 153 beam objects and 3,502 action rows; all 153 beams
+hit the current baseline restriction on nonzero additional actions and cannot
+complete that design profile. It differs from A/B's positive
+three-beam/153-row fixture. One fixture or a component suite cannot prove broad
+model usability. Address these source/coverage boundaries:
+
+1. Supporting-section dimensions and wall/slab context.
+2. Effective member material overrides.
+3. Offset/assignment normalization before design.
+4. Selected-case prerequisites instead of every unrelated case finishing.
+5. Required loading completeness, separate from returned-row completeness.
+6. Shape/material/depth limits across capture, mapping and layout owners.
+7. A core-review contract independent of baseline SLS dependencies.
+8. Declared runtime and unit compatibility.
+9. Bounded selected-scope acquisition and accounted member exceptions.
+10. Governing-section sampling evidence.
+11. Portable workbook and external review evidence.
+
+Start with [repeatable C0a API discovery](wp10-etabs-read-adapter.md#c0a-api-discovery-foundation--2026-09-08),
+then broker-backed source-fact qualification/topology (C0a), independent core
+review (C0b), required mainstream methods (C0c), practical search (C1),
+copied-model verification (D), bounded execution (E), packages (F) and final
+qualification (G). Reuse accepted A/B infrastructure.
+
+Before broad-demo qualification, freeze at least five independent building
+models from three sources/authors, including two holdouts. Proposed per-model
+targets: 95% ordinary-target beam mapping without per-member reconstruction,
+90% complete core outcomes after core inputs and 100% object/row accounting.
+Only one retained independent real building is evidenced. These are unachieved
+targets, not market statistics; synthetic/modified cases do not replace the
+independent corpus.
+
+Earlier API work includes exact getter matrices and bulk capture. The missed
+opportunity was mapping capabilities against complete workflows and realistic
+volumes earlier. Resolve the next contract's critical API questions, then
+implement; learning every unrelated method is not a new delivery prerequisite.
+This section controls revised sequencing; the earlier audit below preserves
+historical component boundaries.
+
+## Historical architecture audit
+
 Date: 2026-09-05. Latest task: XLL-PRODUCT-ARCHITECTURE-AUDIT.
 Status: source-reviewed architecture recommendation; automatic product integration
 is not implemented. The owner requested a fair comparison of the original,

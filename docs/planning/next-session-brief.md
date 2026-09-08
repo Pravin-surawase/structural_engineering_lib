@@ -4,13 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-08
-- Focus: Complete milestone B using the merged native A service, explicit accepted inputs and the installed Excel workflow. B owns the named cumulative correctness gate. Later optimization/reanalysis/overnight work remains excluded.
-- Completed: Verified PR #982 merge cc61035d and its tree equality with the reviewed A candidate; closed the A delivery/timer and admitted this isolated B branch.; Implemented transparent Design Inputs, explicit acceptance, immutable external request/result persistence, background native work, summary/details and ribbon commands. No engineering formula is duplicated in Excel.; Focused development tests passed 17 cases without failures or skips. Owned Excel smoke 11 passed actual ribbon dispatch, all three native fixture beams, mixed Needs Input, immediate invalidation/redesign, workbook switching, cancellation, pending close, offline reopening, missing-result recovery, preserved worksheet footprints and clean Excel process exit.
-- Recurrence controls: RR-005 x135 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-002 x29 / unknown: Probe exact host boundaries and ownership before acceptance; verify cleanup of owned child processes and resources explicitly.; RR-038 x1 / unknown: Inspect remote.origin.fetch when creating a task branch; preserve bounded mappings and add its exact branch mapping before upstream-bound publication checks.
-- Git receipt: docs/verification/wp11-excel-design-git-handoff-receipt.json | sha256:adbac1ec14b92fc811cb1e659063f7d5dc5575bbefaa7ebdd2b3208d4f0f1942 | HOLD
-- Git identity: codex/wp11-excel-design@cc61035d7d69d03877e37a453f0d503e2504d735 | upstream=origin/main@cc61035d7d69d03877e37a453f0d503e2504d735 | base=origin/main@cc61035d7d69d03877e37a453f0d503e2504d735 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: HOLD_FOR_EXACT_EVIDENCE
+- Focus: Start the accepted API-first sequence with repeatable static discovery; qualify live source facts and broader core design in later bounded packets.
+- Completed: Owner requested the API-first correction be planned and started. Inspected the dirty main edit, fetched exact main, verified merged PR 983 and inspected sibling lanes/open PRs. Created an isolated lane at `09df53c9`; original main and completed candidate worktrees are preserved.; Implemented a maintained workflow capability catalogue and reflection-only discovery, with registered getter signature comparison and exact return, parameter and enum metadata. Added a worker inventory command with assembly identity/hash binding and create-only output. No live target API is invoked.; Promoted the accepted core-first direction, eleven coverage needs and API learning sequence into maintained plan owners; corrected stale B status in the planning entry point. Broad source-fact capture/design remains later.
+- Recurrence controls: RR-005 x138 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-002 x30 / unknown: Probe exact host boundaries and ownership before acceptance; verify cleanup of owned child processes and resources explicitly.; RR-004 x15 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -23,15 +19,16 @@ WP10-03 adds bounded operation control and WP10-04 adds offline normalization;
 WP10-05 A/B now adds transparent assumptions and external-snapshot offline
 review. WP10-COMPLETION implements running-model connection, complete group
 force handoff, bounded compact snapshots and source interpretation. It completed
-functional installed/hosted acceptance in PR #981. The active WP11 contract
-qualifies native baseline design and then its installed Excel successor;
-performance certification remains at the owner's project-end gate.
+functional installed/hosted acceptance in PR #981. WP11 A and B completed
+their bounded native and installed Excel acceptance in PRs #982 and #983.
+The owner's [core-first model-coverage sequence](xll-product/etabs-design-workflow.md#owner-refinement-and-implementation-start--2026-09-08)
+now controls the next work; performance certification remains at project end.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | WP10 and WP11 milestone A are merged; A's supported native service remains the B dependency. B's development flow accepts explicit inputs, keeps actual design evidence externally, and marks edited inputs/snapshots stale. A batch can report complete and Needs Input members together. |
-| **Next** | Finish B's signed installed acceptance, cumulative verification and PR without claiming those pending gates passed. Do not reopen A's native scope, repeat completed acquisition work or resume deferred speed experiments. |
-| **Then** | Add bounded multi-option design search, supported physical-span/group constraints, controlled owned-copy ETABS reanalysis and baseline comparison. Overnight automation and reporting remain later scope. PF9 timing/working-set certification resumes as WP10-PERF-FINAL at project end. |
+| **Current** | WP10 and WP11 A/B are merged. The C0a API discovery foundation is implemented and locally verified; its candidate/hosted state lives in the delivery ledger. Static discovery found 69/70 selected names with 35 registered signature matches; it does not qualify broader beam design. |
+| **Next** | Qualify support, material-override and station facts through the existing broker, then version source/topology contracts. Keep A/B's accepted snapshot meaning and exact-instance/cleanup controls. See [API plan and evidence](xll-product/wp10-etabs-read-adapter.md#c0a-api-discovery-foundation--2026-09-08). |
+| **Then** | Deliver independent core review and mainstream beam methods, practical alternatives, owned-copy reanalysis, bounded automation and portable packages. Qualify an independent model corpus before claiming broad demo readiness. Detailed input-intensive checks retain explicit pending states; PF9 certification remains at project end. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |
 | Implementation boundary | WP10-01 is pure offline validation, WP10-02 is the exact getter-only host boundary, and WP10-03 is the bounded acquisition-control boundary. WP10-04 adds offline projection and normalization without COM or Excel. The pure analysis package must not depend on the optional ETABS assembly. |

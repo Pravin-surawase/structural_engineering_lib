@@ -5,6 +5,77 @@
 
 ---
 
+## 2026-09-08 — Session: C0a API discovery foundation
+
+**Task:** BEAM-C0A-API-FOUNDATION
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/beam-c0a-api-foundation`
+**Acceptance:** docs/verification/beam-c0a-api-foundation-acceptance.json
+**Focus:** Start the accepted API-first sequence with repeatable static discovery; qualify live source facts and broader core design in later bounded packets.
+
+### Completed
+
+- Owner requested the API-first correction be planned and started. Inspected
+  the dirty main edit, fetched exact main, verified merged PR 983 and inspected
+  sibling lanes/open PRs. Created an isolated lane at `09df53c9`; original
+  main and completed candidate worktrees are preserved.
+- Implemented a maintained workflow capability catalogue and reflection-only
+  discovery, with registered getter signature comparison and exact return,
+  parameter and enum metadata. Added a worker inventory command with assembly
+  identity/hash binding and create-only output. No live target API is invoked.
+- Promoted the accepted core-first direction, eleven coverage needs and API
+  learning sequence into maintained plan owners; corrected stale B status in
+  the planning entry point. Broad source-fact capture/design remains later.
+- Locked restore, solution build and local single-file worker publish pass.
+  All 19 focused tests pass, with no skips. The packaged command discovers
+  69/70 selected names, 35 registered signature matches and 16 enum types;
+  existing-output preservation and invalid-assembly rejection also pass.
+  Evidence: docs/verification/beam-c0a-api-foundation-evidence.json. No new
+  live-model, installation or expanded engineering qualification is claimed.
+
+### Issues encountered
+
+- Initial admission in the existing checkout returned HOLD_MAIN due to stale
+  main and a pre-existing edit. A fresh isolated worktree passed admission.
+- Three source-location probes included assumed test/script/planning paths;
+  exact file discovery resolved the maintained owners. A multi-file patch
+  using stale README date metadata was rejected before any write and then
+  reapplied against observed content.
+- The first build failed IL3002 after the formatter propagated the
+  `Assembly.Location` single-file restriction onto the new command.
+- The session validator treated a standalone retry-counter bullet as a
+  recurrence row and rejected its missing recurrence ID.
+
+### Root causes and resolutions
+
+- The original lane predates the merged A/B history and contains unrelated
+  work. Verified remote/head/PR evidence and created a new branch without
+  resetting, switching or cleaning it. Current lane admitted successfully.
+- Path/anchor assumptions came from narrative and stale checkout metadata.
+  Discover exact current paths and anchors, then apply the bounded change;
+  rejected patch atomicity was verified. No product result used those probes.
+- The existing worker uses single-file publication; shared-context loading
+  followed by `Assembly.Location` was an unsuitable source-binding mechanism.
+  A fresh collectible `AssemblyLoadContext` now binds the external DLL path.
+  The solution builds without warnings, and its packaged executable completes
+  real installed-DLL discovery plus both negative export checks.
+- Keep general retry counters as prose outside the recurrence-row list;
+  the validator requires one recurrence ID on every row in that list.
+
+### Rework and recurrence
+
+- RR-005, occurrences=138, minutes=unknown: three current source-location
+  command events added to the retained 135; exact discovery supplied the
+  correct source owners. Earlier held research-session events remain external
+  and are not silently included in this count.
+- RR-002, occurrences=30, minutes=unknown: one pre-candidate single-file
+  compatibility correction; solution build and packaged-command proof passed.
+- RR-004, occurrences=15, minutes=unknown: recurrence-parser rejection;
+  general retry counts are prose and every recurrence row has one ID.
+
+One atomic documentation patch reapplication and one focused build retry.
+Candidate, audit, hosted and merge counters remain in the delivery ledger.
+
 ## 2026-09-08 — Session: WP11 installed Excel baseline design
 
 **Task:** WP11-EXCEL-DESIGN

@@ -3,9 +3,65 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-07
+**Last Updated:** 2026-09-08
 
 # WP10 — read-only ETABS snapshot adapter
+
+## C0a API discovery foundation — 2026-09-08
+
+The owner requested a bounded API-learning pass before extending common-model
+capture. [BEAM-C0A-API-FOUNDATION](../../verification/beam-c0a-api-foundation-acceptance.json)
+makes discovery reproducible without changing accepted capture profiles or
+executing a target API method. From repository root, after building:
+
+```powershell
+dotnet run --project CSharp/tools/StructAutomate.EtabsWorker -c Release --no-build -- --api-inventory "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll" --response "C:/CodexWork/evidence/api-discovery.json"
+```
+
+Use a new output path. The report binds the assembly file hash/version and
+capability-catalogue hash. It includes exact overloads, return types,
+parameters, relevant enums and comparisons with maintained getter definitions.
+Statuses distinguish missing methods, available unqualified methods, registered
+signature matches and signature mismatches. A successful inventory is static
+metadata evidence, not live qualification or general compatibility approval.
+No ETABS process, workbook, source model or API method is opened/invoked.
+
+The [2026-09-08 packaged-command evidence](../../verification/beam-c0a-api-foundation-evidence.json)
+records 19 passing focused tests and 69/70 selected names present in the
+installed `2.16.0.0` assembly: 35 registered signature matches, 34 available
+unqualified methods, one missing candidate and 16 enum types. Existing-output
+preservation and invalid-assembly rejection passed. This does not increase the
+number of beam models qualified for design.
+
+The catalogue covers 70 selected candidate names across source identity,
+bulk inventory, supports/mesh topology, effective materials, supporting
+geometry, assignments, loading, forces, tables, reference design and later
+copied-model operations. Write/attachment effects are learning metadata;
+catalogue membership never expands runtime getter admission.
+
+| Needed fact | Candidate route | Remaining interpretation |
+|---|---|---|
+| Supporting object | `FrameObj.GetSupports`, connectivity | End support identity is not complete span/fixity proof |
+| Effective material | `FrameObj.GetMaterialOverwrite`, section/material getters | Preserve base/override IDs; establish strength semantics |
+| Force resolution | `FrameObj.GetOutputStations`, actual result rows | Returned rows do not establish governing-section coverage |
+| Wall/slab context | Area and wall/slab property getters | Context acquisition does not add wall/slab design scope |
+| Reference reinforcement | `DesignConcrete.GetSummaryResultsBeam` | Demand areas are not our actual bar paths or complete design |
+
+CSI documents [support objects](https://docs.csiamerica.com/help-files/etabs-api-2016/html/c1636525-11fe-5d11-8064-ce31a272d461.htm)
+and [beam summaries](https://docs.csiamerica.com/help-files/etabs-api-2016/html/c3556046-fd3f-4559-7659-966eb731ea4c.htm).
+Installed signatures and controlled probes qualify the target version; older
+public pages alone are insufficient. Do not infer a getter from a setter name:
+`GetComboStrength` is an explicit candidate whose absence must remain visible.
+Boolean/string direct returns differ from integer status with by-reference
+outputs; preserve the exact enum type rather than copying numeric values.
+
+**Next packet:** qualify support/material/station observations through the
+existing broker's exact-instance, lease, deadline, journal and cleanup controls.
+Define a versioned source-fact contract after resolving the necessary semantics.
+Do not bypass the broker, change original models or relax legacy normalization
+guards because a method exists. Whole-model reanalysis remains later work.
+
+## Retained WP10 scope
 
 WP10 connects an identified ETABS 23.3.1 model to the reusable native beam
 libraries without moving engineering calculations into COM or Excel. It owns

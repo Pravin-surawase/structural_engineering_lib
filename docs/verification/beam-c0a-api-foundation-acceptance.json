@@ -1,0 +1,37 @@
+{
+  "task_id": "BEAM-C0A-API-FOUNDATION",
+  "status": "implementation_authorized",
+  "authority": "Owner requested the proposed API-first correction be planned and started on 2026-09-08.",
+  "base_commit": "09df53c9764c16f6627c0c6e7a2436bb8d8474d3",
+  "objective": "Make workflow-oriented ETABS API discovery repeatable before freezing new source/topology contracts.",
+  "bounded_units": [
+    {"id": "U1", "outcome": "Maintained capability catalogue and static assembly inspection, reusing the existing exact getter profiles."},
+    {"id": "U2", "outcome": "Worker command exports a source-hash-bound discovery report without attaching to ETABS or overwriting prior evidence."},
+    {"id": "U3", "outcome": "Focused tests, installed assembly discovery and maintained plan/user entry points; one bounded candidate."}
+  ],
+  "acceptance_rows": [
+    {"id": "API-01", "outcome": "Inventory reports each selected method as present or missing, exact overloads, return types, parameter names/types/directions and associated enum definitions."},
+    {"id": "API-02", "outcome": "Registered getter signature matches and mismatches are explicit; presence never becomes a claim of live behavior or general runtime compatibility."},
+    {"id": "API-03", "outcome": "Direct Boolean/String returns and CSI integer-status methods remain distinguishable; discovery executes no target method, constructor or getter."},
+    {"id": "API-04", "outcome": "CLI binds report to the inspected assembly bytes and identifies the capability catalogue; an existing output is preserved and invalid input fails visibly."},
+    {"id": "API-05", "outcome": "Actual installed API discovery confirms the tested signatures for supports, material overrides and output stations and records the absent GetComboStrength candidate honestly."},
+    {"id": "API-06", "outcome": "Existing worker context/force dispatch, getter matrices and snapshot formats retain their meaning. Documentation identifies live source-fact capture as the next packet."}
+  ],
+  "non_goals": [
+    "No live API calls, model attachment, setters, analysis, design execution or installation change in this first packet.",
+    "No broadened beam design profile, new source snapshot fields or weakened existing getter admission.",
+    "No universal API coverage or claim that discovered methods are qualified for target-model behavior.",
+    "No unrelated dependency, UI, engineering-math or repository-workflow change."
+  ],
+  "likely_pitfalls": [
+    "Confusing method existence with exact signature compatibility or live qualification.",
+    "Assuming every getter returns an integer CSI status, or copying enum values between distinct enum types.",
+    "Creating another competing getter wrapper instead of describing the maintained definitions.",
+    "Using a stale assembly or allowing a failed export to overwrite earlier evidence."
+  ],
+  "verification": {
+    "focused_tests": "EtabsApiDiscoveryTests plus existing Wp10GetterAdapterTests and Wp10ContextCaptureTests on the Windows test project",
+    "installed_evidence": "Run the built worker inventory command against the installed ETABSv1.dll; record exact source/assembly/report hashes without starting ETABS.",
+    "cumulative_gate": "Broad Python and full repository check remain at the programme named cumulative gate; this packet uses affected .NET and document/control checks plus required hosted PR checks."
+  }
+}

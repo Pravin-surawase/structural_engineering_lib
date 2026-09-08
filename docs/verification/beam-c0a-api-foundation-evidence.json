@@ -1,0 +1,51 @@
+{
+  "task_id": "BEAM-C0A-API-FOUNDATION",
+  "date": "2026-09-08",
+  "acceptance": "docs/verification/beam-c0a-api-foundation-acceptance.json",
+  "evidence_scope": "static_metadata_only;not_live_qualification",
+  "source_base": "09df53c9764c16f6627c0c6e7a2436bb8d8474d3",
+  "build": {
+    "sdk": "10.0.400",
+    "restore": "dotnet restore StructAutomate.slnx --locked-mode: PASS",
+    "solution": "dotnet build StructAutomate.slnx -c Release --no-restore: PASS; zero warnings/errors",
+    "worker_package": "dotnet publish tools/StructAutomate.EtabsWorker/StructAutomate.EtabsWorker.csproj -c Release --no-restore: PASS; local single-file build only",
+    "initial_failure": "IL3002 exposed Assembly.Location's single-file restriction; a fresh collectible AssemblyLoadContext now loads the explicitly requested external DLL without that dependency."
+  },
+  "focused_tests": {
+    "command_from_CSharp": "dotnet tests/StructAutomate.Tests/bin/Release/net10.0-windows/StructAutomate.Tests.dll -class StructAutomate.Tests.EtabsApiDiscoveryTests -class StructAutomate.Tests.Wp10GetterAdapterTests -class StructAutomate.Tests.Wp10ContextCaptureTests",
+    "passed": 19,
+    "failed": 0,
+    "skipped": 0,
+    "not_run": 0
+  },
+  "packaged_cli": {
+    "assembly_path": "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll",
+    "assembly_file_version": "2.16.0.0",
+    "assembly_sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+    "worker_path": "C:/CodexWork/wp11-evidence/BEAM-C0A-API-FOUNDATION/worker/StructAutomate.EtabsWorker.exe",
+    "worker_sha256": "2b4e064388b1df70a83383019a7855b755445347e68f0b968c9bfbac396ba2c1",
+    "report_path": "C:/CodexWork/wp11-evidence/BEAM-C0A-API-FOUNDATION/installed-api-inventory.json",
+    "report_sha256": "53b1594564fe9f4b2926bfaf0babfa3ccb2e82c8050fb1557b957296559ac61d",
+    "selected_names": 70,
+    "registered_signature_match": 35,
+    "available_unqualified": 34,
+    "missing": ["ETABSv1.cDesignConcrete.GetComboStrength"],
+    "registered_signature_mismatch": 0,
+    "enum_types": 16,
+    "target_methods_invoked": 0,
+    "source_hash_independently_matched": true,
+    "existing_output": "Exit 1; report SHA256 unchanged",
+    "invalid_assembly": "StructuralEngineering.Contracts.dll: exit 1; no output created",
+    "critical_available_unqualified": [
+      "ETABSv1.cFrameObj.GetSupports",
+      "ETABSv1.cFrameObj.GetMaterialOverwrite",
+      "ETABSv1.cFrameObj.GetOutputStations"
+    ]
+  },
+  "limits": [
+    "No ETABS process attachment, target getter execution, model mutation, installation or release was performed.",
+    "The catalogue is a selected workflow map, not an inventory of every ETABS command.",
+    "No new beam or model design coverage is qualified by this packet.",
+    "Broad Python/full-repository qualification remains at the programme cumulative gate; this packet still requires its changed-domain hosted checks."
+  ]
+}
