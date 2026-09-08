@@ -5,8 +5,8 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-07
-**Related Tasks:** WP09, WP10-05, WP10-05B
+**Last Updated:** 2026-09-08
+**Related Tasks:** WP09, WP10-05, WP10-05B, WP11-EXCEL-DESIGN
 **Abstract:** Install, use, diagnose, and integrate the standalone Windows Excel XLL over the native .NET beam library.
 
 ---
@@ -75,10 +75,32 @@ acquire forces or run analysis. Raw getter evidence and context artifacts stay
 outside Excel. Closing the requesting workbook cancels and discards its pending
 result; the status window reports any remaining worker cleanup.
 
+The **Design Inputs**, **Accept Inputs**, **Design**, **Cancel Design**, and
+**Review Designs** ribbon actions add baseline design for captured beams.
+Design Inputs creates a six-column owned sheet: Category, Source ID, Field,
+Value, Unit, and Origin. Edit only Value. Supply explicit project ID, revision,
+origin/evidence; material strengths by material ID; member selection, support
+faces/centres, span, anchorage, cover, aggregate, exposure, booleans, fire and
+lateral restraint evidence; and `uls`, `sls_total`, `sls_sustained` roles.
+Material names never infer strengths. Catalogue defaults remain labelled demo
+values after acceptance; Accept Inputs accepts calculation values only and never
+marks professional approval. Design runs native work off the UI thread, stores
+immutable request/results externally, and writes small identities to Excel.
+Each selected member is accounted independently: missing input is Needs Input
+while other members may complete. An input or snapshot edit immediately makes
+saved results historical; reaccept before redesign. Reopen revalidates the
+original snapshot, and missing/corrupt evidence cannot be current. Use Details
+after selecting a Beam Designs member row. Unsupported profiles are described in
+[WP11 baseline design](../reference/wp11-baseline-design.md).
+Owned Excel development acceptance passed the actual Design ribbon action,
+three complete beams, mixed results, stale editing/redesign, switching,
+cancellation, close/reopen, missing saved evidence and clean Excel exit.
+The release candidate's signed installed receipt and hosted checks are recorded
+externally against its exact source and package identities; this guide is not
+an installed-acceptance receipt.
+
 The separate **Standalone examples** menu retains the WP09 workflow below.
-Use it in a separate workbook: this new workspace does not yet map assumptions
-and imported actions into a complete design/check request. All command outcomes
-are shown in a persistent status window, including rejected operations.
+All command outcomes are shown in a persistent status window, including rejected operations.
 
 The import admission bounds are 64 MiB encoded, 1,000 members and 100,000 actions.
 Get Forces acquires the full source group once, then filters the required beam

@@ -8,8 +8,11 @@ complexity: advanced
 
 # StructAutomate — current plan
 
-**Active work (8 September):** WP11 supported baseline-design service, followed
-by its installed Excel Design integration. WP10 functional acquisition completed
+**Active work (8 September):** WP11 milestone A's supported native baseline-design
+service is merged in [PR #982](https://github.com/Pravin-surawase/structural_engineering_lib/pull/982)
+at `cc61035d7d69d03877e37a453f0d503e2504d735`. Milestone B is implementing
+its installed Excel Design integration against that unchanged service. WP10
+functional acquisition completed
 in [PR #981](https://github.com/Pravin-surawase/structural_engineering_lib/pull/981),
 merged at `9f03bb7ca3c4e103ca3fbe7893a1990c7fcdd118`. Its exact worker/store,
 installed Excel and cumulative correctness evidence remains in that handoff.
@@ -27,14 +30,15 @@ experiments or imply a performance pass while closing this functional milestone.
 The actual 1,000-member / 100,000-row capacity and complete-source checks passed
 in WP10. Learning work is excluded.
 
-**Current WP11 sequence:** complete the application mapping and design
-orchestration from accepted assumptions and concurrent snapshot actions into
-actual reinforcement and all applicable member checks. Then expose bounded
-multi-option search and explicit physical-span/group constraints, followed by
-controlled copied-model reanalysis and comparison against a fixed baseline.
-Missing support/span evidence must remain visible. Overnight automation follows
-those verified services and recovery boundaries; it is not available merely
-because Connect ETABS and Get Forces work.
+**Current WP11 sequence:** B maps explicit accepted Design Inputs and concurrent
+snapshot actions into the merged native service. It presents actual bars and
+required checks through compact workbook results while retaining immutable
+request/result evidence externally. Edited inputs or snapshots make prior
+results stale; a mixed selected batch accounts for every member, including
+precise Needs Input outcomes. Final signed installed acceptance, B's cumulative
+gate and its PR remain pending. Bounded multi-option search, physical-span/group
+constraints, copied-model reanalysis, overnight automation and reporting remain
+later scope.
 
 [PF0's product and library charter](library-definition/pf0/README.md) through
 [PF11's implementation blueprint](library-definition/pf11/README.md) are
@@ -113,11 +117,11 @@ Excel evidence. Its workbook evaluates the one declared current physical
 candidate; it does not yet expose a useful multi-option search domain.
 
 Implementation sequencing follows the refined PF11 plan: WP09 and WP10
-functional delivery are complete. WP11 first qualifies the reusable supported
-baseline design service, then its installed Excel Design action. Practical
-span/group search follows that accepted service, before controlled copied-model
-reanalysis. WP12 and the remaining product gates cover migration, reporting,
-recovery, final performance and release readiness.
+functional delivery are complete, and WP11 milestone A is merged. Milestone B
+is the in-development installed Excel Design action using explicit input
+acceptance; its acceptance gates remain open. Practical span/group search,
+copied-model reanalysis, WP12 migration, reporting, recovery, final performance
+and release readiness remain later work.
 
 ## Learning and evidence status
 

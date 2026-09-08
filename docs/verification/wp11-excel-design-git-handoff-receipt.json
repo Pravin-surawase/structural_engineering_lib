@@ -1,0 +1,140 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "adbac1ec14b92fc811cb1e659063f7d5dc5575bbefaa7ebdd2b3208d4f0f1942",
+    "state": {
+      "branch": "codex/wp11-excel-design",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "cc61035d7d69d03877e37a453f0d503e2504d735",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 332.393,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git\\worktrees\\structural_engineering_lib-wp11-excel",
+      "head_sha": "cc61035d7d69d03877e37a453f0d503e2504d735",
+      "hold_reasons": [
+        "changed paths: 24"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-09-08T00:05:13.564713+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib-wp11-excel",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 24,
+        "modified_paths": [
+          "CSharp/packaging/excel/New-Distribution.ps1",
+          "CSharp/src/StructuralEngineering.ExcelDna/EtabsForceCommands.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineCommands.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineReviewWindow.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/OfflineWorkbookStore.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/StructAutomateRibbon.cs",
+          "docs/SESSION_LOG.md",
+          "docs/library/excel/README.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/xll-product/README.md",
+          "docs/planning/xll-product/current-plan.md",
+          "docs/planning/xll-product/etabs-design-workflow.md",
+          "docs/verification/rework-recurrence-index.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "CSharp/packaging/excel/Invoke-BaselineDesignAcceptance.ps1",
+          "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignCommands.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignProjection.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignStore.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignWork.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/BaselineInputSheet.cs",
+          "CSharp/src/StructuralEngineering.ExcelDna/BaselineWorkbookStore.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp11DesignProjectionTests.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp11DesignStoreTests.cs",
+          "CSharp/tests/StructAutomate.Tests/Wp11InputSheetTests.cs",
+          "docs/verification/wp11-excel-design-acceptance.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "cc61035d7d69d03877e37a453f0d503e2504d735",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib-wp11-excel"
+    }
+  },
+  "local_state_receipt_hash": "sha256:adbac1ec14b92fc811cb1e659063f7d5dc5575bbefaa7ebdd2b3208d4f0f1942",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-08T00:05:13.565176+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Windows",
+    "owned_paths": [
+      "CSharp/src/StructuralEngineering.ExcelDna",
+      "CSharp/tests/StructAutomate.Tests",
+      "CSharp/packaging/excel"
+    ],
+    "shared_paths": [
+      "docs/planning",
+      "docs/library/excel",
+      "docs/verification",
+      "docs/SESSION_LOG.md"
+    ],
+    "task_id": "WP11-EXCEL-DESIGN"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

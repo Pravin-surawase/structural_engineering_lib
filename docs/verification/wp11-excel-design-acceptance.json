@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "task_id": "WP11-EXCEL-DESIGN",
+  "revision": "B-freeze-r3",
+  "base_commit": "cc61035d7d69d03877e37a453f0d503e2504d735",
+  "owner_authority": "Owner requested completion of milestones A/B, necessary workflow repairs and evidence-driven replanning; A PR982 merged with exact reviewed tree.",
+  "writer": "Windows task codex/wp11-excel-design; two bounded file-exclusive helpers; parent integrates and independently verifies. Original main edit and accepted A worktree preserved.",
+  "bounded_units": [
+    {
+      "id": "B1",
+      "outcome": "Explicit input sheet/acceptance and frozen external request/result worker; early owned Excel command/event smoke."
+    },
+    {
+      "id": "B2",
+      "outcome": "Actual ribbon Design, compact summary/details, immediate edit invalidation and dispatch/completion/reopen ownership fences."
+    },
+    {
+      "id": "B3",
+      "outcome": "Mixed real snapshot acceptance, cancel/switch/close/reopen, final signed installed proof and cumulative correctness gate; one integrated PR."
+    }
+  ],
+  "acceptance_rows": [
+    {
+      "id": "B-01",
+      "outcome": "Create Design Inputs without inferred material strength, support, fire, seismic or SLS role. Explicit acceptance is calculation-basis acceptance, never professional approval."
+    },
+    {
+      "id": "B-02",
+      "outcome": "Actual installed ribbon Design completes all three owned A beams using unchanged native service; compact summary and selected-member details include real bars, layers, links and every required check/provenance."
+    },
+    {
+      "id": "B-03",
+      "outcome": "Mixed selection accounts for complete and Needs Input members independently; exact field/cell messages and typed unsupported/failed/incomplete outcomes remain visible."
+    },
+    {
+      "id": "B-04",
+      "outcome": "Input/assumption edits immediately cancel pending work and mark saved results historical. Reacceptance and redesign bind the changed basis; formulas or damaged source/layout do not pass as inputs."
+    },
+    {
+      "id": "B-05",
+      "outcome": "Each dispatch has a real unique handle, immutable request, bounded native worker, progress and cancellation. UI completion targets initiating workbook and checks document/source/input/engine/request identities."
+    },
+    {
+      "id": "B-06",
+      "outcome": "Switching active workbook never redirects writes; closing/unloading cancels and discards callbacks; actual dispatched handle reaches completion before cleanup is claimed."
+    },
+    {
+      "id": "B-07",
+      "outcome": "Save/reopen loads immutable external request/results; missing/tampered/changed-engine inputs cannot appear current. Repeated projection reuses owned sheets without force/result payload dumps or clobbering outside footprints."
+    },
+    {
+      "id": "B-08",
+      "outcome": "Final candidate package is signed and installed, actual ribbon action proven, focused native/Windows evidence plus broad Python and full run.sh check cumulative gate and required hosted checks pass."
+    }
+  ],
+  "design_decisions": [
+    "Reuse OfflineWorkbookStore transaction/custom XML ownership and OfflineCommands workbook/event dispatcher; no parallel workbook framework or Excel engineering math.",
+    "Dedicated Design Inputs sheet exposes full native context; demo Assumptions retain their original origin. Accepted requests/results stay external and workbook metadata contains bounded references only.",
+    "AppEvents SheetChange DISPID1564 and interface00024413-0000-0000-c000-000000000046 verified from installed Office/Excel PIA metadata. Load Office dependency first; host smoke still required.",
+    "Unique dispatch identity is separate from deterministic engineering request identity. Serialization freezes request lists before native dispatch; result currentness rechecked after every relevant boundary.",
+    "Bounded input/result units can proceed independently while parent owns all host files; helpers do not build, format, commit or mutate session state. Parent verifies actual code rather than accepting untested helper claims.",
+    "Owned smoke exposed reentrant RCW lifetime: status could release a shared ExcelDnaUtil.Application wrapper during attachment. Each command now owns unique application/workbook RCWs, balances cached lookup ownership and suppresses own transaction events until output RCWs are released. User event arguments are then balanced. Smoke11 passed attachment and Excel process exit; retained failures are not final candidate verdicts.",
+    "Automatic workbook-open validation is awaited through read-only status; acceptance must not launch a second mutating Review command while the first validation is running. Actual dispatched-task completion is distinct from attached workbook completion.",
+    "Snapshot detachment and validation run on the native worker; only compact accepted input lists are serialized before dispatch. Current results of mixed batches can include NeedsInput: currentness binds their exact request and does not mean engineering Pass."
+  ],
+  "verification": {
+    "early_smoke": "Owned Excel, changed command and SheetChange boundary only, development package/receipt explicit; not final installed proof.",
+    "freeze": "All code/tests/docs/session writes first, one affected formatting pass, focused native/Windows union and meaningful host/store/input tests.",
+    "cumulative": "Broad Python suite and full run.sh check once after integrated B content stabilizes. No duplicate quick gate. Final installed evidence binds exact signed source/package bytes.",
+    "delivery": "One immutable candidate audit/integrity/required hosted cycle. Existing one-repair ceiling followed by changed-contract REPLAN on second rejection.",
+    "performance": "WP10-PERF-FINAL remains deferred with unchanged targets. B does not certify full-building design throughput."
+  },
+  "non_goals": [
+    "New engineering profile or duplicated formulas",
+    "ETABS setters, copied-model reanalysis, optimization or overnight operation",
+    "Issued engineering report, release/tag/package publication",
+    "Unrelated lifecycle redesign or cleanup of user work"
+  ],
+  "development_evidence": {
+    "checks": "Actual ribbon, 3 real complete beams, mixed NeedsInput, immediate stale/edit/redesign, switch/cancel/close/reopen, missing external result and outside-footprint preservation, owned process exited",
+    "verdict": "passed",
+    "receipt": "C:/CodexWork/wp11-evidence/WP11-EXCEL-DESIGN/development-smoke-11/receipt.json",
+    "focused_windows": "17 passed, 0 failed, 0 skipped",
+    "xll_sha256": "cec59bc8247e8bff85ed1d8cfd199f7a5a61dd13c0cc66fe82fe17ae6af1449c",
+    "final_candidate": "Exact signed package, installed receipt, cumulative and hosted verdicts remain external, bound after source commit."
+  }
+}

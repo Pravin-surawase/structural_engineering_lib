@@ -84,7 +84,10 @@ public static partial class OfflineCommands
             var session = result.Session;
             if (state.SnapshotReference is { } previous && previous.ProjectId != session.Reference.ProjectId)
                 throw new InvalidOperationException("The workbook project changed before the force result could be attached.");
+            CancelEntryDesign(entry);
+            entry.DesignInvalidated = true;
             store.CommitImport(state, session.Reference, storeDirectory, store.ReadAssumptions(state), 0);
+            store.MarkDesignHistorical(RequireState(store), "Historical — force snapshot replaced; accept inputs and design again");
             entry.Session = session;
             entry.ForceContextArtifactSha256 = contextId;
             entry.Window ??= new OfflineReviewWindow();

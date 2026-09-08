@@ -116,6 +116,11 @@ internal sealed class OfflineReviewWindow : Form
         _cancel = cancel; _cancelConnection.Text = "Cancel force read"; _cancelConnection.Visible = true;
         Height = Math.Max(Height, 220);
     }
+    public void SetPendingDesign(Action cancel)
+    {
+        _cancel = cancel; _cancelConnection.Text = "Cancel design"; _cancelConnection.Visible = true;
+        Height = Math.Max(Height, 220);
+    }
     public void SetForceProgress(string text) => _outcome.Text = text;
     public void EndPendingConnection() { _cancel = null; _cancelConnection.Visible = false; }
     public void SetContext(EtabsConnectionSession context, string? frameId = null)
