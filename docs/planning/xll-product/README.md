@@ -28,10 +28,14 @@ completed worker capacity, signed installed and cumulative correctness
 qualification in [PR #981](https://github.com/Pravin-surawase/structural_engineering_lib/pull/981).
 WP11 milestone A's supported native baseline service is merged in
 [PR #982](https://github.com/Pravin-surawase/structural_engineering_lib/pull/982);
-its separate installed Excel successor B is in development. B uses explicit
-Design Inputs and Accept Inputs, compact workbook results, and external
-immutable request/result evidence for actual bars and checks. Signed installed
-acceptance, the cumulative gate and B's PR are still pending.
+its installed Excel successor B is merged in
+[PR #983](https://github.com/Pravin-surawase/structural_engineering_lib/pull/983),
+including signed installed acceptance and the cumulative correctness gate.
+B uses explicit Design Inputs and Accept Inputs, compact workbook results,
+and external immutable request/result evidence for actual bars and checks.
+The next [core-review/model-breadth direction](etabs-design-workflow.md#owner-refinement-and-implementation-start--2026-09-08)
+starts with [repeatable C0a API discovery](wp10-etabs-read-adapter.md#c0a-api-discovery-foundation--2026-09-08);
+expanded beam-design profiles remain planned.
 The owner deferred timing/memory certification
 to project-end `WP10-PERF-FINAL`; no performance pass is claimed. The
 [whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)
