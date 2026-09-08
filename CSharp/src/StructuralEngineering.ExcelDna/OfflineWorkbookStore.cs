@@ -7,10 +7,10 @@ namespace StructuralEngineering.ExcelDna;
 public sealed record OfflineDocumentState(
     string SchemaVersion, string DocumentId, bool HasAssumptions,
     string? StoreDirectory, OfflineSnapshotReference? SnapshotReference, int ReportRows,
-    string? AssumptionRevision, string? ReportSnapshotSha256);
+    string? AssumptionRevision, string? ReportSnapshotSha256, BaselineWorkbookState? Design = null);
 
 /// <summary>Small workbook metadata and explicitly requested public projections; no snapshot payload in Excel.</summary>
-internal sealed class OfflineWorkbookStore(object workbook)
+internal sealed partial class OfflineWorkbookStore(object workbook)
 {
     public const string Schema = "structural-excel-offline/v1";
     public const string XmlNamespace = "urn:structautomate:offline-session:v1";
@@ -78,7 +78,13 @@ internal sealed class OfflineWorkbookStore(object workbook)
     public void CommitImport(OfflineDocumentState state, OfflineSnapshotReference reference, string directory,
         OfflineAssumptionInput assumptions, int failAfterWrite = 0)
     {
-        var updated = state with { StoreDirectory = directory, SnapshotReference = reference, AssumptionRevision = assumptions.Revision };
+        var updated = state with
+        {
+            StoreDirectory = directory,
+            SnapshotReference = reference,
+            AssumptionRevision = assumptions.Revision,
+            Design = state.Design is { } design ? design with { Status = "Historical — snapshot replaced; accept inputs and design again" } : null
+        };
         // Existing reports remain explicitly historical after a source replacement.
         object[,]? report = null;
         if (state.ReportRows > 0)
@@ -125,8 +131,14 @@ internal sealed class OfflineWorkbookStore(object workbook)
         var formulaAreas = new List<(string Address, object Formula)>();
         var created = false;
         var changed = false;
+        var restoreEvents = false;
+        var eventsEnabled = false;
         try
         {
+            app = _workbook.Application;
+            eventsEnabled = (bool)app.EnableEvents;
+            app.EnableEvents = false;
+            restoreEvents = true;
             if (sheetName is not null && values is not null)
             {
                 sheet = FindSheet(sheetName);
@@ -154,7 +166,7 @@ internal sealed class OfflineWorkbookStore(object workbook)
                 preimage = range.Formula;
                 preimageValues = range.Value2;
                 CaptureFormulaAreas(range, formulaAreas);
-                if (created) FormatNewSheet(sheet, height, values.GetLength(1), sheetName == OfflineAssumptions.SheetName);
+                if (created) FormatNewSheet(sheet, height, values.GetLength(1), sheetName == OfflineAssumptions.SheetName, sheetName == BaselineInputSheet.SheetName);
                 changed = true;
                 range.ClearContents();
                 dynamic? target = null;
@@ -178,9 +190,8 @@ internal sealed class OfflineWorkbookStore(object workbook)
             try
             {
                 WriteXml(oldXml);
-                if (created && sheet is not null)
+                if (created && sheet is not null && app is not null)
                 {
-                    app = _workbook.Application;
                     var alerts = (bool)app.DisplayAlerts;
                     try { app.DisplayAlerts = false; sheet.Delete(); }
                     finally { app.DisplayAlerts = alerts; }
@@ -204,7 +215,13 @@ internal sealed class OfflineWorkbookStore(object workbook)
             catch (Exception rollback) { throw new InvalidOperationException($"RESTORATION_UNVERIFIED: {error.Message}; {rollback.Message}", rollback); }
             throw;
         }
-        finally { Release(app); Release(range); Release(sheet); }
+        finally
+        {
+            // Release owned output objects before admitting user event callbacks again.
+            Release(range); Release(sheet);
+            try { if (restoreEvents && app is not null) app.EnableEvents = eventsEnabled; }
+            finally { Release(app); }
+        }
     }
 
     public void Activate(string name)
@@ -305,7 +322,7 @@ internal sealed class OfflineWorkbookStore(object workbook)
         finally { Release(areas); Release(formulas); }
     }
 
-    private static void FormatNewSheet(dynamic sheet, int rows, int columns, bool assumptions)
+    private static void FormatNewSheet(dynamic sheet, int rows, int columns, bool assumptions, bool designInputs)
     {
         dynamic? range = null; dynamic? font = null; dynamic? header = null; dynamic? fill = null;
         try
@@ -314,7 +331,7 @@ internal sealed class OfflineWorkbookStore(object workbook)
             range.NumberFormat = "@";
             font = range.Font; font.Name = "Aptos"; font.Size = 11;
             range.ColumnWidth = assumptions ? 29 : 18;
-            header = sheet.Range[assumptions ? "A5:D5" : "A9:M9"];
+            header = SizedRange(sheet, assumptions ? "A5" : designInputs ? "A1" : "A9", 1, columns);
             fill = header.Interior; fill.Color = 0x705030;
             dynamic headerFont = header.Font;
             try { headerFont.Color = 0xFFFFFF; headerFont.Bold = true; }
@@ -324,6 +341,12 @@ internal sealed class OfflineWorkbookStore(object workbook)
                 dynamic inputs = sheet.Range[$"B6:B{rows}"];
                 dynamic inputFill = inputs.Interior;
                 try { inputFill.Color = 0xE9F4FF; inputs.NumberFormat = "General"; }
+                finally { Release(inputFill); Release(inputs); }
+            }
+            if (designInputs)
+            {
+                dynamic inputs = sheet.Range[$"D2:D{rows}"]; dynamic inputFill = inputs.Interior;
+                try { inputFill.Color = 0xE9F4FF; inputs.ColumnWidth = 30; }
                 finally { Release(inputFill); Release(inputs); }
             }
         }

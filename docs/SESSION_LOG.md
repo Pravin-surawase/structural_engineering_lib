@@ -5,6 +5,121 @@
 
 ---
 
+## 2026-09-08 — Session: WP11 installed Excel baseline design
+
+**Task:** WP11-EXCEL-DESIGN
+**Agent:** DEV (one parent; two bounded helpers, independently inspected)
+**Branch:** `codex/wp11-excel-design`
+**Git handoff receipt:** docs/verification/wp11-excel-design-git-handoff-receipt.json
+
+**Focus:** Complete milestone B using the merged native A service, explicit
+accepted inputs and the installed Excel workflow. B owns the named cumulative
+correctness gate. Later optimization/reanalysis/overnight work remains excluded.
+
+### Completed
+
+- Verified PR #982 merge cc61035d and its tree equality with the reviewed A
+  candidate; closed the A delivery/timer and admitted this isolated B branch.
+- Implemented transparent Design Inputs, explicit acceptance, immutable external
+  request/result persistence, background native work, summary/details and ribbon
+  commands. No engineering formula is duplicated in Excel.
+- Focused development tests passed 17 cases without failures or skips. Owned
+  Excel smoke 11 passed actual ribbon dispatch, all three native fixture beams,
+  mixed Needs Input, immediate invalidation/redesign, workbook switching,
+  cancellation, pending close, offline reopening, missing-result recovery,
+  preserved worksheet footprints and clean Excel process exit.
+- Final source-bound focused/cumulative, signed installed, audit/integrity and
+  hosted verdicts are external delivery evidence; this prepublication entry is
+  not a substitute for those exact candidate receipts.
+- Frozen solution build passed with zero warnings/errors. Native tests passed
+  159 without skips; Windows tests passed 146 with eight explicit existing
+  live/PF9 skips. The first cumulative check passed 31/32; its tracked-caller
+  admission guard required staging the new acceptance document before checking.
+  After staging, that affected API classification check passed without any
+  generated API changes; all 32 check outcomes are accounted.
+
+### Progress
+
+- Freeze all intended writes and run the focused/cumulative/installed gates.
+- One meaningful B PR follows immutable audit/integrity. WP10-PERF-FINAL retains
+  its agreed project-end timing/memory gate and unchanged targets.
+
+### Issues encountered
+
+- A publication succeeded but Git upstream resolution lacked the new branch's
+  bounded fetch mapping. A closeout also rejected manually supplied derived
+  PR/merge fields. Neither event changed the accepted source candidate.
+- Installed PIA reflection initially omitted OFFICE.DLL. B owner searches and
+  continuation commands guessed absent filenames, shell expansion, working
+  directory prefixes or a retired session subcommand.
+- Helper source needed concrete native-contract corrections: selected missing
+  members were dropped, snake-case choices were not parsed, a shared issues
+  list erased complete peers, canonical records were compared by list identity,
+  and result/request bindings and test assertions were incomplete. Parent
+  inspected and repaired these before the owned host smoke or publication.
+- The first builds caught nullable/generic output typing and the xUnit required
+  test cancellation token. Those unverified development builds were repaired.
+- Owned Excel smoke exposed intermittent result-attachment failure. Callback
+  tracing located InvalidComObjectException during the command's final publish;
+  status polling could release its shared Excel application/workbook wrapper.
+- Reopen acceptance issued a second command during automatic validation. The
+  harness now awaits the existing validation instead of treating busy as failure.
+- The real ribbon InvokePattern queued its callback after the immediate status
+  read; acceptance now awaits the actual dispatch. Hashing the owned workbook
+  while Excel held it open failed; the harness now hashes its closed saved file.
+- Missing external results could leave a previously Current summary visible.
+  Read failure now marks that summary historical with the unavailable evidence.
+- Cumulative API classification stopped on the untracked acceptance document.
+  Its maintained caller inventory deliberately uses tracked paths. Stage the
+  intended new paths before that check; rerun this affected check only.
+- A path-limited commit held Git's temporary index lock during the safety hook
+  and was rejected before creating a commit. The guard remained enabled; use a
+  normal commit of the reviewed staged milestone. Working files were restored
+  by pre-commit and the subsequent read-only state confirmed no remaining lock.
+
+### Root causes and resolutions
+
+- RR-038: bounded fetch configuration had no mapping for the newly pushed A
+  branch. Add the exact mapping; preserve existing mappings and history. The A
+  PUSHED/MERGED ledger succeeded; B predeclares its exact mapping before push.
+- RR-005: command/owner assumptions disagreed with the actual helper and file
+  layout. Use ledger-derived closeout, load both installed Office/Excel PIAs,
+  and discover exact paths with rg. The corrected commands succeeded.
+- Adapter inputs/results must be checked against their producing native
+  contracts. Selected incomplete members now retain accounted outcomes; local
+  field failures do not suppress other members; canonical saved requests bind
+  inputs, options, source, member order and engine. Focused tests execute the
+  actual owned snapshot and native service, not invented result rows.
+- RR-002: the command used a shared RCW while a nested status/event call could
+  release it. Unique per-command application/workbook wrappers, balanced cache
+  lookup ownership and transaction event suppression fix that lifetime. Owned
+  output wrappers are released before events resume; user-event wrappers remain
+  balanced. Smoke 11 proves attachment/reopen and process exit. The earlier
+  event-argument-only attempt did not fix the root cause and is not accepted.
+- Reopen is an asynchronous host boundary: await automatic status completion.
+  Cancel/close acceptance must await the actual dispatch handle before claiming
+  cleanup; zero active workers before dispatch remains invalid evidence.
+- External result loading now invalidates visible currentness before returning
+  its precise missing-evidence failure; smoke 11 removes/restores only the owned
+  exact file and proves both unavailable and restored states.
+
+### Rework and recurrence
+
+- RR-005, occurrences=135, minutes=unknown: thirteen carried/current command-owner
+  events added once to the previous 122; corrected literal paths and maintained
+  help/owner discovery succeeded. Native failure exit codes remain visible.
+- RR-002, occurrences=29, minutes=unknown: one command RCW ownership repair; the
+  failed development receipts are retained and final verification follows.
+- RR-038, occurrences=1, minutes=unknown: exact branch fetch mapping resolves
+  publication upstream without changing source or rewriting history.
+
+⚠️ TERMINAL ISSUE: derived closeout fields, missing PIA dependency, assumed
+owner/glob/cwd paths and a retired session subcommand failed; ledger-only
+closeout, dependency-first reflection and discovered literal paths/help worked.
+Development build and owned-harness errors were corrected before acceptance.
+No failed command is represented as completed validation.
+
+---
 ## 2026-09-08 — Session: WP11 supported baseline design
 
 **Task:** WP11-BASELINE-DESIGN

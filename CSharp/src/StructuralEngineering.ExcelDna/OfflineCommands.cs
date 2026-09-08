@@ -8,7 +8,7 @@ namespace StructuralEngineering.ExcelDna;
 
 public sealed class OfflineAddIn : IExcelAddIn
 {
-    public void AutoOpen() { }
+    public void AutoOpen() => ExcelAsyncUtil.QueueAsMacro(OfflineCommands.InitializeEvents);
     public void AutoClose() => OfflineCommands.Unload();
 }
 
@@ -26,6 +26,8 @@ public static partial class OfflineCommands
         public string? ForceRequestId { get; set; }
         public CancellationTokenSource? ForceCancellation { get; set; }
         public string? ForceContextArtifactSha256 { get; set; }
+        public BaselineDesignWork? DesignWork { get; set; }
+        public bool DesignInvalidated { get; set; }
     }
     private static readonly Dictionary<long, Entry> Entries = [];
     private static readonly Guid AppEvents = new("00024413-0000-0000-C000-000000000046");
@@ -82,8 +84,8 @@ public static partial class OfflineCommands
     [ExcelCommand(Name = "STR_XL_OFFLINE_STATUS", Description = "Read this workbook's latest command outcome.")]
     public static string Status()
     {
-        dynamic app = ExcelDnaUtil.Application;
-        dynamic? workbook = app.ActiveWorkbook;
+        dynamic app = TakeUniqueCom(ExcelDnaUtil.Application)!;
+        dynamic? workbook = TakeUniqueCom((object?)app.ActiveWorkbook);
         try { return workbook is null ? "{}" : Entries.GetValueOrDefault(Key((object)workbook))?.LastOutcome ?? "{}"; }
         finally { OfflineWorkbookStore.Release(workbook); OfflineWorkbookStore.Release(app); }
     }
@@ -103,7 +105,7 @@ public static partial class OfflineCommands
     internal static void RequireStandalone(object workbook)
     {
         if (new OfflineWorkbookStore(workbook).ReadState() is not null)
-            throw new InvalidOperationException("This is a beam workspace. Linked design mapping is not implemented yet. Use Review Snapshot; run standalone examples in a separate workbook.");
+            throw new InvalidOperationException("This is a beam workspace. Use Design Inputs and Design for captured beams; run standalone examples in a separate workbook.");
     }
 
     internal static void ShowLegacyOutcome(Func<string> action)
@@ -114,11 +116,15 @@ public static partial class OfflineCommands
 
     internal static void Unload()
     {
-        foreach (var entry in Entries.Values) { CancelEntryConnection(entry); CancelEntryForces(entry); entry.Window?.Dispose(); }
+        foreach (var entry in Entries.Values) { CancelEntryConnection(entry); CancelEntryForces(entry); CancelEntryDesign(entry); entry.Window?.Dispose(); }
         Entries.Clear();
+        DesignDispatches.Clear();
+        DesignDispatchPhases.Clear();
         if (_eventApplication is not null)
         {
             ComEventsHelper.Remove(_eventApplication, AppEvents, 1570, CloseHandler);
+            ComEventsHelper.Remove(_eventApplication, AppEvents, 1564, ChangeHandler);
+            ComEventsHelper.Remove(_eventApplication, AppEvents, 1567, OpenHandler);
             OfflineWorkbookStore.Release(_eventApplication);
             _eventApplication = null;
         }
@@ -126,7 +132,7 @@ public static partial class OfflineCommands
 
     private static void OnBeforeClose(object workbook, ref bool cancel)
     {
-        try { if (Entries.Remove(Key(workbook), out var entry)) { CancelEntryConnection(entry); CancelEntryForces(entry); entry.Window?.Dispose(); } }
+        try { if (Entries.Remove(Key(workbook), out var entry)) { CancelEntryConnection(entry); CancelEntryForces(entry); CancelEntryDesign(entry); entry.Window?.Dispose(); } }
         finally { OfflineWorkbookStore.Release(workbook); }
         // A cancelled close merely requires reloading validated evidence on the next review.
     }
@@ -135,6 +141,8 @@ public static partial class OfflineCommands
         string? expectedSha256, string directory, int failure)
     {
         CancelEntryForces(entry);
+        CancelEntryDesign(entry);
+        entry.DesignInvalidated = true;
         entry.Window?.EndPendingConnection();
         entry.ForceContextArtifactSha256 = null;
         var state = RequireState(store);
@@ -146,6 +154,7 @@ public static partial class OfflineCommands
             throw new InvalidOperationException("This workbook is bound to another project. Use a new workbook for a different project.");
         var session = new OfflineSnapshotSession(reference, imported.Snapshot);
         store.CommitImport(state, reference, artifacts.RootDirectory, assumptions, failure);
+        store.MarkDesignHistorical(RequireState(store), "Historical — snapshot replaced; accept inputs and design again");
         entry.Session = session;
         entry.Window?.ClearReview();
         return Summary(session, "Snapshot imported and verified. Save this workbook to retain its reference. Review uses offline evidence; no live model is connected.");
@@ -219,30 +228,23 @@ public static partial class OfflineCommands
         _busy = true;
         try
         {
-            app = ExcelDnaUtil.Application;
-            workbook = targetKey is null ? app.ActiveWorkbook : FindWorkbook(app, targetKey.Value);
+            app = TakeUniqueCom(ExcelDnaUtil.Application) ?? throw new InvalidOperationException("Excel application is unavailable.");
+            workbook = targetKey is null ? TakeUniqueCom((object?)app.ActiveWorkbook) : FindWorkbook(app, targetKey.Value);
             if (workbook is null) throw new InvalidOperationException("The initiating workbook is closed. Open a workbook and try again.");
-            if (_eventApplication is null)
-            {
-                // Keep the event sink on its own RCW so command cleanup cannot disconnect it.
-                var pointer = Marshal.GetIUnknownForObject((object)app);
-                try { _eventApplication = Marshal.GetUniqueObjectForIUnknown(pointer); }
-                finally { Marshal.Release(pointer); }
-                ComEventsHelper.Combine(_eventApplication, AppEvents, 1570, CloseHandler);
-            }
-            var key = Key(workbook);
+            EnsureEvents((object)app);
+            var key = Key((object)workbook);
             if (!Entries.TryGetValue(key, out entry)) Entries[key] = entry = new();
             var store = new OfflineWorkbookStore(workbook);
             EnsureUniqueDocument(app, workbook, store.ReadState());
             HostEffectLedger.Record("excel.offline.command");
-            var result = action(app, workbook, store, entry);
-            Publish(app, workbook, entry, result);
+            var result = action((object)app, (object)workbook, store, entry);
+            Publish((object)app, (object)workbook, entry, result);
             return result;
         }
         catch (Exception error)
         {
             var result = Result("rejected", error.Message);
-            if (app is not null && workbook is not null && entry is not null) Publish(app, workbook, entry, result);
+            if (app is not null && workbook is not null && entry is not null) Publish((object)app, (object)workbook, entry, result);
             else System.Windows.Forms.MessageBox.Show(error.Message, "StructAutomate");
             return result;
         }
@@ -289,7 +291,7 @@ public static partial class OfflineCommands
             for (var i = 1; i <= (int)books.Count; i++)
             {
                 dynamic book = books.Item(i);
-                if (Key(book) == key) return book;
+                if (Key(book) == key) return TakeUniqueCom((object)book);
                 OfflineWorkbookStore.Release(book);
             }
             return null;
@@ -302,6 +304,21 @@ public static partial class OfflineCommands
         var pointer = Marshal.GetIUnknownForObject(workbook);
         try { return pointer.ToInt64(); }
         finally { Marshal.Release(pointer); }
+    }
+    // Excel-DNA caches its Application RCW and tolerates its release. Detach each
+    // command's owned wrapper before releasing the lookup wrapper, so reentrant
+    // status calls cannot disconnect an outer command or retain the cache at quit.
+    private static object UniqueCom(object borrowed)
+    {
+        var pointer = Marshal.GetIUnknownForObject(borrowed);
+        try { return Marshal.GetUniqueObjectForIUnknown(pointer); }
+        finally { Marshal.Release(pointer); }
+    }
+    private static object? TakeUniqueCom(object? acquired)
+    {
+        if (acquired is null) return null;
+        try { return UniqueCom(acquired); }
+        finally { OfflineWorkbookStore.Release(acquired); }
     }
     private static string DefaultStoreDirectory() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StructAutomate", "Projects");
     private static string Result(string state, string message, object? details = null) => JsonSerializer.Serialize(new { state, message, details });

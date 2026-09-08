@@ -758,8 +758,16 @@ Saved requests now bind the exact native module/runtime identity, so a rebuild
 cannot leave an earlier design labelled current. Current WP10 entry points
 are reconciled with merged PR #981. The retained fixture uses the existing WP10
 compact transport (88,657 bytes) to meet the repository file-size gate, with
-the same verified snapshot identity and all 153 rows. Milestone A next freezes source/docs,
-formats its changed path union once, runs focused native/contract/workflow
-evidence, and follows the existing immutable candidate/hosted lifecycle.
-Milestone B remains the separate installed Excel successor with the same
-accepted native service and its named cumulative gate.
+the same verified snapshot identity and all 153 rows. Milestone A is merged in
+PR #982 at `cc61035d7d69d03877e37a453f0d503e2504d735`; its reusable native
+service is not being redesigned by B.
+
+Milestone B is the in-development installed Excel successor. It requires a
+transparent Design Inputs sheet and explicit Accept Inputs action before Design.
+The workbook holds compact requested results and references; immutable native
+requests, actual bar/check results and their evidence remain external. An input
+or snapshot edit fences prior results as stale. A selected batch may therefore
+contain completed members and precise Needs Input members, but must account for
+each selected member. Development smoke evidence does not replace the pending
+signed installed acceptance, cumulative gate or B PR. Search, copied-model
+reanalysis, overnight operation and reporting remain later increments.
