@@ -13,7 +13,7 @@ public static partial class OfflineCommands
 
     private static string StartForces(IReadOnlyList<string>? members) => Run((app, workbook, store, entry) =>
     {
-        var context = entry.Context ?? throw new InvalidOperationException("Connect ETABS first to identify the model.");
+        var context = entry.Context ?? throw new InvalidOperationException("Connect ETABS, then load model details before requesting forces.");
         if (entry.ConnectionRequestId is not null || entry.ForceRequestId is not null)
             throw new InvalidOperationException("This workbook already has a model read running. Wait or cancel it.");
         var state = store.ReadState() ?? store.CreateAssumptions();

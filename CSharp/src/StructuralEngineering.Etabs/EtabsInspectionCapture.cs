@@ -13,10 +13,12 @@ public static class EtabsInspectionReader
     public const int MaximumFrameCatalog = 20_000;
     public const int MaximumSelections = 500;
     public const int MaximumSample = 20;
+    public const string OverviewScope = "model_overview;geometry=not_read;forces=not_read;design_support=not_evaluated";
 
     public static EtabsInspectionCapture Read(IEtabsGetterHost host, DateTimeOffset deadlineUtc,
-        bool includeSample, CancellationToken token = default)
+        bool includeSample, CancellationToken token = default, bool overviewOnly = false)
     {
+        if (overviewOnly && includeSample) throw new ArgumentException("An overview cannot include frame definitions.");
         var observedHost = new ObservedHost(host);
         var adapter = new EtabsGetterAdapter(observedHost, EtabsInspectionGetterMatrix.Allowed);
         var calls = new List<EtabsRawGetterCall>();
@@ -61,23 +63,26 @@ public static class EtabsInspectionReader
         Read("Analyze.GetRunCaseFlag", [], protect: true);
         foreach (var operation in new[] { "DesignConcrete.GetCode", "DesignConcrete.GetResultsAvailable" })
             Read(operation, [], required: false, protect: true);
-        foreach (var kind in new[] { "LoadCases", "LoadCombinations", "LoadPatterns" })
-            Read($"DatabaseTables.Get{kind}SelectedForDisplay", [], required: false, protect: true);
-        Read("DatabaseTables.GetAllTables", [], required: false);
-        if ((int)cases.Outputs[0]! + (int)combos.Outputs[0]! <= MaximumSelections)
+        if (!overviewOnly)
         {
-            foreach (var name in Strings(cases, 1))
+            foreach (var kind in new[] { "LoadCases", "LoadCombinations", "LoadPatterns" })
+                Read($"DatabaseTables.Get{kind}SelectedForDisplay", [], required: false, protect: true);
+            Read("DatabaseTables.GetAllTables", [], required: false);
+            if ((int)cases.Outputs[0]! + (int)combos.Outputs[0]! <= MaximumSelections)
             {
-                Read("Results.Setup.GetCaseSelectedForOutput", [name], protect: true);
-                Read("LoadCases.GetTypeOAPI", [name], protect: true);
+                foreach (var name in Strings(cases, 1))
+                {
+                    Read("Results.Setup.GetCaseSelectedForOutput", [name], protect: true);
+                    Read("LoadCases.GetTypeOAPI", [name], protect: true);
+                }
+                foreach (var name in Strings(combos, 1))
+                {
+                    Read("Results.Setup.GetComboSelectedForOutput", [name], protect: true);
+                    Read("RespCombo.GetTypeOAPI", [name], protect: true);
+                }
             }
-            foreach (var name in Strings(combos, 1))
-            {
-                Read("Results.Setup.GetComboSelectedForOutput", [name], protect: true);
-                Read("RespCombo.GetTypeOAPI", [name], protect: true);
-            }
+            else gaps.Add(new("output selections", "ETABS.INSPECTION_LIMIT", "More than 500 cases plus combinations; per-name selections and types were not read."));
         }
-        else gaps.Add(new("output selections", "ETABS.INSPECTION_LIMIT", "More than 500 cases plus combinations; per-name selections and types were not read."));
 
         var samples = new List<string>();
         if (includeSample && frameCount is > 0 and <= MaximumFrameCatalog)
@@ -127,7 +132,7 @@ public static class EtabsInspectionReader
             throw new InvalidOperationException("The live model changed at final postflight.");
         var stateHash = Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(
             protectedReads.Select(x => new { x.Operation, x.Inputs, x.Shape }))));
-        return new("inventory_and_optional_definition_sample;forces=not_read;design_support=not_evaluated", stateHash,
+        return new(overviewOnly ? OverviewScope : "inventory_and_optional_definition_sample;forces=not_read;design_support=not_evaluated", stateHash,
             frameCount, pointCount, areaCount, samples, calls, gaps);
     }
 

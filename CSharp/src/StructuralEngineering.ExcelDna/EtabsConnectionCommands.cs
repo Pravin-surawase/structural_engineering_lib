@@ -10,7 +10,9 @@ public static partial class OfflineCommands
     public static string ConnectEtabs() => ConnectEtabsProcess(0);
 
     [ExcelCommand(Name = "STR_XL_CONNECT_ETABS_PROCESS", Description = "Connect to an explicit running ETABS PID; zero offers available processes.")]
-    public static string ConnectEtabsProcess(double processId) => Run((app, workbook, store, entry) =>
+    public static string ConnectEtabsProcess(double processId) => StartConnection(processId, overview: false);
+
+    private static string StartConnection(double processId, bool overview, bool fromOverview = false, long? workbookKey = null) => Run((app, workbook, store, entry) =>
     {
         if (entry.ConnectionRequestId is not null) throw new InvalidOperationException("A connection is already running for this workbook. Wait or cancel it.");
         if (entry.ForceRequestId is not null) throw new InvalidOperationException("A force read is already running for this workbook. Wait or cancel it.");
@@ -18,10 +20,15 @@ public static partial class OfflineCommands
             throw new ArgumentException("Enter a valid ETABS process ID.");
         var choices = EtabsConnectionClient.FindRunningModels();
         if (choices.Count == 0) throw new InvalidOperationException("Open ETABS and its model, then click Connect ETABS again.");
+        var expectedOverview = fromOverview ? entry.Overview?.Artifact ?? throw new InvalidOperationException("Connect ETABS to load a model overview first.") : null;
+        if (expectedOverview is not null) processId = expectedOverview.Overview.Source.ProcessId;
         var choice = processId > 0 ? choices.SingleOrDefault(item => item.ProcessId == (int)processId)
             ?? throw new InvalidOperationException("The selected ETABS process is no longer available.")
             : choices.Count == 1 ? choices[0] : EtabsProcessSelector.Choose(choices);
         if (choice is null) return Result("cancelled", "Connection selection cancelled.");
+        if (expectedOverview is not null && (choice.StartedUtc != expectedOverview.Overview.Source.ProcessStartedUtc ||
+            !string.Equals(choice.ExecutablePath, expectedOverview.Overview.Source.ExecutablePath, StringComparison.OrdinalIgnoreCase)))
+            throw new InvalidOperationException("The overview's ETABS process has changed. Connect again.");
         var key = Key((object)workbook);
         var requestId = Guid.NewGuid().ToString("N");
         entry.ConnectionRequestId = requestId;
@@ -33,18 +40,27 @@ public static partial class OfflineCommands
         entry.Window.SetPendingConnection(() => ExcelAsyncUtil.QueueAsMacro(() => CancelConnectionFor(key, entry, requestId)));
         _ = Task.Run(async () =>
         {
-            EtabsConnectionResult? result = null; Exception? failure = null;
-            try { result = await EtabsConnectionClient.ConnectAsync(package, root, choice, requestId, token).ConfigureAwait(false); }
+            EtabsConnectionResult? result = null; EtabsOverviewResult? overviewResult = null; Exception? failure = null;
+            try
+            {
+                if (overview) overviewResult = await EtabsConnectionClient.InspectAsync(package, root, choice, requestId, token).ConfigureAwait(false);
+                else result = await EtabsConnectionClient.ConnectAsync(package, root, choice, requestId, token).ConfigureAwait(false);
+            }
             catch (Exception error) { failure = error; }
             if (token.IsCancellationRequested) return;
             try
             {
-                ExcelAsyncUtil.QueueAsMacro(() => CompleteConnection(key, entry, requestId, result, failure));
+                ExcelAsyncUtil.QueueAsMacro(() =>
+                {
+                    if (overview) CompleteOverview(key, entry, requestId, overviewResult, failure);
+                    else CompleteConnection(key, entry, requestId, result, failure, expectedOverview);
+                });
             }
             catch (InvalidOperationException) { /* Excel has unloaded; the worker client still owns cleanup. */ }
         });
-        return Result("started", "Reading the selected ETABS model in the background. You can continue using Excel.", new { request_id = requestId, process_id = choice.ProcessId });
-    });
+        return Result("started", overview ? "Reading model counts and result availability in the background."
+            : "Loading detailed model geometry in the background. You can continue using Excel.", new { request_id = requestId, process_id = choice.ProcessId });
+    }, workbookKey);
 
     [ExcelCommand(Name = "STR_XL_CONNECTION_STATUS", Description = "Read current connection state without starting a worker.")]
     public static string ConnectionStatus()
@@ -55,6 +71,7 @@ public static partial class OfflineCommands
             var entry = workbook is null ? null : Entries.GetValueOrDefault(Key((object)workbook));
             return entry?.ConnectionRequestId is { } pending ? Result("started", "ETABS connection is running.", new { request_id = pending })
                 : entry?.Context is { } context ? ContextSummary(context, entry.Session is not null && entry.ForceContextArtifactSha256 == context.Artifact.ArtifactSha256)
+                : entry?.Overview is { Artifact: not null } overview ? OverviewSummary(overview)
                 : Result("disconnected", "Connect ETABS to read model context. Saved force snapshots are separate.");
         }
         finally { OfflineWorkbookStore.Release(workbook); OfflineWorkbookStore.Release(app); }
@@ -76,7 +93,8 @@ public static partial class OfflineCommands
     [ExcelCommand(Name = "STR_XL_TEST_CONNECTION_WORKER_COUNT", Description = "Installed acceptance: count active or cleaning-up reader processes.")]
     public static double ConnectionWorkerCount() => EtabsConnectionClient.ActiveWorkerCount;
 
-    private static void CompleteConnection(long key, Entry expectedEntry, string requestId, EtabsConnectionResult? result, Exception? failure)
+    private static void CompleteConnection(long key, Entry expectedEntry, string requestId, EtabsConnectionResult? result, Exception? failure,
+        EtabsOverviewArtifact? expectedOverview = null)
     {
         if (!Entries.TryGetValue(key, out var current) || !ReferenceEquals(current, expectedEntry) || current.ConnectionRequestId != requestId) return;
         Run((app, workbook, store, entry) =>
@@ -88,7 +106,14 @@ public static partial class OfflineCommands
             if (failure is not null) return Result("rejected", "ETABS connection failed: " + failure.Message);
             if (result?.Artifact is null || result.Response.State != EtabsContextWorkerState.Completed)
                 return Result("rejected", result?.Response.Message ?? "No completed model context was returned.", result?.Response);
+            if (expectedOverview is not null)
+            {
+                if (entry.Overview?.Artifact?.ArtifactSha256 != expectedOverview.ArtifactSha256)
+                    throw new InvalidOperationException("The initiating overview is no longer current.");
+                EtabsOverviewWorkerCodec.ValidateDetailedSource(expectedOverview, result.Artifact);
+            }
             entry.Context = new(result.Artifact, result.OperationDirectory);
+            entry.Overview = null;
             entry.ForceContextArtifactSha256 = null;
             entry.Window ??= new OfflineReviewWindow();
             entry.Window.SetContext(entry.Context);

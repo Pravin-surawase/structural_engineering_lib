@@ -126,11 +126,20 @@
 
 ## Active
 
+`ETABS-BOUNDED-ACQUISITION` implements lightweight Excel connection through a
+separate model-overview contract, explicit source-bound detailed loading,
+and requested-object force reads with caller row budgets. The
+[data-flow and acceptance record](planning/xll-product/etabs-design-workflow.md#bounded-acquisition-and-excel-data-flow--2026-09-10)
+explains external snapshot storage, in-memory review and explicit member-sheet
+writes. The current 100,000-row/1,000-member/64 MiB envelope remains unchanged.
+Native units and selected-load semantics remain the next C0a work; this packet
+does not extend beam-design support. Exact delivery facts remain external.
+
 `ETABS-API-LIFECYCLE-MAP` adds repeatable full-interface discovery and an
 [API lifecycle and efficiency map](planning/xll-product/etabs-design-workflow.md#api-lifecycle-and-efficiency--2026-09-10).
 Static inspection accounts for 1,343 installed methods; it does not qualify
-their behavior. Next within C0a: lightweight connection and bounded result
-planning. D/E later promotes the existing owned-copy harness operations into
+their behavior. The acquisition packet implements the first C0a connection
+boundary; workload planning remains. D/E later promotes the existing owned-copy harness operations into
 typed open/save/run/design/exit services. Current-model operations remain
 unchanged; delivery/check facts are recorded externally.
 

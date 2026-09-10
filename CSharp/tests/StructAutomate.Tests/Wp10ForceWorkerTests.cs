@@ -141,6 +141,11 @@ public sealed class Wp10ForceWorkerTests
         var loaded = await EtabsConnectionClient.GetForcesAsync(package!, directory!, Path.Combine(directory!, "store"),
             context, "worker-qualification", "forces", token, memberObjectNames: members);
         Assert.True(loaded.Session is not null, loaded.Response.Message);
+        using var capture = JsonDocument.Parse(File.ReadAllBytes(loaded.Response.ArtifactPath!));
+        var forceCalls = capture.RootElement.GetProperty("content").GetProperty("capture").GetProperty("calls").EnumerateArray()
+            .Where(call => call.GetProperty("operation").GetString() == "Results.FrameForce").ToArray();
+        Assert.Equal(members.Order(StringComparer.Ordinal), forceCalls.Select(call => call.GetProperty("inputs")[0].GetString()).Order(StringComparer.Ordinal));
+        Assert.All(forceCalls, call => Assert.Equal(0, call.GetProperty("inputs")[1].GetInt32()));
         Assert.Equal(members.Order(StringComparer.Ordinal), loaded.Session!.Snapshot.Members.Select(member => member.ObjectId).Order(StringComparer.Ordinal));
         var reference = loaded.Session.Reference;
         var reopened = new OfflineSnapshotStore(Path.Combine(directory!, "store")).Read(reference);
@@ -170,6 +175,8 @@ public sealed class Wp10ForceWorkerTests
             loaded.Response,
             cancelled = cancelled.Response,
             cleanup_completed = true,
+            exact_requested_object_calls = forceCalls.Length,
+            group_force_calls = 0,
             offline_reopen_exact = true,
             engineering_state = "not_evaluated"
         }));

@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-BOUNDED-ACQUISITION",
+  "status": "development_acceptance_passed; frozen focused/candidate/hosted verdicts are external",
+  "external_evidence_root": "C:\\CodexWork\\evidence\\etabs-bounded-acquisition-20260910",
+  "source_effects": {
+    "large_user_model": "getter-only; saved hash and protected state preserved",
+    "owned_fixture": "copied retained analyzed fixture; restored recorded API units and three static output selections; no save or analysis/design run",
+    "excel": "owned development hosts; exact startup preimage restored; installed binaries unchanged"
+  },
+  "admission": {
+    "maximum_action_rows": 100000,
+    "maximum_members": 1000,
+    "maximum_encoded_bytes": 67108864,
+    "limit_meaning": "accepted complete snapshot scope; not worksheet capacity or a hard vendor allocation bound",
+    "partial_snapshot_accepted": false
+  },
+  "data_flow": {
+    "snapshot": "external file plus decoded .NET memory and indexes",
+    "workbook": "reference and state",
+    "viewer": "all selected-member rows; not paged",
+    "explicit_report": "13 columns; 9 header rows plus all selected-member actions"
+  },
+  "production_routes": {
+    "ribbon_connect": "STR_XL_INSPECT_ETABS -> --overview-request",
+    "details": "STR_XL_LOAD_ETABS_DETAILS -> retained context route with exact source comparison",
+    "legacy_context": "STR_XL_CONNECT_ETABS[_PROCESS] and ConnectAsync unchanged",
+    "forces": "AttachBulk -> RunScoped -> exact requested FrameForce(object, ObjectElm)",
+    "legacy_group": "retained comparison/qualification profile; no production dispatch"
+  },
+  "large_overview": {
+    "elapsed_ms": 2059.5322,
+    "getter_calls": 33,
+    "frame_count": 3475,
+    "point_count": 30731,
+    "area_count": 28221,
+    "story_count": 25,
+    "completed_cases": 16,
+    "cases": 16,
+    "combinations": 45,
+    "present_units": 9,
+    "database_units": 9,
+    "source_sha256": "5ec91b3c6b70da42881d5c77e892fb98f89547b2c7ab1ba72a8ad4c250cb8e8a",
+    "source_preserved": true,
+    "pf9_acceptance": false
+  },
+  "scoped_force": {
+    "members": 1,
+    "action_rows": 51,
+    "exact_requested_object_calls": 1,
+    "group_force_calls": 0,
+    "cancelled_state": 5,
+    "cleanup_completed": true,
+    "offline_reopen_exact": true
+  },
+  "excel": {
+    "large_overview_passed": true,
+    "fixture_full_flow_passed": true,
+    "overview_sheets_created": 0,
+    "force_sheets_created": 0,
+    "explicit_review_sheets_created": 1,
+    "force_calls": 1,
+    "sheet_rows": 60,
+    "group_force_calls": 0,
+    "action_rows": 51,
+    "sheet_columns": 13,
+    "startup_restored": true,
+    "owned_excel_exited": true
+  },
+  "cleanup": {
+    "analysis_run": false,
+    "owned_copy_file_preserved": true,
+    "large_model_process_remains": true,
+    "save_called": false,
+    "original_fixture_preserved": true,
+    "owned_process_exited": true
+  },
+  "limits_and_next_work": [
+    "Native-unit detailed geometry and qualified selected-load dependency semantics remain C0a work.",
+    "Shared tables/context still span the source model; only force calls use requested-object scope.",
+    "One provider response can allocate above the row budget before rejection. Multi-snapshot planning and viewer paging are not implemented.",
+    "No additional design applicability, support for all 153 beams or arbitrary future models is claimed.",
+    "Development timings and a signed side-loaded test package do not certify PF9 or install/release the product."
+  ],
+  "evidence_files": [
+    {
+      "file": "large-overview-01/receipt.json",
+      "bytes": 2132,
+      "sha256": "ecff307781390664be38e51dfabd8e4dd106757917e47e6e54e96290ea622dc8"
+    },
+    {
+      "file": "large-overview-01/overview/overview.json",
+      "bytes": 1628,
+      "sha256": "a5e88916d2a6de5afba72631773b0f855af7db785e7a5e0aaeb8674e7949316a"
+    },
+    {
+      "file": "large-overview-01/overview/overview.json.inspection.json",
+      "bytes": 105137,
+      "sha256": "f584edacc02a3087c294e5c365b31cf4d2653eeffbad74f36c5c4c996dd5073f"
+    },
+    {
+      "file": "large-overview-01/overview/overview.json.inspection.json.journal.jsonl",
+      "bytes": 45578,
+      "sha256": "12f803c77a5307b7ecdc8afac4d2449f69dd54e06a1daf543afef1162ae35b8c"
+    },
+    {
+      "file": "excel-large-overview-01/receipt.json",
+      "bytes": 8296,
+      "sha256": "1f64a42768419c71157ed41ea5f482101bdeee8c22d3f340f09d0e1c56e0c8dd"
+    },
+    {
+      "file": "excel-fixture-02/receipt.json",
+      "bytes": 16348,
+      "sha256": "2374a33682bad0e3be61748f2bb6c10d78b29fe5d57590e2947ff0cba0c9f871"
+    },
+    {
+      "file": "fixture-force-03/receipt.json",
+      "bytes": 1590,
+      "sha256": "0fc083a88d64563153e83bd582b739e7da2456408a249f28d79eb3f58b2f38aa"
+    },
+    {
+      "file": "fixture-unit-preparation.json",
+      "bytes": 348,
+      "sha256": "1d652c146e1f3780b0c5fe854b9c8a998a9a1a52e01d442b2a91167c41c3429f"
+    },
+    {
+      "file": "fixture-selection-preparation.json",
+      "bytes": 360,
+      "sha256": "af6f2096e2f9c374b7601b9845af8953546b9e542e5e5b1b125b05e552685d37"
+    },
+    {
+      "file": "cleanup.json",
+      "bytes": 204,
+      "sha256": "a3d4f41e3307f8cd367d7134191a353da08a35511e4f09a9da7449e34b75535c"
+    },
+    {
+      "file": "development-package-01/manifest.json",
+      "bytes": 550,
+      "sha256": "8554c7d9740d9b16930242e33350ab578b08ad61775b41810d0365fe27213b71"
+    },
+    {
+      "file": "development-package-01/source-files.json",
+      "bytes": 24468,
+      "sha256": "a9e31d52d9d16e4edd45d110664d02b7352fae47bea0444c3ae8c64a9f4d2b4a"
+    },
+    {
+      "file": "development-package-02/manifest.json",
+      "bytes": 550,
+      "sha256": "80324db871b98ea51a421a2a0cc4ae7b3f1ab5e64aff449b121b348679f23601"
+    },
+    {
+      "file": "development-package-02/source-files.json",
+      "bytes": 24468,
+      "sha256": "4ae8d31cb49118dc95a4ec54ae67d11885231b1df835d6f9b0a481c95a15038f"
+    }
+  ]
+}

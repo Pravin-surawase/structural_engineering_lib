@@ -126,13 +126,17 @@ public sealed class Wp10InspectionTests
         finally { release.Set(); if (Directory.Exists(directory)) Directory.Delete(directory, true); }
     }
 
-    private sealed class Host : IEtabsGetterHost
+    internal sealed class Host : IEtabsGetterHost
     {
         private static int _pid = 240_000;
-        public EtabsHostIdentity Identity { get; } = new(Interlocked.Increment(ref _pid), DateTimeOffset.Parse("2026-09-10T00:00:00Z"),
+        private readonly EtabsHostIdentity _identity = new(Interlocked.Increment(ref _pid), DateTimeOffset.Parse("2026-09-10T00:00:00Z"),
             "ETABS.exe", "23.3.1.4563", 1, new string('a', 64), "ETABSv1.dll", "ETABSv1, Version=1.0.0.0", "2.16.0.0",
             new string('b', 64), "ETABSv1.tlb", 1, new string('c', 64), "model.EDB", 1,
             DateTimeOffset.Parse("2026-09-10T00:00:00Z"), new string('d', 64), "23.3.1", false, 6);
+        public EtabsHostIdentity Identity => _identity with { PresentUnits = Units };
+        public int Units { get; init; } = 6;
+        public bool FailDesign { get; init; }
+        public bool NullEmptyArrays { get; init; }
         public int Frames { get; init; } = 25;
         public bool FailTables { get; init; }
         public bool MalformedDisplay { get; init; }
@@ -149,6 +153,7 @@ public sealed class Wp10InspectionTests
             Apartment = Thread.CurrentThread.GetApartmentState(); Operations.Add(definition.Operation);
             if (Operations.Count == 1 && Entered is not null) { Entered.Set(); Release!.Wait(); token.ThrowIfCancellationRequested(); }
             if (FailTables && definition.Operation.StartsWith("DatabaseTables.", StringComparison.Ordinal)) return new(7, []);
+            if (FailDesign && definition.Operation.StartsWith("DesignConcrete.", StringComparison.Ordinal)) return new(7, []);
             if (MalformedDisplay && definition.Operation == "DatabaseTables.GetLoadCasesSelectedForDisplay") return new(0, [1, new object?[] { "Dead", null }]);
             if (definition.ReturnSemantics == EtabsReturnSemantics.DirectValue)
                 return new(definition.Operation switch
@@ -157,7 +162,7 @@ public sealed class Wp10InspectionTests
                     "PointObj.Count" => 42,
                     "AreaObj.Count" => 17,
                     "SapModel.GetModelFilename" => DriftOperation == definition.Operation && Operations.Count(x => x == definition.Operation) > 1 ? "other.EDB" : Identity.ModelPath,
-                    "SapModel.GetPresentUnits" => DriftUnits && Operations.Count(x => x == definition.Operation) > 1 ? 9 : 6,
+                    "SapModel.GetPresentUnits" => DriftUnits && Operations.Count(x => x == definition.Operation) > 1 ? 9 : Units,
                     "SapModel.GetDatabaseUnits" => 9,
                     _ => false
                 }, []);
@@ -177,8 +182,10 @@ public sealed class Wp10InspectionTests
                     }).ToArray();
                 return new(0, output);
             }
-            var values = definition.OutputKinds.Select((kind, index) => Default(kind, definition.FixedArrays.GetValueOrDefault(index))).ToArray();
+            object?[] values = definition.OutputKinds.Select((kind, index) => Default(kind, definition.FixedArrays.GetValueOrDefault(index))).ToArray();
             if (definition.Operation == "LoadCases.GetNameList") values = [1, new object?[] { "Dead" }];
+            if (NullEmptyArrays && definition.Operation == "RespCombo.GetNameList") values = [0, null];
+            if (definition.Operation == "Analyze.GetCaseStatus") values = [1, new object?[] { "Dead" }, new object?[] { 4 }];
             if (DriftOperation == definition.Operation && Operations.Count(x => x == definition.Operation) > 1) values = [true];
             if (definition.Operation == "FrameObj.GetPoints") values = ["p1", "p2"];
             return new(0, values);

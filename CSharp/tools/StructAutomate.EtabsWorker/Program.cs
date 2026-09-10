@@ -11,6 +11,9 @@ if (args is ["--api-inventory-all", var allApiAssemblyPath, "--response", var al
 if (args is ["--inspect-request", var inspectionRequestPath, "--response", var inspectionResponsePath])
     return await InspectionWorker.Run(inspectionRequestPath, inspectionResponsePath);
 
+if (args is ["--overview-request", var overviewRequestPath, "--response", var overviewResponsePath])
+    return await OverviewWorker.Run(overviewRequestPath, overviewResponsePath);
+
 if (args.Length == 4 && args[0] == "--forces-request" && args[2] == "--response")
     return await ForceWorker.Run(args[1], args[3]);
 

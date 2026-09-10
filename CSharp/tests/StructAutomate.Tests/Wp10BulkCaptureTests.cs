@@ -8,6 +8,52 @@ namespace StructAutomate.Tests;
 
 public sealed class Wp10BulkCaptureTests
 {
+    [Fact]
+    public async Task ScopedAcquisitionNeverReadsAnUnrequestedObject()
+    {
+        var host = new BulkHost(null);
+        var directory = Path.Combine(Path.GetTempPath(), "wp10-scoped-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var result = await Capture(host, directory, members: ["beam2"], maximumRows: 3);
+            Assert.True(result.State == EtabsContextWorkerState.Completed, result.Message);
+            Assert.Equal(new object?[] { "beam2", 0 }, Assert.Single(host.ForceRequests));
+            var bytes = File.ReadAllBytes(result.EvidencePath);
+            var normalized = EtabsCaptureProjector.Normalize(bytes, Convert.ToHexStringLower(SHA256.HashData(bytes)), Wp10SyntheticCapture.Options);
+            Assert.NotNull(normalized.Snapshot);
+            Assert.Equal("beam2", Assert.Single(normalized.Snapshot.Members).ObjectId);
+            Assert.Equal(3, normalized.Snapshot.ActionRows.Count);
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
+    }
+
+    [Theory]
+    [InlineData(1, 0, false)]
+    [InlineData(3, 1, false)]
+    [InlineData(5, 2, false)]
+    [InlineData(6, 2, true)]
+    public async Task CallerBudgetStopsAtPreflightOrBetweenCompleteObjectCalls(int rows, int calls, bool accepted)
+    {
+        var host = new BulkHost(null);
+        var directory = Path.Combine(Path.GetTempPath(), "wp10-budget-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var result = await Capture(host, directory, maximumRows: rows);
+            Assert.Equal(accepted, result.State == EtabsContextWorkerState.Completed);
+            Assert.True(result.CleanupCompleted);
+            Assert.Equal(calls, host.ForceRequests.Count);
+            Assert.All(host.ForceRequests, request => Assert.Equal(0, request[1]));
+            if (!accepted)
+            {
+                Assert.Contains("ETABS.SCOPE_LIMIT", result.Message);
+                Assert.Null(result.Artifact);
+                Assert.False(File.Exists(result.EvidencePath));
+            }
+            else Assert.Equal(6, result.Artifact!.Content.Capture.Members.Sum(member => member.FrameForceRows));
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -93,12 +139,13 @@ public sealed class Wp10BulkCaptureTests
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
     }
 
-    private static async Task<EtabsBatchBrokerResult> Capture(BulkHost host, string directory, bool group = false, string[]? members = null)
+    private static async Task<EtabsBatchBrokerResult> Capture(BulkHost host, string directory, bool group = false, string[]? members = null, int? maximumRows = null)
     {
         var deadline = DateTimeOffset.UtcNow.AddSeconds(30);
         var handle = new EtabsBatchOperationBroker().Start(new("bulk", host.Identity.ProcessId, deadline, Path.Combine(directory, "capture.json")),
             () => host, (source, token) => group
                 ? EtabsLiveGetterProbe.RunGroup(source, new("bound-request", host.Context, members ?? ["beam", "beam2"], deadline), token)
+                : maximumRows is { } budget ? EtabsLiveGetterProbe.RunScoped(source, new("bound-request", host.Context, members ?? ["beam", "beam2"], deadline), budget, token)
                 : EtabsLiveGetterProbe.RunBulk(source, new("bound-request", host.Context, members ?? ["beam", "beam2"], deadline), token),
             TestContext.Current.CancellationToken, group ? EtabsGroupGetterMatrix.Sha256 : EtabsBulkGetterMatrix.Sha256);
         var result = await handle.Completion; await handle.Quiescence; return result;
@@ -107,6 +154,7 @@ public sealed class Wp10BulkCaptureTests
     private sealed class BulkHost(string? variant) : IEtabsGetterHost
     {
         private readonly Wp10BatchCaptureTests.BatchHost _reference = new(variant == "mesh" ? "mesh" : null);
+        public List<object?[]> ForceRequests { get; } = [];
         public EtabsHostIdentity Identity => _reference.Identity with { ProcessId = 94102 };
         public EtabsContextInventory Context => _reference.Context with
         {
@@ -115,6 +163,7 @@ public sealed class Wp10BulkCaptureTests
         };
         public EtabsInvocation Invoke(EtabsGetterDefinition definition, IReadOnlyList<object?> inputs, CancellationToken token)
         {
+            if (definition.Operation == "Results.FrameForce") ForceRequests.Add(inputs.ToArray());
             if (definition.Operation == "GroupDef.GetNameList") return new(0, [1, new[] { "All" }]);
             if (definition.Operation == "GroupDef.GetAssignments") return new(0, [0, Array.Empty<int>(), Array.Empty<string>()]);
             if (definition.Operation == "Results.FrameForce" && (int)inputs[1]! == 2)

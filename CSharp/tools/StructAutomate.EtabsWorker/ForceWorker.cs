@@ -37,9 +37,10 @@ internal static class ForceWorker
             CheckActive();
             PublishProgress(EtabsForceStage.Capturing, 0);
             var handle = new EtabsBatchOperationBroker().Start(new(request.RequestId, request.Target.ProcessId, request.DeadlineUtc, request.EvidencePath),
-                () => EtabsReflectionGetterHost.AttachGroup(EtabsHostDiscovery.Discover(request.Target)),
-                (host, token) => EtabsLiveGetterProbe.RunGroup(host, new(requestSha, context.Inventory, request.MemberObjectNames, request.DeadlineUtc), token,
-                    (completed, _) => PublishProgress(EtabsForceStage.Capturing, completed)), cancellation.Token, EtabsGroupGetterMatrix.Sha256);
+                () => EtabsReflectionGetterHost.AttachBulk(EtabsHostDiscovery.Discover(request.Target)),
+                (host, token) => EtabsLiveGetterProbe.RunScoped(host, new(requestSha, context.Inventory, request.MemberObjectNames, request.DeadlineUtc),
+                    request.AdmissionLimits.MaximumRows, token,
+                    (completed, _) => PublishProgress(EtabsForceStage.Capturing, completed)), cancellation.Token, EtabsBulkGetterMatrix.Sha256);
             activeQuiescence = handle.Quiescence;
             var result = acquisitionResult = await handle.Completion;
             try

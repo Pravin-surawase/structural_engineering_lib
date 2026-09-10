@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Windows.Forms;
+using StructuralEngineering.Contracts;
 
 namespace StructuralEngineering.ExcelDna;
 
@@ -27,6 +28,8 @@ internal sealed class OfflineReviewWindow : Form
     private Action<string>? _writeMember;
     private readonly Button _cancelConnection = new() { Text = "Cancel connection", Dock = DockStyle.Top, Height = 32, Visible = false };
     private Action? _cancel;
+    private readonly Button _details = new() { Text = "Load model details", Dock = DockStyle.Top, Height = 36, Visible = false };
+    private Action? _loadDetails;
 
     public OfflineReviewWindow()
     {
@@ -34,11 +37,12 @@ internal sealed class OfflineReviewWindow : Form
         Font = new Font("Segoe UI", 10); BackColor = Color.White; StartPosition = FormStartPosition.CenterScreen;
         _selection.Controls.Add(new Label { Text = "Member", AutoSize = true, Padding = new Padding(0, 5, 8, 0) });
         _selection.Controls.Add(_members); _selection.Controls.Add(_write);
-        Controls.Add(_actions); Controls.Add(_connectivity); Controls.Add(_selection); Controls.Add(_model); Controls.Add(_cancelConnection); Controls.Add(_outcome);
+        Controls.Add(_actions); Controls.Add(_connectivity); Controls.Add(_selection); Controls.Add(_details); Controls.Add(_model); Controls.Add(_cancelConnection); Controls.Add(_outcome);
         _selection.Visible = _model.Visible = _actions.Visible = false;
         _members.SelectedIndexChanged += (_, _) => PopulateActions();
         _write.Click += (_, _) => { if (_members.SelectedItem is string member) _writeMember?.Invoke(member); };
         _cancelConnection.Click += (_, _) => _cancel?.Invoke();
+        _details.Click += (_, _) => _loadDetails?.Invoke();
         FormClosing += (_, args) =>
         {
             if (args.CloseReason == CloseReason.UserClosing) { args.Cancel = true; Hide(); }
@@ -55,6 +59,7 @@ internal sealed class OfflineReviewWindow : Form
     public void SetReview(OfflineSnapshotSession session, Action<string> writeMember, bool capturedHere = false)
     {
         _context = null; _session = session; _writeMember = writeMember;
+        _details.Visible = false; _loadDetails = null;
         _selection.Visible = _model.Visible = _actions.Visible = true;
         Width = 1120; Height = 570;
         _model.Height = 66;
@@ -70,6 +75,7 @@ internal sealed class OfflineReviewWindow : Form
         _context = null; _session = null; _writeMember = null; _members.Items.Clear(); _actions.Rows.Clear(); _model.Text = ""; _write.Enabled = false;
         _selection.Visible = _model.Visible = _actions.Visible = false;
         _connectivity.Visible = false;
+        _details.Visible = false; _loadDetails = null;
         Height = 170;
     }
 
@@ -108,6 +114,7 @@ internal sealed class OfflineReviewWindow : Form
 
     public void SetPendingConnection(Action cancel)
     {
+        _details.Enabled = false;
         _cancel = cancel; _cancelConnection.Text = "Cancel connection"; _cancelConnection.Visible = true;
         Height = Math.Max(Height, 220);
     }
@@ -122,10 +129,22 @@ internal sealed class OfflineReviewWindow : Form
         Height = Math.Max(Height, 220);
     }
     public void SetForceProgress(string text) => _outcome.Text = text;
-    public void EndPendingConnection() { _cancel = null; _cancelConnection.Visible = false; }
+    public void EndPendingConnection() { _cancel = null; _cancelConnection.Visible = false; _details.Enabled = true; }
+    public void SetOverview(EtabsOverviewArtifact artifact, Action loadDetails)
+    {
+        ClearReview();
+        var overview = artifact.Overview; var source = overview.Source;
+        _model.Visible = true; _model.Height = 130; Height = 320; Width = 1000;
+        _model.Text = $"ETABS {source.EtabsApiVersion} • {Path.GetFileName(source.ModelPath)}\n" +
+            $"{overview.StoryCount} stories • {overview.FrameCount} frames • {overview.PointCount} joints • {overview.AreaCount} areas\n" +
+            $"Analysis cases completed: {overview.CompletedCaseCount}/{overview.CaseCount} • {overview.CombinationCount} combinations\n" +
+            $"Concrete design results: {(overview.ConcreteDesignResultsAvailable is null ? "unavailable" : overview.ConcreteDesignResultsAvailable.Value ? "available" : "absent")} • Geometry and forces have not been loaded.";
+        _loadDetails = loadDetails; _details.Visible = true; _details.Enabled = true;
+    }
     public void SetContext(EtabsConnectionSession context, string? frameId = null)
     {
         _context = context; _session = null; _writeMember = null;
+        _details.Visible = false; _loadDetails = null;
         _selection.Visible = _model.Visible = _actions.Visible = true;
         Width = 1120; Height = 570; _model.Height = 105;
         var source = context.Artifact.Inventory.Source;
