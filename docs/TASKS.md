@@ -126,8 +126,15 @@
 
 ## Active
 
-`BEAM-MODEL-COVERAGE-PLAN` extends the current XLL product plan beyond the
-retained 153-beam building. The
+`BEAM-SECOND-MODEL-INVENTORY` implements bounded read-only discovery and records
+a second building's inventory and twenty-frame definition sample. The
+[observations and next work](planning/xll-product/etabs-design-workflow.md#second-model-observations-and-revised-next-work--2026-09-10)
+add native N-mm units, response-spectrum scope, releases, modeling-aid
+classification and malformed display-selection evidence to C0a acceptance.
+No force extraction or additional beam-design support is qualified.
+
+`BEAM-MODEL-COVERAGE-PLAN` (PR #985) extends the plan beyond the retained
+153-beam building. The
 [coverage matrix and packet gates](planning/xll-product/etabs-design-workflow.md#model-coverage-and-future-issues--2026-09-10)
 own twenty model/issue classes, independent corpus/holdout acceptance and
 future-issue intake. WP10/WP11 A/B and static API discovery are merged through

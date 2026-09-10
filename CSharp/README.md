@@ -14,6 +14,11 @@ invented-data console/visual lab remain optional background.
 
 Run from `CSharp` with the .NET 10.0.400 SDK:
 
+`global.json` requires this exact SDK, including in CI. SDK patch upgrades can
+change SDK-provided dependencies such as ILLink.Tasks and invalidate locked
+restore; update the SDK and affected lock files together in an explicit change.
+See Microsoft's [SDK selection and package-lock guidance](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json#rollforward).
+
 ```powershell
 dotnet restore StructAutomate.slnx --locked-mode
 dotnet build StructAutomate.slnx -c Release --no-restore

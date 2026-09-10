@@ -5,6 +5,105 @@
 
 ---
 
+## 2026-09-10 — Session: second-model inventory and coverage evidence
+
+**Task:** BEAM-SECOND-MODEL-INVENTORY
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/beam-second-model-inventory`
+**Acceptance:** docs/verification/beam-second-model-inventory-acceptance.json
+**Focus:** Inspect the newly saved second model through bounded read-only acquisition and refine the existing beam plan from observed differences.
+
+### Completed
+
+- Verified fetched main `07118a09`, no open human PR and preserved the original
+  checkout edit and earlier worktrees. Started an admitted task worktree.
+- Implemented a separate count-first inspection profile and worker using the
+  existing exact host, process lease, STA, deadline/quiescence and journal
+  owners. Counts are direct values; results, table data and mutations are
+  excluded. Optional rejected fields retain their raw invocation and reason.
+- Waited while ETABS was busy after the owner's save/analysis update, then
+  bound its current saved model. Inventory and a twenty-frame definition
+  sample completed with exact file/process equality and cleanup. Recorded
+  25 stories, 3,475 frames, 30,731 points, 28,221 areas, 16 finished cases,
+  45 combinations and unavailable concrete-design results. Raw data remains
+  external; the sanitized receipt binds exact evidence hashes and gaps.
+- Added observed N-mm units, response-spectrum scope, releases, dummy-labelled
+  members, stiffness/insertion context and malformed table-selection data to
+  the existing C0a/C0b/C0c sequence. Preserved design-support, corpus/holdout
+  and project-end performance boundaries. Updated the task board and handoff.
+- The first hosted .NET restore exposed SDK patch drift against the lock file.
+  The bounded repair requires the existing tested SDK 10.0.400 exactly and
+  documents coordinated SDK/lock updates; inspection source bytes are unchanged.
+
+Focused fake-host checks cover count admission, unavailable/malformed fields,
+source/selection drift, sample bounds, deny-listed effects, STA evidence and
+timeout lease retention. Final focused and hosted verdicts are retained in the
+external lifecycle ledger; this entry does not claim a broader library gate.
+
+### Issues encountered
+
+- A static metadata command piped directly from a PowerShell foreach statement
+  and failed to parse before execution.
+- The first inspection stopped on exact parameter-name validation for table
+  display selection. It reached source discovery but no inventory getters.
+- The table display-case getter then returned CSI success with count 12 and
+  an array of length 13 containing a trailing null. Its field was unqualified;
+  complete table-selection equality cannot be claimed.
+- Initial test compilation required xUnit cancellation-token arguments. A
+  test's mutation-name predicate also incorrectly matched the `Setup` object
+  path. Both were test construction errors, not ETABS mutations or model faults.
+- An external evidence checker initially reported process-start drift because
+  PowerShell's parsed date was implicitly converted to display text, losing
+  fractional seconds. This was a checker error; the exact source start matched.
+- The first hosted .NET job selected SDK 10.0.401 under `latestPatch` and
+  requested ILLink.Tasks 10.0.12 while the worker lock requires 10.0.11. Restore
+  failed with NU1004 before build/tests. The exact failed run is in the ledger.
+- Two later read-only shell commands failed before their intended operation:
+  the audit helper repeated the foreach/pipeline syntax mistake, and a session
+  command was launched from `CSharp` instead of the repository root.
+
+### Root causes and resolutions
+
+- PowerShell statement output cannot be piped in that form. Assign the loop
+  results to a task variable, then serialize; the corrected metadata read passed.
+- The new profile used generic output names instead of the installed CSI
+  parameter names. Bind exact names from metadata and validate the inspection
+  matrix before host attachment. Subsequent inventory completed in 5.484 s.
+- The live count/array/nullability shape differs from the frozen getter
+  contract; vendor-side cause is unconfirmed. Preserve the complete rejected
+  invocation, expose a precise gap and avoid an unqualified trimming rule.
+  The final development sample retained it while completing other families
+  in 8.148 s, with cleanup and available protected-state equality. No force,
+  table-data, setter, analysis, design, save or exit command was issued.
+- Pass the test context token and inspect the terminal method name when
+  asserting setter exclusion. The corrected seven-test diagnostic passed;
+  subsequent focused verification includes the added drift/raw-shape cases.
+- Read the original JSON timestamp with `GetDateTimeOffset` and compare UTC
+  ticks. Full precision matched the live process, and all ten external evidence
+  checks passed. No model reattachment or retry was needed for this correction.
+- Automatic SDK roll-forward changes SDK-injected dependencies despite an
+  unchanged project file. Set `rollForward` to `disable`, retaining the tested
+  SDK and lock graph; verify exact SDK selection and locked restore before the
+  one repair candidate. This follows Microsoft's package-lock guidance.
+- Assign audit metadata output before serialization and run the session CLI
+  from the explicit repository root. The corrected reads and hosted-rejection
+  transition succeeded; both events are incorporated once in this repair.
+
+### Rework and recurrence
+
+- RR-005, occurrences=148, minutes=unknown: three shell-shape/cwd events,
+  added once to 145; assign foreach results before serialization and use the
+  repository root for session commands. The post-candidate occurrence first
+  recorded externally is included here once, not counted twice.
+- RR-002, occurrences=32, minutes=unknown: two installed contract events,
+  added once to 30. Exact CSI parameter names resolved admission; the
+  count/array mismatch remains an explicit unqualified field with raw evidence.
+- RR-014, occurrences=3, minutes=unknown: one temporal evidence-check event,
+  added once to 2; compare parsed UTC ticks without lossy display-text conversion.
+- RR-039, occurrences=1, minutes=unknown: automatic SDK patch selection changed
+  the SDK-injected ILLink.Tasks version and broke locked restore. Require the
+  exact tested SDK; update SDK and dependency locks together deliberately.
+
 ## 2026-09-10 — Session: broader beam-model coverage plan
 
 **Task:** BEAM-MODEL-COVERAGE-PLAN

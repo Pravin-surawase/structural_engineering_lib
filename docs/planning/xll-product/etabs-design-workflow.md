@@ -53,6 +53,72 @@ profiles. Record these cases now; keep unsupported checks explicit until
 qualified. Supporting columns, walls, slabs and foundations may provide beam
 context; this plan does not activate their design or whole-building approval.
 
+### Second-model observations and revised next work — 2026-09-10
+
+The owner supplied a second open building, then saved it to a different folder
+and ran analysis. `BEAM-SECOND-MODEL-INVENTORY` bound the newly saved source
+through the exact process and performed read-only inventory and definition
+sampling. The [acceptance](../../verification/beam-second-model-inventory-acceptance.json)
+and [sanitized receipt](../../verification/beam-second-model-inventory-receipt.json)
+bind the evidence. Raw filenames, source IDs, catalogs and model data remain
+external. This is a development corpus entry, not a locked holdout or proof of
+an independently authored source. It does not qualify any additional design.
+
+| Observed fact | Consequence for the next packet |
+|---|---|
+| 25 stories, 3,475 frame objects, 30,731 point objects and 28,221 area objects; 13 distinct assigned frame-section names | C0a/BC-04/19 must distinguish object counts, analysis elements, physical beams and design-included members. The frame count is not an established count of designable RC beams. Acquire area/support context deliberately; do not interpret it as slab/wall design. |
+| Present and database units are both enum 9 (N-mm-C) | BC-18 is now an observed second-model admission issue. Existing Connect requires present enum 6; the inspection preserves native values without changing units. Qualify explicit unit conversion at each source boundary instead of modifying the user's model or interpreting raw N/mm values as kN/m. |
+| All 16 analysis cases report finished: 13 static-linear, one modal and two response-spectrum; all 16 and all 45 combinations are selected for API output | C0a/BC-08/09 must bind selected dependency graphs and distinguish ordinary, modal, spectrum and internal cases before force acquisition. All combinations returning a linear-add type does not make their underlying spectrum actions concurrent static vectors. Combination names alone cannot approve ULS/SLS roles. |
+| Concrete design code is IS 456:2000; `GetResultsAvailable` is false | BC-08/12 must keep analysis completion and design-reference availability separate. This pass cannot compare ETABS reinforcement demands; never run design implicitly to fill that gap. |
+| 1,005 catalogued tables, 159 reported nonempty, including beam-force, reaction, drift and modal families | Availability is useful for acquisition planning, but it does not prove complete rows, source compatibility or governing demands. No table data or force rows were retrieved in this packet. |
+| Twenty sampled frames across twenty stories and nine sections all report Beam orientation; seven have end-release flags | BC-03/05 are now observed, not only prospective. Preserve local release DOFs and source restraint context; do not map every beam to one simple-span or fully fixed profile. Four section names and five stories remain outside this sample. |
+| Three sampled frames use a dummy-labelled section whose mass/weight modifiers are zero; ordinary sampled sections have different torsion and bending modifiers | C0a/BC-04/06/07 must classify physical design members versus modeling aids with explicit source/project evidence. A name is a review trigger, not automatic exclusion. Preserve dummy members in source accounting and load-path context, and keep object and section modifiers separate. |
+| The twenty sampled insertion-point records use cardinal point 8; explicit offsets are zero and no sampled endpoint has a point-restraint flag | BC-04/05 must qualify insertion/axis transforms and support-object geometry. Zero point restraints do not imply an unsupported or free beam; connected walls/slabs/frames may provide support. Do not infer support faces or fixity from endpoint restraints alone. |
+| The table display-case getter returns CSI success with count 12 and 13 array entries, including a trailing null | BC-16/18 gains a concrete malformed-shape reproduction. Preserve the complete returned payload and mark that field unqualified. Do not silently trim, treat it as empty, equate it with Results.Setup selections or claim complete pre/post selection proof. Any padded-array interpretation needs its own qualified contract. |
+
+The source API/backend restriction is therefore broader than solver analysis.
+The first building still exposes combined-action and missing-service-input
+limits. The second adds a native-unit mismatch, larger support context,
+response-spectrum scope, releases, modeling aids and a returned-array shape
+variation. No axial/minor-axis/torsional force values were measured for this
+second model, and they must not be inferred from the first building.
+
+Execute the next C0a work in this order:
+
+1. Complete the source manifest, native-unit conversion and malformed-field
+   handling, with precise complete/partial/unsupported states. Make workload
+   admission occur before vendor bulk calls; the old `All` force route checks
+   its row limit after retrieval and is unsuitable as an unmeasured first read.
+2. Resolve support/mesh, effective material, insertion/release and member-role
+   facts. Add targeted examples for the five unsampled stories, four unsampled
+   sections, different support systems and any modeling-aid role. Preserve all
+   source IDs and frozen denominators, including deferred objects.
+3. Approve ULS/SLS roles and case/combo dependency/result semantics, then pilot
+   forces on individual admitted objects. Results.Setup and table display
+   selections are separate inputs. Keep table-selection qualification open
+   while its malformed return remains unresolved.
+4. Feed the source-qualified cases into C0b core-state separation and C0c
+   combined-action/support/section methods. Regress both buildings plus the
+   independent corpus/holdout programme below before claiming broader support.
+
+The initial inventory took 5.484 s. The measured twenty-frame definition pass
+took 8.148 s, with an observed worker peak of 67,178,496 bytes and an external
+raw artifact of about 3.5 MB. The worker and ETABS completed cleanup; available
+protected reads and exact model-file/process identity agreed. The malformed
+table-selection field remains outside that equality proof. These single-run
+development observations justify starting with twenty-frame **definition**
+batches. They do not size force batches or qualify UI latency, whole-building
+memory, throughput or PF9 p95 targets. Result-batch size remains unmeasured;
+start its separately admitted pilot with one object and measure returned rows
+and time before increasing scope. Keep final performance certification at
+WP10-PERF-FINAL.
+
+Delivery also reproduced a BC-18 build-host mismatch: automatic SDK patch
+selection requested a different ILLink.Tasks dependency from the locked graph.
+The repair requires the already-tested .NET SDK 10.0.400 exactly. Future SDK
+updates must deliberately qualify their lock-file and artifact changes together;
+an unchanged application source commit alone cannot establish runtime parity.
+
 ### Coverage matrix
 
 Each row is a mandatory planning and acceptance obligation. C0a records source

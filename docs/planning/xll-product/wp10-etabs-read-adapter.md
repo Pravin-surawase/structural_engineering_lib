@@ -7,6 +7,35 @@
 
 # WP10 — read-only ETABS snapshot adapter
 
+## Second-model inspection — 2026-09-10
+
+The separate `etabs-model-inspection/v1` getter profile and worker command
+`--inspect-request <request.json> --response <new-response.json>` support a
+count-first read-only inventory and optional sample of at most twenty frame
+definitions. The request schema is `structural.etabs_inspection_request/v1`:
+`request_id`, exact `target` (PID, start, executable path/hash), `deadline_utc`
+(at most three minutes ahead), new external `evidence_path`, and
+`include_sample`. Use a new request/output directory, not an accepted artifact.
+Discovery binds the currently saved model inside the shared PID lease/STA.
+
+The profile uses existing host validation, lease, deadline/quiescence and call
+journal owners. It preserves native units and pre/post facts. A frame count
+above 20,000 prevents frame-catalog retrieval; more than 500 cases plus
+combinations prevents per-name selection/type loops. It never reads forces or
+table rows, changes selections/units, saves, analyzes, starts design or exits
+ETABS. `<request.json>.cancel` requests cancellation; a terminal response is
+not proof that the provider stopped. Await the final quiescent response.
+
+The output is `structural.etabs_inspection/v1`, a diagnostic inventory with
+raw successful calls, raw rejected optional fields, explicit gaps, protected
+state digest and call/cleanup evidence. It is **not** a portable beam snapshot
+or a design input. `completed` means the bounded inspection completed, not
+that every optional field was accepted. Existing snapshot/profile meanings
+and hashes remain unchanged. See the
+[second-model receipt](../../verification/beam-second-model-inventory-receipt.json)
+and [revised next work](etabs-design-workflow.md#second-model-observations-and-revised-next-work--2026-09-10).
+Broader source/topology, result extraction and C0b/C0c qualification remain next.
+
 ## C0a API discovery foundation — 2026-09-08
 
 The owner requested a bounded API-learning pass before extending common-model
