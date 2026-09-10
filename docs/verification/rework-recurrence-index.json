@@ -711,6 +711,22 @@
       "details": [
         "docs/planning/xll-product/etabs-design-workflow.md#data-requirements-and-editable-assumptions--2026-09-10"
       ]
+    },
+    {
+      "id": "RR-044",
+      "pattern": "Demo workflow progress is incorrectly gated by final engineering input readiness",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "After BEAM-DATA-REQUIREMENTS the owner clarified that unknown inputs must be assumed and recorded without interrupting demo/review. The prior plan still asked for missing inputs and conflated calculation qualification with review progress. BEAM-ASSUME-AND-CONTINUE corrects the policy and implementation acceptance; runtime wiring remains pending. Correction time was not isolated."
+      },
+      "short_solution": "Auto-record provisional assumptions and continue review; keep missing or unsupported engineering verdicts visible without blocking remaining members, previews and reports.",
+      "last_seen_task": "BEAM-ASSUME-AND-CONTINUE",
+      "aggregate_parent": null,
+      "details": [
+        "docs/planning/xll-product/etabs-design-workflow.md#owner-decision-assume-and-continue-during-demo-and-review--2026-09-10"
+      ]
     }
   ]
 }

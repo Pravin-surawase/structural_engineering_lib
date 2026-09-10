@@ -5,6 +5,54 @@
 
 ---
 
+## 2026-09-10 — Session: Assume-and-continue demo policy
+
+**Task:** BEAM-ASSUME-AND-CONTINUE
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/beam-assume-and-continue`
+**Acceptance:** docs/verification/beam-assume-and-continue-acceptance.json
+**Focus:** Make automatic assumed-value recording and uninterrupted demo/review the default, following the owner's clarification.
+
+### Completed
+
+- Recorded the explicit owner rule: unknown input → write an assumed value →
+  continue without a question, approval or manual Accept Inputs step.
+- Updated the existing workflow and next implementation priority to use one
+  persistent assumption resolver, automatic provisional dispatch and dependent
+  preview updates. All sixteen data groups are covered by the continuation policy.
+- Separated review progress from engineering qualification: missing source data
+  receives an identified provisional scenario, unavailable checks retain their
+  status, and remaining members/stages/reports continue without invented passes.
+- Reconciled active missing-input, conflict, invalid-edit and stop language.
+  Added acceptance for all-missing inputs, unsupported members, calculation
+  failure, editing and reopening. Runtime code, numerical presets, workbooks,
+  ETABS models and installed artifacts remain unchanged.
+
+### Verification
+
+- Frozen documentation checks, efficiency/session/recurrence validation and
+  exact candidate review/integrity are recorded externally.
+- One required hosted documentation cycle follows the accepted candidate.
+  No new code tests or live application acceptance are claimed.
+
+### Issues encountered
+
+| Symptom / impact | Root cause and resolution | Evidence |
+|---|---|---|
+| The preceding plan would still interrupt demo/review for unknown inputs. | It conflated evidence needed for final engineering qualification with progress through a provisional review. The owner's clarification now controls automatic recorded assumptions and continuation; implementation remains pending. | Revised default policy, fallback matrix and acceptance AC01–AC04; RR-044, occurrences=1, minutes=unknown. |
+
+### Root causes and resolutions
+
+- RR-044: automatically fill and record provisional input values while keeping
+  actual source data and calculated check status honest. Readiness indicators
+  are informational during demo/review and do not stop remaining work.
+- The resolver wiring identified in RR-043 remains a separate implementation
+  gap; this clarification does not claim that it has been repaired in code.
+
+### Rework and recurrence
+
+- RR-044, occurrences=1, minutes=unknown: one owner-corrected planning boundary; documentation corrected and runtime acceptance specified.
+
 ## 2026-09-10 — Session: Beam data requirements and editable-input audit
 
 **Task:** BEAM-DATA-REQUIREMENTS

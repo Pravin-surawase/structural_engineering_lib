@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-ASSUME-AND-CONTINUE",
+  "status": "authorized",
+  "base_commit": "b5c9f575234189a8d0e855044a19ab4240cb370a",
+  "authority": "2026-09-10 owner clarified that assumptions must prevent unknown inputs from interrupting demo/review: write assumed values, continue without questions, and let the engineer update later.",
+  "objective": "Make automatic assumed-value continuation the default demo/review policy in the existing plan, preserving visible provenance and honest calculation status.",
+  "bounded_units": [
+    "Record the owner clarification and revise conflicting active input/readiness language",
+    "Define automatic fallback, persistent assumption ledger, dependency updates and nonblocking review acceptance",
+    "Freeze, validate and deliver one documentation-only candidate"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "AC01",
+      "outcome": "Every unknown in demo/review follows automatic assumed-value recording and continuation, without a prompt, approval or whole-run halt."
+    },
+    {
+      "id": "AC02",
+      "outcome": "Assumptions remain visible/editable, persistent, scoped and connected to the effective request; updates refresh dependent previews at a safe boundary."
+    },
+    {
+      "id": "AC03",
+      "outcome": "Unknown source data uses a separately identified provisional scenario; unsupported/uncomputable checks remain honest while remaining members/stages/reports continue. No assumption fabricates an ETABS result or an engineering pass."
+    },
+    {
+      "id": "AC04",
+      "outcome": "Reconcile the previous plan wording and document implementation acceptance for missing inputs, source gaps, conflicts, invalid edits and later corrections."
+    },
+    {
+      "id": "AC05",
+      "outcome": "No code, numerical preset, workbook, ETABS model or installed artifact is changed; documentation and required hosted gates pass."
+    }
+  ],
+  "owned_paths": [
+    "docs/planning/xll-product/etabs-design-workflow.md",
+    "docs/planning/next-session-brief.md",
+    "docs/TASKS.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/beam-assume-and-continue-acceptance.json",
+    "docs/verification/rework-recurrence-index.json"
+  ],
+  "non_goals": [
+    "Implement/install the runtime resolver in this policy clarification",
+    "Suppress known actions or invent successful engineering checks",
+    "Publish a release or mutate a user model"
+  ],
+  "likely_pitfalls": [
+    "Turning pending engineering qualification into a blocked review screen",
+    "Requiring engineers to reconfirm already-authorized demo assumptions",
+    "Labelling assumed data as captured evidence",
+    "Claiming a policy edit changed installed runtime behavior"
+  ],
+  "verification": {
+    "focused": [
+      "Changed-path formatter after content freeze",
+      "Documentation checks",
+      "Efficiency/session/recurrence checks",
+      "Read-only exact candidate policy audit and integrity",
+      "One required hosted cycle"
+    ],
+    "runtime": "None; implementation remains pending."
+  }
+}
