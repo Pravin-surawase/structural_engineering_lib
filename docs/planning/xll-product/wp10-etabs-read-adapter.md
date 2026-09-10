@@ -7,6 +7,40 @@
 
 # WP10 — read-only ETABS snapshot adapter
 
+## API lifecycle and full discovery — 2026-09-10
+
+The [lifecycle and efficiency map](etabs-design-workflow.md#api-lifecycle-and-efficiency--2026-09-10)
+now connects installed APIs, production readers, owned-copy qualification
+scripts and remaining C0a/D/E work from start/open through run/save/exit.
+The [static receipt](../../verification/etabs-api-lifecycle-map-receipt.json)
+reconciles 143 exported interfaces and 1,343 non-property method declarations
+against an independent metadata scan. It records no ETABS target calls.
+
+The selected catalogue has grown from its historical 70 names to 140:
+139 are present, and `DesignConcrete.GetComboStrength` remains missing.
+Full discovery also includes existing registered getters and any other
+public ETABS interface method. It reports 1,344 candidate names including
+that missing candidate; 1,190 methods have unclassified effects. Existing
+getter definitions supply read classification and signature comparisons for
+all six profiles, including inspection. They retain their runtime admission
+and hashes. Effect labels and matching signatures never qualify new calls.
+
+After a locked build, run from the **CSharp directory** so `global.json`
+selects the qualified SDK. Each command requires a new output filename:
+
+```powershell
+dotnet run --project tools/StructAutomate.EtabsWorker -c Release --no-build -- --api-inventory "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll" --response "C:/CodexWork/evidence/lifecycle-api.json"
+dotnet run --project tools/StructAutomate.EtabsWorker -c Release --no-build -- --api-inventory-all "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll" --response "C:/CodexWork/evidence/full-api.json"
+```
+
+Both routes inspect assembly metadata without constructing CSI objects,
+obtaining property values or invoking ETABS methods. The full route enumerates
+interface methods rather than GUI commands or property accessors. Unknown
+effects remain unclassified; no `Get`/`Set` name heuristic grants permissions.
+Output contains exact signatures, parameter directions, relevant enums,
+file/catalogue hashes and registered-profile comparisons. The installed
+runtime must still be behaviorally qualified before using a new operation.
+
 ## Second-model inspection — 2026-09-10
 
 The separate `etabs-model-inspection/v1` getter profile and worker command
@@ -41,10 +75,10 @@ Broader source/topology, result extraction and C0b/C0c qualification remain next
 The owner requested a bounded API-learning pass before extending common-model
 capture. [BEAM-C0A-API-FOUNDATION](../../verification/beam-c0a-api-foundation-acceptance.json)
 makes discovery reproducible without changing accepted capture profiles or
-executing a target API method. From repository root, after building:
+executing a target API method. From the CSharp directory, after building:
 
 ```powershell
-dotnet run --project CSharp/tools/StructAutomate.EtabsWorker -c Release --no-build -- --api-inventory "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll" --response "C:/CodexWork/evidence/api-discovery.json"
+dotnet run --project tools/StructAutomate.EtabsWorker -c Release --no-build -- --api-inventory "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll" --response "C:/CodexWork/evidence/api-discovery.json"
 ```
 
 Use a new output path. The report binds the assembly file hash/version and
@@ -62,7 +96,7 @@ unqualified methods, one missing candidate and 16 enum types. Existing-output
 preservation and invalid-assembly rejection passed. This does not increase the
 number of beam models qualified for design.
 
-The catalogue covers 70 selected candidate names across source identity,
+The initial catalogue covered 70 selected candidate names across source identity,
 bulk inventory, supports/mesh topology, effective materials, supporting
 geometry, assignments, loading, forces, tables, reference design and later
 copied-model operations. Write/attachment effects are learning metadata;

@@ -68,6 +68,39 @@ namespace StructAutomate.Tests
             Assert.Throws<ArgumentException>(() => EtabsApiDiscovery.Inspect(assembly, [first, first]));
         }
 
+        [Fact]
+        public void FullDiscoveryKeepsUnknownEffectsAndMissingCandidatesWithoutCallingOrAdmittingThem()
+        {
+            var result = EtabsApiDiscovery.InspectAll(typeof(ETABSv1.cUnmapped).Assembly);
+            var unknown = Assert.Single(result.Members, x => x.Capability.InterfaceType == typeof(ETABSv1.cUnmapped).FullName);
+            Assert.Equal("GetAndChangeState", unknown.Capability.Member);
+            Assert.Equal("unclassified", unknown.Capability.Effect);
+            Assert.Equal("available_unqualified", unknown.Status);
+            Assert.Empty(unknown.RegisteredGetters);
+            Assert.DoesNotContain(result.Members, x => x.Capability.Member == "get_Label");
+            Assert.Equal("missing", Assert.Single(result.Members, x => x.Capability.Member == "GetComboStrength").Status);
+            Assert.Equal(0, result.TargetMethodsInvoked);
+            Assert.Equal("application_lifecycle", Assert.Single(result.Members, x => x.Capability.Member == "ApplicationExit").Capability.Effect);
+            Assert.Equal("external_file_write", Assert.Single(result.Members, x => x.Capability.Member == "GetTableForDisplayCSVFile").Capability.Effect);
+            var registered = Assert.Single(result.Members, x => x.Capability.InterfaceType == typeof(ETABSv1.cFrameObj).FullName && x.Capability.Member == "GetNameList");
+            Assert.Equal("registered_getter", registered.Capability.Area);
+            Assert.Equal("read", registered.Capability.Effect);
+            Assert.Equal("registered_signature_match", registered.Status);
+        }
+
+        [Fact]
+        public void InspectionOnlyGetterIsReportedAsRegisteredWithItsExactSignature()
+        {
+            var result = EtabsApiDiscovery.Inspect(typeof(ETABSv1.cFrameObj).Assembly,
+                [Candidate(typeof(ETABSv1.cFrameObj), "Count")]);
+            var member = Assert.Single(result.Members);
+            Assert.Equal("registered_signature_match", member.Status);
+            var binding = Assert.Single(member.RegisteredGetters);
+            Assert.Equal("inspection", binding.Profile);
+            Assert.Equal("FrameObj.Count", binding.Operation);
+            Assert.True(binding.Matches);
+        }
+
         private static EtabsApiCapability Candidate(Type type, string method) => new("test", type.FullName!, method, "read");
     }
 
@@ -90,5 +123,17 @@ namespace ETABSv1
     {
         string GetModelFilename(bool IncludePath);
         int GetModelIsLocked();
+    }
+
+    public interface cFrameObj
+    {
+        int Count(string MyType);
+        int GetNameList(ref int NumberNames, ref string[] MyName);
+    }
+
+    public interface cUnmapped
+    {
+        string Label { get; }
+        int GetAndChangeState();
     }
 }

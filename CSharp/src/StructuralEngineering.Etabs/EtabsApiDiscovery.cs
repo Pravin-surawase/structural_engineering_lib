@@ -22,6 +22,20 @@ public static class EtabsApiDiscovery
     public const string SchemaVersion = "structural.etabs_api_inventory/v1";
     public static IReadOnlyList<EtabsApiCapability> Capabilities { get; } = CreateCatalogue();
 
+    /// <summary>Includes every exported ETABS interface method; unknown effects remain unclassified.</summary>
+    public static EtabsApiInventory InspectAll(Assembly assembly)
+    {
+        ArgumentNullException.ThrowIfNull(assembly);
+        var candidates = Capabilities.ToDictionary(x => (x.InterfaceType, x.Member));
+        foreach (var getter in GetterProfiles().SelectMany(x => x.Definitions.Values))
+            candidates.TryAdd((getter.InterfaceType, getter.Member), new("registered_getter", getter.InterfaceType, getter.Member, "read"));
+        foreach (var type in assembly.GetExportedTypes().Where(x => x.IsInterface && x.Namespace == "ETABSv1"))
+            foreach (var method in type.GetMethods().Where(x => !x.IsSpecialName))
+                candidates.TryAdd((type.FullName!, method.Name), new("unclassified", type.FullName!, method.Name, "unclassified"));
+        // Keep absent maintained candidates visible alongside the discovered surface.
+        return Inspect(assembly, candidates.Values.ToArray());
+    }
+
     public static EtabsApiInventory Inspect(Assembly assembly, IReadOnlyList<EtabsApiCapability>? capabilities = null)
     {
         ArgumentNullException.ThrowIfNull(assembly);
@@ -31,12 +45,7 @@ public static class EtabsApiDiscovery
             selected.Select(x => (x.InterfaceType, x.Member)).Distinct().Count() != selected.Length)
             throw new ArgumentException("Discovery requires unique, explicit interface/member identities.", nameof(capabilities));
 
-        var profiles = new (string Name, IReadOnlyDictionary<string, EtabsGetterDefinition> Definitions)[]
-        {
-            ("retained", EtabsGetterMatrix.Allowed), ("context", EtabsContextGetterMatrix.Allowed),
-            ("forces", EtabsForceGetterMatrix.Allowed), ("bulk", EtabsBulkGetterMatrix.Allowed),
-            ("group", EtabsGroupGetterMatrix.Allowed)
-        };
+        var profiles = GetterProfiles();
         var enums = new Dictionary<string, EtabsApiEnum>(StringComparer.Ordinal);
         var members = new List<EtabsApiMemberDiscovery>();
         foreach (var capability in selected)
@@ -82,31 +91,57 @@ public static class EtabsApiDiscovery
 
     private static string TypeName(Type type) => type.FullName ?? type.Name;
 
+    private static (string Name, IReadOnlyDictionary<string, EtabsGetterDefinition> Definitions)[] GetterProfiles() =>
+    [
+        ("retained", EtabsGetterMatrix.Allowed), ("context", EtabsContextGetterMatrix.Allowed),
+        ("forces", EtabsForceGetterMatrix.Allowed), ("bulk", EtabsBulkGetterMatrix.Allowed),
+        ("group", EtabsGroupGetterMatrix.Allowed), ("inspection", EtabsInspectionGetterMatrix.Allowed)
+    ];
+
     private static IReadOnlyList<EtabsApiCapability> CreateCatalogue()
     {
         var result = new List<EtabsApiCapability>();
-        Add("source", "cHelper", "attachment", "GetObjectProcess");
-        Add("source", "cSapModel", "read", "GetVersion GetModelFilename GetModelIsLocked GetPresentUnits GetPresentUnits_2 GetDatabaseUnits");
+        Add("source", "cHelper", "attachment", "GetObjectProcess GetObject");
+        Add("application", "cHelper", "application_lifecycle", "CreateObject CreateObjectProgID");
+        Add("application", "cOAPI", "application_lifecycle", "ApplicationStart ApplicationExit");
+        Add("application", "cOAPI", "read", "GetOAPIVersionNumber Visible");
+        Add("application", "cOAPI", "presentation_write", "Hide Unhide");
+        Add("source", "cSapModel", "read", "GetVersion GetProgramInfo GetModelFilename GetModelFilepath GetModelIsLocked GetPresentUnits GetPresentUnits_2 GetDatabaseUnits GetDatabaseUnits_2");
         Add("source", "cSapModel", "write", "SetPresentUnits SetModelIsLocked");
+        Add("model_creation", "cSapModel", "write", "InitializeNewModel");
+        Add("presentation", "cSapModel", "read", "TreeIsUpdateSuspended");
+        Add("presentation", "cSapModel", "presentation_write", "TreeSuspendUpdateData TreeResumeUpdateData");
+        Add("inventory", "cFrameObj", "read", "Count GetLabelFromName GetLocalAxes");
+        Add("inventory", "cPointObj", "read", "Count");
+        Add("inventory", "cAreaObj", "read", "Count");
+        Add("inventory", "cStory", "read", "GetStories_2");
         Add("beam_topology", "cFrameObj", "read", "GetAllFrames GetDesignOrientation GetPoints GetElm GetSupports GetMaterialOverwrite GetOutputStations GetInsertionPoint_1 GetEndLengthOffset GetReleases GetTransformationMatrix GetModifiers GetSection");
         Add("candidate_update", "cFrameObj", "write", "SetSection");
         Add("connectivity", "cPointObj", "read", "GetAllPoints GetConnectivity GetRestraint");
         Add("support_geometry", "cAreaObj", "read", "GetAllAreas GetPoints GetProperty");
         Add("support_geometry", "cPropArea", "read", "GetWall GetSlab");
-        Add("section_material", "cPropFrame", "read", "GetTypeOAPI GetRectangle GetTee GetTee_1 GetMaterial GetRebarBeam GetSectProps");
-        Add("section_material", "cPropMaterial", "read", "GetOConcrete GetORebar GetTypeOAPI");
+        Add("section_material", "cPropFrame", "read", "GetTypeOAPI GetRectangle GetTee GetTee_1 GetMaterial GetRebarBeam GetSectProps GetModifiers");
+        Add("section_material", "cPropMaterial", "read", "GetOConcrete GetORebar GetTypeOAPI GetMPIsotropic GetWeightAndMass");
+        Add("loading", "cLoadPatterns", "read", "GetNameList GetLoadType GetSelfWTMultiplier");
         Add("loading", "cCombo", "read", "GetNameList GetCaseList GetCaseList_1 GetTypeCombo");
         Add("loading", "cLoadCases", "read", "GetNameList GetTypeOAPI");
-        Add("analysis", "cAnalyze", "read", "GetCaseStatus GetRunCaseFlag");
-        Add("analysis", "cAnalyze", "write", "RunAnalysis");
-        Add("forces", "cAnalysisResults", "read", "FrameForce");
+        Add("analysis", "cAnalyze", "read", "GetCaseStatus GetRunCaseFlag GetSolverOption_3");
+        Add("analysis", "cAnalyze", "write", "RunAnalysis SetRunCaseFlag CreateAnalysisModel DeleteResults SetSolverOption_3");
+        Add("forces", "cAnalysisResults", "read", "FrameForce JointReact BaseReact StoryDrifts ModalPeriod");
         Add("forces", "cAnalysisResultsSetup", "read", "GetCaseSelectedForOutput GetComboSelectedForOutput");
-        Add("forces", "cAnalysisResultsSetup", "write", "SetCaseSelectedForOutput SetComboSelectedForOutput");
+        Add("forces", "cAnalysisResultsSetup", "write", "DeselectAllCasesAndCombosForOutput SetCaseSelectedForOutput SetComboSelectedForOutput");
+        Add("result_basis", "cAnalysisResultsSetup", "read", "GetOptionDirectHist GetOptionModalHist GetOptionModeShape GetOptionMultiStepStatic GetOptionMultiValuedCombo GetOptionNLStatic");
+        Add("result_basis", "cAnalysisResultsSetup", "write", "SetOptionDirectHist SetOptionModalHist SetOptionModeShape SetOptionMultiStepStatic SetOptionMultiValuedCombo SetOptionNLStatic");
         Add("scope", "cGroup", "read", "GetAssignments GetNameList");
-        Add("bulk_tables", "cDatabaseTables", "read", "GetAvailableTables GetAllFieldsInTable GetTableForDisplayArray GetTableForEditingArray");
+        Add("bulk_tables", "cDatabaseTables", "read", "GetAllTables GetAvailableTables GetAllFieldsInTable GetTableForDisplayArray GetTableForEditingArray GetLoadCasesSelectedForDisplay GetLoadCombinationsSelectedForDisplay GetLoadPatternsSelectedForDisplay GetOutputOptionsForDisplay");
+        Add("table_selection", "cDatabaseTables", "write", "SetLoadCasesSelectedForDisplay SetLoadCombinationsSelectedForDisplay SetLoadPatternsSelectedForDisplay SetOutputOptionsForDisplay");
+        Add("table_export", "cDatabaseTables", "external_file_write", "GetTableForDisplayCSVFile");
+        Add("table_edit", "cDatabaseTables", "write", "SetTableForEditingArray ApplyEditedTables CancelTableEditing");
         Add("design_reference", "cDesignConcrete", "read", "GetCode GetResultsAvailable GetSummaryResultsBeam GetDesignSection GetComboStrength");
-        Add("design_reference", "cDesignConcrete", "write", "SetComboStrength StartDesign");
-        Add("candidate_file", "cFile", "write", "Save OpenFile");
+        Add("design_reference", "cDesignConcrete", "write", "SetCode SetComboStrength SetDesignSection StartDesign");
+        Add("candidate_file", "cFile", "write", "Save OpenFile NewBlank ImportFile");
+        Add("model_export", "cFile", "external_file_write", "ExportFile");
+        Add("presentation", "cView", "presentation_write", "RefreshView RefreshWindow");
         return result.AsReadOnly();
 
         void Add(string area, string type, string effect, string names)

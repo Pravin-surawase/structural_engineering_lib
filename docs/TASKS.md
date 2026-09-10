@@ -126,6 +126,14 @@
 
 ## Active
 
+`ETABS-API-LIFECYCLE-MAP` adds repeatable full-interface discovery and an
+[API lifecycle and efficiency map](planning/xll-product/etabs-design-workflow.md#api-lifecycle-and-efficiency--2026-09-10).
+Static inspection accounts for 1,343 installed methods; it does not qualify
+their behavior. Next within C0a: lightweight connection and bounded result
+planning. D/E later promotes the existing owned-copy harness operations into
+typed open/save/run/design/exit services. Current-model operations remain
+unchanged; delivery/check facts are recorded externally.
+
 `BEAM-SECOND-MODEL-INVENTORY` implements bounded read-only discovery and records
 a second building's inventory and twenty-frame definition sample. The
 [observations and next work](planning/xll-product/etabs-design-workflow.md#second-model-observations-and-revised-next-work--2026-09-10)
