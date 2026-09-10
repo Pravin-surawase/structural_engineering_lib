@@ -113,6 +113,12 @@ start its separately admitted pilot with one object and measure returned rows
 and time before increasing scope. Keep final performance certification at
 WP10-PERF-FINAL.
 
+Delivery also reproduced a BC-18 build-host mismatch: automatic SDK patch
+selection requested a different ILLink.Tasks dependency from the locked graph.
+The repair requires the already-tested .NET SDK 10.0.400 exactly. Future SDK
+updates must deliberately qualify their lock-file and artifact changes together;
+an unchanged application source commit alone cannot establish runtime parity.
+
 ### Coverage matrix
 
 Each row is a mandatory planning and acceptance obligation. C0a records source

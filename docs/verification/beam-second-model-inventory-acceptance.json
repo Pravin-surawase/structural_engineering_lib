@@ -5,19 +5,93 @@
   "base_commit": "07118a093f9d6ea48609496b2f07f9ef0463d329",
   "authority": "2026-09-10 owner requested inspecting the newly open second model to improve the broader beam plan; then informed us they saved it in another folder and ran analysis.",
   "objective": "Acquire a bounded read-only model inventory and conditional representative frame sample through the existing ETABS host controls, then refine the maintained plan using actual observations.",
-  "bounded_units": ["I1: separate inspection getter profile and worker with count-first admission", "I2: exact installed-instance discovery and conditional definition sample", "I3: sanitized receipt, plan refinement and one delivery candidate"],
-  "acceptance_rows": [
-    {"id": "I01", "outcome": "Exact PID/start/executable and newly saved model identity are bound before reads; no setters, analysis, design execution, saving, selections or ETABS termination."},
-    {"id": "I02", "outcome": "An independent read-only profile reuses the existing host, process lease, STA, deadline/quiescence, journal and cleanup owners; legacy profiles retain their hashes and semantics."},
-    {"id": "I03", "outcome": "Inventory records native units, counts, stories, case statuses, result and table selections, table availability and concrete-design availability. Each unavailable family has a precise failure or admission reason."},
-    {"id": "I04", "outcome": "A separate optional sample uses at most 20 exact frames after a bounded source catalog; no All-group force call, table rows, shell/time-history rows or general full-model capture."},
-    {"id": "I05", "outcome": "Pre/post state and exact file/process identity agree, all getter calls are journaled, timeout does not release a live provider lease, and artifacts publish only after cleanup."},
-    {"id": "I06", "outcome": "Focused fake-host tests cover counts versus CSI return codes, over-budget admission, provider failure, selection/model drift and legacy broker compatibility; installed evidence records timings and bytes without PF9 qualification."},
-    {"id": "I07", "outcome": "Raw model identifiers and data remain external. Safe summaries map observations to BC rows and next C0a-C0c work; second model is development evidence, not independent-source proof, a holdout, or broad design support."}
+  "bounded_units": [
+    "I1: separate inspection getter profile and worker with count-first admission",
+    "I2: exact installed-instance discovery and conditional definition sample",
+    "I3: sanitized receipt, plan refinement and one delivery candidate"
   ],
-  "bounds": {"operation_deadline_seconds": 180, "maximum_frame_catalog": 20000, "maximum_case_or_combo_catalog": 500, "maximum_sample_frames": 20, "force_results": "not requested by the inspection profile"},
-  "owned_paths": ["CSharp/src/StructuralEngineering.Etabs/EtabsInspection*.cs", "CSharp/src/StructuralEngineering.Etabs/EtabsReflectionGetterHost.cs", "CSharp/tools/StructAutomate.EtabsWorker/InspectionWorker.cs", "CSharp/tools/StructAutomate.EtabsWorker/Program.cs", "CSharp/tests/StructAutomate.Tests/Wp10InspectionTests.cs", "docs/planning/xll-product/etabs-design-workflow.md", "docs/planning/xll-product/wp10-etabs-read-adapter.md", "docs/planning/next-session-brief.md", "docs/TASKS.md", "docs/SESSION_LOG.md", "docs/verification/beam-second-model-inventory-acceptance.json", "docs/verification/beam-second-model-inventory-receipt.json", "docs/verification/rework-recurrence-index.json"],
-  "non_goals": ["Engineering design or solver implementation", "Source-model mutation, installed Excel changes, packaging installation or release", "Full result extraction, database export, schema-wide qualification, or PF9 certification", "Other worktrees, source/licensing permission changes or cleanup"],
-  "likely_pitfalls": ["Reusing the prior saved filename after the owner moved the model", "Treating positive Count values as CSI errors", "Assuming output and table display selections agree", "Treating a worker timeout as stopped ETABS", "Calling an unbounded All group before checking its rows", "Treating a metadata or geometry sample as complete structural support"],
-  "verification": {"focused": ["locked .NET restore/build", "Wp10InspectionTests plus existing getter and broker tests", "documentation links and session validation", "read-only candidate integrity", "required hosted checks"], "installed": "Exact read-only source identity, paired call journal, protected-state equality, operation time, worker memory and artifact hashes retained outside Git."}
+  "acceptance_rows": [
+    {
+      "id": "I01",
+      "outcome": "Exact PID/start/executable and newly saved model identity are bound before reads; no setters, analysis, design execution, saving, selections or ETABS termination."
+    },
+    {
+      "id": "I02",
+      "outcome": "An independent read-only profile reuses the existing host, process lease, STA, deadline/quiescence, journal and cleanup owners; legacy profiles retain their hashes and semantics."
+    },
+    {
+      "id": "I03",
+      "outcome": "Inventory records native units, counts, stories, case statuses, result and table selections, table availability and concrete-design availability. Each unavailable family has a precise failure or admission reason."
+    },
+    {
+      "id": "I04",
+      "outcome": "A separate optional sample uses at most 20 exact frames after a bounded source catalog; no All-group force call, table rows, shell/time-history rows or general full-model capture."
+    },
+    {
+      "id": "I05",
+      "outcome": "Pre/post state and exact file/process identity agree, all getter calls are journaled, timeout does not release a live provider lease, and artifacts publish only after cleanup."
+    },
+    {
+      "id": "I06",
+      "outcome": "Focused fake-host tests cover counts versus CSI return codes, over-budget admission, provider failure, selection/model drift and legacy broker compatibility; installed evidence records timings and bytes without PF9 qualification."
+    },
+    {
+      "id": "I07",
+      "outcome": "Raw model identifiers and data remain external. Safe summaries map observations to BC rows and next C0a-C0c work; second model is development evidence, not independent-source proof, a holdout, or broad design support."
+    }
+  ],
+  "bounds": {
+    "operation_deadline_seconds": 180,
+    "maximum_frame_catalog": 20000,
+    "maximum_case_or_combo_catalog": 500,
+    "maximum_sample_frames": 20,
+    "force_results": "not requested by the inspection profile"
+  },
+  "owned_paths": [
+    "CSharp/src/StructuralEngineering.Etabs/EtabsInspection*.cs",
+    "CSharp/src/StructuralEngineering.Etabs/EtabsReflectionGetterHost.cs",
+    "CSharp/tools/StructAutomate.EtabsWorker/InspectionWorker.cs",
+    "CSharp/tools/StructAutomate.EtabsWorker/Program.cs",
+    "CSharp/tests/StructAutomate.Tests/Wp10InspectionTests.cs",
+    "docs/planning/xll-product/etabs-design-workflow.md",
+    "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+    "docs/planning/next-session-brief.md",
+    "docs/TASKS.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/beam-second-model-inventory-acceptance.json",
+    "docs/verification/beam-second-model-inventory-receipt.json",
+    "docs/verification/rework-recurrence-index.json",
+    "CSharp/global.json",
+    "CSharp/README.md"
+  ],
+  "non_goals": [
+    "Engineering design or solver implementation",
+    "Source-model mutation, installed Excel changes, packaging installation or release",
+    "Full result extraction, database export, schema-wide qualification, or PF9 certification",
+    "Other worktrees, source/licensing permission changes or cleanup"
+  ],
+  "likely_pitfalls": [
+    "Reusing the prior saved filename after the owner moved the model",
+    "Treating positive Count values as CSI errors",
+    "Assuming output and table display selections agree",
+    "Treating a worker timeout as stopped ETABS",
+    "Calling an unbounded All group before checking its rows",
+    "Treating a metadata or geometry sample as complete structural support"
+  ],
+  "verification": {
+    "focused": [
+      "locked .NET restore/build",
+      "Wp10InspectionTests plus existing getter and broker tests",
+      "documentation links and session validation",
+      "read-only candidate integrity",
+      "required hosted checks"
+    ],
+    "installed": "Exact read-only source identity, paired call journal, protected-state equality, operation time, worker memory and artifact hashes retained outside Git."
+  },
+  "hosted_repair": {
+    "cause": "SDK latestPatch selected 10.0.401 and ILLink.Tasks 10.0.12 against locked 10.0.11",
+    "scope": "Require previously tested SDK 10.0.400 exactly; preserve runtime inspection source and lock files",
+    "acceptance": "dotnet --version resolves 10.0.400; locked restore succeeds; unchanged code/build/test evidence remains valid; repaired hosted .NET validation must pass",
+    "candidate_ceiling": "One repair after initial hosted rejection"
+  }
 }

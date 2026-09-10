@@ -31,6 +31,9 @@
   members, stiffness/insertion context and malformed table-selection data to
   the existing C0a/C0b/C0c sequence. Preserved design-support, corpus/holdout
   and project-end performance boundaries. Updated the task board and handoff.
+- The first hosted .NET restore exposed SDK patch drift against the lock file.
+  The bounded repair requires the existing tested SDK 10.0.400 exactly and
+  documents coordinated SDK/lock updates; inspection source bytes are unchanged.
 
 Focused fake-host checks cover count admission, unavailable/malformed fields,
 source/selection drift, sample bounds, deny-listed effects, STA evidence and
@@ -52,6 +55,12 @@ external lifecycle ledger; this entry does not claim a broader library gate.
 - An external evidence checker initially reported process-start drift because
   PowerShell's parsed date was implicitly converted to display text, losing
   fractional seconds. This was a checker error; the exact source start matched.
+- The first hosted .NET job selected SDK 10.0.401 under `latestPatch` and
+  requested ILLink.Tasks 10.0.12 while the worker lock requires 10.0.11. Restore
+  failed with NU1004 before build/tests. The exact failed run is in the ledger.
+- Two later read-only shell commands failed before their intended operation:
+  the audit helper repeated the foreach/pipeline syntax mistake, and a session
+  command was launched from `CSharp` instead of the repository root.
 
 ### Root causes and resolutions
 
@@ -72,17 +81,28 @@ external lifecycle ledger; this entry does not claim a broader library gate.
 - Read the original JSON timestamp with `GetDateTimeOffset` and compare UTC
   ticks. Full precision matched the live process, and all ten external evidence
   checks passed. No model reattachment or retry was needed for this correction.
+- Automatic SDK roll-forward changes SDK-injected dependencies despite an
+  unchanged project file. Set `rollForward` to `disable`, retaining the tested
+  SDK and lock graph; verify exact SDK selection and locked restore before the
+  one repair candidate. This follows Microsoft's package-lock guidance.
+- Assign audit metadata output before serialization and run the session CLI
+  from the explicit repository root. The corrected reads and hosted-rejection
+  transition succeeded; both events are incorporated once in this repair.
 
 ### Rework and recurrence
 
-- RR-005, occurrences=146, minutes=unknown: one PowerShell foreach/pipeline
-  parser event, added once to 145; assigning results before serialization
-  resolved the read-only metadata command.
+- RR-005, occurrences=148, minutes=unknown: three shell-shape/cwd events,
+  added once to 145; assign foreach results before serialization and use the
+  repository root for session commands. The post-candidate occurrence first
+  recorded externally is included here once, not counted twice.
 - RR-002, occurrences=32, minutes=unknown: two installed contract events,
   added once to 30. Exact CSI parameter names resolved admission; the
   count/array mismatch remains an explicit unqualified field with raw evidence.
 - RR-014, occurrences=3, minutes=unknown: one temporal evidence-check event,
   added once to 2; compare parsed UTC ticks without lossy display-text conversion.
+- RR-039, occurrences=1, minutes=unknown: automatic SDK patch selection changed
+  the SDK-injected ILLink.Tasks version and broke locked restore. Require the
+  exact tested SDK; update SDK and dependency locks together deliberately.
 
 ## 2026-09-10 — Session: broader beam-model coverage plan
 
