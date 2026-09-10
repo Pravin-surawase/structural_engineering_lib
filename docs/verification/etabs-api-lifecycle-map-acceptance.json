@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-API-LIFECYCLE-MAP",
+  "status": "authorized",
+  "base_commit": "c3ce5c1e6524af2b3f7e50f6abda81afcd166485",
+  "authority": "2026-09-10 owner requested checking and mapping ETABS API operations from opening through analysis and closing, and identifying a more efficient API workflow.",
+  "objective": "Make installed API discovery cover the lifecycle and the full interface surface, and integrate an evidence-backed efficiency and lifecycle plan into the existing workflow owner.",
+  "bounded_units": [
+    "L1: static installed metadata and maintained caller inspection",
+    "L2: repeatable full-interface discovery with unclassified effects preserved",
+    "L3: lifecycle, efficiency, ownership and qualification map in existing documentation"
+  ],
+  "acceptance_rows": [
+    { "id": "L01", "outcome": "Discovery records exact signatures, parameters, enums and registered-profile matches without constructing or invoking ETABS objects; unclassified methods are not inferred to be reads." },
+    { "id": "L02", "outcome": "The default lifecycle catalogue and opt-in full-interface command retain explicit missing candidates, exclude property accessors from method enumeration, include inspection-profile comparisons and preserve runtime allowlists." },
+    { "id": "L03", "outcome": "The installed DLL inventory is independently reconciled by interface/member/signature against reflection metadata; source and output hashes are retained externally with a safe receipt." },
+    { "id": "L04", "outcome": "The maintained workflow distinguishes production reads, qualification scripts and metadata-only lifecycle operations; maps launch, attach, open/new, inventory, edits, save, analysis, design, results, export and exit." },
+    { "id": "L05", "outcome": "Priorities address count-first connection, request bounds before allocation, shared property caching, result provenance and state invalidation. No unsupported solver cancellation, generic model Close or SQLite API claim is made." },
+    { "id": "L06", "outcome": "Focused tests, locked build, installed static CLI reconciliation, documentation checks and required hosted checks pass. No ETABS COM call, current-model change, analysis/design run, application launch/exit or package installation occurs." }
+  ],
+  "owned_paths": [
+    "CSharp/src/StructuralEngineering.Etabs/EtabsApiDiscovery.cs",
+    "CSharp/tools/StructAutomate.EtabsWorker/ApiInventoryCommand.cs",
+    "CSharp/tools/StructAutomate.EtabsWorker/Program.cs",
+    "CSharp/tests/StructAutomate.Tests/EtabsApiDiscoveryTests.cs",
+    "docs/planning/xll-product/etabs-design-workflow.md",
+    "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+    "docs/planning/next-session-brief.md",
+    "docs/TASKS.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/etabs-api-lifecycle-map-acceptance.json",
+    "docs/verification/etabs-api-lifecycle-map-receipt.json",
+    "docs/verification/rework-recurrence-index.json"
+  ],
+  "non_goals": [
+    "Production mutation/lifecycle orchestration or changing existing getter/capture semantics",
+    "Engineering or solver changes, full beam/model support, full API behavioral qualification",
+    "Live ETABS calls, UI interaction, export of model data, package installation or release",
+    "Other worktrees, cleanup or a new competing programme plan"
+  ],
+  "likely_pitfalls": [
+    "Treating metadata presence or a matching signature as behavior qualification",
+    "Inferring no effects from a Get prefix or using a setter as proof of a getter",
+    "Claiming post-return row limits bound COM allocations",
+    "Using old web documentation instead of installed signatures",
+    "Confusing request cancellation with solver termination or detached COM with application exit"
+  ],
+  "closeout_repair": {
+    "rejected_head": "f7d85099ea35b6b7c029b8a457f937b69bdb3cbb",
+    "cause": "RR-040 details was a string rather than the required non-empty string list",
+    "scope": "Correct recurrence schema and coupled session/handoff evidence; preserve API implementation and installed metadata evidence",
+    "acceptance": "Maintained recurrence and newest-session parsers pass, repaired candidate integrity passes once, pre-push final closeout and hosted checks pass",
+    "candidate_ceiling": "One repair after the unpublished candidate closeout rejection"
+  },
+  "verification": {
+    "focused": ["EtabsApiDiscoveryTests", "Wp10GetterAdapterTests", "Wp10InspectionTests", "locked .NET build", "documentation links", "read-only candidate integrity", "required hosted checks"],
+    "installed": "Static discovery only; independently reconcile exact interface/member/signature sets and unchanged assembly hashes."
+  }
+}

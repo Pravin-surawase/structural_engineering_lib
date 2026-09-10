@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-API-LIFECYCLE-MAP",
+  "recorded_utc": "2026-09-10T07:51:21.0317050+00:00",
+  "acceptance": "docs/verification/etabs-api-lifecycle-map-acceptance.json",
+  "evidence_scope": "static_metadata_only;not_live_qualification",
+  "source_base": "c3ce5c1e6524af2b3f7e50f6abda81afcd166485",
+  "installed_api": {
+    "assembly_identity": "ETABSv1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=453d728ef24c6f5e",
+    "file_version": "2.16.0.0",
+    "sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54"
+  },
+  "counts": {
+    "exported_interfaces": 143,
+    "method_declarations": 1343,
+    "selected_candidates": 140,
+    "selected_present": 139,
+    "full_candidates": 1344,
+    "full_present": 1343,
+    "unclassified_full": 1190
+  },
+  "missing": [
+    "ETABSv1.cDesignConcrete.GetComboStrength"
+  ],
+  "profile_comparison": [
+    {
+      "profile": "bulk",
+      "bindings": 57,
+      "signature_matches": 57
+    },
+    {
+      "profile": "context",
+      "bindings": 9,
+      "signature_matches": 9
+    },
+    {
+      "profile": "forces",
+      "bindings": 53,
+      "signature_matches": 53
+    },
+    {
+      "profile": "group",
+      "bindings": 59,
+      "signature_matches": 59
+    },
+    {
+      "profile": "inspection",
+      "bindings": 40,
+      "signature_matches": 40
+    },
+    {
+      "profile": "retained",
+      "bindings": 48,
+      "signature_matches": 48
+    }
+  ],
+  "checks": {
+    "exact_signature_set": true,
+    "same_dll": true,
+    "static_only": true,
+    "no_signature_mismatch": true,
+    "no_unknown_admission": true
+  },
+  "external_evidence_directory": "C:\\CodexWork\\evidence\\etabs-api-lifecycle-20260910",
+  "artifacts": [
+    {
+      "name": "installed-interfaces.json",
+      "sha256": "b0ca3c0cdd5894c1d4f9da52ceea2146499a18f720c361eacb55a055a59f48b8",
+      "bytes": 1635532
+    },
+    {
+      "name": "lifecycle-inventory.json",
+      "sha256": "b8b255fd8eadbed141fd44987f932b1dfbd9336ac14ecec41e1535874c6a457a",
+      "bytes": 253173
+    },
+    {
+      "name": "full-api-inventory-02.json",
+      "sha256": "bbe2fdfc7fb41cce97df628be0950d6ac96556dfa6e96c6af0248fc4da924100",
+      "bytes": 2211435
+    }
+  ],
+  "boundaries": {
+    "etabs_objects_created": 0,
+    "etabs_methods_invoked": 0,
+    "file_close": "absent from cFile",
+    "analysis_stop_or_progress": "absent from cAnalyze",
+    "sqlite": "no dedicated interface method or eFileTypeIO enum value",
+    "mutating_lifecycle": "not implemented or live-qualified by this task",
+    "performance": "no speedup claimed; final PF9 remains deferred"
+  },
+  "build": {
+    "sdk": "10.0.400",
+    "locked_restore": "passed",
+    "solution_build": "passed; zero warnings/errors"
+  },
+  "verification_required": [
+    "focused metadata/getter/inspection tests after content freeze",
+    "documentation checks",
+    "candidate integrity",
+    "required hosted checks"
+  ],
+  "development_correction": "The initial full scan preserved 14 existing registered getters as effect-unclassified because they were outside the selected catalogue. Full discovery now draws read classification from the existing getter-profile owners before adding unclassified methods; no runtime profile was broadened."
+}

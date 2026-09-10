@@ -5,6 +5,9 @@ using StructuralEngineering.Etabs;
 if (args is ["--api-inventory", var apiAssemblyPath, "--response", var inventoryPath])
     return await ApiInventoryCommand.Run(apiAssemblyPath, inventoryPath);
 
+if (args is ["--api-inventory-all", var allApiAssemblyPath, "--response", var allInventoryPath])
+    return await ApiInventoryCommand.Run(allApiAssemblyPath, allInventoryPath, includeAllInterfaces: true);
+
 if (args is ["--inspect-request", var inspectionRequestPath, "--response", var inspectionResponsePath])
     return await InspectionWorker.Run(inspectionRequestPath, inspectionResponsePath);
 

@@ -1,5 +1,150 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## API lifecycle and efficiency — 2026-09-10
+
+**Status:** checked API map and implementation sequence; lifecycle execution
+remains to be qualified. The owner requested an API-first workflow from opening
+ETABS through analysis and closing. This section extends C0a and the existing
+D/E stages; it does not create another programme. See the
+[acceptance](../../verification/etabs-api-lifecycle-map-acceptance.json) and
+[static evidence receipt](../../verification/etabs-api-lifecycle-map-receipt.json).
+
+The installed `ETABSv1.dll` file version `2.16.0.0` exposes 143 public interfaces
+and 1,343 non-property method declarations. Discovery reads metadata without
+creating a CSI object or calling ETABS. A method's presence, name or matching
+registered signature is not proof that it works for a particular version,
+model, load basis or permission mode. The full inventory leaves unreviewed
+effects **unclassified**, including methods beginning with `Get`.
+
+API control is the preferred route for repeatable operations and structured
+data. [CSI documents model creation, execution and result exchange through its API](https://www.csiamerica.com/developer).
+Our observed advantage is structured, source-bound acquisition; we have not
+measured an API-versus-UI speed ratio. The second-model inventory took 5.484 s
+and its separate twenty-frame definition pass 8.148 s. Neither time measures
+force extraction, solver speed or final performance qualification.
+
+### Operation map and current implementation
+
+The signatures in the repeatable inventory are authoritative for this DLL.
+Names below are navigation aids. **Production** means a maintained worker
+route exists within its declared profile, not universal support. **Harness**
+means an installed qualification/setup script exists, not a product command.
+**Metadata** means the method exists but this task did not execute it.
+
+| Stage | Installed API route | Current use and next qualification |
+|---|---|---|
+| Find and attach | OS process enumeration; `cHelper.GetObjectProcess(progID, processID)`; `GetVersion`, `GetModelFilename`, units and lock getters | Production exact-instance discovery. Bind PID, precise start time, executable/DLL identity and model. `GetObject` alone cannot express which of several instances the user intended. |
+| Start a separate ETABS instance | `cHelper.CreateObject(executablePath)` then `cOAPI.ApplicationStart()` | Harness. Reuse the existing owned-copy startup pattern; prove ownership and successful startup before opening a file. Do not launch a new instance on every getter. |
+| Open or create a model | `cFile.OpenFile(FileName)`; alternatively `InitializeNewModel(eUnits)` then `File.NewBlank()` | Harness. Open only the intended owned copy. Initialization/new-model operations replace model state; they are not attach prerequisites. Capture returned status, actual path and resulting state. |
+| Inspect size and availability | Object `Count`, `Story.GetStories_2`, case/run status, `DatabaseTables.GetAllTables`, concrete-design availability | Production inspection. Count first, then bounded catalog/sample. The existing Excel Connect route still performs a fuller context capture and must be adapted separately. |
+| Read definitions and assignments | Frame/point/area, section/material, load pattern/case/combo getters; selected database tables | Production within existing profiles. Add source/topology facts through C0a, cache shared properties within an accepted capture and preserve explicit units/axes/stations. |
+| Change candidate definitions | `FrameObj.SetSection`, other explicit setters; `SetTableForEditingArray` and `ApplyEditedTables` | Metadata for future product mutation. D owns validated requests, batch errors, exact readback, source preservation and new result identity. Generic table editing is not a bypass around typed validation. |
+| Save the intended model | `cFile.Save(FileName)` | Harness. Use a new owned path and verify the resulting file. A newly created model needs a filename before analysis; preserve associated analysis files as a bound artifact set when required. |
+| Choose cases and run analysis | `Analyze.GetRunCaseFlag`, `SetRunCaseFlag`, `RunAnalysis`, `GetCaseStatus` | Harness. Freeze the required case/dependency scope, invoke once, inspect required completion and analysis diagnostics, and bind fresh results. Do not rerun valid analysis merely to export results. |
+| Run ETABS concrete design | `DesignConcrete.GetCode`, `SetCode`, `SetComboStrength`, `StartDesign`, `GetResultsAvailable`, beam summaries | Reads partly production; design execution is metadata here. D must qualify code/preferences/combination input and returned warnings. Analysis completion is not design completion, and ETABS reinforcement demand is not our actual bar layout. |
+| Choose and extract results | `Results.Setup` selections/options; `FrameForce`, reactions, drifts and modal getters | Production force routes are profile-limited. Qualify exact object/group scope, required cases/combinations/steps, options and concurrent-versus-envelope meaning before broader use. |
+| Read/export database tables | `GetAllFieldsInTable`, display/editing getters; `GetTableForDisplayCSVFile`; `cFile.ExportFile` | Selected table reads are production; file export is metadata. Select fields, table, group and load basis before extraction. A method beginning with `Get` can still write a file. |
+| Refresh or hide a view | `View.RefreshView/RefreshWindow`, `cOAPI.Hide/Unhide`, tree-update suspension/resumption | Metadata. Presentation changes are optional and belong to owned operations. Qualify them only if measurements show rendering overhead; always restore owned presentation state after failure. |
+| Disconnect or exit | Release owned COM references; separately `cOAPI.ApplicationExit(FileSave)` | Production readers disconnect; harnesses can exit their owned instance. Disconnect keeps an attached ETABS instance open. Explicit save/readback precedes an owned exit, with process-exit evidence. There is no `cFile.Close` in this DLL. |
+| Cancel or recover | Existing worker cancellation, deadline, journal, lease and quiescence | Production request cancellation exists. No analysis-stop/progress method was found on installed `cAnalyze`. Show operation stage and elapsed time without inventing solver percentage; a blocked call must return/quiesce before reuse. Do not issue competing COM calls or infer solver termination from a cancelled worker request. |
+
+Existing owners are
+[`EtabsHostDiscovery`](../../../CSharp/src/StructuralEngineering.Etabs/EtabsHostDiscovery.cs),
+[`inspection`](../../../CSharp/src/StructuralEngineering.Etabs/EtabsInspectionCapture.cs),
+[`context capture`](../../../CSharp/src/StructuralEngineering.Etabs/EtabsContextCapture.cs),
+[`force capture`](../../../CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs),
+[`owned-copy preflight`](../../../CSharp/packaging/excel/Invoke-EtabsForcePreflight.ps1),
+[`owned analysis setup`](../../../CSharp/packaging/excel/Invoke-EtabsOwnedAnalysis.ps1)
+and [`fixture creation`](../../../CSharp/packaging/excel/New-EtabsPerformanceFixture.ps1).
+These scripts are reusable implementation evidence, not authority to load
+them into the XLL or call their setters on the user's attached model.
+
+CSI's older public [RunAnalysis contract](https://docs.csiamerica.com/help-files/etabs-api-2016/html/4b00dc5d-9b60-e088-1b39-d7f7687145fc.htm)
+describes the saved-path prerequisite and automatic analysis-model creation;
+its [ApplicationExit contract](https://docs.csiamerica.com/help-files/etabs-api-2016/html/248a55a5-ff6d-ac9d-868e-71d0c9335002.htm)
+describes the save flag. Installed behavior still needs exact-version evidence.
+Do not add a redundant `CreateAnalysisModel` before every `RunAnalysis`.
+
+### Efficiency priorities and acceptance
+
+1. **C0a: separate connection from acquisition.** Attach and show counts,
+   result availability and supported capture choices first. Acquire detailed
+   geometry when the user requests it. `EtabsContextCapture` currently reads
+   frames and points three times and orientation/material assignments twice
+   as part of its consistency checks. Preserve those checks in the retained
+   route; introduce a separately versioned cheap connection route instead of
+   removing freshness checks to make the old route faster. Acceptance: the
+   lightweight route makes no `GetAllPoints`, per-frame loop or result read,
+   and the existing detailed-context route retains its evidence.
+2. **C0a: bound extraction before the vendor allocates it.** The group route
+   calls `FrameForce("All", group)` before enforcing 100,000 rows. That ceiling
+   limits accepted output, not ETABS/COM allocation. Use the inventory, a small
+   pilot and exact pre-existing groups or object batches to choose a route;
+   restrict case/step options on an owned copy where authorized. Table getters
+   expose field/group filters but no offset/limit paging. Even one object may
+   have many history rows; a worker timeout or post-call ceiling is not a hard
+   allocation bound. Admit only qualified workloads and report unsupported
+   volume explicitly. Acceptance: requested object/case/step coverage reconciles
+   exactly, cancellation preserves its lease, and unqualified large requests
+   do not enter the `All` route. Measure rows, bytes, calls, wall time and memory.
+3. **C0a/C1: reuse accepted data at the right scope.** Cache section/material
+   definitions by stable IDs within one capture, then normalize and index an
+   immutable snapshot once for offline design, comparison and Excel output.
+   Reuse the existing C# worker and process lease; serialize COM calls through
+   the existing STA owner. Offline calculations can run independently after
+   acquisition. A saved-file hash alone cannot detect all unsaved live changes:
+   retain pre/post guards and revalidate across operations. Mutation, units,
+   selections, analysis, design or source changes invalidate dependent caches.
+   Acceptance: shared definitions are read once per accepted acquisition scope
+   except declared consistency checks, and stale results cannot be reused.
+4. **D/E: promote harness operations into one owned lifecycle service.** Bind
+   operation, instance, source/copy paths, effect authority, input/result
+   identities, deadlines and artifacts in each request. Reuse the established
+   lease, journal, cleanup and UI progress owners. Open, prepare, save, run,
+   reacquire and verify through typed stages; keep baseline and last accepted
+   candidate. Never blindly retry an uncertain save/setter/analysis call.
+   Acceptance includes failed open, analysis error, missing design output,
+   provider timeout, partial write, source drift and failed cleanup on a
+   disposable owned fixture before broad building use.
+
+```mermaid
+flowchart LR
+  A[Identify ETABS and source] --> B[Inventory and choose scope]
+  B --> C[Read existing qualified results]
+  C --> D[Immutable snapshot and offline design]
+  B --> E[Authorized owned copy]
+  E --> F[Open or edit and save]
+  F --> G[Run required analysis and design]
+  G --> H[Reacquire and compare]
+  H --> I[Save verified artifacts and exit owned instance]
+```
+
+The next implementation packet is the lightweight connection/acquisition
+boundary and measured force-batch planner within **C0a**. C0b/C0c still own
+engineering support; lifecycle automation cannot make the 153 retained beams
+or future models supported by itself. D/E then qualifies owned open/save/run/
+design/exit. Keep focused correctness checks with those units and final PF9
+performance certification at project end, as already agreed.
+
+### UI fallback and export limits
+
+Keep computer use for initial installation/licensing dialogs, unresolved
+interactive errors and visual inspection where needed. Routine production
+model operations should call the qualified API services and return structured
+diagnostics instead of depending on window focus, screenshots and clicks.
+Unsupported UI actions remain explicit; the method inventory is not a promise
+of complete GUI parity or unattended operation in every failure state.
+
+[CSI's 23.3 release information](https://www.csiamerica.com/products/etabs/enhancements/23-23.3.0)
+advertises SQLite database-table export. However, this installed
+`cFile.ExportFile` accepts `eFileTypeIO`, whose values are TextFile,
+DBTablesExcel, DBTablesAccess, DBTablesText and DBTablesXML. No SQLite value or
+dedicated SQLite method was found in the inspected interface surface. The
+earlier extraction proposal's SQLite alternative therefore remains a separate
+export investigation, not a qualified API route. Do not pass an invented enum
+value; CSV/XML or an offline database built from accepted API data are distinct
+routes with their own completeness checks.
+
 ## Model coverage and future issues — 2026-09-10
 
 **Status:** active planning refinement, requested by the owner on 10 September.

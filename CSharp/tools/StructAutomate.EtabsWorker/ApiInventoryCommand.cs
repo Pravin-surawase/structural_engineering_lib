@@ -6,7 +6,7 @@ using StructuralEngineering.Etabs;
 
 internal static class ApiInventoryCommand
 {
-    public static async Task<int> Run(string assemblyPath, string responsePath)
+    public static async Task<int> Run(string assemblyPath, string responsePath, bool includeAllInterfaces = false)
     {
         string? temporary = null;
         AssemblyLoadContext? discoveryContext = null;
@@ -19,7 +19,7 @@ internal static class ApiInventoryCommand
             // An isolated context binds this load to the requested external file even in a single-file worker.
             discoveryContext = new AssemblyLoadContext("ETABS API discovery", isCollectible: true);
             var assembly = discoveryContext.LoadFromAssemblyPath(source);
-            var inventory = EtabsApiDiscovery.Inspect(assembly);
+            var inventory = includeAllInterfaces ? EtabsApiDiscovery.InspectAll(assembly) : EtabsApiDiscovery.Inspect(assembly);
             if (assembly.GetType("ETABSv1.cSapModel", throwOnError: false) is null)
                 throw new InvalidDataException("The requested assembly does not expose the ETABSv1.cSapModel interface.");
             var fileVersion = FileVersionInfo.GetVersionInfo(source).FileVersion;
@@ -41,7 +41,7 @@ internal static class ApiInventoryCommand
             }
             File.Move(temporary, output, overwrite: false);
             temporary = null;
-            Console.WriteLine($"API metadata written: {inventory.Members.Count(x => x.Methods.Count > 0)}/{inventory.Members.Count} selected methods present; no target methods invoked.");
+            Console.WriteLine($"API metadata written: {inventory.Members.Count(x => x.Methods.Count > 0)}/{inventory.Members.Count} catalogued names present; no target methods invoked.");
             return 0;
         }
         catch (Exception exception)
