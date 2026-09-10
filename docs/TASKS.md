@@ -126,6 +126,14 @@
 
 ## Active
 
+`BEAM-ASSUME-AND-CONTINUE` records the owner's
+[default demo/review policy](planning/xll-product/etabs-design-workflow.md#owner-decision-assume-and-continue-during-demo-and-review--2026-09-10):
+unknown input → write an assumed value → continue without questions or manual
+acceptance. Persist visible assumptions, update dependent previews after edits,
+and finish the review/report loop even when individual checks are unavailable.
+The shared resolver and nonblocking orchestrator are the next C0a/C0b priority.
+This policy correction is documentation-only; runtime implementation is pending.
+
 `BEAM-DATA-REQUIREMENTS` audits ETABS/user/derived inputs across the full
 [data lifecycle](planning/xll-product/etabs-design-workflow.md#data-requirements-and-editable-assumptions--2026-09-10).
 Assumptions edits currently invalidate baseline results; the actual values come

@@ -1,10 +1,81 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## Owner decision: assume and continue during demo and review — 2026-09-10
+
+**Unknown input → record an assumed value → continue.** The owner clarified
+that the purpose of Assumptions is to keep the entire demo/review moving.
+Engineer review and edits are optional later actions, not prerequisites for
+continuation. Do not ask a question, open a blocking input dialog, require
+Accept Inputs, or halt the overall review because a value is unknown.
+
+This decision supersedes the earlier proposal to ask for unresolved inputs or
+wait for complete engineering readiness during demo/review. It applies to all
+sixteen data groups below, including missing material/support/scenario data.
+The data register still defines what calculations need; the assumption resolver
+supplies provisional inputs and records their basis without blocking the UI.
+The [acceptance packet](../../verification/beam-assume-and-continue-acceptance.json)
+binds this policy refinement. Runtime implementation remains pending: the
+existing sheet reader and baseline mapper still have the earlier restrictions.
+
+### Default continuation behavior
+
+| Situation | Automatic demo/review action |
+|---|---|
+| A value is unknown or blank | Reuse a saved explicit override or assumption; otherwise use the versioned preset/field fallback. Write the effective value, unit, scope, reason and origin to Assumptions, then calculate the supported preview. No question or approval gate. |
+| A required value has no existing preset entry | Apply the registered fallback for that field/profile and persist its rule identity. The implementation must cover every declared demo input; a missed rule uses the named complete example scenario for the affected preview and records the substitution. It must not interrupt the overall review. |
+| ETABS source data is missing, such as supports, strengths or service demands | Preserve the missing source record and create separate, explicitly assumed scenario inputs for the preview. Record which members/results depend on them. Any synthetic loads/results keep their example identity; they are never labelled as extracted ETABS results. |
+| A user entry is invalid, or two candidate assumptions conflict | Keep the user's entered text and alternatives in the ledger; continue using the last valid saved value or the deterministic preset fallback. Show the chosen value and reason inline. Do not silently overwrite the engineer's entry or ask them to resolve it now. |
+| A known requirement or member is outside the available calculation profile | Retain the requirement and known source actions. Record the unavailable check, evaluate other supported work, and continue through the other members and report stages. An illustrative replacement calculation has its own scenario identity; it does not become a pass for the original member. |
+| A getter or calculation cannot complete | Record the failed operation and continue with available data, a named preview fallback, or an unavailable-result entry. The review/report still completes. A disconnected or failed ETABS operation cannot be recorded as a successful live analysis or save. |
+| An engineer changes an assumption | Persist the edit, replace inherited values in the effective request, and schedule dependent preview updates automatically at a safe boundary. Keep explicit member overrides visible. No repeated acceptance prompt for the already-authorized demo basis. |
+
+Assumptions is the visible ledger and editable shared-value surface. Each entry
+retains the field key, value/unit, project/member scope, original source value
+or missing marker, assumption reason, preset/rule identity, revision, dependent
+outputs and review state. Auto-created member-specific assumptions must also be
+visible from this surface, not hidden in C# constructors or only in a log file.
+Saved values survive reopen and repeated runs; the engineer can change them at
+any time. The detailed Design Inputs view consumes this same resolved basis.
+
+Display a compact assumed-value indicator and provisional result status.
+Review-pending is informational: it must not prevent tables, previews, candidate
+history, available quantities or demo reports from being generated. Where an
+output cannot be calculated, retain its row with the actual reason and continue
+the remaining work. Do not turn an unsupported leaf into an invented pass,
+erase known nonzero actions, or describe an example schedule as the existing
+building's issued reinforcement. Assumed values are useful precisely because
+their origin remains visible to the reviewing engineer.
+
+Keep calculation validity and workflow progress separate. A demo may finish
+with assumed inputs, pending checks, failed candidates and illustrative results.
+That is a completed review run, not a claim that every member is design-complete.
+Raw ETABS evidence, saved models and real approval records keep their identity;
+the provisional overlay does not mutate them. This policy adds no new modal
+approval step for ordinary demo work.
+
+### Required implementation proof
+
+- Start with every supplemental input missing and finish the demo/review with
+  zero input questions, zero acceptance dialogs and an explicit value or named
+  example fallback for every input consumed by a preview.
+- Remove supports/material mappings/SLS data in turn; persist the assumptions,
+  calculate supported provisional outputs and complete the member/report loop.
+  Actual captured records and example/scenario records must remain distinct.
+- Include an unsupported member, an unavailable fire check and one failed
+  calculation; all requested members still appear in the final review. The
+  remaining work continues and no unexecuted check is labelled passed.
+- Enter invalid values and conflicting scoped values; preserve those entries,
+  show the deterministic effective fallback and continue without a prompt.
+- Edit cover, grade, bars and rates after the first run; inspect actual typed
+  request values and updated dependent outputs, not merely revision hashes.
+- Reopen and repeat across two model identities: reuse saved project settings,
+  retain edits, and regenerate source-specific assumptions for the new model.
+
 ## Data requirements and editable assumptions — 2026-09-10
 
 The owner requires reusable demo inputs that remain visible and editable in
-Excel. Read ETABS facts automatically, retain project choices once, and ask
-only for unresolved information needed by the requested operation. This is the
+Excel. Read ETABS facts automatically, retain project choices once, and resolve
+unknowns through the assume-and-continue policy above during demo/review. This is the
 data contract for the existing C0a/C0b/C0c and later C1/D/E/F work; it does not
 qualify additional engineering profiles.
 
@@ -26,7 +97,7 @@ It does not change the installed add-in or any workbook/model.
 | Restricted choices | Assumptions accepts only the preset value for code, seismic basis, exposure, uniform-section policy and currency. | The current sheet is not an unrestricted settings interface. Future dropdowns must list qualified choices and explain unsupported ones. |
 | Missing mappings | Material strengths, steel modulus, physical spans/supports, lateral restraint, fire decisions and ULS/total-SLS/sustained-SLS roles are required through Design Inputs. Snapshot material data contains elastic properties/density, not concrete/rebar design strengths. | Acquire or resolve these facts once at their proper scope. Do not infer strengths from names or copy demo materials over an imported model. |
 | Preset-only future settings | Section-size options and rates are not inputs to the baseline-design request. Automation limits exist in JSON but are not among the twenty Assumptions rows. | A field is not operational until its maintained consumer, validation and update behavior are implemented. |
-| Fire mismatch | The preset contains 60 minutes. The current baseline mapper admits only an explicit, evidenced `NotRequired` fire decision with no duration; required fire design is unsupported. | Preserve the actual requirement. Do not translate 60 minutes into “not required” to obtain a passing demo. A broader profile may show fire pending only after C0b/C0c qualification. |
+| Fire mismatch | The preset contains 60 minutes. The current baseline mapper admits only an explicit, evidenced `NotRequired` fire decision with no duration; required fire design is unsupported. | Preserve the 60-minute requirement, record the unavailable fire check, and continue supported provisional work and reports. C0b/C0c must separate that review progress from complete engineering qualification. |
 
 The source owners are [OfflineAssumptions](../../../CSharp/src/StructuralEngineering.ExcelDna/OfflineAssumptions.cs),
 [BaselineInputSheet](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineInputSheet.cs),
@@ -110,15 +181,19 @@ The planned resolver must provide these behaviors:
    may be scoped to material, story/group, physical span or member. Precedence
    for configurable choices is member, physical-span/group, story/material
    rule, project value, then an allowed demo seed. Conflicting equally specific
-   rules are unresolved, not settled by row order. Show the winning source.
+   rules remain visible; continue the preview with the last valid saved value
+   or deterministic preset fallback, not incidental row order. Show its source.
 3. **Protect source facts:** ETABS dimensions, assignments, axes, forces and
    existing material properties retain their original values/provenance.
    Design material choices are separate explicit mappings; source conflicts
-   require reconciliation. Proposed changes create candidate values, and any
+   remain in the review ledger while the provisional scenario continues.
+   Proposed changes create candidate values, and any
    analysis-affecting change requires a new analysis before final acceptance.
-4. **No silent invention:** missing source forces, supports, load dependencies,
-   strengths or result roles stay missing. A complete synthetic demo may supply
-   a separate named fixture basis; it cannot claim those facts for a real model.
+4. **Explicit provisional replacements:** missing source forces, supports, load
+   dependencies, strengths or result roles retain their missing source marker.
+   Automatically supply an assumed value or named example-scenario basis for
+   the preview and record it in Assumptions. Its outputs retain that basis;
+   they cannot claim it was captured from the real model.
 5. **Resolve before calculation:** Assumptions supplies shared settings;
    Design Inputs may remain the detailed effective-value/override view. It must
    not be a second independent default store. Inherited fields update with the
@@ -127,12 +202,14 @@ The planned resolver must provide these behaviors:
    source and effective values, origin, preset/override revision, evidence,
    validation constraints, required-when predicate, consumer and dependent
    outputs. Missing, invalid, conflicting, unsupported and not applicable are
-   different states. Blank is not zero or false; no fallback on invalid edits.
+   different states. Blank is not zero or false. Invalid edits remain visible
+   while the last valid value or recorded demo fallback keeps review moving.
 7. **Freeze and invalidate:** each run consumes one immutable resolved basis.
    Edits make affected outputs historical and require recomputation before they
    can be current. Running work cancels or pauses at its safe boundary; settings
-   never change halfway through an ETABS call. Existing Accept Inputs and
-   Design actions remain until a qualified automatic rerun path is implemented.
+   never change halfway through an ETABS call. The planned demo resolver freezes
+   its provisional basis internally and refreshes affected previews without a
+   manual Accept Inputs step. That automatic runtime path still needs implementation.
 8. **Dependency-aware reuse:** a rate edit recomputes cost/ranking/reports;
    cover, grade or bar changes recheck affected engineering/detailing/quantities;
    model geometry, stiffness, loads, releases or analysis-settings changes
@@ -145,7 +222,12 @@ dependent bar-fit/effective-depth/check/quantity results. It must neither retain
 30 mm invisibly nor change the saved ETABS model. This is planned acceptance,
 not current behavior.
 
-### Ask for data only at the stage that needs it
+### Record readiness without pausing demo or review
+
+The table describes the evidence needed to qualify the named operation. During
+demo/review, automatically resolve unknown inputs and continue provisional work
+under the policy above. Missing qualification produces a visible result state,
+not a blocking question or a halt to the complete review run.
 
 | Requested operation | Additional readiness needed |
 |---|---|
@@ -168,8 +250,10 @@ API mutation service.
 
 ### Next implementation and acceptance
 
-Add the shared preset/effective-input resolver to C0a/C0b before claiming a
-repeatable, fully prefilled demo. Continue native-unit acquisition, effective
+Prioritize the shared preset/effective-input resolver and nonblocking review
+orchestrator in C0a/C0b, using the owner decision above as their acceptance.
+This includes automatic recording, provisional dispatch and update propagation.
+Continue native-unit acquisition, effective
 materials, physical supports and selected-load dependencies under C0a. C0b/C0c
 then qualify check completeness and broader engineering profiles; C1/D/E/F wire
 search, copied-model reanalysis, automation and integrated outputs to the same
@@ -186,8 +270,9 @@ The resolver's implementation packet must prove:
   only revision hashes or stale banners.
 - Rates trigger only their dependent outputs. Geometry/analysis changes require
   fresh actions; edits during work cannot attach a result from an old basis.
-- Missing SLS, unresolved supports, unknown strengths, dynamic/envelope demands
-  and required fire/seismic checks cannot be disguised by demo defaults.
+- Missing SLS, unresolved supports and unknown strengths use recorded provisional
+  inputs without questions. Dynamic/envelope demands and required fire/seismic
+  checks remain truthful about calculation support while the review continues.
 - At least two distinct model contexts exercise material/member-specific
   settings, units and source rebinding. This is functional evidence, not the
   independent-model corpus or final PF9 performance certification.
@@ -657,7 +742,7 @@ next named cumulative cohort. Do not mask a failure by loosening numerical
 tolerances, deleting required checks, dropping members, assuming supports,
 inventing loads or accepting a larger beam after an unexplained solver mismatch.
 Unknowns cannot become full-design passes; known engineering failures may
-enter the later qualified finite search while model/API uncertainty stops it.
+enter the later qualified finite search while model/API uncertainty stops the affected live operation; the demo/review continues with recorded available or example data.
 
 ## Owner refinement and implementation start — 2026-09-08
 
@@ -1121,15 +1206,16 @@ demo/source/override values distinct and include effective input origins in
 every run. Demo reports stay labelled demo even if example checks pass.
 
 Evaluate B0 using the same complete beam profile, detailing, quantity conventions
-and rates as the candidates. Resolve required missing inputs before search;
-baseline failures remain visible. Remediation differs from optimizing a feasible
-baseline.
+and rates as the candidates. During demo/review, automatically record assumed
+inputs and continue provisional search; baseline failures remain visible.
+Qualification of a final design still uses the declared evidence and checks.
+Remediation differs from optimizing a feasible baseline.
 
 Define eligible beams/groups, fixed dimensions/exclusions, section and bar
 catalogues, hard checks, permitted changes, cost/objective basis, candidate and
 ETABS-analysis counts, wall-time budget and stopping rule. Use existing owner
 authorization within this explicit scope, without asking again for each ordinary
-iteration. Do not invent source facts to keep a run moving.
+iteration. Assumed preview inputs keep their separate identity from source facts.
 
 Favor a practical limited catalogue, repeated beam groups, continuity-compatible
 bars, stock lengths and explicit construction constraints. Complete designs use
@@ -1227,7 +1313,9 @@ a strength/detailing pass; execute required ETABS design/global checks where the
 are part of the declared profile, plus the library's complete member checks.
 An engineering failure may justify another section/bar candidate. A known failed
 candidate can be rejected and search can continue from a verified parent; unknown
-model/API state or a solver/data mismatch must stop for diagnosis instead.
+model/API state or a solver/data mismatch prevents acceptance of that live
+candidate. Record the issue and continue the demo/review with available or
+explicit example data; do not abort the entire review loop.
 
 CSI's [concrete frame procedure](https://docs.csiamerica.com/help-files/etabs/Getting_Started/Concrete_Frame_Design_Procedure.htm)
 requires final-size analysis followed by design using those actions. Its
@@ -1280,9 +1368,11 @@ stale live data and reconcile model state; no automatic cross-session continuati
 is claimed. An uncertain setter,
 analysis or save is never blindly
 replayed: record the last confirmed stage and isolate the uncertain copy. A hung
-call, unresolved popup, changed model or missing required fact stops with a useful
-reason. Ordinary iterations require no human click once scope and inputs are
-settled; unattended behavior still needs actual application qualification.
+call, unresolved popup or changed model is recorded with a useful reason and
+cannot establish live success. Missing facts receive recorded provisional
+inputs; demo/review continues through available/example outputs and reports.
+Ordinary demo iterations require no human click to resolve those unknowns;
+unattended application behavior still needs implementation and qualification.
 
 ## 7. Compare savings on a common basis
 
