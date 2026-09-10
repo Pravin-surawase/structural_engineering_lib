@@ -9,17 +9,23 @@ public static partial class EtabsLiveGetterProbe
     /// <summary>Shared full-precision assignment export, exact source geometry and one real force getter per beam.</summary>
     public static EtabsBatchCapture RunBulk(IEtabsGetterHost host, EtabsBatchCaptureRequest request,
         CancellationToken cancellationToken = default, Action<int, int>? progress = null)
-        => RunBulkCore(host, request, false, cancellationToken, progress);
+        => RunBulkCore(host, request, false, 100_000, cancellationToken, progress);
+
+    /// <summary>Reads requested objects under the caller's admission budget; never accepts partial results.</summary>
+    public static EtabsBatchCapture RunScoped(IEtabsGetterHost host, EtabsBatchCaptureRequest request, int maximumRows,
+        CancellationToken cancellationToken = default, Action<int, int>? progress = null)
+        => RunBulkCore(host, request, false, maximumRows, cancellationToken, progress);
 
     public static EtabsBatchCapture RunGroup(IEtabsGetterHost host, EtabsBatchCaptureRequest request,
         CancellationToken cancellationToken = default, Action<int, int>? progress = null)
-        => RunBulkCore(host, request, true, cancellationToken, progress);
+        => RunBulkCore(host, request, true, 100_000, cancellationToken, progress);
 
-    private static EtabsBatchCapture RunBulkCore(IEtabsGetterHost host, EtabsBatchCaptureRequest request, bool group,
+    private static EtabsBatchCapture RunBulkCore(IEtabsGetterHost host, EtabsBatchCaptureRequest request, bool group, int maximumRows,
         CancellationToken cancellationToken, Action<int, int>? progress)
     {
         if (request.MemberObjectNames.Count is < 1 or > 1000 || request.MemberObjectNames.Distinct(StringComparer.Ordinal).Count() != request.MemberObjectNames.Count ||
             string.IsNullOrWhiteSpace(request.RequestSha256)) throw new ArgumentException("A bulk capture requires 1-1000 unique bound beam identities.");
+        if (maximumRows is < 1 or > 100_000) throw new ArgumentOutOfRangeException(nameof(maximumRows));
         var identity = host.InspectIdentity();
         var source = request.Context.Source;
         if (source.ProcessId != identity.ProcessId || source.ProcessStartedUtc != identity.ProcessStartedUtc || source.ExecutableSha256 != identity.ExecutableSha256 ||
@@ -38,6 +44,8 @@ public static partial class EtabsLiveGetterProbe
         };
         ValidateReadiness(preflight, seed, allowMetricDatabase: true);
         if (seed.SelectedCases.Count + seed.SelectedCombinations.Count == 0) throw new EtabsLiveGetterProbeException("ETABS.SELECTION_EMPTY: select required static output sources in ETABS.");
+        var minimumRowsPerMember = seed.SelectedCases.Count + seed.SelectedCombinations.Count;
+        RequireRemainingBudget(0, request.MemberObjectNames.Count);
         var frames = Read("FrameObj.GetAllFrames", ["Global"]);
         var points = Read("PointObj.GetAllPoints", ["Global"]);
         ValidateContext(request.Context, frames, points);
@@ -85,6 +93,7 @@ public static partial class EtabsLiveGetterProbe
         }
         foreach (var name in request.MemberObjectNames.Order(StringComparer.Ordinal))
         {
+            RequireRemainingBudget(totalRows, request.MemberObjectNames.Count - members.Count);
             if (!sourceBeams.TryGetValue(name, out var frame)) throw new EtabsLiveGetterProbeException("ETABS.SCOPE_UNSUPPORTED: requested object is not a captured beam.");
             var beam = tables["Beam Object Connectivity"].Required(name);
             if (beam.Optional("CurveType") is not null) throw new EtabsLiveGetterProbeException("ETABS.CURVED_MEMBER_UNSUPPORTED: curved members require a separately qualified basis.");
@@ -115,7 +124,8 @@ public static partial class EtabsLiveGetterProbe
                 !indices.Select(index => (string)resultCases[index]!).ToHashSet(StringComparer.Ordinal).SetEquals(seed.SelectedCases.Concat(seed.SelectedCombinations)))
                 throw new EtabsLiveGetterProbeException("ETABS.ROW_ACCOUNTING: incomplete or mismatched same-object result scope.");
             totalRows = checked(totalRows + count);
-            if (totalRows > 100_000) throw new EtabsLiveGetterProbeException("ETABS.SCOPE_LIMIT: complete results exceed 100,000 rows.");
+            // One complete object's arrays arrive before this check; this is not a CSI allocation bound.
+            if (totalRows > maximumRows) throw new EtabsLiveGetterProbeException($"ETABS.SCOPE_LIMIT: complete results exceed the caller's {maximumRows} row budget; no partial snapshot is accepted.");
             members.Add(new(name, beam.Required("BeamBay"), frame.SourceStoryId, [frame.SourcePoint1Id, frame.SourcePoint2Id],
                 indices.Select(index => (string)((object?[])forces.Outputs[3]!)[index]!).Distinct(StringComparer.Ordinal).ToArray(), section, materials[section], count));
             progress?.Invoke(members.Count, request.MemberObjectNames.Count);
@@ -135,6 +145,12 @@ public static partial class EtabsLiveGetterProbe
         return new(group ? EtabsGroupGetterMatrix.ProfileId : EtabsBulkGetterMatrix.ProfileId, request.RequestSha256,
             group ? EtabsGroupGetterMatrix.Sha256 : EtabsBulkGetterMatrix.Sha256, started, DateTimeOffset.UtcNow,
             identity, request.Context, preflight, postflight, members, calls);
+
+        void RequireRemainingBudget(int acquiredRows, int remainingMembers)
+        {
+            if ((long)acquiredRows + (long)remainingMembers * minimumRowsPerMember > maximumRows)
+                throw new EtabsLiveGetterProbeException($"ETABS.SCOPE_LIMIT: the minimum complete result scope exceeds the caller's {maximumRows} row budget; no further force calls will run.");
+        }
 
         EtabsRawGetterCall Read(string operation, object?[] inputs) => Call(adapter, seed, calls, operation, inputs, cancellationToken);
         EtabsRawGetterCall ReadTable(EtabsBulkTableSpec spec, EtabsRawGetterCall metadata) => spec.Editing

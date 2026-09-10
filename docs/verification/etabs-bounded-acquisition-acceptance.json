@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-BOUNDED-ACQUISITION",
+  "status": "authorized",
+  "base_commit": "307e33599e1f69ff34a7dfcfa9d9f311a425eb96",
+  "authority": "2026-09-10 owner asked why there is a row limit, whether all data is written to Excel, and explicitly requested continuing the next API efficiency work.",
+  "objective": "Separate lightweight model connection from detailed acquisition and make production force requests retrieve only requested members under caller admission budgets; document the actual external snapshot and worksheet data paths.",
+  "bounded_units": [
+    "A1: trace capture, transport, offline memory and explicit worksheet writes",
+    "A2: production per-object force acquisition with preflight and incremental caller row budgets",
+    "A3: versioned model-overview contract and worker using existing inspection/lease/journal owners",
+    "A4: lightweight Excel connection and explicit detailed-context handoff, with retained legacy routes",
+    "A5: focused and installed read-only evidence, documentation and one hosted delivery cycle"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "A01",
+      "outcome": "Explain that 100000 rows is the current capture/import admission envelope, not an Excel worksheet limit. Full snapshots remain external; import writes references and the explicit review command writes all rows for one selected member, without paging."
+    },
+    {
+      "id": "A02",
+      "outcome": "The production worker uses exact requested-object force calls, never the All-group route. Minimum required rows are checked before result reads, the caller row budget is enforced during capture, and failure publishes no partial accepted snapshot."
+    },
+    {
+      "id": "A03",
+      "outcome": "Retained group/bulk capture and snapshot profiles keep their schemas and default limits. The 100000-row/1000-member/encoded-byte admission envelope is not silently increased. One provider object call is explicitly not a hard memory bound."
+    },
+    {
+      "id": "A04",
+      "outcome": "A separate overview contract binds source, request, counts, available analysis/design state and external evidence. It performs no GetAllPoints/GetAllFrames, per-frame getter loop, table-data or force read and accepts native units as metadata without setting them."
+    },
+    {
+      "id": "A05",
+      "outcome": "The normal Excel Connect action uses overview; detailed context is an explicit action. Existing direct context APIs remain available with their original semantics. Workbook ownership, cancellation/quiescence, package identity and stale-source checks remain effective."
+    },
+    {
+      "id": "A06",
+      "outcome": "Focused tests prove selected-only force scope, incremental budgets/no partial acceptance, overview identity/counts/provenance and legacy compatibility. Installed read-only overview measures exact source preservation, calls and elapsed time; a qualified fixture proves scoped forces and an owned Excel workbook proves connection/sheet behavior."
+    },
+    {
+      "id": "A07",
+      "outcome": "All intended source/test/documentation/evidence writes freeze before routine verification. Required hosted checks and exact candidate integrity pass; no source-model mutation, analysis/design rerun, production add-in installation or release occurs."
+    }
+  ],
+  "owned_paths": [
+    "CSharp/src/StructuralEngineering.Contracts/EtabsOverviewContracts.cs",
+    "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs",
+    "CSharp/src/StructuralEngineering.Etabs/EtabsInspectionCapture.cs",
+    "CSharp/src/StructuralEngineering.Etabs/EtabsInspectionBroker.cs",
+    "CSharp/src/StructuralEngineering.Etabs/EtabsOverviewProjector.cs",
+    "CSharp/tools/StructAutomate.EtabsWorker/OverviewWorker.cs",
+    "CSharp/tools/StructAutomate.EtabsWorker/ForceWorker.cs",
+    "CSharp/tools/StructAutomate.EtabsWorker/Program.cs",
+    "CSharp/src/StructuralEngineering.ExcelDna/EtabsConnectionClient.cs",
+    "CSharp/src/StructuralEngineering.ExcelDna/EtabsOverviewClient.cs",
+    "CSharp/src/StructuralEngineering.ExcelDna/EtabsOverviewCommands.cs",
+    "CSharp/src/StructuralEngineering.ExcelDna/EtabsConnectionCommands.cs",
+    "CSharp/src/StructuralEngineering.ExcelDna/EtabsForceCommands.cs",
+    "CSharp/src/StructuralEngineering.ExcelDna/OfflineCommands.cs",
+    "CSharp/src/StructuralEngineering.ExcelDna/OfflineReviewWindow.cs",
+    "CSharp/src/StructuralEngineering.ExcelDna/StructAutomateRibbon.cs",
+    "CSharp/packaging/excel/New-Distribution.ps1",
+    "CSharp/packaging/excel/Invoke-EtabsOverviewAcceptance.ps1",
+    "CSharp/tests/StructAutomate.Tests/Wp10BulkCaptureTests.cs",
+    "CSharp/tests/StructAutomate.Tests/Wp10InspectionTests.cs",
+    "CSharp/tests/StructAutomate.Tests/Wp10OverviewTests.cs",
+    "CSharp/tests/StructAutomate.Tests/Wp10ForceWorkerTests.cs",
+    "docs/planning/xll-product/etabs-design-workflow.md",
+    "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+    "docs/planning/next-session-brief.md",
+    "docs/TASKS.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/etabs-bounded-acquisition-acceptance.json",
+    "docs/verification/etabs-bounded-acquisition-receipt.json",
+    "docs/verification/rework-recurrence-index.json"
+  ],
+  "non_goals": [
+    "Unlimited or paged multi-snapshot storage, increasing qualified capacity, or adding worksheet/viewer paging",
+    "Changing production engineering admission, user-model result selections/units, source files or analysis/design state",
+    "Lifecycle mutation service, production installation or package release",
+    "Deleting or updating other worktrees or unrelated user edits"
+  ],
+  "likely_pitfalls": [
+    "Describing post-call limits as vendor allocation bounds",
+    "Disguising an overview as accepted full geometry or beam design input",
+    "Losing exact request/source/workbook binding during the overview-to-details handoff",
+    "Equating request cancellation with stopped ETABS",
+    "Claiming all rows are in worksheets, or claiming existing selected-member review is paged",
+    "Inferring live qualification from a build or static method signature"
+  ],
+  "verification": {
+    "focused": [
+      "locked .NET restore/build",
+      "affected acquisition/overview/client/broker tests",
+      "documentation links",
+      "maintained session/recurrence parsers",
+      "candidate integrity",
+      "required hosted checks"
+    ],
+    "installed": "Read-only current-model overview and retained qualified fixture acquisition; isolated owned Excel workbook loaded from a candidate package without changing installed add-ins. Record source equality, no unrequested force calls, cleanup, worksheet counts and exact artifacts.",
+    "performance": "Per-operation development timings and call counts only; PF9 final certification remains deferred.",
+    "fixture_setup": "Use a separate copy of the retained analyzed WP11 fixture. Restore its recorded kN-m-C API units and three static output selections only in that owned test instance; do not save or rerun analysis. Record setup calls, source-file equality and owned-instance exit. Production readers and the large user model remain getter-only.",
+    "excel_setup": "Load the signed development XLL into a new owned Excel instance. Temporarily suppress only the exact installed StructAutomate startup entry, retain its preimage, and restore it in finally. No installed binary or candidate startup registration is written."
+  }
+}

@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-09-10 — Session: ETABS overview and bounded force acquisition
+
+**Task:** ETABS-BOUNDED-ACQUISITION
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/etabs-bounded-acquisition`
+**Acceptance:** docs/verification/etabs-bounded-acquisition-acceptance.json
+**Focus:** Explain row/storage limits and implement lightweight connection plus requested-member acquisition under caller budgets.
+
+### Completed
+
+- Started from fetched main `307e3359` in an isolated admitted worktree,
+  preserving the primary checkout's unrelated edit and all predecessor lanes.
+- Traced capture, transport, decoded memory, workbook references and explicit
+  writes. Import keeps full admitted snapshots outside worksheets; the viewer
+  and explicit selected-member report both include every captured member row.
+  The 100,000-row/1,000-member/64 MiB admission envelope remains unchanged.
+- Replaced production All-group force dispatch with exact requested-object
+  calls and preflight/incremental caller row budgets. Existing bulk/group
+  schemas, default envelopes and complete-row accounting remain available.
+  The qualified fixture returned one requested member's 51 rows through one
+  object force call; cancellation and exact offline reopening passed.
+- Added a separately versioned overview using the existing inspection broker,
+  journal, process lease and shared background client. The normal Ribbon
+  Connect action now loads counts/availability; detailed geometry is explicit
+  and binds back to the overview source. Legacy context APIs remain intact.
+- The large-model overview measured 2.060 s and 33 getter calls for 3,475
+  frames, 30,731 points, 28,221 areas, 25 stories, 16 finished cases and 45
+  combinations. Its source hash and protected state were preserved.
+- Owned Excel proved overview, detail loading and 51-row force import create
+  no sheets. Explicit member review created one 60-row by 13-column sheet.
+  Workbook routing/close fencing and normal Excel cleanup passed; exact
+  startup registration was restored and installed binaries were unchanged.
+- Qualification used a separate copy of the retained analyzed WP11 fixture.
+  Its recorded API units and three static output selections were restored
+  only in that instance; no save or analysis/design run occurred. The owned
+  instance exited normally, both fixture files were unchanged and the user's
+  large-model process remained open. Development package/evidence hashes are
+  in the receipt; frozen focused/candidate/hosted verdicts are external.
+
+### Issues encountered
+
+| Symptom and impact | Root cause and resolution | Evidence |
+|---|---|---|
+| Selected-member requests retrieved unrelated whole-model forces, with caller bounds applied late. | The production worker always dispatched the All-group profile. It now dispatches scoped bulk calls and applies minimum/incremental row budgets. | Budget/no-partial tests and live single-object/51-row evidence; RR-041, occurrences=1, minutes=unknown. |
+| The first copied-fixture read was rejected before forces. | Reopening the EDB restored default API units/output selections, not the retained test's runtime configuration. Prepared only the exact owned copy using the existing fixture's recorded setup. | Initial rejection, setup receipts, successful force read and unchanged source files; RR-002, occurrences=34, minutes=unknown. |
+| Overview rejected the fixture with no combinations. | ETABS returned a valid zero-count/null-array catalogue. The new projector assumed an array; it now handles null only for declared zero counts. | Null-array regression and the completed owned Excel fixture flow; RR-002, occurrences=34, minutes=unknown. |
+| Journal projection tests and a later live assertion rejected valid retained evidence. | New consumers assumed default JSON field shapes instead of canonical codec output. Compare journal bytes through the owning codec and use observed canonical artifact names. | Focused wire/evidence checks and the completed live scope/cancellation test; RR-042, occurrences=2, minutes=unknown. |
+| Four lookup/help commands failed. | Two filenames were guessed, a wildcard was passed literally to rg, and MTP help was placed behind a separator. Exact file discovery, directory filters and top-level help worked. | Corrected source reads and nonzero focused runs; RR-005, occurrences=155, minutes=unknown. |
+| One inline reflection shell process could not start. | OS access denied before execution; underlying Windows cause unconfirmed. A retained file-based exact-owned-copy harness ran successfully. | Failed launch retained; setup and cleanup receipts; RR-025, occurrences=3, minutes=unknown. |
+
+### Root causes and resolutions
+
+- RR-041: route acquisition by requested scope and caller admission; an
+  accepted-row limit cannot be described as a vendor allocation bound.
+- RR-002: verify fixture runtime configuration after reopening; preserve
+  valid zero-count/null-array API shapes without admitting incomplete data.
+- RR-042: use the evidence-producing codec/schema, rather than default JSON
+  assumptions. Failed assertions must not be confused with failed capture.
+- RR-005/RR-025: discover exact paths and runner options; use a bounded file
+  harness when an inline Windows launch fails, without changing permissions.
+- Development compilation also identified a missing namespace import, an
+  omitted test cancellation token and a nullable test-array declaration.
+  Those local additions were corrected; the locked build then passed with
+  zero warnings/errors. They are not separate recurring control failures.
+
+### Rework and recurrence
+
+- RR-041, occurrences=1, minutes=unknown: one confirmed production scope/budget defect.
+- RR-002, occurrences=34, minutes=unknown: two host-boundary events added to 32.
+- RR-042, occurrences=2, minutes=unknown: two canonical-wire consumer mistakes.
+- RR-005, occurrences=155, minutes=unknown: four command-shape events added to 151.
+- RR-025, occurrences=3, minutes=unknown: one denied inline launch added to two.
+
 ## 2026-09-10 — Session: ETABS API lifecycle and efficiency map
 
 **Task:** ETABS-API-LIFECYCLE-MAP

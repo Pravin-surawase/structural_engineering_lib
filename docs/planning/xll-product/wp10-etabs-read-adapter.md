@@ -7,6 +7,31 @@
 
 # WP10 — read-only ETABS snapshot adapter
 
+## Overview connection and scoped forces — 2026-09-10
+
+The normal Ribbon **Connect ETABS** action now uses the separately versioned
+`structural.etabs_model_overview/v1` artifact through `--overview-request`.
+`STR_XL_INSPECT_ETABS_PROCESS` exposes the explicit-PID overview route;
+`STR_XL_LOAD_ETABS_DETAILS` requests geometry for its exact source. Existing
+`STR_XL_CONNECT_ETABS[_PROCESS]` and `ConnectAsync` retain their full-context
+semantics. The common client still owns package verification, process cleanup,
+cancellation and cross-workbook fencing. Overview artifacts cannot satisfy a
+geometry or force request.
+
+The production force worker now attaches the existing bulk getter profile and
+calls `RunScoped` with the request's row budget. Exact requested-object force
+calls replace unconditional `All`-group acquisition. Minimum and incremental
+row checks reject incomplete scope before a portable snapshot is accepted;
+one provider call still returns its complete arrays. Existing group/bulk
+qualification routes and their hashes/schemas remain available.
+
+The [data-flow explanation](etabs-design-workflow.md#bounded-acquisition-and-excel-data-flow--2026-09-10)
+distinguishes the external snapshot, decoded memory, workbook reference and
+explicit member report. The 100,000-row/1,000-member/64 MiB admission envelope
+is unchanged; neither the review window nor the explicit report is paged.
+See the [bounded acquisition receipt](../../verification/etabs-bounded-acquisition-receipt.json)
+for installed ETABS, owned Excel, source-preservation and scoped-force evidence.
+
 ## API lifecycle and full discovery — 2026-09-10
 
 The [lifecycle and efficiency map](etabs-design-workflow.md#api-lifecycle-and-efficiency--2026-09-10)

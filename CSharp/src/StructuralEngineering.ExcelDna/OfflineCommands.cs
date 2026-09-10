@@ -21,6 +21,7 @@ public static partial class OfflineCommands
         public OfflineReviewWindow? Window { get; set; }
         public string LastOutcome { get; set; } = "{}";
         public EtabsConnectionSession? Context { get; set; }
+        public EtabsOverviewResult? Overview { get; set; }
         public string? ConnectionRequestId { get; set; }
         public CancellationTokenSource? ConnectionCancellation { get; set; }
         public string? ForceRequestId { get; set; }

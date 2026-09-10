@@ -1,5 +1,56 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## Bounded acquisition and Excel data flow — 2026-09-10
+
+`ETABS-BOUNDED-ACQUISITION` implements the first efficiency packet. See its
+[acceptance](../../verification/etabs-bounded-acquisition-acceptance.json) and
+[evidence receipt](../../verification/etabs-bounded-acquisition-receipt.json).
+The 100,000-row ceiling is our current capture/import admission envelope.
+It is neither a beam count nor an Excel worksheet limit. A force row belongs
+to one object/analysis element, station, output case or combination, and step.
+One beam can therefore have many rows.
+
+| Stage | Data retained | Worksheet behavior |
+|---|---|---|
+| Connect ETABS | Separate versioned overview: source identity, counts and analysis/design availability | No sheet created; no geometry or force read |
+| Load model details | Existing source geometry in memory and external evidence, bound back to the overview's exact source | No sheet created; legacy direct geometry commands remain available |
+| Get Forces / Open Snapshot | Complete admitted snapshot outside the workbook; decoded snapshot and indexes in .NET memory | Workbook stores a reference and state; import does not dump force rows into cells |
+| Review Snapshot | All captured rows for the selected member in the review window | No sheet created; the existing viewer is not paged |
+| Write member review | All captured action rows for one selected member | One Beam Review sheet, 13 columns and nine header rows plus that member's action rows |
+
+The production force worker now uses `FrameForce(objectName, ObjectElm)` for
+each exact requested beam. It no longer captures the `All` group and filters
+afterward. It applies the caller's row budget before result reads using the
+minimum complete selected-source scope, between object calls, and after each
+complete object response. Rejection accepts no partial snapshot. The existing
+group reader remains a comparison/qualification route with its original
+schema and default envelope. Shared assignment tables and source geometry
+still cover the connected model; this packet scopes **force calls**, not every
+definition getter.
+
+Limits remain 100,000 action rows, 1,000 requested members and the existing
+64 MiB encoded snapshot budget. They are qualified operating limits, not
+fundamental model capacities. ETABS returns a complete object's arrays before
+our post-call check, so this is **not a hard vendor-memory bound**. Large time
+histories, multiple portable batches, a workload pilot/planner and paged viewer
+or report rendering remain separate work. No rows are silently discarded.
+
+The new overview uses 33 registered getter calls, independent of frame count
+for the measured profile. It omits full geometry, table catalogue/data,
+per-frame and per-case selection loops, and forces. It preserves native units
+as metadata and checks protected state before acceptance. The large-model
+development check measured 2.060 s for 3,475 frames, 30,731 points and 28,221
+areas, with all 16 analysis cases finished and 45 combinations. Its saved
+file hash stayed unchanged. This is an overview measurement, not an
+API-versus-UI comparison, solver timing or PF9 certification.
+
+Native-unit geometry and broader load-case semantics are still the next C0a
+work. The detailed route requires kN-m-C API units and qualified database
+units; current force admission still rejects unqualified dynamic, automatic
+or envelope selections. The overview can describe such models without
+claiming they are accepted force or design inputs. This packet does not
+qualify all 153 retained beams, combined actions or arbitrary future models.
+
 ## API lifecycle and efficiency — 2026-09-10
 
 **Status:** checked API map and implementation sequence; lifecycle execution
@@ -36,7 +87,7 @@ means an installed qualification/setup script exists, not a product command.
 | Find and attach | OS process enumeration; `cHelper.GetObjectProcess(progID, processID)`; `GetVersion`, `GetModelFilename`, units and lock getters | Production exact-instance discovery. Bind PID, precise start time, executable/DLL identity and model. `GetObject` alone cannot express which of several instances the user intended. |
 | Start a separate ETABS instance | `cHelper.CreateObject(executablePath)` then `cOAPI.ApplicationStart()` | Harness. Reuse the existing owned-copy startup pattern; prove ownership and successful startup before opening a file. Do not launch a new instance on every getter. |
 | Open or create a model | `cFile.OpenFile(FileName)`; alternatively `InitializeNewModel(eUnits)` then `File.NewBlank()` | Harness. Open only the intended owned copy. Initialization/new-model operations replace model state; they are not attach prerequisites. Capture returned status, actual path and resulting state. |
-| Inspect size and availability | Object `Count`, `Story.GetStories_2`, case/run status, `DatabaseTables.GetAllTables`, concrete-design availability | Production inspection. Count first, then bounded catalog/sample. The existing Excel Connect route still performs a fuller context capture and must be adapted separately. |
+| Inspect size and availability | Object `Count`, `Story.GetStories_2`, case/run status, concrete-design availability; optional inspection catalogue | Production overview now backs the normal Excel Connect button. Detailed geometry is explicit; the broader inspection/sample route remains available. |
 | Read definitions and assignments | Frame/point/area, section/material, load pattern/case/combo getters; selected database tables | Production within existing profiles. Add source/topology facts through C0a, cache shared properties within an accepted capture and preserve explicit units/axes/stations. |
 | Change candidate definitions | `FrameObj.SetSection`, other explicit setters; `SetTableForEditingArray` and `ApplyEditedTables` | Metadata for future product mutation. D owns validated requests, batch errors, exact readback, source preservation and new result identity. Generic table editing is not a bypass around typed validation. |
 | Save the intended model | `cFile.Save(FileName)` | Harness. Use a new owned path and verify the resulting file. A newly created model needs a filename before analysis; preserve associated analysis files as a bound artifact set when required. |
@@ -67,7 +118,8 @@ Do not add a redundant `CreateAnalysisModel` before every `RunAnalysis`.
 
 ### Efficiency priorities and acceptance
 
-1. **C0a: separate connection from acquisition.** Attach and show counts,
+1. **C0a: separate connection from acquisition.** The first packet above now
+   implements a versioned overview and explicit detailed handoff. Show counts,
    result availability and supported capture choices first. Acquire detailed
    geometry when the user requests it. `EtabsContextCapture` currently reads
    frames and points three times and orientation/material assignments twice
@@ -76,7 +128,7 @@ Do not add a redundant `CreateAnalysisModel` before every `RunAnalysis`.
    removing freshness checks to make the old route faster. Acceptance: the
    lightweight route makes no `GetAllPoints`, per-frame loop or result read,
    and the existing detailed-context route retains its evidence.
-2. **C0a: bound extraction before the vendor allocates it.** The group route
+2. **C0a: bound requested result scope and accepted volume.** The retained group route
    calls `FrameForce("All", group)` before enforcing 100,000 rows. That ceiling
    limits accepted output, not ETABS/COM allocation. Use the inventory, a small
    pilot and exact pre-existing groups or object batches to choose a route;
@@ -119,8 +171,9 @@ flowchart LR
   H --> I[Save verified artifacts and exit owned instance]
 ```
 
-The next implementation packet is the lightweight connection/acquisition
-boundary and measured force-batch planner within **C0a**. C0b/C0c still own
+The lightweight connection and exact-object acquisition boundary is now
+implemented. Native-unit detailed context, selected-load semantics and a
+measured force-batch planner remain within **C0a**. C0b/C0c still own
 engineering support; lifecycle automation cannot make the 153 retained beams
 or future models supported by itself. D/E then qualifies owned open/save/run/
 design/exit. Keep focused correctness checks with those units and final PF9

@@ -36,6 +36,22 @@ public static partial class EtabsConnectionClient
     public static async Task<EtabsConnectionResult> ConnectAsync(string packageDirectory, string operationsRoot,
         EtabsProcessChoice choice, string requestId, CancellationToken cancellationToken)
     {
+        var result = await ReadAsync(packageDirectory, operationsRoot, choice, requestId, cancellationToken,
+            new ReaderProfile<EtabsContextArtifact>("--request", "context.json", EtabsContextWorkerCodec.CanonicalRequestJsonBytes,
+                EtabsContextWorkerCodec.RequestSha256, (bytes, id, sha) => EtabsContextWorkerCodec.ParseAndValidateResponse(bytes, id, sha),
+                (bytes, target, sha) => EtabsContextWorkerCodec.ParseAndValidateArtifact(bytes, target, sha),
+                artifact => artifact.ArtifactSha256, ValidateProvenance)).ConfigureAwait(false);
+        return new(result.Response, result.Artifact, result.OperationDirectory);
+    }
+
+    private sealed record ReaderProfile<T>(string Command, string FileName, Func<EtabsContextWorkerRequest, byte[]> RequestBytes,
+        Func<EtabsContextWorkerRequest, string> RequestSha, Func<byte[], string, string, EtabsContextWorkerResponse> ParseResponse,
+        Func<byte[], EtabsProcessTarget, string, T> ParseArtifact, Func<T, string> ArtifactSha, Action<T, string> ValidateEvidence);
+    private sealed record ReaderResult<T>(EtabsContextWorkerResponse Response, T? Artifact, string OperationDirectory);
+
+    private static async Task<ReaderResult<T>> ReadAsync<T>(string packageDirectory, string operationsRoot,
+        EtabsProcessChoice choice, string requestId, CancellationToken cancellationToken, ReaderProfile<T> profile) where T : class
+    {
         if (!ActiveProcesses.TryAdd(choice.ProcessId, 0)) throw new InvalidOperationException("This ETABS process still has a reader running or cleaning up. Wait for it to finish.");
         Process? worker = null;
         var releaseHere = true;
@@ -48,13 +64,13 @@ public static partial class EtabsConnectionClient
             Directory.CreateDirectory(directory);
             var requestPath = Path.Combine(directory, "request.json");
             var responsePath = Path.Combine(directory, "response.json");
-            var request = new EtabsContextWorkerRequest(requestId, target, DateTimeOffset.UtcNow.AddMinutes(2), Path.Combine(directory, "context.json"));
-            var requestSha = EtabsContextWorkerCodec.RequestSha256(request);
+            var request = new EtabsContextWorkerRequest(requestId, target, DateTimeOffset.UtcNow.AddMinutes(2), Path.Combine(directory, profile.FileName));
+            var requestSha = profile.RequestSha(request);
             await using (var file = new FileStream(requestPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
-                await file.WriteAsync(EtabsContextWorkerCodec.CanonicalRequestJsonBytes(request), cancellationToken).ConfigureAwait(false);
+                await file.WriteAsync(profile.RequestBytes(request), cancellationToken).ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
             var start = new ProcessStartInfo(executable) { UseShellExecute = false, CreateNoWindow = true, WorkingDirectory = packageDirectory };
-            start.ArgumentList.Add("--request"); start.ArgumentList.Add(requestPath);
+            start.ArgumentList.Add(profile.Command); start.ArgumentList.Add(requestPath);
             start.ArgumentList.Add("--response"); start.ArgumentList.Add(responsePath);
             worker = Process.Start(start) ?? throw new InvalidOperationException("The packaged ETABS reader did not start.");
             using var cancel = cancellationToken.Register(() => WriteCancellation(requestPath));
@@ -63,18 +79,18 @@ public static partial class EtabsConnectionClient
                 if (File.Exists(responsePath) || File.Exists(responsePath + ".terminal"))
                 {
                     var final = File.Exists(responsePath);
-                    var response = EtabsContextWorkerCodec.ParseAndValidateResponse(
+                    var response = profile.ParseResponse(
                         await ReadBoundedAsync(final ? responsePath : responsePath + ".terminal", 64 * 1024).ConfigureAwait(false), requestId, requestSha);
-                    EtabsContextArtifact? artifact = null;
+                    T? artifact = null;
                     if (response.State == EtabsContextWorkerState.Completed)
                     {
                         if (!final || !response.Quiesced || !response.CleanupCompleted ||
                             !string.Equals(Path.GetFullPath(response.ArtifactPath!), request.EvidencePath, StringComparison.OrdinalIgnoreCase))
                             throw new InvalidDataException("The ETABS reader returned an incomplete or unexpected artifact.");
-                        artifact = EtabsContextWorkerCodec.ParseAndValidateArtifact(
+                        artifact = profile.ParseArtifact(
                             await ReadBoundedAsync(request.EvidencePath, 16 * 1024 * 1024).ConfigureAwait(false), target, requestSha);
-                        if (artifact.ArtifactSha256 != response.ArtifactSha256) throw new InvalidDataException("The context and worker response digests differ.");
-                        ValidateProvenance(artifact, directory);
+                        if (profile.ArtifactSha(artifact) != response.ArtifactSha256) throw new InvalidDataException("The artifact and worker response digests differ.");
+                        profile.ValidateEvidence(artifact, directory);
                         await worker.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(10)).ConfigureAwait(false);
                         if (worker.ExitCode != 0) throw new InvalidDataException("The ETABS reader did not exit successfully.");
                     }

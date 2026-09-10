@@ -13,7 +13,7 @@ public sealed record EtabsInspectionHandle(Task<EtabsInspectionResult> Completio
 public static class EtabsInspectionBroker
 {
     public static EtabsInspectionHandle Start(EtabsBrokerRequest request, Func<IEtabsGetterHost> hostFactory,
-        bool includeSample, CancellationToken cancellationToken = default)
+        bool includeSample, CancellationToken cancellationToken = default, bool overviewOnly = false)
     {
         ArgumentNullException.ThrowIfNull(request); ArgumentNullException.ThrowIfNull(hostFactory);
         var path = Path.GetFullPath(request.EvidencePath);
@@ -64,7 +64,7 @@ public static class EtabsInspectionBroker
                 var before = host.InspectIdentity();
                 if (before.ProcessId != request.ProcessId) throw new InvalidOperationException("Attached process differs from the lease.");
                 using var journalHost = new EtabsOperationBroker.LedgerEtabsGetterHost(host, journal);
-                var capture = EtabsInspectionReader.Read(journalHost, request.DeadlineUtc, includeSample, stop.Token);
+                var capture = EtabsInspectionReader.Read(journalHost, request.DeadlineUtc, includeSample, stop.Token, overviewOnly);
                 if (host.InspectIdentity() != before) throw new InvalidOperationException("Source file or process identity changed during inspection.");
                 stop.Token.ThrowIfCancellationRequested();
                 artifact = new("structural.etabs_inspection/v1", EtabsInspectionGetterMatrix.Sha256, before, capture,
