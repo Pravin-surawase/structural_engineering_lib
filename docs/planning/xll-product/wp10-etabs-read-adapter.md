@@ -3,7 +3,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-08
+**Last Updated:** 2026-09-10
 
 # WP10 — read-only ETABS snapshot adapter
 
@@ -60,6 +60,12 @@ existing broker's exact-instance, lease, deadline, journal and cleanup controls.
 Define a versioned source-fact contract after resolving the necessary semantics.
 Do not bypass the broker, change original models or relax legacy normalization
 guards because a method exists. Whole-model reanalysis remains later work.
+
+The owner's [10 September model-coverage refinement](etabs-design-workflow.md#model-coverage-and-future-issues--2026-09-10)
+adds independent-model intake, a complete observable restriction inventory,
+selected-load completeness and explicit C0a/C0b/C0c exit gates. Bind this packet
+to its BC source/topology rows; support/material/station acquisition alone
+cannot close combined-action engineering or broad-model qualification.
 
 ## Retained WP10 scope
 

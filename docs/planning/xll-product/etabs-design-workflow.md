@@ -1,5 +1,205 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## Model coverage and future issues — 2026-09-10
+
+**Status:** active planning refinement, requested by the owner on 10 September.
+**Audience:** developers and engineers defining and qualifying the beam product.
+This section extends the core-first sequence below to independent building
+models and foreseeable operating conditions. It owns the next C0a-C0c scope
+definition and corpus qualification; the older acceptance documents retain
+their exact historical meaning. PF0-PF11 remains the programme authority.
+The planning task is bound by
+[BEAM-MODEL-COVERAGE-PLAN](../../verification/beam-model-coverage-plan-acceptance.json).
+
+The objective is dependable beam review and design across declared building
+profiles, followed by practical alternatives and controlled reanalysis. The
+153-beam building is one regression case, not the definition of the market or
+the only acceptance model. No finite corpus proves support for every future
+model. Publish the supported profiles and their evidence, plus precise reasons
+and next steps for cases outside them.
+
+### Evidence and scope boundaries
+
+The retained building has nonzero axial force in every beam and only one
+selected strength combination. The existing mapper rejects nonzero P/V3/M2/T,
+non-simple support profiles, nonrectangular sections, offsets and other
+unqualified domains. These are confirmed workflow restrictions, not evidence
+that every listed variation occurs in that building. The existing positive
+three-beam fixture establishes its narrow profile only. See the
+[mapper](../../../CSharp/src/StructuralEngineering.Beam/BaselineInputMapper.cs),
+[retained-reference test](../../../CSharp/tests/StructuralEngineering.Tests/BaselineRetainedReferenceTests.cs)
+and [baseline acceptance](../../verification/wp11-baseline-design-acceptance.json).
+
+In the matrix, **Observed** means a retained source/acceptance fact or an
+inspected restriction; **Prospective** is an anticipated model variation or
+failure to qualify, not a claim of a reproduced defect. Existing source,
+identity, broker and host controls are reused. The
+[automation requirements](automation/README.md) and
+[PF11 blueprint](library-definition/pf11/README.md) supply the broader operation,
+actual-bar, topology, assurance and delivery requirements.
+
+Mainstream planned admission includes ordinary cast-in-place RC building beams
+with declared materials and load basis, first rectangular and then eligible
+flanged sections; simple, continuous and cantilever spans are separate
+subprofiles. Axial, minor-axis and torsional actions require an applicable
+source-backed method and actual reinforcement, not a tolerance chosen to make
+a model pass. Which combinations of these features can be admitted together
+must be frozen in C0c before implementation. Planned admission is not support.
+
+Deep/transfer regimes outside ordinary-beam methods, prestressed, composite,
+curved, hollow and other special systems require distinct method packets.
+Seismic and fire requirements need their own complete applicability/check
+profiles. Record these cases now; keep unsupported checks explicit until
+qualified. Supporting columns, walls, slabs and foundations may provide beam
+context; this plan does not activate their design or whole-building approval.
+
+### Coverage matrix
+
+Each row is a mandatory planning and acceptance obligation. C0a records source
+facts; C0b defines independent core results; C0c qualifies engineering methods.
+The packet table below owns their exit gates and the later C1/D/E/F/G sequence.
+
+| ID | Model variation or issue | Evidence boundary | Owner | Required outcome before claiming support |
+|---|---|---|---|---|
+| BC-01 | Axial tension/compression with beam bending, including small nonzero actions | Observed: every retained beam has nonzero axial force; the mapper rejects it | C0b/C0c | Declare the interaction method, signs, material/section range and numerical-zero policy; independently verify combined-action capacities with actual bars. Preserve every original action. An unsupported interaction stays visible. |
+| BC-02 | Minor-axis shear/bending, biaxial response and combined torsion | Observed mapper restriction; individual method availability does not qualify the whole design route | C0b/C0c | Freeze admissible concurrent P/V2/V3/T/M2/M3 combinations, both physical faces and link/perimeter reinforcement. Qualify synthesis and rechecks together; do not mix independent envelope maxima or merely remove the mapper guard. |
+| BC-03 | Continuous, cantilever, internal/end and unequal spans; hogging and sagging | Observed simple-span restriction; occurrence in other buildings is prospective | C0a/C0c | Resolve physical support/span and connection meaning, then qualify each admitted restraint/continuity profile, anchorage and bar termination against independent examples. Support-object identity alone cannot establish fixity. |
+| BC-04 | Several analysis elements per physical beam, automatic mesh, secondary beams, wall/slab supports and transfer interfaces | Prospective design-mapping cases; broad capture already retains analysis-element data | C0a/C0c | Account for every source object/element once, preserve load paths and source IDs, identify physical support faces and span groups, and expose unresolved topology. No nearest-coordinate guess or column/wall/slab design claim. |
+| BC-05 | End/insertion offsets, rigid zones, releases, reversed I/J, rotated axes, sloping beams and support movement | Observed zero-offset/vertical-axis restrictions; other cases prospective | C0a/C0c | Define assignment transforms and station/face signs without changing captured forces. Qualify combined effects per subprofile; unsupported slopes, releases or imposed movements are explicit. Do not replace them with ideal simple supports. |
+| BC-06 | Rectangular/T/L sections, depth/material limits, nonprismatic members and special beam systems | Observed rectangular/direct-assignment/depth restrictions | C0a/C0c | Publish section and material envelopes, flange effectiveness basis, region transitions and special-system exclusions. Cross-check capture, mapper, capacity and layout admission so one layer cannot advertise support rejected by another. |
+| BC-07 | Effective material overrides, section changes, separate longitudinal/link grades, cover and project catalogues | Observed source-qualification need; mixed-property models prospective | C0a/C0b/C0c | Retain base and effective IDs, explicit strengths/units and accepted project provenance. Missing or contradictory values identify affected members; section-name parsing and demonstration defaults cannot supply strength. |
+| BC-08 | Multiple ULS/SLS roles, gravity/lateral patterns, sustained loads, self-weight and selected combination dependencies | Observed retained snapshot has one strength combination and lacks SLS roles | C0a/C0b | Freeze the required load/case/combination graph for the selected profile. Prove required loading and selected-case completeness separately from returned-row completeness; unrelated unfinished cases do not block a qualified selected scope. Never invent SLS rows. |
+| BC-09 | Linear combinations, response-spectrum/envelope output, time-history steps, nonlinear/P-delta and construction-stage states | Observed static-concurrent admission limit; broader result types prospective | C0a/C0c | Preserve result-basis and step/epoch semantics; define a qualified demand route for each admitted type. A component envelope is not a simultaneous force vector. Missing compatible provenance or method blocks that profile without relabelling results as static. |
+| BC-10 | Support faces, point loads, section/rebar transitions and governing sections between reported stations | Prospective coverage risk; station metadata is not proof of demand completeness | C0a/C0c | State required design stations and the evidence that captures governing demand, including discontinuities and local extrema where relevant. Qualify sampling/interpolation assumptions or request more results; never infer completeness from row count alone. |
+| BC-11 | Multilayer/congested bars, different top/bottom reinforcement, link zones, laps, curtailment, hooks and stock limits | Observed baseline arrangement envelope is narrow; richer layouts prospective | C0c/C1/F | Generate actual bar/link geometry and recheck effective depth, fit, strength and required detailing after each dependent change. Preserve no-feasible versus incomplete search. Quantities and later BBS use the same final arrangement/path identity. |
+| BC-12 | Crack/deflection checks, long-term effects and missing service assumptions | Observed SLS dependency in the complete baseline workflow | C0b/C0c | Permit a separately labelled core result when its own inputs/checks are complete. Retain pending service checks and explicit method/input reasons; screening is not calculated displacement and core completion is not full design. |
+| BC-13 | Ductile seismic beams, system/joint requirements, capacity shear and confinement | Prospective expanded-profile requirement; ordinary-beam acceptance does not cover it | C0a/C0c/D | Identify system, code and joint context; qualify the complete applicable strength/detailing chain before admission. Geometry-only seismic checks or ETABS analysis success cannot qualify seismic or global structural performance. |
+| BC-14 | Exposure/durability, required fire resistance, lateral restraint and otherwise unavailable project criteria | Observed baseline requires explicit criteria and rejects required fire design | C0b/C0c | Separate unspecified, required, not-applicable and evaluated states with evidence. Qualify the method or retain the required-check hold; no general opt-out flag or silent use of the fixture's no-fire decision. |
+| BC-15 | Local solver applicability versus real-building response | Observed planar solver scope; equivalence for another model is prospective | C0a/C0c/D | Use an explicitly qualified ETABS-only analysis route when local comparison is inapplicable. Compare only equivalent loads/restraints/stiffness/units/stations; investigate unexpected disagreement. Reanalyse structural-response changes in ETABS rather than reconstructing a building from output forces. |
+| BC-16 | Wrong model/instance, stale results, changed selection/units/input, partial capture and reused snapshots | Existing WP10 identity/freshness controls; broader caller combinations prospective | C0a/C0b/E | Bind exact instance/model/result epoch and selected scope; validate pre/post state and complete accounting. Invalidate changed inputs/results, preserve legacy snapshot meaning, and keep offline historical validity distinct from current live-model validity. |
+| BC-17 | Excel workbook switching, cancellation, offline reopen, stale exports and portability to another reviewer | Existing A/B host controls; expanded results and delivery prospective | C0b/F | Keep the initiating workbook, accepted-input/result identity and every selected member outcome. Reopen source-bound evidence without live ETABS; show missing external artifacts precisely. Reports/quantities reconcile to one current scope and cannot upgrade core-only results to issued full design. |
+| BC-18 | ETABS/API, .NET/Excel bitness, units, code-data and snapshot/package version changes | Existing exact installed tuple; other tuples prospective | C0a/F/G | Declare a tested compatibility matrix, deterministic migration/unit conversions and old-profile replay. Unsupported runtime/schema/code-data combinations stop before calculation or host effects. Static API discovery does not qualify a new installed version. |
+| BC-19 | Larger/mixed models, many cases/stations, slow getters and memory/cancellation limits | Observed 153/3,502 and 1,000/100,000 capture workloads; larger combined design workloads prospective | C0a/C1/E/G | Bound selected-scope work and retained data; report exact included/excluded/failed counts, cancellation and incomplete search without silent truncation. Reuse accepted capacity evidence; qualify new design workloads separately. PF9 speed/memory certification stays at project end. |
+| BC-20 | Infeasible alternatives, section-group effects, copied-model readback/reanalysis failures and interrupted overnight runs | Prospective later integrated workflow; retained transaction controls are prerequisites | C1/D/E/F | Keep fixed-force section alternatives provisional, preserve baseline/best artifacts, verify owned-copy state and re-evaluate required affected members. Record budgets and failure stages; uncertain model state stops reuse/retry. Final saved model, forces, design and comparison artifacts must agree. |
+
+### Bounded implementation and exit gates
+
+This is a plan update, not a new implementation or installed-application run.
+Before each packet starts, freeze its exact supported subprofiles, source and
+caller owners, independent reference methods/tolerances, focused commands and
+evidence rows. Route every matrix row it claims to close to that acceptance
+file. Do not rewrite the accepted WP11 A/B profile to represent broader support;
+use versioned contracts and migration/replay evidence for changed semantics.
+
+| Packet | Concrete delivery | Exit gate |
+|---|---|---|
+| C0a — qualified source and topology | Extend the existing broker for required support/material/station facts; version source/topology contracts, selected-load dependency closure, unit/sign/offset mapping and source-accounting diagnostics. Produce the corpus manifest and a per-member restriction inventory. | Exact installed getter behavior, original-model preservation, cross-runtime snapshot replay where supported, and object/element/row reconciliation. Inventory all observable blockers per member without running unqualified calculations; unresolved facts remain separate from confirmed unsupported engineering. |
+| C0b — independent core-review contract | Define source status, profile eligibility, core evaluation completeness, engineering verdict, required-check status and full-design readiness as independent fields. Reuse native calculations, actual-bar identity and Excel input/result persistence. | Supported members with complete core inputs reach evaluated pass/fail without needing unrelated SLS evidence. Applicable axial/other actions and strength-critical bar/detail inputs are never waived. Missing SLS remains pending; the existing full-design route and its fixture replay retain their meaning. |
+| C0c — mainstream method qualification | Replace the generic mainstream label with named action/section/support/material subprofiles covering BC-01-BC-14. Select and qualify the needed combined-action methods, topology mapping, reinforcement synthesis and detailing; trace every old rejection to its new method or retained scope reason. | Independent calculations and real-model replay demonstrate the new profiles with concurrent forces and actual bars. All admitted feature combinations are covered, including meaningful overload/no-fit outcomes; simply deleting guards or raising zero tolerances is rejected. A retained unsupported class cannot count as completed implementation of that class. |
+| C1 — practical alternatives | Compose qualified per-span/group checks with deterministic finite catalogue search and complete candidate identities. | Every ranked result states fixed-action assumptions, required-check completeness and search coverage. Core-only options are explicitly provisional and cannot become final design/BBS by ranking or cost savings. |
+| D — copied-model verification | Freeze mutation scope, then apply/read back/reanalyse/reacquire/redesign an owned copy with required affected-member/global checks and baseline comparison. | Original unchanged; selected dimensions, saved model, fresh forces and result identities agree. Local solver comparison remains conditional. No automatic source-model mutation is introduced by this planning approval. |
+| E — bounded operation | Manual and unattended stages share services, scope/budgets, journals, leases, progress/cancel and recovery states. | Actual host failure/interrupt scenarios retain baseline/best evidence, never replay an uncertain setter and account for every attempted candidate/member. |
+| F — portable delivery | Bind workbook, source/request/result bundle, current quantities/report and supported package/runtime manifests. | Another qualified clean host can reopen and reproduce the declared result with hashes, units, limitations and missing-artifact behavior intact; report claims match check completeness. |
+| G — cross-model qualification | Execute the frozen independent corpus, held-out models, scope/compatibility checks and final performance campaign. | Publish per-model and per-stratum support/results, unresolved limitations and exact evidence. Apply the unchanged project-end WP10-PERF-FINAL gates; no universal-support or professional-approval inference. |
+
+Complete C0a-C0c evidence for the first admitted cohort before using it to
+qualify C1. Later methods may be delivered as separately bounded extensions,
+but cannot be claimed by an earlier profile. Keep focused checks with each
+internal unit and one union at the C0c model-coverage milestone. That milestone
+owns the next cumulative Python/full-repository correctness gate; later changed
+runtime/application milestones retain their required installed and hosted
+gates. Do not rerun completed capture implementation or deferred timing trials.
+
+### Independent model corpus and measurable coverage
+
+Freeze a manifest before tuning or qualification: at least five independently
+authored building models from at least three sources/authors, including at
+least two locked holdouts. Only one retained independent building is presently
+evidenced. Additional models must be obtained and admitted; synthetic or edited
+variants and the three-beam fixture supplement method checks but do not increase
+the independent-model count. Missing corpus members leave broad qualification
+pending; the manifest must not invent models, provenance or expected results.
+
+Select by structural behavior rather than convenient file size. The manifest
+must cover admitted combinations of simple/continuous/cantilever spans,
+rectangular/eligible flanged sections, frame directions and meshing, material
+overrides, offsets/releases, gravity/lateral load bases, torsion/axial/minor-axis
+demands, reinforcement congestion and differing model sizes. A profile absent
+from independent evidence remains unqualified even if aggregate targets pass.
+Special/dynamic/seismic systems remain separate cohorts until their method
+profiles are admitted. Add isolated source-backed benchmark cases for critical
+feature intersections that the independent corpus does not exercise.
+
+For each model record a safe ID, source/author and permission reference, file
+and snapshot hashes, engine/runtime/code-data versions, declared profile,
+counts, required load/case/step graph, source of project inputs, observed feature
+strata, expected engineering reference and whether it is a development model
+or holdout. Proprietary bytes remain external. Freeze membership and inclusion
+rules before results; the retained 153-beam building stays unchanged in the
+regression cohort. Capture genuinely required additional source/SLS facts under
+their own new snapshot identity, without patching its historical force data.
+
+Report these denominators and counts per model and per claimed feature stratum:
+
+1. All requested beam objects, mapped physical members, analysis elements and
+   returned/expected rows, with every exclusion, duplicate and missing item.
+   Required object/row accounting is 100%; it measures completeness of records,
+   not engineering support.
+2. The **frozen target cohort** for the admitted profile, defined independently
+   of mapper success. Split it into mapped, unsupported, missing-input, stale,
+   evaluation-error and complete-core results. Do not shrink the denominator
+   after seeing failures; inability to map a target beam remains in it.
+3. The subset with independently verified complete core inputs, plus the count
+   excluded for each missing input. Compute mapping rate over the full frozen
+   target cohort and complete-core rate over this input-complete subset. If
+   the subset is empty, the result is not assessable, never 100% or a pass.
+   Missing-input counts and their fraction of the full cohort stay visible.
+4. Within complete-core results, report engineering pass and engineering fail
+   separately. A completed overload/capacity failure demonstrates an evaluated
+   case; Unsupported, Needs Input, stale/error and unfinished search do not.
+   Report full-design readiness separately, including every pending required
+   serviceability/detailing/seismic/fire check.
+
+The earlier 95% mapping and 90% complete-core numbers remain **proposed broad
+readiness targets**, not authority to skip an accepted obligation. Freeze
+thresholds, denominators, tolerances and any declared exclusions in G's
+acceptance contract before the run. They apply per model and per claimed
+stratum, never only to pooled totals. A promised supported subprofile must
+evaluate 100% of its input-complete accepted regression cases without an
+unsupported/error escape. A claim that all 153 are supported requires 153/153
+to meet the declared evaluation contract after real required inputs exist;
+recording 153 Unsupported rows is not support. No structural pass is promised.
+
+Keep holdouts out of tuning. An unexpected holdout failure is a coverage issue:
+record it, revise the affected method/contract and its focused evidence, and
+obtain a fresh independent holdout for the affected generalization claim before
+acceptance. Retain the failed model as a regression; do not silently substitute
+an easier case. One model cannot validate a feature absent from its contents.
+
+### New-model intake and future-issue handling
+
+Every new model first receives the same source/profile diagnostic inventory,
+including later observable blockers hidden behind the current first rejection.
+Classify each finding as missing source/project input, unsupported method,
+implementation defect, numerical/analysis disagreement, valid engineering fail,
+or host/resource failure. An error message alone does not establish the cause.
+
+For a material new issue, retain a sanitized reproducible case (external when
+necessary), exact source/runtime/input IDs, expected and actual outcomes,
+affected BC row and subprofile, confirmed root cause or unconfirmed status,
+owner packet, proposed correction and acceptance evidence. Add a new BC row
+only for a distinct behavior; link recurrence to the repository's existing
+RR record rather than making parallel defect inventories. Model IDs and
+frozen counts remain visible while a case is unresolved.
+
+Resolve the cause at the source, mapper, method, orchestration or host owner.
+Qualify the affected combinations and callers, then include the case in the
+next named cumulative cohort. Do not mask a failure by loosening numerical
+tolerances, deleting required checks, dropping members, assuming supports,
+inventing loads or accepting a larger beam after an unexplained solver mismatch.
+Unknowns cannot become full-design passes; known engineering failures may
+enter the later qualified finite search while model/API uncertainty stops it.
+
 ## Owner refinement and implementation start — 2026-09-08
 
 A/B are complete within their original baseline scope (PRs
