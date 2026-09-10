@@ -126,6 +126,15 @@
 
 ## Active
 
+`BEAM-DATA-REQUIREMENTS` audits ETABS/user/derived inputs across the full
+[data lifecycle](planning/xll-product/etabs-design-workflow.md#data-requirements-and-editable-assumptions--2026-09-10).
+Assumptions edits currently invalidate baseline results; the actual values come
+from separate Design Inputs and duplicate catalogue seeds. Add a shared preset
+and effective-input resolver to C0a/C0b before claiming a fully reusable demo.
+Native units, material/support facts and selected-load dependencies remain C0a;
+broader engineering and later quantities/search/reanalysis retain their gates.
+This packet updates the plan and source audit only; implementation is pending.
+
 `ETABS-BOUNDED-ACQUISITION` implements lightweight Excel connection through a
 separate model-overview contract, explicit source-bound detailed loading,
 and requested-object force reads with caller row budgets. The

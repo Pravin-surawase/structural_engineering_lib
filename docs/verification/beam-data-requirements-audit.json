@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-DATA-REQUIREMENTS",
+  "source_commit": "e027750485d5e40c509df4a1119dd7705fd2d5e6",
+  "audit_date": "2026-09-10",
+  "method": "Static main-process call-chain, source contracts, existing test definitions and maintained programme plans; no new tests or live ETABS/Excel calls.",
+  "conclusion": "Editable assumptions exist, but the baseline numerical request is populated from Design Inputs. Assumptions revision checking is not numerical-value propagation. Common preset resolution and downstream integration remain implementation work.",
+  "observations": [
+    {
+      "id": "INPUT-01",
+      "status": "confirmed",
+      "finding": "Assumptions exposes twenty preset-derived explicit-value cells. Reuse reads existing sheets; save retains workbook values. Choice fields admit only their preset values."
+    },
+    {
+      "id": "INPUT-02",
+      "status": "confirmed_gap",
+      "finding": "AcceptDesignInputs serializes input.Inputs from ReadDesignInputs; ReadAssumptions contributes a separate accepted revision. A cover-only Assumptions edit invalidates the result without replacing Design Inputs nominal_cover_mm. Reacceptance does not bridge those values.",
+      "root_cause": "Independent workbook input owners without a common effective-value resolver.",
+      "resolution_status": "Planned C0a/C0b root-cause repair; no runtime change in this audit."
+    },
+    {
+      "id": "INPUT-03",
+      "status": "confirmed_gap",
+      "finding": "BaselineInputSheet.Create embeds catalogue seed literals distinct from demo-beam-preset.json; longitudinal choices and stock lengths differ.",
+      "root_cause": "Independent catalogue initialization path.",
+      "resolution_status": "Consolidate editable seed authority and scoped overrides in the same resolver packet."
+    },
+    {
+      "id": "INPUT-04",
+      "status": "confirmed_boundary",
+      "finding": "SnapshotMaterial has elastic properties and density, not design strengths. The baseline requires material-ID strength/modulus mappings, member support/context/fire/restraint evidence and ULS/total-SLS/sustained-SLS roles."
+    },
+    {
+      "id": "INPUT-05",
+      "status": "confirmed_boundary",
+      "finding": "The preset fire duration is 60 minutes; current baseline only supports an explicit NotRequired fire decision with null duration. Required fire design must not be silently removed."
+    },
+    {
+      "id": "INPUT-06",
+      "status": "confirmed_boundary",
+      "finding": "Section options, cost rates and JSON automation settings do not imply a baseline-design or integrated optimization consumer. Current serviceability uses span/depth screening and bounded crack calculations."
+    }
+  ],
+  "data_register": [
+    "DATA-01",
+    "DATA-02",
+    "DATA-03",
+    "DATA-04",
+    "DATA-05",
+    "DATA-06",
+    "DATA-07",
+    "DATA-08",
+    "DATA-09",
+    "DATA-10",
+    "DATA-11",
+    "DATA-12",
+    "DATA-13",
+    "DATA-14",
+    "DATA-15",
+    "DATA-16"
+  ],
+  "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md#data-requirements-and-editable-assumptions--2026-09-10",
+  "planned_behavior": [
+    "Persistent demo/project settings with explicit provenance",
+    "One shared preset/effective-input resolver and visible scoped overrides",
+    "Immutable imported facts, explicit design mappings and candidate changes",
+    "Stage-dependent missing-data readiness",
+    "Dependency-specific recomputation and frozen run identity",
+    "No hidden defaults or new engineering-support claims"
+  ],
+  "verification_boundary": {
+    "source_files_changed": false,
+    "preset_values_changed": false,
+    "new_tests_added": false,
+    "existing_tests_executed": false,
+    "live_application_calls": 0,
+    "installed_artifacts_changed": false,
+    "engineering_profiles_expanded": false,
+    "documentation_gate_results": "Recorded externally after content freeze; no hosted or merge outcome is asserted here."
+  },
+  "source_evidence": [
+    {
+      "path": "CSharp/src/StructuralEngineering.ExcelDna/OfflineAssumptions.cs",
+      "sha256": "3d22c2abf512ce22c62cebd4d6ce7e9546b65abde43fd275edf88c8bffaec219",
+      "locations": [
+        {
+          "symbol": "public static OfflineAssumptionInput Read",
+          "line": 22
+        },
+        {
+          "symbol": "private static IReadOnlyList<AssumptionDefinition> LoadDefinitions",
+          "line": 92
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.ExcelDna/OfflineWorkbookStore.cs",
+      "sha256": "cd33062b2dd98c6b08c988786a08cf51f21db495795423f326ec70df9ce4bc72",
+      "locations": [
+        {
+          "symbol": "public OfflineDocumentState CreateAssumptions",
+          "line": 31
+        },
+        {
+          "symbol": "public OfflineAssumptionInput ReadAssumptions",
+          "line": 52
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.ExcelDna/BaselineInputSheet.cs",
+      "sha256": "65385cc6b6dd41591dbd02b3634426c70db0b5aad3c96b828b13675a043e103c",
+      "locations": [
+        {
+          "symbol": "public static object[,] Create",
+          "line": 14
+        },
+        {
+          "symbol": "public static BaselineInputReadResult Read",
+          "line": 80
+        },
+        {
+          "symbol": "private static void AddMemberRows",
+          "line": 132
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.ExcelDna/BaselineWorkbookStore.cs",
+      "sha256": "c39224792470662307bcb8ba9d998a122e3d60928af936ab2019d17113081bd6",
+      "locations": [
+        {
+          "symbol": "public OfflineDocumentState CreateDesignInputs",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignCommands.cs",
+      "sha256": "6df3410ae330c921230c57a0d21fa7326ce27fac302efe2a9474babea4fa3ca2",
+      "locations": [
+        {
+          "symbol": "public static string AcceptDesignInputs",
+          "line": 58
+        },
+        {
+          "symbol": "private static BaselineReplayRequest RequireAcceptedDesign",
+          "line": 253
+        },
+        {
+          "symbol": "private static void OnSheetChange",
+          "line": 282
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignWork.cs",
+      "sha256": "1821d482146abfb9ccd9f9a026288e5b8233387c2edabce7bd3d4bf62d45ab64",
+      "locations": [
+        {
+          "symbol": "public static BaselineDesignWork Start",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.ExcelDna/StructuralEngineering.ExcelDna.csproj",
+      "sha256": "e109706f7df7c3a5af8dca95dd90e45d1e04b4004799c4051d0878fae0a6765a",
+      "locations": [
+        {
+          "symbol": "StructAutomate.DemoPreset.json",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Contracts/BaselineDesignContracts.cs",
+      "sha256": "53538f0e393f6fa45aeea5275f4f72dac9cc9caef2a46adb260f4df5a47d6d1d",
+      "locations": [
+        {
+          "symbol": "public sealed record BaselineProjectInputs",
+          "line": 11
+        },
+        {
+          "symbol": "public sealed record BaselineMemberContext",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Contracts/AnalysisSnapshotContracts.cs",
+      "sha256": "6062f01a561d503c6d1d0869da85feb652c862c034751f6b7f2f6b7461baf9d6",
+      "locations": [
+        {
+          "symbol": "public sealed record SnapshotMaterial",
+          "line": 208
+        },
+        {
+          "symbol": "public sealed record SnapshotActionRow",
+          "line": 331
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Contracts/EtabsContextContracts.cs",
+      "sha256": "6694efbb11791841be8d6c2ed09ac848ddf87a7d654b0472bf1dddca3d454a8c",
+      "locations": [
+        {
+          "symbol": "public sealed record EtabsContextInventory",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Contracts/EtabsModelInterpretationContracts.cs",
+      "sha256": "15b37abfc6db22c593bc907c006e5a0aa9e60524557269a3a771eab66e160a6a",
+      "locations": [
+        {
+          "symbol": "public sealed record EtabsModelInterpretation",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Contracts/ServiceabilityContracts.cs",
+      "sha256": "70ef59804cf6c72b36c54cf25cbabe8d4a0808909a0030c33d5af2b0bcb587e3",
+      "locations": [
+        {
+          "symbol": "public sealed record DeflectionLimitRequest",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Contracts/Wp07Contracts.cs",
+      "sha256": "3c4104ec71b2f83ee90e0a544ef71675e7d7d03aca2aff6a532739b22efcd0b3",
+      "locations": [
+        {
+          "symbol": "public sealed record BbsRequest",
+          "line": 59
+        },
+        {
+          "symbol": "public sealed record ConstructionQuantityRequest",
+          "line": 179
+        },
+        {
+          "symbol": "public sealed record MeasuredRateProfile",
+          "line": 255
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Contracts/Wp08Contracts.cs",
+      "sha256": "14b98ed66c523e3f26e0e761e2175d8bf0c5a2db61b9faaeb27cef529f67f1a1",
+      "locations": [
+        {
+          "symbol": "public sealed record DiscreteCandidateDomain",
+          "line": 17
+        },
+        {
+          "symbol": "public sealed record ReanalysisPolicy",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Beam/BaselineInputMapper.cs",
+      "sha256": "36d88ce82e40481681033a44b96dd1232d47425fc0fed061d30fbb82ae9a28ad",
+      "locations": [
+        {
+          "symbol": "public static BaselineMappingResult Map",
+          "line": 7
+        },
+        {
+          "symbol": "FIRE.PROFILE_UNSUPPORTED",
+          "line": 32
+        },
+        {
+          "symbol": "ACTION.ROLE_COVERAGE",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Beam/BaselineServiceChecks.cs",
+      "sha256": "2b9b70d6174c9333f6a09d8075309e0aa8921e1190c8afe4ed81c9307d844cdf",
+      "locations": [
+        {
+          "symbol": "private static void EvaluateDeflection",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs",
+      "sha256": "78669f14e652390249183a34dec5a04347ac2faab13264f84f60ba433c155b09",
+      "locations": [
+        {
+          "symbol": "PropMaterial.GetMPIsotropic",
+          "line": 112
+        }
+      ]
+    },
+    {
+      "path": "CSharp/tests/StructAutomate.Tests/Wp10AssumptionTests.cs",
+      "sha256": "342e002970079f3331c548ba81845328e329c240cf5ace943f553cb19c7b87d1",
+      "locations": [
+        {
+          "symbol": "public void EditedInputChangesIdentityAndOriginButNeverBecomesImportedFact",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "CSharp/tests/StructAutomate.Tests/Wp11InputSheetTests.cs",
+      "sha256": "c3ffa4e200511be8d6139105d93f099b0301742d906b8a0faf9e6c8fd62c6cb5",
+      "locations": [
+        {
+          "symbol": "public void CompleteOwnedLikeRowsReadDeterministicallyAcrossOneBasedMatrices",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "docs/planning/xll-product/demo-beam-preset.json",
+      "sha256": "b1f48143be278d006b949efcbc69c81b0f1de2b10718f8b9e265bc2887eac43f",
+      "locations": [
+        {
+          "symbol": "\"design_basis\"",
+          "line": 8
+        },
+        {
+          "symbol": "\"automation_example_limits\"",
+          "line": 37
+        }
+      ]
+    }
+  ],
+  "official_context": [
+    {
+      "url": "https://docs.csiamerica.com/help-files/etabs/Menus/Assign/Frame/Frame_Auto_Mesh_Options.htm",
+      "supports": "Internal analysis meshing does not alter object definitions."
+    },
+    {
+      "url": "https://docs.csiamerica.com/help-files/etabs/Getting_Started/Concrete_Frame_Design_Procedure.htm",
+      "supports": "Final-size analysis and subsequent design; compare analysis and design sections."
+    },
+    {
+      "url": "https://docs.csiamerica.com/help-files/etabs/Menus/Analyze/Lock_Model.htm",
+      "supports": "Unlocking deletes analysis results; preserve the original when changing a copy."
+    }
+  ]
+}
