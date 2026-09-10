@@ -35,6 +35,10 @@
   Preserved source freshness, cancellation/quiescence, design-scope and PF9
   performance boundaries. Locked SDK 10.0.400 restore/build passed; final
   focused, candidate and hosted verdicts are bound externally after freeze.
+- The first pre-push closeout rejected an invalid recurrence-record field.
+  The bounded repair changes `details` to the required list and records the
+  cause. API source, inventory evidence and 26 passing focused tests remain
+  unchanged; the unpublished predecessor and repaired candidate are retained.
 
 ### Issues encountered
 
@@ -42,6 +46,7 @@
 |---|---|---|
 | Three source/script lookups failed. | A guessed adapter folder, a wildcard passed literally to `rg`, and a guessed session-usage script were invalid Windows paths. Discovered exact files and used literal paths, directory filters and the existing `session.py`. | Subsequent source reads, session-contract lookup and installed metadata scan completed. RR-005, occurrences=151, minutes=unknown. |
 | Initial full discovery labelled fourteen already registered getters as effect-unclassified. | Effect classification initially consulted only the selected catalogue. Full discovery now consults maintained getter profiles before adding unknown methods; runtime allowlists are unchanged. | Initial external inventory retained; corrected full inventory reconciles signatures/parameters and has no unclassified registered binding. RR-040, occurrences=1, minutes=unknown. |
+| Pre-push final closeout rejected the first candidate. | The new RR-040 `details` value was a string rather than the required non-empty string list. Corrected the record using the maintained parser's schema. | Narrow recurrence/session validation and the repaired candidate's pre-push closeout must pass before publication. RR-004, occurrences=16, minutes=unknown. |
 
 ### Root causes and resolutions
 
@@ -50,6 +55,8 @@
 - RR-040: use maintained behavior owners for effect classification; preserve
   unknown effects for the remaining interface surface. Do not infer effects
   from a method-name prefix or conflate signature matching with qualification.
+- RR-004: inspect the maintained recurrence-record schema when creating an
+  entry; validate its actual field types before candidate closeout.
 
 ### Rework and recurrence
 
@@ -58,6 +65,9 @@
 - RR-040, occurrences=1, minutes=unknown: one pre-freeze metadata classification
   correction. Exact initial and corrected inventories remain external; the
   safe receipt binds the corrected output. No hosted candidate existed yet.
+- RR-004, occurrences=16, minutes=unknown: one final-closeout rejection on
+  unpublished head `f7d85099ea35b6b7c029b8a457f937b69bdb3cbb`; one bounded
+  session-record repair, with no API implementation or evidence change.
 
 ## 2026-09-10 — Session: second-model inventory and coverage evidence
 

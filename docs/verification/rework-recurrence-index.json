@@ -57,14 +57,14 @@
     {
       "id": "RR-004",
       "pattern": "Session or handoff lifecycle contract missed",
-      "occurrences": 15,
+      "occurrences": 16,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. XLL-AUTOMATION-PRODUCT used free-form no-recurrence prose instead of the canonical empty marker or indexed rows; closeout identified the schema mismatch. Correction time was not isolated. WP10-05B-FORCES-PLAN called the lower-level file integrity CLI instead of the timed candidate gate and then selected an invalid rejection transition after acceptance. Inspect session.py and use check --candidate-integrity plus the admitted delivery transition. File checks passed; a documentation-only repair records the observations. Correction time was not isolated. WP10-COMPLETION preparation retained Progress but omitted the parser-required Completed/Summary section. Added exact completed-unit outcomes and regenerated handoff before freeze; untimed. The cumulative Python gate also retained an assertion for superseded manual-timer prose. It now asserts the current derived elapsed time and transition-based phases; affected tests passed, untimed. WP11 intake found a completed local VS Code setup had no publication candidate and left its INTAKE timer open. Exact-task supersession, with completed-task evidence and no elapsed/integration claim, admitted the new task. Untimed. BEAM-C0A-API-FOUNDATION session check rejected a general retry-counter bullet in the recurrence section because every parsed row requires one RR identifier. Keeping counters as prose outside the recurrence list resolves the contract; untimed."
+        "basis": "Log placement, completion marker, unmatched timer, wrapped-handoff, and two main-branch start-before-preflight incidents are confirmed. WP10-PLAN-DRIVEN-DELIVERY added one stale handoff projection. WP10-04-PREP used a Completed heading omitted by handoff; parsers now share outcome rules. WP09-UI-REVIEW placed a relative link in copied completion prose, breaking the generated brief; a plain document name and regeneration resolve it. XLL-AUTOMATION-PRODUCT used free-form no-recurrence prose instead of the canonical empty marker or indexed rows; closeout identified the schema mismatch. Correction time was not isolated. WP10-05B-FORCES-PLAN called the lower-level file integrity CLI instead of the timed candidate gate and then selected an invalid rejection transition after acceptance. Inspect session.py and use check --candidate-integrity plus the admitted delivery transition. File checks passed; a documentation-only repair records the observations. Correction time was not isolated. WP10-COMPLETION preparation retained Progress but omitted the parser-required Completed/Summary section. Added exact completed-unit outcomes and regenerated handoff before freeze; untimed. The cumulative Python gate also retained an assertion for superseded manual-timer prose. It now asserts the current derived elapsed time and transition-based phases; affected tests passed, untimed. WP11 intake found a completed local VS Code setup had no publication candidate and left its INTAKE timer open. Exact-task supersession, with completed-task evidence and no elapsed/integration claim, admitted the new task. Untimed. BEAM-C0A-API-FOUNDATION session check rejected a general retry-counter bullet in the recurrence section because every parsed row requires one RR identifier. Keeping counters as prose outside the recurrence list resolves the contract; untimed. ETABS-API-LIFECYCLE-MAP first pre-push closeout rejected the new recurrence entry because details was a string instead of a non-empty string list. The unpublished candidate entered one bounded record-schema repair; API code and tests were unchanged. Untimed."
       },
       "short_solution": "Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.",
-      "last_seen_task": "BEAM-C0A-API-FOUNDATION",
+      "last_seen_task": "ETABS-API-LIFECYCLE-MAP",
       "aggregate_parent": null,
       "details": [
         "docs/SESSION_LOG.md"
@@ -659,7 +659,10 @@
       "short_solution": "Classify known reads from maintained getter definitions and keep the remaining methods unclassified; metadata never expands invocation authority.",
       "last_seen_task": "ETABS-API-LIFECYCLE-MAP",
       "aggregate_parent": null,
-      "details": "docs/SESSION_LOG.md docs/verification/etabs-api-lifecycle-map-receipt.json"
+      "details": [
+        "docs/SESSION_LOG.md",
+        "docs/verification/etabs-api-lifecycle-map-receipt.json"
+      ]
     }
   ]
 }

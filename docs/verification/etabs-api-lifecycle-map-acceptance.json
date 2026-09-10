@@ -45,6 +45,13 @@
     "Using old web documentation instead of installed signatures",
     "Confusing request cancellation with solver termination or detached COM with application exit"
   ],
+  "closeout_repair": {
+    "rejected_head": "f7d85099ea35b6b7c029b8a457f937b69bdb3cbb",
+    "cause": "RR-040 details was a string rather than the required non-empty string list",
+    "scope": "Correct recurrence schema and coupled session/handoff evidence; preserve API implementation and installed metadata evidence",
+    "acceptance": "Maintained recurrence and newest-session parsers pass, repaired candidate integrity passes once, pre-push final closeout and hosted checks pass",
+    "candidate_ceiling": "One repair after the unpublished candidate closeout rejection"
+  },
   "verification": {
     "focused": ["EtabsApiDiscoveryTests", "Wp10GetterAdapterTests", "Wp10InspectionTests", "locked .NET build", "documentation links", "read-only candidate integrity", "required hosted checks"],
     "installed": "Static discovery only; independently reconcile exact interface/member/signature sets and unchanged assembly hashes."
