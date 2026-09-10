@@ -1,5 +1,200 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## Data requirements and editable assumptions — 2026-09-10
+
+The owner requires reusable demo inputs that remain visible and editable in
+Excel. Read ETABS facts automatically, retain project choices once, and ask
+only for unresolved information needed by the requested operation. This is the
+data contract for the existing C0a/C0b/C0c and later C1/D/E/F work; it does not
+qualify additional engineering profiles.
+
+**Audit conclusion:** the current Assumptions sheet exists, but it is not the
+complete calculation-input owner. Its revision invalidates baseline results;
+the baseline request obtains numerical inputs from a separate Design Inputs
+sheet. A common input resolver and consistent defaults are still required.
+This audit changes documentation only, against source commit `e0277504`.
+It does not change the installed add-in or any workbook/model.
+
+### What the current workbook actually uses
+
+| Surface | Current behavior | Consequence / required work |
+|---|---|---|
+| Assumptions, B6:B25 | Twenty values loaded from the embedded [demo preset](demo-beam-preset.json): design basis B6:B14, detailing/search preferences B15:B21, currency/rates B22:B25. Values are explicit cells; formulas in input cells are rejected. Existing sheets are read, not reset. | These are reusable workbook values, but presence on this sheet does not prove consumption by a design, cost or optimization operation. |
+| Assumptions edits | Change the normalized input hash/origin. Sheet-change handling cancels the attached baseline task and marks results historical; command-time checks also compare the accepted assumption revision. | Staleness is detected. There is no automatic transfer of changed cover, strengths or bar choices into the baseline request and no automatic recalculation. |
+| Design Inputs | Holds project identity/evidence, per-material strengths/modulus, per-member context, case roles and a catalogue. Accept Inputs freezes this request; Design consumes it. | Editing and accepting these values affects the next design. A cover change only in Assumptions can be reaccepted while the old Design Inputs cover remains the calculation value. |
+| Duplicate catalogue defaults | `BaselineInputSheet.Create` seeds longitudinal diameters `12,16,20`, links `8,10`, spacings `250,200,150,100`, counts `2,3,4,6`, layers `1,2`, stock `6000,12000`, and a 1,000-candidate limit directly in C#. The preset instead offers longitudinal diameters `12,16,20,25,32` and stock `12000`. | Both catalogues are visible after sheet creation, but they have separate seed authorities. Consolidate editable preferences in one versioned preset/resolver; do not scatter defaults in constructors or formulas. |
+| Restricted choices | Assumptions accepts only the preset value for code, seismic basis, exposure, uniform-section policy and currency. | The current sheet is not an unrestricted settings interface. Future dropdowns must list qualified choices and explain unsupported ones. |
+| Missing mappings | Material strengths, steel modulus, physical spans/supports, lateral restraint, fire decisions and ULS/total-SLS/sustained-SLS roles are required through Design Inputs. Snapshot material data contains elastic properties/density, not concrete/rebar design strengths. | Acquire or resolve these facts once at their proper scope. Do not infer strengths from names or copy demo materials over an imported model. |
+| Preset-only future settings | Section-size options and rates are not inputs to the baseline-design request. Automation limits exist in JSON but are not among the twenty Assumptions rows. | A field is not operational until its maintained consumer, validation and update behavior are implemented. |
+| Fire mismatch | The preset contains 60 minutes. The current baseline mapper admits only an explicit, evidenced `NotRequired` fire decision with no duration; required fire design is unsupported. | Preserve the actual requirement. Do not translate 60 minutes into “not required” to obtain a passing demo. A broader profile may show fire pending only after C0b/C0c qualification. |
+
+The source owners are [OfflineAssumptions](../../../CSharp/src/StructuralEngineering.ExcelDna/OfflineAssumptions.cs),
+[BaselineInputSheet](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineInputSheet.cs),
+[BaselineDesignCommands](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignCommands.cs),
+[BaselineWorkbookStore](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineWorkbookStore.cs)
+and [BaselineInputMapper](../../../CSharp/src/StructuralEngineering.Beam/BaselineInputMapper.cs).
+The [audit receipt](../../verification/beam-data-requirements-audit.json) binds
+source hashes and distinguishes observations from planned behavior.
+
+### Complete data register by downstream use
+
+E = acquired ETABS evidence; U = accepted user/project input or labelled demo
+preset; D = derived by a qualified library operation. “Required” is conditional
+on the selected operation/profile. Broad model context does not authorize
+column, wall, slab, foundation or whole-building design.
+
+| ID / data group | Information to retain | Owner and use | Current boundary / missing work |
+|---|---|---|---|
+| DATA-01 Identity and acquisition | Project/model ID, saved-file hash/path, runtime/API identity, units and conversions, model/analysis/result revisions, lock/case status, capture time, selected scope, table/getter schema, provenance, row accounting and diagnostics. | E; U selects the model and project. Needed for every operation and replay. | Overview/source identity and bounded snapshots exist. Native-unit detailed geometry and dependency-scoped readiness remain C0a. A file hash alone does not establish an unchanged in-memory model. |
+| DATA-02 Structural inventory | Story IDs/elevations, joint coordinates, frame IDs/labels/orientation, object-to-analysis-element mapping, sections/material assignments, columns/walls/slabs, openings, diaphragm/constraint and support/link connections. Retain beams, braces and modeling aids separately. | E; D validates roles and connectivity for 3D, load paths and impact assessment. | Detailed frame/point context and source adjacency exist. Surface/support topology and modeling-aid interpretation are incomplete; overview counts are not geometry. |
+| DATA-03 Physical beam geometry | Width/depth/shape and transitions, slab/flange thickness and effective-flange basis when applicable, I/J direction, local axes/physical faces, insertion/end offsets, rigid zones, releases/partial fixity, object and property modifiers, meshing, point restraints/springs, neighboring support dimensions, lateral restraint positions, support faces/centres, span/continuous-line/group IDs and anchorage space. | E + D; U supplies unresolved physical/construction evidence. Needed for design, detailing, quantities and alternatives. | Snapshot retains qualified section/axis/modifier/offset/release data; source adjacency does not resolve physical supports. Current baseline requires a narrow horizontal rectangular simply-supported profile with zero source offsets. |
+| DATA-04 Materials and existing reinforcement | Base/effective material IDs and property modifiers; concrete strength, longitudinal/link yield grades, steel/concrete elastic properties, density, applicable time-dependent properties; reinforcement assignments, section-specific design overwrites and actual issued bars if available. | E for model values; U supplies accepted design mapping and missing schedule evidence. D resolves effective values. | Snapshot provides E, Poisson ratio and density. Strength mappings remain supplemental; full effective-strength/overwrite and issued-rebar intake is not complete. ETABS required steel area is not an actual bar schedule. |
+| DATA-05 Applied loads and analysis basis | Load patterns/types/self-weight factors; point, distributed, temperature, imposed displacement and surface loads with directions/locations; load transfer basis; case types, nested combination factors/dependencies and status. For applicable profiles retain P-delta/nonlinear/staged settings, mass sources, diaphragm constraints, modal/spectrum/time-history functions, scaling, damping, directions and steps. | E; U declares required design scenarios. Needed to establish loading completeness, compare a local solver and reanalyse changed models. | Bounded cases/combinations are retained; a complete applied-load/dependency graph and broader dynamic routes remain C0a/C0c. Force rows cannot reconstruct missing applied loads. |
+| DATA-06 Demand coverage | P, V2, V3, T, M2, M3 together with member/element, object/element station, discontinuity side, case/combo, step and action basis. Preserve signed same-row demands separately from component envelopes. Retain required ULS, total SLS and sustained SLS roles, selected versus required coverage, load discontinuities and governing design stations. | E; U accepts scenario roles; D determines governing demands under qualified semantics. Needed for strength, crack and service checks. | Complete bounded frame rows exist for qualified selections. Baseline rejects nonzero P/V3/M2/T and non-static-concurrent actions. Required station/case completeness must be established, not inferred from a large row count or a combo name. |
+| DATA-07 Design requirements | Code/edition and qualified profile, seismic system/detailing requirements, exposure/environment, harmful cracking classification, nominal cover by relevant face, fire requirement/duration, aggregate size, serviceability method and project limits, design life where relevant, acceptance/evidence references. | U, with ETABS settings as comparison evidence. Needed before affected engineering checks. | Partial demo and member context inputs exist. Required checks remain kernel-owned; project settings cannot silently disable them. Fire/seismic/profile expansion remains separate qualification work. |
+| DATA-08 Serviceability extensions | Total and sustained service actions, actual bars and effective depths; for calculated deflection, compatible stiffness/boundaries, short/long-term components, creep/shrinkage basis, loading age/duration, finishes/partition installation stage, restraint and environmental inputs required by the chosen method, allowed total/after-finish displacement and crack limit basis. | E + U + D. Request only what the chosen serviceability method needs. | Current baseline performs span/depth screening and bounded service crack checks; it does not calculate beam displacement. Lower-level serviceability contracts are not proof of full Excel integration. ETABS displacement alone is not complete long-term RC serviceability evidence. |
+| DATA-09 Reinforcement and constructability | Available diameters/grades, counts and layers by face, link diameters/legs/spacings/zones, stock lengths, allowed hooks/bends/radii, anchorage, laps/couplers and splice exclusions, curtailment, side-face bars when required, support/joint space, cover/clear spacing, congestion and continuity constraints. Actual selected bars retain coordinates, centroids, start/end stations and paths. | U preferences; E/D geometry and demands; D produces and rechecks actual arrangements. Needed for complete design, BBS and quantities. | Bounded catalogue/arrangements and pure detailing operations exist. Wider continuous/seismic/special-section arrangements and their connected workflow remain C0c/F. |
+| DATA-10 Architectural and grouping constraints | Fixed/excluded members and dimensions, allowed width-depth pairs/increments, headroom, alignment, slab/column/wall interfaces, prohibited changes, span/line/repeated-beam grouping, common-size policy and exceptions. | U + D, bound to source IDs. Needed before alternatives, not merely after ranking. | The preset includes search preferences; persistent scoped constraints and group resolution need a common application owner. A group candidate must satisfy every member. |
+| DATA-11 BBS and quantities | Same-revision detailed bar paths/marks, shape convention, link-zone endpoint rules, laps/couplers, steel density, stock allocation, cutting kerf, reusable offcuts and waste basis. Net concrete segments and ownership of slab/support overlaps; measured formwork faces, exclusions/deductions and rounding/measurement policy. | U policies + E geometry + D schedules/quantities. | WP07 has typed operations/contracts. End-to-end baseline Excel quantities are not established by a baseline bar summary. Record unavailable values explicitly; avoid double-counting interfaces or waste. |
+| DATA-12 Cost and optional objectives | Currency, dated/geographic rate source and revision, concrete/steel/formwork rates, scheduled versus purchased steel basis, included labour/plant/couplers, waste/overhead/tax treatment and excluded components. Carbon factors or congestion metrics require their own source/unit/basis when selected. | U; D quantities/cost/objective metrics. Needed only for selected comparisons/objectives. | Three illustrative rates exist in Assumptions; full measured-rate and optional-objective wiring remains future work. Missing rates must not block force review or a strength calculation. |
+| DATA-13 ETABS design comparison | Active design code/preferences, per-member overwrites, selected design combinations, analysis versus design section, required reinforcement/check outputs, governing case/station, warnings, failures and result freshness. | E; D comparisons under compatible settings. | Overview reports available design state/code. Full design-result comparison is not captured by that overview and is not a prerequisite for the library's own supported force-based design. |
+| DATA-14 Global and affected-member response | Required reactions/equilibrium, story forces/drifts/displacements, modal periods/mass participation, torsional/stability indicators and relevant column/wall/slab/joint/foundation demands or qualified external checks. Bind case/dependency scope and baseline/candidate revisions. | E + qualified domain owner; U acceptance criteria. Needed before accepting a coupled whole-model change. | These are broader acquisition/acceptance requirements. Beam checks alone cannot establish acceptable building behavior. Missing domain capability prevents automatic global acceptance. |
+| DATA-15 Search and reanalysis control | Eligible scope, allowed change categories, objective/tie breakers, catalogue/domain revision, local/ETABS run/time budgets, stopping criteria, fixed-action versus coupled classification, original/best/candidate-copy identities, exact old/new assignments, readback, case execution, save outcome and recovery journal. | U run policy; E execution evidence; D deterministic search/history. | Pure candidate contracts and owned-copy harnesses exist. Production coupled/overnight orchestration remains C1/D/E. JSON automation examples are not an implemented Excel run policy. |
+| DATA-16 Reports, comparisons and persistence | Source/input/profile/engine/result IDs, effective value origins, all mandatory check states, governing demand/capacity, selected actual bars, quantities and rates, baseline/previous/final comparison scope, exclusions, search completion and prepared/checked/approved status. Persist external snapshot/request/results and workbook references. | D + U report choices and real review actions. Needed for traceable outputs and reopen. | Offline references and baseline summary/details exist. Integrated BBS/cost/model/report delivery remains future work; demo or input acceptance is not professional approval. |
+
+For member geometry, distinguish internal analysis meshing from physical
+objects: CSI documents that automatic meshing leaves object definitions
+unchanged. This supports retaining both identities rather than treating every
+analysis element as a separate construction beam. See
+[CSI frame meshing](https://docs.csiamerica.com/help-files/etabs/Menus/Assign/Frame/Frame_Auto_Mesh_Options.htm).
+
+### Minimum inputs for the current baseline request
+
+The existing [baseline contract](../../../CSharp/src/StructuralEngineering.Contracts/BaselineDesignContracts.cs)
+requires the following in addition to an admitted, current force snapshot:
+
+- Project ID/revision, origin and evidence reference, plus accepted calculation
+  inputs. Professional approval remains separately recorded.
+- Each source material's concrete strength, longitudinal and link yield
+  strengths, and steel modulus. Map by material ID, not by display-name parsing.
+- A catalogue revision, longitudinal/link diameters, link spacings, bar counts,
+  layers, stock lengths and candidate bound.
+- Each selected member's physical-span ID, support condition, support-face and
+  centre stations, effective span, anchorage limits, cover, aggregate, exposure,
+  cracking classification, ordinary-profile declaration, screening permission,
+  horizontal/physical-top mapping and evidence revision. Also an explicit fire
+  decision and ordered lateral-restraint positions with evidence.
+- An explicit ULS/total-SLS/sustained-SLS role for every consumed selection, with
+  complete required member stations. No derived “SLS = fraction of ULS” fallback.
+
+Supplying these fields does not overcome the mapper's geometry, material,
+action or fire restrictions. The retained 153-beam model and the second large
+building remain development evidence with the earlier recorded gaps; this task
+did not recapture either model. Current support and planned coverage stay distinct.
+
+### One effective input basis, with reusable demo values
+
+Use the existing preset as the single seed authority, extending its schema only
+in an implementation packet. Keep engineering equations, normalized code data,
+mandatory applicability limits and qualified numerical tolerances in the typed
+kernel. User preferences are configuration; they are not substitutes for code
+rules. Excel passes values to that kernel and displays results.
+
+The planned resolver must provide these behaviors:
+
+1. **Reuse:** initialize an identified demo/project once; save the selected
+   preset revision and editable values with the workbook/project. Reopen and
+   repeated commands preserve them. A deliberate reset previews/replaces only
+   its requested settings; a newer application preset cannot reset user edits.
+2. **Scope:** project defaults apply to inherited fields. Explicit overrides
+   may be scoped to material, story/group, physical span or member. Precedence
+   for configurable choices is member, physical-span/group, story/material
+   rule, project value, then an allowed demo seed. Conflicting equally specific
+   rules are unresolved, not settled by row order. Show the winning source.
+3. **Protect source facts:** ETABS dimensions, assignments, axes, forces and
+   existing material properties retain their original values/provenance.
+   Design material choices are separate explicit mappings; source conflicts
+   require reconciliation. Proposed changes create candidate values, and any
+   analysis-affecting change requires a new analysis before final acceptance.
+4. **No silent invention:** missing source forces, supports, load dependencies,
+   strengths or result roles stay missing. A complete synthetic demo may supply
+   a separate named fixture basis; it cannot claim those facts for a real model.
+5. **Resolve before calculation:** Assumptions supplies shared settings;
+   Design Inputs may remain the detailed effective-value/override view. It must
+   not be a second independent default store. Inherited fields update with the
+   project choice; explicit overrides remain visible and unchanged.
+6. **Explain every field:** retain stable key, type, unit, scope/source ID,
+   source and effective values, origin, preset/override revision, evidence,
+   validation constraints, required-when predicate, consumer and dependent
+   outputs. Missing, invalid, conflicting, unsupported and not applicable are
+   different states. Blank is not zero or false; no fallback on invalid edits.
+7. **Freeze and invalidate:** each run consumes one immutable resolved basis.
+   Edits make affected outputs historical and require recomputation before they
+   can be current. Running work cancels or pauses at its safe boundary; settings
+   never change halfway through an ETABS call. Existing Accept Inputs and
+   Design actions remain until a qualified automatic rerun path is implemented.
+8. **Dependency-aware reuse:** a rate edit recomputes cost/ranking/reports;
+   cover, grade or bar changes recheck affected engineering/detailing/quantities;
+   model geometry, stiffness, loads, releases or analysis-settings changes
+   invalidate actions and require reanalysis. Reinforcement changes also need
+   reanalysis when the model's stiffness/nonlinearity depends on reinforcement.
+
+For example, changing project cover from 30 to 40 mm should change inherited
+member cover to 40 mm, preserve a declared 45 mm member override, and invalidate
+dependent bar-fit/effective-depth/check/quantity results. It must neither retain
+30 mm invisibly nor change the saved ETABS model. This is planned acceptance,
+not current behavior.
+
+### Ask for data only at the stage that needs it
+
+| Requested operation | Additional readiness needed |
+|---|---|
+| Inspect/connect/review forces | Source/runtime identity, admitted scope, units and complete compatible captured data. No cost or fabrication inputs. |
+| Design a supported beam | Qualified geometry/material/action basis, required design settings and actual-bar catalogue. Missing fields identify the affected members; unsupported members should not trigger irrelevant forms. |
+| Complete service/detail checks | The chosen method's service roles, restraint/anchorage/fire/seismic and actual-bar evidence. Missing required checks remain pending or unsupported under the qualified profile. |
+| BBS and quantities | A current detailed member, measurement/interface and stock policies. |
+| Compare cost | Comparable current quantities, rates and included/excluded scope for both baseline and candidate. |
+| Generate alternatives | Accepted baseline basis, fixed constraints, allowed domain, objective and evaluation budget. |
+| Apply/reanalyse a candidate | Owned copy and allowed setters, dependencies, readback, complete new analysis results, affected-domain/global checks and save evidence. |
+| Run unattended / resume | Resolved settings, stop limits, exact model/run binding and qualified recovery behavior. Revalidate persisted state after restart. |
+| Issue outputs | Matching current model/actions/details/checks/quantities and the required real review status. Demo labels cannot become approval by editing a cell. |
+
+CSI's [design procedure](https://docs.csiamerica.com/help-files/etabs/Getting_Started/Concrete_Frame_Design_Procedure.htm)
+requires analysis with final section sizes and subsequent design using those
+forces. Its [locking guidance](https://docs.csiamerica.com/help-files/etabs/Menus/Analyze/Lock_Model.htm)
+explains result deletion on unlocking and preserving an original before changes.
+These support the source/candidate distinction; they do not qualify our installed
+API mutation service.
+
+### Next implementation and acceptance
+
+Add the shared preset/effective-input resolver to C0a/C0b before claiming a
+repeatable, fully prefilled demo. Continue native-unit acquisition, effective
+materials, physical supports and selected-load dependencies under C0a. C0b/C0c
+then qualify check completeness and broader engineering profiles; C1/D/E/F wire
+search, copied-model reanalysis, automation and integrated outputs to the same
+basis. Do not make every future field a prerequisite for initial force review.
+
+The resolver's implementation packet must prove:
+
+- One preset produces consistent sheet values and typed requests; every exposed
+  editable setting has a real consumer or an explicit future/unavailable label.
+- Saved demo values survive reopen, recapture and preset/application upgrades.
+  A different source model cannot inherit member-specific facts by ID collision.
+- Shared cover/grade/catalogue edits reach the request; member overrides and
+  unchanged ETABS facts remain explicit. Compare effective request values, not
+  only revision hashes or stale banners.
+- Rates trigger only their dependent outputs. Geometry/analysis changes require
+  fresh actions; edits during work cannot attach a result from an old basis.
+- Missing SLS, unresolved supports, unknown strengths, dynamic/envelope demands
+  and required fire/seismic checks cannot be disguised by demo defaults.
+- At least two distinct model contexts exercise material/member-specific
+  settings, units and source rebinding. This is functional evidence, not the
+  independent-model corpus or final PF9 performance certification.
+- The data-availability report accounts for every requested member and every
+  required input/check, with a source, effective value or precise unresolved
+  reason. The final Excel/model integration is tested on the exact package.
+
 ## Bounded acquisition and Excel data flow — 2026-09-10
 
 `ETABS-BOUNDED-ACQUISITION` implements the first efficiency packet. See its

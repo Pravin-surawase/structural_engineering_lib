@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-DATA-REQUIREMENTS",
+  "status": "authorized",
+  "base_commit": "e027750485d5e40c509df4a1119dd7705fd2d5e6",
+  "authority": "2026-09-10 owner requested a complete beam/model data audit, ETABS versus user ownership, and verification that editable Excel assumptions are used without repeated demo questions.",
+  "objective": "Trace current input consumers and document a complete, stage-dependent data contract and demo-default resolution plan without changing engineering or installed applications.",
+  "bounded_units": [
+    "Read current acquisition, workbook and engineering contracts",
+    "Trace assumptions/defaults through baseline request and freshness consumers",
+    "Update the existing workflow, task handoff and source-bound audit receipt",
+    "Freeze documentation, validate, independently audit and deliver one documentation PR"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "D01",
+      "outcome": "ETABS, user/preset and derived data are mapped to intake, topology, strength, serviceability, detailing, quantities, optimization, reanalysis and reports, including missing/unsupported states."
+    },
+    {
+      "id": "D02",
+      "outcome": "State actual Assumptions versus Design Inputs wiring, duplicate catalogue defaults, edit invalidation and current constraints with exact source evidence; do not claim unimplemented propagation."
+    },
+    {
+      "id": "D03",
+      "outcome": "Define persistent editable demo defaults, scoped overrides, immutable source facts, conflict handling and revision-driven reruns; retain code equations and qualified limits in the kernel."
+    },
+    {
+      "id": "D04",
+      "outcome": "Specify implementation priorities and measurable acceptance including two models, case roles, units, fire requirement and stale-result behavior; planned coverage is not implemented support."
+    },
+    {
+      "id": "D05",
+      "outcome": "No source code, preset values, installed workbook/add-in or ETABS model is changed; documentation/session checks and required hosted gates pass on the exact candidate."
+    }
+  ],
+  "owned_paths": [
+    "docs/planning/xll-product/etabs-design-workflow.md",
+    "docs/planning/next-session-brief.md",
+    "docs/TASKS.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/beam-data-requirements-acceptance.json",
+    "docs/verification/beam-data-requirements-audit.json",
+    "docs/verification/rework-recurrence-index.json"
+  ],
+  "non_goals": [
+    "Implement or install a defaults resolver",
+    "Change required fire, seismic, solver or engineering support limits to make a demo pass",
+    "Read or mutate live ETABS/Excel state",
+    "Run analysis/design, publish a release or delete existing worktrees"
+  ],
+  "likely_pitfalls": [
+    "Confusing stale-result detection with propagation of changed values",
+    "Calling a preset field implemented because it exists in JSON",
+    "Inventing model loads, strengths, supports or SLS combinations from demo defaults",
+    "Treating required numerical/code limits as editable preferences",
+    "Requesting every possible future field before a supported operation can begin"
+  ],
+  "verification": {
+    "focused": [
+      "Static call-chain and contract inspection, no new tests during review",
+      "bash ./run.sh format --write after freeze",
+      "bash ./run.sh check --category docs",
+      "bash ./run.sh efficiency check",
+      "maintained session/recurrence validation",
+      "candidate integrity once",
+      "required hosted checks"
+    ],
+    "runtime": "No live application or new engineering qualification claimed."
+  }
+}

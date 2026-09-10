@@ -5,6 +5,60 @@
 
 ---
 
+## 2026-09-10 — Session: Beam data requirements and editable-input audit
+
+**Task:** BEAM-DATA-REQUIREMENTS
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/beam-data-requirements`
+**Acceptance:** docs/verification/beam-data-requirements-acceptance.json
+**Focus:** Audit ETABS/user/derived data across the beam lifecycle and verify whether saved Excel assumptions drive actual calculation values.
+
+### Completed
+
+- Traced the merged acquisition, snapshot, workbook and baseline consumers at
+  `e0277504`, preserving the primary checkout's unrelated edit and predecessor
+  worktrees. No live ETABS/Excel call or installed-artifact change was made.
+- Confirmed twenty editable preset-derived Assumptions rows, independent
+  Design Inputs request values and duplicated C# catalogue seeds. Assumption
+  edits invalidate results but do not propagate numerical settings into that
+  request; the plan now requires a common effective-input resolver.
+- Extended the existing workflow with sixteen data groups covering source
+  identity, topology, materials, loads, design/service/detail requirements,
+  quantities, cost, optimization, global checks, reanalysis and reports.
+- Specified persistent demo values, scoped overrides, source conflicts,
+  stage-dependent readiness and dependency-aware recomputation. Required fire,
+  seismic, combined-action and source-data gaps cannot be bypassed by presets.
+- Bound twenty inspected source/preset/test files in the audit receipt.
+  Existing test definitions were inspected, not executed or extended. This is
+  a documentation audit, not installed acceptance or engineering expansion.
+
+### Verification
+
+- Static call-chain and contract evidence is in
+  `docs/verification/beam-data-requirements-audit.json`.
+- Post-freeze formatter, documentation/session checks, efficiency validation,
+  immutable candidate audit and required hosted verdicts are recorded externally.
+- No broad engineering suite is selected for this documentation-only packet.
+
+### Issues encountered
+
+| Symptom / impact | Root cause and resolution | Evidence |
+|---|---|---|
+| Changing shared assumptions does not change the baseline calculation values; catalogue defaults differ. | Two workbook input owners lack a shared effective-value resolver. The audit documents the exact path and an implementation packet; runtime repair remains pending. | INPUT-02/03 in the source-bound audit and the new workflow acceptance; RR-043, occurrences=1, minutes=unknown. |
+| One source lookup failed with Windows filename syntax error. | A wildcard was passed as a literal path to rg. Exact file discovery and directory-scoped reads resolved it. | Corrected BaselineInputSheet and BaselineDesignCommands reads; RR-005, occurrences=156, minutes=unknown. |
+
+### Root causes and resolutions
+
+- RR-043: a revision hash is not a numerical binding. The required repair is
+  one resolver feeding typed design inputs from persistent shared settings and
+  explicit overrides. This audit does not claim that repair is implemented.
+- RR-005: use discovered literal paths and rg glob filters in PowerShell.
+
+### Rework and recurrence
+
+- RR-043, occurrences=1, minutes=unknown: one main-process input-owner audit finding; implementation pending.
+- RR-005, occurrences=156, minutes=unknown: one command-shape event added to 155.
+
 ## 2026-09-10 — Session: ETABS overview and bounded force acquisition
 
 **Task:** ETABS-BOUNDED-ACQUISITION
