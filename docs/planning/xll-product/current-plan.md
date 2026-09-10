@@ -1,27 +1,30 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-08
+last_updated: 2026-09-10
 doc_type: guide
 complexity: advanced
 ---
 
 # StructAutomate — current plan
 
-**Active work (8 September):** WP11 milestone A's supported native baseline-design
-service is merged in [PR #982](https://github.com/Pravin-surawase/structural_engineering_lib/pull/982)
-at `cc61035d7d69d03877e37a453f0d503e2504d735`. Milestone B is implementing
-its installed Excel Design integration against that unchanged service. WP10
-functional acquisition completed
-in [PR #981](https://github.com/Pravin-surawase/structural_engineering_lib/pull/981),
-merged at `9f03bb7ca3c4e103ca3fbe7893a1990c7fcdd118`. Its exact worker/store,
-installed Excel and cumulative correctness evidence remains in that handoff.
-The [baseline acceptance contract](../../verification/wp11-baseline-design-acceptance.json)
-and [execution refinement](etabs-design-workflow.md#wp11-baseline-execution--2026-09-08)
-now own the implementation scope and its first specimen/serviceability replan.
-The owner requested completion of these two milestones in the current Windows
-task. This task is the sole writer of its isolated branch; other-device state
-and the existing main-checkout edit are preserved.
+**Active work (10 September):** the owner requested planning beyond the retained
+153-beam building, including other models and foreseeable issues. The
+[model-coverage plan](etabs-design-workflow.md#model-coverage-and-future-issues--2026-09-10)
+now defines twenty coverage obligations, C0a-C0c deliverables, later application
+gates, independent model/holdout rules and future-issue handling. It extends
+planning; broader engineering profiles remain unimplemented and unqualified.
+
+WP10 acquisition, WP11 native baseline A and installed Excel B are merged in
+PRs [#981](https://github.com/Pravin-surawase/structural_engineering_lib/pull/981),
+[#982](https://github.com/Pravin-surawase/structural_engineering_lib/pull/982) and
+[#983](https://github.com/Pravin-surawase/structural_engineering_lib/pull/983).
+Static C0a API discovery is merged in
+[PR #984](https://github.com/Pravin-surawase/structural_engineering_lib/pull/984)
+at `28551b5461e10ffb1bf19d3008950cf81c27602a`. Those exact accepted scopes and
+their receipts remain valid; discovery does not qualify live methods or new
+beam profiles. The next packet is broker-backed source/topology qualification
+and corpus intake, then independent core review and mainstream method work.
 
 The owner explicitly deferred PF9 timing and incremental-memory certification
 to **WP10-PERF-FINAL at the end of the project**. Existing 5 s / 30 s p95 and
@@ -30,15 +33,15 @@ experiments or imply a performance pass while closing this functional milestone.
 The actual 1,000-member / 100,000-row capacity and complete-source checks passed
 in WP10. Learning work is excluded.
 
-**Current WP11 sequence:** B maps explicit accepted Design Inputs and concurrent
-snapshot actions into the merged native service. It presents actual bars and
-required checks through compact workbook results while retaining immutable
-request/result evidence externally. Edited inputs or snapshots make prior
-results stale; a mixed selected batch accounts for every member, including
-precise Needs Input outcomes. Final signed installed acceptance, B's cumulative
-gate and its PR remain pending. Bounded multi-option search, physical-span/group
-constraints, copied-model reanalysis, overnight automation and reporting remain
-later scope.
+**Current core-design sequence:** C0a qualifies source/support/material/station
+facts and versions their interpretation; C0b defines core results independently
+of pending serviceability; C0c qualifies explicit combined-action, section,
+support and reinforcement subprofiles. It must resolve the actual mapper and
+method restrictions without zeroing forces, inventing inputs or reclassifying
+missing checks as not applicable. C1/D/E/F/G then cover practical alternatives,
+copied-model verification, bounded operation, portable delivery and independent
+qualification. Five independent models from three sources, including two
+locked holdouts, are the minimum planned corpus; only one is currently evidenced.
 
 [PF0's product and library charter](library-definition/pf0/README.md) through
 [PF11's implementation blueprint](library-definition/pf11/README.md) are
@@ -116,12 +119,11 @@ adapter, versioned workbook commands, a sample, signed packaging, and installed
 Excel evidence. Its workbook evaluates the one declared current physical
 candidate; it does not yet expose a useful multi-option search domain.
 
-Implementation sequencing follows the refined PF11 plan: WP09 and WP10
-functional delivery are complete, and WP11 milestone A is merged. Milestone B
-is the in-development installed Excel Design action using explicit input
-acceptance; its acceptance gates remain open. Practical span/group search,
-copied-model reanalysis, WP12 migration, reporting, recovery, final performance
-and release readiness remain later work.
+Implementation sequencing follows PF11 and the owner's current model-coverage
+refinement. WP09/WP10 and WP11 A/B are complete in their accepted scopes.
+Broader source interpretation, core review and method qualification precede
+practical span/group search, copied-model reanalysis, WP12 migration/reporting,
+recovery, final performance and release readiness.
 
 ## Learning and evidence status
 

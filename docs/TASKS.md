@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-02 — Six-phase beam/ETABS master plan active; Phase 1 continues with offline C2 parsing after A1/C1 acceptance in PR #952
+**Updated:** 2026-09-10 — XLL model-coverage planning expanded; the separate six-phase beam/ETABS programme retains its own phase gates
 
 ---
 
@@ -125,6 +125,15 @@
 ---
 
 ## Active
+
+`BEAM-MODEL-COVERAGE-PLAN` extends the current XLL product plan beyond the
+retained 153-beam building. The
+[coverage matrix and packet gates](planning/xll-product/etabs-design-workflow.md#model-coverage-and-future-issues--2026-09-10)
+own twenty model/issue classes, independent corpus/holdout acceptance and
+future-issue intake. WP10/WP11 A/B and static API discovery are merged through
+PR #984. Next implementation: C0a source/topology and model intake, C0b core
+review, then C0c named engineering subprofiles. Planning content is complete;
+its exact delivery state is external. Broader design support remains unqualified.
 
 `LIB-PRO-012-S0-P0-SAFETY-CLOSURE` and its required post-merge repair are
 accepted. Repair PR #878 reviewed candidate

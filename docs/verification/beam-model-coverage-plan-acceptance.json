@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-MODEL-COVERAGE-PLAN",
+  "status": "planning_authorized",
+  "authority": "2026-09-10 owner requested extending the plan beyond the retained 153 beams to other models and foreseeable issues.",
+  "base_commit": "28551b5461e10ffb1bf19d3008950cf81c27602a",
+  "objective": "Extend the maintained ETABS workflow with source-backed model coverage, bounded implementation packets, independent qualification and future-issue triage.",
+  "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md#model-coverage-and-future-issues--2026-09-10",
+  "bounded_units": [
+    {"id": "P1", "outcome": "Reconcile observed baseline restrictions with existing source, topology, engineering, application and delivery requirements."},
+    {"id": "P2", "outcome": "Define coverage cases, packet ownership, model-corpus rules, truthful completion states and recurrence admission in the existing plan."},
+    {"id": "P3", "outcome": "Align current entry points and session records, then verify and deliver one documentation candidate."}
+  ],
+  "acceptance_rows": [
+    {"id": "PLAN-01", "outcome": "Every BC-01 through BC-20 row declares model variation or issue, observed-versus-prospective evidence, responsible packet and measurable required outcome."},
+    {"id": "PLAN-02", "outcome": "C0a, C0b and C0c specify concrete source, result-state and action/topology/method deliverables, with compatible legacy behavior and no fabricated actions or inputs."},
+    {"id": "PLAN-03", "outcome": "Independent models, strata, locked holdouts, per-model denominators and exact supported/unsupported/missing-input outcomes prevent a small fixture or excluded members from establishing broad qualification."},
+    {"id": "PLAN-04", "outcome": "Core evaluation, engineering verdict, full design, solver comparison and source freshness remain distinct; later search/copy/automation/output gates consume explicit qualified profiles."},
+    {"id": "PLAN-05", "outcome": "Foreseeable seismic, nonrectangular, special-beam, runtime, scaling, stale-data and recovery conditions have explicit admission or deferral rules without claiming new implemented support."},
+    {"id": "PLAN-06", "outcome": "Future failures enter a reproducible, root-cause-bound coverage record and affected requalification; held or failed model cases cannot be silently removed from the cohort."},
+    {"id": "PLAN-07", "outcome": "README, current plan, WP10 next packet, task board and next-session briefing route to the same updated plan and preserve historical acceptance evidence."}
+  ],
+  "coverage_rows": ["BC-01", "BC-02", "BC-03", "BC-04", "BC-05", "BC-06", "BC-07", "BC-08", "BC-09", "BC-10", "BC-11", "BC-12", "BC-13", "BC-14", "BC-15", "BC-16", "BC-17", "BC-18", "BC-19", "BC-20"],
+  "packet_ids": ["C0a", "C0b", "C0c", "C1", "D", "E", "F", "G"],
+  "owned_paths": [
+    "docs/planning/xll-product/etabs-design-workflow.md",
+    "docs/planning/xll-product/current-plan.md",
+    "docs/planning/xll-product/README.md",
+    "docs/planning/xll-product/wp10-etabs-read-adapter.md",
+    "docs/planning/next-session-brief.md",
+    "docs/TASKS.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/rework-recurrence-index.json",
+    "docs/verification/beam-model-coverage-plan-acceptance.json"
+  ],
+  "non_goals": [
+    "No runtime code, test, formula, source model, installed application, worksheet or package change.",
+    "No new live API qualification, engineering completion or universal model-support claim.",
+    "No activation of column, slab, wall, foundation or special-system design; their beam context may be planned.",
+    "No changed historical WP11 acceptance, original phase numbering or project-end PF9 timing/memory targets.",
+    "No cleanup of preserved user edits, old worktrees or branches; no release or publication of software packages."
+  ],
+  "likely_pitfalls": [
+    "Treating an API method inventory, a green fixture or accounted Unsupported members as broad usable design.",
+    "Silently zeroing axial/minor-axis/torsional actions, inventing SLS or admitting all geometry by removing guards.",
+    "Using the same model with synthetic variations as independent building evidence or tuning against holdouts.",
+    "Duplicating plan ownership, counting future scenarios as observed defects or weakening full-design qualification."
+  ],
+  "verification": {
+    "focused": ["Plan matrix and link/anchor consistency", "Changed-path format", "Documentation links", "Context validation", "Next-session brief length", "Session records", "Efficiency policy"],
+    "runtime_tests": "None: planning-only changes do not alter runtime behavior.",
+    "delivery": "One frozen documentation candidate, separate read-only acceptance pass, candidate integrity and required hosted PR checks."
+  }
+}

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-08
+last_updated: 2026-09-10
 doc_type: guide
 complexity: intermediate
 tags: [excel-dna, xll, planning, handoff]
@@ -33,9 +33,13 @@ its installed Excel successor B is merged in
 including signed installed acceptance and the cumulative correctness gate.
 B uses explicit Design Inputs and Accept Inputs, compact workbook results,
 and external immutable request/result evidence for actual bars and checks.
-The next [core-review/model-breadth direction](etabs-design-workflow.md#owner-refinement-and-implementation-start--2026-09-08)
-starts with [repeatable C0a API discovery](wp10-etabs-read-adapter.md#c0a-api-discovery-foundation--2026-09-08);
-expanded beam-design profiles remain planned.
+The [C0a API discovery foundation](wp10-etabs-read-adapter.md#c0a-api-discovery-foundation--2026-09-08)
+is merged in [PR #984](https://github.com/Pravin-surawase/structural_engineering_lib/pull/984).
+The next [model-coverage and future-issue plan](etabs-design-workflow.md#model-coverage-and-future-issues--2026-09-10)
+qualifies live source/topology facts, independent core review and explicit
+mainstream methods across a frozen independent model corpus. Twenty coverage
+rows include geometry, actions, materials, detailing, serviceability, runtime,
+scale and later application failures. Expanded beam-design profiles remain planned.
 The owner deferred timing/memory certification
 to project-end `WP10-PERF-FINAL`; no performance pass is claimed. The
 [whole-product audit](etabs-design-workflow.md#whole-product-audit-and-decisions--2026-09-05)

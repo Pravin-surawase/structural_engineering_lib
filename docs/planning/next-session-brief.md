@@ -3,10 +3,10 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-09-08
-- Focus: Start the accepted API-first sequence with repeatable static discovery; qualify live source facts and broader core design in later bounded packets.
-- Completed: Owner requested the API-first correction be planned and started. Inspected the dirty main edit, fetched exact main, verified merged PR 983 and inspected sibling lanes/open PRs. Created an isolated lane at `09df53c9`; original main and completed candidate worktrees are preserved.; Implemented a maintained workflow capability catalogue and reflection-only discovery, with registered getter signature comparison and exact return, parameter and enum metadata. Added a worker inventory command with assembly identity/hash binding and create-only output. No live target API is invoked.; Promoted the accepted core-first direction, eleven coverage needs and API learning sequence into maintained plan owners; corrected stale B status in the planning entry point. Broad source-fact capture/design remains later.
-- Recurrence controls: RR-005 x138 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-002 x30 / unknown: Probe exact host boundaries and ownership before acceptance; verify cleanup of owned child processes and resources explicitly.; RR-004 x15 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.
+- Date: 2026-09-10
+- Focus: Extend the existing product plan beyond the retained building to independent models, explicit engineering profiles and foreseeable operating issues.
+- Completed: Compared the retained building and actual mapper restrictions with the maintained workflow, baseline acceptance, automation requirements and PF11. Verified PR #984 and its exact merged/candidate tree; preserved the old checkout edit and created a fresh admitted worktree from `28551b54`.; Added twenty source/design/model/application coverage obligations to the existing workflow document, concrete C0a-C0c and later packet gates, independent corpus/holdout rules, fixed denominators and reproducible future-issue intake. Observed restrictions remain distinct from prospective scenarios; no new engineering, installed-host or broad-model qualification is claimed.; Reconciled the current plan, README, WP10 next packet, task board and handoff with the new plan owner and already merged A/B/API work. Historical acceptance files and project-end performance targets retain their meaning.
+- Recurrence controls: RR-005 x145 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -21,14 +21,14 @@ review. WP10-COMPLETION implements running-model connection, complete group
 force handoff, bounded compact snapshots and source interpretation. It completed
 functional installed/hosted acceptance in PR #981. WP11 A and B completed
 their bounded native and installed Excel acceptance in PRs #982 and #983.
-The owner's [core-first model-coverage sequence](xll-product/etabs-design-workflow.md#owner-refinement-and-implementation-start--2026-09-08)
+The owner's [model-coverage and future-issue sequence](xll-product/etabs-design-workflow.md#model-coverage-and-future-issues--2026-09-10)
 now controls the next work; performance certification remains at project end.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | WP10 and WP11 A/B are merged. The C0a API discovery foundation is implemented and locally verified; its candidate/hosted state lives in the delivery ledger. Static discovery found 69/70 selected names with 35 registered signature matches; it does not qualify broader beam design. |
-| **Next** | Qualify support, material-override and station facts through the existing broker, then version source/topology contracts. Keep A/B's accepted snapshot meaning and exact-instance/cleanup controls. See [API plan and evidence](xll-product/wp10-etabs-read-adapter.md#c0a-api-discovery-foundation--2026-09-08). |
-| **Then** | Deliver independent core review and mainstream beam methods, practical alternatives, owned-copy reanalysis, bounded automation and portable packages. Qualify an independent model corpus before claiming broad demo readiness. Detailed input-intensive checks retain explicit pending states; PF9 certification remains at project end. |
+| **Current** | WP10, WP11 A/B and static C0a discovery are merged through PR #984. The broader plan now has twenty coverage obligations and explicit packet/corpus gates. These are planned requirements, not new model-support evidence. |
+| **Next** | Freeze C0a source/topology and model-intake acceptance against the coverage matrix. Qualify required support/material/station facts through the existing broker, selected-load completeness and every observable member restriction. Preserve A/B snapshot meanings; inventory additional independent models and holdouts. |
+| **Then** | C0b separates core completion from pending checks; C0c qualifies named combined-action/section/support/reinforcement profiles. Cross-model evidence precedes practical alternatives, copied-model reanalysis, automation and portable delivery. Accounting for every beam is not support; PF9 certification stays at project end. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |
 | Implementation boundary | WP10-01 is pure offline validation, WP10-02 is the exact getter-only host boundary, and WP10-03 is the bounded acquisition-control boundary. WP10-04 adds offline projection and normalization without COM or Excel. The pure analysis package must not depend on the optional ETABS assembly. |

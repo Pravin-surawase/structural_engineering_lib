@@ -5,6 +5,71 @@
 
 ---
 
+## 2026-09-10 — Session: broader beam-model coverage plan
+
+**Task:** BEAM-MODEL-COVERAGE-PLAN
+**Agent:** doc-master (one parent, no subagents)
+**Branch:** `codex/beam-model-coverage-plan`
+**Acceptance:** docs/verification/beam-model-coverage-plan-acceptance.json
+**Focus:** Extend the existing product plan beyond the retained building to independent models, explicit engineering profiles and foreseeable operating issues.
+
+### Completed
+
+- Compared the retained building and actual mapper restrictions with the
+  maintained workflow, baseline acceptance, automation requirements and PF11.
+  Verified PR #984 and its exact merged/candidate tree; preserved the old
+  checkout edit and created a fresh admitted worktree from `28551b54`.
+- Added twenty source/design/model/application coverage obligations to the
+  existing workflow document, concrete C0a-C0c and later packet gates, independent
+  corpus/holdout rules, fixed denominators and reproducible future-issue intake.
+  Observed restrictions remain distinct from prospective scenarios; no new
+  engineering, installed-host or broad-model qualification is claimed.
+- Reconciled the current plan, README, WP10 next packet, task board and handoff
+  with the new plan owner and already merged A/B/API work. Historical
+  acceptance files and project-end performance targets retain their meaning.
+
+Verification is limited to planning consistency, links, context, session,
+efficiency and the required documentation delivery gates. Exact candidate,
+focused, hosted and merge results remain in the external delivery evidence.
+No runtime code or tests were changed, and no model/application was operated.
+
+### Issues encountered
+
+- The overview still described merged B as in progress. The current sequence
+  named broader core methods but did not bind the foreseeable cases, admitted
+  feature combinations or model-denominator rules to concrete packet exits.
+- Earlier read-only review used one absent C# owner path and one unexpanded
+  Windows wildcard-path query; planning intake assumed an absent docs-rule
+  filename. Three lookup commands failed before implementation.
+- Three historical-task delivery-status requests and one active-snapshot
+  helper call were rejected because they require an active task. Historical
+  states were inspected through the retained read-only ledger records instead.
+- Original main remains stale with a user whitespace edit; the completed
+  C0a candidate has a different squash-merge identity from main.
+
+### Root causes and resolutions
+
+- High-level sequencing was not yet translated into an executable successor
+  planning contract, and the overview retained pre-merge state. Extend the
+  canonical plan and align its entry points; distinguish supported evaluation
+  from accounting, missing input and pending full-design checks.
+- Path/expansion assumptions did not match the actual Windows file owners.
+  Exact file discovery and directory-scoped glob filters resolved all three
+  reads. Source and acceptance evidence now reference observed paths.
+- The delivery status command and snapshot helper are active-task scoped even
+  across worktrees. Read historical records without changing task
+  ownership; the three predecessor records are already merged.
+- Verified GitHub merge `28551b54` and candidate `df070dfe` share tree
+  `f072d80f`. No reset, cleanup or write to either preserved lane was needed;
+  the fresh feature worktree passed canonical session admission.
+
+### Rework and recurrence
+
+- RR-005, occurrences=145, minutes=unknown: three confirmed lookup events
+  across the preceding review/intake and four rejected historical state queries,
+  added once to 138. Discover exact files, use directory-scoped glob filters
+  and inspect active-only command semantics; correction time was not measured.
+
 ## 2026-09-08 — Session: C0a API discovery foundation
 
 **Task:** BEAM-C0A-API-FOUNDATION
