@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-SECOND-MODEL-INVENTORY",
+  "observed_utc": "2026-09-10T06:59:07.6233213+00:00",
+  "status": "development_inventory_with_explicit_optional_gap",
+  "corpus_id": "M02-development",
+  "source_model_sha256": "5ec91b3c6b70da42881d5c77e892fb98f89547b2c7ab1ba72a8ad4c250cb8e8a",
+  "scope": "Saved-source inventory and deterministic 20-frame definition sample; no force/table-data extraction or design evaluation.",
+  "runtime": {
+    "etabs_api": "23.3.1",
+    "executable_version": "23.3.1.4563",
+    "api_file_version": "2.16.0.0",
+    "present_units": 9,
+    "database_units": 9,
+    "unit_label": "N-mm-C"
+  },
+  "inventory": {
+    "stories": 25,
+    "frames": 3475,
+    "points": 30731,
+    "areas": 28221,
+    "distinct_assigned_sections": 13,
+    "load_patterns": 28,
+    "analysis_cases": 16,
+    "cases_with_finished_status_4": 16,
+    "static_linear_cases": 13,
+    "modal_cases": 1,
+    "response_spectrum_cases": 2,
+    "selected_output_cases": 16,
+    "combinations": 45,
+    "selected_output_combinations": 45,
+    "catalogued_tables": 1005,
+    "tables_reported_nonempty": 159,
+    "concrete_design_code": "IS 456:2000",
+    "concrete_design_results_available": false
+  },
+  "sample": {
+    "frames": 20,
+    "source_reported_beams": 20,
+    "stories": 20,
+    "sections": 9,
+    "sampled_release_assignments": 7,
+    "sampled_dummy_labelled_frames": 3,
+    "sampled_insertion_cardinal_point_8": 20,
+    "sampled_nonzero_explicit_end_offsets": 0,
+    "source_orientations_are_not_physical_design_role_approval": true
+  },
+  "gap": {
+    "operation": "DatabaseTables.GetLoadCasesSelectedForDisplay",
+    "state": "unqualified_return_shape",
+    "csi_return": 0,
+    "declared_count": 12,
+    "actual_array_length": 13,
+    "null_entries": 1,
+    "known_cause": "Observed count/array/nullability mismatch with frozen getter contract; vendor-side cause unconfirmed.",
+    "policy": "Raw invocation retained, field excluded from accepted values and equality proof; no automatic trimming or selection change."
+  },
+  "safety": {
+    "exact_pid_start_executable_and_saved_model_bound": true,
+    "available_protected_state_equal": true,
+    "complete_table_selection_equality": false,
+    "exact_model_file_and_process_identity_equal": true,
+    "cleanup_completed": true,
+    "quiescent": true,
+    "force_or_table_data_calls": 0,
+    "mutation_calls": 0
+  },
+  "measurement": {
+    "inventory_elapsed_ms": 5484,
+    "sample_elapsed_ms": 8148,
+    "observed_worker_peak_bytes": 67178496,
+    "sample_artifact_bytes": 3508901,
+    "getter_calls": 786,
+    "note": "Single development observations include worker startup and cleanup; memory excludes ETABS. No PF9/p95 or result-batch qualification."
+  },
+  "next": {
+    "definition_starting_batch_frames": 20,
+    "force_starting_pilot_objects": 1,
+    "result_batch_size": "unmeasured; requires admitted units, load-dependency/result semantics and direct object pilot",
+    "coverage_rows": [
+      "BC-03",
+      "BC-04",
+      "BC-05",
+      "BC-06",
+      "BC-07",
+      "BC-08",
+      "BC-09",
+      "BC-12",
+      "BC-16",
+      "BC-18",
+      "BC-19"
+    ],
+    "design_support": "unchanged; C0a source/topology and C0b/C0c engineering qualification remain open",
+    "independent_source_or_holdout": "not established"
+  },
+  "artifacts": [
+    {
+      "file": "inventory-02.json",
+      "bytes": 968664,
+      "sha256": "bae7e730a5c4c31a033e8c17c7ad9c8cb90d7df2ca977870763f877a57b552dd"
+    },
+    {
+      "file": "inventory-02.json.journal.jsonl",
+      "bytes": 421069,
+      "sha256": "52bd9a47a2591046a840df0c554a209bb7b596da85bd6e9f81ecece093dd75f8"
+    },
+    {
+      "file": "inventory-02-metrics.json",
+      "bytes": 81,
+      "sha256": "3021b8f9903cf8179e27ffa2cc1b63c400e04d726c11d43def10466e2042972a"
+    },
+    {
+      "file": "sample-02.json",
+      "bytes": 3508901,
+      "sha256": "26ec5506af46384c951d9589bb8252107595d60df0acb1cc962c1868999ef6bc"
+    },
+    {
+      "file": "sample-02.json.journal.jsonl",
+      "bytes": 1155792,
+      "sha256": "2e0faec7d39f2a1a3a14a05677b88d3462a06d24e1b12ccd2a7bd74ee4a2786a"
+    },
+    {
+      "file": "sample-02-metrics.json",
+      "bytes": 81,
+      "sha256": "693eabaf426aadab2504c1457bce1cfeba48e1effb3f0f9e395ad3376e2d67da"
+    },
+    {
+      "file": "sample-02-request.json",
+      "bytes": 581,
+      "sha256": "26f598fbbb73c0c4a2513497b069d163826e352a638dd8e3285820dff726451a"
+    },
+    {
+      "file": "sample-02-response.json",
+      "bytes": 256,
+      "sha256": "d7b9cb911904f8011d73d0e74451c33c8bd531e772f1ec0114c6055a93944460"
+    }
+  ],
+  "raw_storage": "External task-owned evidence directory only; raw model path, object IDs and catalogs are not committed."
+}
