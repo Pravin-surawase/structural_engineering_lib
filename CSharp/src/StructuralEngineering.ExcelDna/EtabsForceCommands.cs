@@ -85,13 +85,15 @@ public static partial class OfflineCommands
             if (state.SnapshotReference is { } previous && previous.ProjectId != session.Reference.ProjectId)
                 throw new InvalidOperationException("The workbook project changed before the force result could be attached.");
             CancelEntryDesign(entry);
+            CancelEntryReview(entry);
             entry.DesignInvalidated = true;
-            store.CommitImport(state, session.Reference, storeDirectory, store.ReadAssumptions(state), 0);
+            store.CommitImport(state, session.Reference, storeDirectory, store.ReadAssumptionsForReview(state), 0);
             store.MarkDesignHistorical(RequireState(store), "Historical — force snapshot replaced; accept inputs and design again");
             entry.Session = session;
             entry.ForceContextArtifactSha256 = contextId;
             entry.Window ??= new OfflineReviewWindow();
             entry.Window.SetReview(session, member => ExcelAsyncUtil.QueueAsMacro(() => WriteMemberReviewFor(key, member, 0)), capturedHere: true);
+            QueueReview(key, entry);
             return Summary(session, "Forces captured and verified. Member selection uses memory. Save the workbook to retain its snapshot reference; engineering checks have not run.", connected: true);
         }, key);
     }

@@ -73,7 +73,7 @@ public static class BaselineDesignOperations
     }
 
     private static BaselineMemberDesignResult DesignMapped(BaselineMappingResult mapped, BaselineProjectInputs inputs,
-        string memberId, BaselineDesignOptions options, CancellationToken cancellationToken)
+        string memberId, BaselineDesignOptions options, CancellationToken cancellationToken, bool coreOnly = false)
     {
         if (mapped.Beam is null)
             return new(memberId, string.Empty, EngineIdentity, mapped.State switch
@@ -99,7 +99,7 @@ public static class BaselineDesignOperations
             if (!seen.Add(arrangement.RevisionId))
                 return Outcome(BaselineRunState.Incomplete, evaluated, last, "SEARCH.REPEATED_ARRANGEMENT", "The deterministic search repeated an arrangement.");
             evaluated++;
-            last = Evaluate(beam, inputs.Project, arrangement);
+            last = coreOnly ? EvaluateCore(beam, arrangement) : Evaluate(beam, inputs.Project, arrangement);
             if (last.Qualified)
                 return Outcome(BaselineRunState.Complete, evaluated, last);
             if (last.Checks.Any(check => check.Result.Engineering == EngineeringState.NotEvaluated &&
@@ -116,6 +116,44 @@ public static class BaselineDesignOperations
             string? code = null, string? message = null) => new(memberId, beam.EffectiveInputId, EngineIdentity, state,
                 count, seen.Count, design, code is null ? [] : [new(code, "information", message!, EngineRevision,
                     "member:" + memberId, "baseline-design")]);
+    }
+
+    /// <summary>Independent actual-arrangement checks. This never produces full member-design qualification.</summary>
+    public static BeamCorePreviewResult PreviewCore(AnalysisSnapshot snapshot, BeamResolvedMember scenario,
+        CancellationToken cancellationToken = default)
+        => PreviewCore(new BaselineSnapshotIndex(snapshot), scenario, cancellationToken);
+
+    internal static BeamCorePreviewResult PreviewCore(BaselineSnapshotIndex index, BeamResolvedMember scenario,
+        CancellationToken cancellationToken)
+    {
+        var mapped = BaselineInputMapper.MapCore(index, scenario.Inputs, scenario.MemberId);
+        if (mapped.Beam is { } beam && scenario.AnalysisAlternative)
+        {
+            if (!Validation.Positive(scenario.WidthMm) || !Validation.Positive(scenario.DepthMm) || scenario.DepthMm > 750 ||
+                (beam.Context.RightSupportFaceXMm - beam.Context.LeftSupportFaceXMm) / scenario.DepthMm <= 2)
+                mapped = new(null, BaselineDesignState.Unsupported, [new("SCENARIO.SECTION_UNSUPPORTED", "information",
+                    "The proposed section is outside the qualified rectangular core profile.", EngineRevision, "scenario.section")]);
+            else mapped = mapped with
+            {
+                Beam = beam with
+                {
+                    WidthMm = scenario.WidthMm,
+                    DepthMm = scenario.DepthMm,
+                    EffectiveInputId = ResultFactory.SemanticId("core_scenario", new { beam.EffectiveInputId, scenario.WidthMm, scenario.DepthMm })
+                }
+            };
+        }
+        var result = DesignMapped(mapped, scenario.Inputs, scenario.MemberId, new(scenario.Inputs.Catalogue.MaximumCandidates), cancellationToken, true);
+        return new(result.MemberId, result.EffectiveInputId, result.EngineRevisionId, result.State,
+            result.EvaluatedCandidates, result.EnumeratedCandidates, result.Design, result.Diagnostics);
+    }
+
+    private static BaselineCandidateEvaluation EvaluateCore(BoundBaselineBeam beam, BaselineArrangement arrangement)
+    {
+        var checks = new List<BaselineCheckEvidence>();
+        var derivations = new List<ResultEnvelope<JsonElement>>();
+        BaselineStrengthDetailChecks.Evaluate(beam, arrangement, ProfileId, checks, derivations, includeFireScope: false);
+        return new(arrangement, checks, derivations, null, checks.Count > 0 && checks.All(x => BaselineEvidence.Qualified(x.Result)));
     }
 
     internal static BaselineCandidateEvaluation Evaluate(BoundBaselineBeam beam, BaselineProjectIdentity projectIdentity, BaselineArrangement arrangement)

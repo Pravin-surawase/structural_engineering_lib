@@ -29,6 +29,9 @@ public static partial class OfflineCommands
         public string? ForceContextArtifactSha256 { get; set; }
         public BaselineDesignWork? DesignWork { get; set; }
         public bool DesignInvalidated { get; set; }
+        public BeamReviewWork? ReviewWork { get; set; }
+        public bool ReviewQueued { get; set; }
+        public int ReviewDispatchCount { get; set; }
     }
     private static readonly Dictionary<long, Entry> Entries = [];
     private static readonly Guid AppEvents = new("00024413-0000-0000-C000-000000000046");
@@ -41,7 +44,7 @@ public static partial class OfflineCommands
     public static string Assumptions() => Run((app, workbook, store, entry) =>
     {
         var state = store.CreateAssumptions();
-        var input = store.ReadAssumptions(state);
+        var input = store.ReadAssumptionsForReview(state);
         return Result("completed", "Assumptions ready. DEMO values remain editable; save the workbook to retain them.",
             new { document_id = state.DocumentId, assumption_revision = input.Revision, production_issuance_allowed = false });
     });
@@ -117,10 +120,13 @@ public static partial class OfflineCommands
 
     internal static void Unload()
     {
-        foreach (var entry in Entries.Values) { CancelEntryConnection(entry); CancelEntryForces(entry); CancelEntryDesign(entry); entry.Window?.Dispose(); }
+        foreach (var entry in Entries.Values) { CancelEntryConnection(entry); CancelEntryForces(entry); CancelEntryDesign(entry); CancelEntryReview(entry); entry.Window?.Dispose(); }
         Entries.Clear();
         DesignDispatches.Clear();
         DesignDispatchPhases.Clear();
+        ReviewDispatches.Clear(); ReviewDispatchPhases.Clear();
+        foreach (var timer in ReviewTimers) { timer.Stop(); timer.Dispose(); }
+        ReviewTimers.Clear();
         if (_eventApplication is not null)
         {
             ComEventsHelper.Remove(_eventApplication, AppEvents, 1570, CloseHandler);
@@ -133,7 +139,7 @@ public static partial class OfflineCommands
 
     private static void OnBeforeClose(object workbook, ref bool cancel)
     {
-        try { if (Entries.Remove(Key(workbook), out var entry)) { CancelEntryConnection(entry); CancelEntryForces(entry); CancelEntryDesign(entry); entry.Window?.Dispose(); } }
+        try { if (Entries.Remove(Key(workbook), out var entry)) { CancelEntryConnection(entry); CancelEntryForces(entry); CancelEntryDesign(entry); CancelEntryReview(entry); entry.Window?.Dispose(); } }
         finally { OfflineWorkbookStore.Release(workbook); }
         // A cancelled close merely requires reloading validated evidence on the next review.
     }
@@ -143,11 +149,12 @@ public static partial class OfflineCommands
     {
         CancelEntryForces(entry);
         CancelEntryDesign(entry);
+        CancelEntryReview(entry);
         entry.DesignInvalidated = true;
         entry.Window?.EndPendingConnection();
         entry.ForceContextArtifactSha256 = null;
         var state = RequireState(store);
-        var assumptions = store.ReadAssumptions(state);
+        var assumptions = store.ReadAssumptionsForReview(state);
         var artifacts = new OfflineSnapshotStore(directory);
         var imported = artifacts.ImportWithSnapshot(path, expectedSha256);
         var reference = imported.Reference;
@@ -158,6 +165,7 @@ public static partial class OfflineCommands
         store.MarkDesignHistorical(RequireState(store), "Historical — snapshot replaced; accept inputs and design again");
         entry.Session = session;
         entry.Window?.ClearReview();
+        QueueReview(Key(workbook), entry);
         return Summary(session, "Snapshot imported and verified. Save this workbook to retain its reference. Review uses offline evidence; no live model is connected.");
     }
 

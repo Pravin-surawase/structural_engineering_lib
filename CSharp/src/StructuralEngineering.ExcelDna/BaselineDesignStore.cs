@@ -11,6 +11,31 @@ public sealed record BaselineResultReference(string FileName, string FileSha256,
 public sealed class BaselineDesignStore(string directory)
 {
     private readonly string _root = Path.GetFullPath(directory);
+    public BeamReviewInputReference SaveReviewInputs(BeamResolvedReview resolved)
+    {
+        var bytes = JsonSerializer.SerializeToUtf8Bytes(resolved, WorkbookContract.Json); var hash = Hash(bytes);
+        return new(Write("review-input-" + hash + ".json", bytes), hash, resolved.Ledger.Revision);
+    }
+    public BeamResolvedReview ReadReviewInputs(BeamReviewInputReference reference)
+    {
+        var resolved = JsonSerializer.Deserialize<BeamResolvedReview>(Read(reference.FileName, reference.FileSha256), WorkbookContract.Json)
+            ?? throw new InvalidDataException("Review inputs are missing.");
+        if (resolved.Ledger.Revision != reference.LedgerRevision) throw new InvalidDataException("Review input revision mismatch.");
+        return resolved;
+    }
+    public BeamReviewArtifactReference SaveReview(BeamReviewResult result)
+    {
+        var bytes = JsonSerializer.SerializeToUtf8Bytes(result, WorkbookContract.Json); var hash = Hash(bytes);
+        return new(Write("review-" + hash + ".json", bytes), hash, result.RequestId, result.Ledger.Revision, result.EngineIdentity);
+    }
+    public BeamReviewResult ReadReview(BeamReviewArtifactReference reference)
+    {
+        var result = JsonSerializer.Deserialize<BeamReviewResult>(Read(reference.FileName, reference.FileSha256), WorkbookContract.Json)
+            ?? throw new InvalidDataException("Review result is missing.");
+        if (result.RequestId != reference.RequestId || result.Ledger.Revision != reference.LedgerRevision || result.EngineIdentity != reference.EngineIdentity)
+            throw new InvalidDataException("Review result does not bind to its saved reference.");
+        return result;
+    }
     public BaselineRequestReference SaveRequest(BaselineReplayRequest request)
     {
         var bytes = BaselineReplay.Serialize(request); var hash = Hash(bytes); var id = ResultFactory.SemanticId("baseline_request", new { request.SnapshotSha256, inputs = request.AcceptedInputs, memberIds = request.MemberIds, options = request.Options, EngineIdentity = request.EngineRevisionId }); var file = Write("request-" + hash + ".json", bytes);

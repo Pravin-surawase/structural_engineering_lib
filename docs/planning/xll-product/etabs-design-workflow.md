@@ -1,5 +1,88 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## Active implementation: BEAM-PROVISIONAL-REVIEW — 2026-09-18
+
+The owner asked to continue after API readiness PR #994. Implementation starts
+from `57a5998793a93f23335cecd8afa191fb7f099911` in a separate Windows writer
+worktree. The [R01–R12 acceptance contract](../../verification/beam-provisional-review-acceptance.json)
+adopts the prepared card below. Earlier preparation dates/hashes remain
+historical evidence, not the active candidate identity.
+
+| Unit | State | Evidence / decision | Next action |
+|---|---|---|---|
+| U1 contracts and field registry | Implemented | Executable field/consumer/fallback map, typed ledger and exact WP11 named example. Core preview has a distinct result type. | Maintain these owners when adding fields. |
+| U2 resolver and persistence | Implemented | Scoped resolution, explicit-equal-default, last-valid/conflict fallback and model isolation; two reopens and old-workbook migration preserve edits. | Bind migration to the final installed receipt. |
+| U3 core/provisional review | Implemented | Actual arrangements reuse qualified checks; required fire/SLS stay visible; failure peers finish. Compatible measured quantities reprice with unchanged quantity identity. | Preserve strict baseline qualification and separate teaching examples. |
+| U4 Excel edit/refresh | Implemented | Shared views, coalesced dispatch, cancellation and initiating-workbook ownership pass owned integration; the strict baseline fixture also passes. | Freeze with the final integrated migration evidence. |
+| U5 integrated acceptance | Active cumulative gate | R01–R12, full native/Windows/Python and repository checks, exact signed installed ribbon and legacy regressions control completion. | Record immutable candidate, installed, integrity, hosted and merge verdicts in the external evidence/ledger. |
+
+Update each row after its exit evidence or an outcome-changing blocker.
+Complete versioned writes before formatting; do not write while its byte
+snapshot is active. Post-candidate facts stay in the delivery ledger/external
+evidence. No new engineering-method or ETABS-mutation scope is implied.
+
+### Implemented owners and current verification
+
+The executable field matrix is
+[`BeamReviewFields.All`](../../../CSharp/src/StructuralEngineering.Beam/BeamReviewFields.cs).
+Its keys bind directly to typed material, catalogue, support, role, rate and
+scenario consumers; the DATA-01–DATA-16 dispositions below cover immutable
+source evidence and later stages that are not configurable fields.
+[`BeamReviewContracts`](../../../CSharp/src/StructuralEngineering.Contracts/BeamReviewContracts.cs)
+separates core preview from strict baseline result types. The native resolver
+and coordinator have no file/worksheet/ETABS I/O. Excel owns saved ledger/view
+migration, compact status references and content-addressed input/results.
+
+The named engineering example is the exact retained three-beam WP11 snapshot,
+with its separate nonbuilding fire decision and explicit ULS/SLS roles. The cost
+teaching example separately declares 100 kg steel, 1 m³ concrete and 3 m²
+formwork; it is never attributed to a source member's takeoff. Compatible native
+quantity evidence can be priced through the existing qualified cost operation.
+A rate edit changes price without repeating structural calculations. A review
+shares one validated snapshot index across member calculations.
+
+Initial focused evidence: eight native resolver/review/cost tests, an additional
+compatible measured-quantity pricing check and two host projection/persistence
+tests pass. Owned `integrated-smoke-06` completes R01–R10 including the real
+ribbon, two reopens, mixed failures, edit/switch/close/cancel, missing artifacts
+and unverified section alternatives. Cover 30 → 40 mm changes actual bottom
+effective depth 446 → 436 mm. `legacy-baseline-smoke-05` preserves the strict
+three-member result, mixed Needs Input, acceptance, ownership and reopen behavior.
+The migration-inclusive `integrated-smoke-07` also passes with the original old
+workbook hash unchanged and zero prompt responses. Frozen R01–R12 evidence is in
+`C:/CodexWork/evidence/beam-provisional-review-20260918`; development smoke is
+not final signed acceptance.
+
+The first owned runs exposed a 32,767-character macro-response limit and status
+polling through the mutating command guard. Status now returns compact external
+artifact references; queued completion defers while a transaction owns the host.
+The expanded harness also corrected its own workbook-hash timing (after close),
+retained an inadequate bar catalogue as a real no-fit outcome, and waits for an
+observed ribbon control in a maximized owned window. U5 must verify these on the
+exact frozen signed candidate before completion is claimed.
+
+Cumulative local results: 168 native, 176 Windows and 7,866 Python tests pass;
+the existing external/environment skips remain explicit in their logs. All 32
+repository checks pass across the full run and the affected classification
+recheck after staging. An unchanged short-deadline Windows broker fixture first
+failed under concurrent heavy checks, then passed alone and in the full isolated
+suite. The underlying timing cause remains unconfirmed; required hosted evidence
+is still mandatory. Documentation records these findings before CANDIDATE.
+
+Candidate `c396dbff` passed exact signed R01–R12 and eleven strict baseline
+scenarios, then integrity rejected five generated lock files without final LF.
+The single repair appends those newlines and records the issue; native behavior
+and package versions are unchanged. The replacement candidate must bind its own
+manifest, installed acceptance and integrity result. Rejected evidence is retained.
+
+Closing Excel's last workbook prevents queued macros from executing. Cancellation
+now records its terminal discard immediately and a worker cannot overwrite it
+with a queued state. Re-running an unchanged ledger also no longer rewrites the
+legacy input sheet; this removed a rapid-edit overwrite found by the legacy
+fixture. The harness retries only the exact pre-execution busy rejection and
+preserves the existing empty status before reopen callbacks finish. These fixes
+are verified before freeze, then included in final installed acceptance.
+
 ## Prepared next milestone: persistent assumptions and provisional review — 2026-09-18
 
 **Next implementation: `BEAM-PROVISIONAL-REVIEW`.** Deliver one useful loop:
@@ -8,7 +91,7 @@ previews → edit and refresh → save/reopen → produce a complete member revi
 The September 10 owner decision below controls its behavior. This execution
 card refines C0a/C0b; it does not replace the data register or coverage matrix.
 `BEAM-NEXT-WORK-PLAN` prepares the workspace and this plan only. Runtime work
-has not started. Preparation and source hashes are bound in the
+was not part of that preparation packet; the active implementation is tracked above. Preparation and source hashes are bound in the
 [preparation acceptance record](../../verification/beam-next-work-plan-acceptance.json).
 
 ### Prepared baseline and actual implementation gaps

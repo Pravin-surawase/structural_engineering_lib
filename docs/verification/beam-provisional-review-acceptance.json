@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-PROVISIONAL-REVIEW",
+  "status": "authorized",
+  "base_commit": "57a5998793a93f23335cecd8afa191fb7f099911",
+  "authority": "Owner asked to continue on 2026-09-18 after API knowledge completion and the explicit next step of persistent assumptions/provisional beam review. The September 10 assume-and-continue decision and prepared U1-U5/R01-R12 plan govern this milestone.",
+  "objective": "Complete the snapshot-to-persistent-assumptions-to-provisional-review-to-edit-refresh/reopen/report loop with visible provenance and unchanged strict full-design meaning.",
+  "bounded_units": [
+    "U1 field and scenario contracts, complete field/consumer/fallback matrix and a named example",
+    "U2 pure resolver and versioned persistence/migration with scoped overrides and source isolation",
+    "U3 independent core/provisional coordinator using existing qualified calculations and complete member/stage accounting",
+    "U4 Excel assumptions/detail views, automatic coalesced review, cancellation/ownership and early owned-host smoke",
+    "U5 integrated R01-R12 acceptance, exact signed installed artifact, cumulative correctness gate, one candidate/PR cycle"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "R01",
+      "scenario": "Open the owned snapshot with all supplemental fields blank",
+      "outcome": "Finish review with zero questions/acceptance dialogs; every consumed field has a visible effective value/rule or named example basis."
+    },
+    {
+      "id": "R02",
+      "scenario": "Remove material mappings, supports and SLS roles separately",
+      "outcome": "Preserve source gaps, persist scenario assumptions, evaluate supported independent work and retain unavailable checks."
+    },
+    {
+      "id": "R03",
+      "scenario": "Change cover, fck/fy, bars, links and stock",
+      "outcome": "Typed requests and all affected actual-bar/depth/check outputs reflect edits; inherited versus explicit overrides is visible. A changed hash alone is insufficient."
+    },
+    {
+      "id": "R04",
+      "scenario": "Blank, invalid, formula or conflicting scoped input",
+      "outcome": "Preserve entered text/alternatives; select the deterministic valid fallback without executing formula text or displaying a blocking prompt."
+    },
+    {
+      "id": "R05",
+      "scenario": "Required 60-minute fire, nonzero unsupported actions and missing service evidence",
+      "outcome": "Preserve each known requirement/action and distinct check status. Full-design readiness cannot be upgraded by the provisional overlay."
+    },
+    {
+      "id": "R06",
+      "scenario": "Mixed supported, unsupported, no-fit and injected calculation failure",
+      "outcome": "Complete peers and produce one outcome for every selected member; no invented check or omitted denominator."
+    },
+    {
+      "id": "R07",
+      "scenario": "Reopen twice, then use a different model with repeated member/material IDs",
+      "outcome": "Persist edits and effective origins; reuse only valid project preferences; regenerate source-specific assumptions and historical/current identities."
+    },
+    {
+      "id": "R08",
+      "scenario": "Edit during computation, switch workbook, close workbook and cancel",
+      "outcome": "Discard obsolete completions, coalesce refresh, preserve initiating-workbook ownership and honor cancellation. Owned Excel exits after harness cleanup."
+    },
+    {
+      "id": "R09",
+      "scenario": "Missing external snapshot/result or disconnected ETABS",
+      "outcome": "Complete a truthful review with available/example/unavailable entries. No claim of successful live acquisition, analysis or save."
+    },
+    {
+      "id": "R10",
+      "scenario": "Change only rates, then edit a section/scenario",
+      "outcome": "Refresh compatible costs from the same quantities; analysis-affecting alternatives retain unverified status until D. Unsupported future stages still appear in the review."
+    },
+    {
+      "id": "R11",
+      "scenario": "Existing explicit-input full-design fixture and old saved workbook",
+      "outcome": "Preserve complete-design meaning, source/currentness guards and required checks; migrate without resetting edits or altering immutable prior evidence."
+    },
+    {
+      "id": "R12",
+      "scenario": "Real ribbon path on exact signed candidate",
+      "outcome": "Final installed receipt binds source/package/workbook/fixture hashes and every R-row, including zero prompts and actual request-value changes. Development smoke is not final acceptance."
+    }
+  ],
+  "non_goals": [
+    "New engineering formulas or expanded action/section/support profiles; route these to C0c",
+    "New live ETABS capture methods, setters, model mutation or analysis",
+    "Optimization/overnight orchestration, issued reports, public package publication or PF9 performance certification",
+    "Modify user Excel/ETABS sessions, models or the original checkout edit"
+  ],
+  "likely_pitfalls": [
+    "Treating fire/SLS-unavailable as NotApplicable or erasing nonzero actions to pass the mapper",
+    "Two independent assumption/catalogue values that change hashes but not actual requests",
+    "Losing explicit-equal-default edit provenance or cross-model override isolation",
+    "Using synthetic/example actions as source evidence",
+    "Stale async completions, repeated auto-refresh after cancellation, or writing to the active rather than initiating workbook",
+    "Claiming installed acceptance from a build/development smoke or skipping newly added tests",
+    "Concurrent writes during formatter scope snapshots; finish documentation first"
+  ],
+  "verification": {
+    "per_unit": "Only affected focused native/host tests and diagnostics that guide current implementation; independently inspect actual request values and retained WP11 outputs.",
+    "cumulative_gate": "U5: full native and Windows suites, broad Python suite and full 32-check run after content stabilizes; exact signed owned-Excel R01-R12 acceptance; one immutable candidate review/integrity and required hosted PR cycle.",
+    "external_evidence": "C:/CodexWork/evidence/beam-provisional-review-20260918",
+    "development_evidence": [
+      "integrated-smoke-07/receipt.json",
+      "legacy-baseline-smoke-05/receipt.json"
+    ],
+    "final_receipt_contract": "Aggregate exact source/tree/XLL/manifest/fixture/workbook identities, new signed review acceptance including legacy migration and R01-R12, strict signed baseline regression, cumulative suites and candidate audit/integrity. No development smoke can satisfy the signed gate."
+  },
+  "writer_lane": "One parent in isolated Windows codex/beam-provisional-review; retained source/installed evidence reused within exact scope.",
+  "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md",
+  "implementation_status": "U1-U4 integrated; U5 frozen-candidate gates remain authoritative externally"
+}

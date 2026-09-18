@@ -27,6 +27,16 @@
     "section_depths_mm": [300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900],
     "catalogue_note": "Search choices, not code minima/maxima. Preserve fixed geometry and check every selected arrangement."
   },
+  "review_defaults": {
+    "design.steel_modulus": 200000,
+    "design.fire_requirement": "Required",
+    "design.cracking_harmful": false,
+    "design.screening_permitted": true,
+    "detailing.link_spacings": [250, 200, 150, 100],
+    "detailing.bar_counts": [2, 3, 4, 6],
+    "detailing.layers": [1, 2],
+    "catalogue.maximum_candidates": 1000
+  },
   "illustrative_rates": {
     "currency": "INR",
     "concrete_per_m3": 7500,

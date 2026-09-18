@@ -9,7 +9,7 @@ namespace StructuralEngineering.Beam;
 internal static class BaselineStrengthDetailChecks
 {
     public static void Evaluate(BoundBaselineBeam b, BaselineArrangement a, string profile,
-        List<BaselineCheckEvidence> checks, List<ResultEnvelope<JsonElement>> derivations)
+        List<BaselineCheckEvidence> checks, List<ResultEnvelope<JsonElement>> derivations, bool includeFireScope = true)
     {
         void Add<T>(string rule, CheckScope scope, string id, IReadOnlyList<string> rows, ResultEnvelope<T> result) =>
             checks.Add(new(rule, scope, id, rows, BaselineEvidence.Pack(result)));
@@ -125,7 +125,7 @@ internal static class BaselineStrengthDetailChecks
             new("beam-local", "member_station_x", "section_x_from_left", "section_y_from_top"), b.Context.AnchorageStartXMm,
             b.Context.AnchorageEndXMm, b.WidthMm, b.DepthMm, seeds, b.Catalogue.StockLengthsMm)));
         Add("seismic", CheckScope.Member, b.MemberId, [], Detailing.CheckSeismicDetailing(new(profile, SeismicApplicability.OrdinaryIs456)));
-        Add("fire_scope", CheckScope.Member, b.MemberId, [], ResultFactory.NotApplicable<object>(
+        if (includeFireScope) Add("fire_scope", CheckScope.Member, b.MemberId, [], ResultFactory.NotApplicable<object>(
             BaselineDesignOperations.FireScopeOperation,
             ResultFactory.Effective(("member_id", b.MemberId), ("input_basis_id", b.EffectiveInputId), ("fire_basis", b.Context.FireBasis)),
             new Provenance("project-fire-scope-wp11-v1", "explicit-project-fire-scope-wp11-v1", [b.Context.FireBasis!.DecisionReference]),
