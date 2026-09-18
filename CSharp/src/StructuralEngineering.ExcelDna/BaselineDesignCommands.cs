@@ -50,14 +50,23 @@ public static partial class OfflineCommands
     public static string DesignInputs() => Run((app, workbook, store, entry) =>
     {
         var state = RequireState(store);
-        _ = store.CreateDesignInputs(state, LoadSession(state, entry).Snapshot);
-        return Result("needs_input", "Edit the Value column in Design Inputs, then click Accept Inputs. Source facts are fixed; demo catalogue values remain labelled. Acceptance is not professional approval.");
+        var snapshot = LoadSession(state, entry).Snapshot;
+        CancelEntryReview(entry);
+        state = store.CreateDesignInputs(state, snapshot);
+        var captured = store.CaptureReviewEdits(state, snapshot);
+        var resolved = BeamReviewResolver.Resolve(snapshot, store.SelectedReviewMembers(state, snapshot), BeamReviewInputProjection.Preset(),
+            OfflineWorkbookStore.ReadResolved(state)?.Ledger, captured.Edits);
+        store.WriteReviewInputs(state, resolved, sheetValuesJson: captured.SheetValuesJson, snapshot: snapshot);
+        store.Activate(BaselineInputSheet.SheetName);
+        QueueReview(Key((object)workbook), entry);
+        return Result("needs_input", "Shared effective inputs are shown. Provisional review refreshes automatically; Accept Inputs is only for the separate strict Design command. Acceptance is not professional approval.");
     });
 
     [ExcelCommand(Name = "STR_XL_ACCEPT_DESIGN_INPUTS", Description = "Accept calculation inputs for selected beams; not professional approval.")]
     public static string AcceptDesignInputs() => Run((app, workbook, store, entry) =>
     {
         var state = RequireState(store); var snapshot = LoadSession(state, entry).Snapshot;
+        CancelEntryReview(entry);
         var input = store.ReadDesignInputs(state, snapshot);
         if (input.MemberIds.Count == 0) throw new InvalidOperationException("Select at least one member in Design Inputs.");
         var reference = DesignArtifacts(state).SaveRequest(BaselineReplay.Request(snapshot, input.Inputs, input.MemberIds,
@@ -83,7 +92,9 @@ public static partial class OfflineCommands
         if (entry.DesignWork is not null) throw new InvalidOperationException("A design is running. Wait or click Cancel Design.");
         if (entry.ForceRequestId is not null || entry.ConnectionRequestId is not null)
             throw new InvalidOperationException("Wait for the model read before designing its snapshot.");
-        var state = RequireState(store); var snapshot = LoadSession(state, entry).Snapshot;
+        var state = RequireState(store);
+        CancelEntryReview(entry);
+        var snapshot = LoadSession(state, entry).Snapshot;
         var request = RequireAcceptedDesign(store, state, entry, snapshot);
         var key = Key((object)workbook);
         store.MarkDesignHistorical(state, "Design running — previous results are historical");
@@ -286,15 +297,34 @@ public static partial class OfflineCommands
         {
             if (_busy) return;
             dynamic source = sheet; string name = source.Name;
-            if (name != BaselineInputSheet.SheetName && name != OfflineAssumptions.SheetName) return;
+            if (name != BaselineInputSheet.SheetName && name != OfflineAssumptions.SheetName && name != BeamReviewInputProjection.SheetName) return;
             workbook = source.Parent; var key = Key(workbook);
             if (!Entries.TryGetValue(key, out var entry)) Entries[key] = entry = new();
-            entry.DesignInvalidated = true; CancelEntryDesign(entry); entry.Window?.EndPendingConnection();
-            const string message = "Historical — inputs edited; accept inputs and design again";
+            entry.DesignInvalidated = true; CancelEntryDesign(entry); CancelEntryReview(entry); entry.Window?.EndPendingConnection();
+            const string message = "Historical — inputs edited; provisional review refreshing";
             entry.LastOutcome = Result("stale", message);
             _busy = true; entered = true;
             var store = new OfflineWorkbookStore(workbook);
-            if (store.ReadState() is { Design: not null } state) store.MarkDesignHistorical(state, message);
+            if (store.ReadState() is { } state)
+            {
+                if (state.Design is not null) store.MarkDesignHistorical(state, message);
+                state = RequireState(store);
+                if (state.SnapshotReference is not null)
+                {
+                    var snapshot = LoadSession(state, entry).Snapshot;
+                    dynamic changed = target;
+                    int row = changed.Row, column = changed.Column;
+                    dynamic rows = changed.Rows; dynamic columns = changed.Columns;
+                    int rowCount, columnCount;
+                    try { rowCount = rows.Count; columnCount = columns.Count; }
+                    finally { OfflineWorkbookStore.Release(rows); OfflineWorkbookStore.Release(columns); }
+                    var captured = store.CaptureReviewEdits(state, snapshot, name, row, row + rowCount - 1, column, column + columnCount - 1);
+                    var resolved = BeamReviewResolver.Resolve(snapshot, store.SelectedReviewMembers(state, snapshot), BeamReviewInputProjection.Preset(),
+                        OfflineWorkbookStore.ReadResolved(state)?.Ledger, captured.Edits);
+                    store.WriteReviewInputs(state, resolved, sheetValuesJson: captured.SheetValuesJson, snapshot: snapshot);
+                    QueueReview(key, entry);
+                }
+            }
         }
         catch (Exception error) { HostEffectLedger.Record("excel.design.invalidate.failed:" + error.GetType().Name); }
         finally
@@ -311,9 +341,17 @@ public static partial class OfflineCommands
     {
         try
         {
-            if (new OfflineWorkbookStore(workbook).ReadState()?.Design?.Result is null) return;
+            var state = new OfflineWorkbookStore(workbook).ReadState();
+            if (state is null) return;
             var key = Key(workbook);
-            ExcelAsyncUtil.QueueAsMacro(() => DesignStatusFor(key));
+            if (state.Design?.Result is not null && state.Design.Status.StartsWith("Current", StringComparison.Ordinal))
+                ExcelAsyncUtil.QueueAsMacro(() => DesignStatusFor(key));
+            else if (state.Review is { Cancelled: false })
+            {
+                if (!Entries.TryGetValue(key, out var entry)) Entries[key] = entry = new();
+                QueueReview(key, entry);
+            }
+            else if (state.Design?.Result is not null) ExcelAsyncUtil.QueueAsMacro(() => DesignStatusFor(key));
         }
         finally { OfflineWorkbookStore.Release(workbook); }
     }

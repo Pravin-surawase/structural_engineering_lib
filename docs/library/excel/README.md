@@ -5,8 +5,8 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-09-04
-**Last Updated:** 2026-09-08
-**Related Tasks:** WP09, WP10-05, WP10-05B, WP11-EXCEL-DESIGN
+**Last Updated:** 2026-09-19
+**Related Tasks:** WP09, WP10-05, WP10-05B, WP11-EXCEL-DESIGN, BEAM-PROVISIONAL-REVIEW
 **Abstract:** Install, use, diagnose, and integrate the standalone Windows Excel XLL over the native .NET beam library.
 
 ---
@@ -24,10 +24,63 @@ length, anchorage, lap and curtailment, reinforcement arrangement, bar paths,
 BBS, concrete/steel/formwork quantities, illustrative cost, calculation
 packages, and evaluation of one declared current physical candidate.
 
+## Persistent assumptions and provisional review
+
+Open a completed snapshot, then use **Review Beams**. Importing a snapshot and
+editing supported inputs also refresh this review automatically. No Accept
+Inputs step is required for provisional review. **Cancel Review** stops the
+current dispatch; it does not retry until a new edit or explicit review.
+
+- **Assumptions** supplies editable project preferences. The shared preset keeps
+  its 60-minute fire requirement. Blank, invalid or formula text is retained;
+  the resolver uses a valid saved override or a labelled preset/rule fallback.
+- **Review Inputs** shows every consumed field, its effective value and unit,
+  captured source value or gap, origin and reason. Edit column C for a local
+  member/selection override. Member overrides take precedence over physical
+  spans, story/material scopes and project preferences. Equally specific
+  conflicts retain alternatives and use the previous valid value or the
+  deterministic fallback. An explicit value equal to the preset remains an edit.
+- **Design Inputs**, when present, is another view of the same effective basis.
+  Existing explicit entries migrate into the ledger. A material shared by
+  members with different overrides is shown as member-specific; the strict
+  batch design cannot silently collapse those values to one material strength.
+- **Provisional Review** accounts for every selected member. **Review Evidence**
+  shows actual-bar checks and all later stages, including unavailable work.
+  Core, source, scenario, required checks, workflow completion and full-design
+  readiness have separate meanings. Known unsupported actions are retained.
+- Missing source evidence can show the separately identified retained WP11
+  example. Its calculations never become results for the missing source member.
+  The separate cost teaching example declares 100 kg steel, 1 m³ concrete and
+  3 m² formwork. It illustrates changed rates; it is not a takeoff or estimate
+  for the source beam. Actual cost requires a compatible complete quantity basis.
+
+Save the workbook normally. The ledger and entered text stay in workbook
+metadata; detailed input/result artifacts are content-addressed in the external
+project store. Reopening restores the basis and verifies/rebuilds its review.
+Model-specific overrides cannot carry into a different model merely because
+member IDs match. Rate-only edits reuse the same structural calculations.
+Changed section scenarios remain unverified until copied-model reanalysis.
+
+**Accept Inputs** and **Design** retain the separate strict full-design path.
+Provisional core results have their own native type and cannot be stored as
+complete baseline member designs. Required fire/service checks and unsupported
+profiles are not waived. Neither input acceptance nor review completion records
+professional approval.
+
+For .NET integration, `BeamReviewPresetReader.Parse` takes host-supplied preset
+text, `BeamReviewResolver.Resolve` produces immutable typed member inputs and a
+ledger, and `BeamReviewOperations.Review` coordinates the available checks.
+`BeamReviewFields.All` is the executable field/consumer/unit/fallback map.
+These native operations perform no Excel, file or ETABS I/O. Excel owns artifact
+storage, transactions and asynchronous dispatch. `STR_XL_REVIEW_STATE` returns
+compact status and hashed artifact references within Excel's string limit.
+The [active U1–U5 plan](../../planning/xll-product/etabs-design-workflow.md#active-implementation-beam-provisional-review--2026-09-18)
+tracks implementation and exact acceptance evidence.
+
 ## Supported installation
 
-The completion candidate adds five main ribbon actions without creating sheets at
-XLL load:
+The existing acquisition and evidence actions remain available; XLL load creates
+no sheets:
 
 1. **Assumptions** creates one sheet with editable demo inputs and explicit
    units/origins. Initial cover is 30 mm to the outermost reinforcement, concrete

@@ -36,6 +36,8 @@ public sealed class StructAutomateRibbon : ExcelRibbon
                 </group>
                 <group id="StructAutomateDesignGroup" label="Baseline beam design">
                   <button id="StructAutomateDesignInputs" label="Design Inputs" imageMso="TableProperties" onAction="OnDesignInputs" screentip="Explicit project and member inputs" />
+                  <button id="StructAutomateProvisionalReview" label="Review Beams" size="large" imageMso="ViewForm" onAction="OnProvisionalReview" screentip="Review beams using visible persistent assumptions" supertip="Runs supported core checks and shows pending fire/service checks. No Accept Inputs step is required." />
+                  <button id="StructAutomateCancelReview" label="Cancel Review" imageMso="CancelRequest" onAction="OnCancelReview" />
                   <button id="StructAutomateAcceptDesignInputs" label="Accept Inputs" imageMso="FileCheckIn" onAction="OnAcceptDesignInputs" screentip="Accept calculation inputs; professional approval remains separate" />
                   <button id="StructAutomateDesign" label="Design" size="large" imageMso="CalculateNow" onAction="OnDesign" screentip="Design the selected beams from accepted inputs" />
                   <button id="StructAutomateCancelDesign" label="Cancel Design" imageMso="CancelRequest" onAction="OnCancelDesign" />
@@ -63,6 +65,8 @@ public sealed class StructAutomateRibbon : ExcelRibbon
     public void OnOpenSnapshot(IRibbonControl control) => OfflineCommands.OpenSnapshot();
     public void OnReviewSnapshot(IRibbonControl control) => OfflineCommands.ReviewSnapshot();
     public void OnDesignInputs(IRibbonControl control) => OfflineCommands.DesignInputs();
+    public void OnProvisionalReview(IRibbonControl control) => OfflineCommands.ProvisionalReview();
+    public void OnCancelReview(IRibbonControl control) => OfflineCommands.CancelReview();
     public void OnAcceptDesignInputs(IRibbonControl control) => OfflineCommands.AcceptDesignInputs();
     public void OnDesign(IRibbonControl control) => OfflineCommands.Design();
     public void OnCancelDesign(IRibbonControl control) => OfflineCommands.CancelDesign();

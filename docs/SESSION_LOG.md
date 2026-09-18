@@ -5,6 +5,124 @@
 
 ---
 
+## 2026-09-19 — Session: Persistent assumptions and provisional beam review
+
+**Task:** BEAM-PROVISIONAL-REVIEW
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/beam-provisional-review`
+**Acceptance:** docs/verification/beam-provisional-review-acceptance.json
+**Focus:** Complete persistent assumptions, independent provisional checks and the Excel edit/refresh/reopen loop under U1–U5/R01–R12.
+
+### Completed
+
+- Started from freshly fetched #994 main `57a59987` in an isolated Windows
+  worktree. Preserved the original checkout edit, user applications and retained
+  evidence lanes. Reused the pinned .NET/Python environment and API foundation.
+- Implemented the native field/consumer/fallback matrix, versioned scoped ledger,
+  source/model isolation, explicit overrides and deterministic invalid/conflict
+  fallback. Shared Excel views now feed the actual typed inputs.
+- Added a distinct core-preview result and independent member/stage accounting
+  through the existing engineering owners. Fire, SLS, unsupported actions,
+  examples, quantities, costs and unverified alternatives remain explicit.
+  Rate-only changes reuse structural/quantity evidence.
+- Integrated automatic import/edit review, coalescing, persisted external
+  evidence, last-workbook cancellation, ownership and old-workbook migration.
+  Added the owned installed acceptance harness and native API documentation.
+  Updated the plan after each implemented unit and material blocker.
+
+### Verification
+
+- Initial focused tests: eight native tests, one additional compatible measured
+  quantity repricing test, and two host projection/persistence tests pass.
+- `integrated-smoke-07` passes R01–R11, actual ribbon invocation, old-workbook
+  migration with preserved explicit cover and unchanged prior file hash, and cleanup.
+  Cover 30 → 40 mm changes actual depth 446 → 436 mm; material/bar/link/stock
+  edits reach leaf inputs; all mixed members remain accounted. Source member 82
+  retains its nonzero axial value and Unsupported outcome.
+- `legacy-baseline-smoke-05` preserves all eleven strict baseline scenarios,
+  including the original three actual arrangements, mixed Needs Input,
+  reacceptance, cancellation, ownership and current offline reopen.
+- Frozen cumulative evidence: 168 native and 7,866 Python tests pass (17 Python
+  skips and six deselections retain existing environment/runner conditions).
+  Repository validation passes 31/32 initially; after staging the reviewed new
+  acceptance file, the unchanged API-classification check passes too.
+- The first Windows run has 175 passes, nine explicit external-evidence skips
+  and one unchanged broker deadline failure during concurrent heavy checks.
+  The isolated failing method and then all 176 Windows tests pass unchanged,
+  with the same nine external-evidence skips. No deadline or skip was changed.
+- U5 freezes all versioned writes before one formatting/cumulative verification
+  pass. Exact final native/Windows/Python/repository, migration, signed installed,
+  review/integrity and hosted/merge results remain external under
+  `C:/CodexWork/evidence/beam-provisional-review-20260918` and the delivery ledger.
+  Development smoke does not substitute for signed installed acceptance.
+
+### Next
+
+- Complete/verify the U5 immutable delivery ledger before starting another packet.
+  After accepted merge, continue C0a source units/material/support/dependency
+  qualification, then C0c profiles, C1 alternatives and D reanalysis. PF9 remains
+  at project end; this milestone does not claim full building qualification.
+
+### Issues encountered
+
+- Diagnostic path/glob/output assumptions and an incomplete worktree restore
+  blocked bounded commands. The first embedded-resource path also pointed one
+  directory too high.
+- Status polling competed with a mutating COM guard; a full ledger response
+  exceeded Excel's 32,767-character macro string limit. Queued completions could
+  lose disposition, and closing the last workbook deferred macros indefinitely.
+- A repeated unchanged-ledger projection could overwrite a rapid legacy input
+  edit. Independent Assumptions/Design Inputs and readiness-gated review were
+  the existing main-process defects addressed by this milestone.
+- Harness corrections: hash workbooks after close, restore an adequate bar
+  catalogue before expecting pass, wait for the observed ribbon button, and
+  retain the valid empty status before a reopened workbook's callback finishes.
+  One earlier switch failure was not reproduced after callback instrumentation;
+  later complete integration and ownership checks pass.
+- API classification rejected untracked caller text. A Windows broker test did
+  not enter its fake call under the short deadline during concurrent checks.
+
+### Root causes and resolutions
+
+- Use discovered paths and response keys, explicit root/CSharp working
+  directories and a whole-solution locked restore. Corrected commands/builds
+  pass; no source or Git safety control was bypassed.
+- Status is read-only and returns compact hash-bound artifact references.
+  Deferred callbacks respect the host transaction; cancellation records discard
+  immediately and worker completion cannot overwrite that disposition.
+- The shared resolver now owns numeric values, scope, provenance and actual
+  requests. Refreshing an unchanged ledger updates review state without
+  rewriting editable inputs. Integrated and strict legacy receipts prove the
+  resulting behavior; the full-design command keeps explicit acceptance.
+- Harness fixes target observed host/fixture contracts. Busy retries apply only
+  to the exact pre-execution rejection. Failed receipts stay alongside passing
+  evidence; timing versus layout in the original ribbon miss was not isolated.
+- Staging only the reviewed task files satisfies the classifier's tracked-caller
+  contract. The unchanged broker method passes in 1.95 seconds and the full
+  isolated Windows suite in 22.28 seconds; underlying scheduling/I/O cause is
+  unconfirmed. Retain both runs and require the hosted verdict without weakening
+  deadlines. These cumulative findings update documentation before CANDIDATE;
+  only affected documentation/classification validation is repeated.
+
+### Rework and recurrence
+
+- RR-005, occurrences=177, minutes=unknown — ten path, glob, binding, restore
+  or output-envelope corrections; discover actual owners before commands.
+- RR-002, occurrences=42, minutes=unknown — eight host/harness boundary events:
+  reentrant guard/callback, macro size, last-workbook queue, redundant projection,
+  workbook file lock, ribbon visibility, inadequate restored catalogue and empty
+  reopen status. Exact corrections and owned-process cleanup are retained.
+- RR-043, occurrences=1, minutes=unknown — the original shared numeric input
+  defect is resolved by the typed ledger and actual-value/leaf-output proof.
+- RR-044, occurrences=1, minutes=unknown — the original readiness gate is resolved
+  by independent review accounting with truthful engineering qualification.
+- RR-046, occurrences=2, minutes=unknown — the existing short-deadline fixture
+  fails under concurrent load and passes unchanged in isolated replay/full run.
+- RR-047, occurrences=1, minutes=unknown — stage reviewed new caller text before
+  API classification, then rerun only that affected check.
+
+---
+
 ## 2026-09-18 — Session: Complete ETABS API knowledge handoff and readiness plan
 
 **Task:** ETABS-API-READINESS

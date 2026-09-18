@@ -15,6 +15,13 @@
           "StructuralEngineering.Core": "[0.1.0, )"
         }
       },
+      "structuralengineering.construction": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Core": "[0.1.0, )",
+          "StructuralEngineering.Reinforcement": "[0.1.0, )"
+        }
+      },
       "structuralengineering.contracts": {
         "type": "Project"
       },

@@ -18,14 +18,23 @@ $receipt = [ordered]@{ mode = if ($DevelopmentSmoke) { 'development_smoke' } els
 $excel = $null; $book = $null; $other = $null; $books = $null; $processId = $null; $failure = $null
 function Assert-Design([bool]$Condition, [string]$Message) { if (-not $Condition) { throw $Message } }
 function Invoke-DesignMacro([object]$Excel, [string]$Name, [object[]]$MacroArguments = @()) {
-    $text = switch ($MacroArguments.Count) {
-        0 { $Excel.Run($Name) }
-        1 { $Excel.Run($Name, $MacroArguments[0]) }
-        2 { $Excel.Run($Name, $MacroArguments[0], $MacroArguments[1]) }
-        3 { $Excel.Run($Name, $MacroArguments[0], $MacroArguments[1], $MacroArguments[2]) }
-        default { throw 'Unsupported macro argument count.' }
-    }
-    return [string]$text | ConvertFrom-Json -ErrorAction Stop
+    $timer=[Diagnostics.Stopwatch]::StartNew()
+    do {
+        $text = switch ($MacroArguments.Count) {
+            0 { $Excel.Run($Name) }
+            1 { $Excel.Run($Name, $MacroArguments[0]) }
+            2 { $Excel.Run($Name, $MacroArguments[0], $MacroArguments[1]) }
+            3 { $Excel.Run($Name, $MacroArguments[0], $MacroArguments[1], $MacroArguments[2]) }
+            default { throw 'Unsupported macro argument count.' }
+        }
+        $outcome=[string]$text | ConvertFrom-Json -ErrorAction Stop
+        # Auto-review can own a reentrant COM transaction. Only this pre-execution
+        # rejection is safe to retry; engineering and completed-command failures are not.
+        if ($null -eq $outcome.PSObject.Properties['message']) { return $outcome }
+        if ($outcome.message -ne 'Another StructAutomate command is already running.') { return $outcome }
+        Start-Sleep -Milliseconds 200
+    } while ($timer.Elapsed.TotalSeconds -lt 10)
+    throw "Host did not become idle for $Name."
 }
 function Read-DesignCells([object]$Book, [string]$SheetName, [string]$Address) {
     $sheets = $null; $sheet = $null; $range = $null
@@ -140,9 +149,11 @@ function Invoke-DesignRibbon([object]$Excel) {
     $pattern=$null
     Assert-Design ($tab.TryGetCurrentPattern([Windows.Automation.SelectionItemPattern]::Pattern,[ref]$pattern)) 'The observed ribbon tab has no selection pattern.'
     $pattern.Select()
-    $button=$root.FindFirst([Windows.Automation.TreeScope]::Descendants,[Windows.Automation.AndCondition]::new(
+    $buttonCondition=[Windows.Automation.AndCondition]::new(
         [Windows.Automation.PropertyCondition]::new([Windows.Automation.AutomationElement]::NameProperty,'Design'),
-        [Windows.Automation.PropertyCondition]::new([Windows.Automation.AutomationElement]::ControlTypeProperty,[Windows.Automation.ControlType]::Button)))
+        [Windows.Automation.PropertyCondition]::new([Windows.Automation.AutomationElement]::ControlTypeProperty,[Windows.Automation.ControlType]::Button))
+    $buttonTimer=[Diagnostics.Stopwatch]::StartNew()
+    do { $button=$root.FindFirst([Windows.Automation.TreeScope]::Descendants,$buttonCondition); if ($null -ne $button) { break }; Start-Sleep -Milliseconds 100 } while ($buttonTimer.Elapsed.TotalSeconds -lt 5)
     Assert-Design ($null -ne $button) 'The selected ribbon has no observed Design button.'
     $invoke=$null
     Assert-Design ($button.TryGetCurrentPattern([Windows.Automation.InvokePattern]::Pattern,[ref]$invoke)) 'The observed Design button has no InvokePattern.'
@@ -182,7 +193,7 @@ try {
     Assert-Design ($books.Count -eq 0) 'Owned Excel unexpectedly contains workbooks.'
     Assert-Design ([bool]$excel.RegisterXLL($xll)) 'Excel could not load the exact XLL.'
     Assert-Design ($books.Count -eq 0) 'Loading the add-in created a workbook.'
-    $excel.Visible=$true; $excel.DisplayAlerts=$false; $excel.AskToUpdateLinks=$false
+    $excel.Visible=$true; $excel.DisplayAlerts=$false; $excel.AskToUpdateLinks=$false; $excel.WindowState=-4137
     $book=$books.Add()
     Assert-Design ([bool]$excel.Run('STR_XL_TEST_RIBBON_LOADED')) 'Ribbon XML did not load.'
     $setup=Invoke-DesignMacro $excel 'STR_XL_ASSUMPTIONS'; Assert-Design ($setup.state -eq 'completed') $setup.message
@@ -215,7 +226,9 @@ try {
     Assert-Design ((Read-DesignCells $book 'Beam Designs' 'A2') -like 'Historical*') 'Saved summary was not immediately marked historical.'
     $receipt.checks.Add([ordered]@{name='immediate_sheet_change_invalidation';passed=$true})
     $blocked=Invoke-DesignMacro $excel 'STR_XL_DESIGN'; Assert-Design ($blocked.state -eq 'rejected') 'Edited inputs were used without explicit acceptance.'
-    $accepted2=Invoke-DesignMacro $excel 'STR_XL_ACCEPT_DESIGN_INPUTS'; Assert-Design ($accepted2.state -eq 'accepted' -and $accepted2.details.input_revision -ne $accepted.details.input_revision) 'Changed inputs did not receive a new accepted revision.'
+    $accepted2=Invoke-DesignMacro $excel 'STR_XL_ACCEPT_DESIGN_INPUTS'
+    $receipt.changed_basis=[ordered]@{ original=$accepted; changed=$accepted2 }
+    Assert-Design ($accepted2.state -eq 'accepted' -and $accepted2.details.input_revision -ne $accepted.details.input_revision) ('Changed inputs did not receive a new accepted revision: '+($accepted2 | ConvertTo-Json -Depth 8 -Compress))
     $started=Start-Design $excel; $completed=Wait-DesignOutcome $excel $started.details.request_id
     $receipt.checks.Add([ordered]@{name='changed_basis_redesigned';passed=$true})
     Set-DesignCell $book 'Assumptions' 'B8' '30'

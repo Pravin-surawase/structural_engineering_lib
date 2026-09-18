@@ -7,7 +7,8 @@ namespace StructuralEngineering.ExcelDna;
 public sealed record OfflineDocumentState(
     string SchemaVersion, string DocumentId, bool HasAssumptions,
     string? StoreDirectory, OfflineSnapshotReference? SnapshotReference, int ReportRows,
-    string? AssumptionRevision, string? ReportSnapshotSha256, BaselineWorkbookState? Design = null);
+    string? AssumptionRevision, string? ReportSnapshotSha256, BaselineWorkbookState? Design = null,
+    BeamReviewWorkbookState? Review = null);
 
 /// <summary>Small workbook metadata and explicitly requested public projections; no snapshot payload in Excel.</summary>
 internal sealed partial class OfflineWorkbookStore(object workbook)
@@ -33,7 +34,7 @@ internal sealed partial class OfflineWorkbookStore(object workbook)
         var state = ReadState();
         if (state is not null)
         {
-            _ = ReadAssumptions(state);
+            _ = ReadAssumptionsForReview(state);
             Activate(OfflineAssumptions.SheetName);
             return state;
         }
@@ -173,6 +174,8 @@ internal sealed partial class OfflineWorkbookStore(object workbook)
                 try
                 {
                     target = SizedRange(sheet, "A1", values.GetLength(0), values.GetLength(1));
+                    if (sheetName is BeamReviewInputProjection.SheetName or BeamReviewInputProjection.SummarySheet or BeamReviewInputProjection.DetailSheet or BaselineInputSheet.SheetName)
+                        target.NumberFormat = "@";
                     target.Value2 = values;
                     if (!SameValues(target.Value2, values)) throw new InvalidOperationException("Projection readback failed.");
                 }

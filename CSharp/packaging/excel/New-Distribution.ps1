@@ -76,6 +76,7 @@ foreach ($scriptName in @(
     'Repair-PerUser.ps1',
     'Invoke-OfflineSessionAcceptance.ps1',
     'Invoke-BaselineDesignAcceptance.ps1',
+    'Invoke-ProvisionalReviewAcceptance.ps1',
     'Invoke-EtabsConnectionAcceptance.ps1',
     'Uninstall-PerUser.ps1')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $scriptName) `

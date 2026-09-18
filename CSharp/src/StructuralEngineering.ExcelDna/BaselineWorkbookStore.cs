@@ -6,7 +6,7 @@ public sealed record BaselineWorkbookState(int InputRows, string InputSnapshotSh
     string? AcceptedInputRevision = null, string? AcceptedAssumptionRevision = null,
     BaselineRequestReference? AcceptedRequest = null, BaselineResultReference? Result = null,
     int SummaryRows = 0, int DetailRows = 0, string Status = "Needs Input — resolve and accept the design basis",
-    OfflineSnapshotReference? ResultSnapshot = null, string? ResultStoreDirectory = null);
+    OfflineSnapshotReference? ResultSnapshot = null, string? ResultStoreDirectory = null, string? ModelBinding = null);
 
 internal sealed partial class OfflineWorkbookStore
 {
@@ -23,7 +23,8 @@ internal sealed partial class OfflineWorkbookStore
         }
         var cells = BaselineInputSheet.Create(snapshot);
         // Preserve explicit edits for matching fields when recapturing the same source members.
-        if (state.Design is { } old)
+        var modelBinding = StructuralEngineering.Beam.BeamReviewResolver.ModelBinding(snapshot);
+        if (state.Design is { } old && (old.ModelBinding == modelBinding || old.InputSnapshotSha256 == snapshot.SnapshotSha256))
         {
             var previous = ReadDesignInputCells(state);
             var r0 = previous.GetLowerBound(0); var c0 = previous.GetLowerBound(1);
@@ -44,6 +45,7 @@ internal sealed partial class OfflineWorkbookStore
         {
             InputRows = cells.GetLength(0),
             InputSnapshotSha256 = snapshot.SnapshotSha256,
+            ModelBinding = modelBinding,
             AcceptedRequest = null,
             AcceptedInputRevision = null,
             Status = "Needs Input — resolve and accept the design basis"

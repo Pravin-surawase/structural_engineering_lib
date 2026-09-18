@@ -162,6 +162,7 @@
         "dependencies": {
           "StructuralEngineering.Analysis": "[0.1.0, )",
           "StructuralEngineering.Codes.IS456": "[0.1.0, )",
+          "StructuralEngineering.Construction": "[0.1.0, )",
           "StructuralEngineering.Reinforcement": "[0.1.0, )"
         }
       },

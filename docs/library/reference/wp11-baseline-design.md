@@ -1,12 +1,60 @@
 # WP11 supported native baseline beam design
 
 **Type:** Reference | **Audience:** Developers | **Status:** Active |
-**Importance:** High | **Created:** 2026-09-08 | **Last Updated:** 2026-09-08
+**Importance:** High | **Created:** 2026-09-08 | **Last Updated:** 2026-09-19
 
 `StructuralEngineering.Beam.BaselineDesignOperations` turns a validated WP10
 snapshot and explicitly accepted engineering inputs into actual reinforcement
 and complete-member check evidence. It runs without Excel, ETABS, file I/O or a
-Python process. Excel integration is the separate successor milestone B.
+Python process. Excel exposes this strict operation through Design and the
+independent provisional workflow through Review Beams.
+
+## Persistent assumptions and provisional review
+
+Start from [`BeamReviewFields.All`](../../../CSharp/src/StructuralEngineering.Beam/BeamReviewFields.cs)
+for the complete field/unit/consumer/fallback matrix. Use the maintained
+[`demo-beam-preset.json`](../../planning/xll-product/demo-beam-preset.json)
+through `BeamReviewPresetReader.Parse`; hosts supply its text so the native
+layer remains free of file I/O.
+
+```csharp
+var preset = BeamReviewPresetReader.Parse(presetJson);
+var resolved = BeamReviewResolver.Resolve(snapshot, memberIds, preset, savedLedger);
+var review = BeamReviewOperations.Review(snapshot, resolved,
+    previous: previousReview, cancellationToken: cancellationToken);
+// Preserve the whole ledger: entered text, effective values, scope, origin and revisions.
+var edits = BeamReviewResolver.ApplyEdit(resolved.Ledger.Edits,
+    BeamReviewResolver.Edit("design.cover", BeamInputScope.Project, "", null, "40", 1));
+var changed = BeamReviewResolver.Resolve(snapshot, memberIds, preset, resolved.Ledger, edits);
+```
+
+Use a monotonically increasing edit sequence. Member/material/story/span/selection
+edits require `BeamReviewResolver.ModelBinding(snapshot)`; project preferences
+can cross models. Explicit edits equal to defaults remain overrides. Invalid or
+formula text stays visible with its last valid/source/preset fallback. Equal
+priority conflicting scopes retain both alternatives and an explicit fallback.
+
+`BaselineDesignOperations.PreviewCore` returns the distinct
+`BeamCorePreviewResult`: actual bars and independent checks, without a complete
+member result. Required fire and missing service evidence stay unavailable;
+known unsupported actions stay unchanged. `BeamReviewOperations.Review` accounts
+for every selected member and every stage, even when another member fails.
+`WorkflowComplete` means the review finished, not that the beam is qualified.
+`Design`, `DesignMember` and `BaselineReplay` retain the strict contract below.
+
+The coordinator reuses structural evidence for rate-only edits. Supply compatible
+`BeamReviewQuantityEvidence` to price existing measured quantities through
+`BeamReviewCostProjection`; structural/member/detail identities must match.
+The optional named cost example is a separate teaching basis, never a member
+takeoff. Optional `BeamReviewExamples.Owned` accepts only the exact WP11 fixture
+and appears separately from source results. Analysis-affecting section alternatives
+remain unverified until copied-model reanalysis.
+
+Excel commands, shared input views, persistence and the acceptance procedure are
+in the [Excel guide](../excel/README.md). The
+[U1–U5/R01–R12 plan](../../planning/xll-product/etabs-design-workflow.md)
+owns installed qualification and the next work; the native APIs alone make no
+live acquisition, reanalysis or issued-report claim.
 
 ## Native contract and call path
 
@@ -35,7 +83,7 @@ stable inputs for the duration of a call; a background host freezes the request
 before dispatch. JSON replay rejects unknown fields, omitted required
 constructor arguments and numeric enum values.
 
-The dependency is Beam → Analysis/IS456/Reinforcement/Core/Contracts. Analysis
+The dependency is Beam → Analysis/IS456/Reinforcement/Construction/Core/Contracts. Analysis
 does not import Beam. Native IS456 producers remain pure calculations. The
 existing member aggregator receives genuine leaf results; equal station
 calculations retain every scope leaf and bind each unique calculation once.
