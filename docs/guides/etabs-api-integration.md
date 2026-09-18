@@ -16,6 +16,139 @@ and installed evidence for the selected operation. The integration boundaries
 below also retain the earlier Python bridge contracts; they are not a reason
 to create another adapter. Owned-copy mutation remains a separate milestone.
 
+## Completion plan and current knowledge boundary
+
+The owner requested reusable API knowledge before the next runtime milestone.
+`ETABS-API-GUIDE` is merged in
+[PR #993](https://github.com/Pravin-surawase/structural_engineering_lib/pull/993).
+`ETABS-API-READINESS` completes its project setup, coverage navigation,
+procedure evidence and agent handoff. Its
+[acceptance contract](../verification/etabs-api-readiness-acceptance.json)
+starts from `a9f0ec11cf06896e9211d7d0d13d6eb5bbd8939f`.
+
+**Done means:** an agent can identify the correct implementation and exact
+method, find its semantics and evidence, see what is still unknown, and pick
+the next bounded action without redoing the inventory. It does not mean every
+possible ETABS procedure has been implemented or exercised. The complete
+method surface is enumerable; authored procedures expand with approved tasks.
+
+| Step | Current state | Exit evidence / next action |
+|---|---|---|
+| S1 — baseline and setup | Complete | Freshly fetched #993 baseline, isolated writer, Python source binding, SDK manifest and current plan inspected; original checkout edit preserved. |
+| S2 — complete surface map | Complete implementation and command replay | Fresh-worktree coverage reconciles 143 interfaces, 1,343 present methods and 126 properties. Missing/unmapped/unclassified counts remain separate. Focused regression verdict follows in S5. |
+| S3 — procedure and evidence map | Complete source reconciliation | Fourteen recipes link existing source/test/evidence paths; every referenced method is indexed, including the explicitly missing design candidate. Both installed artifact hashes and reference checks pass. |
+| S4 — reusable handoff and rework plan | Complete implementation | Existing skill/context/guide route setup, known issues, acceptance and step/blocker updates. Current plan, task board and next-session brief agree on the next runtime milestone. |
+| S5 — acceptance and integration | Active; final verdict recorded externally | Run focused lookup/CLI and documentation checks, then independent acceptance, candidate integrity and required hosted checks on one frozen candidate. Exact verdicts stay in the task delivery ledger. |
+
+### Project setup: read the owner of each fact
+
+| Concern | Authority and bounded check | Meaning for this work |
+|---|---|---|
+| Checkout, branch, predecessor and device | [Git workflow](../git-automation/git-workflow-single-source.md); `git_state.py --json --worktrees` after an explicit fetch | Verify actual cwd/remote and candidate base. An old clean evidence worktree or locally cached remote ref is not proof of current main. Preserve other work. |
+| Python execution | `./scripts/python_runtime.sh --diagnose` | A shared environment is valid only when `source_bound` points at the current worktree. Use this launcher for all discovery and tests. |
+| C# runtime/build | [CSharp/global.json](../../CSharp/global.json), [solution](../../CSharp/StructAutomate.slnx), [prepared runtime plan](../planning/xll-product/etabs-design-workflow.md) | Exact SDK 10.0.400 and Microsoft.Testing.Platform are pinned. Locked restore/Release build is needed for changed C# or inventory generation; do not repeat it for unchanged documentation. |
+| ETABS version/help | Catalogue source hashes and `check --assembly … --chm …` below | Offline search needs no installation. Both matching installed artifacts are required to claim installed identity; extracted help stays device-local. |
+| Product architecture | [XLL entry point](../planning/xll-product/README.md), [current plan](../planning/xll-product/current-plan.md), workflow recipe owners | Native C# owns this Excel/ETABS path; Python/FastAPI/React are separate library/web layers. The Python bridge contracts retained below are not proof of a current C# production route. |
+| Existing application evidence | [WP10 completion](../verification/wp10-completion-source-evidence.json), [bounded acquisition](../verification/etabs-bounded-acquisition-receipt.json), WP11 receipts in the current plan | Reuse evidence for its exact source/runtime/model/profile only. This knowledge task does not replace installed Excel acceptance or broaden beam support. |
+| Session, controls and scope | Root AGENTS.md, `session begin`, `context show etabs`, [control plane](../../scripts/control-plane.json) | One parent and one bounded packet; existing operations and maintained owners come first. |
+
+On Windows, run the shown `./run.sh` commands as `bash ./run.sh …` from the
+explicit repository root. Commands in the metadata-build section alone run
+from `CSharp`. Use `rg --files` before a guessed path and write edited text as
+UTF-8 with LF; do not alternate Windows-default newlines with patch writes.
+
+### Complete coverage and choosing the next procedure
+
+```bash
+./run.sh etabs-api coverage
+./run.sh etabs-api coverage --filter Load --limit 12
+./run.sh etabs-api coverage --filter supports
+./run.sh etabs-api coverage --offset 12 --limit 12
+./run.sh etabs-api workflow recovery
+```
+
+Coverage is generated from the pinned catalogue and current recipes, not a
+second hand-maintained inventory. Each exported interface appears once, even
+if it has no recipe. Counts separate present methods, missing candidates,
+properties, matching help, registered getter names, unknown effects and
+methods mapped to a recipe. Totals always refer to the entire catalogue;
+filtering/paging changes only the displayed rows. Shared methods count once
+per interface even when several recipes use them.
+
+Use `interface <name>` to list its methods, then `show <interface.method>`.
+A recipe link describes a sequence, not a permission or a live-test pass.
+Each workflow's `verification` gives focused test paths, retained evidence
+paths and the exact qualification boundary. `check` verifies these links as
+well as method/implementation references. File existence does not prove a
+receipt applies to the current runtime/model, or detect every semantic change;
+inspect affected owners when they change.
+
+| Need | Recipe(s) | Current boundary / remaining work |
+|---|---|---|
+| Target, lightweight inventory | `attach`, `overview` | Existing exact-target getter host and retained overview evidence. |
+| Geometry, materials, units, physical support | `geometry`, `materials`, `units`, `supports` | Existing admitted profiles; general native-unit detail, effective material and support/span interpretation remain C0a. |
+| Demands and their source definitions | `loads`, `result_selection`, `forces`, `tables` | Scoped static acquisition and retained schemas; broader dynamic/nonlinear dependency closure and arbitrary tables need named qualification. |
+| Failure and cleanup | `recovery` | Existing broker/lease/journal controls; no new ETABS solver-cancel capability. |
+| New model, copy/update/analyse, ETABS design | `create_model`, `owned_reanalysis`, `concrete_design` | Future procedures. Method metadata and planned order do not supply production runners or installed acceptance. |
+| Any other exported interface | `coverage` → `interface` → `show` → matching help | Discoverable. If no recipe/evidence exists, record the gap and qualify only the methods needed by the approved task. |
+
+### Update the plan after each step or blocker
+
+Keep the active task's step table in its maintained plan, with **state,
+evidence, remaining dependency and next action**. Use planned → active →
+complete, or blocked with an explicit unmet dependency. A completed step needs
+its exit evidence; writing code or finding a method is not an acceptance pass.
+After a step, update its row and the next row before proceeding. Update sooner
+when a failed experiment changes the scope, dependency, chosen procedure or
+verification basis. Routine polling does not require a new plan revision.
+
+When stuck: retain the exact failure and source identity, isolate the failing
+stage with the smallest useful diagnostic, distinguish confirmed cause from
+hypothesis, and amend the plan with the decision and measurable exit. Continue
+independent authorized work. New input is needed only when an actual unresolved
+owner decision controls the dependent action. Record material issues and
+recurrence IDs in the newest task-owned SESSION_LOG entry, using the
+[existing recurrence index](../verification/rework-recurrence-index.json).
+
+Finish all versioned writes before starting the formatter and do not edit
+files while its scope snapshot is active (RR-003). Before `CANDIDATE`, finish
+all plan/handoff/evidence writes. After
+freeze, record verification, hosted run and merge progress in the executable
+session delivery ledger and external task evidence. Do not edit the frozen
+candidate merely to mark a checkbox. A changed outcome/contract uses the
+repository's REPAIR/REPLAN transitions and updates the plan before a new
+candidate. The next task reconciles the final delivery facts at intake.
+
+| Trigger / known rework | Required response and next exit |
+|---|---|
+| Installed DLL/help hash differs | Keep offline discovery usable, but refresh metadata/help and review the changed methods before installed use. New signature presence alone is insufficient live proof. |
+| Missing method, unknown effects or unregistered getter | Inspect exact help and maintained adapter; add only the needed scoped contract/evidence. `cDesignConcrete.GetComboStrength` remains missing; do not infer it from its setter. |
+| New units, case type, section/support or result semantics | Preserve the unsupported source outcome and route qualification to C0a/C0c. The assumed-input review uses a separately identified scenario; it cannot erase original actions or requirements. |
+| Timeout, uncertain cleanup or incomplete capture | Follow `recovery`, retain journal/cleanup facts and isolate the failing stage. RR-046's hosted deadline cause is still unconfirmed; replay the affected tests before considering a code or budget change. |
+| Empty Windows help extraction | RR-020: verify output files; use the documented task-local copy and 32-bit decompiler. No files means extraction did not succeed. |
+| Wrong cwd/path/arguments or mixed newlines | RR-005/RR-045: explicit workdir, targeted file discovery, canonical launchers and UTF-8 LF. Check actual file bytes before candidate integrity. |
+| Brief/session format or new branch upstream failure | RR-004/RR-009: retain `Current`/`Next` briefing rows and exact recurrence syntax; use the canonical Git flow and exact branch tracking. |
+| First/second candidate rejection | Use the enforced repair ceiling; a second rejection requires an evidence-changing replan, not another identical attempt or relaxed checks. |
+
+### What follows this knowledge milestone
+
+1. **BEAM-PROVISIONAL-REVIEW U1–U5:** use the existing
+   [execution card and R01–R12](../planning/xll-product/etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
+   Its first exit is a complete field/consumer/fallback contract, followed by
+   persistent resolution, independent provisional calculations, Excel refresh
+   and installed acceptance. New runtime behavior remains unimplemented here.
+2. **C0a/C0c qualification:** add only the source/method/profile gaps needed for
+   the approved beam cohorts. Bind actual units, source closure, supports,
+   stations and independent engineering examples; update the relevant recipe
+   and evidence when each named packet passes.
+3. **C1 then D/E/F/G:** practical alternatives precede copied-model reanalysis,
+   bounded overnight execution and portable final outputs. Owned application
+   gates and the project-end PF9 timing/memory gate remain in the product plan.
+
+The knowledge milestone can close while future procedures remain explicitly
+unqualified. It should not become an open-ended attempt to invoke every ETABS
+method or rewrite the completed acquisition/design foundations.
+
 ## Start with one task
 
 ```bash
@@ -39,8 +172,9 @@ These are documentation/metadata coverage claims, not claims that all methods
 have been exercised. Missing maintained candidates stay visible.
 
 `./run.sh etabs-api workflows` lists the authored procedures: attachment,
-overview, geometry, materials, forces, tables, model creation, owned reanalysis
-and concrete design. The last three describe future owned workflows. They
+overview, geometry, materials, units, loads, supports, result selection, forces,
+tables, recovery, model creation, owned reanalysis and concrete design. The
+last three describe future owned workflows. They
 are not production runners. Arbitrary API sequences are not assumed to work
 merely because their individual methods exist.
 

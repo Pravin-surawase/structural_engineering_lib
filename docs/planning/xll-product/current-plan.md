@@ -15,6 +15,13 @@ recipes through `./run.sh etabs-api`. Start with the
 [API integration guide](../../guides/etabs-api-integration.md) and existing
 adapters; method discovery does not qualify all live operations.
 
+`ETABS-API-READINESS` completes the [knowledge handoff and step plan](../../guides/etabs-api-integration.md#completion-plan-and-current-knowledge-boundary):
+bounded coverage of every interface, fourteen evidence-linked procedures,
+project setup authorities and known issue/rework responses. Agents update the
+active plan after each completed step or outcome-changing blocker; exact
+post-freeze checks/merge facts stay in the delivery ledger. These are knowledge
+tools, with future runtime qualifications still explicitly outstanding.
+
 **Prepared following work:** implement `BEAM-PROVISIONAL-REVIEW`
 using the [prepared execution card](etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
 It connects one persistent effective-input resolver to core/provisional review,

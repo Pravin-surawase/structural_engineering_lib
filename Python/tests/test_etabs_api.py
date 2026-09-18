@@ -82,6 +82,58 @@ def test_task_search_finds_methods_and_cli_pages_without_dumping_inventory(
     assert result["offset"] == 1
 
 
+def test_interface_map_accounts_for_every_method_without_upgrading_evidence(catalog):
+    rows = api.interface_coverage(catalog, api.load_workflows())
+    inv = catalog["inventory"]
+    assert {row["interface"] for row in rows} == set(inv["Interfaces"])
+    assert len(rows) == len(inv["Interfaces"])
+    assert sum(row["present_methods"] for row in rows) == sum(
+        bool(member["Methods"]) for member in inv["Members"]
+    )
+    assert sum(row["properties"] for row in rows) == len(inv["Properties"])
+    assert sum(row["missing_candidates"] for row in rows) == sum(
+        not member["Methods"] for member in inv["Members"]
+    )
+    for row in rows:
+        assert (
+            row["recipe_mapped_methods"] + row["without_recipe"]
+            == row["present_methods"]
+        )
+        assert row["documented_methods"] <= row["present_methods"]
+    analysis = next(row for row in rows if row["interface"] == "ETABSv1.cAnalyze")
+    assert "owned_reanalysis" in analysis["workflows"]
+    assert not api.select_member(catalog, "cAnalyze.RunAnalysis")["RegisteredGetters"]
+    missing = next(row for row in rows if row["interface"] == "ETABSv1.cDesignConcrete")
+    assert missing["missing_candidates"] == 1
+
+
+def test_coverage_cli_pages_filters_navigation_and_keeps_global_totals(capsys):
+    assert api.main(["coverage", "--limit", "2", "--offset", "1"]) == 0
+    page = json.loads(capsys.readouterr().out)
+    assert len(page["interfaces"]) == 2 < page["total_interfaces"]
+    assert page["offset"] == 1
+    assert api.main(["coverage", "--filter", "sapmodel.results"]) == 0
+    filtered = json.loads(capsys.readouterr().out)
+    assert filtered["matching_interfaces"] < page["total_interfaces"]
+    assert {row["interface"] for row in filtered["interfaces"]} == {
+        "ETABSv1.cAnalysisResults",
+        "ETABSv1.cAnalysisResultsSetup",
+    }
+    assert filtered["totals"] == page["totals"]
+    assert "Live qualification is not inferred" in filtered["qualification"]
+
+
+def test_workflow_verification_links_fail_when_evidence_or_tests_disappear(catalog):
+    flows = copy.deepcopy(api.load_workflows())
+    flows["forces"]["verification"]["evidence"].append("absent-evidence.json")
+    flows["recovery"]["verification"]["tests"] = ["absent-tests.cs"]
+    flows["owned_reanalysis"]["verification"]["qualification"] = ""
+    errors = api.validate(catalog, flows)
+    assert any("forces: missing evidence absent-evidence.json" in err for err in errors)
+    assert any("recovery: missing test absent-tests.cs" in err for err in errors)
+    assert any("owned_reanalysis: missing verification scope" in err for err in errors)
+
+
 @pytest.fixture
 def source_files(tmp_path):
     assembly = tmp_path / "ETABSv1.dll"

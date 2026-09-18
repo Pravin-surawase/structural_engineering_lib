@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-09-18 — Session: Complete ETABS API knowledge handoff and readiness plan
+
+**Task:** ETABS-API-READINESS
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/etabs-api-readiness`
+**Acceptance:** docs/verification/etabs-api-readiness-acceptance.json
+**Focus:** Complete reusable API coverage navigation, evidence-linked procedures and a project-aware step/rework plan for future agents.
+
+### Completed
+
+- Started from freshly fetched #993 main `a9f0ec11` in an isolated Windows
+  knowledge-tool writer lane. Verified Python current-worktree binding and
+  exact SDK 10.0.400; preserved the original edit and historical evidence lanes.
+- Added bounded/filterable interface coverage: all 143 interfaces, 1,343 present
+  methods and 126 properties reconcile. The 69 recipe-mapped and 1,274 unmapped
+  present methods are separate from 68 registered names and live qualification.
+- Expanded to fourteen authored procedures, adding units, selected load
+  dependencies, supports, result selection and failure recovery. Every recipe
+  links maintained implementation/test/evidence owners and states its limits;
+  checks detect broken verification references. Pinned DLL/CHM identity passes.
+- Added the in-depth S1–S5 plan to the existing guide, including project setup,
+  acceptance, known issue/rework controls, step/blocker updates and next runtime
+  dependencies. Recorded S1–S4 completion as each unit finished; S5 exact
+  verification/integration progress is external after candidate freeze.
+
+### Verification
+
+- Pre-freeze command replay and source/reference reconciliation passed. Full
+  generated coverage and ongoing progress are retained under
+  `C:/CodexWork/evidence/etabs-api-readiness-20260918`.
+- Frozen verification uses the focused discovery tests, command/help/identity
+  replay, skill/context/control/docs checks, separate acceptance and read-only
+  candidate integrity. Exact results, candidate and hosted/merge facts remain
+  in that evidence directory and the executable delivery ledger.
+- No ETABS method, Excel/ETABS application, user model/workbook, installed
+  package or engineering runtime was changed. Static metadata was reused;
+  the full unchanged solution and broad product suites are not repeated locally.
+
+### Next
+
+- Begin BEAM-PROVISIONAL-REVIEW U1 from the existing U1–U5 execution card and
+  R01–R12 acceptance. API discovery is ready; runtime implementation is pending.
+- Use `etabs-api coverage`, `workflow` and `show` before new integrations; only
+  extend source/method qualification needed by the approved task.
+
+### Issues encountered
+
+- A read-only worktree summary used the single-checkout JSON shape on the
+  `--worktrees` response and raised KeyError after saving the full evidence.
+  A later diagnostic also supplied an unexpanded Windows wildcard path to rg.
+- The formatter rejected issue-log/acceptance writes made while its allowed
+  write-scope snapshot was active. This was a sequencing error in this task.
+
+### Root causes and resolutions
+
+- Confirmed: the multi-worktree response nests the checkout under `current`.
+  Inspecting the response keys and reading `current` plus the compact sibling
+  rows resolved the summary; all 18 lanes were retained. No Git/source action
+  ran on the incorrect shape. The corrected evidence is external.
+- The known control-plane path resolved the wildcard lookup. For the formatter,
+  complete all versioned writes first and rerun the unchanged maintained
+  formatter sequentially. Its outside-scope rejection is retained as evidence;
+  the guard and allowed source scope are unchanged.
+
+### Rework and recurrence
+
+- RR-005, occurrences=167, minutes=unknown — output-envelope and Windows
+  wildcard assumptions; inspect actual output keys and use exact paths.
+- RR-003, occurrences=8, minutes=unknown — issue-log writes overlapped the
+  formatter snapshot; finish writes before the sequential formatting pass.
+
+---
+
 ## 2026-09-18 — Session: Reusable ETABS API discovery and workflow knowledge
 
 **Task:** ETABS-API-GUIDE
