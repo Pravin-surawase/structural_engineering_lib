@@ -9,6 +9,20 @@
     "initial_import": "2026-08-23"
   },
   "operations": {
+    "discover etabs api": {
+      "group": "Discovery",
+      "description": "Search all pinned ETABS API methods, exact signatures/defaults, object paths, installed help and workflow owners",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/etabs_api.py <command>",
+        "steps": [{"argv": ["./scripts/python_runtime.sh", "scripts/etabs_api.py", "<command>"], "cwd": "."}]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {"build": "WorkspaceWrite"},
+      "aliases": ["etabs api", "etabs-api", "etabs methods", "etabs procedures"],
+      "context_docs": [".github/skills/api-discovery/SKILL.md", "docs/guides/etabs-api-integration.md"],
+      "options": {"search <query>": "Bounded task/method lookup", "show <interface.method>": "Exact method card", "workflow <name>": "Ordered procedure and maintained owners", "summary": "Surface, coverage and source identity", "check": "Validate references and optionally installed hashes", "build": "Rebuild from static inventory and locally extracted matching help"}
+    },
     "resolve python runtime": {
       "group": "Infrastructure",
       "description": "Resolve the approved Python interpreter across primary and linked Git worktrees",

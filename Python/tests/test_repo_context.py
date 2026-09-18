@@ -77,7 +77,7 @@ def _fixture(tmp_path: Path) -> tuple[dict, dict]:
 def test_live_context_manifest_is_valid_and_folder_indexes_are_retired() -> None:
     manifest = repo_context.load_manifest()
 
-    assert len(manifest["areas"]) == 10
+    assert manifest["areas"]["etabs"]["operations"] == ["discover etabs api"]
     assert manifest["summary_policy"]["generated_folder_indexes"] == "retired"
     assert set(manifest["retained_indexes"]) == {
         "docs/api-reference/index.md",

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-API-GUIDE",
+  "status": "authorized",
+  "base_commit": "45a4b60465eed2efe462cbada5e80fbf1e520770",
+  "authority": "2026-09-18 owner requested API proficiency as the first step: discover every function and procedure and make the knowledge efficient and reusable for every future agent.",
+  "objective": "Provide version-bound ETABS method discovery and practical workflow lookup through the existing API discovery skill and integration guide.",
+  "bounded_units": [
+    "Complete static metadata with defaults and object navigation, retaining unknown effects and missing methods",
+    "Generate a portable searchable catalogue linked to version-matched installed help and maintained workflow/source owners",
+    "Connect the existing cross-agent skill, context and operation routing; verify one frozen candidate"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "A01",
+      "outcome": "Every exported ETABS interface method is indexed from the pinned assembly, with exact parameter/return/default metadata; navigation properties and enums are discoverable without invoking ETABS."
+    },
+    {
+      "id": "A02",
+      "outcome": "Lookup and search work offline from the repository, return bounded results, expose source hashes and documentation coverage, and never treat metadata or help coverage as live qualification."
+    },
+    {
+      "id": "A03",
+      "outcome": "Common attachment, overview, geometry, result, table and owned-copy lifecycle procedures have prerequisites, ordered method references, existing implementation owners and verification boundaries."
+    },
+    {
+      "id": "A04",
+      "outcome": "Agents reach the same maintained tool and guide through API discovery, beam workflow, context and automation routing; refresh and drift checks are reproducible."
+    },
+    {
+      "id": "A05",
+      "outcome": "Meaningful focused C# and Python checks, metadata regeneration, routing/documentation checks and required hosted checks pass; unrelated work and installed applications remain untouched."
+    }
+  ],
+  "owned_paths": [
+    "run.sh",
+    "CSharp/src/StructuralEngineering.Etabs/EtabsApiDiscovery.cs",
+    "CSharp/tests/StructAutomate.Tests/EtabsApiDiscoveryTests.cs",
+    "scripts/etabs_api.py",
+    "Python/tests/test_etabs_api.py",
+    "Python/tests/test_repo_context.py",
+    "docs/reference/etabs-api-catalog.json.gz",
+    "docs/reference/etabs-api-workflows.json",
+    "docs/guides/etabs-api-integration.md",
+    ".github/skills/api-discovery/SKILL.md",
+    ".github/skills/beam-automation/SKILL.md",
+    "scripts/control-plane.json",
+    "scripts/automation-map.json",
+    "scripts/context-manifest.json",
+    "docs/docs-canonical.json",
+    "docs/TASKS.md",
+    "docs/planning/xll-product/current-plan.md",
+    "docs/planning/next-session-brief.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/etabs-api-guide-acceptance.json",
+    "docs/verification/rework-recurrence-index.json"
+  ],
+  "non_goals": [
+    "Invoke every discovered method or grant new runtime mutation permissions",
+    "Implement all ETABS features, beam assumptions, new engineering calculations or live acceptance",
+    "Launch or modify ETABS/Excel, user models/workbooks, installed packages or releases",
+    "Redistribute extracted vendor help prose or create an external indexing service"
+  ],
+  "likely_pitfalls": [
+    "Assuming Get-prefixed methods are harmless or all integer returns are CSI status codes",
+    "Confusing optional parameters with known defaults or an object property with a callable method",
+    "Using a stale CHM as current installed signature authority",
+    "Equating method existence or registered signature matches with live qualification",
+    "Duplicating existing adapters or loading the entire inventory into every agent context"
+  ],
+  "verification": {
+    "focused": [
+      "EtabsApiDiscoveryTests",
+      "Python/tests/test_etabs_api.py",
+      "Control/context/skill/documentation validation",
+      "Complete installed metadata and help coverage reconciliation",
+      "Read-only candidate integrity"
+    ],
+    "hosted": "One required PR validation cycle after all bounded units freeze; no broad local product suite required for metadata/discovery changes."
+  },
+  "writer_lane": "One parent in the isolated Windows codex/etabs-api-guide worktree; metadata and repository tools only.",
+  "observed_source": {
+    "assembly_file_version": "2.16.0.0",
+    "assembly_identity": "ETABSv1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=453d728ef24c6f5e",
+    "assembly_sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+    "help_binding": "Operator-extracted matching CHM; per-topic bytes and assembly file versions checked.",
+    "help_file_name": "CSI API ETABS v1.chm",
+    "help_sha256": "0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88"
+  },
+  "observed_catalogue": {
+    "interfaces": 143,
+    "present_methods": 1343,
+    "methods_with_help": 1343,
+    "properties": 126,
+    "enums": 58,
+    "registered_method_names": 68,
+    "unclassified_effects": 1190,
+    "missing_candidates": [
+      "ETABSv1.cDesignConcrete.GetComboStrength"
+    ],
+    "workflow_recipes": 9,
+    "target_methods_invoked": 0,
+    "compressed_bytes": 182710,
+    "catalogue_sha256": "0fda5d30ae989b5fc7f35f3de404a4b5e19137a60ae82acb323f42050a62fa64"
+  },
+  "external_evidence_directory": "C:/CodexWork/evidence/etabs-api-guide-20260918"
+}

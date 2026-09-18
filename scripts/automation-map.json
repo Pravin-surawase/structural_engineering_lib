@@ -2,8 +2,35 @@
   "_comment": "GENERATED compatibility projection from scripts/control-plane.json; do not edit directly",
   "_usage": "Use ./run.sh find <query> or ./run.sh control find <query>",
   "_source": "scripts/control-plane.json",
-  "_coverage": "107/107 top-level scripts registered",
+  "_coverage": "108/108 top-level scripts registered",
   "tasks": {
+    "discover etabs api": {
+      "script": "./scripts/python_runtime.sh scripts/etabs_api.py <command>",
+      "group": "Discovery",
+      "description": "Search all pinned ETABS API methods, exact signatures/defaults, object paths, installed help and workflow owners",
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "build": "WorkspaceWrite"
+      },
+      "options": {
+        "search <query>": "Bounded task/method lookup",
+        "show <interface.method>": "Exact method card",
+        "workflow <name>": "Ordered procedure and maintained owners",
+        "summary": "Surface, coverage and source identity",
+        "check": "Validate references and optionally installed hashes",
+        "build": "Rebuild from static inventory and locally extracted matching help"
+      },
+      "aliases": [
+        "etabs api",
+        "etabs-api",
+        "etabs methods",
+        "etabs procedures"
+      ],
+      "context_docs": [
+        ".github/skills/api-discovery/SKILL.md",
+        "docs/guides/etabs-api-integration.md"
+      ]
+    },
     "resolve python runtime": {
       "script": "./scripts/python_runtime.sh --version",
       "group": "Infrastructure",

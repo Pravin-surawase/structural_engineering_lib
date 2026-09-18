@@ -8,7 +8,14 @@ complexity: advanced
 
 # StructAutomate — current plan
 
-**Prepared next work (18 September):** implement `BEAM-PROVISIONAL-REVIEW`
+**API foundation first (18 September):** the owner moved API proficiency ahead
+of runtime implementation. `ETABS-API-GUIDE` provides version-bound discovery
+for every installed interface method, matching help topics and reusable task
+recipes through `./run.sh etabs-api`. Start with the
+[API integration guide](../../guides/etabs-api-integration.md) and existing
+adapters; method discovery does not qualify all live operations.
+
+**Prepared following work:** implement `BEAM-PROVISIONAL-REVIEW`
 using the [prepared execution card](etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
 It connects one persistent effective-input resolver to core/provisional review,
 Excel edit refresh and complete member reporting without input/acceptance
