@@ -43,6 +43,12 @@
 - No engineering runtime, installed acceptance, live ETABS/Excel invocation,
   model/workbook edit, package installation or release is claimed.
 
+- Replan evidence: the first hosted cycle failed six existing Windows capture
+  cases on deadlines/cleanup. All eleven affected variants passed locally, then
+  the full unchanged Windows suite passed 174 tests with 9 explicit external
+  evidence skips. Acceptance A06 requires a fresh hosted verdict; no product or
+  test behavior is changed to obtain it.
+
 ### Next
 
 - Agents start with `./run.sh etabs-api search "<task>"`, read the workflow and
@@ -53,8 +59,8 @@
 
 ### Issues encountered
 
-- The Windows help host completed without extracted files. Four discovery reads
-  used an absent directory, unexpanded wildcard, misplaced rg options or wrong
+- The Windows help host completed without extracted files. Five discovery reads
+  used guessed paths, an unexpanded wildcard, misplaced rg options or a wrong
   relative command directory.
 - Control registration initially paired an alias display with different argv;
   the registry rejected the mismatch before projection generation.
@@ -68,6 +74,10 @@
   placed in the structured recurrence list without a recurrence identifier.
 - Candidate integrity rejected mixed CRLF/LF in the task log and acceptance
   document before the first push.
+
+- Required hosted run 35351456291 failed six existing Windows capture cases;
+  the .NET build, portable tests and API discovery tests passed. The other five
+  applicable hosted jobs passed. Exact failing job 105620413526 is retained.
 
 ### Root causes and resolutions
 
@@ -92,11 +102,16 @@
   correctly checks the actual working bytes too; its repaired-candidate result
   is retained separately from the rejected first candidate.
 
+- The hosted timing cause is unconfirmed. Failed-fixture replay and the full
+  unchanged Windows suite pass locally; the previous hosted suite also passed
+  on an older runner image. This supports a bounded fresh-host qualification,
+  not a speculative production fix. A repeated failure requires more diagnosis.
+
 ### Rework and recurrence
 
 - RR-004: occurrences=18, minutes=unknown. Two briefing/recurrence format
   contracts missed; preserve stable labels and structured recurrence rows.
-- RR-005: occurrences=164, minutes=unknown. Four path/command-shape events;
+- RR-005: occurrences=165, minutes=unknown. Five path/command-shape events;
   use discovered paths and literal shell arguments.
 - RR-020: occurrences=3, minutes=unknown. One help-extraction event; verify
   files exist before claiming coverage and use the proved extraction path.
@@ -105,9 +120,14 @@
 - RR-045: occurrences=1, minutes=unknown. Mixed Windows text/patch writers;
   set LF explicitly and verify final document bytes before candidate integrity.
 
-The initial integrity rejection consumed the task's single repair allowance.
-Only documentation/issue records changed; implementation and focused test
-evidence remain unchanged. No hosted run occurred before this repair.
+- RR-046: occurrences=1, minutes=unknown. Hosted capture deadlines exceeded;
+  preserve source/test contracts and bind local full-suite and fresh-host proof.
+
+The initial integrity rejection consumed the first design's repair allowance.
+The required hosted failure then entered REPLAN. Design revision 2 changes the
+acceptance contract to require the complete Windows suite and a fresh hosted
+verdict while preserving product code, tests, time limits and durability.
+Rejected and replacement evidence remain separate.
 
 ---
 

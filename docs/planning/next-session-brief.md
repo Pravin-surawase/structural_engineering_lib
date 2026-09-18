@@ -6,7 +6,6 @@
 - Date: 2026-09-18
 - Focus: Make every installed ETABS interface method discoverable and connect exact contracts to practical workflows and maintained implementation owners.
 - Completed: Started from fetched main `45a4b604` in an isolated Windows writer lane, preserving the original edit and retained worktrees. Bound the existing assembly and matching installed help; reflection invoked no ETABS methods.; Extended metadata with optional defaults, exported interfaces, properties and enums. Built a deterministic portable catalogue: 1,343 present methods, 143 interfaces, 126 properties, 58 enums; every present method has matching help. The missing design getter remains visible.; Added bounded search, method cards, navigation/enum lookup, nine workflow recipes, local help sections and installed identity checks. Recipes separate implemented paths from future owned model/design work; 1,190 unclassified effects remain unqualified.
-- Recurrence controls: RR-004 x18 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.; RR-005 x164 / unknown: Use maintained launchers, literal PowerShell blocks, exact paths, native output tools, and one shell per operation.; RR-020 x3 / unknown: Verify extracted files and source hash; use a CHM-capable extractor when the host help command produces no evidence.
 <!-- HANDOFF:END -->
 
 ## Current boundary

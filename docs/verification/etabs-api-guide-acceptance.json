@@ -8,7 +8,8 @@
   "bounded_units": [
     "Complete static metadata with defaults and object navigation, retaining unknown effects and missing methods",
     "Generate a portable searchable catalogue linked to version-matched installed help and maintained workflow/source owners",
-    "Connect the existing cross-agent skill, context and operation routing; verify one frozen candidate"
+    "Connect the existing cross-agent skill, context and operation routing; verify one frozen candidate",
+    "Diagnose hosted deadline failures with existing complete Windows tests and admit a new evidence-bound candidate only after local full-suite proof"
   ],
   "acceptance_rows": [
     {
@@ -30,6 +31,10 @@
     {
       "id": "A05",
       "outcome": "Meaningful focused C# and Python checks, metadata regeneration, routing/documentation checks and required hosted checks pass; unrelated work and installed applications remain untouched."
+    },
+    {
+      "id": "A06",
+      "outcome": "All eleven failed Windows method variants and the unchanged complete Windows suite pass locally; the next exact candidate passes a fresh required hosted cycle without altered production code, test limits or selections. Retain rejected-run and new-run evidence separately."
     }
   ],
   "owned_paths": [
@@ -74,9 +79,10 @@
       "Python/tests/test_etabs_api.py",
       "Control/context/skill/documentation validation",
       "Complete installed metadata and help coverage reconciliation",
-      "Read-only candidate integrity"
+      "Read-only candidate integrity",
+      "Complete existing Windows C# suite after hosted failure; required for this replan only"
     ],
-    "hosted": "One required PR validation cycle after all bounded units freeze; no broad local product suite required for metadata/discovery changes."
+    "hosted": "Retain rejected run 35351456291. Publish one replan candidate with unchanged runtime/test source and require its full hosted gate before merge."
   },
   "writer_lane": "One parent in the isolated Windows codex/etabs-api-guide worktree; metadata and repository tools only.",
   "observed_source": {
@@ -103,5 +109,35 @@
     "compressed_bytes": 182710,
     "catalogue_sha256": "0fda5d30ae989b5fc7f35f3de404a4b5e19137a60ae82acb323f42050a62fa64"
   },
-  "external_evidence_directory": "C:/CodexWork/evidence/etabs-api-guide-20260918"
+  "external_evidence_directory": "C:/CodexWork/evidence/etabs-api-guide-20260918",
+  "design_revision": 2,
+  "replan": {
+    "trigger": "Required hosted Windows suite failed on the already repaired candidate; delivery entered REPLAN.",
+    "rejected_candidate": "ac40c32cf85158ccae49b361398353704134e5da",
+    "rejected_run": 35351456291,
+    "rejected_job": 105620413526,
+    "observed_failures": "Six deadline/cleanup failures in existing context, bulk, batch and overview tests; API discovery tests passed.",
+    "cause": "Unconfirmed host-sensitive timing. Current Windows runner image differs from the previous passing run; this observation does not prove causation.",
+    "source_disposition": "No API, broker, test timeout, test selection, durability or workflow change is justified by current evidence.",
+    "changed_acceptance": "Require the complete existing Windows suite locally, direct replay of all failed method variants, proof of unchanged product/test source, and a fresh required hosted cycle before integration. A repeated failure requires further diagnosis, never skipped assertions or weakened budgets.",
+    "local_failed_method_replay": {
+      "passed": 11,
+      "failed": 0,
+      "seconds": 2.449
+    },
+    "local_full_windows_suite": {
+      "total": 183,
+      "passed": 174,
+      "skipped": 9,
+      "failed": 0,
+      "seconds": 23.136
+    },
+    "prior_passing_reference": {
+      "run": 34460090567,
+      "windows_total": 182,
+      "passed": 173,
+      "skipped": 9,
+      "seconds": 31.429
+    }
+  }
 }
