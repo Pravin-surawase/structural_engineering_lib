@@ -66,6 +66,8 @@
 - Reconciled the previous task's external post-push upstream event once.
 - Session validation rejected a renamed `Next` row and an explanatory bullet
   placed in the structured recurrence list without a recurrence identifier.
+- Candidate integrity rejected mixed CRLF/LF in the task log and acceptance
+  document before the first push.
 
 ### Root causes and resolutions
 
@@ -84,6 +86,11 @@
 - The briefing validator requires the stable `Next` label, and each recurrence
   bullet requires one identifier. Restored the label and moved the general
   note to prose; session validation is the direct proof before preparation.
+- Python text writes used Windows default newlines, then patch edits introduced
+  LF into the same documents. Explicit LF writes normalize the affected task
+  documents. Their Git content was already normalized, but the integrity gate
+  correctly checks the actual working bytes too; its repaired-candidate result
+  is retained separately from the rejected first candidate.
 
 ### Rework and recurrence
 
@@ -95,9 +102,12 @@
   files exist before claiming coverage and use the proved extraction path.
 - RR-009: occurrences=3, minutes=unknown. One previous-task event reconciled
   from its external receipt; no additional upstream failure occurred here.
+- RR-045: occurrences=1, minutes=unknown. Mixed Windows text/patch writers;
+  set LF explicitly and verify final document bytes before candidate integrity.
 
-Registry correction preceded freeze and candidate creation; no candidate
-retry or duplicate hosted run was consumed.
+The initial integrity rejection consumed the task's single repair allowance.
+Only documentation/issue records changed; implementation and focused test
+evidence remain unchanged. No hosted run occurred before this repair.
 
 ---
 

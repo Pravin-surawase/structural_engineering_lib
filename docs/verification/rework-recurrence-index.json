@@ -727,6 +727,22 @@
       "details": [
         "docs/planning/xll-product/etabs-design-workflow.md#owner-decision-assume-and-continue-during-demo-and-review--2026-09-10"
       ]
+    },
+    {
+      "id": "RR-045",
+      "pattern": "Mixed default Windows text writes and LF patch edits fail immutable document integrity",
+      "occurrences": 1,
+      "observed_minutes": {
+        "minimum": null,
+        "maximum": null,
+        "basis": "ETABS-API-GUIDE first candidate a03ddb63 failed read-only integrity for mixed CRLF/LF in the session log and acceptance JSON. Path.write_text used Windows default newlines, followed by LF patch edits. Normalize task documents with explicit LF; keep rejected and repaired evidence distinct. Untimed."
+      },
+      "short_solution": "Use explicit LF for task text writes and preserve the final working-byte integrity gate.",
+      "last_seen_task": "ETABS-API-GUIDE",
+      "aggregate_parent": null,
+      "details": [
+        "docs/SESSION_LOG.md"
+      ]
     }
   ]
 }
