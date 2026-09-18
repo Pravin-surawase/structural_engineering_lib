@@ -1,5 +1,169 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## Prepared next milestone: persistent assumptions and provisional review — 2026-09-18
+
+**Next implementation: `BEAM-PROVISIONAL-REVIEW`.** Deliver one useful loop:
+open an accepted snapshot → resolve and show assumptions → run supported
+previews → edit and refresh → save/reopen → produce a complete member review.
+The September 10 owner decision below controls its behavior. This execution
+card refines C0a/C0b; it does not replace the data register or coverage matrix.
+`BEAM-NEXT-WORK-PLAN` prepares the workspace and this plan only. Runtime work
+has not started. Preparation and source hashes are bound in the
+[preparation acceptance record](../../verification/beam-next-work-plan-acceptance.json).
+
+### Prepared baseline and actual implementation gaps
+
+The planning base is merged `0b398968eeea82c8a07ee8a9820c4dbd644e6425`
+(PR #990). A separate `codex/beam-next-work-plan` worktree preserves the
+original checkout's whitespace edit and all retained evidence lanes. Fetched
+GitHub has no open predecessor PR. The exact .NET SDK 10.0.400, locked restore
+and Release solution build pass, including the packed x64 XLL. This is build
+readiness, not an installed or new engineering acceptance result.
+
+| Existing owner | Confirmed behavior / implementation responsibility |
+|---|---|
+| [OfflineAssumptions](../../../CSharp/src/StructuralEngineering.ExcelDna/OfflineAssumptions.cs) and [preset](demo-beam-preset.json) | Twenty shared values, strict blank/invalid rejection, fixed demo origin; add visible persistent resolution without losing entered text. |
+| [BaselineInputSheet](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineInputSheet.cs) | Separate numerical input and hard-coded catalogue seeds; make this a view/editor of the same resolved basis. |
+| [BaselineDesignCommands](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignCommands.cs) | Requires an accepted request; edits cancel and invalidate but do not dispatch refreshed work. Reuse its workbook/dispatch fences and add automatic provisional dispatch. |
+| [BaselineWorkbookStore](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineWorkbookStore.cs), [design store](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignStore.cs) and [work](../../../CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignWork.cs) | Existing transactional workbook metadata, immutable external requests/results and background work are the persistence/host owners. Scope saved overrides to the source model, rather than reusing matching member IDs alone. |
+| [BaselineInputMapper](../../../CSharp/src/StructuralEngineering.Beam/BaselineInputMapper.cs), [design operations](../../../CSharp/src/StructuralEngineering.Beam/BaselineDesignOperations.cs) and [contracts](../../../CSharp/src/StructuralEngineering.Contracts/BaselineDesignContracts.cs) | Full design currently requires all admitted inputs, SLS roles and an explicit no-fire decision, and rejects unsupported actions. Add a distinct core/provisional review contract; preserve full-design admission and its actual-bar checks. |
+
+The resolver and review coordinator belong to the host-free native
+`StructuralEngineering.Beam` boundary, with typed records in
+`StructuralEngineering.Contracts`. The Excel adapter loads the versioned
+preset and persists/displays records; inject parsed rules into native services,
+so the kernel never reads a worksheet, file or ETABS object. Reuse existing
+calculation operations. Do not start another demo engine or put formulas in Excel.
+
+### Contract decisions to implement
+
+| Contract | Required semantics and cross-field invariant |
+|---|---|
+| Effective field | Stable key, explicit unit, scope kind/ID, entered text, original source value or missing marker, selected value, origin, reason, rule/preset revision, review state and dependent outputs. Equal-to-default edits retain their explicit-edit identity. |
+| Choice precedence | Member → physical span/group → story/material rule → project → saved/preset fallback, as defined below. Equally specific conflicts use the last valid saved value, then a deterministic rule; preserve all competing entries and reasons. Never use worksheet row order as precedence. |
+| Source versus scenario | Preserve source snapshot bytes/IDs and known requirements/actions. Configurable design mappings are explicit overlays. Missing or conflicting source facts can produce an identified assumed scenario; synthetic actions keep a separate example snapshot/scenario identity. No source-strength inference from labels and no ULS-to-SLS scaling. |
+| Identity and migration | Bind model/source identity, selected member set, snapshot/action revision, effective fields, rule/preset version, engine/profile and final arrangement. Reopen old workbook versions deterministically; retain accepted historical requests. Across models reuse project preferences only; re-resolve material/member/source bindings, even when IDs repeat. |
+| Invalid or blank values | Preserve entered text. Use the last valid saved value or registered fallback; a field without a usable rule invokes the named complete example scenario for that preview. Formula text is not executed. Resolution failures become visible review entries, never an input/acceptance dialog. |
+| Review and engineering states | Record source status, scenario origin, eligibility, core completeness/verdict, required-check status, full-design readiness and workflow completion separately. Core Pass can coexist with pending SLS/fire; full design cannot. Failed/unsupported/unavailable members remain in the final denominator. |
+| Fire and other known requirements | Keep the preset's 60-minute fire requirement and any known project requirement. Never replace it with `NotRequired` to pass the existing mapper. Evaluate independently qualified work through the new review contract, record unavailable fire design, and retain the strict full-design result. |
+| Updates and cancellation | Persist an edit, invalidate affected identities, cancel obsolete work and schedule one coalesced refresh at a safe Excel boundary. Completion must match the initiating workbook/document, selected source, effective revision and dispatch. User cancellation stops the run; it must not trigger automatic retry. |
+| Reports and quantities | Review output accounts for every requested member and stage, with explicit unavailable rows. Only calculate quantities/rates from compatible current arrangements; otherwise label an example scenario or unavailable output. Cost-only edits refresh cost projections, not ETABS or structural calculations. |
+| Bounds and isolation | Reuse caller selection, existing acquisition limits and finite candidate budgets. One failed member/check cannot abort peers. Do not acquire a whole building, restart indefinitely, mutate a model or launch analysis as an assumption fallback. |
+
+U1 must turn these decisions into a field registry with exact typed consumers,
+validation, precedence, fallback rule, persistence location and dependency set.
+Cover every consumed field in the sixteen DATA groups; the following disposition
+prevents missing whole stages while keeping this first milestone bounded:
+
+| Data groups | First milestone disposition |
+|---|---|
+| DATA-01 identity; DATA-02 inventory | Preserve accepted snapshot/runtime/source accounting. If unavailable, show an identified example context; never claim a live connection or successful capture. |
+| DATA-03 geometry; DATA-04 materials | Keep captured facts and explicit source gaps. Resolve supplemental context/mappings as labelled assumptions; unsupported actual geometry still has its original outcome. |
+| DATA-05 loads; DATA-06 demands | Preserve concurrent force rows, roles and missing dependencies. Use separately identified complete example actions for an illustrative fallback, never substitute them into source evidence. |
+| DATA-07 requirements; DATA-08 serviceability | Resolve configurable basis fields and retain known fire/seismic/service requirements. Qualified independent checks can run; unavailable checks remain visible and prevent full-design completion. |
+| DATA-09 reinforcement; DATA-10 architectural/grouping constraints | Consolidate catalogue seeds; actual bars and dependent depth/checks share one arrangement identity. Persist size/group preferences; practical multi-option/span/group search remains C1 and is shown as unavailable until delivered. |
+| DATA-11 BBS/quantities; DATA-12 cost/objectives | Reuse qualified quantity operations only with sufficient current geometry/path evidence. Persist illustrative rates and refresh compatible projections; incomplete paths retain unavailable BBS/quantity rows. |
+| DATA-13 ETABS design comparison; DATA-14 global/affected response | Retain available comparison evidence and missing markers. Do not turn ETABS steel area into issued bars or claim global response verification; D owns copied-model reanalysis and affected-member checks. |
+| DATA-15 search/reanalysis control; DATA-16 reports/comparisons/persistence | Reuse bounded dispatch/cancellation and persist later configuration without setters or solver runs. Produce the current review with source/scenario and historical/current distinctions. D/E own trials/overnight recovery; issued schedules/portable delivery remain F. |
+
+### Sequential units inside one functional milestone
+
+| Unit | Deliverable | Exit evidence before proceeding |
+|---|---|---|
+| U1 — field and scenario contract | Freeze typed ledger/review contracts, complete field-consumer/fallback matrix, preset compatibility and one named complete example scenario. Extend the existing preset only for missing demo rules; keep code limits kernel-owned. | Every consumed field and DATA-01–16 has an owner and deterministic disposition. Inspect actual request values for the positive WP11 fixture and original outcomes for the retained building. Unknowns require no question. |
+| U2 — resolver and persistence | Implement the pure resolver, one effective request and versioned persistence/migration. Project/member overrides, conflicts and last-valid values survive reopen. | Default, edited, invalid, conflicting and cross-model cases produce deterministic identities and actual typed values. Source records remain byte-identical; two same-named members in different models never share source-specific overrides. |
+| U3 — independent core/provisional coordinator | Separate applicable core work from pending full-design requirements. Execute existing qualified calculations against actual bars and retain per-member/check failures; add the identified example fallback and current review projection. | Existing complete fixture results remain equivalent. Missing SLS/fire allows only independently admissible work; known P/V3/M2/T is retained. No unsupported check becomes Pass. Every requested member/stage appears once. |
+| U4 — Excel integration and edit refresh | Drive Assumptions and detailed inputs from the resolver. Automatically persist/dispatch the provisional basis; expose origins and overrides, coalesce edit refreshes and preserve owned output footprints. | Early owned-Excel smoke proves blank-input continuation, actual changed cover/grade/bar requests, event ownership, cancellation and process cleanup. No manual Accept Inputs prerequisite for demo/review. |
+| U5 — integrated acceptance and delivery | Reopen, mixed outcomes, report/quantity projections, compatibility and documentation; complete frozen installed acceptance. | Acceptance R01–R12 below passes on the final candidate. One independent read-only acceptance, one integrity check and one required hosted PR cycle. No broad gate, push or PR per internal unit. |
+
+Keep a single writer/parent by default. Freeze all intended code, meaningful
+tests, schema/conformance projections, documentation and evidence before the
+candidate. If a unit needs a new engineering method, route that method to C0c;
+retain the honest unavailable outcome here. If the existing core calculations
+cannot be independently bound without new method semantics, replan U3 before
+coding rather than weakening the full-design mapper or returning fixture passes
+for actual members.
+
+### Acceptance that proves the user-visible outcome
+
+| ID | Scenario | Required result |
+|---|---|---|
+| R01 | Open the owned snapshot with all supplemental fields blank | Finish review with zero questions/acceptance dialogs; every consumed field has a visible effective value/rule or named example basis. |
+| R02 | Remove material mappings, supports and SLS roles separately | Preserve source gaps, persist scenario assumptions, evaluate supported independent work and retain unavailable checks. |
+| R03 | Change cover, fck/fy, bars, links and stock | Typed requests and all affected actual-bar/depth/check outputs reflect edits; inherited versus explicit overrides is visible. A changed hash alone is insufficient. |
+| R04 | Blank, invalid, formula or conflicting scoped input | Preserve entered text/alternatives; select the deterministic valid fallback without executing formula text or displaying a blocking prompt. |
+| R05 | Required 60-minute fire, nonzero unsupported actions and missing service evidence | Preserve each known requirement/action and distinct check status. Full-design readiness cannot be upgraded by the provisional overlay. |
+| R06 | Mixed supported, unsupported, no-fit and injected calculation failure | Complete peers and produce one outcome for every selected member; no invented check or omitted denominator. |
+| R07 | Reopen twice, then use a different model with repeated member/material IDs | Persist edits and effective origins; reuse only valid project preferences; regenerate source-specific assumptions and historical/current identities. |
+| R08 | Edit during computation, switch workbook, close workbook and cancel | Discard obsolete completions, coalesce refresh, preserve initiating-workbook ownership and honor cancellation. Owned Excel exits after harness cleanup. |
+| R09 | Missing external snapshot/result or disconnected ETABS | Complete a truthful review with available/example/unavailable entries. No claim of successful live acquisition, analysis or save. |
+| R10 | Change only rates, then edit a section/scenario | Refresh compatible costs from the same quantities; analysis-affecting alternatives retain unverified status until D. Unsupported future stages still appear in the review. |
+| R11 | Existing explicit-input full-design fixture and old saved workbook | Preserve complete-design meaning, source/currentness guards and required checks; migrate without resetting edits or altering immutable prior evidence. |
+| R12 | Real ribbon path on exact signed candidate | Final installed receipt binds source/package/workbook/fixture hashes and every R-row, including zero prompts and actual request-value changes. Development smoke is not final acceptance. |
+
+### Verification owners and delivery cadence
+
+Use the existing [owned snapshot](../../../CSharp/tests/StructuralEngineering.Tests/Fixtures/wp11-owned-snapshot.sasnap)
+and its independently documented WP11 basis as the positive specimen. The
+retained 153-beam snapshot is an unsupported-action regression; the larger model
+is acquisition/overview evidence only. Reuse prior receipts without relabelling
+them as a new implementation pass. Proprietary model bytes remain external.
+
+The prepared commands below run from `CSharp` and passed for the current
+baseline. Extend their named test owners for U1–U4; include any new test classes
+explicitly in the frozen test union, so new work cannot escape the filter.
+
+```powershell
+dotnet restore StructAutomate.slnx --locked-mode
+dotnet build StructAutomate.slnx -c Release --no-restore
+dotnet test --project tests/StructuralEngineering.Tests/StructuralEngineering.Tests.csproj -c Release --no-build --filter-class '*Baseline*'
+dotnet test --project tests/StructAutomate.Tests/StructAutomate.Tests.csproj -c Release --no-build --filter 'FullyQualifiedName~Wp11|FullyQualifiedName~Wp10Assumption|FullyQualifiedName~Wp10OfflineSession'
+```
+
+`WP11_BUILDING_SNAPSHOT` selects the external case in
+`BaselineRetainedReferenceTests`; an unset variable is a reported skip, never a
+retained-model pass. Existing native mapper/eligibility/design/arrangement
+tests, Windows input/store/projection/assumption tests and the source-preserving
+offline-session tests are the starting owners. Schema/identity changes add their
+maintained conformance consumers. New independent core results need comparison
+to the retained independent WP11 calculations, not only C#/Python agreement.
+
+Extend [Invoke-BaselineDesignAcceptance.ps1](../../../CSharp/packaging/excel/Invoke-BaselineDesignAcceptance.ps1)
+for the new review mode while preserving strict explicit-input regression.
+Its existing parameters are `XllPath`, `SnapshotPath`,
+`ExpectedSnapshotSha256`, `OutputDirectory`, `DevelopmentSmoke` and
+`ExerciseRibbon`; use a new task-owned output directory and the exact expected
+snapshot hash. Reuse the offline-session harness for reopening/ownership.
+Do one early development smoke after the command/event path exists, then the
+final signed installed pass after content freezes. User Excel must be closed
+for this owned harness; it never attaches to or stops a user workbook.
+
+The U5 integrated milestone is the named cumulative correctness gate: run the
+native/Windows focused union, broad Python suite and full `./run.sh check`
+once after content stabilizes. During U1–U4 run only affected focused evidence
+and necessary reproducers; do not add repeated quick/full gates. Format once,
+freeze one candidate, audit all R-rows, check immutable integrity once, and
+publish one PR. One rejection admits one repair; a second requires a changed
+acceptance contract and REPLAN. Hosted/merge identities remain in the external
+delivery ledger. PF9 timing/memory certification remains at project end.
+
+### Work after the first functional milestone
+
+1. **Finish C0a source qualification:** native-unit detailed geometry, effective
+   material/support/station facts and selected load-case dependency closure.
+   Reuse the existing broker/getter/normalizer boundaries and add exact installed
+   getter proof. The assumed-input overlay remains useful while this expands.
+2. **C0c named profile qualification:** independent combined-action, section,
+   continuity/support and reinforcement proofs; complete C0b core/full-state
+   semantics for each admitted cohort. The twenty coverage rows and planned
+   five independent models from three sources, including two locked holdouts,
+   remain the broader qualification target. Two model identities in R07 prove
+   persistence isolation only and do not satisfy that engineering corpus.
+3. **C1 → D → E → F/G:** practical span/group alternatives, verified owned-copy
+   ETABS reanalysis, bounded overnight operation, portable outputs and final
+   qualification. Current source contracts and independent evidence must
+   qualify each dependency before the next outcome is claimed.
+
 ## Owner decision: assume and continue during demo and review — 2026-09-10
 
 **Unknown input → record an assumed value → continue.** The owner clarified

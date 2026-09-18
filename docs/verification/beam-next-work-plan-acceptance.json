@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-NEXT-WORK-PLAN",
+  "status": "authorized",
+  "base_commit": "0b398968eeea82c8a07ee8a9820c4dbd644e6425",
+  "authority": "2026-09-18 owner requested preparation first, then a concrete plan for the next work. The 2026-09-10 assume-and-continue decision remains the product authority.",
+  "objective": "Prepare an isolated current workspace and define a source-backed, bounded implementation sequence for persistent assumptions and uninterrupted provisional review.",
+  "bounded_units": [
+    "Verify workspace, dependencies, predecessor state and existing source/test owners",
+    "Extend the maintained workflow with contracts, sequential implementation units, acceptance evidence and later gates",
+    "Reconcile current entry points and deliver one documentation-only candidate"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "P01",
+      "outcome": "The task starts on fetched main in an isolated branch; the original edit and retained worktrees are preserved, and dependency readiness is recorded truthfully."
+    },
+    {
+      "id": "P02",
+      "outcome": "Current input, mapping, dispatch, persistence and verification owners are traced and bound to source hashes; proposed behavior is distinguished from working behavior."
+    },
+    {
+      "id": "P03",
+      "outcome": "One planned effective-input contract covers precedence, all sixteen data groups, provisional/source identities, persistence, invalid edits, required-check truth and dependency updates."
+    },
+    {
+      "id": "P04",
+      "outcome": "Each next milestone has bounded units, measurable acceptance, exact maintained test/harness owners, a candidate ceiling and no premature claim of broader model qualification."
+    },
+    {
+      "id": "P05",
+      "outcome": "Maintained entry points agree, documentation and lifecycle checks pass, and no runtime, preset, user model, workbook or installed artifact is changed."
+    }
+  ],
+  "owned_paths": [
+    "docs/planning/xll-product/etabs-design-workflow.md",
+    "docs/planning/xll-product/current-plan.md",
+    "docs/planning/next-session-brief.md",
+    "docs/TASKS.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/beam-next-work-plan-acceptance.json",
+    "docs/verification/rework-recurrence-index.json"
+  ],
+  "non_goals": [
+    "Implement the resolver, new engineering methods or automatic dispatch in this planning task",
+    "Launch or modify Excel/ETABS, install a package, issue engineering results or publish a release",
+    "Resume final performance certification, optimization or copied-model reanalysis",
+    "Clean, reset or delete retained branches, worktrees or the original user edit"
+  ],
+  "likely_pitfalls": [
+    "Planning only sheet defaults while leaving actual typed requests unchanged",
+    "Treating review completion as full engineering qualification",
+    "Carrying source-specific assumptions between different models",
+    "Inventing a service load, source fact or passing fire check",
+    "Repeating broad gates or publishing one PR per internal implementation unit"
+  ],
+  "verification": {
+    "preparation": [
+      "Exact SDK selection",
+      "Locked restore and Release build",
+      "Existing focused input, persistence and baseline tests without live applications"
+    ],
+    "focused": [
+      "Changed-path formatter after freeze",
+      "Documentation checks",
+      "Efficiency and session/recurrence checks",
+      "Source-bound plan acceptance audit",
+      "Immutable candidate integrity"
+    ],
+    "hosted": "One required documentation/repository PR cycle; exact run and merge identities remain external."
+  },
+  "preparation": {
+    "date": "2026-09-18",
+    "writer_lane": "Windows preparation/planning only; subsequent source writer must be explicitly bound at implementation intake",
+    "environment_preflight": "PASS: isolated current worktree, current Python source binding, standard hooks",
+    "sdk": "10.0.400",
+    "locked_restore": "PASS",
+    "release_build": {
+      "result": "PASS",
+      "warnings": 0,
+      "errors": 0,
+      "packed_x64_xll": true
+    },
+    "focused_existing_tests": {
+      "native_baseline_passed": 28,
+      "native_baseline_initial_external_skip": 1,
+      "external_retained_case_rerun_passed": 1,
+      "windows_inputs_store_projection_assumptions_offline_passed": 31,
+      "failed": 0,
+      "unique_passed": 60
+    },
+    "external_retained_snapshot_sha256": "a6170c04cbeb45c7b7eca308ddec2b45a4e2248e345fe93f5a80b47d23f7b4ed",
+    "external_log_directory": "C:/CodexWork/beam-next-work-prep/BEAM-NEXT-WORK-PLAN",
+    "installed_acceptance": "Not run; no application launched, workbook/model changed, or package installed",
+    "new_runtime": "Not implemented; this task delivers its prepared plan",
+    "source_sha256": {
+      "CSharp/global.json": "38c47568af69fd6360e03e682c461948bb6648ba4ed0324184741265345e15e8",
+      "CSharp/src/StructuralEngineering.ExcelDna/OfflineAssumptions.cs": "3d22c2abf512ce22c62cebd4d6ce7e9546b65abde43fd275edf88c8bffaec219",
+      "CSharp/src/StructuralEngineering.ExcelDna/BaselineInputSheet.cs": "65385cc6b6dd41591dbd02b3634426c70db0b5aad3c96b828b13675a043e103c",
+      "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignCommands.cs": "6df3410ae330c921230c57a0d21fa7326ce27fac302efe2a9474babea4fa3ca2",
+      "CSharp/src/StructuralEngineering.ExcelDna/BaselineWorkbookStore.cs": "c39224792470662307bcb8ba9d998a122e3d60928af936ab2019d17113081bd6",
+      "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignStore.cs": "41605ec128cbbe9584b8b9a41d05992b56d2d220c7e56341e50d542bc611870d",
+      "CSharp/src/StructuralEngineering.ExcelDna/BaselineDesignWork.cs": "1821d482146abfb9ccd9f9a026288e5b8233387c2edabce7bd3d4bf62d45ab64",
+      "CSharp/src/StructuralEngineering.Beam/BaselineInputMapper.cs": "36d88ce82e40481681033a44b96dd1232d47425fc0fed061d30fbb82ae9a28ad",
+      "CSharp/src/StructuralEngineering.Beam/BaselineDesignOperations.cs": "18210797504b7dde4c4ff40026385a1ac754643b386f45cb4b66934c7dfae7b8",
+      "CSharp/src/StructuralEngineering.Contracts/BaselineDesignContracts.cs": "53538f0e393f6fa45aeea5275f4f72dac9cc9caef2a46adb260f4df5a47d6d1d",
+      "CSharp/tests/StructuralEngineering.Tests/BaselineRetainedReferenceTests.cs": "32b97e25ddde5e8e0e041a2be7a9a3fed99284dfa5a4e1eba98be650ec9e6f54",
+      "CSharp/tests/StructuralEngineering.Tests/Fixtures/wp11-owned-snapshot.sasnap": "cd04be9d9a7ec41db0714f8259fb17bba14d19e73981e71241149da69d0b78f0",
+      "CSharp/tests/StructAutomate.Tests/Wp11InputSheetTests.cs": "c3ffa4e200511be8d6139105d93f099b0301742d906b8a0faf9e6c8fd62c6cb5",
+      "CSharp/tests/StructAutomate.Tests/Wp11DesignStoreTests.cs": "581648eebf26959490d97f9fb0753a7ab1efeabb5e4103b865470ae2da520d64",
+      "CSharp/tests/StructAutomate.Tests/Wp11DesignProjectionTests.cs": "b47c6f716eb9bf0525fa217beb8f5d50e083dc946dc93f367be1f9025f0a72b3",
+      "CSharp/tests/StructAutomate.Tests/Wp10AssumptionTests.cs": "342e002970079f3331c548ba81845328e329c240cf5ace943f553cb19c7b87d1",
+      "CSharp/tests/StructAutomate.Tests/Wp10OfflineSessionTests.cs": "2c7cc8fde2d731f4b4d9a875274d25d75b41fc893436327313e22df4f91a98ac",
+      "CSharp/packaging/excel/Invoke-BaselineDesignAcceptance.ps1": "4a725092ade7b6c0c99bea0d8f007479b02093232829e93352a6a0111eae90e4",
+      "docs/planning/xll-product/demo-beam-preset.json": "b1f48143be278d006b949efcbc69c81b0f1de2b10718f8b9e265bc2887eac43f"
+    }
+  },
+  "planned_next_task": {
+    "task_id": "BEAM-PROVISIONAL-REVIEW",
+    "unit_ids": [
+      "U1",
+      "U2",
+      "U3",
+      "U4",
+      "U5"
+    ],
+    "acceptance_ids": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R08",
+      "R09",
+      "R10",
+      "R11",
+      "R12"
+    ],
+    "data_group_ids": [
+      "DATA-01",
+      "DATA-02",
+      "DATA-03",
+      "DATA-04",
+      "DATA-05",
+      "DATA-06",
+      "DATA-07",
+      "DATA-08",
+      "DATA-09",
+      "DATA-10",
+      "DATA-11",
+      "DATA-12",
+      "DATA-13",
+      "DATA-14",
+      "DATA-15",
+      "DATA-16"
+    ],
+    "authority_path": "docs/planning/xll-product/etabs-design-workflow.md",
+    "publication_boundary": "One functional milestone; no internal-unit PRs",
+    "cumulative_gate": "U5 only; broad Python and full run.sh check after content stabilizes"
+  }
+}
