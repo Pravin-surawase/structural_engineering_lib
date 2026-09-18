@@ -25,6 +25,9 @@ namespace StructAutomate.Tests
             Assert.Equal("ref", read.Parameters[0].Direction);
             Assert.Equal("out", read.Parameters[1].Direction);
             Assert.True(read.Parameters[2].Optional);
+            Assert.True(read.Parameters[2].HasDefaultValue);
+            Assert.Equal(true, read.Parameters[2].DefaultValue);
+            Assert.False(read.Parameters[0].HasDefaultValue);
             Assert.Equal("2", Assert.Single(Assert.Single(result.Enums).Values, x => x.Name == "Group").Value);
 
             EtabsApiMethod Method(string name) => Assert.Single(Assert.Single(result.Members,
@@ -101,6 +104,24 @@ namespace StructAutomate.Tests
             Assert.True(binding.Matches);
         }
 
+        [Fact]
+        public void NavigationAndDefaultValuesAreMetadataWithoutConstructingOrCallingObjects()
+        {
+            var result = EtabsApiDiscovery.InspectAll(typeof(ETABSv1.cSapModel).Assembly);
+            Assert.Contains("ETABSv1.cSapModel", result.Interfaces);
+            var property = Assert.Single(result.Properties, x => x.Name == "FrameObj");
+            Assert.Equal("ETABSv1.cFrameObj", property.Type);
+            Assert.True(property.CanRead);
+            Assert.False(property.CanWrite);
+            var method = Assert.Single(Assert.Single(result.Members,
+                x => x.Capability.Member == "Defaults").Methods);
+            Assert.Equal(2, Convert.ToInt32(method.Parameters[0].DefaultValue));
+            Assert.Equal(0.5, method.Parameters[1].DefaultValue);
+            Assert.True(method.Parameters[2].HasDefaultValue);
+            Assert.Null(method.Parameters[2].DefaultValue);
+            Assert.Equal(0, result.TargetMethodsInvoked);
+        }
+
         private static EtabsApiCapability Candidate(Type type, string method) => new("test", type.FullName!, method, "read");
     }
 
@@ -121,6 +142,7 @@ namespace ETABSv1
     // Deliberate fake SDK: filename matches the real registered signature; lock return type does not.
     public interface cSapModel
     {
+        cFrameObj FrameObj { get; }
         string GetModelFilename(bool IncludePath);
         int GetModelIsLocked();
     }
@@ -135,5 +157,11 @@ namespace ETABSv1
     {
         string Label { get; }
         int GetAndChangeState();
+    }
+
+    public interface cDefaults
+    {
+        int Defaults(StructAutomate.Tests.DiscoveryScope scope = StructAutomate.Tests.DiscoveryScope.Group,
+            double factor = 0.5, string? name = null);
     }
 }

@@ -1,12 +1,31 @@
 ---
 name: api-discovery
-description: "Discover exact live public API signatures, types, defaults, units, modules, and return contracts before calling or wrapping structural_lib functions."
-argument-hint: "Function name to look up, e.g. 'design_beam_is456' or '--all' to list everything"
+description: "Discover exact structural_lib or ETABS API signatures, defaults, return contracts and workflow owners before calling unfamiliar functions or building integrations."
 ---
 
 # API Discovery
 
-The discovery script inspects the installed workspace package through the public compatibility facade. Its output is authoritative for current names and signatures; this skill deliberately does not copy them.
+Choose the API first. Python discovery inspects the workspace package; ETABS discovery reads a portable, version-bound assembly/help catalogue. Neither requires copying the full inventory into agent context.
+
+## ETABS: Task → Method → Existing Implementation
+
+```bash
+./run.sh etabs-api search "beam forces"
+./run.sh etabs-api workflow forces
+./run.sh etabs-api show cAnalysisResults.FrameForce
+./run.sh etabs-api interface cSapModel
+./run.sh etabs-api enum eItemTypeElm
+```
+
+1. Search the task, then read its workflow and maintained source owners. Reuse the existing adapter and smallest acquisition scope.
+2. Inspect each exact method's object path, return type, parameter names/directions/defaults, enums and effect. Missing methods and unknown effects remain explicit; a `Get` prefix is not a permission decision.
+3. Before using an installation, run `./run.sh etabs-api check --assembly <ETABSv1.dll> --chm <matching-help.chm>`. A repository-only check does not verify installed identity.
+4. For units, constraints, return meaning and examples, follow the pinned topic or use `./run.sh etabs-api help <interface.method> --root <extracted-help> --section parameters`. Use `returns` or paginated `all` when needed. Metadata cannot supply undocumented semantics.
+5. Verify new usage through the scoped existing adapter/tests and required installed evidence. A registered signature match is not live qualification. Discovery does not authorize mutation or method invocation.
+
+`summary` reports complete surface/coverage and source hashes; `workflows` lists recipes. Search is bounded; use `--offset`/`--limit` to page. See the [ETABS integration guide](../../../docs/guides/etabs-api-integration.md) for source authority, refresh and use boundaries. Never paste the entire catalogue or vendor manual into every task.
+
+## Python Public API
 
 ## When to Use
 

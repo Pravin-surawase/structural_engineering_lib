@@ -50,6 +50,12 @@
     }
   },
   "areas": {
+    "etabs": {
+      "description": "ETABS API methods, workflow recipes, native adapters and version-bound installed help",
+      "roots": ["CSharp/src/StructuralEngineering.Etabs", "CSharp/tools/StructAutomate.EtabsWorker"],
+      "read_first": [".github/skills/api-discovery/SKILL.md", "docs/guides/etabs-api-integration.md"],
+      "operations": ["discover etabs api"]
+    },
     "repository": {
       "description": "Task state, repository rules, runtime identity, and cross-project orientation",
       "roots": ["."],

@@ -1005,6 +1005,7 @@ _print_usage() {
     echo -e "  ${GREEN}frontend${NC}    Run React checks with the pinned Node runtime"
     echo -e "  ${GREEN}generate${NC}    Generate SDKs, manifests, and scaffolds"
     echo -e "  ${GREEN}context${NC}     Validate/query live context without generated indexes"
+    echo -e "  ${GREEN}etabs-api${NC}   Search ETABS methods, installed help and workflow recipes"
     echo -e "  ${GREEN}verification${NC} Plan change domains and inspect exact PASS evidence"
     echo -e "  ${GREEN}format${NC}      Format/check changed source paths with a scope guard"
     echo -e "  ${GREEN}health${NC}      Project health scan (unified checker)"
@@ -1045,6 +1046,7 @@ _dispatch_help() {
         frontend) _help_frontend ;;
         generate) _help_generate ;;
         context)  _cmd_context --help ;;
+        etabs-api) _require_venv; "$VENV" "$SCRIPTS/etabs_api.py" --help ;;
         verification) _cmd_verification --help ;;
         format)   _cmd_verification format --help ;;
         health)   _help_health ;;
@@ -1190,6 +1192,7 @@ main() {
         frontend) _cmd_frontend "$@" ;;
         generate) _cmd_generate "$@" ;;
         context)  _cmd_context "$@" ;;
+        etabs-api) _require_venv; "$VENV" "$SCRIPTS/etabs_api.py" "$@" ;;
         verification) _cmd_verification "$@" ;;
         format)    _cmd_format "$@" ;;
         health)   _cmd_health "$@" ;;

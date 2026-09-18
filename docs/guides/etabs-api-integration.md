@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-02
+last_updated: 2026-09-18
 doc_type: guide
 complexity: advanced
 tags: [etabs, com, safety, evidence, integration]
@@ -9,22 +9,141 @@ tags: [etabs, com, safety, evidence, integration]
 
 # ETABS API integration guide
 
-This guide defines the maintained safety boundary for ETABS automation in this
-repository. It describes software contracts, not permission to attach to or
-change an installed ETABS session. Installed read-only evidence is acquired only
-in a separately authorized A1/C1 session; setters, analysis, design, save,
-unlock, model switching and exit remain forbidden until their later owned-copy
-milestones are accepted.
+This is the entry point for finding and using ETABS API methods in this
+repository. The portable catalogue and task recipes support discovery without
+starting ETABS. Actual use follows the maintained C# getter host, scoped worker
+and installed evidence for the selected operation. The integration boundaries
+below also retain the earlier Python bridge contracts; they are not a reason
+to create another adapter. Owned-copy mutation remains a separate milestone.
+
+## Start with one task
+
+```bash
+./run.sh context show etabs
+./run.sh etabs-api search "beam forces"
+./run.sh etabs-api workflow forces
+./run.sh etabs-api show cAnalysisResults.FrameForce
+```
+
+The method card supplies the exact parameter names, ref/out directions,
+optional/default values, return type, enum values, object path, installed help
+topic and registered getter profiles. Read the workflow's source owners before
+writing another wrapper. `interface cSapModel` shows object navigation;
+`enum eItemTypeElm` explains the available enum values. `search` returns twelve
+matches by default; page with `--offset` and `--limit`.
+
+`./run.sh etabs-api summary` derives coverage and source identity from the
+catalogue. The September 18 intake contains every exported interface method
+from the installed DLL, and every present method has a matching help topic.
+These are documentation/metadata coverage claims, not claims that all methods
+have been exercised. Missing maintained candidates stay visible.
+
+`./run.sh etabs-api workflows` lists the authored procedures: attachment,
+overview, geometry, materials, forces, tables, model creation, owned reanalysis
+and concrete design. The last three describe future owned workflows. They
+are not production runners. Arbitrary API sequences are not assumed to work
+merely because their individual methods exist.
+
+### How agents obtain the right knowledge
+
+| Need | Maintained source |
+|---|---|
+| Exact callable, defaults, types, property navigation | Generated assembly metadata in [the compressed catalogue](../reference/etabs-api-catalog.json.gz), queried through `etabs-api` |
+| Units, constraints, return meaning, examples | Matching installed CHM, reached through the method's pinned topic |
+| Call order, prerequisites, efficiency choices | [Workflow recipes](../reference/etabs-api-workflows.json) and their implementation owners |
+| Approved getter shape and decoding | Current C# getter matrices, hosts and focused tests |
+| What has actually worked in ETABS | Exact installed receipts; for current acquisition see [bounded acquisition evidence](../verification/etabs-bounded-acquisition-receipt.json) |
+| Agent entry point | Existing [API discovery skill](../../.github/skills/api-discovery/SKILL.md), beam skill, context and operation registry |
+
+This uses small on-demand lookups rather than a second documentation service.
+Keep the full vendor manual outside version control. The portable catalogue
+contains functional metadata and topic identities/hashes, not copied help prose
+or examples. Agents on another device can search it without ETABS installed;
+reading local help or using a live API requires the matching installation.
+
+### Efficiency rules for implementation
+
+Start with overview, acquire geometry/context only when required, and request
+forces only for the selected members and cases. Reuse the existing member,
+batch and group paths. Cache accepted definitions by source identity and bind
+forces to their own current result epoch. Retain the actual rows and API-call
+counts when comparing alternatives. The catalogue lookup is fast; it makes no
+claim that a particular live API call is fast on every model.
+
+Do not infer effects from method names. For example, a CSV-file getter writes a
+file. Do not infer return meaning from `int`: counts and status codes need their
+own documented interpretation, while `GetPresentUnits` returns an enum.
+Registration, help coverage and static signature matching are separate from
+installed behavior and engineering qualification.
 
 ## Versioned authority
 
-The tracked API reference is
-`docs/reference/CSI API ETABS v1.chm`, 4,000,373 bytes, SHA-256
-`a730756ccd283ffc17f592a2e21c973d50b5a14ed3489244fca1524e58f3a700`.
-That exact CHM is the signature authority for this guide. Retained installed
-metadata separately records ETABS 23.3.1.4563, ETABSv1 assembly 2.16.0.0 and
-`comtypes` 1.4.16; those observations do not make a different installation
-compatible automatically.
+The generated catalogue pins ETABSv1 assembly file version `2.16.0.0`, DLL
+SHA-256 `393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54`
+and installed `CSI API ETABS v1.chm` SHA-256
+`0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88`.
+Its source identity is printed by `summary` and each method card. The older
+tracked CHM (`a730756c…`) remains a historical reference; do not substitute it
+for the matching installed help. Assembly reflection supplies current callable
+signatures; the help supplies semantics. Neither alone establishes live behavior.
+
+Before using a different installation, compare both artifacts:
+
+```bash
+./run.sh etabs-api check --assembly "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll" --chm "C:/Program Files/Computers and Structures/ETABS 23/CSI API ETABS v1.chm"
+```
+
+Without those arguments, `check` validates repository references only and
+explicitly reports that installed identity was not checked. A mismatch fails;
+it does not silently select newer signatures.
+
+### Rebuild and read installed help
+
+Use a fresh task-owned evidence directory. From `CSharp`, build the maintained
+worker using the pinned SDK and locked restore, then generate metadata:
+
+```powershell
+dotnet restore tools/StructAutomate.EtabsWorker/StructAutomate.EtabsWorker.csproj --locked-mode
+dotnet build tools/StructAutomate.EtabsWorker/StructAutomate.EtabsWorker.csproj -c Release --no-restore
+dotnet run --project tools/StructAutomate.EtabsWorker/StructAutomate.EtabsWorker.csproj -c Release --no-build -- --api-inventory-all "C:\Program Files\Computers and Structures\ETABS 23\ETABSv1.dll" --response "C:\CodexWork\evidence\NEW-TASK\inventory.json"
+```
+
+This worker uses reflection only and never creates ETABS objects. It refuses
+to overwrite its evidence output. Extract the matching installed help into a
+new empty directory, without executing any example. On this Windows host the
+32-bit HTML Help decompiler worked; the 64-bit executable produced no files:
+
+```powershell
+$apiEvidence = 'C:\CodexWork\evidence\NEW-TASK'
+Copy-Item -LiteralPath 'C:\Program Files\Computers and Structures\ETABS 23\CSI API ETABS v1.chm' -Destination (Join-Path $apiEvidence 'etabs-api.chm')
+Start-Process -FilePath 'C:\Windows\SysWOW64\hh.exe' -ArgumentList '-decompile help etabs-api.chm' -WorkingDirectory $apiEvidence -WindowStyle Hidden -Wait
+```
+
+Confirm HTML files exist. Return to repository root and rebuild the portable
+catalogue from the original CHM, copied help extraction and static inventory:
+
+```bash
+./run.sh etabs-api build --inventory "C:/CodexWork/evidence/NEW-TASK/inventory.json" --assembly "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll" --chm "C:/Program Files/Computers and Structures/ETABS 23/CSI API ETABS v1.chm" --help-root "C:/CodexWork/evidence/NEW-TASK/help" --output docs/reference/etabs-api-catalog.json.gz
+./run.sh etabs-api help cAnalysisResults.FrameForce --root "C:/CodexWork/evidence/NEW-TASK/help" --section parameters
+```
+
+`help` verifies the selected topic hash and emits a bounded plain-text section.
+Use `--section returns` for its return contract, or `--section all --offset N`
+for remarks/examples. The tool does not execute HTML scripts. Build output is
+deterministic for identical inputs; it excludes machine paths and capture time.
+It checks DLL identity and help topic assembly versions. The operator owns the
+fresh CHM extraction; a topic absent from help is reported as a gap.
+
+After refresh, review the changed method/default/property surface and help
+coverage, run `check` and the focused `EtabsApiDiscoveryTests` /
+`Python/tests/test_etabs_api.py` checks, then qualify only the live operations
+needed by the task. Update a workflow when its maintained source behavior or
+evidence changes. Do not mark every method qualified to improve a coverage count.
+
+CSI describes the searchable help as containing function syntax, parameters,
+history and usage examples on its [official developer page](https://www.csiamerica.com/developer).
+This supports using version-matched local help alongside assembly metadata;
+unversioned tutorials are not the signature authority.
 
 Refresh signatures by hashing the installed ETABS executable, registered type
 library, ETABSv1 assembly, generated wrapper if used, Python executable,

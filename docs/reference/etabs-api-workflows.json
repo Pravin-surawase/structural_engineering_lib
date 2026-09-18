@@ -1,0 +1,368 @@
+{
+  "schema_version": 1,
+  "scope": "Authored task recipes linked to generated method metadata; not an exhaustive list of all possible procedures.",
+  "workflows": {
+    "attach": {
+      "purpose": "Attach to the exact operator-selected ETABS process and prove identity before reading.",
+      "keywords": [
+        "connect",
+        "pid",
+        "process",
+        "identity",
+        "version",
+        "units"
+      ],
+      "status": "Implemented getter host; each live target still needs its own identity and operation scope.",
+      "prerequisites": [
+        "Selected PID plus start time, executable/runtime fingerprint and expected model; use the maintained lease and supervised STA broker."
+      ],
+      "steps": [
+        "Discover processes without API calls and select the exact target.",
+        "Use GetObjectProcess, then read version, filename, present/database units and lock state through the existing host.",
+        "Bind the current target and preflight state; run only the selected registered getter profile.",
+        "Compare postflight state and release the worker-owned COM references and lease."
+      ],
+      "methods": [
+        "ETABSv1.cHelper.GetObjectProcess",
+        "ETABSv1.cSapModel.GetVersion",
+        "ETABSv1.cSapModel.GetModelFilename",
+        "ETABSv1.cSapModel.GetPresentUnits",
+        "ETABSv1.cSapModel.GetDatabaseUnits",
+        "ETABSv1.cSapModel.GetModelIsLocked"
+      ],
+      "owners": [
+        "CSharp/src/StructuralEngineering.Etabs/EtabsHostDiscovery.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsReflectionGetterHost.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsProcessLease.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsOperationBroker.cs"
+      ],
+      "checks": [
+        "GetPresentUnits returns an enum directly; do not decode it as status.",
+        "A filename or lock flag does not prove an unsaved in-memory model is clean.",
+        "Never attach to an arbitrary active instance as a fallback."
+      ]
+    },
+    "overview": {
+      "purpose": "Read lightweight model counts, stories, sections, cases and combinations before choosing acquisition scope.",
+      "keywords": [
+        "inventory",
+        "quick",
+        "model",
+        "stories",
+        "counts",
+        "fast"
+      ],
+      "status": "Implemented; retained installed scope recorded in etabs-bounded-acquisition receipt.",
+      "prerequisites": [
+        "Valid exact target and inspection getter profile; bounded overview request."
+      ],
+      "steps": [
+        "Dispatch the existing OverviewWorker request.",
+        "Read metadata/counts and name lists through EtabsInspectionReader overviewOnly.",
+        "Project and retain the overview artifact with source/journal hashes; request geometry or forces only when the next action needs them."
+      ],
+      "methods": [
+        "ETABSv1.cFrameObj.Count",
+        "ETABSv1.cPointObj.Count",
+        "ETABSv1.cAreaObj.Count",
+        "ETABSv1.cStory.GetStories_2",
+        "ETABSv1.cPropFrame.GetNameList",
+        "ETABSv1.cLoadCases.GetNameList",
+        "ETABSv1.cCombo.GetNameList"
+      ],
+      "owners": [
+        "CSharp/tools/StructAutomate.EtabsWorker/OverviewWorker.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsInspectionCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsOverviewProjector.cs",
+        "docs/verification/etabs-bounded-acquisition-receipt.json"
+      ],
+      "checks": [
+        "Overview proves neither geometry nor forces nor beam-design support.",
+        "Respect count-zero/null-array results rather than inventing a row."
+      ]
+    },
+    "geometry": {
+      "purpose": "Acquire frame identities and geometry for selected members without fetching all force results.",
+      "keywords": [
+        "coordinates",
+        "points",
+        "frames",
+        "members",
+        "mesh",
+        "topology"
+      ],
+      "status": "Implemented context capture; detailed support/topology interpretation remains profile-specific.",
+      "prerequisites": [
+        "Valid target; explicit geometry need; context identity bound to later force requests."
+      ],
+      "steps": [
+        "Reuse EtabsContextCapture to read GetAllFrames once.",
+        "Preserve frame unique names, labels, stories, endpoints, sections and source coordinates.",
+        "Project/cache by exact context identity; use member/point getters only for details the next operation requires."
+      ],
+      "methods": [
+        "ETABSv1.cFrameObj.GetAllFrames",
+        "ETABSv1.cFrameObj.GetPoints",
+        "ETABSv1.cFrameObj.GetElm",
+        "ETABSv1.cPointObj.GetCoordCartesian",
+        "ETABSv1.cFrameObj.GetLocalAxes"
+      ],
+      "owners": [
+        "CSharp/src/StructuralEngineering.Etabs/EtabsContextCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsMemberCapture.cs"
+      ],
+      "checks": [
+        "Object and element identities are different; meshed points may not appear among physical endpoints.",
+        "Local axes, insertion offsets and physical faces must remain explicit.",
+        "Do not use geometry-only data as a complete support or design model."
+      ]
+    },
+    "materials": {
+      "purpose": "Resolve assigned sections, concrete and reinforcement properties with explicit provenance.",
+      "keywords": [
+        "section",
+        "rectangle",
+        "tee",
+        "rebar",
+        "concrete",
+        "material",
+        "strength"
+      ],
+      "status": "Existing getters and decoders cover declared profiles; presence of other section methods does not extend design support.",
+      "prerequisites": [
+        "Current member/context identity; declared section and engineering applicability profile."
+      ],
+      "steps": [
+        "Read assigned section and any auto-select list.",
+        "Resolve its type before the corresponding shape getter.",
+        "Read concrete and separate longitudinal/transverse rebar materials.",
+        "Retain original properties and unit basis; keep proposed defaults separate from source facts."
+      ],
+      "methods": [
+        "ETABSv1.cFrameObj.GetSection",
+        "ETABSv1.cPropFrame.GetTypeOAPI",
+        "ETABSv1.cPropFrame.GetRectangle",
+        "ETABSv1.cPropFrame.GetTee",
+        "ETABSv1.cPropFrame.GetMaterial",
+        "ETABSv1.cPropFrame.GetRebarBeam",
+        "ETABSv1.cPropMaterial.GetOConcrete",
+        "ETABSv1.cPropMaterial.GetORebar"
+      ],
+      "owners": [
+        "CSharp/src/StructuralEngineering.Etabs/EtabsMemberCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsInspectionCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs"
+      ],
+      "checks": [
+        "A rectangular decoder cannot silently handle every available section type.",
+        "GetRebarBeam describes section reinforcement settings; do not treat them as a completed design."
+      ]
+    },
+    "forces": {
+      "purpose": "Read member or batch frame-force rows efficiently from already available analysis results.",
+      "keywords": [
+        "beam",
+        "forces",
+        "moments",
+        "shear",
+        "axial",
+        "station",
+        "results",
+        "load"
+      ],
+      "status": "Implemented member/batch/group paths; installed evidence applies only to retained scopes.",
+      "prerequisites": [
+        "Current target/context, already-finished source results, explicit member/case/combination scope and observable output settings."
+      ],
+      "steps": [
+        "Use the existing force request, selecting the smallest member/batch scope needed.",
+        "Read status, selected output cases/combinations and result options through the force getter profile.",
+        "Call FrameForce through the retained member/bulk/group implementation for that scope.",
+        "Validate count and parallel arrays, preserve complete signed rows, normalize units offline and compare postflight state."
+      ],
+      "methods": [
+        "ETABSv1.cAnalyze.GetCaseStatus",
+        "ETABSv1.cAnalysisResultsSetup.GetCaseSelectedForOutput",
+        "ETABSv1.cAnalysisResultsSetup.GetComboSelectedForOutput",
+        "ETABSv1.cAnalysisResultsSetup.GetOptionDirectHist",
+        "ETABSv1.cAnalysisResults.FrameForce"
+      ],
+      "owners": [
+        "CSharp/tools/StructAutomate.EtabsWorker/ForceWorker.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsMemberCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsGroupGetterMatrix.cs",
+        "docs/verification/etabs-bounded-acquisition-receipt.json"
+      ],
+      "checks": [
+        "Use ItemTypeElm and Name together; group, object, element and selection have different meanings.",
+        "Do not combine independent extrema into a synthetic action row.",
+        "Do not change output selections on an attached session; caller state is a prerequisite.",
+        "Count API calls and requested rows before optimizing; reuse accepted context/definitions, not stale result epochs."
+      ]
+    },
+    "tables": {
+      "purpose": "Discover and read available database tables with their actual field schemas.",
+      "keywords": [
+        "database",
+        "table",
+        "schema",
+        "csv",
+        "export",
+        "bulk"
+      ],
+      "status": "Existing retained bulk table path; arbitrary table keys and schemas still require qualification.",
+      "prerequisites": [
+        "Valid target, already-observed display selections, explicit requested table and row/size bounds."
+      ],
+      "steps": [
+        "Read available table keys and emptiness/status metadata.",
+        "Read fields and units for the exact selected key and table version.",
+        "Use the display-array getter for in-memory reads, retaining field order and row count.",
+        "Decode only the observed qualified schema and retain per-table failure status."
+      ],
+      "methods": [
+        "ETABSv1.cDatabaseTables.GetAvailableTables",
+        "ETABSv1.cDatabaseTables.GetAllFieldsInTable",
+        "ETABSv1.cDatabaseTables.GetTableForDisplayArray",
+        "ETABSv1.cDatabaseTables.GetTableForDisplayCSVString",
+        "ETABSv1.cDatabaseTables.GetTableForDisplayCSVFile"
+      ],
+      "owners": [
+        "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsBulkGetterMatrix.cs",
+        "docs/guides/etabs-api-integration.md"
+      ],
+      "checks": [
+        "Display-table selection differs from Results.Setup selection.",
+        "GetTableForDisplayCSVFile writes an external file despite its Get prefix.",
+        "Do not infer a SQLite export method; inspect the installed API surface and retained export contract."
+      ]
+    },
+    "create_model": {
+      "purpose": "Plan an owned model creation procedure from exact installed method contracts.",
+      "keywords": [
+        "new",
+        "create",
+        "model",
+        "frame",
+        "section",
+        "load",
+        "pattern",
+        "build"
+      ],
+      "status": "Documented method sequence only; no new runnable creation workflow or live qualification is delivered by this guide.",
+      "prerequisites": [
+        "Separate owned process/model, explicit creation scope and engineering inputs; never apply this sequence to the attached user session."
+      ],
+      "steps": [
+        "Create the owned application with the installed helper contract and start it.",
+        "Initialize the model with explicit units and create a blank model.",
+        "Define materials/sections/load patterns, then geometry and assignments in dependency order.",
+        "Read back definitions and save to a new owned path; analysis is a separate stage."
+      ],
+      "methods": [
+        "ETABSv1.cHelper.CreateObject",
+        "ETABSv1.cOAPI.ApplicationStart",
+        "ETABSv1.cSapModel.InitializeNewModel",
+        "ETABSv1.cFile.NewBlank",
+        "ETABSv1.cPropMaterial.SetMaterial",
+        "ETABSv1.cPropFrame.SetRectangle",
+        "ETABSv1.cLoadPatterns.Add",
+        "ETABSv1.cFrameObj.AddByCoord",
+        "ETABSv1.cFile.Save"
+      ],
+      "owners": [
+        "docs/planning/xll-product/etabs-design-workflow.md",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsApiDiscovery.cs"
+      ],
+      "checks": [
+        "This is a discovery recipe, not permission or a production runner.",
+        "Consult installed help for every required/default parameter, unit, constraint and return contract."
+      ]
+    },
+    "owned_reanalysis": {
+      "purpose": "Plan section changes and analysis on a separately owned copy.",
+      "keywords": [
+        "change",
+        "section",
+        "mutation",
+        "reanalyze",
+        "solver",
+        "analysis",
+        "save",
+        "copy"
+      ],
+      "status": "Future owned-copy milestone; methods are inventoried but this guide does not implement or qualify the lifecycle.",
+      "prerequisites": [
+        "Saved checkpoint, non-existing owned copy destination, owned process and explicit reviewed change set; existing owned-copy authority/evidence gates apply."
+      ],
+      "steps": [
+        "Create and open the owned copy in the owned application.",
+        "Capture the baseline, unlock only the owned model as required, apply exact section changes and read them back.",
+        "Choose the authorized case dependency closure and run analysis.",
+        "Read statuses and fresh force results, bind the new epoch, then save/report only within the accepted stage."
+      ],
+      "methods": [
+        "ETABSv1.cHelper.CreateObject",
+        "ETABSv1.cOAPI.ApplicationStart",
+        "ETABSv1.cFile.OpenFile",
+        "ETABSv1.cSapModel.SetModelIsLocked",
+        "ETABSv1.cFrameObj.SetSection",
+        "ETABSv1.cAnalyze.SetRunCaseFlag",
+        "ETABSv1.cAnalyze.RunAnalysis",
+        "ETABSv1.cAnalyze.GetCaseStatus",
+        "ETABSv1.cFile.Save",
+        "ETABSv1.cOAPI.ApplicationExit"
+      ],
+      "owners": [
+        "docs/planning/xll-product/etabs-design-workflow.md",
+        "docs/guides/etabs-api-integration.md"
+      ],
+      "checks": [
+        "Never promote an attached user session into an owned one.",
+        "No cFile.Close or proven solver cancellation/progress method is supplied by this installed inventory.",
+        "Worker timeout does not prove ETABS stopped solving; do not automatically replay."
+      ]
+    },
+    "concrete_design": {
+      "purpose": "Plan concrete-design configuration, execution and diagnostic result comparison on an owned model.",
+      "keywords": [
+        "design",
+        "concrete",
+        "summary",
+        "reinforcement",
+        "combination",
+        "comparison"
+      ],
+      "status": "Method discovery and future owned lifecycle; does not imply engineering or installed design qualification.",
+      "prerequisites": [
+        "Owned analyzed model and explicit design code/preferences/overwrites, combinations, section/rebar identity and current result epoch."
+      ],
+      "steps": [
+        "Read or explicitly configure design code and strength combinations within the owned stage.",
+        "Run concrete design only after prerequisites pass.",
+        "Read availability, design section and beam summary with exact item type and row semantics.",
+        "Compare like-for-like cases/stations/units and preserve warnings and design provenance."
+      ],
+      "methods": [
+        "ETABSv1.cDesignConcrete.GetCode",
+        "ETABSv1.cDesignConcrete.SetCode",
+        "ETABSv1.cDesignConcrete.SetComboStrength",
+        "ETABSv1.cDesignConcrete.GetComboStrength",
+        "ETABSv1.cDesignConcrete.StartDesign",
+        "ETABSv1.cDesignConcrete.GetResultsAvailable",
+        "ETABSv1.cDesignConcrete.GetDesignSection",
+        "ETABSv1.cDesignConcrete.GetSummaryResultsBeam"
+      ],
+      "owners": [
+        "docs/planning/xll-product/etabs-design-workflow.md",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsApiDiscovery.cs"
+      ],
+      "checks": [
+        "GetComboStrength is a missing maintained candidate: do not call it or infer it from SetComboStrength; the future implementation must resolve its evidence need explicitly.",
+        "An available summary or comparison is not engineering approval."
+      ]
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-18 — Prepared BEAM-PROVISIONAL-REVIEW execution card; shared assumptions and uninterrupted review are next, with runtime implementation pending
+**Updated:** 2026-09-18 — ETABS API knowledge foundation first; prepared BEAM-PROVISIONAL-REVIEW remains the following runtime milestone
 
 ---
 
@@ -126,9 +126,16 @@
 
 ## Active
 
+`ETABS-API-GUIDE` implements the owner's new first step: a version-bound
+catalogue of all installed ETABS interface methods, matching help topics,
+object navigation/defaults and reusable workflow recipes. Every agent uses
+`./run.sh etabs-api` through the existing API discovery skill and
+[integration guide](guides/etabs-api-integration.md). The catalogue is metadata;
+new installed operations still need scoped qualification.
+
 `BEAM-NEXT-WORK-PLAN` prepares the isolated current workspace and the
 [next functional milestone](planning/xll-product/etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
-`BEAM-PROVISIONAL-REVIEW` is the next implementation task: U1–U5 connect the
+After this API foundation, `BEAM-PROVISIONAL-REVIEW` is the next runtime task: U1–U5 connect the
 field registry, shared resolver/persistence, honest core/provisional states,
 automatic Excel refresh and installed review acceptance. R01–R12 are its exit
 criteria. Preparation changes documentation only; source/method expansion,

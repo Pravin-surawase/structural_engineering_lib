@@ -4,6 +4,11 @@
   "_usage": "Before creating a new document, check if a canonical doc exists for that topic",
 
   "topics": {
+    "etabs-api": {
+      "canonical": "docs/guides/etabs-api-integration.md",
+      "description": "Version-bound ETABS method discovery, workflow lookup, refresh and integration boundaries",
+      "also_see": [".github/skills/api-discovery/SKILL.md", "docs/planning/xll-product/etabs-design-workflow.md"]
+    },
     "agent-onboarding": {
       "canonical": "docs/getting-started/agent-bootstrap.md",
       "description": "Primary entry point for new agents",

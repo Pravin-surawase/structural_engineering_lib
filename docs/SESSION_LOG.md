@@ -5,6 +5,132 @@
 
 ---
 
+## 2026-09-18 — Session: Reusable ETABS API discovery and workflow knowledge
+
+**Task:** ETABS-API-GUIDE
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/etabs-api-guide`
+**Acceptance:** docs/verification/etabs-api-guide-acceptance.json
+**Focus:** Make every installed ETABS interface method discoverable and connect exact contracts to practical workflows and maintained implementation owners.
+
+### Completed
+
+- Started from fetched main `45a4b604` in an isolated Windows writer lane,
+  preserving the original edit and retained worktrees. Bound the existing
+  assembly and matching installed help; reflection invoked no ETABS methods.
+- Extended metadata with optional defaults, exported interfaces, properties
+  and enums. Built a deterministic portable catalogue: 1,343 present methods,
+  143 interfaces, 126 properties, 58 enums; every present method has matching
+  help. The missing design getter remains visible.
+- Added bounded search, method cards, navigation/enum lookup, nine workflow
+  recipes, local help sections and installed identity checks. Recipes separate
+  implemented paths from future owned model/design work; 1,190 unclassified
+  effects remain unqualified.
+- Connected `run.sh etabs-api`, existing API/beam skills, operation registry,
+  context routing and integration guide. Corrected stale help-version authority;
+  the new catalogue contains no vendor help prose or examples.
+
+### Verification
+
+- Metadata generation and all-method help reconciliation completed with the
+  hashes in the acceptance record. The compressed catalogue is 182,710 bytes.
+  Raw inventory and extracted help stay outside Git under
+  `C:/CodexWork/evidence/etabs-api-guide-20260918`.
+- The frozen candidate uses changed-path formatting, focused metadata/lookup
+  regressions, routing/skill/docs validation, a separate acceptance pass and
+  read-only integrity. Exact outcomes and hosted/merge identities remain in
+  external evidence and the delivery ledger.
+- No engineering runtime, installed acceptance, live ETABS/Excel invocation,
+  model/workbook edit, package installation or release is claimed.
+
+- Replan evidence: the first hosted cycle failed six existing Windows capture
+  cases on deadlines/cleanup. All eleven affected variants passed locally, then
+  the full unchanged Windows suite passed 174 tests with 9 explicit external
+  evidence skips. Acceptance A06 requires a fresh hosted verdict; no product or
+  test behavior is changed to obtain it.
+
+### Next
+
+- Agents start with `./run.sh etabs-api search "<task>"`, read the workflow and
+  exact method, verify installed identity and reuse maintained adapters. Add
+  live evidence only for the operations required by the current task.
+- The prepared BEAM-PROVISIONAL-REVIEW U1–U5 runtime milestone follows this API
+  foundation; runtime and installed review acceptance remain pending.
+
+### Issues encountered
+
+- The Windows help host completed without extracted files. Five discovery reads
+  used guessed paths, an unexpanded wildcard, misplaced rg options or a wrong
+  relative command directory.
+- Control registration initially paired an alias display with different argv;
+  the registry rejected the mismatch before projection generation.
+- Focused checks found the older context test fixed the area count at ten;
+  adding ETABS exposed that stale expectation. Script lint also required the
+  descriptive `re.DOTALL` constant instead of its alias.
+- Portable skill validation rejected the pre-existing `argument-hint` key;
+  the examples remain in the body and unsupported frontmatter was removed.
+- Reconciled the previous task's external post-push upstream event once.
+- Session validation rejected a renamed `Next` row and an explanatory bullet
+  placed in the structured recurrence list without a recurrence identifier.
+- Candidate integrity rejected mixed CRLF/LF in the task log and acceptance
+  document before the first push.
+
+- Required hosted run 35351456291 failed six existing Windows capture cases;
+  the .NET build, portable tests and API discovery tests passed. The other five
+  applicable hosted jobs passed. Exact failing job 105620413526 is retained.
+
+### Root causes and resolutions
+
+- The 64-bit help host's underlying failure remains unconfirmed. The 32-bit
+  `SysWOW64/hh.exe` with a task-local CHM produced 1,874 files; all present
+  methods matched help topics and assembly versions. The guide records the
+  working extraction and the reader verifies topic bytes before use.
+- Guessed paths did not match the Windows repository layout. `rg --files` and
+  exact paths found the test owners. Registry display/argv parity was restored
+  with its direct script command; `run.sh` remains the convenience route.
+- The prior upstream failure came from a missing exact branch fetch mapping.
+  Its external receipt proves the repair; this task adds its mapping at intake.
+- Replaced the stale count assertion with the required ETABS operation routing
+  assertion, and corrected the regex spelling. Only affected Python evidence
+  is rerun after these pre-candidate corrections; C# behavior is unchanged.
+- The briefing validator requires the stable `Next` label, and each recurrence
+  bullet requires one identifier. Restored the label and moved the general
+  note to prose; session validation is the direct proof before preparation.
+- Python text writes used Windows default newlines, then patch edits introduced
+  LF into the same documents. Explicit LF writes normalize the affected task
+  documents. Their Git content was already normalized, but the integrity gate
+  correctly checks the actual working bytes too; its repaired-candidate result
+  is retained separately from the rejected first candidate.
+
+- The hosted timing cause is unconfirmed. Failed-fixture replay and the full
+  unchanged Windows suite pass locally; the previous hosted suite also passed
+  on an older runner image. This supports a bounded fresh-host qualification,
+  not a speculative production fix. A repeated failure requires more diagnosis.
+
+### Rework and recurrence
+
+- RR-004: occurrences=18, minutes=unknown. Two briefing/recurrence format
+  contracts missed; preserve stable labels and structured recurrence rows.
+- RR-005: occurrences=165, minutes=unknown. Five path/command-shape events;
+  use discovered paths and literal shell arguments.
+- RR-020: occurrences=3, minutes=unknown. One help-extraction event; verify
+  files exist before claiming coverage and use the proved extraction path.
+- RR-009: occurrences=3, minutes=unknown. One previous-task event reconciled
+  from its external receipt; no additional upstream failure occurred here.
+- RR-045: occurrences=1, minutes=unknown. Mixed Windows text/patch writers;
+  set LF explicitly and verify final document bytes before candidate integrity.
+
+- RR-046: occurrences=1, minutes=unknown. Hosted capture deadlines exceeded;
+  preserve source/test contracts and bind local full-suite and fresh-host proof.
+
+The initial integrity rejection consumed the first design's repair allowance.
+The required hosted failure then entered REPLAN. Design revision 2 changes the
+acceptance contract to require the complete Windows suite and a fresh hosted
+verdict while preserving product code, tests, time limits and durability.
+Rejected and replacement evidence remain separate.
+
+---
+
 ## 2026-09-18 — Session: Prepare the next beam review milestone
 
 **Task:** BEAM-NEXT-WORK-PLAN

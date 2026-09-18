@@ -14,6 +14,12 @@ Keep engineering ownership in the typed C# kernel. Excel maps inputs, displays c
 ./scripts/python_runtime.sh scripts/discover_api_signatures.py <function>
 ```
 
+For ETABS work, use `./run.sh etabs-api search "<task>"`, then `workflow <name>`
+and `show <interface.method>`. The [API discovery skill](../api-discovery/SKILL.md)
+routes exact defaults, object navigation, version-matched help, existing adapters
+and qualification boundaries. Start with overview/context and request forces
+only for the next action's scope; inspect installed identity before live use.
+
 For each public operation, retain its request/result contract, source and example identity, explicit units/signs, applicability, and a current input/result identity. ETABS-derived actions also retain model/runtime/result epoch, case/combination, station, local-axis and physical-face identity. Identify missing or changed inputs precisely and recalculate dependent results before design completion.
 
 Treat a beam as design-complete only after its declared profile has evaluated all required strength, serviceability, detailing and constructability checks against actual selected bars. Preserve bar face, layer, count, diameter, centroid, length/termination, stirrup zones, anchorage and lap inputs. Area-only selection, a bounded solver result, or an Excel export is not an issued member design.

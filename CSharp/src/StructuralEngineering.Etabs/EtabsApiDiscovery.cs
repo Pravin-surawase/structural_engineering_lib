@@ -5,8 +5,10 @@ using System.Text;
 namespace StructuralEngineering.Etabs;
 
 public sealed record EtabsApiCapability(string Area, string InterfaceType, string Member, string Effect);
-public sealed record EtabsApiParameter(string Name, string Type, string Direction, bool Optional);
+public sealed record EtabsApiParameter(string Name, string Type, string Direction, bool Optional,
+    bool HasDefaultValue, object? DefaultValue);
 public sealed record EtabsApiMethod(string Signature, string ReturnType, IReadOnlyList<EtabsApiParameter> Parameters);
+public sealed record EtabsApiProperty(string InterfaceType, string Name, string Type, bool CanRead, bool CanWrite);
 public sealed record EtabsApiEnumValue(string Name, string Value);
 public sealed record EtabsApiEnum(string Type, IReadOnlyList<EtabsApiEnumValue> Values);
 public sealed record EtabsApiGetterBinding(string Profile, string Operation, string ExpectedSignature, bool Matches);
@@ -14,12 +16,13 @@ public sealed record EtabsApiMemberDiscovery(EtabsApiCapability Capability, stri
     IReadOnlyList<EtabsApiMethod> Methods, IReadOnlyList<EtabsApiGetterBinding> RegisteredGetters);
 public sealed record EtabsApiInventory(string SchemaVersion, string CatalogueSha256, string AssemblyIdentity,
     string EvidenceScope, int TargetMethodsInvoked, IReadOnlyList<EtabsApiMemberDiscovery> Members,
-    IReadOnlyList<EtabsApiEnum> Enums);
+    IReadOnlyList<EtabsApiEnum> Enums, IReadOnlyList<string> Interfaces,
+    IReadOnlyList<EtabsApiProperty> Properties);
 
 /// <summary>Metadata discovery only. This catalogue grants no permission to invoke a target method.</summary>
 public static class EtabsApiDiscovery
 {
-    public const string SchemaVersion = "structural.etabs_api_inventory/v1";
+    public const string SchemaVersion = "structural.etabs_api_inventory/v2";
     public static IReadOnlyList<EtabsApiCapability> Capabilities { get; } = CreateCatalogue();
 
     /// <summary>Includes every exported ETABS interface method; unknown effects remain unclassified.</summary>
@@ -47,6 +50,12 @@ public static class EtabsApiDiscovery
 
         var profiles = GetterProfiles();
         var enums = new Dictionary<string, EtabsApiEnum>(StringComparer.Ordinal);
+        var exported = assembly.GetExportedTypes().Where(x => x.Namespace == "ETABSv1").ToArray();
+        var interfaces = exported.Where(x => x.IsInterface).OrderBy(TypeName, StringComparer.Ordinal).ToArray();
+        foreach (var enumType in exported.Where(x => x.IsEnum)) AddEnum(enumType);
+        var properties = interfaces.SelectMany(type => type.GetProperties()
+            .OrderBy(x => x.Name, StringComparer.Ordinal)
+            .Select(x => new EtabsApiProperty(TypeName(type), x.Name, TypeName(x.PropertyType), x.CanRead, x.CanWrite))).ToArray();
         var members = new List<EtabsApiMemberDiscovery>();
         foreach (var capability in selected)
         {
@@ -67,7 +76,8 @@ public static class EtabsApiDiscovery
                 {
                     AddEnum(parameter.ParameterType);
                     return new EtabsApiParameter(parameter.Name ?? string.Empty, TypeName(parameter.ParameterType),
-                        parameter.IsOut ? "out" : parameter.ParameterType.IsByRef ? "ref" : "in", parameter.IsOptional);
+                        parameter.IsOut ? "out" : parameter.ParameterType.IsByRef ? "ref" : "in", parameter.IsOptional,
+                        parameter.HasDefaultValue, parameter.HasDefaultValue ? parameter.DefaultValue : null);
                 }).ToArray();
                 return new EtabsApiMethod(method.ToString()!, TypeName(method.ReturnType), parameters);
             }).ToArray();
@@ -77,7 +87,8 @@ public static class EtabsApiDiscovery
             string.Join('|', x.Area, x.InterfaceType, x.Member, x.Effect))));
         return new(SchemaVersion, Convert.ToHexStringLower(SHA256.HashData(catalogueBytes)),
             assembly.FullName ?? assembly.GetName().Name ?? string.Empty, "static_metadata_only;not_live_qualification", 0,
-            members, enums.Values.OrderBy(x => x.Type, StringComparer.Ordinal).ToArray());
+            members, enums.Values.OrderBy(x => x.Type, StringComparer.Ordinal).ToArray(),
+            interfaces.Select(TypeName).ToArray(), properties);
 
         void AddEnum(Type enumType)
         {
