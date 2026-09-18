@@ -15,6 +15,7 @@ Choose the API first. Python discovery inspects the workspace package; ETABS dis
 ./run.sh etabs-api show cAnalysisResults.FrameForce
 ./run.sh etabs-api interface cSapModel
 ./run.sh etabs-api enum eItemTypeElm
+./run.sh etabs-api coverage --filter Load
 ```
 
 1. Search the task, then read its workflow and maintained source owners. Reuse the existing adapter and smallest acquisition scope.
@@ -23,7 +24,11 @@ Choose the API first. Python discovery inspects the workspace package; ETABS dis
 4. For units, constraints, return meaning and examples, follow the pinned topic or use `./run.sh etabs-api help <interface.method> --root <extracted-help> --section parameters`. Use `returns` or paginated `all` when needed. Metadata cannot supply undocumented semantics.
 5. Verify new usage through the scoped existing adapter/tests and required installed evidence. A registered signature match is not live qualification. Discovery does not authorize mutation or method invocation.
 
-`summary` reports complete surface/coverage and source hashes; `workflows` lists recipes. Search is bounded; use `--offset`/`--limit` to page. See the [ETABS integration guide](../../../docs/guides/etabs-api-integration.md) for source authority, refresh and use boundaries. Never paste the entire catalogue or vendor manual into every task.
+`coverage` enumerates all interfaces, including those without a recipe; filter by interface, object path or recipe and page with `--offset`/`--limit`. Global totals remain independent of the page. Workflow `verification` links focused tests, retained evidence and qualification limits; inspect those limits before reusing a receipt. `check` detects broken references, not every semantic change in an adapter.
+
+Use the [completion plan and setup map](../../../docs/guides/etabs-api-integration.md#completion-plan-and-current-knowledge-boundary) for project setup, next work and known rework controls. Update the active plan's state, evidence and next action after each completed step or outcome-changing blocker. Preserve the repository's candidate freeze: later verdicts belong in the delivery ledger until a repair/replan or next task.
+
+`summary` reports complete surface/coverage and source hashes; `workflows` lists recipes. See the [ETABS integration guide](../../../docs/guides/etabs-api-integration.md) for source authority, refresh and use boundaries. Never paste the entire catalogue or vendor manual into every task.
 
 ## Python Public API
 

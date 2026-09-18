@@ -202,6 +202,47 @@ def coverage(catalog: dict, workflows: dict) -> dict:
     }
 
 
+def interface_coverage(catalog: dict, workflows: dict) -> list[dict]:
+    """Account for the full surface without treating recipes as live evidence."""
+    inv = catalog["inventory"]
+    paths = navigation(catalog)
+    rows = []
+    for interface in sorted(inv["Interfaces"]):
+        members = [
+            m for m in inv["Members"] if m["Capability"]["InterfaceType"] == interface
+        ]
+        present = [m for m in members if m["Methods"]]
+        names = {method_id(m) for m in present}
+        linked = {
+            key: names.intersection(flow["methods"]) for key, flow in workflows.items()
+        }
+        mapped = set().union(*linked.values())
+        rows.append(
+            {
+                "interface": interface,
+                "object_path": paths.get(interface),
+                "present_methods": len(present),
+                "missing_candidates": sum(not m["Methods"] for m in members),
+                "properties": sum(
+                    p["InterfaceType"] == interface for p in inv["Properties"]
+                ),
+                "documented_methods": sum(
+                    bool(catalog["topics"].get("M:" + name)) for name in names
+                ),
+                "registered_methods": sum(
+                    bool(m["RegisteredGetters"]) for m in present
+                ),
+                "unclassified_effects": sum(
+                    m["Capability"]["Effect"] == "unclassified" for m in present
+                ),
+                "recipe_mapped_methods": len(mapped),
+                "without_recipe": len(names - mapped),
+                "workflows": [key for key, matches in linked.items() if matches],
+            }
+        )
+    return rows
+
+
 def build_catalog(
     inventory_path: Path, assembly: Path, chm: Path, help_root: Path
 ) -> dict:
@@ -265,9 +306,17 @@ def validate(catalog: dict, workflows: dict) -> list[str]:
         for name in flow["methods"]:
             if name not in names:
                 errors.append(f"{key}: unknown method {name}")
-        for path in flow["owners"]:
-            if not (ROOT / path).is_file():
-                errors.append(f"{key}: missing owner {path}")
+        verification = flow.get("verification", {})
+        if not verification.get("qualification") or not verification.get("tests"):
+            errors.append(f"{key}: missing verification scope or focused test owner")
+        for label, paths in (
+            ("owner", flow["owners"]),
+            ("test", verification.get("tests", [])),
+            ("evidence", verification.get("evidence", [])),
+        ):
+            for path in paths:
+                if not (ROOT / path).is_file():
+                    errors.append(f"{key}: missing {label} {path}")
     for name, topics in catalog["topics"].items():
         for topic in topics:
             if not re.fullmatch(r"html/[a-zA-Z0-9_-]+\.htm", topic["path"]):
@@ -316,6 +365,12 @@ def main(argv: list[str] | None = None) -> int:
     subs = parser.add_subparsers(dest="command", required=True)
     subs.add_parser("summary")
     subs.add_parser("workflows")
+    matrix = subs.add_parser(
+        "coverage", help="Browse every interface and its knowledge gaps."
+    )
+    matrix.add_argument("--filter", default="")
+    matrix.add_argument("--limit", type=positive, default=12)
+    matrix.add_argument("--offset", type=int, default=0)
     find = subs.add_parser("search")
     find.add_argument("query")
     find.add_argument("--limit", type=positive, default=12)
@@ -358,6 +413,38 @@ def main(argv: list[str] | None = None) -> int:
             catalog = load_catalog(args.catalog)
             if args.command == "summary":
                 result = coverage(catalog, flows)
+            elif args.command == "coverage":
+                all_rows = interface_coverage(catalog, flows)
+                rows = [
+                    row
+                    for row in all_rows
+                    if args.filter.lower()
+                    in " ".join(
+                        [row["interface"], row["object_path"] or "", *row["workflows"]]
+                    ).lower()
+                ]
+                start = max(0, args.offset)
+                result = {
+                    "total_interfaces": len(all_rows),
+                    "matching_interfaces": len(rows),
+                    "offset": start,
+                    "totals_scope": "Entire catalogue, independent of filter and page.",
+                    "totals": {
+                        key: sum(row[key] for row in all_rows)
+                        for key in (
+                            "present_methods",
+                            "missing_candidates",
+                            "properties",
+                            "documented_methods",
+                            "registered_methods",
+                            "unclassified_effects",
+                            "recipe_mapped_methods",
+                            "without_recipe",
+                        )
+                    },
+                    "interfaces": rows[start : start + args.limit],
+                    "qualification": "Documentation, registration and recipe counts are separate. Live qualification is not inferred; inspect the workflow verification scope and exact receipts.",
+                }
             elif args.command == "search":
                 results = search(catalog, args.query, flows)
                 start = max(0, args.offset)

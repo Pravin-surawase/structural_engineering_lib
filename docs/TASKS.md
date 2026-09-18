@@ -133,6 +133,12 @@ object navigation/defaults and reusable workflow recipes. Every agent uses
 [integration guide](guides/etabs-api-integration.md). The catalogue is metadata;
 new installed operations still need scoped qualification.
 
+`ETABS-API-READINESS` completes the [API knowledge handoff plan](guides/etabs-api-integration.md#completion-plan-and-current-knowledge-boundary)
+with a complete interface coverage map, fourteen procedures linked to source,
+tests and evidence, project setup checks and step/blocker update rules. Its
+[acceptance](verification/etabs-api-readiness-acceptance.json) keeps every-method
+discovery separate from live qualification; frozen delivery verdicts are external.
+
 `BEAM-NEXT-WORK-PLAN` prepares the isolated current workspace and the
 [next functional milestone](planning/xll-product/etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
 After this API foundation, `BEAM-PROVISIONAL-REVIEW` is the next runtime task: U1–U5 connect the

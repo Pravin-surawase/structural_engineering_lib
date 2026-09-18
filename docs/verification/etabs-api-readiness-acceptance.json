@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-API-READINESS",
+  "status": "authorized",
+  "base_commit": "a9f0ec11cf06896e9211d7d0d13d6eb5bbd8939f",
+  "authority": "2026-09-18 owner requested completion of reusable API knowledge with an in-depth project-aware plan, issue/rework controls and updates after each step or blocker.",
+  "objective": "Finish the API knowledge handoff with a complete navigable coverage map, evidence-linked procedures and an executable progression plan in the existing guide.",
+  "bounded_units": [
+    "S1: verify project/source baseline and define the remaining knowledge gaps",
+    "S2: add bounded per-interface coverage and reconcile every present method",
+    "S3: map needed unit/load/support/selection/recovery procedures to exact metadata, source owners, tests and evidence limits",
+    "S4: connect project setup, issue/rework controls and step/blocker updates through the maintained guide and skill",
+    "S5: freeze, verify focused discovery/documentation behavior, audit and deliver one candidate"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "A01",
+      "outcome": "A fresh checkout can enumerate every exported interface and reconcile every present method exactly once, with separate documentation, recipe, registration and unclassified-effect counts; output is bounded and filterable."
+    },
+    {
+      "id": "A02",
+      "outcome": "Each authored workflow points to existing source, focused verification and evidence/qualification limits; added procedures retain exact method identities and do not invent implemented or live-qualified behavior."
+    },
+    {
+      "id": "A03",
+      "outcome": "The canonical guide supplies setup authorities, completed/current/next scope, ordered steps, dependencies, acceptance, issues/rework controls and explicit update/replan rules; normal agent routing reaches it."
+    },
+    {
+      "id": "A04",
+      "outcome": "Fresh-worktree command replay, focused Python tests, documentation/context/control/skill validation, read-only candidate integrity and all required hosted checks pass."
+    }
+  ],
+  "owned_paths": [
+    "scripts/etabs_api.py",
+    "Python/tests/test_etabs_api.py",
+    "docs/reference/etabs-api-workflows.json",
+    "docs/guides/etabs-api-integration.md",
+    ".github/skills/api-discovery/SKILL.md",
+    "docs/TASKS.md",
+    "docs/planning/xll-product/current-plan.md",
+    "docs/planning/next-session-brief.md",
+    "docs/SESSION_LOG.md",
+    "docs/verification/etabs-api-readiness-acceptance.json",
+    "docs/verification/rework-recurrence-index.json"
+  ],
+  "non_goals": [
+    "Change ETABS/Excel or engineering runtime behavior",
+    "Invoke discovered API methods, qualify every procedure or change installed applications/models",
+    "Implement BEAM-PROVISIONAL-REVIEW or later optimization/reanalysis",
+    "Repeat completed metadata extraction, solution builds or broad product gates without changed scope"
+  ],
+  "likely_pitfalls": [
+    "Counting missing candidates as present methods",
+    "Treating recipe coverage or registered signatures as live qualification",
+    "Duplicating setup or issue inventories rather than linking maintained authorities",
+    "Updating versioned plans after candidate freeze",
+    "Unbounded reads and recurring Windows path/newline mistakes"
+  ],
+  "verification": {
+    "focused": [
+      "Python/tests/test_etabs_api.py",
+      "CLI surface/workflow/installed-hash replay",
+      "Documentation, context, control and skill checks",
+      "Read-only acceptance and candidate integrity"
+    ],
+    "hosted": "One required PR cycle after the complete knowledge packet freezes; no C# implementation changes."
+  },
+  "writer_lane": "One parent in isolated Windows codex/etabs-api-readiness; original checkout and retained evidence lanes preserved.",
+  "external_evidence_directory": "C:/CodexWork/evidence/etabs-api-readiness-20260918",
+  "observed_pre_freeze": {
+    "interfaces": 143,
+    "present_methods": 1343,
+    "recipe_mapped_methods": 69,
+    "without_recipe": 1274,
+    "workflows": 14,
+    "installed_identity_check": "PASS: pinned DLL and CHM unchanged",
+    "sdk": "10.0.400",
+    "python_source_bound": true,
+    "target_methods_invoked_by_task": 0
+  }
+}
