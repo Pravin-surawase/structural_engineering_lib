@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-10 — XLL model-coverage planning expanded; the separate six-phase beam/ETABS programme retains its own phase gates
+**Updated:** 2026-09-18 — Prepared BEAM-PROVISIONAL-REVIEW execution card; shared assumptions and uninterrupted review are next, with runtime implementation pending
 
 ---
 
@@ -125,6 +125,14 @@
 ---
 
 ## Active
+
+`BEAM-NEXT-WORK-PLAN` prepares the isolated current workspace and the
+[next functional milestone](planning/xll-product/etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
+`BEAM-PROVISIONAL-REVIEW` is the next implementation task: U1–U5 connect the
+field registry, shared resolver/persistence, honest core/provisional states,
+automatic Excel refresh and installed review acceptance. R01–R12 are its exit
+criteria. Preparation changes documentation only; source/method expansion,
+optimization, reanalysis and final performance remain later gates.
 
 `BEAM-ASSUME-AND-CONTINUE` records the owner's
 [default demo/review policy](planning/xll-product/etabs-design-workflow.md#owner-decision-assume-and-continue-during-demo-and-review--2026-09-10):

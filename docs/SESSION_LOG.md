@@ -5,6 +5,77 @@
 
 ---
 
+## 2026-09-18 — Session: Prepare the next beam review milestone
+
+**Task:** BEAM-NEXT-WORK-PLAN
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/beam-next-work-plan`
+**Acceptance:** docs/verification/beam-next-work-plan-acceptance.json
+**Focus:** Prepare a clean current workspace and a bounded implementation plan for persistent assumptions and uninterrupted provisional review.
+
+### Completed
+
+- Created an isolated branch at fetched main `0b398968`, preserving the original
+  checkout's whitespace edit and retained worktrees. Environment/source binding
+  and standard hooks pass; no open predecessor PR was found at intake.
+- Verified exact SDK 10.0.400, locked restore, Release solution and packed x64
+  XLL build with zero warnings/errors. Existing focused tests pass in this
+  worktree: 28 native baseline, 31 Windows input/store/projection/assumption/
+  offline cases, plus the initially skipped retained-building case rerun with
+  its explicit external snapshot. Sixty distinct tests passed, zero failed.
+- Traced the separate input paths, strict full-design mapper, persistence and
+  host/event owners. Bound 19 existing source/fixture/preset/harness hashes and
+  preparation evidence without copying proprietary model bytes.
+- Added BEAM-PROVISIONAL-REVIEW's U1–U5 execution card to the maintained workflow:
+  typed field/scenario contract, resolver/persistence, independent core review,
+  automatic Excel refresh and final integrated acceptance. All sixteen data
+  groups and twelve measurable acceptance scenarios have explicit dispositions.
+- Reconciled current-plan, task and next-session entry points. Source/method
+  qualification follows the first functional review milestone; optimization,
+  reanalysis, overnight operation and project-end PF9 remain later gates.
+
+### Verification
+
+- Preparation logs remain external under
+  `C:/CodexWork/beam-next-work-prep/BEAM-NEXT-WORK-PLAN`; the versioned acceptance
+  record binds observed results and source hashes. No new runtime tests, live
+  application runs, installation or engineering qualification are claimed.
+- The frozen planning candidate uses the documentation checks, efficiency,
+  session/recurrence validation, source-bound plan audit and immutable integrity
+  gate. Exact candidate, hosted and merge outcomes remain in the delivery ledger.
+
+### Next
+
+- At implementation intake bind one source writer and a current isolated branch,
+  then execute U1's field-consumer/fallback registry before U2–U5. Preserve the
+  owner-authorized assumption policy and actual engineering outcomes.
+- Include new test classes in the focused union; run the named cumulative gate
+  once at integrated U5 and keep one PR for that functional milestone.
+
+### Issues encountered
+
+| Symptom / impact | Root cause and resolution | Evidence |
+|---|---|---|
+| Three preparation reads and one documentation patch used a guessed path/cwd or stale heading. | Owner locations were inferred instead of read from the current worktree. Exact `rg --files` paths, explicit repository/CSharp cwd and current task-board text resolved them before freeze. | Successful source/hash inspection, corrected patch and focused commands; RR-005, occurrences=160, minutes=unknown. |
+
+### Root causes and resolutions
+
+- RR-005: the policy packet has an acceptance record rather than the guessed
+  evidence filename; packaging is under CSharp; session scripts are at repository
+  root; task-board text is read from the new current worktree. Four corrections
+  were not separately timed. No source or check was bypassed.
+- Existing RR-043/RR-044 input wiring and continuation gaps are carried into
+  U1–U5 with typed-request and no-prompt acceptance; no new runtime fix is claimed.
+- The external retained test initially skipped because its opt-in environment
+  variable was unset. The known retained snapshot was available; the one affected
+  case passed after binding it explicitly. This is preparation evidence, not a
+  new defect or a reason to repeat unchanged suites.
+
+### Rework and recurrence
+
+- RR-005, occurrences=160, minutes=unknown: four preparation path/cwd/context
+  corrections, deduplicated in the maintained index before candidate freeze.
+
 ## 2026-09-10 — Session: Assume-and-continue demo policy
 
 **Task:** BEAM-ASSUME-AND-CONTINUE

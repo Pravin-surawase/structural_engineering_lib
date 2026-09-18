@@ -1,14 +1,22 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-10
+last_updated: 2026-09-18
 doc_type: guide
 complexity: advanced
 ---
 
 # StructAutomate — current plan
 
-**Active work (10 September):** the owner requested planning beyond the retained
+**Prepared next work (18 September):** implement `BEAM-PROVISIONAL-REVIEW`
+using the [prepared execution card](etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
+It connects one persistent effective-input resolver to core/provisional review,
+Excel edit refresh and complete member reporting without input/acceptance
+prompts. Preparation verified a clean isolated lane, exact SDK, locked build
+and existing focused tests; the new runtime remains unimplemented. Deliver
+U1–U5 as one functional milestone, then expand source/method qualification.
+
+**Broader programme (10 September):** the owner requested planning beyond the retained
 153-beam building, including other models and foreseeable issues. The
 [model-coverage plan](etabs-design-workflow.md#model-coverage-and-future-issues--2026-09-10)
 now defines twenty coverage obligations, C0a-C0c deliverables, later application
@@ -23,8 +31,10 @@ Static C0a API discovery is merged in
 [PR #984](https://github.com/Pravin-surawase/structural_engineering_lib/pull/984)
 at `28551b5461e10ffb1bf19d3008950cf81c27602a`. Those exact accepted scopes and
 their receipts remain valid; discovery does not qualify live methods or new
-beam profiles. The next packet is broker-backed source/topology qualification
-and corpus intake, then independent core review and mainstream method work.
+beam profiles. The immediate review milestone precedes the remaining
+broker-backed source/topology and corpus intake work, followed by named
+engineering-method qualification. Assumed review outputs retain their
+scenario identity throughout that sequence.
 
 The owner explicitly deferred PF9 timing and incremental-memory certification
 to **WP10-PERF-FINAL at the end of the project**. Existing 5 s / 30 s p95 and
