@@ -40,14 +40,14 @@
     {
       "id": "RR-003",
       "pattern": "Candidate or evidence frozen before normalization and behavior stability",
-      "occurrences": 8,
+      "occurrences": 9,
       "observed_minutes": {
         "minimum": null,
         "maximum": null,
-        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed. WP10-05B-FORCES-PLAN edited the learning index while the formatter's byte snapshot was active; its outside-scope guard correctly rejected. Complete all documentation and serialize the repeated formatter against mutations. Rework was not separately timed. WP10-COMPLETION ran the tracked-caller cumulative gate before staging two intended new evidence records; stage reviewed records and retry the affected API/docs checks. Untimed. ETABS-API-READINESS edited the issue log and acceptance while the formatter byte snapshot was active. The scope guard correctly rejected. Complete all writes before repeating the formatter; no bypass or source-behavior change. Untimed."
+        "basis": "The fourth event took about 3 minutes from hosted Black failure to a local formatted file; the earlier evidence-rebind work overlaps RR-001 and was not timed separately. WP10-03 reached content freeze before projecting two new project references into the NuGet lock files; the first locked restore rejected and the repair was not separately timed. WP10-05B-FORCES-PLAN edited the learning index while the formatter's byte snapshot was active; its outside-scope guard correctly rejected. Complete all documentation and serialize the repeated formatter against mutations. Rework was not separately timed. WP10-COMPLETION ran the tracked-caller cumulative gate before staging two intended new evidence records; stage reviewed records and retry the affected API/docs checks. Untimed. ETABS-API-READINESS edited the issue log and acceptance while the formatter byte snapshot was active. The scope guard correctly rejected. Complete all writes before repeating the formatter; no bypass or source-behavior change. Untimed. BEAM-PROVISIONAL-REVIEW candidate c396dbff passed signed installed functional acceptance, then immutable integrity rejected five generated NuGet locks without final LF. CRLF translation had preserved the missing final newline. Append final LF with semantic JSON equality and rebind the one repair candidate; retain rejected evidence. One untimed normalization event."
       },
       "short_solution": "Finish code, docs and generated projections before freeze; serialize mutations against formatting, then run read-only integrity after acceptance.",
-      "last_seen_task": "ETABS-API-READINESS",
+      "last_seen_task": "BEAM-PROVISIONAL-REVIEW",
       "aggregate_parent": "RR-001",
       "details": [
         "docs/planning/xll-product/wp09-postmortem.md#corrected-candidate-sequence",

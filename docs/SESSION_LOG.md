@@ -81,6 +81,9 @@
   later complete integration and ownership checks pass.
 - API classification rejected untracked caller text. A Windows broker test did
   not enter its fake call under the short deadline during concurrent checks.
+- Candidate `c396dbff` passed signed R01–R12 and all eleven strict installed
+  scenarios, then failed read-only integrity: five generated NuGet lock files
+  lacked final LF. The candidate is retained as rejected; one repair is used.
 
 ### Root causes and resolutions
 
@@ -103,6 +106,11 @@
   unconfirmed. Retain both runs and require the hosted verdict without weakening
   deadlines. These cumulative findings update documentation before CANDIDATE;
   only affected documentation/classification validation is repeated.
+- Confirmed integrity root: converting CRLF to LF with `write_text(newline=...)`
+  preserves an absent final newline; it does not append one. Append final LF to
+  the five lock files and retain semantic JSON equality. Native code and package
+  versions are unchanged. Repair evidence rebinds the new immutable candidate,
+  signed manifest/installed checks and one fresh read-only integrity verdict.
 
 ### Rework and recurrence
 
@@ -120,6 +128,8 @@
   fails under concurrent load and passes unchanged in isolated replay/full run.
 - RR-047, occurrences=1, minutes=unknown — stage reviewed new caller text before
   API classification, then rerun only that affected check.
+- RR-003, occurrences=9, minutes=unknown — candidate text normalization omitted
+  final newlines in generated lock files; normalize before freezing the repair.
 
 ---
 

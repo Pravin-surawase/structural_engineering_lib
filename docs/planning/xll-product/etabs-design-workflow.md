@@ -69,6 +69,12 @@ failed under concurrent heavy checks, then passed alone and in the full isolated
 suite. The underlying timing cause remains unconfirmed; required hosted evidence
 is still mandatory. Documentation records these findings before CANDIDATE.
 
+Candidate `c396dbff` passed exact signed R01–R12 and eleven strict baseline
+scenarios, then integrity rejected five generated lock files without final LF.
+The single repair appends those newlines and records the issue; native behavior
+and package versions are unchanged. The replacement candidate must bind its own
+manifest, installed acceptance and integrity result. Rejected evidence is retained.
+
 Closing Excel's last workbook prevents queued macros from executing. Cancellation
 now records its terminal discard immediately and a worker cannot overwrite it
 with a queued state. Re-running an unchanged ledger also no longer rewrites the
