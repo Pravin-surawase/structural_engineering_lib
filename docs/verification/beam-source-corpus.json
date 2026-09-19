@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-C0A-SOURCE",
+  "state": "partial_development_manifest;broader_qualification_pending",
+  "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md#independent-model-corpus-and-measurable-coverage",
+  "inclusion_rule": "M01 unchanged retained regression and M02 pre-result deterministic source sample. Keep all requested frames/roots, including unsupported peers. No synthetic variants count as independent buildings.",
+  "source_scope_frozen_sha256": "1c32da0ed44996d8e5e96b1e373d1f03457dd82e848ff685c3f4f7eff8ee24c1",
+  "target": {
+    "independently_authored_buildings": 5,
+    "sources_or_authors": 3,
+    "locked_holdouts": 2
+  },
+  "evidenced": {
+    "independent_buildings": 1,
+    "independently_named_sources_or_authors": null,
+    "locked_holdouts": 0,
+    "note": "The maintained coverage plan establishes one retained independent building; M02 author/source independence is not established. No author identity or holdout membership is invented."
+  },
+  "models": [
+    {
+      "id": "M01-retained",
+      "role": "development_regression",
+      "independent_building_evidence": "docs/planning/xll-product/etabs-design-workflow.md#independent-model-corpus-and-measurable-coverage",
+      "source_author": "Not named in the public evidence; retained source provenance stays external.",
+      "permission_reference": "Owner-authorized local WP10/WP11 read/acceptance; proprietary source bytes remain external.",
+      "source_model_sha256": "daaa9e852d21a21daa4f5e092edcffb95f39759d90de5445b83f5fb6397a4856",
+      "snapshot_file_sha256": "2529dddccf5bc48084095550781663da5a95b1822abe90e8b6ff6d0c10b68886",
+      "snapshot_identity_sha256": "d398eaec98f0c86f6b8a40fc0bc4a040e722f34b865799f5fe999f2766356dd9",
+      "runtime": "ETABS 23.3.1 / API 2.16.0.0",
+      "members": 153,
+      "action_rows": 3502,
+      "observed_features": [
+        "Nonzero axial demand in all retained beams",
+        "One selected strength combination"
+      ],
+      "declared_profile": "Retained WP10 source/force profile; baseline mapper preserves Unsupported combined-action result.",
+      "expected_reference": "Unchanged retained snapshot and existing BaselineRetainedReferenceTests; no new design reference.",
+      "source_inputs": "Existing snapshot and separate project-input contracts; not inferred from M02.",
+      "holdout": false,
+      "evidence": "docs/verification/wp10-completion-source-evidence.json"
+    },
+    {
+      "id": "M02-development",
+      "role": "development_source_qualification",
+      "independent_building_evidence": null,
+      "source_author": "Unestablished; not counted toward independent authors/models.",
+      "permission_reference": "Owner supplied/opened the intended saved model and replied ready for this read-only packet.",
+      "source_model_sha256": "5ec91b3c6b70da42881d5c77e892fb98f89547b2c7ab1ba72a8ad4c250cb8e8a",
+      "source_artifact_sha256": "f4a5dae9997d5a38f8d7e65bef308e623a07aef73a37cc9428c51a522053f2f7",
+      "snapshot_file_sha256": null,
+      "runtime": "ETABS 23.3.1 / API 2.16.0.0 / native N-mm-C",
+      "inventory": {
+        "frames": 3475,
+        "stories": 25,
+        "assigned_sections": 13,
+        "cases": 16,
+        "combinations": 45
+      },
+      "frozen_scope": {
+        "frames": 20,
+        "stories": 20,
+        "sections": 9,
+        "case_roots": 16,
+        "combination_roots": 16,
+        "rule": "All cases and first 16 ordinal combinations from the intake; deterministic prior 20-frame sample."
+      },
+      "observed": {
+        "source_elements": 68,
+        "endpoint_points": 40,
+        "materials": 2,
+        "complete_static_roots": 17,
+        "unsupported_roots": 15,
+        "omitted_from_source_scope_frames": 3455,
+        "unsampled_stories": 5,
+        "unsampled_sections": 4
+      },
+      "observed_features": [
+        "Native units 9",
+        "Automatic offsets",
+        "Release flags",
+        "Modeling-aid labels require role interpretation",
+        "Modal/spectrum dependency peers remain unsupported"
+      ],
+      "declared_profile": "etabs-source-qualification/v1 only; no force, physical support or design admission.",
+      "expected_reference": "Independent raw-call table/unit/graph replay; no independent engineering design reference supplied.",
+      "source_inputs": "Frozen exact PID/model/scope from local intake; no assumed project support or code-strength inputs.",
+      "holdout": false,
+      "evidence": "docs/verification/beam-c0a-source-receipt.json"
+    }
+  ],
+  "next": "Obtain/admit genuinely independent models and lock holdout membership before tuning; fill missing feature strata and named engineering references. Finish bounded C0a support/role/source qualification first."
+}

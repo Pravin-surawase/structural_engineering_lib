@@ -92,16 +92,18 @@ namespace StructAutomate.Tests
         }
 
         [Fact]
-        public void InspectionOnlyGetterIsReportedAsRegisteredWithItsExactSignature()
+        public void SharedInspectionAndSourceGetterKeepsBothExactProfileBindings()
         {
             var result = EtabsApiDiscovery.Inspect(typeof(ETABSv1.cFrameObj).Assembly,
                 [Candidate(typeof(ETABSv1.cFrameObj), "Count")]);
             var member = Assert.Single(result.Members);
             Assert.Equal("registered_signature_match", member.Status);
-            var binding = Assert.Single(member.RegisteredGetters);
-            Assert.Equal("inspection", binding.Profile);
-            Assert.Equal("FrameObj.Count", binding.Operation);
-            Assert.True(binding.Matches);
+            Assert.Equal(["inspection", "source"], member.RegisteredGetters.Select(x => x.Profile).Order(StringComparer.Ordinal));
+            Assert.All(member.RegisteredGetters, binding =>
+            {
+                Assert.Equal("FrameObj.Count", binding.Operation);
+                Assert.True(binding.Matches);
+            });
         }
 
         [Fact]

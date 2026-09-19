@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 doc_type: guide
 complexity: advanced
 ---
@@ -16,19 +16,20 @@ recipes through `./run.sh etabs-api`. Start with the
 adapters; method discovery does not qualify all live operations.
 
 `ETABS-API-READINESS` completes the [knowledge handoff and step plan](../../guides/etabs-api-integration.md#completion-plan-and-current-knowledge-boundary):
-bounded coverage of every interface, fourteen evidence-linked procedures,
+bounded coverage of every interface, maintained evidence-linked procedures,
 project setup authorities and known issue/rework responses. Agents update the
 active plan after each completed step or outcome-changing blocker; exact
 post-freeze checks/merge facts stay in the delivery ledger. These are knowledge
 tools, with future runtime qualifications still explicitly outstanding.
 
-**Prepared following work:** implement `BEAM-PROVISIONAL-REVIEW`
-using the [prepared execution card](etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
-It connects one persistent effective-input resolver to core/provisional review,
-Excel edit refresh and complete member reporting without input/acceptance
-prompts. Preparation verified a clean isolated lane, exact SDK, locked build
-and existing focused tests; the new runtime remains unimplemented. Deliver
-U1–U5 as one functional milestone, then expand source/method qualification.
+**Current runtime packet:** `BEAM-C0A-SOURCE` follows completed provisional
+review [PR #995](https://github.com/Pravin-surawase/structural_engineering_lib/pull/995).
+The [active step plan](etabs-design-workflow.md#active-implementation-beam-c0a-source--2026-09-19)
+records 20-frame/32-root installed source capture and independent replay,
+versioned material/element tables and native-unit definitions. Final candidate,
+integrity and hosted verdicts stay external. The source recipe and
+[receipt](../../verification/beam-c0a-source-receipt.json) preserve exact limits;
+physical supports/roles, force/result semantics and the wider corpus remain next.
 
 **Broader programme (10 September):** the owner requested planning beyond the retained
 153-beam building, including other models and foreseeable issues. The

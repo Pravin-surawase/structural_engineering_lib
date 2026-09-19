@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-C0A-SOURCE",
+  "status": "authorized",
+  "base_commit": "6aed0d4ee81a37362ed0719bbb4ce0024559a708",
+  "authority": "Owner asked to continue on 2026-09-19 after PR #995, with C0a source qualification explicitly identified as next.",
+  "objective": "Deliver the first bounded C0a source-fact packet: explicit native units, effective material identity, endpoint connectivity, object/element and output-station facts, and selected static load dependency closure through the existing getter/worker boundary.",
+  "profile": "etabs-source-qualification/v1; ETABS 23.3.1/API 2.16.0.0; kN-m-C or N-mm-C; at most 20 named frames and 32 selected case/combination roots; source model <=20000 frames; complete assignment/mapping tables <=200000 records and <=1000000 cells, <=200 mapped elements per requested frame",
+  "bounded_units": [
+    "S1 reconcile merged predecessor, freeze source contract, independent reference and installed-model dependency",
+    "S2 add exact getter profile and typed source facts using the existing lease, STA, journal, deadline and quiescence broker",
+    "S3 normalize native units and resolve selected static dependency closure; preserve every requested member and explicit restrictions",
+    "S4 verify focused offline cases and exact installed getter behavior with source preservation and independent raw-call replay",
+    "S5 update API recipes/catalogue, source/corpus evidence and next-agent plan; freeze one candidate and complete required hosted delivery"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "Q01",
+      "scenario": "Equivalent kN-m-C and N-mm-C records",
+      "outcome": "Coordinates, lengths and source stress normalize identically to mm and N/mm2; raw values/unit codes remain available and no SetPresentUnits call occurs."
+    },
+    {
+      "id": "Q02",
+      "scenario": "Assigned material, overwrite and unavailable property",
+      "outcome": "Retain section and object material identities separately. Resolve only qualified overwrite semantics; no material grade inferred from a name or source Fc silently promoted to IS fck."
+    },
+    {
+      "id": "Q03",
+      "scenario": "Endpoint connectivity, restraint, releases and offsets",
+      "outcome": "Preserve source object/point identities, axes and dimensional facts; connectivity alone never supplies a physical support or effective-span claim."
+    },
+    {
+      "id": "Q04",
+      "scenario": "Object/element and output station settings",
+      "outcome": "Retain exact mappings and reconcile table count/object/element endpoint identities. Preserve undocumented provider RDI/RDJ without a range/unit claim; configured station spacing is distinct from actual force-result stations."
+    },
+    {
+      "id": "Q05",
+      "scenario": "Nested selected combinations and static cases",
+      "outcome": "Retain every factor, dependency and case status; unrelated unsupported cases do not block a complete selected static closure. Cycles, missing terms, unsupported types and initial-case dependencies remain explicit."
+    },
+    {
+      "id": "Q06",
+      "scenario": "Mixed source availability and bounded admission",
+      "outcome": "Every requested frame/root appears once; failed optional getters retain diagnostics/raw invocation; invalid scope is rejected before live getter calls."
+    },
+    {
+      "id": "Q07",
+      "scenario": "Source drift, cancellation and deadline",
+      "outcome": "No accepted artifact after changed units/model/protected facts, cancellation or deadline. Exact PID lease remains held through cleanup and final response is quiescent."
+    },
+    {
+      "id": "Q08",
+      "scenario": "Exact installed source qualification and replay",
+      "outcome": "Bind runtime/source/profile/worker hashes and original-file equality; independently recompute normalized facts/graph from raw evidence and retain all gaps. No installed acceptance inferred from a build or synthetic fixture."
+    },
+    {
+      "id": "Q09",
+      "scenario": "Existing accepted capture and API discovery",
+      "outcome": "Existing profile hashes/semantics and force snapshot bytes remain unchanged; new methods/profile and recipe evidence are discoverable without starting ETABS."
+    }
+  ],
+  "non_goals": [
+    "Change model units/selections, save or analyze a model, modify the user's ETABS/Excel session, or admit engineering profiles",
+    "General dynamic/nonlinear result qualification, new force extraction, physical support inference, C0c combined-action design or C1 alternatives",
+    "Claim completion of the five-model/three-source/two-holdout corpus, full C0a topology qualification, PF9 certification, package publication or release"
+  ],
+  "likely_pitfalls": [
+    "Metadata-present GetElm and GetMaterialOverwrite return CSI 1 on the frozen M02 sample; use the existing versioned table decoder, preserve negative evidence, and never interpret their error outputs as absent assignments",
+    "Confusing native API units with database units or guessing undocumented material/element semantics",
+    "Using a name, restraint flag or mesh point as a physical-support/grade decision",
+    "Dropping unsupported load dependencies or combining selected roots with unrelated cases",
+    "Duplicating the existing COM broker or changing frozen getter profiles",
+    "Claiming saved-model or installed evidence when the running ETABS instance has no readable file",
+    "Guessing helper paths instead of using rg; final text files require LF"
+  ],
+  "verification": {
+    "per_unit": "Focused source qualification, inspection/broker/getter and API catalogue tests; independent source-fact replay, no repeated broad gates.",
+    "cumulative_gate": "The active model-coverage plan reserves broad Python/full-repository validation for C0c. This packet runs the affected union, changed-path formatter/docs/session checks, read-only candidate audit/integrity and required hosted checks.",
+    "external_evidence": "C:/CodexWork/evidence/beam-c0a-source-20260919",
+    "installed_dependency": "Resolved: owner opened M02 and replied ready. Development-03 and independent raw replay passed with 20 frames, 68 elements, 17 static roots and 15 unsupported peers. Exact candidate acceptance remains required.",
+    "table_admission_boundary": "Source frame count is checked before vendor table calls; row/cell payload limits are checked after retrieval before parsing. No claim of prebounded vendor allocation or PF9 performance."
+  },
+  "writer_lane": "One parent in isolated Windows codex/beam-c0a-source-qualification; original checkout and edit preserved.",
+  "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md"
+}

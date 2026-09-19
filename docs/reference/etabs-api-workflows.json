@@ -129,23 +129,29 @@
       ],
       "owners": [
         "CSharp/src/StructuralEngineering.Etabs/EtabsContextCapture.cs",
-        "CSharp/src/StructuralEngineering.Etabs/EtabsMemberCapture.cs"
+        "CSharp/src/StructuralEngineering.Etabs/EtabsMemberCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs"
       ],
       "checks": [
         "Object and element identities are different; meshed points may not appear among physical endpoints.",
         "Local axes, insertion offsets and physical faces must remain explicit.",
-        "Do not use geometry-only data as a complete support or design model."
+        "Do not use geometry-only data as a complete support or design model.",
+        "On the frozen M02 sample, direct GetElm returns CSI 1. Reuse the version-1 Objects and Elements - Frames table with explicit ObjType=Frame filtering, then reverse-check element owners/endpoints; raw RDI/RDJ semantics remain unqualified."
       ],
       "verification": {
         "tests": [
           "CSharp/tests/StructAutomate.Tests/Wp10ContextCaptureTests.cs",
-          "CSharp/tests/StructAutomate.Tests/Wp10BatchCaptureTests.cs"
+          "CSharp/tests/StructAutomate.Tests/Wp10BatchCaptureTests.cs",
+          "CSharp/tests/StructAutomate.Tests/EtabsSourceReaderTests.cs",
+          "CSharp/tests/StructuralEngineering.Tests/EtabsSourceQualificationTests.cs"
         ],
         "evidence": [
           "docs/verification/wp10-completion-source-evidence.json",
-          "docs/verification/etabs-bounded-acquisition-receipt.json"
+          "docs/verification/etabs-bounded-acquisition-receipt.json",
+          "docs/verification/beam-c0a-source-receipt.json"
         ],
-        "qualification": "Retained context/member/mesh profiles only. General support/span interpretation and native-unit detailed acquisition remain C0a work."
+        "qualification": "Retained context/member profiles plus the 20-frame C0a source packet: 68 reconciled elements. Physical supports/spans and actual force stations remain unqualified."
       }
     },
     "materials": {
@@ -166,6 +172,7 @@
       "steps": [
         "Read assigned section and any auto-select list.",
         "Resolve its type before the corresponding shape getter.",
+        "For the source profile, resolve effective material from the complete version-1 Frame Assignments - Material Overwrites table and actual section/material getters. Never interpret an error output as no overwrite.",
         "Read concrete and separate longitudinal/transverse rebar materials.",
         "Retain original properties and unit basis; keep proposed defaults separate from source facts."
       ],
@@ -177,27 +184,34 @@
         "ETABSv1.cPropFrame.GetMaterial",
         "ETABSv1.cPropFrame.GetRebarBeam",
         "ETABSv1.cPropMaterial.GetOConcrete",
-        "ETABSv1.cPropMaterial.GetORebar"
+        "ETABSv1.cPropMaterial.GetORebar",
+        "ETABSv1.cFrameObj.GetMaterialOverwrite"
       ],
       "owners": [
         "CSharp/src/StructuralEngineering.Etabs/EtabsMemberCapture.cs",
         "CSharp/src/StructuralEngineering.Etabs/EtabsInspectionCapture.cs",
-        "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs"
+        "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs"
       ],
       "checks": [
         "A rectangular decoder cannot silently handle every available section type.",
-        "GetRebarBeam describes section reinforcement settings; do not treat them as a completed design."
+        "GetRebarBeam describes section reinforcement settings; do not treat them as a completed design.",
+        "GetMaterialOverwrite returns CSI 1 on every frozen M02 sample frame; its empty error output is not an absence sentinel. CSI Fc is not automatically IS fck."
       ],
       "verification": {
         "tests": [
           "CSharp/tests/StructAutomate.Tests/Wp10GetterAdapterTests.cs",
-          "CSharp/tests/StructAutomate.Tests/Wp10CaptureProjectionTests.cs"
+          "CSharp/tests/StructAutomate.Tests/Wp10CaptureProjectionTests.cs",
+          "CSharp/tests/StructAutomate.Tests/EtabsSourceReaderTests.cs",
+          "CSharp/tests/StructuralEngineering.Tests/EtabsSourceQualificationTests.cs"
         ],
         "evidence": [
           "docs/verification/wp10-02-host-microprobe-evidence.json",
-          "docs/verification/wp10-04-normalization-evidence.json"
+          "docs/verification/wp10-04-normalization-evidence.json",
+          "docs/verification/beam-c0a-source-receipt.json"
         ],
-        "qualification": "Retained rectangular/material mappings only; further sections, effective strengths and code mappings require named profile evidence."
+        "qualification": "Twenty live rectangular source members resolve through the complete empty overwrite table; explicit overwrite rows are fixture-qualified only. Other shapes and code-strength mapping remain separate."
       }
     },
     "forces": {
@@ -280,27 +294,34 @@
         "ETABSv1.cDatabaseTables.GetAllFieldsInTable",
         "ETABSv1.cDatabaseTables.GetTableForDisplayArray",
         "ETABSv1.cDatabaseTables.GetTableForDisplayCSVString",
-        "ETABSv1.cDatabaseTables.GetTableForDisplayCSVFile"
+        "ETABSv1.cDatabaseTables.GetTableForDisplayCSVFile",
+        "ETABSv1.cDatabaseTables.GetTableForEditingArray"
       ],
       "owners": [
         "CSharp/src/StructuralEngineering.Etabs/EtabsBulkCapture.cs",
         "CSharp/src/StructuralEngineering.Etabs/EtabsBulkGetterMatrix.cs",
-        "docs/guides/etabs-api-integration.md"
+        "docs/guides/etabs-api-integration.md",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs"
       ],
       "checks": [
         "Display-table selection differs from Results.Setup selection.",
         "GetTableForDisplayCSVFile writes an external file despite its Get prefix.",
-        "Do not infer a SQLite export method; inspect the installed API surface and retained export contract."
+        "Do not infer a SQLite export method; inspect the installed API surface and retained export contract.",
+        "The source profile reads the complete material overwrite editing array without applying edits, and filters only explicit Frame rows from the version-1 element display table. Model count bounds precede calls; payload limits follow retrieval because the vendor API has no row-limit input."
       ],
       "verification": {
         "tests": [
           "CSharp/tests/StructAutomate.Tests/Wp10BulkCaptureTests.cs",
-          "CSharp/tests/StructAutomate.Tests/Wp10InspectionTests.cs"
+          "CSharp/tests/StructAutomate.Tests/Wp10InspectionTests.cs",
+          "CSharp/tests/StructAutomate.Tests/EtabsSourceReaderTests.cs",
+          "CSharp/tests/StructuralEngineering.Tests/EtabsSourceQualificationTests.cs"
         ],
         "evidence": [
-          "docs/verification/wp10-completion-source-evidence.json"
+          "docs/verification/wp10-completion-source-evidence.json",
+          "docs/verification/beam-c0a-source-receipt.json"
         ],
-        "qualification": "Only retained schemas/table versions/selections are qualified. CSV file export and arbitrary table keys need their own evidence."
+        "qualification": "Retained schemas plus version-1 material overwrite and object/element identity tables. Raw display-selection equality and arbitrary table keys remain unqualified."
       }
     },
     "create_model": {
@@ -463,14 +484,14 @@
         "kn",
         "mm"
       ],
-      "status": "Unit getters and offline normalization exist; broader native-unit detailed-source admission remains C0a qualification.",
+      "status": "Source definitions normalize native enum 6 and 9 through a separate profile; installed source evidence is enum 9, equivalent enum 6 is verified offline. Existing force admission is unchanged.",
       "prerequisites": [
         "Exact runtime/target and declared getter profile; each output quantity has a known unit and sign contract."
       ],
       "steps": [
         "Read present and database unit enums through the existing getter host before acquisition.",
         "Retain raw values, enum identities, field/table units and pre/postflight state with the source evidence.",
-        "Normalize offline using AnalysisSnapshotNormalizer and the admitted source policy; keep concurrent signed action rows intact.",
+        "For source definitions use EtabsSourceQualification: lengths to mm, source stress to N/mm2; retain raw provider coordinates/partial fixity when semantics are undocumented. Existing force snapshots continue through AnalysisSnapshotNormalizer under their original profile.",
         "If the detailed route rejects the native units, preserve that outcome and continue only the available overview/review scope; do not set units on an attached model."
       ],
       "methods": [
@@ -479,7 +500,9 @@
       ],
       "owners": [
         "CSharp/src/StructuralEngineering.Etabs/EtabsGetterMatrix.cs",
-        "CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotNormalizer.cs"
+        "CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotNormalizer.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs"
       ],
       "checks": [
         "Unit enum values are direct returns, not CSI status codes.",
@@ -489,13 +512,16 @@
       "verification": {
         "tests": [
           "CSharp/tests/StructuralEngineering.Tests/Wp10NormalizationTests.cs",
-          "CSharp/tests/StructAutomate.Tests/Wp10GetterAdapterTests.cs"
+          "CSharp/tests/StructAutomate.Tests/Wp10GetterAdapterTests.cs",
+          "CSharp/tests/StructAutomate.Tests/EtabsSourceReaderTests.cs",
+          "CSharp/tests/StructuralEngineering.Tests/EtabsSourceQualificationTests.cs"
         ],
         "evidence": [
           "docs/verification/wp10-04-normalization-evidence.json",
-          "docs/verification/etabs-bounded-acquisition-receipt.json"
+          "docs/verification/etabs-bounded-acquisition-receipt.json",
+          "docs/verification/beam-c0a-source-receipt.json"
         ],
-        "qualification": "Retained unit/source profiles only. The large model overview is accepted while its detailed native-unit force route remains outside current admission."
+        "qualification": "C0a source definitions: installed N-mm-C and offline kN-m-C equivalence. This does not qualify the M02 native-unit force route or change older capture profiles."
       }
     },
     "loads": {
@@ -516,7 +542,7 @@
       ],
       "steps": [
         "Read case names/types and combination terms through the maintained capture path.",
-        "Resolve each selected combination to supported case/pattern dependencies, preserving factors and identities.",
+        "Resolve each requested root independently through EtabsSourceQualification, preserving every factor, nested case/combo/pattern dependency, initial case, status and observed output selection. Unrelated unsupported roots do not block complete static peers.",
         "For admitted linear static cases retain GetLoads definitions and source records; do not reinterpret spectrum/history/nonlinear cases as static.",
         "Treat response-spectrum GetLoads as a discovery candidate for later qualification; inspect matching help and extend the exact adapter/decoder only within the named C0a packet.",
         "Compare requested and observed result selections; reject incomplete dependencies instead of dropping terms or fabricating source actions."
@@ -531,7 +557,9 @@
       "owners": [
         "CSharp/src/StructuralEngineering.Etabs/EtabsLiveGetterProbe.cs",
         "CSharp/src/StructuralEngineering.Etabs/EtabsBatchCapture.cs",
-        "CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotNormalizer.cs"
+        "CSharp/src/StructuralEngineering.Analysis/AnalysisSnapshotNormalizer.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs"
       ],
       "checks": [
         "A selected result name is not a complete source-dependency description.",
@@ -542,13 +570,16 @@
         "tests": [
           "CSharp/tests/StructAutomate.Tests/Wp10GetterAdapterTests.cs",
           "CSharp/tests/StructAutomate.Tests/Wp10BatchCaptureTests.cs",
-          "CSharp/tests/StructuralEngineering.Tests/Wp10NormalizationTests.cs"
+          "CSharp/tests/StructuralEngineering.Tests/Wp10NormalizationTests.cs",
+          "CSharp/tests/StructAutomate.Tests/EtabsSourceReaderTests.cs",
+          "CSharp/tests/StructuralEngineering.Tests/EtabsSourceQualificationTests.cs"
         ],
         "evidence": [
           "docs/verification/wp10-completion-source-evidence.json",
-          "docs/verification/etabs-bounded-acquisition-receipt.json"
+          "docs/verification/etabs-bounded-acquisition-receipt.json",
+          "docs/verification/beam-c0a-source-receipt.json"
         ],
-        "qualification": "Static retained source evidence only. The spectrum candidate is available metadata with unclassified effect and no registered getter; no live dynamic qualification is claimed."
+        "qualification": "Installed 32-root definition scope: 17 complete_static_source and 15 unsupported. No applied load capture, ULS/SLS role assignment, dynamic result qualification or force synthesis."
       }
     },
     "supports": {
@@ -570,7 +601,7 @@
       "steps": [
         "Reuse member capture for endpoints, GetReleases, GetRestraint, GetInsertionPoint_1 and end offsets.",
         "Keep frame releases and point restraints separate; retain axes and partial-fixity data from their actual contracts.",
-        "Inspect GetConnectivity for the next topology qualification packet; it has no current registered getter in the pinned catalogue.",
+        "Use the source profile's exact GetConnectivity getter to retain object types/names and point numbers with native-unit endpoint facts. Keep physical support interpretation separate.",
         "Build physical spans/supports only after the named interpretation profile and independent examples are accepted; source facts and assumed review supports remain distinct."
       ],
       "methods": [
@@ -584,7 +615,9 @@
       "owners": [
         "CSharp/src/StructuralEngineering.Etabs/EtabsMemberCapture.cs",
         "CSharp/src/StructuralEngineering.Etabs/EtabsGetterMatrix.cs",
-        "docs/planning/xll-product/etabs-design-workflow.md"
+        "docs/planning/xll-product/etabs-design-workflow.md",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs"
       ],
       "checks": [
         "Use the registered GetInsertionPoint_1 signature rather than substituting a similarly named overload.",
@@ -594,13 +627,16 @@
       "verification": {
         "tests": [
           "CSharp/tests/StructAutomate.Tests/Wp10GetterAdapterTests.cs",
-          "CSharp/tests/StructAutomate.Tests/Wp10BatchCaptureTests.cs"
+          "CSharp/tests/StructAutomate.Tests/Wp10BatchCaptureTests.cs",
+          "CSharp/tests/StructAutomate.Tests/EtabsSourceReaderTests.cs",
+          "CSharp/tests/StructuralEngineering.Tests/EtabsSourceQualificationTests.cs"
         ],
         "evidence": [
           "docs/verification/wp10-02-host-microprobe-evidence.json",
-          "docs/verification/wp10-completion-source-evidence.json"
+          "docs/verification/wp10-completion-source-evidence.json",
+          "docs/verification/beam-c0a-source-receipt.json"
         ],
-        "qualification": "Evidence covers retained getter/topology profiles, not general physical support/continuity qualification."
+        "qualification": "Installed endpoint connectivity and release/offset facts for 20 frames and 40 points; no physical support/continuity/span qualification."
       }
     },
     "result_selection": {
@@ -696,6 +732,72 @@
           "docs/verification/etabs-bounded-acquisition-receipt.json"
         ],
         "qualification": "Existing broker and retained scoped cleanup evidence. Hosted deadline variability RR-046 is an unresolved observation, not a proved production defect or a new cancellation capability."
+      }
+    },
+    "source": {
+      "purpose": "Capture bounded native-unit source facts and static load dependency closures without changing the selected ETABS model.",
+      "keywords": [
+        "source",
+        "qualification",
+        "native",
+        "material",
+        "connectivity",
+        "mesh",
+        "station",
+        "closure"
+      ],
+      "status": "Implemented separate source worker/profile; exact M02 installed development evidence plus independent raw-call replay. Candidate-bound final verdict is external.",
+      "prerequisites": [
+        "Exact PID/start/executable, expected saved-model SHA-256, future deadline, fresh request/response/evidence paths, 1..20 frame names and 1..32 case/combination roots.",
+        "Observe source frame count <=20000. Each full table must remain <=200000 rows/1000000 cells; vendor allocation occurs before returned-size validation."
+      ],
+      "steps": [
+        "Use overview/inspection to freeze model identity and explicit scope before seeing new results.",
+        "Dispatch StructAutomate.EtabsWorker --source-request request.json --response response.json using structural.etabs_source_request/v1; see the guide for the exact contract.",
+        "Reuse EtabsSourceBroker and the shared lease/STA/journal/deadline/quiescence boundary; its reader caches repeated properties and proves successful facts equal before/after.",
+        "Read versioned material overwrite and element identity tables once; filter Frame rows and reconcile reverse object/element endpoints. Retain source coordinates, properties, releases, offsets and configured station settings.",
+        "Normalize only documented dimensions; resolve each selected static definition closure independently and retain all unsupported/unavailable peers.",
+        "Require completed plus quiescent response, unchanged source file and protected facts, and raw-call replay before accepting evidence. Update the receipt/plan before candidate freeze."
+      ],
+      "methods": [
+        "ETABSv1.cFrameObj.Count",
+        "ETABSv1.cDatabaseTables.GetAllFieldsInTable",
+        "ETABSv1.cDatabaseTables.GetTableForEditingArray",
+        "ETABSv1.cDatabaseTables.GetTableForDisplayArray",
+        "ETABSv1.cLineElm.GetObj",
+        "ETABSv1.cLineElm.GetPoints",
+        "ETABSv1.cPointObj.GetConnectivity",
+        "ETABSv1.cFrameObj.GetOutputStations",
+        "ETABSv1.cPropMaterial.GetOConcrete",
+        "ETABSv1.cCaseStaticLinear.GetInitialCase",
+        "ETABSv1.cCombo.GetCaseList"
+      ],
+      "owners": [
+        "CSharp/tools/StructAutomate.EtabsWorker/SourceWorker.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceBroker.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsSourceGetterMatrix.cs",
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs",
+        "CSharp/src/StructuralEngineering.Contracts/EtabsSourceContracts.cs",
+        "docs/verification/beam-c0a-source-receipt.json"
+      ],
+      "checks": [
+        "Source definitions only; applied loads and force rows are not read.",
+        "Connectivity, releases, offsets and axes do not establish physical supports, effective span or member design role.",
+        "Output station configuration is distinct from actual force-result stations; raw RDI/RDJ coordinate semantics remain unqualified.",
+        "Static root closure does not assign ULS/SLS roles, prove concurrent dynamic actions, establish current in-memory result freshness, or admit engineering design.",
+        "Known table display-case getter mismatch remains outside this profile; no complete table-selection equality claim.",
+        "Independent source/holdout count, cross-model support and PF9 certification are unchanged."
+      ],
+      "verification": {
+        "tests": [
+          "CSharp/tests/StructAutomate.Tests/EtabsSourceReaderTests.cs",
+          "CSharp/tests/StructuralEngineering.Tests/EtabsSourceQualificationTests.cs"
+        ],
+        "evidence": [
+          "docs/verification/beam-c0a-source-receipt.json"
+        ],
+        "qualification": "Exact source definitions only; live no-overwrite material branch and N-mm-C. Explicit overwrites/kN-m-C fixture evidence remain separate; broader C0a and design support are not complete."
       }
     }
   }

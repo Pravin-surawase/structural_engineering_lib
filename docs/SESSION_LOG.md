@@ -5,6 +5,77 @@
 
 ---
 
+## 2026-09-19 — Session: Bounded C0a source qualification
+
+**Task:** BEAM-C0A-SOURCE
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/beam-c0a-source-qualification`
+**Acceptance:** docs/verification/beam-c0a-source-acceptance.json
+**Focus:** Qualify native-unit source facts and selected static load dependencies through the existing bounded ETABS host.
+
+### Completed
+
+- Reconciled #995 merge/tree and hosted evidence; isolated the writer from the
+  original checkout/edit and retained evidence lanes. Installed API/help match.
+- Added the bounded source contracts/profile/worker using the existing shared
+  lease, STA, journal, deadline, source drift and quiescence owner. Original
+  capture profiles and retained M01 force snapshot bytes remain unchanged.
+- Projected native unit/material/endpoint/release/offset/station facts and
+  per-root static dependency closure. Preserved every requested member and
+  unsupported peer, with physical-support and code-strength boundaries explicit.
+- Qualified the version-1 material overwrite and element tables through the
+  existing table parser after retaining direct-getter failures. Updated the
+  searchable API catalogue/recipes, partial corpus manifest and next-step plan.
+
+### Verification
+
+- Locked restore/Release build passed with zero warnings/errors. Nine portable
+  source cases, five source-host cases and ten inspection regression cases pass.
+- Exact user-opened M02 development-03 acquired 20 members, 40 endpoints, two
+  materials and 68 reconciled elements. All 32 roots are retained: 17 complete
+  static definitions and 15 unsupported. No source getter gaps remain.
+- Independent raw-call Python replay rebuilt dimensions, table joins and load
+  dependency factors/closures. Original model and protected successful calls
+  compare equal; cleanup and quiescence passed. M01 snapshot SHA remains exact.
+- Final frozen-candidate focused, installed replay, integrity and hosted verdicts
+  belong in the external evidence/delivery ledger. Broad Python/full-repository
+  cumulative validation remains the named C0c gate, not this source packet.
+
+### Issues encountered
+
+- Initial exact-PID intake had no readable saved model. The owner opened the
+  intended saved source and replied ready; intake-02 then passed.
+- Metadata-present GetElm/GetMaterialOverwrite returned CSI 1 for every sampled
+  frame. Empty error outputs did not establish absent mappings or overwrites.
+- Terminal diagnostics made guessed path/glob/command/output-envelope assumptions,
+  including a legacy test invocation that ran zero tests and an artifact read
+  before worker completion. None of those attempts supplied acceptance evidence.
+
+### Root causes and resolutions
+
+- The source guard rejected the initial unreadable filename before attachment;
+  no accepted artifact was produced. User source readiness resolved the dependency.
+- New direct getter usage was admitted from metadata before model-specific proof;
+  vendor rejection cause is unconfirmed. Reused the already-qualified Frame-row
+  table decoder and proved complete overwrite-table absence plus actual material
+  identity. Independent replay and all reverse element endpoints agree.
+- Terminal failures were caller contract errors, not repository/runtime defects.
+  Discovered owners, inspected output keys, awaited completion and used pinned
+  Microsoft.Testing.Platform `--project`/`--filter-class` arguments. All writes
+  use explicit UTF-8 LF. Evidence is under the task's external directory.
+
+### Rework and recurrence
+
+- RR-002: occurrences=43, minutes=unknown. One source getter qualification event;
+  two methods failed on the same frozen source. The new profile uses proved table
+  identities; vendor cause remains unconfirmed and negative evidence is retained.
+- RR-005: occurrences=193, minutes=unknown. Fourteen task diagnostic corrections
+  plus two untallied predecessor closeout command corrections are reconciled once.
+  Exact discovered paths, modern test syntax and actual output envelopes resolved
+  them; no source or candidate evidence was silently replaced.
+
+---
+
 ## 2026-09-19 — Session: Persistent assumptions and provisional beam review
 
 **Task:** BEAM-PROVISIONAL-REVIEW

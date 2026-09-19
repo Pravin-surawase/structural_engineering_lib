@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 doc_type: guide
 complexity: advanced
 tags: [etabs, com, safety, evidence, integration]
@@ -38,7 +38,7 @@ method surface is enumerable; authored procedures expand with approved tasks.
 | S2 — complete surface map | Complete implementation and command replay | Fresh-worktree coverage reconciles 143 interfaces, 1,343 present methods and 126 properties. Missing/unmapped/unclassified counts remain separate. Focused regression verdict follows in S5. |
 | S3 — procedure and evidence map | Complete source reconciliation | Fourteen recipes link existing source/test/evidence paths; every referenced method is indexed, including the explicitly missing design candidate. Both installed artifact hashes and reference checks pass. |
 | S4 — reusable handoff and rework plan | Complete implementation | Existing skill/context/guide route setup, known issues, acceptance and step/blocker updates. Current plan, task board and next-session brief agree on the next runtime milestone. |
-| S5 — acceptance and integration | Active; final verdict recorded externally | Run focused lookup/CLI and documentation checks, then independent acceptance, candidate integrity and required hosted checks on one frozen candidate. Exact verdicts stay in the task delivery ledger. |
+| S5 — acceptance and integration | Complete in PR #994 | Readiness merged before the completed #995 provisional-review milestone. Current source qualification and exact candidate/hosted facts follow the active workflow plan and delivery ledger. |
 
 ### Project setup: read the owner of each fact
 
@@ -86,7 +86,7 @@ inspect affected owners when they change.
 | Need | Recipe(s) | Current boundary / remaining work |
 |---|---|---|
 | Target, lightweight inventory | `attach`, `overview` | Existing exact-target getter host and retained overview evidence. |
-| Geometry, materials, units, physical support | `geometry`, `materials`, `units`, `supports` | Existing admitted profiles; general native-unit detail, effective material and support/span interpretation remain C0a. |
+| Geometry, materials, units, physical support | `geometry`, `materials`, `units`, `supports` | The bounded source recipe adds native-unit/material/connectivity/element facts; physical support/span and role interpretation remain C0a. |
 | Demands and their source definitions | `loads`, `result_selection`, `forces`, `tables` | Scoped static acquisition and retained schemas; broader dynamic/nonlinear dependency closure and arbitrary tables need named qualification. |
 | Failure and cleanup | `recovery` | Existing broker/lease/journal controls; no new ETABS solver-cancel capability. |
 | New model, copy/update/analyse, ETABS design | `create_model`, `owned_reanalysis`, `concrete_design` | Future procedures. Method metadata and planned order do not supply production runners or installed acceptance. |
@@ -123,6 +123,7 @@ candidate. The next task reconciles the final delivery facts at intake.
 |---|---|
 | Installed DLL/help hash differs | Keep offline discovery usable, but refresh metadata/help and review the changed methods before installed use. New signature presence alone is insufficient live proof. |
 | Missing method, unknown effects or unregistered getter | Inspect exact help and maintained adapter; add only the needed scoped contract/evidence. `cDesignConcrete.GetComboStrength` remains missing; do not infer it from its setter. |
+| Direct GetElm/GetMaterialOverwrite returns CSI 1 | Retain raw failure outputs without interpreting them as absence. Use the source recipe's qualified table route; vendor cause remains unconfirmed. |
 | New units, case type, section/support or result semantics | Preserve the unsupported source outcome and route qualification to C0a/C0c. The assumed-input review uses a separately identified scenario; it cannot erase original actions or requirements. |
 | Timeout, uncertain cleanup or incomplete capture | Follow `recovery`, retain journal/cleanup facts and isolate the failing stage. RR-046's hosted deadline cause is still unconfirmed; replay the affected tests before considering a code or budget change. |
 | Empty Windows help extraction | RR-020: verify output files; use the documented task-local copy and 32-bit decompiler. No files means extraction did not succeed. |
@@ -132,11 +133,11 @@ candidate. The next task reconciles the final delivery facts at intake.
 
 ### What follows this knowledge milestone
 
-1. **BEAM-PROVISIONAL-REVIEW U1–U5:** use the existing
+1. **BEAM-PROVISIONAL-REVIEW U1–U5 (completed in PR #995):** use the existing
    [execution card and R01–R12](../planning/xll-product/etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
    Its first exit is a complete field/consumer/fallback contract, followed by
    persistent resolution, independent provisional calculations, Excel refresh
-   and installed acceptance. New runtime behavior remains unimplemented here.
+   and installed acceptance. The active C0a source packet follows this merged behavior.
 2. **C0a/C0c qualification:** add only the source/method/profile gaps needed for
    the approved beam cohorts. Bind actual units, source closure, supports,
    stations and independent engineering examples; update the relevant recipe
@@ -441,3 +442,45 @@ These are software acceptance tests only. A1/C1 installed observations require
 separate user authorization and new target/runtime/pre-post evidence. No fake,
 static signature audit, prior installed run, selected candidate or diagnostic
 comparison is professional review, construction approval or release authority.
+
+
+## Bounded source qualification worker
+
+Run `./run.sh etabs-api workflow source` for the maintained owners and
+[source receipt](../verification/beam-c0a-source-receipt.json) for exact evidence.
+The request is JSON with `schema_version: structural.etabs_source_request/v1`,
+a unique `request_id`, `target` (`process_id`, `process_started_utc`,
+`executable_path`, `executable_sha256`), `expected_model_sha256`, a future
+`deadline_utc`, a new absolute `evidence_path`, and `scope` containing
+`frame_names`, `case_names`, and `combination_names` arrays. Bind these to a
+fresh exact-target inspection and freeze the sample before interpreting results.
+Do not reuse the example source's model identities for another project.
+
+From `CSharp`, dispatch the existing worker:
+
+```powershell
+dotnet run --project tools/StructAutomate.EtabsWorker -c Release --no-build -- --source-request C:\path\request.json --response C:\path\response.json
+```
+
+Use fresh response/evidence paths. Acceptance needs `completed`, `quiescent`
+and successful cleanup plus the artifact's source/profile/journal identities.
+The artifact retains raw native values and normalized documented dimensions,
+complete table evidence, every requested member/root and explicit restrictions.
+It caches repeated source getters and compares every successful fact before and
+after capture. It shares the inspection broker rather than introducing another
+COM lifetime owner.
+
+Limits are 20 frames, 32 roots, 500 graph nodes/terms per node, 20,000 source
+frames, 200,000 rows/1,000,000 cells per full table and 200 elements per requested
+frame. Model frame count is checked before table calls; the vendor has no row
+limit input, so returned-size limits do not bound its allocation in advance.
+This is source qualification, not a PF9 latency/memory claim.
+
+M02 live evidence covers N-mm-C, a complete empty material-overwrite table and
+20 source frames; explicit overwrite rows and kN-m-C equivalence have offline
+fixtures only. Table identity decoding reuses `EtabsBulkTable` and retains
+100,428 non-Frame context rows without treating them as beam elements. Source
+Fc is not automatically IS fck. Raw RDI/RDJ and partial-fixity semantics remain
+explicit. Configured output stations are not actual force stations. The next
+work is physical support/role interpretation, declared load roles and qualified
+result semantics; existing force capture profiles remain unchanged.
