@@ -58,6 +58,13 @@
 
 ### Issues encountered
 
+- First candidate `527c0e26` failed read-only integrity because the PowerShell
+  JSON writer produced mixed CRLF/LF in the recurrence index. Before that check,
+  the audit helper misread the direct Git-state response envelope; orchestration
+  incorrectly advanced AUDIT_ACCEPTED despite its failure. No successful audit
+  report existed and no push occurred. An explicit REPAIR command was redundant
+  because the integrity rejection had already derived that state.
+
 - Main advanced with #997 while topology was frozen, overlapping four shared
   records. The first retained-test invocation supplied binary `.sasnap` to a
   JSON-only fixture, then an unrelated three-member development JSON. A later
@@ -78,6 +85,14 @@
   differ from point-connectivity object type codes.
 
 ### Root causes and resolutions
+
+- Use source-bound Python with explicit UTF-8 LF for the recurrence JSON. The
+  one allowed repair changes documentation/evidence only and retains all C# and
+  accepted Python source bytes. Read the actual direct/multi-worktree Git-state
+  envelope, require a zero exit code plus a successful audit report before its
+  dependent transition, and inspect derived lifecycle state. Rebuild and bind
+  fresh installed evidence to the repaired candidate; repeat only affected
+  documentation checks and read-only candidate integrity.
 
 - Committed the scoped implementation, then merged the verified main normally.
   Preserved both session histories and the accepted Python sources; regenerated
@@ -112,8 +127,8 @@
 
 ### Rework and recurrence
 
-- RR-005: occurrences=213, minutes=unknown. One predecessor completion-wait
-  event, three earlier lookup events and five continuation input/lookup
+- RR-005: occurrences=216, minutes=unknown. One predecessor completion-wait
+  event, three earlier lookup events and eight continuation input/lookup
   corrections are counted once; #997 contributes eleven distinct prior events. Read CLI examples,
   discover exact owners and await command completion before dependent actions.
 - RR-002: occurrences=47, minutes=unknown. Four host/interpretation boundaries
@@ -121,8 +136,10 @@
   matrix layout and object-type vocabulary. Raw installed schemas/coordinates,
   unchanged ownership tables and independent replay resolve them; earlier
   development artifacts stay external and are not accepted candidate evidence.
-- RR-004: occurrences=23, minutes=unknown. One untimed formatter-entry event;
-  canonical `run.sh format --write` supplies the event required by FORMATTED.
+- RR-004: occurrences=24, minutes=unknown. One untimed formatter-entry event
+  and one premature audit transition are counted. Canonical `run.sh format
+  --write` records the gate event; checked success and an existing acceptance
+  report must precede dependent delivery commands.
 
 ## 2026-09-19 — Session: Integrate verified beam quality fixes after Windows source qualification
 
