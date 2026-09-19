@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-19
-- Focus: Complete persistent assumptions, independent provisional checks and the Excel edit/refresh/reopen loop under U1–U5/R01–R12.
-- Completed: Started from freshly fetched #994 main `57a59987` in an isolated Windows worktree. Preserved the original checkout edit, user applications and retained evidence lanes. Reused the pinned .NET/Python environment and API foundation.; Implemented the native field/consumer/fallback matrix, versioned scoped ledger, source/model isolation, explicit overrides and deterministic invalid/conflict fallback. Shared Excel views now feed the actual typed inputs.; Added a distinct core-preview result and independent member/stage accounting through the existing engineering owners. Fire, SLS, unsupported actions, examples, quantities, costs and unverified alternatives remain explicit. Rate-only changes reuse structural/quantity evidence.
-- Recurrence controls: RR-005 x177 / unknown: Use maintained launchers, exact paths and explicit cwd; inspect actual output envelopes before projecting diagnostic fields.; RR-002 x42 / unknown: Probe exact host boundaries and ownership before acceptance; verify cleanup of owned child processes and resources explicitly.; RR-043 x1 / unknown: Resolve shared preset and scoped overrides into the actual typed request; verify effective values and leaf outputs as well as freshness.
+- Focus: Preserve requested batch calculation inputs and outcomes in an isolated Mac lane.
+- Completed: Fetched GitHub main `6aed0d4e` and created a dedicated Mac worktree. The primary checkout remains unchanged at `c822809d`; existing dirty/unknown worktrees are preserved.; Observed the active Windows source-qualification task on `codex/beam-c0a-source-qualification`. Python batch implementation is separate; publication remains dependent on predecessor/shared-document reconciliation.; Corrected the stale batch argument map: automatic and explicit serviceability, tension-steel percentage, all stirrup-zone spacings and complete effective-depth basis now reach the single-beam owner. Nullable depths preserve its defaults.
+- Recurrence controls: RR-004 x20 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.; RR-005 x180 / unknown: Use maintained launchers, exact paths and explicit cwd; inspect actual output envelopes before projecting diagnostic fields.
 <!-- HANDOFF:END -->
 
 ## Current boundary

@@ -5,6 +5,84 @@
 
 ---
 
+## 2026-09-19 — Session: Parallel Python library quality pass
+
+**Task:** LIB-QUALITY-20260919
+**Agent:** DEV (one parent, one bounded read-only reviewer)
+**Branch:** `codex/library-quality-audit`
+**Acceptance:** docs/verification/library-quality-20260919-acceptance.json
+**Focus:** Preserve requested batch calculation inputs and outcomes in an isolated Mac lane.
+
+### Completed
+
+- Fetched GitHub main `6aed0d4e` and created a dedicated Mac worktree. The primary
+  checkout remains unchanged at `c822809d`; existing dirty/unknown worktrees are preserved.
+- Observed the active Windows source-qualification task on
+  `codex/beam-c0a-source-qualification`. Python batch implementation is separate;
+  publication remains dependent on predecessor/shared-document reconciliation.
+- Corrected the stale batch argument map: automatic and explicit serviceability,
+  tension-steel percentage, all stirrup-zone spacings and complete effective-depth
+  basis now reach the single-beam owner. Nullable depths preserve its defaults.
+- Added focused mixed-batch failure, derived-depth and reinforcement-choice
+  regressions; documented supported dictionary options in the API reference.
+- Independently reproduced LIB-QUALITY-GEOMETRY-001. A canonical PASS/BBS can
+  use a bar layout inconsistent with strength depth. D=550, d=500, d_dash=50,
+  cover=40, links=8, tension bars=20, compression bars=16, b=300, fck=25,
+  fy=500, Mu=340 and Vu=80 produces 1885 mm2 in two bottom layers and a 9-item
+  BBS. Even the outer-row bound d=492/d_dash=56 requires 1918.511 mm2.
+  Actual layer centroids are not represented by the legacy generated layout.
+  A canonical-only input gate would leave compatibility/pipeline owners unfixed;
+  a complete shared-owner correction is retained separately, not claimed fixed.
+
+### Verification
+
+- Worktree Python source binding is confirmed. Before repair the identical
+  cantilever request returned individual deflection FAIL (11.111 > 7) but batch
+  PASS with deflection not_run and passed=1.
+- Independent review accepted the batch diff; its development focused run passed
+  42 tests. Frozen-candidate checks and exact verdicts are recorded externally
+  in the task's local evidence directory and delivery ledger.
+- No installed, release, hosted or whole-library qualification is claimed.
+
+### Next
+
+- Preserve this local candidate until BEAM-C0A-SOURCE is integrated or its owner
+  explicitly rebinds the merge order; reconcile shared records from that base.
+- LIB-QUALITY-GEOMETRY-001 must bind selected bar rows/centroids to final strength
+  calculations across canonical, retained combined and pipeline paths, preserving
+  design-only explicit depths. Verify affected BBS/report consumers and mirrored
+  supported profiles before integrating that separate correction.
+
+### Issues encountered
+
+- The shared tracker rejected the new session because XLL-ARCH-DOC-001 remained open.
+- Three discovery commands used an unmatched shell glob or guessed absent files.
+- An explicit INTAKE transition was rejected because INTAKE is already the initial
+  state; the admitted BOUNDED_UNITS transition passed.
+- Confirmed product issues: batch options were dropped; accepted generated bar
+  geometry can disagree with the effective depth used for strength.
+
+### Root causes and resolutions
+
+- Git-linked worktrees share one timer ledger. The owner approved superseding
+  only the old timer; the new session then passed startup. All old work survives.
+- Existing script and project owners resolved the discovery errors. Use exact
+  discovered paths rather than shell globs or guessed helper names.
+- The batch wrapper's argument map had not followed the single-beam interface.
+  Complete forwarding fixes the caller-visible omission without changing formulas.
+- Generated arrangements retain layer counts without row centroids; only the
+  torsion route currently reconciles physical detailing depth. The broader
+  geometry correction is open as LIB-QUALITY-GEOMETRY-001.
+
+### Rework and recurrence
+
+- RR-004 — occurrences=20; minutes=unknown; owner-approved timer supersession
+  permitted successful task startup while preserving unfinished work.
+- RR-005 — occurrences=180; minutes=unknown; exact existing file owners resolved
+  three discovery errors; no source or lifecycle guard was bypassed.
+
+---
+
 ## 2026-09-19 — Session: Persistent assumptions and provisional beam review
 
 **Task:** BEAM-PROVISIONAL-REVIEW

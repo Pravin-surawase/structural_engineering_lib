@@ -1708,6 +1708,13 @@ def design_multiple_beams(
 ) -> MultiBeamOutput
 ```
 
+Each beam dictionary accepts the single-beam options, including
+`include_serviceability`, `support_condition`, explicit deflection/crack-width
+parameters, `pt_percent`, and the three stirrup-zone spacings. Requested checks
+contribute to that beam's status and the batch pass/fail summary. Supply either
+`d_mm` or a complete `EffectiveDepthBasisV1`; omit `d_mm` (or set it to `None`)
+when deriving depth. `include_detailing` is selected once for the whole batch.
+
 ---
 
 ## 2. Flexure Module (`M06_Flexure` / `flexure.py`)

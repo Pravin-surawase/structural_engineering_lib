@@ -126,6 +126,12 @@
 
 ## Active
 
+`LIB-QUALITY-20260919` is an isolated Mac batch-input quality correction. Its
+[acceptance](verification/library-quality-20260919-acceptance.json) preserves the
+active Windows C0a lane and holds publication for shared-document/merge-order
+reconciliation. Local implementation and focused evidence do not establish
+whole-library quality.
+
 `ETABS-API-GUIDE` implements the owner's new first step: a version-bound
 catalogue of all installed ETABS interface methods, matching help topics,
 object navigation/defaults and reusable workflow recipes. Every agent uses
@@ -481,6 +487,12 @@ matches the accepted candidate tree. ETABS file/live work and all
 write-back/nightly work remain outside E1.
 
 ## Up Next
+
+- **LIB-QUALITY-GEOMETRY-001 (P1):** Correct accepted generated reinforcement/BBS
+  whose actual bar centroids differ from strength d/d_dash. Reproduction and
+  shared-owner scope are in the newest library-quality session entry. Cover all
+  canonical, compatibility and pipeline consumers; preserve valid design-only
+  explicit depths. The multilayer generator currently lacks row-centroid data.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
