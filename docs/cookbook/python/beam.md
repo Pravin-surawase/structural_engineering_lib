@@ -74,6 +74,15 @@ raise `DETAILING_EFFECTIVE_DEPTH_UNVERIFIED`, because the generated arrangement
 does not retain vertical row positions. Use the supplied-reinforcement workflow
 for explicit layer geometry. Design-only calls can retain caller-supplied depths.
 
+Generated stirrups must also satisfy the shear calculation: total leg area must
+be at least the area used for design, and each support/midspan spacing must be
+no greater than the calculated limit. Violations raise
+`DETAILING_SHEAR_AREA_MISMATCH` or `DETAILING_SHEAR_SPACING_EXCEEDED` before a
+passing combined result or BBS is returned. Submit the actual stirrup area for
+strength design and choose spacing within the resulting limit. A smaller area
+at closer spacing needs a new calculation basis; the library does not silently
+substitute that alternative for the requested design.
+
 An engineering `FAIL` is a valid result, not an input error. Check the
 orthogonal envelope instead of treating object creation as a pass:
 

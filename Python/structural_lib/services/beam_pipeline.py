@@ -34,6 +34,7 @@ from structural_lib.core.data_types import (
 from structural_lib.core.errors import DesignError
 from structural_lib.services.beam_detailing_binding import (
     _require_generated_detailing_depth,
+    _require_generated_detailing_shear,
 )
 from structural_lib.services.project_beam import (
     EffectiveDepthBasisV1,
@@ -557,6 +558,11 @@ def design_single_beam(
             d_mm=resolved_d_mm,
             d_dash_mm=resolved_d_dash_mm,
             compression_required_mm2=case_result.flexure.Asc_required,
+        )
+        _require_generated_detailing_shear(
+            detailing_result,
+            assumed_asv_mm2=asv_mm2,
+            maximum_spacing_mm=case_result.shear.spacing,
         )
 
     # Determine governing check

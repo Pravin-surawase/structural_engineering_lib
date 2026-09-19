@@ -10,7 +10,9 @@ from structural_lib.services.api import compute_bbs, design_and_detail_beam_is45
 from structural_lib.services.beam_pipeline import design_single_beam
 
 
-def _canonical_request(*, d_mm=492, d_dash_mm=56, mu_knm=150, b_mm=300):
+def _canonical_request(
+    *, d_mm=492, d_dash_mm=56, mu_knm=150, b_mm=300, mid_spacing_mm=200
+):
     options = beam.BeamDetailingOptionsV1(
         standard=beam.DetailingStandard.IS456,
         clear_cover_mm=40,
@@ -20,7 +22,7 @@ def _canonical_request(*, d_mm=492, d_dash_mm=56, mu_knm=150, b_mm=300):
         stirrup_diameter_mm=8,
         stirrup_legs=2,
         stirrup_spacing_support_mm=150,
-        stirrup_spacing_mid_mm=200,
+        stirrup_spacing_mid_mm=mid_spacing_mm,
     )
     return beam.input(
         member_id="B-GEOMETRY",
@@ -110,7 +112,8 @@ def test_required_compression_depth_binds_to_actual_top_bars():
     assert error.value.issues[0].path == "detailing.top_bars[0].d_dash_mm"
 
     corrected = beam.design_and_detail(
-        _canonical_request(b_mm=600, mu_knm=600, d_dash_mm=56),
+        # The 600 mm width requires links at no more than 150 mm for this basis.
+        _canonical_request(b_mm=600, mu_knm=600, d_dash_mm=56, mid_spacing_mm=150),
         detailing_standard=beam.DetailingStandard.IS456,
     )
     assert corrected.is_ok

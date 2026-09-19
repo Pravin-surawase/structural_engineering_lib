@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "task_id": "LIB-QUALITY-SHEAR-001",
+  "status": "authorized",
+  "base_commit": "21691fdf8ab8e8bb195e0bbb329259cf599210c2",
+  "authority": "Owner requested continued library-quality work and authorized replanning when necessary. Preserve the accepted batch and depth-binding commits and extend the stacked local milestone with the confirmed shear-schedule defect.",
+  "objective": "Prevent passing combined beam results and their BBS from using a generated stirrup schedule that does not satisfy the assumed shear-design basis.",
+  "bounded_units": [
+    "U1 Confirm all three producers and actual BBS exposure; freeze one shared area/spacing contract.",
+    "U2 Add one private post-generation gate at canonical, retained compatibility and pipeline producers; preserve design-only and engineering-failure semantics.",
+    "U3 Qualify public failure/success cases and update only affected successful caller fixtures, user recovery docs and generated API projections.",
+    "U4 Freeze and format once; run the affected union and repository checks, review one exact local candidate and verify its integrity. Reconcile the Windows predecessor before publication."
+  ],
+  "decisions": [
+    "Actual total stirrup-leg area must be at least the calculation basis. Retained 100 mm2 defaults remain valid with actual two-leg 8 mm area of 100.530965 mm2. Do not demand exact equality.",
+    "Every generated start/mid/end spacing must be no greater than the calculated shear spacing. Do not silently tighten caller-selected spacing.",
+    "Smaller area at closer spacing is a basis mismatch requiring strength resubmission with actual area; this gate does not claim that every such alternate layout is physically inadequate.",
+    "Use structured InputContractError before returning a passing combined result. Pipeline checks stay outside optional drafting exception handling and apply even to invalid drafting when strength passes.",
+    "Preserve the existing physical-depth gate, torsion restrictions, design-only explicit inputs, engineering FAIL results and raw standalone detailing/BBS semantics. No new IS formulas or automatic redesign."
+  ],
+  "acceptance_rows": [
+    {
+      "id": "S01",
+      "outcome": "The exact asv201.06193/2L6@300 Mu150/Vu200 D500/d446 retained PASS+BBS reproducer rejects its below-basis generated area."
+    },
+    {
+      "id": "S02",
+      "outcome": "Matching-area generated spacing beyond the calculated shear limit rejects in all three combined routes, including each pipeline zone."
+    },
+    {
+      "id": "S03",
+      "outcome": "Coherent stirrup area/spacing reaches canonical and retained BBS and passes pipeline; conservative default area100 is accepted with actual100.530965."
+    },
+    {
+      "id": "S04",
+      "outcome": "Smaller area with closer spacing clearly rejects only the mismatched design basis; required torsion and physical-depth checks remain effective."
+    },
+    {
+      "id": "S05",
+      "outcome": "Design-only and genuine engineering FAIL outputs remain available. Accepted batch/depth fixes and affected CLI/typed/report examples remain covered."
+    }
+  ],
+  "non_goals": [
+    "No inferred reinforcement layers, new engineering formulas, automatic redesign, public signature expansion, CSharp/Excel/ETABS edits, package release or whole-library acceptance.",
+    "No unrelated cleanup, governance redesign or arbitrary additional quality units before this candidate is verified."
+  ],
+  "verification": {
+    "focused": "New public shear-binding regressions plus existing depth-binding, canonical, pipeline/batch, typed, safety-closure, CLI/package/public-example, insight and W3 torsion callers.",
+    "repository": "Regenerate affected API ledgers; run canonical repository checks once after intended writes freeze, then only affected repair evidence if necessary.",
+    "cumulative_gate": "The next merged-base integration candidate owns the broad Python/FastAPI suites and hosted checks. Preserve previous full-run evidence; do not repeat unchanged broad suites for this internal unit.",
+    "review": "Independent read-only main-outcome audit of exact clean candidate, then one read-only integrity run."
+  },
+  "integration_dependency": "Windows BEAM-C0A-SOURCE remains active on its own branch. Source paths are separate; SESSION_LOG, TASKS, next-session-brief and recurrence index overlap. Reconcile exact published predecessor/head before publication.",
+  "supersedes_publication_plan": "LIB-QUALITY-GEOMETRY-001; preserve21691fdf and a17926b0 and their original branches and evidence."
+}

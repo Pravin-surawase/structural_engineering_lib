@@ -67,3 +67,60 @@ def _require_generated_detailing_depth(
                 )
     if issues:
         raise InputContractError(issues)
+
+
+def _require_generated_detailing_shear(
+    detailing: BeamDetailingResult,
+    *,
+    assumed_asv_mm2: float,
+    maximum_spacing_mm: float,
+) -> None:
+    """Bind generated stirrups to the accepted shear-design basis.
+
+    The shear owner has already calculated the permitted spacing from its
+    assumed stirrup-leg area. This validator verifies the generated schedule
+    uses at least that area and does not widen any generated zone beyond the
+    calculated limit. It does not redesign the member or alter the schedule.
+    """
+    issues: list[InputIssueV1] = []
+    for index, stirrup in enumerate(detailing.stirrups):
+        path = f"detailing.stirrups[{index}]"
+        actual_asv_mm2 = stirrup.legs * math.pi * stirrup.diameter**2 / 4
+        if actual_asv_mm2 + 1e-6 < assumed_asv_mm2:
+            issues.append(
+                InputIssueV1(
+                    code="DETAILING_SHEAR_AREA_MISMATCH",
+                    path=f"{path}.area_mm2",
+                    message=(
+                        f"Generated stirrup area={actual_asv_mm2:g} mm² is below "
+                        f"the shear-design basis Asv={assumed_asv_mm2:g} mm²."
+                    ),
+                    received=actual_asv_mm2,
+                    constraint=f"area_mm2 must be at least {assumed_asv_mm2:g} mm²",
+                    suggestion=(
+                        "Rerun strength design with the generated stirrup area or select "
+                        "stirrups that provide the assumed Asv."
+                    ),
+                )
+            )
+        if stirrup.spacing > maximum_spacing_mm + 1e-6:
+            issues.append(
+                InputIssueV1(
+                    code="DETAILING_SHEAR_SPACING_EXCEEDED",
+                    path=f"{path}.spacing_mm",
+                    message=(
+                        f"Generated stirrup spacing={stirrup.spacing:g} mm exceeds "
+                        f"the shear-design limit={maximum_spacing_mm:g} mm."
+                    ),
+                    received=stirrup.spacing,
+                    constraint=(
+                        f"spacing_mm must not exceed {maximum_spacing_mm:g} mm"
+                    ),
+                    suggestion=(
+                        "Use spacing at or below the calculated shear limit, then rerun "
+                        "design and detailing."
+                    ),
+                )
+            )
+    if issues:
+        raise InputContractError(issues)

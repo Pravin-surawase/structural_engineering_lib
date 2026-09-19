@@ -1721,6 +1721,12 @@ multiple-layer geometry raises `InputContractError` before an accepted combined
 result is returned. To request only strength checks, use `include_detailing=False`;
 `design_from_input` returns a `ComplianceReport` for either one or multiple cases.
 
+Joint results also require generated stirrup area to cover the assumed `asv_mm2`
+and each zone spacing to stay within the calculated shear limit. Smaller area
+raises `DETAILING_SHEAR_AREA_MISMATCH`; excessive zone spacing raises
+`DETAILING_SHEAR_SPACING_EXCEEDED`. Resubmit strength design with the actual area
+and select compatible spacing; caller choices are not silently changed.
+
 ---
 
 ## 2. Flexure Module (`M06_Flexure` / `flexure.py`)

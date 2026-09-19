@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-09-19 — Session: Bind generated stirrups to the shear design basis
+
+**Task:** LIB-QUALITY-SHEAR-001
+**Agent:** DEV (parent plus bounded implementation and independent review)
+**Branch:** `codex/library-quality-shear`
+**Acceptance:** docs/verification/library-quality-shear-acceptance.json
+**Focus:** Reject passing combined beam/BBS output when generated stirrup area or zone spacing does not satisfy the assumed shear basis.
+
+### Completed
+
+- Preserved accepted geometry head `21691fdf` and batch head `a17926b0` on their
+  original branches. Owner-requested continuation starts this stacked milestone;
+  only the geometry packet's standalone publication/timer plan is superseded.
+- Independently confirmed the retained API emits PASS and nine BBS items for
+  design Asv=201.061930 mm2 and required spacing=250 mm, but generated 2L-6@300
+  provides Asv=56.548668 mm2. Required stirrup force is 127.219761 kN.
+- Added one shared post-generation area/spacing guard to canonical, retained
+  compatibility and pipeline producers. Actual area must cover the assumed
+  basis; every zone spacing must satisfy the calculated limit. Defaults using
+  conservative area100 remain supported with actual two-leg 8 mm links.
+- Preserve caller choices: smaller area requires resubmission with its actual
+  basis, and wider spacing requires a valid selection. No silent tightening,
+  new formulas, altered design-only results or generated-layer assumptions.
+- Updated the existing wide-beam compression fixture to use its actual 150 mm
+  shear limit while preserving the depth-binding assertion.
+
+### Verification
+
+- Parent and independent reproductions agreed on the original PASS/BBS defect.
+- Development union: 324 affected public, pipeline, typed, CLI, package,
+  example, insight and W3 tests pass. Final frozen focused/caller, repository,
+  audit and integrity verdicts belong to the external task ledger.
+- The merged-base integration candidate owns the next broad Python/FastAPI and
+  hosted gates. This local unit does not repeat the previous broad suites.
+
+### Next
+
+- Complete the bounded candidate and reconcile Windows BEAM-C0A-SOURCE before
+  publication. Observed source paths are separate; four planning/log files
+  overlap and require exact predecessor/head reconciliation.
+
+### Issues encountered
+
+- Shear results used assumed area and computed spacing independently of the
+  generated links. A positive calculation status could therefore reach BBS with
+  a below-basis schedule in all three joint producers.
+- The existing wide-beam fixture used 200 mm midspan spacing against a 150 mm
+  shear limit; the new gate exposed that input inconsistency.
+- One guessed compliance-module path was absent during discovery (RR-005;
+  occurrences=186; minutes=unknown).
+
+### Root causes and resolutions
+
+- Bind actual diameter/leg area and every zone to the accepted shear basis
+  before result exposure; retain the guard outside optional pipeline catches.
+  Geometry checks and torsion restrictions remain in force.
+- Fix the affected fixture's selected spacing, retaining its engineering case
+  and depth assertions. Public failures remain explicit and structured.
+- RR-005: `rg --files` located codes/is456/compliance.py; use discovered paths.
+
+### Rework and recurrence
+
+- RR-005 — occurrences=186; minutes=unknown. One untimed module-owner lookup
+  corrected through the live file inventory before implementation freeze.
+
+---
+
 ## 2026-09-19 — Session: Bind generated beam detailing to strength depth
 
 **Task:** LIB-QUALITY-GEOMETRY-001

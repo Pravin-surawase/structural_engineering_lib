@@ -126,12 +126,12 @@
 
 ## Active
 
-`LIB-QUALITY-GEOMETRY-001` is the active isolated Mac quality milestone. Its
-[acceptance](verification/library-quality-geometry-acceptance.json) stacks the
-preserved batch-input fix `a17926b0` with physical generated-detail depth checks.
-The active Windows C0a lane is preserved; publication waits for predecessor and
-shared-document reconciliation. Local evidence does not establish whole-library
-or installed engineering acceptance.
+`LIB-QUALITY-SHEAR-001` is the active isolated Mac quality milestone. Its
+[acceptance](verification/library-quality-shear-acceptance.json) preserves the
+batch-input and physical-depth commits while binding generated stirrups to
+the shear calculation. The Windows C0a lane remains separate; publication waits
+for exact predecessor/shared-document reconciliation. Local verification does
+not establish whole-library or installed engineering acceptance.
 
 `ETABS-API-GUIDE` implements the owner's new first step: a version-bound
 catalogue of all installed ETABS interface methods, matching help topics,

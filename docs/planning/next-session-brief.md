@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-19
-- Focus: Correct all three passing design-to-generated-detail producers with one physical depth-binding check.
-- Completed: Preserved batch fix `a17926b0` and its original branch. This geometry correction is stacked on it for one final reconciled publication candidate.; Added one shared producer-side check for actual single-layer primary and required compression centroids at every generated station. Canonical, retained compatibility and pipeline results reject mismatched depths and unverified multilayer positions before returning a combined result.; Kept the pipeline check outside its optional-drafting exception handler and active even when spacing makes the generated detail invalid. Design-only explicit depths and existing engineering FAIL results remain available.
-- Recurrence controls: RR-005 x185 / unknown: Use maintained launchers, exact paths and explicit cwd; inspect actual output envelopes before projecting diagnostic fields.
+- Focus: Reject passing combined beam/BBS output when generated stirrup area or zone spacing does not satisfy the assumed shear basis.
+- Completed: Preserved accepted geometry head `21691fdf` and batch head `a17926b0` on their original branches. Owner-requested continuation starts this stacked milestone; only the geometry packet's standalone publication/timer plan is superseded.; Independently confirmed the retained API emits PASS and nine BBS items for design Asv=201.061930 mm2 and required spacing=250 mm, but generated 2L-6@300 provides Asv=56.548668 mm2. Required stirrup force is 127.219761 kN.; Added one shared post-generation area/spacing guard to canonical, retained compatibility and pipeline producers. Actual area must cover the assumed basis; every zone spacing must satisfy the calculated limit. Defaults using conservative area100 remain supported with actual two-leg 8 mm links.
+- Recurrence controls: RR-005 x186 / unknown: Use maintained launchers, exact paths and explicit cwd; inspect actual output envelopes before projecting diagnostic fields.
 <!-- HANDOFF:END -->
 
 ## Current boundary

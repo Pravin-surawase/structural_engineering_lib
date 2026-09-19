@@ -37,6 +37,7 @@ from structural_lib.insights import cost_optimization, design_suggestions
 from structural_lib.services import bbs, beam_pipeline, report
 from structural_lib.services.beam_detailing_binding import (
     _require_generated_detailing_depth,
+    _require_generated_detailing_shear,
 )
 from structural_lib.services.common_api import (
     _require_finite_real,
@@ -2404,6 +2405,11 @@ def _design_and_detail_beam_is456_calculation(
             d_dash_mm=d_dash_mm,
             compression_required_mm2=asc_required,
             primary_tension_face=primary_tension_face,
+        )
+        _require_generated_detailing_shear(
+            detail_result,
+            assumed_asv_mm2=asv_mm2,
+            maximum_spacing_mm=design_result.shear.spacing,
         )
 
     # Combine results

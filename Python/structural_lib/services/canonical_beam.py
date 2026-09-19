@@ -33,6 +33,7 @@ from structural_lib.core.version import get_runtime_version
 from structural_lib.services import bbs as bbs_service
 from structural_lib.services.beam_detailing_binding import (
     _require_generated_detailing_depth,
+    _require_generated_detailing_shear,
 )
 from structural_lib.services.contracts.beam import (
     BEAM_DESIGN_SCHEMA_VERSION,
@@ -785,6 +786,11 @@ def detail(
             d_dash_mm=request.calculation_basis.d_dash_mm,
             compression_required_mm2=calculation.flexure.Asc_required,
             primary_tension_face=request.actions.primary_tension_face or "BOTTOM",
+        )
+        _require_generated_detailing_shear(
+            detailing,
+            assumed_asv_mm2=request.calculation_basis.asv_mm2,
+            maximum_spacing_mm=calculation.shear.spacing,
         )
     return BeamDetailingResultV1(
         request=request,
