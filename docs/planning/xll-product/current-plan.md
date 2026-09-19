@@ -22,14 +22,16 @@ active plan after each completed step or outcome-changing blocker; exact
 post-freeze checks/merge facts stay in the delivery ledger. These are knowledge
 tools, with future runtime qualifications still explicitly outstanding.
 
-**Current runtime packet:** `BEAM-C0A-SOURCE` follows completed provisional
-review [PR #995](https://github.com/Pravin-surawase/structural_engineering_lib/pull/995).
-The [active step plan](etabs-design-workflow.md#active-implementation-beam-c0a-source--2026-09-19)
-records 20-frame/32-root installed source capture and independent replay,
-versioned material/element tables and native-unit definitions. Final candidate,
-integrity and hosted verdicts stay external. The source recipe and
-[receipt](../../verification/beam-c0a-source-receipt.json) preserve exact limits;
-physical supports/roles, force/result semantics and the wider corpus remain next.
+**Current runtime packet:** `BEAM-C0A-TOPOLOGY` follows source qualification
+[PR #996](https://github.com/Pravin-surawase/structural_engineering_lib/pull/996).
+The [active step plan](etabs-design-workflow.md#active-implementation-beam-c0a-topology--2026-09-19)
+and [receipt](../../verification/beam-c0a-topology-receipt.json) record bounded
+connected geometry and independent plane-intersection replay. The combined
+sample covers all 25 M02 stories and 13 section assignments; the topology
+sample retains 12 clear reference lengths and eight restricted members. Final
+candidate/integrity/hosted facts stay external. The next packet binds member and
+support intent plus ULS/SLS roles through the existing review ledger before the
+native-unit force/station pilot; broader corpus and C0c remain open.
 
 **Broader programme (10 September):** the owner requested planning beyond the retained
 153-beam building, including other models and foreseeable issues. The

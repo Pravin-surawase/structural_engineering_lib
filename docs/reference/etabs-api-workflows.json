@@ -131,13 +131,15 @@
         "CSharp/src/StructuralEngineering.Etabs/EtabsContextCapture.cs",
         "CSharp/src/StructuralEngineering.Etabs/EtabsMemberCapture.cs",
         "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
-        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs"
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsTopologyReader.cs"
       ],
       "checks": [
         "Object and element identities are different; meshed points may not appear among physical endpoints.",
         "Local axes, insertion offsets and physical faces must remain explicit.",
         "Do not use geometry-only data as a complete support or design model.",
-        "On the frozen M02 sample, direct GetElm returns CSI 1. Reuse the version-1 Objects and Elements - Frames table with explicit ObjType=Frame filtering, then reverse-check element owners/endpoints; raw RDI/RDJ semantics remain unqualified."
+        "On the frozen M02 sample, direct GetElm returns CSI 1. Reuse the version-1 Objects and Elements - Frames table with explicit ObjType=Frame filtering, then reverse-check element owners/endpoints; raw RDI/RDJ semantics remain unqualified.",
+        "Use the topology recipe for bounded modelled support envelopes and role evidence; engineering support behavior remains a separate project decision."
       ],
       "verification": {
         "tests": [
@@ -617,12 +619,14 @@
         "CSharp/src/StructuralEngineering.Etabs/EtabsGetterMatrix.cs",
         "docs/planning/xll-product/etabs-design-workflow.md",
         "CSharp/src/StructuralEngineering.Etabs/EtabsSourceReader.cs",
-        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs"
+        "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsTopologyReader.cs"
       ],
       "checks": [
         "Use the registered GetInsertionPoint_1 signature rather than substituting a similarly named overload.",
         "A restrained point, connected object or release flag alone does not prove beam effective span or boundary condition.",
-        "A mesh node is not automatically a physical support."
+        "A mesh node is not automatically a physical support.",
+        "Use the topology recipe for bounded modelled support envelopes and role evidence; engineering support behavior remains a separate project decision."
       ],
       "verification": {
         "tests": [
@@ -779,7 +783,8 @@
         "CSharp/src/StructuralEngineering.Etabs/EtabsSourceGetterMatrix.cs",
         "CSharp/src/StructuralEngineering.Analysis/EtabsSourceQualification.cs",
         "CSharp/src/StructuralEngineering.Contracts/EtabsSourceContracts.cs",
-        "docs/verification/beam-c0a-source-receipt.json"
+        "docs/verification/beam-c0a-source-receipt.json",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsTopologyReader.cs"
       ],
       "checks": [
         "Source definitions only; applied loads and force rows are not read.",
@@ -787,7 +792,8 @@
         "Output station configuration is distinct from actual force-result stations; raw RDI/RDJ coordinate semantics remain unqualified.",
         "Static root closure does not assign ULS/SLS roles, prove concurrent dynamic actions, establish current in-memory result freshness, or admit engineering design.",
         "Known table display-case getter mismatch remains outside this profile; no complete table-selection equality claim.",
-        "Independent source/holdout count, cross-model support and PF9 certification are unchanged."
+        "Independent source/holdout count, cross-model support and PF9 certification are unchanged.",
+        "Use the topology recipe for bounded modelled support envelopes and role evidence; engineering support behavior remains a separate project decision."
       ],
       "verification": {
         "tests": [
@@ -798,6 +804,78 @@
           "docs/verification/beam-c0a-source-receipt.json"
         ],
         "qualification": "Exact source definitions only; live no-overwrite material branch and N-mm-C. Explicit overwrites/kN-m-C fixture evidence remain separate; broader C0a and design support are not complete."
+      }
+    },
+    "topology": {
+      "purpose": "Acquire bounded connected geometry and report modelled wall/column envelope faces with explicit member-role evidence.",
+      "keywords": [
+        "topology",
+        "support",
+        "wall",
+        "column",
+        "face",
+        "offset",
+        "role",
+        "modifiers",
+        "mesh",
+        "axes"
+      ],
+      "status": "Implemented read-only topology worker using the existing source reader and broker. Installed M02 evidence is a development geometry sample, not engineering support approval.",
+      "prerequisites": [
+        "Exact target/saved-model identity and a frozen source scope of 1..20 members/1..32 roots; reuse source admission limits.",
+        "At most 200 adjacent frame/area objects and 40 vertices per area; returned complete tables remain <=200000 records/1000000 cells."
+      ],
+      "steps": [
+        "Start with the source recipe; freeze cohort selection from prior inventory before new geometry outcomes.",
+        "Dispatch --topology-request request.json --response response.json with structural.etabs_topology_request/v1 and the source worker's exact request fields.",
+        "Reuse source material/element/load capture; acquire connected frame axes/properties and area points/orientation/opening/property/wall thickness/offset facts.",
+        "Read version-2 area insertion and beam connectivity plus version-1 thickness-overwrite tables. Uniform centred walls require an explicit Middle row, no joint-offset assignment, zero provider offsets and no thickness overwrite.",
+        "Treat global frame matrix columns as local-axis vectors; verify right-handed orthonormality and I-to-J direction. Retain unknown object curvature; where the curvature column is omitted, verify the complete collinear analysis mesh using PointElm coordinates and explicit Frame mapping rows.",
+        "Intersect the beam reference ray with qualified rectangular modelled envelopes. Zero inward extent at an end face is valid; multiple qualified envelopes use their connected union's exit. Preserve unavailable/unsupported peers and compare reported offsets separately.",
+        "Wait for completed and quiescent cleanup, independently replay raw geometry, and bind source/runtime/profile/worker hashes. Update the maintained plan after each step; post-freeze verdicts stay external."
+      ],
+      "methods": [
+        "ETABSv1.cFrameObj.GetAllFrames",
+        "ETABSv1.cFrameObj.GetTransformationMatrix",
+        "ETABSv1.cFrameObj.GetModifiers",
+        "ETABSv1.cPropFrame.GetModifiers",
+        "ETABSv1.cPointObj.GetConnectivity",
+        "ETABSv1.cPointElm.GetCoordCartesian",
+        "ETABSv1.cAreaObj.GetPoints",
+        "ETABSv1.cAreaObj.GetDesignOrientation",
+        "ETABSv1.cAreaObj.GetProperty",
+        "ETABSv1.cAreaObj.GetOpening",
+        "ETABSv1.cAreaObj.GetOffsets3",
+        "ETABSv1.cPropArea.GetWall",
+        "ETABSv1.cDatabaseTables.GetAllFieldsInTable",
+        "ETABSv1.cDatabaseTables.GetTableForEditingArray",
+        "ETABSv1.cDatabaseTables.GetTableForDisplayArray"
+      ],
+      "owners": [
+        "CSharp/tools/StructAutomate.EtabsWorker/TopologyWorker.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsTopologyBroker.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsTopologyReader.cs",
+        "CSharp/src/StructuralEngineering.Etabs/EtabsTopologyGetterMatrix.cs",
+        "CSharp/src/StructuralEngineering.Analysis/EtabsTopologyQualification.cs",
+        "CSharp/src/StructuralEngineering.Contracts/EtabsTopologyContracts.cs"
+      ],
+      "checks": [
+        "Modelled envelope faces are not construction dimensions, support stiffness/fixity, IS effective span or design readiness.",
+        "Orientation and separate object/section modifiers are role evidence. A zero mass/weight modifier never deletes a member or proves nonstructural intent.",
+        "The geometric admission tolerance is 0.001 mm; direction/orthonormality tolerance is 1e-8. Preserve the raw source values.",
+        "GetCurved_2 returned CSI 1 on all 37 development frames; empty error outputs and an omitted CurveType column are not straightness defaults.",
+        "LineElm.GetObj ObjType is an undocumented provider vocabulary; do not substitute PointObj connectivity type codes. Explicit Frame table rows plus reverse names/points bind ownership.",
+        "Provider RDI/RDJ, actual force stations, dynamic action semantics and physical design support remain unqualified."
+      ],
+      "verification": {
+        "tests": [
+          "CSharp/tests/StructuralEngineering.Tests/EtabsTopologyQualificationTests.cs",
+          "CSharp/tests/StructAutomate.Tests/EtabsTopologyReaderTests.cs"
+        ],
+        "evidence": [
+          "docs/verification/beam-c0a-topology-receipt.json"
+        ],
+        "qualification": "Installed N-mm-C M02 connected-wall/beam sample and independent plane-intersection replay; rectangular columns, rotated/reversed axes and kN-m-C are authored fixture evidence. No independent-building or holdout claim."
       }
     }
   }

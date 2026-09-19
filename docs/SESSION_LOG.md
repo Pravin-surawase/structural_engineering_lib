@@ -5,6 +5,92 @@
 
 ---
 
+## 2026-09-19 — Session: Bounded C0a topology and role evidence
+
+**Task:** BEAM-C0A-TOPOLOGY
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/beam-c0a-topology`
+**Acceptance:** docs/verification/beam-c0a-topology-acceptance.json
+**Focus:** Reusable bounded connected geometry, member-role evidence and modelled support-envelope interpretation.
+
+### Completed
+
+- Reconciled #996 exact accepted merge tree and hosted run 35428062275; started
+  the isolated writer from fetched main with the original checkout/edit preserved.
+- Froze twenty members using prior inventory and source facts, covering the five
+  previously unsampled stories, four sections and modifier/connection cohorts.
+- Added the separate topology profile/worker through the existing source reader,
+  lease, STA, journal, deadline and quiescent publication owner. Source and all
+  earlier getter profiles retain their identities and behavior.
+- Acquired 37 frames, 162 connected areas, 557 object points and 100 analysis
+  points. Versioned insertion/thickness/connectivity tables preserve provenance.
+- Added native modelled-envelope geometry, matrix-column axis checks, separate
+  modifier/role evidence and actual collinear mesh qualification. All twenty
+  requested members remain present with precise restrictions.
+- Updated the searchable API recipe/catalogue, guide, corpus and maintained
+  step/next-work plan. Physical role/support behavior stays an explicit decision.
+
+### Verification
+
+- Locked solution build produces the packed x64 XLL with zero warnings/errors.
+  Twelve native geometry cases and six Windows source/topology/broker cases pass.
+- Development-05 independent source and plane-intersection replay passes:
+  80 mapped elements, 109 modelled envelopes, 29 endpoint faces and twelve clear
+  reference lengths. Three noncollinear meshes and five incomplete endpoint
+  envelopes remain explicit. Combined sampling covers 27 members, all 25 stories
+  and 13 assigned sections; this does not add independent buildings or holdouts.
+- The independent point-cloud plane calculation differs by at most 0.0000692 mm
+  from the edge-based rectangle calculation, within the declared 0.001 mm
+  geometry tolerance. The mesh departure of about 0.0844 mm remains rejected;
+  its threshold was not widened. Native source/protected facts and cleanup pass.
+- Final frozen focused union, exact candidate capture/replay, integrity and hosted
+  verdicts belong in the external evidence/delivery ledger. The broad cumulative
+  gate remains C0c, not this packet.
+
+### Issues encountered
+
+- Carried the predecessor's late formatter transition rejection into this task:
+  the formatter had not completed when FORMATTED was requested.
+- Three lookup diagnostics used object-path instead of interface-method syntax,
+  a literal Windows wildcard path, and an absent area-offset method name.
+- Direct curve getters returned CSI 1 for all 37 observed frames. The requested
+  display curvature column is also omitted; neither is proof of Straight.
+- Shell insertion metadata reports version 2. The initial row-based matrix
+  interpretation failed eleven axis checks. Line-element owner type codes also
+  differ from point-connectivity object type codes.
+
+### Root causes and resolutions
+
+- The lifecycle correctly rejected the premature transition; waiting for actual
+  completion resolved it. The previous external post-freeze note is preserved.
+- Caller lookup shapes were wrong, not the installed API. The catalogue uses
+  `cFrameObj.Method`; directory-scoped `rg -g` and discovery found
+  `cAreaObj.GetOffsets3`. No failed lookup supplies acceptance evidence.
+- Bound shell placement to actual version-2 fields and complete overwrite
+  absence. Pinned CSI matrix convention plus endpoint directions establishes
+  columns as global local-axis vectors; all twenty installed axes agree.
+- Actual analysis-point coordinates now prove complete collinear chains without
+  guessing object curvature. Explicit Frame mapping rows and reverse owner/point
+  identities establish ownership while raw provider type/RDI/RDJ remain
+  uninterpreted. Independent replay found these boundaries before acceptance.
+- Initial new broker fixtures omitted the required xUnit cancellation token;
+  passing TestContext.Current.CancellationToken resolved the analyzer failure.
+  The independent reference initially assumed every mesh would qualify and a
+  comparison tighter than the declared geometry tolerance; it now evaluates
+  negative peers and records the measured difference without changing source
+  values or the production admission limit.
+
+### Rework and recurrence
+
+- RR-005: occurrences=197, minutes=unknown. One predecessor completion-wait
+  event and three current lookup events are counted once. Read CLI examples,
+  discover exact owners and await command completion before dependent actions.
+- RR-002: occurrences=47, minutes=unknown. Four host/interpretation boundaries
+  are counted once: unavailable curvature evidence, insertion-table version,
+  matrix layout and object-type vocabulary. Raw installed schemas/coordinates,
+  unchanged ownership tables and independent replay resolve them; earlier
+  development artifacts stay external and are not accepted candidate evidence.
+
 ## 2026-09-19 — Session: Bounded C0a source qualification
 
 **Task:** BEAM-C0A-SOURCE
