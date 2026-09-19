@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-19 — API knowledge and provisional review are merged; bounded BEAM-C0A-SOURCE qualification is active
+**Updated:** 2026-09-19 — Source qualification #996 is merged; bounded BEAM-C0A-TOPOLOGY is at its final delivery gate
 
 ---
 
@@ -126,12 +126,11 @@
 
 ## Active
 
-`LIB-QUALITY-INTEGRATION-001` delivers the accepted batch-input, generated-depth
-and shear-schedule fixes after merged Windows PR #996. Its
-[acceptance](verification/library-quality-integration-acceptance.json) owns one
-cumulative Python/FastAPI/repository gate and one reviewed hosted candidate.
-The original quality branches and Windows evidence remain preserved. Exact
-candidate/hosted/merge verdicts stay in the external delivery ledger.
+`LIB-QUALITY-INTEGRATION-001` merged in [PR #997](https://github.com/Pravin-surawase/structural_engineering_lib/pull/997)
+at `b3ceb2c9` after required hosted run `35429312577` passed. Its accepted batch,
+generated-depth and shear-schedule fixes and both original histories are
+preserved by this topology integration. The [acceptance](verification/library-quality-integration-acceptance.json)
+retains its own cumulative Python/FastAPI/repository evidence boundary.
 
 `ETABS-API-GUIDE` implements the owner's new first step: a version-bound
 catalogue of all installed ETABS interface methods, matching help topics,
@@ -152,15 +151,15 @@ acceptance. This implements the owner policy and shared-input needs recorded by
 the earlier `BEAM-NEXT-WORK-PLAN`, `BEAM-ASSUME-AND-CONTINUE` and
 `BEAM-DATA-REQUIREMENTS` packets; their historical scopes remain unchanged.
 
-`BEAM-C0A-SOURCE` merged in PR #996 at `a42f9656`. Its
-[step plan](planning/xll-product/etabs-design-workflow.md#active-implementation-beam-c0a-source--2026-09-19)
-and [receipt](verification/beam-c0a-source-receipt.json) record native-unit facts,
-effective materials, endpoint connectivity, 68 element mappings and all 32 load
-roots from a frozen 20-frame M02 sample. Independent raw replay passes; final
-candidate/hosted verdicts remain external. Next: support/role/offset interpretation
-and source-accounting coverage, followed by declared load/result semantics before
-native-unit force acquisition. C0c engineering, independent corpus and PF9 gates
-remain open. Use the searchable `source` recipe for this actual implementation.
+`BEAM-C0A-SOURCE` is complete in #996. `BEAM-C0A-TOPOLOGY` is at the
+final gate: [step plan](planning/xll-product/etabs-design-workflow.md#active-implementation-beam-c0a-topology--2026-09-19)
+and [receipt](verification/beam-c0a-topology-receipt.json). Independent source and
+geometry replay retains 20 requested members: 12 clear reference lengths, three
+noncollinear meshes and five incomplete endpoint envelopes. Combined source
+sampling covers all 25 stories and 13 sections. Use the searchable `topology`
+recipe; physical support behavior and member purpose remain project decisions.
+Next: ledger-bound physical intent and ULS/SLS roles before native-unit force/
+station qualification. C0c, independent corpus and PF9 gates remain open.
 
 `ETABS-BOUNDED-ACQUISITION` implements lightweight Excel connection through a
 separate model-overview contract, explicit source-bound detailed loading,

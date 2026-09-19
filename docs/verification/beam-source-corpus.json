@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "task_id": "BEAM-C0A-SOURCE",
+  "task_id": "BEAM-C0A-TOPOLOGY",
   "state": "partial_development_manifest;broader_qualification_pending",
   "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md#independent-model-corpus-and-measurable-coverage",
   "inclusion_rule": "M01 unchanged retained regression and M02 pre-result deterministic source sample. Keep all requested frames/roots, including unsupported peers. No synthetic variants count as independent buildings.",
@@ -46,7 +46,7 @@
       "source_author": "Unestablished; not counted toward independent authors/models.",
       "permission_reference": "Owner supplied/opened the intended saved model and replied ready for this read-only packet.",
       "source_model_sha256": "5ec91b3c6b70da42881d5c77e892fb98f89547b2c7ab1ba72a8ad4c250cb8e8a",
-      "source_artifact_sha256": "f4a5dae9997d5a38f8d7e65bef308e623a07aef73a37cc9428c51a522053f2f7",
+      "source_artifact_sha256": "e23dc9830ff198731cc0226786b6ddf1357b5d7a2b028a81100f16d8da187e35",
       "snapshot_file_sha256": null,
       "runtime": "ETABS 23.3.1 / API 2.16.0.0 / native N-mm-C",
       "inventory": {
@@ -85,8 +85,26 @@
       "expected_reference": "Independent raw-call table/unit/graph replay; no independent engineering design reference supplied.",
       "source_inputs": "Frozen exact PID/model/scope from local intake; no assumed project support or code-strength inputs.",
       "holdout": false,
-      "evidence": "docs/verification/beam-c0a-source-receipt.json"
+      "evidence": "docs/verification/beam-c0a-source-receipt.json",
+      "topology_qualification": {
+        "receipt": "docs/verification/beam-c0a-topology-receipt.json",
+        "artifact_sha256": "6a885a35458705e6ea693e24e7e5fb2ba512dd7190b4ea198957394561c10c3a",
+        "coverage_union": {
+          "members": 27,
+          "stories": 25,
+          "sections": 13
+        },
+        "topology_requested_members": 20,
+        "adjacent_frames": 17,
+        "adjacent_areas": 162,
+        "modelled_clear_lengths": 12,
+        "noncollinear_analysis_chains": 3,
+        "incomplete_endpoint_envelopes": 5,
+        "source_independence": "Unestablished; no increase to independent building/author/holdout counts.",
+        "claim": "Complete requested-member accounting and story/section sample categories; not all-member topology, physical support or engineering qualification."
+      }
     }
   ],
-  "next": "Obtain/admit genuinely independent models and lock holdout membership before tuning; fill missing feature strata and named engineering references. Finish bounded C0a support/role/source qualification first."
+  "next": "Obtain/admit genuinely independent models and lock holdout membership before tuning; fill missing feature strata and named engineering references. Finish bounded C0a support/role/source qualification first.",
+  "topology_scope_frozen_sha256": "bc1117f098e65f13b7c71b1c6fa9a5e345521d8fc3bafef1450dc02fd5a9730c"
 }

@@ -1,6 +1,52 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
-## Active implementation: BEAM-C0A-SOURCE — 2026-09-19
+## Active implementation: BEAM-C0A-TOPOLOGY — 2026-09-19
+
+[PR #996](https://github.com/Pravin-surawase/structural_engineering_lib/pull/996)
+merged as `a42f96565a2086527931f3b68658d136b93f1455` with the accepted
+source candidate tree. Required run `35428062275`, 79 focused local tests,
+candidate integrity and fresh installed raw-call replay passed. S1–S5 is closed;
+the exact final receipt remains in its external evidence directory.
+
+The owner continued with the [T01–T08 topology contract](../../verification/beam-c0a-topology-acceptance.json).
+One Windows writer started from that merge and preserves the original user edit.
+Before candidate creation, main advanced with the independent Python fix
+[PR #997](https://github.com/Pravin-surawase/structural_engineering_lib/pull/997),
+merged as `b3ceb2c92e9e115d42d43fb284e96b6788376a12` after required run
+`35429312577` passed. Normal integration preserves its accepted source bytes and
+both histories; four shared records are reconciled from common base `a42f9656`.
+Acceptance is rebound to that exact main. The topology implementation, frozen
+sample, getter profile and engineering claim boundaries are unchanged.
+
+| Step | State | Evidence / remaining dependency | Next action |
+|---|---|---|---|
+| T1 source and sample | Complete | Twenty members frozen from prior inventory: all five missing stories and four missing sections, plus retained modifier/connection cohorts. Scope SHA starts `bc1117f0`; no new topology result influenced selection. | Keep every requested member. |
+| T2 connected geometry | Complete development read | Reused source/broker; 37 frames and 162 areas acquired. Version-2 shell insertion and beam connectivity plus version-1 thickness overwrites reconcile source placement. All development-02 getter gaps resolved. | Preserve exact raw calls and the 200-adjacent-object boundary. |
+| T3 interpretation | Complete development verification | Twelve native examples and six Windows cases pass. All 20 installed axes agree; 17 complete collinear meshes pass and three remain restricted. Reference geometry admits 0.001 mm residuals and zero inward extent at an end face. | Preserve the explicit geometric/engineering boundary. |
+| T4 installed evidence | Complete development verification | Development-05 and independent plane-intersection/source replay pass: 109 modelled envelopes, 29 endpoint faces and 12 clear reference lengths; eight requested members remain restricted. Source/protected facts/cleanup match. Combined sample covers 27 members, all 25 stories and 13 sections. | Bind fresh capture/replay to the frozen candidate. |
+| T5 handoff and delivery | Replanned closeout prerequisite | Searchable topology recipe, catalogue, sanitized receipt and corpus/next-agent plan are prepared. First candidate's fresh capture/replay passed; read-only integrity rejected mixed line endings in the recurrence JSON. The repaired candidate then passed audit/integrity but pre-push rejected a wrapped command parsed as an extra recurrence bullet. Delivery contract revision 2 adds the exact session-record parser before freeze and keeps command tokens atomic. All implementation bytes and final installed/hosted gates remain required. Broad cumulative gate remains C0c. | Reconcile #997 before candidate, refresh affected docs/format evidence, audit exact candidate, run integrity once and complete required hosted delivery. |
+
+Evidence owner: `C:/CodexWork/evidence/beam-c0a-topology-20260919`.
+Modelled envelope faces describe geometry, not support behavior, construction
+dimensions, IS effective span or design readiness. Zero mass/weight modifiers
+are evidence of modelling choices; they do not prove that a member is disposable
+or nonstructural. Update this table after each step or outcome-changing blocker.
+
+Development adjustment: the pinned frame transform topic lacks its matrix
+layout; the pinned CSI link-transform definition and actual frame-to-endpoint
+comparison establish columns as global local-axis vectors. The first row-based
+implementation failed 11 of 20 axis checks and was corrected before acceptance.
+The independent replay then found that the requested beam curvature column is
+omitted by the provider. Its absence cannot establish a straight object. The
+packet now retains unknown object curvature and qualifies only a complete
+collinear analysis-element chain using actual analysis-point coordinates; it
+does not convert the direct getter's error into a default. Uniform centred wall placement requires an
+explicit Middle insertion row with no joint offsets, zero provider offsets and
+absence from the complete thickness-overwrite table. No default is inferred from
+a failed getter. The geometry tolerance is a declared computational admission
+rule, not construction precision or author intent.
+
+## Completed implementation: BEAM-C0A-SOURCE — 2026-09-19
 
 The owner continued after [PR #995](https://github.com/Pravin-surawase/structural_engineering_lib/pull/995).
 Its merge `6aed0d4ee81a37362ed0719bbb4ce0024559a708` has the exact accepted

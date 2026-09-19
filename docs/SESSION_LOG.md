@@ -5,6 +5,153 @@
 
 ---
 
+## 2026-09-19 — Session: Bounded C0a topology and role evidence
+
+**Task:** BEAM-C0A-TOPOLOGY
+**Agent:** DEV (one parent, no subagents)
+**Branch:** `codex/beam-c0a-topology`
+**Acceptance:** docs/verification/beam-c0a-topology-acceptance.json
+**Focus:** Reusable bounded connected geometry, member-role evidence and modelled support-envelope interpretation.
+
+### Completed
+
+- Rebound before candidate creation to merged Python library fix #997 at
+  `b3ceb2c9` after its required hosted run 35429312577 passed. Preserved both
+  histories and all non-overlapping source bytes; reconciled the four shared
+  records and distinct recurrence deltas from common base `a42f9656`.
+- Reconciled #996 exact accepted merge tree and hosted run 35428062275; started
+  the isolated writer from fetched main with the original checkout/edit preserved.
+- Froze twenty members using prior inventory and source facts, covering the five
+  previously unsampled stories, four sections and modifier/connection cohorts.
+- Added the separate topology profile/worker through the existing source reader,
+  lease, STA, journal, deadline and quiescent publication owner. Source and all
+  earlier getter profiles retain their identities and behavior.
+- Acquired 37 frames, 162 connected areas, 557 object points and 100 analysis
+  points. Versioned insertion/thickness/connectivity tables preserve provenance.
+- Added native modelled-envelope geometry, matrix-column axis checks, separate
+  modifier/role evidence and actual collinear mesh qualification. All twenty
+  requested members remain present with precise restrictions.
+- Updated the searchable API recipe/catalogue, guide, corpus and maintained
+  step/next-work plan. Physical role/support behavior stays an explicit decision.
+
+### Verification
+
+- Locked solution build produces the packed x64 XLL with zero warnings/errors.
+  Twelve native geometry cases and six Windows source/topology/broker cases pass.
+- The affected union passes 27 portable cases, 52 Windows cases and eleven API
+  knowledge tests. The retained-building case uses a validated typed JSON copy
+  decoded by the maintained transport reader from the unchanged 153-member,
+  3,502-row snapshot; both file and canonical snapshot identities are checked.
+- Development-05 independent source and plane-intersection replay passes:
+  80 mapped elements, 109 modelled envelopes, 29 endpoint faces and twelve clear
+  reference lengths. Three noncollinear meshes and five incomplete endpoint
+  envelopes remain explicit. Combined sampling covers 27 members, all 25 stories
+  and 13 assigned sections; this does not add independent buildings or holdouts.
+- The independent point-cloud plane calculation differs by at most 0.0000692 mm
+  from the edge-based rectangle calculation, within the declared 0.001 mm
+  geometry tolerance. The mesh departure of about 0.0844 mm remains rejected;
+  its threshold was not widened. Native source/protected facts and cleanup pass.
+- Final frozen focused union, exact candidate capture/replay, integrity and hosted
+  verdicts belong in the external evidence/delivery ledger. The broad cumulative
+  gate remains C0c, not this packet.
+
+### Issues encountered
+
+- Repaired candidate `21233e62` passed exact installed replay, audit and file
+  integrity, but pre-push closeout rejected an extra recurrence item. The
+  wrapped command continuation began with `--write`, which the existing bullet
+  parser reads as a new item. Push was refused and the lifecycle entered REPLAN.
+
+- First candidate `527c0e26` failed read-only integrity because the PowerShell
+  JSON writer produced mixed CRLF/LF in the recurrence index. Before that check,
+  the audit helper misread the direct Git-state response envelope; orchestration
+  incorrectly advanced AUDIT_ACCEPTED despite its failure. No successful audit
+  report existed and no push occurred. An explicit REPAIR command was redundant
+  because the integrity rejection had already derived that state.
+
+- Main advanced with #997 while topology was frozen, overlapping four shared
+  records. The first retained-test invocation supplied binary `.sasnap` to a
+  JSON-only fixture, then an unrelated three-member development JSON. A later
+  lookup repeated a Windows wildcard error and the reconciliation helper
+  initially assumed the wrong recurrence JSON field.
+- The direct verification formatter passed, but FORMATTED correctly refused it
+  because that entry point does not record a timed gate event. A guessed local
+  session directory was also absent in this linked worktree.
+
+- Carried the predecessor's late formatter transition rejection into this task:
+  the formatter had not completed when FORMATTED was requested.
+- Three lookup diagnostics used object-path instead of interface-method syntax,
+  a literal Windows wildcard path, and an absent area-offset method name.
+- Direct curve getters returned CSI 1 for all 37 observed frames. The requested
+  display curvature column is also omitted; neither is proof of Straight.
+- Shell insertion metadata reports version 2. The initial row-based matrix
+  interpretation failed eleven axis checks. Line-element owner type codes also
+  differ from point-connectivity object type codes.
+
+### Root causes and resolutions
+
+- Keep command tokens on one physical line in recurrence bullets. The exact
+  maintained session-record parser reproduces four rows before the fix and
+  validates three rows after it. The revised T08 contract runs this narrow
+  prerequisite before freeze; final pre-push closeout still runs normally.
+  Preserve the prior candidate/evidence and all implementation bytes, then bind
+  the final candidate to fresh installed evidence and required hosted checks.
+
+- Use source-bound Python with explicit UTF-8 LF for the recurrence JSON. The
+  one allowed repair changes documentation/evidence only and retains all C# and
+  accepted Python source bytes. Read the actual direct/multi-worktree Git-state
+  envelope, require a zero exit code plus a successful audit report before its
+  dependent transition, and inspect derived lifecycle state. Rebuild and bind
+  fresh installed evidence to the repaired candidate; repeat only affected
+  documentation checks and read-only candidate integrity.
+
+- Committed the scoped implementation, then merged the verified main normally.
+  Preserved both session histories and the accepted Python sources; regenerated
+  the current handoff and rebound acceptance before creating any candidate.
+- The retained-test inputs had the wrong format or identity. The maintained
+  transport reader validates and decodes the exact retained archive to external
+  typed JSON; the unchanged fixture then passes. No test or production source
+  was changed. Inspecting the recurrence schema and directory-scoped discovery
+  resolves the read-only helper and wildcard errors.
+- The maintained `run.sh format --write` entry point wraps the same formatter
+  with the required usage event. Use it after the integrated freeze; session
+  status and the shared Git-directory ledger own linked-worktree delivery data.
+
+- The lifecycle correctly rejected the premature transition; waiting for actual
+  completion resolved it. The previous external post-freeze note is preserved.
+- Caller lookup shapes were wrong, not the installed API. The catalogue uses
+  `cFrameObj.Method`; directory-scoped `rg -g` and discovery found
+  `cAreaObj.GetOffsets3`. No failed lookup supplies acceptance evidence.
+- Bound shell placement to actual version-2 fields and complete overwrite
+  absence. Pinned CSI matrix convention plus endpoint directions establishes
+  columns as global local-axis vectors; all twenty installed axes agree.
+- Actual analysis-point coordinates now prove complete collinear chains without
+  guessing object curvature. Explicit Frame mapping rows and reverse owner/point
+  identities establish ownership while raw provider type/RDI/RDJ remain
+  uninterpreted. Independent replay found these boundaries before acceptance.
+- Initial new broker fixtures omitted the required xUnit cancellation token;
+  passing TestContext.Current.CancellationToken resolved the analyzer failure.
+  The independent reference initially assumed every mesh would qualify and a
+  comparison tighter than the declared geometry tolerance; it now evaluates
+  negative peers and records the measured difference without changing source
+  values or the production admission limit.
+
+### Rework and recurrence
+
+- RR-005: occurrences=216, minutes=unknown. One predecessor completion-wait
+  event, three earlier lookup events and eight continuation input/lookup
+  corrections are counted once; #997 contributes eleven distinct prior events. Read CLI examples,
+  discover exact owners and await command completion before dependent actions.
+- RR-002: occurrences=47, minutes=unknown. Four host/interpretation boundaries
+  are counted once: unavailable curvature evidence, insertion-table version,
+  matrix layout and object-type vocabulary. Raw installed schemas/coordinates,
+  unchanged ownership tables and independent replay resolve them; earlier
+  development artifacts stay external and are not accepted candidate evidence.
+- RR-004: occurrences=25, minutes=unknown. Formatter-entry, premature audit
+  transition and wrapped-command recurrence-parser events are counted once.
+  Use `run.sh format --write`, validate the session record before freeze, and
+  require a successful acceptance report before dependent delivery commands.
+
 ## 2026-09-19 — Session: Integrate verified beam quality fixes after Windows source qualification
 
 **Task:** LIB-QUALITY-INTEGRATION-001

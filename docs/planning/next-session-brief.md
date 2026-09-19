@@ -4,16 +4,18 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-19
-- Focus: Deliver the accepted batch, generated-depth and shear-binding fixes on the exact merged Windows base with one cumulative validation and hosted candidate.
-- Completed: Verified Windows PR #996 merged at `a42f9656`; its published head `04cfab88` and merge share tree `911862ce`. Preserve its source qualification and next support/role/offset, source-accounting and load/result-semantics work.; Preserved local batch `a17926b0`, geometry `21691fdf` and shear `6e25bf0f` heads and branches. Their source changes carry forward without rewriting history; no foreign checkout, installed application or release is changed.; Created a fresh source-bound worktree from the exact merged base and combined both histories. Reconciled four shared records: retained both session histories, kept both task boundaries, regenerated handoff and counted distinct recurrence deltas once from common base `6aed0d4e`.
-- Recurrence controls: RR-004 x22 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.; RR-005 x204 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.
-- Git receipt: docs/verification/library-quality-integration-git-handoff-receipt.json | sha256:32dd3ec5d3ff89b7d79764a545dfecdde85bd9655ee312f76c048e64a6c5db4d | HOLD
-- Git identity: codex/library-quality-integrated@a42f96565a2086527931f3b68658d136b93f1455 | upstream=NONE@UNKNOWN | base=origin/main@a42f96565a2086527931f3b68658d136b93f1455 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_APPLICABLE | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
-- Next action: WAIT_FOR_EXACT_HEAD_AUDIT
+- Focus: Reusable bounded connected geometry, member-role evidence and modelled support-envelope interpretation.
+- Completed: Rebound before candidate creation to merged Python library fix #997 at `b3ceb2c9` after its required hosted run 35429312577 passed. Preserved both histories and all non-overlapping source bytes; reconciled the four shared records and distinct recurrence deltas from common base `a42f9656`.; Reconciled #996 exact accepted merge tree and hosted run 35428062275; started the isolated writer from fetched main with the original checkout/edit preserved.; Froze twenty members using prior inventory and source facts, covering the five previously unsampled stories, four sections and modifier/connection cohorts.
+- Recurrence controls: RR-005 x216 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.; RR-002 x47 / unknown: Bind exact getter/table/axis/identity semantics to raw installed evidence and an independent reference; never infer defaults or type vocabularies from absent fields or another API.; RR-004 x25 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.
 <!-- HANDOFF:END -->
 
 ## Current boundary
+
+The Python library batch/depth/shear fixes merged separately in
+[PR #997](https://github.com/Pravin-surawase/structural_engineering_lib/pull/997)
+at `b3ceb2c9`, with required hosted run `35429312577` successful. The topology
+writer integrates that exact base before its candidate, preserves all Python
+fixes and both session histories, and reconciles the shared task/recurrence data.
 
 [Structural Library Definition Programme PF0–PF11](xll-product/library-definition/README.md)
 remains the implementation authority. IMP-M1 implements WP01–WP08 as native
@@ -32,7 +34,7 @@ now controls the next work; performance certification remains at project end.
 |---|---|
 | **Current** | The [bounded acquisition packet](xll-product/etabs-design-workflow.md#bounded-acquisition-and-excel-data-flow--2026-09-10) adds a 33-getter overview, explicit detailed handoff and exact requested-object forces with caller row admission. Overview, force import and explicit sheet writes have separate meanings. The large model is overview-qualified; its current dynamic selections and native API units are not admitted by the existing detailed-force profile. Exact delivery state is external. |
 | **API first** | `ETABS-API-GUIDE` and `ETABS-API-READINESS` are merged in #993/#994. The [knowledge handoff plan](../guides/etabs-api-integration.md#completion-plan-and-current-knowledge-boundary) maps every interface, exposes gaps and links maintained procedures to evidence. Discovery is separate from live qualification. |
-| **Next** | `BEAM-C0A-SOURCE` merged in PR #996 at `a42f9656`. Its bounded source reader passes development capture/replay on 20 M02 frames, 68 elements and 32 roots (17 complete static; 15 unsupported). Exact candidate/hosted verdicts stay external at `C:/CodexWork/evidence/beam-c0a-source-20260919`. Follow the [next C0a support/role packet](xll-product/etabs-design-workflow.md#source-packet-result-and-next-bounded-work) and [corpus manifest](../verification/beam-source-corpus.json). Provisional review #995 is complete. |
+| **Next** | Finish the external delivery ledger for `BEAM-C0A-TOPOLOGY` before new work. Its [step plan](xll-product/etabs-design-workflow.md#active-implementation-beam-c0a-topology--2026-09-19), [receipt](../verification/beam-c0a-topology-receipt.json) and `topology` API recipe record 20-member connected geometry with 12 modelled clear lengths and eight restrictions; all 25 stories/13 sections are now sampled across 27 members. After accepted merge, bind physical member/support intent and ULS/SLS roles through the review ledger, then qualify native-unit force/station semantics. Source #996 and provisional review #995 are complete. |
 | **Then** | Finish C0a native-unit/material/support/station/load-dependency qualification, then C0c named combined-action/section/support/reinforcement profiles with independent evidence and the remaining C0b core/full states. Cross-model qualification precedes practical alternatives, copied-model reanalysis, automation and portable delivery. Accounting for every beam is not support; PF9 certification stays at project end. |
 | Definition boundary | PF0–PF11 remains the approved requirements, semantics, signature, assurance, application, packaging, migration and implementation-order authority. |
 | Application boundary | Excel and ETABS remain adapters. Worksheet calculations consume immutable validated data; live COM and mutations are explicit application commands. |

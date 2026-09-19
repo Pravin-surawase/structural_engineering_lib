@@ -92,13 +92,13 @@ namespace StructAutomate.Tests
         }
 
         [Fact]
-        public void SharedInspectionAndSourceGetterKeepsBothExactProfileBindings()
+        public void SharedCountGetterKeepsAllExactProfileBindings()
         {
             var result = EtabsApiDiscovery.Inspect(typeof(ETABSv1.cFrameObj).Assembly,
                 [Candidate(typeof(ETABSv1.cFrameObj), "Count")]);
             var member = Assert.Single(result.Members);
             Assert.Equal("registered_signature_match", member.Status);
-            Assert.Equal(["inspection", "source"], member.RegisteredGetters.Select(x => x.Profile).Order(StringComparer.Ordinal));
+            Assert.Equal(["inspection", "source", "topology"], member.RegisteredGetters.Select(x => x.Profile).Order(StringComparer.Ordinal));
             Assert.All(member.RegisteredGetters, binding =>
             {
                 Assert.Equal("FrameObj.Count", binding.Operation);

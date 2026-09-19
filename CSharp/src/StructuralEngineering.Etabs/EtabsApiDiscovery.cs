@@ -107,7 +107,7 @@ public static class EtabsApiDiscovery
         ("retained", EtabsGetterMatrix.Allowed), ("context", EtabsContextGetterMatrix.Allowed),
         ("forces", EtabsForceGetterMatrix.Allowed), ("bulk", EtabsBulkGetterMatrix.Allowed),
         ("group", EtabsGroupGetterMatrix.Allowed), ("inspection", EtabsInspectionGetterMatrix.Allowed),
-        ("source", EtabsSourceGetterMatrix.Allowed)
+        ("source", EtabsSourceGetterMatrix.Allowed), ("topology", EtabsTopologyGetterMatrix.Allowed)
     ];
 
     private static IReadOnlyList<EtabsApiCapability> CreateCatalogue()
@@ -130,7 +130,8 @@ public static class EtabsApiDiscovery
         Add("beam_topology", "cFrameObj", "read", "GetAllFrames GetDesignOrientation GetPoints GetElm GetSupports GetMaterialOverwrite GetOutputStations GetInsertionPoint_1 GetEndLengthOffset GetReleases GetTransformationMatrix GetModifiers GetSection");
         Add("candidate_update", "cFrameObj", "write", "SetSection");
         Add("connectivity", "cPointObj", "read", "GetAllPoints GetConnectivity GetRestraint");
-        Add("support_geometry", "cAreaObj", "read", "GetAllAreas GetPoints GetProperty");
+        Add("support_geometry", "cAreaObj", "read", "GetAllAreas GetPoints GetProperty GetDesignOrientation GetOffsets3 GetOpening");
+        Add("beam_topology", "cFrameObj", "read", "GetCurved_2");
         Add("support_geometry", "cPropArea", "read", "GetWall GetSlab");
         Add("section_material", "cPropFrame", "read", "GetTypeOAPI GetRectangle GetTee GetTee_1 GetMaterial GetRebarBeam GetSectProps GetModifiers");
         Add("section_material", "cPropMaterial", "read", "GetOConcrete GetORebar GetTypeOAPI GetMPIsotropic GetWeightAndMass");

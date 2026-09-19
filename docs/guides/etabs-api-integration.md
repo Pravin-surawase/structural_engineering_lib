@@ -484,3 +484,69 @@ Fc is not automatically IS fck. Raw RDI/RDJ and partial-fixity semantics remain
 explicit. Configured output stations are not actual force stations. The next
 work is physical support/role interpretation, declared load roles and qualified
 result semantics; existing force capture profiles remain unchanged.
+
+## Connected geometry, role evidence and modelled faces
+
+Run `./run.sh etabs-api workflow topology`. Its
+[acceptance](../verification/beam-c0a-topology-acceptance.json) and
+[receipt](../verification/beam-c0a-topology-receipt.json) bind the bounded profile.
+Use the source request fields above with schema
+`structural.etabs_topology_request/v1` and dispatch from `CSharp`:
+
+```powershell
+dotnet run --project tools/StructAutomate.EtabsWorker -c Release --no-build -- --topology-request C:\path\request.json --response C:\path\response.json
+```
+
+The topology broker reuses the original source reader and the shared host
+lifetime. Source facts remain protected until all connected geometry is read
+and compared. In addition to the source limits, at most 200 adjacent frame/area
+objects and 40 vertices per area are admitted. Complete table payload limits
+apply after vendor retrieval. Analysis points have their own namespace, distinct
+from object points; their bound follows the source's 20 members × 200 elements.
+This is a bounded functional qualification, not PF9 performance certification.
+
+The artifact keeps the original source capture, connected frame/area/point
+records, separate object/section modifier arrays, raw calls, gaps and typed
+interpretation. It accounts for every requested member. Zero mass/weight
+modifiers flag a modelling choice; they do not prove a member's physical purpose
+or authorize its removal.
+
+For the admitted geometry, the reader proves a straight horizontal reference
+path and intersects it with centred rectangular vertical columns or uniform
+rectangular vertical wall envelopes. Geometry tolerance is 0.001 mm;
+direction/orthonormality tolerance is 1e-8. These are computational admission
+tolerances, not construction accuracy. A beam starting at a support envelope's
+end face has zero inward extent. Where multiple qualified envelopes meet a
+point, their union determines the modelled face; unsupported geometry prevents
+a complete face claim. Floor/opening/other-frame connections remain context.
+The result preserves the reported end offsets, rigid-zone factor, releases and
+their difference from the envelope distances.
+
+CSI distinguishes shell cardinal placement and per-point offsets
+([shell insertion documentation](https://docs.csiamerica.com/help-files/etabs/Menus/Assign/Shell/Shell_Assignment_-_Insertion_Point.htm)).
+The version-2 insertion row must explicitly say Middle with no joint-offset
+assignment, its provider offsets must be zero, and the complete version-1
+thickness-overwrite table must contain no row for that wall. Its specified
+uniform property then supplies the modelled thickness. Layered, nonrectangular,
+offset or unavailable walls remain restricted.
+
+The matrix maps local components to global components, so its columns are local
+axis vectors ([CSI matrix convention](https://docs.csiamerica.com/help-files/etabs-api-2016/html/5c7e36ef-0f7a-b3a8-1b11-77916018a048.htm)).
+The pinned installed link-transform topic states the same convention; actual
+frame matrices must independently agree with I-to-J coordinates and the
+right-hand rule. No matrix-layout guess is accepted from the sparse frame topic.
+
+Two API traps are preserved in the receipt. `GetCurved_2` returns CSI 1 for this
+sample, and the display table omits the requested `CurveType` column. Neither
+proves Straight. The profile leaves object curvature unknown and instead checks
+complete, nonoverlapping, collinear analysis-element chains against actual
+`PointElm.GetCoordCartesian` coordinates. Likewise, `LineElm.GetObj.ObjType`
+does not use the point-connectivity type vocabulary. Explicit Frame mapping rows
+and reverse object/point identities establish ownership; the raw code stays
+uninterpreted. RDI/RDJ and force stations remain separate unresolved semantics.
+
+Modelled envelope faces and clear reference-line lengths do not establish
+physical support stiffness, fixity, construction dimensions, IS effective span
+or design readiness. Project intent belongs in the existing review assumption
+ledger. The next packet must bind those decisions and ULS/SLS roles before the
+native-unit force/station pilot; the five-model corpus and C0c gates remain open.

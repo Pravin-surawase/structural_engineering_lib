@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-C0A-TOPOLOGY",
+  "status": "development_installed_and_independent_replay_passed",
+  "candidate_binding": "Final acceptance binds a fresh capture/reference to the exact candidate commit/tree, built worker, profile and runtime. Final audit/integrity/hosted/merge facts stay external.",
+  "scope_frozen_sha256": "bc1117f098e65f13b7c71b1c6fa9a5e345521d8fc3bafef1450dc02fd5a9730c",
+  "runtime": {
+    "etabs": "23.3.1",
+    "api_file_version": "2.16.0.0",
+    "api_sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+    "chm_sha256": "0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88"
+  },
+  "profile": {
+    "id": "etabs-topology/v1",
+    "sha256": "064e4155add821f7e86905f15400c61976e1019ccb64e6ec5b5248ea38ac3f0f",
+    "interpretation": "etabs-topology-geometry/v1",
+    "requested_frames_max": 20,
+    "adjacent_objects_max": 200,
+    "area_vertices_max": 40,
+    "geometry_admission_mm": 0.001,
+    "direction_tolerance": 1e-08,
+    "native_live_units": 9,
+    "offline_unit_equivalence": [
+      6,
+      9
+    ],
+    "source_profile": "Unchanged etabs-source-qualification/v1; all source scope/table/element limits retained."
+  },
+  "replay": {
+    "status": "PASS",
+    "artifact_sha256": "6a885a35458705e6ea693e24e7e5fb2ba512dd7190b4ea198957394561c10c3a",
+    "replay_sha256": "13e8436cbf18052567c8361897e08bdd0087fbff543f67dcaa0f4722ad387e17",
+    "getter_matrix_sha256": "064e4155add821f7e86905f15400c61976e1019ccb64e6ec5b5248ea38ac3f0f",
+    "source_model_sha256": "5ec91b3c6b70da42881d5c77e892fb98f89547b2c7ab1ba72a8ad4c250cb8e8a",
+    "members": 20,
+    "frames": 37,
+    "areas": 162,
+    "points": 557,
+    "envelopes": {
+      "connection_context": 90,
+      "qualified_modelled_envelope": 109
+    },
+    "qualified_endpoint_envelopes": 29,
+    "members_with_modelled_clear_length": 12,
+    "maximum_axis_residual": 1.1102230246252828e-16,
+    "reference_line_basis": {
+      "collinear_complete_analysis_mesh": 17,
+      "unqualified": 3
+    },
+    "maximum_mesh_departure_mm": 0.08440378396720677,
+    "maximum_geometric_reference_difference_mm": 6.917276186868548e-05,
+    "reference_geometry_tolerance_mm": 0.001,
+    "clear_length_reference_tolerance_mm": 0.002,
+    "distinct_calls": 2290,
+    "protected_pairs_equal": true,
+    "source_equal": true,
+    "cleanup_complete": true,
+    "coverage": {
+      "members": 27,
+      "stories": 25,
+      "sections": 13
+    },
+    "method": "Independent raw-call table joins; wall point-cloud bounding planes and ray/plane intersections; no production projector.",
+    "source_reference": "Labelled derived source capsule bound to parent artifact and replayed with the unchanged previous independent Python reference."
+  },
+  "analysis_points": 100,
+  "source_elements": 80,
+  "tables": [
+    {
+      "Key": "Area Assignments - Insertion Point",
+      "Version": 2,
+      "SourceRecords": 28221,
+      "AcceptedRows": 28221,
+      "ContextOnlyRows": 0
+    },
+    {
+      "Key": "Area Assignments - Thickness Overwrites",
+      "Version": 1,
+      "SourceRecords": 0,
+      "AcceptedRows": 0,
+      "ContextOnlyRows": 0
+    },
+    {
+      "Key": "Beam Object Connectivity",
+      "Version": 2,
+      "SourceRecords": 3475,
+      "AcceptedRows": 3475,
+      "ContextOnlyRows": 0
+    }
+  ],
+  "restrictions": {
+    "requested_members": 20,
+    "modelled_clear_length": 12,
+    "noncollinear_analysis_chain": 3,
+    "incomplete_endpoint_envelope": 5,
+    "engineering_support_or_role_qualified": 0,
+    "note": "All members and connected contexts are retained. Maximum mesh departure is about 0.0844 mm, above the fixed 0.001 mm admission tolerance; no threshold is widened to admit those members."
+  },
+  "interpretation_boundaries": [
+    "Physical purpose/support behavior and IS effective span remain project inputs, not inferred source facts.",
+    "Source orientation and object/section mass/weight modifiers are retained separately; zero modifiers do not prove a disposable or nonstructural object.",
+    "Wall envelopes require explicit centred/no-offset/no-overwrite source evidence; rectangular column/rotated/reversed cases are authored fixture evidence only.",
+    "Object curvature remains unknown where the provider omits CurveType. Actual complete analysis-point chains qualify only the modelled straight reference path.",
+    "The independent wall point-cloud plane method differs from the edge-based rectangle projection by at most 0.0000692 mm, below the declared 0.001 mm geometry tolerance (0.002 mm accumulated clear-length comparison). Raw values are unchanged.",
+    "Raw LineElm ObjType, RDI/RDJ and nonzero area-offset semantics remain uninterpreted; explicit Frame mapping rows and reverse names/points establish ownership.",
+    "No force extraction, design admission, physical support approval, installed Excel update, independent-building addition, PF9 claim or release."
+  ],
+  "negative_development_evidence": [
+    {
+      "artifact": "topology-development-01.json",
+      "sha256": "73d1b344951d9fa1cd517cc8cc49d2bae9479cfbc74b3fbe681c511528caf5a2",
+      "finding": "37 GetCurved_2 CSI 1 responses; shell insertion table version 2; eleven frame axis checks rejected the initial row-vector interpretation."
+    },
+    {
+      "artifact": "topology-development-03.json",
+      "sha256": "cafb9a1dff3eb5e36b333422184e4e799c34f85d4d366f4f74d9a87c5c41c702",
+      "finding": "Independent replay found the requested CurveType column omitted; initial straightness default rejected before acceptance."
+    },
+    {
+      "artifact": "topology-development-04.json",
+      "sha256": "fbe42b3e5b90cce4483ca1d8afa6ca331173b8d5585899419d89949af1dd2044",
+      "finding": "LineElm.GetObj returns provider ObjType 0, not the PointObj connectivity Frame code 2. Table/owner/endpoint proof now supplies the correct ownership boundary."
+    }
+  ],
+  "offline_evidence": "Affected union: 27 portable cases (including twelve topology cases and the identity-checked retained-building reference), 52 Windows cases (including six topology reader/broker cases), and eleven API knowledge tests pass. Exact candidate acceptance follows the integrated freeze.",
+  "external_evidence": "C:/CodexWork/evidence/beam-c0a-topology-20260919",
+  "next": "Bind physical member/support intent and ULS/SLS roles through the existing review ledger, then qualify the native-unit individual-member force/station pilot. Keep the three mesh departures and five incomplete envelopes explicit; broader corpus and C0c gates remain open."
+}

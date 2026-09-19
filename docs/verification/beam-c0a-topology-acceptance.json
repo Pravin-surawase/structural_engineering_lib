@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-C0A-TOPOLOGY",
+  "status": "authorized",
+  "base_commit": "b3ceb2c92e9e115d42d43fb284e96b6788376a12",
+  "authority": "Owner asked to continue after completed source qualification #996; next bounded C0a support/member-role/offset work was identified.",
+  "objective": "Extend the reusable native source reader with bounded connected-object geometry and explicit member-role evidence, qualify modelled support-envelope candidates and axis/offset comparisons, and close the remaining M02 story/section sample coverage without promoting modelling facts into design support assumptions.",
+  "profile": "etabs-topology/v1; pinned ETABS 23.3.1/API 2.16.0.0; source profile limits unchanged; <=20 requested frames, <=200 adjacent frames/areas total, <=40 vertices per area. Straight horizontal beam reference lines, centred rectangular column sections, and vertical rectangular specified uniform walls with zero area offsets form the geometric envelope profile. All other cases retain restrictions. Straight reference paths may be proved from the complete analysis-element chain with actual PointElm coordinates when object curvature is unknown. Numerical admission: 0.001 mm geometry, 1e-8 directions.",
+  "bounded_units": [
+    "T1 freeze source identities, deterministic missing-story/section/cohort sample and geometry acceptance",
+    "T2 reuse source reader and shared broker; acquire only connected geometry with exact new getter profile",
+    "T3 pure typed role evidence, axis checks, support-envelope ray intersections and reported-offset comparisons; preserve every member",
+    "T4 focused fixtures and exact installed sample with independent raw-call geometry replay and unchanged sources",
+    "T5 update searchable API procedures, corpus/receipt/plan and complete one frozen candidate with required hosted delivery"
+  ],
+  "acceptance_rows": [
+    {
+      "id": "T01",
+      "scenario": "Coverage frozen before topology outcomes",
+      "outcome": "Deterministic sample covers five previously unsampled stories, four sections, and retained zero mass/weight plus connection cohorts. Every requested member appears exactly once; identities remain external."
+    },
+    {
+      "id": "T02",
+      "scenario": "Source and new profile compatibility",
+      "outcome": "Reuse original source capture and immutable getter definitions. Full frame inventory agrees with requested source endpoints/sections/stories; protected source and topology calls compare equal after acquisition."
+    },
+    {
+      "id": "T03",
+      "scenario": "Role evidence",
+      "outcome": "Retain design orientation and separate object/section modifier arrays. Zero mass/weight is explicit modelling evidence, never sufficient to delete a member or declare it nonstructural. Physical design role requires project intent."
+    },
+    {
+      "id": "T04",
+      "scenario": "Independent geometry examples",
+      "outcome": "Hand-solvable normal, rotated, reversed and oblique rectangular supports/walls give expected inward ray exit, face coordinates and modelled clear length in mm. Missing, unsupported, competing or overlapping geometry remains explicit. No IS effective span or restraint/stiffness inference."
+    },
+    {
+      "id": "T05",
+      "scenario": "Axes and offsets",
+      "outcome": "Validate right-handed orthonormal frame axes against I-to-J direction. Keep cardinal point, joint offsets, end offsets, rigid factor and releases distinct; report geometric comparisons without treating automatic offsets as physical faces."
+    },
+    {
+      "id": "T06",
+      "scenario": "Bounded host and mixed failures",
+      "outcome": "Reject invalid scope before attachment; unknown/malformed adjacent objects are retained as restrictions; bounds stop unbounded fanout. Existing lease/STA/journal/deadline/cancellation/source identity/cleanup owner protects publication."
+    },
+    {
+      "id": "T07",
+      "scenario": "Installed source and independent replay",
+      "outcome": "Exact worker/profile/source hashes bind raw evidence. A separately written Python reference replays coverage, modifiers and geometry from raw calls; source file, original user edit and retained M01 snapshot remain unchanged."
+    },
+    {
+      "id": "T08",
+      "scenario": "Reusable handoff and delivery",
+      "outcome": "Catalogue and task recipes expose exact owners, supported envelope and gaps. Focused union, frozen candidate review/integrity and required hosted checks pass; broad cumulative Python/full-repository gate remains C0c. The exact maintained session-record parser must pass before freeze, including one RR identifier per logical recurrence bullet; command tokens remain on one physical line."
+    }
+  ],
+  "non_goals": [
+    "Changing ETABS units, selections, model contents, save/analysis/open/close operations, or Excel state",
+    "Certifying physical support behavior, code effective spans, load roles, force stations, C0c member design, dynamic results or alternatives",
+    "Inferring material grade, modelling intent or structural irrelevance from names/modifier zeros; arbitrary wall polygons, curved/nonprismatic/offset support interpretation",
+    "Completing the independent five-building/three-source/two-holdout corpus or PF9 certification; release/publication"
+  ],
+  "likely_pitfalls": [
+    "Wall/area connectivity is not support behavior; adjacent floor objects remain explicit context",
+    "Reported auto-offsets, rigidity fractions and geometric face distances have separate semantics",
+    "A rectangular wall membrane thickness is a modelled envelope, not proof of construction dimensions",
+    "Source calls must remain protected until the complete topology read ends; no partial-bound truncation accepted",
+    "Exact API interface.member names are required by the discovery CLI; Windows rg takes directories plus -g filters",
+    "The display table can omit a requested curvature column; omission is not Straight.",
+    "LineElm.GetObj ObjType does not share PointObj.GetConnectivity's integer vocabulary; explicit Frame table rows own mapping."
+  ],
+  "verification": {
+    "per_unit": "Focused source/topology/broker/API cases plus independent geometry reference and installed read-only development evidence.",
+    "cumulative_gate": "C0c retains broad Python/full32 gate. This packet runs affected union, formatter/docs/session controls, exact candidate integrity and mandatory hosted checks.",
+    "external_evidence": "C:/CodexWork/evidence/beam-c0a-topology-20260919",
+    "installed_dependency": "Owner-opened M02 remains authorized read-only; reconfirm exact runtime/source identity before each capture."
+  },
+  "writer_lane": "One parent, isolated Windows codex/beam-c0a-topology; original checkout and edit preserved.",
+  "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md",
+  "base_integration": {
+    "original_base": "a42f96565a2086527931f3b68658d136b93f1455",
+    "merged_pr": 997,
+    "merged_commit": "b3ceb2c92e9e115d42d43fb284e96b6788376a12",
+    "successful_hosted_run": 35429312577,
+    "decision": "Normal pre-candidate merge; preserve both histories and accepted Python sources, reconcile four shared records, refresh affected docs evidence. Topology code/profile/scope and C0c gate unchanged."
+  },
+  "delivery_replan": {
+    "revision": 2,
+    "trigger": "Pre-push closeout rejected candidate 21233e624faeffb7ba46b5a2a3df7400ee732670 after its successful audit/integrity because a wrapped --write continuation became a fourth recurrence bullet.",
+    "confirmed_root_cause": "The maintained section parser treats every stripped leading hyphen as a bullet. The command continuation had no RR identifier.",
+    "changed_prerequisite": "Before CONTENT_FROZEN, run scripts/session.py check_session_log_complete through the source-bound runtime and require exactly three current recurrence rows with matching index counts. Keep command tokens on one physical line. This is a narrow input validation, not a second session-end run.",
+    "preserved_requirements": "All T01-T07 implementation/scope/runtime constraints and original source bytes are unchanged. Exact final candidate build, fresh installed replay, acceptance audit, one candidate integrity run, ordinary pre-push closeout and required hosted checks still apply."
+  }
+}

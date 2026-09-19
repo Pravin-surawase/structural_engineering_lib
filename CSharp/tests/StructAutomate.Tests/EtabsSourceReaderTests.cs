@@ -101,7 +101,7 @@ public sealed class EtabsSourceReaderTests
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
     }
 
-    private sealed class Host(int units) : IEtabsGetterHost
+    internal sealed class Host(int units) : IEtabsGetterHost
     {
         private readonly Wp10InspectionTests.Host _base = new() { Units = units };
         public EtabsHostIdentity Identity => _base.Identity;
