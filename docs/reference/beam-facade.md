@@ -286,7 +286,8 @@ Raises
 ------
 InputContractError
     If the source type/status/options are unacceptable or the standard,
-    serviceability, torsion, spacing, or side-face basis is incomplete.
+    serviceability, torsion, spacing, side-face or generated-depth basis is
+    incomplete or inconsistent.
 ValueError
     If the maintained detailing owner rejects an unsupported value outside
     the translated public issue cases.

@@ -5,6 +5,328 @@
 
 ---
 
+## 2026-09-19 — Session: Integrate verified beam quality fixes after Windows source qualification
+
+**Task:** LIB-QUALITY-INTEGRATION-001
+**Agent:** DEV (one parent, bounded reconciliation and independent review)
+**Branch:** `codex/library-quality-integrated`
+**Acceptance:** docs/verification/library-quality-integration-acceptance.json
+**Git handoff receipt:** docs/verification/library-quality-integration-git-handoff-receipt.json
+**Focus:** Deliver the accepted batch, generated-depth and shear-binding fixes on the exact merged Windows base with one cumulative validation and hosted candidate.
+
+### Completed
+
+- Verified Windows PR #996 merged at `a42f9656`; its published head `04cfab88`
+  and merge share tree `911862ce`. Preserve its source qualification and next
+  support/role/offset, source-accounting and load/result-semantics work.
+- Preserved local batch `a17926b0`, geometry `21691fdf` and shear `6e25bf0f`
+  heads and branches. Their source changes carry forward without rewriting
+  history; no foreign checkout, installed application or release is changed.
+- Created a fresh source-bound worktree from the exact merged base and combined
+  both histories. Reconciled four shared records: retained both session histories,
+  kept both task boundaries, regenerated handoff and counted distinct recurrence
+  deltas once from common base `6aed0d4e`.
+- The three fixes preserve caller-supplied batch requirements and reject passing
+  generated details whose bar centroids or stirrup schedules do not match the
+  accepted calculation basis. Coherent BBS and design-only routes remain usable.
+
+### Verification
+
+- The accepted shear head passed 324 affected Python tests, 41 HTTP caller tests,
+  32 repository checks, independent exact-head review and one integrity run.
+- This integration owns the named cumulative Python/FastAPI and repository gates.
+  Frozen verdicts, exact candidate/review/hosted identities and final merge/tree
+  equality belong to the external delivery ledger, not a predicted versioned claim.
+- Windows CSharp and source-evidence bytes remain those of the merged predecessor;
+  only the four shared planning records require integration changes.
+
+### Next
+
+- Complete one exact integration candidate and required hosted checks, then merge
+  unchanged reviewed bytes. Keep all branches/worktrees; no cleanup is authorized.
+- Windows work continues from the merged source packet's existing support/role
+  and corpus plan; this quality work adds no installed engineering acceptance.
+
+### Issues encountered
+
+- Main advanced while the shear candidate was being closed, so session end
+  correctly reported HOLD_DIVERGED. Attempted successor intake on that stale
+  base was held by preflight (RR-004; occurrences=22; minutes=unknown).
+- The merge had three textual conflicts across the four shared planning records;
+  both lanes had independently prepended sessions and updated recurrence state.
+- The first cumulative repository check ran while the resolved merge was still
+  uncommitted; two Git-operation checks correctly held it (RR-004).
+- One source-evidence example filename was absent, and an auditor shell loop
+  temporarily shadowed zsh command lookup with its variable name. Exact paths
+  and `target_file` resolved both reads (RR-005; occurrences=204; minutes=unknown).
+
+### Root causes and resolutions
+
+- RR-004: the planned predecessor merged during local closeout. Preserve accepted
+  bytes and use a fresh exact-main checkout; its intake passed. No reset, rebase,
+  history rewrite or foreign timer mutation was used.
+- Resolve conflicts from exact common-base/Windows/Mac snapshots. Keep both logs
+  and all Windows source bytes; RR-002=43, RR-004=22 and RR-005=204 combine distinct
+  historical deltas plus only this packet's four diagnostic corrections.
+- Clear the resolved merge with its normal commit before final Git readiness;
+  retain the 30 passing checks and rerun only affected Git/doc/governance evidence.
+- RR-005: use discovered receipt/helper paths and non-reserved shell variables. The canonical transition receipt
+  validates as an honest preservation hold and grants no extra authority.
+
+### Rework and recurrence
+
+- RR-004 — occurrences=22; minutes=unknown. Stale-base intake and pre-commit
+  merge readiness were held; fresh-base intake and normal merge commit resolve them.
+- RR-005 — occurrences=204; minutes=unknown. One absent example lookup and one
+  auditor shell-variable collision; discovered paths and `target_file` resolve them.
+
+---
+
+## 2026-09-19 — Session: Bind generated stirrups to the shear design basis
+
+**Task:** LIB-QUALITY-SHEAR-001
+**Agent:** DEV (parent plus bounded implementation and independent review)
+**Branch:** `codex/library-quality-shear`
+**Acceptance:** docs/verification/library-quality-shear-acceptance.json
+**Focus:** Reject passing combined beam/BBS output when generated stirrup area or zone spacing does not satisfy the assumed shear basis.
+
+### Completed
+
+- Preserved accepted geometry head `21691fdf` and batch head `a17926b0` on their
+  original branches. Owner-requested continuation starts this stacked milestone;
+  only the geometry packet's standalone publication/timer plan is superseded.
+- Independently confirmed the retained API emits PASS and nine BBS items for
+  design Asv=201.061930 mm2 and required spacing=250 mm, but generated 2L-6@300
+  provides Asv=56.548668 mm2. Required stirrup force is 127.219761 kN.
+- Added one shared post-generation area/spacing guard to canonical, retained
+  compatibility and pipeline producers. Actual area must cover the assumed
+  basis; every zone spacing must satisfy the calculated limit. Defaults using
+  conservative area100 remain supported with actual two-leg 8 mm links.
+- Preserve caller choices: smaller area requires resubmission with its actual
+  basis, and wider spacing requires a valid selection. No silent tightening,
+  new formulas, altered design-only results or generated-layer assumptions.
+- Updated the existing wide-beam compression fixture to use its actual 150 mm
+  shear limit while preserving the depth-binding assertion.
+
+### Verification
+
+- Parent and independent reproductions agreed on the original PASS/BBS defect.
+- Development union: 324 affected public, pipeline, typed, CLI, package,
+  example, insight and W3 tests pass. Final frozen focused/caller, repository,
+  audit and integrity verdicts belong to the external task ledger.
+- The merged-base integration candidate owns the next broad Python/FastAPI and
+  hosted gates. This local unit does not repeat the previous broad suites.
+
+### Next
+
+- Complete the bounded candidate and reconcile Windows BEAM-C0A-SOURCE before
+  publication. Observed source paths are separate; four planning/log files
+  overlap and require exact predecessor/head reconciliation.
+
+### Issues encountered
+
+- Shear results used assumed area and computed spacing independently of the
+  generated links. A positive calculation status could therefore reach BBS with
+  a below-basis schedule in all three joint producers.
+- The existing wide-beam fixture used 200 mm midspan spacing against a 150 mm
+  shear limit; the new gate exposed that input inconsistency.
+- One guessed compliance-module path was absent during discovery (RR-005;
+  occurrences=186; minutes=unknown).
+
+### Root causes and resolutions
+
+- Bind actual diameter/leg area and every zone to the accepted shear basis
+  before result exposure; retain the guard outside optional pipeline catches.
+  Geometry checks and torsion restrictions remain in force.
+- Fix the affected fixture's selected spacing, retaining its engineering case
+  and depth assertions. Public failures remain explicit and structured.
+- RR-005: `rg --files` located codes/is456/compliance.py; use discovered paths.
+
+### Rework and recurrence
+
+- RR-005 — occurrences=186; minutes=unknown. One untimed module-owner lookup
+  corrected through the live file inventory before implementation freeze.
+
+---
+
+## 2026-09-19 — Session: Bind generated beam detailing to strength depth
+
+**Task:** LIB-QUALITY-GEOMETRY-001
+**Agent:** DEV (one parent, two bounded caller/review workers)
+**Branch:** `codex/library-quality-geometry`
+**Acceptance:** docs/verification/library-quality-geometry-acceptance.json
+**Focus:** Correct all three passing design-to-generated-detail producers with one physical depth-binding check.
+
+### Completed
+
+- Preserved batch fix `a17926b0` and its original branch. This geometry correction
+  is stacked on it for one final reconciled publication candidate.
+- Added one shared producer-side check for actual single-layer primary and
+  required compression centroids at every generated station. Canonical,
+  retained compatibility and pipeline results reject mismatched depths and
+  unverified multilayer positions before returning a combined result.
+- Kept the pipeline check outside its optional-drafting exception handler and
+  active even when spacing makes the generated detail invalid. Design-only
+  explicit depths and existing engineering FAIL results remain available.
+- Kept smart-analysis strength/heuristic consumers design-only; their wrapper
+  had fabricated clear cover from D-d and generated unused bars. The public
+  synthetic CLI example now samples three authored coherent single-layer cases.
+- Honored the existing single-case `design_from_input(include_detailing=False)`
+  option with the already declared one-case ComplianceReport return contract.
+- Added public geometry regressions and updated affected executable examples,
+  typed callers, CLI/BBS flows and insight fixtures to use consistent geometry.
+  No engineering formula, inferred layer position or automatic redesign changed.
+
+### Verification
+
+- Starting worktree was clean and source-bound at `a17926b0`; fetched main was
+  `6aed0d4e`. The Windows source-qualification task remains active and separate.
+- The original Mu340/D550/d500 layout produced a nominal PASS with 1885 mm2 in
+  two layers. Even its outer-row depth needs 1918.511 mm2; the new check rejects
+  that unverified layout. Coherent explicit/derived single-layer BBS succeeds.
+- Focused development evidence covers all three producers, required compression,
+  nominal opposite steel, invalid-spacing bypass and the design-only option.
+  The existing 13 W3 torsion/top-face journey tests also pass.
+- Frozen focused/cumulative, audit and integrity verdicts belong to the external
+  task ledger. No hosted, installed, release or whole-library acceptance is
+  claimed by this versioned record.
+
+### Next
+
+- Complete the frozen cumulative gate, review and integrity; preserve the local
+  candidate until Windows predecessor/shared-document ownership is reconciled.
+
+### Issues encountered
+
+- Joint producers accepted generated bars without binding strength depths.
+  Legacy BBS unwraps combined results, so an aggregate false flag cannot protect
+  downstream scheduling by itself.
+- Independent development review reproduced a pipeline bypass: invalid spacing
+  skipped the first version of the binding check while pipeline is_ok stayed true.
+- Focused caller tests exposed fixtures using centroid cover as clear cover,
+  mismatched bar/link sizes, and the single-case API ignoring its no-detail flag.
+- Parent review caught a dependent UAT fixture mutation still removing the old
+  depth token after its base row changed. It was corrected before freeze and
+  the affected negative-matrix/public-example test passed.
+- The cumulative gate exposed generated API-ledger/facade-doc drift, the
+  synthetic generator assuming a fixed bar diameter for arbitrary demands, and
+  smart analysis generating unused detailing from D-d as clear cover. These
+  affected callers and projections were repaired before a candidate was created.
+- The formatter rejected an authored regression's dict() constructor under C408.
+  Replacing it with the equivalent literal resolved the formatting-stage block.
+- Four guessed discovery owners were absent: Python instructions, check registry,
+  FastAPI schemas and the synthetic script. Existing file inventories and callers
+  resolved them. A focused FastAPI retry used the whole-suite wrapper; it was
+  interrupted and replaced by the exact source-bound pytest selector
+  (RR-005; occurrences=185; minutes=unknown).
+
+### Root causes and resolutions
+
+- Generated arrangements contain layer counts but no row positions. Validate
+  the recoverable final geometry at each producer; otherwise return structured
+  InputContractError before a nominally passing combined result can escape.
+- Pipeline validity controls optional drafting, not its strength is_ok flag.
+  Remove that predicate from the binding gate; the exact narrow-beam reproducer
+  now rejects all six unverified strength-bearing rows.
+- Successful workflow fixtures must account separately for clear cover, links
+  and longitudinal steel. Correct those callers; preserve intentionally invalid
+  inputs and design-only checks. The single-case no-detail branch now follows
+  the same report contract as the existing multiple-case branch.
+- Smart analysis consumes strength and steel-percentage estimates, not bar
+  layouts. Explicit design-only dispatch preserves those results without
+  fabricating a schedule. Synthetic BBS samples use authored supported cases;
+  generated ledgers/docs are rebuilt from their maintained owners.
+- C408 required an equivalent literal, with no behavioral change.
+- RR-005: use discovered exact paths; no runtime control was bypassed.
+- The prior accepted timer/publication packet was superseded under the owner's
+  explicit replan instruction. Its commit, branch and ledger remain preserved.
+
+### Rework and recurrence
+
+- RR-005 — occurrences=185; minutes=unknown. Four untimed discovery-owner
+  corrections and one whole-suite-wrapper selector correction; exact paths
+  and the direct focused pytest invocation resolved them before preparation.
+
+---
+
+## 2026-09-19 — Session: Parallel Python library quality pass
+
+**Task:** LIB-QUALITY-20260919
+**Agent:** DEV (one parent, one bounded read-only reviewer)
+**Branch:** `codex/library-quality-audit`
+**Acceptance:** docs/verification/library-quality-20260919-acceptance.json
+**Focus:** Preserve requested batch calculation inputs and outcomes in an isolated Mac lane.
+
+### Completed
+
+- Fetched GitHub main `6aed0d4e` and created a dedicated Mac worktree. The primary
+  checkout remains unchanged at `c822809d`; existing dirty/unknown worktrees are preserved.
+- Observed the active Windows source-qualification task on
+  `codex/beam-c0a-source-qualification`. Python batch implementation is separate;
+  publication remains dependent on predecessor/shared-document reconciliation.
+- Corrected the stale batch argument map: automatic and explicit serviceability,
+  tension-steel percentage, all stirrup-zone spacings and complete effective-depth
+  basis now reach the single-beam owner. Nullable depths preserve its defaults.
+- Added focused mixed-batch failure, derived-depth and reinforcement-choice
+  regressions; documented supported dictionary options in the API reference.
+- Independently reproduced LIB-QUALITY-GEOMETRY-001. A canonical PASS/BBS can
+  use a bar layout inconsistent with strength depth. D=550, d=500, d_dash=50,
+  cover=40, links=8, tension bars=20, compression bars=16, b=300, fck=25,
+  fy=500, Mu=340 and Vu=80 produces 1885 mm2 in two bottom layers and a 9-item
+  BBS. Even the outer-row bound d=492/d_dash=56 requires 1918.511 mm2.
+  Actual layer centroids are not represented by the legacy generated layout.
+  A canonical-only input gate would leave compatibility/pipeline owners unfixed;
+  a complete shared-owner correction is retained separately, not claimed fixed.
+
+### Verification
+
+- Worktree Python source binding is confirmed. Before repair the identical
+  cantilever request returned individual deflection FAIL (11.111 > 7) but batch
+  PASS with deflection not_run and passed=1.
+- Independent review accepted the batch diff; its development focused run passed
+  42 tests. Frozen-candidate checks and exact verdicts are recorded externally
+  in the task's local evidence directory and delivery ledger.
+- No installed, release, hosted or whole-library qualification is claimed.
+
+### Next
+
+- Preserve this local candidate until BEAM-C0A-SOURCE is integrated or its owner
+  explicitly rebinds the merge order; reconcile shared records from that base.
+- LIB-QUALITY-GEOMETRY-001 must bind selected bar rows/centroids to final strength
+  calculations across canonical, retained combined and pipeline paths, preserving
+  design-only explicit depths. Verify affected BBS/report consumers and mirrored
+  supported profiles before integrating that separate correction.
+
+### Issues encountered
+
+- The shared tracker rejected the new session because XLL-ARCH-DOC-001 remained open.
+- Three discovery commands used an unmatched shell glob or guessed absent files.
+- An explicit INTAKE transition was rejected because INTAKE is already the initial
+  state; the admitted BOUNDED_UNITS transition passed.
+- Confirmed product issues: batch options were dropped; accepted generated bar
+  geometry can disagree with the effective depth used for strength.
+
+### Root causes and resolutions
+
+- Git-linked worktrees share one timer ledger. The owner approved superseding
+  only the old timer; the new session then passed startup. All old work survives.
+- Existing script and project owners resolved the discovery errors. Use exact
+  discovered paths rather than shell globs or guessed helper names.
+- The batch wrapper's argument map had not followed the single-beam interface.
+  Complete forwarding fixes the caller-visible omission without changing formulas.
+- Generated arrangements retain layer counts without row centroids; only the
+  torsion route currently reconciles physical detailing depth. The broader
+  geometry correction is open as LIB-QUALITY-GEOMETRY-001.
+
+### Rework and recurrence
+
+- RR-004 — occurrences=20; minutes=unknown; owner-approved timer supersession
+  permitted successful task startup while preserving unfinished work.
+- RR-005 — occurrences=180; minutes=unknown; exact existing file owners resolved
+  three discovery errors; no source or lifecycle guard was bypassed.
+
+---
+
 ## 2026-09-19 — Session: Bounded C0a source qualification
 
 **Task:** BEAM-C0A-SOURCE

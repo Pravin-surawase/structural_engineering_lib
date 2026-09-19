@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "task_id": "LIB-QUALITY-INTEGRATION-001",
+  "status": "authorized",
+  "authority": "Owner requested continued quality fixes, careful planning and replanning; integrate the accepted local fixes after the Windows predecessor is merged, preserving every original branch and worktree.",
+  "base_commit": "a42f96565a2086527931f3b68658d136b93f1455",
+  "accepted_quality_head": "6e25bf0fe5bb31248679a52d44c229108a724a89",
+  "windows_predecessor": {
+    "pr": 996,
+    "branch_head": "04cfab88503ca61af6343aa21ac4bd90c48d070f",
+    "merge_commit": "a42f96565a2086527931f3b68658d136b93f1455",
+    "equal_tree": "911862ceaef38f066ca8616141e74c97308584b9"
+  },
+  "bounded_units": [
+    "U1 Integrate accepted batch, depth and shear commits onto the exact merged Windows base without rewriting history.",
+    "U2 Retain both session histories and task boundaries; reconcile recurrence deltas from the common base and regenerate the current integration handoff.",
+    "U3 Freeze and format once, then run full Python, full FastAPI and repository checks as the named cumulative gate.",
+    "U4 Independently audit exact candidate, verify integrity once, publish one PR and merge only unchanged reviewed head with passing required hosted checks."
+  ],
+  "acceptance_rows": [
+    "I01 Batch requested engineering inputs reach single-beam evaluation; genuine failed checks remain failures.",
+    "I02 Passing combined results bind generated longitudinal depths and every stirrup zone to the accepted strength basis; coherent BBS remains usable.",
+    "I03 Every Windows CSharp/source-evidence path outside the four shared planning records remains byte-identical to the merged predecessor.",
+    "I04 Both session histories and Windows next-step boundaries survive; recurrence events are counted once from the common base.",
+    "I05 Cumulative tests, exact-head independent review, integrity, required hosted checks and candidate/merge tree equality have retained evidence."
+  ],
+  "non_goals": [
+    "No further quality units, new formulas, automatic redesign, Windows implementation changes, installed acceptance claims, release, or branch/worktree cleanup."
+  ],
+  "verification": {
+    "cumulative": "Full Python package suite, full FastAPI suite and canonical 32 repository checks once after content freeze; rerun only affected repair evidence if necessary.",
+    "review": "Independent exact-head main-outcome and integration audit, followed by one read-only candidate-integrity run.",
+    "hosted": "Single PR for entire stacked milestone; required checks must pass on unchanged reviewed head before merge."
+  },
+  "preserved_heads": [
+    "a17926b04bd9d3c93af401493988a24e3b847e84",
+    "21691fdf8ab8e8bb195e0bbb329259cf599210c2",
+    "6e25bf0fe5bb31248679a52d44c229108a724a89"
+  ]
+}

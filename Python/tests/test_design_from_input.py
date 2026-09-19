@@ -8,6 +8,8 @@ This tests the integration between the inputs module and the API.
 
 from __future__ import annotations
 
+import pytest
+
 from structural_lib import api
 from structural_lib.core.data_types import ComplianceReport
 from structural_lib.core.inputs import (
@@ -29,7 +31,7 @@ class TestDesignFromInput:
         beam = BeamInput(
             beam_id="B1",
             story="GF",
-            geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),
+            geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, bar_dia_mm=16),
             materials=MaterialsInput.m25_fe500(),
             loads=LoadsInput(mu_knm=100, vu_kn=60),
         )
@@ -46,7 +48,7 @@ class TestDesignFromInput:
         beam = BeamInput(
             beam_id="B1",
             story="GF",
-            geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),
+            geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, bar_dia_mm=16),
             materials=MaterialsInput.m25_fe500(),
             loads=LoadsInput(mu_knm=100, vu_kn=60),
         )
@@ -62,7 +64,7 @@ class TestDesignFromInput:
         beam = BeamInput(
             beam_id="B2",
             story="1F",
-            geometry=BeamGeometryInput(b_mm=300, D_mm=600, span_mm=6000),
+            geometry=BeamGeometryInput(b_mm=300, D_mm=600, span_mm=6000, bar_dia_mm=16),
             materials=MaterialsInput.m30_fe500(),
             load_cases=[
                 LoadCaseInput("DL+LL", mu_knm=150, vu_kn=90),
@@ -100,7 +102,9 @@ class TestDesignFromInput:
         beam = BeamInput(
             beam_id="B1",
             story="GF",
-            geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),
+            geometry=BeamGeometryInput(
+                b_mm=300, D_mm=500, span_mm=5000, bar_dia_mm=16, stirrup_dia_mm=10
+            ),
             materials=MaterialsInput.m25_fe500(),
             loads=LoadsInput(mu_knm=100, vu_kn=60),
             detailing_config=DetailingConfigInput.seismic(zone=4),
@@ -124,10 +128,12 @@ class TestDesignFromInput:
             loads=LoadsInput(mu_knm=100, vu_kn=60),
         )
 
-        result = api.design_from_input(beam)
+        result = api.design_from_input(beam, include_detailing=False)
 
-        assert isinstance(result, DesignAndDetailResult)
-        assert result.geometry["d_mm"] == 432.0
+        assert beam.geometry.effective_depth == 432.0
+        assert isinstance(result, ComplianceReport)
+        assert len(result.cases) == 1
+        assert result.cases[0].shear.tau_v == pytest.approx(60_000 / (300 * 432))
 
     def test_api_exports_input_classes(self) -> None:
         """Test that input classes are exported from api module."""

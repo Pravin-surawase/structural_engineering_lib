@@ -1,0 +1,91 @@
+{
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-09-19T07:19:35Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-09-19T07:19:35Z",
+      "reference": "current-thread: user explicitly authorized continuation, integration of accepted local quality fixes with merged predecessor, one green PR, and unchanged-green merge"
+    },
+    "authorized_actions": [
+      "PREPARE_VERSIONED_TRANSITION_RECEIPTS",
+      "MERGE_ACCEPTED_LOCAL_FIXES_WITH_MERGED_PREDECESSOR",
+      "PUSH_INTEGRATION_BRANCH",
+      "CREATE_PULL_REQUEST",
+      "MERGE_UNCHANGED_GREEN_PULL_REQUEST"
+    ],
+    "prohibited_actions": [
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "BYPASS_REQUIRED_CHECKS",
+      "MODIFY_WINDOWS_PREDECESSOR_BRANCH",
+      "CLAIM_UNOBSERVED_EXTERNAL_CHECK_OR_PULL_REQUEST_STATUS"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "target_binding": {
+      "task_id": "LIB-QUALITY-INTEGRATION-001",
+      "branch": "codex/library-quality-integrated",
+      "head_sha": "a42f96565a2086527931f3b68658d136b93f1455",
+      "actions": [
+        "PREPARE_VERSIONED_TRANSITION_RECEIPTS",
+        "MERGE_ACCEPTED_LOCAL_FIXES_WITH_MERGED_PREDECESSOR",
+        "PUSH_INTEGRATION_BRANCH",
+        "CREATE_PULL_REQUEST",
+        "MERGE_UNCHANGED_GREEN_PULL_REQUEST"
+      ]
+    }
+  },
+  "remote": {
+    "status": "NOT_APPLICABLE",
+    "reason_code": "INTEGRATION_BRANCH_UNPUBLISHED_AT_SOURCE_SNAPSHOT"
+  },
+  "pull_request": {
+    "status": "NOT_APPLICABLE",
+    "reason_code": "OWN_INTEGRATION_PULL_REQUEST_NOT_CREATED_AT_SOURCE_SNAPSHOT"
+  },
+  "review": {
+    "status": "NOT_APPLICABLE",
+    "reason_code": "PARENT_MERGE_WILL_CREATE_EXACT_INTEGRATION_HEAD_FOR_REVIEW"
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "reason_code": "SOURCE_TRANSITION_SNAPSHOT_PRECEDES_PARENT_MERGE"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-09-19T07:19:35Z",
+    "decision": "PRESERVE_BATCH_A17926B0_GEOMETRY_21691FDF_SHEAR_6E25BF0F_AND_WINDOWS_MERGED_PREDECESSOR_REFERENCES_WITH_ALL_EXISTING_WORKTREES",
+    "owner": "Parent integration owner under explicit user continuation authority",
+    "holds": [
+      "PRESERVE_ACCEPTED_BATCH_GEOMETRY_AND_SHEAR_BRANCHES",
+      "PRESERVE_WINDOWS_PREDECESSOR_AND_FOREIGN_WORKTREES",
+      "NO_BRANCH_OR_WORKTREE_DELETION"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_APPLICABLE",
+    "reason_code": "LIB_QUALITY_INTEGRATION_REMAINS_ACTIVE_UNTIL_UNCHANGED_GREEN_MERGE"
+  },
+  "predecessor_facts": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-09-19T07:19:35Z",
+    "merged_main_sha": "a42f96565a2086527931f3b68658d136b93f1455",
+    "merged_main_tree": "911862ceaef38f066ca8616141e74c97308584b9",
+    "windows_published_head": "04cfab88503ca61af6343aa21ac4bd90c48d070f",
+    "windows_published_tree": "911862ceaef38f066ca8616141e74c97308584b9",
+    "pull_request_number": 996,
+    "pull_request_state": "MERGED",
+    "pull_request_merged_at_utc": "2026-09-19T07:04:03Z",
+    "source": "parent-confirmed GitHub and exact-tree facts in current task"
+  },
+  "preserved_quality_candidates": {
+    "batch": "a17926b04bd9d3c93af401493988a24e3b847e84",
+    "geometry": "21691fdf8ab8e8bb195e0bbb329259cf599210c2",
+    "shear": "6e25bf0fe5bb31248679a52d44c229108a724a89"
+  }
+}

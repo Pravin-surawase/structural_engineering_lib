@@ -1,6 +1,6 @@
 """Generate synthetic beam inputs and run the full CLI pipeline.
 
-This script creates a CSV with realistic beam data, then runs:
+This script samples three authored single-layer beam cases into a CSV, then runs:
   - design -> results.json
   - bbs -> schedule.csv
   - dxf -> drawings.dxf (optional, requires ezdxf)
@@ -14,14 +14,10 @@ from __future__ import annotations
 
 import argparse
 import csv
-import math
 import random
 import subprocess
 import sys
 from pathlib import Path
-
-from structural_lib.codes.is456 import tables
-from structural_lib.codes.is456.beam import flexure, shear
 
 FIELDNAMES = [
     "BeamID",
@@ -40,92 +36,37 @@ FIELDNAMES = [
 ]
 
 
-def _round_to_step(value: float, step: int) -> int:
-    return int(round(value / step) * step)
-
-
 def _generate_rows(count: int, seed: int) -> list[dict]:
     rng = random.Random(seed)
-
     stories = ["G", "L1", "L2", "L3", "L4", "L5"]
-    widths = [230, 250, 300, 350]
-    depths = [450, 500, 550, 600]
     spans = [3000, 3500, 4000, 4500, 5000, 5500]
-    covers = [30, 40, 50]
-    fcks = [20, 25, 30, 35]
-    fys = [415, 500]
-    stirrup_dias = [8, 10]
-
+    # These demands select single-layer 16 mm tension bars in the maintained
+    # generator. Arbitrary random demands can select other sizes or multiple
+    # layers, so they cannot reuse a guessed 16 mm centroid for a BBS example.
+    cases = [(450, 100), (500, 150), (550, 150)]
+    cover = 40
+    stirrup_dia = 8
+    main_bar_dia = 16
     rows: list[dict] = []
-    main_bar_dia = 16.0
-
     for idx in range(count):
-        beam_id = f"B{idx + 1:04d}"
-        story = stories[idx % len(stories)]
-
-        b = rng.choice(widths)
-        D = rng.choice(depths)
-        span = rng.choice(spans)
-        cover = rng.choice(covers)
-        fck = rng.choice(fcks)
-        fy = rng.choice(fys)
-        stirrup_dia = rng.choice(stirrup_dias)
-
-        d = D - cover - stirrup_dia - main_bar_dia / 2
-        if d <= 0:
-            d = D * 0.85
-
-        probe = flexure.design_singly_reinforced(
-            b=b, d=d, d_total=D, mu_knm=1.0, fck=fck, fy=fy
-        )
-        mu_lim = probe.Mu_lim if probe.Mu_lim > 0 else 150.0
-        mu = mu_lim * rng.uniform(0.45, 0.7)
-        mu = max(mu, 20.0)
-
-        flex = flexure.design_singly_reinforced(
-            b=b, d=d, d_total=D, mu_knm=mu, fck=fck, fy=fy
-        )
-        if not flex.is_safe and mu_lim > 0:
-            mu = mu_lim * 0.5
-            flex = flexure.design_singly_reinforced(
-                b=b, d=d, d_total=D, mu_knm=mu, fck=fck, fy=fy
-            )
-
-        tc_max = tables.get_tc_max_value(fck)
-        vu_cap = 0.7 * tc_max * b * d / 1000.0
-        span_m = span / 1000.0
-        vu_from_mu = (4.0 * mu) / span_m
-        vu = min(vu_from_mu, vu_cap)
-        vu = max(vu, 20.0)
-
-        asv = 2.0 * math.pi * (stirrup_dia / 2) ** 2
-        pt = max(flex.pt_provided, 0.2)
-        shear_res = shear.design_shear(
-            vu_kn=vu, b=b, d=d, fck=fck, fy=fy, asv=asv, pt=pt
-        )
-
-        spacing = _round_to_step(shear_res.spacing, 25)
-        if spacing <= 0:
-            spacing = 150
-
+        D, mu = rng.choice(cases)
         rows.append(
             {
-                "BeamID": beam_id,
-                "Story": story,
-                "b": round(b, 1),
-                "D": round(D, 1),
-                "eff_d": round(d, 1),
-                "Span": round(span, 1),
-                "Cover": round(cover, 1),
-                "fck": round(fck, 1),
-                "fy": round(fy, 1),
-                "Mu": round(mu, 2),
-                "Vu": round(vu, 2),
-                "Stirrup_Dia": round(stirrup_dia, 1),
-                "Stirrup_Spacing": round(spacing, 1),
+                "BeamID": f"B{idx + 1:04d}",
+                "Story": stories[idx % len(stories)],
+                "b": 300,
+                "D": D,
+                "eff_d": D - cover - stirrup_dia - main_bar_dia / 2,
+                "Span": rng.choice(spans),
+                "Cover": cover,
+                "fck": 25,
+                "fy": 500,
+                "Mu": mu,
+                "Vu": 80,
+                "Stirrup_Dia": stirrup_dia,
+                "Stirrup_Spacing": 150,
             }
         )
-
     return rows
 
 

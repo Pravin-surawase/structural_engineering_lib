@@ -1,4 +1,9 @@
-"""Tests for design suggestions engine."""
+"""Tests for design suggestions engine.
+
+Most rules inspect the canonical strength output only, so they deliberately
+request ``include_detailing=False``. The full-context rule test below keeps
+generated detailing enabled and supplies depths that match its bar centroids.
+"""
 
 from structural_lib.insights.design_suggestions import (
     DesignSuggestion,
@@ -597,7 +602,9 @@ class TestEdgeCases:
             story="L1",
             b_mm=300,
             D_mm=500,
-            d_mm=450,
+            # Generated 4-16 bars with 40 mm clear cover and 8 mm links give
+            # d = 500 - 40 - 8 - 16 / 2 = 444 mm.
+            d_mm=444,
             cover_mm=40,
             span_mm=5000,
             mu_knm=120,

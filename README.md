@@ -140,12 +140,17 @@ from structural_lib import api
 
 result = api.design_and_detail_beam_is456(
     units="IS456", beam_id="B1", story="GF",
-    span_mm=5500, mu_knm=160, vu_kn=85, b_mm=300, D_mm=500,
+    span_mm=5500, mu_knm=160, vu_kn=85, b_mm=300, D_mm=500, d_mm=444,
 )
 print(result.summary())
 bbs = api.compute_bbs(result)
 print(f"BBS weight: {bbs.summary.total_weight_kg:.1f} kg")
 ```
+
+The example depth is `500 - 40 - 8 - 16/2 = 444 mm`, matching the generated
+single-layer 16 mm tension bars. Combined design/detailing rejects mismatched
+depths and multiple-layer layouts whose row centroids are not defined. Use
+explicit supplied reinforcement when layer positions are needed.
 
 Identity names differ on two retained service functions:
 `design_and_detail_beam_is456()` uses `beam_id`, while

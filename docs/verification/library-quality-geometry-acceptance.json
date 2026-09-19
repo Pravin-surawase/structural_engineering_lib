@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "task_id": "LIB-QUALITY-GEOMETRY-001",
+  "status": "authorized",
+  "base_commit": "a17926b04bd9d3c93af401493988a24e3b847e84",
+  "authority": "Owner explicitly instructed on 2026-09-19 to plan well, avoid rework, replan when needed and start the confirmed geometry fix. The accepted batch commit remains unchanged in its branch; its standalone publication plan is superseded by this stacked quality milestone.",
+  "objective": "Prevent canonical, retained combined and pipeline design+detail results from accepting generated reinforcement whose strength depths do not match the physical bar layout.",
+  "bounded_units": [
+    "U1 Freeze all three producers, BBS/report consumers and recovery examples before changing behavior.",
+    "U2 Add one shared post-generation depth-binding validator and call it at every passing joint producer before returning any combined result.",
+    "U3 Qualify public failure/success paths, preserve design-only and engineering-failure behavior, and update affected executable examples.",
+    "U4 Freeze all content, format once, run affected union plus one cumulative Python/repository gate, review exact candidate and verify integrity."
+  ],
+  "decisions": [
+    "Do not infer vertical row spacing or centroid from layer count alone. Multilayer primary or required compression reinforcement is unverified in this generated-layout contract.",
+    "For single-layer strength-bearing faces, compare actual generated bar diameter, link diameter and clear cover against supplied d and required d_dash at every station. Explicit and derived depths have the same physical check.",
+    "Use InputContractError before emitting a nominally passing combined result, so legacy BBS unwrapping cannot bypass the failure. Pipeline must not swallow this error in its optional-detailing exception handler.",
+    "Preserve design-only explicit depths and existing engineering FAIL results. Standalone raw detailing/BBS does not establish strength binding.",
+    "Do not silently alter input depths or introduce iterative redesign; users can provide consistent single-layer geometry or use the existing supplied-reinforcement route with explicit layer positions.",
+    "The single-case design_from_input branch ignored include_detailing=False. Honor that existing flag by returning a one-case ComplianceReport, preserving the declared return union and permitting design-only explicit depths.",
+    "Cumulative caller evidence: smart_analyze_design consumes strength and heuristic estimates without using generated bars. Explicit design-only dispatch preserves that existing result contract. The synthetic CLI sample uses three authored single-layer cases instead of assigning a guessed 16 mm centroid to arbitrary demands."
+  ],
+  "acceptance_rows": [
+    {
+      "id": "R01",
+      "outcome": "Original Mu340/D550/d500/cover40/link8/20mm-bars multilayer canonical PASS+BBS reproducer returns a structured geometry error."
+    },
+    {
+      "id": "R02",
+      "outcome": "All three passing design+generated-detail paths reject inconsistent one-layer depth and unverified multiple layers."
+    },
+    {
+      "id": "R03",
+      "outcome": "Actual required compression reinforcement must match d_dash; nominal unused opposite steel does not redefine design-only depth."
+    },
+    {
+      "id": "R04",
+      "outcome": "Coherent single-layer explicit and derived-depth canonical/compatibility/pipeline examples succeed; canonical and retained combined BBS still work."
+    },
+    {
+      "id": "R05",
+      "outcome": "Design-only explicit depths and existing genuine engineering FAIL result behavior remain intact."
+    },
+    {
+      "id": "R06",
+      "outcome": "The preserved batch-input fix remains passing; CLI and package examples use physically consistent inputs and surface structured failures."
+    }
+  ],
+  "non_goals": [
+    "New engineering formulas, inferred multilayer row layouts, optimization, automatic redesign, or CSharp/Excel/ETABS profile changes.",
+    "Broad refactoring, cleanup, unrelated fixes, package publication, or claiming whole-building/professional acceptance."
+  ],
+  "replan_triggers": [
+    "An affected valid caller requires actual multilayer centroid support rather than a truthful explicit unsupported outcome.",
+    "A failing focused check proves the shared gate misses a joint producer or breaks a documented result contract.",
+    "Windows advances the base or overlaps implementation paths; rebind exact predecessor/head before publication."
+  ],
+  "verification": {
+    "focused": "Public geometry regressions plus canonical, pipeline, compatibility safety, design_from_input, packaging/CLI, beam-audit and torsion callers selected by maintained ownership.",
+    "cumulative": "After content stabilizes: one broad Python suite, the FastAPI suite selected by changed-path ownership, and ./run.sh check. Required hosted checks belong to the final reconciled publication candidate.",
+    "independent_audit": "One bounded read-only reviewer; parent verifies exact source and observed outputs.",
+    "repair_scope": "After the single cumulative run, rerun only repaired smart-analysis/API callers, executable synthetic examples, generated API-ledger/facade checks, and their affected focused union. Do not repeat unchanged broad suites."
+  },
+  "integration_dependency": "Active Windows BEAM-C0A-SOURCE owns separate CSharp work and shared planning records. Hold publication until predecessor base/head/changed paths and shared documents are reconciled.",
+  "supersedes_publication_plan": "LIB-QUALITY-20260919; preserve accepted commit a17926b04bd9d3c93af401493988a24e3b847e84 without rewriting history."
+}

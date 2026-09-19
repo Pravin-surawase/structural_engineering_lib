@@ -35,6 +35,10 @@ from structural_lib.core.validation import (
 )
 from structural_lib.insights import cost_optimization, design_suggestions
 from structural_lib.services import bbs, beam_pipeline, report
+from structural_lib.services.beam_detailing_binding import (
+    _require_generated_detailing_depth,
+    _require_generated_detailing_shear,
+)
 from structural_lib.services.common_api import (
     _require_finite_real,
     _require_is456_units,
@@ -2279,7 +2283,9 @@ def _design_and_detail_beam_is456_calculation(
         vu_kn: Factored shear (kN).
         b_mm: Beam width (mm).
         D_mm: Overall depth (mm).
-        d_mm: Effective depth (mm). If None, calculated as D_mm - cover_mm.
+        d_mm: Strength effective depth (mm), which must match the generated
+            single-layer tension-bar centroid. None retains the preliminary
+            D_mm - cover_mm estimate, which cannot itself establish that match.
         cover_mm: Clear cover (mm). Default: 40mm.
         fck_nmm2: Concrete strength (N/mm²). Default: 25.
         fy_nmm2: Steel yield strength (N/mm²). Default: 500.
@@ -2310,11 +2316,12 @@ def _design_and_detail_beam_is456_calculation(
         ...     vu_kn=80,
         ...     b_mm=300,
         ...     D_mm=500,
+        ...     d_mm=444,
         ...     fck_nmm2=25,
         ...     fy_nmm2=500,
         ... )
         >>> print(result.summary())
-        'B1@GF: 300×500mm, Ast=960mm², OK'
+        'B1@GF: 300×500mm, Ast=900mm², OK'
         >>> print(f"Tension steel: {result.design.flexure.ast_required:.0f} mm²")
         >>> print(f"Bottom bars: {result.detailing.bottom_bars}")
 
@@ -2342,7 +2349,7 @@ def _design_and_detail_beam_is456_calculation(
     require_positive_real(d_dash_mm, "d_dash_mm")
     require_positive_real(asv_mm2, "asv_mm2")
 
-    # Calculate effective depth if not provided
+    # Preserve the preliminary estimate; final generated geometry is checked below.
     if d_mm is None:
         d_mm = D_mm - cover_mm
 
@@ -2390,6 +2397,20 @@ def _design_and_detail_beam_is456_calculation(
         is_seismic=is_seismic,
         primary_tension_face=primary_tension_face,
     )
+
+    if design_result.is_ok and detail_result.is_valid:
+        _require_generated_detailing_depth(
+            detail_result,
+            d_mm=d_mm,
+            d_dash_mm=d_dash_mm,
+            compression_required_mm2=asc_required,
+            primary_tension_face=primary_tension_face,
+        )
+        _require_generated_detailing_shear(
+            detail_result,
+            assumed_asv_mm2=asv_mm2,
+            maximum_spacing_mm=design_result.shear.spacing,
+        )
 
     # Combine results
     is_ok = design_result.is_ok and detail_result.is_valid
@@ -2741,13 +2762,17 @@ def smart_analyze_design(
     cost_profile: CostProfile | None = None,
     weights: dict[str, float] | None = None,
 ) -> SmartAnalysisResult:
-    """Unified smart design analysis dashboard.
+    """Return strength-based smart-design estimates for a beam.
 
     Combines cost optimization, design suggestions, sensitivity analysis,
-    and constructability assessment into a comprehensive dashboard.
+    and a steel-percentage constructability estimate into a comprehensive
+    dashboard. This API does not accept clear cover or reinforcement layout
+    inputs, so it deliberately runs the design-only pipeline: its results are
+    not generated-detail acceptance, a bar schedule, or a constructability
+    check against generated bar positions.
 
-    This function runs the full design pipeline internally to get complete
-    design context, then performs all smart analyses.
+    This function runs the strength-design pipeline internally, then performs
+    the smart analyses from that canonical strength result.
 
     Args:
         units: Units label (must be "IS456").
@@ -2812,13 +2837,15 @@ def smart_analyze_design(
     )
     require_positive_real(span_mm, "span_mm")
 
-    # Run full pipeline to get BeamDesignOutput
+    # This public API has no clear-cover or bar-layout inputs. Do not infer a
+    # cover from D-d and present it as generated detailing; SmartDesigner uses
+    # the canonical strength result for its current estimates.
     pipeline_result = beam_pipeline.design_single_beam(
         units=units,
         b_mm=b_mm,
         D_mm=D_mm,
         d_mm=d_mm,
-        cover_mm=D_mm - d_mm,  # Calculate cover from D and d
+        cover_mm=D_mm - d_mm,
         fck_nmm2=fck_nmm2,
         fy_nmm2=fy_nmm2,
         mu_knm=mu_knm,
@@ -2828,6 +2855,7 @@ def smart_analyze_design(
         span_mm=span_mm,
         d_dash_mm=d_dash_mm,
         asv_mm2=asv_mm2,
+        include_detailing=False,
     )
 
     # Run smart analysis
@@ -2883,7 +2911,7 @@ def design_from_input(
 
     Returns:
         DesignAndDetailResult if include_detailing=True (single case or envelope)
-        ComplianceReport if include_detailing=False (multi-case analysis)
+        ComplianceReport if include_detailing=False (one or multiple cases)
 
     Examples:
         >>> # Simple usage with dataclasses
@@ -2894,7 +2922,7 @@ def design_from_input(
         >>> beam = BeamInput(
         ...     beam_id="B1",
         ...     story="GF",
-        ...     geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),
+        ...     geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, bar_dia_mm=16),
         ...     materials=MaterialsInput.m25_fe500(),
         ...     loads=LoadsInput(mu_knm=150, vu_kn=80),
         ... )
@@ -2992,6 +3020,25 @@ def design_from_input(
     # Single case
     if beam.loads is None:
         raise ValueError("BeamInput requires either 'loads' or 'load_cases'")
+
+    if not include_detailing:
+        return check_beam_is456(
+            units=beam.units,
+            cases=[
+                {
+                    "case_id": f"{beam.beam_id}@{beam.story}",
+                    "mu_knm": beam.loads.mu_knm,
+                    "vu_kn": beam.loads.vu_kn,
+                }
+            ],
+            b_mm=geom.b_mm,
+            D_mm=geom.D_mm,
+            d_mm=d_mm,
+            fck_nmm2=mat.fck_nmm2,
+            fy_nmm2=mat.fy_nmm2,
+            d_dash_mm=config.d_dash_mm,
+            asv_mm2=config.asv_mm2,
+        )
 
     return design_and_detail_beam_is456(
         units=beam.units,

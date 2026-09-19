@@ -155,7 +155,7 @@ class TestDesignSingleBeam:
             "story": "GF",
             "b_mm": 300.0,
             "D_mm": 500.0,
-            "d_mm": 450.0,
+            "d_mm": 457.0,
             "span_mm": 5000.0,
             "cover_mm": 25.0,
             "fck_nmm2": 25.0,
@@ -243,7 +243,7 @@ class TestDesignMultipleBeams:
                 "story": "GF",
                 "b_mm": 300.0,
                 "D_mm": 500.0,
-                "d_mm": 450.0,
+                "d_mm": 457.0,
                 "span_mm": 5000.0,
                 "cover_mm": 25.0,
                 "fck_nmm2": 25.0,
@@ -256,7 +256,7 @@ class TestDesignMultipleBeams:
                 "story": "1F",
                 "b_mm": 350.0,
                 "D_mm": 600.0,
-                "d_mm": 550.0,
+                "d_mm": 554.0,
                 "span_mm": 6000.0,
                 "cover_mm": 30.0,
                 "fck_nmm2": 30.0,
@@ -299,3 +299,96 @@ class TestDesignMultipleBeams:
         assert isinstance(result_dict, dict)
         assert "beams" in result_dict
         assert len(result_dict["beams"]) == 2
+
+    @pytest.mark.parametrize(
+        ("options", "failed_check"),
+        [
+            (
+                {"include_serviceability": True, "support_condition": "CANTILEVER"},
+                "deflection",
+            ),
+            (
+                {
+                    "deflection_params": {
+                        "span_mm": 5000,
+                        "d_mm": 457,
+                        "support_condition": "CANTILEVER",
+                    }
+                },
+                "deflection",
+            ),
+            (
+                {
+                    "crack_width_params": {
+                        "limit_mm": 0.2,
+                        "acr_mm": 100,
+                        "cmin_mm": 25,
+                        "h_mm": 500,
+                        "x_mm": 150,
+                        "epsilon_m": 0.002,
+                    }
+                },
+                "crack_width",
+            ),
+        ],
+    )
+    def test_requested_serviceability_failure_is_counted_in_batch(
+        self, two_beam_cases, options, failed_check
+    ):
+        beams = [dict(two_beam_cases[0], **options), two_beam_cases[1]]
+
+        result = beam_pipeline.design_multiple_beams(
+            units="IS456", beams=beams, include_detailing=False
+        )
+
+        failed, passed = result.beams
+        assert getattr(failed.serviceability, f"{failed_check}_status") == "fail"
+        assert getattr(failed.serviceability, f"{failed_check}_utilization") > 1
+        assert not failed.is_ok
+        assert failed.governing_check == failed_check
+        assert passed.is_ok
+        assert result.summary == {
+            "total_beams": 2,
+            "passed": 1,
+            "failed": 1,
+            "pass_rate": 0.5,
+        }
+
+    @pytest.mark.parametrize("explicit_none", [False, True])
+    def test_batch_resolves_complete_depth_basis(self, two_beam_cases, explicit_none):
+        from structural_lib.services.project_beam import EffectiveDepthBasisV1
+
+        params = dict(two_beam_cases[0])
+        params.pop("d_mm")
+        params["effective_depth_basis"] = EffectiveDepthBasisV1(25, 8, 20)
+        if explicit_none:
+            params.update(d_mm=None, d_dash_mm=None)
+
+        result = beam_pipeline.design_multiple_beams(
+            units="IS456", beams=[params], include_detailing=False
+        ).beams[0]
+
+        assert result.geometry.d_mm == 457
+        assert result.geometry.d_dash_mm == 43
+        assert result.effective_depth_resolution["source"] == "DERIVED"
+
+    def test_batch_preserves_shear_and_stirrup_choices(self, two_beam_cases):
+        params = dict(
+            two_beam_cases[0],
+            pt_percent=0.2,
+            stirrup_spacing_start_mm=100,
+            stirrup_spacing_mid_mm=125,
+            stirrup_spacing_end_mm=175,
+        )
+
+        single = beam_pipeline.design_single_beam(units="IS456", **params)
+        batch = beam_pipeline.design_multiple_beams(units="IS456", beams=[params])
+        result = batch.beams[0]
+
+        assert result.shear.tau_c_nmm2 == pytest.approx(0.325)
+        assert result.shear == single.shear
+        assert [zone["spacing"] for zone in result.detailing.stirrups] == [
+            100,
+            125,
+            175,
+        ]

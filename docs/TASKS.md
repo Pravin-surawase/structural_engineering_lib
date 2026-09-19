@@ -126,6 +126,13 @@
 
 ## Active
 
+`LIB-QUALITY-INTEGRATION-001` delivers the accepted batch-input, generated-depth
+and shear-schedule fixes after merged Windows PR #996. Its
+[acceptance](verification/library-quality-integration-acceptance.json) owns one
+cumulative Python/FastAPI/repository gate and one reviewed hosted candidate.
+The original quality branches and Windows evidence remain preserved. Exact
+candidate/hosted/merge verdicts stay in the external delivery ledger.
+
 `ETABS-API-GUIDE` implements the owner's new first step: a version-bound
 catalogue of all installed ETABS interface methods, matching help topics,
 object navigation/defaults and reusable workflow recipes. Every agent uses
@@ -145,7 +152,7 @@ acceptance. This implements the owner policy and shared-input needs recorded by
 the earlier `BEAM-NEXT-WORK-PLAN`, `BEAM-ASSUME-AND-CONTINUE` and
 `BEAM-DATA-REQUIREMENTS` packets; their historical scopes remain unchanged.
 
-`BEAM-C0A-SOURCE` is the active bounded source packet. Its
+`BEAM-C0A-SOURCE` merged in PR #996 at `a42f9656`. Its
 [step plan](planning/xll-product/etabs-design-workflow.md#active-implementation-beam-c0a-source--2026-09-19)
 and [receipt](verification/beam-c0a-source-receipt.json) record native-unit facts,
 effective materials, endpoint connectivity, 68 element mappings and all 32 load

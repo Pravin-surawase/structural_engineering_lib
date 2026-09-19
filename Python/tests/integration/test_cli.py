@@ -79,7 +79,7 @@ def sample_csv_file(tmp_path):
                 "Story1",
                 "300",
                 "500",
-                "460",
+                "444",
                 "4000",
                 "40",
                 "25",
@@ -96,7 +96,7 @@ def sample_csv_file(tmp_path):
                 "Story1",
                 "300",
                 "450",
-                "410",
+                "394",
                 "3000",
                 "40",
                 "25",
@@ -124,7 +124,7 @@ def sample_json_beams_file(tmp_path):
                 "story": "Story1",
                 "b": 300,
                 "D": 500,
-                "d": 460,
+                "d": 444,
                 "span": 4000,
                 "cover": 40,
                 "fck": 25,
@@ -158,7 +158,7 @@ def sample_design_results_file(tmp_path):
                 "geometry": {
                     "b": 300,
                     "D": 500,
-                    "d": 460,
+                    "d": 442,
                     "span": 4000,
                     "cover": 40,
                 },
@@ -328,7 +328,7 @@ def test_design_units_conversion_boundary(tmp_path):
                 "S1",
                 "200",
                 "450",
-                "400",
+                "396",
                 "4000",
                 "40",
                 "25",
@@ -350,7 +350,26 @@ def test_design_units_conversion_boundary(tmp_path):
 
     assert beam["loads"]["mu_knm"] == 50.0
     assert beam["loads"]["vu_kn"] == 80.0
-    assert beam["shear"]["tau_v_nmm2"] == pytest.approx(1.0, rel=0.0, abs=1e-6)
+    assert beam["shear"]["tau_v_nmm2"] == pytest.approx(
+        1.0101010101010102, rel=0.0, abs=1e-6
+    )
+
+
+def test_design_rejects_generated_depth_mismatch(tmp_path, capsys):
+    """A CLI design+BBS artifact must bind strength depth to generated bars."""
+    input_path = tmp_path / "unbound-depth.csv"
+    output_path = tmp_path / "result.json"
+    _write_cli_csv(
+        input_path,
+        [["B1", "S1", 300, 500, 460, 4000, 40, 25, 500, 150, 100, 8, 150]],
+    )
+
+    rc = cli_main.main(["design", str(input_path), "-o", str(output_path)])
+
+    captured = capsys.readouterr()
+    assert rc != 0
+    assert not output_path.exists()
+    assert "DETAILING_EFFECTIVE_DEPTH_MISMATCH" in captured.err
 
 
 @pytest.mark.parametrize(
@@ -503,7 +522,7 @@ def test_design_complete_depth_basis_derives_effective_depth(tmp_path):
     ]
     _write_cli_csv(
         input_path,
-        [["B1", "S1", 300, 500, 4000, 40, 25, 500, 150, 80, 8, 150, 20]],
+        [["B1", "S1", 300, 500, 4000, 40, 25, 500, 150, 80, 8, 150, 16]],
         headers,
     )
 
@@ -511,7 +530,7 @@ def test_design_complete_depth_basis_derives_effective_depth(tmp_path):
 
     assert rc == 0
     payload = json.loads(output_path.read_text(encoding="utf-8"))
-    assert payload["beams"][0]["geometry"]["d_mm"] == 442.0
+    assert payload["beams"][0]["geometry"]["d_mm"] == 444.0
 
 
 def test_design_depth_boundary_keeps_canonical_engineering_failure(tmp_path):
@@ -1465,12 +1484,12 @@ def test_integration_multi_beam_workflow(tmp_path):
                 "GF",
                 "230",
                 "400",
-                "360",
+                "344",
                 "3000",
                 "40",
                 "25",
                 "500",
-                "80",
+                "75",
                 "50",
                 "8",
                 "150",
@@ -1483,7 +1502,7 @@ def test_integration_multi_beam_workflow(tmp_path):
                 "1F",
                 "300",
                 "500",
-                "460",
+                "444",
                 "4000",
                 "40",
                 "25",
@@ -1501,12 +1520,12 @@ def test_integration_multi_beam_workflow(tmp_path):
                 "1F",
                 "400",
                 "700",
-                "650",
+                "630",
                 "6000",
                 "50",
                 "30",
                 "500",
-                "400",
+                "300",
                 "200",
                 "10",
                 "100",

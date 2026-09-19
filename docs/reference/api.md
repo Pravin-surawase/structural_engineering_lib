@@ -1708,6 +1708,25 @@ def design_multiple_beams(
 ) -> MultiBeamOutput
 ```
 
+Each beam dictionary accepts the single-beam options, including
+`include_serviceability`, `support_condition`, explicit deflection/crack-width
+parameters, `pt_percent`, and the three stirrup-zone spacings. Requested checks
+contribute to that beam's status and the batch pass/fail summary. Supply either
+`d_mm` or a complete `EffectiveDepthBasisV1`; omit `d_mm` (or set it to `None`)
+when deriving depth. `include_detailing` is selected once for the whole batch.
+
+When detailing is requested, all joint beam producers verify that the final
+bar centroids match the strength calculation depths. Mismatched or unverified
+multiple-layer geometry raises `InputContractError` before an accepted combined
+result is returned. To request only strength checks, use `include_detailing=False`;
+`design_from_input` returns a `ComplianceReport` for either one or multiple cases.
+
+Joint results also require generated stirrup area to cover the assumed `asv_mm2`
+and each zone spacing to stay within the calculated shear limit. Smaller area
+raises `DETAILING_SHEAR_AREA_MISMATCH`; excessive zone spacing raises
+`DETAILING_SHEAR_SPACING_EXCEEDED`. Resubmit strength design with the actual area
+and select compatible spacing; caller choices are not silently changed.
+
 ---
 
 ## 2. Flexure Module (`M06_Flexure` / `flexure.py`)

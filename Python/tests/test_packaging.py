@@ -481,12 +481,12 @@ class TestREADMESnippets:
             span_mm=5000,
             b_mm=300,
             D_mm=550,
-            d_mm=500,
+            d_mm=492,
             fck_nmm2=25,
             fy_nmm2=500,
             mu_knm=150,
             vu_kn=80,
-            d_dash_mm=50,
+            d_dash_mm=56,
             asv_mm2=detailing.asv_mm2,
             detailing=detailing,
             source_provenance="analysis-envelope:ULS-1",
@@ -515,6 +515,7 @@ class TestREADMESnippets:
             vu_kn=85,
             b_mm=300,
             D_mm=500,
+            d_mm=444,
         )
         bbs = api.compute_bbs(result)
 
