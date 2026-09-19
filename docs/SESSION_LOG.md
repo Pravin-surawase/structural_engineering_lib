@@ -19,7 +19,6 @@
   `b3ceb2c9` after its required hosted run 35429312577 passed. Preserved both
   histories and all non-overlapping source bytes; reconciled the four shared
   records and distinct recurrence deltas from common base `a42f9656`.
-
 - Reconciled #996 exact accepted merge tree and hosted run 35428062275; started
   the isolated writer from fetched main with the original checkout/edit preserved.
 - Froze twenty members using prior inventory and source facts, covering the five
@@ -58,6 +57,11 @@
 
 ### Issues encountered
 
+- Repaired candidate `21233e62` passed exact installed replay, audit and file
+  integrity, but pre-push closeout rejected an extra recurrence item. The
+  wrapped command continuation began with `--write`, which the existing bullet
+  parser reads as a new item. Push was refused and the lifecycle entered REPLAN.
+
 - First candidate `527c0e26` failed read-only integrity because the PowerShell
   JSON writer produced mixed CRLF/LF in the recurrence index. Before that check,
   the audit helper misread the direct Git-state response envelope; orchestration
@@ -85,6 +89,13 @@
   differ from point-connectivity object type codes.
 
 ### Root causes and resolutions
+
+- Keep command tokens on one physical line in recurrence bullets. The exact
+  maintained session-record parser reproduces four rows before the fix and
+  validates three rows after it. The revised T08 contract runs this narrow
+  prerequisite before freeze; final pre-push closeout still runs normally.
+  Preserve the prior candidate/evidence and all implementation bytes, then bind
+  the final candidate to fresh installed evidence and required hosted checks.
 
 - Use source-bound Python with explicit UTF-8 LF for the recurrence JSON. The
   one allowed repair changes documentation/evidence only and retains all C# and
@@ -136,10 +147,10 @@
   matrix layout and object-type vocabulary. Raw installed schemas/coordinates,
   unchanged ownership tables and independent replay resolve them; earlier
   development artifacts stay external and are not accepted candidate evidence.
-- RR-004: occurrences=24, minutes=unknown. One untimed formatter-entry event
-  and one premature audit transition are counted. Canonical `run.sh format
-  --write` records the gate event; checked success and an existing acceptance
-  report must precede dependent delivery commands.
+- RR-004: occurrences=25, minutes=unknown. Formatter-entry, premature audit
+  transition and wrapped-command recurrence-parser events are counted once.
+  Use `run.sh format --write`, validate the session record before freeze, and
+  require a successful acceptance report before dependent delivery commands.
 
 ## 2026-09-19 — Session: Integrate verified beam quality fixes after Windows source qualification
 

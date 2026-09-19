@@ -52,7 +52,7 @@
     {
       "id": "T08",
       "scenario": "Reusable handoff and delivery",
-      "outcome": "Catalogue and task recipes expose exact owners, supported envelope and gaps. Focused union, frozen candidate review/integrity and required hosted checks pass; broad cumulative Python/full-repository gate remains C0c."
+      "outcome": "Catalogue and task recipes expose exact owners, supported envelope and gaps. Focused union, frozen candidate review/integrity and required hosted checks pass; broad cumulative Python/full-repository gate remains C0c. The exact maintained session-record parser must pass before freeze, including one RR identifier per logical recurrence bullet; command tokens remain on one physical line."
     }
   ],
   "non_goals": [
@@ -84,5 +84,12 @@
     "merged_commit": "b3ceb2c92e9e115d42d43fb284e96b6788376a12",
     "successful_hosted_run": 35429312577,
     "decision": "Normal pre-candidate merge; preserve both histories and accepted Python sources, reconcile four shared records, refresh affected docs evidence. Topology code/profile/scope and C0c gate unchanged."
+  },
+  "delivery_replan": {
+    "revision": 2,
+    "trigger": "Pre-push closeout rejected candidate 21233e624faeffb7ba46b5a2a3df7400ee732670 after its successful audit/integrity because a wrapped --write continuation became a fourth recurrence bullet.",
+    "confirmed_root_cause": "The maintained section parser treats every stripped leading hyphen as a bullet. The command continuation had no RR identifier.",
+    "changed_prerequisite": "Before CONTENT_FROZEN, run scripts/session.py check_session_log_complete through the source-bound runtime and require exactly three current recurrence rows with matching index counts. Keep command tokens on one physical line. This is a narrow input validation, not a second session-end run.",
+    "preserved_requirements": "All T01-T07 implementation/scope/runtime constraints and original source bytes are unchanged. Exact final candidate build, fresh installed replay, acceptance audit, one candidate integrity run, ordinary pre-push closeout and required hosted checks still apply."
   }
 }
