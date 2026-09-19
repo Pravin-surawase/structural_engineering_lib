@@ -46,7 +46,7 @@ def _combined_kwargs() -> dict:
         "vu_kn": 80.0,
         "b_mm": 300.0,
         "D_mm": 500.0,
-        "d_mm": 450.0,
+        "d_mm": 444.0,
         "cover_mm": 40.0,
         "fck_nmm2": 25.0,
         "fy_nmm2": 500.0,
@@ -338,7 +338,7 @@ def test_ext_typed_005_one_load_case_is_supported():
     beam = BeamInput(
         beam_id="B-S0",
         story="GF",
-        geometry=BeamGeometryInput(300.0, 500.0, 5000.0),
+        geometry=BeamGeometryInput(300.0, 500.0, 5000.0, bar_dia_mm=16),
         materials=MaterialsInput(25.0, 500.0),
         load_cases=[LoadCaseInput("LC-1", 150.0, 80.0)],
     )
@@ -368,8 +368,8 @@ def test_ext_typed_007_zero_loads_are_preserved_by_alias_parsing():
 
 def test_valid_beam_values_and_corrected_torsion_source_vector():
     combined = design_and_detail_beam_is456(**_combined_kwargs())
-    assert combined.design.flexure.Ast_required == pytest.approx(883.7158126109596)
-    assert combined.design.shear.tau_v == pytest.approx(0.5925925925925926)
+    assert combined.design.flexure.Ast_required == pytest.approx(900.1166577522483)
+    assert combined.design.shear.tau_v == pytest.approx(0.6006006006006006)
     assert combined.design.shear.spacing == pytest.approx(300.0)
     assert combined.detailing.ld_tension == pytest.approx(777.0)
 

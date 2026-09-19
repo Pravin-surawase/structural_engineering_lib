@@ -122,11 +122,12 @@ class DesignAndDetailResult:
         ...     vu_kn=80,
         ...     b_mm=300,
         ...     D_mm=500,
+        ...     d_mm=444,
         ...     fck_nmm2=25,
         ...     fy_nmm2=500,
         ... )
         >>> print(result.summary())
-        'B1@GF: 300×500mm, Ast=960mm², OK'
+        'B1@GF: 300×500mm, Ast=900mm², OK'
         >>> result.to_dict()  # Serialize
         >>> result.to_json()  # JSON string
     """

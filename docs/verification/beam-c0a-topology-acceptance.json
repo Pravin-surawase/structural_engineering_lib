@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task_id": "BEAM-C0A-TOPOLOGY",
   "status": "authorized",
-  "base_commit": "a42f96565a2086527931f3b68658d136b93f1455",
+  "base_commit": "b3ceb2c92e9e115d42d43fb284e96b6788376a12",
   "authority": "Owner asked to continue after completed source qualification #996; next bounded C0a support/member-role/offset work was identified.",
   "objective": "Extend the reusable native source reader with bounded connected-object geometry and explicit member-role evidence, qualify modelled support-envelope candidates and axis/offset comparisons, and close the remaining M02 story/section sample coverage without promoting modelling facts into design support assumptions.",
   "profile": "etabs-topology/v1; pinned ETABS 23.3.1/API 2.16.0.0; source profile limits unchanged; <=20 requested frames, <=200 adjacent frames/areas total, <=40 vertices per area. Straight horizontal beam reference lines, centred rectangular column sections, and vertical rectangular specified uniform walls with zero area offsets form the geometric envelope profile. All other cases retain restrictions. Straight reference paths may be proved from the complete analysis-element chain with actual PointElm coordinates when object curvature is unknown. Numerical admission: 0.001 mm geometry, 1e-8 directions.",
@@ -77,5 +77,12 @@
     "installed_dependency": "Owner-opened M02 remains authorized read-only; reconfirm exact runtime/source identity before each capture."
   },
   "writer_lane": "One parent, isolated Windows codex/beam-c0a-topology; original checkout and edit preserved.",
-  "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md"
+  "plan_owner": "docs/planning/xll-product/etabs-design-workflow.md",
+  "base_integration": {
+    "original_base": "a42f96565a2086527931f3b68658d136b93f1455",
+    "merged_pr": 997,
+    "merged_commit": "b3ceb2c92e9e115d42d43fb284e96b6788376a12",
+    "successful_hosted_run": 35429312577,
+    "decision": "Normal pre-candidate merge; preserve both histories and accepted Python sources, reconcile four shared records, refresh affected docs evidence. Topology code/profile/scope and C0c gate unchanged."
+  }
 }

@@ -1,0 +1,161 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-09-19T07:19:35Z",
+      "query_status": "OK",
+      "reference": "current-thread: user explicitly authorized continuation, integration of accepted local quality fixes with merged predecessor, one green PR, and unchanged-green merge",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "PREPARE_VERSIONED_TRANSITION_RECEIPTS",
+      "MERGE_ACCEPTED_LOCAL_FIXES_WITH_MERGED_PREDECESSOR",
+      "PUSH_INTEGRATION_BRANCH",
+      "CREATE_PULL_REQUEST",
+      "MERGE_UNCHANGED_GREEN_PULL_REQUEST"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-09-19T07:19:35Z",
+    "prohibited_actions": [
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "BYPASS_REQUIRED_CHECKS",
+      "MODIFY_WINDOWS_PREDECESSOR_BRANCH",
+      "CLAIM_UNOBSERVED_EXTERNAL_CHECK_OR_PULL_REQUEST_STATUS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "PREPARE_VERSIONED_TRANSITION_RECEIPTS",
+        "MERGE_ACCEPTED_LOCAL_FIXES_WITH_MERGED_PREDECESSOR",
+        "PUSH_INTEGRATION_BRANCH",
+        "CREATE_PULL_REQUEST",
+        "MERGE_UNCHANGED_GREEN_PULL_REQUEST"
+      ],
+      "branch": "codex/library-quality-integrated",
+      "head_sha": "a42f96565a2086527931f3b68658d136b93f1455",
+      "task_id": "LIB-QUALITY-INTEGRATION-001"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "NO_BRANCH_OR_WORKTREE_DELETION",
+    "PRESERVE_ACCEPTED_BATCH_GEOMETRY_AND_SHEAR_BRANCHES",
+    "PRESERVE_WINDOWS_PREDECESSOR_AND_FOREIGN_WORKTREES"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "SOURCE_TRANSITION_SNAPSHOT_PRECEDES_PARENT_MERGE",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "32dd3ec5d3ff89b7d79764a545dfecdde85bd9655ee312f76c048e64a6c5db4d",
+    "state": {
+      "branch": "codex/library-quality-integrated",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "a42f96565a2086527931f3b68658d136b93f1455",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 61.159,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib6",
+      "head_sha": "a42f96565a2086527931f3b68658d136b93f1455",
+      "hold_reasons": [
+        "changed paths: 1"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-09-19T07:19:35.797410+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/library-quality-integration/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 1,
+        "modified_paths": [],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/library-quality-integration-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/library-quality-integration/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:32dd3ec5d3ff89b7d79764a545dfecdde85bd9655ee312f76c048e64a6c5db4d",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-19T07:19:35.797591+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "reason_code": "OWN_INTEGRATION_PULL_REQUEST_NOT_CREATED_AT_SOURCE_SNAPSHOT",
+    "status": "NOT_APPLICABLE"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "reason_code": "INTEGRATION_BRANCH_UNPUBLISHED_AT_SOURCE_SNAPSHOT",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "PRESERVE_BATCH_A17926B0_GEOMETRY_21691FDF_SHEAR_6E25BF0F_AND_WINDOWS_MERGED_PREDECESSOR_REFERENCES_WITH_ALL_EXISTING_WORKTREES",
+    "holds": [
+      "PRESERVE_ACCEPTED_BATCH_GEOMETRY_AND_SHEAR_BRANCHES",
+      "PRESERVE_WINDOWS_PREDECESSOR_AND_FOREIGN_WORKTREES",
+      "NO_BRANCH_OR_WORKTREE_DELETION"
+    ],
+    "observed_at_utc": "2026-09-19T07:19:35Z",
+    "owner": "Parent integration owner under explicit user continuation authority",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "reason_code": "PARENT_MERGE_WILL_CREATE_EXACT_INTEGRATION_HEAD_FOR_REVIEW",
+    "status": "NOT_APPLICABLE"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "CSharp",
+      "Python/structural_lib/codes",
+      "fastapi_app",
+      "react_app"
+    ],
+    "integration_owner": "parent-integration-owner",
+    "owned_paths": [
+      "docs/verification/library-quality-integration-git-handoff-source-evidence.json",
+      "docs/verification/library-quality-integration-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/verification/rework-recurrence-index.json"
+    ],
+    "task_id": "LIB-QUALITY-INTEGRATION-001"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "reason_code": "LIB_QUALITY_INTEGRATION_REMAINS_ACTIVE_UNTIL_UNCHANGED_GREEN_MERGE",
+    "status": "NOT_APPLICABLE"
+  }
+}

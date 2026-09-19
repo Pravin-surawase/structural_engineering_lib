@@ -126,6 +126,12 @@
 
 ## Active
 
+`LIB-QUALITY-INTEGRATION-001` merged in [PR #997](https://github.com/Pravin-surawase/structural_engineering_lib/pull/997)
+at `b3ceb2c9` after required hosted run `35429312577` passed. Its accepted batch,
+generated-depth and shear-schedule fixes and both original histories are
+preserved by this topology integration. The [acceptance](verification/library-quality-integration-acceptance.json)
+retains its own cumulative Python/FastAPI/repository evidence boundary.
+
 `ETABS-API-GUIDE` implements the owner's new first step: a version-bound
 catalogue of all installed ETABS interface methods, matching help topics,
 object navigation/defaults and reusable workflow recipes. Every agent uses

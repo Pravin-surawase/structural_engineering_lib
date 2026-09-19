@@ -9,6 +9,7 @@ from structural_lib.insights import (
     SmartDesigner,
     quick_analysis,
 )
+from structural_lib.services.beam_api import smart_analyze_design
 
 
 def _base_params():
@@ -18,7 +19,10 @@ def _base_params():
         "span_mm": 5000.0,
         "b_mm": 300.0,
         "D_mm": 500.0,
-        "d_mm": 450.0,
+        # Generated 4-16 bars with 50 mm clear cover and 8 mm links give
+        # d = 500 - 50 - 8 - 16 / 2 = 434 mm.
+        "d_mm": 434.0,
+        "cover_mm": 50.0,
         "fck_nmm2": 25.0,
         "fy_nmm2": 500.0,
         "d_dash_mm": 50.0,
@@ -34,7 +38,7 @@ def _run_pipeline(params):
         b_mm=params["b_mm"],
         D_mm=params["D_mm"],
         d_mm=params["d_mm"],
-        cover_mm=params["D_mm"] - params["d_mm"],  # Calculate from D and d
+        cover_mm=params["cover_mm"],
         fck_nmm2=params["fck_nmm2"],
         fy_nmm2=params["fy_nmm2"],
         mu_knm=params["mu_knm"],
@@ -45,6 +49,27 @@ def _run_pipeline(params):
         d_dash_mm=params.get("d_dash_mm", 50.0),
         asv_mm2=params.get("asv_mm2", 100.0),
     )
+
+
+def test_public_smart_analysis_is_strength_based_without_generated_detailing():
+    """The public smart API accepts strength inputs without inferring a bar layout."""
+    result = smart_analyze_design(
+        units="IS456",
+        span_mm=5000.0,
+        mu_knm=150.0,
+        vu_kn=85.0,
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=450.0,
+        fck_nmm2=25.0,
+        fy_nmm2=500.0,
+    )
+
+    assert result.summary_data["design_status"] == "PASS"
+    assert {check["basis"] for check in result.summary_data["checks"]} == {
+        "canonical_beam_pipeline"
+    }
+    assert result.constructability is not None
 
 
 # =============================================================================
@@ -147,7 +172,13 @@ def test_smart_designer_summary_structure():
 
 
 def test_lower_utilization_has_larger_remaining_capacity_margin():
-    light_params = {**_base_params(), "mu_knm": 60.0, "vu_kn": 40.0}
+    # The lighter demand selects 3-12 bars, whose centroid gives d=436 mm.
+    light_params = {
+        **_base_params(),
+        "mu_knm": 60.0,
+        "vu_kn": 40.0,
+        "d_mm": 436.0,
+    }
     heavier_params = {**_base_params(), "mu_knm": 120.0, "vu_kn": 85.0}
     light = SmartDesigner.analyze(
         design=_run_pipeline(light_params),
@@ -497,7 +528,13 @@ def test_smart_designer_different_designs():
     params1 = _base_params()
     design1 = _run_pipeline(params1)
 
-    params2 = {**_base_params(), "b_mm": 350.0, "d_mm": 500.0, "D_mm": 550.0}
+    # Generated 4-16 bars give d = 550 - 50 - 8 - 16 / 2 = 484 mm.
+    params2 = {
+        **_base_params(),
+        "b_mm": 350.0,
+        "d_mm": 484.0,
+        "D_mm": 550.0,
+    }
     design2 = _run_pipeline(params2)
 
     dashboard1 = SmartDesigner.analyze(
@@ -520,7 +557,8 @@ def test_smart_designer_large_span():
     """Test analysis with large span."""
     params = _base_params()
     params["mu_knm"] = 250.0
-    params["d_mm"] = 600.0
+    # Generated 4-20 bars give d = 650 - 50 - 8 - 20 / 2 = 582 mm.
+    params["d_mm"] = 582.0
     params["D_mm"] = 650.0
     params["span_mm"] = 8000.0
     params["vu_kn"] = 120.0
@@ -537,14 +575,18 @@ def test_smart_designer_large_span():
 def test_smart_designer_high_congestion():
     """Test constructability assessment for high congestion case."""
     params = _base_params()
-    params["mu_knm"] = 180.0  # Higher moment -> more steel
-    params["b_mm"] = 250.0  # Narrower section -> higher steel%
+    # 4-20 tension bars and 2-12 compression bars remain single-layer.
+    # Their centroids give d=432 mm and d_dash=64 mm, respectively.
+    params["mu_knm"] = 190.0  # Higher moment -> more steel
+    params["b_mm"] = 275.0  # Narrower section -> higher steel%
+    params["d_mm"] = 432.0
+    params["d_dash_mm"] = 64.0
     design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
         design=design,
         span_mm=5000.0,
-        mu_knm=180.0,
+        mu_knm=190.0,
         vu_kn=85.0,
         include_constructability=True,
     )

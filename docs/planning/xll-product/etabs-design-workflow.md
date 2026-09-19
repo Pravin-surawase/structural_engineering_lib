@@ -9,7 +9,14 @@ candidate integrity and fresh installed raw-call replay passed. S1–S5 is close
 the exact final receipt remains in its external evidence directory.
 
 The owner continued with the [T01–T08 topology contract](../../verification/beam-c0a-topology-acceptance.json).
-One Windows writer starts from that merge and preserves the original user edit.
+One Windows writer started from that merge and preserves the original user edit.
+Before candidate creation, main advanced with the independent Python fix
+[PR #997](https://github.com/Pravin-surawase/structural_engineering_lib/pull/997),
+merged as `b3ceb2c92e9e115d42d43fb284e96b6788376a12` after required run
+`35429312577` passed. Normal integration preserves its accepted source bytes and
+both histories; four shared records are reconciled from common base `a42f9656`.
+Acceptance is rebound to that exact main. The topology implementation, frozen
+sample, getter profile and engineering claim boundaries are unchanged.
 
 | Step | State | Evidence / remaining dependency | Next action |
 |---|---|---|---|
@@ -17,7 +24,7 @@ One Windows writer starts from that merge and preserves the original user edit.
 | T2 connected geometry | Complete development read | Reused source/broker; 37 frames and 162 areas acquired. Version-2 shell insertion and beam connectivity plus version-1 thickness overwrites reconcile source placement. All development-02 getter gaps resolved. | Preserve exact raw calls and the 200-adjacent-object boundary. |
 | T3 interpretation | Complete development verification | Twelve native examples and six Windows cases pass. All 20 installed axes agree; 17 complete collinear meshes pass and three remain restricted. Reference geometry admits 0.001 mm residuals and zero inward extent at an end face. | Preserve the explicit geometric/engineering boundary. |
 | T4 installed evidence | Complete development verification | Development-05 and independent plane-intersection/source replay pass: 109 modelled envelopes, 29 endpoint faces and 12 clear reference lengths; eight requested members remain restricted. Source/protected facts/cleanup match. Combined sample covers 27 members, all 25 stories and 13 sections. | Bind fresh capture/replay to the frozen candidate. |
-| T5 handoff and delivery | Active final gate | Searchable topology recipe, catalogue, sanitized receipt and corpus/next-agent plan are prepared. Broad cumulative gate remains C0c. | Freeze once, verify affected union, audit exact candidate, run integrity once and complete required hosted delivery. |
+| T5 handoff and delivery | Active final gate | Searchable topology recipe, catalogue, sanitized receipt and corpus/next-agent plan are prepared. Broad cumulative gate remains C0c. | Reconcile #997 before candidate, refresh affected docs/format evidence, audit exact candidate, run integrity once and complete required hosted delivery. |
 
 Evidence owner: `C:/CodexWork/evidence/beam-c0a-topology-20260919`.
 Modelled envelope faces describe geometry, not support behavior, construction

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "task_id": "LIB-QUALITY-20260919",
+  "status": "authorized",
+  "base_commit": "6aed0d4ee81a37362ed0719bbb4ce0024559a708",
+  "authority": "Owner requested a parallel library quality review and fixes on 2026-09-19, then explicitly approved superseding only the old XLL-ARCH-DOC-001 timer.",
+  "objective": "Make the multi-beam pipeline consume its supported single-beam inputs and preserve requested check outcomes in the batch summary.",
+  "bounded_units": [
+    "Review the batch input handoff and canonical design/detail consumers read-only.",
+    "Repair the confirmed batch option-forwarding defect, focused regression tests and API documentation.",
+    "Record the independently confirmed generated-layout depth defect for a separate shared-owner correction."
+  ],
+  "non_goals": [
+    "CSharp, Excel or ETABS changes; engineering formula/profile expansion; repository cleanup; package release.",
+    "Treating this bounded pass as whole-library qualification.",
+    "Publishing ahead of the active Windows BEAM-C0A-SOURCE candidate without merge-order reconciliation."
+  ],
+  "acceptance_rows": [
+    {
+      "id": "R01",
+      "outcome": "Automatic cantilever deflection, explicit deflection and crack-width failures remain failed in mixed batch summaries."
+    },
+    {
+      "id": "R02",
+      "outcome": "Complete effective-depth basis works with omitted or None d_mm and preserves derived d and d_dash."
+    },
+    {
+      "id": "R03",
+      "outcome": "Explicit pt_percent and all stirrup-zone spacings reach the maintained single-beam calculation/detailing owners."
+    },
+    {
+      "id": "R04",
+      "outcome": "Existing explicit-depth batch defaults, identities and output schema remain supported."
+    }
+  ],
+  "verification": {
+    "focused": "./scripts/python_runtime.sh -m pytest Python/tests/integration/test_beam_pipeline.py Python/tests/test_design_from_input.py -q",
+    "local_gate": "Changed-source formatter/linter, focused tests, session consistency and read-only candidate integrity.",
+    "cumulative_gate": "Integration/publication after Windows predecessor and shared-document reconciliation: broad Python suite and ./run.sh check, then required hosted PR checks. No whole-library gate is claimed by this local packet."
+  },
+  "integration_dependency": {
+    "task": "BEAM-C0A-SOURCE",
+    "branch": "codex/beam-c0a-source-qualification",
+    "host": "Laptop-360-Pravin",
+    "state_at_intake": "active, unpushed work observed in separate Windows worktree",
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/verification/rework-recurrence-index.json"
+    ],
+    "disposition": "Preserve local candidate; refresh predecessor base/head/paths and reconcile shared records before publication."
+  },
+  "follow_up": "LIB-QUALITY-GEOMETRY-001: bind accepted generated reinforcement and BBS to actual strength depths across canonical and compatibility/pipeline consumers."
+}

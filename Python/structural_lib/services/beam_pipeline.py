@@ -32,6 +32,10 @@ from structural_lib.core.data_types import (
     StirrupDict,
 )
 from structural_lib.core.errors import DesignError
+from structural_lib.services.beam_detailing_binding import (
+    _require_generated_detailing_depth,
+    _require_generated_detailing_shear,
+)
 from structural_lib.services.project_beam import (
     EffectiveDepthBasisV1,
     resolve_effective_depth_v1,
@@ -369,6 +373,8 @@ def design_single_beam(
 
     Raises:
         UnitsValidationError: If units parameter is invalid.
+        InputContractError: If a passing strength design cannot be bound to
+            the requested generated reinforcement geometry.
     """
     # Validate units at boundary
     validated_units = validate_units(units)
@@ -489,6 +495,7 @@ def design_single_beam(
 
     # Generate detailing if requested
     detailing_output = None
+    detailing_result = None
     if include_detailing:
         try:
             detailing_result = detailing.create_beam_detailing(
@@ -544,6 +551,20 @@ def design_single_beam(
             # Detailing is optional; don't fail the whole design
             pass
 
+    # Keep the joint strength/layout gate outside the optional drafting handler.
+    if detailing_result is not None and case_result.is_ok:
+        _require_generated_detailing_depth(
+            detailing_result,
+            d_mm=resolved_d_mm,
+            d_dash_mm=resolved_d_dash_mm,
+            compression_required_mm2=case_result.flexure.Asc_required,
+        )
+        _require_generated_detailing_shear(
+            detailing_result,
+            assumed_asv_mm2=asv_mm2,
+            maximum_spacing_mm=case_result.shear.spacing,
+        )
+
     # Determine governing check
     governing_check = ""
     if case_result.failed_checks:
@@ -586,8 +607,9 @@ def design_multiple_beams(
 
     Args:
         units: Units specifier.
-        beams: List of beam parameter dicts.
-        include_detailing: Generate detailing for each beam.
+        beams: List of single-beam parameter dicts, including optional
+            serviceability checks, reinforcement choices and effective-depth basis.
+        include_detailing: Generate detailing for each beam (batch-wide option).
 
     Returns:
         MultiBeamOutput with all beam results.
@@ -605,7 +627,11 @@ def design_multiple_beams(
             story=beam_params.get("story", "STORY"),
             b_mm=float(beam_params["b_mm"]),
             D_mm=float(beam_params["D_mm"]),
-            d_mm=float(beam_params["d_mm"]),
+            d_mm=(
+                float(beam_params["d_mm"])
+                if beam_params.get("d_mm") is not None
+                else None
+            ),
             span_mm=float(beam_params.get("span_mm", 4000)),
             cover_mm=float(beam_params.get("cover_mm", 40)),
             fck_nmm2=float(beam_params["fck_nmm2"]),
@@ -613,10 +639,33 @@ def design_multiple_beams(
             mu_knm=float(beam_params["mu_knm"]),
             vu_kn=float(beam_params["vu_kn"]),
             case_id=beam_params.get("case_id", "CASE-1"),
-            d_dash_mm=float(beam_params.get("d_dash_mm", 50)),
+            d_dash_mm=(
+                float(beam_params["d_dash_mm"])
+                if beam_params.get("d_dash_mm") is not None
+                else None
+            ),
             asv_mm2=float(beam_params.get("asv_mm2", 100)),
+            pt_percent=(
+                float(beam_params["pt_percent"])
+                if beam_params.get("pt_percent") is not None
+                else None
+            ),
             include_detailing=include_detailing,
             stirrup_dia_mm=float(beam_params.get("stirrup_dia_mm", 8)),
+            stirrup_spacing_start_mm=float(
+                beam_params.get("stirrup_spacing_start_mm", 150)
+            ),
+            stirrup_spacing_mid_mm=float(
+                beam_params.get("stirrup_spacing_mid_mm", 200)
+            ),
+            stirrup_spacing_end_mm=float(
+                beam_params.get("stirrup_spacing_end_mm", 150)
+            ),
+            deflection_params=beam_params.get("deflection_params"),
+            crack_width_params=beam_params.get("crack_width_params"),
+            include_serviceability=beam_params.get("include_serviceability", False),
+            support_condition=beam_params.get("support_condition", "SIMPLY_SUPPORTED"),
+            effective_depth_basis=beam_params.get("effective_depth_basis"),
         )
         results.append(result)
 

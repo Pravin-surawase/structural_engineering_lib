@@ -17,7 +17,7 @@ origin with `python -m structural_lib install-preflight`.
 
 Supported case: one rectangular beam, caller-supplied factored non-negative
 action magnitudes, explicit effective depth, IS 456 materials, explicit
-detailing choices, and BBS composition. Load generation, flanged sections, and
+single-layer detailing choices, and BBS composition. Load generation, flanged sections, and
 signed action conventions are outside this recipe.
 Canonical serviceability request models remain explicitly held in B0 until
 their strict typed field contracts freeze; passing `serviceability` returns
@@ -45,12 +45,12 @@ request = beam.input(
     span_mm=5000,
     b_mm=300,
     D_mm=550,
-    d_mm=500,
+    d_mm=492,
     fck_nmm2=25,
     fy_nmm2=500,
     mu_knm=150,
     vu_kn=80,
-    d_dash_mm=50,
+    d_dash_mm=56,
     asv_mm2=detailing.asv_mm2,
     detailing=detailing,
 )
@@ -64,6 +64,24 @@ schedule = beam.bbs(result)
 print(result.engineering_status)
 print(schedule.total_weight_kg)
 ```
+
+Before accepting generated detailing, the facade checks its actual bar/link
+diameters and clear cover against the strength depths. Here the tension depth
+is `550 - 40 - 8 - 20/2 = 492 mm`; the opposite-face centroid is
+`40 + 8 + 16/2 = 56 mm`. An incompatible depth raises
+`DETAILING_EFFECTIVE_DEPTH_MISMATCH`. Multiple-layer strength-bearing layouts
+raise `DETAILING_EFFECTIVE_DEPTH_UNVERIFIED`, because the generated arrangement
+does not retain vertical row positions. Use the supplied-reinforcement workflow
+for explicit layer geometry. Design-only calls can retain caller-supplied depths.
+
+Generated stirrups must also satisfy the shear calculation: total leg area must
+be at least the area used for design, and each support/midspan spacing must be
+no greater than the calculated limit. Violations raise
+`DETAILING_SHEAR_AREA_MISMATCH` or `DETAILING_SHEAR_SPACING_EXCEEDED` before a
+passing combined result or BBS is returned. Submit the actual stirrup area for
+strength design and choose spacing within the resulting limit. A smaller area
+at closer spacing needs a new calculation basis; the library does not silently
+substitute that alternative for the requested design.
 
 An engineering `FAIL` is a valid result, not an input error. Check the
 orthogonal envelope instead of treating object creation as a pass:

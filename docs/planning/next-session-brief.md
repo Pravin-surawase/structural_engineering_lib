@@ -5,11 +5,17 @@
 <!-- HANDOFF:START -->
 - Date: 2026-09-19
 - Focus: Reusable bounded connected geometry, member-role evidence and modelled support-envelope interpretation.
-- Completed: Reconciled #996 exact accepted merge tree and hosted run 35428062275; started the isolated writer from fetched main with the original checkout/edit preserved.; Froze twenty members using prior inventory and source facts, covering the five previously unsampled stories, four sections and modifier/connection cohorts.; Added the separate topology profile/worker through the existing source reader, lease, STA, journal, deadline and quiescent publication owner. Source and all earlier getter profiles retain their identities and behavior.
-- Recurrence controls: RR-005 x197 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.; RR-002 x47 / unknown: Bind exact getter/table/axis/identity semantics to raw installed evidence and an independent reference; never infer defaults or type vocabularies from absent fields or another API.
+- Completed: Rebound before candidate creation to merged Python library fix #997 at `b3ceb2c9` after its required hosted run 35429312577 passed. Preserved both histories and all non-overlapping source bytes; reconciled the four shared records and distinct recurrence deltas from common base `a42f9656`.
+- Recurrence controls: RR-005 x212 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.; RR-002 x47 / unknown: Bind exact getter/table/axis/identity semantics to raw installed evidence and an independent reference; never infer defaults or type vocabularies from absent fields or another API.
 <!-- HANDOFF:END -->
 
 ## Current boundary
+
+The Python library batch/depth/shear fixes merged separately in
+[PR #997](https://github.com/Pravin-surawase/structural_engineering_lib/pull/997)
+at `b3ceb2c9`, with required hosted run `35429312577` successful. The topology
+writer integrates that exact base before its candidate, preserves all Python
+fixes and both session histories, and reconciles the shared task/recurrence data.
 
 [Structural Library Definition Programme PF0–PF11](xll-product/library-definition/README.md)
 remains the implementation authority. IMP-M1 implements WP01–WP08 as native
