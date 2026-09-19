@@ -6,7 +6,7 @@
 - Date: 2026-09-19
 - Focus: Reusable bounded connected geometry, member-role evidence and modelled support-envelope interpretation.
 - Completed: Rebound before candidate creation to merged Python library fix #997 at `b3ceb2c9` after its required hosted run 35429312577 passed. Preserved both histories and all non-overlapping source bytes; reconciled the four shared records and distinct recurrence deltas from common base `a42f9656`.
-- Recurrence controls: RR-005 x212 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.; RR-002 x47 / unknown: Bind exact getter/table/axis/identity semantics to raw installed evidence and an independent reference; never infer defaults or type vocabularies from absent fields or another API.
+- Recurrence controls: RR-005 x213 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.; RR-002 x47 / unknown: Bind exact getter/table/axis/identity semantics to raw installed evidence and an independent reference; never infer defaults or type vocabularies from absent fields or another API.; RR-004 x23 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.
 <!-- HANDOFF:END -->
 
 ## Current boundary

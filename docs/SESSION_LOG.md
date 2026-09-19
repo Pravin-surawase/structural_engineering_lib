@@ -63,6 +63,9 @@
   JSON-only fixture, then an unrelated three-member development JSON. A later
   lookup repeated a Windows wildcard error and the reconciliation helper
   initially assumed the wrong recurrence JSON field.
+- The direct verification formatter passed, but FORMATTED correctly refused it
+  because that entry point does not record a timed gate event. A guessed local
+  session directory was also absent in this linked worktree.
 
 - Carried the predecessor's late formatter transition rejection into this task:
   the formatter had not completed when FORMATTED was requested.
@@ -84,6 +87,9 @@
   typed JSON; the unchanged fixture then passes. No test or production source
   was changed. Inspecting the recurrence schema and directory-scoped discovery
   resolves the read-only helper and wildcard errors.
+- The maintained `run.sh format --write` entry point wraps the same formatter
+  with the required usage event. Use it after the integrated freeze; session
+  status and the shared Git-directory ledger own linked-worktree delivery data.
 
 - The lifecycle correctly rejected the premature transition; waiting for actual
   completion resolved it. The previous external post-freeze note is preserved.
@@ -106,8 +112,8 @@
 
 ### Rework and recurrence
 
-- RR-005: occurrences=212, minutes=unknown. One predecessor completion-wait
-  event, three earlier lookup events and four continuation input/lookup
+- RR-005: occurrences=213, minutes=unknown. One predecessor completion-wait
+  event, three earlier lookup events and five continuation input/lookup
   corrections are counted once; #997 contributes eleven distinct prior events. Read CLI examples,
   discover exact owners and await command completion before dependent actions.
 - RR-002: occurrences=47, minutes=unknown. Four host/interpretation boundaries
@@ -115,6 +121,8 @@
   matrix layout and object-type vocabulary. Raw installed schemas/coordinates,
   unchanged ownership tables and independent replay resolve them; earlier
   development artifacts stay external and are not accepted candidate evidence.
+- RR-004: occurrences=23, minutes=unknown. One untimed formatter-entry event;
+  canonical `run.sh format --write` supplies the event required by FORMATTED.
 
 ## 2026-09-19 — Session: Integrate verified beam quality fixes after Windows source qualification
 
