@@ -14,6 +14,16 @@ public static class EtabsInspectionBroker
 {
     public static EtabsInspectionHandle Start(EtabsBrokerRequest request, Func<IEtabsGetterHost> hostFactory,
         bool includeSample, CancellationToken cancellationToken = default, bool overviewOnly = false)
+        => StartCore(request, hostFactory, EtabsInspectionGetterMatrix.Sha256,
+            (host, token) => EtabsInspectionReader.Read(host, request.DeadlineUtc, includeSample, token, overviewOnly),
+            (capture, source, ledger, cleanup) => new EtabsInspectionArtifact("structural.etabs_inspection/v1",
+                EtabsInspectionGetterMatrix.Sha256, source, capture, ledger, cleanup), cancellationToken);
+
+    internal static EtabsInspectionHandle StartCore<TCapture>(EtabsBrokerRequest request,
+        Func<IEtabsGetterHost> hostFactory, string matrixSha256,
+        Func<IEtabsGetterHost, CancellationToken, TCapture> read,
+        Func<TCapture, EtabsHostIdentity, SnapshotCallLedger, EtabsCleanupEvidence, object> createArtifact,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request); ArgumentNullException.ThrowIfNull(hostFactory);
         var path = Path.GetFullPath(request.EvidencePath);
@@ -53,22 +63,22 @@ public static class EtabsInspectionBroker
 
         void Worker()
         {
-            IEtabsGetterHost? host = null; EtabsInspectionArtifact? artifact = null;
+            IEtabsGetterHost? host = null; TCapture? capture = default;
+            EtabsHostIdentity? before = null; SnapshotCallLedger? ledger = null;
             Exception? failure = null; var disposed = false; var released = false;
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-                using var journal = new EtabsOperationBroker.EtabsCallJournal(request.OperationId, journalPath, TimeProvider.System, EtabsInspectionGetterMatrix.Sha256);
+                using var journal = new EtabsOperationBroker.EtabsCallJournal(request.OperationId, journalPath, TimeProvider.System, matrixSha256);
                 EtabsOperationBroker.StaMessagePump.Drain(); stop.Token.ThrowIfCancellationRequested();
                 host = hostFactory();
-                var before = host.InspectIdentity();
+                before = host.InspectIdentity();
                 if (before.ProcessId != request.ProcessId) throw new InvalidOperationException("Attached process differs from the lease.");
                 using var journalHost = new EtabsOperationBroker.LedgerEtabsGetterHost(host, journal);
-                var capture = EtabsInspectionReader.Read(journalHost, request.DeadlineUtc, includeSample, stop.Token, overviewOnly);
+                capture = read(journalHost, stop.Token);
                 if (host.InspectIdentity() != before) throw new InvalidOperationException("Source file or process identity changed during inspection.");
                 stop.Token.ThrowIfCancellationRequested();
-                artifact = new("structural.etabs_inspection/v1", EtabsInspectionGetterMatrix.Sha256, before, capture,
-                    journal.Build(), new(false, false, "win32-peekmessage/v1", Thread.CurrentThread.GetApartmentState().ToString()));
+                ledger = journal.Build();
             }
             catch (Exception exception) { failure = exception; }
             finally
@@ -82,12 +92,13 @@ public static class EtabsInspectionBroker
                 lock (gate)
                 {
                     if (completion.Task.IsCompleted) return;
-                    if (failure is not null || artifact is null || stop.IsCancellationRequested || DateTimeOffset.UtcNow >= request.DeadlineUtc)
+                    if (failure is not null || capture is null || before is null || ledger is null || stop.IsCancellationRequested || DateTimeOffset.UtcNow >= request.DeadlineUtc)
                     {
                         completion.TrySetResult(new("fenced", failure?.ToString() ?? "Inspection ended outside its acceptance deadline.", path, null, disposed && released));
                         return;
                     }
-                    artifact = artifact with { Cleanup = artifact.Cleanup with { HostDisposed = disposed, LeaseReleased = released } };
+                    var artifact = createArtifact(capture, before, ledger,
+                        new(disposed, released, "win32-peekmessage/v1", Thread.CurrentThread.GetApartmentState().ToString()));
                     var bytes = JsonSerializer.SerializeToUtf8Bytes(artifact);
                     var temporary = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
                     try

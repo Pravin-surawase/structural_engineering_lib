@@ -106,7 +106,8 @@ public static class EtabsApiDiscovery
     [
         ("retained", EtabsGetterMatrix.Allowed), ("context", EtabsContextGetterMatrix.Allowed),
         ("forces", EtabsForceGetterMatrix.Allowed), ("bulk", EtabsBulkGetterMatrix.Allowed),
-        ("group", EtabsGroupGetterMatrix.Allowed), ("inspection", EtabsInspectionGetterMatrix.Allowed)
+        ("group", EtabsGroupGetterMatrix.Allowed), ("inspection", EtabsInspectionGetterMatrix.Allowed),
+        ("source", EtabsSourceGetterMatrix.Allowed)
     ];
 
     private static IReadOnlyList<EtabsApiCapability> CreateCatalogue()

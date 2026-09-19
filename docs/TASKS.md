@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-18 — ETABS API knowledge foundation first; prepared BEAM-PROVISIONAL-REVIEW remains the following runtime milestone
+**Updated:** 2026-09-19 — API knowledge and provisional review are merged; bounded BEAM-C0A-SOURCE qualification is active
 
 ---
 
@@ -134,35 +134,26 @@ object navigation/defaults and reusable workflow recipes. Every agent uses
 new installed operations still need scoped qualification.
 
 `ETABS-API-READINESS` completes the [API knowledge handoff plan](guides/etabs-api-integration.md#completion-plan-and-current-knowledge-boundary)
-with a complete interface coverage map, fourteen procedures linked to source,
+with a complete interface coverage map, procedures linked to source,
 tests and evidence, project setup checks and step/blocker update rules. Its
 [acceptance](verification/etabs-api-readiness-acceptance.json) keeps every-method
 discovery separate from live qualification; frozen delivery verdicts are external.
 
-`BEAM-NEXT-WORK-PLAN` prepares the isolated current workspace and the
-[next functional milestone](planning/xll-product/etabs-design-workflow.md#prepared-next-milestone-persistent-assumptions-and-provisional-review--2026-09-18).
-After this API foundation, `BEAM-PROVISIONAL-REVIEW` is the next runtime task: U1–U5 connect the
-field registry, shared resolver/persistence, honest core/provisional states,
-automatic Excel refresh and installed review acceptance. R01–R12 are its exit
-criteria. Preparation changes documentation only; source/method expansion,
-optimization, reanalysis and final performance remain later gates.
+`BEAM-PROVISIONAL-REVIEW` is complete in PR #995: persistent assumptions,
+separate core/provisional review, automatic Excel refresh and R01–R12 installed
+acceptance. This implements the owner policy and shared-input needs recorded by
+the earlier `BEAM-NEXT-WORK-PLAN`, `BEAM-ASSUME-AND-CONTINUE` and
+`BEAM-DATA-REQUIREMENTS` packets; their historical scopes remain unchanged.
 
-`BEAM-ASSUME-AND-CONTINUE` records the owner's
-[default demo/review policy](planning/xll-product/etabs-design-workflow.md#owner-decision-assume-and-continue-during-demo-and-review--2026-09-10):
-unknown input → write an assumed value → continue without questions or manual
-acceptance. Persist visible assumptions, update dependent previews after edits,
-and finish the review/report loop even when individual checks are unavailable.
-The shared resolver and nonblocking orchestrator are the next C0a/C0b priority.
-This policy correction is documentation-only; runtime implementation is pending.
-
-`BEAM-DATA-REQUIREMENTS` audits ETABS/user/derived inputs across the full
-[data lifecycle](planning/xll-product/etabs-design-workflow.md#data-requirements-and-editable-assumptions--2026-09-10).
-Assumptions edits currently invalidate baseline results; the actual values come
-from separate Design Inputs and duplicate catalogue seeds. Add a shared preset
-and effective-input resolver to C0a/C0b before claiming a fully reusable demo.
-Native units, material/support facts and selected-load dependencies remain C0a;
-broader engineering and later quantities/search/reanalysis retain their gates.
-This packet updates the plan and source audit only; implementation is pending.
+`BEAM-C0A-SOURCE` is the active bounded source packet. Its
+[step plan](planning/xll-product/etabs-design-workflow.md#active-implementation-beam-c0a-source--2026-09-19)
+and [receipt](verification/beam-c0a-source-receipt.json) record native-unit facts,
+effective materials, endpoint connectivity, 68 element mappings and all 32 load
+roots from a frozen 20-frame M02 sample. Independent raw replay passes; final
+candidate/hosted verdicts remain external. Next: support/role/offset interpretation
+and source-accounting coverage, followed by declared load/result semantics before
+native-unit force acquisition. C0c engineering, independent corpus and PF9 gates
+remain open. Use the searchable `source` recipe for this actual implementation.
 
 `ETABS-BOUNDED-ACQUISITION` implements lightweight Excel connection through a
 separate model-overview contract, explicit source-bound detailed loading,

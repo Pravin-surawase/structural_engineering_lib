@@ -1,6 +1,54 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
-## Active implementation: BEAM-PROVISIONAL-REVIEW — 2026-09-18
+## Active implementation: BEAM-C0A-SOURCE — 2026-09-19
+
+The owner continued after [PR #995](https://github.com/Pravin-surawase/structural_engineering_lib/pull/995).
+Its merge `6aed0d4ee81a37362ed0719bbb4ce0024559a708` has the exact accepted
+candidate tree; all 14 installed review and 11 strict-design checks and required
+hosted run `35390662321` passed. U1–U5 is complete. The source-fact packet below
+is the next bounded C0a step, governed by the
+[Q01–Q09 acceptance contract](../../verification/beam-c0a-source-acceptance.json).
+It preserves the original checkout edit and accepted source/capture meanings.
+
+| Step | State | Evidence / remaining dependency | Next action |
+|---|---|---|---|
+| S1 scope and source authority | Complete | Owner opened M02; unchanged source has 3,475 frames and native N-mm-C. API/help identity matches; scope frozen before results. | Preserve source and original checkout. |
+| S2 getter and host integration | Complete development verification | Separate source profile/worker reuse the lease, STA, journal, deadline and quiescence broker; existing profiles remain unchanged. Source host cases and inspection regression pass. | Verify the integrated frozen candidate. |
+| S3 source projection and closure | Complete development verification | Nine portable cases and five source-host cases pass. Every requested member/root is retained with its actual source facts and restrictions. | Preserve unsupported peers and unit/provenance boundaries. |
+| S4 installed qualification and independent replay | Complete development verification | Development-03: 20 members, 40 endpoints, two materials, 68 reconciled elements, 17 complete static roots and 15 unsupported roots; no getter gaps. Independent raw-call Python replay, source equality and cleanup pass. Earlier GetElm/GetMaterialOverwrite CSI 1 evidence is retained; vendor reason remains unconfirmed. | Bind a fresh capture/replay to the final candidate and built worker; explicit overwrite and native enum 6 remain offline evidence only. |
+| S5 agent handoff and delivery | Active final gate | Searchable source recipe, updated material/geometry/units/support/load/table recipes, version-bound catalogue, sanitized receipt and corpus manifest are prepared. Broad Python/full-repository cumulative gate remains C0c. | Freeze/format, verify affected union, audit exact candidate, run integrity once and complete required hosted delivery. |
+
+Evidence remains external at `C:/CodexWork/evidence/beam-c0a-source-20260919`.
+This packet does not qualify physical supports from connectivity, dynamic
+results, broader design methods or the independent-model corpus. Update this
+table after each completed step or outcome-changing blocker. After candidate
+freeze, use the external delivery ledger for exact acceptance/merge facts.
+
+
+### Source packet result and next bounded work
+
+The [source receipt](../../verification/beam-c0a-source-receipt.json) binds the
+observations, failed direct getters and independent replay. The
+[corpus manifest](../../verification/beam-source-corpus.json) preserves the
+retained building and M02 development sample; it does not manufacture independent
+authors, holdouts or expected engineering results.
+
+Next, finish C0a support/role/offset interpretation for named member cohorts.
+Freeze a sample covering the five unsampled stories and four unsampled sections,
+plus source-proved modeling aids and support arrangements. Reuse this reader's
+connectivity and element identities; acquire only missing support geometry under
+an explicit source profile. Exit requires complete requested-member accounting,
+independent support/axis examples, unchanged sources and an updated restriction
+inventory. Effective material identity alone does not supply code strength.
+
+Then establish explicit ULS/SLS roles and result semantics before a native-unit
+individual-object force pilot. Applied loads, actual force stations, physical
+faces/spans, dynamic result interpretation and the malformed display-case getter
+remain open. C0c combined-action design and the wider independent-model corpus
+retain their existing acceptance gates. No broad force or owned-model mutation
+is implied by this source packet.
+
+## Completed implementation: BEAM-PROVISIONAL-REVIEW — 2026-09-18
 
 The owner asked to continue after API readiness PR #994. Implementation starts
 from `57a5998793a93f23335cecd8afa191fb7f099911` in a separate Windows writer
@@ -14,7 +62,7 @@ historical evidence, not the active candidate identity.
 | U2 resolver and persistence | Implemented | Scoped resolution, explicit-equal-default, last-valid/conflict fallback and model isolation; two reopens and old-workbook migration preserve edits. | Bind migration to the final installed receipt. |
 | U3 core/provisional review | Implemented | Actual arrangements reuse qualified checks; required fire/SLS stay visible; failure peers finish. Compatible measured quantities reprice with unchanged quantity identity. | Preserve strict baseline qualification and separate teaching examples. |
 | U4 Excel edit/refresh | Implemented | Shared views, coalesced dispatch, cancellation and initiating-workbook ownership pass owned integration; the strict baseline fixture also passes. | Freeze with the final integrated migration evidence. |
-| U5 integrated acceptance | Active cumulative gate | R01–R12, full native/Windows/Python and repository checks, exact signed installed ribbon and legacy regressions control completion. | Record immutable candidate, installed, integrity, hosted and merge verdicts in the external evidence/ledger. |
+| U5 integrated acceptance | Complete | Exact installed R01–R12 and strict baseline checks, cumulative evidence, integrity and required hosted run 35390662321 passed; #995 merged as 6aed0d4e with accepted tree. | Preserve the closed evidence and advance the C0a source packet above. |
 
 Update each row after its exit evidence or an outcome-changing blocker.
 Complete versioned writes before formatting; do not write while its byte

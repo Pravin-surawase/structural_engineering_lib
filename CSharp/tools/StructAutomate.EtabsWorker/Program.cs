@@ -11,6 +11,9 @@ if (args is ["--api-inventory-all", var allApiAssemblyPath, "--response", var al
 if (args is ["--inspect-request", var inspectionRequestPath, "--response", var inspectionResponsePath])
     return await InspectionWorker.Run(inspectionRequestPath, inspectionResponsePath);
 
+if (args is ["--source-request", var sourceRequestPath, "--response", var sourceResponsePath])
+    return await SourceWorker.Run(sourceRequestPath, sourceResponsePath);
+
 if (args is ["--overview-request", var overviewRequestPath, "--response", var overviewResponsePath])
     return await OverviewWorker.Run(overviewRequestPath, overviewResponsePath);
 

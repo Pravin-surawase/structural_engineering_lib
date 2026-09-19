@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "task_id": "BEAM-C0A-SOURCE",
+  "status": "development_installed_and_independent_replay_passed",
+  "candidate_binding": "Final acceptance must bind the unchanged candidate commit/tree, worker and runtime hashes to a fresh scoped capture and replay. Final verdicts remain in the delivery ledger/external evidence.",
+  "runtime": {
+    "etabs": "23.3.1",
+    "executable": "23.3.1.4563",
+    "api_file_version": "2.16.0.0",
+    "api_sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+    "chm_sha256": "0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88"
+  },
+  "profile": {
+    "id": "etabs-source-qualification/v1",
+    "sha256": "d5b1aef9bd3df26948acc3e0056f4cff52403dc7d51d1445c5289cfacc6d21ae",
+    "frames_max": 20,
+    "roots_max": 32,
+    "graph_nodes_max": 500,
+    "terms_per_node_max": 500,
+    "model_frames_max": 20000,
+    "table_records_max": 200000,
+    "table_cells_max": 1000000,
+    "elements_per_requested_frame_max": 200,
+    "native_units": {
+      "installed": [
+        9
+      ],
+      "offline_equivalence": [
+        6,
+        9
+      ]
+    },
+    "table_size_admission": "Model frame bound is checked before full table calls; returned table size is validated before projection. Vendor allocation is not prebounded by its API. No partial table is admitted."
+  },
+  "corpus_id": "M02-development",
+  "selection": "Exact 20-frame sample plus all 16 cases and first 16 ordinal combinations frozen before new source results; includes unsupported roots.",
+  "replay": {
+    "status": "PASS",
+    "artifact": "source-development-03.json",
+    "artifact_sha256": "f4a5dae9997d5a38f8d7e65bef308e623a07aef73a37cc9428c51a522053f2f7",
+    "replay_sha256": "f41a0a0d954e3f27104f3764009d6a0846f66585458ef5f3fd6076bdc3eae14a",
+    "source_model_sha256": "5ec91b3c6b70da42881d5c77e892fb98f89547b2c7ab1ba72a8ad4c250cb8e8a",
+    "getter_matrix_sha256": "d5b1aef9bd3df26948acc3e0056f4cff52403dc7d51d1445c5289cfacc6d21ae",
+    "members": 20,
+    "elements": 68,
+    "points": 40,
+    "materials": 2,
+    "load_nodes": 56,
+    "roots": {
+      "complete_static_source": 17,
+      "unsupported": 15
+    },
+    "calls": 1551,
+    "distinct_calls": 775,
+    "mapping_rows": 16432,
+    "context_rows": 100428,
+    "source_file_equal": true,
+    "protected_call_pairs_equal": true,
+    "cleanup_completed": true,
+    "method": "Independent Python table joins, dimensional conversion and raw-definition graph traversal; no production projector called."
+  },
+  "tables": [
+    {
+      "key": "Frame Assignments - Material Overwrites",
+      "version": 1,
+      "source_records": 0,
+      "accepted_rows": 0
+    },
+    {
+      "key": "Objects and Elements - Frames",
+      "version": 1,
+      "source_records": 116860,
+      "accepted_frame_rows": 16432,
+      "context_only_rows": 100428
+    }
+  ],
+  "material_resolution": {
+    "members_resolved": 20,
+    "distinct_materials": 2,
+    "basis": "Complete version-1 All-group overwrite editing table contains no object rows; assigned section material and actual material type/properties resolve identity. Failed getter output is never an absence sentinel.",
+    "explicit_overwrite_branch": "offline fixture only; not exercised by the live empty table",
+    "strength_boundary": "CSI Fc is retained in native units and N/mm2; not implicitly mapped to IS fck."
+  },
+  "negative_evidence": [
+    {
+      "artifact": "source-development-01.json",
+      "sha256": "6650aaa3e3b3ad13ebd68dade3c604cd1a1191bbca8371c38b444ff4641aeb16",
+      "operations": [
+        "FrameObj.GetElm",
+        "FrameObj.GetMaterialOverwrite"
+      ],
+      "attempted_frames": 20,
+      "csi_return": 1,
+      "vendor_root_cause": "unconfirmed",
+      "resolution": "Source profile reuses qualified versioned table decoding; these direct getters are excluded from this profile."
+    }
+  ],
+  "claim_boundary": [
+    "Source definitions only; applied loads and force rows are not read.",
+    "Connectivity, releases, offsets and axes do not establish physical supports, effective span or member design role.",
+    "Output station configuration is distinct from actual force-result stations; raw RDI/RDJ coordinate semantics remain unqualified.",
+    "Static root closure does not assign ULS/SLS roles, prove concurrent dynamic actions, establish current in-memory result freshness, or admit engineering design.",
+    "Known table display-case getter mismatch remains outside this profile; no complete table-selection equality claim.",
+    "Independent source/holdout count, cross-model support and PF9 certification are unchanged."
+  ],
+  "verification": {
+    "portable_source_cases": 9,
+    "source_host_cases": 5,
+    "inspection_regression_cases": 10,
+    "independent_method": "Independent Python table joins, dimensional conversion and raw-definition graph traversal; no production projector called.",
+    "source_file_equal": true,
+    "protected_successful_calls_equal": true,
+    "cleanup_completed": true,
+    "quiescent": true,
+    "mutation_calls": 0,
+    "final_focused_and_hosted": "Required after content freeze; final facts external."
+  },
+  "evidence_root": "C:/CodexWork/evidence/beam-c0a-source-20260919",
+  "next": "C0a support/role/offset interpretation and source-accounting coverage across unsampled sections/stories; qualified load roles/result semantics before native-unit force pilot."
+}
