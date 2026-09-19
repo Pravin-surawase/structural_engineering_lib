@@ -31,6 +31,9 @@ from structural_lib.core.result_contract import (
 )
 from structural_lib.core.version import get_runtime_version
 from structural_lib.services import bbs as bbs_service
+from structural_lib.services.beam_detailing_binding import (
+    _require_generated_detailing_depth,
+)
 from structural_lib.services.contracts.beam import (
     BEAM_DESIGN_SCHEMA_VERSION,
     BeamDesignInputV1,
@@ -603,7 +606,8 @@ def detail(
     ------
     InputContractError
         If the source type/status/options are unacceptable or the standard,
-        serviceability, torsion, spacing, or side-face basis is incomplete.
+        serviceability, torsion, spacing, side-face or generated-depth basis is
+        incomplete or inconsistent.
     ValueError
         If the maintained detailing owner rejects an unsupported value outside
         the translated public issue cases.
@@ -774,6 +778,14 @@ def detail(
                 )
             ) from exc
         raise
+    if design_result.is_ok and detailing.is_valid:
+        _require_generated_detailing_depth(
+            detailing,
+            d_mm=request.section.resolved_d_mm(),
+            d_dash_mm=request.calculation_basis.d_dash_mm,
+            compression_required_mm2=calculation.flexure.Asc_required,
+            primary_tension_face=request.actions.primary_tension_face or "BOTTOM",
+        )
     return BeamDetailingResultV1(
         request=request,
         detailing=detailing,

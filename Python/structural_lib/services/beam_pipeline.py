@@ -32,6 +32,9 @@ from structural_lib.core.data_types import (
     StirrupDict,
 )
 from structural_lib.core.errors import DesignError
+from structural_lib.services.beam_detailing_binding import (
+    _require_generated_detailing_depth,
+)
 from structural_lib.services.project_beam import (
     EffectiveDepthBasisV1,
     resolve_effective_depth_v1,
@@ -369,6 +372,8 @@ def design_single_beam(
 
     Raises:
         UnitsValidationError: If units parameter is invalid.
+        InputContractError: If a passing strength design cannot be bound to
+            the requested generated reinforcement geometry.
     """
     # Validate units at boundary
     validated_units = validate_units(units)
@@ -489,6 +494,7 @@ def design_single_beam(
 
     # Generate detailing if requested
     detailing_output = None
+    detailing_result = None
     if include_detailing:
         try:
             detailing_result = detailing.create_beam_detailing(
@@ -543,6 +549,15 @@ def design_single_beam(
         except Exception:  # nosec B110
             # Detailing is optional; don't fail the whole design
             pass
+
+    # Keep the joint strength/layout gate outside the optional drafting handler.
+    if detailing_result is not None and case_result.is_ok:
+        _require_generated_detailing_depth(
+            detailing_result,
+            d_mm=resolved_d_mm,
+            d_dash_mm=resolved_d_dash_mm,
+            compression_required_mm2=case_result.flexure.Asc_required,
+        )
 
     # Determine governing check
     governing_check = ""

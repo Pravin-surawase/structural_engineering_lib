@@ -71,7 +71,7 @@ def _write(path: Path, text: str) -> None:
 _CLI_HEADER = (
     "BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu," "Stirrup_Dia,Stirrup_Spacing"
 )
-_CLI_VALID_ROW = "B1,S1,300,500,450,4000,40,25,500,150,80,8,150"
+_CLI_VALID_ROW = "B1,S1,300,500,444,4000,40,25,500,150,80,8,150"
 
 
 def _capture_cli(argv: list[str]) -> tuple[int, str, str]:
@@ -129,7 +129,7 @@ def _case_cli_design_empty() -> dict[str, Any]:
 
 def _case_cli_design_missing_depth_basis() -> dict[str, Any]:
     header = _CLI_HEADER.replace(",eff_d", "")
-    row = _CLI_VALID_ROW.replace(",450", "", 1)
+    row = _CLI_VALID_ROW.replace(",444", "", 1)
     return _assert_cli_blocked(f"{header}\n{row}")
 
 
@@ -536,7 +536,7 @@ def _public_examples() -> dict[str, Any]:
         vu_kn=80,
         b_mm=300,
         D_mm=500,
-        d_mm=442,
+        d_mm=444,
         cover_mm=40,
         fck_nmm2=25,
         fy_nmm2=500,

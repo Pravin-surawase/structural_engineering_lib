@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-19
-- Focus: Preserve requested batch calculation inputs and outcomes in an isolated Mac lane.
-- Completed: Fetched GitHub main `6aed0d4e` and created a dedicated Mac worktree. The primary checkout remains unchanged at `c822809d`; existing dirty/unknown worktrees are preserved.; Observed the active Windows source-qualification task on `codex/beam-c0a-source-qualification`. Python batch implementation is separate; publication remains dependent on predecessor/shared-document reconciliation.; Corrected the stale batch argument map: automatic and explicit serviceability, tension-steel percentage, all stirrup-zone spacings and complete effective-depth basis now reach the single-beam owner. Nullable depths preserve its defaults.
-- Recurrence controls: RR-004 x20 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.; RR-005 x180 / unknown: Use maintained launchers, exact paths and explicit cwd; inspect actual output envelopes before projecting diagnostic fields.
+- Focus: Correct all three passing design-to-generated-detail producers with one physical depth-binding check.
+- Completed: Preserved batch fix `a17926b0` and its original branch. This geometry correction is stacked on it for one final reconciled publication candidate.; Added one shared producer-side check for actual single-layer primary and required compression centroids at every generated station. Canonical, retained compatibility and pipeline results reject mismatched depths and unverified multilayer positions before returning a combined result.; Kept the pipeline check outside its optional-drafting exception handler and active even when spacing makes the generated detail invalid. Design-only explicit depths and existing engineering FAIL results remain available.
+- Recurrence controls: RR-005 x185 / unknown: Use maintained launchers, exact paths and explicit cwd; inspect actual output envelopes before projecting diagnostic fields.
 <!-- HANDOFF:END -->
 
 ## Current boundary

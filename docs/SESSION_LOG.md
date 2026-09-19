@@ -5,6 +5,106 @@
 
 ---
 
+## 2026-09-19 — Session: Bind generated beam detailing to strength depth
+
+**Task:** LIB-QUALITY-GEOMETRY-001
+**Agent:** DEV (one parent, two bounded caller/review workers)
+**Branch:** `codex/library-quality-geometry`
+**Acceptance:** docs/verification/library-quality-geometry-acceptance.json
+**Focus:** Correct all three passing design-to-generated-detail producers with one physical depth-binding check.
+
+### Completed
+
+- Preserved batch fix `a17926b0` and its original branch. This geometry correction
+  is stacked on it for one final reconciled publication candidate.
+- Added one shared producer-side check for actual single-layer primary and
+  required compression centroids at every generated station. Canonical,
+  retained compatibility and pipeline results reject mismatched depths and
+  unverified multilayer positions before returning a combined result.
+- Kept the pipeline check outside its optional-drafting exception handler and
+  active even when spacing makes the generated detail invalid. Design-only
+  explicit depths and existing engineering FAIL results remain available.
+- Kept smart-analysis strength/heuristic consumers design-only; their wrapper
+  had fabricated clear cover from D-d and generated unused bars. The public
+  synthetic CLI example now samples three authored coherent single-layer cases.
+- Honored the existing single-case `design_from_input(include_detailing=False)`
+  option with the already declared one-case ComplianceReport return contract.
+- Added public geometry regressions and updated affected executable examples,
+  typed callers, CLI/BBS flows and insight fixtures to use consistent geometry.
+  No engineering formula, inferred layer position or automatic redesign changed.
+
+### Verification
+
+- Starting worktree was clean and source-bound at `a17926b0`; fetched main was
+  `6aed0d4e`. The Windows source-qualification task remains active and separate.
+- The original Mu340/D550/d500 layout produced a nominal PASS with 1885 mm2 in
+  two layers. Even its outer-row depth needs 1918.511 mm2; the new check rejects
+  that unverified layout. Coherent explicit/derived single-layer BBS succeeds.
+- Focused development evidence covers all three producers, required compression,
+  nominal opposite steel, invalid-spacing bypass and the design-only option.
+  The existing 13 W3 torsion/top-face journey tests also pass.
+- Frozen focused/cumulative, audit and integrity verdicts belong to the external
+  task ledger. No hosted, installed, release or whole-library acceptance is
+  claimed by this versioned record.
+
+### Next
+
+- Complete the frozen cumulative gate, review and integrity; preserve the local
+  candidate until Windows predecessor/shared-document ownership is reconciled.
+
+### Issues encountered
+
+- Joint producers accepted generated bars without binding strength depths.
+  Legacy BBS unwraps combined results, so an aggregate false flag cannot protect
+  downstream scheduling by itself.
+- Independent development review reproduced a pipeline bypass: invalid spacing
+  skipped the first version of the binding check while pipeline is_ok stayed true.
+- Focused caller tests exposed fixtures using centroid cover as clear cover,
+  mismatched bar/link sizes, and the single-case API ignoring its no-detail flag.
+- Parent review caught a dependent UAT fixture mutation still removing the old
+  depth token after its base row changed. It was corrected before freeze and
+  the affected negative-matrix/public-example test passed.
+- The cumulative gate exposed generated API-ledger/facade-doc drift, the
+  synthetic generator assuming a fixed bar diameter for arbitrary demands, and
+  smart analysis generating unused detailing from D-d as clear cover. These
+  affected callers and projections were repaired before a candidate was created.
+- The formatter rejected an authored regression's dict() constructor under C408.
+  Replacing it with the equivalent literal resolved the formatting-stage block.
+- Four guessed discovery owners were absent: Python instructions, check registry,
+  FastAPI schemas and the synthetic script. Existing file inventories and callers
+  resolved them. A focused FastAPI retry used the whole-suite wrapper; it was
+  interrupted and replaced by the exact source-bound pytest selector
+  (RR-005; occurrences=185; minutes=unknown).
+
+### Root causes and resolutions
+
+- Generated arrangements contain layer counts but no row positions. Validate
+  the recoverable final geometry at each producer; otherwise return structured
+  InputContractError before a nominally passing combined result can escape.
+- Pipeline validity controls optional drafting, not its strength is_ok flag.
+  Remove that predicate from the binding gate; the exact narrow-beam reproducer
+  now rejects all six unverified strength-bearing rows.
+- Successful workflow fixtures must account separately for clear cover, links
+  and longitudinal steel. Correct those callers; preserve intentionally invalid
+  inputs and design-only checks. The single-case no-detail branch now follows
+  the same report contract as the existing multiple-case branch.
+- Smart analysis consumes strength and steel-percentage estimates, not bar
+  layouts. Explicit design-only dispatch preserves those results without
+  fabricating a schedule. Synthetic BBS samples use authored supported cases;
+  generated ledgers/docs are rebuilt from their maintained owners.
+- C408 required an equivalent literal, with no behavioral change.
+- RR-005: use discovered exact paths; no runtime control was bypassed.
+- The prior accepted timer/publication packet was superseded under the owner's
+  explicit replan instruction. Its commit, branch and ledger remain preserved.
+
+### Rework and recurrence
+
+- RR-005 — occurrences=185; minutes=unknown. Four untimed discovery-owner
+  corrections and one whole-suite-wrapper selector correction; exact paths
+  and the direct focused pytest invocation resolved them before preparation.
+
+---
+
 ## 2026-09-19 — Session: Parallel Python library quality pass
 
 **Task:** LIB-QUALITY-20260919

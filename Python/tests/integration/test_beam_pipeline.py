@@ -155,7 +155,7 @@ class TestDesignSingleBeam:
             "story": "GF",
             "b_mm": 300.0,
             "D_mm": 500.0,
-            "d_mm": 450.0,
+            "d_mm": 457.0,
             "span_mm": 5000.0,
             "cover_mm": 25.0,
             "fck_nmm2": 25.0,
@@ -243,7 +243,7 @@ class TestDesignMultipleBeams:
                 "story": "GF",
                 "b_mm": 300.0,
                 "D_mm": 500.0,
-                "d_mm": 450.0,
+                "d_mm": 457.0,
                 "span_mm": 5000.0,
                 "cover_mm": 25.0,
                 "fck_nmm2": 25.0,
@@ -256,7 +256,7 @@ class TestDesignMultipleBeams:
                 "story": "1F",
                 "b_mm": 350.0,
                 "D_mm": 600.0,
-                "d_mm": 550.0,
+                "d_mm": 554.0,
                 "span_mm": 6000.0,
                 "cover_mm": 30.0,
                 "fck_nmm2": 30.0,
@@ -311,7 +311,7 @@ class TestDesignMultipleBeams:
                 {
                     "deflection_params": {
                         "span_mm": 5000,
-                        "d_mm": 450,
+                        "d_mm": 457,
                         "support_condition": "CANTILEVER",
                     }
                 },
