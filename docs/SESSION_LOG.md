@@ -5,6 +5,59 @@
 
 ---
 
+## 2026-09-26 — Session: Temporary ETABS access hold and project status
+
+**Task:** ETABS-OFFLINE-STATUS
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/etabs-offline-status`
+**Acceptance:** docs/planning/xll-product/etabs-design-workflow.md#etabs-offline-status-documentation-packet
+**Focus:** Record the owner's temporary loss of ETABS access and reconcile current work against fetched GitHub evidence.
+
+### Completed
+
+- Recorded ETABS unavailability for the next few days with no assumed return
+  date; separated eligible offline preparation from installed evidence gates.
+- Verified main `9c75e568` and topology PR #998 with required run `35433982136`
+  successful. Reconciled the current plan, task board and next-session brief.
+- Reviewed the merged WP10/WP11, provisional review, source/topology and Python
+  quality work. Broader profiles, independent-model qualification, reanalysis
+  and project-end performance remain unfinished.
+- Confirmed ten open dependency-update PRs and no open product implementation
+  PR in the current GitHub query. No dependency change is part of this packet.
+
+### Verification
+
+- Fetched the verified repository remote and inspected current/sibling Git
+  states and the original single-file diff before isolating this packet.
+- Documentation, context, efficiency and session checks are the focused gate;
+  exact frozen-candidate and hosted verdicts belong to the delivery ledger.
+- No runtime changes or installed application runs; existing software and
+  engineering acceptance are not reclassified by this documentation update.
+
+### Issues encountered
+
+- The selected primary checkout was 16 commits behind fetched main and had an
+  existing C# whitespace edit. Its September 7 handoff described superseded work.
+
+### Root causes and resolutions
+
+- Confirmed cause: the selected checkout remained at `9f03bb7c` while GitHub
+  main advanced to `9c75e568`. The Git-state authority and exact diff proved the
+  mismatch. Started an isolated worktree at fetched main; preserved the original
+  checkout/edit and reconciled current status with the merged PR and hosted run.
+
+### Rework and recurrence
+
+- None encountered.
+
+### Next
+
+- Prepare physical member/support intent and ULS/SLS role bindings offline
+  against retained evidence and the current review ledger. Fresh ETABS force/
+  station qualification resumes after the owner confirms access has returned.
+
+---
+
 ## 2026-09-19 — Session: Bounded C0a topology and role evidence
 
 **Task:** BEAM-C0A-TOPOLOGY
