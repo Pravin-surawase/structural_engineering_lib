@@ -34,25 +34,42 @@ class Workflow:
     draft_package: beam.OperationResult
 
 
-def require_complete(result: beam.OperationResult) -> None:
+def require_complete(
+    result: beam.OperationResult, *, allow_engineering_fail: bool = False
+) -> None:
     """Stop at a failed/incomplete calculation before consuming its outputs."""
     if not (
         result.execution is beam.ExecutionState.COMPLETED
-        and result.engineering is beam.EngineeringState.PASS
+        and (
+            result.engineering is beam.EngineeringState.PASS
+            or allow_engineering_fail
+            and result.engineering is beam.EngineeringState.FAIL
+        )
         and result.completeness is beam.CompletenessState.COMPLETE_FOR_SCOPE
         and result.freshness is beam.FreshnessState.CURRENT
     ):
         raise ValueError(result.to_dict())
 
 
-def build_workflow() -> Workflow:
-    """Run the same supplied physical bars through the existing pure owners."""
-    profile_id, member_id, detail_revision = "teaching-profile", "B1", "detail-r1"
+def build_workflow(
+    *,
+    bar_diameter_mm: float = 20,
+    detail_revision: str = "detail-r1",
+    include_links: bool = False,
+) -> Workflow:
+    """Run a supplied arrangement, retaining genuine engineering failures.
+
+    The optional links are 8 mm closed centreline loops at 150 mm spacing,
+    from station 75 to 5925 mm. They are measured physical paths, without a
+    claim of qualified hook/end anchorage. These explicit fixture choices are
+    also used by ``candidate_ranking_workflow.py``.
+    """
+    profile_id, member_id = "teaching-profile", "B1"
     bars = (
-        beam.BarPosition("BOTTOM-1", 20, 50, 450, beam.Face.BOTTOM),
-        beam.BarPosition("BOTTOM-2", 20, 250, 450, beam.Face.BOTTOM),
-        beam.BarPosition("TOP-1", 20, 50, 50, beam.Face.TOP),
-        beam.BarPosition("TOP-2", 20, 250, 50, beam.Face.TOP),
+        beam.BarPosition("BOTTOM-1", bar_diameter_mm, 50, 450, beam.Face.BOTTOM),
+        beam.BarPosition("BOTTOM-2", bar_diameter_mm, 250, 450, beam.Face.BOTTOM),
+        beam.BarPosition("TOP-1", bar_diameter_mm, 50, 50, beam.Face.TOP),
+        beam.BarPosition("TOP-2", bar_diameter_mm, 250, 50, beam.Face.TOP),
     )
     geometry_request = beam.ReinforcementGeometryRequest(
         profile_id=profile_id,
@@ -87,7 +104,7 @@ def build_workflow() -> Workflow:
         )
     )
     for result in (geometry, depth, flexure):
-        require_complete(result)
+        require_complete(result, allow_engineering_fail=True)
 
     # The profile is explicit and frozen; leaf results never decide what checks
     # a real project requires. This limited teaching profile is not a default.
@@ -165,7 +182,7 @@ def build_workflow() -> Workflow:
         leaf_results=leaves,
     )
     member = beam.design_member(member_request)
-    require_complete(member)
+    require_complete(member, allow_engineering_fail=True)
     missing_member = beam.design_member(
         replace(member_request, leaf_results=leaves[:1] + leaves[2:])
     )
@@ -181,6 +198,33 @@ def build_workflow() -> Workflow:
     )
 
     # Use the same physical coordinates and bar IDs. No area-to-bar inference.
+    link_paths = (
+        tuple(
+            beam.BarPathSeed(
+                bar_id=f"LINK-{station}",
+                bar_mark="LINK-8",
+                role=beam.BarPathRole.TRANSVERSE_LINK,
+                layer=1,
+                diameter_mm=8,
+                steel_grade_n_per_mm2=415,
+                closed=True,
+                nodes=tuple(
+                    beam.PathNode(
+                        str(index),
+                        beam.PathPoint(station, x, y),
+                        16,
+                        beam.BendKind.STANDARD_BEND,
+                    )
+                    for index, (x, y) in enumerate(
+                        ((29, 29), (271, 29), (271, 471), (29, 471))
+                    )
+                ),
+            )
+            for station in range(75, 5926, 150)
+        )
+        if include_links
+        else ()
+    )
     paths = beam.resolve_bar_paths(
         beam.BarPathRequest(
             profile_id=profile_id,
@@ -223,7 +267,8 @@ def build_workflow() -> Workflow:
                     ),
                 )
                 for bar in bars
-            ),
+            )
+            + link_paths,
             stock_lengths_mm=(12000,),
         )
     )
@@ -244,6 +289,15 @@ def build_workflow() -> Workflow:
                 "stock", "stock-r1", (12000,), 3, 500
             ),
             steel_density_kg_per_m3=7850,
+            link_zones=(
+                (
+                    construction.LinkPlacementZone(
+                        "links", "LINK-8", 75, 5925, 150, True, True
+                    ),
+                )
+                if include_links
+                else ()
+            ),
         )
     )
     require_complete(bbs)
@@ -414,6 +468,7 @@ def build_workflow() -> Workflow:
                 cost_binding=reporting.result_binding(cost, "cost"),
                 assumptions=(
                     "Four supplied straight bars and a 300 x 500 x 6000 mm isolated prism.",
+                    "Optional links use the explicitly supplied closed centreline paths; hook anchorage is not assessed.",
                 ),
                 traces=traces,
                 drawings=(
@@ -441,7 +496,10 @@ def build_workflow() -> Workflow:
         )
 
     package = package_for(member)
-    require_complete(package)
+    if member.engineering is beam.EngineeringState.PASS:
+        require_complete(package)
+    elif package.completeness is not beam.CompletenessState.PARTIAL:
+        raise ValueError("A failed teaching member must retain a draft package")
     draft_package = package_for(stale_member)
     return Workflow(
         project_result,
