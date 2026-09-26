@@ -238,6 +238,7 @@ class TestJSONParsing:
     def test_export_beam_data_to_json(self, sample_beam_data, temp_output_dir):
         """Test exporting beam data to JSON."""
         json_path = os.path.join(temp_output_dir, "export.json")
+        sample_beam_data.d = 437.0  # Deliberately differs from D minus clear cover.
 
         export_beam_data_to_json([sample_beam_data], json_path)
 
@@ -249,6 +250,9 @@ class TestJSONParsing:
         assert "beams" in data
         assert len(data["beams"]) == 1
         assert data["beams"][0]["beam_id"] == "B1"
+        assert data["beams"][0]["d"] == 437.0
+        assert data["beams"][0]["eff_d"] == 437.0
+        assert load_beam_data_from_json(json_path) == [sample_beam_data]
 
 
 # =============================================================================
