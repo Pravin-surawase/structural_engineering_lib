@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-26 — Topology #998 is merged; live ETABS work is temporarily held while offline review/preparation remains available
+**Updated:** 2026-09-26 — Mac is synchronized; Python workflow reliability is the active goal while live ETABS work remains held
 
 ---
 
@@ -13,6 +13,12 @@
 - **Streamlit is retired** — React is the only active UI. Do not restore its runtime, dependencies, hooks, or feature work; legacy files are reference-only until removal.
 
 ---
+
+## Python Library Improvement
+
+| ID | Task | Priority | Status | Exit condition |
+|---|---|---|---|---|
+| PY-LIB-IMPROVE-001 | Reliable design → detailing → BBS/report/DXF across public Python and serialized CLI paths | P0 | In progress: implementation complete, delivery gates pending | Original strength inputs/status survive serialization; failed or incompatible schedules are blocked; positive examples and focused/cumulative/hosted gates pass. [Acceptance](planning/python-library-workflow-improvement-plan.md) |
 
 ## Maintenance Recovery Dashboard
 

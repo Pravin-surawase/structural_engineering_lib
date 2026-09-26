@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02",
+  "generated": "2026-09-26",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 245,
@@ -107,7 +107,7 @@
     {
       "name": "ComplianceCaseResult",
       "kind": "class",
-      "signature": "(case_id: 'str', Mu_knm: 'float', Vu_kn: 'float', flexure: 'FlexureResult', shear: 'ShearResult', deflection: 'DeflectionResult | None' = None, crack_width: 'CrackWidthResult | None' = None, is_ok: 'bool' = False, governing_utilization: 'float' = 0.0, utilizations: 'dict[str, float]' = <factory>, failed_checks: 'list[str]' = <factory>, remarks: 'str' = '', clause_refs: 'dict[str, str]' = <factory>, Tu_knm: 'float' = 0.0, Me_knm: 'float | None' = None, Ve_kn: 'float | None' = None, torsion: 'TorsionResult | None' = None, effective_depth_resolution: 'dict[str, Any] | None' = None, result_envelope: 'dict[str, Any] | None' = None) -> None"
+      "signature": "(case_id: 'str', Mu_knm: 'float', Vu_kn: 'float', flexure: 'FlexureResult', shear: 'ShearResult', deflection: 'DeflectionResult | None' = None, crack_width: 'CrackWidthResult | None' = None, is_ok: 'bool' = False, governing_utilization: 'float' = 0.0, utilizations: 'dict[str, float]' = <factory>, failed_checks: 'list[str]' = <factory>, remarks: 'str' = '', clause_refs: 'dict[str, str]' = <factory>, Tu_knm: 'float' = 0.0, Me_knm: 'float | None' = None, Ve_kn: 'float | None' = None, torsion: 'TorsionResult | None' = None, effective_depth_resolution: 'dict[str, Any] | None' = None, result_envelope: 'dict[str, Any] | None' = None, design_inputs: 'dict[str, Any]' = <factory>) -> None"
     },
     {
       "name": "ComplianceReport",

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
+from copy import deepcopy
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from typing import Any, Literal, TypeVar
@@ -38,6 +39,8 @@ from structural_lib.services import bbs, beam_pipeline, report
 from structural_lib.services.beam_detailing_binding import (
     _require_generated_detailing_depth,
     _require_generated_detailing_shear,
+    _require_matching_design_inputs,
+    _serialized_detailing_basis,
 )
 from structural_lib.services.common_api import (
     _require_finite_real,
@@ -317,8 +320,10 @@ def build_detailing_input(
 ) -> dict[str, Any]:
     """Build the dict schema expected by compute_detailing() from a design result.
 
-    Since ComplianceCaseResult stores only design outputs (Ast, shear spacing, etc.)
-    and not the original geometry/material inputs, you must pass those explicitly.
+    Preserve the source design inputs, outcome and identity for downstream checks.
+    Geometry/material arguments must agree with the original calculation; span
+    and clear cover supply the additional drafting inputs. Failed designs can be
+    reported, but cannot be converted to accepted detailing or a schedule.
 
     Args:
         result: A ComplianceCaseResult from design_beam_is456().
@@ -336,23 +341,38 @@ def build_detailing_input(
 
     Example:
         >>> result = design_beam_is456(
-        ...     units="IS456", b_mm=300, D_mm=500, d_mm=450,
+        ...     units="IS456", b_mm=300, D_mm=500, d_mm=444,
         ...     fck_nmm2=25, fy_nmm2=500, mu_knm=150, vu_kn=100,
         ... )
         >>> detailing_input = build_detailing_input(
-        ...     result, b_mm=300, D_mm=500, d_mm=450, fck_nmm2=25, fy_nmm2=500,
+        ...     result, b_mm=300, D_mm=500, d_mm=444, fck_nmm2=25, fy_nmm2=500,
         ... )
         >>> detailed = compute_detailing(detailing_input)
     """
     flexure = result.flexure
     shear = result.shear
+    _require_matching_design_inputs(
+        {"b": b_mm, "D": D_mm, "d": d_mm, "fck": fck_nmm2, "fy": fy_nmm2},
+        result.design_inputs,
+    )
 
     beam_dict: dict[str, Any] = {
         "beam_id": beam_id,
+        "is_ok": result.is_ok,
+        "failed_checks": list(result.failed_checks),
+        "design_inputs": deepcopy(result.design_inputs),
+        "result_envelope": deepcopy(result.result_envelope),
+        "loads": {
+            "case_id": result.case_id,
+            "mu_knm": result.Mu_knm,
+            "vu_kn": result.Vu_kn,
+            "tu_knm": result.Tu_knm,
+        },
         "geometry": {
             "b_mm": b_mm,
             "D_mm": D_mm,
             "d_mm": d_mm,
+            "d_dash_mm": result.design_inputs["d_dash_mm"],
             "span_mm": span_mm,
             "cover_mm": cover_mm,
         },
@@ -363,6 +383,7 @@ def build_detailing_input(
         "flexure": {
             "ast_required_mm2": flexure.Ast_required,
             "asc_required_mm2": flexure.Asc_required,
+            "is_safe": flexure.is_safe,
         },
         "shear": {
             "tau_v": shear.tau_v,
@@ -374,7 +395,12 @@ def build_detailing_input(
         },
     }
 
-    return {"beams": [beam_dict]}
+    return {
+        "schema_version": 1,
+        "code": "IS456",
+        "units": "IS456",
+        "beams": [beam_dict],
+    }
 
 
 def compute_detailing(
@@ -386,6 +412,11 @@ def compute_detailing(
 
     Extracts beam geometry, materials, and reinforcement from design results
     and generates detailed bar schedules, stirrup layouts, and construction notes.
+    Design-derived inputs require a passing source result and its consumed
+    ``design_inputs``. Missing default spacing is capped by the calculated shear
+    limit; explicit configuration and generated geometry must satisfy that basis.
+    Legacy design JSON without this basis must be regenerated. Steel-only drafting
+    dictionaries carry no strength-design acceptance claim.
 
     Args:
         design_results: Design results dictionary with 'beams' key containing
@@ -436,6 +467,7 @@ def compute_detailing(
 
     for beam in beams:
         params = _extract_beam_params_from_schema(beam)
+        basis = _serialized_detailing_basis(beam, params)
         det = params["detailing"] or {}
 
         stirrups = det.get("stirrups") if isinstance(det, dict) else []
@@ -459,11 +491,11 @@ def compute_detailing(
                 spacing_end = stirrups[2].get("spacing")
 
         if spacing_start is None:
-            spacing_start = 150.0
+            spacing_start = min(150.0, basis[1]) if basis else 150.0
         if spacing_mid is None:
-            spacing_mid = 200.0
+            spacing_mid = min(200.0, basis[1]) if basis else 200.0
         if spacing_end is None:
-            spacing_end = 150.0
+            spacing_end = min(150.0, basis[1]) if basis else 150.0
 
         detailing_result = detailing.create_beam_detailing(
             beam_id=params["beam_id"],
@@ -487,6 +519,19 @@ def compute_detailing(
             is_seismic=bool(cfg.get("is_seismic", False)),
         )
 
+        if basis is not None:
+            inputs, maximum_spacing = basis
+            _require_generated_detailing_depth(
+                detailing_result,
+                d_mm=inputs["d_mm"],
+                d_dash_mm=inputs["d_dash_mm"],
+                compression_required_mm2=params["asc"],
+            )
+            _require_generated_detailing_shear(
+                detailing_result,
+                assumed_asv_mm2=inputs["asv_mm2"],
+                maximum_spacing_mm=maximum_spacing,
+            )
         detailing_list.append(detailing_result)
 
     return detailing_list
@@ -559,6 +604,17 @@ def compute_bbs(
             )
         normalized = [detailing_list.detailing]
     elif isinstance(detailing_list, DesignAndDetailResult):
+        if not detailing_list.is_ok or not detailing_list.design.is_ok:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="detailing_list.is_ok",
+                        message="BBS requires a passing combined design and detailing result.",
+                        received=detailing_list.is_ok,
+                    ),
+                )
+            )
         normalized = [detailing_list.detailing]
     elif isinstance(detailing_list, detailing.BeamDetailingResult):
         normalized = [detailing_list]
@@ -1657,41 +1713,42 @@ def _design_beam_is456_calculation(
             return dict(value)
         raise TypeError("Serviceability parameters must expose a mapping contract.")
 
+    result.design_inputs = {
+        "units": units,
+        "case_id": case_id,
+        "mu_knm": mu_knm,
+        "vu_kn": vu_kn,
+        "b_mm": b_mm,
+        "D_mm": D_mm,
+        "d_mm": d_mm,
+        "fck_nmm2": fck_nmm2,
+        "fy_nmm2": fy_nmm2,
+        "d_dash_mm": d_dash_mm,
+        "asv_mm2": asv_mm2,
+        "pt_percent": pt_percent,
+        "ast_mm2_for_shear": ast_mm2_for_shear,
+        "tu_knm": tu_knm,
+        "cover_mm": cover_mm,
+        "stirrup_dia_mm": stirrup_dia_mm,
+        "include_serviceability": (
+            deflection_params is not None or crack_width_params is not None
+        ),
+        "deflection_params": _parameter_mapping(deflection_params),
+        "crack_width_params": _parameter_mapping(crack_width_params),
+        **(
+            {"fy_transverse_nmm2": fy_transverse_nmm2}
+            if fy_transverse_nmm2 is not None
+            else {}
+        ),
+        **(
+            {"torsion_corner_bar_centres_mm": torsion_corner_bar_centres_mm}
+            if torsion_corner_bar_centres_mm is not None
+            else {}
+        ),
+    }
     evidence = build_beam_evidence_envelope(
         source_basis=source_basis,
-        inputs={
-            "units": units,
-            "case_id": case_id,
-            "mu_knm": mu_knm,
-            "vu_kn": vu_kn,
-            "b_mm": b_mm,
-            "D_mm": D_mm,
-            "d_mm": d_mm,
-            "fck_nmm2": fck_nmm2,
-            "fy_nmm2": fy_nmm2,
-            "d_dash_mm": d_dash_mm,
-            "asv_mm2": asv_mm2,
-            "pt_percent": pt_percent,
-            "ast_mm2_for_shear": ast_mm2_for_shear,
-            "tu_knm": tu_knm,
-            "cover_mm": cover_mm,
-            "stirrup_dia_mm": stirrup_dia_mm,
-            "include_serviceability": (
-                deflection_params is not None or crack_width_params is not None
-            ),
-            "deflection_params": _parameter_mapping(deflection_params),
-            "crack_width_params": _parameter_mapping(crack_width_params),
-            **(
-                {"fy_transverse_nmm2": fy_transverse_nmm2}
-                if fy_transverse_nmm2 is not None
-                else {}
-            ),
-            **(
-                {"torsion_corner_bar_centres_mm": torsion_corner_bar_centres_mm}
-                if torsion_corner_bar_centres_mm is not None
-                else {}
-            ),
-        },
+        inputs=result.design_inputs,
         is_ok=result.is_ok,
         governing_utilization=result.governing_utilization,
         utilizations=result.utilizations,

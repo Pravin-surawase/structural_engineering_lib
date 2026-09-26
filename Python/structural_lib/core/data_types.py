@@ -785,6 +785,7 @@ class ComplianceCaseResult:
     torsion: TorsionResult | None = None
     effective_depth_resolution: dict[str, Any] | None = None
     result_envelope: dict[str, Any] | None = None
+    design_inputs: dict[str, Any] = field(default_factory=dict)
 
     @property
     def mu_knm(self) -> float:

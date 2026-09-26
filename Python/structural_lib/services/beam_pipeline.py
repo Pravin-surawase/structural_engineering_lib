@@ -228,6 +228,7 @@ class BeamDesignOutput:
     remarks: str = ""
     effective_depth_resolution: dict[str, Any] | None = None
     result_envelope: dict[str, Any] | None = None
+    design_inputs: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
@@ -593,6 +594,7 @@ def design_single_beam(
         remarks=case_result.remarks,
         effective_depth_resolution=case_result.effective_depth_resolution,
         result_envelope=case_result.result_envelope,
+        design_inputs=case_result.design_inputs,
     )
 
 

@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-26
-- Focus: Resume development on the Mac from current GitHub history, preserve work on both devices, and repair the confirmed maintenance inventory defect.
-- Completed: Fetched the verified GitHub remote and fast-forwarded Mac main from `9c75e568` to `6b71d7cf`. PR #1000 is merged and its required validation run `36257920855` succeeded. Its temporary ETABS access hold remains active.; Preserved all 33 Mac worktrees and existing branches, including the dirty XLL architecture worktree. The Windows task is idle after its documented closeout; its primary checkout still has a retained C# edit and was not modified or represented as synchronized by this Mac session.; Carried the two reviewed Colima setup documents from local commit `42d1572a` into this maintenance packet while retaining the original branch and commit. Docker VM recreation remains on demand.
-- Recurrence controls: RR-004 x26 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.
+- Focus: Complete the owner's reliability priority through the existing Python beam design, detailing, BBS/report and serialized CLI export paths.
+- Completed: Preserved the consumed strength inputs, original case, source status and result envelope in compatibility adapters and serialized pipeline outputs.; Bound design-derived details to original geometry/materials, effective and compression depths, stirrup area and the calculated spacing limit. Default spacing follows that limit; explicit incompatible settings remain errors.; Blocked failed combined-design BBS consumption and reused the checked detailing/export services in CLI DXF. Failed designs remain reportable.
+- Recurrence controls: RR-005 x220 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.; RR-003 x10 / unknown: Finish code, docs and generated projections before freeze; serialize mutations against formatting, then run read-only integrity after acceptance.; RR-047 x2 / unknown: Stage reviewed intended caller files before API classification; after the guard rejects, rerun only that affected check.
 <!-- HANDOFF:END -->
 
 ## Current boundary
