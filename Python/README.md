@@ -68,12 +68,12 @@ request = beam.input(
     span_mm=5000,
     b_mm=300,
     D_mm=550,
-    d_mm=500,
+    d_mm=492,
     fck_nmm2=25,
     fy_nmm2=500,
     mu_knm=150,
     vu_kn=80,
-    d_dash_mm=50,
+    d_dash_mm=56,
     asv_mm2=detailing.asv_mm2,
     detailing=detailing,
     source_provenance="analysis-envelope:ULS-1",
@@ -86,6 +86,9 @@ result = beam.design_and_detail(
 print(result.engineering_status)
 print(result.to_dict())
 ```
+
+The example uses `d = 550 - 40 - 8 - 20/2 = 492 mm` and
+`d_dash = 40 + 8 + 16/2 = 56 mm`, matching the stated reinforcement.
 
 The complete 13-journey cookbook is maintained at
 `docs/cookbook/python/family-facades.md` in the source repository.
@@ -167,6 +170,17 @@ print(batch.members[0].calculation["flexure"]["ast_required"])
 ### Run the Full Pipeline (design → detail → BBS → report)
 
 See [examples/end_to_end_workflow.py](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/Python/examples/end_to_end_workflow.py) for a complete working script (available in the source repository).
+
+The compatibility adapter retains `design_inputs`, the original case and the
+result envelope. `compute_detailing()` checks that geometry, materials, bar
+centroids and stirrups match the passing source design. Default stirrup spacing
+respects the calculated maximum; explicit excessive spacing is rejected.
+Failed designs remain reportable but cannot produce design-derived schedules.
+Regenerate older design JSON that lacks `design_inputs` before using `detail`,
+`bbs` or `dxf`. Explicit steel-only drafting inputs do not establish strength
+acceptance. The CLI's unmodified span/depth screen remains supported for the
+same geometry. Supplied reinforcement factors, crack strains and torsion need
+their documented canonical detailing scope and evidence.
 
 ### Cost-Optimize a Beam
 

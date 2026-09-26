@@ -36,10 +36,7 @@ import sys
 from pathlib import Path
 from typing import cast
 
-from . import (
-    beam_pipeline,
-    detailing,
-)
+from . import beam_pipeline
 from .core.data_types import CrackWidthParams, ValidationReport
 from .services import api, cli_design, dxf_export, job_runner, report
 
@@ -789,52 +786,8 @@ def cmd_dxf(args: argparse.Namespace) -> int:
 
         print(f"Loaded {len(beams)} beam(s)", file=sys.stderr)
 
-        # Generate detailing results for DXF
-        detailing_list = []
-        for beam in beams:
-            # Extract parameters using schema-agnostic helper
-            params = api._extract_beam_params_from_schema(beam)
-
-            print(
-                f"  Processing {params['story']}/{params['beam_id']}...",
-                file=sys.stderr,
-            )
-            det = params["detailing"]
-
-            detailing_result = detailing.create_beam_detailing(
-                beam_id=params["beam_id"],
-                story=params["story"],
-                b=params["b"],
-                D=params["D"],
-                span=params["span"],
-                cover=params["cover"],
-                fck=params["fck"],
-                fy=params["fy"],
-                ast_start=params["ast"],
-                ast_mid=params["ast"],
-                ast_end=params["ast"],
-                asc_start=params["asc"],
-                asc_mid=params["asc"],
-                asc_end=params["asc"],
-                stirrup_dia=(
-                    det["stirrups"][0]["diameter"] if det.get("stirrups") else 8
-                ),
-                stirrup_spacing_start=(
-                    det["stirrups"][0]["spacing"] if det.get("stirrups") else 150
-                ),
-                stirrup_spacing_mid=(
-                    det["stirrups"][1]["spacing"]
-                    if det.get("stirrups") and len(det["stirrups"]) > 1
-                    else 200
-                ),
-                stirrup_spacing_end=(
-                    det["stirrups"][2]["spacing"]
-                    if det.get("stirrups") and len(det["stirrups"]) > 2
-                    else 150
-                ),
-            )
-
-            detailing_list.append(detailing_result)
+        # Use the same source-design and reinforcement checks as BBS/detail.
+        detailing_list = api.compute_detailing(data)
 
         # Generate DXF
         if not args.output:
@@ -851,28 +804,15 @@ def cmd_dxf(args: argparse.Namespace) -> int:
 
         title_block = {"title": args.title} if args.title else None
 
-        if len(detailing_list) == 1:
-            # Single beam - use standard function
-            dxf_export.generate_beam_dxf(
-                detailing_list[0],
-                str(output_path),
-                include_title_block=args.title_block or args.title is not None,
-                title_block=title_block,
-                sheet_margin_mm=args.sheet_margin,
-                title_block_width_mm=args.title_block_width,
-                title_block_height_mm=args.title_block_height,
-            )
-        else:
-            # Multiple beams - use multi-beam layout
-            dxf_export.generate_multi_beam_dxf(
-                detailing_list,
-                str(output_path),
-                include_title_block=args.title_block or args.title is not None,
-                title_block=title_block,
-                sheet_margin_mm=args.sheet_margin,
-                title_block_width_mm=args.title_block_width,
-                title_block_height_mm=args.title_block_height,
-            )
+        api.compute_dxf(
+            detailing_list,
+            output_path,
+            include_title_block=args.title_block or args.title is not None,
+            title_block=title_block,
+            sheet_margin_mm=args.sheet_margin,
+            title_block_width_mm=args.title_block_width,
+            title_block_height_mm=args.title_block_height,
+        )
 
         print(f"DXF drawings written to {output_path}", file=sys.stderr)
         print(f"DXF complete: {len(detailing_list)} beam(s) drawn", file=sys.stderr)

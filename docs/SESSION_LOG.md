@@ -5,6 +5,115 @@
 
 ---
 
+## 2026-09-26 — Session: Reliable Python design-to-schedule workflows
+
+**Task:** PY-LIB-IMPROVE-001
+**Agent:** backend (one parent, no subagents)
+**Branch:** `codex/python-design-workflow`
+**Acceptance:** docs/planning/python-library-workflow-improvement-plan.md
+**Focus:** Complete the owner's reliability priority through the existing Python beam design, detailing, BBS/report and serialized CLI export paths.
+
+### Completed
+
+- Preserved the consumed strength inputs, original case, source status and
+  result envelope in compatibility adapters and serialized pipeline outputs.
+- Bound design-derived details to original geometry/materials, effective and
+  compression depths, stirrup area and the calculated spacing limit. Default
+  spacing follows that limit; explicit incompatible settings remain errors.
+- Blocked failed combined-design BBS consumption and reused the checked
+  detailing/export services in CLI DXF. Failed designs remain reportable.
+- Corrected the README's canonical depth and the executable full workflow;
+  added positive high-shear, JSON round-trip and export regression journeys
+  plus the reproduced failure/basis-loss cases.
+
+### Verification
+
+- Before the fix, the public 300 × 500 mm, d=444 mm, M25/Fe500,
+  Mu=100 kNm, Vu=200 kN reproducer produced 150/200/150 mm stirrups despite
+  a 100 mm limit. At Vu=500 kN it produced nine BBS items after shear FAIL.
+- The same direct reproducers now use 100/100/100 mm or reject the failed
+  source design. Compatibility combined BBS and serialized pipeline replay
+  also enforce the source result.
+- The frozen W5 gate comprises the scoped workflow union, example replay,
+  full Python suite and 32 repository checks. Exact final candidate and hosted
+  verdicts belong to the delivery ledger, not a post-push documentation edit.
+
+### Issues encountered
+
+- Design-derived JSON omitted consumed inputs and overall outcome; its
+  detailing consumer ignored calculated shear limits. CLI DXF independently
+  reconstructed details and bypassed the shared consumer checks.
+- Compatibility combined-result BBS unwrapped valid detailing even when its
+  source strength design failed. The README and old full-pipeline fixture
+  retained depths incompatible with their generated bars.
+- A read-only discovery command guessed an absent service filename and an
+  unmatched zsh glob, stopping that lookup.
+
+### Root causes and resolutions
+
+- Confirmed root cause: independently evolved adapters dropped source state,
+  while consumers trusted drawing validity and fixed defaults. Preserve the
+  exact calculation inputs and result envelope, reuse the maintained depth/
+  shear binding owner, check combined acceptance and route DXF through the
+  same service. Public failure reproducers and positive exports are the proof.
+- Confirmed example drift: stated cover/link/bar sizes imply d=492 mm in the
+  README and d=454 mm in the legacy example. Correct those inputs rather than
+  relaxing the existing geometry check.
+- Terminal lookup resolution: directory-scoped `rg` located the actual
+  canonical service owner; explicit existing paths replaced the guessed glob.
+  No repository source or runtime was affected by these five lookup mistakes. A sixth diagnostic used a root-relative
+  mypy file path that assigned duplicate module names; the explicit
+  `-p structural_lib` package target and project configuration resolve it.
+- The cumulative repository gate passed 30/32. The new public result field
+  required API manifest regeneration, and the caller scan deliberately rejected
+  two intended untracked files. Review/stage those paths, refresh generated API
+  projections and rerun only those checks. The full Python suite additionally
+  found an overbroad initial serviceability guard: ordinary CLI span/depth
+  screening was blocked. Retain it with span/depth binding while holding
+  reinforcement-dependent factors and crack strains. Its unchanged public
+  synthetic example and focused regressions verify the corrected workflow.
+- The full suite recorded 7924 passes and three failures: stale compatibility
+  ledger, the screening regression, and a read-only Git-status assertion. The
+  last before/after diff contains only the concurrently regenerated manifest;
+  finish all mutations before rerunning that observational check. Rerun only
+  affected tests after this consolidated pre-candidate correction.
+- One new positive screening fixture omitted its required `d_mm`. The
+  maintained calculation owner correctly rejected it; supply the complete
+  screening request rather than infer a depth or relax source acceptance.
+- Hosted run `36261181018`, Python job `108457209781`, rejected candidate
+  `4b031594` at mypy: the aggregate validation loop did not narrow the outer
+  optional spacing variable. Add an explicit post-validation type invariant;
+  preserve runtime checks and rerun mypy plus the affected workflow suite.
+  This is the single admitted hosted repair, with no formula or scope change.
+- The `gh run view` log endpoint held logs while sibling jobs ran. The completed
+  job-log connector returned the exact type-check error; no CI rerun or check
+  bypass was used to investigate it.
+- Repair delivery initially targeted the derived `REPAIRED_CANDIDATE` label
+  and continued to dependent audit/integrity commands after rejection. Neither
+  candidate nor audit was admitted, and nothing was pushed. Source inspection
+  requires repair freeze, formatting, focused verification, preparation and
+  `CANDIDATE`, which derives the repaired label. Check each exit status before
+  its dependent command; the premature read-only integrity run is not accepted
+  candidate evidence. Record this before the repaired candidate is admitted.
+
+### Rework and recurrence
+
+- RR-005: occurrences=222; minutes=unknown. Six read-only path/glob/module-discovery mistakes; use discovered owners, explicit paths and the package target for root-launched mypy.
+- RR-004: occurrences=27; minutes=unknown. A derived repair-state command was rejected before audit; follow the inspected state machine and stop dependent commands on failure.
+- RR-003: occurrences=10; minutes=unknown. Manifest regeneration overlapped the full suite Git-status invariant; serialize mutations before affected test reruns.
+- RR-047: occurrences=2; minutes=unknown. The caller scan rejected two intended untracked files; review and stage them before refreshing/checking API projections.
+
+### Next
+
+- Complete the frozen reliability packet's focused and cumulative gates,
+  candidate review/integrity and one required hosted PR cycle, then resume
+  the Mac from the merged head. Legacy design JSON must be regenerated.
+- Retain all existing worktrees and the held solver-documentation candidate;
+  future integration of that candidate requires replan/rebinding to current main.
+  This software packet grants no installed ETABS or construction acceptance.
+
+---
+
 ## 2026-09-26 — Session: Mac maintenance and GitHub synchronization
 
 **Task:** MAINT-MAC-2026-09-26

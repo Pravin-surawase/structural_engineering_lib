@@ -148,63 +148,27 @@ def sample_design_results_file(tmp_path):
     """Create a sample design results JSON for testing bbs and dxf commands."""
     results_path = tmp_path / "design_results.json"
 
+    from structural_lib.services.beam_pipeline import design_single_beam
+
+    result = design_single_beam(
+        units="IS456",
+        beam_id="B1",
+        story="Story1",
+        b_mm=300,
+        D_mm=500,
+        d_mm=444,
+        span_mm=4000,
+        cover_mm=40,
+        fck_nmm2=25,
+        fy_nmm2=500,
+        mu_knm=150,
+        vu_kn=100,
+    )
     data = {
         "schema_version": 1,
         "code": "IS456",
-        "beams": [
-            {
-                "beam_id": "B1",
-                "story": "Story1",
-                "geometry": {
-                    "b": 300,
-                    "D": 500,
-                    "d": 442,
-                    "span": 4000,
-                    "cover": 40,
-                },
-                "materials": {
-                    "fck": 25,
-                    "fy": 500,
-                },
-                "loads": {
-                    "Mu": 150,
-                    "Vu": 100,
-                },
-                "flexure": {
-                    "ast_req": 942.5,
-                    "asc_req": 0,
-                    "status": "OK",
-                    "xu_d": 0.35,
-                    "mu_rd": 160.0,
-                },
-                "shear": {
-                    "tau_v": 0.72,
-                    "tau_c": 0.48,
-                    "sv_req": 150,
-                    "status": "OK",
-                },
-                "detailing": {
-                    "bottom_bars": [
-                        {"count": 3, "diameter": 20, "callout": "3-T20"},
-                        {"count": 3, "diameter": 20, "callout": "3-T20"},
-                        {"count": 3, "diameter": 20, "callout": "3-T20"},
-                    ],
-                    "top_bars": [
-                        {"count": 2, "diameter": 16, "callout": "2-T16"},
-                        {"count": 2, "diameter": 16, "callout": "2-T16"},
-                        {"count": 2, "diameter": 16, "callout": "2-T16"},
-                    ],
-                    "stirrups": [
-                        {"diameter": 8, "spacing": 150, "callout": "T8@150"},
-                        {"diameter": 8, "spacing": 200, "callout": "T8@200"},
-                        {"diameter": 8, "spacing": 150, "callout": "T8@150"},
-                    ],
-                    "ld_tension": 752,
-                    "lap_length": 940,
-                },
-                "status": "OK",
-            }
-        ],
+        "units": "IS456",
+        "beams": [result.to_dict()],
     }
 
     with results_path.open("w", encoding="utf-8") as f:

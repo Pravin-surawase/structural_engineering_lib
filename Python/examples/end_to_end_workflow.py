@@ -21,11 +21,11 @@ def main():
         case_id="DL+LL",
         b_mm=300,  # Beam width (mm)
         D_mm=500,  # Overall depth (mm)
-        d_mm=450,  # Effective depth (mm)
+        d_mm=454,  # 500 - 30 cover - 8 link - 16/2 bar (mm)
         fck_nmm2=25,  # Concrete grade M25 (N/mm²)
         fy_nmm2=500,  # Steel grade Fe500 (N/mm²)
         mu_knm=150,  # Factored bending moment (kN·m)
-        vu_kn=100,  # Factored shear force (kN)
+        vu_kn=200,  # Factored shear force (kN)
     )
     print(f"  Flexure: Ast = {result.flexure.Ast_required:.0f} mm²")
     print(f"  Shear:   spacing = {result.shear.spacing:.0f} mm")
@@ -41,12 +41,14 @@ def main():
         beam_id="B1",
         b_mm=300,
         D_mm=500,
-        d_mm=450,
+        d_mm=454,
         span_mm=6000,
         cover_mm=30,
         fck_nmm2=25,
         fy_nmm2=500,
     )
+    # Defaults respect the calculated shear limit; explicit excessive spacing
+    # is rejected. A failed source design cannot produce a schedule.
     detailed = api.compute_detailing(detailing_input)
     print(f"  Beams detailed: {len(detailed)}")
     for beam in detailed:
