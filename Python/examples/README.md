@@ -13,10 +13,23 @@ python3 -m pip install "structural-lib-is456==0.24.0"
 python3 -m structural_lib install-preflight
 ```
 
+## Typed workflows from the current source
+
+`canonical_workflows.py` uses public request groups, a beam-to-BBS workflow,
+column and slab checks, structured errors and a JSON round-trip. The newly
+exposed group imports and slab builders require the current source build;
+they are not assumed to exist in the older published wheel.
+
+```bash
+python3 -m pip install -e ./Python
+python3 Python/examples/canonical_workflows.py
+```
+
 ## Recommended order
 
 | Example | What it demonstrates | Writes files? |
 |---|---|---|
+| `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
 | `end_to_end_workflow.py` | Installed-package beam design → detailing → BBS → HTML report | No |
 | `simple_examples.py` | Seven focused flexure, shear, detailing, and bar-selection demonstrations | No |
 | `bmd_sfd_example.py` | Bending-moment and shear-force diagrams | No |

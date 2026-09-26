@@ -3,9 +3,31 @@
 from __future__ import annotations
 
 import csv
+import json
 import subprocess
 import sys
 from pathlib import Path
+
+
+def test_canonical_workflows_use_public_types_and_complete_user_journeys(
+    tmp_path: Path,
+) -> None:
+    script = Path(__file__).resolve().parents[1] / "examples" / "canonical_workflows.py"
+    completed = subprocess.run(
+        [sys.executable, str(script)],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    result = json.loads(completed.stdout)
+    assert result["beam_bbs_weight_kg"] > 0
+    assert result["column_status"] == result["slab_status"] == "PASS"
+    assert result["column_check_passed"] is True
+    assert result["review_required"] is True
+    assert result["rejected_fields"] == ["geometry.b_mm"]
+    assert not list(tmp_path.iterdir())
 
 
 def test_synthetic_pipeline_uses_strict_cli_contract(tmp_path: Path) -> None:

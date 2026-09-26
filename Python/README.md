@@ -43,6 +43,19 @@ are still in progress.
 
 ---
 
+## Choosing an API
+
+For supported element design/checks, use `structural_lib.design.is456`.
+For explicit physical beam reinforcement, analysis and project workflows, see
+`structural_lib.beam` and the source repository's `docs/library/getting-started.md`.
+Existing root and `api` imports remain supported compatibility routes.
+
+The current source adds typed family group imports, typed calculation results,
+and slab `input_*` builders. Run `Python/examples/canonical_workflows.py` after
+`pip install -e ./Python` from the repository root. These additions have not
+been published as a new release; the install commands above retain their exact
+published-version meaning.
+
 ## If You Want To…
 
 ### Design and Detail a Beam Through the Canonical Facade
