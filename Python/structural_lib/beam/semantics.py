@@ -11,9 +11,11 @@ import hashlib
 import json
 import math
 from collections.abc import Iterable, Mapping
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, is_dataclass
 from enum import StrEnum
-from typing import Any
+from typing import Any, TypeVar
+
+_OutputT = TypeVar("_OutputT")
 
 CANONICALIZATION_VERSION = "pf4-canonical-json-v1"
 RESULT_SCHEMA_VERSION = "structural-operation-result/v1"
@@ -105,6 +107,54 @@ class OperationResult:
 
     def to_dict(self) -> dict[str, Any]:
         return {str(key): plain(value) for key, value in asdict(self).items()}
+
+    def output_as(self, key: str, output_type: type[_OutputT]) -> _OutputT:
+        """Restore an output record for the next typed operation.
+
+        Parameters
+        ----------
+        key : str
+            Named payload in ``outputs``, such as ``reinforcement_schedule``.
+        output_type : type
+            The payload's public dataclass, such as ``BarPathOutput``.
+
+        Returns
+        -------
+        output_type
+            A new typed record, including nested records, tuples, and enums.
+            Its canonical payload is identical to the original output.
+
+        Raises
+        ------
+        KeyError
+            The operation did not produce the named payload.
+        TypeError
+            The requested type is not a dataclass class.
+        ValueError
+            The payload does not match the type without data loss.
+
+        Notes
+        -----
+        Projection does not qualify a result or change its status, identities,
+        units, or provenance. Check execution, engineering, completeness, and
+        freshness before using a result. Partial outputs remain inspectable.
+        ``outputs`` and ``to_dict()`` retain their existing JSON-shaped form.
+
+        Examples
+        --------
+        ``project_result.output_as("project", BeamProject)`` returns the typed
+        project consumed by ``MemberDesignRequest``.
+        """
+        if not isinstance(output_type, type) or not is_dataclass(output_type):
+            raise TypeError("output_type must be a public output dataclass")
+        # Keep schema construction off the normal calculation/import path.
+        from pydantic import TypeAdapter
+
+        payload = canonical_json_bytes(self.outputs[key])
+        output = TypeAdapter(output_type).validate_json(payload, strict=True)
+        if canonical_json_bytes(output) != payload:
+            raise ValueError(f"Output {key!r} cannot be projected without data loss")
+        return output
 
 
 def plain(value: Any) -> Any:

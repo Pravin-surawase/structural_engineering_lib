@@ -1,4 +1,4 @@
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from math import pi
 
 import pytest
@@ -35,6 +35,7 @@ from structural_lib.beam.semantics import (
     EngineeringState,
     ExecutionState,
     FreshnessState,
+    canonical_json_bytes,
 )
 
 
@@ -226,6 +227,62 @@ def test_create_project_freezes_profile_units_and_revisions() -> None:
         "moment_unit": "Nmm",
         "stress_unit": "N/mm2",
     }
+
+
+def test_output_projection_connects_project_to_member_without_losing_identity() -> None:
+    result = create_beam_project(_project_request())
+    original = result.to_dict()
+    project = result.output_as("project", BeamProject)
+    assert project.profile.check_rules[0].scope is CheckScope.MEMBER
+    assert isinstance(project.code_data_revisions, tuple)
+    assert canonical_json_bytes(project) == canonical_json_bytes(
+        result.outputs["project"]
+    )
+    member = design_member(replace(_member_request(), project=project))
+    assert member.engineering is EngineeringState.PASS
+    assert result.to_dict() == original
+
+
+def test_output_projection_rejects_missing_wrong_and_lossy_types() -> None:
+    result = create_beam_project(_project_request())
+
+    @dataclass(frozen=True)
+    class IncompleteProject:
+        project_basis_id: str
+
+    with pytest.raises(KeyError):
+        result.output_as("absent", BeamProject)
+    with pytest.raises(TypeError, match="dataclass"):
+        result.output_as("project", dict)
+    with pytest.raises(ValueError, match="data loss"):
+        result.output_as("project", IncompleteProject)
+    with pytest.raises(ValueError):
+        result.output_as("project", StructuralUnitBasis)
+
+
+def test_leaf_factory_retains_missing_and_stale_evidence() -> None:
+    request = _member_request()
+    for result in (
+        design_member(replace(request, leaf_results=())),
+        design_member(
+            replace(
+                request,
+                leaf_results=tuple(
+                    replace(leaf, freshness=FreshnessState.STALE)
+                    for leaf in request.leaf_results
+                ),
+            )
+        ),
+    ):
+        leaf = MemberLeafEvidence.from_result("member@B1", result)
+        assert leaf.engineering is EngineeringState.NOT_EVALUATED
+        assert leaf.completeness is CompletenessState.PARTIAL
+        assert leaf.freshness is result.freshness
+        assert leaf.result_id == result.result_id
+        assert leaf.normalized_input_id == result.normalized_input_id
+        assert leaf.calculation_id == result.calculation_id
+        assert leaf.code_data_revision_id == result.provenance.code_data_revision_id
+        assert leaf.diagnostic_codes == tuple(item.code for item in result.diagnostics)
 
 
 def test_create_project_rejects_conflicting_profile_and_seismic_rule() -> None:
