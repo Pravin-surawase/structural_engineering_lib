@@ -144,3 +144,10 @@ Progress: I1–I3 implemented. I4 regression journeys and documentation are writ
 the first diagnostic verified Python/HTTP preservation and exposed a missing
 required story in the new CLI fixture, now corrected. I5 frozen verification
 and delivery remain. No software blocker or installed-application dependency.
+
+I5 repair: the focused suites, full Python (7,952 passed), mypy, React build/lint
+and repository 32/32 checks passed. Immutable integrity rejected the first
+unpublished candidate because the schema snapshot updater omitted its final LF.
+The single consolidated repair fixes that writer with explicit UTF-8/LF output
+and regenerates its snapshot. Validate parsed schema equality and the final byte,
+then repeat only affected evidence, immutable review and integrity before push.

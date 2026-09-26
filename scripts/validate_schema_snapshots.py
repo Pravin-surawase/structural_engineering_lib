@@ -196,8 +196,9 @@ def update_snapshots(current_schemas: dict[str, Any]) -> None:
 
     snapshots["models"] = models
 
-    with open(SNAPSHOT_FILE, "w") as f:
+    with open(SNAPSHOT_FILE, "w", encoding="utf-8", newline="\n") as f:
         json.dump(snapshots, f, indent=2)
+        f.write("\n")
 
     print(f"✅ Updated {SNAPSHOT_FILE}")
 
