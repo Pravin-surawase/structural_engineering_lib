@@ -962,7 +962,26 @@ def _guard_allows(
             and not state.query_failures
         )
     if guard in {"operation", "validation"}:
-        if state.query_failures or state.locks or state.tree.conflicted_paths:
+        locks = state.locks
+        if allow_completion and guard == "operation":
+            # Git partial commits invoke hooks with their temporary next-index.
+            # Their real index.lock is held by that same commit, not a rival
+            # writer. Keep the raw observation and every unrelated lock intact.
+            active_index = os.environ.get("GIT_INDEX_FILE", "")
+            if active_index and state.git_dir:
+                index = Path(active_index).resolve()
+                git_dir = Path(state.git_dir).resolve()
+                if (
+                    index.parent == git_dir
+                    and re.fullmatch(r"next-index-[0-9]+\.lock", index.name)
+                    and index.is_file()
+                ):
+                    locks = [
+                        lock
+                        for lock in locks
+                        if lock != f"index.lock:{git_dir / 'index.lock'}"
+                    ]
+        if state.query_failures or locks or state.tree.conflicted_paths:
             return False
         if state.operation != "none":
             return allow_completion and _resolved_merge_allows(state)
@@ -990,7 +1009,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--allow-operation-completion",
         action="store_true",
-        help="For pre-commit only: complete a resolved merge containing required refs.",
+        help="For pre-commit only: allow Git's partial-commit index and resolved merges containing required refs.",
     )
     parser.add_argument(
         "--timeout", type=float, default=DEFAULT_COMMAND_TIMEOUT_SECONDS

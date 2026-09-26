@@ -517,6 +517,63 @@ def _pending_merge(tmp_path: Path) -> tuple[Path, Path]:
     return repo, linked
 
 
+@pytest.mark.parametrize("linked_worktree", [False, True])
+def test_partial_commit_preserves_other_staged_work_through_hook(
+    tmp_path: Path, linked_worktree: bool
+):
+    repo = _repo(tmp_path)
+    if linked_worktree:
+        linked = tmp_path / "linked"
+        _git(repo, "worktree", "add", "-b", "feature", str(linked))
+        repo = linked
+    else:
+        _feature(repo)
+    _commit(repo, "other.txt", "original\n", "second file")
+    _write(repo, "tracked.txt", "selected\n")
+    _write(repo, "other.txt", "remain staged\n")
+    _git(repo, "add", "tracked.txt", "other.txt")
+    command = [
+        sys.executable,
+        str(REPO_ROOT / "scripts" / "git_state.py"),
+        "--guard",
+        "operation",
+        "--allow-operation-completion",
+        "--repo",
+        str(repo),
+        "--default-ref",
+        "main",
+    ]
+    hook = _marker_path(repo, "hooks/pre-commit")
+    hook.write_text(
+        "#!/bin/sh\nset -e\n" + shlex.join(command) + "\n", encoding="utf-8"
+    )
+    hook.chmod(0o755)
+    result = _git(repo, "commit", "--only", "tracked.txt", "-m", "partial", check=False)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert _git(repo, "show", "HEAD:tracked.txt").stdout == "selected\n"
+    assert _git(repo, "show", "HEAD:other.txt").stdout == "original\n"
+    assert _git(repo, "diff", "--cached", "--name-only").stdout.splitlines() == [
+        "other.txt"
+    ]
+
+
+def test_partial_commit_exception_never_hides_unrelated_locks(tmp_path, monkeypatch):
+    repo = _repo(tmp_path)
+    _feature(repo)
+    git_dir = _marker_path(repo, "index.lock").parent
+    active_index = git_dir / "next-index-123.lock"
+    active_index.write_text("hook index\n")
+    (git_dir / "index.lock").write_text("commit index\n")
+    # Observe with a valid ordinary index; exercise only the hook's lock verdict.
+    state = git_state.collect_repository_state(repo, default_ref="main")
+    monkeypatch.setenv("GIT_INDEX_FILE", str(active_index))
+    assert not git_state._guard_allows(state, "operation", allow_completion=False)
+    assert not git_state._guard_allows(state, "validation", allow_completion=True)
+    assert git_state._guard_allows(state, "operation", allow_completion=True)
+    state.locks.append(f"HEAD.lock:{git_dir / 'HEAD.lock'}")
+    assert not git_state._guard_allows(state, "operation", allow_completion=True)
+
+
 def test_real_resolved_merge_commits_through_precommit_operation_guard(
     tmp_path: Path,
 ):
