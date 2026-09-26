@@ -76,6 +76,12 @@ def _check(payload: dict[str, object] | None = None):
     return beam.check_supplied(request)
 
 
+def test_supplied_request_json_preserves_physical_bar_arrays() -> None:
+    request = beam.load_supplied_check(_payload())
+    restored = beam.load_supplied_check_json(request.model_dump_json())
+    assert restored == request
+
+
 def test_complete_depth_basis_500_40_8_20_resolves_to_442_mm() -> None:
     result = _check()
 

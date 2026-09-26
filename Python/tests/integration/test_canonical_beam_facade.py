@@ -267,6 +267,39 @@ def test_canonical_cli_preserves_result_and_problem_contracts(tmp_path, capsys):
     assert problem["details"]["issues"][0]["path"] == "actions.mu_knm"
 
 
+@pytest.mark.parametrize(
+    ("actions", "code"),
+    [
+        ('"vu_kn": 500, "vu_kn": 75', "DUPLICATE_JSON_KEY"),
+        ('"vu_kn": NaN', "INPUT_NOT_FINITE"),
+    ],
+)
+def test_json_loaders_and_cli_reject_ambiguous_actions(tmp_path, capsys, actions, code):
+    raw = '{"actions": {' + actions + "}}"
+    with pytest.raises(InputContractError) as error:
+        beam.load_json(raw)
+    assert error.value.issues[0].code == code
+    assert error.value.issues[0].path == "actions.vu_kn"
+
+    request_path = tmp_path / "beam.json"
+    request_path.write_text(raw, encoding="utf-8")
+    assert cli_main(["beam-v1", str(request_path)]) == 2
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert json.loads(captured.err)["details"] == error.value.to_problem()["details"]
+
+
+@pytest.mark.parametrize("raw", [b"{", b"\xff"])
+def test_json_syntax_and_encoding_use_library_errors(tmp_path, capsys, raw):
+    with pytest.raises(InputContractError) as error:
+        beam.load_json(raw)
+    assert error.value.issues[0].code == "INPUT_JSON_INVALID"
+    request_path = tmp_path / "beam.json"
+    request_path.write_bytes(raw)
+    assert cli_main(["beam-v1", str(request_path)]) == 2
+    assert json.loads(capsys.readouterr().err)["code"] == "INPUT_JSON_INVALID"
+
+
 def test_report_and_export_adapters_accept_named_canonical_results(tmp_path):
     request = _request(with_detailing=True)
     combined = beam.design_and_detail(

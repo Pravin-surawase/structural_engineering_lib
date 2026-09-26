@@ -793,6 +793,13 @@ def run_recipes() -> list[dict[str, Any]]:
     for recipe in recipe_specs():
         module = importlib.import_module(recipe.module)
         request = getattr(module, recipe.loader)(copy.deepcopy(recipe.payload))
+        json_request = getattr(module, recipe.loader + "_json")(
+            request.model_dump_json()
+        )
+        if json_request != request:
+            raise AssertionError(
+                f"{recipe.journey_id}: JSON round-trip changed the request"
+            )
         result = getattr(module, recipe.operation)(request)
         serialized = result.to_dict()
         json.dumps(serialized, allow_nan=False)

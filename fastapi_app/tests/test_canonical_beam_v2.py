@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import math
 
 from structural_lib.design.is456 import beam
@@ -37,6 +38,17 @@ def test_v2_matches_canonical_python_result(client):
     assert response.status_code == 200
     assert response.json() == python_result
     assert response.json()["envelope"]["overall_status"] == "PASS"
+
+
+def test_v2_rejects_duplicate_actions_before_design(client):
+    raw = json.dumps(_payload()).replace('"vu_kn": 80', '"vu_kn": 500, "vu_kn": 80')
+    response = client.post(
+        "/api/v2/design/beam", content=raw, headers={"Content-Type": "application/json"}
+    )
+    assert response.status_code == 422
+    issue = response.json()["error"]["details"]["issues"][0]
+    assert issue["code"] == "DUPLICATE_JSON_KEY"
+    assert issue["path"] == "actions.vu_kn"
 
 
 def test_v2_rejects_invalid_input_with_canonical_code_and_path(client):

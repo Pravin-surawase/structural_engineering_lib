@@ -125,7 +125,7 @@ def main() -> None:
     schedule = beam_schedule()
     request = column_request()
     # JSON round-trip keeps the strict input contract and calculation identity.
-    restored = column.load(json.loads(request.model_dump_json()))
+    restored = column.load_json(request.model_dump_json())
     checked_column = column.check(restored)
     checked_slab = slab.design_one_way(slab_request())
 

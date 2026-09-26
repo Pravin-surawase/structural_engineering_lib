@@ -20,6 +20,7 @@ from structural_lib.services.canonical_family import (
 )
 from structural_lib.services.contracts.common import (
     StrictPublicModel,
+    model_validate_json_or_error,
     model_validate_or_error,
 )
 from structural_lib.services.contracts.family_f1 import (
@@ -76,8 +77,11 @@ __all__ = [
     "design_one_way",
     "design_two_way",
     "load_continuous_one_way",
+    "load_continuous_one_way_json",
     "load_one_way",
+    "load_one_way_json",
     "load_two_way",
+    "load_two_way_json",
 ]
 
 
@@ -249,7 +253,7 @@ def load_one_way(value: Mapping[str, object] | OneWaySlabInputV1) -> OneWaySlabI
     Parameters
     ----------
     value : Mapping[str, object] or OneWaySlabInputV1
-        Explicit grouped fields. Decode JSON text with ``json.loads`` first.
+        Explicit grouped fields. For serialized requests use ``load_one_way_json``.
 
     Returns
     -------
@@ -280,6 +284,45 @@ def load_one_way(value: Mapping[str, object] | OneWaySlabInputV1) -> OneWaySlabI
     return model_validate_or_error(OneWaySlabInputV1, value)
 
 
+def load_one_way_json(value: str | bytes) -> OneWaySlabInputV1:
+    """Load a validated request directly from JSON text or UTF-8 bytes.
+
+    Parameters
+    ----------
+    value : str or bytes
+        Serialized OneWaySlabInputV1 fields, using the units named by the request.
+        UTF-8 byte-order marks are accepted; values are not silently coerced.
+
+    Returns
+    -------
+    OneWaySlabInputV1
+        The same immutable request produced by ``load_one_way`` for a mapping.
+
+    Raises
+    ------
+    InputContractError
+        Malformed JSON, duplicate fields, non-finite numbers, invalid fields,
+        or unsupported scope. ``error.issues`` supplies stable codes and paths.
+
+    Examples
+    --------
+    Read a saved request with ``load_one_way_json(Path("request.json").read_bytes())``.
+    A typed request round-trips with ``load_one_way_json(request.model_dump_json())``.
+    See the family facade cookbook for complete valid and rejected requests.
+
+    Limitations
+    -----------
+    Loading validates intake; it does not calculate or approve a design.
+    Engineering assumptions and review requirements belong to the operation.
+
+    Provenance
+    ----------
+    The shared JSON decoder preserves one value per field; the canonical
+    request model owns field, unit, and supported-scope validation.
+    """
+    return model_validate_json_or_error(OneWaySlabInputV1, value)
+
+
 def load_continuous_one_way(
     value: Mapping[str, object] | ContinuousOneWaySlabInputV1,
 ) -> ContinuousOneWaySlabInputV1:
@@ -288,7 +331,7 @@ def load_continuous_one_way(
     Parameters
     ----------
     value : Mapping[str, object] or ContinuousOneWaySlabInputV1
-        Explicit grouped fields. Decode JSON text with ``json.loads`` first.
+        Explicit grouped fields. For serialized requests use ``load_continuous_one_way_json``.
 
     Returns
     -------
@@ -319,13 +362,52 @@ def load_continuous_one_way(
     return model_validate_or_error(ContinuousOneWaySlabInputV1, value)
 
 
+def load_continuous_one_way_json(value: str | bytes) -> ContinuousOneWaySlabInputV1:
+    """Load a validated request directly from JSON text or UTF-8 bytes.
+
+    Parameters
+    ----------
+    value : str or bytes
+        Serialized ContinuousOneWaySlabInputV1 fields, using the units named by the request.
+        UTF-8 byte-order marks are accepted; values are not silently coerced.
+
+    Returns
+    -------
+    ContinuousOneWaySlabInputV1
+        The same immutable request produced by ``load_continuous_one_way`` for a mapping.
+
+    Raises
+    ------
+    InputContractError
+        Malformed JSON, duplicate fields, non-finite numbers, invalid fields,
+        or unsupported scope. ``error.issues`` supplies stable codes and paths.
+
+    Examples
+    --------
+    Read a saved request with ``load_continuous_one_way_json(Path("request.json").read_bytes())``.
+    A typed request round-trips with ``load_continuous_one_way_json(request.model_dump_json())``.
+    See the family facade cookbook for complete valid and rejected requests.
+
+    Limitations
+    -----------
+    Loading validates intake; it does not calculate or approve a design.
+    Engineering assumptions and review requirements belong to the operation.
+
+    Provenance
+    ----------
+    The shared JSON decoder preserves one value per field; the canonical
+    request model owns field, unit, and supported-scope validation.
+    """
+    return model_validate_json_or_error(ContinuousOneWaySlabInputV1, value)
+
+
 def load_two_way(value: Mapping[str, object] | TwoWaySlabInputV1) -> TwoWaySlabInputV1:
     """Validate decoded JSON/Python data for the two way slab route.
 
     Parameters
     ----------
     value : Mapping[str, object] or TwoWaySlabInputV1
-        Explicit grouped fields. Decode JSON text with ``json.loads`` first.
+        Explicit grouped fields. For serialized requests use ``load_two_way_json``.
 
     Returns
     -------
@@ -354,6 +436,45 @@ def load_two_way(value: Mapping[str, object] | TwoWaySlabInputV1) -> TwoWaySlabI
     """
 
     return model_validate_or_error(TwoWaySlabInputV1, value)
+
+
+def load_two_way_json(value: str | bytes) -> TwoWaySlabInputV1:
+    """Load a validated request directly from JSON text or UTF-8 bytes.
+
+    Parameters
+    ----------
+    value : str or bytes
+        Serialized TwoWaySlabInputV1 fields, using the units named by the request.
+        UTF-8 byte-order marks are accepted; values are not silently coerced.
+
+    Returns
+    -------
+    TwoWaySlabInputV1
+        The same immutable request produced by ``load_two_way`` for a mapping.
+
+    Raises
+    ------
+    InputContractError
+        Malformed JSON, duplicate fields, non-finite numbers, invalid fields,
+        or unsupported scope. ``error.issues`` supplies stable codes and paths.
+
+    Examples
+    --------
+    Read a saved request with ``load_two_way_json(Path("request.json").read_bytes())``.
+    A typed request round-trips with ``load_two_way_json(request.model_dump_json())``.
+    See the family facade cookbook for complete valid and rejected requests.
+
+    Limitations
+    -----------
+    Loading validates intake; it does not calculate or approve a design.
+    Engineering assumptions and review requirements belong to the operation.
+
+    Provenance
+    ----------
+    The shared JSON decoder preserves one value per field; the canonical
+    request model owns field, unit, and supported-scope validation.
+    """
+    return model_validate_json_or_error(TwoWaySlabInputV1, value)
 
 
 def _serviceability_arguments(evidence: SlabServiceabilityEvidenceV1) -> dict[str, Any]:

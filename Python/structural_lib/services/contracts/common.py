@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import math
 from collections.abc import Mapping, Sequence
 from enum import StrEnum
@@ -20,6 +21,8 @@ __all__ = [
     "complete_field_contracts_from_schema",
     "input_issues_from_details",
     "model_validate_or_error",
+    "model_validate_json_or_error",
+    "parse_json_or_error",
     "schema_leaf_paths",
 ]
 
@@ -35,6 +38,8 @@ INPUT_ISSUE_CODES_V1 = (
     "CROSS_FIELD_CONTRACT_INVALID",
     "SERVICEABILITY_SCOPE_HOLD",
     "INPUT_CONTRACT_INVALID",
+    "INPUT_JSON_INVALID",
+    "DUPLICATE_JSON_KEY",
 )
 
 
@@ -431,3 +436,83 @@ def model_validate_or_error(
                 for issue in issues
             )
         raise InputContractError(issues) from None
+
+
+class _JSONPairs(list[tuple[str, Any]]):
+    """Retain object members until duplicate keys can be located precisely."""
+
+
+def _json_value(value: Any, path: str = "") -> Any:
+    if isinstance(value, _JSONPairs):
+        result: dict[str, Any] = {}
+        for key, item in value:
+            child_path = f"{path}.{key}" if path else key
+            if key in result:
+                raise InputContractError(
+                    (
+                        InputIssueV1(
+                            code="DUPLICATE_JSON_KEY",
+                            path=child_path,
+                            message="A JSON field must have exactly one value.",
+                            suggestion="Remove the duplicate field and retain the intended value.",
+                        ),
+                    )
+                )
+            result[key] = _json_value(item, child_path)
+        return result
+    if isinstance(value, list):
+        return [
+            _json_value(item, f"{path}.{index}" if path else str(index))
+            for index, item in enumerate(value)
+        ]
+    if isinstance(value, float) and not math.isfinite(value):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="INPUT_NOT_FINITE",
+                    path=path or "$",
+                    message="JSON numeric values must be finite.",
+                    received=str(value),
+                ),
+            )
+        )
+    return value
+
+
+def parse_json_or_error(value: str | bytes) -> Any:
+    """Decode UTF-8 JSON without losing repeated fields or numeric validity.
+
+    A leading UTF-8 byte-order mark is accepted. Syntax, encoding, duplicate
+    fields, and non-finite numbers become the common structured input issues.
+    Model-specific fields and units are validated by the caller's request model.
+    """
+    if not isinstance(value, (str, bytes)):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="INPUT_TYPE_INVALID",
+                    path="$",
+                    message="JSON input must be text or UTF-8 bytes.",
+                    received=f"<{type(value).__name__}>",
+                ),
+            )
+        )
+    try:
+        text = value.decode("utf-8-sig") if isinstance(value, bytes) else value
+        parsed = json.loads(text.removeprefix("\ufeff"), object_pairs_hook=_JSONPairs)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="INPUT_JSON_INVALID",
+                    path="$",
+                    message=f"Invalid JSON input: {exc}",
+                ),
+            )
+        ) from None
+    return _json_value(parsed)
+
+
+def model_validate_json_or_error(model: type[_ModelT], value: str | bytes) -> _ModelT:
+    """Decode one JSON request and apply the same strict model as mapping intake."""
+    return model_validate_or_error(model, parse_json_or_error(value))

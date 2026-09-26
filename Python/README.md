@@ -51,7 +51,9 @@ For explicit physical beam reinforcement, analysis and project workflows, see
 Existing root and `api` imports remain supported compatibility routes.
 
 The current source adds typed family group imports, typed calculation results,
-and slab `input_*` builders. Run `Python/examples/canonical_workflows.py` after
+slab `input_*` builders, and direct JSON loaders such as `beam.load_json`.
+JSON loaders reject ambiguous duplicate fields and return structured input errors.
+Run `Python/examples/canonical_workflows.py` after
 `pip install -e ./Python` from the repository root. These additions have not
 been published as a new release; the install commands above retain their exact
 published-version meaning.

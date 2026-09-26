@@ -25,8 +25,7 @@ import json
 
 from structural_lib.design.is456 import flat_slab
 
-payload = json.loads(
-    r"""{
+request_json = r"""{
     "actions": {
         "factored_support_reaction_kn": 702.0,
         "factored_uniform_load_kn_per_m2": 19.5,
@@ -128,8 +127,8 @@ payload = json.loads(
         }
     }
 }"""
-)
-request = flat_slab.load(payload)
+request = flat_slab.load_json(request_json)
+payload = request.model_dump(mode="json")
 result = flat_slab.design(request)
 
 print(result.intake_status)
@@ -140,6 +139,12 @@ print(json.dumps(result.to_dict(), allow_nan=False, sort_keys=True))
 
 `PASS`, `FAIL`, and `HOLD` are engineering/review outcomes for valid intake.
 They are not interchangeable with `InputContractError`.
+
+The JSON loader accepts text or UTF-8 bytes (including a byte-order mark),
+rejects duplicate fields and non-finite numbers, and preserves field issue
+paths. For a saved request, use
+`flat_slab.load_json(Path("request.json").read_bytes())` after importing
+`Path` from `pathlib`. Existing Python mappings use `flat_slab.load`.
 
 ## Rejected-input example
 
@@ -161,8 +166,8 @@ except InputContractError as error:
 
 Typed request groups are exported from `structural_lib.design.is456.flat_slab` alongside the
 operations below. Mapping inputs remain supported for JSON/HTTP callers.
-This reference follows the current source; newly added builders and group
-imports require its matching build rather than an older published wheel.
+This reference follows the current source; JSON loaders, newly added builders,
+and group imports require its matching build rather than an older published wheel.
 
 ::: structural_lib.design.is456.flat_slab
     options:
@@ -172,6 +177,7 @@ imports require its matching build rather than an older published wheel.
       members:
         - input
         - load
+        - load_json
         - design
 
 ## Compatibility and evidence
@@ -182,6 +188,7 @@ imports require its matching build rather than an older published wheel.
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-This recipe is verified against `structural-lib-is456==0.24.0` and remains
+This recipe is verified against the current source build (package version
+`0.24.0`), not the older published wheel with that version, and remains
 subject to qualified review. It is not professional approval, engineering-use
 approval, construction-use approval, or Windows application acceptance.
