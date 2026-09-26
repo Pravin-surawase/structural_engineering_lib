@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-19 — Source qualification #996 is merged; bounded BEAM-C0A-TOPOLOGY is at its final delivery gate
+**Updated:** 2026-09-26 — Topology #998 is merged; live ETABS work is temporarily held while offline review/preparation remains available
 
 ---
 
@@ -126,6 +126,13 @@
 
 ## Active
 
+**Temporary access constraint:** the owner has no ETABS access for the next few
+days; no return date is confirmed. The
+[current offline plan](planning/xll-product/etabs-design-workflow.md#temporary-etabs-access-hold--2026-09-26)
+holds fresh ETABS captures and installed force/station qualification. Next,
+prepare physical member/support intent and ULS/SLS roles against saved evidence
+and the existing review ledger. Preserve provisional states and all later gates.
+
 `LIB-QUALITY-INTEGRATION-001` merged in [PR #997](https://github.com/Pravin-surawase/structural_engineering_lib/pull/997)
 at `b3ceb2c9` after required hosted run `35429312577` passed. Its accepted batch,
 generated-depth and shear-schedule fixes and both original histories are
@@ -151,15 +158,18 @@ acceptance. This implements the owner policy and shared-input needs recorded by
 the earlier `BEAM-NEXT-WORK-PLAN`, `BEAM-ASSUME-AND-CONTINUE` and
 `BEAM-DATA-REQUIREMENTS` packets; their historical scopes remain unchanged.
 
-`BEAM-C0A-SOURCE` is complete in #996. `BEAM-C0A-TOPOLOGY` is at the
-final gate: [step plan](planning/xll-product/etabs-design-workflow.md#active-implementation-beam-c0a-topology--2026-09-19)
+`BEAM-C0A-SOURCE` is complete in #996. `BEAM-C0A-TOPOLOGY` is complete in
+[PR #998](https://github.com/Pravin-surawase/structural_engineering_lib/pull/998)
+at `9c75e568`, with required hosted run `35433982136` successful:
+[step plan](planning/xll-product/etabs-design-workflow.md#active-implementation-beam-c0a-topology--2026-09-19)
 and [receipt](verification/beam-c0a-topology-receipt.json). Independent source and
 geometry replay retains 20 requested members: 12 clear reference lengths, three
 noncollinear meshes and five incomplete endpoint envelopes. Combined source
 sampling covers all 25 stories and 13 sections. Use the searchable `topology`
 recipe; physical support behavior and member purpose remain project decisions.
-Next: ledger-bound physical intent and ULS/SLS roles before native-unit force/
-station qualification. C0c, independent corpus and PF9 gates remain open.
+Next: offline preparation of ledger-bound physical intent and ULS/SLS roles.
+Native-unit force/station installed qualification waits for ETABS access.
+C0c and independent corpus gates remain open; PF9 stays deferred to project end.
 
 `ETABS-BOUNDED-ACQUISITION` implements lightweight Excel connection through a
 separate model-overview contract, explicit source-bound detailed loading,

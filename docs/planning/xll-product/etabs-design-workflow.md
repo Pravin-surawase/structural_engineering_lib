@@ -1,5 +1,49 @@
 # ETABS workflow: capture, design, reanalyse and compare
 
+## Temporary ETABS access hold — 2026-09-26
+
+**Owner update:** ETABS is unavailable for the next few days. The return date
+is not confirmed. Hold work that needs a running ETABS installation until the
+owner confirms access has returned; continue eligible offline work from retained
+evidence. This is an access constraint, not a failure or revocation of earlier
+accepted work.
+
+**Verified project checkpoint:** GitHub main is
+`9c75e5688fde6deb4b51090a4d7fcf5ac453986f` after
+[PR #998](https://github.com/Pravin-surawase/structural_engineering_lib/pull/998).
+Its required [PR Validation run](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/35433982136)
+passed. This closes the topology packet's delivery gate; the dated T1–T5 table
+below preserves its pre-publication history and is not an instruction to repeat
+that acceptance. WP10, WP11 A/B, provisional Excel review (#995), source facts
+(#996) and the Python batch/depth/shear fixes (#997) are also merged.
+
+| Work | Status during the access hold | Evidence boundary / next action |
+|---|---|---|
+| Saved snapshots, assumptions and provisional review | Available offline within existing support | Reuse retained snapshots, source identities and the existing input ledger. Preserve provisional/unsupported results and all requested members. |
+| Physical member/support intent and ULS/SLS roles | Next offline preparation | Map existing evidence and explicit or assumed review inputs into the maintained ledger; keep modelling geometry separate from physical support intent. A proposed or assumed role is not new ETABS evidence. |
+| Native-unit force/station qualification and fresh source/topology captures | Held for ETABS access | Offline API discovery and acceptance preparation can continue. Installed capture and qualification must wait; do not replace them with fixture-only claims. |
+| C0c broader engineering profiles and independent-model corpus | Still incomplete | Prepare named method/combined-action cases and corpus requirements offline. One retained independent building and no locked holdouts are evidenced; M02 remains a development sample. |
+| Copied-model reanalysis and later automation | Later, dependency-gated | Require accepted source/design prerequisites, restored ETABS access and the existing explicit mutation authority. |
+| PF9 performance certification | Deferred to project end | Keep WP10-PERF-FINAL and its original targets; the access hold does not reactivate timing experiments. |
+
+Resume live work only after access returns: fetch the accepted source revision,
+verify the installed ETABS/API and model/result identities, select the next
+bounded force/station packet, and run its exact installed acceptance. Retained
+captures remain historical evidence; do not describe them as freshly acquired.
+
+### ETABS-OFFLINE-STATUS documentation packet
+
+Scope: update this workflow, the current XLL plan, task board, next-session brief
+and newest session entry. Acceptance: all five agree on the temporary hold with
+no invented return date, #998's verified completion, eligible offline next work
+and unchanged engineering/release gates. Preserve the original checkout edit.
+Non-goals: runtime implementation, dependency upgrades, application launches,
+model/workbook changes, new engineering qualification and release publication.
+Pitfalls: stale local main and dated pre-freeze handoffs can hide completed work;
+offline tests cannot substitute for installed evidence. Verify the documentation
+category, session records, context and efficiency policy after one content
+freeze; use one reviewed documentation candidate and required hosted PR cycle.
+
 ## Active implementation: BEAM-C0A-TOPOLOGY — 2026-09-19
 
 [PR #996](https://github.com/Pravin-surawase/structural_engineering_lib/pull/996)

@@ -1,12 +1,20 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-19
+last_updated: 2026-09-26
 doc_type: guide
 complexity: advanced
 ---
 
 # StructAutomate — current plan
+
+**Temporary ETABS access hold (26 September):** the owner has no ETABS access
+for the next few days; the return date is unconfirmed. Follow the
+[offline work and resume boundary](etabs-design-workflow.md#temporary-etabs-access-hold--2026-09-26).
+Saved-snapshot review and preparation of ledger-bound physical intent and
+ULS/SLS roles can continue. Fresh captures, native-unit force/station installed
+qualification and copied-model runs wait for restored access. Existing accepted
+evidence and the project-end performance deferral retain their meanings.
 
 **API foundation first (18 September):** the owner moved API proficiency ahead
 of runtime implementation. `ETABS-API-GUIDE` provides version-bound discovery
@@ -22,16 +30,19 @@ active plan after each completed step or outcome-changing blocker; exact
 post-freeze checks/merge facts stay in the delivery ledger. These are knowledge
 tools, with future runtime qualifications still explicitly outstanding.
 
-**Current runtime packet:** `BEAM-C0A-TOPOLOGY` follows source qualification
+**Latest completed runtime packet:** `BEAM-C0A-TOPOLOGY` follows source qualification
 [PR #996](https://github.com/Pravin-surawase/structural_engineering_lib/pull/996).
 The [active step plan](etabs-design-workflow.md#active-implementation-beam-c0a-topology--2026-09-19)
 and [receipt](../../verification/beam-c0a-topology-receipt.json) record bounded
 connected geometry and independent plane-intersection replay. The combined
 sample covers all 25 M02 stories and 13 section assignments; the topology
 sample retains 12 clear reference lengths and eight restricted members. Final
-candidate/integrity/hosted facts stay external. The next packet binds member and
-support intent plus ULS/SLS roles through the existing review ledger before the
-native-unit force/station pilot; broader corpus and C0c remain open.
+candidate/integrity/hosted facts stay external. Its accepted delivery is now
+verified in [PR #998](https://github.com/Pravin-surawase/structural_engineering_lib/pull/998),
+merged at `9c75e568` with required run `35433982136` successful. Next, prepare
+member/support intent and ULS/SLS roles through the existing review ledger
+offline. The native-unit force/station installed pilot waits for ETABS access;
+broader corpus and C0c remain open.
 
 **Broader programme (10 September):** the owner requested planning beyond the retained
 153-beam building, including other models and foreseeable issues. The
