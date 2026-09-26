@@ -956,6 +956,10 @@ def _resolved_merge_allows(state: RepositoryState) -> bool:
 def _guard_allows(
     state: RepositoryState, guard: str, *, allow_completion: bool
 ) -> bool:
+    if guard == "push":
+        return _guard_allows(state, "branch", allow_completion=False) and _guard_allows(
+            state, "validation", allow_completion=False
+        )
     if guard == "branch":
         return (
             state.branch not in {"main", "master", "DETACHED", "UNKNOWN"}
@@ -1005,7 +1009,9 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--json", action="store_true", dest="as_json")
     parser.add_argument("--worktrees", action="store_true")
     parser.add_argument("--strict", action="store_true")
-    parser.add_argument("--guard", choices=("branch", "operation", "validation"))
+    parser.add_argument(
+        "--guard", choices=("branch", "operation", "validation", "push")
+    )
     parser.add_argument(
         "--allow-operation-completion",
         action="store_true",

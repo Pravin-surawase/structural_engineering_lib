@@ -34,9 +34,9 @@ repos:
         always_run: true
         stages: [manual]
 
-      - id: delivery-state-guard
-        name: Block push unless the current candidate passed the delivery audit
-        entry: ./scripts/python_runtime.sh scripts/session.py delivery --guard-push
+      - id: git-push-guard
+        name: Check branch and live Git safety before push
+        entry: ./scripts/python_runtime.sh scripts/git_state.py --guard push
         language: system
         pass_filenames: false
         always_run: true
