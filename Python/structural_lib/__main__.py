@@ -167,7 +167,7 @@ def cmd_beam_v1(args: argparse.Namespace) -> int:
                     ),
                 )
             )
-        request = beam.load(json.loads(input_path.read_text(encoding="utf-8")))
+        request = beam.load_json(input_path.read_bytes())
         if args.mode == "design":
             payload = beam.design(request).to_dict()
         else:
@@ -199,17 +199,10 @@ def cmd_beam_v1(args: argparse.Namespace) -> int:
             )
             + "\n"
         )
-    except (InputContractError, json.JSONDecodeError) as exc:
-        problem = (
-            exc.to_problem()
-            if isinstance(exc, InputContractError)
-            else {
-                "schema_version": "structural-problem/v1",
-                "code": "INPUT_JSON_INVALID",
-                "message": str(exc),
-                "details": None,
-            }
-        )
+    except InputContractError as exc:
+        problem = exc.to_problem()
+        if all(issue.code == "INPUT_JSON_INVALID" for issue in exc.issues):
+            problem["code"] = "INPUT_JSON_INVALID"
         print(json.dumps(problem, allow_nan=False, sort_keys=True), file=sys.stderr)
         return 2
     except OSError as exc:
