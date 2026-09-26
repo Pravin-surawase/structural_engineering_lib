@@ -130,21 +130,27 @@ cannot become active approval.
 ## Python surface
 
 ```python
+from structural_lib.beam import BarPathOutput
 from structural_lib.construction import (
     BbsRequest,
     CuttingStockPolicy,
     ShapeConvention,
     create_bbs,
 )
+from structural_lib.reporting import result_binding
+
+# path_result is the unchanged passing result from resolve_bar_paths (AO18).
+schedule = path_result.output_as("reinforcement_schedule", BarPathOutput)
+binding = result_binding(path_result, "reinforcement_schedule")
 
 request = BbsRequest(
-    profile_id="ordinary-beam",
-    project_basis_id="project-basis-r1",
-    member_id="B1",
-    detail_revision_id="detail-r1",
-    schedule_result_id="schedule-result-r1",
-    schedule_output_payload_id="output_payload_id:pf4-canonical-json-v1:...",
-    schedule=typed_resolved_schedule,
+    profile_id=schedule.profile_id,
+    project_basis_id=schedule.project_basis_id,
+    member_id=schedule.member_id,
+    detail_revision_id=schedule.detail_revision_id,
+    schedule_result_id=binding.result_id,
+    schedule_output_payload_id=binding.output_payload_id,
+    schedule=schedule,
     shape_convention=ShapeConvention("IS2502", "shape-r1"),
     stock_policy=CuttingStockPolicy(
         "project-stock",
@@ -159,10 +165,15 @@ result = create_bbs(request)
 assert result.engineering == "pass"
 ```
 
-`structural_lib.reporting` contains the AO24 records and operation. Applications
-may translate a validated operation-result payload back into the corresponding
-typed request record at an interchange boundary; application tables and files
-do not enter these pure operations.
+`structural_lib.reporting` contains the AO24 records and operation. Continue with
+`result.output_as("bbs", BbsOutput)` for AO04 and
+`quantity_result.output_as("quantities", ConstructionQuantityOutput)` for AO20.
+The current-source `output_as` helper reconstructs nested records and enums
+without losing payload data; `result_binding` preserves the selected result and
+payload identities. Application tables and files do not enter these operations.
+The [physical-member example](../../../Python/examples/physical_member_workflow.py)
+runs the entire chain, including package creation and a stale draft, against
+actual operation results.
 
 ## Corrections from the earlier library
 

@@ -73,6 +73,47 @@ class MemberLeafEvidence:
     governing_utilization: float | None = None
     diagnostic_codes: tuple[str, ...] = ()
 
+    @classmethod
+    def from_result(
+        cls,
+        leaf_id: str,
+        result: OperationResult,
+        *,
+        required_value: float | None = None,
+        selected_value: float | None = None,
+        supplied_value: float | None = None,
+        unit: str | None = None,
+        governing_utilization: float | None = None,
+    ) -> MemberLeafEvidence:
+        """Bind an actual check result to a profile-derived leaf id.
+
+        All result states, identities, provenance revisions, and diagnostic
+        codes are copied unchanged, including failure or incomplete states.
+        Optional display values must come from that check's output and use the
+        explicit ``unit``. This does not run or approve a calculation; the
+        member operation still qualifies it against the project profile.
+        """
+        return cls(
+            leaf_id=leaf_id,
+            operation_semantic_id=result.operation_semantic_id,
+            result_id=result.result_id,
+            execution=result.execution,
+            applicability=result.applicability,
+            engineering=result.engineering,
+            completeness=result.completeness,
+            freshness=result.freshness,
+            code_data_revision_id=result.provenance.code_data_revision_id,
+            method_revision_id=result.provenance.method_revision_id,
+            normalized_input_id=result.normalized_input_id,
+            calculation_id=result.calculation_id,
+            required_value=required_value,
+            selected_value=selected_value,
+            supplied_value=supplied_value,
+            unit=unit,
+            governing_utilization=governing_utilization,
+            diagnostic_codes=tuple(item.code for item in result.diagnostics),
+        )
+
 
 @dataclass(frozen=True)
 class MemberLeafQualification:
