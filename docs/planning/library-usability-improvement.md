@@ -85,11 +85,13 @@ release is a separate decision.
   those gates for documentation-only evidence updates; repair only affected
   evidence if a confirmed failure changes the candidate.
 
-## Completion evidence
+## Current evidence
 
 The implementation and usability outcomes above have the following current
-evidence. Delivery is complete when the required hosted checks pass and the
-reviewed batch is merged; those exact head/run/merge facts stay in GitHub.
+evidence. The family JSON batch can be delivered after required hosted checks
+pass and its reviewed head is merged; those exact head/run/merge facts stay in
+GitHub. The wider usability goal remains active for the complete-member caller
+journey described below.
 
 | Outcome | Verified evidence |
 |---|---|
@@ -110,6 +112,19 @@ and generated API/cookbook checks pass.
 The verified wheel has SHA-256
 `1f08ab62d54bb36b792de5afaa738109650b5367e3d6e0a66e8dff2b8dcf9af7`.
 It is a local source build; no package publication or release was performed.
+
+## Next bounded work
+
+The promoted `structural_lib.beam` project/profile, physical reinforcement,
+complete-member, and construction-package workflows have maintained regression
+tests, but the advertised examples do not yet demonstrate their composition.
+Trace a realistic installed caller through those existing owners, fix confirmed
+main-process defects, and provide one executable example with a matching guide.
+Preserve execution, applicability, engineering, completeness, and freshness as
+separate evidence dimensions; do not turn example metadata into engineering
+approval. Acceptance requires the example to run from the installed wheel and
+report missing or stale evidence honestly. Use focused checks for changes found
+there; the unchanged cumulative suite above does not need another run.
 
 Use several cohesive commits and one PR per integrated batch. Focused checks
 run after the batch; required hosted checks run on its published head.
