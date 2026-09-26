@@ -46,7 +46,26 @@ release is a separate decision.
   from the built wheel with installed origin verified. Eight additional
   advertised examples execute successfully in isolated scratch directories.
 - Remaining canonical operation documentation debt is zero in the generated
-  classification. Hosted checks and integration are tracked in the batch PR.
+  classification. Batch 1 merged as PR #1006 after required validation passed.
+- Batch 2 addresses implementation behavior: optional DXF/report imports no
+  longer run during calculation or CLI discovery startup. Output functions and
+  their missing-dependency behavior retain their existing owners.
+- Local timing: seven fresh interpreter processes per entry point on this Mac,
+  same Python environment and warmed filesystem. Median package import dropped
+  from 588.2 ms to 462.0 ms (21.4%); column import dropped from 576.6 ms to
+  460.2 ms (20.2%). These are startup measurements, not calculation-throughput
+  or cold-machine claims. The regression checks assert dependency isolation,
+  rather than a timing threshold that varies by machine.
+- A concrete data-loss defect was reproduced in the Excel bridge's JSON
+  round-trip: exported `D=550, d=492, cover=40` reloaded with `d=510`. The
+  exporter now includes the loader's explicit `eff_d` field and retains `d`
+  for existing JSON consumers. Legacy lowercase overall-depth input remains
+  supported. The file round-trip regression uses a supplied depth that differs
+  from the default and compares the complete restored record.
+- Batch 2 verification: 272 focused import/API compatibility, CLI, Excel bridge,
+  DXF, and report checks pass; the three changed library modules pass type
+  checking. Regenerated API inventories have no changes. Hosted checks and
+  integration remain attached to its PR.
 - Next: trace calculation/result and transport paths for outcome-changing
   implementation defects; replay and repair the broader installed user journey.
 

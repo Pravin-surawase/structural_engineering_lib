@@ -945,14 +945,14 @@ def test_mark_diff_missing_dxf(tmp_path):
 
 def test_mark_diff_without_ezdxf(tmp_path, monkeypatch):
     """Test mark-diff command when ezdxf is not installed."""
-    from types import SimpleNamespace
+    from structural_lib.services import dxf_export
 
     bbs_path = tmp_path / "schedule.csv"
     dxf_path = tmp_path / "drawings.dxf"
     bbs_path.write_text("", encoding="utf-8")
     dxf_path.write_text("", encoding="utf-8")
 
-    monkeypatch.setattr(cli_main, "dxf_export", SimpleNamespace(EZDXF_AVAILABLE=False))
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", False)
 
     rc = cli_main.main(["mark-diff", "--bbs", str(bbs_path), "--dxf", str(dxf_path)])
 
@@ -961,7 +961,7 @@ def test_mark_diff_without_ezdxf(tmp_path, monkeypatch):
 
 def test_mark_diff_json_output(tmp_path, monkeypatch):
     """Test mark-diff command JSON output."""
-    from types import SimpleNamespace
+    from structural_lib.services import dxf_export
 
     bbs_path = tmp_path / "schedule.csv"
     dxf_path = tmp_path / "drawings.dxf"
@@ -972,11 +972,8 @@ def test_mark_diff_json_output(tmp_path, monkeypatch):
     def _fake_compare(_bbs, _dxf):
         return {"ok": True, "summary": {"beams_checked": 1}}
 
-    monkeypatch.setattr(
-        cli_main,
-        "dxf_export",
-        SimpleNamespace(EZDXF_AVAILABLE=True, compare_bbs_dxf_marks=_fake_compare),
-    )
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True)
+    monkeypatch.setattr(dxf_export, "compare_bbs_dxf_marks", _fake_compare)
 
     rc = cli_main.main(
         [
@@ -999,7 +996,7 @@ def test_mark_diff_json_output(tmp_path, monkeypatch):
 
 def test_mark_diff_text_fail(tmp_path, monkeypatch, capsys):
     """Test mark-diff command text output on failure."""
-    from types import SimpleNamespace
+    from structural_lib.services import dxf_export
 
     bbs_path = tmp_path / "schedule.csv"
     dxf_path = tmp_path / "drawings.dxf"
@@ -1009,11 +1006,8 @@ def test_mark_diff_text_fail(tmp_path, monkeypatch, capsys):
     def _fake_compare(_bbs, _dxf):
         return {"ok": False, "summary": {"beams_checked": 0}}
 
-    monkeypatch.setattr(
-        cli_main,
-        "dxf_export",
-        SimpleNamespace(EZDXF_AVAILABLE=True, compare_bbs_dxf_marks=_fake_compare),
-    )
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True)
+    monkeypatch.setattr(dxf_export, "compare_bbs_dxf_marks", _fake_compare)
 
     rc = cli_main.main(["mark-diff", "--bbs", str(bbs_path), "--dxf", str(dxf_path)])
 

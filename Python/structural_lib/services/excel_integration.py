@@ -214,8 +214,12 @@ def load_beam_data_from_json(filepath: str) -> list[BeamDesignData]:
 
 
 def export_beam_data_to_json(beams: list[BeamDesignData], filepath: str) -> None:
-    """Export beam data to JSON file."""
-    data = {"beams": [asdict(b) for b in beams]}
+    """Export beam data with an unambiguous effective-depth field.
+
+    ``d`` is retained for existing JSON consumers. The loader's legacy lowercase
+    depth alias means it needs ``eff_d`` to preserve a supplied effective depth.
+    """
+    data = {"beams": [{**asdict(b), "eff_d": b.d} for b in beams]}
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 

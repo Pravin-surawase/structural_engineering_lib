@@ -558,19 +558,14 @@ _LAZY_MODULES = {
     "serialization",
 }
 
-# DXF export is optional (requires ezdxf)
+# Optional output modules are loaded only when requested. Keep their existing
+# module-or-None contract without making calculation callers import renderers.
+_OPTIONAL_MODULES = {
+    "dxf_export": ".services.dxf_export",
+    "reports": ".reports",
+}
 dxf_export: _ModuleType | None
-try:
-    dxf_export = importlib.import_module(f"{__name__}.services.dxf_export")
-except ImportError:
-    dxf_export = None
-
-# Reports module is optional (requires jinja2)
 reports: _ModuleType | None
-try:
-    reports = importlib.import_module(f"{__name__}.reports")
-except ImportError:
-    reports = None
 
 __all__ = [
     "AttestedCalculationDossierV1",
@@ -1099,9 +1094,21 @@ __all__ = [
 ]
 
 
-def __getattr__(name: str) -> _ModuleType:
+def __getattr__(name: str) -> _ModuleType | None:
     if name in _LAZY_MODULES:
         mod = importlib.import_module(f".{name}", __name__)
         globals()[name] = mod
         return mod
+    if name in _OPTIONAL_MODULES:
+        optional_mod: _ModuleType | None
+        try:
+            optional_mod = importlib.import_module(_OPTIONAL_MODULES[name], __name__)
+        except ImportError:
+            optional_mod = None
+        globals()[name] = optional_mod
+        return optional_mod
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def __dir__() -> list[str]:
+    return sorted(set(globals()) | _LAZY_MODULES | _OPTIONAL_MODULES.keys())
