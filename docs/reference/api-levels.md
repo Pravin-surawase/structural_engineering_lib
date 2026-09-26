@@ -16,6 +16,9 @@ pin the installed distribution for reproducible calculations.
 |---|---|---|
 | Supported IS 456 element design/checks | `structural_lib.design.is456` | [Family cookbook](../cookbook/python/family-facades.md) |
 | Physical beam reinforcement, analysis and project workflows | `structural_lib.beam` | [Beam library guide](../library/getting-started.md) |
+| Physical BBS, measured quantities, declared costs and package data | `structural_lib.construction`, `structural_lib.reporting` | [Construction guide](../library/reference/wp07-construction-calculation-package.md) |
+| Finite-domain candidate ranking with actual evidence | `structural_lib.beam_optimization` | [Candidate workflow](../library/reference/wp08-beam-optimization.md) |
+| Offline replay of captured analysis evidence | `structural_lib.analysis_snapshot` | [Snapshot replay](../library/reference/wp10-analysis-snapshot.md) |
 | An individual expert calculation | `structural_lib.codes.is456` | [Code reference](../api-reference/index.md#is-456-code-modules) |
 | JSON files and exports | `python -m structural_lib` | [CLI reference](../cookbook/cli-reference.md) |
 | HTTP applications | FastAPI routes in `/docs` and `/openapi.json` | [Canonical beam contract](beam-facade.md) |
@@ -68,10 +71,18 @@ reinforcement geometry and effective-depth inputs.
 ## Physical beam and project workflows
 
 `structural_lib.beam` exposes the newer explicit physical-bar, analysis,
-serviceability, detailing, quantities and complete-member workflow. It has its
+serviceability, detailing and complete-member workflow. Construction quantities
+and calculation packages live in `structural_lib.construction` and
+`structural_lib.reporting`; ranking lives in `structural_lib.beam_optimization`.
+This group has its
 own request/result vocabulary, including execution, applicability, completeness
 and freshness. Follow the [beam library guide](../library/getting-started.md);
 do not mix its result states with the element facade envelope by name alone.
+
+Use `OperationResult.output_as` to connect typed records without rebuilding
+nested mappings, `MemberLeafEvidence.from_result` to retain real leaf evidence,
+and `bind_candidate_evaluation` to compose real member/quantity/cost results.
+The runnable physical and candidate examples are linked from their guides.
 
 ## Expert calculation and compatibility
 

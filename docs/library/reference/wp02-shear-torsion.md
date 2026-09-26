@@ -2,6 +2,11 @@
 
 WP02 publishes supplied-capacity FO05 and check operations AO07/AO08.
 
+Run the [typed beam checks example](../../../Python/examples/beam_checks_workflow.py)
+with `python3 Python/examples/beam_checks_workflow.py` after installing the
+current source build. Its shear and torsion calls declare actual bars, link
+geometry, axis and concurrent actions; all states remain visible in the output.
+
 Shear capacity is qualified by local axis. It derives concrete strength from
 the normalized Table 19 data, the limiting stress from Table 20, and transverse
 capacity from the actual link diameter, active legs, spacing, and declared

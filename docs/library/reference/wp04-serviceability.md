@@ -6,6 +6,13 @@ screen or an explicit component-based deflection result, and AO10 calculates
 Annex F flexural crack width from actual bar geometry. Excel and ETABS adapters
 may construct these requests, but the operations do not access either host.
 
+The [typed beam checks example](../../../Python/examples/beam_checks_workflow.py)
+shows screening, supplied-component deflection and actual-bar crack width.
+Run `python3 Python/examples/beam_checks_workflow.py` with the current source
+build. Its service components and strain are explicit teaching inputs, not
+results inferred from the elastic solver. Omitting duration or strain produces
+an unevaluated result in the same example.
+
 ## Deflection limits and screening
 
 `deflection_limit` / `Serviceability.DeflectionLimit` distinguishes total final

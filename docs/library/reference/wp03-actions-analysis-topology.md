@@ -5,6 +5,12 @@ snapshot, AO15 defines beam topology, and AO02 solves a bounded planar beam
 line. Excel and ETABS adapters can create these requests later; none of the
 operations accesses either application.
 
+The [typed beam checks example](../../../Python/examples/beam_checks_workflow.py)
+defines a 6 m span, solves its explicit 10 N/mm load and normalizes the genuine
+midspan action row. Run `python3 Python/examples/beam_checks_workflow.py` with
+the current source build. Analysis completion remains separate from an
+engineering pass; other checks in the example declare their own action basis.
+
 ## Action snapshots
 
 `normalize_action_snapshot` / `ActionNormalizer.NormalizeSnapshot` accepts a

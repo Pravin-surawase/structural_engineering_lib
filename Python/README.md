@@ -58,6 +58,13 @@ Run `Python/examples/canonical_workflows.py` after
 been published as a new release; the install commands above retain their exact
 published-version meaning.
 
+The same source build provides typed operation outputs and result-bound
+physical-member/candidate workflows. Run
+`Python/examples/physical_member_workflow.py` for project → checks → physical
+paths → quantities/package data, and `Python/examples/candidate_ranking_workflow.py`
+for ranking genuine calculations. Those teaching profiles state their limited
+engineering scope and retain missing, failed and stale outcomes.
+
 ## If You Want To…
 
 ### Design and Detail a Beam Through the Canonical Facade

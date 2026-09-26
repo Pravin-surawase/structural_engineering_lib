@@ -7,6 +7,13 @@ complete IS 13920 beam detailing context. AO26 checks the full reinforcement
 arrangement and its construction fit. None of these operations accesses Excel,
 ETABS, HTTP, or a UI host.
 
+The [typed beam checks example](../../../Python/examples/beam_checks_workflow.py)
+calls development length, straight anchorage, a declared lap, and full
+reinforcement arrangement checks. Run
+`python3 Python/examples/beam_checks_workflow.py` with the current source build.
+It shows ordinary seismic non-applicability and missing IS 13920 context;
+neither substitutes for complete seismic joint and dependency evidence.
+
 The code-data revisions are `is456-amd6-wp05-v1` and
 `is13920-2016-amd2-wp05-v1`. The BIS record lists IS 456:2000 as reviewed in
 2025 with six amendments. Amendment 6 changes the design bond stress for

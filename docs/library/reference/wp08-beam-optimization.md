@@ -111,3 +111,62 @@ never sets `selected_candidate_id`, `optimality_claimed`, or
 The exact wire records and cross-language fixtures are in
 `contracts/structural-engineering/schemas/wp08.schema.json` and
 `contracts/structural-engineering/conformance/wp08-vectors.json`.
+
+## Run a real Python caller
+
+Install the current source build and run the maintained example:
+
+```bash
+python3 -m pip install -e ./Python
+python3 Python/examples/candidate_ranking_workflow.py
+```
+
+Keep [candidate_ranking_workflow.py](../../../Python/examples/candidate_ranking_workflow.py)
+and [physical_member_workflow.py](../../../Python/examples/physical_member_workflow.py)
+together. The first expands three arrangements and maps each definition to the
+second's actual geometry/flexure checks, member aggregation, resolved paths,
+BBS and quantities. No pass result or measured mass is fabricated. The mapper
+rejects domain edits it cannot calculate faithfully.
+
+Each arrangement has four equal-diameter longitudinal bars and 40 resolved
+8 mm closed centreline link paths. The 12 mm alternative fails flexure despite
+using less steel. The passing 20 mm alternative is lighter than the passing
+25 mm alternative, so it is selected. Two-result budget and stale-member
+journeys remain partial and claim no optimum. Both AO05 and AO21 produce the
+same ranking from the complete evidence.
+
+This is a fixed-action teaching profile containing geometry, positive flexure
+and ordinary-frame seismic applicability. It does not qualify shear,
+serviceability, anchorage, durability, hooks, or complete building design.
+Its bounded optimum is a software/caller demonstration within that exact
+profile. Production integrations retain their approved full reference profile
+and calculate every required leaf.
+
+Use the current-source binding helper after calculating a candidate:
+
+```python
+from structural_lib.beam_optimization import bind_candidate_evaluation
+
+evaluation = bind_candidate_evaluation(
+    candidate_id=candidate.candidate_id,
+    analysis_revision_id=baseline_analysis_revision_id,
+    member_result=actual_member_result,
+    quantity_result=actual_quantity_result,
+    cost_result=actual_cost_result,  # omit when cost is not required
+)
+```
+
+It restores the public typed records and copies exact result bindings. It does
+not turn failed or partial evidence into a passing candidate. An input-rejected
+operation without its named output raises `KeyError`; preserve its diagnostics
+and resolve the intake failure. A mismatched output type raises `ValueError`.
+The lower-level `candidate_result_binding(result, payload)` accepts only an
+unchanged named output of that result; a modified or unrelated payload raises
+`ValueError` instead of attaching the original calculation identity to new data.
+
+Recover the full result with
+`result.output_as("optimization", BeamOptimizationOutput)` and inspect
+`output.ranking.terminal_state`, `selected_candidate_id`, `exclusions`, and
+`optimality_claimed`. A successful function return alone is not a successful
+or complete search. These helpers require the current source build and have
+not been published as a new package release.
