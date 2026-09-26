@@ -131,12 +131,11 @@ Then:
 
 - Treat the compact brief and environment result as the default orientation;
   do not reopen files or rerun Git queries that they already answered.
-- Read the bounded recurrence controls shown by `session begin`. Each task's
-  newest session entry references stable `RR-NNN` rows in
-  `docs/verification/rework-recurrence-index.json`; counts, observed-time basis,
-  and short solutions live once in that index, while deep evidence stays in the
-  session log or linked postmortem. Subagent findings are deduplicated by the
-  parent into that one entry.
+- Use the bounded recurrence controls from `session begin` when relevant.
+  Routine PRs record their problem, change, and verification once. Update
+  session/handoff documents only for unfinished work, durable decisions, or a
+  real transition; recurrence-index maintenance belongs to an explicit task.
+
 - Use `./run.sh context show <area>` only for a concrete unresolved routing
   question, then targeted
   `rg`; request a bounded live inventory with
@@ -165,45 +164,23 @@ profile. Use `--full` only for a named risk/release reason; `--category` and
 affected behavior tests; they do not replace them. Required hosted checks run
 once on the final milestone candidate, not after each internal commit.
 
-1. Inspect only affected files and existing patterns.
-2. Complete the bounded implementation, its tests, documentation, evidence,
-   and other intended versioned writes.
-3. While implementing, run only the narrowest reproducer, test, lint, or
-   diagnostic needed to answer a current question or repair a failure. Do not
-   rerun quick, full, or unchanged suites after each edit.
-4. Freeze the packet content and validate the live repository-context manifest;
-   generic committed folder indexes require no refresh.
-5. Enter `CONTENT_FROZEN`, run `./run.sh format --write` once, and then run the
-   affected focused tests, benchmarks, and architecture/import checks together
-   as one consolidated selection. The formatter owns only changed Python,
-   FastAPI, and C# paths and fails if bytes change outside that set.
-6. Add one or two independent reviews only when risk justifies them. After the
-   final candidate commit and independent acceptance, run
-   `./run.sh check --candidate-integrity` exactly once; its consolidated manual
-   all-files owner is read-only. A failure invalidates the candidate; record
-   `INTEGRITY_REJECTED` to use the one repair path or enter `REPLAN` after the
-   repair candidate. Preserve separately named raw artifact identities.
-   Ordinary commits run only conflict, large-file, and live Git-operation
-   safety guards; comprehensive assurance belongs to the PR.
-7. If verification exposes an outcome-changing defect, repair its root cause,
-   rerun the failed or affected narrow evidence, and repeat the consolidated
-   gate once for the new frozen candidate.
-8. Treat a multi-unit milestone branch as the publication and validation unit.
-   Complete its sequential internal task IDs with only their affected focused
-   tests and any required independent benchmark; do not run broad local gates,
-   hosted CI, or create a PR for every internal unit. Once all intended units
-   are integrated, run their union of focused evidence, then push once for one
-   PR/hosted cycle.
-   Installed-application evidence, mutation authority, and externally acquired
-   artifacts remain separate milestone boundaries.
-9. Run the broad Python suite or `./run.sh check --full` only when a named
-   risk or release reason calls for it. Milestone completion alone does not
-   require duplicating the required hosted checks locally.
-10. Reuse unchanged successful evidence. After a repair, repeat only the failed
-    or affected checks unless the fix changes outcomes in other areas.
-Required hosted checks are never deferred or bypassed for a publishable
-milestone candidate; they are intentionally not invoked for unpublished
-internal checkpoints on the same branch.
+1. Inspect affected files and existing patterns, then complete the scoped work.
+2. Keep cohesive commits on one branch. During editing, use a narrow reproducer
+   only when needed to guide the implementation.
+3. After the batch, format changed files and run their focused behavior tests
+   and relevant contract checks once. Reuse unchanged successful evidence.
+4. Review the essential diff once and push the commits together to one PR.
+   Ordinary commits run three mutation-safety hooks; pre-push checks live Git
+   safety without a delivery ledger or session-document gate.
+5. Required hosted checks must pass before merge. Repair confirmed failures and
+   repeat affected evidence, without re-running unrelated successful suites.
+6. Close the task timer with one `session usage --checkpoint closeout` command.
+   No acceptance matrix, delivery-state transitions, separate local integrity
+   gate, or phase/candidate counters are required for routine work.
+
+Run the broad Python suite or `./run.sh check --full` locally only for a named
+risk or release reason. Keep independent engineering reference validation for
+calculation changes; avoid duplicate infrastructure rituals around that work.
 
 `check` JSON retains `duration` as the sum of child-check seconds for
 compatibility; it is not elapsed time when checks run in parallel. Use `timings`
@@ -227,22 +204,11 @@ headline folder category. Shared helper directories must be decomposed into
 explicit helper-level impact rules when their callers differ. A genuinely
 unknown or unclassified path remains fail-closed and selects every domain.
 
-For work requiring independent acceptance, use these stricter efficiency
-controls:
-
-- one writer owns all mutable, shared, and generated surfaces;
-- freeze acceptance rows, maintained callers, and context scope before editing;
-- use focused gates during iteration; after content freezes, validate live
-  context once and rerun the affected focused checks;
-- only then commit an immutable local candidate for a read-only independent
-  audit and return one consolidated blocker list after the full audit matrix;
-- run no hosted CI before `PASS <head> <tree>` from that local audit;
-- after PASS, push the batched commits for one hosted validation cycle; a full
-  local gate requires a separately named risk or release reason;
-- allow the initial candidate plus one consolidated repair candidate; a second
-  rejection requires contract/design re-planning; and
-- if the audited head changes, invalidate the PASS rather than spending another
-  hosted run on unaudited work.
+When a plan explicitly requires independent acceptance, use the
+[optional detailed audit track](../git-automation/git-workflow-single-source.md#compact-audited-integration).
+Its acceptance matrices, immutable candidate audit, delivery transitions,
+integrity check, and repair ceiling apply only to that track. Do not activate
+it just because ordinary work uses a PR or contains several commits.
 
 For a release, freeze the prepared code candidate before its one exact-head
 Weekly run. After review, one bounded publication packet may change only
@@ -252,27 +218,11 @@ publication-surface and target-authorization checks on that packet; do not rerun
 Weekly verification for those metadata-only changes. The TestPyPI rehearsal and
 tag-triggered production workflow remain distinct publication gates.
 
-The ignored Git-common ledger persists the executable sequence
-`INTAKE → BOUNDED_UNITS → CONTENT_FROZEN → FORMATTED → FOCUSED_VERIFIED →
-PREPARED → CANDIDATE → AUDIT_ACCEPTED → INTEGRITY_VERIFIED → FINAL_CLOSED →
-PUSHED → HOSTED_PASSED → MERGED`. One rejection enters `REPAIR` and permits one
-`REPAIRED_CANDIDATE`; a second enters `REPLAN` and blocks until an acceptance
-file changes. An accepted candidate's integrity failure uses that same repair
-allowance and is recorded separately from an audit rejection. Transitions,
-timed commands, candidate heads, audit failures,
-repair batches, focused retries, full-gate runs, the single hosted run, and total
-elapsed time are machine-derived rather than caller-entered. Closeout derives
-the seven non-overlapping phase intervals from transition timestamps, binds the
-PR/merge commit, and proves accepted-candidate/merged-tree equality. It also
-reports rework and network ratios. The read-only `session end` command does not
-consume the start checkpoint or write a timing event; the pre-push guard records
-its one successful `FINAL_CLOSED` transition.
-If a published candidate fails hosted validation, record its exact run with
-`HOSTED_REJECTED`. The replacement head receives its own single integrity,
-final-closeout, and hosted verdict; automatic closeout counts every attempt and
-requires one of each boundary per pushed candidate.
-Record closeout after exact post-merge verification and before starting the
-next task; inspect an unexpected open task with `session usage --active --json`.
+Routine timing closeout derives elapsed time from the task's actual start and
+closeout timestamps. It makes no candidate, phase, CI-count, or integration
+claim; those delivery facts stay in GitHub. The detailed track retains its
+machine-derived phases and exact candidate evidence when explicitly used.
+Inspect an unexpected open timer with `session usage --active --json`.
 
 Safety-critical structural calculations still require independent reference
 validation. Token efficiency never replaces practicing-engineer review or the
@@ -304,21 +254,10 @@ records no elapsed-time, efficiency, candidate, PR, or integration claim.
 
 ```bash
 ./run.sh session begin --task-id TASK-XXX --agent governance --task "bounded scope"
-./run.sh session delivery --to BOUNDED_UNITS --acceptance-path docs/task-contract.md
-./run.sh session delivery --to CONTENT_FROZEN
-./run.sh format --write
-./run.sh session delivery --to FORMATTED
-./run.sh session delivery --to FOCUSED_VERIFIED --evidence "targeted tests pass"
-./run.sh session delivery --to PREPARED --evidence "owned docs and projections complete"
-# Commit the candidate, record CANDIDATE, obtain independent audit acceptance,
-# run candidate integrity once, push, record hosted PASS, then merge.
-./run.sh session usage --checkpoint milestone --elapsed-min 120 \
-  --verification "targeted tests pass" --notes "no subagents"
-./run.sh session usage --active --json
-./run.sh session usage --checkpoint superseded --task-id STALE-TASK \
-  --notes "Exact successor task owns current work; no timing claim"
+# Implement and commit cohesive changes; format and run focused tests once.
+# Review the diff, push one PR, wait for required checks, and merge normally.
 ./run.sh session usage --checkpoint closeout --task-id TASK-XXX \
-  --verification "delivery state MERGED; required hosted checks pass"
+  --verification "focused tests and required PR checks passed"
 ./run.sh session usage --summary --hours 24
 ```
 

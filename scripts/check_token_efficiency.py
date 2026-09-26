@@ -40,11 +40,13 @@ TASK_PREAMBLE = """Work in low-token mode.
 Respect the parent model and reasoning selected by the user; never override it
 from repository policy. Keep Fast mode off. Luna is unavailable: dispatch
 Terra-low subagents directly and ask before any Sol escalation. Default to no
-subagents; use no more than two only for independent,
-bounded work. Give each a concise packet with objective, exact files, non-goals,
+subagents; use no more than two for independent, bounded work.
+Give each a concise packet with objective, exact files, non-goals,
 pitfalls, acceptance criteria, tests, and return format—never full conversation
-history. Verify every result before accepting it. Run targeted tests during
-development and the full gate once at closeout. Close subagents and stop when done."""
+history. Verify every result before accepting it. Implement the bounded work,
+then format changed files and run focused tests once. Keep cohesive commits in
+one PR and wait for required hosted checks. Run broad local gates only for a
+named risk or release reason. Close the timer without extra paperwork; stop when done."""
 
 
 def _load_config() -> dict:
