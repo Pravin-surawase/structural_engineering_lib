@@ -349,7 +349,7 @@ def test_every_retired_commit_hook_has_a_hosted_owner_or_explicit_disposition():
     assert set(coverage["target_manual_hook_ids"]) == {
         "file-integrity-read-only",
     }
-    assert set(coverage["target_pre_push_hook_ids"]) == {"delivery-state-guard"}
+    assert set(coverage["target_pre_push_hook_ids"]) == {"git-push-guard"}
 
     retired = [entry for entry in entries if "retirement" in entry]
     assert [entry["key"] for entry in retired] == ["check-doc-metadata"]

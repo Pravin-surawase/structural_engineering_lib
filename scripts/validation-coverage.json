@@ -10,7 +10,7 @@
     "file-integrity-read-only"
   ],
   "target_pre_push_hook_ids": [
-    "delivery-state-guard"
+    "git-push-guard"
   ],
   "entries": [
     {
@@ -32,10 +32,10 @@
       "local_only": "Rejects newly added files before commit; hosted candidate integrity does not rescan historical large artifacts."
     },
     {
-      "key": "delivery-state-guard",
-      "source_id": "delivery-state-guard",
-      "target_pre_push_id": "delivery-state-guard",
-      "local_only": "Requires live local delivery and upstream state that a hosted checkout cannot observe."
+      "key": "git-push-guard",
+      "source_id": "git-push-guard",
+      "target_pre_push_id": "git-push-guard",
+      "local_only": "Checks the live branch, operations, conflicts, locks, and upstream state that a hosted checkout cannot observe."
     },
     {
       "key": "black-python",

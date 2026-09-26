@@ -155,15 +155,34 @@ configuration, move its checkout or treat an unqueried Mac as synchronized.
 Before implementation, the maintained `session begin` performs read-only
 admission before opening the timer and verifies source binding, local Git state,
 and the active standard pre-commit and pre-push hooks. A clean synchronized
-default branch is valid for intake only; create the feature branch before
-`BOUNDED_UNITS` or any write. Use
+default branch is valid for intake only; create the feature branch before any write. Use
 `./run.sh preflight --environment-only --json` for a standalone read-only
 diagnostic. A missing/custom hook is an inspection hold, never authority to
 overwrite it. Host-local environment setup must preserve cwd unless an exact
 repository is explicitly requested; portable repository scripts contain no
 Mac/Windows owner-specific absolute root.
 
+## Routine integration
+
+Implement related work in several cohesive commits on one branch. After the
+batch, format changed files, run affected tests and relevant contract checks,
+review the essential diff, and publish one PR. Required hosted checks must pass
+on the reviewed head before merge. A repair repeats only affected evidence.
+
+The three commit hooks and read-only Git pre-push guard remain active. Routine
+work requires no delivery-state ledger, acceptance matrix, independent local
+audit, candidate-integrity run, or session-document closeout. Record the problem,
+change, and tests in the PR; close the timer with `session usage --checkpoint
+closeout --task-id <task>`. Update handoff records only when actual handoff state
+changes. Do not create a follow-up PR just for bookkeeping.
+
 ## Compact audited integration
+
+This is an **optional detailed track**, selected only when the user or an
+accepted plan explicitly requires release, installed-artifact, or independent
+audit evidence. Its state transitions and document gates do not apply to routine
+work. Select it before implementation; an existing detailed task retains its
+history and closeout requirements.
 
 Use three roles for work that needs independent acceptance:
 
@@ -198,9 +217,10 @@ The persisted stage gates are:
    read-only candidate-integrity owner exactly once on the unchanged accepted
    head. A failure invalidates the candidate; record `INTEGRITY_REJECTED` to
    enter the same single repair allowance, or `REPLAN` if that allowance was
-   already used. The pre-push hook runs the one final read-only `session end`
-   and records `FINAL_CLOSED` idempotently.
-   If closeout fails, the push remains blocked and the guard records the
+   already used. Run `session delivery --guard-push` explicitly before publication; it
+   runs the final read-only `session end` and records `FINAL_CLOSED`
+   idempotently. The normal pre-push hook checks Git safety only.
+   If detailed closeout fails, do not publish; the explicit guard records the
    rejection into the existing `REPAIR`/`REPLAN` ceiling. An older task stuck
    at `INTEGRITY_VERIFIED` can record the observed failure with `session delivery
    --to CLOSEOUT_REJECTED --head <full-candidate-sha> --evidence <failure>`.
@@ -347,7 +367,7 @@ checks, merge commit, and merged tree. This separation is unavoidable for a
 squash merge because the unchanged pre-merge candidate cannot know its future
 merge identity.
 
-The pre-push delivery guard runs the final read-only session closeout while any
+In the optional detailed track, run `session delivery --guard-push` while any
 declared transition receipt is fresh. A later freshness failure means that the retained observation has
 aged; it does not corrupt the historical artifact or authorize a candidate
 rewrite. Final hosted and merge facts belong only to the successor external
@@ -420,11 +440,16 @@ its head or base changes. Never use administrator bypasses, `--no-verify`,
 
 The standard `pre-commit` framework protects the local mutation boundary with
 exactly three ordinary-commit hooks: merge-conflict markers, newly added files
-over 500 KB, and the live Git-operation guard. The six generic file-integrity
-hooks use the manual stage and run in PR Repository Validation. Formatting,
+over 500 KB, and the live Git-operation guard. The consolidated file-integrity
+hook uses the manual stage and runs in PR Repository Validation. Formatting,
 linting, type checks, security scans, tests, generated-contract checks, and the
 quick gate are not commit hooks. Repository hooks must not block Codex-native
 Git merely because a legacy wrapper environment variable is absent.
+The `git-push-guard` runs `scripts/git_state.py --guard push`: named feature
+branch, no active operation/conflict/lock, and no known behind/diverged or
+unknown base/upstream state. It uses local refs; fetch and inspect the remote
+before publication, since `NOT_CHECKED` is not remote freshness proof. It does
+not load a delivery ledger or require session-document updates.
 `core.hooksPath` must not point to the retired enforcement hooks.
 
 ## Historical material

@@ -260,7 +260,7 @@ def test_pre_commit_contract_has_three_commit_guards_and_bounded_later_stages():
         "check-added-large-files",
         "git-operation-guard",
         "file-integrity-read-only",
-        "delivery-state-guard",
+        "git-push-guard",
     }
     commit_hooks = {
         hook["id"]
@@ -277,7 +277,7 @@ def test_pre_commit_contract_has_three_commit_guards_and_bounded_later_stages():
         hook["id"] for hook in hooks if "pre-push" in hook.get("stages", [])
     }
     assert manual_hooks == {"file-integrity-read-only"}
-    assert pre_push_hooks == {"delivery-state-guard"}
+    assert pre_push_hooks == {"git-push-guard"}
     operation_guard = by_id["git-operation-guard"]
     assert operation_guard["always_run"] is True
     assert operation_guard["pass_filenames"] is False
@@ -293,9 +293,9 @@ def test_pre_commit_contract_has_three_commit_guards_and_bounded_later_stages():
     assert integrity_guard["always_run"] is True
     assert integrity_guard["pass_filenames"] is False
 
-    delivery_guard = by_id["delivery-state-guard"]
+    delivery_guard = by_id["git-push-guard"]
     assert delivery_guard["entry"] == (
-        "./scripts/python_runtime.sh scripts/session.py delivery --guard-push"
+        "./scripts/python_runtime.sh scripts/git_state.py --guard push"
     )
     assert delivery_guard["always_run"] is True
     assert delivery_guard["pass_filenames"] is False

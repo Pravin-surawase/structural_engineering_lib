@@ -111,6 +111,64 @@ def test_porcelain_v2_classifies_each_dirty_surface(tmp_path: Path):
     assert state.tree.conflicted_paths == []
 
 
+def test_real_push_needs_no_delivery_ledger_and_still_blocks_main(tmp_path: Path):
+    repo = _repo(tmp_path)
+    remote = tmp_path / "remote.git"
+    _git(tmp_path, "init", "--bare", str(remote))
+    _git(repo, "remote", "add", "origin", str(remote))
+    _feature(repo)
+    command = [
+        sys.executable,
+        str(REPO_ROOT / "scripts" / "git_state.py"),
+        "--guard",
+        "push",
+        "--repo",
+        str(repo),
+        "--default-ref",
+        "main",
+    ]
+    hook = _marker_path(repo, "hooks/pre-push")
+    hook.write_text("#!/bin/sh\nexec " + shlex.join(command) + "\n")
+    hook.chmod(0o755)
+
+    pushed = _git(repo, "push", "-u", "origin", "feature", check=False)
+    assert pushed.returncode == 0, pushed.stdout + pushed.stderr
+    assert (
+        _git(remote, "rev-parse", "refs/heads/feature").stdout
+        == _git(repo, "rev-parse", "HEAD").stdout
+    )
+
+    _git(repo, "switch", "main")
+    blocked = _git(repo, "push", "origin", "main", check=False)
+    assert blocked.returncode != 0
+    assert "HOLD_MAIN" in blocked.stdout
+    assert (
+        _git(remote, "show-ref", "--verify", "refs/heads/main", check=False).returncode
+        != 0
+    )
+
+
+@pytest.mark.parametrize(
+    "problem", ["DETACHED", "conflict", "lock", "operation", "behind", "diverged"]
+)
+def test_push_guard_retains_git_safety_holds(tmp_path: Path, problem: str):
+    repo = _repo(tmp_path)
+    _feature(repo)
+    state = git_state.collect_repository_state(repo, default_ref="main")
+    assert git_state._guard_allows(state, "push", allow_completion=False)
+    if problem == "DETACHED":
+        state.branch = "DETACHED"
+    elif problem == "conflict":
+        state.tree.conflicted_paths = ["tracked.txt"]
+    elif problem == "lock":
+        state.locks = ["index.lock"]
+    elif problem == "operation":
+        state.operation = "merge"
+    else:
+        state.upstream.status = problem
+    assert not git_state._guard_allows(state, "push", allow_completion=False)
+
+
 def test_state_consistency_recomputes_action_and_holds_without_git_io(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

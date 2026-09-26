@@ -240,7 +240,7 @@ Manage agent work sessions.
 Subcommands:
   begin      Timed compact brief + environment start for one exact task
   start      Begin session (verify env, read priorities)
-  end        Run the final read-only closeout validation
+  end        Optional read-only detailed closeout diagnostic
   handoff    Write the durable task handoff; receipt is optional unless crossing lanes/devices
   summary    Preview summary from git log; pass --write to update docs
   sync       Check stale doc numbers; pass --fix to update them
@@ -249,7 +249,7 @@ Subcommands:
   brief      Fast 20-line agent brief (--agent <name> | --handoff)
   recurrence Show compact issue counts, observed time, prevention, and detail links
   usage      Record/show model, reasoning, agent, and usage checkpoints
-  delivery   Inspect/advance the executable delivery state machine
+  delivery   Opt-in detailed audit state machine
   costs      Show legacy Git-activity proxies (not billing or tokens)
   compact    Archive old SESSION_LOG entries
   trust      Show or reset session trust state
@@ -260,7 +260,7 @@ Examples:
   ./run.sh session context    # Quick orientation mid-session
   ./run.sh session recurrence # Compact recurring issue counts and controls
   ./run.sh session usage --help
-  ./run.sh session end        # Validate closeout without hidden writes
+  ./run.sh session usage --checkpoint closeout --task-id TASK-XXX
   ./run.sh session sync --fix # Explicitly fix stale numbers when required
 EOF
 }
@@ -1030,7 +1030,7 @@ _print_usage() {
     echo -e "  ${DIM}./run.sh session start${NC}              # Begin work"
     echo -e "  ${DIM}./run.sh check --quick${NC}              # Fast validation"
     echo -e "  ${DIM}Codex Git/GitHub${NC}                         # Commit, push, and open PR"
-    echo -e "  ${DIM}./run.sh session end${NC}                # Wrap up"
+    echo -e "  ${DIM}./run.sh session usage --checkpoint closeout --task-id TASK-XXX${NC}"
     echo ""
     echo -e "${DIM}Run ./run.sh <command> --help for detailed usage.${NC}"
 }

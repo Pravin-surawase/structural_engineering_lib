@@ -81,9 +81,8 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
   folder name alone must not select unrelated product domains; unknown or
   unclassified impact still fails closed to every domain.
 - Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency
-  check` for repository-side policy validation, and record the required
-  non-overlapping timing/candidate/retry counters with a closeout
-  `./run.sh session usage` checkpoint.
+  check` for repository-side policy validation, and close the task timer with one `./run.sh session usage --checkpoint closeout
+  --task-id <task>` command. Detailed phase/candidate/retry counters are opt-in.
 - Run `./run.sh model "task"` only when the user asks for a recommendation,
   has not selected a model, or has delegated model choice. The picker is
   advisory: Luna is unavailable; use Terra-low for clear repeatable work,
@@ -97,24 +96,18 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
 - Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
 
-## Root-Cause and Session-Issue Record (MANDATORY)
+## Root-Cause and Session Records
 
-- Each agent records material issues in the newest task-owned
-  `docs/SESSION_LOG.md` entry. Material means outcome-changing, command-blocking,
-  stale-contract, or likely-to-repeat.
-- Each entry needs `### Issues encountered`, `### Root causes and resolutions`,
-  and `### Rework and recurrence`. Record symptom/impact, confirmed root cause
-  (or `unconfirmed`), solution, and proof. When recurrence exists, each row
-  references one `RR-NNN`, `occurrences=N`, and `minutes=unknown|N|N-N`; update
-  the count/time and short solution once in
-  `docs/verification/rework-recurrence-index.json`. Reuse IDs for the same cause
-  and create one only for a distinct pattern; otherwise write `- None encountered.`
-- Exclude secrets, transient noise, speculative hardening, and unrelated
-  failures. Trace the path; an error message alone does not prove root cause.
-- `session begin` shows compact recurrence controls. Subagents receive relevant
-  controls and return issue/root-cause/evidence; the parent writes one
-  deduplicated entry. `session end` fails if a required section or index mapping
-  is absent or stale.
+- Put the problem, confirmed root cause, fix, and relevant verification in the
+  PR description. One useful record is enough for routine completed work.
+- Update task/session/handoff files when there is unfinished work, a durable
+  decision, or a real cross-device/installed-artifact transition. Do not require
+  a SESSION_LOG, WORKLOG, task-board, and handoff edit for every change.
+- Track recurring consequential failures in the recurrence index during an
+  explicit maintenance or detailed-audit task. Exclude transient terminal noise,
+  speculative hardening, and unrelated failures; do not invent root causes.
+- The optional detailed audit track retains its structured issue sections and
+  recurrence validation. Ordinary delivery does not depend on those records.
 
 ## Git and GitHub — Codex Native
 
@@ -279,48 +272,40 @@ If `./run.sh` produces no output or fails, try these in order:
 
 See `.github/instructions/terminal-rules.instructions.md` for the full fallback table.
 
-### MANDATORY: Document Terminal Issues
-When you encounter terminal problems (commands failing, wrong directory, scripts not found), include in your handoff:
-`⚠️ TERMINAL ISSUE: [what happened] → [what worked instead]`
-This feeds the improvement loop — recurring issues get fixed in agent instructions.
+### Terminal Issues
+
+Include unresolved command blockers in a needed handoff with the working
+alternative. Routine corrected command mistakes do not require a separate
+versioned record or follow-up PR.
 
 ## Session Workflow (MANDATORY)
 
 ```bash
-# START: task-bound timer + bounded orientation + environment check
+# START: one task timer, compact orientation, and environment check
 ./run.sh session begin --task-id <task> --agent <role>
 
-# END: advance the executable delivery states. The pre-push guard runs the
-# final read-only session closeout for the accepted candidate.
-./run.sh session delivery --status
-./run.sh session end
+# FINISH: close the timer after delivery; elapsed time is measured automatically
+./run.sh session usage --checkpoint closeout --task-id <task> \
+  --verification "focused tests and required PR checks passed"
 ```
 
-**Executable delivery lifecycle:** Enforce
-`INTAKE → BOUNDED_UNITS → CONTENT_FROZEN → FORMATTED → FOCUSED_VERIFIED →
-PREPARED → CANDIDATE → AUDIT_ACCEPTED → INTEGRITY_VERIFIED → FINAL_CLOSED →
-PUSHED → HOSTED_PASSED → MERGED`. One rejection admits
-`REPAIR → REPAIRED_CANDIDATE`; the next enters digest-gated `REPLAN`.
-Format once after freeze and run focused checks. After independent acceptance,
-run read-only candidate integrity once. `INTEGRITY_REJECTED` uses the same
-repair ceiling. Pre-push runs one read-only `session end` and records
-`FINAL_CLOSED` idempotently. Record each hosted verdict by exact run ID;
-Failed pre-push closeout enters the same repair ceiling; `CLOSEOUT_REJECTED`
-records an older stuck candidate's observed failure with exact head/evidence.
-`HOSTED_REJECTED` enters repair or, after its repair candidate, `REPLAN`.
-An owner-directed scope expansion uses `SCOPE_CHANGED --head <candidate-sha>
---evidence <owner-instruction>` with a changed acceptance file to enter `REPLAN`
-on the same task and branch. It preserves timing, history and aggregate counters;
-it does not invent a failure or require a separate PR.
+Routine work uses normal Git and one PR: implement in cohesive commits, format
+and run affected tests once after the batch, review the essential diff once,
+then push and wait for required hosted checks before merging. A repair reruns
+only affected evidence. The pre-push hook checks live Git safety; it does not
+require session documents, delivery transitions, or a separate local audit.
 
-Finish all versioned task, handoff, documentation, test, generated projection,
-and repository evidence writes before `CANDIDATE`. A Git handoff receipt is
-required only for a real cross-device, cross-worktree, installed-artifact, or
-authority transition; routine same-checkout delivery uses the lifecycle ledger.
-After push, keep hosted/merge facts external and bind exact run, PR, and merge
-IDs. Post-push defects use the repair candidate or a changed-contract replan.
+The detailed delivery ledger, candidate-integrity gate, fixed repair ceiling,
+and `session end` diagnostic are opt-in when a plan explicitly requires a
+release, installed-artifact, or independent audit track. Follow
+[the detailed audit procedure](docs/git-automation/git-workflow-single-source.md#compact-audited-integration)
+for that track. Routine work has no mandatory delivery-state transitions.
 
-Log feedback only when a concrete stale instruction or missing control was found. `session summary`, `session sync`, and `session end` are read-only; preparation writes happen explicitly before `PREPARED`. Agent evolution is scheduled governance work, not a mandatory session-end mutation.
+A Git handoff receipt is required only for a real cross-device, cross-worktree,
+installed-artifact, or authority transition. Keep later PR/check/merge facts in
+GitHub; do not open a documentation-only follow-up PR for routine closeout.
+`session summary`, `session sync`, and `session end` remain read-only diagnostics.
+Agent evolution is scheduled governance work, not a session-end mutation.
 
 ## Key Patterns — Do NOT Reinvent
 
