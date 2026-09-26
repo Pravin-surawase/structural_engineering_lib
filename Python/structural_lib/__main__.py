@@ -38,7 +38,7 @@ from typing import cast
 
 from . import beam_pipeline
 from .core.data_types import CrackWidthParams, ValidationReport
-from .services import api, cli_design, dxf_export, job_runner, report
+from .services import api, cli_design, job_runner, report
 
 
 def _fmt_cell(v: object) -> str:
@@ -756,13 +756,7 @@ def cmd_dxf(args: argparse.Namespace) -> int:
         _print_error(f"Input file not found: {input_path}")
         return 1
 
-    # Check if dxf_export module is available
-    if dxf_export is None:
-        _print_error(
-            "DXF export module not available.",
-            hint='Install with: pip install "structural-lib-is456[dxf]"',
-        )
-        return 1
+    from .services import dxf_export
 
     # Check if ezdxf is available
     if not dxf_export.EZDXF_AVAILABLE:
@@ -838,7 +832,9 @@ def cmd_mark_diff(args: argparse.Namespace) -> int:
         _print_error(f"DXF file not found: {dxf_path}")
         return 1
 
-    if dxf_export is None or not dxf_export.EZDXF_AVAILABLE:
+    from .services import dxf_export
+
+    if not dxf_export.EZDXF_AVAILABLE:
         _print_error(
             "ezdxf library not installed.",
             hint='Install with: pip install "structural-lib-is456[dxf]"',
