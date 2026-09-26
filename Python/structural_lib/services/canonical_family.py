@@ -13,7 +13,7 @@ import json
 import math
 from dataclasses import asdict, dataclass, is_dataclass
 from enum import Enum
-from typing import Any, NoReturn
+from typing import Any, Generic, NoReturn, TypeVar
 
 from pydantic import Field
 
@@ -88,12 +88,15 @@ def _input_hash(request: StrictPublicModel) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+_CalculationT = TypeVar("_CalculationT")
+
+
 @dataclass(frozen=True)
-class CanonicalFamilyResultV1:
+class CanonicalFamilyResultV1(Generic[_CalculationT]):
     """Typed family payload carried by the common B0 result semantics."""
 
     request: StrictPublicModel
-    calculation: Any
+    calculation: _CalculationT
     envelope: StructuralResultEnvelopeV2
     limitations: tuple[str, ...]
     assumptions: tuple[str, ...]
@@ -159,14 +162,14 @@ class CanonicalFamilyResultV1:
 
 def canonical_family_result(
     request: StrictPublicModel,
-    calculation: Any,
+    calculation: _CalculationT,
     *,
     workflow_id: str,
     engineering_status: EngineeringStatus,
     limitations: tuple[str, ...] = (),
     assumptions: tuple[str, ...] = (),
     provenance: tuple[str, ...] = (),
-) -> CanonicalFamilyResultV1:
+) -> CanonicalFamilyResultV1[_CalculationT]:
     """Bind one completed owner calculation to the common result envelope."""
 
     return CanonicalFamilyResultV1(

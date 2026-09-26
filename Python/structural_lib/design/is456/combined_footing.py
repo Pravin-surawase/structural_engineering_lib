@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Any
+from collections.abc import Mapping
 
 from structural_lib.codes.is456.combined_footing import CombinedFootingContractError
 from structural_lib.core.errors import InputContractError, InputIssueV1
 from structural_lib.core.result_contract import EngineeringStatus
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
+    FamilyIdentityV1,
     canonical_family_result,
     require_request_type,
     translate_owner_input_error,
@@ -20,9 +21,22 @@ from structural_lib.services.combined_footing_api import (
     design_symmetric_combined_footing_is456,
 )
 from structural_lib.services.contracts.common import model_validate_or_error
-from structural_lib.services.contracts.family_f3 import CombinedFootingInputV1
+from structural_lib.services.contracts.family_f3 import (
+    CombinedActionsV1,
+    CombinedEvidenceReviewV1,
+    CombinedFootingInputV1,
+    CombinedGeometryTopologyV1,
+    CombinedIdentitySourceV1,
+    CombinedMaterialsReinforcementV1,
+)
 
 __all__ = [
+    "CombinedActionsV1",
+    "CombinedEvidenceReviewV1",
+    "CombinedGeometryTopologyV1",
+    "CombinedIdentitySourceV1",
+    "CombinedMaterialsReinforcementV1",
+    "FamilyIdentityV1",
     "CanonicalFamilyResultV1",
     "CombinedFootingInputV1",
     "InputContractError",
@@ -36,20 +50,140 @@ __all__ = [
 
 def input(  # noqa: A001
     *,
-    identity_source: Any,
-    geometry_topology: Any,
-    actions: Any,
-    materials_reinforcement: Any,
-    evidence_review: Any,
+    identity_source: CombinedIdentitySourceV1 | Mapping[str, object],
+    geometry_topology: CombinedGeometryTopologyV1 | Mapping[str, object],
+    actions: CombinedActionsV1 | Mapping[str, object],
+    materials_reinforcement: CombinedMaterialsReinforcementV1 | Mapping[str, object],
+    evidence_review: CombinedEvidenceReviewV1 | Mapping[str, object],
 ) -> CombinedFootingInputV1:
+    """Build a validated combined footing request from explicit groups.
+
+    Parameters
+    ----------
+    identity_source : CombinedIdentitySourceV1 or Mapping[str, object]
+        Member/case identity and source references for the design basis. Mapping inputs use the same strict validation.
+    geometry_topology : CombinedGeometryTopologyV1 or Mapping[str, object]
+        Dimensions in mm and the supported arrangement and restraints. Mapping inputs use the same strict validation.
+    actions : CombinedActionsV1 or Mapping[str, object]
+        Factored design actions in the units named by each field. Mapping inputs use the same strict validation.
+    materials_reinforcement : CombinedMaterialsReinforcementV1 or Mapping[str, object]
+        Material strengths and explicit supplied/permitted reinforcement. Mapping inputs use the same strict validation.
+    evidence_review : CombinedEvidenceReviewV1 or Mapping[str, object]
+        Caller-supplied basis, review references and acknowledgements. Mapping inputs use the same strict validation.
+
+    Returns
+    -------
+    CombinedFootingInputV1
+        Immutable typed request, ready for ``design``.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, inconsistent inputs, or an unsupported request type.
+        Inspect ``error.issues`` for stable codes, paths and constraints.
+
+    Limitations
+    -----------
+    Column positions, soil basis and reinforcement evidence must match the supported symmetric case.
+    Existing mapping-based callers remain supported; no engineering defaults are inferred.
+
+    Examples
+    --------
+    See the executable combined-footing recipe in the family facade cookbook:
+    ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     return model_validate_or_error(CombinedFootingInputV1, locals())
 
 
-def load(value: Any) -> CombinedFootingInputV1:
+def load(
+    value: Mapping[str, object] | CombinedFootingInputV1,
+) -> CombinedFootingInputV1:
+    """Validate a Python mapping or an existing CombinedFootingInputV1.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or CombinedFootingInputV1
+        Decoded JSON/Python fields or a typed request. Parse JSON text with
+        ``json.loads`` first; values are not silently coerced.
+
+    Returns
+    -------
+    CombinedFootingInputV1
+        Validated immutable request with field-level issue paths on rejection.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, inconsistent inputs, or an unsupported request type.
+        Inspect ``error.issues`` for stable codes, paths and constraints.
+
+    Limitations
+    -----------
+    Column positions, soil basis and reinforcement evidence must match the supported symmetric case.
+    Existing mapping-based callers remain supported; no engineering defaults are inferred.
+
+    Examples
+    --------
+    See the executable combined-footing recipe in the family facade cookbook:
+    ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     return model_validate_or_error(CombinedFootingInputV1, value)
 
 
-def design(request: CombinedFootingInputV1) -> CanonicalFamilyResultV1:
+def design(
+    request: CombinedFootingInputV1,
+) -> CanonicalFamilyResultV1[SymmetricCombinedFootingDesignResult]:
+    """Design a symmetric two-column combined footing.
+
+    Parameters
+    ----------
+    request : CombinedFootingInputV1
+        Validated input from ``input`` or ``load``; all engineering bases are explicit.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1[SymmetricCombinedFootingDesignResult]
+        ``calculation`` holds the maintained owner result. Read
+        ``engineering_status`` for PASS/FAIL/HOLD, ``limitations`` for scope,
+        and ``to_dict()`` for finite JSON. Completion is not engineering approval.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, inconsistent inputs, or an unsupported request type.
+        Inspect ``error.issues`` for stable codes, paths and constraints.
+
+    Limitations
+    -----------
+    Column positions, soil basis and reinforcement evidence must match the supported symmetric case.
+    Existing mapping-based callers remain supported; no engineering defaults are inferred.
+
+    Examples
+    --------
+    See the executable combined-footing recipe in the family facade cookbook:
+    ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     require_request_type(request, CombinedFootingInputV1)
     i, g, a, m, e = (
         request.identity_source,

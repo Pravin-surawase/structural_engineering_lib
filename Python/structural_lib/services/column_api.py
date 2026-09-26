@@ -10,7 +10,7 @@ Split from services/api.py (ARCH-NEW-12).
 from __future__ import annotations
 
 import warnings
-from typing import Any, TypeVar
+from typing import Any, NotRequired, TypedDict, TypeVar, cast
 
 from structural_lib.codes.is456.column.axial import (
     classify_column,
@@ -43,6 +43,43 @@ from structural_lib.core.result_contract import (
     StructuralResultEnvelopeV1,
 )
 from structural_lib.core.validation import validate_finite_reals
+
+
+class ColumnDesignResult(TypedDict):
+    """Supplied-steel column result with explicit action units and status.
+
+    ``checks`` contains the detailed governing owner result. Additional moments
+    ``Ma_x_kNm`` and ``Ma_y_kNm`` are present only for the slender-column route.
+    ``is_safe`` is the supported calculation outcome, not review approval.
+    """
+
+    Pu_kN: float
+    Mux_applied_kNm: float
+    Muy_applied_kNm: float
+    classification: str
+    classification_x: str
+    classification_y: str
+    le_x_mm: float
+    le_y_mm: float
+    slenderness_x: float
+    slenderness_y: float
+    emin_x_mm: float
+    emin_y_mm: float
+    Mux_min_kNm: float
+    Muy_min_kNm: float
+    Mux_design_kNm: float
+    Muy_design_kNm: float
+    is_safe: bool
+    governing_check: str
+    checks: dict[str, object]
+    warnings: list[str]
+    clause_refs: list[str]
+    result_envelope: dict[str, object]
+    review_status: str
+    qualified_review_required: bool
+    Ma_x_kNm: NotRequired[float]
+    Ma_y_kNm: NotRequired[float]
+
 
 # ============================================================================
 # Deprecated-parameter resolution helper
@@ -1079,7 +1116,7 @@ def design_column_is456(
     *,
     fck: float | None = None,  # Deprecated alias
     fy: float | None = None,  # Deprecated alias
-) -> dict[str, Any]:
+) -> ColumnDesignResult:
     """Design column per IS 456:2000 — unified orchestrator.
 
     Master entry point for column design that automatically routes to the
@@ -1418,7 +1455,7 @@ def design_column_is456(
     result["result_envelope"] = result_envelope.to_dict()
     result["review_status"] = result_envelope.review_status.value
     result["qualified_review_required"] = True
-    return result
+    return cast(ColumnDesignResult, result)
 
 
 def detail_column_is456(
