@@ -1386,7 +1386,23 @@ def _automatic_delivery_efficiency(
     push_runs = sum(
         1 for entry in history if entry.get("delivery", {}).get("state") == "PUSHED"
     )
-    if int(snapshot["hosted_validation_runs"]) != push_runs:
+    # SCOPE_CHANGED can replace a pushed head before a PR/CI run exists.
+    # Its guarded PUSHED -> REPLAN transition retains the same head/run IDs;
+    # HOSTED_REJECTED always adds a verdict, so it cannot qualify here.
+    superseded_pushes = sum(
+        1
+        for before, after in zip(history, history[1:])
+        if before["delivery"]["state"] == "PUSHED"
+        and after["delivery"]["state"] == "REPLAN"
+        and after.get("evidence")
+        and before["delivery"].get("latest_candidate_head")
+        and before["delivery"].get("latest_candidate_head")
+        == after["delivery"].get("latest_candidate_head")
+        and isinstance(before["delivery"].get("hosted_run_ids"), list)
+        and before["delivery"]["hosted_run_ids"]
+        == after["delivery"].get("hosted_run_ids")
+    )
+    if int(snapshot["hosted_validation_runs"]) != push_runs - superseded_pushes:
         raise ValueError("closeout requires one hosted verdict per pushed candidate")
     unpublished_integrity_runs = _validate_candidate_closeouts(
         history, integrity_events
