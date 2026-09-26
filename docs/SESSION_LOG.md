@@ -88,10 +88,18 @@
 - The `gh run view` log endpoint held logs while sibling jobs ran. The completed
   job-log connector returned the exact type-check error; no CI rerun or check
   bypass was used to investigate it.
+- Repair delivery initially targeted the derived `REPAIRED_CANDIDATE` label
+  and continued to dependent audit/integrity commands after rejection. Neither
+  candidate nor audit was admitted, and nothing was pushed. Source inspection
+  requires repair freeze, formatting, focused verification, preparation and
+  `CANDIDATE`, which derives the repaired label. Check each exit status before
+  its dependent command; the premature read-only integrity run is not accepted
+  candidate evidence. Record this before the repaired candidate is admitted.
 
 ### Rework and recurrence
 
 - RR-005: occurrences=222; minutes=unknown. Six read-only path/glob/module-discovery mistakes; use discovered owners, explicit paths and the package target for root-launched mypy.
+- RR-004: occurrences=27; minutes=unknown. A derived repair-state command was rejected before audit; follow the inspected state machine and stop dependent commands on failure.
 - RR-003: occurrences=10; minutes=unknown. Manifest regeneration overlapped the full suite Git-status invariant; serialize mutations before affected test reruns.
 - RR-047: occurrences=2; minutes=unknown. The caller scan rejected two intended untracked files; review and stage them before refreshing/checking API projections.
 
