@@ -104,6 +104,9 @@ class BeamRow(BaseModel):
     story: str | None = Field(None, max_length=200, description="Story/floor level")
     width_mm: float = Field(..., description="Beam width in mm")
     depth_mm: float = Field(..., description="Beam overall depth in mm")
+    d_mm: float | None = Field(
+        None, description="Source-supplied effective depth in mm"
+    )
     span_mm: float = Field(..., description="Span length in mm")
     mu_knm: float = Field(..., description="Design moment in kN·m")
     vu_kn: float = Field(..., description="Design shear in kN")
@@ -198,6 +201,7 @@ def _lossless_import_response(
             story=beam.story,
             width_mm=beam.section.width_mm,
             depth_mm=beam.section.depth_mm,
+            d_mm=beam.section.d_mm,
             span_mm=beam.length_m * 1000.0,
             mu_knm=forces_by_id[beam.id].mu_knm,
             vu_kn=forces_by_id[beam.id].vu_kn,
@@ -209,11 +213,17 @@ def _lossless_import_response(
                 "artifact_sha256": import_result.ledger.geometry_artifact.sha256,
                 "normalization_ledger_hash": ledger_hash,
                 "adapter": detected,
-                "effective_depth_basis": {
-                    "clear_cover_mm": beam.section.cover_mm,
-                    "stirrup_diameter_mm": stirrup_diameter_mm,
-                    "tension_bar_diameter_mm": tension_bar_diameter_mm,
-                },
+                **(
+                    {"d_mm": beam.section.d_mm}
+                    if beam.section.d_mm is not None
+                    else {
+                        "effective_depth_basis": {
+                            "clear_cover_mm": beam.section.cover_mm,
+                            "stirrup_diameter_mm": stirrup_diameter_mm,
+                            "tension_bar_diameter_mm": tension_bar_diameter_mm,
+                        }
+                    }
+                ),
             },
         )
         for beam in import_result.batch.beams
@@ -556,6 +566,7 @@ async def import_dual_csv(
                         story=beam.story,
                         width_mm=beam.section.width_mm,
                         depth_mm=beam.section.depth_mm,
+                        d_mm=beam.section.d_mm,
                         span_mm=beam.length_m * 1000.0,
                         mu_knm=forces.mu_knm,
                         vu_kn=forces.vu_kn,
@@ -572,11 +583,17 @@ async def import_dual_csv(
                             ),
                             "normalization_ledger_hash": normalization_ledger_hash,
                             "adapter": detected,
-                            "effective_depth_basis": {
-                                "clear_cover_mm": beam.section.cover_mm,
-                                "stirrup_diameter_mm": stirrup_diameter_mm,
-                                "tension_bar_diameter_mm": (tension_bar_diameter_mm),
-                            },
+                            **(
+                                {"d_mm": beam.section.d_mm}
+                                if beam.section.d_mm is not None
+                                else {
+                                    "effective_depth_basis": {
+                                        "clear_cover_mm": beam.section.cover_mm,
+                                        "stirrup_diameter_mm": stirrup_diameter_mm,
+                                        "tension_bar_diameter_mm": tension_bar_diameter_mm,
+                                    }
+                                }
+                            ),
                         },
                         point1=Point3D(
                             x=beam.point1.x,

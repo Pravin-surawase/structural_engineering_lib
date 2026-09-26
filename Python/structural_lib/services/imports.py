@@ -506,9 +506,15 @@ def _artifact_ledger(
         headers, _column_spec(adapter, role)
     )
     header_block_codes: set[ImportIssueCode] = set()
-    counts = Counter(header.casefold() for header in headers)
+    header_groups: dict[str, list[int]] = defaultdict(list)
     for index, header in enumerate(headers):
-        if counts[header.casefold()] > 1:
+        header_groups[header.casefold()].append(index)
+    for index, header in enumerate(headers):
+        group = header_groups[header.casefold()]
+        # Structural D and d are different exact aliases. Case variants are
+        # only distinct when every header resolves to a different known field.
+        group_fields = {canonical[position] for position in group}
+        if len(group) > 1 and (None in group_fields or len(group_fields) != len(group)):
             header_problems.append(
                 (
                     index,

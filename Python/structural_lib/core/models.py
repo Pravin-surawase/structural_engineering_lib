@@ -125,12 +125,19 @@ class SectionProperties(BaseModel):
         fck_mpa: Characteristic concrete strength in MPa (N/mm²)
         fy_mpa: Steel yield strength in MPa (N/mm²)
         cover_mm: Clear cover to reinforcement in millimeters
+        d_mm: Optional explicit effective depth supplied for analysis (mm)
     """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     width_mm: float = Field(..., gt=0, le=2000, description="Width in mm (50-2000)")
     depth_mm: float = Field(..., gt=0, le=3000, description="Depth in mm (100-3000)")
+    d_mm: float | None = Field(
+        default=None,
+        gt=0,
+        allow_inf_nan=False,
+        description="Explicit effective depth in mm; when absent, derive from cover and bars",
+    )
     fck_mpa: float = Field(
         25.0, gt=0, le=100, description="Concrete strength in MPa (15-100)"
     )
@@ -147,10 +154,19 @@ class SectionProperties(BaseModel):
         default=20.0, gt=0, le=40, description="Main bar diameter in mm"
     )
 
+    @model_validator(mode="after")
+    def validate_explicit_depth(self) -> SectionProperties:
+        """Keep a supplied analysis depth inside the section."""
+        if self.d_mm is not None and self.d_mm >= self.depth_mm:
+            raise ValueError("d_mm must be less than depth_mm")
+        return self
+
     @computed_field
     @property
     def effective_depth_mm(self) -> float:
-        """Calculate effective depth (d = D - cover - stirrup - bar/2)."""
+        """Use explicit d when supplied, otherwise derive from cover and bars."""
+        if self.d_mm is not None:
+            return self.d_mm
         return self.depth_mm - self.cover_mm - self.stirrup_dia_mm - self.bar_dia_mm / 2
 
 

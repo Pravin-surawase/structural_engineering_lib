@@ -5,8 +5,8 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-09-26
-**Last Updated:** 2026-09-26
-**Related Tasks:** PY-LIB-IMPROVE-001
+**Last Updated:** 2026-09-27
+**Related Tasks:** PY-LIB-IMPROVE-001, PY-LIB-IMPROVE-002
 **Abstract:** Reliable Python beam design, detailing, schedule and export workflows with explicit acceptance evidence.
 
 ---
@@ -83,11 +83,64 @@ where the dependency trace reaches them. Hosted CI remains required.
 - W1–W4 implemented: consumed inputs and outcome are preserved, generated
   schedules bind to strength, CLI DXF shares the checked owner, and examples
   plus positive/negative regression journeys are updated.
-- Active: W5 frozen-candidate verification and delivery.
+- W5 complete: PR #1002 merged at `d0722155`; the exact repaired candidate
+  passed required hosted run `36261661398` and matched the merged tree.
 - Cumulative gate follow-up: regenerate the API projections and stage intended
   caller text before their scan. The synthetic CLI example exposed an overly
   broad initial serviceability guard; retain the unmodified span/depth journey
   with geometry binding. Complete all mutations before observational tests.
 - Blockers: none for this software packet. Installed ETABS access is unrelated
   and remains held.
-- Next: freeze the complete packet, then W5 verification and integration.
+- Next: the import-depth milestone below, authorized by the owner's renewed
+  request to improve the project and library.
+
+## Milestone 2 — preserve imported effective depth
+
+Task `PY-LIB-IMPROVE-002` starts at `d072215504ad5986631e64dc98c8a4ed83e4c5ac`.
+Mac is the sole writer on `codex/python-import-depth`. No active product PR
+precedes it; the ten open dependency PRs and all 32 foreign worktrees are
+preserved. The unpublished solver documentation candidate remains held for a
+future replan/rebind of shared records, not integration in this packet.
+
+Confirmed baseline: the lossless generic importer rejects distinct `D (mm)`
+and `d (mm)` columns as duplicate headers. Using the accepted `eff_d` alias
+instead records 470 mm in the ledger but returns 442 mm from the canonical
+section for D=500 mm and cover=40 mm. The API preview omits explicit depth;
+the saved workspace also omits all three existing depth-input fields.
+
+| Unit | Acceptance and owned paths |
+|---|---|
+| I1 Distinct headers | `services/imports.py` permits case variants only when they resolve to distinct known fields. Duplicate/ambiguous headers remain blocked. `services/adapters.py` never maps a lone D column to d. |
+| I2 Preserve source depth | `core/models.py` gains optional explicit `d_mm`; `effective_depth_mm` uses it when supplied and otherwise retains the existing derivation. Generic adapter aliases preserve it; non-finite/nonpositive/depth-at-or-above-D inputs fail with row context and no partial accepted batch. |
+| I3 Complete transport | `fastapi_app/routers/imports.py` exposes the optional explicit depth for file/text/dual imports; existing React import hooks carry it into batch requests. Workspace input hashing, save and restore preserve explicit depth and the existing stirrup/main-bar basis fields. |
+| I4 Verify journeys | Exercise generic Python import, CLI D/d intake, HTTP preview-to-project design and React import/workspace-to-request round trips. Compare direct and imported results for the same 470 mm input. Keep no-d import behavior and real duplicate blocking. |
+| I5 Deliver | Update existing guidance, task/session/handoff and affected projections; format/focused checks, essential immutable review, integrity, required CI and exact-head merge. |
+
+Schema/cross-field contract: `d_mm` is optional, finite, positive and less than
+`depth_mm`; it records the caller's explicit analysis depth, not qualification
+of an automatically generated bar layout. Absent depth retains the existing
+derivation. D/d spelling is significant when exact aliases distinguish fields;
+multiple aliases for the same field and identical headers stay invalid. New
+workspace inputs participate in its existing hash/revision contract, so changing
+depth invalidates a previous result. Older saved workspaces omit these fields
+and remain readable without inventing explicit depth.
+
+Non-goals: no formulas, member families, bar optimization, force/sign semantics,
+general adapter rewrite, installed ETABS work, dependency changes or release.
+Do not broaden this into unrelated import/default-policy changes. No new UI
+controls are needed: retain source inputs through existing data flows.
+
+During implementation run only reproducers needed to guide the changes. After
+all intended writes, run the focused Python model/import/CLI/schema tests,
+affected HTTP imports/project-design tests, React CSV/workspace/batch-request
+tests and the required React build. The named I5 cumulative gate is full Python
+plus `./run.sh check`, justified by the shared canonical model change; keep
+mutation commands outside observational tests. Required hosted checks remain
+mandatory. Candidate audit is a separate read-only parent pass, with no new
+tests or adjacent hardening. Record exact local evidence externally after
+freeze, and keep publication/merge facts external to the frozen candidate.
+
+Progress: I1–I3 implemented. I4 regression journeys and documentation are written;
+the first diagnostic verified Python/HTTP preservation and exposed a missing
+required story in the new CLI fixture, now corrected. I5 frozen verification
+and delivery remain. No software blocker or installed-application dependency.

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-23
+last_updated: 2026-09-27
 doc_type: spec
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Active
 **Importance:** High
 **Created:** 2026-01-20
-**Last Updated:** 2026-08-23
+**Last Updated:** 2026-09-27
 **Related Tasks:** TASK-CSV-01, TASK-CSV-02, TASK-3D-002
 
 ---
@@ -196,8 +196,27 @@ Simplified format for custom data or manual entry.
 | `fy_nmm2` / `fy` | Steel yield strength | N/mm² |
 | `cover_mm` / `Cover (mm)` | Explicit clear cover basis | mm |
 
-`story`, `span_mm`, effective-depth metadata, exposure, support, and notes may be
-retained when present, but no missing calculation value is silently invented.
+`story`, `span_mm`, exposure, support, and notes may be retained when present.
+Optional explicit effective depth is a calculation input: `d_mm`, `d (mm)`, `d`,
+`eff_d`, `effective_depth_mm` and `Effective Depth` map to `SectionProperties.d_mm`.
+Its `effective_depth_mm` property uses that value when supplied; otherwise it
+retains the section's existing cover/bar derivation. Explicit depth must be
+finite, positive and less than the overall depth. Invalid geometry rejects the
+generic import with source-row context; the lossless service exposes no partial
+accepted batch.
+
+Exact aliases distinguish `D_mm`/`d_mm`, `D (mm)`/`d (mm)` and `D`/`d`. A lone
+overall-depth column never becomes effective depth through case-insensitive
+matching. Repeated headers and multiple aliases for the same field remain
+errors. Keep unambiguous column names when changing capitalization.
+
+The file, text and dual-file API previews expose supplied `d_mm`, and the React
+workspace preserves it through save/restore into project-beam design. Saved
+cover/stirrup/main-bar inputs also survive restoration when depth is derived.
+Changing one of these depth inputs invalidates an existing workspace result.
+Older workspaces remain readable, but a previously discarded source depth must
+be recovered by importing the original CSV again. An explicit analysis depth
+does not validate a reinforcement arrangement; existing detailing checks apply.
 
 #### Example Generic CSV
 

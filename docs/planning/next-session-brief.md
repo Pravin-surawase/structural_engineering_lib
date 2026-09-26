@@ -3,10 +3,10 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-09-26
-- Focus: Complete the owner's reliability priority through the existing Python beam design, detailing, BBS/report and serialized CLI export paths.
-- Completed: Preserved the consumed strength inputs, original case, source status and result envelope in compatibility adapters and serialized pipeline outputs.; Bound design-derived details to original geometry/materials, effective and compression depths, stirrup area and the calculated spacing limit. Default spacing follows that limit; explicit incompatible settings remain errors.; Blocked failed combined-design BBS consumption and reused the checked detailing/export services in CLI DXF. Failed designs remain reportable.
-- Recurrence controls: RR-005 x222 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.; RR-004 x27 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.; RR-003 x10 / unknown: Finish code, docs and generated projections before freeze; serialize mutations against formatting, then run read-only integrity after acceptance.
+- Date: 2026-09-27
+- Focus: Complete the source-depth path from generic CSV to Python models, HTTP preview, batch design and durable workspace restoration.
+- Completed: Distinguished exact D/d aliases while retaining duplicate/conflicting-header rejection and preventing a lone overall-depth column from supplying effective depth.; Added optional explicit section `d_mm`, preserved generic CSV aliases and enforced finite, positive depth below D. Invalid supplied depth returns row context and no accepted partial batch.; Carried explicit depth through all three import transports and existing React hooks; saved workspaces now preserve both explicit depth and the existing stirrup/main-bar basis inputs, including result invalidation on change.
+- Recurrence controls: RR-005 x226 / unknown: Discover paths/commands first; use explicit cwd, pinned MTP --project/--filter-class and actual JSON envelopes. Await completion before reading accepted artifacts.; RR-034 x2 / unknown: Use role-specific variables for heterogeneous typed records and verify the configured mypy owner with affected runtime replay before republishing.; RR-004 x28 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.
 <!-- HANDOFF:END -->
 
 ## Current boundary
