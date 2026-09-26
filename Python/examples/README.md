@@ -25,11 +25,23 @@ python3 -m pip install -e ./Python
 python3 Python/examples/canonical_workflows.py
 ```
 
+`physical_member_workflow.py` connects the physical-beam operations: actual bars,
+an explicit project/profile, check results, member aggregation, resolved paths,
+BBS, quantities, declared costs, and calculation-package data. It demonstrates
+missing and stale evidence too. Its teaching profile covers geometry, positive
+flexure, and ordinary-frame seismic applicability; it is not a complete
+building-design profile. It uses current-source typed output and leaf helpers:
+
+```bash
+python3 Python/examples/physical_member_workflow.py
+```
+
 ## Recommended order
 
 | Example | What it demonstrates | Writes files? |
 |---|---|---|
 | `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
+| `physical_member_workflow.py` | Physical bars → profile checks → BBS/quantities/cost/package; missing/stale evidence; current source build | No |
 | `end_to_end_workflow.py` | Installed-package beam design → detailing → BBS → HTML report | No |
 | `simple_examples.py` | Seven focused flexure, shear, detailing, and bar-selection demonstrations | No |
 | `bmd_sfd_example.py` | Bending-moment and shear-force diagrams | No |
