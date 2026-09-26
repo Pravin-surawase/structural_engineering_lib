@@ -157,6 +157,14 @@ The default cadence is implementation first, then one batched verification
 sequence for the agreed bounded packet. A diagnostic check during implementation
 is an exception used to guide or debug the change, not a ritual after each edit.
 
+Prefer several cohesive commits in one milestone PR. `./run.sh check` selects
+essential checks for whole-candidate changed domains: at most 12, four for
+docs-only or eight for Python-only changes. Unknown impact selects the full
+profile. Use `--full` only for a named risk/release reason; `--category` and
+`--quick` remain explicit alternatives. These repository checks accompany the
+affected behavior tests; they do not replace them. Required hosted checks run
+once on the final milestone candidate, not after each internal commit.
+
 1. Inspect only affected files and existing patterns.
 2. Complete the bounded implementation, its tests, documentation, evidence,
    and other intended versioned writes.
@@ -188,11 +196,11 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    PR/hosted cycle.
    Installed-application evidence, mutation authority, and externally acquired
    artifacts remain separate milestone boundaries.
-9. After all intended milestone branches are integrated, run the broad Python suite and
-   `./run.sh check` (currently 32 checks) once at the cumulative closeout.
-   Repeat only a failed portion unless the fix can affect other categories.
-10. Run either broad gate before cumulative closeout only when an
-   outcome-changing failure or repository-wide surface makes it necessary.
+9. Run the broad Python suite or `./run.sh check --full` only when a named
+   risk or release reason calls for it. Milestone completion alone does not
+   require duplicating the required hosted checks locally.
+10. Reuse unchanged successful evidence. After a repair, repeat only the failed
+    or affected checks unless the fix changes outcomes in other areas.
 Required hosted checks are never deferred or bypassed for a publishable
 milestone candidate; they are intentionally not invoked for unpublished
 internal checkpoints on the same branch.
@@ -229,8 +237,8 @@ controls:
 - only then commit an immutable local candidate for a read-only independent
   audit and return one consolidated blocker list after the full audit matrix;
 - run no hosted CI before `PASS <head> <tree>` from that local audit;
-- after PASS, run the full gate at cumulative milestone closeout (earlier only
-  for repository-wide risk), then push once for one hosted validation cycle;
+- after PASS, push the batched commits for one hosted validation cycle; a full
+  local gate requires a separately named risk or release reason;
 - allow the initial candidate plus one consolidated repair candidate; a second
   rejection requires contract/design re-planning; and
 - if the audited head changes, invalidate the PASS rather than spending another
@@ -338,7 +346,7 @@ history. Verify every result before accepting it. Complete the bounded
 implementation first; use a narrow diagnostic during editing only when needed,
 then run one consolidated focused selection after content freezes. Let the
 batched PR own comprehensive candidate assurance; run the full local gate only
-at a named cumulative or release boundary. Close subagents and stop
+for a named risk or release reason. Close subagents and stop
 when done.
 ```
 

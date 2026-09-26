@@ -384,17 +384,6 @@ def test_react_dependency_probe_is_worktree_local_and_actionable(tmp_path):
     assert "npm --prefix react_app ci" in preflight.REACT_INSTALL_COMMAND
 
 
-def test_live_full_gate_count_matches_active_instructions():
-    full_count = sum(len(category.checks) for category in check_all.CATEGORIES)
-    assert full_count == 32
-    for path in (
-        REPO_ROOT / "AGENTS.md",
-        REPO_ROOT / "docs/guidelines/ai-token-efficiency.md",
-        REPO_ROOT / "docs/getting-started/agent-bootstrap.md",
-    ):
-        assert "32 checks" in path.read_text(encoding="utf-8"), path
-
-
 def test_api_classification_timeout_covers_the_generated_surface():
     checks = {
         check.name: check

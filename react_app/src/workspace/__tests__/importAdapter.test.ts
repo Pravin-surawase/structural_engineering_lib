@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import type { BeamCSVRow } from '../../types/csv';
 import { useWorkspaceStore } from '../workspaceStore';
 import { projectExportReadiness } from '../resultRecords';
+import { buildProjectBeamBatchRequest } from '../../hooks/useBatchDesign';
 import {
   beamRowsToWorkspaceMembers,
   synchronizeImportedBeams,
@@ -73,6 +74,46 @@ describe('import workspace adapter', () => {
       { id: 'B1', source_id: 'ETABS-101', b: 300, D: 500, Mu_mid: 120 },
       { id: 'B2', source_id: 'ETABS-102', b: 300, D: 450, Mu_mid: 100 },
     ]);
+  });
+
+  it('preserves explicit and derived depth inputs through saved JSON and design requests', () => {
+    synchronizeImportedBeams([
+      { ...beams[0], d_mm: 470 },
+      { ...beams[1], stirrup_diameter_mm: 10, tension_bar_diameter_mm: 25 },
+    ]);
+    const saved = JSON.parse(JSON.stringify(useWorkspaceStore.getState().snapshot!));
+    const restored = workspaceSnapshotToBeamRows(saved);
+    expect(buildProjectBeamBatchRequest(restored[0], { requestId: 'explicit' })).toMatchObject({
+      D_mm: 500, d_mm: 470,
+    });
+    expect(buildProjectBeamBatchRequest(restored[1], { requestId: 'derived' })).toMatchObject({
+      effective_depth_basis: {
+        clear_cover_mm: 40, stirrup_diameter_mm: 10, tension_bar_diameter_mm: 25,
+      },
+    });
+    delete saved.members[0].inputs.effectiveDepthMm;
+    delete saved.members[0].inputs.stirrupDiameterMm;
+    delete saved.members[0].inputs.tensionBarDiameterMm;
+    expect(workspaceSnapshotToBeamRows(saved)[0].d_mm).toBeUndefined();
+  });
+
+  it.each([
+    { d_mm: 470 }, { stirrup_diameter_mm: 10 }, { tension_bar_diameter_mm: 25 },
+  ])('invalidates a retained result when depth inputs change: %j', (change) => {
+    synchronizeImportedBeams(beams);
+    const initial = useWorkspaceStore.getState().snapshot!.members[0];
+    const pending = useWorkspaceStore.getState().beginMemberRequest('ETABS-101', 'result', 'depth-result')!;
+    useWorkspaceStore.getState().applyMemberRecord('ETABS-101', 'result', {
+      ...pending, lifecycle: 'current', calculationIdentity: 'calculation-identity',
+      libraryVersion: '0.24.0', decision: 'PASS', supportStatus: 'SUPPORTED',
+      data: {}, settledAt: '2026-09-27T00:00:00.000Z',
+    });
+    synchronizeImportedBeams([{ ...beams[0], ...change }, beams[1]]);
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    expect(snapshot.members[0].inputHash).not.toBe(initial.inputHash);
+    expect(snapshot.members[0].inputRevision).toBe(initial.inputRevision + 1);
+    expect(snapshot.members[0].result?.lifecycle).toBe('stale');
+    expect(projectExportReadiness(snapshot).eligible).toBe(false);
   });
 
   it('makes retained results stale when only the ETABS snapshot identity changes', () => {

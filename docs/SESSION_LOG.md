@@ -5,6 +5,63 @@
 
 ---
 
+## 2026-09-27 — Session: Preserve imported effective depth through design and saved projects
+
+**Task:** PY-LIB-IMPROVE-002
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/python-import-depth`
+**Acceptance:** docs/planning/python-library-workflow-improvement-plan.md
+**Focus:** Preserve imported depth through design and saved projects; use essential checks and multiple commits in one milestone PR.
+
+### Completed
+
+- Distinguished exact D/d aliases while retaining duplicate/conflicting-header rejection and preventing a lone overall-depth column from supplying effective depth.
+- Implemented compact changed-area checks and explicit --full mode; added owner-directed scope changes on the same task/branch with retained timing and history. Required hosted gates and the three lightweight commit hooks remain.
+- Corrected the operation hook's partial-commit false hold; recognize Git's own next-index context while retaining other lock holds and preserving unrelated staged content.
+- Added optional explicit section `d_mm`, preserved generic CSV aliases and enforced finite, positive depth below D. Invalid supplied depth returns row context and no accepted partial batch.
+- Carried explicit depth through all three import transports and existing React hooks; saved workspaces now preserve both explicit depth and the existing stirrup/main-bar basis inputs, including result invalidation on change.
+- Added Python, CLI, HTTP and React workflow regressions; updated the existing import specification, Python guidance and schema/API projections.
+
+### Verification
+
+- Baseline at d0722155: D/d headers were blocked as duplicates; accepted eff_d=470 was retained in the ledger but canonical effective depth became 442 mm.
+- Initial focused diagnostic confirmed imported and direct design agreement and all HTTP import paths. Its five positive CLI variants exposed a missing required story in the new test fixture; the fixture now includes that source identity.
+- Frozen I5 evidence comprises model/import/CLI contracts, HTTP import/project design, React CSV/workspace/request tests and production build, full Python and the repository cumulative gate. Exact verdicts and candidate/hosted/merge identities remain in the external delivery ledger.
+- The owner expanded scope after two commits were pushed but before the first PR. The six focused scope-change diagnostic cases passed, then the real ledger advanced PUSHED to REPLAN to BOUNDED_UNITS without fabricated failure or timer reset. The extension's frozen verification selects only the affected control tests and compact repository checks; unchanged I5 evidence is retained.
+- Extension evidence: 227 affected control tests passed; the compact profile passed 12/12 in 6.33 seconds of measured wall time. Token-efficiency and Git workflow checks passed. The instruction-size check exposed duplicated inventory prose above the maintained entrypoint limit; remove that duplication and repeat only affected document/control evidence.
+
+### Issues encountered
+
+- Case-folded duplicate detection rejected structurally distinct D and d. The adapter recognized effective-depth aliases but omitted them from the output model; HTTP and persistence mappings also dropped that input.
+- Workspace snapshots omitted the existing bar-based depth inputs as well, preventing equivalent design requests after reopening a project.
+- Seven read-only discovery commands guessed missing filenames/folders or a zsh glob; the first new CLI fixture omitted required story.
+- Routine check invoked all 32 checks, duplicating broader hosted assurance. The lifecycle had no honest transition for an owner scope expansion after push, encouraging a separate task/PR or a false failure record.
+- The first formatter pass rejected the new control-test sentinel exception name under N818. Rename it SelectionCompleteError and repeat the affected formatter before focused verification; product behavior is unchanged.
+- A real git commit --only was rejected by the operation hook: Git holds its own index.lock while supplying hooks a next-index-PID.lock. No concurrent writer existed, and the lock disappeared when the failed command exited.
+- Hosted control validation found a legacy test requiring the literal phrase 32 checks in three guides. The old bootstrap still described the no-argument command as full validation.
+
+### Root causes and resolutions
+
+- Preserve canonical field identity when detecting duplicates and reserve exact aliases before fallback. Store optional explicit depth in the canonical model and carry it through transport, workspace hashing and restoration. Compare direct/imported calculations and replay both explicit and derived saved inputs.
+- The canonical CLI correctly required story; add it to the regression fixture rather than weakening input validation.
+- The first frozen focused Python/HTTP union passed 252 tests. Local mypy found a reused set/list variable name and an optional Pydantic default inferred as required; use a distinct group_fields variable and keyword-explicit default=None. Re-freeze before affected validation.
+- Final local verification passed 7,952 Python tests (four skipped, six deselected), 34 React workflow tests, mypy for 324 source files, React lint/build and all 32 repository checks. Immutable integrity then rejected unpublished candidate 187ddfe8: the schema snapshot generator writes JSON without a final LF. Fix that owning writer with explicit UTF-8/LF and a final newline, regenerate its output, and verify parsed-content equality plus the file boundary in the one admitted repair.
+- React validation initially could not start because local node_modules lacked eslint. Restored exactly the checked-in dependencies with the maintained pinned-Node npm ci command; no dependency declaration or lockfile changed.
+- The early session check rejected a recurrence table as empty. The maintained parser only consumes bullets; use that existing format and regenerate the handoff.
+- Compact checks select essential contracts, architecture, schema and handoff checks by the maintained impact domains. The existing Git validation guard already includes the operation guard, so the duplicate is omitted from the default profile. Full/quick/category modes remain explicit; unknown impact retains full checks. The added SCOPE_CHANGED command requires the previous candidate SHA, owner evidence and changed acceptance; the existing replan path invalidates acceptance while preserving all previous attempts.
+- RR-049 root cause: the hook treated every observed index.lock as foreign, including Git's own partial-commit lock. Limit the exception to operation-completion mode and an existing Git next-index in this worktree; preserve raw state and all other holds. Real temporary-repository commits prove selected content is committed and other staged content survives, in both primary and linked checkouts.
+- The legacy full-gate test asserted duplicated prose rather than command behavior. Remove that redundant assertion; retained CLI outcome tests cover default selection, explicit full/quick/category modes and unknown-impact fallback. Refresh the bootstrap commands and verify only the affected governance/profile tests and documentation; retain all passing product evidence.
+- ⚠️ TERMINAL ISSUE: guessed paths/glob stopped discovery → known-directory inventories located the existing owners.
+- Terminal resolution: use discovered paths (`useCSVImport.ts`, integration contract files and the shared API classification generator), not inferred filenames/globs. The read-only errors did not mutate product data.
+
+### Rework and recurrence
+
+- RR-049: occurrences=1; minutes=unknown. Recognize the partial-commit hook index context without hiding unrelated locks or relaxing normal validation.
+- RR-048: occurrences=1; minutes=unknown. Snapshot generation omitted the final LF required by immutable integrity; repair the maintained writer and verify freshly generated bytes before the repaired candidate.
+- RR-005: occurrences=229; minutes=unknown. Seven path/glob discovery errors; directory-scoped inventories located the actual owners and known commands resumed the work.
+- RR-034: occurrences=2; minutes=unknown. Distinct typed variable names and an explicit optional constructor default repair local mypy without changing accepted calculations.
+- RR-004: occurrences=30; minutes=unknown. Use maintained session syntax and guarded scope changes; remove the obsolete prose-count test in favor of retained command-behavior tests and refresh bootstrap guidance.
+
 ## 2026-09-26 — Session: Reliable Python design-to-schedule workflows
 
 **Task:** PY-LIB-IMPROVE-001

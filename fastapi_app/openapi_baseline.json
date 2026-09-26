@@ -6271,6 +6271,18 @@
             "title": "Cover Mm",
             "type": "number"
           },
+          "d_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Source-supplied effective depth in mm",
+            "title": "D Mm"
+          },
           "depth_mm": {
             "description": "Beam overall depth in mm",
             "title": "Depth Mm",
@@ -7184,6 +7196,18 @@
             "description": "Clear cover in mm",
             "title": "Cover Mm",
             "type": "number"
+          },
+          "d_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Source-supplied effective depth in mm",
+            "title": "D Mm"
           },
           "depth_mm": {
             "description": "Beam overall depth in mm",

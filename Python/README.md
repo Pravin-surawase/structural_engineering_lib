@@ -143,6 +143,14 @@ python -m structural_lib report results.json --format=html -o report.html
 
 > Requires the `dxf` extra: `pip install "structural-lib-is456[dxf]"`
 
+Generic CSV imports preserve optional effective depth from `d_mm`, `d (mm)`,
+`d`, `eff_d`, `effective_depth_mm` or `Effective Depth`. Overall `D` and effective
+`d` are distinct columns. Supplied depth must be finite and satisfy `0 < d < D`;
+it survives Python model serialization, API import and saved-project restoration.
+When depth is omitted, the existing explicit depth-basis workflow still applies.
+An explicit analysis depth does not establish that generated reinforcement fits;
+design-to-detailing checks continue to verify that separately.
+
 ### Batch Design with the Canonical Project Schema
 
 ```python

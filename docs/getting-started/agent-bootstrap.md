@@ -473,7 +473,8 @@ curl http://localhost:8000/health           # Should return {"status":"ok"}
 
 # Validate codebase
 ./run.sh check --quick                               # Fast validation (10 checks, <30s)
-./run.sh check                                       # Full validation (32 checks, parallel)
+./run.sh check                                       # Essential checks for changed areas
+./run.sh check --full                                # Explicit full validation when needed
 ./run.sh check --category api                        # One category only
 
 # Run tests
@@ -559,7 +560,8 @@ END:    □ Codex reviews the scoped diff
 |--------|--------|-------------------------|
 | Session start | `./run.sh session start` | `./scripts/agent_start.sh --quick` |
 | Git/GitHub closeout | Codex | [canonical workflow](../git-automation/git-workflow-single-source.md) |
-| Full check | `./run.sh check` | N/A (orchestrator) |
+| Essential check | `./run.sh check` | N/A (orchestrator) |
+| Full check | `./run.sh check --full` | N/A |
 | Quick check | `./run.sh check --quick` | N/A |
 | Run tests | `./run.sh test` | `./scripts/python_runtime.sh -m pytest Python/tests/ -v` |
 | Test changed | `./run.sh test --changed` | `./scripts/python_runtime.sh scripts/test_changed.py` |

@@ -218,6 +218,14 @@ The persisted stage gates are:
    integrated checks, and task/handoff/receipt truth. Retain branches and
    worktrees unless deletion is separately authorized.
 
+When the owner expands an unmerged milestone, keep its task, branch and PR.
+Update the acceptance file, record `session delivery --to SCOPE_CHANGED
+--head <previous-candidate-sha> --evidence <owner-instruction>`, then bind the
+revised acceptance through `BOUNDED_UNITS`. This invalidates the old acceptance
+while retaining the original timer, candidate history and aggregate counters.
+It is a scope change, not a failed audit or CI run. Complete the added units in
+cohesive commits and validate the final combined candidate once.
+
 At closeout, the Git-common ignored delivery ledger derives the seven
 non-overlapping wall-time phases, exact candidate heads,
 rejection/repair/retry counters, full-gate count, hosted-run count, and rework
@@ -349,8 +357,10 @@ closeout observation.
 
 - Follow the compact audited-integration gates above when independent acceptance
   is required. Routine work uses focused diagnostics locally and one batched PR
-  for comprehensive assurance. Run `./run.sh check --quick` or the full local
-  gate only when a named cumulative/release boundary or investigation requires it.
+  for comprehensive assurance. Prefer several commits per milestone PR.
+  `./run.sh check` selects essential checks for changed areas. Run full local
+  suites only for a named risk or release reason; do not repeat them for each
+  commit or merely because a milestone ends.
 - Never bypass pre-commit hooks or required GitHub checks.
 - A green software gate is evidence about the software, not structural design
   approval or formula certification.

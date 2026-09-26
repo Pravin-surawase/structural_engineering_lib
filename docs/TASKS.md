@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-26 — Mac is synchronized; Python workflow reliability is the active goal while live ETABS work remains held
+**Updated:** 2026-09-27 — Mac owns the imported-depth milestone; live ETABS work remains held
 
 ---
 
@@ -18,7 +18,8 @@
 
 | ID | Task | Priority | Status | Exit condition |
 |---|---|---|---|---|
-| PY-LIB-IMPROVE-001 | Reliable design → detailing → BBS/report/DXF across public Python and serialized CLI paths | P0 | In progress: implementation complete, delivery gates pending | Original strength inputs/status survive serialization; failed or incompatible schedules are blocked; positive examples and focused/cumulative/hosted gates pass. [Acceptance](planning/python-library-workflow-improvement-plan.md) |
+| PY-LIB-IMPROVE-001 | Reliable design → detailing → BBS/report/DXF across public Python and serialized CLI paths | P0 | Done: PR #1002 merged at d0722155 | Required hosted run 36261661398 passed; reviewed and merged trees match. [Acceptance](planning/python-library-workflow-improvement-plan.md) |
+| PY-LIB-IMPROVE-002 | Preserve imported depth and compact milestone delivery | P0 | In progress: product verified; compact-check extension and one PR delivery | D/d survives imports and saved projects; invalid depth blocks the batch. Default checks select essential changed areas; multiple commits share one PR and retained task history. Required checks pass. [Acceptance](planning/python-library-workflow-improvement-plan.md#milestone-2--preserve-imported-effective-depth) |
 
 ## Maintenance Recovery Dashboard
 

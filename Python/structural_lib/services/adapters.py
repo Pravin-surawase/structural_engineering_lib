@@ -1660,7 +1660,14 @@ class GenericCSVAdapter(InputAdapter):
             "H",
             "Height",
         ],
-        "eff_depth_mm": ["d (mm)", "d_mm", "d", "Effective Depth"],
+        "eff_depth_mm": [
+            "d (mm)",
+            "d_mm",
+            "d",
+            "Effective Depth",
+            "eff_d",
+            "effective_depth_mm",
+        ],
         "fck_mpa": ["fck", "fck_nmm2", "Fck", "fck (N/mm2)", "Concrete Grade"],
         "fy_mpa": ["fy", "fy_nmm2", "Fy", "fy (N/mm2)", "Steel Grade"],
         "cover_mm": ["Cover (mm)", "cover_mm", "Cover", "c"],
@@ -1796,7 +1803,15 @@ class GenericCSVAdapter(InputAdapter):
         """
         column_map = {}
         headers_set = set(headers)
-        headers_lower = {h.lower(): h for h in headers}
+        # A header owned by an exact alias must not also supply another field
+        # through case folding (a lone D must never become an explicit d).
+        exact_headers = {
+            header
+            for aliases in column_spec.values()
+            for header in headers
+            if header in aliases
+        }
+        headers_lower = {h.lower(): h for h in headers if h not in exact_headers}
 
         for internal_name, aliases in column_spec.items():
             # First pass: try exact match
@@ -1877,7 +1892,7 @@ class GenericCSVAdapter(InputAdapter):
                     f"Available: {headers}"
                 )
 
-            for row in reader:
+            for row_number, row in enumerate(reader, start=2):
                 try:
                     beam_id = row[column_map["beam_id"]].strip()
                     if not beam_id:
@@ -1918,11 +1933,18 @@ class GenericCSVAdapter(InputAdapter):
                     # Section properties
                     width_col = column_map.get("width_mm")
                     depth_col = column_map.get("depth_mm")
+                    effective_depth_col = column_map.get("eff_depth_mm")
                     fck_col = column_map.get("fck_mpa")
                     fy_col = column_map.get("fy_mpa")
                     cover_col = column_map.get("cover_mm")
 
                     section = SectionProperties(
+                        d_mm=(
+                            float(row[effective_depth_col])
+                            if effective_depth_col
+                            and (row.get(effective_depth_col) or "").strip()
+                            else None
+                        ),
                         width_mm=(
                             float(
                                 row.get(width_col, self.DEFAULT_WIDTH_MM)
@@ -1983,8 +2005,10 @@ class GenericCSVAdapter(InputAdapter):
                         )
                         continue
 
-                except (KeyError, ValueError):
-                    continue
+                except (KeyError, ValueError) as exc:
+                    raise ValueError(
+                        f"Invalid generic geometry at CSV row {row_number}: {exc}"
+                    ) from exc
 
         return beams
 

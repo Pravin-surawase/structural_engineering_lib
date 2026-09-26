@@ -2,7 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useCSVFileImport } from '../../hooks/useCSVImport';
+import { useCSVFileImport, useCSVTextImport, useDualCSVImport } from '../../hooks/useCSVImport';
+import { buildProjectBeamBatchRequest } from '../useBatchDesign';
 
 // Mock the imported beams store
 const mockSetBeams = vi.fn();
@@ -55,6 +56,32 @@ describe('useCSVFileImport', () => {
     expect(result.current.isImporting).toBe(false);
     expect(result.current.error).toBeNull();
     expect(result.current.reset).toBeInstanceOf(Function);
+  });
+
+  it.each(['file', 'text', 'dual'] as const)('preserves explicit depth from %s import into design', async (transport) => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(JSON.stringify({
+      success: true,
+      data: {
+        success: true, beam_count: 1, warnings: [], beams: [{
+          id: 'B1', source_id: 'B1', width_mm: 300, depth_mm: 500, d_mm: 470,
+          span_mm: 6000, fck_mpa: 25, fy_mpa: 500, cover_mm: 40,
+          mu_knm: 100, vu_kn: 70,
+        }],
+      },
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    const { result } = renderHook(() => ({
+      file: useCSVFileImport(), text: useCSVTextImport(), dual: useDualCSVImport(),
+    }), { wrapper: createWrapper() });
+    const file = new File(['source'], 'beams.csv', { type: 'text/csv' });
+    if (transport === 'file') result.current.file.importFile(file, 'generic', explicitBasis);
+    else if (transport === 'text') result.current.text.importText('source', 'generic', explicitBasis);
+    else result.current.dual.importFiles(file, file, 'generic', explicitBasis);
+    await waitFor(() => expect(mockSetBeams).toHaveBeenCalled());
+    const beam = mockSetBeams.mock.calls[0][0][0];
+    expect(beam.d_mm).toBe(470);
+    const request = buildProjectBeamBatchRequest(beam, { requestId: 'import-depth' });
+    expect(request).toMatchObject({ D_mm: 500, d_mm: 470 });
+    expect(request).not.toHaveProperty('effective_depth_basis');
   });
 
   it('imports file and updates store on success', async () => {

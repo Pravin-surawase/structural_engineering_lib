@@ -96,9 +96,10 @@ Usage: ./run.sh check [options]
 Run validation checks across the codebase.
 
 Options:
-  (no args)            Run ALL checks (parallel by category)
+  (no args)            Essential checks for whole-candidate changed areas
+  --full               All repository checks (explicit cumulative/release gate)
   --quick              Fast subset: links, imports, hygiene (<30s)
-  --changed            Run categories for whole-candidate impact domains
+  --changed            Select whole-candidate domains (default; combine with --full)
   --pre-commit         Run the three ordinary commit-safety hooks
   --candidate-integrity
                        Run hosted-equivalent read-only file checks once after audit
@@ -119,7 +120,8 @@ Categories:
   code         Type annotations
 
 Examples:
-  ./run.sh check                      # Run everything
+  ./run.sh check                      # Essential checks for changed areas
+  ./run.sh check --full               # Full repository validation when needed
   ./run.sh check --quick              # Fast validation
   ./run.sh check --category api       # API checks only
   ./run.sh check --category docs --fix  # Fix doc issues
@@ -1098,7 +1100,7 @@ _run_sh() {
         'efficiency:Validate low-token controls'
         'model:Recommend model and reasoning profile'
     )
-    local -a check_opts=('--quick' '--changed' '--pre-commit' '--candidate-integrity' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
+    local -a check_opts=('--full' '--quick' '--changed' '--pre-commit' '--candidate-integrity' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
     local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'delivery' 'costs' 'compact' 'trust' 'recurrence')
     local -a task_subs=('brief')

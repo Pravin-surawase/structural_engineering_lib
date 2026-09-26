@@ -139,11 +139,87 @@ def test_failed_check_json_retains_actionable_output_without_rerunning(capsys):
         (["--candidate-integrity"], "check candidate integrity"),
         (["--changed"], "check changed"),
         (["--category", "docs"], "check category"),
-        ([], "check full"),
+        (["--full"], "check full"),
+        ([], "check changed"),
     ],
 )
 def test_check_orchestrator_timing_labels_are_stable(argv: list[str], label: str):
     assert check_all._timing_label(argv) == label
+
+
+@pytest.mark.parametrize(
+    ("argv", "domains", "fail_closed", "count", "required", "excluded"),
+    [
+        (
+            [],
+            {"docs"},
+            False,
+            4,
+            {"Broken links", "Tasks format", "Brief integrity", "Git state"},
+            {"API contracts"},
+        ),
+        (
+            [],
+            {"python"},
+            False,
+            8,
+            {"API contracts", "Architecture boundaries", "Schema snapshots"},
+            {"Broken links", "Unfinished operation"},
+        ),
+        (["--changed"], {"fastapi"}, False, 9, {"OpenAPI snapshot"}, {"CLI smoke"}),
+        (
+            [],
+            set(verification.REQUIRED_DOMAINS),
+            False,
+            12,
+            {"API contracts", "OpenAPI snapshot"},
+            {"Type annotations", "Unfinished operation"},
+        ),
+        (
+            [],
+            set(verification.REQUIRED_DOMAINS),
+            True,
+            32,
+            {"CLI smoke", "Type annotations"},
+            set(),
+        ),
+        (["--full"], set(), False, 32, {"CLI smoke", "Type annotations"}, set()),
+        (["--quick"], set(), False, 10, {"CLI smoke"}, {"API contracts"}),
+        (["--category", "api"], set(), False, 4, {"API validation"}, {"Git state"}),
+    ],
+)
+def test_check_cli_selects_essential_changed_profile_or_explicit_full(
+    monkeypatch, argv, domains, fail_closed, count, required, excluded
+):
+    monkeypatch.setattr(check_all.sys, "argv", ["check_all.py", *argv])
+    monkeypatch.setattr(
+        check_all, "_detect_changed_domains", lambda: (domains, fail_closed, ())
+    )
+    collect = check_all._collect_checks
+    selected = []
+
+    class SelectionCompleteError(Exception):
+        pass
+
+    def capture(*args, **kwargs):
+        selected.extend(check.name for check, _ in collect(*args, **kwargs))
+        raise SelectionCompleteError
+
+    monkeypatch.setattr(check_all, "_collect_checks", capture)
+    with pytest.raises(SelectionCompleteError):
+        check_all._main()
+    assert len(selected) == count
+    assert required <= set(selected)
+    assert not excluded.intersection(selected)
+
+
+def test_default_check_skips_clean_candidate(monkeypatch, capsys):
+    monkeypatch.setattr(check_all.sys, "argv", ["check_all.py"])
+    monkeypatch.setattr(
+        check_all, "_detect_changed_domains", lambda: (set(), False, ())
+    )
+    assert check_all._main() == 0
+    assert "nothing to check" in capsys.readouterr().out
 
 
 @pytest.mark.parametrize("option", ["--list", "--help", "-h"])

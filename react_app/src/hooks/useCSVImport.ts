@@ -26,6 +26,7 @@ export interface ImportedBeam {
   story: string;
   width_mm: number;
   depth_mm: number;
+  d_mm?: number | null;
   span_mm: number;
   fck_mpa: number;
   fy_mpa: number;
@@ -308,6 +309,7 @@ export function useCSVFileImport() {
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,
+          d_mm: b.d_mm ?? undefined,
           span: b.span_mm,
           fck: b.fck_mpa,
           fy: b.fy_mpa,
@@ -374,6 +376,7 @@ export function useCSVTextImport() {
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,
+          d_mm: b.d_mm ?? undefined,
           span: b.span_mm,
           fck: b.fck_mpa,
           fy: b.fy_mpa,
@@ -438,6 +441,7 @@ export function useDualCSVImport() {
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,
+          d_mm: b.d_mm ?? undefined,
           span: b.span_mm,
           fck: b.fck_mpa,
           fy: b.fy_mpa,
