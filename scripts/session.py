@@ -1036,7 +1036,7 @@ def _efficiency_payload(
     entries: list[dict],
     observed_at: datetime,
 ) -> dict[str, object] | None:
-    """Validate closeout phases against a task-bound observed start timestamp."""
+    """Measure compact closeout, or validate explicitly selected detailed evidence."""
     raw_phases = getattr(args, "phase", None) or []
     candidate_heads = getattr(args, "candidate_head", None) or []
     counter_values = {
@@ -1062,6 +1062,22 @@ def _efficiency_payload(
         return _automatic_delivery_efficiency(
             args.task_id, entries=entries, observed_at=observed_at
         )
+
+    if not supplied:
+        started = _latest_open_start(args.task_id, entries)
+        if started is None:
+            raise ValueError("closeout requires an unmatched start checkpoint")
+        started_at = datetime.fromisoformat(str(started["timestamp"]))
+        if started_at.tzinfo is None or observed_at < started_at:
+            raise ValueError("task start must be timezone-aware and precede closeout")
+        return {
+            "mode": "compact",
+            "measurement_source": "task start and closeout timestamps; delivery evidence stays in GitHub",
+            "started_at": started_at.isoformat(timespec="seconds"),
+            "total_wall_time_min": round(
+                (observed_at - started_at).total_seconds() / 60, 3
+            ),
+        }
 
     phases: dict[str, float] = {}
     for raw in raw_phases:
@@ -1685,7 +1701,11 @@ def cmd_usage(args: argparse.Namespace) -> int:
             print(
                 "Token/cost fields remain empty unless an authoritative source is added."
             )
-            if efficiency is not None:
+            if efficiency is not None and efficiency.get("mode") == "compact":
+                print(
+                    f"Session elapsed: {efficiency['total_wall_time_min']}m (compact)"
+                )
+            elif efficiency is not None:
                 print(
                     "Efficiency closeout: "
                     f"{efficiency['total_wall_time_min']}m | "

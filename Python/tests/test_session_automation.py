@@ -1150,7 +1150,38 @@ def _complete_efficiency_closeout_args() -> list[str]:
     return arguments
 
 
-def test_closeout_usage_requires_complete_efficiency_evidence(
+def test_compact_closeout_finishes_timer_without_delivery_bookkeeping(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
+    monkeypatch.setattr(session, "_git_checkpoint_state", dict)
+    args = session.build_parser().parse_args(
+        [
+            "usage",
+            "--checkpoint",
+            "closeout",
+            "--task-id",
+            "MAINT-0132",
+            "--verification",
+            "focused tests and required PR checks passed",
+        ]
+    )
+
+    assert session.cmd_usage(args) == 0
+    entries = [json.loads(line) for line in usage_log.read_text().splitlines()]
+    entry = entries[-1]
+    assert entry["elapsed_min"] == 31
+    assert entry["efficiency"]["mode"] == "compact"
+    assert "candidate_heads" not in entry["efficiency"]
+    assert "phases_min" not in entry["efficiency"]
+    assert session._active_usage_start(entries) is None
+    assert "31.0m (compact)" in capsys.readouterr().out
+
+
+def test_closeout_usage_requires_complete_explicit_detailed_evidence(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ):
     usage_log = tmp_path / "model_usage.jsonl"
