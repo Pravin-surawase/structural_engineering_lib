@@ -8,7 +8,7 @@
 
 Open-source IS 456 RC beam design library. Full stack:
 - **Python core** (`Python/structural_lib/`) — Pure math, IS 456:2000 code
-- **FastAPI backend** (`fastapi_app/`) — 93 OpenAPI HTTP operations across 28 router modules, plus a WebSocket route
+- **FastAPI backend** (`fastapi_app/`) — 92 OpenAPI HTTP operations across 28 router modules, plus a WebSocket route
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
 
 The separate Excel-DNA XLL planning/learning track starts at

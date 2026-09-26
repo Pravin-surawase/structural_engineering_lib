@@ -134,8 +134,9 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-93 OpenAPI HTTP operation endpoints across 28 router modules. The separate
-React-contract scanner currently matches 92 OpenAPI paths; that path metric is
+92 OpenAPI HTTP operation endpoints across 28 router modules in the default
+configuration; opt-in live ETABS routes are excluded. The separate
+React-contract scanner currently matches 91 OpenAPI paths; that path metric is
 not the operation count. The WebSocket route is also outside OpenAPI:
 
 | Router | Endpoint | Purpose |
@@ -205,7 +206,7 @@ not the operation count. The WebSocket route is also outside OpenAPI:
 
 | Module | Key Functions |
 |--------|---------------|
-| `services/api.py` | 100 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (21 private helpers) |
+| `services/api.py` | 115 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (21 private helpers) |
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
@@ -274,6 +275,27 @@ colima stop
 
 > **Install (if missing):** `brew install docker docker-compose colima`
 > **Full setup guide:** [mac-mini-setup.md](mac-mini-setup.md)
+
+#### Mac Mini VM removal — 2026-09-25
+
+The owner approved deleting the stopped `default` Colima VM and its Docker data
+to recover device space. Before deletion, Colima 0.10.1 had no running
+containers or local volumes. Its two stopped containers used 49.15 kB; seven
+images used 5.673 GB. The listed image tags were this library's builds or
+Python/Node base images.
+The inspected saved local projects showed no other Docker configuration.
+
+`colima delete default --data` completed. Afterward, `colima list` reported no
+instance, the Colima data-disk directory was empty, and `~/.colima` fell from
+6.9 GB to 20 kB. The Colima application remains installed. Repository source
+files and non-Docker development are unaffected; local Docker runs require a
+new VM and rebuilt or downloaded images.
+
+When Docker is needed again, run `colima start --cpu 4 --memory 4`, then
+`docker info`. Start this project's container workflow with
+`docker compose up --build`. A fresh VM may need to download its base image.
+On Colima 0.9.0 and later, plain `colima delete` retains the container data
+disk; `--data` removes it. See the [Colima FAQ](https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#how-can-i-delete-container-data).
 
 ---
 
@@ -346,7 +368,7 @@ npm run dev
 # React is now at http://localhost:5173
 ```
 
-This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 93 current OpenAPI HTTP operations.
+This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 92 current OpenAPI HTTP operations.
 
 For development with hot-reload (code changes reflect without rebuild):
 ```bash
@@ -425,7 +447,8 @@ curl http://localhost:8000/health           # Should return {"status":"ok"}
 | Problem | Fix |
 |---------|-----|
 | `docker ps` permission denied | Colima not running → `colima start --cpu 4 --memory 4` |
-| Colima download/start fails | Run `colima status`, then inspect `~/.colima/_lima/colima/ha.stderr.log`; do not delete the transferred VM without approval |
+| No Colima instance exists | Run `colima start --cpu 4 --memory 4`, then `docker info` to create and verify a fresh VM |
+| An existing Colima VM fails to start | Run `colima status`, then inspect `~/.colima/_lima/colima/ha.stderr.log`; review its data and obtain owner approval before deleting it |
 | Port 8000 already in use | Inspect the listener: `lsof -nP -iTCP:8000 -sTCP:LISTEN` |
 | Port 5173 already in use | Inspect the listener: `lsof -nP -iTCP:5173 -sTCP:LISTEN` |
 | `uvicorn: command not found` | Use `./scripts/python_runtime.sh -m uvicorn` |

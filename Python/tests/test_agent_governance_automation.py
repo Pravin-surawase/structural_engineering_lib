@@ -742,17 +742,29 @@ def test_sync_numbers_separates_http_operations_paths_and_websockets(
     routers = tmp_path / "fastapi_app" / "routers"
     routers.mkdir(parents=True)
     (routers / "sample.py").write_text(
-        '@router.get("/sample")\n@router.websocket("/live")\n', encoding="utf-8"
+        '@offline_router.get("/sample")\n'
+        '@offline_router.post("/sample")\n'
+        '@live_read_router.post("/disabled-live")\n'
+        '@router.websocket("/live")\n',
+        encoding="utf-8",
     )
     (tmp_path / "fastapi_app" / "main.py").write_text(
         '@app.get("/health")\n', encoding="utf-8"
     )
     (tmp_path / "fastapi_app" / "openapi_baseline.json").write_text(
-        json.dumps({"paths": {"/sample": {}, "/health": {}}}), encoding="utf-8"
+        json.dumps(
+            {
+                "paths": {
+                    "/sample": {"get": {}, "post": {}, "parameters": []},
+                    "/health": {"get": {}},
+                }
+            }
+        ),
+        encoding="utf-8",
     )
     monkeypatch.setattr(sync_numbers, "REPO_ROOT", tmp_path)
 
-    assert sync_numbers.scan_endpoints() == (2, 1)
+    assert sync_numbers.scan_endpoints() == (3, 1)
     assert sync_numbers.scan_openapi_paths() == 2
 
 

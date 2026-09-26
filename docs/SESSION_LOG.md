@@ -5,6 +5,88 @@
 
 ---
 
+## 2026-09-26 — Session: Mac maintenance and GitHub synchronization
+
+**Task:** MAINT-MAC-2026-09-26
+**Agent:** governance (one parent, no subagents)
+**Branch:** `codex/mac-maintenance-2026-09-26`
+**Focus:** Resume development on the Mac from current GitHub history, preserve work on both devices, and repair the confirmed maintenance inventory defect.
+
+### Completed
+
+- Fetched the verified GitHub remote and fast-forwarded Mac main from
+  `9c75e568` to `6b71d7cf`. PR #1000 is merged and its required validation
+  run `36257920855` succeeded. Its temporary ETABS access hold remains active.
+- Preserved all 33 Mac worktrees and existing branches, including the dirty
+  XLL architecture worktree. The Windows task is idle after its documented
+  closeout; its primary checkout still has a retained C# edit and was not
+  modified or represented as synchronized by this Mac session.
+- Carried the two reviewed Colima setup documents from local commit `42d1572a`
+  into this maintenance packet while retaining the original branch and commit.
+  Docker VM recreation remains on demand.
+- Corrected the HTTP inventory to count operations in the independently
+  checked default OpenAPI baseline. Refreshed seven stale values across four
+  documentation files: 92 HTTP operations, 91 paths and 115 public functions.
+- Verified the previous solver research task had completed with standalone
+  artifacts and an integration-pending handoff. Superseded only its unmatched
+  local timer, without elapsed-time or integration claims, and admitted this
+  maintenance task. Initial inspection/synchronization preceded its new timer.
+
+### Verification
+
+- Intake quick gate: 10/10 passed. Python requirements are consistent;
+  source binding and standard hooks passed. The pinned frontend runtime is
+  Node 24.19.0 with npm 11.17.0.
+- Live OpenAPI and its checked baseline independently agree on 92 HTTP
+  operations across 91 paths. The existing focused inventory fixture now
+  exercises named routers, a disabled live route, WebSocket exclusion and
+  multiple HTTP operations on one path.
+- Frozen-candidate gate: focused inventory tests, OpenAPI snapshot,
+  documentation/context/efficiency/session checks and health. One read-only
+  candidate-integrity pass and required hosted checks remain delivery gates;
+  exact candidate, run and merge facts are retained in the external ledger.
+
+### Issues encountered
+
+- An unmatched `SOLVER-RESEARCH-001` timer from 22 September blocked intake.
+- The health scan scored 94/100 because documentation counts were stale; its
+  suggested count of 90 HTTP operations was also incorrect.
+- The diagnostic `sync_numbers.py --check` invocation was rejected because
+  the maintained command uses no flag for dry-run or `--json` for details.
+
+### Root causes and resolutions
+
+- The completed standalone solver work never closed its shared repository
+  timer. Exact-task supersession retained its artifacts and pending integration;
+  a successful maintenance `session begin` proved intake recovered.
+- The inventory matched only decorators named `router` or `app`. It missed
+  two admitted `offline_router` operations; counting every router decorator
+  would also include five disabled live ETABS operations. Counting methods in
+  the independently checked default OpenAPI contract fixes the source of the
+  warning without changing route registration or enabled capabilities.
+- The diagnostic flag was guessed rather than read from the command contract.
+  `sync_numbers.py --json` supplied the exact drift and `--fix` updated only
+  the four inspected documentation surfaces after the counter was repaired.
+
+### Rework and recurrence
+
+- RR-004; occurrences=26; minutes=unknown. A completed standalone task left an unmatched timer; verify its final handoff, supersede only the exact timer without completion claims, then begin the maintenance task.
+
+### Next
+
+- Continue on the Mac from the merged maintenance head using a fresh task
+  branch. Prepare member/support intent and ULS/SLS roles offline against
+  retained evidence; installed ETABS force/station qualification remains held.
+- Ten dependency-update PRs remain open and require a separate reviewed
+  upgrade packet. Preserve old worktrees, the Windows edit and solver artifacts.
+- The unpublished solver documentation candidate `91207365` remains held.
+  Any future integration must replan and rebind its shared session/recurrence
+  files against then-current main; it is not an active writer or an accepted
+  predecessor of this maintenance packet. Two unavailable temporary worktree
+  entries remain UNKNOWN and retained; no cleanup is authorized by this scan.
+
+---
+
 ## 2026-09-26 — Session: Temporary ETABS access hold and project status
 
 **Task:** ETABS-OFFLINE-STATUS
