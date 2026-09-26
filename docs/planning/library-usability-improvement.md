@@ -113,18 +113,44 @@ The verified wheel has SHA-256
 `1f08ab62d54bb36b792de5afaa738109650b5367e3d6e0a66e8dff2b8dcf9af7`.
 It is a local source build; no package publication or release was performed.
 
-## Next bounded work
+## Physical-member composition batch
 
-The promoted `structural_lib.beam` project/profile, physical reinforcement,
-complete-member, and construction-package workflows have maintained regression
-tests, but the advertised examples do not yet demonstrate their composition.
-Trace a realistic installed caller through those existing owners, fix confirmed
-main-process defects, and provide one executable example with a matching guide.
-Preserve execution, applicability, engineering, completeness, and freshness as
-separate evidence dimensions; do not turn example metadata into engineering
-approval. Acceptance requires the example to run from the installed wheel and
-report missing or stale evidence honestly. Use focused checks for changes found
-there; the unchanged cumulative suite above does not need another run.
+The family JSON batch merged as PR #1008. The next batch addresses a confirmed
+composition obstacle in the promoted physical-beam API: operation results have
+JSON-shaped outputs, while downstream requests need nested dataclasses and
+enums. Passing AO18's output directly to AO19 raises an `AttributeError`; each
+caller otherwise rebuilds the record tree and evidence fields manually.
+
+- Add `OperationResult.output_as` to recover typed output records while checking
+  canonical payload equality. Preserve existing serialized output and states.
+- Add `MemberLeafEvidence.from_result` to copy genuine result identities,
+  provenance, diagnostics and states into a profile-derived leaf.
+- Provide one executable physical-bar → member → BBS → quantity → cost → package
+  example and update the existing guides. Its teaching profile is explicitly
+  limited to geometry, positive flexure and ordinary seismic applicability;
+  it must not be represented as a complete building-design profile. The native
+  WP11 automatic ETABS baseline is .NET-only and is not part of this Python API.
+- Accept only after the installed wheel runs the entire example and preserves
+  missing/stale evidence as partial/draft, with no invented human approval.
+  Check affected WP01-WP08 result consumers, the typed caller, and strict docs.
+  The unchanged cumulative suite above does not need another run.
+
+Verification: 67 focused WP01/WP06/WP07/WP08 checks passed; the two changed
+library modules and the example pass mypy. Changed-path formatting, generated
+API inventories (no inventory changes), and strict documentation build passed.
+The complete example runs in isolated Python mode from a fresh wheel-only
+environment with declared dependencies, with NumPy, ezdxf, Jinja2 and pytest
+absent. It reports 59.187606 kg steel, 0.9 m³ concrete, 7.8 m² formwork, a
+complete teaching-profile member, a partial missing-leaf member, and a stale
+draft package without human approval. Wheel SHA-256:
+`64190f506ff231f5958170f993c3c567c8d11a3a65bdd04451787e890e185000`.
+
+The remaining promoted caller acceptance is a bounded finite-domain candidate
+ranking example with genuine member and quantity evidence. WP08 regression
+fixtures currently construct those payloads directly; a caller recipe must
+demonstrate the real chain and retain the declared engineering-profile limits.
+Keep this in the same broader usability goal rather than calling the whole
+library finished after only family and package examples.
 
 Use several cohesive commits and one PR per integrated batch. Focused checks
 run after the batch; required hosted checks run on its published head.

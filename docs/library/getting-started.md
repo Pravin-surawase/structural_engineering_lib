@@ -84,6 +84,54 @@ human actions stay explicit. See the
 [WP07 reference](reference/wp07-construction-calculation-package.md) for the
 public signatures and reconciliation rules.
 
+### Connect the physical operations in Python
+
+The runnable [physical-member example](../../Python/examples/physical_member_workflow.py)
+connects project/profile creation, genuine geometry/flexure/seismic checks,
+member aggregation, physical paths, BBS, quantities, declared costs, and package
+data. Install the current source build; the new helpers are not assumed to
+exist in the older published wheel:
+
+```bash
+python3 -m pip install -e ./Python
+python3 Python/examples/physical_member_workflow.py
+```
+
+Results keep their JSON-shaped `outputs` for serialization. Use
+`result.output_as(key, OutputType)` to recover a typed record for another
+operation, including nested dataclasses, tuples, and enums:
+
+```python
+project = project_result.output_as("project", BeamProject)
+schedule = path_result.output_as("reinforcement_schedule", BarPathOutput)
+bbs = bbs_result.output_as("bbs", BbsOutput)
+```
+
+Projection checks that the canonical payload is unchanged. A missing output
+raises `KeyError`; a mismatched or lossy type raises `ValueError`. Inspect the
+result states before proceeding; projection also permits inspection of partial
+outputs and does not turn them into passing evidence.
+
+Use `MemberLeafEvidence.from_result("flexure@B1", actual_check_result, ...)` to
+retain the operation's exact identities, states, diagnostics and provenance.
+Use `reporting.result_binding(result, output_key)` for construction-package
+dependencies. Both helpers copy evidence; they do not run or approve a check.
+
+The example's frozen teaching profile requires geometry, positive flexure, and
+ordinary-frame seismic applicability. It is deliberately not a complete
+building-design profile. It measures four supplied 20 mm straight bars in a
+300 × 500 × 6000 mm prism: 59.187606 kg steel, 0.9 m³ concrete and 7.8 m² formwork.
+Rates are explicit invented teaching inputs. Shear, torsion, serviceability,
+anchorage, durability and actual construction approval remain outside that
+fixture. A real integration supplies its approved complete profile and genuine
+results for every required check.
+
+Removing a required result keeps the member partial; marking its evidence
+stale keeps the package a draft. `issue_ready` only describes the complete
+declared semantic package. The example records no human approval and renders
+no issued files. The native WP11 ETABS baseline in the reference is a separate
+.NET application contract, not an automatic Python design entry point.
+
 WP08 expands an explicit finite section/bar/link domain, binds each candidate
 to the complete profile-derived member result and physical WP07 quantities,
 and ranks only candidates with complete evidence. Fixed-action studies retain

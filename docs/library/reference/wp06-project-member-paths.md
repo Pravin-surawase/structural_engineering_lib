@@ -82,6 +82,12 @@ result = create_beam_project(request)
 assert result.engineering == "pass"
 ```
 
+For the next operation, obtain the public record with
+`result.output_as("project", BeamProject)` (`BeamProject` is exported by
+`structural_lib.beam`). This restores the nested profile, rule enums, and tuples
+without changing the canonical payload. The existing `outputs` mapping and
+`to_dict()` remain suitable for serialization.
+
 ## AO17: design a complete member
 
 AO17 does not accept a caller-provided list of required check names. It derives
@@ -109,6 +115,14 @@ Effective-depth iteration is also explicit. Iterations are sequential and bind
 the calculated depth to the dependent result ids and reinforcement revision.
 The member qualifies only when the final iteration is converged against the
 current physical reinforcement revision.
+
+`MemberLeafEvidence.from_result(leaf_id, actual_result, ...)` copies the exact
+operation result's states, identities, provenance revisions and diagnostics.
+Optional required/supplied/selected values, units and utilization come from
+that same check's outputs. The factory preserves failed, missing-input and
+stale states; AO17 still applies the profile's qualification rules. See the
+[executable composition example](../../../Python/examples/physical_member_workflow.py)
+for actual checks and missing/stale member outcomes.
 
 ## AO18: resolve reinforcement paths
 
