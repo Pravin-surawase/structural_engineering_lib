@@ -36,12 +36,43 @@ building-design profile. It uses current-source typed output and leaf helpers:
 python3 Python/examples/physical_member_workflow.py
 ```
 
+`candidate_ranking_workflow.py` reuses that physical fixture to calculate three
+actual arrangements, including their 40 links, BBS and quantities. It excludes
+a failed smaller-bar arrangement, ranks the passing ones, and shows budget and
+stale-evidence outcomes. Keep both example files together:
+
+```bash
+python3 Python/examples/candidate_ranking_workflow.py
+```
+
+`beam_checks_workflow.py` gives explicit calls for topology, beam-line analysis,
+action normalization, physical capacity, deflection, crack width, anchorage,
+laps, and reinforcement fit. It also shows missing-evidence and seismic
+applicability outcomes. Service components and strain are declared teaching
+inputs; the elastic analysis does not establish them:
+
+```bash
+python3 Python/examples/beam_checks_workflow.py
+```
+
+`analysis_snapshot_replay.py` validates and round-trips an existing portable
+snapshot without ETABS. With no argument it reads the clone's synthetic WP10
+fixture; supply your snapshot path to validate your own captured evidence:
+
+```bash
+python3 Python/examples/analysis_snapshot_replay.py
+python3 Python/examples/analysis_snapshot_replay.py /path/to/snapshot.json
+```
+
 ## Recommended order
 
 | Example | What it demonstrates | Writes files? |
 |---|---|---|
 | `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
+| `beam_checks_workflow.py` | Explicit analysis, capacity, serviceability and detailing calls; evidence remains distinct | No |
 | `physical_member_workflow.py` | Physical bars → profile checks → BBS/quantities/cost/package; missing/stale evidence; current source build | No |
+| `candidate_ranking_workflow.py` | Genuine candidate calculations → finite-domain ranking; failed, budget and stale outcomes; current source build | No |
+| `analysis_snapshot_replay.py` | Offline snapshot validation, canonical replay and rejection diagnostics | No |
 | `end_to_end_workflow.py` | Installed-package beam design → detailing → BBS → HTML report | No |
 | `simple_examples.py` | Seven focused flexure, shear, detailing, and bar-selection demonstrations | No |
 | `bmd_sfd_example.py` | Bending-moment and shear-force diagrams | No |

@@ -675,6 +675,19 @@ def test_changed_typed_output_with_old_binding_is_rejected_as_incomplete() -> No
     )
 
 
+def test_binding_cannot_attach_modified_quantity_to_original_result() -> None:
+    quantities = _quantities("candidate", steel_kg=100)
+    result = _envelope(
+        quantities,
+        "structural.construction_quantities.calculate/v1",
+        EngineeringState.PASS,
+    )
+    original = candidate_result_binding(result, quantities)
+    assert original.result_id == result.result_id
+    with pytest.raises(ValueError, match="does not match"):
+        candidate_result_binding(result, replace(quantities, steel_scheduled_mass_kg=1))
+
+
 def test_cost_objective_rejects_nonportable_decimal_notation() -> None:
     domain = _domain(longitudinal=(_domain().longitudinal_choices[0],))
     candidate = build_candidate_domain(domain).candidates[0]

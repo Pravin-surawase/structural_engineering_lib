@@ -5,6 +5,14 @@ contract. It defines what a later getter-only adapter must supply, and what
 ordinary Python and .NET callers can validate and replay without ETABS, Excel,
 COM, or CSI assemblies.
 
+The [Python replay example](../../../Python/examples/analysis_snapshot_replay.py)
+validates captured JSON, returns typed rejection diagnostics and checks a
+canonical round-trip. Install the current source build and run
+`python3 Python/examples/analysis_snapshot_replay.py snapshot.json`.
+Omit the path to use the repository's synthetic conformance fixture. This
+example reads caller-supplied bytes; it does not acquire or normalize live
+ETABS data. An accepted snapshot retains engineering `not_evaluated`.
+
 ## Public operations
 
 | Language | Request parsing | Snapshot replay |

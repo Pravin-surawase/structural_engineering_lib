@@ -5,6 +5,7 @@ from .contracts import __all__ as _contract_exports
 from .operations import (
     OPTIMIZE_BEAM_OPERATION,
     RANK_CANDIDATES_OPERATION,
+    bind_candidate_evaluation,
     build_candidate_domain,
     candidate_result_binding,
     optimize_beam,
@@ -15,6 +16,7 @@ __all__ = [
     *_contract_exports,
     "OPTIMIZE_BEAM_OPERATION",
     "RANK_CANDIDATES_OPERATION",
+    "bind_candidate_evaluation",
     "build_candidate_domain",
     "candidate_result_binding",
     "optimize_beam",

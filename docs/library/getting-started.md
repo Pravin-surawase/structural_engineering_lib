@@ -69,6 +69,16 @@ placement opening. See the
 [WP05 reference](reference/wp05-detailing-constructability.md) for the complete
 signatures, normalized source rules, and construction-fit behavior.
 
+Run the [beam checks example](../../Python/examples/beam_checks_workflow.py)
+for the explicit Python requests used by WP02–WP05:
+
+```bash
+python3 Python/examples/beam_checks_workflow.py
+```
+
+The fixtures declare separate action, service-component, strain and detailing
+bases. Successful individual checks do not establish complete-member acceptance.
+
 WP06 freezes those decisions in a versioned project/profile, derives the
 complete expected member-check set from that profile and topology scope, and
 resolves physical reinforcement into marked tangent straights and bend arcs.

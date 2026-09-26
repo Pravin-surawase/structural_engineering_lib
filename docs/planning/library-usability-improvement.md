@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: active
+status: complete
 last_updated: 2026-09-27
 doc_type: plan
 ---
@@ -30,7 +30,7 @@ test suite alone is insufficient. Existing supported engineering scope is the
 starting boundary; adding unsupported structural systems or publishing a new
 release is a separate decision.
 
-## Current work
+## Completed implementation batches
 
 - Baseline: `244a2dae76b253e6c8abd99e5af5329d5b1e0bef`.
 - Confirmed: nine family builders expose `Any` groups, ten family modules have
@@ -85,13 +85,13 @@ release is a separate decision.
   those gates for documentation-only evidence updates; repair only affected
   evidence if a confirmed failure changes the candidate.
 
-## Current evidence
+## Cumulative family and transport evidence
 
-The implementation and usability outcomes above have the following current
-evidence. The family JSON batch can be delivered after required hosted checks
-pass and its reviewed head is merged; those exact head/run/merge facts stay in
-GitHub. The wider usability goal remains active for the complete-member caller
-journey described below.
+The family JSON batch merged as PR #1008 and the physical composition batch as
+PR #1009 after their required hosted checks passed. The table below records
+the cumulative family/transport baseline; the later sections record the
+affected evidence for physical composition and the final caller batch. Exact
+candidate, hosted-run and merge identities remain in GitHub.
 
 | Outcome | Verified evidence |
 |---|---|
@@ -145,12 +145,62 @@ complete teaching-profile member, a partial missing-leaf member, and a stale
 draft package without human approval. Wheel SHA-256:
 `64190f506ff231f5958170f993c3c567c8d11a3a65bdd04451787e890e185000`.
 
-The remaining promoted caller acceptance is a bounded finite-domain candidate
-ranking example with genuine member and quantity evidence. WP08 regression
-fixtures currently construct those payloads directly; a caller recipe must
-demonstrate the real chain and retain the declared engineering-profile limits.
-Keep this in the same broader usability goal rather than calling the whole
-library finished after only family and package examples.
+## Candidate evidence and remaining caller recipes
 
-Use several cohesive commits and one PR per integrated batch. Focused checks
-run after the batch; required hosted checks run on its published head.
+The final batch closes the remaining Python caller categories and fixes an
+outcome-changing implementation defect found while constructing the real chain:
+
+- `candidate_result_binding` accepted a detached quantity payload while keeping
+  the original operation's result identity. Replacing a candidate's calculated
+  steel mass with 1 kg changed the selected optimum. It now requires canonical
+  equality with an actual output of that operation and rejects a mismatch.
+- `bind_candidate_evaluation` composes typed member, quantity and optional cost
+  results without rebuilding nested records. The ranker retains its existing
+  identity, profile, freshness, completeness and coupling qualification rules.
+- `candidate_ranking_workflow.py` calculates all three physical arrangements,
+  including four longitudinal bars and 40 actual link paths. The 12 mm case
+  fails; 20 mm and 25 mm pass the declared teaching profile. The eligible
+  20 mm case has 80.345690 kg steel versus 113.638719 kg for 25 mm. A budget
+  stop or stale selected member prevents a selection and optimum claim.
+- `beam_checks_workflow.py` runs 21 explicit WP02–WP05 operations, including
+  topology, analysis, real action-row normalization, capacity, serviceability,
+  anchorage, a lap and reinforcement arrangement. Missing load history, strain
+  or seismic context remains unevaluated. The successful elastic analysis is
+  also unevaluated as an engineering check. Service components and strain are
+  declared teaching inputs, not inferred from that analysis.
+- `analysis_snapshot_replay.py` validates portable WP10 JSON and a canonical
+  round-trip. It runs offline with the synthetic fixture or a supplied file;
+  a changed evidence hash is rejected without exposing an accepted snapshot.
+  The native ETABS acquisition/normalization route remains distinct.
+- The API chooser and existing references link these executable callers and
+  use the actual public construction, reporting, optimization and snapshot
+  namespaces.
+
+Verification: 21 focused WP08 checks and three executable-caller integration
+checks pass. Six affected library/example files pass mypy. The five
+current-source examples and all 13 positive/negative family recipes run from a
+fresh installed wheel, with the package origin verified and NumPy, ezdxf,
+Jinja2 and pytest absent. The final local wheel SHA-256 is
+`b352f150c235af7d23b156e7c569b06b84e077b6506e55a221525815f4d22fee`.
+The 10 retained compatibility examples were already replayed at the cumulative
+baseline; their owners are unchanged by the physical/candidate batches.
+
+## Completion and boundaries
+
+All six acceptance areas have source, caller and installed-package evidence:
+typed APIs and discoverable signatures, registered calculation-owner traces,
+structured intake and explicit result states, executable recipes across the
+promoted Python workflow categories, clean installation and transport replay,
+and measured startup improvement. The final source candidate also passes
+changed-path formatting, generated API checks and the strict documentation
+build. Required hosted checks apply to the reviewed candidate before merge.
+
+The cumulative 8,002-test run is retained as the shared-boundary baseline;
+only affected physical/candidate behavior was retested afterwards. The final
+batch changes no family arithmetic or CLI/HTTP owner. Several cohesive commits
+share one PR and one required hosted-check cycle per integrated batch.
+
+This completes the current supported Python usability goal. Teaching profiles
+do not establish complete-building design or construction approval. Public
+package publication, installed Windows Excel/ETABS qualification, native-only
+WP11 baseline design and new structural-system scope remain separate work.
