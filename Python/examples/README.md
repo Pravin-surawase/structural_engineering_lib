@@ -17,7 +17,7 @@ python3 -m structural_lib install-preflight
 
 `canonical_workflows.py` uses public request groups, a beam-to-BBS workflow,
 column and slab checks, structured errors and a JSON round-trip. The newly
-exposed group imports and slab builders require the current source build;
+exposed group imports, slab builders, and JSON loaders require the current source build;
 they are not assumed to exist in the older published wheel.
 
 ```bash

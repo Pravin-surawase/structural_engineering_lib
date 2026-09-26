@@ -113,10 +113,9 @@ import json
 
 from structural_lib.design.is456 import {alias}
 
-payload = json.loads(
-    r"""{payload}"""
-)
-request = {alias}.{recipe.loader}(payload)
+request_json = r"""{payload}"""
+request = {alias}.{recipe.loader}_json(request_json)
+payload = request.model_dump(mode="json")
 result = {alias}.{recipe.operation}(request)
 
 print(result.intake_status)
@@ -127,6 +126,12 @@ print(json.dumps(result.to_dict(), allow_nan=False, sort_keys=True))
 
 `PASS`, `FAIL`, and `HOLD` are engineering/review outcomes for valid intake.
 They are not interchangeable with `InputContractError`.
+
+The JSON loader accepts text or UTF-8 bytes (including a byte-order mark),
+rejects duplicate fields and non-finite numbers, and preserves field issue
+paths. For a saved request, use
+`{alias}.{recipe.loader}_json(Path("request.json").read_bytes())` after importing
+`Path` from `pathlib`. Existing Python mappings use `{alias}.{recipe.loader}`.
 
 ## Rejected-input example
 
@@ -148,8 +153,8 @@ except InputContractError as error:
 
 Typed request groups are exported from `{workflow.module}` alongside the
 operations below. Mapping inputs remain supported for JSON/HTTP callers.
-This reference follows the current source; newly added builders and group
-imports require its matching build rather than an older published wheel.
+This reference follows the current source; JSON loaders, newly added builders,
+and group imports require its matching build rather than an older published wheel.
 
 ::: {workflow.module}
     options:
@@ -167,7 +172,8 @@ imports require its matching build rather than an older published wheel.
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-This recipe is verified against `structural-lib-is456=={PROJECT_VERSION}` and remains
+This recipe is verified against the current source build (package version
+`{PROJECT_VERSION}`), not the older published wheel with that version, and remains
 subject to qualified review. It is not professional approval, engineering-use
 approval, construction-use approval, or Windows application acceptance.
 '''

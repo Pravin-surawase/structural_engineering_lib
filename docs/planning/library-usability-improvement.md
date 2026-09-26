@@ -64,10 +64,52 @@ release is a separate decision.
   from the default and compares the complete restored record.
 - Batch 2 verification: 272 focused import/API compatibility, CLI, Excel bridge,
   DXF, and report checks pass; the three changed library modules pass type
-  checking. Regenerated API inventories have no changes. Hosted checks and
-  integration remain attached to its PR.
-- Next: trace calculation/result and transport paths for outcome-changing
-  implementation defects; replay and repair the broader installed user journey.
+  checking. Regenerated API inventories have no changes. PR #1007 merged after
+  required hosted checks passed.
+- Clean-install replay at `eae98738`: a fresh virtual environment containing only
+  the wheel and declared Pydantic dependencies runs all 13 positive/negative
+  family recipes and the typed workflow example. Imported origin was inside
+  that environment; NumPy, ezdxf, Jinja2, and pytest were absent.
+- Batch 3 fixes an outcome-changing JSON intake defect: duplicate `vu_kn`
+  members silently discarded the first action. A request containing 500 kN
+  followed by 75 kN returned PASS even though 500 kN alone fails. One common
+  JSON boundary now rejects duplicates with the complete field path, rejects
+  non-finite numbers, and exposes syntax/encoding failures as library issues.
+- Every supported family has a typed JSON loader, including slab variants and
+  supplied beam checks. The canonical CLI and V2 HTTP beam route use the same
+  ambiguity check. Cookbooks and the typed example show direct JSON loading.
+- Final verification reason: this batch changes the shared input boundary and
+  public loader inventory across all supported families. After content freezes,
+  run one cumulative Python suite (including the maintained independent family
+  benchmarks), strict docs, and installed Python/CLI/API replay. Do not repeat
+  those gates for documentation-only evidence updates; repair only affected
+  evidence if a confirmed failure changes the candidate.
+
+## Completion evidence
+
+The implementation and usability outcomes above have the following current
+evidence. Delivery is complete when the required hosted checks pass and the
+reviewed batch is merged; those exact head/run/merge facts stay in GitHub.
+
+| Outcome | Verified evidence |
+|---|---|
+| Public API and signatures | Typed groups/results across 11 family modules; 14 typed JSON loaders; 15 changed implementation/example files pass mypy; canonical documentation debt is zero |
+| Calculation and result flow | Runtime traces of all 13 family journeys reach their registered calculation owners and preserve expected PASS/FAIL/HOLD states; the cumulative Python suite includes existing independent arithmetic, golden-vector, physical-beam, and workflow regressions |
+| Intake and errors | JSON request round-trips preserve all 13 request models plus supplied beam bar arrays; duplicate actions, non-finite values, syntax and encoding failures produce structured issues; CLI and HTTP reject ambiguous action values |
+| Examples and reference | All 11 advertised examples execute against the installed wheel with only declared dependencies; all 13 family recipes pass; strict documentation build succeeds and rendered JSON-loader references were inspected |
+| Packaging and transports | Fresh virtual environment, installed origin verified, no NumPy/ezdxf/Jinja2/pytest; installed CLI PASS, FAIL, and rejected-input cases pass; V1 preserves engineering FAIL and V2 exactly matches Python while rejecting duplicate JSON |
+| Performance and maintenance | Measured import improvement and the lossless Excel-bridge JSON fix are integrated in PR #1007; JSON parsing has one shared owner across the family loaders, canonical CLI, and V2 ambiguity check |
+
+Cumulative command:
+`./run.sh test --python -q -m 'not slow and not performance' --disable-warnings --durations=5`.
+Result: 8,002 passed and 4 skipped. Slow/performance tests were excluded; this is
+software evidence for the supported library scope, not installed Windows-host
+acceptance. The affected HTTP checks pass (10 tests), and changed-path formatting
+and generated API/cookbook checks pass.
+
+The verified wheel has SHA-256
+`1f08ab62d54bb36b792de5afaa738109650b5367e3d6e0a66e8dff2b8dcf9af7`.
+It is a local source build; no package publication or release was performed.
 
 Use several cohesive commits and one PR per integrated batch. Focused checks
 run after the batch; required hosted checks run on its published head.

@@ -1311,7 +1311,7 @@
       "result_contract": "beam-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.canonical_beam.design",
@@ -1875,7 +1875,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.codes.is456.beam.torsion.design_torsion",
@@ -2466,7 +2466,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design/check",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.column_api.design_column_is456",
@@ -3093,7 +3093,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input_one_way/load_one_way",
+      "constructor": "input_one_way/load_one_way/load_one_way_json",
       "operation": "design_one_way",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.slab_api.design_complete_one_way_slab_is456",
@@ -3918,7 +3918,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input_continuous_one_way/load_continuous_one_way",
+      "constructor": "input_continuous_one_way/load_continuous_one_way/load_continuous_one_way_json",
       "operation": "design_continuous_one_way",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.slab_api.design_continuous_one_way_slab_builtin_is456",
@@ -4789,7 +4789,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input_two_way/load_two_way",
+      "constructor": "input_two_way/load_two_way/load_two_way_json",
       "operation": "design_two_way",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.slab_api.design_two_way_slab_panel_builtin_is456",
@@ -5479,7 +5479,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.wall_api.design_braced_wall_is456",
@@ -6302,7 +6302,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.staircase_api.design_straight_flight_staircase_is456",
@@ -7186,7 +7186,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.deep_beam_api.design_simply_supported_deep_beam_is456",
@@ -8562,7 +8562,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.flat_slab_api.design_regular_interior_flat_slab_is456",
@@ -9624,7 +9624,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.footing_api.design_concentric_isolated_footing_is456",
@@ -11132,7 +11132,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.combined_footing_api.design_symmetric_combined_footing_is456",
@@ -13193,7 +13193,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "input/load",
+      "constructor": "input/load/load_json",
       "operation": "design",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.strap_footing_api.design_property_line_strap_footing_is456",
@@ -13589,8 +13589,8 @@
     {
       "module": "structural_lib.design.is456.beam",
       "export_classification": "preview",
-      "declared_export_count": 43,
-      "classified_symbol_count": 47,
+      "declared_export_count": 45,
+      "classified_symbol_count": 50,
       "symbols": [
         {
           "name": "BEAM_FIELD_CONTRACTS",
@@ -14544,6 +14544,35 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.beam.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'BeamDesignInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_supplied_check",
           "qualified_name": "structural_lib.design.is456.beam.load_supplied_check",
           "kind": "function",
@@ -14576,6 +14605,52 @@
           }
         },
         {
+          "name": "load_supplied_check_json",
+          "qualified_name": "structural_lib.design.is456.beam.load_supplied_check_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'BeamSuppliedCheckRequestV2'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.beam.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.beam.model_validate_or_error",
           "kind": "function",
@@ -14597,8 +14672,8 @@
     {
       "module": "structural_lib.design.is456.torsion",
       "export_classification": "preview",
-      "declared_export_count": 13,
-      "classified_symbol_count": 21,
+      "declared_export_count": 14,
+      "classified_symbol_count": 23,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -14966,6 +15041,52 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.torsion.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.torsion",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'TorsionDesignInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.torsion.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.torsion.model_validate_or_error",
           "kind": "function",
@@ -15021,8 +15142,8 @@
     {
       "module": "structural_lib.design.is456.column",
       "export_classification": "preview",
-      "declared_export_count": 14,
-      "classified_symbol_count": 22,
+      "declared_export_count": 15,
+      "classified_symbol_count": 24,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -15420,6 +15541,52 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.column.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'ColumnDesignInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.column.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.column.model_validate_or_error",
           "kind": "function",
@@ -15475,8 +15642,8 @@
     {
       "module": "structural_lib.design.is456.slab",
       "export_classification": "preview",
-      "declared_export_count": 30,
-      "classified_symbol_count": 44,
+      "declared_export_count": 33,
+      "classified_symbol_count": 48,
       "symbols": [
         {
           "name": "Any",
@@ -16268,6 +16435,35 @@
           }
         },
         {
+          "name": "load_continuous_one_way_json",
+          "qualified_name": "structural_lib.design.is456.slab.load_continuous_one_way_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.slab",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'ContinuousOneWaySlabInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_one_way",
           "qualified_name": "structural_lib.design.is456.slab.load_one_way",
           "kind": "function",
@@ -16284,6 +16480,35 @@
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
             "signature": "(value: 'Mapping[str, object] | OneWaySlabInputV1') -> 'OneWaySlabInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_one_way_json",
+          "qualified_name": "structural_lib.design.is456.slab.load_one_way_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.slab",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'OneWaySlabInputV1'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -16321,6 +16546,52 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_two_way_json",
+          "qualified_name": "structural_lib.design.is456.slab.load_two_way_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.slab",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'TwoWaySlabInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.slab.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
           }
@@ -16381,8 +16652,8 @@
     {
       "module": "structural_lib.design.is456.wall",
       "export_classification": "preview",
-      "declared_export_count": 14,
-      "classified_symbol_count": 24,
+      "declared_export_count": 15,
+      "classified_symbol_count": 26,
       "symbols": [
         {
           "name": "BracedWallDesignInput",
@@ -16800,6 +17071,52 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.wall.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.wall",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'BracedWallInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.wall.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.wall.model_validate_or_error",
           "kind": "function",
@@ -16855,8 +17172,8 @@
     {
       "module": "structural_lib.design.is456.staircase",
       "export_classification": "preview",
-      "declared_export_count": 14,
-      "classified_symbol_count": 24,
+      "declared_export_count": 15,
+      "classified_symbol_count": 26,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -17274,6 +17591,52 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.staircase.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.staircase",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'StaircaseInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.staircase.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.staircase.model_validate_or_error",
           "kind": "function",
@@ -17329,8 +17692,8 @@
     {
       "module": "structural_lib.design.is456.deep_beam",
       "export_classification": "preview",
-      "declared_export_count": 14,
-      "classified_symbol_count": 24,
+      "declared_export_count": 15,
+      "classified_symbol_count": 26,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -17748,6 +18111,52 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.deep_beam.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.deep_beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'DeepBeamInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.deep_beam.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.deep_beam.model_validate_or_error",
           "kind": "function",
@@ -17803,8 +18212,8 @@
     {
       "module": "structural_lib.design.is456.flat_slab",
       "export_classification": "preview",
-      "declared_export_count": 16,
-      "classified_symbol_count": 26,
+      "declared_export_count": 17,
+      "classified_symbol_count": 28,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -18260,6 +18669,52 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.flat_slab.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.flat_slab",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'FlatSlabInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.flat_slab.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.flat_slab.model_validate_or_error",
           "kind": "function",
@@ -18315,8 +18770,8 @@
     {
       "module": "structural_lib.design.is456.isolated_footing",
       "export_classification": "preview",
-      "declared_export_count": 14,
-      "classified_symbol_count": 24,
+      "declared_export_count": 15,
+      "classified_symbol_count": 26,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -18734,6 +19189,52 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.isolated_footing",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'IsolatedFootingInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.isolated_footing.model_validate_or_error",
           "kind": "function",
@@ -18789,8 +19290,8 @@
     {
       "module": "structural_lib.design.is456.combined_footing",
       "export_classification": "preview",
-      "declared_export_count": 14,
-      "classified_symbol_count": 24,
+      "declared_export_count": 15,
+      "classified_symbol_count": 26,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -19208,6 +19709,52 @@
           }
         },
         {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.combined_footing.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.combined_footing",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'CombinedFootingInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.combined_footing.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_or_error",
           "qualified_name": "structural_lib.design.is456.combined_footing.model_validate_or_error",
           "kind": "function",
@@ -19263,8 +19810,8 @@
     {
       "module": "structural_lib.design.is456.strap_footing",
       "export_classification": "preview",
-      "declared_export_count": 14,
-      "classified_symbol_count": 24,
+      "declared_export_count": 15,
+      "classified_symbol_count": 26,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -19677,6 +20224,52 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_json",
+          "qualified_name": "structural_lib.design.is456.strap_footing.load_json",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.strap_footing",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'str | bytes') -> 'StrapFootingInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "model_validate_json_or_error",
+          "qualified_name": "structural_lib.design.is456.strap_footing.model_validate_json_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(model: 'type[_ModelT]', value: 'str | bytes') -> '_ModelT'",
+            "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
           }

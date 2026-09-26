@@ -44,11 +44,16 @@ serializable_result = result.to_dict()
 ```
 
 For new typed code, construct the named groups and pass them to `input`.
-For data received as JSON, decode with `json.loads` and pass the mapping to
-`load`. Both use the same validation owner; neither guesses geometry, materials,
+For JSON text or UTF-8 bytes, use `load_json`; for an existing Python mapping,
+use `load`. JSON loaders reject duplicate fields and non-finite numbers before
+validation. All routes use the same request model; none guesses geometry, materials,
 load basis, reinforcement or review evidence. Slab routes use
 `input_one_way`, `input_continuous_one_way` or `input_two_way` and matching
 `load_*`/`design_*` names.
+
+For example, `column.load_json(Path("column.json").read_bytes())` loads a saved
+request after importing `Path` from `pathlib`. Slab JSON loaders are named
+`load_one_way_json`, `load_continuous_one_way_json`, and `load_two_way_json`.
 
 Invalid intake raises `InputContractError`; inspect `error.issues` for the
 field path, code and constraint. A valid request may calculate an engineering
