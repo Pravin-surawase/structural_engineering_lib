@@ -19,7 +19,8 @@
 | ID | Task | Priority | Status | Exit condition |
 |---|---|---|---|---|
 | PY-LIB-IMPROVE-001 | Reliable design → detailing → BBS/report/DXF across public Python and serialized CLI paths | P0 | Done: PR #1002 merged at d0722155 | Required hosted run 36261661398 passed; reviewed and merged trees match. [Acceptance](planning/python-library-workflow-improvement-plan.md) |
-| PY-LIB-IMPROVE-002 | Preserve imported depth and compact milestone delivery | P0 | In progress: product verified; compact-check extension and one PR delivery | D/d survives imports and saved projects; invalid depth blocks the batch. Default checks select essential changed areas; multiple commits share one PR and retained task history. Required checks pass. [Acceptance](planning/python-library-workflow-improvement-plan.md#milestone-2--preserve-imported-effective-depth) |
+| PY-LIB-IMPROVE-002 | Preserve imported depth and compact milestone delivery | P0 | Done: six commits merged in PR #1003 at e900c9b1 | Required run 36265467619 passed; merged tree matches review. Imported depth and compact defaults verified. [Acceptance](planning/python-library-workflow-improvement-plan.md#milestone-2--preserve-imported-effective-depth) |
+| COMPACT-CLOSEOUT-001 | Close owner-expanded milestones without fictitious CI runs | P1 | In progress: root fix implemented, delivery pending | Superseded pre-PR pushes retain history without requiring a nonexistent verdict; published candidates retain required gates. [Acceptance](planning/python-library-workflow-improvement-plan.md#follow-up--close-owner-expanded-milestones) |
 
 ## Maintenance Recovery Dashboard
 

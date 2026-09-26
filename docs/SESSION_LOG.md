@@ -5,6 +5,33 @@
 
 ---
 
+## 2026-09-27 — Session: Close owner-expanded milestones
+
+**Task:** COMPACT-CLOSEOUT-001
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/compact-closeout-fix`
+**Acceptance:** docs/planning/python-library-workflow-improvement-plan.md
+**Focus:** Finish automatic closeout after an owner supersedes a pushed head before opening a PR.
+
+### Completed
+
+- PR #1003 merged all six commits after required run 36265467619 passed; Mac main was clean at e900c9b1 and matched the reviewed tree.
+- Corrected automatic accounting for an evidenced PUSHED to REPLAN with unchanged candidate/run IDs; actual hosted failures retain verdict requirements.
+- Six existing closeout scenarios passed, including the two added scope-change variants. The real PY-LIB-IMPROVE-002 closeout then succeeded with its original history, four candidate heads and two actual hosted runs preserved.
+
+### Issues encountered
+
+- Final usage first rejected manually repeated PR/merge identifiers, then required three hosted verdicts for only two real runs. The first pushed candidate had been superseded before any PR existed.
+
+### Root causes and resolutions
+
+- Delivery already derives integration identifiers; omit them from usage closeout. Its old push-count assertion did not account for the new guarded scope-change transition. Exclude only that evidenced superseded push from expected verdicts while retaining its integrity and closeout records. Existing published/rejected-candidate cases and replacement-integrity failures remain enforced.
+- ⚠️ TERMINAL ISSUE: automatic closeout rejected repeated identifiers and the superseded-push count → omit derived flags, repair accounting, and replay the original ledger without editing its history.
+
+### Rework and recurrence
+
+- RR-004: occurrences=32; minutes=unknown. Two final-closeout contract mismatches; automatic identifiers and guarded scope-change accounting now agree with retained history.
+
 ## 2026-09-27 — Session: Preserve imported effective depth through design and saved projects
 
 **Task:** PY-LIB-IMPROVE-002

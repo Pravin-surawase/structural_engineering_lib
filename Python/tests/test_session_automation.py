@@ -2618,12 +2618,12 @@ def test_delivery_hosted_rejection_records_attempt_and_reenters_repair(
     assert repaired["hosted_run_ids"] == ["12345"]
 
 
-@pytest.mark.parametrize("first_pushed", [True, False])
+@pytest.mark.parametrize("first_pushed", [True, False, "superseded"])
 @pytest.mark.parametrize("replacement_check", [True, False])
 def test_automatic_delivery_closeout_counts_each_published_candidate(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
-    first_pushed: bool,
+    first_pushed: bool | str,
     replacement_check: bool,
 ):
     ledger = tmp_path / "usage.jsonl"
@@ -2651,12 +2651,20 @@ def test_automatic_delivery_closeout_counts_each_published_candidate(
     for clock, state in timeline:
         if not first_pushed and clock in {"10:13:00", "10:14:00"}:
             continue
+        delivery = {"state": state}
+        evidence = []
+        if first_pushed == "superseded" and clock in {"10:14:00", "10:16:00"}:
+            delivery.update(latest_candidate_head="a" * 40, hosted_run_ids=[])
+            if clock == "10:16:00":
+                delivery["state"] = "REPLAN"
+                evidence = ["Owner expanded the acceptance before the first PR"]
         rows.append(
             {
                 "timestamp": f"2026-09-04T{clock}+00:00",
                 "checkpoint": "delivery",
                 "task_id": task_id,
-                "delivery": {"state": state},
+                "delivery": delivery,
+                "evidence": evidence,
             }
         )
     for clock in ("10:12:00", "10:22:00"):
@@ -2683,8 +2691,8 @@ def test_automatic_delivery_closeout_counts_each_published_candidate(
         "design_candidate_count": 2,
         "design_audit_rejections": 0,
         "repair_batches": 1,
-        "hosted_validation_runs": 2 if first_pushed else 1,
-        "hosted_run_ids": ["failed", "passed"] if first_pushed else ["passed"],
+        "hosted_validation_runs": 2 if first_pushed is True else 1,
+        "hosted_run_ids": ["failed", "passed"] if first_pushed is True else ["passed"],
         "closeout_rejections": 0 if first_pushed else 1,
         "latest_candidate_head": "c" * 40,
         "latest_candidate_tree": "d" * 40,
@@ -2721,7 +2729,7 @@ def test_automatic_delivery_closeout_counts_each_published_candidate(
     assert result["unpublished_candidate_integrity_runs"] == (0 if first_pushed else 1)
     assert result["closeout_rejections"] == (0 if first_pushed else 1)
     assert result["final_session_end_runs"] == (2 if first_pushed else 1)
-    assert result["hosted_validation_runs"] == (2 if first_pushed else 1)
+    assert result["hosted_validation_runs"] == (2 if first_pushed is True else 1)
     assert result["phase_timings_min"]["final local closeout"] == (
         6 if first_pushed else 8
     )

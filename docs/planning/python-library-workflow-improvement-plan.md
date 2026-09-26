@@ -182,3 +182,16 @@ one PR. The new acceptance supersedes the earlier publication cutoff:
 
 No required hosted checks or behavioral tests are deleted. No additional PR,
 dependency update, release or unrelated cleanup is part of this extension.
+
+## Follow-up — close owner-expanded milestones
+
+`COMPACT-CLOSEOUT-001` starts from merged PR #1003 at `e900c9b1`. Its final
+administrative closeout exposed a remaining assumption: every push had a hosted
+run, even when the owner replaced that head before opening the first PR.
+Correct only `session.py` accounting and its existing end-to-end closeout test.
+An evidenced PUSHED → REPLAN with the same candidate and unchanged recorded run
+IDs is a superseded push; actual hosted rejections still require their verdict.
+Preserve all history, timing, integrity/closeout gates and final merge proof.
+Verify the affected session tests, record the recovered original closeout, and
+publish one narrow follow-up because #1003 is already merged. No product or
+engineering changes, full local suites, release or unrelated cleanup.
