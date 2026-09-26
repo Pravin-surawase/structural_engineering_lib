@@ -27,6 +27,22 @@ sys.modules[_SPEC.name] = recipes
 _SPEC.loader.exec_module(recipes)
 
 
+@pytest.mark.parametrize("recipe", recipes.recipe_specs(), ids=lambda r: r.journey_id)
+def test_json_loaders_preserve_typed_requests_and_field_errors(recipe):
+    module = __import__(recipe.module, fromlist=[recipe.loader])
+    expected = getattr(module, recipe.loader)(recipe.payload)
+    load_json = getattr(module, recipe.loader + "_json")
+    text = expected.model_dump_json()
+    assert load_json(text) == expected
+    assert load_json(b"\xef\xbb\xbf" + text.encode("utf-8")) == expected
+
+    invalid = json.loads(text)
+    recipes._set_path(invalid, recipe.invalid_path, recipe.invalid_value)
+    with pytest.raises(InputContractError) as error:
+        load_json(json.dumps(invalid))
+    assert error.value.issues
+
+
 @pytest.mark.parametrize(
     "recipe",
     [r for r in recipes.recipe_specs() if r.module.rsplit(".", 1)[-1] != "beam"],

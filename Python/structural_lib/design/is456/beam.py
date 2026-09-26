@@ -48,7 +48,10 @@ from structural_lib.services.contracts.beam_supplied_check import (
     BeamSuppliedReinforcementV2,
     BeamSupportBasisV2,
 )
-from structural_lib.services.contracts.common import model_validate_or_error
+from structural_lib.services.contracts.common import (
+    model_validate_json_or_error,
+    model_validate_or_error,
+)
 from structural_lib.services.supplied_beam_check import (
     BEAM_SUPPLIED_CHECK_RESULT_SCHEMA_VERSION,
     BeamSuppliedCheckResultV2,
@@ -99,7 +102,9 @@ __all__ = [
     "detail",
     "input",
     "load",
+    "load_json",
     "load_supplied_check",
+    "load_supplied_check_json",
 ]
 
 
@@ -284,6 +289,45 @@ def load(value: Mapping[str, object] | BeamDesignInputV1) -> BeamDesignInputV1:
     return model_validate_or_error(BeamDesignInputV1, value)
 
 
+def load_json(value: str | bytes) -> BeamDesignInputV1:
+    """Load a validated request directly from JSON text or UTF-8 bytes.
+
+    Parameters
+    ----------
+    value : str or bytes
+        Serialized BeamDesignInputV1 fields, using the units named by the request.
+        UTF-8 byte-order marks are accepted; values are not silently coerced.
+
+    Returns
+    -------
+    BeamDesignInputV1
+        The same immutable request produced by ``load`` for a mapping.
+
+    Raises
+    ------
+    InputContractError
+        Malformed JSON, duplicate fields, non-finite numbers, invalid fields,
+        or unsupported scope. ``error.issues`` supplies stable codes and paths.
+
+    Examples
+    --------
+    Read a saved request with ``load_json(Path("request.json").read_bytes())``.
+    A typed request round-trips with ``load_json(request.model_dump_json())``.
+    See the family facade cookbook for complete valid and rejected requests.
+
+    Limitations
+    -----------
+    Loading validates intake; it does not calculate or approve a design.
+    Engineering assumptions and review requirements belong to the operation.
+
+    Provenance
+    ----------
+    The shared JSON decoder preserves one value per field; the canonical
+    request model owns field, unit, and supported-scope validation.
+    """
+    return model_validate_json_or_error(BeamDesignInputV1, value)
+
+
 def load_supplied_check(
     value: Mapping[str, object] | BeamSuppliedCheckRequestV2,
 ) -> BeamSuppliedCheckRequestV2:
@@ -323,6 +367,45 @@ def load_supplied_check(
     """
 
     return model_validate_or_error(BeamSuppliedCheckRequestV2, value)
+
+
+def load_supplied_check_json(value: str | bytes) -> BeamSuppliedCheckRequestV2:
+    """Load a validated request directly from JSON text or UTF-8 bytes.
+
+    Parameters
+    ----------
+    value : str or bytes
+        Serialized BeamSuppliedCheckRequestV2 fields, using the units named by the request.
+        UTF-8 byte-order marks are accepted; values are not silently coerced.
+
+    Returns
+    -------
+    BeamSuppliedCheckRequestV2
+        The same immutable request produced by ``load_supplied_check`` for a mapping.
+
+    Raises
+    ------
+    InputContractError
+        Malformed JSON, duplicate fields, non-finite numbers, invalid fields,
+        or unsupported scope. ``error.issues`` supplies stable codes and paths.
+
+    Examples
+    --------
+    Read a saved request with ``load_supplied_check_json(Path("request.json").read_bytes())``.
+    A typed request round-trips with ``load_supplied_check_json(request.model_dump_json())``.
+    See the family facade cookbook for complete valid and rejected requests.
+
+    Limitations
+    -----------
+    Loading validates intake; it does not calculate or approve a design.
+    Engineering assumptions and review requirements belong to the operation.
+
+    Provenance
+    ----------
+    The shared JSON decoder preserves one value per field; the canonical
+    request model owns field, unit, and supported-scope validation.
+    """
+    return model_validate_json_or_error(BeamSuppliedCheckRequestV2, value)
 
 
 def check_supplied(

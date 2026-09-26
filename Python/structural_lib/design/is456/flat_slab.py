@@ -14,7 +14,10 @@ from structural_lib.services.canonical_family import (
     require_request_type,
     translate_owner_input_error,
 )
-from structural_lib.services.contracts.common import model_validate_or_error
+from structural_lib.services.contracts.common import (
+    model_validate_json_or_error,
+    model_validate_or_error,
+)
 from structural_lib.services.contracts.family_f2 import (
     FlatActionsV1,
     FlatDirectionReinforcementV1,
@@ -49,6 +52,7 @@ __all__ = [
     "design",
     "input",
     "load",
+    "load_json",
 ]
 
 
@@ -112,8 +116,8 @@ def load(value: Mapping[str, object] | FlatSlabInputV1) -> FlatSlabInputV1:
     Parameters
     ----------
     value : Mapping[str, object] or FlatSlabInputV1
-        Decoded JSON/Python fields or a typed request. Parse JSON text with
-        ``json.loads`` first; values are not silently coerced.
+        Python fields or a typed request; values are not silently coerced.
+        For serialized text or bytes, use ``load_json`` directly.
 
     Returns
     -------
@@ -144,6 +148,45 @@ def load(value: Mapping[str, object] | FlatSlabInputV1) -> FlatSlabInputV1:
     """
 
     return model_validate_or_error(FlatSlabInputV1, value)
+
+
+def load_json(value: str | bytes) -> FlatSlabInputV1:
+    """Load a validated request directly from JSON text or UTF-8 bytes.
+
+    Parameters
+    ----------
+    value : str or bytes
+        Serialized FlatSlabInputV1 fields, using the units named by the request.
+        UTF-8 byte-order marks are accepted; values are not silently coerced.
+
+    Returns
+    -------
+    FlatSlabInputV1
+        The same immutable request produced by ``load`` for a mapping.
+
+    Raises
+    ------
+    InputContractError
+        Malformed JSON, duplicate fields, non-finite numbers, invalid fields,
+        or unsupported scope. ``error.issues`` supplies stable codes and paths.
+
+    Examples
+    --------
+    Read a saved request with ``load_json(Path("request.json").read_bytes())``.
+    A typed request round-trips with ``load_json(request.model_dump_json())``.
+    See the family facade cookbook for complete valid and rejected requests.
+
+    Limitations
+    -----------
+    Loading validates intake; it does not calculate or approve a design.
+    Engineering assumptions and review requirements belong to the operation.
+
+    Provenance
+    ----------
+    The shared JSON decoder preserves one value per field; the canonical
+    request model owns field, unit, and supported-scope validation.
+    """
+    return model_validate_json_or_error(FlatSlabInputV1, value)
 
 
 def design(
