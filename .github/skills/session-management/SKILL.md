@@ -65,6 +65,9 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
 4. Commit the clean `CANDIDATE`, have one independent audit return one decision,
    then advance to `AUDIT_ACCEPTED`. One rejection admits one consolidated
    repair candidate; a second enters `REPLAN` until acceptance content changes.
+   If the owner expands the unmerged milestone, update its acceptance file and
+   use `SCOPE_CHANGED --head <previous-candidate-sha> --evidence <instruction>`
+   before `BOUNDED_UNITS`. Keep the same task/branch/PR and original history.
 5. Run `./run.sh check --candidate-integrity` once on the accepted unchanged
    head and advance to `INTEGRITY_VERIFIED`. On failure, record
    `INTEGRITY_REJECTED`; it consumes the same single repair allowance as an

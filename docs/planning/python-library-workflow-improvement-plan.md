@@ -140,10 +140,10 @@ mandatory. Candidate audit is a separate read-only parent pass, with no new
 tests or adjacent hardening. Record exact local evidence externally after
 freeze, and keep publication/merge facts external to the frozen candidate.
 
-Progress: I1–I3 implemented. I4 regression journeys and documentation are written;
-the first diagnostic verified Python/HTTP preservation and exposed a missing
-required story in the new CLI fixture, now corrected. I5 frozen verification
-and delivery remain. No software blocker or installed-application dependency.
+Progress: I1–I4 are implemented and verified. I5 local verification and repaired
+candidate integrity passed; the branch was pushed without opening a PR. The
+owner then added I6–I7 below. Complete their focused verification and integrate
+the combined milestone through one PR. No installed-application dependency.
 
 I5 repair: the focused suites, full Python (7,952 passed), mypy, React build/lint
 and repository 32/32 checks passed. Immutable integrity rejected the first
@@ -151,3 +151,34 @@ unpublished candidate because the schema snapshot updater omitted its final LF.
 The single consolidated repair fixes that writer with explicit UTF-8/LF output
 and regenerates its snapshot. Validate parsed schema equality and the final byte,
 then repeat only affected evidence, immutable review and integrity before push.
+
+### Owner scope update — compact delivery, 2026-09-27
+
+After the two import/repair commits were pushed, but before any PR or hosted
+run, the owner requested more commits, fewer PRs and essential, faster checks.
+Keep this task, branch and original timing/history; deliver all units through
+one PR. The new acceptance supersedes the earlier publication cutoff:
+
+- I6: `./run.sh check` runs essential checks for whole-candidate changed domains,
+  at most 12 for recognized impact. Docs-only selects four; Python-only selects
+  eight. Unknown impact retains all 32. `--full` keeps all checks available;
+  explicit categories and the existing quick profile remain available.
+- Remove repeated local broad-gate expectations from routine delivery. Run
+  affected behavior tests and changed formatting once after the batch, then
+  one required hosted cycle. Commits remain cheap internal checkpoints; the
+  existing three commit-safety hooks stay unchanged. Full local suites require
+  a named risk or release reason, not merely another commit or milestone end.
+- I7: a guarded owner-directed `SCOPE_CHANGED` transition binds the previous
+  candidate SHA and changed acceptance, enters the existing replan path, and
+  preserves history, timing and aggregate counters without inventing failures.
+- I8: normal partial commits must pass the pre-commit operation guard while
+  preserving other staged work. Recognize Git's own temporary next-index only
+  in hook completion mode; keep the raw lock observation, normal validation
+  and unrelated-lock holds. Verify real commits in primary and linked checkouts.
+- Verify profile selection, unknown-impact fallback, timing labels and scope
+  changes with the affected control and Git-state test files. Retain completed I5 product
+  evidence; do not repeat unchanged Python/React suites. Update authoritative
+  help/policy and the current handoff, then freeze one combined candidate.
+
+No required hosted checks or behavioral tests are deleted. No additional PR,
+dependency update, release or unrelated cleanup is part of this extension.

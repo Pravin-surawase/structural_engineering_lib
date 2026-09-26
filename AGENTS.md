@@ -71,10 +71,12 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
   and content freezes, run their union of focused/benchmark evidence, push the
   commits together once, and use one required hosted PR cycle for the milestone.
   Run the broad
-  Python suite and `./run.sh check` (currently 32 checks) only at the plan's
-  named cumulative gate. Run any broad gate earlier only when an outcome-
-  changing failure or repository-wide surface makes it necessary; never bypass
-  required checks on a published milestone candidate.
+  Python suite and `./run.sh check --full` only when the plan names a concrete
+  risk or release reason. Milestone completion alone does not require duplicate
+  local broad suites. Default `./run.sh check` selects essential checks for
+  changed areas. Prefer several cohesive commits in one milestone PR; run
+  affected behavior tests once after the batch and required hosted checks once
+  on its final candidate. Never bypass required checks.
 - Route changed paths by their maintained callers and outcome owners. A shared
   folder name alone must not select unrelated product domains; unknown or
   unclassified impact still fails closed to every domain.
@@ -177,16 +179,10 @@ UI/IO        → react_app/, fastapi_app/
 
 ### Agent Infrastructure
 
-- **Agent Registry:** `agents/agent_registry.json` — 16 agents with permissions, skills, keywords
-- **Control Registry:** `scripts/control-plane.json` — canonical operations, commands, aliases, permissions, and compatibility projection
-- **Tool Registry:** `scripts/tool_registry.py` — unified search across agents, skills, scripts
-- **Prompt Router:** `scripts/prompt_router.py` — NLP-based task → agent routing
-- **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
-- **Session Persistence:** `scripts/session_store.py` — JSON session state in logs/sessions/
-- **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
-- **Routing controls:** `scripts/prompt_router.py` and `scripts/tool_permissions.py` — canonical routing and permission enforcement
-- **Parity Dashboard:** `scripts/parity_dashboard.py` — declared Indian-code capability plus endpoint/test/hook coverage
-- **Skill Tiers:** Core (task-eligible), Specialist (role-based), Experimental (explicit)
+Use the maintained registries listed under Instruction Surface Ownership below;
+`./run.sh tools`, `route`, and `parity` expose their live inventories. Session
+state lives in `scripts/session_store.py`; resumable pipeline state is owned by
+`scripts/pipeline_state.py`. Avoid copying catalogues into entry instructions.
 
 ## Search Before Coding
 
@@ -204,7 +200,8 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ```bash
 ./run.sh session begin --task-id <task> --agent <role> # Canonical task start
 ./run.sh check --quick              # Fast validation (<30s, 10 checks)
-./run.sh check                      # Full validation (32 checks, parallel)
+./run.sh check                      # Essential changed-area checks (at most 12)
+./run.sh check --full               # Explicit full validation (32 checks)
 ./run.sh test                       # Run Python package pytest suite
 ./run.sh test --fastapi             # Run complete FastAPI test suite
 ./run.sh test --react               # Run complete React test suite on pinned Node
@@ -311,6 +308,10 @@ repair ceiling. Pre-push runs one read-only `session end` and records
 Failed pre-push closeout enters the same repair ceiling; `CLOSEOUT_REJECTED`
 records an older stuck candidate's observed failure with exact head/evidence.
 `HOSTED_REJECTED` enters repair or, after its repair candidate, `REPLAN`.
+An owner-directed scope expansion uses `SCOPE_CHANGED --head <candidate-sha>
+--evidence <owner-instruction>` with a changed acceptance file to enter `REPLAN`
+on the same task and branch. It preserves timing, history and aggregate counters;
+it does not invent a failure or require a separate PR.
 
 Finish all versioned task, handoff, documentation, test, generated projection,
 and repository evidence writes before `CANDIDATE`. A Git handoff receipt is
