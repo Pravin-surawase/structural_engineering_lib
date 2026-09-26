@@ -274,7 +274,7 @@ structural_engineering_lib/
 │   ├── insights/               #   Design insights & analysis
 │   ├── visualization/          #   3D geometry generation
 │   └── reports/                #   Report templates
-├── fastapi_app/                # REST backend (93 OpenAPI operations) + WebSocket
+├── fastapi_app/                # REST backend (92 OpenAPI operations) + WebSocket
 │   └── routers/                #   28 routers (design, column, geometry, import, export...)
 ├── react_app/src/              # React 19 + TypeScript + R3F + Tailwind
 │   ├── components/             #   UI components by feature
@@ -348,13 +348,22 @@ The Dockerfile handles system deps automatically. If issues persist:
 docker compose build --no-cache
 ```
 
-### Colima won't start
+### Colima won't start or no VM exists
+
+The default VM and its Docker data were removed with owner approval on
+2026-09-25. Colima remains installed. Create a new VM only when a Docker
+workflow is needed:
 
 ```bash
-colima delete    # Remove existing VM
-colima start     # Fresh start
+colima start --cpu 4 --memory 4
 docker info      # Verify Docker is connected
 ```
+
+If an existing VM fails to start, run `colima status` and inspect its log before
+considering deletion. Plain `colima delete` can leave container data behind;
+`colima delete --data` removes it. Review that data and obtain owner approval
+before deleting an existing VM. The dated inspection and removal evidence is
+in [agent-bootstrap.md](agent-bootstrap.md#mac-mini-vm-removal--2026-09-25).
 
 ---
 

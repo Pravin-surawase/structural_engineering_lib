@@ -4,11 +4,25 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-26
-- Focus: Record the owner's temporary loss of ETABS access and reconcile current work against fetched GitHub evidence.
-- Completed: Recorded ETABS unavailability for the next few days with no assumed return date; separated eligible offline preparation from installed evidence gates.; Verified main `9c75e568` and topology PR #998 with required run `35433982136` successful. Reconciled the current plan, task board and next-session brief.; Reviewed the merged WP10/WP11, provisional review, source/topology and Python quality work. Broader profiles, independent-model qualification, reanalysis and project-end performance remain unfinished.
+- Focus: Resume development on the Mac from current GitHub history, preserve work on both devices, and repair the confirmed maintenance inventory defect.
+- Completed: Fetched the verified GitHub remote and fast-forwarded Mac main from `9c75e568` to `6b71d7cf`. PR #1000 is merged and its required validation run `36257920855` succeeded. Its temporary ETABS access hold remains active.; Preserved all 33 Mac worktrees and existing branches, including the dirty XLL architecture worktree. The Windows task is idle after its documented closeout; its primary checkout still has a retained C# edit and was not modified or represented as synchronized by this Mac session.; Carried the two reviewed Colima setup documents from local commit `42d1572a` into this maintenance packet while retaining the original branch and commit. Docker VM recreation remains on demand.
+- Recurrence controls: RR-004 x26 / unknown: Use canonical timed gate commands and admitted delivery transitions; finish location-independent session/handoff records before the candidate.
 <!-- HANDOFF:END -->
 
 ## Current boundary
+
+**Development device — 26 September:** continue on the Mac. Mac main was
+fast-forwarded to GitHub `6b71d7cf` before the maintenance packet; fetch and use
+its merged head for the next task. The Windows task completed PR #1000 in an
+isolated worktree and retained its primary-checkout C# edit. Preserve that
+checkout and all older Mac worktrees. The current session log records the
+maintenance scope and local timer recovery; GitHub and the delivery ledger
+retain exact publication facts.
+
+The unpublished local solver documentation candidate `91207365` is held.
+Replan and rebind it against current main before any future integration,
+preserving its research and standalone evidence. It does not select the next
+library task or transfer ownership from the separate solver project.
 
 **Owner update — 26 September:** ETABS access is unavailable for the next few
 days; the return date is unconfirmed. Follow the

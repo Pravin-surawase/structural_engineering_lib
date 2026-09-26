@@ -126,6 +126,12 @@
 
 ## Active
 
+**Development device — 26 September:** the owner is working on the Mac.
+Mac main was synchronized to GitHub `6b71d7cf` before
+`MAINT-MAC-2026-09-26`. Continue from the merged maintenance head on a fresh
+task branch. Preserve the Windows checkout/edit and all older worktrees;
+GitHub remains the shared history and each task branch has one writer device.
+
 **Temporary access constraint:** the owner has no ETABS access for the next few
 days; no return date is confirmed. The
 [current offline plan](planning/xll-product/etabs-design-workflow.md#temporary-etabs-access-hold--2026-09-26)
@@ -573,6 +579,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-MAC-2026-09-26 | Synchronize the Mac, preserve device-local work, repair default HTTP inventory and publish the retained Colima setup note | governance | COMPLETE ON MERGE — focused inventory/OpenAPI, docs/session/health, immutable candidate and required hosted checks gate this packet; dependency upgrades and installed ETABS work remain separate. |
 | WP10-05-PREP | Verify the next Excel-import plan against source and installed evidence | MAIN | PLANNED — [executable card](planning/xll-product/wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05) covers byte-safe storage, freshness, transaction and real Excel gates; production handoff and multi-member prerequisites precede final qualification. No implementation started. |
 | WP10-04 | Normalize the retained ETABS capture offline with complete evidence and row conservation | MAIN | IMPLEMENTED — [receipt](verification/wp10-04-normalization-evidence.json); 97 model records and 13 actions, Python/.NET parity, no live application work. Delivery/merge facts belong to the task ledger and PR. WP10-05 is next. |
 | XLL-PLAN-HANDOFF | Preserve the supplied XLL architecture, corrected phase plan, completed research and portable Mac/Windows learning handoff | MAIN | DOCUMENTATION CANDIDATE PREPARED — [shared entry point](planning/xll-product/README.md); local audit and hosted closeout are subsequent observations; no XLL lesson, engineering or release acceptance claimed |

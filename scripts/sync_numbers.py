@@ -141,11 +141,11 @@ def scan_hooks() -> tuple[int, int]:
 
 
 def scan_endpoints() -> tuple[int, int]:
-    """Count OpenAPI HTTP operations and router modules.
+    """Count default OpenAPI HTTP operations and source router modules.
 
-    The root application owns one HTTP operation outside ``routers/`` and the
-    WebSocket router is intentionally outside OpenAPI. Count those boundaries
-    explicitly so coincidentally equal HTTP/WebSocket totals cannot hide drift.
+    The independently checked baseline includes named routers and the root
+    application while excluding WebSockets and disabled live ETABS routes.
+    Counting decorators cannot represent that configured application boundary.
     """
     routers_dir = REPO_ROOT / "fastapi_app" / "routers"
     if not routers_dir.exists():
@@ -157,19 +157,13 @@ def scan_endpoints() -> tuple[int, int]:
         if f.suffix == ".py" and f.name not in ("__init__.py",)
     ]
 
-    endpoint_count = 0
-    for f in router_files:
-        content = f.read_text(encoding="utf-8", errors="ignore")
-        endpoint_count += len(
-            re.findall(r"@router\.(get|post|put|delete|patch)\b", content)
-        )
-
-    app_file = REPO_ROOT / "fastapi_app" / "main.py"
-    if app_file.exists():
-        content = app_file.read_text(encoding="utf-8", errors="ignore")
-        endpoint_count += len(
-            re.findall(r"@app\.(get|post|put|delete|patch)\b", content)
-        )
+    baseline = REPO_ROOT / "fastapi_app" / "openapi_baseline.json"
+    spec = json.loads(baseline.read_text(encoding="utf-8"))
+    http_methods = {"get", "post", "put", "delete", "patch", "options", "head"}
+    endpoint_count = sum(
+        len(http_methods.intersection(path_item))
+        for path_item in spec["paths"].values()
+    )
 
     return endpoint_count, len(router_files)
 
