@@ -2,7 +2,15 @@
 
 Auto-generated from Python docstrings.
 
-## Core API
+## Recommended workflow APIs
+
+Choose an entry point in [Which API should I use?](../reference/api-levels.md).
+The [family cookbook](../cookbook/python/family-facades.md) contains executable
+requests and live operation reference for all 13 supported element journeys.
+The [physical beam guide](../library/getting-started.md) covers explicit
+reinforcement, analysis and project workflows.
+
+## Retained service API
 
 ::: structural_lib.services.api
     options:

@@ -94,6 +94,23 @@ assert failed.to_dict()["envelope"]["overall_status"] == "FAIL"
 This is valid intake and a completed calculation. It must not be represented as
 an exception, HTTP failure, or professional acceptance.
 
+## Python API
+
+Typed request groups are exported from `structural_lib.design.is456.beam` alongside the
+operations below. Mapping inputs remain supported for JSON/HTTP callers.
+This reference follows the current source; newly added builders and group
+imports require its matching build rather than an older published wheel.
+
+::: structural_lib.design.is456.beam
+    options:
+      docstring_style: numpy
+      show_root_heading: false
+      show_signature_annotations: true
+      members:
+        - input
+        - load
+        - design
+
 ## Compatibility and evidence
 
 - Maintained calculation owner: `structural_lib.services.canonical_beam.design`

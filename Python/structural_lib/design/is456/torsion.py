@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Any
+from collections.abc import Mapping
 
 from structural_lib.codes.is456.beam.torsion import TorsionResult, design_torsion
 from structural_lib.core.errors import InputContractError, InputIssueV1, ValidationError
 from structural_lib.core.result_contract import EngineeringStatus
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
+    FamilyIdentityV1,
     canonical_family_result,
     require_request_type,
     translate_owner_input_error,
@@ -23,6 +24,7 @@ from structural_lib.services.contracts.family_f1 import (
 )
 
 __all__ = [
+    "FamilyIdentityV1",
     "CanonicalFamilyResultV1",
     "InputContractError",
     "InputIssueV1",
@@ -40,12 +42,55 @@ __all__ = [
 
 def input(  # noqa: A001
     *,
-    identity: Any,
-    geometry: Any,
-    actions: Any,
-    materials: Any,
-    reinforcement: Any,
+    identity: FamilyIdentityV1 | Mapping[str, object],
+    geometry: TorsionGeometryV1 | Mapping[str, object],
+    actions: TorsionActionsV1 | Mapping[str, object],
+    materials: TorsionMaterialsV1 | Mapping[str, object],
+    reinforcement: TorsionReinforcementV1 | Mapping[str, object],
 ) -> TorsionDesignInputV1:
+    """Build a validated torsion request from explicit groups.
+
+    Parameters
+    ----------
+    identity : FamilyIdentityV1 or Mapping[str, object]
+        Member, case and caller-owned source identity. Mapping inputs use the same strict validation.
+    geometry : TorsionGeometryV1 or Mapping[str, object]
+        Dimensions in mm and the explicit support/topology choices. Mapping inputs use the same strict validation.
+    actions : TorsionActionsV1 or Mapping[str, object]
+        Factored design actions in the units named by each field. Mapping inputs use the same strict validation.
+    materials : TorsionMaterialsV1 or Mapping[str, object]
+        Concrete and reinforcement strengths in N/mm². Mapping inputs use the same strict validation.
+    reinforcement : TorsionReinforcementV1 or Mapping[str, object]
+        Supplied bar areas, positions or dimensions in mm and mm². Mapping inputs use the same strict validation.
+
+    Returns
+    -------
+    TorsionDesignInputV1
+        Immutable typed request, ready for ``design``.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, inconsistent inputs, or an unsupported request type.
+        Inspect ``error.issues`` for stable codes, paths and constraints.
+
+    Limitations
+    -----------
+    Actions are factored magnitudes; redistribution and axial interaction are not included.
+    Existing mapping-based callers remain supported; no engineering defaults are inferred.
+
+    Examples
+    --------
+    See the executable torsion recipe in the family facade cookbook:
+    ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     return model_validate_or_error(
         TorsionDesignInputV1,
         {
@@ -58,11 +103,84 @@ def input(  # noqa: A001
     )
 
 
-def load(value: Any) -> TorsionDesignInputV1:
+def load(value: Mapping[str, object] | TorsionDesignInputV1) -> TorsionDesignInputV1:
+    """Validate a Python mapping or an existing TorsionDesignInputV1.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or TorsionDesignInputV1
+        Decoded JSON/Python fields or a typed request. Parse JSON text with
+        ``json.loads`` first; values are not silently coerced.
+
+    Returns
+    -------
+    TorsionDesignInputV1
+        Validated immutable request with field-level issue paths on rejection.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, inconsistent inputs, or an unsupported request type.
+        Inspect ``error.issues`` for stable codes, paths and constraints.
+
+    Limitations
+    -----------
+    Actions are factored magnitudes; redistribution and axial interaction are not included.
+    Existing mapping-based callers remain supported; no engineering defaults are inferred.
+
+    Examples
+    --------
+    See the executable torsion recipe in the family facade cookbook:
+    ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     return model_validate_or_error(TorsionDesignInputV1, value)
 
 
-def design(request: TorsionDesignInputV1) -> CanonicalFamilyResultV1:
+def design(request: TorsionDesignInputV1) -> CanonicalFamilyResultV1[TorsionResult]:
+    """Design a rectangular beam for combined torsion, shear and bending.
+
+    Parameters
+    ----------
+    request : TorsionDesignInputV1
+        Validated input from ``input`` or ``load``; all engineering bases are explicit.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1[TorsionResult]
+        ``calculation`` holds the maintained owner result. Read
+        ``engineering_status`` for PASS/FAIL/HOLD, ``limitations`` for scope,
+        and ``to_dict()`` for finite JSON. Completion is not engineering approval.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, inconsistent inputs, or an unsupported request type.
+        Inspect ``error.issues`` for stable codes, paths and constraints.
+
+    Limitations
+    -----------
+    Actions are factored magnitudes; redistribution and axial interaction are not included.
+    Existing mapping-based callers remain supported; no engineering defaults are inferred.
+
+    Examples
+    --------
+    See the executable torsion recipe in the family facade cookbook:
+    ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     require_request_type(request, TorsionDesignInputV1)
     geometry = request.geometry
     actions = request.actions

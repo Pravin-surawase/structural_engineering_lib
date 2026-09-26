@@ -27,6 +27,36 @@ sys.modules[_SPEC.name] = recipes
 _SPEC.loader.exec_module(recipes)
 
 
+@pytest.mark.parametrize(
+    "recipe",
+    [r for r in recipes.recipe_specs() if r.module.rsplit(".", 1)[-1] != "beam"],
+    ids=lambda recipe: recipe.journey_id,
+)
+def test_public_typed_builders_preserve_requests_results_and_error_paths(recipe):
+    module = __import__(recipe.module, fromlist=[recipe.loader])
+    loaded = getattr(module, recipe.loader)(recipe.payload)
+    builder_name = "input" + recipe.loader.removeprefix("load")
+    builder = getattr(module, builder_name)
+    # Each model type is available at the documented facade import path.
+    groups = {
+        name: getattr(loaded, name)
+        for name in type(loaded).model_fields
+        if name != "schema_version"
+    }
+    for value in groups.values():
+        assert getattr(module, type(value).__name__) is type(value)
+    rebuilt = builder(**groups)
+    mapped = builder(**recipe.payload)
+    assert rebuilt == mapped == loaded
+    result = getattr(module, recipe.operation)(rebuilt)
+    assert result.to_dict() == getattr(module, recipe.operation)(loaded).to_dict()
+    with pytest.raises(InputContractError) as error:
+        builder(**{**recipe.payload, next(iter(groups)): {}})
+    assert any(
+        issue.path.startswith(next(iter(groups))) for issue in error.value.issues
+    )
+
+
 def test_all_thirteen_facade_classes_run_valid_and_invalid_recipes() -> None:
     receipts = recipes.run_recipes()
 

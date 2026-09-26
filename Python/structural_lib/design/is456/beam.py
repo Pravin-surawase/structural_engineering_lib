@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal
+from collections.abc import Mapping
+from typing import Literal
 
 from structural_lib.core.errors import InputContractError, InputIssueV1
 from structural_lib.services.canonical_beam import (
@@ -238,7 +239,7 @@ def input(  # noqa: A001 - frozen public facade spelling
     )
 
 
-def load(value: Any) -> BeamDesignInputV1:
+def load(value: Mapping[str, object] | BeamDesignInputV1) -> BeamDesignInputV1:
     """Parse nested Python or decoded JSON into a canonical beam request.
 
     Parameters
@@ -283,7 +284,9 @@ def load(value: Any) -> BeamDesignInputV1:
     return model_validate_or_error(BeamDesignInputV1, value)
 
 
-def load_supplied_check(value: Any) -> BeamSuppliedCheckRequestV2:
+def load_supplied_check(
+    value: Mapping[str, object] | BeamSuppliedCheckRequestV2,
+) -> BeamSuppliedCheckRequestV2:
     """Parse the exact supplied-reinforcement V2 request.
 
     Parameters

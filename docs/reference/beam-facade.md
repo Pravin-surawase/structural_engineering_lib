@@ -19,14 +19,14 @@ Exact-wheel version: `structural-lib-is456==0.24.0`
 
 | Operation | Exact live signature | Purpose |
 |---|---|---|
-| `input` | `structural_lib.design.is456.beam.input(*, member_id: 'str', story: 'str', case_id: 'str', span_mm: 'float', b_mm: 'float', D_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', fy_transverse_nmm2: 'float | None' = None, mu_knm: 'float', vu_kn: 'float', d_dash_mm: 'float', asv_mm2: 'float', d_mm: 'float | None' = None, effective_depth_basis: 'EffectiveDepthBasisRequestV1 | CentroidCoverDepthRequestV1 | None' = None, tu_knm: 'float' = 0.0, primary_tension_face: "Literal['TOP', 'BOTTOM'] | None" = None, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, detailing: 'BeamDetailingOptionsV1 | None' = None, serviceability: 'BeamServiceabilityV1 | BeamServiceabilityChecksV1 | None' = None, source_provenance: 'str | None' = None) -> 'BeamDesignInputV1'` | Build one strict rectangular-beam design request. |
-| `load` | `structural_lib.design.is456.beam.load(value: 'Any') -> 'BeamDesignInputV1'` | Parse nested Python or decoded JSON into a canonical beam request. |
+| `input` | `structural_lib.design.is456.beam.input(*, member_id: 'str', story: 'str', case_id: 'str', span_mm: 'float', b_mm: 'float', D_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', fy_transverse_nmm2: 'float \| None' = None, mu_knm: 'float', vu_kn: 'float', d_dash_mm: 'float', asv_mm2: 'float', d_mm: 'float \| None' = None, effective_depth_basis: 'EffectiveDepthBasisRequestV1 \| CentroidCoverDepthRequestV1 \| None' = None, tu_knm: 'float' = 0.0, primary_tension_face: "Literal['TOP', 'BOTTOM'] \| None" = None, pt_percent: 'float \| None' = None, ast_mm2_for_shear: 'float \| None' = None, detailing: 'BeamDetailingOptionsV1 \| None' = None, serviceability: 'BeamServiceabilityV1 \| BeamServiceabilityChecksV1 \| None' = None, source_provenance: 'str \| None' = None) -> 'BeamDesignInputV1'` | Build one strict rectangular-beam design request. |
+| `load` | `structural_lib.design.is456.beam.load(value: 'Mapping[str, object] \| BeamDesignInputV1') -> 'BeamDesignInputV1'` | Parse nested Python or decoded JSON into a canonical beam request. |
 | `design` | `structural_lib.design.is456.beam.design(request: 'BeamDesignInputV1') -> 'BeamDesignResultV1'` | Run the canonical rectangular-beam design journey. |
 | `check` | `structural_lib.design.is456.beam.check(request: 'BeamDesignInputV1') -> 'BeamDesignResultV1'` | Evaluate a canonical request without converting failure into an exception. |
 | `detail` | `structural_lib.design.is456.beam.detail(design_result: 'BeamDesignResultV1', *, detailing_standard: 'DetailingStandard') -> 'BeamDetailingResultV1'` | Create explicit detailing from a completed canonical design result. |
 | `design_and_detail` | `structural_lib.design.is456.beam.design_and_detail(request: 'BeamDesignInputV1', *, detailing_standard: 'DetailingStandard') -> 'BeamDesignAndDetailResultV1'` | Compose canonical design and detailing without hidden choices. |
-| `bbs` | `structural_lib.design.is456.beam.bbs(result: 'BeamDesignAndDetailResultV1 | BeamDetailingResultV1 | list[BeamDetailingResultV1]') -> 'BeamBBSResultV1'` | Generate a canonical BBS from exact accepted detailing results. |
-| `load_supplied_check` | `structural_lib.design.is456.beam.load_supplied_check(value: 'Any') -> 'BeamSuppliedCheckRequestV2'` | Parse the exact supplied-reinforcement V2 request. |
+| `bbs` | `structural_lib.design.is456.beam.bbs(result: 'BeamDesignAndDetailResultV1 \| BeamDetailingResultV1 \| list[BeamDetailingResultV1]') -> 'BeamBBSResultV1'` | Generate a canonical BBS from exact accepted detailing results. |
+| `load_supplied_check` | `structural_lib.design.is456.beam.load_supplied_check(value: 'Mapping[str, object] \| BeamSuppliedCheckRequestV2') -> 'BeamSuppliedCheckRequestV2'` | Parse the exact supplied-reinforcement V2 request. |
 | `check_supplied` | `structural_lib.design.is456.beam.check_supplied(request: 'BeamSuppliedCheckRequestV2') -> 'BeamSuppliedCheckResultV2'` | Evaluate exact supplied longitudinal bars and stirrups for one case. |
 
 ## Request, result, and error contracts
@@ -130,7 +130,7 @@ canonical CLI and REST V2 journey.
 ### `load`
 
 ```python
-load(value: 'Any') -> 'BeamDesignInputV1'
+load(value: 'Mapping[str, object] | BeamDesignInputV1') -> 'BeamDesignInputV1'
 ```
 
 Parse nested Python or decoded JSON into a canonical beam request.
@@ -390,7 +390,7 @@ schema versions in the returned schedule.
 ### `load_supplied_check`
 
 ```python
-load_supplied_check(value: 'Any') -> 'BeamSuppliedCheckRequestV2'
+load_supplied_check(value: 'Mapping[str, object] | BeamSuppliedCheckRequestV2') -> 'BeamSuppliedCheckRequestV2'
 ```
 
 Parse the exact supplied-reinforcement V2 request.

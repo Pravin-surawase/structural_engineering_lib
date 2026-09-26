@@ -95,6 +95,23 @@ except InputContractError as error:
     print([issue.to_dict() for issue in error.issues])
 ```
 
+## Python API
+
+Typed request groups are exported from `structural_lib.design.is456.wall` alongside the
+operations below. Mapping inputs remain supported for JSON/HTTP callers.
+This reference follows the current source; newly added builders and group
+imports require its matching build rather than an older published wheel.
+
+::: structural_lib.design.is456.wall
+    options:
+      docstring_style: numpy
+      show_root_heading: false
+      show_signature_annotations: true
+      members:
+        - input
+        - load
+        - design
+
 ## Compatibility and evidence
 
 - Maintained calculation owner: `structural_lib.services.wall_api.design_braced_wall_is456`

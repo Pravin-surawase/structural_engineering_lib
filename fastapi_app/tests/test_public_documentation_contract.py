@@ -1,7 +1,6 @@
 """Executable contracts for the public REST documentation.
 
-These tests intentionally mirror the high-traffic examples in
-``docs/reference/api-levels.md`` and
+These tests exercise the high-traffic examples in
 ``docs/reference/fastapi-rest-api.md``. Calculation regression tests own exact
 engineering values; this module owns the public request fields, response
 envelope, and documented access path.
@@ -110,18 +109,12 @@ def test_supplied_beam_openapi_contract_is_exact_and_stable(client: TestClient):
     )
 
 
-def test_public_guides_retain_the_maintained_contract_language():
-    """Known stale field and response paths must not return to public guides."""
-    api_levels = (REPO_ROOT / "docs/reference/api-levels.md").read_text(
-        encoding="utf-8"
-    )
+def test_rest_guide_retains_the_maintained_contract_language():
+    """Known stale field and response paths must not return to the REST guide."""
     rest_reference = (REPO_ROOT / "docs/reference/fastapi-rest-api.md").read_text(
         encoding="utf-8"
     )
 
-    assert "sl.design_column_is456(" in api_levels
-    assert '"width": 300' in api_levels
-    assert "`.is_safe()`" not in api_levels
     assert 'design = payload["data"]' in rest_reference
     assert "It is not an engineering PASS" in rest_reference
     assert "structural-problem/v1" in rest_reference

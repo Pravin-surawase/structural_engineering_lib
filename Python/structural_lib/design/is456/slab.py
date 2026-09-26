@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any
+from collections.abc import Mapping
+from typing import Any, TypeVar
 
 from structural_lib.codes.is456.slab.models import (
     SlabCapacityFailureResult,
@@ -12,6 +13,7 @@ from structural_lib.core.errors import InputContractError, InputIssueV1
 from structural_lib.core.result_contract import EngineeringStatus
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
+    FamilyIdentityV1,
     canonical_family_result,
     require_request_type,
     translate_owner_input_error,
@@ -21,11 +23,20 @@ from structural_lib.services.contracts.common import (
     model_validate_or_error,
 )
 from structural_lib.services.contracts.family_f1 import (
+    ContinuousOneWaySlabActionsV1,
+    ContinuousOneWaySlabGeometryV1,
     ContinuousOneWaySlabInputV1,
+    ContinuousOneWaySlabReinforcementV1,
+    OneWaySlabActionsV1,
+    OneWaySlabGeometryV1,
     OneWaySlabInputV1,
+    OneWaySlabReinforcementV1,
     SlabMaterialsV1,
     SlabServiceabilityEvidenceV1,
+    TwoWaySlabActionsV1,
+    TwoWaySlabGeometryV1,
     TwoWaySlabInputV1,
+    TwoWaySlabReinforcementV1,
 )
 from structural_lib.services.slab_api import (
     CompleteOneWaySlabDesignResult,
@@ -37,6 +48,19 @@ from structural_lib.services.slab_api import (
 )
 
 __all__ = [
+    "ContinuousOneWaySlabActionsV1",
+    "ContinuousOneWaySlabGeometryV1",
+    "ContinuousOneWaySlabReinforcementV1",
+    "FamilyIdentityV1",
+    "OneWaySlabActionsV1",
+    "OneWaySlabGeometryV1",
+    "OneWaySlabReinforcementV1",
+    "TwoWaySlabActionsV1",
+    "TwoWaySlabGeometryV1",
+    "TwoWaySlabReinforcementV1",
+    "input_continuous_one_way",
+    "input_one_way",
+    "input_two_way",
     "CanonicalFamilyResultV1",
     "CompleteOneWaySlabDesignResult",
     "ContinuousOneWaySlabInputV1",
@@ -57,15 +81,278 @@ __all__ = [
 ]
 
 
-def load_one_way(value: Any) -> OneWaySlabInputV1:
+def input_one_way(
+    *,
+    identity: FamilyIdentityV1 | Mapping[str, object],
+    geometry: OneWaySlabGeometryV1 | Mapping[str, object],
+    actions: OneWaySlabActionsV1 | Mapping[str, object],
+    materials: SlabMaterialsV1 | Mapping[str, object],
+    reinforcement: OneWaySlabReinforcementV1 | Mapping[str, object],
+    serviceability_evidence: SlabServiceabilityEvidenceV1 | Mapping[str, object],
+) -> OneWaySlabInputV1:
+    """Build the supported one way slab request from typed groups.
+
+    Parameters
+    ----------
+    identity : FamilyIdentityV1 or Mapping[str, object]
+        Explicit identity group; units are named on its fields.
+    geometry : OneWaySlabGeometryV1 or Mapping[str, object]
+        Explicit geometry group; units are named on its fields.
+    actions : OneWaySlabActionsV1 or Mapping[str, object]
+        Explicit actions group; units are named on its fields.
+    materials : SlabMaterialsV1 or Mapping[str, object]
+        Explicit materials group; units are named on its fields.
+    reinforcement : OneWaySlabReinforcementV1 or Mapping[str, object]
+        Explicit reinforcement group; units are named on its fields.
+    serviceability_evidence : SlabServiceabilityEvidenceV1 or Mapping[str, object]
+        Explicit serviceability evidence group; units are named on its fields.
+
+    Returns
+    -------
+    OneWaySlabInputV1
+        Immutable request for ``design_one_way``.
+
+    Raises
+    ------
+    InputContractError
+        A group is missing, has invalid values, or violates the request contract.
+
+    Limitations
+    -----------
+    No load, support, bar layout or serviceability acceptance is inferred.
+    Mapping and typed inputs pass through the same validation owner.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+    return model_validate_or_error(OneWaySlabInputV1, locals())
+
+
+def input_continuous_one_way(
+    *,
+    identity: FamilyIdentityV1 | Mapping[str, object],
+    geometry: ContinuousOneWaySlabGeometryV1 | Mapping[str, object],
+    actions: ContinuousOneWaySlabActionsV1 | Mapping[str, object],
+    materials: SlabMaterialsV1 | Mapping[str, object],
+    reinforcement: ContinuousOneWaySlabReinforcementV1 | Mapping[str, object],
+    serviceability_evidence: SlabServiceabilityEvidenceV1 | Mapping[str, object],
+) -> ContinuousOneWaySlabInputV1:
+    """Build the supported continuous one way slab request from typed groups.
+
+    Parameters
+    ----------
+    identity : FamilyIdentityV1 or Mapping[str, object]
+        Explicit identity group; units are named on its fields.
+    geometry : ContinuousOneWaySlabGeometryV1 or Mapping[str, object]
+        Explicit geometry group; units are named on its fields.
+    actions : ContinuousOneWaySlabActionsV1 or Mapping[str, object]
+        Explicit actions group; units are named on its fields.
+    materials : SlabMaterialsV1 or Mapping[str, object]
+        Explicit materials group; units are named on its fields.
+    reinforcement : ContinuousOneWaySlabReinforcementV1 or Mapping[str, object]
+        Explicit reinforcement group; units are named on its fields.
+    serviceability_evidence : SlabServiceabilityEvidenceV1 or Mapping[str, object]
+        Explicit serviceability evidence group; units are named on its fields.
+
+    Returns
+    -------
+    ContinuousOneWaySlabInputV1
+        Immutable request for ``design_continuous_one_way``.
+
+    Raises
+    ------
+    InputContractError
+        A group is missing, has invalid values, or violates the request contract.
+
+    Limitations
+    -----------
+    No load, support, bar layout or serviceability acceptance is inferred.
+    Mapping and typed inputs pass through the same validation owner.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+    return model_validate_or_error(ContinuousOneWaySlabInputV1, locals())
+
+
+def input_two_way(
+    *,
+    identity: FamilyIdentityV1 | Mapping[str, object],
+    geometry: TwoWaySlabGeometryV1 | Mapping[str, object],
+    actions: TwoWaySlabActionsV1 | Mapping[str, object],
+    materials: SlabMaterialsV1 | Mapping[str, object],
+    reinforcement: TwoWaySlabReinforcementV1 | Mapping[str, object],
+    serviceability_evidence: SlabServiceabilityEvidenceV1 | Mapping[str, object],
+) -> TwoWaySlabInputV1:
+    """Build the supported two way slab request from typed groups.
+
+    Parameters
+    ----------
+    identity : FamilyIdentityV1 or Mapping[str, object]
+        Explicit identity group; units are named on its fields.
+    geometry : TwoWaySlabGeometryV1 or Mapping[str, object]
+        Explicit geometry group; units are named on its fields.
+    actions : TwoWaySlabActionsV1 or Mapping[str, object]
+        Explicit actions group; units are named on its fields.
+    materials : SlabMaterialsV1 or Mapping[str, object]
+        Explicit materials group; units are named on its fields.
+    reinforcement : TwoWaySlabReinforcementV1 or Mapping[str, object]
+        Explicit reinforcement group; units are named on its fields.
+    serviceability_evidence : SlabServiceabilityEvidenceV1 or Mapping[str, object]
+        Explicit serviceability evidence group; units are named on its fields.
+
+    Returns
+    -------
+    TwoWaySlabInputV1
+        Immutable request for ``design_two_way``.
+
+    Raises
+    ------
+    InputContractError
+        A group is missing, has invalid values, or violates the request contract.
+
+    Limitations
+    -----------
+    No load, support, bar layout or serviceability acceptance is inferred.
+    Mapping and typed inputs pass through the same validation owner.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+    return model_validate_or_error(TwoWaySlabInputV1, locals())
+
+
+def load_one_way(value: Mapping[str, object] | OneWaySlabInputV1) -> OneWaySlabInputV1:
+    """Validate decoded JSON/Python data for the one way slab route.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or OneWaySlabInputV1
+        Explicit grouped fields. Decode JSON text with ``json.loads`` first.
+
+    Returns
+    -------
+    OneWaySlabInputV1
+        Strict typed request; unknown fields and coerced values are rejected.
+
+    Raises
+    ------
+    InputContractError
+        Invalid intake, wrong request type or unsupported owner inputs.
+
+    Limitations
+    -----------
+    This route does not generate load combinations or independently approve
+    caller-supplied serviceability evidence. Read result limitations before use.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     return model_validate_or_error(OneWaySlabInputV1, value)
 
 
-def load_continuous_one_way(value: Any) -> ContinuousOneWaySlabInputV1:
+def load_continuous_one_way(
+    value: Mapping[str, object] | ContinuousOneWaySlabInputV1,
+) -> ContinuousOneWaySlabInputV1:
+    """Validate decoded JSON/Python data for the continuous one way slab route.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or ContinuousOneWaySlabInputV1
+        Explicit grouped fields. Decode JSON text with ``json.loads`` first.
+
+    Returns
+    -------
+    ContinuousOneWaySlabInputV1
+        Strict typed request; unknown fields and coerced values are rejected.
+
+    Raises
+    ------
+    InputContractError
+        Invalid intake, wrong request type or unsupported owner inputs.
+
+    Limitations
+    -----------
+    This route does not generate load combinations or independently approve
+    caller-supplied serviceability evidence. Read result limitations before use.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     return model_validate_or_error(ContinuousOneWaySlabInputV1, value)
 
 
-def load_two_way(value: Any) -> TwoWaySlabInputV1:
+def load_two_way(value: Mapping[str, object] | TwoWaySlabInputV1) -> TwoWaySlabInputV1:
+    """Validate decoded JSON/Python data for the two way slab route.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or TwoWaySlabInputV1
+        Explicit grouped fields. Decode JSON text with ``json.loads`` first.
+
+    Returns
+    -------
+    TwoWaySlabInputV1
+        Strict typed request; unknown fields and coerced values are rejected.
+
+    Raises
+    ------
+    InputContractError
+        Invalid intake, wrong request type or unsupported owner inputs.
+
+    Limitations
+    -----------
+    This route does not generate load combinations or independently approve
+    caller-supplied serviceability evidence. Read result limitations before use.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     return model_validate_or_error(TwoWaySlabInputV1, value)
 
 
@@ -73,7 +360,43 @@ def _serviceability_arguments(evidence: SlabServiceabilityEvidenceV1) -> dict[st
     return evidence.model_dump(mode="python")
 
 
-def design_one_way(request: OneWaySlabInputV1) -> CanonicalFamilyResultV1:
+def design_one_way(
+    request: OneWaySlabInputV1,
+) -> CanonicalFamilyResultV1[CompleteOneWaySlabDesignResult]:
+    """Check the supported one way slab with supplied reinforcement.
+
+    Parameters
+    ----------
+    request : OneWaySlabInputV1
+        Typed geometry, loads, materials, bars and reviewed serviceability basis.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1[CompleteOneWaySlabDesignResult]
+        Owner calculation plus engineering status, scope and provenance.
+        FAIL is a completed calculation, not an input exception.
+
+    Raises
+    ------
+    InputContractError
+        Invalid intake, wrong request type or unsupported owner inputs.
+
+    Limitations
+    -----------
+    This route does not generate load combinations or independently approve
+    caller-supplied serviceability evidence. Read result limitations before use.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     require_request_type(request, OneWaySlabInputV1)
     g, a, m, r = (
         request.geometry,
@@ -113,7 +436,41 @@ def design_one_way(request: OneWaySlabInputV1) -> CanonicalFamilyResultV1:
 
 def design_continuous_one_way(
     request: ContinuousOneWaySlabInputV1,
-) -> CanonicalFamilyResultV1:
+) -> CanonicalFamilyResultV1[ContinuousOneWaySlabDesignResult]:
+    """Check the supported continuous one way slab with supplied reinforcement.
+
+    Parameters
+    ----------
+    request : ContinuousOneWaySlabInputV1
+        Typed geometry, loads, materials, bars and reviewed serviceability basis.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1[ContinuousOneWaySlabDesignResult]
+        Owner calculation plus engineering status, scope and provenance.
+        FAIL is a completed calculation, not an input exception.
+
+    Raises
+    ------
+    InputContractError
+        Invalid intake, wrong request type or unsupported owner inputs.
+
+    Limitations
+    -----------
+    This route does not generate load combinations or independently approve
+    caller-supplied serviceability evidence. Read result limitations before use.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     require_request_type(request, ContinuousOneWaySlabInputV1)
     g, a, m, r = (
         request.geometry,
@@ -160,7 +517,43 @@ def design_continuous_one_way(
     return _result(request, calculation, "is456.slab.continuous-one-way/v1", passed)
 
 
-def design_two_way(request: TwoWaySlabInputV1) -> CanonicalFamilyResultV1:
+def design_two_way(
+    request: TwoWaySlabInputV1,
+) -> CanonicalFamilyResultV1[TwoWaySlabPanelWorkflowResult]:
+    """Check the supported two way slab with supplied reinforcement.
+
+    Parameters
+    ----------
+    request : TwoWaySlabInputV1
+        Typed geometry, loads, materials, bars and reviewed serviceability basis.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1[TwoWaySlabPanelWorkflowResult]
+        Owner calculation plus engineering status, scope and provenance.
+        FAIL is a completed calculation, not an input exception.
+
+    Raises
+    ------
+    InputContractError
+        Invalid intake, wrong request type or unsupported owner inputs.
+
+    Limitations
+    -----------
+    This route does not generate load combinations or independently approve
+    caller-supplied serviceability evidence. Read result limitations before use.
+
+    Examples
+    --------
+    See the executable slab recipe in ``docs/cookbook/python/family-facades.md``.
+
+    Provenance
+    ----------
+    Request fields are validated by the named canonical request model.
+    The operation delegates to the maintained family service/code owner;
+    returned ``provenance`` identifies that owner and its source references.
+    """
+
     require_request_type(request, TwoWaySlabInputV1)
     g, a, m, r = (
         request.geometry,
@@ -210,12 +603,15 @@ def design_two_way(request: TwoWaySlabInputV1) -> CanonicalFamilyResultV1:
     return _result(request, calculation, "is456.slab.two-way/v1", passed)
 
 
+_SlabResultT = TypeVar("_SlabResultT")
+
+
 def _result(
     request: StrictPublicModel,
-    calculation: Any,
+    calculation: _SlabResultT,
     workflow_id: str,
     passed: bool,
-) -> CanonicalFamilyResultV1:
+) -> CanonicalFamilyResultV1[_SlabResultT]:
     return canonical_family_result(
         request,
         calculation,

@@ -67,6 +67,10 @@ def _python_assignment(path: tuple[str, ...], value: Any) -> str:
 def _page(workflow: Any, recipe: Any) -> str:
     alias = workflow.module.rsplit(".", 1)[-1]
     payload = json.dumps(recipe.payload, indent=4, sort_keys=True, allow_nan=False)
+    members = list(
+        dict.fromkeys(workflow.constructor.split("/") + workflow.operation.split("/"))
+    )
+    api_members = "\n".join(f"        - {name}" for name in members)
     engineering_failure = ""
     if workflow.journey_id == "is456.beam.design/v1":
         engineering_failure = """## Engineering `FAIL` example
@@ -140,7 +144,22 @@ except InputContractError as error:
     print([issue.to_dict() for issue in error.issues])
 ```
 
-{engineering_failure}## Compatibility and evidence
+{engineering_failure}## Python API
+
+Typed request groups are exported from `{workflow.module}` alongside the
+operations below. Mapping inputs remain supported for JSON/HTTP callers.
+This reference follows the current source; newly added builders and group
+imports require its matching build rather than an older published wheel.
+
+::: {workflow.module}
+    options:
+      docstring_style: numpy
+      show_root_heading: false
+      show_signature_annotations: true
+      members:
+{api_members}
+
+## Compatibility and evidence
 
 - Maintained calculation owner: `{workflow.compatibility_owner}`
 - Result consumer: `{workflow.consumer_contract}`
@@ -263,11 +282,11 @@ def _reference(workflows: tuple[Any, ...]) -> str:
         constructor_names = workflow.constructor.split("/")
         operation_names = workflow.operation.split("/")
         constructor_signatures = "<br>".join(
-            f"`{name}{inspect.signature(getattr(module, name))}`"
+            f"`{name}{inspect.signature(getattr(module, name))}`".replace("|", "\\|")
             for name in constructor_names
         )
         operation_signatures = "<br>".join(
-            f"`{name}{inspect.signature(getattr(module, name))}`"
+            f"`{name}{inspect.signature(getattr(module, name))}`".replace("|", "\\|")
             for name in operation_names
         )
         signature_rows.append(
@@ -466,9 +485,10 @@ def _beam_reference() -> str:
     for name in operations:
         value = getattr(module, name)
         signature = inspect.signature(value)
+        table_signature = str(signature).replace("|", "\\|")
         summary = (inspect.getdoc(value) or "").splitlines()[0]
         rows.append(
-            f"| `{name}` | `structural_lib.design.is456.beam.{name}{signature}` | "
+            f"| `{name}` | `structural_lib.design.is456.beam.{name}{table_signature}` | "
             f"{summary} |"
         )
         sections.append(
