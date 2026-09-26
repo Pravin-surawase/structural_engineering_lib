@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Unified check orchestrator — runs all validation scripts in parallel.
+"""Run essential checks for changed areas, or an explicitly selected full profile.
 
-When to use: When you want a single command to validate the entire codebase.
+When to use: Once after a bounded change, alongside its focused behavior tests.
 Called by `./run.sh check` or directly.
 
 USAGE:
-    ./scripts/python_runtime.sh scripts/check_all.py                      # All
+    ./scripts/python_runtime.sh scripts/check_all.py                      # Essential, changed
+    ./scripts/python_runtime.sh scripts/check_all.py --full               # All
     ./scripts/python_runtime.sh scripts/check_all.py --quick              # Fast
     ./scripts/python_runtime.sh scripts/check_all.py --category api       # One category
     ./scripts/python_runtime.sh scripts/check_all.py --changed            # Changed paths
@@ -152,7 +153,7 @@ CATEGORIES: list[Category] = [
         name="governance",
         label="Governance",
         description="Governance rules, repo hygiene, Python version, schemas",
-        impact_domains=("control_plane", "repository"),
+        impact_domains=("python", "fastapi", "control_plane", "repository"),
         checks=[
             Check("Governance rules", _py("check_governance.py", "--full")),
             Check("Repo hygiene", _py("check_repo_hygiene.py")),
@@ -230,6 +231,18 @@ QUICK_CHECKS: dict[str, list[str]] = {
     "governance": ["Repo hygiene", "Token efficiency"],
     "git": ["Git state", "Unfinished operation"],
     "stale": ["Script references", "CLI smoke"],
+}
+
+# Routine local checks protect contracts and usable handoffs. Broader static
+# audits remain available via --full and the required hosted checks.
+ESSENTIAL_CHECKS: dict[str, list[str]] = {
+    "api": ["API contracts", "API manifest", "API classification"],
+    "docs": ["Broken links", "Tasks format", "Brief integrity"],
+    "arch": ["Architecture boundaries", "Import validation"],
+    "governance": ["Repo hygiene", "Schema snapshots"],
+    "fastapi": ["OpenAPI snapshot"],
+    # The validation guard already includes the unfinished-operation guard.
+    "git": ["Git state"],
 }
 
 
@@ -399,6 +412,8 @@ def _collect_checks(
     category_filter: str | None,
     quick: bool,
     changed_domains: set[str] | None = None,
+    *,
+    essential: bool = False,
 ) -> list[tuple[Check, str]]:
     """Collect checks to run based on filters."""
     checks: list[tuple[Check, str]] = []
@@ -414,9 +429,9 @@ def _collect_checks(
         ):
             continue
 
-        if quick:
-            # Only run checks named in QUICK_CHECKS for this category
-            allowed = QUICK_CHECKS.get(cat.name, [])
+        if quick or essential:
+            profile = QUICK_CHECKS if quick else ESSENTIAL_CHECKS
+            allowed = profile.get(cat.name, [])
             if not allowed:
                 continue
             for check in cat.checks:
@@ -625,7 +640,8 @@ def _main() -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Examples:\n"
-            "  ./run.sh check                       # Run all checks\n"
+            "  ./run.sh check                       # Essential checks for changed areas\n"
+            "  ./run.sh check --full                # All repository checks\n"
             "  ./run.sh check --quick               # Fast subset\n"
             "  ./run.sh check --category api        # API checks only\n"
             "  ./run.sh check --changed             # Changed paths only\n"
@@ -637,7 +653,13 @@ def _main() -> int:
             "  ./run.sh check --list                # Show categories\n"
         ),
     )
-    parser.add_argument(
+    profile = parser.add_mutually_exclusive_group()
+    profile.add_argument(
+        "--full",
+        action="store_true",
+        help="Run all repository checks (explicit cumulative/release gate)",
+    )
+    profile.add_argument(
         "--quick",
         action="store_true",
         help="Run fast subset of checks (<30s)",
@@ -653,7 +675,7 @@ def _main() -> int:
     parser.add_argument(
         "--changed",
         action="store_true",
-        help="Only run checks for categories affected by recent file changes",
+        help="Select whole-candidate impact domains (the default for essential checks)",
     )
     pre_commit_mode = parser.add_mutually_exclusive_group()
     pre_commit_mode.add_argument(
@@ -713,11 +735,12 @@ def _main() -> int:
     if args.candidate_integrity:
         return _run_pre_commit(candidate_integrity=True)
 
-    # Detect canonical change domains if --changed
+    essential = not (args.full or args.quick or args.category)
+    # Default to the whole candidate, including committed and uncommitted work.
     changed_domains = None
     impact_fail_closed = False
     impact_reasons: tuple[str, ...] = ()
-    if args.changed:
+    if args.changed or essential:
         changed_domains, impact_fail_closed, impact_reasons = _detect_changed_domains()
         if not changed_domains:
             if not args.json:
@@ -725,7 +748,12 @@ def _main() -> int:
             return 0
 
     # Collect checks to run
-    checks = _collect_checks(args.category, args.quick, changed_domains)
+    if impact_fail_closed:
+        checks = _collect_checks(None, False)
+    else:
+        checks = _collect_checks(
+            args.category, args.quick, changed_domains, essential=essential
+        )
 
     if not checks:
         if args.category:
@@ -735,7 +763,11 @@ def _main() -> int:
         return 1
 
     if not args.json:
-        if args.changed and changed_domains:
+        if impact_fail_closed:
+            mode = "full: unknown impact"
+        elif essential:
+            mode = f"essential: {', '.join(sorted(changed_domains or ()))}"
+        elif args.changed and changed_domains:
             mode = f"changed domains: {', '.join(sorted(changed_domains))}"
         elif args.quick:
             mode = "quick"
@@ -927,7 +959,7 @@ def _timing_label(argv: list[str]) -> str | None:
         return "check changed"
     if "--category" in argv or "-c" in argv:
         return "check category"
-    return "check full"
+    return "check full" if "--full" in argv else "check changed"
 
 
 def _record_task_timing(label: str, duration_sec: float, result_code: int) -> None:

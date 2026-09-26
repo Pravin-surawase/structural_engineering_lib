@@ -2113,6 +2113,93 @@ def test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate(
     assert entry["billing_cost"] is None
 
 
+@pytest.mark.parametrize(
+    ("state", "changed", "evidence", "head", "succeeds"),
+    [
+        ("PUSHED", True, "Owner expanded the same milestone", "a" * 40, True),
+        ("FINAL_CLOSED", True, "Owner expanded the same milestone", "a" * 40, True),
+        ("PUSHED", False, "Owner expanded the same milestone", "a" * 40, False),
+        ("PUSHED", True, "", "a" * 40, False),
+        ("PUSHED", True, "Owner expanded the same milestone", "c" * 40, False),
+        ("MERGED", True, "Owner expanded the same milestone", "a" * 40, False),
+    ],
+)
+def test_owner_scope_change_retains_milestone_history(
+    tmp_path, monkeypatch, state, changed, evidence, head, succeeds
+):
+    ledger = tmp_path / "usage.jsonl"
+    snapshot = {
+        "state": state,
+        "design_revision": 1,
+        "acceptance_digest": "original",
+        "acceptance_paths": ["acceptance.md"],
+        "candidate_heads": ["a" * 40],
+        "candidate_trees": {"a" * 40: "b" * 40},
+        "latest_candidate_head": "a" * 40,
+        "latest_candidate_tree": "b" * 40,
+        "audit_rejections": 1,
+        "design_candidate_count": 2,
+        "design_audit_rejections": 1,
+        "repair_batches": 1,
+        "hosted_validation_runs": 1,
+        "hosted_run_ids": ["previous-run"],
+    }
+    start = {
+        "timestamp": "2026-09-04T10:00:00+00:00",
+        "checkpoint": "start",
+        "task_id": "DELIVERY-TEST",
+    }
+    delivery = {**start, "checkpoint": "delivery", "delivery": snapshot}
+    ledger.write_text("\n".join(json.dumps(row) for row in (start, delivery)) + "\n")
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", ledger)
+    monkeypatch.setattr(
+        session,
+        "_acceptance_identity",
+        lambda _paths: (["acceptance.md"], "expanded" if changed else "original"),
+    )
+    monkeypatch.setattr(
+        session,
+        "collect_repository_state",
+        lambda _root: SimpleNamespace(
+            branch="codex/milestone", default_base=SimpleNamespace(ref="origin/main")
+        ),
+    )
+
+    def advance(*args):
+        return session.cmd_delivery(
+            session.build_parser().parse_args(
+                ["delivery", "--task-id", "DELIVERY-TEST", *args]
+            )
+        )
+
+    args = ["--to", "SCOPE_CHANGED", "--head", head]
+    if evidence:
+        args.extend(["--evidence", evidence])
+    assert advance(*args) == (0 if succeeds else 1)
+    current = session._delivery_snapshot(session._read_jsonl(ledger), "DELIVERY-TEST")
+    assert current["state"] == ("REPLAN" if succeeds else state)
+    assert current["acceptance_digest"] == "original"
+    if succeeds:
+        assert (
+            advance("--to", "BOUNDED_UNITS", "--acceptance-path", "acceptance.md") == 0
+        )
+        current = session._delivery_snapshot(
+            session._read_jsonl(ledger), "DELIVERY-TEST"
+        )
+        assert current["design_revision"] == 2
+        assert current["design_candidate_count"] == 0
+        assert current["acceptance_digest"] == "expanded"
+    for field in (
+        "audit_rejections",
+        "repair_batches",
+        "hosted_validation_runs",
+        "hosted_run_ids",
+        "candidate_heads",
+    ):
+        assert current[field] == snapshot[field]
+    assert session._read_jsonl(ledger)[0] == start
+
+
 def test_delivery_second_audit_rejection_requires_changed_acceptance_contract(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

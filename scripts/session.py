@@ -1875,7 +1875,32 @@ def cmd_delivery(args: argparse.Namespace) -> int:
         target = requested
         if requested in DERIVED_DELIVERY_TARGETS:
             raise ValueError(f"{requested} is derived by its guarded delivery command")
-        if requested == "AUDIT_REJECTED":
+        if requested == "SCOPE_CHANGED":
+            if state not in {
+                "CANDIDATE",
+                "REPAIRED_CANDIDATE",
+                "AUDIT_ACCEPTED",
+                "INTEGRITY_VERIFIED",
+                "FINAL_CLOSED",
+                "PUSHED",
+                "HOSTED_PASSED",
+            }:
+                raise ValueError(f"scope change is invalid from {state}")
+            if not evidence or not re.fullmatch(r"[0-9a-f]{40}", args.head or ""):
+                raise ValueError(
+                    "scope change requires exact --head SHA and owner --evidence"
+                )
+            if args.head != snapshot.get("latest_candidate_head"):
+                raise ValueError("scope change must name the latest candidate head")
+            paths, digest = _acceptance_identity(
+                args.acceptance_path or list(snapshot["acceptance_paths"])
+            )
+            if digest == snapshot.get("acceptance_digest"):
+                raise ValueError("scope change requires a changed acceptance contract")
+            # Keep the prior digest and all counters. BOUNDED_UNITS binds the new
+            # contract, invalidating old acceptance without fabricating a failure.
+            target = "REPLAN"
+        elif requested == "AUDIT_REJECTED":
             if state not in {"CANDIDATE", "REPAIRED_CANDIDATE"}:
                 raise ValueError(f"audit rejection is invalid from {state}")
             latest_head = snapshot.get("latest_candidate_head")
@@ -4030,6 +4055,7 @@ def build_parser() -> argparse.ArgumentParser:
             "INTEGRITY_REJECTED",
             "CLOSEOUT_REJECTED",
             "HOSTED_REJECTED",
+            "SCOPE_CHANGED",
         ),
     )
     p_delivery.add_argument("--status", action="store_true")
