@@ -3093,7 +3093,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "load_one_way",
+      "constructor": "input_one_way/load_one_way",
       "operation": "design_one_way",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.slab_api.design_complete_one_way_slab_is456",
@@ -3918,7 +3918,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "load_continuous_one_way",
+      "constructor": "input_continuous_one_way/load_continuous_one_way",
       "operation": "design_continuous_one_way",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.slab_api.design_continuous_one_way_slab_builtin_is456",
@@ -4789,7 +4789,7 @@
       "result_contract": "family-design-result/v1 + structural-result-envelope/v2",
       "validation_contract": "field-contract/v1",
       "error_contract": "input-issue/v1 + structural-problem/v1",
-      "constructor": "load_two_way",
+      "constructor": "input_two_way/load_two_way",
       "operation": "design_two_way",
       "consumer_contract": "to_dict() -> finite JSON + structural-result-envelope/v2",
       "compatibility_owner": "structural_lib.services.slab_api.design_two_way_slab_panel_builtin_is456",
@@ -13421,384 +13421,44 @@
       "structural_lib.design.is456.wall.input",
       "structural_lib.design.is456.wall.load"
     ],
-    "current_debt": [
-      {
-        "qualified_name": "structural_lib.design.is456.torsion.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.torsion.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.torsion.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.column.check",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.column.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.column.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.column.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.slab.design_continuous_one_way",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.slab.design_one_way",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.slab.design_two_way",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.slab.load_continuous_one_way",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.slab.load_one_way",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.slab.load_two_way",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.wall.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.wall.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.wall.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.staircase.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.staircase.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.staircase.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.deep_beam.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.deep_beam.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.deep_beam.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.flat_slab.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.flat_slab.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.flat_slab.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.isolated_footing.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.isolated_footing.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.isolated_footing.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.combined_footing.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.combined_footing.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.combined_footing.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.strap_footing.design",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.strap_footing.input",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      },
-      {
-        "qualified_name": "structural_lib.design.is456.strap_footing.load",
-        "missing_docstring_sections": [
-          "examples",
-          "limitations",
-          "parameters",
-          "provenance",
-          "raises",
-          "returns"
-        ]
-      }
-    ],
+    "current_debt": [],
     "unbaselined_debt": [],
-    "resolved_baseline_symbols": [],
+    "resolved_baseline_symbols": [
+      "structural_lib.design.is456.column.check",
+      "structural_lib.design.is456.column.design",
+      "structural_lib.design.is456.column.input",
+      "structural_lib.design.is456.column.load",
+      "structural_lib.design.is456.combined_footing.design",
+      "structural_lib.design.is456.combined_footing.input",
+      "structural_lib.design.is456.combined_footing.load",
+      "structural_lib.design.is456.deep_beam.design",
+      "structural_lib.design.is456.deep_beam.input",
+      "structural_lib.design.is456.deep_beam.load",
+      "structural_lib.design.is456.flat_slab.design",
+      "structural_lib.design.is456.flat_slab.input",
+      "structural_lib.design.is456.flat_slab.load",
+      "structural_lib.design.is456.isolated_footing.design",
+      "structural_lib.design.is456.isolated_footing.input",
+      "structural_lib.design.is456.isolated_footing.load",
+      "structural_lib.design.is456.slab.design_continuous_one_way",
+      "structural_lib.design.is456.slab.design_one_way",
+      "structural_lib.design.is456.slab.design_two_way",
+      "structural_lib.design.is456.slab.load_continuous_one_way",
+      "structural_lib.design.is456.slab.load_one_way",
+      "structural_lib.design.is456.slab.load_two_way",
+      "structural_lib.design.is456.staircase.design",
+      "structural_lib.design.is456.staircase.input",
+      "structural_lib.design.is456.staircase.load",
+      "structural_lib.design.is456.strap_footing.design",
+      "structural_lib.design.is456.strap_footing.input",
+      "structural_lib.design.is456.strap_footing.load",
+      "structural_lib.design.is456.torsion.design",
+      "structural_lib.design.is456.torsion.input",
+      "structural_lib.design.is456.torsion.load",
+      "structural_lib.design.is456.wall.design",
+      "structural_lib.design.is456.wall.input",
+      "structural_lib.design.is456.wall.load"
+    ],
     "exact_wheel_beam_operations": [
       "bbs",
       "check",
@@ -13932,23 +13592,6 @@
       "declared_export_count": 43,
       "classified_symbol_count": 47,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.beam.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "BEAM_FIELD_CONTRACTS",
           "qualified_name": "structural_lib.design.is456.beam.BEAM_FIELD_CONTRACTS",
@@ -14558,6 +14201,23 @@
           }
         },
         {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.beam.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "MemberIdentityV1",
           "qualified_name": "structural_lib.design.is456.beam.MemberIdentityV1",
           "kind": "class",
@@ -14867,7 +14527,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'BeamDesignInputV1'",
+            "signature": "(value: 'Mapping[str, object] | BeamDesignInputV1') -> 'BeamDesignInputV1'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -14899,7 +14559,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'BeamSuppliedCheckRequestV2'",
+            "signature": "(value: 'Mapping[str, object] | BeamSuppliedCheckRequestV2') -> 'BeamSuppliedCheckRequestV2'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -14937,26 +14597,9 @@
     {
       "module": "structural_lib.design.is456.torsion",
       "export_classification": "preview",
-      "declared_export_count": 12,
-      "classified_symbol_count": 20,
+      "declared_export_count": 13,
+      "classified_symbol_count": 21,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.torsion.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "CanonicalFamilyResultV1",
           "qualified_name": "structural_lib.design.is456.torsion.CanonicalFamilyResultV1",
@@ -14987,6 +14630,25 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.torsion.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -15025,6 +14687,23 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.torsion.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -15173,7 +14852,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -15195,9 +14874,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'TorsionDesignInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'TorsionDesignInputV1') -> 'CanonicalFamilyResultV1[TorsionResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -15205,6 +14883,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -15244,9 +14923,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity: 'Any', geometry: 'Any', actions: 'Any', materials: 'Any', reinforcement: 'Any') -> 'TorsionDesignInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity: 'FamilyIdentityV1 | Mapping[str, object]', geometry: 'TorsionGeometryV1 | Mapping[str, object]', actions: 'TorsionActionsV1 | Mapping[str, object]', materials: 'TorsionMaterialsV1 | Mapping[str, object]', reinforcement: 'TorsionReinforcementV1 | Mapping[str, object]') -> 'TorsionDesignInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -15254,6 +14932,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -15273,9 +14952,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'TorsionDesignInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | TorsionDesignInputV1') -> 'TorsionDesignInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -15283,6 +14961,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -15342,26 +15021,9 @@
     {
       "module": "structural_lib.design.is456.column",
       "export_classification": "preview",
-      "declared_export_count": 12,
-      "classified_symbol_count": 20,
+      "declared_export_count": 14,
+      "classified_symbol_count": 22,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.column.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "CanonicalFamilyResultV1",
           "qualified_name": "structural_lib.design.is456.column.CanonicalFamilyResultV1",
@@ -15407,6 +15069,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ColumnDesignResult",
+          "qualified_name": "structural_lib.design.is456.column.ColumnDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -15494,6 +15175,25 @@
           }
         },
         {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.column.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "InputContractError",
           "qualified_name": "structural_lib.design.is456.column.InputContractError",
           "kind": "class",
@@ -15532,6 +15232,23 @@
           }
         },
         {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.column.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ValidationError",
           "qualified_name": "structural_lib.design.is456.column.ValidationError",
           "kind": "class",
@@ -15559,7 +15276,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -15581,9 +15298,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'ColumnDesignInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'ColumnDesignInputV1') -> 'CanonicalFamilyResultV1[ColumnDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -15591,6 +15307,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -15610,9 +15327,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'ColumnDesignInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'ColumnDesignInputV1') -> 'CanonicalFamilyResultV1[ColumnDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -15620,6 +15336,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -15634,7 +15351,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict[str, Any]'",
+            "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnDesignResult'",
             "docstring_sections": [
               "examples",
               "raises",
@@ -15660,9 +15377,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity: 'Any', geometry: 'Any', actions: 'Any', materials: 'Any', reinforcement: 'Any') -> 'ColumnDesignInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity: 'FamilyIdentityV1 | Mapping[str, object]', geometry: 'ColumnGeometryV1 | Mapping[str, object]', actions: 'ColumnActionsV1 | Mapping[str, object]', materials: 'ColumnMaterialsV1 | Mapping[str, object]', reinforcement: 'ColumnReinforcementV1 | Mapping[str, object]') -> 'ColumnDesignInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -15670,6 +15386,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -15689,9 +15406,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'ColumnDesignInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | ColumnDesignInputV1') -> 'ColumnDesignInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -15699,6 +15415,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -15758,8 +15475,8 @@
     {
       "module": "structural_lib.design.is456.slab",
       "export_classification": "preview",
-      "declared_export_count": 17,
-      "classified_symbol_count": 29,
+      "declared_export_count": 30,
+      "classified_symbol_count": 44,
       "symbols": [
         {
           "name": "Any",
@@ -15817,12 +15534,50 @@
           }
         },
         {
+          "name": "ContinuousOneWaySlabActionsV1",
+          "qualified_name": "structural_lib.design.is456.slab.ContinuousOneWaySlabActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ContinuousOneWaySlabDesignResult",
           "qualified_name": "structural_lib.design.is456.slab.ContinuousOneWaySlabDesignResult",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.slab_api",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ContinuousOneWaySlabGeometryV1",
+          "qualified_name": "structural_lib.design.is456.slab.ContinuousOneWaySlabGeometryV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -15855,6 +15610,25 @@
           }
         },
         {
+          "name": "ContinuousOneWaySlabReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.slab.ContinuousOneWaySlabReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "EngineeringStatus",
           "qualified_name": "structural_lib.design.is456.slab.EngineeringStatus",
           "kind": "class",
@@ -15865,6 +15639,25 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.slab.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -15910,8 +15703,82 @@
           }
         },
         {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.slab.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "OneWaySlabActionsV1",
+          "qualified_name": "structural_lib.design.is456.slab.OneWaySlabActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "OneWaySlabGeometryV1",
+          "qualified_name": "structural_lib.design.is456.slab.OneWaySlabGeometryV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "OneWaySlabInputV1",
           "qualified_name": "structural_lib.design.is456.slab.OneWaySlabInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "OneWaySlabReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.slab.OneWaySlabReinforcementV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
@@ -16018,6 +15885,44 @@
           }
         },
         {
+          "name": "TwoWaySlabActionsV1",
+          "qualified_name": "structural_lib.design.is456.slab.TwoWaySlabActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "TwoWaySlabGeometryV1",
+          "qualified_name": "structural_lib.design.is456.slab.TwoWaySlabGeometryV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "TwoWaySlabInputV1",
           "qualified_name": "structural_lib.design.is456.slab.TwoWaySlabInputV1",
           "kind": "class",
@@ -16056,6 +15961,42 @@
           }
         },
         {
+          "name": "TwoWaySlabReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.slab.TwoWaySlabReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "TypeVar",
+          "qualified_name": "structural_lib.design.is456.slab.TypeVar",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "typing",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "canonical_family_result",
           "qualified_name": "structural_lib.design.is456.slab.canonical_family_result",
           "kind": "function",
@@ -16066,7 +16007,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -16105,9 +16046,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'ContinuousOneWaySlabInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'ContinuousOneWaySlabInputV1') -> 'CanonicalFamilyResultV1[ContinuousOneWaySlabDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16115,6 +16055,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16151,9 +16092,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'OneWaySlabInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'OneWaySlabInputV1') -> 'CanonicalFamilyResultV1[CompleteOneWaySlabDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16161,6 +16101,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16180,9 +16121,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'TwoWaySlabInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'TwoWaySlabInputV1') -> 'CanonicalFamilyResultV1[TwoWaySlabPanelWorkflowResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16190,6 +16130,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16211,6 +16152,93 @@
           }
         },
         {
+          "name": "input_continuous_one_way",
+          "qualified_name": "structural_lib.design.is456.slab.input_continuous_one_way",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.slab",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(*, identity: 'FamilyIdentityV1 | Mapping[str, object]', geometry: 'ContinuousOneWaySlabGeometryV1 | Mapping[str, object]', actions: 'ContinuousOneWaySlabActionsV1 | Mapping[str, object]', materials: 'SlabMaterialsV1 | Mapping[str, object]', reinforcement: 'ContinuousOneWaySlabReinforcementV1 | Mapping[str, object]', serviceability_evidence: 'SlabServiceabilityEvidenceV1 | Mapping[str, object]') -> 'ContinuousOneWaySlabInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "input_one_way",
+          "qualified_name": "structural_lib.design.is456.slab.input_one_way",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.slab",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(*, identity: 'FamilyIdentityV1 | Mapping[str, object]', geometry: 'OneWaySlabGeometryV1 | Mapping[str, object]', actions: 'OneWaySlabActionsV1 | Mapping[str, object]', materials: 'SlabMaterialsV1 | Mapping[str, object]', reinforcement: 'OneWaySlabReinforcementV1 | Mapping[str, object]', serviceability_evidence: 'SlabServiceabilityEvidenceV1 | Mapping[str, object]') -> 'OneWaySlabInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "input_two_way",
+          "qualified_name": "structural_lib.design.is456.slab.input_two_way",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.slab",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(*, identity: 'FamilyIdentityV1 | Mapping[str, object]', geometry: 'TwoWaySlabGeometryV1 | Mapping[str, object]', actions: 'TwoWaySlabActionsV1 | Mapping[str, object]', materials: 'SlabMaterialsV1 | Mapping[str, object]', reinforcement: 'TwoWaySlabReinforcementV1 | Mapping[str, object]', serviceability_evidence: 'SlabServiceabilityEvidenceV1 | Mapping[str, object]') -> 'TwoWaySlabInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_continuous_one_way",
           "qualified_name": "structural_lib.design.is456.slab.load_continuous_one_way",
           "kind": "function",
@@ -16226,9 +16254,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'ContinuousOneWaySlabInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | ContinuousOneWaySlabInputV1') -> 'ContinuousOneWaySlabInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16236,6 +16263,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16255,9 +16283,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'OneWaySlabInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | OneWaySlabInputV1') -> 'OneWaySlabInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16265,6 +16292,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16284,9 +16312,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'TwoWaySlabInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | TwoWaySlabInputV1') -> 'TwoWaySlabInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16294,6 +16321,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16353,26 +16381,9 @@
     {
       "module": "structural_lib.design.is456.wall",
       "export_classification": "preview",
-      "declared_export_count": 8,
-      "classified_symbol_count": 18,
+      "declared_export_count": 14,
+      "classified_symbol_count": 24,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.wall.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "BracedWallDesignInput",
           "qualified_name": "structural_lib.design.is456.wall.BracedWallDesignInput",
@@ -16465,6 +16476,25 @@
           }
         },
         {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.wall.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "InputContractError",
           "qualified_name": "structural_lib.design.is456.wall.InputContractError",
           "kind": "class",
@@ -16490,6 +16520,42 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.errors",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.wall.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "WallActionsV1",
+          "qualified_name": "structural_lib.design.is456.wall.WallActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -16537,6 +16603,82 @@
           }
         },
         {
+          "name": "WallEvidenceReviewV1",
+          "qualified_name": "structural_lib.design.is456.wall.WallEvidenceReviewV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "WallGeometryTopologyV1",
+          "qualified_name": "structural_lib.design.is456.wall.WallGeometryTopologyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "WallIdentitySourceV1",
+          "qualified_name": "structural_lib.design.is456.wall.WallIdentitySourceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "WallMaterialsReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.wall.WallMaterialsReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "canonical_family_result",
           "qualified_name": "structural_lib.design.is456.wall.canonical_family_result",
           "kind": "function",
@@ -16547,7 +16689,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -16569,9 +16711,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'BracedWallInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'BracedWallInputV1') -> 'CanonicalFamilyResultV1[BracedWallDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16579,6 +16720,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16615,9 +16757,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity_source: 'Any', geometry_topology: 'Any', actions: 'Any', materials_reinforcement: 'Any', evidence_review: 'Any') -> 'BracedWallInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity_source: 'WallIdentitySourceV1 | Mapping[str, object]', geometry_topology: 'WallGeometryTopologyV1 | Mapping[str, object]', actions: 'WallActionsV1 | Mapping[str, object]', materials_reinforcement: 'WallMaterialsReinforcementV1 | Mapping[str, object]', evidence_review: 'WallEvidenceReviewV1 | Mapping[str, object]') -> 'BracedWallInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16625,6 +16766,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16644,9 +16786,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'BracedWallInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | BracedWallInputV1') -> 'BracedWallInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16654,6 +16795,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16713,26 +16855,9 @@
     {
       "module": "structural_lib.design.is456.staircase",
       "export_classification": "preview",
-      "declared_export_count": 8,
-      "classified_symbol_count": 18,
+      "declared_export_count": 14,
+      "classified_symbol_count": 24,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.staircase.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "CanonicalFamilyResultV1",
           "qualified_name": "structural_lib.design.is456.staircase.CanonicalFamilyResultV1",
@@ -16770,6 +16895,25 @@
           }
         },
         {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.staircase.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "InputContractError",
           "qualified_name": "structural_lib.design.is456.staircase.InputContractError",
           "kind": "class",
@@ -16795,6 +16939,118 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.errors",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.staircase.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StairActionsV1",
+          "qualified_name": "structural_lib.design.is456.staircase.StairActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StairEvidenceReviewV1",
+          "qualified_name": "structural_lib.design.is456.staircase.StairEvidenceReviewV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StairGeometryTopologyV1",
+          "qualified_name": "structural_lib.design.is456.staircase.StairGeometryTopologyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StairIdentitySourceV1",
+          "qualified_name": "structural_lib.design.is456.staircase.StairIdentitySourceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StairMaterialsReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.staircase.StairMaterialsReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -16907,7 +17163,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -16929,9 +17185,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'StaircaseInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'StaircaseInputV1') -> 'CanonicalFamilyResultV1[StraightFlightStaircaseResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16939,6 +17194,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -16975,9 +17231,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity_source: 'Any', geometry_topology: 'Any', actions: 'Any', materials_reinforcement: 'Any', evidence_review: 'Any') -> 'StaircaseInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity_source: 'StairIdentitySourceV1 | Mapping[str, object]', geometry_topology: 'StairGeometryTopologyV1 | Mapping[str, object]', actions: 'StairActionsV1 | Mapping[str, object]', materials_reinforcement: 'StairMaterialsReinforcementV1 | Mapping[str, object]', evidence_review: 'StairEvidenceReviewV1 | Mapping[str, object]') -> 'StaircaseInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -16985,6 +17240,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -17004,9 +17260,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'StaircaseInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | StaircaseInputV1') -> 'StaircaseInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -17014,6 +17269,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -17073,26 +17329,9 @@
     {
       "module": "structural_lib.design.is456.deep_beam",
       "export_classification": "preview",
-      "declared_export_count": 8,
-      "classified_symbol_count": 18,
+      "declared_export_count": 14,
+      "classified_symbol_count": 24,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.deep_beam.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "CanonicalFamilyResultV1",
           "qualified_name": "structural_lib.design.is456.deep_beam.CanonicalFamilyResultV1",
@@ -17100,6 +17339,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "DeepActionsV1",
+          "qualified_name": "structural_lib.design.is456.deep_beam.DeepActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -17166,6 +17424,82 @@
           }
         },
         {
+          "name": "DeepEvidenceReviewV1",
+          "qualified_name": "structural_lib.design.is456.deep_beam.DeepEvidenceReviewV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "DeepGeometryTopologyV1",
+          "qualified_name": "structural_lib.design.is456.deep_beam.DeepGeometryTopologyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "DeepIdentitySourceV1",
+          "qualified_name": "structural_lib.design.is456.deep_beam.DeepIdentitySourceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "DeepMaterialsReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.deep_beam.DeepMaterialsReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "EngineeringStatus",
           "qualified_name": "structural_lib.design.is456.deep_beam.EngineeringStatus",
           "kind": "class",
@@ -17176,6 +17510,25 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.deep_beam.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -17214,6 +17567,23 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.deep_beam.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -17267,7 +17637,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -17289,9 +17659,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'DeepBeamInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'DeepBeamInputV1') -> 'CanonicalFamilyResultV1[SimplySupportedDeepBeamDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -17299,6 +17668,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -17335,9 +17705,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity_source: 'Any', geometry_topology: 'Any', actions: 'Any', materials_reinforcement: 'Any', evidence_review: 'Any') -> 'DeepBeamInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity_source: 'DeepIdentitySourceV1 | Mapping[str, object]', geometry_topology: 'DeepGeometryTopologyV1 | Mapping[str, object]', actions: 'DeepActionsV1 | Mapping[str, object]', materials_reinforcement: 'DeepMaterialsReinforcementV1 | Mapping[str, object]', evidence_review: 'DeepEvidenceReviewV1 | Mapping[str, object]') -> 'DeepBeamInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -17345,6 +17714,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -17364,9 +17734,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'DeepBeamInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | DeepBeamInputV1') -> 'DeepBeamInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -17374,6 +17743,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -17433,26 +17803,9 @@
     {
       "module": "structural_lib.design.is456.flat_slab",
       "export_classification": "preview",
-      "declared_export_count": 8,
-      "classified_symbol_count": 18,
+      "declared_export_count": 16,
+      "classified_symbol_count": 26,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.flat_slab.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "CanonicalFamilyResultV1",
           "qualified_name": "structural_lib.design.is456.flat_slab.CanonicalFamilyResultV1",
@@ -17483,6 +17836,158 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.flat_slab.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FlatActionsV1",
+          "qualified_name": "structural_lib.design.is456.flat_slab.FlatActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FlatDirectionReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.flat_slab.FlatDirectionReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FlatEvidenceReviewV1",
+          "qualified_name": "structural_lib.design.is456.flat_slab.FlatEvidenceReviewV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FlatGeometryTopologyV1",
+          "qualified_name": "structural_lib.design.is456.flat_slab.FlatGeometryTopologyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FlatIdentitySourceV1",
+          "qualified_name": "structural_lib.design.is456.flat_slab.FlatIdentitySourceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FlatMaterialsReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.flat_slab.FlatMaterialsReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FlatProvidedBarsV1",
+          "qualified_name": "structural_lib.design.is456.flat_slab.FlatProvidedBarsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f2",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -17564,6 +18069,23 @@
           }
         },
         {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.flat_slab.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "RegularInteriorFlatSlabDesignResult",
           "qualified_name": "structural_lib.design.is456.flat_slab.RegularInteriorFlatSlabDesignResult",
           "kind": "class",
@@ -17627,7 +18149,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -17649,9 +18171,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'FlatSlabInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'FlatSlabInputV1') -> 'CanonicalFamilyResultV1[RegularInteriorFlatSlabDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -17659,6 +18180,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -17695,9 +18217,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity_source: 'Any', geometry_topology: 'Any', actions: 'Any', materials_reinforcement: 'Any', evidence_review: 'Any') -> 'FlatSlabInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity_source: 'FlatIdentitySourceV1 | Mapping[str, object]', geometry_topology: 'FlatGeometryTopologyV1 | Mapping[str, object]', actions: 'FlatActionsV1 | Mapping[str, object]', materials_reinforcement: 'FlatMaterialsReinforcementV1 | Mapping[str, object]', evidence_review: 'FlatEvidenceReviewV1 | Mapping[str, object]') -> 'FlatSlabInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -17705,6 +18226,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -17724,9 +18246,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'FlatSlabInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | FlatSlabInputV1') -> 'FlatSlabInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -17734,6 +18255,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -17793,26 +18315,9 @@
     {
       "module": "structural_lib.design.is456.isolated_footing",
       "export_classification": "preview",
-      "declared_export_count": 8,
-      "classified_symbol_count": 18,
+      "declared_export_count": 14,
+      "classified_symbol_count": 24,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.isolated_footing.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "CanonicalFamilyResultV1",
           "qualified_name": "structural_lib.design.is456.isolated_footing.CanonicalFamilyResultV1",
@@ -17886,6 +18391,25 @@
           }
         },
         {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "FootingType",
           "qualified_name": "structural_lib.design.is456.isolated_footing.FootingType",
           "kind": "class",
@@ -17941,6 +18465,44 @@
           }
         },
         {
+          "name": "IsolatedActionsV1",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.IsolatedActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "IsolatedEvidenceReviewV1",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.IsolatedEvidenceReviewV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "IsolatedFootingInputV1",
           "qualified_name": "structural_lib.design.is456.isolated_footing.IsolatedFootingInputV1",
           "kind": "class",
@@ -17953,6 +18515,80 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "IsolatedGeometryTopologyV1",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.IsolatedGeometryTopologyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "IsolatedIdentitySourceV1",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.IsolatedIdentitySourceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "IsolatedMaterialsReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.IsolatedMaterialsReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.isolated_footing.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -17987,7 +18623,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -18009,9 +18645,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'IsolatedFootingInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'IsolatedFootingInputV1') -> 'CanonicalFamilyResultV1[ConcentricIsolatedFootingResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18019,6 +18654,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -18055,9 +18691,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity_source: 'Any', geometry_topology: 'Any', actions: 'Any', materials_reinforcement: 'Any', evidence_review: 'Any') -> 'IsolatedFootingInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity_source: 'IsolatedIdentitySourceV1 | Mapping[str, object]', geometry_topology: 'IsolatedGeometryTopologyV1 | Mapping[str, object]', actions: 'IsolatedActionsV1 | Mapping[str, object]', materials_reinforcement: 'IsolatedMaterialsReinforcementV1 | Mapping[str, object]', evidence_review: 'IsolatedEvidenceReviewV1 | Mapping[str, object]') -> 'IsolatedFootingInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18065,6 +18700,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -18084,9 +18720,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'IsolatedFootingInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | IsolatedFootingInputV1') -> 'IsolatedFootingInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18094,6 +18729,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -18153,26 +18789,9 @@
     {
       "module": "structural_lib.design.is456.combined_footing",
       "export_classification": "preview",
-      "declared_export_count": 8,
-      "classified_symbol_count": 18,
+      "declared_export_count": 14,
+      "classified_symbol_count": 24,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.combined_footing.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "CanonicalFamilyResultV1",
           "qualified_name": "structural_lib.design.is456.combined_footing.CanonicalFamilyResultV1",
@@ -18180,6 +18799,44 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "CombinedActionsV1",
+          "qualified_name": "structural_lib.design.is456.combined_footing.CombinedActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "CombinedEvidenceReviewV1",
+          "qualified_name": "structural_lib.design.is456.combined_footing.CombinedEvidenceReviewV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -18229,6 +18886,63 @@
           }
         },
         {
+          "name": "CombinedGeometryTopologyV1",
+          "qualified_name": "structural_lib.design.is456.combined_footing.CombinedGeometryTopologyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "CombinedIdentitySourceV1",
+          "qualified_name": "structural_lib.design.is456.combined_footing.CombinedIdentitySourceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "CombinedMaterialsReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.combined_footing.CombinedMaterialsReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "EngineeringStatus",
           "qualified_name": "structural_lib.design.is456.combined_footing.EngineeringStatus",
           "kind": "class",
@@ -18239,6 +18953,25 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.combined_footing.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -18277,6 +19010,23 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.combined_footing.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -18347,7 +19097,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -18369,9 +19119,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'CombinedFootingInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'CombinedFootingInputV1') -> 'CanonicalFamilyResultV1[SymmetricCombinedFootingDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18379,6 +19128,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -18415,9 +19165,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity_source: 'Any', geometry_topology: 'Any', actions: 'Any', materials_reinforcement: 'Any', evidence_review: 'Any') -> 'CombinedFootingInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity_source: 'CombinedIdentitySourceV1 | Mapping[str, object]', geometry_topology: 'CombinedGeometryTopologyV1 | Mapping[str, object]', actions: 'CombinedActionsV1 | Mapping[str, object]', materials_reinforcement: 'CombinedMaterialsReinforcementV1 | Mapping[str, object]', evidence_review: 'CombinedEvidenceReviewV1 | Mapping[str, object]') -> 'CombinedFootingInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18425,6 +19174,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -18444,9 +19194,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'CombinedFootingInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | CombinedFootingInputV1') -> 'CombinedFootingInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18454,6 +19203,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -18513,26 +19263,9 @@
     {
       "module": "structural_lib.design.is456.strap_footing",
       "export_classification": "preview",
-      "declared_export_count": 8,
-      "classified_symbol_count": 18,
+      "declared_export_count": 14,
+      "classified_symbol_count": 24,
       "symbols": [
-        {
-          "name": "Any",
-          "qualified_name": "structural_lib.design.is456.strap_footing.Any",
-          "kind": "class",
-          "classification": "internal",
-          "declared_export": false,
-          "defined_in": "typing",
-          "claim_disposition": "internal",
-          "documentation": {
-            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
-            "obligations": [],
-            "signature": "",
-            "docstring_sections": [],
-            "missing_docstring_sections": [],
-            "example_ids": []
-          }
-        },
         {
           "name": "CanonicalFamilyResultV1",
           "qualified_name": "structural_lib.design.is456.strap_footing.CanonicalFamilyResultV1",
@@ -18563,6 +19296,25 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FamilyIdentityV1",
+          "qualified_name": "structural_lib.design.is456.strap_footing.FamilyIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -18608,6 +19360,23 @@
           }
         },
         {
+          "name": "Mapping",
+          "qualified_name": "structural_lib.design.is456.strap_footing.Mapping",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "collections.abc",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "PropertyLineStrapFootingDesignResult",
           "qualified_name": "structural_lib.design.is456.strap_footing.PropertyLineStrapFootingDesignResult",
           "kind": "class",
@@ -18644,6 +19413,44 @@
           }
         },
         {
+          "name": "StrapActionsV1",
+          "qualified_name": "structural_lib.design.is456.strap_footing.StrapActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StrapEvidenceReviewV1",
+          "qualified_name": "structural_lib.design.is456.strap_footing.StrapEvidenceReviewV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "StrapFootingContractError",
           "qualified_name": "structural_lib.design.is456.strap_footing.StrapFootingContractError",
           "kind": "class",
@@ -18663,6 +19470,63 @@
         {
           "name": "StrapFootingInputV1",
           "qualified_name": "structural_lib.design.is456.strap_footing.StrapFootingInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StrapGeometryTopologyV1",
+          "qualified_name": "structural_lib.design.is456.strap_footing.StrapGeometryTopologyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StrapIdentitySourceV1",
+          "qualified_name": "structural_lib.design.is456.strap_footing.StrapIdentitySourceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.family_f3",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "StrapMaterialsReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.strap_footing.StrapMaterialsReinforcementV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
@@ -18707,7 +19571,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'StrictPublicModel', calculation: 'Any', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1'",
+            "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -18729,9 +19593,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'StrapFootingInputV1') -> 'CanonicalFamilyResultV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(request: 'StrapFootingInputV1') -> 'CanonicalFamilyResultV1[PropertyLineStrapFootingDesignResult]'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18739,6 +19602,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -18775,9 +19639,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(*, identity_source: 'Any', geometry_topology: 'Any', actions: 'Any', materials_reinforcement: 'Any', evidence_review: 'Any') -> 'StrapFootingInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(*, identity_source: 'StrapIdentitySourceV1 | Mapping[str, object]', geometry_topology: 'StrapGeometryTopologyV1 | Mapping[str, object]', actions: 'StrapActionsV1 | Mapping[str, object]', materials_reinforcement: 'StrapMaterialsReinforcementV1 | Mapping[str, object]', evidence_review: 'StrapEvidenceReviewV1 | Mapping[str, object]') -> 'StrapFootingInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18785,6 +19648,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -18804,9 +19668,8 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Any') -> 'StrapFootingInputV1'",
-            "docstring_sections": [],
-            "missing_docstring_sections": [
+            "signature": "(value: 'Mapping[str, object] | StrapFootingInputV1') -> 'StrapFootingInputV1'",
+            "docstring_sections": [
               "examples",
               "limitations",
               "parameters",
@@ -18814,6 +19677,7 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
             "example_ids": []
           }
         },
@@ -26389,7 +27253,7 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
-            "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict[str, Any]'",
+            "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnDesignResult'",
             "docstring_sections": [
               "examples",
               "raises",
@@ -31977,7 +32841,7 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
-            "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict[str, Any]'",
+            "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnDesignResult'",
             "docstring_sections": [
               "examples",
               "raises",
@@ -36843,7 +37707,7 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
-            "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict[str, Any]'",
+            "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnDesignResult'",
             "docstring_sections": [
               "examples",
               "raises",
