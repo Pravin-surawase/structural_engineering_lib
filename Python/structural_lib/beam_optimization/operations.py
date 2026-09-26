@@ -6,7 +6,7 @@ import math
 import re
 from decimal import Decimal, InvalidOperation
 
-from structural_lib.beam.member import MemberLeafExpectation
+from structural_lib.beam.member import MemberDesignOutput, MemberLeafExpectation
 from structural_lib.beam.semantics import (
     ApplicabilityState,
     CompletenessState,
@@ -22,6 +22,10 @@ from structural_lib.beam.semantics import (
     plain,
     rejected_result,
     semantic_hash,
+)
+from structural_lib.construction.contracts import (
+    ConstructionCostOutput,
+    ConstructionQuantityOutput,
 )
 
 from .contracts import (
@@ -88,7 +92,20 @@ _REANALYSIS_CHANGES = {
 def candidate_result_binding(
     result: OperationResult, output_payload: object
 ) -> CandidateResultBinding:
-    """Create the portable WP08 evidence binding for one typed output payload."""
+    """Bind an unchanged output payload to its actual operation result.
+
+    ``output_payload`` must canonically equal one named value in
+    ``result.outputs``. A detached or modified payload raises ``ValueError``;
+    it cannot acquire the original result's identity through this helper.
+    Result states are copied unchanged and remain subject to ranking checks.
+    """
+
+    payload_id = semantic_hash("output_payload_id", output_payload)
+    if not any(
+        semantic_hash("output_payload_id", value) == payload_id
+        for value in result.outputs.values()
+    ):
+        raise ValueError("Output payload does not match the supplied operation result")
 
     return CandidateResultBinding(
         result.operation_semantic_id,
@@ -100,7 +117,80 @@ def candidate_result_binding(
         result.engineering,
         result.completeness,
         result.freshness,
-        semantic_hash("output_payload_id", output_payload),
+        payload_id,
+    )
+
+
+def bind_candidate_evaluation(
+    *,
+    candidate_id: str,
+    analysis_revision_id: str,
+    member_result: OperationResult,
+    quantity_result: OperationResult,
+    cost_result: OperationResult | None = None,
+    reanalysis_evidence: CandidateReanalysisEvidence | None = None,
+) -> CandidateEvaluation:
+    """Compose a ranking input from actual member, quantity, and cost results.
+
+    Parameters
+    ----------
+    candidate_id : str
+        Identity returned by ``build_candidate_domain`` and used as the
+        member reinforcement and quantity detail revision.
+    analysis_revision_id : str
+        The baseline revision for fixed actions, or the candidate's reanalysis
+        revision when its coupling policy requires new analysis evidence.
+    member_result : OperationResult
+        AO17 result containing ``member_design``; all leaf states are retained.
+    quantity_result : OperationResult
+        AO04 result containing physical ``quantities`` in kg, m³, and m².
+    cost_result : OperationResult, optional
+        AO20 result containing ``cost``. Omission never invents rates or money.
+    reanalysis_evidence : CandidateReanalysisEvidence, optional
+        Explicit candidate-specific snapshot evidence for coupled analysis.
+
+    Returns
+    -------
+    CandidateEvaluation
+        Typed output records and bindings from those exact results.
+
+    Raises
+    ------
+    KeyError
+        A supplied result has no corresponding output, for example after input
+        rejection. Keep that diagnostic rather than fabricating a payload.
+    ValueError
+        An output cannot be restored to its public type without data loss.
+
+    Notes
+    -----
+    This assembles existing calculations. It does not evaluate a candidate or
+    qualify evidence; ``rank_candidates`` and ``optimize_beam`` still apply all
+    identity, profile, state, and coupling checks. Failed and partial results
+    with outputs remain inspectable. Additional explicitly sourced carbon or
+    congestion values may be supplied using ``dataclasses.replace``.
+    """
+    member = member_result.output_as("member_design", MemberDesignOutput)
+    quantities = quantity_result.output_as("quantities", ConstructionQuantityOutput)
+    cost = (
+        cost_result.output_as("cost", ConstructionCostOutput)
+        if cost_result is not None
+        else None
+    )
+    return CandidateEvaluation(
+        candidate_id=candidate_id,
+        analysis_revision_id=analysis_revision_id,
+        member_binding=candidate_result_binding(member_result, member),
+        member_result=member,
+        quantity_binding=candidate_result_binding(quantity_result, quantities),
+        quantities=quantities,
+        cost_binding=(
+            candidate_result_binding(cost_result, cost)
+            if cost_result is not None
+            else None
+        ),
+        cost=cost,
+        reanalysis_evidence=reanalysis_evidence,
     )
 
 
@@ -261,7 +351,32 @@ def _coupling_class(
 
 
 def build_candidate_domain(domain: DiscreteCandidateDomain) -> CandidateDomainOutput:
-    """Expand a bounded Cartesian product and seal canonical candidate identities."""
+    """Expand a bounded physical domain in deterministic candidate-id order.
+
+    Parameters
+    ----------
+    domain : DiscreteCandidateDomain
+        Versioned project, profile, member and action context plus explicit
+        section/bar/link choices. Dimensions are mm, strengths N/mm² and
+        counts integers. No catalogue or engineering default is inferred.
+
+    Returns
+    -------
+    CandidateDomainOutput
+        Every generated definition, its physical identity and coupling class.
+        Iterate ``candidates`` in this order when supplying evaluation results.
+
+    Raises
+    ------
+    ValueError
+        A domain value/identity is invalid, or its Cartesian product exceeds
+        the declared maximum or the 100,000-candidate hard ceiling.
+
+    Notes
+    -----
+    This generates definitions, not calculation evidence. Physically duplicate
+    choices remain visible; the ranker evaluates each unique definition once.
+    """
 
     _validate_domain(domain)
     baseline = next(
@@ -1299,7 +1414,31 @@ def _ranking_result(
 
 
 def rank_candidates(request: CandidateRankingRequest) -> OperationResult:
-    """AO05: rank evaluated candidates only after complete profile-derived checks."""
+    """Rank an expanded domain against its actual profile-derived evidence.
+
+    Parameters
+    ----------
+    request : CandidateRankingRequest
+        Frozen context/domain/objectives, analysis mode, bounded evaluation
+        count, stop reason and the canonical prefix of candidate evaluations.
+        Metrics retain their declared kg, m³, m², mm or currency units.
+
+    Returns
+    -------
+    OperationResult
+        ``ranking`` contains the full ledger and typed ranking output. Invalid
+        request contracts return ``rejected_input`` with diagnostic codes.
+        Complete enumeration may select a candidate or report engineering
+        failure for a fully evaluated infeasible domain. Budget, cancellation
+        and incomplete/stale evidence remain partial and claim no optimum.
+
+    Notes
+    -----
+    No formulas or candidate analyses run here. Fixed-action results retain the
+    common-force assumption; a coupled change needs its own reanalysis evidence.
+    Qualification covers the reference member's complete declared profile, not
+    checks omitted from that profile or professional approval.
+    """
 
     inputs = effective_inputs(request=request)
     try:
@@ -1310,7 +1449,31 @@ def rank_candidates(request: CandidateRankingRequest) -> OperationResult:
 
 
 def optimize_beam(request: BeamOptimizationRequest) -> OperationResult:
-    """AO21: generate the finite domain and make only evidence-supported claims."""
+    """Expand a finite domain and rank supplied genuine calculation results.
+
+    Parameters
+    ----------
+    request : BeamOptimizationRequest
+        Domain, context, objectives, coupling policy, evaluation budget, stop
+        reason and evaluated prefix. Use ``build_candidate_domain`` first to
+        obtain identities and order, calculate each candidate through its
+        maintained owners, then use ``bind_candidate_evaluation``.
+
+    Returns
+    -------
+    OperationResult
+        ``optimization`` contains both the generated domain and ranking. The
+        same rejection, failure, partial and optimum rules as ``rank_candidates``
+        apply. Recover the nested record using
+        ``result.output_as("optimization", BeamOptimizationOutput)``.
+
+    Notes
+    -----
+    This operation orchestrates definitions and evidence; it does not synthesize
+    a passing member, invent quantity/cost values, or run an external analysis.
+    The finite-domain claim remains limited to the declared profile and analysis
+    mode. See the executable ``candidate_ranking_workflow.py`` example.
+    """
 
     inputs = effective_inputs(request=request)
     try:
@@ -1399,6 +1562,7 @@ __all__ = [
     "QUANTITY_OPERATION",
     "RANK_CANDIDATES_OPERATION",
     "TRAVERSAL_ORDER",
+    "bind_candidate_evaluation",
     "build_candidate_domain",
     "candidate_result_binding",
     "optimize_beam",
