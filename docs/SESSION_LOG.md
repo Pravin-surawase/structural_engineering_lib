@@ -61,7 +61,9 @@
   relaxing the existing geometry check.
 - Terminal lookup resolution: directory-scoped `rg` located the actual
   canonical service owner; explicit existing paths replaced the guessed glob.
-  No repository source or runtime was affected by these four lookup mistakes.
+  No repository source or runtime was affected by these five lookup mistakes. A sixth diagnostic used a root-relative
+  mypy file path that assigned duplicate module names; the explicit
+  `-p structural_lib` package target and project configuration resolve it.
 - The cumulative repository gate passed 30/32. The new public result field
   required API manifest regeneration, and the caller scan deliberately rejected
   two intended untracked files. Review/stage those paths, refresh generated API
@@ -78,10 +80,18 @@
 - One new positive screening fixture omitted its required `d_mm`. The
   maintained calculation owner correctly rejected it; supply the complete
   screening request rather than infer a depth or relax source acceptance.
+- Hosted run `36261181018`, Python job `108457209781`, rejected candidate
+  `4b031594` at mypy: the aggregate validation loop did not narrow the outer
+  optional spacing variable. Add an explicit post-validation type invariant;
+  preserve runtime checks and rerun mypy plus the affected workflow suite.
+  This is the single admitted hosted repair, with no formula or scope change.
+- The `gh run view` log endpoint held logs while sibling jobs ran. The completed
+  job-log connector returned the exact type-check error; no CI rerun or check
+  bypass was used to investigate it.
 
 ### Rework and recurrence
 
-- RR-005: occurrences=220; minutes=unknown. Four read-only path/glob discovery mistakes; use discovered owners and explicit paths.
+- RR-005: occurrences=222; minutes=unknown. Six read-only path/glob/module-discovery mistakes; use discovered owners, explicit paths and the package target for root-launched mypy.
 - RR-003: occurrences=10; minutes=unknown. Manifest regeneration overlapped the full suite Git-status invariant; serialize mutations before affected test reruns.
 - RR-047: occurrences=2; minutes=unknown. The caller scan rejected two intended untracked files; review and stage them before refreshing/checking API projections.
 

@@ -146,6 +146,7 @@ def _serialized_detailing_basis(
             )
     if issues:
         raise InputContractError(issues)
+    assert isinstance(spacing, (int, float))
     return inputs, float(spacing)
 
 
