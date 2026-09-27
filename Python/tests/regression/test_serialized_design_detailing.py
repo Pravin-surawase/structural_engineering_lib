@@ -106,6 +106,15 @@ def test_explicit_spacing_is_rejected_instead_of_silently_reduced():
     assert document["beams"][0]["shear"]["spacing"] == 100
 
 
+@pytest.mark.parametrize("basis", [{"pt_percent": 3.0}, {"ast_mm2_for_shear": 3996}])
+def test_serialized_design_cannot_discard_its_longitudinal_shear_basis(basis):
+    document = json.loads(json.dumps(_document(**basis)))
+    assert document["beams"][0]["is_ok"]
+    with pytest.raises(InputContractError) as error:
+        api.compute_detailing(document)
+    assert _codes(error) == {"DETAILING_SHEAR_LONGITUDINAL_AREA_MISMATCH"}
+
+
 def test_serialized_depth_cannot_change_the_original_strength_basis():
     document = _document()
     document["beams"][0]["geometry"]["d_mm"] = 460

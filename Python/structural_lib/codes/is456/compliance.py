@@ -226,6 +226,8 @@ def check_compliance_case(
     Notes:
     - If pt_percent is not provided, it is computed from ast_mm2_for_shear when available,
       else falls back to using flexure-required Ast (recorded as an assumption).
+    - When both shear-steel descriptions are supplied they must agree with
+      pt_percent = 100 * ast_mm2_for_shear / (b_mm * d_mm); neither can be ignored.
     """
 
     _require_finite_inputs(tu_knm=tu_knm)
@@ -260,6 +262,12 @@ def check_compliance_case(
         if value is not None:
             finite_inputs[name] = value
     _require_finite_inputs(**finite_inputs)
+    shear._require_consistent_shear_steel_basis(
+        b_mm=b_mm,
+        d_mm=d_mm,
+        pt_percent=pt_percent,
+        ast_mm2_for_shear=ast_mm2_for_shear,
+    )
     fy_stirrup = fy_nmm2 if fy_transverse_nmm2 is None else fy_transverse_nmm2
     if fy_transverse_nmm2 is not None and not 250 <= fy_stirrup <= 500:
         raise ValueError("fy_transverse_nmm2 must be between 250 and 500 N/mm2")

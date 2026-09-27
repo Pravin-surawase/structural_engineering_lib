@@ -587,7 +587,7 @@ def design_and_detail_compatibility(**arguments: Any) -> DesignAndDetailResult:
 def detail(
     design_result: BeamDesignResultV1,
     *,
-    detailing_standard: DetailingStandard,
+    detailing_standard: DetailingStandard | None = None,
 ) -> BeamDetailingResultV1:
     """Create explicit detailing from a completed canonical design result.
 
@@ -595,8 +595,9 @@ def detail(
     ----------
     design_result : BeamDesignResultV1
         Completed canonical design whose request includes detailing options.
-    detailing_standard : DetailingStandard
-        Explicit standard, which must match the request's choice.
+    detailing_standard : DetailingStandard, optional
+        Use the standard already selected in ``request.detailing`` when omitted.
+        An explicit argument is an assertion and must match that choice.
 
     Returns
     -------
@@ -664,6 +665,8 @@ def detail(
                 ),
             )
         )
+    if detailing_standard is None:
+        detailing_standard = options.standard
     if options.standard is not detailing_standard:
         raise InputContractError(
             (
@@ -671,7 +674,7 @@ def detail(
                     code="DETAILING_STANDARD_CONFLICT",
                     path="detailing_standard",
                     message="argument must match request.detailing.standard",
-                    received=detailing_standard.value,
+                    received=str(detailing_standard),
                     allowed_values=(options.standard.value,),
                 ),
             )
@@ -791,6 +794,11 @@ def detail(
             detailing,
             assumed_asv_mm2=request.calculation_basis.asv_mm2,
             maximum_spacing_mm=calculation.shear.spacing,
+            d_mm=request.section.resolved_d_mm(),
+            flexural_ast_mm2=calculation.flexure.Ast_required,
+            pt_percent=request.calculation_basis.pt_percent,
+            ast_mm2_for_shear=request.calculation_basis.ast_mm2_for_shear,
+            primary_tension_face=request.actions.primary_tension_face or "BOTTOM",
         )
     return BeamDetailingResultV1(
         request=request,
@@ -806,7 +814,7 @@ def detail(
 def design_and_detail(
     request: BeamDesignInputV1,
     *,
-    detailing_standard: DetailingStandard,
+    detailing_standard: DetailingStandard | None = None,
 ) -> BeamDesignAndDetailResultV1:
     """Compose canonical design and detailing without hidden choices.
 
@@ -814,8 +822,9 @@ def design_and_detail(
     ----------
     request : BeamDesignInputV1
         Strict request containing complete detailing options.
-    detailing_standard : DetailingStandard
-        Explicit standard matching ``request.detailing.standard``.
+    detailing_standard : DetailingStandard, optional
+        Use ``request.detailing.standard`` when omitted. An explicit argument
+        must match it; the request always carries the caller's standard choice.
 
     Returns
     -------

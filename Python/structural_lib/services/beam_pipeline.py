@@ -564,6 +564,9 @@ def design_single_beam(
             detailing_result,
             assumed_asv_mm2=asv_mm2,
             maximum_spacing_mm=case_result.shear.spacing,
+            d_mm=resolved_d_mm,
+            flexural_ast_mm2=case_result.flexure.Ast_required,
+            pt_percent=pt_percent,
         )
 
     # Determine governing check

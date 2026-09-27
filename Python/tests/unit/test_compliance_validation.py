@@ -54,6 +54,18 @@ def test_compliance_case_rejects_nonpositive_supplied_shear_steel(supplied):
         )
 
 
+def test_compliance_does_not_silently_prefer_a_conflicting_shear_percentage():
+    with pytest.raises(ValueError, match="pt_percent and ast_mm2_for_shear conflict"):
+        check_compliance_case(
+            case_id="CONFLICTING_SHEAR_BASIS",
+            mu_knm=20.0,
+            vu_kn=100.0,
+            pt_percent=3.0,
+            ast_mm2_for_shear=600.0,
+            **COMMON,
+        )
+
+
 def test_public_compliance_report_rejects_numeric_text_nan():
     with pytest.raises(ValueError, match="mu_knm must be a finite real number"):
         check_public_compliance_report(
