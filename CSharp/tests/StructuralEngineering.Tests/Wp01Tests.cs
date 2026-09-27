@@ -85,6 +85,51 @@ public class Wp01Tests
         Assert.True(doubly.Outputs.CapacityKnM > singly.Outputs!.CapacityKnM);
     }
 
+    [Theory]
+    [InlineData(10, EngineeringState.Fail)]
+    [InlineData(40, EngineeringState.Fail)]
+    [InlineData(45, EngineeringState.Pass)]
+    public void GeometrySpacingIncludesOppositeFaces(double distanceMm, EngineeringState expected)
+    {
+        BarCoordinate[] bars =
+        [
+            new("T", 20, 150, 200, Face.Top),
+            new("B", 20, 150, 200 + distanceMm, Face.Bottom)
+        ];
+        var result = ReinforcementOperations.EvaluateGeometry(new("IS456-WP01", 300, 500, 25, 8, 25, bars));
+
+        Assert.Equal(expected, result.Engineering);
+        Assert.Equal(distanceMm - 20, result.Outputs!.MinimumClearSpacingMm);
+        Assert.Equal(["T", "B"], result.Outputs.GoverningSpacingPair);
+    }
+
+    [Theory]
+    [InlineData(7, 7, true)]
+    [InlineData(13, 7, false)]
+    [InlineData(7, 13, false)]
+    public void FlexureLimitsEachLongitudinalGroup(int topCount, int bottomCount, bool maximumPass)
+    {
+        BarCoordinate[] Group(Face face, int count) => Enumerable.Range(0, count)
+            .Select(index => new BarCoordinate($"{face}{index}", 32, 55 + 65 * (index % 7),
+                face == Face.Top ? 55 + 65 * (index / 7) : 445 - 65 * (index / 7),
+                face, 1 + index / 7)).ToArray();
+        var bars = Group(Face.Top, topCount).Concat(Group(Face.Bottom, bottomCount)).ToArray();
+        var request = Capacity() with { WebWidthMm = 500, Bars = bars };
+        var capacity = Flexure.Capacity(request);
+        var result = BeamOperations.CheckFlexure(new(request, 200, -200));
+
+        Assert.Equal(10000, capacity.Outputs!.MaximumTensionSteelAreaMm2);
+        Assert.Equal(10000, capacity.Outputs.MaximumCompressionSteelAreaMm2);
+        Assert.Equal(10000, capacity.Outputs.MaximumTotalSteelAreaMm2);
+        Assert.All(result.Outputs!.Checks, check => Assert.Equal(maximumPass, check.MaximumSteelPass));
+        Assert.Equal(maximumPass ? EngineeringState.Pass : EngineeringState.Fail, result.Engineering);
+        if (maximumPass)
+        {
+            Assert.Equal(5629.734035232909, capacity.Outputs.TensionSteelAreaMm2, 9);
+            Assert.True(capacity.Outputs.TensionSteelAreaMm2 + capacity.Outputs.CompressionSteelAreaMm2 > 10000);
+        }
+    }
+
     [Fact]
     public void IndependentRectangularCapacityVectorMatches()
     {

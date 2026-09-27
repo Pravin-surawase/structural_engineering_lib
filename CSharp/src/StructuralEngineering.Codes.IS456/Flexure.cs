@@ -10,7 +10,7 @@ public static class Flexure
     public static ResultEnvelope<FlexuralCapacityOutput> Capacity(FlexuralCapacityRequest request)
     {
         var inputs = Inputs(request);
-        var provenance = Source(request.CodeDataRevisionId, "is456-flexural-capacity-wp01-v1");
+        var provenance = Source(request.CodeDataRevisionId, "is456-flexural-capacity-wp01-v2");
         var required = new[]
         {
             request.WebWidthMm, request.DepthMm, request.ConcreteStrengthNPerMm2,

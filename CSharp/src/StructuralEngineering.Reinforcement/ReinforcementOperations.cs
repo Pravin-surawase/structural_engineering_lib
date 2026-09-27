@@ -61,7 +61,7 @@ public static class ReinforcementOperations
     public static ResultEnvelope<GeometryOutput> EvaluateGeometry(GeometryRequest request)
     {
         var inputs = Inputs(request);
-        var provenance = Source(request.CodeDataRevisionId, "reinforcement-actual-geometry-v1");
+        var provenance = Source(request.CodeDataRevisionId, "reinforcement-actual-geometry-v2");
         var invalid = Validate(GeometryOperation, request);
         if (invalid.Count > 0)
             return ResultFactory.Rejected<GeometryOutput>(GeometryOperation, inputs, provenance, [.. invalid]);
@@ -87,7 +87,6 @@ public static class ReinforcementOperations
             for (var previous = 0; previous < index; previous++)
             {
                 var other = request.Bars[previous];
-                if (bar.Face != other.Face) continue;
                 var deltaX = bar.XFromLeftMm - other.XFromLeftMm;
                 var deltaY = bar.YFromTopMm - other.YFromTopMm;
                 var gap = Math.Sqrt(deltaX * deltaX + deltaY * deltaY) -

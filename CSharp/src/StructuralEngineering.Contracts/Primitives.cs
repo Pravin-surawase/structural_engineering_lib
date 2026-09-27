@@ -123,7 +123,12 @@ public sealed record FlexuralCapacityOutput(
     double ConcreteCompressionForceN,
     double CompressionSteelForceN,
     bool IsOverReinforced,
-    bool UsesCompressionFlange);
+    bool UsesCompressionFlange)
+{
+    // Retain the positional constructor and legacy property as a per-group alias.
+    public double MaximumTensionSteelAreaMm2 => MaximumTotalSteelAreaMm2;
+    public double MaximumCompressionSteelAreaMm2 => MaximumTotalSteelAreaMm2;
+}
 
 public sealed record FlexureCheckRequest(
     FlexuralCapacityRequest Capacity,
