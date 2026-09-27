@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-27 — Mac library usability milestone complete; documentation maintenance and 24-hour review reconciled; live ETABS work remains held
+**Updated:** 2026-09-27 — Library deep-review packets 001–003 merged; progress assessment and handoff prepared; complete member workflow proposed; live ETABS work remains held
 
 ---
 
@@ -23,17 +23,17 @@
 | COMPACT-CLOSEOUT-001 | Close owner-expanded milestones without fictitious CI runs | P1 | Done: PR #1004 | Superseded pre-PR pushes retain history without a nonexistent verdict. Routine delivery was then simplified in #1005. [Acceptance](planning/python-library-workflow-improvement-plan.md#follow-up--close-owner-expanded-milestones) |
 | ROUTINE-DELIVERY | Remove routine delivery bookkeeping | P1 | Done: PR #1005 | Cohesive commits, affected verification and one PR; detailed audits are opt-in. [Workflow](git-automation/git-workflow-single-source.md#routine-integration) |
 | LIB-USABILITY | Improve existing implementation, typed APIs and executable caller workflows | P0 | Done: PRs #1006–#1010 | Current-source installation, family/transport/physical/candidate journeys and measured startup improvement. [Evidence](planning/library-usability-improvement.md#completion-and-boundaries) |
-| LIB-DEEP-REVIEW-001 | Read beam function bodies, compare APIs/numerics and repair shear-basis composition | P0 | Beam packet implemented; full-library review remains open | [Function-by-function evidence and remaining scope](planning/library-usability-improvement.md#function-review-lib-deep-review-001); retain exact final checks in the packet PR |
-| LIB-DEEP-REVIEW-002 | Review supplied bars, source bond/anchorage and bounded serviceability | P0 | Supplied-beam packet implemented; physical-member review remains open | [Function reads, source benchmarks and corrections](planning/library-usability-improvement.md#function-review-lib-deep-review-002); retain final verification in the packet PR |
-| LIB-DEEP-REVIEW-003 | Correct physical group limits, cross-face gaps and rounded-link enclosure | P0 | Physical fit packet implemented; general strain/support composition remains open | [Exact function reads, reproducers and independent comparison](planning/library-usability-improvement.md#function-review-lib-deep-review-003); retain final verification in the packet PR |
+| LIB-DEEP-REVIEW-001 | Read beam function bodies, compare APIs/numerics and repair shear-basis composition | P0 | Done: PR #1012 | [Function-by-function evidence and remaining scope](planning/library-usability-improvement.md#function-review-lib-deep-review-001); exact final checks in the packet PR |
+| LIB-DEEP-REVIEW-002 | Review supplied bars, source bond/anchorage and bounded serviceability | P0 | Done: PR #1013 | [Function reads, source benchmarks and corrections](planning/library-usability-improvement.md#function-review-lib-deep-review-002); final verification in the packet PR |
+| LIB-DEEP-REVIEW-003 | Correct physical group limits, cross-face gaps and rounded-link enclosure | P0 | Done: PR #1014 | [Exact function reads, reproducers and independent comparison](planning/library-usability-improvement.md#function-review-lib-deep-review-003); final verification in the packet PR |
+| LIB-MEMBER-WORKFLOW-001 | Complete one representative public beam workflow through checked reinforcement, BBS and report | P0 | Proposed; not started | [Frozen case, full profile, independent calculations and measured caller acceptance](planning/library-usability-improvement.md#proposed-milestone-lib-member-workflow-001) |
 
-**Next library review:** matched-material per-bar strain and multilayer section
-benchmarks, support/path-to-arrangement composition and a representative
-complete-profile replay, then Level B/C serviceability and the remaining
-element families. Record exact
-source reads and independent evidence rather than equating inventory or test
-counts with deep review. The representative complete-profile application replay
-and consolidated release preparation remain separate proposed packets.
+**Next library milestone:** use the representative complete workflow to select
+essential calculation and integration repairs, including matched-material
+strain/multilayer and support-fit evidence where required. Whole-library deep
+review, Level B/C serviceability and the remaining families are still open.
+Record source reads and independent outcomes, not just inventory or test
+counts. Consolidated release preparation remains a separate proposed packet.
 
 ## Maintenance Recovery Dashboard
 

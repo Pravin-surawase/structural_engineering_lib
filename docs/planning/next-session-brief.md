@@ -4,19 +4,22 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-27
-- Focus: Reconcile completed library improvements, current handoff and compact maintenance guidance.
-- Completed: PRs #1000–#1010 merged; library usability milestone complete at 35acf5b1. Required CI passed on all 11 heads.
-- Recurrence controls: RR-004 x34 / unknown: Refresh milestone handoff and preserve reader headings. RR-050 x2 / unknown: Use the canonical OpenAPI inventory in every consumer.
+- Focus: Preserve completed deep-review evidence and prepare one complete, measured beam workflow as the next proposed milestone.
+- Completed: Deep-review packets 001–003 merged in PRs #1012, #1013 and #1014.; Recorded progress, remaining limits and proposed LIB-MEMBER-WORKFLOW-001 acceptance criteria.; Prepared Mac resumption; preserved Windows and unrelated work.
+- Recurrence controls: RR-004 x34 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-**Development device — 27 September:** continue on the Mac. Maintenance intake
-fetched GitHub and verified clean main at `35acf5b1`. Fetch again before the next
-task and use the latest merged head. The Windows checkout was not inspected in
-this session; preserve its retained C# edit and installed evidence. All 33 Mac
-worktree records remain preserved, including the unrelated dirty architecture
-worktree and two unavailable temporary entries.
+**Development device — 27 September:** continue on the Mac. This handoff intake
+fetched GitHub and verified clean `main` equal to `origin/main` at
+`1e558ad3977a489430172064423ae67a4556332d` (PR #1014, accepted calculation
+baseline). Use the latest merged head after a fresh fetch; do not reset to this
+historical observation. No open non-dependency PR was found at intake. The
+Windows checkout was not inspected; preserve its retained C# edit and installed
+evidence. All 33 Mac worktree records remain preserved, including the unrelated
+dirty architecture worktree and two unavailable temporary entries. No writer
+ownership or installed-artifact authority is transferred by this session brief.
 
 The [24-hour report](../SESSION_LOG.md#maint-20260927-24h) covers
 26 September 10:10 to 27 September 10:10 IST: 11 merged PRs carrying 32 commits.
@@ -24,6 +27,10 @@ The [library usability evidence](library-usability-improvement.md) records typed
 family APIs, strict JSON intake, lossless design/depth propagation, real physical
 and candidate workflows, installed-wheel replay and measured import improvement.
 The current-source improvements are not a new published package release.
+
+The [latest assessment and handoff](../SESSION_LOG.md#lib-review-handoff-20260927)
+adds the three completed deep-review packets. The [progress assessment](library-usability-improvement.md#progress-assessment-and-next-acceptance-milestone)
+explains their practical value, remaining gaps and the proposed finish line.
 
 Routine work now uses cohesive commits, affected checks once after the batch,
 one PR and required hosted checks. The delivery ledger and separate local audit
@@ -50,23 +57,48 @@ enclosure in Python/C#. It traces actual failed arrangement evidence into member
 acceptance and compares 36 bounded capacity cases with SciPy. General per-bar
 strain compatibility and complete support geometry remain separate work.
 
-1. Continue with matched-material per-bar strain and multilayer section
-   benchmarks and support/path-to-arrangement composition, then Level B/C
-   serviceability and the remaining element families.
-   Record each function's actual review depth and numerical evidence in the
-   maintained review table; batch confirmed repairs in cohesive commits.
-2. Replay one representative sanitized member through a declared complete
-   supported profile and a maintained application caller, from source inputs to
-   BBS/report. Keep missing checks explicit and use the result to prioritize the
-   next integration fix; teaching-profile examples are not that acceptance.
-3. Prepare a consolidated release candidate/changelog and upgrade/install
+1. **LIB-MEMBER-WORKFLOW-001 — proposed, not started:** select one representative
+   ordinary rectangular beam, freeze inputs and its complete supported check
+   profile, then replay public inputs → checked reinforcement → BBS/report.
+   Follow the [acceptance criteria](library-usability-improvement.md#proposed-milestone-lib-member-workflow-001).
+   Preserve missing-check states; teaching-profile PASS is not this acceptance.
+2. Let that case identify essential calculation or integration gaps. Perform
+   matched-material strain/multilayer and support-fit comparisons where needed;
+   retain exact function-read and independent evidence records. General strain
+   capability, Level B/C serviceability and remaining families are still open.
+3. Measure complete workflow elapsed time and manual steps. The existing
+   approximately 20% improvement concerns import startup only; batch speed has
+   not been established. Avoid another general maintenance campaign unless a
+   confirmed blocker requires it.
+4. Prepare a consolidated release candidate/changelog and upgrade/install
    evidence when release work is selected. Publication remains separately
    authorized; current users of the older public wheel do not receive source
    changes automatically.
-4. Measure a representative batch before claiming calculation-throughput gains.
-   The existing approximately 20% improvement concerns import startup only.
 
 These are proposed packets, not active implementation or release authority.
+
+### Resume the proposed library packet
+
+Confirm the actual checkout and remote for `Pravin-surawase/structural_engineering_lib`.
+On the Mac the verified checkout is
+`/Users/pravinsurawase/VS_code_project/structural_engineering_lib`.
+After selecting the proposed packet, start one timer and inspect fresh Git state:
+
+```bash
+./run.sh session begin --task-id LIB-MEMBER-WORKFLOW-001 --agent MAIN
+git remote get-url origin
+git fetch origin
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
+```
+
+Follow the [multi-device Git procedure](../git-automation/git-workflow-single-source.md#multi-device-rule-one-branch-one-writer-device)
+to fast-forward a clean ancestral `main` and create a new `codex/` task branch.
+Inspect any dirty/diverged checkout before switching; retain other-device work.
+Use the API chooser and runnable examples below to select the real caller, then
+record the frozen case and required checks before changing engineering logic.
+Do not reopen completed review packets or rerun their broad suites by default.
+Finish each selected milestone with cohesive commits, affected checks after the
+batch, one PR and a session-usage closeout.
 
 ## Separate solver and installed-host boundaries
 
