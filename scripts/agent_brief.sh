@@ -110,13 +110,14 @@ _git_status() {
     echo "${branch:-detached} (${dirty} uncommitted files)"
 }
 
-# ── Live counts (fast grep) ──────────────────────────────────────────
+# ── Counts from maintained inventories ───────────────────────────────
 _live_counts() {
     local tests endpoints hooks
     tests=$(find "$REPO_ROOT/Python/tests" -name "test_*.py" -exec grep -c "def test_" {} + 2>/dev/null | awk -F: '{sum+=$NF} END{print sum}')
-    endpoints=$(grep -r "@router\.\(get\|post\|put\|delete\|patch\|websocket\)" "$REPO_ROOT/fastapi_app/routers/" 2>/dev/null | wc -l | tr -d ' ')
+    endpoints=$(cd "$REPO_ROOT" && ./scripts/python_runtime.sh -c \
+        'from scripts.sync_numbers import scan_endpoints; print(scan_endpoints()[0])') || endpoints="unknown"
     hooks=$(grep -r "^export.*function\|^export.*const.*use" "$REPO_ROOT/react_app/src/hooks/" 2>/dev/null | wc -l | tr -d ' ')
-    echo "Test functions: $tests | Endpoints: $endpoints | Hooks: $hooks"
+    echo "Test functions: $tests | HTTP operations: $endpoints | Hooks: $hooks"
 }
 
 # ── Handoff context (what the last agent left) ────────────────────────
@@ -224,7 +225,7 @@ main() {
     _recent_changes
     echo ""
 
-    echo -e "${D}Session end: ./run.sh feedback log --agent ${agent:-<name>} --stale-doc '...'${N}"
+    echo -e "${D}Session finish: ./run.sh session usage --checkpoint closeout --task-id <task>${N}"
     echo -e "${D}Deep context: ./scripts/python_runtime.sh scripts/agent_context.py ${agent:-<name>}${N}"
 }
 

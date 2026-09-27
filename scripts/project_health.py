@@ -211,8 +211,8 @@ def scan_docs(fix: bool = False) -> CategoryResult:
 
     # Check 3: Doc metadata (check_docs.py)
     result.checks_run += 1
-    doc_args = ["--fix"] if fix else []
-    code, output = _run_check_script("check_docs.py", doc_args)
+    # Metadata values need an explicit correction; the checker has no --fix.
+    code, output = _run_check_script("check_docs.py", [])
     if code == 0:
         result.checks_passed += 1
     else:
@@ -220,8 +220,8 @@ def scan_docs(fix: bool = False) -> CategoryResult:
             Issue(
                 category="docs",
                 severity="info",
-                message="Doc metadata/frontmatter issues found. Run: check_docs.py --fix",
-                fixable=True,
+                message="Doc metadata/frontmatter issues found. Run: check_docs.py --all and correct the reported fields.",
+                fixable=False,
             )
         )
 
