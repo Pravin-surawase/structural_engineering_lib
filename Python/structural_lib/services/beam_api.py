@@ -531,6 +531,10 @@ def compute_detailing(
                 detailing_result,
                 assumed_asv_mm2=inputs["asv_mm2"],
                 maximum_spacing_mm=maximum_spacing,
+                d_mm=inputs["d_mm"],
+                flexural_ast_mm2=params["ast"],
+                pt_percent=inputs.get("pt_percent"),
+                ast_mm2_for_shear=inputs.get("ast_mm2_for_shear"),
             )
         detailing_list.append(detailing_result)
 
@@ -2467,6 +2471,9 @@ def _design_and_detail_beam_is456_calculation(
             detail_result,
             assumed_asv_mm2=asv_mm2,
             maximum_spacing_mm=design_result.shear.spacing,
+            d_mm=d_mm,
+            flexural_ast_mm2=ast_required,
+            primary_tension_face=primary_tension_face,
         )
 
     # Combine results

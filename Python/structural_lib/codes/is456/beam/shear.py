@@ -5,6 +5,8 @@ Module:       shear
 Description:  Shear design and analysis functions
 """
 
+import math
+
 from structural_lib.core.data_types import ShearResult
 from structural_lib.core.error_messages import dimension_too_small
 from structural_lib.core.errors import (
@@ -297,6 +299,29 @@ def enhanced_shear_strength(
 
     # IS 456 Cl 40.3: τc' shall not exceed τc,max (Table 20)
     return min(tc_prime, tc_max)
+
+
+def _require_consistent_shear_steel_basis(
+    *,
+    b_mm: float,
+    d_mm: float,
+    pt_percent: float | None,
+    ast_mm2_for_shear: float | None,
+) -> None:
+    """Reject competing longitudinal-steel descriptions before Table 19 lookup.
+
+    Callers validate finite inputs first. Both descriptions may be retained for
+    compatibility only when pt = 100 Ast / (b d), within relative tolerance 1e-9.
+    """
+    if pt_percent is not None and ast_mm2_for_shear is not None:
+        area_from_percentage = pt_percent * b_mm * d_mm / 100
+        if not math.isclose(
+            area_from_percentage, ast_mm2_for_shear, rel_tol=1e-9, abs_tol=1e-6
+        ):
+            raise ValueError(
+                "pt_percent and ast_mm2_for_shear conflict: supply one shear-steel "
+                "basis, or matching values with pt_percent = 100 * Ast / (b * d)."
+            )
 
 
 @clause("40.1", "40.2", "40.4", "26.5.1.5", "26.5.1.6")

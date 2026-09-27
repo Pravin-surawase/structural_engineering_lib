@@ -145,6 +145,25 @@ def test_explicit_detailing_and_combined_result_have_identical_bbs_accounting():
     assert from_combined.summary == from_detailing.summary
     assert from_combined.total_weight_kg > 0
 
+    # The request already contains the standard: the extra keyword is optional.
+    assert beam.bbs(beam.design_and_detail(request)) == from_combined
+    assert beam.bbs(beam.detail(beam.design(request))) == from_detailing
+
+
+def test_shear_percentage_and_area_must_describe_the_same_reinforcement():
+    payload = _request().model_dump(mode="python")
+    payload["calculation_basis"].update(pt_percent=3.0, ast_mm2_for_shear=600)
+    with pytest.raises(InputContractError) as error:
+        beam.load(payload)
+    assert error.value.issues[0].path == "calculation_basis"
+    assert error.value.issues[0].code == "CROSS_FIELD_CONTRACT_INVALID"
+
+    payload["calculation_basis"]["pt_percent"] = 0.4  # 100 * 600 / (300 * 500)
+    both = beam.design(beam.load(payload))
+    payload["calculation_basis"]["pt_percent"] = None
+    area_only = beam.design(beam.load(payload))
+    assert both.calculation.shear == area_only.calculation.shear
+
 
 def test_bbs_rejects_unaccepted_result_type_before_generating_items():
     design_result = beam.design(_request())

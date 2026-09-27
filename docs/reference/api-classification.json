@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
-  "generated": "2026-09-26",
+  "generated": "2026-09-27",
   "package_version": "0.24.0",
   "release_channel": "normal",
   "classifications": {
@@ -177,7 +177,7 @@
           },
           "BeamCalculationBasisV1": {
             "additionalProperties": false,
-            "description": "Explicit section/reinforcement values consumed by strength calculation.",
+            "description": "Explicit section/reinforcement values consumed by strength calculation.\n\nSupply longitudinal steel for shear as ``pt_percent`` or\n``ast_mm2_for_shear``. If neither is supplied, design uses flexure-required\nsteel. If both are supplied, the complete request checks their agreement\nagainst its section. Generated detailing must provide at least this steel.",
             "properties": {
               "d_dash_mm": {
                 "exclusiveMinimum": 0,
@@ -792,7 +792,7 @@
         "title": "BeamDesignInputV1",
         "type": "object"
       },
-      "request_schema_sha256": "5a3177be6125735296085f2292099fff74cc5affebdfcdf77b0570c2fd7e1f5a",
+      "request_schema_sha256": "a93ff5c4422faff58e01c6b6484d8c35645051e0b77a962b888391b8e7bd49ad",
       "request_field_contracts": [
         {
           "path": "$",
@@ -14417,7 +14417,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'BeamDesignInputV1', *, detailing_standard: 'DetailingStandard') -> 'BeamDesignAndDetailResultV1'",
+            "signature": "(request: 'BeamDesignInputV1', *, detailing_standard: 'DetailingStandard | None' = None) -> 'BeamDesignAndDetailResultV1'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -14448,7 +14448,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(design_result: 'BeamDesignResultV1', *, detailing_standard: 'DetailingStandard') -> 'BeamDetailingResultV1'",
+            "signature": "(design_result: 'BeamDesignResultV1', *, detailing_standard: 'DetailingStandard | None' = None) -> 'BeamDetailingResultV1'",
             "docstring_sections": [
               "examples",
               "limitations",

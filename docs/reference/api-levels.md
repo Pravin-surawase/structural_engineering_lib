@@ -67,6 +67,14 @@ and `provenance` before consuming the result.
 The beam facade additionally supports explicit design → detailing → BBS.
 See its [reference](beam-facade.md) and the runnable typed example for matching
 reinforcement geometry and effective-depth inputs.
+Use `beam.design_and_detail(request)` after choosing the standard in
+`request.detailing`. The optional `detailing_standard=` keyword asserts that
+same choice. Optional `pt_percent` or `ast_mm2_for_shear` describes the
+longitudinal steel used for concrete shear strength; it does not select bars.
+Generated bars must provide that basis before a schedule can be accepted.
+The [function review](../planning/library-usability-improvement.md#function-review-lib-deep-review-001)
+shows the source owners, numerical comparison, repaired failure and remaining
+review scope.
 
 ## Physical beam and project workflows
 

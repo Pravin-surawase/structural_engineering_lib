@@ -156,7 +156,11 @@ def input(  # noqa: A001 - frozen public facade spelling
     primary_tension_face : {"TOP", "BOTTOM"}, optional
         Physical tension face required for signed/torsional workflows.
     pt_percent, ast_mm2_for_shear : float, optional
-        Explicit shear-design longitudinal-steel basis.
+        Longitudinal steel for the concrete shear-strength lookup: supply its
+        percentage or area in mm². With neither, use flexure-required steel.
+        If both are supplied, they must agree with ``pt = 100 * Ast / (b * d)``
+        (relative tolerance 1e-9, absolute area tolerance 1e-6 mm²). Generated
+        detailing must supply at least this area; these inputs do not select bars.
     detailing : BeamDetailingOptionsV1, optional
         Complete caller-selected detailing choices.
     serviceability : BeamServiceabilityV1 or BeamServiceabilityChecksV1, optional
@@ -249,7 +253,7 @@ def load(value: Mapping[str, object] | BeamDesignInputV1) -> BeamDesignInputV1:
 
     Parameters
     ----------
-    value : Any
+    value : Mapping[str, object] or BeamDesignInputV1
         Mapping-like decoded data for ``beam-design-input/v1``.
 
     Returns
@@ -335,7 +339,7 @@ def load_supplied_check(
 
     Parameters
     ----------
-    value : Any
+    value : Mapping[str, object] or BeamSuppliedCheckRequestV2
         Nested decoded data conforming to ``beam-supplied-check/v2``.
 
     Returns

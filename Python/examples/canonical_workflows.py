@@ -45,7 +45,7 @@ def beam_schedule() -> beam.BeamBBSResultV1:
         detailing=detailing,
         source_provenance="illustrative design envelope",
     )
-    result = beam.design_and_detail(request, detailing_standard=detailing.standard)
+    result = beam.design_and_detail(request)
     # The detailing owner rejects failed designs and incompatible reinforcement.
     return beam.bbs(result)
 

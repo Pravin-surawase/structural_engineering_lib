@@ -12,7 +12,7 @@ from structural_lib.services.beam_pipeline import design_single_beam
 _ASV_2L8 = 2 * math.pi * 8**2 / 4
 
 
-def _canonical_request(*, spacing_mm: float) -> object:
+def _canonical_request(*, spacing_mm: float) -> beam.BeamDesignInputV1:
     options = beam.BeamDetailingOptionsV1(
         standard=beam.DetailingStandard.IS456,
         clear_cover_mm=40,
@@ -172,3 +172,60 @@ def test_compatibility_rejects_original_underarea_overspacing_reproducer():
         "DETAILING_SHEAR_AREA_MISMATCH",
         "DETAILING_SHEAR_SPACING_EXCEEDED",
     }
+
+
+@pytest.mark.parametrize("face", ["TOP", "BOTTOM"])
+@pytest.mark.parametrize("basis", [{"pt_percent": 3.0}, {"ast_mm2_for_shear": 3996}])
+def test_generated_tension_bars_must_supply_the_concrete_shear_basis(face, basis):
+    payload = _canonical_request(spacing_mm=200).model_dump(mode="python")
+    payload["actions"]["primary_tension_face"] = face
+    payload["calculation_basis"].update(basis)
+    request = beam.load(payload)
+    assert beam.design(request).is_ok
+
+    with pytest.raises(InputContractError) as error:
+        beam.design_and_detail(request)
+
+    assert {issue.code for issue in error.value.issues} == {
+        "DETAILING_SHEAR_LONGITUDINAL_AREA_MISMATCH"
+    }
+    selected_face = "top_bars" if face == "TOP" else "bottom_bars"
+    assert {issue.path for issue in error.value.issues} == {
+        f"detailing.{selected_face}[{i}].area_mm2" for i in range(3)
+    }
+
+
+def test_pipeline_preserves_longitudinal_shear_basis_through_generation():
+    params = _compatibility_params(asv_mm2=_ASV_2L8, stirrup_dia_mm=8, spacing_mm=200)
+    params.pop("stirrup_spacing_support_mm")
+    with pytest.raises(InputContractError) as error:
+        design_single_beam(
+            **params,
+            pt_percent=3.0,
+            stirrup_spacing_start_mm=200,
+            stirrup_spacing_end_mm=200,
+        )
+    assert {issue.code for issue in error.value.issues} == {
+        "DETAILING_SHEAR_LONGITUDINAL_AREA_MISMATCH"
+    }
+
+
+def test_actual_bar_basis_and_revised_spacing_produce_a_bound_bbs():
+    payload = _canonical_request(spacing_mm=125).model_dump(mode="python")
+    payload["section"]["d_mm"] = 442
+    payload["actions"].update(mu_knm=100, vu_kn=180)
+    payload["detailing"]["tension_bar_diameter_mm"] = 20
+    actual_ast_mm2 = 2 * math.pi * 20**2 / 4
+    payload["calculation_basis"]["ast_mm2_for_shear"] = actual_ast_mm2
+    result = beam.design_and_detail(beam.load(payload))
+
+    # Independent Table 19 interpolation and Cl. 40.4 arithmetic for this vector.
+    pt = 100 * actual_ast_mm2 / (300 * 442)
+    tau_c = 0.36 + (pt - 0.25) * (0.49 - 0.36) / (0.5 - 0.25)
+    spacing_limit = 0.87 * 415 * _ASV_2L8 * 442 / (180000 - tau_c * 300 * 442)
+    assert 125 < spacing_limit < 150
+    assert result.design.calculation.shear.tau_c == pytest.approx(tau_c)
+    assert result.design.calculation.shear.spacing == 125
+    assert result.is_ok and len(beam.bbs(result).items) == 9
+    # The stored display area is 628, but the physical area supplies 628.3185 mm².
+    assert result.detailing.detailing.bottom_bars[0].area_provided == 628

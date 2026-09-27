@@ -10,6 +10,9 @@ from typing import Any, Literal, Self
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 from pydantic_core import PydanticCustomError
 
+from structural_lib.codes.is456.beam.shear import (
+    _require_consistent_shear_steel_basis,
+)
 from structural_lib.services.contracts.beam_serviceability import (
     BeamServiceabilityChecksV1,
 )
@@ -153,7 +156,13 @@ class BeamActionsV1(StrictPublicModel):
 
 
 class BeamCalculationBasisV1(StrictPublicModel):
-    """Explicit section/reinforcement values consumed by strength calculation."""
+    """Explicit section/reinforcement values consumed by strength calculation.
+
+    Supply longitudinal steel for shear as ``pt_percent`` or
+    ``ast_mm2_for_shear``. If neither is supplied, design uses flexure-required
+    steel. If both are supplied, the complete request checks their agreement
+    against its section. Generated detailing must provide at least this steel.
+    """
 
     d_dash_mm: float = Field(gt=0)
     asv_mm2: float = Field(gt=0)
@@ -299,6 +308,12 @@ class BeamDesignInputV1(StrictPublicModel):
             d_mm = section.resolved_d_mm()
             if value.d_dash_mm >= d_mm:
                 raise ValueError("d_dash_mm must be less than effective depth")
+            _require_consistent_shear_steel_basis(
+                b_mm=section.b_mm,
+                d_mm=d_mm,
+                pt_percent=value.pt_percent,
+                ast_mm2_for_shear=value.ast_mm2_for_shear,
+            )
         return value
 
     @field_validator("detailing")

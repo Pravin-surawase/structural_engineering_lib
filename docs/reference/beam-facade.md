@@ -23,8 +23,8 @@ Exact-wheel version: `structural-lib-is456==0.24.0`
 | `load` | `structural_lib.design.is456.beam.load(value: 'Mapping[str, object] \| BeamDesignInputV1') -> 'BeamDesignInputV1'` | Parse nested Python or decoded JSON into a canonical beam request. |
 | `design` | `structural_lib.design.is456.beam.design(request: 'BeamDesignInputV1') -> 'BeamDesignResultV1'` | Run the canonical rectangular-beam design journey. |
 | `check` | `structural_lib.design.is456.beam.check(request: 'BeamDesignInputV1') -> 'BeamDesignResultV1'` | Evaluate a canonical request without converting failure into an exception. |
-| `detail` | `structural_lib.design.is456.beam.detail(design_result: 'BeamDesignResultV1', *, detailing_standard: 'DetailingStandard') -> 'BeamDetailingResultV1'` | Create explicit detailing from a completed canonical design result. |
-| `design_and_detail` | `structural_lib.design.is456.beam.design_and_detail(request: 'BeamDesignInputV1', *, detailing_standard: 'DetailingStandard') -> 'BeamDesignAndDetailResultV1'` | Compose canonical design and detailing without hidden choices. |
+| `detail` | `structural_lib.design.is456.beam.detail(design_result: 'BeamDesignResultV1', *, detailing_standard: 'DetailingStandard \| None' = None) -> 'BeamDetailingResultV1'` | Create explicit detailing from a completed canonical design result. |
+| `design_and_detail` | `structural_lib.design.is456.beam.design_and_detail(request: 'BeamDesignInputV1', *, detailing_standard: 'DetailingStandard \| None' = None) -> 'BeamDesignAndDetailResultV1'` | Compose canonical design and detailing without hidden choices. |
 | `bbs` | `structural_lib.design.is456.beam.bbs(result: 'BeamDesignAndDetailResultV1 \| BeamDetailingResultV1 \| list[BeamDetailingResultV1]') -> 'BeamBBSResultV1'` | Generate a canonical BBS from exact accepted detailing results. |
 | `load_supplied_check` | `structural_lib.design.is456.beam.load_supplied_check(value: 'Mapping[str, object] \| BeamSuppliedCheckRequestV2') -> 'BeamSuppliedCheckRequestV2'` | Parse the exact supplied-reinforcement V2 request. |
 | `check_supplied` | `structural_lib.design.is456.beam.check_supplied(request: 'BeamSuppliedCheckRequestV2') -> 'BeamSuppliedCheckResultV2'` | Evaluate exact supplied longitudinal bars and stirrups for one case. |
@@ -88,7 +88,11 @@ effective_depth_basis : EffectiveDepthBasisRequestV1 or CentroidCoverDepthReques
 primary_tension_face : {"TOP", "BOTTOM"}, optional
     Physical tension face required for signed/torsional workflows.
 pt_percent, ast_mm2_for_shear : float, optional
-    Explicit shear-design longitudinal-steel basis.
+    Longitudinal steel for the concrete shear-strength lookup: supply its
+    percentage or area in mm². With neither, use flexure-required steel.
+    If both are supplied, they must agree with ``pt = 100 * Ast / (b * d)``
+    (relative tolerance 1e-9, absolute area tolerance 1e-6 mm²). Generated
+    detailing must supply at least this area; these inputs do not select bars.
 detailing : BeamDetailingOptionsV1, optional
     Complete caller-selected detailing choices.
 serviceability : BeamServiceabilityV1 or BeamServiceabilityChecksV1, optional
@@ -137,7 +141,7 @@ Parse nested Python or decoded JSON into a canonical beam request.
 
 Parameters
 ----------
-value : Any
+value : Mapping[str, object] or BeamDesignInputV1
     Mapping-like decoded data for ``beam-design-input/v1``.
 
 Returns
@@ -265,7 +269,7 @@ and result ownership.
 ### `detail`
 
 ```python
-detail(design_result: 'BeamDesignResultV1', *, detailing_standard: 'DetailingStandard') -> 'BeamDetailingResultV1'
+detail(design_result: 'BeamDesignResultV1', *, detailing_standard: 'DetailingStandard | None' = None) -> 'BeamDetailingResultV1'
 ```
 
 Create explicit detailing from a completed canonical design result.
@@ -274,8 +278,9 @@ Parameters
 ----------
 design_result : BeamDesignResultV1
     Completed canonical design whose request includes detailing options.
-detailing_standard : DetailingStandard
-    Explicit standard, which must match the request's choice.
+detailing_standard : DetailingStandard, optional
+    Use the standard already selected in ``request.detailing`` when omitted.
+    An explicit argument is an assertion and must match that choice.
 
 Returns
 -------
@@ -310,7 +315,7 @@ calculation envelope in the returned result.
 ### `design_and_detail`
 
 ```python
-design_and_detail(request: 'BeamDesignInputV1', *, detailing_standard: 'DetailingStandard') -> 'BeamDesignAndDetailResultV1'
+design_and_detail(request: 'BeamDesignInputV1', *, detailing_standard: 'DetailingStandard | None' = None) -> 'BeamDesignAndDetailResultV1'
 ```
 
 Compose canonical design and detailing without hidden choices.
@@ -319,8 +324,9 @@ Parameters
 ----------
 request : BeamDesignInputV1
     Strict request containing complete detailing options.
-detailing_standard : DetailingStandard
-    Explicit standard matching ``request.detailing.standard``.
+detailing_standard : DetailingStandard, optional
+    Use ``request.detailing.standard`` when omitted. An explicit argument
+    must match it; the request always carries the caller's standard choice.
 
 Returns
 -------
@@ -397,7 +403,7 @@ Parse the exact supplied-reinforcement V2 request.
 
 Parameters
 ----------
-value : Any
+value : Mapping[str, object] or BeamSuppliedCheckRequestV2
     Nested decoded data conforming to ``beam-supplied-check/v2``.
 
 Returns

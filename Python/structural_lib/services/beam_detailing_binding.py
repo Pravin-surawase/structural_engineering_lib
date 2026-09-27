@@ -214,15 +214,49 @@ def _require_generated_detailing_shear(
     *,
     assumed_asv_mm2: float,
     maximum_spacing_mm: float,
+    d_mm: float,
+    flexural_ast_mm2: float,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
+    primary_tension_face: Literal["TOP", "BOTTOM"] = "BOTTOM",
 ) -> None:
-    """Bind generated stirrups to the accepted shear-design basis.
+    """Bind longitudinal bars and stirrups to the accepted shear-design basis.
 
-    The shear owner has already calculated the permitted spacing from its
-    assumed stirrup-leg area. This validator verifies the generated schedule
-    uses at least that area and does not widen any generated zone beyond the
-    calculated limit. It does not redesign the member or alter the schedule.
+    Table 19 concrete strength depends on the tension steel as well as b*d.
+    Preserve the calculation owner's explicit percentage/area or its fallback
+    to flexure-required steel. Depth is verified by the companion depth check.
+    Generated bars must supply that basis in every zone; generated stirrups
+    must supply the assumed leg area and respect the calculated spacing limit.
+    This validator does not redesign the member or alter the schedule.
     """
     issues: list[InputIssueV1] = []
+    assumed_ast_mm2 = (
+        pt_percent * detailing.b * d_mm / 100
+        if pt_percent is not None
+        else ast_mm2_for_shear if ast_mm2_for_shear is not None else flexural_ast_mm2
+    )
+    face = "top_bars" if primary_tension_face == "TOP" else "bottom_bars"
+    for index, bars in enumerate(getattr(detailing, face)):
+        # area_provided is rounded for presentation; use the physical bars.
+        actual_ast_mm2 = bars.count * math.pi * bars.diameter**2 / 4
+        if actual_ast_mm2 + 1e-6 < assumed_ast_mm2:
+            issues.append(
+                InputIssueV1(
+                    code="DETAILING_SHEAR_LONGITUDINAL_AREA_MISMATCH",
+                    path=f"detailing.{face}[{index}].area_mm2",
+                    message=(
+                        f"Generated tension steel={actual_ast_mm2:g} mm² is below "
+                        f"the concrete shear-strength basis Ast={assumed_ast_mm2:g} mm²."
+                    ),
+                    received=actual_ast_mm2,
+                    constraint=f"area_mm2 must be at least {assumed_ast_mm2:g} mm²",
+                    suggestion=(
+                        "Rerun design using the generated longitudinal steel (or omit "
+                        "the optional shear-steel basis to use flexure-required steel), "
+                        "then select spacing at or below the revised shear limit."
+                    ),
+                )
+            )
     for index, stirrup in enumerate(detailing.stirrups):
         path = f"detailing.stirrups[{index}]"
         actual_asv_mm2 = stirrup.legs * math.pi * stirrup.diameter**2 / 4
