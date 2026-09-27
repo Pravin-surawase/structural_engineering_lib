@@ -23,11 +23,13 @@
 | COMPACT-CLOSEOUT-001 | Close owner-expanded milestones without fictitious CI runs | P1 | Done: PR #1004 | Superseded pre-PR pushes retain history without a nonexistent verdict. Routine delivery was then simplified in #1005. [Acceptance](planning/python-library-workflow-improvement-plan.md#follow-up--close-owner-expanded-milestones) |
 | ROUTINE-DELIVERY | Remove routine delivery bookkeeping | P1 | Done: PR #1005 | Cohesive commits, affected verification and one PR; detailed audits are opt-in. [Workflow](git-automation/git-workflow-single-source.md#routine-integration) |
 | LIB-USABILITY | Improve existing implementation, typed APIs and executable caller workflows | P0 | Done: PRs #1006–#1010 | Current-source installation, family/transport/physical/candidate journeys and measured startup improvement. [Evidence](planning/library-usability-improvement.md#completion-and-boundaries) |
+| LIB-DEEP-REVIEW-001 | Read beam function bodies, compare APIs/numerics and repair shear-basis composition | P0 | Beam packet implemented; full-library review remains open | [Function-by-function evidence and remaining scope](planning/library-usability-improvement.md#function-review-lib-deep-review-001); retain exact final checks in the packet PR |
 
-**Next proposed library packet:** replay one representative, sanitized member
-through a fully declared supported check profile and a maintained application
-caller. Preserve missing evidence as unevaluated; use that case to prioritize
-remaining integration work. This is a proposal, not an active feature or release.
+**Next library review:** supplied-bar anchorage/serviceability and physical beam
+calculation owners, followed by the remaining element families. Record exact
+source reads and independent evidence rather than equating inventory or test
+counts with deep review. The representative complete-profile application replay
+and consolidated release preparation remain separate proposed packets.
 
 ## Maintenance Recovery Dashboard
 

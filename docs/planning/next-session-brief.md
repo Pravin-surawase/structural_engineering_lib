@@ -32,15 +32,25 @@ are opt-in; do not restore them through an older guide. Use the
 
 ## Next proposed work on the Mac
 
-1. Replay one representative sanitized member through a declared complete
+The owner requested visible, deeper function review after the usability
+milestone. [LIB-DEEP-REVIEW-001](library-usability-improvement.md#function-review-lib-deep-review-001)
+records the beam source reads, signature/options decisions, SciPy comparison
+and the repaired longitudinal shear-basis binding. Whole-library deep review
+remains open; an inventory or a green suite does not establish that review.
+
+1. Continue the source-level review with supplied-bar anchorage/serviceability
+   and the physical beam calculation owners, then the remaining element families.
+   Record each function's actual review depth and numerical evidence in the
+   maintained review table; batch confirmed repairs in cohesive commits.
+2. Replay one representative sanitized member through a declared complete
    supported profile and a maintained application caller, from source inputs to
    BBS/report. Keep missing checks explicit and use the result to prioritize the
    next integration fix; teaching-profile examples are not that acceptance.
-2. Prepare a consolidated release candidate/changelog and upgrade/install
+3. Prepare a consolidated release candidate/changelog and upgrade/install
    evidence when release work is selected. Publication remains separately
    authorized; current users of the older public wheel do not receive source
    changes automatically.
-3. Measure a representative batch before claiming calculation-throughput gains.
+4. Measure a representative batch before claiming calculation-throughput gains.
    The existing approximately 20% improvement concerns import startup only.
 
 These are proposed packets, not active implementation or release authority.
