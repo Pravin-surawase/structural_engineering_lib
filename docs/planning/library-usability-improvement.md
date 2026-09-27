@@ -1,11 +1,14 @@
 ---
 owner: Main Agent
-status: complete
+status: active
 last_updated: 2026-09-27
-doc_type: plan
+doc_type: spec
 ---
 
 # Library usability and implementation quality
+
+Implementation milestone: complete through PR #1010. This document remains
+active as the maintained evidence and scope reference.
 
 The owner's goal is a usable library, including improvement of the code already
 written. Signatures, examples, and API documentation are part of that goal, not

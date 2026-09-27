@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-27 — Mac owns the imported-depth milestone; live ETABS work remains held
+**Updated:** 2026-09-27 — Mac library usability milestone complete; documentation maintenance and 24-hour review reconciled; live ETABS work remains held
 
 ---
 
@@ -20,7 +20,14 @@
 |---|---|---|---|---|
 | PY-LIB-IMPROVE-001 | Reliable design → detailing → BBS/report/DXF across public Python and serialized CLI paths | P0 | Done: PR #1002 merged at d0722155 | Required hosted run 36261661398 passed; reviewed and merged trees match. [Acceptance](planning/python-library-workflow-improvement-plan.md) |
 | PY-LIB-IMPROVE-002 | Preserve imported depth and compact milestone delivery | P0 | Done: six commits merged in PR #1003 at e900c9b1 | Required run 36265467619 passed; merged tree matches review. Imported depth and compact defaults verified. [Acceptance](planning/python-library-workflow-improvement-plan.md#milestone-2--preserve-imported-effective-depth) |
-| COMPACT-CLOSEOUT-001 | Close owner-expanded milestones without fictitious CI runs | P1 | In progress: root fix implemented, delivery pending | Superseded pre-PR pushes retain history without requiring a nonexistent verdict; published candidates retain required gates. [Acceptance](planning/python-library-workflow-improvement-plan.md#follow-up--close-owner-expanded-milestones) |
+| COMPACT-CLOSEOUT-001 | Close owner-expanded milestones without fictitious CI runs | P1 | Done: PR #1004 | Superseded pre-PR pushes retain history without a nonexistent verdict. Routine delivery was then simplified in #1005. [Acceptance](planning/python-library-workflow-improvement-plan.md#follow-up--close-owner-expanded-milestones) |
+| ROUTINE-DELIVERY | Remove routine delivery bookkeeping | P1 | Done: PR #1005 | Cohesive commits, affected verification and one PR; detailed audits are opt-in. [Workflow](git-automation/git-workflow-single-source.md#routine-integration) |
+| LIB-USABILITY | Improve existing implementation, typed APIs and executable caller workflows | P0 | Done: PRs #1006–#1010 | Current-source installation, family/transport/physical/candidate journeys and measured startup improvement. [Evidence](planning/library-usability-improvement.md#completion-and-boundaries) |
+
+**Next proposed library packet:** replay one representative, sanitized member
+through a fully declared supported check profile and a maintained application
+caller. Preserve missing evidence as unevaluated; use that case to prioritize
+remaining integration work. This is a proposal, not an active feature or release.
 
 ## Maintenance Recovery Dashboard
 

@@ -1,189 +1,69 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-09-27
 doc_type: guide
-complexity: intermediate
-tags: []
+complexity: beginner
+tags: [maintenance]
 ---
 
 # Maintenance Checklist
 
-**Type:** Guide
-**Audience:** All Agents
-**Status:** Approved
-**Importance:** High
-**Created:** 2026-03-29
-**Last Updated:** 2026-03-29
-
----
+The [maintenance playbook](../governance/maintenance-playbook.md) is the canonical
+procedure. This page is a short entry point, not another delivery policy.
 
 ## Quick Reference
 
-| Frequency | Command | What It Does | Time |
-|-----------|---------|-------------|------|
-| **Daily** | `./run.sh health --quick` | Fast health scan (numbers, links) | ~10s |
-| **Daily** | `./run.sh check --quick` | 8 core validation checks | ~30s |
-| **Weekly** | `./run.sh evolve --review weekly` | Numbers sync + links + feedback | ~1min |
-| **Weekly** | `./run.sh health` | Full 5-category health scan (0-100) | ~3min |
-| **Weekly** | `./run.sh check` | All 28 validation checks | ~2min |
-| **Monthly** | `./run.sh evolve --review monthly` | Full review + archive stale docs | ~5min |
-| **Monthly** | `./run.sh audit` | 25-check readiness report | ~3min |
-| **On Demand** | `./run.sh evolve --fix` | Auto-fix all fixable issues + commit | ~3min |
-| **On Demand** | `./run.sh health --fix` | Auto-fix health issues | ~2min |
+| Need | Action |
+|---|---|
+| Start work | `./run.sh session begin --task-id <task> --agent <role>` |
+| Verify checkout/device state | Fetch GitHub, then `./scripts/python_runtime.sh scripts/git_state.py --json --worktrees` |
+| Diagnose repository health | `./run.sh health`; inspect each reported owner |
+| Verify a completed batch | Affected tests plus `./run.sh check` for essential changed-area checks |
+| Inspect policy/context drift | `./run.sh efficiency check` and `./run.sh context validate` when relevant |
+| Finish delivery | Required hosted checks, merge, then one `session usage --checkpoint closeout` |
 
----
+## Daily Maintenance
 
-## Daily Maintenance (2 minutes)
+Use the task's compact start and current priorities. Do not add a health scan,
+quick check, full suite and evolution run to every normal edit. Refresh the
+handoff after a milestone changes what the next agent should do.
 
-Run these at the start or end of each session:
+## Weekly Maintenance
 
-```bash
-# 1. Quick health check
-./run.sh health --quick
+Inspect the current GitHub state, repository health and unresolved feedback.
+Fix confirmed drift in one bounded batch with several cohesive commits and one
+PR. Update the existing canonical documentation and record material recurrence.
 
-# 2. Quick validation
-./run.sh check --quick
+## Monthly Maintenance
 
-# 3. Check for uncommitted work
-git status --short
-```
-
-**If issues found:** Run `./run.sh health --fix` to auto-fix, or note for weekly review.
-
----
-
-## Weekly Maintenance (15-30 minutes)
-
-Run every 5th session or weekly:
-
-```bash
-# 1. Full evolution review
-./run.sh evolve --review weekly
-
-# 2. Full health scan
-./run.sh health
-
-# 3. Full registered validation
-./run.sh check
-
-# 4. Run test suite
-./run.sh test
-
-# 5. Check feedback backlog
-./run.sh feedback summary
-
-# 6. Validate canonical live context
-./run.sh context validate
-```
-
-### Weekly Manual Checks
-
-| Check | How | Target |
-|-------|-----|--------|
-| Stale TASKS.md items | Read first 20 lines of `docs/TASKS.md` | No items >2 weeks old |
-| next-session-brief freshness | Check `docs/planning/next-session-brief.md` date | Updated within last session |
-| Open PRs | `gh pr list` | No stale PRs (>7 days old) |
-| CI status | `gh run list --limit 5` | All recent runs green |
-| Doc version numbers | `./run.sh session sync` | No drift detected |
-
----
-
-## Monthly Maintenance (1-2 hours)
-
-### Agent: governance (delegated by orchestrator)
-
-```bash
-# 1. Full monthly evolution
-./run.sh evolve --review monthly
-
-# 2. Full audit
-./run.sh audit
-
-# 3. Architecture check
-.venv/bin/python scripts/check_architecture_boundaries.py
-
-# 4. Import validation
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
-
-# 5. Check for circular imports
-.venv/bin/python scripts/check_circular_imports.py
-
-# 6. Bootstrap freshness
-.venv/bin/python scripts/check_bootstrap_freshness.py
-
-# 7. Inspection-only branch/worktree disposition
-./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
-
-# 8. Instruction drift check
-# Compare .github/instructions/*.instructions.md with .claude/rules/*.md
-```
-
-### Monthly Manual Checks
-
-| Check | Tool | Action If Failed |
-|-------|------|-----------------|
-| Architecture violations | `check_architecture_boundaries.py` | Delegate to @backend |
-| Circular imports | `check_circular_imports.py` | Delegate to @backend |
-| Broken imports | `validate_imports.py` | Delegate to @backend |
-| Stale GitHub issues | `gh issue list --state open` | Close with user approval |
-| Branch/worktree disposition | `classify_branch_disposition.py` | Refresh remote/PR evidence; review holds/candidates; request exact deletion approval separately |
-| Agent instruction drift | Compare instruction files | Delegate to @doc-master |
-| Test coverage | `./run.sh test` | Delegate to @tester |
-| React build | `cd react_app && npm run build` | Delegate to @frontend |
-
----
+Review dependencies, recurring failures and the next release need. Broad suites
+and `./run.sh check --full` require a concrete risk or release reason.
+Branch/worktree classification is inspection; cleanup requires separate exact
+authorization.
 
 ## Health Score Categories
 
-| Category | Weight | What It Checks |
-|----------|--------|----------------|
-| docs | 30% | Staleness, broken links, version drift, number sync |
-| code | 25% | Linting, import cycles, architecture boundaries |
-| agents | 20% | Agent instructions, skill manifests |
-| infra | 15% | Docker config, CI checks, git state |
-| feedback | 10% | Unresolved feedback items |
-
-**Target:** 80+ overall score (Grade B or better)
-
----
+The current diagnostic implementation is `scripts/project_health.py`. A cached
+startup score is the last report, not a new scan. A green score does not prove
+complete engineering scope, live-host qualification or release readiness.
 
 ## Common Fix Patterns
 
-| Issue | Fix Command | Agent |
-|-------|-------------|-------|
-| Stale doc numbers | `./run.sh evolve --fix` | governance |
-| Broken links | Manual fix or `safe_file_move.py` | doc-master |
-| Architecture violations | Fix imports in violating file | backend |
-| Retired wrapper hook path active | Unset `core.hooksPath`; rerun `check_codex_git_workflow.py` | Codex |
-| Branch retirement candidate | `classify_branch_disposition.py` | ops inspects only; deletion is a separate exact-target approval/action |
-| Import cycle | Refactor module dependencies | backend |
-| Agent instruction drift | Sync instruction files | doc-master |
-
----
+Repair inventory drift in its shared owner, invalid metadata in the named
+document, and stale commands in the guide that recommends them. Keep error
+states explicit. Do not overwrite hooks, delete worktrees or run broad
+auto-fix commands as a generic response to a warning.
 
 ## Maintenance Pipeline (Who Does What)
 
-```
-orchestrator  → diagnose (./run.sh health, ./run.sh check)
-  → governance  → bounded fixes (evolve --fix, context validation, sync)
-  → backend     → code fixes (architecture, imports, cycles)
-  → tester      → verify no regressions
-  → doc-master  → doc fixes (dates, drift, references)
-  → reviewer    → verify health score improved
-  → Codex       → scoped Git/GitHub closeout
-```
-
----
+One parent normally performs diagnosis, scoped repairs, focused verification
+and essential review. Codex owns Git/GitHub delivery. Repair only affected
+evidence if the candidate changes; do not restart every gate.
 
 ## Tracking
 
-After each maintenance session, log results:
-
-```bash
-# Log to WORKLOG
-# Date | MAINT | description | commit
-
-# Update health score in next-session-brief
-# "Last health score: XX/100 (date)"
-```
+Put the problem, root cause, correction and checks in the PR. Maintain a
+session/handoff record when next work or a durable decision changes; routine
+commits need no bookkeeping-only follow-up PR. Preserve unresolved feedback
+until evidence supports resolution.

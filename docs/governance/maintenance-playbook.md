@@ -5,254 +5,139 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-04-02
-**Last Updated:** 2026-08-09
+**Last Updated:** 2026-09-27
 
----
-
-This playbook defines recurring maintenance tasks, quality gates, and governance
-limits for the **structural_engineering_lib** project. Every AI agent and human
-contributor should follow these procedures to keep the project healthy.
-
----
+This is the canonical maintenance guide. [AGENTS.md](../../AGENTS.md), the
+[Git workflow](../git-automation/git-workflow-single-source.md#routine-integration)
+and [token-efficiency policy](../guidelines/ai-token-efficiency.md) own execution
+rules. Maintenance fixes confirmed drift and preserves unfinished work.
 
 ## 1. Per-Session Checklist
 
 ### Session Start
 
+Run one task-bound start from the verified repository root:
+
 ```bash
-# 1. Read priorities
-cat docs/planning/next-session-brief.md
-
-# 2. Check task board
-head -60 docs/TASKS.md
-
-# 3. Verify environment
-./run.sh session start
-
-# 4. Check git state
-git status --short
-git branch --show-current
+./run.sh session begin --task-id <task> --agent <role>
+git fetch origin
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-### Session End (MANDATORY — do NOT skip)
+The start already supplies a compact brief and environment check. Confirm the
+remote, current PR and writer device before edits. Read additional context only
+for the task. Create a `codex/<task-slug>` branch from synchronized main.
+
+### Session End
+
+Complete related work in cohesive commits. After the batch, format changed
+files, run affected behavior checks once, review the essential diff, and publish
+one PR. Required hosted checks must pass on the reviewed head before merge.
+Close the timer after delivery:
 
 ```bash
-# 1. Log agent feedback when a concrete process defect was found
-./run.sh feedback log --agent <name>
-
-# 2. Generate a session summary only when the task owns that state
-./run.sh session summary
-
-# 3. Check evolution status
-./run.sh evolve --status
-
-# 4. Update handoff docs only when project state changed
-# Edit: docs/planning/next-session-brief.md
-# Edit: docs/TASKS.md
-
-# 5. Run the quick gate once
-./run.sh check --quick
-
-# 6. Codex reviews and performs the scoped Git/GitHub closeout
+./run.sh session usage --checkpoint closeout --task-id <task> \
+  --verification "focused tests and required PR checks passed"
 ```
 
-> **Why this matters:** Skipping session-end steps has historically caused 10+
-> hours of wasted rework. SESSION_LOG.md is the project memory;
-> next-session-brief.md is the handoff. Without them, the next agent starts
-> blind.
+Update the maintained handoff when the next task, completed milestone or device
+boundary changes. Routine commits do not require multiple session records,
+delivery-ledger transitions, evolution runs or a second validation suite.
 
----
+## 2. Weekly Maintenance
 
-## 2. Weekly Maintenance (~1 hour)
+Inspect GitHub and the current checkout, then select diagnostics for the
+maintenance question:
 
 ```bash
-# Quick validation (28 checks, <30s)
-./run.sh check --quick
-
-# Project health score (0-100)
 ./run.sh health
-
-# Archive completed tasks (when >20 done items)
-# Move from TASKS.md → docs/_archive/tasks-history.md
-
-# Compact SESSION_LOG.md if >50KB
-./run.sh session compact
-
-# Run agent evolution (observe only during burn-in)
-./run.sh evolve --status
-
-# Inspect every non-default local branch; missing remote/PR evidence stays UNKNOWN
-./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
-```
-
----
-
-## 3. Monthly Review (~2 hours)
-
-```bash
-# Full validation (all checks, parallel)
-./run.sh check
-
-# Full readiness audit
-./run.sh audit
-
-# Declared Indian-code capability and cross-layer dashboard
-./run.sh parity
-
-# Standard-namespaced decorator registration (not implementation coverage)
-./run.sh coverage --summary
-
-# Element completeness check
-./scripts/python_runtime.sh scripts/check_new_element_completeness.py
-
-# Function quality scan
-./scripts/python_runtime.sh scripts/check_function_quality.py
-
-# Feedback trends
 ./run.sh feedback summary
-
-# Agent evolution review
-./run.sh evolve --review weekly
+./run.sh efficiency check
+./run.sh context validate
 ```
 
----
+Health is a repository diagnostic, not engineering acceptance. Repair confirmed
+issues at their owning source. Inspect a fix before applying it; a generic
+`--fix` suggestion does not authorize broad edits. Existing feedback is closed
+only after its resolution is proved. No change means no maintenance commit.
+
+## 3. Monthly Review
+
+Review recurring failures, dependency/release needs and unfinished work.
+Run `./run.sh check --full` or a broad test suite only for a named release or
+repository-wide risk. Routine `./run.sh check` selects essential changed-area
+checks; do not stack quick, default and full runs on an unchanged candidate.
+
+Branch/worktree classification is read-only. Missing remote evidence remains
+unknown; age, a green score or a merged branch does not authorize deletion.
 
 ## 4. Quality Gate Enforcement (Per PR)
 
-Every new IS 456 function must pass the 9-step pipeline
-(see `/function-quality-pipeline` skill):
-
-1. **PLAN** → clause + formula + benchmark
-2. **MATH REVIEW** → formula verified by @structural-engineer
-3. **IMPLEMENT** → outcome-critical static contracts plus advisory review
-   (`check_function_quality.py`)
-4. **TEST** → 6 test types (unit, edge, degenerate, SP:16, textbook, hypothesis)
-5. **REVIEW** → dual pass: @structural-engineer (math) + @reviewer (code)
-6. **API WIRE** → services/api.py
-7. **ENDPOINT** → FastAPI router
-8. **DOCUMENT** → docs updated
-9. **CLOSEOUT** → Codex-managed commit, push, and PR update
-
-### Quality gates between steps
-
-| Gate | Requirement |
-|------|-------------|
-| Step 2 → 3 | Formula approved by @structural-engineer |
-| Step 4 → 5 | All tests pass (SP:16 benchmarks ±0.1%) |
-| Step 5 → 6 | Both reviews (math + code) approved |
-
----
+For new engineering calculations, use the maintained
+[function-quality workflow](../../.github/skills/function-quality-pipeline/SKILL.md)
+and approved feature scope. Preserve explicit units, source provenance and
+independent arithmetic evidence. Named quality roles do not require separate
+agents. Routine maintenance does not rerun unchanged engineering suites.
 
 ## 5. Quarterly Benchmarks (Structural Engineering)
 
-| Task | Command | Purpose |
-|------|---------|---------|
-| Run all SP:16 benchmarks | `.venv/bin/pytest Python/tests/ -v -k "sp16 or benchmark"` | Catch regression from refactoring |
-| Verify IS 456 table values | Manual check against standard | Tables are typed constants — typos propagate |
-| Check BIS website for amendments | `fetch_webpage` for BIS portal | IS 456:2000 periodically revised |
-| Clause coverage report | `./scripts/python_runtime.sh scripts/check_clause_coverage.py` | Track implementation progress |
-
----
+Use a representative workload and before/after evidence when making a speed
+claim. Select existing independent benchmarks for affected calculations.
+Inspect code amendments only when that source review is in scope. Formula,
+installed-host and whole-building acceptance remain distinct.
 
 ## 6. Error Handling Standards
 
-All `DesignError` codes require:
-
-| Field | Description |
-|-------|-------------|
-| `code` | Unique identifier (e.g. `E_FLEXURE_001`, `E_COLUMN_003`) |
-| `severity` | `error` / `warning` / `info` |
-| `message` | Human-readable description |
-| `field` | Input field that caused the error |
-| `hint` | Quick actionable tip (~1 line) |
-| `clause` | IS 456 clause reference |
-| `recovery` | Step-by-step fix instructions |
-
-Error codes are defined in `Python/structural_lib/core/errors.py`.
-
----
+Use the [error-handling standard](../guidelines/error-handling-standard.md).
+Preserve structured input failures, engineering FAIL/HOLD, incomplete or stale
+evidence, and human approval as separate outcomes throughout caller workflows.
 
 ## 7. Governance Limits
 
-Enforced by `check_governance.py`:
+Use current executable checks and maintained owners rather than copying counts
+or inventories into guides. HTTP operation counts come from
+`scripts/sync_numbers.py:scan_endpoints`, which reads the independently checked
+default OpenAPI snapshot; decorator matches and WebSockets are not that count.
 
-| Rule | Limit | Check Command |
-|------|-------|---------------|
-| Root folder files | ≤ 17 | `./run.sh check --quick` |
-| docs/ root files | ≤ 5 | `./run.sh check --quick` |
-| Documentation scale | No numeric cap; canonical ownership, metadata, lifecycle, and links remain enforced | `./scripts/python_runtime.sh scripts/check_docs.py --all` |
-| WIP tasks | ≤ 2 | Review TASKS.md |
-| Draft docs age | ≤ 7 days | Archive or promote |
-
----
+No automatic archive, move or deletion follows from document age or count.
+Preserve unrelated dirty work, old candidates and device-only evidence.
 
 ## 8. Documentation and Context Validation
 
-After structural changes (file moves, renames, new modules):
+Prefer updating a canonical document to creating another. For a status report,
+state its time window, evidence source, confirmed defects, effect and next work.
+Check metadata as well as rendering: a successful MkDocs build does not validate
+the document's status/type vocabulary.
 
 ```bash
-# Validate canonical routing and inspect the affected area if useful
-./run.sh context validate
-./run.sh context summary docs
-
-# Sync numbers in docs
-./scripts/python_runtime.sh scripts/sync_numbers.py --fix
-
-# Check maintained local links and images
+./scripts/python_runtime.sh scripts/check_docs.py --all
 ./scripts/python_runtime.sh scripts/check_links.py
-
-# Preview exact safe-file operations before any live command
-./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md --dry-run --json
-./scripts/python_runtime.sh scripts/safe_file_delete.py file.md --dry-run --json
-
-# Preflight every operation in a cleanup batch before the first mutation
-./scripts/python_runtime.sh scripts/batch_migrate_runner.py plan.json --dry-run --json
+./run.sh context validate
 ```
 
----
+These are available diagnostics; use the selected changed-area check when it
+already covers them. Correct reported metadata explicitly; `check_docs.py`
+has no `--fix` option. Use safe-file tools for authorized moves/deletions and
+preview their exact targets first. Generic folder indexes remain retired.
 
 ## 9. Release Checklist
 
-```bash
-# Pre-release validation
-./run.sh release preflight <version>
-
-# Docker-based preflight (2GB memory limit)
-./run.sh release preflight --docker
-
-# Version bump + release
-./run.sh release run <version>
-```
-
----
+Each release needs the owner's per-release authorization and the maintained
+release preflight. A source build or successful example is not a publication.
+Use the [release checklist](../planning/pre-release-checklist.md) when a release
+is actually selected.
 
 ## 10. Incident Response
 
-| Scenario | Diagnosis | Fix |
-|----------|-----------|-----|
-| Test failure | `.venv/bin/pytest Python/tests/ -v -k "test_name" --tb=short` | Use `/fix-test-failure` prompt |
-| Import error | `./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib` | Fix import chain |
-| Architecture breach | `./scripts/python_runtime.sh scripts/check_architecture_boundaries.py` | Move code to correct layer |
-| Broken links | `./scripts/python_runtime.sh scripts/check_links.py` | Update paths or use `safe_file_move` |
-| Calculation error reported | 1. Identify IS 456 clause 2. Hand-verify vs SP:16 3. Add regression test | Fix formula, trace @clause |
-
----
+Reproduce the main-process failure, trace the responsible boundary, fix its
+owner, and rerun the affected evidence. Record symptom, confirmed root cause,
+resolution and proof once. During maintenance, reuse recurrence IDs for the
+same cause; do not count mentions or repeated reports as new incidents.
 
 ## 11. Agent System Maintenance
 
-```bash
-# Agent performance scoring
-./scripts/python_runtime.sh scripts/agent_scorer.py --agent backend
-
-# Drift detection
-./scripts/python_runtime.sh scripts/agent_drift_detector.py
-
-# Compliance check
-./scripts/python_runtime.sh scripts/agent_compliance_checker.py
-
-# Route a task to best agent
-./run.sh route "task description"
-
-# Check agent registry
-cat agents/agent_registry.json | python -m json.tool | head -50
-```
+Use `./run.sh tools`, `./run.sh route "task"`, and the maintained registries
+for discovery. Keep one parent by default. Use
+`./run.sh evolve --review weekly` only for an explicit governance review;
+evolution is not a routine session-end mutation. Preserve provider settings and
+report actual elapsed time rather than invented token or cost estimates.
