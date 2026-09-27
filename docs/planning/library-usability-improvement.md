@@ -566,3 +566,59 @@ benchmarks, then support/path-to-arrangement composition and a representative
 complete-profile replay. Level B/C serviceability and other element families
 remain open. Exact local/hosted verification and delivery belong in the packet
 PR; no broad local suite or release is required by this scope.
+
+## Progress assessment and next acceptance milestone
+
+**Assessment and owner-requested handoff — 27 September 2026.** The recent
+work is worthwhile because it corrected reproduced engineering decisions and
+made existing public workflows easier to call. Reviews 001–003 changed both
+false acceptance (insufficient anchorage, excessive steel and physical clashes)
+and false rejection (separately permissible tension/compression groups).
+The earlier usability milestone delivered typed inputs/results, executable
+examples and installed-package replay. These are concrete improvements;
+commit counts, documentation volume and passing suites alone are not measures
+of engineering completeness.
+
+The review also exposed a process limitation: the same mistaken assumptions
+could survive passing tests and matching Python/C# implementations. Source
+reads, independent calculations and complete caller paths are therefore the
+valuable parts to retain. Further maintenance should address confirmed
+blockers rather than create another general cleanup campaign. Keep cohesive
+commits, one PR per bounded milestone and affected verification after the batch.
+
+Progress is strongest in **correctness and usability**. Whole-library deep
+review, general per-bar strain/multilayer behavior and complete support geometry
+remain open. The measured approximately 20% speed gain concerns imports;
+representative end-to-end throughput and manual effort have not been measured.
+The source improvements have not been published as a new package release.
+
+### Proposed milestone: LIB-MEMBER-WORKFLOW-001
+
+Deliver one representative ordinary rectangular IS 456 beam through the normal
+public Python workflow, from explicit source inputs to checked reinforcement,
+BBS and report. Select a case within existing supported scope; enumerate its
+complete required check profile before implementation. Teaching examples are
+starting points for callers, not the acceptance profile. This is a recommended
+next packet, not work already started or a release authorization.
+
+| Acceptance area | Required evidence |
+|---|---|
+| Frozen case | Named section, materials/code revision, units, supports, separate ULS/SLS actions and actual reinforcement; safe retained inputs and expected outcomes |
+| Calculation correctness | Independent source-based benchmarks for governing calculations; matched-material per-bar/multilayer comparison wherever the selected case requires it |
+| Complete composition | Every required leaf is accounted for; missing or unsupported evidence remains HOLD/unevaluated and cannot be relabelled as acceptance |
+| Caller and artifacts | A reproducible public-API journey preserves inputs, geometry, identities and result states through BBS/report; rejected engineering cannot produce an accepted artifact |
+| Measured usability | Record environment, complete elapsed time, manual steps and any baseline comparison; do not substitute import timing for workflow speed |
+| Delivery | Update the existing evidence record, run the union of affected checks once after content freezes, then use one hosted PR cycle; publication remains separate |
+
+Start by replaying the selected case and identifying the first confirmed gap.
+If a required check cannot be completed within the implemented profile, retain
+the incomplete result and repair the gap before calling the milestone complete.
+Any scope revision must be explicit; removing a governing check merely to
+obtain PASS is not acceptance. Avoid expanding simultaneously into new element
+families, a general solver, GUI redesign or installed ETABS work. Level B/C
+serviceability and the remaining families follow the governing needs and
+subsequent agreed packets.
+
+The [next-session brief](next-session-brief.md) owns resumption and device
+boundaries; GitHub owns exact PR/check/merge facts. The function tables above
+remain the source-review evidence rather than being copied into each handoff.

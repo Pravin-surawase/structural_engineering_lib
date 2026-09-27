@@ -5,6 +5,65 @@
 
 ---
 
+<a id="lib-review-handoff-20260927"></a>
+
+## 2026-09-27 — Session: Library review assessment and handoff
+
+**Task:** LIB-REVIEW-HANDOFF-20260927
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/library-review-handoff`
+**Focus:** Preserve completed deep-review evidence and prepare one complete, measured beam workflow as the next proposed milestone.
+
+### Completed
+
+- Deep-review packets 001–003 merged in PRs #1012, #1013 and #1014.
+- Recorded progress, remaining limits and proposed LIB-MEMBER-WORKFLOW-001 acceptance criteria.
+- Prepared Mac resumption; preserved Windows and unrelated work.
+
+### Verification and scope
+
+Fresh fetch at this documentation intake found clean Mac `main` equal to
+`origin/main` at accepted calculation baseline
+`1e558ad3977a489430172064423ae67a4556332d`, and no open non-dependency PR.
+All 32 sibling worktrees remain preserved: one unrelated architecture checkout
+is dirty and two temporary entries are unavailable. Windows was not inspected.
+This is a same-checkout handoff for resumption; no branch writer or installed
+artifact authority transfers to another device.
+
+The [progress assessment and proposed acceptance criteria](planning/library-usability-improvement.md#progress-assessment-and-next-acceptance-milestone)
+retain the evidence boundaries. The latest engineering packet, #1014, passed
+89 affected Python cases, 36 independent numerical comparisons, 12 changed-area
+checks and required hosted Python/documentation/repository/FastAPI/.NET checks
+plus the PR Gate without a hosted retry. This documentation packet changes no
+runtime behavior and requires only affected documentation/session checks and
+its selected hosted checks; their final results belong in its PR.
+
+### Issues encountered
+
+The startup handoff still summarized the earlier usability milestone while
+the deeper reviews were recorded farther down the maintained evidence files.
+
+### Root causes and resolutions
+
+The generated startup block reads the latest session entry. Record this
+requested milestone handoff once and regenerate that block through its owner,
+while preserving the session reader's required headings.
+
+### Rework and recurrence
+
+- RR-004: occurrences=34; minutes=unknown. Reuse the existing handoff freshness and reader-heading control; this planned handoff records no new counted recurrence.
+
+### What next
+
+Resume from the [canonical brief](planning/next-session-brief.md). Propose one
+representative beam through public inputs, the complete supported check profile
+and BBS/report, with independent calculations and measured time/manual steps.
+Retain incomplete outcomes and address the first confirmed integration gap.
+The general strain model, broader families, package release and installed
+Excel/ETABS evidence remain distinct scope boundaries.
+
+---
+
 <a id="maint-20260927-24h"></a>
 
 ## 2026-09-27 — Session: Maintenance and 24-hour review
