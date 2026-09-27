@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-27
-- Focus: Preserve completed deep-review evidence and prepare one complete, measured beam workflow as the next proposed milestone.
-- Completed: Deep-review packets 001–003 merged in PRs #1012, #1013 and #1014.; Recorded progress, remaining limits and proposed LIB-MEMBER-WORKFLOW-001 acceptance criteria.; Prepared Mac resumption; preserved Windows and unrelated work.
+- Focus: Complete one frozen public beam workflow through checked physical reinforcement, BBS and report, with independent evidence and measured caller effort.
+- Completed: Added the complete ordinary-beam example with all 19 required leaves and 39 physical bars through HTML/JSON/CSV artifacts.; Repaired support extension, continuous-bar qualification, conditional opposite-face torsion checks and report revision binding in Python/.NET.; Retained independent source/calculation evidence, failure propagation and explicit remaining scope limits.
 - Recurrence controls: RR-004 x34 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
 <!-- HANDOFF:END -->
 
@@ -13,8 +13,8 @@
 
 **Development device — 27 September:** continue on the Mac. This handoff intake
 fetched GitHub and verified clean `main` equal to `origin/main` at
-`1e558ad3977a489430172064423ae67a4556332d` (PR #1014, accepted calculation
-baseline). Use the latest merged head after a fresh fetch; do not reset to this
+`90da51072a60bc0656b295d5b625c8c8699eefe5` (PR #1015, intake baseline
+for LIB-MEMBER-WORKFLOW-001). Use the latest merged head after a fresh fetch; do not reset to this
 historical observation. No open non-dependency PR was found at intake. The
 Windows checkout was not inspected; preserve its retained C# edit and installed
 evidence. All 33 Mac worktree records remain preserved, including the unrelated
@@ -28,9 +28,12 @@ family APIs, strict JSON intake, lossless design/depth propagation, real physica
 and candidate workflows, installed-wheel replay and measured import improvement.
 The current-source improvements are not a new published package release.
 
-The [latest assessment and handoff](../SESSION_LOG.md#lib-review-handoff-20260927)
-adds the three completed deep-review packets. The [progress assessment](library-usability-improvement.md#progress-assessment-and-next-acceptance-milestone)
-explains their practical value, remaining gaps and the proposed finish line.
+The [complete beam handoff](../SESSION_LOG.md#lib-member-workflow-001-20260927)
+records the implemented frozen case and its integration fixes. The
+[independent acceptance evidence](library-usability-improvement.md#complete-beam-implementation-and-independent-evidence)
+retains sources, numerical comparisons, failure behavior and remaining limits.
+The earlier [progress assessment](library-usability-improvement.md#progress-assessment-and-next-acceptance-milestone)
+explains why this milestone followed the three deep-review packets.
 
 Routine work now uses cohesive commits, affected checks once after the batch,
 one PR and required hosted checks. The delivery ledger and separate local audit
@@ -57,19 +60,20 @@ enclosure in Python/C#. It traces actual failed arrangement evidence into member
 acceptance and compares 36 bounded capacity cases with SciPy. General per-bar
 strain compatibility and complete support geometry remain separate work.
 
-1. **LIB-MEMBER-WORKFLOW-001 — proposed, not started:** select one representative
-   ordinary rectangular beam, freeze inputs and its complete supported check
-   profile, then replay public inputs → checked reinforcement → BBS/report.
-   Follow the [acceptance criteria](library-usability-improvement.md#proposed-milestone-lib-member-workflow-001).
-   Preserve missing-check states; teaching-profile PASS is not this acceptance.
-2. Let that case identify essential calculation or integration gaps. Perform
-   matched-material strain/multilayer and support-fit comparisons where needed;
-   retain exact function-read and independent evidence records. General strain
-   capability, Level B/C serviceability and remaining families are still open.
-3. Measure complete workflow elapsed time and manual steps. The existing
-   approximately 20% improvement concerns import startup only; batch speed has
-   not been established. Avoid another general maintenance campaign unless a
-   confirmed blocker requires it.
+1. **LIB-MEMBER-WORKFLOW-001 — implemented:** the
+   [complete example](../../Python/examples/complete_member_workflow.py) now
+   connects public inputs to all 19 required checks, 39 physical bars, BBS,
+   quantities and an HTML/JSON/CSV report. Inspect [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016) for final hosted and
+   merge status before resuming; do not reopen accepted work by default.
+2. A following engineering packet must freeze its own supported case/profile
+   and acceptance evidence. General per-bar strain/multilayer capability,
+   calculated long-term serviceability and broader families remain open.
+   The current case uses source-checked admission, single-layer compression
+   steel, cracked-section SLS inputs and span/depth screening.
+3. Retain the full-process timing and manual-step boundary in the acceptance
+   record. This establishes one case's elapsed time, without a comparative
+   speedup or whole-building throughput claim. Avoid a general maintenance
+   campaign unless a confirmed blocker requires it.
 4. Prepare a consolidated release candidate/changelog and upgrade/install
    evidence when release work is selected. Publication remains separately
    authorized; current users of the older public wheel do not receive source
@@ -77,15 +81,15 @@ strain compatibility and complete support geometry remain separate work.
 
 These are proposed packets, not active implementation or release authority.
 
-### Resume the proposed library packet
+### Resume library work safely
 
 Confirm the actual checkout and remote for `Pravin-surawase/structural_engineering_lib`.
 On the Mac the verified checkout is
 `/Users/pravinsurawase/VS_code_project/structural_engineering_lib`.
-After selecting the proposed packet, start one timer and inspect fresh Git state:
+After selecting a new exact packet, start its timer and inspect fresh Git state:
 
 ```bash
-./run.sh session begin --task-id LIB-MEMBER-WORKFLOW-001 --agent MAIN
+./run.sh session begin --task-id <selected-task-id> --agent MAIN
 git remote get-url origin
 git fetch origin
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees

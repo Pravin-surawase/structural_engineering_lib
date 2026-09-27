@@ -61,6 +61,25 @@ public class Wp02Tests
         Assert.Contains(result.Diagnostics, diagnostic => diagnostic.Code == "REINFORCEMENT.REQUIRED");
     }
 
+    [Theory]
+    [InlineData(1, 0, true)]
+    [InlineData(-1, 0, true)]
+    [InlineData(1, 5, true)]
+    [InlineData(-1, 5, true)]
+    [InlineData(1, 50, false)]
+    [InlineData(-1, 50, false)]
+    public void OppositeTensionSteelIsOnlyRequiredForPositiveEquivalentMoment(int sign, double torsion, bool passed)
+    {
+        var active = sign > 0 ? Face.Bottom : Face.Top;
+        var bars = Bars.Select(bar => bar.Face == active ? bar : bar with { DiameterMm = 8 }).ToArray();
+        var result = BeamOperations.CheckTorsion(new("IS456-WP02",
+            Action() with { M3KnM = sign * 50, TorsionKnM = torsion },
+            FlexureRequest() with { Bars = bars }, Link(), ["TL", "TR", "BL", "BR"]));
+        Assert.Equal(ExecutionState.Completed, result.Execution);
+        Assert.Equal(passed, result.Outputs!.LongitudinalPass);
+        Assert.Equal(passed ? EngineeringState.Pass : EngineeringState.Fail, result.Engineering);
+    }
+
     [Fact]
     public void TorsionRejectsComponentEnvelope()
     {

@@ -23,7 +23,13 @@ may come from different source rows. The WP02 profile evaluates the major-axis
 V2/M3 interaction for a solid rectangular beam. Nonzero V3/M2 interaction is
 explicitly `not_applicable`; it is never ignored.
 
-The torsion result checks equivalent shear, both equivalent bending faces,
+The torsion result checks equivalent shear, the required equivalent bending faces,
 section stress, actual closed-link area and spacing, and identified perimeter
 corner bars. The selected perimeter must resolve left and right bars on both
 the physical top and bottom faces inside the same closed link.
+
+Under clause 41.4.2, the opposite face requires a tension check only when
+`Mt > |Mu|`. A zero opposite equivalent moment does not invent a second
+tension-steel requirement for compression/hanger bars. A positive opposite
+moment still receives the full face-specific flexure check. This applies to
+both signs of the supplied major-axis moment.

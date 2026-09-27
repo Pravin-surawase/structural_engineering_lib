@@ -97,6 +97,14 @@ nested mappings, `MemberLeafEvidence.from_result` to retain real leaf evidence,
 and `bind_candidate_evaluation` to compose real member/quantity/cost results.
 The runnable physical and candidate examples are linked from their guides.
 
+For one complete supported ordinary beam, run the
+[complete member example](../../Python/examples/complete_member_workflow.py)
+with the current source build. Its frozen profile retains 19 required checks,
+source-checked case admission and independent calculations through physical BBS
+and HTML/JSON/CSV output. The [acceptance record](../planning/library-usability-improvement.md#lib-member-workflow-001-frozen-acceptance-case)
+distinguishes this case from the smaller teaching profiles and from general
+member design or professional approval.
+
 ## Expert calculation and compatibility
 
 Expert functions perform individual calculations. Their parameter names,

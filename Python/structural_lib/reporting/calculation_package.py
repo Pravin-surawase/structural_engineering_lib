@@ -31,7 +31,7 @@ from structural_lib.construction.contracts import (
 )
 
 CREATE_CALCULATION_PACKAGE_OPERATION = "structural.calculation_package.create/v1"
-CALCULATION_PACKAGE_METHOD_REVISION = "structural-calculation-package-wp07-v1"
+CALCULATION_PACKAGE_METHOD_REVISION = "structural-calculation-package-wp07-v2"
 
 
 class HumanActionKind(StrEnum):
@@ -414,6 +414,8 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
         or schedule.project_basis_id != member.project_basis_id
         or bbs.project_basis_id != member.project_basis_id
         or quantities.project_basis_id != member.project_basis_id
+        or schedule.detail_revision_id != member.reinforcement_revision_id
+        or schedule.topology_revision_id != member.topology_revision_id
         or bbs.detail_revision_id != schedule.detail_revision_id
         or quantities.detail_revision_id != schedule.detail_revision_id
         or bbs.schedule_result_id != request.schedule_binding.result_id

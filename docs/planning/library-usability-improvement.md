@@ -622,3 +622,181 @@ subsequent agreed packets.
 The [next-session brief](next-session-brief.md) owns resumption and device
 boundaries; GitHub owns exact PR/check/merge facts. The function tables above
 remain the source-review evidence rather than being copied into each handoff.
+
+### LIB-MEMBER-WORKFLOW-001 frozen acceptance case
+
+**Activated 27 September 2026.** The owner selected this packet from the handoff.
+Mac source baseline is PR #1015 (`90da5107`); the writer branch is
+`codex/lib-member-workflow-001`. The separate solver candidate remains held
+and must be rebound before future integration. Windows work remains retained.
+
+The case is an ordinary, non-seismic rectangular beam on two 400 mm bearing
+supports, centred at stations 0 and 5000 mm. The concrete member runs from
+-200 to 5200 mm; clear support faces are 200 and 4800 mm. It is 300 by 500 mm,
+M25, Fe415 deformed longitudinal steel, with 25 mm nominal cover, 20 mm
+aggregate, two 20 mm bottom bars at (50,450)/(250,450) mm and two 12 mm top
+bars at (50,50)/(250,50) mm. Every longitudinal bar runs continuously from
+-175 to 5175 mm. Two-leg 8 mm Fe415 stirrups at 150 mm have explicit bent
+centreline paths and end hooks. No lap, cutoff, axial load, torsion, weak-axis
+load, support rotation restraint, primary lateral-system role, or special
+fire/watertightness criterion is selected. Lateral restraint exists at both
+bearings. Mild exposure and the material/mix specification are explicit case
+admission conditions, not inferred from a passing flexure calculation.
+
+Separate uniform actions are ULS 12 N/mm and SLS 8 N/mm, including self-weight.
+The public beam-line solver supplies the action rows; independent statics must
+recover 30/20 kN support reactions and 37.5/25 kNm midspan moments. The selected
+serviceability route is IS 456 clause 23.2.1 span/depth screening with a
+conservative source-checked factor, plus Annex F crack width using a retained
+cracked-section service calculation. It does not claim calculated long-term
+deflection, general multilayer strain compatibility, or new installed evidence.
+
+The frozen required profile includes physical geometry/effective depth,
+positive flexure and steel limits, shear/minimum links/spacing, concurrent
+zero torsion, span/depth serviceability, crack width, anchorage at both ends,
+continuous-bar/lap/curtailment evidence, arrangement and link fit, and explicit
+ordinary seismic non-applicability. Fixed-case admission also accounts for
+durability cover/material, lateral stability, support steel extension and
+fraction, link anchorage, and the absence of side-face-steel requirements.
+All these conditions remain in the retained inputs and evidence; none may be
+removed to obtain PASS. Geometry and identities must survive paths → BBS →
+quantities → report. A failed or missing required check must produce a failed
+or draft artifact. No human approval is synthesized.
+
+Initial public-call reproductions exposed: AO11 accepted 5 mm embedment by
+checking only M1/V+Lo; AO12 held a completely unspliced/uncurtailed member;
+AO24 accepted a schedule from a different reinforcement revision. Repair these
+owners and their Python/.NET counterparts, then replay this complete case.
+Use source clauses 26.2.3.3(a,c), 26.2.2.4, 26.3, 26.4, 26.5, 23.2/23.3,
+38/40 and Annex F. Keep protected prose and page images outside Git.
+
+Verification is the union of affected WP02/WP05/WP07, public-workflow and
+independent numerical checks, the matching .NET tests, documentation/contract
+checks, an installed-current-wheel replay and one required hosted PR cycle.
+Measure a fresh-process input-to-artifact run including imports, calculation,
+serialization and file writes; report manual inputs and review steps separately.
+No broad local suite, package publication, GUI or installed ETABS work is in scope.
+
+### Complete beam implementation and independent evidence
+
+The [standalone public example](../../Python/examples/complete_member_workflow.py)
+freezes 11 member leaves and eight actual bar-end anchorage leaves. Every leaf
+comes from the public operation and retains its state, inputs and result identity.
+The report carries all 19 leaves, physical bars, quantities and the source
+assumptions. Geometry → paths → BBS → package preserves the reinforcement and
+topology revisions. The optional renderer writes `calculation.json`, `bbs.csv`
+and `report.html`; it cannot promote the semantic package's issue state.
+
+| Confirmed main-process defect | Root cause and repair in Python/.NET |
+|---|---|
+| A bar ending 5 mm inside its support passed AO11. | Only clause 26.2.3.3(c) was enforced. Compare `Ld` against the minimum of `M1/V+Lo` and three times the actual extension required by (a); expose the combined criterion. |
+| A member with continuous bars and no laps/cutoffs remained incomplete. | AO12 treated empty detail lists as missing evidence before inspecting actual paths. Admit only full interval coverage with adequate role-specific station steel; retain interior-end holds and steel-deficit failure. |
+| Small top hanger bars failed zero-torsion interaction. | AO08 checked opposite-face tension even when its equivalent moment was zero. Clause 41.4.2 activates that check only when `Mt > |Mu|`; both signs and positive opposite demand are retained. |
+| A report could issue against another checked reinforcement revision. | AO24 validated payload hashes and downstream revisions without joining schedule revision/topology to the member. Reject either mismatch as `PACKAGE.IDENTITY_CONFLICT`. The workbook sample generator now gives its checked bars and physical detail one revision. |
+
+The maintained owners read and changed are `check_anchorage`,
+`check_laps_and_curtailment`, `check_torsion`, and `create_calculation_package`,
+with matching .NET owners. The caller also traces topology, beam-line solve,
+action normalization, geometry/depth, flexure, shear, serviceability, arrangement,
+ordinary seismic applicability, physical path resolution, member aggregation,
+BBS and quantities. No second calculation engine was embedded in the example.
+
+Controlled source identity is IS 456 through Amendment 5, reaffirmed 2021,
+SHA256 `964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264`,
+plus Amendment 6:2024,
+SHA256 `4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881`.
+Visual reads checked Fig 4 (printed page 38), support clauses 26.2.3.3(a,c)
+(page 44), ordinary link anchorage 26.2.2.4 and Table 19 (page 73). Other
+admission bases are clauses 22.2, 23.3, 26.3–26.5, 38, 40, 41.4.2,
+Tables 5/16/20 and Annex F. The normalized constants and source references are
+retained; protected text and images remain outside Git.
+
+| Independent calculation | Result and comparison |
+|---|---|
+| Simply supported uniform-load statics, at every solver station | ULS reactions 30 kN, maximum moment 37.5 kNm; SLS 20 kN and 25 kNm. |
+| Single-layer compression steel, equilibrium reduced independently to a quadratic | `x=68.8801197058 mm`, `Mu=94.6603483765 kNm`; matches the declared centroid profile within `1e-10`. Each top bar remains below Fe415's first inelastic strain point, so this case does not depend on an unqualified multilayer average. |
+| Separate SciPy bracketed equilibrium using local parabolic concrete stress deducted at top bars | `x=68.7222003519 mm`, `Mu=94.6636711625 kNm`. The library's uniform `0.446 fck` displaced-concrete deduction is conservative by 0.003323 kNm (0.00351%) for this case. |
+| Cracked elastic SLS section, `n=Es/Ec=8`, including displaced concrete at compression steel | `x=104.824706682 mm`, `Icr=718835907.155 mm4`, `fs=96.0372986052 N/mm2`; Annex F surface strain without tension-stiffening reduction gives `w=0.127893467743 mm < 0.3 mm`. |
+| Clause 23.2.1 screening and Fig 4 | `L/d=11.1111 < 20`, using conservative tension factor 1.0 and no compression enhancement; this is screening, not a displacement calculation. |
+| M25 Table 19 interpolation, actual two-leg 8 mm links at 150 mm | `pt=0.465421%`; interpolate `(0.25%,0.36)`–`(0.50%,0.49)`; resistance `172.612678245 kN > 30 kN`. Minimum links and maximum spacing also pass. |
+| Development length and support extension | Bottom `Ld=805.915178571 mm`; physical extension 375 mm at both ends; combined equivalent available length 1125 mm. All bottom bars, exceeding the required one-third fraction, continue into each support. |
+| Physical path lengths and steel mass | Four 5350 mm longitudinal bars and 35 hooked links, 39 bars in three marks, `56.9522931244 kg`; concrete `0.81 m3`, formwork `7.08 m2` under the named measurement policy. |
+
+For the independent ultimate calculation, let `Ast=200 pi`, `Asc=72 pi`,
+`A=0.36*25*300` and `B=Asc*(700-0.446*25)-0.87*415*Ast`.
+The positive root of `A*x²+B*x-Asc*700*50=0` gives the profile equilibrium.
+The separate SciPy residual replaces the uniform concrete deduction with
+`fcc=0.446*fck*(2r-r²)` for `r=0.0035*(1-50/x)/0.002 < 1`; the bracket
+is 50–100 mm. This comparison is limited to these actual single-layer bars.
+
+Each link has two 90-degree hooks around top bars larger than the link itself
+and 80 mm tangent tails, exceeding `8*8=64 mm`. Five 20 mm centreline-radius
+bends join an open seven-vertex fabrication path. The overlapping closure
+parts occupy member planes 10 mm apart. Independently summed length is
+`2*100+2*442+242+hypot(242,10)+5*20*(pi/2-2)` mm. The JSON retains actual
+segments, not an invented welded loop. The report is not a fabrication drawing.
+
+The [workflow tests](../../Python/tests/integration/test_complete_member_workflow.py)
+cover the complete journey, each of 19 missing leaves, actual ULS overload,
+actual 5 mm embedment failure, independent statics/section/service calculations,
+and path-derived quantities. Every missing case remains visible and draft;
+both engineering failures export draft CSV/report data. Professional approval
+is absent even for the passing case. This is acceptance of one frozen profile,
+not whole-library review, a general design facade or release authorization.
+
+#### Validation, installation and complete-process measurement
+
+- 86 affected Python tests passed: WP02, WP05, WP07, the 25 new complete-case
+  checks and the maintained beam/candidate callers. The unrelated snapshot
+  replay test was deselected.
+- .NET SDK 10.0.400 Release build passed with zero warnings/errors. The affected
+  WP02/WP05/WP07 and maintained baseline caller classes ran 78 cases: 77 passed,
+  one existing external proprietary-snapshot test skipped. This is portable
+  Mac evidence; required hosted Windows checks remain owned by the PR.
+- Changed-path Python/C# formatting, semantic manifests/code-data/conformance,
+  token-efficiency validation and all 12 selected essential check owners passed.
+  API classification was checked after staging the two new intended callers,
+  as its tracked-caller inventory requires; no generated registry changed.
+- Current-source wheel SHA256
+  `11d16d60ced8d6d79b464b8aebcfac724b8f74b7d79829a7347c2fa2215ca3bb`
+  installed in an isolated temporary environment. The copied standalone example
+  ran outside the checkout with `PYTHONPATH` removed and its library import
+  resolved to that environment's `site-packages`. All 19 checks qualified;
+  39 bars and `56.9522931244 kg` reached `issue_ready`, with approval false.
+  The HTML was also inspected in a browser. This local wheel is not a release.
+
+One installed-wheel command, `python complete_member_workflow.py --output-dir
+artifacts`, includes fresh process startup, imports, every operation,
+serialization and JSON/CSV/HTML writes. Seven consecutive runs on macOS
+26.6.2 arm64, Python 3.11.15, with a warmed filesystem measured
+**1.0471, 1.0856, 1.2399, 1.2452, 1.1742, 1.3935 and 1.3686 seconds**;
+median **1.2399 seconds**. Outputs were 2,744,277-byte JSON, 10,920-byte CSV
+and 664,868-byte HTML. SciPy 1.17.1 was used only for the independent comparison,
+not by the caller or installed workflow. No equivalent complete earlier case
+was available for a speedup comparison.
+
+Manual work is: prepare/review the fixed inputs, admission and SLS source;
+invoke one command; inspect the resulting calculations and physical detailing.
+There are **zero intermediate values copied manually during execution**.
+Human preparation, checking/approval and fabrication drawing production are
+outside the timed run and were not assigned an invented duration. A future
+case must retain those obligations and its own supported-check profile.
+
+The first hosted run exposed an additional caller of the stricter report
+identity join: `SampleWorkbookData.Member` assigned different reinforcement
+and detail IDs to its same source bars. Eight Windows workbook tests rejected
+the package. A temporary Mac harness linking the actual host-free workbook
+sources and existing tests reproduced the failure. The generator now shares
+one revision. Its former 200 mm sample embedment also failed the repaired
+engineering criterion; the right bearing is now explicitly 800 mm wide, centred
+at 6000 mm with its near face at 5600 mm. The unchanged scheduled bar ends at
+6000 mm and has 400 mm actual extension; topology and anchorage use the same
+face/centre. The 5 mm failure probes remain failures. No acceptance check is
+removed or relaxed to preserve the workbook's passing teaching case.
+This is a source-level caller correction, not fresh installed Excel evidence.
+The unchanged Python artifact/timing evidence remains applicable; only affected
+workbook checks, formatting/documentation and required hosted checks rerun.
+The linked-source harness then passed all 18 existing workbook engine/reader
+tests with no skips; it is an offline portability check and does not emulate
+Excel. [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016)
+owns the final hosted Windows result and integration state.
