@@ -16,10 +16,26 @@ sections with an eligible compression flange. Reverse bending of a flanged
 section uses the web rectangle because the flange is then in tension. Nonzero
 axial interaction is explicitly `not_applicable` for this profile.
 
-Flexural capacity resolves tension and compression steel from actual bar
-coordinates. It solves force equilibrium, applies the IS 456 limiting neutral
-axis, reports brittle over-reinforcement as engineering failure, and retains
-minimum and maximum longitudinal steel criteria for the demand check.
+Flexural capacity uses area-weighted tension and compression face centroids
+from the actual bar coordinates. Its bounded model assumes yielded tension
+steel and evaluates compression stress at the compression centroid. It solves
+force equilibrium, applies the IS 456 limiting neutral axis, and reports
+over-reinforcement as engineering failure. This is not a general per-bar strain
+or moment-curvature analysis.
+
+The demand check applies `0.04*b*D` separately to the tension and compression
+groups, as required by IS 456 clauses 26.5.1.1(b) and 26.5.1.2. Capacity outputs
+name these limits `maximum_tension_steel_area_mm2` and
+`maximum_compression_steel_area_mm2`. The existing
+`maximum_total_steel_area_mm2` field remains a compatibility alias for the
+per-group value; it must not be applied to the sum of both groups. The C# output
+provides the corresponding `MaximumTensionSteelAreaMm2` and
+`MaximumCompressionSteelAreaMm2` properties without changing its constructor.
+
+AO03 checks clear spacing between every physical bar pair, including opposite
+face labels. It uses a cover/link rectangle and one declared minimum spacing.
+Use [AO26](wp05-detailing-constructability.md#full-reinforcement-arrangement)
+for link bend corners and the more complete arrangement criteria.
 
 Portable schemas, normalized code constants, projections, and expected values
 are under `contracts/structural-engineering`. Conformance compares canonical

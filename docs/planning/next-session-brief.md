@@ -44,9 +44,15 @@ M40-and-above bond stress, exact support development length and zero shear.
 The canonical Level A serviceability path was read and checked with 81
 independent decimal vectors; its service-analysis prerequisites remain explicit.
 
-1. Continue with the physical beam section/strain, support/bend-fit and
-   member/profile calculation owners, then Level B/C serviceability and the
-   remaining element families.
+[LIB-DEEP-REVIEW-003](library-usability-improvement.md#function-review-lib-deep-review-003)
+corrects separate physical steel limits, opposite-face spacing and rounded-link
+enclosure in Python/C#. It traces actual failed arrangement evidence into member
+acceptance and compares 36 bounded capacity cases with SciPy. General per-bar
+strain compatibility and complete support geometry remain separate work.
+
+1. Continue with matched-material per-bar strain and multilayer section
+   benchmarks and support/path-to-arrangement composition, then Level B/C
+   serviceability and the remaining element families.
    Record each function's actual review depth and numerical evidence in the
    maintained review table; batch confirmed repairs in cohesive commits.
 2. Replay one representative sanitized member through a declared complete

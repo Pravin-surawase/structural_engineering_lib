@@ -483,3 +483,86 @@ owners, complete support/bend-fit and member/profile composition, followed by
 Level B/C serviceability and the remaining element families. This packet does
 not turn the simplified support-width screen into a complete anchorage or
 construction-acceptance model.
+
+## Function review: LIB-DEEP-REVIEW-003
+
+**Scope and intake (2026-09-27, LIB-DEEP-REVIEW-003).** Correct three reproduced
+main-process decisions in the physical WP01/WP05 Python operations and their
+maintained C# counterparts. The public request signatures, explicit mm/mm²/kNm
+units, operation IDs and independent result states remain compatible.
+
+| Calculation owner | Confirmed cause and independent expected outcome |
+|---|---|
+| `beam.flexure.check_flexure` / `BeamOperations.CheckFlexure` | The check sums tension and compression steel before applying `0.04*b*D`. IS 456:2000 clauses 26.5.1.1(b) and 26.5.1.2 apply this limit separately. In a 500 × 500 mm section, seven 32 mm bars per face give 5,629.734035 mm² per group, each below 10,000 mm²; ±200 kNm demand must not fail the maximum-area criterion. |
+| `beam.reinforcement.evaluate_geometry` / `ReinforcementOperations.EvaluateGeometry` | Pair checking skips different face labels. Two 20 mm bars at (150,245) and (150,255) mm have −10 mm clear spacing regardless of their top/bottom labels; the operation must FAIL. |
+| `beam.detailing.check_reinforcement_arrangement` / `Detailing.CheckReinforcementArrangement` | Enclosure uses only a sharp inner rectangle and ignores the declared link bend. For an 8 mm link at x/y=29 mm with internal radius 16 mm, the inner corner centre is (49,49) mm. A 16 mm bar at (41,41) mm has `16 - sqrt(8²+8²) - 8 = -3.313708499 mm` clearance to the inner bend; it must FAIL. |
+
+The controlled source identity and printed page 47 for both steel limits are
+recorded in review 002 above. Circle separation and quarter-circle containment
+are independent Euclidean geometry, with no new code-table interpretation.
+Steel-limit and link-enclosure comparisons retain the existing 1e-9 mm²/mm
+tolerances; the declared uniform gap comparison remains exact. Fixed numerical
+benchmarks use explicit absolute tolerances. Enclosure verification includes
+all four corners, tangency and a feasible inset, and member aggregation must
+retain a real failed arrangement leaf.
+
+Non-goals: new material laws, a general per-bar strain solver, axial/biaxial
+interaction, revised flange-width eligibility, seismic/lap design, new UI
+wiring, installed Excel/ETABS artifacts or publication of a release. The
+existing capacity routine uses area-weighted face centroids, yielded tension
+steel and compression stress at one centroid; its numerical comparison must
+identify those assumptions rather than imply general strain compatibility.
+
+### Function bodies, signatures and options inspected
+
+| Owner | Read depth and decision |
+|---|---|
+| `beam.reinforcement._validate_geometry`, `_face_output`, `effective_depth`, `evaluate_geometry` | Read validation, explicit face/layer/coordinate requests, centroid arithmetic and the full pair loop. Keep the declared uniform gap option; remove the face filter from physical pair checks. AO03 still uses a rectangle, not a curved-link fit model. |
+| `beam.flexure._depth_from_compression_face`, `_concrete_block`, `_compression_steel`, `flexural_capacity` | Read the complete calculation path, all capacity options, axial exclusion, sagging/hogging flange behavior, stress interpolation caller and 100-step equilibrium solve. Add explicit per-group output names; retain the old output name as an alias and preserve the request constructor. Material/centroid assumptions remain bounded. |
+| `beam.flexure.check_flexure` | Read signed-demand intake, both capacity calls, numerical utilization and all reinforcement decisions. Correct the separate group maxima for both moment signs; excessive tension or compression supply still fails. |
+| `beam.detailing.check_reinforcement_arrangement` | Read request/role validation, link cover/bend extent, bar enclosure, pair collisions and horizontal/vertical row checks. Add exact circle containment at rounded corners; retain existing gap, obstacle and placement options. Lap/seismic owners and the remainder of obstacle processing are not certified by this read. |
+| `beam.detailing.check_anchorage`, `_anchorage_bend_value` | Trace physical support face/centre, path direction, bend credit, unrounded Ld and M1/V + Lo composition. These are declared evidence and path-length checks; they do not prove that a scheduled bend physically fits a support. No anchorage formula change in this packet. |
+| `beam.bar_paths._bend_at`, `_resolve_seed` | Read tangent setbacks, corner centres, arc length and adjacent-bend overlap. These resolve path geometry; they do not qualify support reinforcement or source actions. The whole `resolve_bar_paths` validator was not deeply reviewed here. |
+| `beam.member._expected_leaves`, `_qualify_leaf`, `design_member` | Trace profile-derived expected leaves, current code-data/state qualification, exact final-depth result IDs and FAIL propagation. Use an actual failed AO26 result in the regression; a complete failed leaf remains a failed member, never an accepted one. The selected test profile is deliberately bounded, not whole-member acceptance evidence. |
+| C# `Flexure.Capacity`, `BeamOperations.CheckFlexure`, `ReinforcementOperations.EvaluateGeometry`, `Detailing.CheckReinforcementArrangement` and output records | Inspect corresponding formulas, face filtering, enclosure and typed output consumers; apply the same three corrections and independent expected decisions. Do not change request constructors or claim installed-host qualification. |
+
+The corrected methods carry new method revision IDs; operation IDs and source
+revisions remain unchanged. No optional dependency or new facade is introduced.
+
+### Independent arithmetic and established-library comparison
+
+An executed **36-vector** comparison used installed SciPy 1.17.1
+[`brentq`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brentq.html)
+with an independently written force residual and moment calculation, rather
+than the library's 100-step bisection. Inputs were `b=300, D=500, d=450,
+d'=50 mm`, Fe250, concrete strengths 20/30/40 N/mm², three tension bars of
+16/20/25 mm diameter, zero or two same-diameter compression bars, and both
+physical bending faces. The reference used elastic-perfectly-plastic Fe250
+stress, `0.0035*(1-d'/x)` compression strain, displaced-concrete deduction and
+the existing rectangular design block. All cases were below the limiting axis.
+Maximum neutral-axis error was **1.28e-13 mm** and moment error **7.68e-13 kNm**,
+against explicit 1e-9 absolute tolerances. This checks the bounded calculation,
+not all steel grades or a general distributed-strain formulation.
+
+[`concreteproperties.ultimate_bending_capacity(theta=0, n=0)`](https://concrete-properties.readthedocs.io/en/stable/user_guide/analysis.html#ultimate-bending-capacity)
+uses declared material stress/strain profiles and equilibrates axial forces;
+its general result is code agnostic, without design reduction factors. This
+documentation comparison supports keeping our explicit IS 456/profile result
+separate from general section analysis. No concreteproperties execution or
+numerical equivalence is claimed. Per-bar strain and multilayer compression
+need a separate matched-material benchmark before broadening our capacity
+claim.
+
+The implementation regressions cover the separate steel maxima, cross-face
+gap outcomes, four mirrored link corners, exact corner tangency, an accepted
+inset, a smaller bend radius, and actual arrangement-to-member FAIL propagation.
+The three misses arose in the calculation owners themselves: face labels were
+used to skip physical pairs, a link's straight bounding rectangle stood in for
+its curved steel boundary, and two separately limited steel groups were summed.
+Python/C# agreement before the fixes could not detect those shared assumptions.
+
+**Next deep review:** matched-material per-bar strain and multilayer section
+benchmarks, then support/path-to-arrangement composition and a representative
+complete-profile replay. Level B/C serviceability and other element families
+remain open. Exact local/hosted verification and delivery belong in the packet
+PR; no broad local suite or release is required by this scope.

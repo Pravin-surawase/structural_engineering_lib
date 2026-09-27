@@ -106,7 +106,8 @@ operation checks:
 
 - cover from each concrete face to the surface of the outermost steel,
   including links;
-- every bar circle inside the section and within a supplied link cage;
+- every bar circle inside the section and within a supplied link cage,
+  including the curved inner surface of all four link bends;
 - pairwise bar overlap and all horizontally or vertically aligned clearances;
 - horizontal clear distance against the larger bar diameter and aggregate size
   plus 5 mm;
@@ -118,6 +119,13 @@ operation checks:
 - separate area-weighted centroids for every reinforcement role;
 - bar and link clashes with resolved circular obstacles; and
 - the selected cage against the supplied placement opening and sequence.
+
+`internal_bend_radius_mm` is the radius to the link's inner steel surface.
+Enclosure accounts for the whole longitudinal bar circle, so passing the inner
+rectangle alone is insufficient near a curved corner. For an 8 mm link with
+left/top centrelines at 29 mm and a 16 mm internal bend radius, a 16 mm bar at
+(41,41) mm fails despite clearing the straight legs. Moving both coordinates
+to 44 mm clears that bend. Tangency is accepted within the numerical tolerance.
 
 Valid geometry that violates a criterion is a completed engineering failure.
 Missing actual bars, both longitudinal faces, joints, demand revisions, or a
