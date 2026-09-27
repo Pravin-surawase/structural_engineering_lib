@@ -4714,7 +4714,7 @@
       },
       "BeamCalculationBasisV1": {
         "additionalProperties": false,
-        "description": "Explicit section/reinforcement values consumed by strength calculation.",
+        "description": "Explicit section/reinforcement values consumed by strength calculation.\n\nSupply longitudinal steel for shear as ``pt_percent`` or\n``ast_mm2_for_shear``. If neither is supplied, design uses flexure-required\nsteel. If both are supplied, the complete request checks their agreement\nagainst its section. Generated detailing must provide at least this steel.",
         "properties": {
           "ast_mm2_for_shear": {
             "anyOf": [
