@@ -63,7 +63,7 @@ strain compatibility and complete support geometry remain separate work.
 1. **LIB-MEMBER-WORKFLOW-001 — implemented:** the
    [complete example](../../Python/examples/complete_member_workflow.py) now
    connects public inputs to all 19 required checks, 39 physical bars, BBS,
-   quantities and an HTML/JSON/CSV report. Inspect its PR for final hosted and
+   quantities and an HTML/JSON/CSV report. Inspect [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016) for final hosted and
    merge status before resuming; do not reopen accepted work by default.
 2. A following engineering packet must freeze its own supported case/profile
    and acceptance evidence. General per-bar strain/multilayer capability,

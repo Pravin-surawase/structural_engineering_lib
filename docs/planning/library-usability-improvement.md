@@ -692,7 +692,7 @@ and `report.html`; it cannot promote the semantic package's issue state.
 | A bar ending 5 mm inside its support passed AO11. | Only clause 26.2.3.3(c) was enforced. Compare `Ld` against the minimum of `M1/V+Lo` and three times the actual extension required by (a); expose the combined criterion. |
 | A member with continuous bars and no laps/cutoffs remained incomplete. | AO12 treated empty detail lists as missing evidence before inspecting actual paths. Admit only full interval coverage with adequate role-specific station steel; retain interior-end holds and steel-deficit failure. |
 | Small top hanger bars failed zero-torsion interaction. | AO08 checked opposite-face tension even when its equivalent moment was zero. Clause 41.4.2 activates that check only when `Mt > |Mu|`; both signs and positive opposite demand are retained. |
-| A report could issue against another checked reinforcement revision. | AO24 validated payload hashes and downstream revisions without joining schedule revision/topology to the member. Reject either mismatch as `PACKAGE.IDENTITY_CONFLICT`. |
+| A report could issue against another checked reinforcement revision. | AO24 validated payload hashes and downstream revisions without joining schedule revision/topology to the member. Reject either mismatch as `PACKAGE.IDENTITY_CONFLICT`. The workbook sample generator now gives its checked bars and physical detail one revision. |
 
 The maintained owners read and changed are `check_anchorage`,
 `check_laps_and_curtailment`, `check_torsion`, and `create_calculation_package`,
@@ -781,3 +781,22 @@ There are **zero intermediate values copied manually during execution**.
 Human preparation, checking/approval and fabrication drawing production are
 outside the timed run and were not assigned an invented duration. A future
 case must retain those obligations and its own supported-check profile.
+
+The first hosted run exposed an additional caller of the stricter report
+identity join: `SampleWorkbookData.Member` assigned different reinforcement
+and detail IDs to its same source bars. Eight Windows workbook tests rejected
+the package. A temporary Mac harness linking the actual host-free workbook
+sources and existing tests reproduced the failure. The generator now shares
+one revision. Its former 200 mm sample embedment also failed the repaired
+engineering criterion; the right bearing is now explicitly 800 mm wide, centred
+at 6000 mm with its near face at 5600 mm. The unchanged scheduled bar ends at
+6000 mm and has 400 mm actual extension; topology and anchorage use the same
+face/centre. The 5 mm failure probes remain failures. No acceptance check is
+removed or relaxed to preserve the workbook's passing teaching case.
+This is a source-level caller correction, not fresh installed Excel evidence.
+The unchanged Python artifact/timing evidence remains applicable; only affected
+workbook checks, formatting/documentation and required hosted checks rerun.
+The linked-source harness then passed all 18 existing workbook engine/reader
+tests with no skips; it is an offline portability check and does not emulate
+Excel. [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016)
+owns the final hosted Windows result and integration state.

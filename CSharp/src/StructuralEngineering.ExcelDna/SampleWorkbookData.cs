@@ -113,7 +113,7 @@ public static class SampleWorkbookData
         var actionRevision = $"{memberId}-actions-r1";
         var reinforcementRevision = $"{memberId}-reinforcement-r1";
         var scopeRevision = $"{memberId}-scope-r1";
-        var detailRevision = $"{memberId}-detail-r1";
+        var detailRevision = reinforcementRevision;
         var bars = Bars(memberId);
         var capacity = new FlexuralCapacityRequest("IS456-WP01", SectionKind.Rectangular,
             300, 500, 25, 415, bars, Face.Bottom);
@@ -122,7 +122,7 @@ public static class SampleWorkbookData
 
         var topology = new BeamTopologyDefinitionRequest(memberId,
             new($"{memberId}-local", new(1, 0, 0), new(0, 1, 0), new(0, 0, 1)),
-            [new("A", 0, -150, 150), new("B", 6000, 5850, 6150)],
+            [new("A", 0, -150, 150), new("B", 6000, 5600, 6400)],
             [new(spanId, "A", "B", 440, [new("REGION-1", "R300X500", 0, 6000)])],
             [new("E1", spanId, 0, 6000)]);
         var flexure = new FlexureCheckRequest(capacity, 80, -40);
@@ -151,7 +151,7 @@ public static class SampleWorkbookData
         var anchorage = new AnchorageCheckRequest("IS456-WP05", memberId,
             reinforcementRevision,
             [new($"{memberId}-B1", "right-face", AnchorageLocation.SimpleSupport,
-                AnchorageDirection.IncreasingX, 0, 6000, 5800, "B", 5800, 5900,
+                AnchorageDirection.IncreasingX, 0, 6000, 5600, "B", 5600, 6000,
                 [], null, development, new(85_000_000, 100_000, [$"{memberId}-ULS-right"]))]);
         var lap = new LapCurtailmentCheckRequest("IS456-WP05", memberId, spanId,
             actionRevision, reinforcementRevision, 0, 6000, 440, 25, 415,
