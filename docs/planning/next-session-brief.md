@@ -4,20 +4,48 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-27
-- Focus: Finish automatic closeout after an owner supersedes a pushed head before opening a PR.
-- Completed: PR #1003 merged all six commits after required run 36265467619 passed; Mac main was clean at e900c9b1 and matched the reviewed tree.; Corrected automatic accounting for an evidenced PUSHED to REPLAN with unchanged candidate/run IDs; actual hosted failures retain verdict requirements.; Six existing closeout scenarios passed, including the two added scope-change variants. The real PY-LIB-IMPROVE-002 closeout then succeeded with its original history, four candidate heads and two actual hosted runs preserved.
-- Recurrence controls: RR-004 x32 / unknown: Use automatic integration identifiers and distinguish owner-superseded pre-PR pushes from actual hosted verdicts without resetting history.
+- Focus: Reconcile completed library improvements, current handoff and compact maintenance guidance.
+- Completed: PRs #1000–#1010 merged; library usability milestone complete at 35acf5b1. Required CI passed on all 11 heads.
+- Recurrence controls: RR-004 x33 / unknown: Refresh handoff after a milestone changes next work. RR-050 x2 / unknown: Use the canonical OpenAPI inventory in every consumer.
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-**Development device — 26 September:** continue on the Mac. Mac main was
-fast-forwarded to GitHub `6b71d7cf` before the maintenance packet; fetch and use
-its merged head for the next task. The Windows task completed PR #1000 in an
-isolated worktree and retained its primary-checkout C# edit. Preserve that
-checkout and all older Mac worktrees. The current session log records the
-maintenance scope and local timer recovery; GitHub and the delivery ledger
-retain exact publication facts.
+**Development device — 27 September:** continue on the Mac. Maintenance intake
+fetched GitHub and verified clean main at `35acf5b1`. Fetch again before the next
+task and use the latest merged head. The Windows checkout was not inspected in
+this session; preserve its retained C# edit and installed evidence. All 33 Mac
+worktree records remain preserved, including the unrelated dirty architecture
+worktree and two unavailable temporary entries.
+
+The [24-hour report](../SESSION_LOG.md#maint-20260927-24h) covers
+26 September 10:10 to 27 September 10:10 IST: 11 merged PRs carrying 32 commits.
+The [library usability evidence](library-usability-improvement.md) records typed
+family APIs, strict JSON intake, lossless design/depth propagation, real physical
+and candidate workflows, installed-wheel replay and measured import improvement.
+The current-source improvements are not a new published package release.
+
+Routine work now uses cohesive commits, affected checks once after the batch,
+one PR and required hosted checks. The delivery ledger and separate local audit
+are opt-in; do not restore them through an older guide. Use the
+[maintenance playbook](../governance/maintenance-playbook.md).
+
+## Next proposed work on the Mac
+
+1. Replay one representative sanitized member through a declared complete
+   supported profile and a maintained application caller, from source inputs to
+   BBS/report. Keep missing checks explicit and use the result to prioritize the
+   next integration fix; teaching-profile examples are not that acceptance.
+2. Prepare a consolidated release candidate/changelog and upgrade/install
+   evidence when release work is selected. Publication remains separately
+   authorized; current users of the older public wheel do not receive source
+   changes automatically.
+3. Measure a representative batch before claiming calculation-throughput gains.
+   The existing approximately 20% improvement concerns import startup only.
+
+These are proposed packets, not active implementation or release authority.
+
+## Separate solver and installed-host boundaries
 
 The unpublished local solver documentation candidate `91207365` is held.
 Replan and rebind it against current main before any future integration,
@@ -62,7 +90,7 @@ now controls the next work; performance certification remains at project end.
 | Implementation boundary | WP10-01 is pure offline validation, WP10-02 is the exact getter-only host boundary, and WP10-03 is the bounded acquisition-control boundary. WP10-04 adds offline projection and normalization without COM or Excel. The pure analysis package must not depend on the optional ETABS assembly. |
 | Release boundary | Package publication and GitHub releases retain the repository's separate per-release authorization and evidence process. |
 
-## Implementation order
+## Native library and Excel implementation order
 
 1. IMP-M1: WP01–WP08 pure dual-language libraries are implemented and qualified.
 2. IMP-M2: WP09 now delivers the standalone Excel XLL, workbook and installed
@@ -70,16 +98,13 @@ now controls the next work; performance certification remains at project end.
 3. IMP-M3: WP10–WP12 deliver getter-only ETABS intake, copied-model reanalysis,
    migration, performance and release readiness.
 
-## Required Reading
+## Read for the selected task
 
-1. [WP10 ETABS read-adapter plan](xll-product/wp10-etabs-read-adapter.md)
-2. [PF11 implementation blueprint](xll-product/library-definition/pf11/README.md)
-3. [WP09 standalone Excel plan](xll-product/wp09-standalone-excel.md)
-4. [Native library and Excel status](../library/implementation-status.md)
-5. [Library getting started](../library/getting-started.md)
-6. [Structural Library Definition Programme](xll-product/library-definition/README.md)
-7. [Decision register](xll-product/library-definition/decision-register.json)
-8. [Current XLL plan](xll-product/current-plan.md)
-9. [Automation requirements](xll-product/automation/README.md)
-10. [Newest session entry](../SESSION_LOG.md)
-11. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+For Python work, start with the [API chooser](../reference/api-levels.md),
+[executable examples](../../Python/examples/README.md), and
+[completed usability scope](library-usability-improvement.md).
+For installed Excel/ETABS work, use the
+[WP10 plan](xll-product/wp10-etabs-read-adapter.md),
+[PF11 blueprint](xll-product/library-definition/pf11/README.md), and
+[current XLL plan](xll-product/current-plan.md).
+All deliveries follow the [canonical Git workflow](../git-automation/git-workflow-single-source.md).

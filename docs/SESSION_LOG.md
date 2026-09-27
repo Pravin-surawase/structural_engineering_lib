@@ -5,6 +5,152 @@
 
 ---
 
+<a id="maint-20260927-24h"></a>
+
+## 2026-09-27 — Session: Maintenance and 24-hour review
+
+**Task:** MAINT-20260927-24H
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/maintenance-24h-20260927`
+**Focus:** Maintain current documentation, inspect repository health, and explain the last day's changes, misses, effects and next work.
+
+### Report window and evidence
+
+The fixed window is **26 September 10:10:29 to 27 September 10:10:29 IST**
+(26 September 04:40:29 to 27 September 04:40:29 UTC). GitHub merge timestamps,
+PR descriptions and exact-head PR Validation runs establish **11 merged PRs
+carrying 32 commits**. Commit counts are the sums reported on those PRs, excluding
+their merge commits. This maintenance packet is outside that historical window.
+
+Mac intake fetched GitHub and found clean `main` equal to `origin/main` at
+`35acf5b17e86a2c1b539b0bad583f8024b69b996`. No open non-dependency PR was found.
+All 33 Mac worktree records were inspected without changing them. An unrelated
+architecture worktree has one dirty file; two temporary entries are unavailable.
+The Windows checkout was not inspected. No branch, worktree or issue was deleted.
+
+| PR | Merged (IST, month-day time) | Commits | Change | Required CI |
+|---|---|---|---|---|
+| [#1000](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1000) | 09-26 22:40 | 1 | docs(etabs): record temporary access hold and offline next steps | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36257920855) |
+| [#1001](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1001) | 09-26 23:00 | 1 | fix(maintenance): reconcile Mac handoff and default API inventory | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36259120660) |
+| [#1002](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1002) | 09-26 23:45 | 3 | fix(python): bind beam schedules and exports to the source design | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36261661398) |
+| [#1003](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1003) | 09-27 00:50 | 6 | fix(workflows): preserve imported design depth and compact milestone checks | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36265467619) |
+| [#1004](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1004) | 09-27 01:00 | 1 | fix(workflow): close milestones after superseded pre-PR pushes | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36266180789) |
+| [#1005](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1005) | 09-27 01:18 | 3 | perf(workflow): remove routine delivery bookkeeping | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36267241449) |
+| [#1006](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1006) | 09-27 01:52 | 4 | feat(library): make supported family workflows typed and discoverable | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36269142607) |
+| [#1007](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1007) | 09-27 02:03 | 3 | perf(library): streamline startup and preserve beam JSON depth | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36269762654) |
+| [#1008](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1008) | 09-27 02:39 | 4 | feat(library): typed JSON workflows without silent input loss | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36271801837) |
+| [#1009](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1009) | 09-27 02:54 | 3 | feat(library): compose typed physical-member and construction workflows | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36272652021) |
+| [#1010](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1010) | 09-27 03:30 | 3 | fix(library): bind candidate evidence and complete runnable workflows | [passed](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36274720936) |
+
+### What earlier work missed, how it changed, and the effect
+
+| Confirmed miss | Root cause and correction | Practical effect |
+|---|---|---|
+| Design-to-schedule code could produce 150/200/150 mm links when design allowed 100 mm, or produce BBS after shear FAIL (#1002). | Source inputs and result state were dropped between adapters, serialization and detail generation. Bind downstream geometry/links/exports to the consumed design; preserve failures and use the checked DXF path. | The schedule now follows 100 mm or rejects an incompatible/failed source rather than presenting misleading design-derived output. |
+| Imported and saved effective depth could change: explicit 470 mm became derived 442 mm (#1003); bridge JSON with D=550, d=492, cover=40 reloaded d=510 (#1007). | Case-folded D/d aliases, missing model/transport/workspace fields and exporter/loader disagreement lost explicit depth. Preserve canonical identities and explicit depth through each boundary; export `eff_d` alongside compatibility `d`. | Import, save/reopen and JSON replay retain the same design input instead of silently changing the calculation. |
+| Duplicate JSON actions could return PASS after a 500 kN value was overwritten by 75 kN (#1008). | Ordinary decoding discarded the first member before schema validation. One shared decoder now rejects duplicates, non-finite values and malformed input across typed family loaders, canonical CLI and the V2 boundary. | Ambiguous actions stop at intake with a field-level issue instead of reaching calculations with altered meaning. |
+| Recommended APIs hid types and complete public composition was awkward (#1006, #1009). | Facades exposed `Any`, guides recommended conflicting paths, and JSON-shaped outputs did not satisfy downstream nested dataclasses. Expose typed groups/builders/results, restore unchanged typed outputs and copy genuine leaf evidence. | IDE help and executable caller recipes now support family checks and physical bars → member → BBS → quantity/cost/package composition. |
+| Ranking could select a false optimum after a quantity payload was replaced with 1 kg (#1010). | The binding helper attached arbitrary payloads to an original result identity. Require canonical equality with a real output and provide a typed candidate composition helper. | Real 12/20/25 mm candidates exclude the failing 12 mm arrangement; incomplete budget or stale evidence cannot claim an optimum. |
+| Calculation startup loaded optional drawing/report modules (#1007). | Eager imports coupled ordinary calculation discovery to optional output dependencies. Load the existing owners only when requested. | Seven-process Mac medians improved from 588.2 to 462.0 ms for root import (21.4%) and 576.6 to 460.2 ms for column import (20.2%). This measures startup with a warmed filesystem, not batch calculation speed. |
+| Ordinary work required repeated broad checks and bookkeeping, and honest owner scope expansion broke closeout (#1003–#1005). | Default validation always selected the broad set; detailed delivery rules applied to routine work; accounting expected a hosted verdict for a superseded pre-PR push. Introduce changed-area checks, repair accounting and make detailed audit tracking opt-in. | Several commits share one PR and one required hosted cycle. The recorded compact profile passed 12/12 in 6.33 seconds. Required hosted checks and commit safety hooks remain. |
+| Device and documentation state disagreed (#1000–#1001). | The Windows/Mac handoff and copied inventories lagged current authority. Record the temporary ETABS hold, synchronize Mac and derive the HTTP count from checked default OpenAPI. | Source work continues on Mac without claiming new installed ETABS evidence; older work and the separate solver candidate remain preserved. |
+
+The recurring pattern, inferred from these reproduced failures, is that component
+checks were stronger than the caller boundaries joining them. Saved inputs,
+actual public composition, and result/evidence identity needed direct replay.
+A second pattern is copied process/inventory text outliving its owning change.
+The successful checks did not prove every other boundary; raw test counts should
+not be added together or treated as engineering approval.
+
+### Maintenance findings and repairs
+
+- The startup brief still counted 90 endpoints after #1001 corrected the shared
+  HTTP inventory to 92. Its separate decorator grep omitted configured routes
+  and mixed WebSockets into the count. It now calls
+  `sync_numbers.scan_endpoints` and labels the result HTTP operations.
+- The handoff still focused on #1003/#1004, the task board called #1004 pending,
+  and both maintenance guides required obsolete broad/session-end routines.
+  Refresh the handoff and board once at this material milestone; make the
+  checklist point to the shortened canonical playbook. The startup footer now
+  recommends timer closeout instead of an unconditional stale-document report.
+- The live health scan was 94/100, despite the cached startup report showing
+  100. The prior usability plan used unsupported `status: complete` and
+  `doc_type: plan`. Correct those to `active` and `spec`, while preserving
+  the explicit completed implementation milestone. This was a mistake in our
+  previous documentation; the successful rendered-doc build did not validate
+  the separate metadata vocabulary.
+- The health tool recommended and attempted unsupported `check_docs.py --fix`.
+  Keep metadata diagnosis read-only and direct callers to correct the reported
+  fields; do not label that correction automatic.
+- Python dependency consistency passed. The maintained frontend selector uses
+  Node 24.19.0 and npm 11.17.0. The one old pending tester-feedback item remains
+  open because this session has no evidence that its cause was resolved.
+
+### Verification and scope
+
+The day includes the 8,002-pass, four-skip shared-boundary Python baseline
+(slow/performance tests excluded), followed by affected physical/candidate
+checks. Installed-wheel replay covers the 13 positive/negative family recipes,
+current-source examples and maintained CLI/HTTP boundaries. The earlier
+[usability evidence](planning/library-usability-improvement.md) retains those
+limits and measurements; this maintenance does not rerun unchanged library
+suites or claim that every count refers to one final test invocation.
+
+Maintenance verification targets the brief/inventory caller, health metadata
+diagnostic, changed documents, instruction/context/recurrence contracts and
+required hosted checks. Exact maintenance head/run/merge and final check results
+belong in its PR. No calculation, API schema, dependency, public release or
+installed application changed.
+
+Local maintenance results: four focused existing automation checks passed;
+essential changed-area validation passed 6/6 in 2.075 seconds wall time;
+health recovered from 94 to 100/100; context and efficiency validation passed.
+Changed-path formatting and shell syntax passed. A selected repair-mode
+diagnostic executed the real metadata checker without the unsupported option.
+Unchanged library suites were retained, not rerun for this documentation batch.
+
+### Issues encountered
+
+Stale startup inventory and handoff, superseded maintenance commands, invalid
+plan metadata and a health remediation command unsupported by its checker.
+Routine corrected discovery mistakes are not separate recurrence events.
+
+### Root causes and resolutions
+
+The brief bypassed the shared inventory; redirect it to the maintained owner.
+The compact workflow change and completed library milestone did not reach all
+maintained guides/handoffs; refresh those owners without restoring per-commit
+document churn. The plan used task-completion words outside the metadata enum;
+separate implementation completion from document lifecycle. The health wrapper
+kept an obsolete checker option; use the actual read-only contract.
+
+### Rework and recurrence
+
+- RR-004: occurrences=33; minutes=unknown. One material handoff/policy propagation event; refresh next-work documents at milestone changes and retain compact routine delivery.
+- RR-050: occurrences=2; minutes=unknown. The partial-decorator inventory in #1001 and the retained startup copy are two confirmed occurrences; all default HTTP-count consumers should use the checked OpenAPI owner.
+- Counts above are events, not the number of files, mentions or historical PRs. New metadata/health findings are recorded here without inventing recurrence time.
+
+### What next
+
+1. **Real caller acceptance:** select one representative sanitized member,
+   explicit actions and actual reinforcement, declare the complete supported
+   check profile, and replay source → checks → BBS/report through a maintained
+   application caller. List any unevaluated evidence; do not extend the teaching
+   profile's PASS to omitted checks.
+2. **Consolidated release preparation:** when selected, prepare the changelog,
+   version/upgrade path and exact-wheel installation evidence for these source
+   changes. The older public 0.24.0 wheel does not automatically contain them.
+   Publication still needs per-release owner authorization.
+3. **Measured runtime work:** benchmark a representative multi-beam batch
+   before selecting another speed change; import speed does not establish
+   calculation-throughput improvement.
+4. **ETABS track:** continue eligible saved-data support/load-role preparation.
+   Fresh capture, native-unit qualification and model-copy runs wait for access.
+   Preserve Windows evidence, and keep project-end performance certification
+   separate.
+
+These are recommended next packets, not newly activated feature or release tasks.
+
 ## 2026-09-27 — Session: Close owner-expanded milestones
 
 **Task:** COMPACT-CLOSEOUT-001
