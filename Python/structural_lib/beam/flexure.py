@@ -161,7 +161,7 @@ def _compression_steel(
 def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
     inputs = _inputs(request)
     provenance = _provenance(
-        request.code_data_revision_id, "is456-flexural-capacity-wp01-v1"
+        request.code_data_revision_id, "is456-flexural-capacity-wp01-v2"
     )
     numeric = {
         "web_width_mm": request.web_width_mm,
@@ -402,6 +402,9 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
             "tension_steel_area_mm2": ast,
             "compression_steel_area_mm2": asc,
             "minimum_tension_steel_area_mm2": min_area,
+            "maximum_tension_steel_area_mm2": max_area,
+            "maximum_compression_steel_area_mm2": max_area,
+            # Compatibility alias: this is a per-group limit, not a sum limit.
             "maximum_total_steel_area_mm2": max_area,
             "concrete_compression_force_n": concrete_force,
             "compression_steel_force_n": compression_force,
@@ -421,7 +424,7 @@ def check_flexure(request: FlexureCheckRequest) -> OperationResult:
         positive_design_moment_knm=request.positive_design_moment_knm,
         negative_design_moment_knm=request.negative_design_moment_knm,
     )
-    provenance = _provenance(base.code_data_revision_id, "is456-flexure-check-wp01-v1")
+    provenance = _provenance(base.code_data_revision_id, "is456-flexure-check-wp01-v2")
     demands: list[tuple[str, Face, float]] = []
     if request.positive_design_moment_knm is not None:
         value = request.positive_design_moment_knm
@@ -494,9 +497,13 @@ def check_flexure(request: FlexureCheckRequest) -> OperationResult:
             continue
         output = capacity.outputs
         ast = float(output["tension_steel_area_mm2"])
-        total_area = ast + float(output["compression_steel_area_mm2"])
+        asc = float(output["compression_steel_area_mm2"])
         minimum_ok = ast + 1e-9 >= float(output["minimum_tension_steel_area_mm2"])
-        maximum_ok = total_area <= float(output["maximum_total_steel_area_mm2"]) + 1e-9
+        # IS 456:2000 26.5.1.1(b) and 26.5.1.2 limit each group separately.
+        maximum_ok = (
+            ast <= float(output["maximum_tension_steel_area_mm2"]) + 1e-9
+            and asc <= float(output["maximum_compression_steel_area_mm2"]) + 1e-9
+        )
         capacity_value = float(output["capacity_knm"])
         utilization = demand / capacity_value if capacity_value > 0 else math.inf
         utilizations.append(utilization)

@@ -16,15 +16,23 @@ from structural_lib.beam import (
     DesignCheckRule,
     DesignCriterion,
     EffectiveDepthIteration,
+    LinkCage,
+    LongitudinalBarPath,
     MemberDesignRequest,
     MemberLeafEvidence,
     MemberLocalCoordinateSystem,
     MemberScopeInstance,
     PathNode,
     PathPoint,
+    ReinforcementArrangementCheckRequest,
+    ReinforcementRole,
     RevisionBinding,
+    SeismicApplicability,
     SeismicDesignProfile,
+    SeismicDetailingCheckRequest,
     StructuralUnitBasis,
+    check_reinforcement_arrangement,
+    check_seismic_detailing,
     create_beam_project,
     design_member,
     resolve_bar_paths,
@@ -442,6 +450,110 @@ def test_member_reports_complete_engineering_failure() -> None:
     assert result.completeness == "complete_for_scope"
     assert result.engineering == "fail"
     assert result.outputs["member_design"]["qualified"] is False
+
+
+def test_real_link_bend_failure_cannot_qualify_member() -> None:
+    arrangement = check_reinforcement_arrangement(
+        ReinforcementArrangementCheckRequest(
+            "PROFILE-1",
+            "B1",
+            "S1",
+            "reinforcement-r1",
+            300,
+            500,
+            25,
+            20,
+            (
+                LongitudinalBarPath(
+                    "T1",
+                    "T1",
+                    ReinforcementRole.TOP_LONGITUDINAL,
+                    16,
+                    1,
+                    41,
+                    41,
+                    0,
+                    6000,
+                    300,
+                ),
+                LongitudinalBarPath(
+                    "B1",
+                    "B1",
+                    ReinforcementRole.BOTTOM_LONGITUDINAL,
+                    16,
+                    1,
+                    240,
+                    440,
+                    0,
+                    6000,
+                    300,
+                ),
+            ),
+            (LinkCage("L1", 8, 29, 271, 29, 471, 16, True),),
+            (ReinforcementRole.TOP_LONGITUDINAL, ReinforcementRole.BOTTOM_LONGITUDINAL),
+            10,
+        )
+    )
+    assert arrangement.engineering is EngineeringState.FAIL
+    assert {item.code for item in arrangement.diagnostics} == {"BAR.NOT_ENCLOSED"}
+    seismic = check_seismic_detailing(
+        SeismicDetailingCheckRequest("PROFILE-1", SeismicApplicability.ORDINARY_IS456)
+    )
+
+    basis = _project_request()
+    rule = DesignCheckRule(
+        "arrangement",
+        arrangement.operation_semantic_id,
+        CheckScope.MEMBER,
+        ApplicabilityState.APPLICABLE,
+        "physical cage fit",
+        "is456",
+    )
+    project = create_beam_project(
+        replace(
+            basis,
+            profile=replace(
+                basis.profile,
+                check_rules=(
+                    rule,
+                    replace(
+                        basis.profile.check_rules[-1], code_data_binding_id="is13920"
+                    ),
+                ),
+            ),
+            code_data_revisions=(
+                RevisionBinding(
+                    "is456",
+                    arrangement.provenance.code_data_revision_id,
+                    "IS 456 project source",
+                ),
+                RevisionBinding(
+                    "is13920",
+                    seismic.provenance.code_data_revision_id,
+                    "IS 13920 project source",
+                ),
+            ),
+        )
+    ).output_as("project", BeamProject)
+    leaf = MemberLeafEvidence.from_result("arrangement@B1", arrangement)
+    result = design_member(
+        replace(
+            _member_request(),
+            project=project,
+            scope_instances=(),
+            leaf_results=(leaf, MemberLeafEvidence.from_result("seismic@B1", seismic)),
+            depth_iterations=(
+                EffectiveDepthIteration(
+                    1, "reinforcement-r1", 440, (leaf.result_id,), True
+                ),
+            ),
+        )
+    )
+
+    assert result.completeness is CompletenessState.COMPLETE_FOR_SCOPE
+    assert result.engineering is EngineeringState.FAIL
+    assert result.outputs["member_design"]["qualified"] is False
+    assert "LEAF.FAIL" in {item.code for item in result.diagnostics}
 
 
 def test_stale_leaf_cannot_become_governing_member_evidence() -> None:

@@ -17,7 +17,7 @@ public static class BeamOperations
             ("positive_design_moment_knm", request.PositiveDesignMomentKnM),
             ("negative_design_moment_knm", request.NegativeDesignMomentKnM));
         var provenance = new Provenance(request.Capacity.CodeDataRevisionId,
-            "is456-flexure-check-wp01-v1", ["IS 456:2000 normalized WP01 flexure rules"]);
+            "is456-flexure-check-wp01-v2", ["IS 456:2000 normalized WP01 flexure rules"]);
         var demands = new List<(string Sign, Face Face, double Demand)>();
         if (request.PositiveDesignMomentKnM is { } positive)
         {
@@ -60,9 +60,10 @@ public static class BeamOperations
                 continue;
             }
             var output = capacity.Outputs!;
-            var totalArea = output.TensionSteelAreaMm2 + output.CompressionSteelAreaMm2;
             var minimumPass = output.TensionSteelAreaMm2 + 1e-9 >= output.MinimumTensionSteelAreaMm2;
-            var maximumPass = totalArea <= output.MaximumTotalSteelAreaMm2 + 1e-9;
+            // IS 456:2000 26.5.1.1(b) and 26.5.1.2 limit each group separately.
+            var maximumPass = output.TensionSteelAreaMm2 <= output.MaximumTensionSteelAreaMm2 + 1e-9 &&
+                output.CompressionSteelAreaMm2 <= output.MaximumCompressionSteelAreaMm2 + 1e-9;
             var utilization = demand.Demand / output.CapacityKnM;
             var pass = capacity.Engineering == EngineeringState.Pass && minimumPass && maximumPass &&
                        demand.Demand <= output.CapacityKnM + 1e-9;

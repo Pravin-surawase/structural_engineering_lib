@@ -117,6 +117,66 @@ def test_geometry_overlap_is_an_engineering_failure() -> None:
     assert any(item.code == "GEOMETRY.SPACING" for item in result.diagnostics)
 
 
+@pytest.mark.parametrize(
+    ("distance_mm", "expected"), [(10, "fail"), (40, "fail"), (45, "pass")]
+)
+def test_geometry_spacing_includes_opposite_faces(
+    distance_mm: float, expected: str
+) -> None:
+    bars = (
+        BarPosition("T", 20, 150, 200, Face.TOP),
+        BarPosition("B", 20, 150, 200 + distance_mm, Face.BOTTOM),
+    )
+
+    result = evaluate_geometry(_geometry(bars))
+
+    assert result.engineering == expected
+    assert result.outputs["minimum_clear_spacing_mm"] == distance_mm - 20
+    assert result.outputs["governing_spacing_pair"] == ["T", "B"]
+
+
+@pytest.mark.parametrize(
+    ("top_count", "bottom_count", "maximum_ok"),
+    [(7, 7, True), (13, 7, False), (7, 13, False)],
+)
+def test_flexure_limits_each_longitudinal_group(
+    top_count: int, bottom_count: int, maximum_ok: bool
+) -> None:
+    # Two feasible rows where needed; the two groups are not a combined 4% limit.
+    bars = tuple(
+        BarPosition(
+            f"{face.value}{index}",
+            32,
+            55 + 65 * (index % 7),
+            55 + 65 * (index // 7) if face is Face.TOP else 445 - 65 * (index // 7),
+            face,
+            1 + index // 7,
+        )
+        for face, count in ((Face.TOP, top_count), (Face.BOTTOM, bottom_count))
+        for index in range(count)
+    )
+    request = _capacity(web_width_mm=500, bars=bars)
+    capacity = flexural_capacity(request)
+    result = check_flexure(FlexureCheckRequest(request, 200, -200))
+
+    assert capacity.outputs["maximum_tension_steel_area_mm2"] == 10000
+    assert capacity.outputs["maximum_compression_steel_area_mm2"] == 10000
+    assert capacity.outputs["maximum_total_steel_area_mm2"] == 10000
+    assert all(
+        row["maximum_steel_pass"] is maximum_ok for row in result.outputs["checks"]
+    )
+    assert result.engineering == ("pass" if maximum_ok else "fail")
+    if maximum_ok:
+        assert capacity.outputs["tension_steel_area_mm2"] == pytest.approx(
+            5629.734035232909, rel=0, abs=1e-9
+        )
+        assert (
+            capacity.outputs["tension_steel_area_mm2"]
+            + capacity.outputs["compression_steel_area_mm2"]
+            > 10000
+        )
+
+
 def test_rectangular_singly_and_doubly_reinforced_capacity() -> None:
     singly = flexural_capacity(
         _capacity(bars=tuple(bar for bar in _bars() if bar.face is Face.BOTTOM))

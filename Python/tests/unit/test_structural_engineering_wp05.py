@@ -1,4 +1,5 @@
 from dataclasses import replace
+from math import sqrt
 
 import pytest
 
@@ -597,6 +598,49 @@ def test_full_arrangement_checks_surfaces_spacing_centroids_and_placement() -> N
         440
     )
     assert result.outputs["placement_check"]["passed"] is True
+
+
+@pytest.mark.parametrize(
+    ("bend_radius_mm", "inset_mm", "expected"),
+    [
+        (16, 41, "fail"),
+        (16, 49 - 8 / sqrt(2), "pass"),
+        (16, 44, "pass"),
+        (4, 41, "pass"),
+    ],
+)
+def test_arrangement_checks_bar_circles_at_all_rounded_link_corners(
+    bend_radius_mm: float, inset_mm: float, expected: str
+) -> None:
+    request = _arrangement_request()
+    coordinates = (
+        (inset_mm, inset_mm),
+        (300 - inset_mm, inset_mm),
+        (inset_mm, 500 - inset_mm),
+        (300 - inset_mm, 500 - inset_mm),
+    )
+    bars = tuple(
+        replace(bar, x_from_left_mm=x, y_from_top_mm=y)
+        for bar, (x, y) in zip(request.bars, coordinates, strict=True)
+    )
+    result = check_reinforcement_arrangement(
+        replace(
+            request,
+            bars=bars,
+            links=(replace(request.links[0], internal_bend_radius_mm=bend_radius_mm),),
+        )
+    )
+
+    # At 45 degrees the 8 mm bar is tangent when its centre is 8/sqrt(2)
+    # from the inner arc centre (49,49); a (41,41) centre crosses that arc.
+    assert result.engineering == expected
+    assert all(
+        row["passed"] is (expected == "pass")
+        for row in result.outputs["bar_enclosure_checks"]
+    )
+    assert all(row["passed"] for row in result.outputs["link_checks"])
+    if expected == "fail":
+        assert {item.code for item in result.diagnostics} == {"BAR.NOT_ENCLOSED"}
 
 
 def test_tension_layer_only_cannot_qualify_full_arrangement() -> None:

@@ -169,7 +169,12 @@ def _validate_geometry(
 ) -> tuple[dict[str, dict[str, object]], Provenance, list[Diagnostic]]:
     inputs = _request_inputs(request)
     provenance = _provenance(
-        "reinforcement-actual-geometry-v1", request.code_data_revision_id
+        (
+            "reinforcement-actual-geometry-v2"
+            if operation == GEOMETRY_OPERATION
+            else "reinforcement-actual-geometry-v1"
+        ),
+        request.code_data_revision_id,
     )
     diagnostics: list[Diagnostic] = []
     for field, value, allow_zero in (
@@ -345,8 +350,6 @@ def evaluate_geometry(request: ReinforcementGeometryRequest) -> OperationResult:
     governing_pair: tuple[str, str] | None = None
     for index, bar in enumerate(request.bars):
         for other in request.bars[:index]:
-            if bar.face is not other.face:
-                continue
             distance = math.hypot(
                 bar.x_from_left_mm - other.x_from_left_mm,
                 bar.y_from_top_mm - other.y_from_top_mm,

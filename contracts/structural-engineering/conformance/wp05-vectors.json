@@ -70,6 +70,18 @@
       "expected": {"link_surface_covers_mm": [25, 25, 25, 25], "horizontal_clearances_mm": [164, 164], "required_horizontal_clearance_mm": 25, "top_centroid_y_mm": 60, "bottom_centroid_y_mm": 440, "required_placement_opening_mm": [250, 450], "engineering": "pass"}
     },
     {
+      "id": "wp05-arrangement-corner-clash",
+      "operation_semantic_id": "structural.reinforcement_arrangement.check/v1",
+      "input": {"base_vector": "wp05-arrangement-complete", "top_bars": [{"diameter_mm": 16, "x_mm": 41, "y_mm": 41}, {"diameter_mm": 16, "x_mm": 259, "y_mm": 41}], "bottom_bars": [{"diameter_mm": 16, "x_mm": 41, "y_mm": 459}, {"diameter_mm": 16, "x_mm": 259, "y_mm": 459}]},
+      "expected": {"engineering": "fail", "bar_enclosure_passed": [false, false, false, false], "diagnostic": "BAR.NOT_ENCLOSED"}
+    },
+    {
+      "id": "wp05-arrangement-corner-tangency",
+      "operation_semantic_id": "structural.reinforcement_arrangement.check/v1",
+      "input": {"base_vector": "wp05-arrangement-complete", "bar_centre_inset_from_each_face_mm": 43.34314575050762},
+      "expected": {"engineering": "pass", "bar_enclosure_passed": [true, true, true, true]}
+    },
+    {
       "id": "wp05-arrangement-tension-only",
       "operation_semantic_id": "structural.reinforcement_arrangement.check/v1",
       "input": {"required_roles": ["top_longitudinal"], "bottom_bars": []},

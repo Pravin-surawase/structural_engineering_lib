@@ -79,6 +79,10 @@ review scope.
 
 ## Physical beam and project workflows
 
+The [physical section and fit review](../planning/library-usability-improvement.md#function-review-lib-deep-review-003)
+records the separate steel-area limits, cross-face gaps, rounded-link enclosure
+and the bounded centroid-model assumptions.
+
 `structural_lib.beam` exposes the newer explicit physical-bar, analysis,
 serviceability, detailing and complete-member workflow. Construction quantities
 and calculation packages live in `structural_lib.construction` and

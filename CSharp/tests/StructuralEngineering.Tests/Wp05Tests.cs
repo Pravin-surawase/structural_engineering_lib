@@ -175,6 +175,32 @@ public class Wp05Tests
             check.ReinforcementKind == "link_segment" && check.SegmentIndex == 4 && !check.Passed);
     }
 
+    [Theory]
+    [InlineData(16, 41, EngineeringState.Fail)]
+    [InlineData(16, 43.34314575050762, EngineeringState.Pass)]
+    [InlineData(16, 44, EngineeringState.Pass)]
+    [InlineData(4, 41, EngineeringState.Pass)]
+    public void ArrangementChecksAllRoundedLinkCorners(double bendRadiusMm, double insetMm, EngineeringState expected)
+    {
+        var result = Detailing.CheckReinforcementArrangement(new(
+            "IS456-WP05", "B1", "SPAN-1@MID", "reinforcement:R1", 300, 500, 25, 20,
+            [Bar("T1", ReinforcementRole.TopLongitudinal, insetMm, insetMm, 16),
+             Bar("T2", ReinforcementRole.TopLongitudinal, 300 - insetMm, insetMm, 16),
+             Bar("B1", ReinforcementRole.BottomLongitudinal, insetMm, 500 - insetMm, 16),
+             Bar("B2", ReinforcementRole.BottomLongitudinal, 300 - insetMm, 500 - insetMm, 16)],
+            [new("L1", 8, 29, 271, 29, 471, bendRadiusMm, true)],
+            [ReinforcementRole.TopLongitudinal, ReinforcementRole.BottomLongitudinal], 10,
+            PlacementOpening: new("PO-1", 260, 460, "sequence:R1"), RequirePlacementPlan: true));
+
+        // 43.34314575050762 = 49 - 8/sqrt(2): exact 45-degree inner-arc tangency.
+        Assert.Equal(expected, result.Engineering);
+        Assert.All(result.Outputs!.BarEnclosureChecks, check =>
+            Assert.Equal(expected == EngineeringState.Pass, check.Passed));
+        Assert.All(result.Outputs.LinkChecks, check => Assert.True(check.Passed));
+        if (expected == EngineeringState.Fail)
+            Assert.All(result.Diagnostics, diagnostic => Assert.Equal("BAR.NOT_ENCLOSED", diagnostic.Code));
+    }
+
     [Fact]
     public void CouplersMayExceedLapDiameterLimitAndMalformedSchedulesAreRejected()
     {

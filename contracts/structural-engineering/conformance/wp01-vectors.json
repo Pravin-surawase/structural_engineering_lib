@@ -47,6 +47,18 @@
       "expected": {"engineering": "pass", "utilization": 0.8503479167338274, "tension_face": "bottom"}
     },
     {
+      "id": "wp01-flexure-separate-steel-maxima",
+      "operation_semantic_id": "is456.beam.flexure.check/v1",
+      "input": {"web_width_mm": 500, "depth_mm": 500, "fck_n_per_mm2": 25, "fy_n_per_mm2": 415, "top_bars": ["7-32", 55], "bottom_bars": ["7-32", 445], "positive_design_moment_knm": 200, "negative_design_moment_knm": -200},
+      "expected": {"engineering": "pass", "tension_steel_area_mm2": 5629.734035232909, "compression_steel_area_mm2": 5629.734035232909, "maximum_tension_steel_area_mm2": 10000, "maximum_compression_steel_area_mm2": 10000, "maximum_steel_pass": true}
+    },
+    {
+      "id": "wp01-opposite-face-overlap",
+      "operation_semantic_id": "structural.reinforcement_geometry.evaluate/v1",
+      "input": {"width_mm": 300, "depth_mm": 500, "nominal_cover_mm": 25, "link_diameter_mm": 8, "minimum_clear_spacing_mm": 25, "bars": [{"bar_id": "T", "diameter_mm": 20, "x_from_left_mm": 150, "y_from_top_mm": 200, "face": "top"}, {"bar_id": "B", "diameter_mm": 20, "x_from_left_mm": 150, "y_from_top_mm": 210, "face": "bottom"}]},
+      "expected": {"engineering": "fail", "minimum_clear_spacing_mm": -10, "governing_spacing_pair": ["T", "B"], "diagnostic": "GEOMETRY.SPACING"}
+    },
+    {
       "id": "wp01-bar-area-zero",
       "operation_semantic_id": "structural.reinforcement.bar_area/v1",
       "input": {"diameter_mm": 0},
