@@ -24,9 +24,11 @@
 | ROUTINE-DELIVERY | Remove routine delivery bookkeeping | P1 | Done: PR #1005 | Cohesive commits, affected verification and one PR; detailed audits are opt-in. [Workflow](git-automation/git-workflow-single-source.md#routine-integration) |
 | LIB-USABILITY | Improve existing implementation, typed APIs and executable caller workflows | P0 | Done: PRs #1006–#1010 | Current-source installation, family/transport/physical/candidate journeys and measured startup improvement. [Evidence](planning/library-usability-improvement.md#completion-and-boundaries) |
 | LIB-DEEP-REVIEW-001 | Read beam function bodies, compare APIs/numerics and repair shear-basis composition | P0 | Beam packet implemented; full-library review remains open | [Function-by-function evidence and remaining scope](planning/library-usability-improvement.md#function-review-lib-deep-review-001); retain exact final checks in the packet PR |
+| LIB-DEEP-REVIEW-002 | Review supplied bars, source bond/anchorage and bounded serviceability | P0 | Supplied-beam packet implemented; physical-member review remains open | [Function reads, source benchmarks and corrections](planning/library-usability-improvement.md#function-review-lib-deep-review-002); retain final verification in the packet PR |
 
-**Next library review:** supplied-bar anchorage/serviceability and physical beam
-calculation owners, followed by the remaining element families. Record exact
+**Next library review:** physical beam section/strain, support/bend-fit and
+member/profile composition, then Level B/C serviceability and the remaining
+element families. Record exact
 source reads and independent evidence rather than equating inventory or test
 counts with deep review. The representative complete-profile application replay
 and consolidated release preparation remain separate proposed packets.

@@ -8,6 +8,8 @@ Per IS 456:2000 Clause 26.2.3.3.
 
 from __future__ import annotations
 
+import pytest
+
 from structural_lib.codes.is456.beam.detailing import (
     AnchorageCheckResult,
     check_anchorage_at_simple_support,
@@ -104,18 +106,44 @@ class TestAnchorageCheckAtSimpleSupport:
         assert "bar diameter" in result.errors[0].lower()
 
     def test_anchorage_invalid_shear_force(self):
-        """Test error handling for zero/negative shear."""
+        """Negative shear is outside the magnitude-only support check."""
         result = check_anchorage_at_simple_support(
             bar_dia=16,
             fck=25,
             fy=500,
-            vu_kn=0,  # Invalid
+            vu_kn=-1,  # Invalid
             support_width=230,
         )
 
         assert result.is_adequate is False
         assert len(result.errors) > 0
         assert "Shear" in result.errors[0]
+
+    @pytest.mark.parametrize("width,adequate", [(724.0, False), (726.0, True)])
+    def test_zero_shear_still_checks_unrounded_full_development_length(
+        self, width, adequate
+    ):
+        from structural_lib.services.beam_api import (
+            check_anchorage_at_simple_support as public_check,
+        )
+
+        result = public_check(
+            bar_dia_mm=8,
+            fck_nmm2=25,
+            fy_nmm2=415,
+            vu_kn=0,
+            support_width_mm=width,
+            cover_mm=40,
+            has_standard_bend=False,
+        )
+        # 8 * 361.05 / (4 * 2.24) = 322.366071...; rounding to 322 hid failure.
+        assert result.ld_required == pytest.approx(322.36607142857144, rel=0, abs=1e-9)
+        assert result.ld_available == width / 2 - 40
+        assert result.is_adequate is adequate
+        positive_shear = check_anchorage_at_simple_support(
+            8, 25, 415, 60, width, 40, has_standard_bend=False
+        )
+        assert result == positive_shear
 
     def test_anchorage_utilization_calculation(self):
         """Test that utilization is correctly calculated."""
@@ -132,6 +160,23 @@ class TestAnchorageCheckAtSimpleSupport:
         if result.ld_available > 0:
             expected_utilization = result.ld_required / result.ld_available
             assert abs(result.utilization - expected_utilization) < 0.01
+
+    @pytest.mark.parametrize("fck", [45.0, 50.0])
+    def test_high_grade_bond_correction_reaches_public_support_wrapper(self, fck):
+        from structural_lib.services.beam_api import (
+            check_anchorage_at_simple_support as public_check,
+        )
+
+        result = public_check(
+            bar_dia_mm=20,
+            fck_nmm2=fck,
+            fy_nmm2=500,
+            vu_kn=60,
+            support_width_mm=1360,
+        )
+        assert not result.is_adequate
+        assert result.ld_required == pytest.approx(715.4605263157895, rel=0, abs=1e-9)
+        assert result.ld_available == 680.0
 
     def test_anchorage_plain_bars(self):
         """Test with plain bars (higher Ld required)."""

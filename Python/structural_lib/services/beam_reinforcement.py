@@ -24,6 +24,7 @@ from structural_lib.codes.is456.beam.detailing import (
     check_anchorage_at_simple_support,
     check_min_spacing,
 )
+from structural_lib.codes.is456.beam.flexure import _maximum_longitudinal_area_mm2
 from structural_lib.services.rebar_optimizer import Objective, optimize_bar_arrangement
 
 __all__ = [
@@ -438,6 +439,9 @@ def evaluate_supplied_beam_reinforcement_v1(
     clause_refs = {
         "minimum_clear_spacing": "IS 456:2000 Cl 26.3.2",
         "longitudinal_reinforcement": "IS 456:2000 Cl 26.5.1",
+        "maximum_tension_reinforcement": "IS 456:2000 Cl 26.5.1.1(b)",
+        "maximum_compression_reinforcement": "IS 456:2000 Cl 26.5.1.2",
+        "development_length": "IS 456:2000 Cl 26.2.1/26.2.1.1",
         "simple_support_anchorage": "IS 456:2000 Cl 26.2.3.3",
     }
     if supplied is None:
@@ -522,6 +526,9 @@ def evaluate_supplied_beam_reinforcement_v1(
 
     tension_area_ok = tension.area_provided_mm2 + 1e-9 >= ast_required_mm2
     compression_area_ok = compression.area_provided_mm2 + 1e-9 >= asc_required_mm2
+    maximum_area_mm2 = _maximum_longitudinal_area_mm2(b_mm, D_mm)
+    tension_maximum_ok = tension.area_provided_mm2 <= maximum_area_mm2
+    compression_maximum_ok = compression.area_provided_mm2 <= maximum_area_mm2
     support_complete = (
         support_width_start_mm is not None
         and support_width_end_mm is not None
@@ -567,6 +574,20 @@ def evaluate_supplied_beam_reinforcement_v1(
             _issue(
                 "BEAM_COMPRESSION_REINFORCEMENT_AREA_INSUFFICIENT",
                 "Supplied compression-bar area is below calculated Asc.",
+            )
+        )
+    if not tension_maximum_ok:
+        issues.append(
+            _issue(
+                "BEAM_TENSION_REINFORCEMENT_AREA_EXCESSIVE",
+                "Supplied tension-bar area exceeds the maximum 4% of bD.",
+            )
+        )
+    if not compression_maximum_ok:
+        issues.append(
+            _issue(
+                "BEAM_COMPRESSION_REINFORCEMENT_AREA_EXCESSIVE",
+                "Supplied compression/top-bar area exceeds the maximum 4% of bD.",
             )
         )
     if not bool(tension_spacing["is_adequate"]):
@@ -654,12 +675,16 @@ def evaluate_supplied_beam_reinforcement_v1(
             "tension_area": {
                 "required_mm2": ast_required_mm2,
                 "provided_mm2": tension.area_provided_mm2,
-                "is_adequate": tension_area_ok,
+                "maximum_mm2": maximum_area_mm2,
+                "is_within_maximum": tension_maximum_ok,
+                "is_adequate": tension_area_ok and tension_maximum_ok,
             },
             "compression_area": {
                 "required_mm2": asc_required_mm2,
                 "provided_mm2": compression.area_provided_mm2,
-                "is_adequate": compression_area_ok,
+                "maximum_mm2": maximum_area_mm2,
+                "is_within_maximum": compression_maximum_ok,
+                "is_adequate": compression_area_ok and compression_maximum_ok,
             },
             "tension_spacing": tension_spacing,
             "compression_spacing": compression_spacing,

@@ -149,6 +149,37 @@ def test_supplied_stirrup_spacing_changes_the_shear_result() -> None:
     )
 
 
+def test_excessive_supplied_compression_area_changes_canonical_verdict() -> None:
+    payload = _payload()
+    payload["section"]["b_mm"] = 500.0
+    payload["reinforcement"]["compression_or_hanger"] = {
+        "diameter_mm": 40.0,
+        "bars_per_layer": [4, 4],
+        "vertical_center_spacings_mm": [80.0],
+    }
+    payload["selection"]["permitted_diameters_mm"] = [12.0, 16.0, 20.0, 25.0, 40.0]
+
+    result = _check(payload)
+
+    assert result.status == "FAIL"
+    assert result.shear.status == "PASS"
+    assert result.result_envelope.engineering_status.value == "FAIL"
+    assert result.result_envelope.overall_status.value == "FAIL"
+    assert result.longitudinal.checks["compression_area"]["maximum_mm2"] == 10000.0
+    assert any(
+        issue.code == "BEAM_COMPRESSION_REINFORCEMENT_AREA_EXCESSIVE"
+        for issue in result.result_envelope.issues
+    )
+
+
+def test_zero_shear_reaches_the_same_conservative_anchorage_check() -> None:
+    payload = _payload()
+    payload["actions"]["vu_kn"] = 0.0
+    result = _check(payload)
+    assert result.status == "PASS"
+    assert result.longitudinal.checks["start_anchorage"]["ld_required_mm"] > 0
+
+
 def test_transverse_grade_owns_minimum_shear_reinforcement_spacing() -> None:
     low_grade = _payload()
     materials = low_grade["materials"]

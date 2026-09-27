@@ -11,6 +11,7 @@ Tests cover:
 
 import pytest
 
+from structural_lib.codes.is456.beam.detailing import evaluate_tension_bar_anchorage_v1
 from structural_lib.core.errors import ConfigurationError
 from structural_lib.detailing import (
     BarArrangement,
@@ -55,6 +56,30 @@ class TestBondStress:
         """M22 should use M20 values (nearest lower)."""
         tau = get_bond_stress(22, "deformed")
         assert tau == pytest.approx(1.92, rel=0.01)
+
+    @pytest.mark.parametrize("fck", [40, 45, 50, 60])
+    @pytest.mark.parametrize("bar_type,expected", [("plain", 1.9), ("deformed", 3.04)])
+    def test_m40_and_above_uses_one_source_row(self, fck, bar_type, expected):
+        # Controlled IS 456:2000 Cl 26.2.1.1, printed p43: M40 and above.
+        assert get_bond_stress(fck, bar_type) == pytest.approx(
+            expected, rel=0, abs=1e-12
+        )
+
+    @pytest.mark.parametrize("fck", [40, 45, 50, 60])
+    def test_high_grade_concrete_cannot_shorten_anchorage_below_source(self, fck):
+        result = evaluate_tension_bar_anchorage_v1(
+            bar_dia=20,
+            fck=fck,
+            fy=500,
+            available_straight_length_mm=680,
+            arrangement="straight",
+        )
+        # Independently: 20 * 435 / (4 * 1.9 * 1.6), in mm.
+        assert result.required_development_length_mm == pytest.approx(
+            715.4605263157895, abs=1e-9
+        )
+        assert result.shortfall_mm == pytest.approx(35.4605263157895, rel=0, abs=1e-9)
+        assert not result.is_adequate
 
     @pytest.mark.parametrize("fck", [True, float("nan"), float("inf")])
     def test_rejects_invalid_concrete_strength_type(self, fck):

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-01
+last_updated: 2026-09-27
 doc_type: guide
 complexity: advanced
 tags: [beam, supplied-reinforcement, canonical-api, lib-pro-015-d1]
@@ -17,6 +17,27 @@ Errors: `input-issue/v1`, `structural-problem/v1`, and
 The check consumes exact longitudinal layers, stirrup diameter/legs/spacing,
 effective depth, materials, factored actions, selection constraints, support
 basis, source references, identity, tension face, and correlation identity.
+
+Each longitudinal group must meet the calculated required area and stay within
+`0.04 * b_mm * D_mm`. Inspect `longitudinal.checks.tension_area` and
+`compression_area` for `required_mm2`, `provided_mm2`, `maximum_mm2`,
+`is_within_maximum` and `is_adequate`. Extra bars can therefore cause `FAIL` even
+when they exceed the required strength area.
+
+Support acceptance uses unrounded development length. The M40-and-above bond
+value is used by the shared anchorage helpers for M40 and higher grades. The
+canonical V2 beam request still admits M20–M40 only; this correction does not
+expand that domain. Zero shear is
+accepted and still requires the same conservative support anchorage check.
+
+The bend flags declare a standard bend; this route does not reconstruct its
+shape or fit. Its support-width screen takes no M1/V enhancement. Serviceability
+is separate: `beam.check`/`beam.design` accept `BeamServiceabilityChecksV1` with
+the caller's service-analysis, section and reinforcement references. A supplied
+reinforcement PASS does not include deflection or crack-width qualification.
+
+See the [function review](../../planning/library-usability-improvement.md#function-review-lib-deep-review-002)
+for source checks, numerical examples and the remaining physical-member scope.
 
 ## Valid `PASS`
 
