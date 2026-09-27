@@ -5,6 +5,63 @@
 
 ---
 
+<a id="lib-member-workflow-001-20260927"></a>
+
+## 2026-09-27 — Session: Complete supported ordinary beam workflow
+
+**Task:** LIB-MEMBER-WORKFLOW-001
+**Agent:** MAIN (one parent, no subagents)
+**Branch:** `codex/lib-member-workflow-001`
+**Focus:** Complete one frozen public beam workflow through checked physical reinforcement, BBS and report, with independent evidence and measured caller effort.
+
+### Completed
+
+- Added the complete ordinary-beam example with all 19 required leaves and 39 physical bars through HTML/JSON/CSV artifacts.
+- Repaired support extension, continuous-bar qualification, conditional opposite-face torsion checks and report revision binding in Python/.NET.
+- Retained independent source/calculation evidence, failure propagation and explicit remaining scope limits.
+
+### Verification and scope
+
+The [acceptance record](planning/library-usability-improvement.md#complete-beam-implementation-and-independent-evidence)
+owns the numerical comparisons, focused checks, installed-current-wheel replay
+and full-process measurement. The single PR owns final required hosted checks
+and merge facts. No new package release, installed ETABS qualification or
+professional approval is created. General multilayer strain compatibility and
+calculated long-term deflection remain outside this fixed-case acceptance.
+
+Intake fetched and verified Mac `main == origin/main == 90da5107` (#1015),
+with no open non-dependency PR. The 33 worktree records and unrelated dirty
+architecture work are preserved. Windows was not inspected. The separate
+solver candidate `91207365` remains held for an explicit future rebind;
+there is no cross-device writer or installed-artifact authority transition.
+
+### Issues encountered
+
+The complete public caller exposed four outcome-changing gaps across individual
+detailing, torsion and reporting operations. Smaller teaching profiles had not
+established this full required-check path.
+
+### Root causes and resolutions
+
+The acceptance record maps each reproduction to its maintained Python/.NET
+owner and correction. A large support moment/shear contribution cannot replace
+physical bar embedment; empty splice lists require actual continuous steel;
+zero opposite torsion demand does not create tension; a report must bind the
+reinforcement and topology revisions that were checked.
+
+### Rework and recurrence
+
+- RR-004: occurrences=34; minutes=unknown. Preserve the existing handoff freshness control; this material milestone adds no counted governance recurrence.
+
+### What next
+
+Use the [current brief](planning/next-session-brief.md) and confirm this packet's
+GitHub integration before selecting another case. Expand only through a frozen
+profile with independent numerical evidence. Publication and fresh installed
+Excel/ETABS work retain their separate authority and access boundaries.
+
+---
+
 <a id="lib-review-handoff-20260927"></a>
 
 ## 2026-09-27 — Session: Library review assessment and handoff

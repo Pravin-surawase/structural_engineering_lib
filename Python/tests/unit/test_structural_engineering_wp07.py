@@ -691,7 +691,7 @@ def _member_output() -> MemberDesignOutput:
         0.8333333333,
     )
     iteration = EffectiveDepthIteration(
-        1, "reinforcement-r1", 450, (evidence.result_id,), True
+        1, "detail-r1", 450, (evidence.result_id,), True
     )
     return MemberDesignOutput(
         "project-basis-1",
@@ -699,7 +699,7 @@ def _member_output() -> MemberDesignOutput:
         "B1",
         "topology-r1",
         "actions-r1",
-        "reinforcement-r1",
+        "detail-r1",
         "scope-r1",
         (expectation,),
         (MemberLeafQualification(expectation, evidence, True, ()),),
@@ -816,6 +816,23 @@ def _package_request() -> CalculationPackageRequest:
             ),
         ),
     )
+
+
+@pytest.mark.parametrize("field", ("reinforcement_revision_id", "topology_revision_id"))
+def test_package_rejects_checked_member_from_another_detail_or_topology(field) -> None:
+    request = _package_request()
+    member = replace(request.member_result, **{field: "different-revision"})
+    result = create_calculation_package(
+        replace(
+            request,
+            member_result=member,
+            member_binding=_binding(
+                "is456.beam_member.design/v1", "member-result-1", member
+            ),
+        )
+    )
+    assert result.execution == "rejected_input"
+    assert result.diagnostics[0].code == "PACKAGE.IDENTITY_CONFLICT"
 
 
 def test_calculation_package_is_replayable_and_keeps_real_human_actions() -> None:

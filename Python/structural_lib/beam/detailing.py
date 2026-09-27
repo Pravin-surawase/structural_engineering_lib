@@ -572,7 +572,7 @@ def _anchorage_bend_value(
 def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
     inputs = effective_inputs(request=request)
     provenance = _provenance(
-        "is456-anchorage-path-check-wp05-v1",
+        "is456-anchorage-path-check-wp05-v2",
         request.code_data_revision_id,
     )
     if (
@@ -743,8 +743,13 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
             moment_shear_contribution = (
                 evidence.moment_resistance_nmm / evidence.support_shear_n
             )
-            available = moment_shear_contribution + anchorage_beyond_centre
-            criterion = "simple_support_moment_shear_plus_lo"
+            # Cl 26.2.3.3(a) requires physical extension into the support as
+            # well as the diameter/development criterion in (c). Express both
+            # against Ld; M1/V cannot compensate for a missing bar extension.
+            available = min(
+                moment_shear_contribution + anchorage_beyond_centre, 3 * straight
+            )
+            criterion = "simple_support_extension_and_moment_shear_plus_lo"
         passed = required <= available + 1e-9
         if not passed:
             diagnostics.append(
@@ -866,7 +871,7 @@ def check_laps_and_curtailment(
 ) -> OperationResult:
     inputs = effective_inputs(request=request)
     provenance = _provenance(
-        "is456-lap-curtailment-evidence-check-wp05-v1",
+        "is456-lap-curtailment-evidence-check-wp05-v2",
         request.code_data_revision_id,
     )
     if (
@@ -908,15 +913,6 @@ def check_laps_and_curtailment(
             "Actual bar paths and the current station steel-demand envelope are required.",
             "bars,demands",
         )
-    if not request.splices and not request.curtailments:
-        return _not_evaluated(
-            LAP_CURTAILMENT_CHECK_OPERATION,
-            inputs,
-            provenance,
-            "At least one actual splice or curtailment detail is required.",
-            "splices,curtailments",
-        )
-
     bar_ids = [bar.bar_id for bar in request.bars]
     demand_ids = [demand.station_id for demand in request.demands]
     detail_ids = [splice.splice_id for splice in request.splices] + [
@@ -992,6 +988,35 @@ def check_laps_and_curtailment(
         )
 
     diagnostics: list[Diagnostic] = []
+    if not request.splices and not request.curtailments:
+        # Empty detail lists are meaningful only for actual continuous bars.
+        # An interior end still needs its curtailment/anchorage evidence.
+        if any(
+            bar.start_station_mm > request.member_start_x_mm
+            or bar.end_station_mm < request.member_end_x_mm
+            for bar in request.bars
+        ):
+            return _not_evaluated(
+                LAP_CURTAILMENT_CHECK_OPERATION,
+                inputs,
+                provenance,
+                "An interior bar end requires explicit splice or curtailment evidence.",
+                "splices,curtailments",
+            )
+        for demand in request.demands:
+            supplied = math.fsum(
+                bar.area_mm2 for bar in request.bars if bar.role is demand.role
+            )
+            if supplied + 1e-9 < demand.required_area_mm2:
+                diagnostics.append(
+                    _diagnostic(
+                        LAP_CURTAILMENT_CHECK_OPERATION,
+                        "CONTINUITY.STEEL_DEFICIT",
+                        "Continuous bars do not supply the required station steel area.",
+                        f"demands[{demand.station_id}]",
+                        "Revise the actual continuous reinforcement or demand basis.",
+                    )
+                )
     splice_checks: list[dict[str, object]] = []
     for splice in request.splices:
         if (

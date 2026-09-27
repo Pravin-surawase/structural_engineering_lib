@@ -15,6 +15,27 @@ python3 -m structural_lib install-preflight
 
 ## Typed workflows from the current source
 
+`complete_member_workflow.py` is the frozen LIB-MEMBER-WORKFLOW-001 acceptance
+case: a 300 × 500 mm ordinary beam with separate ULS/SLS loads, actual bars,
+19 required leaf checks, physical BBS, quantities and an HTML calculation report.
+Its [source and independent evidence](../../docs/planning/library-usability-improvement.md#lib-member-workflow-001-frozen-acceptance-case)
+defines the complete supported profile and manual case-admission conditions.
+It requires the current source build; it is not present in the older public wheel.
+
+```bash
+python3 -m pip install -e ./Python
+python3 Python/examples/complete_member_workflow.py --output-dir /tmp/complete-beam
+```
+
+Open `report.html`; `calculation.json` retains every input/result/source identity
+and `bbs.csv` carries the same issue state for each physical bar. The fixed case
+passes, each missing required check remains visible/draft, and actual overload
+or insufficient anchorage cannot export an accepted package. Preparation and
+engineering review are manual; the run copies no intermediate values by hand.
+This is one qualified worked case with span/depth screening and supplied,
+independently verified SLS section evidence. It is not a general beam-design
+profile, calculated long-term deflection, fabrication drawing or human approval.
+
 `canonical_workflows.py` uses public request groups, a beam-to-BBS workflow,
 column and slab checks, structured errors and a JSON round-trip. The newly
 exposed group imports, slab builders, and JSON loaders require the current source build;
@@ -68,6 +89,7 @@ python3 Python/examples/analysis_snapshot_replay.py /path/to/snapshot.json
 
 | Example | What it demonstrates | Writes files? |
 |---|---|---|
+| `complete_member_workflow.py` | One independently checked ordinary beam → all required checks → physical BBS and report; current source build | Yes, with `--output-dir` |
 | `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
 | `beam_checks_workflow.py` | Explicit analysis, capacity, serviceability and detailing calls; evidence remains distinct | No |
 | `physical_member_workflow.py` | Physical bars → profile checks → BBS/quantities/cost/package; missing/stale evidence; current source build | No |

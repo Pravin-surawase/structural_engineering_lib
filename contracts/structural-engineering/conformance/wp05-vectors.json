@@ -25,7 +25,7 @@
       "id": "wp05-simple-support-anchorage",
       "operation_semantic_id": "is456.beam.anchorage.check/v1",
       "input": {"critical_section_x_mm": 5800, "support_near_face_x_mm": 5800, "support_centre_x_mm": 5900, "path_end_x_mm": 6000, "moment_resistance_nmm": 85000000, "support_shear_n": 100000},
-      "expected": {"required_development_length_mm": 940.234375, "moment_shear_contribution_mm": 850, "anchorage_beyond_support_centre_mm": 100, "available_for_criterion_mm": 950, "engineering": "pass"}
+      "expected": {"required_development_length_mm": 940.234375, "moment_shear_contribution_mm": 850, "anchorage_beyond_support_centre_mm": 100, "available_for_criterion_mm": 600, "engineering": "fail"}
     },
     {
       "id": "wp05-support-face-required",

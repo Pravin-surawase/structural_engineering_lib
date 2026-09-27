@@ -10,7 +10,7 @@ public static class CalculationPackageOperations
 
     private static readonly Provenance Source = new(
         "calculation-package-wp07-v1",
-        "structural-calculation-package-wp07-v1",
+        "structural-calculation-package-wp07-v2",
         [
             "PF5 AO24 calculation-package contract",
             "PF7 AR24 reproducible leaf, identity, drawing, and human-action evidence"
@@ -152,6 +152,8 @@ public static class CalculationPackageOperations
             schedule.ProjectBasisId != member.ProjectBasisId ||
             bbs.ProjectBasisId != member.ProjectBasisId ||
             quantities.ProjectBasisId != member.ProjectBasisId ||
+            schedule.DetailRevisionId != member.ReinforcementRevisionId ||
+            schedule.TopologyRevisionId != member.TopologyRevisionId ||
             bbs.DetailRevisionId != schedule.DetailRevisionId ||
             quantities.DetailRevisionId != schedule.DetailRevisionId ||
             bbs.ScheduleResultId != request.ScheduleBinding.ResultId ||

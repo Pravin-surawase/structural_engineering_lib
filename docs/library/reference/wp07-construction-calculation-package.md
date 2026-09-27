@@ -107,6 +107,11 @@ one AO17 member result with the exact AO18, AO19, AO04, and optional AO20 result
 chain. It retains project, member, revision, engine, dataset, normalized-input,
 calculation, and result identities.
 
+The physical schedule must match both the member's checked reinforcement
+revision and topology revision. A correctly hashed schedule from another
+revision is rejected with `PACKAGE.IDENTITY_CONFLICT`; a valid binding alone
+does not establish that those bars were checked.
+
 The package profile must list the same complete leaf set derived by AO17. Each
 leaf carries its operation, evidence result, required/provided/selected values,
 unit, utilization, governing state, qualification, and reason codes. A matching
@@ -174,6 +179,13 @@ payload identities. Application tables and files do not enter these operations.
 The [physical-member example](../../../Python/examples/physical_member_workflow.py)
 runs the entire chain, including package creation and a stale draft, against
 actual operation results.
+
+The [complete member example](../../../Python/examples/complete_member_workflow.py)
+adds a frozen ordinary-beam profile with 19 required checks and independently
+verified calculations. Its optional `--output-dir` renderer writes an HTML
+report, every operation/input to JSON, and one CSV row per physical bar. Failed
+or missing required checks leave the package and exported bar rows `draft`.
+The output has no invented checker, approver or fabrication drawing.
 
 ## Corrections from the earlier library
 

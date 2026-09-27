@@ -156,7 +156,7 @@ def test_simple_support_anchorage_uses_moment_over_shear_plus_lo() -> None:
                     AnchorageLocation.SIMPLE_SUPPORT,
                     AnchorageDirection.INCREASING_X,
                     0,
-                    6000,
+                    6200,
                     5800,
                     "SUP-R",
                     5800,
@@ -177,8 +177,99 @@ def test_simple_support_anchorage_uses_moment_over_shear_plus_lo() -> None:
     check = result.outputs["checks"][0]
     assert result.engineering == "pass"
     assert check["moment_shear_contribution_mm"] == pytest.approx(850)
-    assert check["anchorage_beyond_support_centre_mm"] == pytest.approx(100)
-    assert check["available_for_criterion_mm"] == pytest.approx(950)
+    assert check["anchorage_beyond_support_centre_mm"] == pytest.approx(300)
+    assert check["available_for_criterion_mm"] == pytest.approx(1150)
+
+
+@pytest.mark.parametrize("left", (True, False))
+@pytest.mark.parametrize("extension", (5, 940.234375 / 3, 400))
+def test_simple_support_requires_real_extension_even_when_moment_over_shear_passes(
+    left, extension
+) -> None:
+    path = AnchoragePath(
+        "B1",
+        "face",
+        AnchorageLocation.SIMPLE_SUPPORT,
+        AnchorageDirection.DECREASING_X if left else AnchorageDirection.INCREASING_X,
+        200 - extension if left else 0,
+        5000 if left else 4800 + extension,
+        200 if left else 4800,
+        "support",
+        200 if left else 4800,
+        0 if left else 5000,
+        (),
+        None,
+        _development(),
+        SimpleSupportAnchorageEvidence(90e6, 30e3, ("ULS",)),
+    )
+    result = check_anchorage(AnchorageCheckRequest("IS456-WP05", "B1", "r1", (path,)))
+    assert result.execution == "completed"
+    assert result.engineering == ("fail" if extension == 5 else "pass")
+    assert result.outputs["checks"][0]["available_for_criterion_mm"] == pytest.approx(
+        3 * extension
+    )
+
+
+@pytest.mark.parametrize(
+    "end,required,state",
+    ((6000, 600, "pass"), (5900, 600, "not_evaluated"), (6000, 700, "fail")),
+)
+def test_unspliced_member_requires_continuous_paths_and_sufficient_station_steel(
+    end, required, state
+) -> None:
+    bars = tuple(
+        LongitudinalBarPath(
+            name,
+            name,
+            ReinforcementRole.BOTTOM_LONGITUDINAL,
+            20,
+            1,
+            x,
+            450,
+            0,
+            end,
+            0.87 * 415,
+        )
+        for name, x in (("B1", 50), ("B2", 250))
+    )
+    result = check_laps_and_curtailment(
+        LapCurtailmentCheckRequest(
+            "IS456-WP05",
+            "B1",
+            "S1",
+            "ULS-r1",
+            "detail-r1",
+            0,
+            6000,
+            450,
+            25,
+            415,
+            BarSurface.DEFORMED,
+            bars,
+            (
+                StationSteelDemand(
+                    "mid",
+                    3000,
+                    ReinforcementRole.BOTTOM_LONGITUDINAL,
+                    required,
+                    0,
+                    100e3,
+                    "ULS-mid",
+                ),
+            ),
+            (),
+            (),
+        )
+    )
+    assert result.execution == "completed"
+    assert result.engineering == state
+    if state == "pass":
+        assert result.completeness == "complete_for_scope"
+        assert (
+            result.outputs["splice_checks"]
+            == result.outputs["curtailment_checks"]
+            == []
+        )
 
 
 def test_anchorage_rejects_support_centreline_as_face() -> None:

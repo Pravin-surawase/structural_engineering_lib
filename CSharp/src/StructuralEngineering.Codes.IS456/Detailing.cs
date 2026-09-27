@@ -45,7 +45,7 @@ public static class Detailing
     public static ResultEnvelope<AnchorageCheckOutput> CheckAnchorage(AnchorageCheckRequest request)
     {
         var inputs = Inputs(request);
-        var source = Source("is456-anchorage-path-check-wp05-v1", request.CodeDataRevisionId);
+        var source = Source("is456-anchorage-path-check-wp05-v2", request.CodeDataRevisionId);
         if (!Text(request.ProfileId) || !Text(request.MemberId) || !Text(request.ReinforcementRevisionId) || request.CodeDataRevisionId != Is456Revision)
             return Missing<AnchorageCheckOutput>(AnchorageCheckOperation, inputs, source, "Member and reinforcement-revision identity is required.", "identity");
         if (request.Paths is not { Count: > 0 }) return Missing<AnchorageCheckOutput>(AnchorageCheckOperation, inputs, source, "Actual longitudinal bar-end paths are required.", "paths");
@@ -81,8 +81,8 @@ public static class Detailing
                     return Missing<AnchorageCheckOutput>(AnchorageCheckOperation, inputs, source, "Simple-support anchorage requires moment resistance, support shear, and source action rows.", $"paths[{path.BarId}].simple_support_evidence");
                 beyondCentre = Math.Max(0, path.Direction == AnchorageDirection.IncreasingX ? path.PathEndXMm - path.SupportCentreXMm!.Value : path.SupportCentreXMm!.Value - path.PathStartXMm) + bend;
                 contribution = evidence.MomentResistanceNmm / evidence.SupportShearN;
-                available = contribution + beyondCentre;
-                criterion = "simple_support_moment_shear_plus_lo";
+                available = Math.Min(contribution + beyondCentre, 3 * straight);
+                criterion = "simple_support_extension_and_moment_shear_plus_lo";
             }
             var passed = required <= available + 1e-9;
             if (!passed) diagnostics.Add(Error(AnchorageCheckOperation, "ANCHORAGE.DEFICIT", "Actual straight path and credited bends do not satisfy the applicable development criterion.", $"paths[{path.BarId}]"));
@@ -96,11 +96,10 @@ public static class Detailing
     public static ResultEnvelope<LapCurtailmentCheckOutput> CheckLapsAndCurtailment(LapCurtailmentCheckRequest request)
     {
         var inputs = Inputs(request);
-        var source = Source("is456-lap-curtailment-evidence-check-wp05-v1", request.CodeDataRevisionId);
+        var source = Source("is456-lap-curtailment-evidence-check-wp05-v2", request.CodeDataRevisionId);
         if (!Text(request.ProfileId) || !Text(request.MemberId) || !Text(request.PhysicalSpanId) || !Text(request.DemandRevisionId) || !Text(request.ReinforcementRevisionId) || request.CodeDataRevisionId != Is456Revision || !Positive(request.EffectiveDepthMm) || !Positive(request.ConcreteGradeNPerMm2) || !Positive(request.SteelYieldStrengthNPerMm2) || !Enum.IsDefined(request.BarSurface) || !Finite(request.MemberStartXMm, request.MemberEndXMm) || request.MemberStartXMm >= request.MemberEndXMm)
             return Rejected<LapCurtailmentCheckOutput>(LapCurtailmentCheckOperation, inputs, source, "INPUT.INVALID", "The lap and curtailment check requires complete identities, member geometry, materials, and revision binding.", "request");
         if (request.Bars is not { Count: > 0 } || request.Demands is not { Count: > 0 }) return Missing<LapCurtailmentCheckOutput>(LapCurtailmentCheckOperation, inputs, source, "Actual bar paths and the current station steel-demand envelope are required.", "bars,demands");
-        if (request.Splices.Count == 0 && request.Curtailments.Count == 0) return Missing<LapCurtailmentCheckOutput>(LapCurtailmentCheckOperation, inputs, source, "At least one actual splice or curtailment detail is required.", "splices,curtailments");
         if (request.Bars.Any(b => !ValidBar(b)) || request.Bars.Select(b => b.BarId).Distinct().Count() != request.Bars.Count || request.Demands.Any(d => !Text(d.StationId) || !Text(d.ActionRowId) || !Enum.IsDefined(d.Role) || !Finite(d.StationXMm) || d.StationXMm < request.MemberStartXMm || d.StationXMm > request.MemberEndXMm || !Nonnegative(d.RequiredAreaMm2) || !Nonnegative(d.ShearDemandN) || !Nonnegative(d.ShearCapacityN)))
             return Rejected<LapCurtailmentCheckOutput>(LapCurtailmentCheckOperation, inputs, source, "DETAIL.IDENTITY_OR_GEOMETRY", "Bars and demand records require valid geometry and unique identities.", "bars,demands");
         if ((request.ProhibitedSpliceZones ?? []).Any(zone =>
@@ -112,6 +111,17 @@ public static class Detailing
         var demands = request.Demands.ToDictionary(d => d.StationId);
         var diagnostics = new List<Diagnostic>();
         var spliceChecks = new List<SpliceCheck>();
+        if (request.Splices.Count == 0 && request.Curtailments.Count == 0)
+        {
+            if (request.Bars.Any(bar => bar.StartStationMm > request.MemberStartXMm || bar.EndStationMm < request.MemberEndXMm))
+                return Missing<LapCurtailmentCheckOutput>(LapCurtailmentCheckOperation, inputs, source, "An interior bar end requires explicit splice or curtailment evidence.", "splices,curtailments");
+            foreach (var demand in request.Demands)
+            {
+                var supplied = request.Bars.Where(bar => bar.Role == demand.Role).Sum(Area);
+                if (supplied + 1e-9 < demand.RequiredAreaMm2)
+                    diagnostics.Add(Error(LapCurtailmentCheckOperation, "CONTINUITY.STEEL_DEFICIT", "Continuous bars do not supply the required station steel area.", $"demands[{demand.StationId}]"));
+            }
+        }
         foreach (var splice in request.Splices)
         {
             if (!Text(splice.SpliceId) || !Enum.IsDefined(splice.Kind) || !Enum.IsDefined(splice.StressState) || !Identifiers(splice.BarIds) || splice.BarIds.Distinct().Count() != splice.BarIds.Count || splice.BarIds.Any(id => !bars.ContainsKey(id)) || !Finite(splice.StartXMm, splice.EndXMm) || splice.StartXMm >= splice.EndXMm || splice.PercentageSplicedAtSection is <= 0 or > 100 || !Text(splice.StaggerGroup) || (splice.DirectTension && splice.StressState != StressState.Tension) || splice.StartXMm < request.MemberStartXMm || splice.EndXMm > request.MemberEndXMm)

@@ -149,7 +149,7 @@ public static class BeamOperations
             ("flexural_capacity", request.FlexuralCapacity), ("link", request.Link),
             ("perimeter_bar_ids", request.PerimeterBarIds),
             ("code_data_revision_id", request.CodeDataRevisionId));
-        var provenance = new Provenance(request.CodeDataRevisionId, "is456-torsion-check-wp02-v1",
+        var provenance = new Provenance(request.CodeDataRevisionId, "is456-torsion-check-wp02-v2",
             ["IS 456:2000 normalized WP02 shear and torsion rules"]);
         var action = request.Action;
         if (action.ActionBasis is not ActionBasis.StaticConcurrent and not ActionBasis.StagedStep)
@@ -234,8 +234,8 @@ public static class BeamOperations
         var oppositeMoment = Math.Max(0, torsionMoment - bending);
         var primaryPositive = action.M3KnM >= 0;
         var flexure = CheckFlexure(new FlexureCheckRequest(request.FlexuralCapacity,
-            primaryPositive ? primaryMoment : oppositeMoment,
-            primaryPositive ? -oppositeMoment : -primaryMoment));
+            primaryPositive ? primaryMoment : oppositeMoment > 0 ? oppositeMoment : null,
+            primaryPositive ? oppositeMoment > 0 ? -oppositeMoment : null : -primaryMoment));
         if (flexure.Execution == ExecutionState.RejectedInput)
             return ResultFactory.Rejected<TorsionCheckOutput>(TorsionCheckOperation, inputs, provenance,
                 [.. flexure.Diagnostics.Select(item => ForOperation(item, TorsionCheckOperation))]);

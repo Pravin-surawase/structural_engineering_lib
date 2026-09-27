@@ -39,7 +39,7 @@ public class Wp05Tests
         var valid = Detailing.CheckAnchorage(new(
             "IS456-WP05", "B1", "reinforcement:R1",
             [new("B1", "right-face", AnchorageLocation.SimpleSupport,
-                AnchorageDirection.IncreasingX, 0, 6000, 5800, "SUP-R", 5800, 5900,
+                AnchorageDirection.IncreasingX, 0, 6200, 5800, "SUP-R", 5800, 5900,
                 [], null, Development(), new(85_000_000, 100_000, ["action:ULS-right"]))]));
         var invalid = Detailing.CheckAnchorage(new(
             "IS456-WP05", "B1", "reinforcement:R1",
@@ -50,8 +50,41 @@ public class Wp05Tests
         var check = Assert.Single(valid.Outputs!.Checks);
         Assert.Equal(EngineeringState.Pass, valid.Engineering);
         Assert.Equal(850, check.MomentShearContributionMm, 12);
-        Assert.Equal(100, check.AnchorageBeyondSupportCentreMm, 12);
+        Assert.Equal(300, check.AnchorageBeyondSupportCentreMm, 12);
+        Assert.Equal(1150, check.AvailableForCriterionMm, 12);
         Assert.Equal("SUPPORT.FACE_REQUIRED", invalid.Diagnostics[0].Code);
+    }
+
+    [Theory]
+    [InlineData(true, 5, false)]
+    [InlineData(false, 5, false)]
+    [InlineData(true, 313.4114583333333, true)]
+    [InlineData(false, 313.4114583333333, true)]
+    public void SimpleSupportRequiresPhysicalExtension(bool left, double extension, bool passed)
+    {
+        var result = Detailing.CheckAnchorage(new("IS456-WP05", "B1", "r1",
+            [new("B1", "face", AnchorageLocation.SimpleSupport,
+                left ? AnchorageDirection.DecreasingX : AnchorageDirection.IncreasingX,
+                left ? 200 - extension : 0, left ? 5000 : 4800 + extension,
+                left ? 200 : 4800, "support", left ? 200 : 4800, left ? 0 : 5000,
+                [], null, Development(), new(90e6, 30e3, ["ULS"]))]));
+        Assert.Equal(passed ? EngineeringState.Pass : EngineeringState.Fail, result.Engineering);
+        Assert.Equal(3 * extension, result.Outputs!.Checks[0].AvailableForCriterionMm, 8);
+    }
+
+    [Theory]
+    [InlineData(6000, 600, EngineeringState.Pass)]
+    [InlineData(5900, 600, EngineeringState.NotEvaluated)]
+    [InlineData(6000, 700, EngineeringState.Fail)]
+    public void UnsplicedMemberRequiresContinuousPathsAndStationSteel(double end, double required, EngineeringState expected)
+    {
+        var result = Detailing.CheckLapsAndCurtailment(new("IS456-WP05", "B1", "S1", "ULS-r1", "r1",
+            0, 6000, 450, 25, 415, BarSurface.Deformed,
+            [Bar("B1", ReinforcementRole.BottomLongitudinal, 50, 450, end: end),
+             Bar("B2", ReinforcementRole.BottomLongitudinal, 250, 450, end: end)],
+            [new("mid", 3000, ReinforcementRole.BottomLongitudinal, required, 0, 100e3, "ULS-mid")], [], []));
+        Assert.Equal(ExecutionState.Completed, result.Execution);
+        Assert.Equal(expected, result.Engineering);
     }
 
     [Fact]

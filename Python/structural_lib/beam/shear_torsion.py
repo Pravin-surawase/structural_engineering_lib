@@ -462,7 +462,7 @@ def check_torsion(request: TorsionCheckRequest) -> OperationResult:
         code_data_revision_id=request.code_data_revision_id,
     )
     provenance = _provenance(
-        "is456-torsion-check-wp02-v1", request.code_data_revision_id
+        "is456-torsion-check-wp02-v2", request.code_data_revision_id
     )
     action = request.action
     if action.action_basis not in (
@@ -687,10 +687,10 @@ def check_torsion(request: TorsionCheckRequest) -> OperationResult:
     flexure_request = FlexureCheckRequest(
         request.flexural_capacity,
         positive_design_moment_knm=(
-            primary_moment_knm if primary_positive else opposite_moment_knm
+            primary_moment_knm if primary_positive else opposite_moment_knm or None
         ),
         negative_design_moment_knm=(
-            -opposite_moment_knm if primary_positive else -primary_moment_knm
+            (-opposite_moment_knm or None) if primary_positive else -primary_moment_knm
         ),
     )
     flexure_result = check_flexure(flexure_request)

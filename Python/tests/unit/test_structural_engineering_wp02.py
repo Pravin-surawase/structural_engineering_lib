@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 import pytest
 
 from structural_lib.beam import (
@@ -138,3 +140,27 @@ def test_open_link_is_completed_engineering_failure() -> None:
     assert result.execution == "completed"
     assert result.engineering == "fail"
     assert result.diagnostics[0].code == "TORSION.CLOSED_LINK_REQUIRED"
+
+
+@pytest.mark.parametrize("sign", (-1, 1))
+@pytest.mark.parametrize("torsion", (0, 5, 50))
+def test_opposite_tension_steel_is_checked_only_when_equivalent_moment_exists(
+    sign, torsion
+) -> None:
+    active = Face.BOTTOM if sign > 0 else Face.TOP
+    bars = tuple(
+        replace(bar, diameter_mm=8) if bar.face is not active else bar
+        for bar in _bars()
+    )
+    result = check_torsion(
+        TorsionCheckRequest(
+            "IS456-WP02",
+            replace(_action(), m3_knm=sign * 50, torsion_knm=torsion),
+            replace(_flexure(), bars=bars),
+            _link(),
+            ("TL", "TR", "BL", "BR"),
+        )
+    )
+    assert result.execution == "completed"
+    assert result.outputs["longitudinal_pass"] is (torsion < 50)
+    assert result.engineering == ("pass" if torsion < 50 else "fail")

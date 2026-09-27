@@ -305,6 +305,23 @@ public class Wp07Tests
         Assert.Equal("0.00", output.DirectSubtotalDecimal);
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void PackageRejectsMemberFromAnotherDetailOrTopology(bool detail)
+    {
+        var request = PackageRequest();
+        var member = detail ? request.MemberResult with { ReinforcementRevisionId = "different" }
+            : request.MemberResult with { TopologyRevisionId = "different" };
+        var result = CalculationPackageOperations.Create(request with
+        {
+            MemberResult = member,
+            MemberBinding = Binding("is456.beam_member.design/v1", "member-result-1", member)
+        });
+        Assert.Equal(ExecutionState.RejectedInput, result.Execution);
+        Assert.Equal("PACKAGE.IDENTITY_CONFLICT", result.Diagnostics[0].Code);
+    }
+
     [Fact]
     public void CalculationPackageIsReplayableAndRetainsHumanActions()
     {
@@ -656,14 +673,14 @@ public class Wp07Tests
             0.8333333333,
             []);
         var iteration = new EffectiveDepthIteration(
-            1, "reinforcement-r1", 450, [evidence.ResultId], true);
+            1, "detail-r1", 450, [evidence.ResultId], true);
         return new MemberDesignOutput(
             "project-basis-1",
             "profile-r1",
             "B1",
             "topology-r1",
             "actions-r1",
-            "reinforcement-r1",
+            "detail-r1",
             "scope-r1",
             [expectation],
             [new MemberLeafQualification(expectation, evidence, true, [])],

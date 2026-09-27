@@ -15,7 +15,8 @@
   "anchorage": {
     "bend_credit_mm": "4 bar diameters per 45 degrees",
     "maximum_bend_credit_bar_diameters": 16,
-    "simple_support_criterion": "Ld <= M1/V + Lo",
+    "simple_support_criterion": "Ld <= M1/V + Lo and straight extension from support face >= Ld/3",
+    "simple_support_extension_source": "IS 456:2000 clause 26.2.3.3(a); caller selects at least one-third of positive steel for simple members",
     "support_reference": "physical near face with support centre retained separately"
   },
   "splices": {

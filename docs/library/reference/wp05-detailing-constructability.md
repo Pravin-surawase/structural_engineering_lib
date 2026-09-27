@@ -53,6 +53,14 @@ simple support the operation evaluates `Ld <= M1/V + Lo` from a referenced
 moment resistance, support shear, source action rows, and the actual anchorage
 beyond the support centre.
 
+It also requires actual extension into the support of at least `Ld/3`
+(26.2.3.3a). The reported equivalent available length is
+`min(M1/V + Lo, 3 * actual straight extension)`, compared with the same `Ld`.
+Thus a large `M1/V` cannot excuse a bar ending only 5 mm inside a support.
+The caller must separately select the required fraction of bottom bars; the
+[complete beam case](../../../Python/examples/complete_member_workflow.py)
+extends all of them and checks both ends.
+
 ## Laps, mechanical splices, and curtailment
 
 AO12 receives actual bar marks and start/end stations together with a current
@@ -63,6 +71,11 @@ compression development length and 24 bar diameters. Bars larger than 36 mm do
 not qualify for a lap in this profile. Every splice also carries its percentage,
 stagger group, and prohibited-zone comparison. A mechanical splice qualifies
 only when both qualification and installation references are present.
+
+Empty splice/curtailment lists are a valid continuous-bar case only when every
+actual bar covers the requested member interval and each role supplies the
+station steel demand. Insufficient steel fails. An interior bar end still
+requires explicit splice/curtailment evidence and remains unevaluated.
 
 Each curtailment records its theoretical cutoff, actual end, direction,
 explicit required extension, continuing bar ids, and demand station. The
