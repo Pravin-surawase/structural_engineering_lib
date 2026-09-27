@@ -364,3 +364,122 @@ batches with the same table: exact function, body/owner read, signature/options,
 reproducer or independent benchmark, decision, change and verified outcome.
 Prioritize consequential calculation/data-flow defects over cosmetic rewrites;
 measure a representative batch before changing performance-sensitive code.
+
+## Function review: LIB-DEEP-REVIEW-002
+
+**Date:** 27 September 2026. **Starting source:** `3aae2c0e` (PR #1012).
+**Scope:** supplied rectangular-beam contracts, longitudinal-layer evaluation,
+support anchorage, and the canonical span/depth and Annex F serviceability path.
+
+### Calculation change intake
+
+The controlled source is IS 456:2000 through Amendment 5, SHA-256
+`964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264`.
+Printed pages 43, 44 and 47 (PDF pages 44, 45 and 48) were read and visually
+checked locally. Only normalized values, clause identifiers and derived
+benchmarks belong in this record; protected text and page images stay private.
+
+| Confirmed outcome to repair | Source / independent target | Public consumers and acceptance |
+|---|---|---|
+| Supplied compression bars can pass above the maximum area; the shared evaluator checks only the lower demand | Cl 26.5.1.1(b)/26.5.1.2: each longitudinal group is limited to `0.04*b*D`. A 500 × 500 mm section has a 10,000 mm² limit; eight 40 mm bars provide 10,053.096491 mm² | Shared evaluator, canonical supplied check, and gravity caller must report the excessive group and its limit; adequate existing cases retain PASS |
+| M45/M50 bond values exceed the source's M40-and-above row | Cl 26.2.1.1: 1.9 N/mm² for plain tension bars, 3.04 N/mm² for deformed bars. For 20 mm Fe500, `Ld=20*0.87*500/(4*3.04)=715.4605263157895 mm`; 680 mm is insufficient | Fix the shared lookup so exact anchorage and all development-length consumers use the same source value; retain public signatures and grade keys |
+| Simple-support acceptance consumes rounded Ld | Cl 26.2.1: 8 mm Fe415/M25 requires 322.36607142857144 mm; a straight 322 mm length must fail | Reuse the existing unrounded compliance owner; display/scheduling rounding remains separate |
+| The documented zero-enhancement support check rejects an otherwise accepted zero-shear action | The implemented conservative check compares full Ld with its support allowance and performs no division by shear | Admit zero shear without an automatic PASS; sufficient and insufficient anchorage must still be distinguished |
+
+Area benchmark tolerance is 1e-6 mm²; development-length arithmetic tolerance
+is 1e-9 mm. The code limit itself is not relaxed by those test tolerances.
+No new bending, bond, strain or support model is inferred. Full bend geometry,
+M1/V credit, negative-moment curtailment, lap qualification, service-load
+analysis, Level B/C deflection and the physical-member numerical owners remain
+outside this packet. Missing support evidence retains the documented HOLD
+policy, with individual completed checks still visible.
+
+### Function bodies, signatures and options inspected
+
+| Function / owner | What was read and traced | Decision |
+|---|---|---|
+| `BeamBarLayersV2.validate_layers`, `count`, `area_provided_mm2`, `to_service` | Immutable layer arrays, exact circular area, one spacing per layer gap and conversion to the service carrier | Retain exact geometry; no new area override |
+| `BeamSuppliedCheckSectionV2.validate_depth_basis` / `resolve_effective_depth` | Exactly one explicit depth or complete depth basis, shared resolver and section proportions | Retain; compare the result with the actual weighted bar centroid downstream |
+| `BeamSuppliedReinforcementV2.asv_mm2` / `to_service` | Separate transverse diameter/legs/spacing and declared bend flags; no generated replacement bars | Retain; flags declare bends, not verified bend geometry |
+| `BeamReinforcementSelectionV2.to_service` and `BeamSuppliedCheckRequestV2.validate_consumability` | Permitted diameters, layer limits, depth-basis consistency; selection objective is for the preliminary recommendation | Retain the explicit selection object and compatibility; no new options are needed for the fixes |
+| `check_supplied_beam_v2` / `_evaluate_shear` | Actual tension area feeds Table 19; actual stirrup area, spacing and grade feed capacity; longitudinal/shear outcomes form the envelope | Retain the existing HOLD policy for missing support evidence. Fixes belong in shared owners and must reach this aggregate |
+| `LongitudinalBarLayersV1`, `BeamReinforcementSelectionConstraintsV1`, `SuppliedBeamReinforcementV1` | Immutable dataclass validation, permitted diameter ordering and source references | Retain existing V1 signatures and V2 translation |
+| `_recommendation`, `_spacing_checks` | Recommendation remains separate from supplied evidence; actual horizontal/vertical clearances use declared bars and aggregate size | Retain; no speculative optimizer rewrite or speed claim |
+| `_layer_centres_from_face_mm`, `_weighted_centroid_from_face_mm`, `_layer_centroid_from_face_mm` | Each layer's physical centre and count-weighted centroid; independent design-depth comparison | Retain; exact physical dimensions are already consumed |
+| `evaluate_supplied_beam_reinforcement_v1` | Full body, every area/spacing/depth/support branch and resulting issue/status payload | Add maximum-area checks for both groups, including compression/hanger steel when required Asc is zero |
+| `_maximum_longitudinal_area_mm2`, `design_singly_reinforced`, `design_doubly_reinforced` | Extract the existing rectangular maximum-area formula into one pure owner consumed by required-design and supplied-bar checks | Same `0.04*b*D` calculation; no design formula or public signature change |
+| `get_bond_stress` | Entire lookup, grade selection, normalized table and plain/deformed factor; source row visually verified | Correct M45/M50 to the M40-and-above value; preserve exported dictionary keys |
+| `calculate_development_length_unrounded`, `calculate_development_length`, `evaluate_tension_bar_anchorage_v1` | Exact formula, scheduling rounding and straight-plus-bend equivalent value | Retain separation; corrected shared bond source reaches all three |
+| `check_anchorage_at_simple_support` and `beam_api` wrapper | Entire support calculation, zero M1/V assumption, rounding, zero shear and public aliases/defaults | Use exact Ld; accept zero shear while checking full anchorage; correct examples and explain the actual conservative allowance |
+| `BeamServiceabilityChecksV1` and its basis/span-depth/crack models | Separate service case, explicit factors and mean surface strain, references/hash, exposure limit and geometric domain | Retain explicit service-analysis ownership; do not infer SLS from ULS actions |
+| `BeamDesignInputV1.hold_unfrozen_serviceability`, `canonical_beam.design` service branch | Section/station/material consistency, elastic-strain ceiling, typed mapping into both pure checks | Retain; opaque/partial input stays rejected and generated-bar detailing cannot inherit unrelated SLS evidence |
+| `check_deflection_span_depth`, `check_crack_width` | Full Level A bodies, assumptions, formula, defaults, result and pass/fail calculation | Canonical typed caller supplies the required controls. Retain formulas; run independent decimal arithmetic below. Legacy direct-helper defaults are not the canonical service contract |
+| `gravity_workflow.run_gravity_workflow_v1` reinforcement branch | Shared evaluator call and reinforcement-result envelope propagation | New excessive-steel failure must reach the real component result; other gravity calculations were not re-reviewed |
+| `beam_audit` service-result branches / `derive_overall_status` | Explicit SLS result, service-case identity, provenance and incomplete-evidence aggregation | Retain; status precedence is an existing contract, not a new defect finding |
+
+### Reproducers and impact
+
+Before this packet, a valid 500 × 500 mm V2 request with four 20 mm tension bars,
+two layers of four 40 mm compression bars (80 mm vertical centre spacing),
+M25/Fe500, 100 kNm, 60 kN and complete support evidence returned **PASS**. The
+compression group exceeds its 10,000 mm² maximum. It now returns **FAIL**, with
+`BEAM_COMPRESSION_REINFORCEMENT_AREA_EXCESSIVE` in the canonical envelope.
+Both area payloads expose `maximum_mm2` and `is_within_maximum`; `is_adequate`
+requires both lower and upper limits. The same shared fix reaches gravity
+component checks. Missing support evidence still produces the documented HOLD.
+
+For 20 mm Fe500 deformed bars with 680 mm straight anchorage, the old M45/M50
+lookup returned **679.6875 / 647.321429 mm** required length and accepted both.
+The controlled source requires **715.460526 mm** for either grade; both now
+fail with a **35.460526 mm** shortfall. The correction also reaches existing
+footing/load-transfer and detailing consumers of the shared bond lookup.
+Their use of this owner is covered by focused regression checks, without
+claiming a new full review of those element families. The canonical V2 beam
+material contract remains M20–M40; the higher-grade correction is exercised
+through the expert anchorage APIs, not by widening the canonical domain.
+
+The support check previously accepted 322 mm when the exact required length
+was 322.366071 mm. It now fails. Its zero-shear branch previously returned an
+input failure with zero required length; it now performs the same conservative
+full-length check as a positive-shear case. Public call signatures remain intact.
+
+### Comparison with established library interfaces
+
+| Primary reference checked on 27 September 2026 | Comparison | Consequence here |
+|---|---|---|
+| [concreteproperties cracked/service stress APIs](https://concrete-properties.readthedocs.io/en/stable/user_guide/analysis.html#stress-analysis) | `calculate_cracked_stress(cracked_results, n, m)` consumes section analysis; `calculate_service_stress(moment_curvature_results, m, kappa=None)` consumes a moment-curvature result | Keep service-analysis and strength inputs separate. Our canonical service check consumes externally established mean strain and modifiers; it is not a replacement section-analysis engine |
+| [StructuralCodes EC2 crack functions](https://fib-international.github.io/structuralcodes/api/codes/ec2_2004/cracks.html#calculated-crack-width) | `wk(sr_max, eps_sm_eps_cm)` separates spacing and mean-strain difference; exposure/load-combination limits are separate functions | Preserve explicit geometry/strain/limit inputs and returned evidence. EC2 and IS 456 numerical formulas are not interchangeable |
+
+These are API/documentation comparisons, not executed cross-code benchmarks or
+proof of engineering equivalence. No additional runtime dependency is introduced.
+
+### Independent arithmetic and verification scope
+
+An **81-vector** run used Python's `decimal` at 50-digit precision through
+`beam.load` → `beam.check`, with separate expected arithmetic. It combines:
+
+- cantilever/simply-supported/continuous bases 7/20/26;
+- tension modification factors 0.5/1.0/1.2, compression factor 1.1;
+- `acr=40/60/90 mm` and mean strain `0/0.0005/0.001`;
+- `L=5000, d=500, h=550, x=150, cmin=40 mm`, with a 0.2 mm crack limit.
+
+The independently rearranged crack expression was
+`3*acr*epsilon_m*(h-x)/((h-x)+2*(acr-cmin))`; the L/d limit was
+`base*mf_tension*1.1`. Numeric values and both PASS/FAIL results were compared.
+Maximum crack-width error was **2.78e-17 mm** and maximum L/d-limit error
+**3.55e-15**, against a 1e-12 arithmetic tolerance. This tests the existing
+bounded formulas, not the derivation of service strain, Fig 4/5 factors, or
+the correctness of a caller's source analysis.
+
+Implementation regressions cover both maximum-area groups, a passing normal
+arrangement, source bond values, the unrounded support decision, zero shear,
+canonical FAIL propagation and the gravity consumer. The affected evidence
+also includes serviceability, public wrappers, generated detailing, footing
+load transfer and shared-owner consumers. Exact command results and required
+hosted checks belong in this packet's PR; no broad local suite is mandated.
+
+**Next deep review:** physical beam section/strain and reinforcement-layout
+owners, complete support/bend-fit and member/profile composition, followed by
+Level B/C serviceability and the remaining element families. This packet does
+not turn the simplified support-width screen into a complete anchorage or
+construction-acceptance model.

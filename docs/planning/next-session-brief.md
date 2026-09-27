@@ -38,8 +38,15 @@ records the beam source reads, signature/options decisions, SciPy comparison
 and the repaired longitudinal shear-basis binding. Whole-library deep review
 remains open; an inventory or a green suite does not establish that review.
 
-1. Continue the source-level review with supplied-bar anchorage/serviceability
-   and the physical beam calculation owners, then the remaining element families.
+[LIB-DEEP-REVIEW-002](library-usability-improvement.md#function-review-lib-deep-review-002)
+continues with supplied-bar contracts, maximum-area checks, source-verified
+M40-and-above bond stress, exact support development length and zero shear.
+The canonical Level A serviceability path was read and checked with 81
+independent decimal vectors; its service-analysis prerequisites remain explicit.
+
+1. Continue with the physical beam section/strain, support/bend-fit and
+   member/profile calculation owners, then Level B/C serviceability and the
+   remaining element families.
    Record each function's actual review depth and numerical evidence in the
    maintained review table; batch confirmed repairs in cohesive commits.
 2. Replay one representative sanitized member through a declared complete
