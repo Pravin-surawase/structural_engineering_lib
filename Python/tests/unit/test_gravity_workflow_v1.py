@@ -460,6 +460,35 @@ def test_inadequate_source_referenced_beam_bars_fail() -> None:
     )
 
 
+def test_excessive_supplied_compression_area_reaches_gravity_envelope() -> None:
+    reinforcement = _beam_reinforcement_basis(supplied=True).model_copy(
+        update={
+            "permitted_diameters_mm": (12, 16, 20, 32),
+            "maximum_layers": 3,
+            "supplied_compression_or_hanger": GravityLongitudinalBarLayersV1(
+                diameter_mm=32,
+                bars_per_layer=(3, 3, 3),
+                vertical_center_spacings_mm=(64, 64),
+            ),
+        }
+    )
+    request = _request(
+        _building_with_square_column_width(1600),
+        with_supported_component_bases=True,
+        beam_effective_depth_mm=459,
+        beam_reinforcement_basis=reinforcement,
+    )
+    result = run_gravity_workflow_v1(request)
+    beam_result = next(item for item in result.components if item.component_id == "B1")
+
+    assert beam_result.result_envelope["overall_status"] == "FAIL"
+    evaluation = beam_result.result["reinforcement_evaluation"]
+    assert evaluation["checks"]["compression_area"]["maximum_mm2"] == 6000.0
+    assert [issue["code"] for issue in evaluation["issues"]] == [
+        "BEAM_COMPRESSION_REINFORCEMENT_AREA_EXCESSIVE"
+    ]
+
+
 def test_component_failure_remains_fail_while_other_missing_basis_holds_aggregate() -> (
     None
 ):

@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 import pytest
 
 import structural_lib
@@ -102,6 +104,53 @@ def test_inadequate_supplied_area_fails_without_changing_required_demand() -> No
     assert result.status == "FAIL"
     assert result.ast_required_mm2 == 900.0
     assert result.issues[0]["code"] == ("BEAM_TENSION_REINFORCEMENT_AREA_INSUFFICIENT")
+
+
+@pytest.mark.parametrize("group", ["tension", "compression_or_hanger"])
+def test_supplied_group_cannot_exceed_gross_section_area_limit(group) -> None:
+    supplied = replace(
+        _supplied(),
+        **{
+            group: LongitudinalBarLayersV1(
+                diameter_mm=40,
+                bars_per_layer=(4, 4),
+                vertical_center_spacings_mm=(80,),
+            )
+        },
+    )
+    result = _evaluate(
+        b_mm=500.0,
+        cover_mm=40.0,
+        d_design_mm=392.0 if group == "tension" else 444.0,
+        support_width_start_mm=5000.0,
+        support_width_end_mm=5000.0,
+        selection=replace(
+            _selection(), permitted_diameters_mm=(12.0, 16.0, 20.0, 40.0)
+        ),
+        supplied=supplied,
+    )
+
+    assert result.status == "FAIL"
+    area_name = "tension_area" if group == "tension" else "compression_area"
+    check = result.checks[area_name]
+    assert check["provided_mm2"] == pytest.approx(10053.096491487338, rel=0, abs=1e-6)
+    assert check["maximum_mm2"] == 10000.0  # 4% of 500 * 500, using D, not d.
+    assert not check["is_within_maximum"]
+    assert not check["is_adequate"]
+    expected = (
+        "BEAM_TENSION_REINFORCEMENT_AREA_EXCESSIVE"
+        if group == "tension"
+        else "BEAM_COMPRESSION_REINFORCEMENT_AREA_EXCESSIVE"
+    )
+    assert [issue["code"] for issue in result.issues] == [expected]
+
+
+def test_adequate_supplied_area_reports_both_required_and_maximum_limits() -> None:
+    result = _evaluate()
+    assert result.status == "PASS"
+    assert result.checks["tension_area"]["required_mm2"] == 700.0
+    assert result.checks["tension_area"]["maximum_mm2"] == 6000.0
+    assert result.checks["compression_area"]["is_within_maximum"] is True
 
 
 def test_clear_spacing_failure_is_detected_from_center_spacing() -> None:

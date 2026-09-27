@@ -61,6 +61,15 @@ __all__ = [
 ]
 
 
+def _maximum_longitudinal_area_mm2(b_mm: float, D_mm: float) -> float:
+    """Maximum area per group for validated rectangular dimensions in mm.
+
+    IS 456:2000 Cl 26.5.1.1(b) (tension) and 26.5.1.2 (compression).
+    Required-design and supplied-bar checks use the same gross-section limit.
+    """
+    return 0.04 * b_mm * D_mm
+
+
 @clause("38.1", "38.1.1")
 def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     """
@@ -438,7 +447,7 @@ def design_singly_reinforced(
 
     is_safe = True
     # Check Maximum Steel (Cl. 26.5.1.2)
-    ast_max = 0.04 * b * d_total
+    ast_max = _maximum_longitudinal_area_mm2(b, d_total)
     if ast_final > ast_max:
         is_safe = False
         design_errors.append(E_FLEXURE_003)
@@ -624,7 +633,7 @@ def design_doubly_reinforced(
     ast_total = ast1 + ast2
 
     # 7. Check Max Steel (Cl. 26.5.1.2) - 4% bD
-    ast_max = 0.04 * b * d_total
+    ast_max = _maximum_longitudinal_area_mm2(b, d_total)
     is_safe = True
     design_errors = []
 
