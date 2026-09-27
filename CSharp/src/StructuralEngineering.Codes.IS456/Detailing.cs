@@ -417,7 +417,7 @@ public static class Detailing
     public static ResultEnvelope<ReinforcementArrangementCheckOutput> CheckReinforcementArrangement(ReinforcementArrangementCheckRequest request)
     {
         var inputs = Inputs(request);
-        var source = Source("reinforcement-arrangement-coordinate-check-wp05-v1", request.CodeDataRevisionId);
+        var source = Source("reinforcement-arrangement-coordinate-check-wp05-v2", request.CodeDataRevisionId);
         if (!Text(request.ProfileId) || !Text(request.MemberId) || !Text(request.StationId) || !Text(request.ReinforcementRevisionId) || request.CodeDataRevisionId != Is456Revision || !Positive(request.SectionWidthMm) || !Positive(request.SectionDepthMm) || !Positive(request.NominalCoverMm) || !Positive(request.MaximumAggregateSizeMm) || !Nonnegative(request.VerticalAlignmentToleranceMm)) return Rejected<ReinforcementArrangementCheckOutput>(ArrangementCheckOperation, inputs, source, "INPUT.INVALID", "The arrangement check requires complete identities, positive section/cover/aggregate geometry, and an alignment tolerance.", "request");
         var requiredFaces = new[] { ReinforcementRole.TopLongitudinal, ReinforcementRole.BottomLongitudinal };
         if (request.Bars is not { Count: > 0 } || request.Links is not { Count: > 0 } || request.RequiredRoles is not { Count: > 0 } || requiredFaces.Any(r => !request.RequiredRoles.Contains(r))) return Missing<ReinforcementArrangementCheckOutput>(ArrangementCheckOperation, inputs, source, "A full arrangement requires actual bars, links, and both top and bottom longitudinal roles.", "bars,links,required_roles");
@@ -506,15 +506,7 @@ public static class Detailing
                 radius <= bar.YFromTopMm &&
                 bar.YFromTopMm <= request.SectionDepthMm - radius;
             var enclosingLinkIds = request.Links
-                .Where(link =>
-                    bar.XFromLeftMm - radius >=
-                        link.LeftCentreXMm + link.DiameterMm / 2 - 1e-9 &&
-                    bar.XFromLeftMm + radius <=
-                        link.RightCentreXMm - link.DiameterMm / 2 + 1e-9 &&
-                    bar.YFromTopMm - radius >=
-                        link.TopCentreYMm + link.DiameterMm / 2 - 1e-9 &&
-                    bar.YFromTopMm + radius <=
-                        link.BottomCentreYMm - link.DiameterMm / 2 + 1e-9)
+                .Where(link => BarFitsLink(bar, link))
                 .Select(link => link.LinkId)
                 .ToArray();
             var passed = withinSection && enclosingLinkIds.Length > 0;
@@ -522,7 +514,7 @@ public static class Detailing
             {
                 Fail(
                     "BAR.NOT_ENCLOSED",
-                    "A longitudinal bar lies outside the section or is not enclosed by a supplied closed link cage.",
+                    "A longitudinal bar lies outside the section or the rounded inner surface of every supplied link cage.",
                     $"bars[{bar.BarId}]");
             }
             enclosure.Add(new(bar.BarId, withinSection, enclosingLinkIds, passed));
@@ -806,6 +798,28 @@ public static class Detailing
         b.StartStationMm < b.EndStationMm &&
         b.DesignStressNPerMm2 >= 0 &&
         b.BundleSize is >= 1 and <= 4;
+    private static bool BarFitsLink(LongitudinalBarPath bar, LinkCage link)
+    {
+        var radius = bar.DiameterMm / 2;
+        var linkRadius = link.DiameterMm / 2;
+        var left = link.LeftCentreXMm + linkRadius;
+        var right = link.RightCentreXMm - linkRadius;
+        var top = link.TopCentreYMm + linkRadius;
+        var bottom = link.BottomCentreYMm - linkRadius;
+        var x = bar.XFromLeftMm;
+        var y = bar.YFromTopMm;
+        if (x - radius < left - 1e-9 || x + radius > right + 1e-9 ||
+            y - radius < top - 1e-9 || y + radius > bottom + 1e-9)
+            return false;
+
+        var bendRadius = link.InternalBendRadiusMm;
+        var cornerDx = Math.Max(Math.Max(left + bendRadius - x, x - (right - bendRadius)), 0);
+        var cornerDy = Math.Max(Math.Max(top + bendRadius - y, y - (bottom - bendRadius)), 0);
+        if (cornerDx > 0 && cornerDy > 0)
+            return Distance(cornerDx, cornerDy) + radius <= bendRadius + 1e-9;
+        return true;
+    }
+
     private static bool Overlap(double a, double b, double c, double d) => Math.Max(a, c) < Math.Min(b, d);
     private static bool Text(string? value) => !string.IsNullOrWhiteSpace(value);
     private static bool Positive(double value) => Validation.Positive(value);

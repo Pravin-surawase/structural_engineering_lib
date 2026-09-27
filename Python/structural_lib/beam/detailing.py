@@ -1838,12 +1838,38 @@ def _point_to_segment_distance(
     return math.hypot(point_x - nearest_x, point_y - nearest_y)
 
 
+def _bar_fits_link(bar: LongitudinalBarPath, link: LinkCage) -> bool:
+    """Contain the whole bar circle inside the link's rounded inner surface."""
+
+    radius = bar.diameter_mm / 2
+    link_radius = link.diameter_mm / 2
+    left = link.left_centre_x_mm + link_radius
+    right = link.right_centre_x_mm - link_radius
+    top = link.top_centre_y_mm + link_radius
+    bottom = link.bottom_centre_y_mm - link_radius
+    x, y = bar.x_from_left_mm, bar.y_from_top_mm
+    if (
+        x - radius < left - 1e-9
+        or x + radius > right + 1e-9
+        or y - radius < top - 1e-9
+        or y + radius > bottom + 1e-9
+    ):
+        return False
+
+    bend_radius = link.internal_bend_radius_mm
+    corner_dx = max(left + bend_radius - x, x - (right - bend_radius), 0.0)
+    corner_dy = max(top + bend_radius - y, y - (bottom - bend_radius), 0.0)
+    if corner_dx > 0 and corner_dy > 0:
+        return math.hypot(corner_dx, corner_dy) + radius <= bend_radius + 1e-9
+    return True
+
+
 def check_reinforcement_arrangement(
     request: ReinforcementArrangementCheckRequest,
 ) -> OperationResult:
     inputs = effective_inputs(request=request)
     provenance = _provenance(
-        "reinforcement-arrangement-coordinate-check-wp05-v1",
+        "reinforcement-arrangement-coordinate-check-wp05-v2",
         request.code_data_revision_id,
     )
     if (
@@ -2039,22 +2065,13 @@ def check_reinforcement_arrangement(
             and radius <= bar.y_from_top_mm <= request.section_depth_mm - radius
         )
         enclosing_links = [
-            link.link_id
-            for link in request.links
-            if bar.x_from_left_mm - radius
-            >= link.left_centre_x_mm + link.diameter_mm / 2 - 1e-9
-            and bar.x_from_left_mm + radius
-            <= link.right_centre_x_mm - link.diameter_mm / 2 + 1e-9
-            and bar.y_from_top_mm - radius
-            >= link.top_centre_y_mm + link.diameter_mm / 2 - 1e-9
-            and bar.y_from_top_mm + radius
-            <= link.bottom_centre_y_mm - link.diameter_mm / 2 + 1e-9
+            link.link_id for link in request.links if _bar_fits_link(bar, link)
         ]
         passed = within_section and bool(enclosing_links)
         if not passed:
             fail(
                 "BAR.NOT_ENCLOSED",
-                "A longitudinal bar lies outside the section or is not enclosed by a supplied closed link cage.",
+                "A longitudinal bar lies outside the section or the rounded inner surface of every supplied link cage.",
                 f"bars[{bar.bar_id}]",
                 "Move the bar or revise the enclosing link cage.",
             )
