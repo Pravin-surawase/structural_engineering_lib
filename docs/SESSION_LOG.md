@@ -62,7 +62,7 @@ A second pattern is copied process/inventory text outliving its owning change.
 The successful checks did not prove every other boundary; raw test counts should
 not be added together or treated as engineering approval.
 
-### Maintenance findings and repairs
+### Completed
 
 - The startup brief still counted 90 endpoints after #1001 corrected the shared
   HTTP inventory to 92. Its separate decorator grep omitted configured routes
@@ -85,6 +85,10 @@ not be added together or treated as engineering approval.
 - Python dependency consistency passed. The maintained frontend selector uses
   Node 24.19.0 and npm 11.17.0. The one old pending tester-feedback item remains
   open because this session has no evidence that its cause was resolved.
+- Required documentation validation caught a renamed handoff heading; the
+  focused session check also exposed a completion heading and explanatory
+  recurrence bullet outside the retained reader contract. Restore the required
+  headings and keep explanatory text outside the indexed recurrence rows.
 
 ### Verification and scope
 
@@ -122,13 +126,18 @@ The compact workflow change and completed library milestone did not reach all
 maintained guides/handoffs; refresh those owners without restoring per-commit
 document churn. The plan used task-completion words outside the metadata enum;
 separate implementation completion from document lifecycle. The health wrapper
-kept an obsolete checker option; use the actual read-only contract.
+kept an obsolete checker option; use the actual read-only contract. The report
+rewrite also missed the existing session reader's heading/bullet schema;
+restore that schema and verify the actual reader before republishing. GitHub
+retains the failed and repaired run identities.
 
 ### Rework and recurrence
 
-- RR-004: occurrences=33; minutes=unknown. One material handoff/policy propagation event; refresh next-work documents at milestone changes and retain compact routine delivery.
+- RR-004: occurrences=34; minutes=unknown. One material handoff/policy propagation event and one report-format repair; refresh milestone state and preserve the maintained reader's headings and recurrence rows.
 - RR-050: occurrences=2; minutes=unknown. The partial-decorator inventory in #1001 and the retained startup copy are two confirmed occurrences; all default HTTP-count consumers should use the checked OpenAPI owner.
-- Counts above are events, not the number of files, mentions or historical PRs. New metadata/health findings are recorded here without inventing recurrence time.
+
+Counts above are events, not the number of files, mentions or historical PRs.
+New metadata/health findings are recorded here without inventing recurrence time.
 
 ### What next
 

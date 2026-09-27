@@ -6,7 +6,7 @@
 - Date: 2026-09-27
 - Focus: Reconcile completed library improvements, current handoff and compact maintenance guidance.
 - Completed: PRs #1000–#1010 merged; library usability milestone complete at 35acf5b1. Required CI passed on all 11 heads.
-- Recurrence controls: RR-004 x33 / unknown: Refresh handoff after a milestone changes next work. RR-050 x2 / unknown: Use the canonical OpenAPI inventory in every consumer.
+- Recurrence controls: RR-004 x34 / unknown: Refresh milestone handoff and preserve reader headings. RR-050 x2 / unknown: Use the canonical OpenAPI inventory in every consumer.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -98,7 +98,7 @@ now controls the next work; performance certification remains at project end.
 3. IMP-M3: WP10–WP12 deliver getter-only ETABS intake, copied-model reanalysis,
    migration, performance and release readiness.
 
-## Read for the selected task
+## Required Reading
 
 For Python work, start with the [API chooser](../reference/api-levels.md),
 [executable examples](../../Python/examples/README.md), and
