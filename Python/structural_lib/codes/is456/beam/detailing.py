@@ -74,7 +74,7 @@ __all__ = [
 # Constants
 # =============================================================================
 
-# Design bond stress (τbd) for deformed bars — IS 456 Table 5.3 (60% increase)
+# Design bond stress (τbd), IS 456 Cl 26.2.1.1 (60% increase for deformed bars).
 BOND_STRESS_DEFORMED = {
     15: 1.60,  # M15
     20: 1.92,  # M20
@@ -82,8 +82,8 @@ BOND_STRESS_DEFORMED = {
     30: 2.40,  # M30
     35: 2.72,  # M35
     40: 3.04,  # M40
-    45: 3.20,  # M45
-    50: 3.36,  # M50
+    45: 3.04,  # Retained grade key; the source row is M40 and above.
+    50: 3.04,  # Retained grade key; the source row is M40 and above.
 }
 
 # Standard bar diameters (mm)
@@ -233,7 +233,8 @@ def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
         τbd in N/mm²
 
     Notes:
-        - Uses nearest lower concrete grade from IS 456 Table 5.3.
+        - Uses the nearest lower grade from IS 456 Cl 26.2.1.1.
+        - M40 and above use the same bond stress; no extrapolation is made.
         - "deformed" bars use the table value; "plain" bars reduce τbd by 1.6.
     """
     fck = require_finite_real("fck", fck)
@@ -838,7 +839,8 @@ def check_anchorage_at_simple_support(
         bar_dia: Bottom bar diameter (mm).
         fck: Concrete strength (N/mm²).
         fy: Steel yield strength (N/mm²).
-        vu_kn: Factored shear force at support (kN).
+        vu_kn: Non-negative factored shear at support (kN). This conservative
+            check takes no M1/V credit, including when shear is zero.
         support_width: Width of support (mm).
         cover: Clear cover at support (mm).
         bar_type: "plain" or "deformed".
@@ -853,7 +855,7 @@ def check_anchorage_at_simple_support(
         ...     support_width=230, cover=40
         ... )
         >>> result.is_adequate
-        True
+        False
     """
     errors: list[str] = []
     warnings: list[str] = []
@@ -870,8 +872,8 @@ def check_anchorage_at_simple_support(
             errors=errors,
         )
 
-    if vu_kn <= 0:
-        errors.append(f"Shear force must be > 0, got {vu_kn} kN")
+    if vu_kn < 0:
+        errors.append(f"Shear force must be >= 0, got {vu_kn} kN")
         return AnchorageCheckResult(
             is_adequate=False,
             ld_required=0.0,
@@ -882,7 +884,7 @@ def check_anchorage_at_simple_support(
         )
 
     # Calculate development length required
-    ld_required = calculate_development_length(bar_dia, fck, fy, bar_type)
+    ld_required = calculate_development_length_unrounded(bar_dia, fck, fy, bar_type)
 
     # Calculate Lo (anchorage beyond center of support)
     if has_standard_bend:

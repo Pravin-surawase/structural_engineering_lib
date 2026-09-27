@@ -1269,20 +1269,18 @@ def check_anchorage_at_simple_support(
 ) -> detailing.AnchorageCheckResult:
     """Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.
 
-    At simple supports, the positive moment tension reinforcement must have
-    sufficient anchorage beyond the face of the support. This function checks
-    whether the provided development length is adequate.
-
-    The available anchorage length includes:
-    - Standard 90° bend: provides 8 times bar diameter
-    - Straight extension beyond support center
-    - Support width contribution
+    This conservative support-width screen compares unrounded development
+    length with the maintained allowance: max(8 * diameter, half support width)
+    for a declared standard bend, or half support width minus cover for a
+    straight bar. It takes no M1/V credit and does not reconstruct bend geometry,
+    curtailment, or the complete member anchorage arrangement.
 
     Args:
         bar_dia_mm: Bottom bar diameter in mm.
         fck_nmm2: Concrete strength in N/mm².
         fy_nmm2: Steel yield strength in N/mm².
-        vu_kn: Factored shear force at support in kN.
+        vu_kn: Non-negative factored shear magnitude in kN. Zero is accepted;
+            it does not waive the full development-length check.
         support_width_mm: Width of support in mm.
         cover_mm: Clear cover at support in mm (default 40mm).
         bar_type: "plain" or "deformed" (default "deformed").
@@ -1300,7 +1298,7 @@ def check_anchorage_at_simple_support(
         ...     support_width_mm=300
         ... )
         >>> result.is_adequate
-        True
+        False
 
     References:
         IS 456:2000 Cl 26.2.3.3: Anchorage of bars at simple supports
