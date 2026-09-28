@@ -1,5 +1,24 @@
 # Next Session Briefing
 
+## Library completion planning — 28 September
+
+The owner selected **the library**, **one implementation stream**, and **weekly
+owner review** for a 50-day completion horizon. The
+[completion plan](library-usability-improvement.md#50-day-library-completion-plan)
+and [WBS schedule](library-50-day-plan.json) cover 28 September–16 November 2026.
+They preserve all 13 existing bounded family journeys and common Python/.NET
+beam semantics; new application, live ETABS and solver work is outside this
+schedule. Capacity/reviewer availability and the proposed SLS addition remain
+explicit baseline decisions, not invented commitments or acceptance.
+
+Next: WBS 1.1/1.3 reconciles the remaining queue and requirement-to-evidence
+matrix for the first weekly review on 2 October. Then select the exact authorized
+engineering packet. Do not restart the two complete member milestones: GitHub
+readback confirms #1016 and #1018 merged; this planning intake fetched clean
+Mac main at `96170d81cd94d323b56f0914ed0214d1bff967b8` equal to `origin/main`.
+No other-device writer or installed evidence is transferred. The planning PR
+owns its own final checks and integration facts.
+
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->

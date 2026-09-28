@@ -1,0 +1,850 @@
+{
+  "schema_version": 1,
+  "task_id": "LIB-PM-50DAY-001",
+  "updated": "2026-09-28",
+  "status": "proposed_conditional_baseline",
+  "forecast": "AMBER",
+  "authority": "docs/planning/library-usability-improvement.md#50-day-library-completion-plan",
+  "confirmed_owner_direction": {
+    "deliverable": "the library",
+    "implementation_streams": 1,
+    "owner_review": "weekly"
+  },
+  "calendar": {
+    "start": "2026-09-28",
+    "finish": "2026-11-16",
+    "timezone": "Asia/Kolkata",
+    "inclusive_calendar_days": 50,
+    "weekdays_before_leave": 36,
+    "focused_hours_per_weekday_assumption": 6,
+    "gross_hours_assumption": 216,
+    "planned_hours": 168,
+    "reserve_hours": 48,
+    "capacity_confirmed": false,
+    "weekend_work_assumed": false,
+    "holidays_and_leave": "unknown",
+    "owner_review_weekday": "Friday",
+    "owner_review_minutes_assumption": 45,
+    "review_time_of_day": "unconfirmed"
+  },
+  "estimate_totals": {
+    "optimistic": 112,
+    "base": 168,
+    "pessimistic": 300
+  },
+  "baseline": {
+    "source_commit": "96170d81cd94d323b56f0914ed0214d1bff967b8",
+    "remote": "git@github.com:Pravin-surawase/structural_engineering_lib.git",
+    "fetch_date": "2026-09-28",
+    "current_at_intake": "clean main equal to fetched origin/main",
+    "git_state_remote_freshness_field": "NOT_CHECKED; successful explicit git fetch and PR readback provide the separate observation",
+    "github_merged_prs": [
+      {
+        "number": 1016,
+        "merge_commit": "0793a34f2bbefd6253a3b608c1c4226fdf56fc84"
+      },
+      {
+        "number": 1018,
+        "merge_commit": "96170d81cd94d323b56f0914ed0214d1bff967b8"
+      }
+    ],
+    "open_pr_numbers_at_intake": [
+      1017,
+      979,
+      816,
+      717,
+      716,
+      715,
+      714,
+      713,
+      684,
+      683
+    ],
+    "open_non_dependency_prs_at_intake": 0,
+    "open_issue_search_results_at_intake": 0,
+    "other_device_state": "not inspected",
+    "full_current_numerical_audit_performed": false,
+    "fresh_test_suite_run_for_planning": false,
+    "source_paths": [
+      "docs/reference/api-classification.json",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/multilayer-member-workflow.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/xll-product/wp09-postmortem.md",
+      "docs/verification/rework-recurrence-index.json",
+      "docs/planning/xll-product/library-definition/pf0/charter.md",
+      "docs/planning/bounded-release-candidate-plan.md",
+      "docs/verification/is456-public-distribution-permission.json",
+      "Python/pyproject.toml"
+    ]
+  },
+  "scope": {
+    "canonical_journeys": [
+      "is456.beam.design/v1",
+      "is456.torsion.design/v1",
+      "is456.column.supplied-steel-check/v1",
+      "is456.slab.one-way/v1",
+      "is456.slab.continuous-one-way/v1",
+      "is456.slab.two-way/v1",
+      "is456.wall.braced-axial/v1",
+      "is456.staircase.straight-flight/v1",
+      "is456.deep-beam.simply-supported/v1",
+      "is456.flat-slab.regular-interior/v1",
+      "is456.isolated-footing.concentric/v1",
+      "is456.combined-footing.symmetric/v1",
+      "is456.strap-footing.property-line/v1"
+    ],
+    "facade_module_count": 11,
+    "advanced_export_count": 25,
+    "stable_export_count": 0,
+    "native_boundary": "existing Python/.NET common beam semantics and maintained callers; no whole-family .NET expansion",
+    "proposed_addition": "source-backed calculated service stress/crack inputs and short/long-term deflection for two admitted rectangular member cases and frozen load history",
+    "frozen": false,
+    "publication_authorized": false,
+    "professional_approval_granted": false
+  },
+  "roles": {
+    "owner": "Pravin / repository owner",
+    "delivery_lead": "Codex in active authorized sessions",
+    "implementer": "one implementation stream",
+    "qualified_reviewer": null
+  },
+  "external_review": {
+    "status": "unassigned",
+    "booking_due": "2026-10-02",
+    "target_start": "2026-11-02",
+    "target_finish": "2026-11-06",
+    "estimated_hours_min": 12,
+    "estimated_hours_max": 20,
+    "separate_from_implementation_capacity": true,
+    "fee_budget": null
+  },
+  "decisions": [
+    {
+      "id": "D01",
+      "status": "pending",
+      "owner": "repository owner",
+      "due": "2026-10-02",
+      "question": "Freeze advertised supported subset and select the bounded SLS addition"
+    },
+    {
+      "id": "D02",
+      "status": "pending",
+      "owner": "repository owner",
+      "due": "2026-10-02",
+      "question": "Confirm actual hours, leave/holidays and weekly review slot"
+    },
+    {
+      "id": "D03",
+      "status": "pending",
+      "owner": "repository owner",
+      "due": "2026-10-02",
+      "question": "Name and book qualified reviewer; set fee and compute ceiling"
+    },
+    {
+      "id": "D04",
+      "status": "pending",
+      "owner": "repository owner",
+      "due": "2026-10-02",
+      "question": "Confirm release-candidate finish, maturity and version policy"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "M0",
+      "date": "2026-10-02",
+      "title": "Baseline agreed",
+      "depends_on": "1.2",
+      "status": "proposed"
+    },
+    {
+      "id": "M1",
+      "date": "2026-10-09",
+      "title": "First SLS result",
+      "depends_on": "2.3",
+      "status": "proposed"
+    },
+    {
+      "id": "M2",
+      "date": "2026-10-16",
+      "title": "Beam journey closed",
+      "depends_on": "2.5",
+      "status": "proposed"
+    },
+    {
+      "id": "M3",
+      "date": "2026-10-23",
+      "title": "Family scope closed",
+      "depends_on": "3.4",
+      "status": "proposed"
+    },
+    {
+      "id": "M4",
+      "date": "2026-10-30",
+      "title": "Feature/API freeze",
+      "depends_on": "4.3",
+      "status": "proposed"
+    },
+    {
+      "id": "M5",
+      "date": "2026-11-06",
+      "title": "Exact candidate reviewed",
+      "depends_on": "5.3",
+      "status": "proposed"
+    },
+    {
+      "id": "M6",
+      "date": "2026-11-13",
+      "title": "Delivery decision",
+      "depends_on": "6.2",
+      "status": "proposed"
+    },
+    {
+      "id": "M7",
+      "date": "2026-11-16",
+      "title": "Finish",
+      "depends_on": "6.3",
+      "status": "proposed"
+    }
+  ],
+  "work_packages": [
+    {
+      "id": "1.1",
+      "title": "Reconcile accepted work and remaining queue",
+      "status": "proposed",
+      "start": "2026-09-28",
+      "finish": "2026-09-29",
+      "effort_hours": {
+        "optimistic": 6,
+        "base": 8,
+        "pessimistic": 12
+      },
+      "dependencies": [],
+      "responsible_role": "delivery_lead",
+      "deliverable": "Current source/PR baseline, remaining work and recurrence lessons",
+      "acceptance": "No completed milestone is reopened; every remaining item has an outcome owner",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-09-28",
+          "hours": 6
+        },
+        {
+          "date": "2026-09-29",
+          "hours": 2
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "1.2",
+      "title": "Freeze scope, resources and acceptance decisions",
+      "status": "proposed",
+      "start": "2026-10-02",
+      "finish": "2026-10-02",
+      "effort_hours": {
+        "optimistic": 2,
+        "base": 4,
+        "pessimistic": 6
+      },
+      "dependencies": [
+        "1.3"
+      ],
+      "responsible_role": "owner",
+      "deliverable": "D01-D04 decisions, calendar, reviewer and supported subset",
+      "acceptance": "Actual owner decision and reviewer disposition recorded; unresolved decisions remain pending",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-02",
+          "hours": 4
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "1.3",
+      "title": "Map advertised promises to requirements and evidence",
+      "status": "proposed",
+      "start": "2026-09-29",
+      "finish": "2026-10-01",
+      "effort_hours": {
+        "optimistic": 8,
+        "base": 12,
+        "pessimistic": 20
+      },
+      "dependencies": [
+        "1.1"
+      ],
+      "responsible_role": "delivery_lead",
+      "deliverable": "Row-level coverage of 13 journeys, 25 advanced exports, compatibility and common native operations",
+      "acceptance": "Each promise has source, case, code owner, independent evidence, caller, disposition and remaining WBS",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-09-29",
+          "hours": 4
+        },
+        {
+          "date": "2026-09-30",
+          "hours": 6
+        },
+        {
+          "date": "2026-10-01",
+          "hours": 2
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "2.1",
+      "title": "Trace complete beam journeys and callers",
+      "status": "proposed",
+      "start": "2026-10-05",
+      "finish": "2026-10-05",
+      "effort_hours": {
+        "optimistic": 4,
+        "base": 6,
+        "pessimistic": 10
+      },
+      "dependencies": [
+        "1.2"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Bounded beam blocker and affected-caller map",
+      "acceptance": "Main-process defects have reproducer, actual owner and outcome-changing acceptance",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-05",
+          "hours": 6
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "2.2",
+      "title": "Freeze bounded SLS method and independent reference",
+      "status": "proposed",
+      "start": "2026-10-06",
+      "finish": "2026-10-06",
+      "effort_hours": {
+        "optimistic": 4,
+        "base": 6,
+        "pessimistic": 12
+      },
+      "dependencies": [
+        "2.1"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Source, load history, method, supported cases and tolerances",
+      "acceptance": "Independent expected results exist before production implementation",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-06",
+          "hours": 6
+        }
+      ],
+      "scope_gate": "D01 approval of bounded SLS addition",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "2.3",
+      "title": "Calculate selected service stresses, crack inputs and short-term result",
+      "status": "proposed",
+      "start": "2026-10-07",
+      "finish": "2026-10-09",
+      "effort_hours": {
+        "optimistic": 12,
+        "base": 18,
+        "pessimistic": 30
+      },
+      "dependencies": [
+        "2.2"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Typed calculated SLS path for frozen member cases",
+      "acceptance": "Independent comparisons and actual affected Python/.NET callers agree",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-07",
+          "hours": 6
+        },
+        {
+          "date": "2026-10-08",
+          "hours": 6
+        },
+        {
+          "date": "2026-10-09",
+          "hours": 6
+        }
+      ],
+      "scope_gate": "D01 approval of bounded SLS addition",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "2.4",
+      "title": "Calculate bounded long-term deflection",
+      "status": "proposed",
+      "start": "2026-10-12",
+      "finish": "2026-10-14",
+      "effort_hours": {
+        "optimistic": 12,
+        "base": 18,
+        "pessimistic": 36
+      },
+      "dependencies": [
+        "2.3"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Selected long-term method with explicit load-history/material assumptions",
+      "acceptance": "Independent result agrees; unsupported histories do not become PASS",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-12",
+          "hours": 6
+        },
+        {
+          "date": "2026-10-13",
+          "hours": 6
+        },
+        {
+          "date": "2026-10-14",
+          "hours": 6
+        }
+      ],
+      "scope_gate": "D01 approval of bounded SLS addition",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "2.5",
+      "title": "Integrate complete beam through BBS and report",
+      "status": "proposed",
+      "start": "2026-10-15",
+      "finish": "2026-10-15",
+      "effort_hours": {
+        "optimistic": 4,
+        "base": 6,
+        "pessimistic": 10
+      },
+      "dependencies": [
+        "2.4"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Single-layer and multilayer complete supported journeys",
+      "acceptance": "Required checks and identities survive all callers and artifacts",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-15",
+          "hours": 6
+        }
+      ],
+      "scope_gate": "D01 approval of bounded SLS addition",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "3.1",
+      "title": "Close existing column and isolated-footing outcomes",
+      "status": "proposed",
+      "start": "2026-10-16",
+      "finish": "2026-10-16",
+      "effort_hours": {
+        "optimistic": 4,
+        "base": 6,
+        "pessimistic": 14
+      },
+      "dependencies": [
+        "1.2"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Supported-source/benchmark reconciliation and confirmed blocker repairs",
+      "acceptance": "Existing supported cases retain independently evidenced outcomes",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-16",
+          "hours": 6
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "3.2",
+      "title": "Close solid-slab and torsion outcomes",
+      "status": "proposed",
+      "start": "2026-10-19",
+      "finish": "2026-10-20",
+      "effort_hours": {
+        "optimistic": 6,
+        "base": 8,
+        "pessimistic": 16
+      },
+      "dependencies": [
+        "1.2"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Three solid-slab journeys and torsion composition",
+      "acceptance": "Public support/sign/unit assumptions agree with relevant independent evidence",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-19",
+          "hours": 6
+        },
+        {
+          "date": "2026-10-20",
+          "hours": 2
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "3.3",
+      "title": "Close existing six extended-family outcomes",
+      "status": "proposed",
+      "start": "2026-10-20",
+      "finish": "2026-10-22",
+      "effort_hours": {
+        "optimistic": 8,
+        "base": 12,
+        "pessimistic": 24
+      },
+      "dependencies": [
+        "1.2"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Wall, stair, deep, flat, combined and strap accepted/held cases",
+      "acceptance": "No promoted case has an unresolved outcome-changing blocker; held scope stays held",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-20",
+          "hours": 4
+        },
+        {
+          "date": "2026-10-21",
+          "hours": 6
+        },
+        {
+          "date": "2026-10-22",
+          "hours": 2
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "3.4",
+      "title": "Reconcile existing IS13920 and cross-family claim states",
+      "status": "proposed",
+      "start": "2026-10-23",
+      "finish": "2026-10-23",
+      "effort_hours": {
+        "optimistic": 2,
+        "base": 4,
+        "pessimistic": 8
+      },
+      "dependencies": [
+        "3.1",
+        "3.2",
+        "3.3"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Bounded code profile and provenance/status decisions",
+      "acceptance": "Software completion, engineering disposition, independent review and approval stay distinct",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-23",
+          "hours": 4
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "4.1",
+      "title": "Close API compatibility and affected callers",
+      "status": "proposed",
+      "start": "2026-10-26",
+      "finish": "2026-10-27",
+      "effort_hours": {
+        "optimistic": 6,
+        "base": 8,
+        "pessimistic": 14
+      },
+      "dependencies": [
+        "2.5",
+        "3.4"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Maintained public contracts, native/transport callers and migration map",
+      "acceptance": "No unapproved compatibility break or stale caller assumption",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-26",
+          "hours": 6
+        },
+        {
+          "date": "2026-10-27",
+          "hours": 2
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "4.2",
+      "title": "Finish executable reference and developer onboarding",
+      "status": "proposed",
+      "start": "2026-10-27",
+      "finish": "2026-10-28",
+      "effort_hours": {
+        "optimistic": 4,
+        "base": 6,
+        "pessimistic": 10
+      },
+      "dependencies": [
+        "4.1"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Promoted examples, typed documentation and quickstart",
+      "acceptance": "Examples execute and strict docs match recommended live APIs",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-27",
+          "hours": 4
+        },
+        {
+          "date": "2026-10-28",
+          "hours": 2
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "4.3",
+      "title": "Freeze candidate and review dossier",
+      "status": "proposed",
+      "start": "2026-10-29",
+      "finish": "2026-10-29",
+      "effort_hours": {
+        "optimistic": 4,
+        "base": 6,
+        "pessimistic": 10
+      },
+      "dependencies": [
+        "4.2"
+      ],
+      "responsible_role": "delivery_lead",
+      "deliverable": "Exact supported subset, version, source revision and review packet",
+      "acceptance": "Complete reviewable artifact instructions and no unresolved scope ambiguity",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-10-29",
+          "hours": 6
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "5.1",
+      "title": "Qualify exact artifacts and supported runtimes",
+      "status": "proposed",
+      "start": "2026-11-02",
+      "finish": "2026-11-03",
+      "effort_hours": {
+        "optimistic": 8,
+        "base": 12,
+        "pessimistic": 20
+      },
+      "dependencies": [
+        "4.3"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Wheel/sdist and applicable native artifacts, release gates and isolated install evidence",
+      "acceptance": "All 13 recipes and both members reproduce from the exact installed candidate; hashes and origins verified",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-11-02",
+          "hours": 6
+        },
+        {
+          "date": "2026-11-03",
+          "hours": 6
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "5.2",
+      "title": "Measure representative library resources and performance",
+      "status": "proposed",
+      "start": "2026-11-04",
+      "finish": "2026-11-04",
+      "effort_hours": {
+        "optimistic": 2,
+        "base": 4,
+        "pessimistic": 8
+      },
+      "dependencies": [
+        "5.1"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Host/workload-bound measurements against budgets frozen at baseline",
+      "acceptance": "Reproducible timing/resource results without inferred ETABS PF9 certification",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-11-04",
+          "hours": 4
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "5.3",
+      "title": "Resolve qualified review and candidate disposition",
+      "status": "proposed",
+      "start": "2026-11-05",
+      "finish": "2026-11-06",
+      "effort_hours": {
+        "optimistic": 6,
+        "base": 8,
+        "pessimistic": 16
+      },
+      "dependencies": [
+        "5.1",
+        "5.2"
+      ],
+      "responsible_role": "delivery_lead",
+      "deliverable": "Reviewer receipt and blocker disposition for exact candidate",
+      "acceptance": "Named qualified reviewer accepts promised scope; outcome-changing repairs are re-reviewed",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-11-05",
+          "hours": 6
+        },
+        {
+          "date": "2026-11-06",
+          "hours": 2
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "6.1",
+      "title": "Developer UAT and upgrade/maintenance handover",
+      "status": "proposed",
+      "start": "2026-11-09",
+      "finish": "2026-11-10",
+      "effort_hours": {
+        "optimistic": 6,
+        "base": 8,
+        "pessimistic": 12
+      },
+      "dependencies": [
+        "5.3"
+      ],
+      "responsible_role": "implementer",
+      "deliverable": "Consumer UAT, upgrade/rollback rehearsal and maintenance packet",
+      "acceptance": "A retained consumer can install/run/inspect/upgrade and recover previous known-good artifact",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-11-09",
+          "hours": 6
+        },
+        {
+          "date": "2026-11-10",
+          "hours": 2
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "6.2",
+      "title": "Publish only if authorized or hand over unpublished RC",
+      "status": "proposed",
+      "start": "2026-11-11",
+      "finish": "2026-11-11",
+      "effort_hours": {
+        "optimistic": 2,
+        "base": 4,
+        "pessimistic": 6
+      },
+      "dependencies": [
+        "6.1"
+      ],
+      "responsible_role": "delivery_lead",
+      "deliverable": "Exact authorized release evidence or explicit unpublished RC record",
+      "acceptance": "Publication readback is bound to approved bytes; no authorization means no tag/upload/release",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-11-11",
+          "hours": 4
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    },
+    {
+      "id": "6.3",
+      "title": "Record final acceptance and residual backlog",
+      "status": "proposed",
+      "start": "2026-11-16",
+      "finish": "2026-11-16",
+      "effort_hours": {
+        "optimistic": 2,
+        "base": 4,
+        "pessimistic": 6
+      },
+      "dependencies": [
+        "6.2"
+      ],
+      "responsible_role": "owner",
+      "deliverable": "G1-G5 disposition, known limitations and residual owners",
+      "acceptance": "Owner acceptance or exact unmet criterion and revised forecast recorded",
+      "evidence_links": [],
+      "daily_allocation": [
+        {
+          "date": "2026-11-16",
+          "hours": 4
+        }
+      ],
+      "scope_gate": "D01-D04 baseline decisions",
+      "estimate_basis": "Uncalibrated planning allowance; accepted evidence reuse plus bounded main-process repair, not measured velocity"
+    }
+  ],
+  "tracking": {
+    "live_task_state": "docs/TASKS.md",
+    "implementation_evidence": "accepted PRs and maintained source/reference registries",
+    "actual_hours": null,
+    "overall_completion_percent": null,
+    "scheduled_automation_created": false,
+    "scope_changes_require": "Explicit owner decision recorded against a concrete impact assessment",
+    "no_silent_descope": true
+  }
+}

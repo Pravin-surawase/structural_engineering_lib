@@ -1,6 +1,6 @@
 {
   "_comment": "Canonical document registry - prevents duplication by mapping topics to single source of truth",
-  "_updated": "2026-04-06",
+  "_updated": "2026-09-28",
   "_usage": "Before creating a new document, check if a canonical doc exists for that topic",
 
   "topics": {
@@ -98,6 +98,11 @@
       "canonical": "docs/planning/library-expansion-blueprint-v5.md",
       "description": "Multi-code multi-element expansion master plan (IS 456 + ACI 318 + EC2)",
       "also_see": ["docs/_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md"]
+    },
+    "library-completion": {
+      "canonical": "docs/planning/library-usability-improvement.md",
+      "description": "Library-only 50-day completion goals, scope, WBS, milestones, acceptance and recovery controls; preserves prior implementation evidence",
+      "also_see": ["docs/planning/library-50-day-plan.json", "docs/TASKS.md", "docs/planning/next-session-brief.md"]
     },
     "commit-conventions": {
       "canonical": "docs/contributing/commit-message-conventions.md",

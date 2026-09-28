@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-28 — Complete multilayer beam implemented with independent per-bar evidence; live ETABS work remains held
+**Updated:** 2026-09-28 — Library-only 50-day completion plan prepared; one implementation stream and weekly owner review
 
 ---
 
@@ -16,8 +16,17 @@
 
 ## Python Library Improvement
 
+**Current planning priority:** [50-day library completion plan](planning/library-usability-improvement.md#50-day-library-completion-plan),
+28 September–16 November. The owner selected the library only, one implementation
+stream and weekly review. The proposed 168-hour WBS plus 48-hour reserve needs
+scope/capacity/reviewer decisions at M0 on 2 October. Start with WBS 1.1/1.3;
+the proposed serviceability addition is not yet an implementation commitment.
+Existing accepted capabilities and the held application/solver tracks retain
+their boundaries. This priority takes precedence over older roadmap rows below.
+
 | ID | Task | Priority | Status | Exit condition |
 |---|---|---|---|---|
+| LIB-PM-50DAY-001 | Audit rework and create a finite library completion plan | P0 | Plan prepared; delivery baseline proposed | [Goals, WBS, milestones, resources, risks, decisions and acceptance](planning/library-usability-improvement.md#50-day-library-completion-plan); D01–D04 at the first weekly review |
 | PY-LIB-IMPROVE-001 | Reliable design → detailing → BBS/report/DXF across public Python and serialized CLI paths | P0 | Done: PR #1002 merged at d0722155 | Required hosted run 36261661398 passed; reviewed and merged trees match. [Acceptance](planning/python-library-workflow-improvement-plan.md) |
 | PY-LIB-IMPROVE-002 | Preserve imported depth and compact milestone delivery | P0 | Done: six commits merged in PR #1003 at e900c9b1 | Required run 36265467619 passed; merged tree matches review. Imported depth and compact defaults verified. [Acceptance](planning/python-library-workflow-improvement-plan.md#milestone-2--preserve-imported-effective-depth) |
 | COMPACT-CLOSEOUT-001 | Close owner-expanded milestones without fictitious CI runs | P1 | Done: PR #1004 | Superseded pre-PR pushes retain history without a nonexistent verdict. Routine delivery was then simplified in #1005. [Acceptance](planning/python-library-workflow-improvement-plan.md#follow-up--close-owner-expanded-milestones) |
@@ -26,13 +35,15 @@
 | LIB-DEEP-REVIEW-001 | Read beam function bodies, compare APIs/numerics and repair shear-basis composition | P0 | Done: PR #1012 | [Function-by-function evidence and remaining scope](planning/library-usability-improvement.md#function-review-lib-deep-review-001); exact final checks in the packet PR |
 | LIB-DEEP-REVIEW-002 | Review supplied bars, source bond/anchorage and bounded serviceability | P0 | Done: PR #1013 | [Function reads, source benchmarks and corrections](planning/library-usability-improvement.md#function-review-lib-deep-review-002); final verification in the packet PR |
 | LIB-DEEP-REVIEW-003 | Correct physical group limits, cross-face gaps and rounded-link enclosure | P0 | Done: PR #1014 | [Exact function reads, reproducers and independent comparison](planning/library-usability-improvement.md#function-review-lib-deep-review-003); final verification in the packet PR |
-| LIB-MEMBER-WORKFLOW-001 | Complete one representative public beam workflow through checked reinforcement, BBS and report | P0 | Implemented: [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016) owns hosted closeout | [19 required checks, 39 physical bars, independent calculations, installed-wheel replay and 1.240 s full-process median](planning/library-usability-improvement.md#lib-member-workflow-001-frozen-acceptance-case) |
-| LIB-MEMBER-WORKFLOW-002 | Complete a multilayer beam with per-bar strain/stress equilibrium | P0 | Implemented; milestone PR owns final hosted closeout | [Frozen plan and acceptance](planning/multilayer-member-workflow.md): shared independent vectors, 27 required checks, 43 bars, BBS/report and installed-wheel replay |
+| LIB-MEMBER-WORKFLOW-001 | Complete one representative public beam workflow through checked reinforcement, BBS and report | P0 | Done: [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016), merge 0793a34f | [19 required checks, 39 physical bars, independent calculations, installed-wheel replay and 1.240 s full-process median](planning/library-usability-improvement.md#lib-member-workflow-001-frozen-acceptance-case) |
+| LIB-MEMBER-WORKFLOW-002 | Complete a multilayer beam with per-bar strain/stress equilibrium | P0 | Done: [PR #1018](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1018), merge 96170d81 | [Frozen plan and acceptance](planning/multilayer-member-workflow.md): shared independent vectors, 27 required checks, 43 bars, BBS/report and installed-wheel replay |
 
-**Next proposed library milestone:** calculated service-stress/crack inputs and
-short/long-term deflection, with separately frozen source and load-history
-evidence. General support-fit, whole-library deep review, Level B/C serviceability
-and the remaining families are still open.
+**Next proposed engineering milestone:** the 50-day plan's WBS 2 proposes
+calculated service-stress/crack inputs and bounded short/long-term deflection,
+after WBS 1 freezes scope, source, load history and acceptance. General
+support-fit, whole-library deep review and broader Level B/C serviceability
+remain open; existing accepted family cases are preserved and reviewed within
+their boundaries by WBS 3.
 Record source reads and independent outcomes, not just inventory or test
 counts. Consolidated release preparation remains a separate proposed packet.
 
