@@ -12,6 +12,15 @@
 **Task:** LIB-MEMBER-WORKFLOW-002
 **Agent:** MAIN (one parent, no subagents)
 **Branch:** `codex/lib-member-workflow-002`
+**Focus:** Complete the frozen multilayer beam with independently verified per-bar section equilibrium through BBS/report.
+
+### Completed
+
+- Replaced centroid/yielded-tension assumptions in Python/.NET with signed per-bar strains, stresses, forces and moments.
+- Added 27 independent reference vectors and the 27-check/43-bar multilayer replay.
+- Retained draft outcomes for missing/failed evidence and explicit serviceability limits.
+
+### Verification and scope
 
 The owner authorized the proposed multilayer milestone. Fresh GitHub intake
 confirmed clean Mac main at `0793a34f` (#1016); all 31 observed worktrees,
@@ -20,12 +29,9 @@ Windows was not inspected. The solver candidate `91207365` stays held for
 replanning/rebinding; no installed-host authority changed.
 
 The [frozen plan and acceptance](planning/multilayer-member-workflow.md) owns
-the source reads, independent calculations and validation. The confirmed root
-cause was evaluating nonlinear compression steel at one centroid and assuming
-yielded tension steel. Python/.NET now equilibrate signed per-bar forces,
-deduct local displaced concrete and check extreme-bar ductility. The report
-retains every bar's stress/force and all 27 required leaves through 43 physical
-bars, BBS and quantities. Missing evidence and actual failures remain draft.
+the source reads, independent calculations, focused checks and installed-wheel
+replay. [PR #1018](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1018)
+owns the final hosted-check and merge state.
 
 The physical v3 material law uses the complete normalized Fig 23 points and
 fy/1.15. Historical rounded direct-helper behavior remains unchanged. General
@@ -33,6 +39,26 @@ serviceability calculation, axial/biaxial analysis, broad support fit, installed
 Excel/ETABS qualification and release publication remain separate. The one
 milestone PR owns final required checks and merge state; no routine closeout
 documentation PR is needed.
+
+### Issues encountered
+
+The centroid capacity overestimated the multilayer case's resistance. The first
+hosted documentation check also rejected this new session entry because its
+required focus, completion and issue/recurrence sections were absent.
+
+### Root causes and resolutions
+
+Nonlinear compression steel was evaluated at one centroid and all tension
+steel was treated as yielded. Python/.NET now equilibrate signed per-bar forces,
+deduct local displaced concrete and check extreme-bar ductility. The report
+retains every bar's stress/force and all 27 required leaves through 43 physical
+bars, BBS and quantities. Missing evidence and actual failures remain draft.
+The documentation repair supplies the maintained entry structure without
+changing the validated code, references or wheel.
+
+### Rework and recurrence
+
+- RR-004: occurrences=34; minutes=unknown. Preserve the existing handoff freshness control; no new recurrence count is claimed by this milestone.
 
 ---
 
