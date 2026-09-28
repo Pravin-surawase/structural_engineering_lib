@@ -5,8 +5,14 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, replace
 from enum import StrEnum
+from typing import TypedDict
 
-from structural_lib.codes.is456.materials import get_steel_stress, get_xu_max_d
+from structural_lib.codes.is456.section_materials import (
+    ELASTIC_MODULUS_N_PER_MM2,
+    ULTIMATE_CONCRETE_STRAIN,
+    section_concrete_stress,
+    section_steel_stress,
+)
 
 from .reinforcement import BarPosition, Face
 from .semantics import (
@@ -25,6 +31,18 @@ from .semantics import (
 FLEXURAL_CAPACITY_OPERATION = "is456.beam.flexural_capacity/v1"
 FLEXURE_CHECK_OPERATION = "is456.beam.flexure.check/v1"
 CODE_DATA_REVISION = "is456-wp01-v1"
+
+
+class _BarResponse(TypedDict):
+    bar_id: str
+    face: Face
+    layer: int
+    depth_from_compression_face_mm: float
+    area_mm2: float
+    strain: float
+    steel_stress_n_per_mm2: float
+    displaced_concrete_stress_n_per_mm2: float
+    net_force_n: float
 
 
 class SectionKind(StrEnum):
@@ -60,7 +78,7 @@ def _provenance(revision: str, method: str) -> Provenance:
     return Provenance(
         revision,
         method,
-        ("IS 456:2000 normalized WP01 flexure rules",),
+        ("IS 456:2000 38.1, Fig 21-23 and Annex G; per-bar section profile",),
     )
 
 
@@ -141,27 +159,45 @@ def _concrete_block(
     return web_force + flange_force, moment, True
 
 
-def _compression_steel(
+def _bar_responses(
     request: FlexuralCapacityRequest,
     x_mm: float,
-    d_mm: float,
-    d_prime_mm: float | None,
-    area_mm2: float,
-) -> tuple[float, float]:
-    if d_prime_mm is None or area_mm2 <= 0 or x_mm <= d_prime_mm:
-        return 0.0, 0.0
-    strain = 0.0035 * (x_mm - d_prime_mm) / x_mm
-    steel_stress = get_steel_stress(strain, request.steel_yield_strength_n_per_mm2)
-    displaced_concrete_stress = 0.446 * request.concrete_strength_n_per_mm2
-    net_stress = max(0.0, steel_stress - displaced_concrete_stress)
-    force = net_stress * area_mm2
-    return force, force * (d_mm - d_prime_mm)
+) -> list[_BarResponse]:
+    responses: list[_BarResponse] = []
+    for bar in request.bars:
+        depth = (
+            bar.y_from_top_mm
+            if request.tension_face is Face.BOTTOM
+            else request.depth_mm - bar.y_from_top_mm
+        )
+        strain = ULTIMATE_CONCRETE_STRAIN * (1 - depth / x_mm)
+        steel_stress = section_steel_stress(
+            strain, request.steel_yield_strength_n_per_mm2
+        )
+        concrete_stress = section_concrete_stress(
+            strain, request.concrete_strength_n_per_mm2
+        )
+        area = _bar_area(bar)
+        responses.append(
+            {
+                "bar_id": bar.bar_id,
+                "face": bar.face,
+                "layer": bar.layer,
+                "depth_from_compression_face_mm": depth,
+                "area_mm2": area,
+                "strain": strain,
+                "steel_stress_n_per_mm2": steel_stress,
+                "displaced_concrete_stress_n_per_mm2": concrete_stress,
+                "net_force_n": area * (steel_stress - concrete_stress),
+            }
+        )
+    return responses
 
 
 def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
     inputs = _inputs(request)
     provenance = _provenance(
-        request.code_data_revision_id, "is456-flexural-capacity-wp01-v2"
+        request.code_data_revision_id, "is456-flexural-capacity-wp01-v3"
     )
     numeric = {
         "web_width_mm": request.web_width_mm,
@@ -270,6 +306,7 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
             or not math.isfinite(bar.diameter_mm)
             or bar.diameter_mm <= 0
             or not math.isfinite(bar.y_from_top_mm)
+            or not 0 < bar.y_from_top_mm < request.depth_mm
         ),
         None,
     )
@@ -281,7 +318,7 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
                 _diagnostic(
                     FLEXURAL_CAPACITY_OPERATION,
                     "INPUT.RANGE",
-                    "Every bar requires a positive diameter and finite coordinate.",
+                    "Every bar requires a positive diameter and a coordinate inside the section.",
                     f"bars[{invalid_bar.bar_id}]",
                     "Resolve the actual physical bar geometry.",
                 ),
@@ -335,12 +372,12 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
             ),
             provenance=provenance,
         )
-    tension_force = 0.87 * fy * ast
 
     def residual(x_mm: float) -> float:
         concrete_force, _, _ = _concrete_block(request, x_mm, d_mm)
-        steel_force, _ = _compression_steel(request, x_mm, d_mm, d_prime_mm, asc)
-        return concrete_force + steel_force - tension_force
+        return concrete_force + math.fsum(
+            float(row["net_force_n"]) for row in _bar_responses(request, x_mm)
+        )
 
     low = 1e-9
     high = request.depth_mm
@@ -365,16 +402,35 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
         else:
             low = mid
     equilibrium_x = (low + high) / 2.0
-    xu_max = get_xu_max_d(fy) * d_mm
+    extreme_depth = max(
+        (
+            bar.y_from_top_mm
+            if request.tension_face is Face.BOTTOM
+            else request.depth_mm - bar.y_from_top_mm
+        )
+        for bar in request.bars
+    )
+    minimum_tension_strain = fy / (1.15 * ELASTIC_MODULUS_N_PER_MM2) + 0.002
+    xu_max = (
+        ULTIMATE_CONCRETE_STRAIN
+        * extreme_depth
+        / (ULTIMATE_CONCRETE_STRAIN + minimum_tension_strain)
+    )
     over_reinforced = equilibrium_x > xu_max + 1e-8
-    used_x = min(equilibrium_x, xu_max)
+    used_x = equilibrium_x
     concrete_force, concrete_moment, uses_flange = _concrete_block(
         request, used_x, d_mm
     )
-    compression_force, compression_moment = _compression_steel(
-        request, used_x, d_mm, d_prime_mm, asc
+    responses = _bar_responses(request, used_x)
+    steel_moment = math.fsum(
+        float(row["net_force_n"])
+        * (d_mm - float(row["depth_from_compression_face_mm"]))
+        for row in responses
     )
-    capacity_knm = (concrete_moment + compression_moment) / 1_000_000.0
+    compression_force = math.fsum(
+        max(0.0, float(row["net_force_n"])) for row in responses
+    )
+    capacity_knm = (concrete_moment + steel_moment) / 1_000_000.0
     max_area = 0.04 * request.web_width_mm * request.depth_mm
     min_area = 0.85 * request.web_width_mm * d_mm / fy
     diagnostics: list[Diagnostic] = []
@@ -408,6 +464,11 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
             "maximum_total_steel_area_mm2": max_area,
             "concrete_compression_force_n": concrete_force,
             "compression_steel_force_n": compression_force,
+            "bar_responses": responses,
+            "force_residual_n": residual(used_x),
+            "maximum_tension_strain": max(-float(row["strain"]) for row in responses),
+            "minimum_tension_strain": minimum_tension_strain,
+            "extreme_tension_depth_mm": extreme_depth,
             "over_reinforced": over_reinforced,
             "uses_compression_flange": uses_flange,
         },
@@ -424,7 +485,7 @@ def check_flexure(request: FlexureCheckRequest) -> OperationResult:
         positive_design_moment_knm=request.positive_design_moment_knm,
         negative_design_moment_knm=request.negative_design_moment_knm,
     )
-    provenance = _provenance(base.code_data_revision_id, "is456-flexure-check-wp01-v2")
+    provenance = _provenance(base.code_data_revision_id, "is456-flexure-check-wp01-v3")
     demands: list[tuple[str, Face, float]] = []
     if request.positive_design_moment_knm is not None:
         value = request.positive_design_moment_knm

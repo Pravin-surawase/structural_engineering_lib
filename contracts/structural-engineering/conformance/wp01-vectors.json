@@ -38,13 +38,13 @@
       "id": "wp01-rectangular-capacity",
       "operation_semantic_id": "is456.beam.flexural_capacity/v1",
       "input": {"web_width_mm": 300, "depth_mm": 500, "fck_n_per_mm2": 25, "fy_n_per_mm2": 415, "tension_face": "bottom", "bars": ["2-20", 450]},
-      "expected": {"engineering": "pass", "capacity_knm": 94.07913916844615, "neutral_axis_depth_mm": 84.02015019100702, "effective_depth_mm": 450}
+      "expected": {"engineering": "pass", "capacity_knm": 94.03612177887787, "neutral_axis_depth_mm": 83.97816111045181, "effective_depth_mm": 450}
     },
     {
       "id": "wp01-flexure-positive",
       "operation_semantic_id": "is456.beam.flexure.check/v1",
       "input": {"design_moment_knm": 80, "capacity_vector": "wp01-rectangular-capacity"},
-      "expected": {"engineering": "pass", "utilization": 0.8503479167338274, "tension_face": "bottom"}
+      "expected": {"engineering": "pass", "utilization": 0.8507369135034807, "tension_face": "bottom"}
     },
     {
       "id": "wp01-flexure-separate-steel-maxima",

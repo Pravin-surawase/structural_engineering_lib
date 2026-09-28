@@ -17,7 +17,7 @@ public static class BeamOperations
             ("positive_design_moment_knm", request.PositiveDesignMomentKnM),
             ("negative_design_moment_knm", request.NegativeDesignMomentKnM));
         var provenance = new Provenance(request.Capacity.CodeDataRevisionId,
-            "is456-flexure-check-wp01-v2", ["IS 456:2000 normalized WP01 flexure rules"]);
+            "is456-flexure-check-wp01-v3", ["IS 456:2000 38.1, Fig 21-23 and Annex G; per-bar section profile"]);
         var demands = new List<(string Sign, Face Face, double Demand)>();
         if (request.PositiveDesignMomentKnM is { } positive)
         {

@@ -2,7 +2,18 @@
   "schema_version": "structural-code-data/v1",
   "code_data_revision_id": "is456-wp01-v1",
   "subject": "reinforced-concrete beam flexure",
-  "source": {"standard": "IS 456:2000", "scope": ["6.2", "26.5.1", "38.1", "Annex G"]},
+  "source": {
+    "standard": "IS 456:2000",
+    "scope": [
+      "6.2",
+      "26.5.1",
+      "38.1",
+      "Annex G",
+      "Fig 21",
+      "Fig 22",
+      "Fig 23"
+    ]
+  },
   "coefficients": {
     "concrete_compression_force": 0.36,
     "rectangular_resultant_depth_ratio": 0.42,
@@ -13,12 +24,56 @@
     "minimum_tension_steel_ratio_numerator": 0.85,
     "maximum_longitudinal_steel_ratio": 0.04
   },
-  "limiting_neutral_axis_ratios": {"250": 0.53, "415": 0.48, "500": 0.46},
+  "limiting_neutral_axis_ratios": {
+    "250": 0.53,
+    "415": 0.48,
+    "500": 0.46
+  },
   "rules": {
     "other_grade_ratio": "700/(1100+0.87*fy)",
     "flange_block_depth": "min(Df,0.15*xu+0.65*Df)",
     "reverse_bending_flanged_section": "web rectangle when the flange is in tension",
     "axial_interaction": "not_applicable in WP01"
   },
-  "distribution_permission": "docs/verification/is456-public-distribution-permission.json"
+  "distribution_permission": "docs/verification/is456-public-distribution-permission.json",
+  "per_bar_profile": {
+    "method_revision_id": "is456-flexural-capacity-wp01-v3",
+    "source_sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+    "steel_design_strength": "fy/1.15",
+    "steel_elastic_modulus_n_per_mm2": 200000,
+    "fe250": "elastic then perfectly plastic at fy/1.15",
+    "deformed_steel_points": [
+      {
+        "stress_fraction": 0.8,
+        "inelastic_strain": 0
+      },
+      {
+        "stress_fraction": 0.85,
+        "inelastic_strain": 0.0001
+      },
+      {
+        "stress_fraction": 0.9,
+        "inelastic_strain": 0.0003
+      },
+      {
+        "stress_fraction": 0.95,
+        "inelastic_strain": 0.0007
+      },
+      {
+        "stress_fraction": 0.975,
+        "inelastic_strain": 0.001
+      },
+      {
+        "stress_fraction": 1,
+        "inelastic_strain": 0.002
+      }
+    ],
+    "steel_point_strain": "stress_fraction*(fy/1.15)/200000 + inelastic_strain",
+    "concrete_compression": "(0.67/1.5)*fck*(2*r-r*r), r=clamp(strain/0.002,0,1)",
+    "bar_strain": "0.0035*(1-depth_from_compression_face/x)",
+    "net_bar_force": "bar_area*(signed_steel_stress-displaced_concrete_stress)",
+    "ductility": "maximum_tension_strain >= fy/(1.15*200000)+0.002",
+    "capacity_axis": "actual equilibrium; over-reinforced output remains FAIL",
+    "legacy_coefficients": "0.87 and 0.446 and tabulated xu/d are rounded design values; v3 uses the explicit strain laws above"
+  }
 }

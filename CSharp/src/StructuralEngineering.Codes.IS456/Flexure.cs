@@ -10,7 +10,7 @@ public static class Flexure
     public static ResultEnvelope<FlexuralCapacityOutput> Capacity(FlexuralCapacityRequest request)
     {
         var inputs = Inputs(request);
-        var provenance = Source(request.CodeDataRevisionId, "is456-flexural-capacity-wp01-v2");
+        var provenance = Source(request.CodeDataRevisionId, "is456-flexural-capacity-wp01-v3");
         var required = new[]
         {
             request.WebWidthMm, request.DepthMm, request.ConcreteStrengthNPerMm2,
@@ -41,10 +41,11 @@ public static class Flexure
                 Information("PROFILE.UNSUPPORTED", "Steel grade is outside the WP01 IS 456 material domain.",
                     "steel_yield_strength_n_per_mm2", "Use a supported 250-550 N/mm2 grade or another profile."));
         var invalidBar = request.Bars.FirstOrDefault(bar => string.IsNullOrWhiteSpace(bar.BarId) ||
-            !Validation.Positive(bar.DiameterMm) || !double.IsFinite(bar.YFromTopMm));
+            !Validation.Positive(bar.DiameterMm) || !double.IsFinite(bar.YFromTopMm) ||
+            bar.YFromTopMm <= 0 || bar.YFromTopMm >= request.DepthMm);
         if (invalidBar is not null)
             return ResultFactory.Rejected<FlexuralCapacityOutput>(CapacityOperation, inputs, provenance,
-                Error("INPUT.RANGE", "Every bar requires a positive diameter and finite coordinate.",
+                Error("INPUT.RANGE", "Every bar requires a positive diameter and a coordinate inside the section.",
                     $"bars[{invalidBar.BarId}]", "Resolve the actual physical bar geometry."));
 
         var tension = request.Bars.Where(bar => bar.Face == request.TensionFace).ToArray();
@@ -65,12 +66,10 @@ public static class Flexure
                 Error("AXIS.UNRESOLVED", "Bar coordinates do not resolve valid tension and compression depths.",
                     "bars", "Correct the physical face and y-coordinate assignments."));
 
-        var tensionForce = 0.87 * fy * ast;
         double Residual(double x)
         {
             var concrete = ConcreteBlock(request, x, d);
-            var compressionSteel = CompressionSteel(request, x, d, dPrime, asc);
-            return concrete.ForceN + compressionSteel.ForceN - tensionForce;
+            return concrete.ForceN + BarResponses(request, x).Sum(row => row.NetForceN);
         }
         var low = 1e-9;
         var high = request.DepthMm;
@@ -85,17 +84,29 @@ public static class Flexure
             if (Residual(mid) >= 0) high = mid; else low = mid;
         }
         var equilibriumX = (low + high) / 2d;
-        var xuMax = XuMaxRatio(fy) * d;
+        var extremeDepth = request.Bars.Max(bar => request.TensionFace == Face.Bottom
+            ? bar.YFromTopMm : request.DepthMm - bar.YFromTopMm);
+        var minimumTensionStrain = fy / (1.15 * 200_000) + 0.002;
+        var xuMax = 0.0035 * extremeDepth / (0.0035 + minimumTensionStrain);
         var overReinforced = equilibriumX > xuMax + 1e-8;
-        var usedX = Math.Min(equilibriumX, xuMax);
+        var usedX = equilibriumX;
         var concreteBlock = ConcreteBlock(request, usedX, d);
-        var compressionBlock = CompressionSteel(request, usedX, d, dPrime, asc);
-        var capacity = (concreteBlock.MomentNmm + compressionBlock.MomentNmm) / 1_000_000d;
+        var responses = BarResponses(request, usedX);
+        var steelMoment = responses.Sum(row => row.NetForceN * (d - row.DepthFromCompressionFaceMm));
+        var compressionForce = responses.Sum(row => Math.Max(0, row.NetForceN));
+        var capacity = (concreteBlock.MomentNmm + steelMoment) / 1_000_000d;
         var output = new FlexuralCapacityOutput(
             request.TensionFace, capacity, equilibriumX, xuMax, usedX, d, dPrime,
             ast, asc, 0.85 * request.WebWidthMm * d / fy,
             0.04 * request.WebWidthMm * request.DepthMm, concreteBlock.ForceN,
-            compressionBlock.ForceN, overReinforced, concreteBlock.UsesFlange);
+            compressionForce, overReinforced, concreteBlock.UsesFlange)
+        {
+            BarResponses = responses,
+            ForceResidualN = Residual(usedX),
+            MaximumTensionStrain = responses.Max(row => -row.Strain),
+            MinimumTensionStrain = minimumTensionStrain,
+            ExtremeTensionDepthMm = extremeDepth
+        };
         var diagnostics = overReinforced
             ? new[] { Error("FLEXURE.OVER_REINFORCED", "The equilibrium neutral axis exceeds the limiting depth.",
                 "bars", "Revise the supplied longitudinal reinforcement or section.") }
@@ -144,37 +155,42 @@ public static class Flexure
             webForce * (d - 0.42 * x) + flangeForce * (d - 0.5 * yf), true);
     }
 
-    private static (double ForceN, double MomentNmm) CompressionSteel(
-        FlexuralCapacityRequest request, double x, double d, double? dPrime, double area)
+    private static FlexuralBarResponse[] BarResponses(FlexuralCapacityRequest request, double x)
     {
-        if (dPrime is null || area <= 0 || x <= dPrime) return (0, 0);
-        var strain = 0.0035 * (x - dPrime.Value) / x;
-        var stress = SteelStress(strain, request.SteelYieldStrengthNPerMm2);
-        var netStress = Math.Max(0, stress - 0.446 * request.ConcreteStrengthNPerMm2);
-        var force = netStress * area;
-        return (force, force * (d - dPrime.Value));
+        return request.Bars.Select(bar =>
+        {
+            var depth = request.TensionFace == Face.Bottom ? bar.YFromTopMm : request.DepthMm - bar.YFromTopMm;
+            var strain = 0.0035 * (1 - depth / x);
+            var stress = SteelStress(strain, request.SteelYieldStrengthNPerMm2);
+            var ratio = Math.Clamp(strain / 0.002, 0, 1);
+            var concreteStress = (0.67 / 1.5) * request.ConcreteStrengthNPerMm2 * (2 * ratio - ratio * ratio);
+            var area = Area(bar);
+            return new FlexuralBarResponse(bar.BarId, bar.Face, bar.Layer, depth, area, strain,
+                stress, concreteStress, area * (stress - concreteStress));
+        }).ToArray();
     }
 
     private static double SteelStress(double strain, double fy)
     {
         const double elasticModulus = 200_000;
-        if (Math.Abs(fy - 250) < 0.5) return Math.Min(strain * elasticModulus, 0.87 * fy);
-        var points = Math.Abs(fy - 415) < 0.5
-            ? new[] { (0.00144, 288.7), (0.00163, 306.7), (0.00192, 324.8), (0.00241, 342.8), (0.00380, 360.9) }
-            : Math.Abs(fy - 500) < 0.5
-                ? new[] { (0.00174, 347.8), (0.00195, 369.6), (0.00226, 391.3), (0.00277, 413.0), (0.00417, 434.8) }
-                : [];
-        if (points.Length == 0) return Math.Min(strain * elasticModulus, 0.87 * fy);
-        if (strain < points[0].Item1) return strain * elasticModulus;
-        for (var index = 0; index < points.Length - 1; index++)
+        var designStrength = fy / 1.15;
+        var magnitude = Math.Abs(strain);
+        if (Math.Abs(fy - 250) < 0.5)
+            return Math.CopySign(Math.Min(magnitude * elasticModulus, designStrength), strain);
+        double previousStrain = 0, previousStress = 0;
+        // IS 456 Fig 23A: normalized stress fractions and inelastic strains.
+        foreach (var (fraction, plasticStrain) in new[]
+                 { (0.8, 0.0), (0.85, 0.0001), (0.9, 0.0003), (0.95, 0.0007), (0.975, 0.001), (1.0, 0.002) })
         {
-            var first = points[index];
-            var second = points[index + 1];
-            if (strain >= first.Item1 && strain <= second.Item1)
-                return first.Item2 + (second.Item2 - first.Item2) *
-                    (strain - first.Item1) / (second.Item1 - first.Item1);
+            var pointStress = fraction * designStrength;
+            var pointStrain = pointStress / elasticModulus + plasticStrain;
+            if (magnitude <= pointStrain)
+                return Math.CopySign(previousStress + (pointStress - previousStress) *
+                    (magnitude - previousStrain) / (pointStrain - previousStrain), strain);
+            previousStrain = pointStrain;
+            previousStress = pointStress;
         }
-        return points[^1].Item2;
+        return Math.CopySign(designStrength, strain);
     }
 
     private static double DepthFromCompressionFace(double depth, Face tensionFace, IReadOnlyList<BarCoordinate> bars)
@@ -185,14 +201,11 @@ public static class Flexure
     }
 
     private static double Area(BarCoordinate bar) => Math.PI * bar.DiameterMm * bar.DiameterMm / 4d;
-    private static double XuMaxRatio(double fy) => Math.Abs(fy - 250) < 0.5 ? 0.53 :
-        Math.Abs(fy - 415) < 0.5 ? 0.48 : Math.Abs(fy - 500) < 0.5 ? 0.46 :
-        700 / (1100 + 0.87 * fy);
 
     private static Diagnostic Error(string code, string message, string field, string remediation) =>
         new(code, "error", message, CapacityOperation, field, "is456-flexure", remediation);
     private static Diagnostic Information(string code, string message, string field, string remediation) =>
         new(code, "information", message, CapacityOperation, field, "is456-flexure", remediation);
     private static Provenance Source(string revision, string method) =>
-        new(revision, method, ["IS 456:2000 normalized WP01 flexure rules"]);
+        new(revision, method, ["IS 456:2000 38.1, Fig 21-23 and Annex G; per-bar section profile"]);
 }

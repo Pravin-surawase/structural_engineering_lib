@@ -16,12 +16,32 @@ sections with an eligible compression flange. Reverse bending of a flanged
 section uses the web rectangle because the flange is then in tension. Nonzero
 axial interaction is explicitly `not_applicable` for this profile.
 
-Flexural capacity uses area-weighted tension and compression face centroids
-from the actual bar coordinates. Its bounded model assumes yielded tension
-steel and evaluates compression stress at the compression centroid. It solves
-force equilibrium, applies the IS 456 limiting neutral axis, and reports
-over-reinforcement as engineering failure. This is not a general per-bar strain
-or moment-curvature analysis.
+Capacity method `is456-flexural-capacity-wp01-v3` uses each bar's actual depth.
+Plane-section strains are `0.0035*(1-y/x)` with compression positive. Fig 23A
+defines the deformed-steel curve, including the 0.975fy point and design strength
+`fy/1.15`; Fe250 uses a definite yield point. Each compression bar displaces
+concrete at its local Fig 21 stress. A bar may be in tension regardless of its
+nominal face label. The existing 0.36/0.42 rectangular and Annex G flange
+design blocks supply the concrete resultant.
+
+The solver equilibrates concrete and every bar, then sums their actual moments.
+`bar_responses` retains bar identity/layer, depth, area, signed strain, steel
+stress, displaced-concrete stress and net force. `force_residual_n` makes
+equilibrium inspectable. Area-weighted depths remain geometric outputs and
+inputs to minimum-steel and downstream depth checks.
+
+The most strained tension bar must satisfy 38.1(f),
+`fy/(1.15*200000)+0.002`. The limiting axis is derived at that extreme bar,
+not the group's centroid. An over-reinforced section returns its actual
+equilibrated resistance with engineering FAIL; its axis is not clipped to a
+limiting value. This changes some numerical results from v2, including the
+rounded 0.87fy plateau. Existing operation IDs and request constructors remain.
+The historical direct `materials.get_steel_stress` helper remains unchanged.
+
+The [multilayer acceptance](../../planning/multilayer-member-workflow.md)
+qualifies the complete rectangular case and retains independent reference
+vectors, including mirrored bending and the existing flange branches. It does
+not establish general axial/biaxial interaction or moment-curvature analysis.
 
 The demand check applies `0.04*b*D` separately to the tension and compression
 groups, as required by IS 456 clauses 26.5.1.1(b) and 26.5.1.2. Capacity outputs

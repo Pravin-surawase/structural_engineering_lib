@@ -7,6 +7,12 @@ doc_type: spec
 
 # Library usability and implementation quality
 
+**28 September update:** [LIB-MEMBER-WORKFLOW-002](multilayer-member-workflow.md)
+adds the complete multilayer case and supersedes the physical centroid-capacity
+method with per-bar equilibrium. Its independent source/reference evidence and
+limits are recorded separately. Earlier values below remain historical results
+for their stated method revisions; do not interpret them as current v3 values.
+
 Caller-usability milestone: complete through PR #1010. This is not a claim that
 every function has received a deep implementation or independent engineering
 review. The [function review below](#function-review-lib-deep-review-001) records

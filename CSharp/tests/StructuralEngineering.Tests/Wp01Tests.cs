@@ -139,8 +139,8 @@ public class Wp01Tests
             new("B2", 20, 220, 450, Face.Bottom)
         ];
         var result = Flexure.Capacity(Capacity() with { Bars = bars });
-        Assert.Equal(94.07913916844615, result.Outputs!.CapacityKnM, 9);
-        Assert.Equal(84.02015019100702, result.Outputs.EquilibriumNeutralAxisDepthMm, 9);
+        Assert.Equal(94.03612177887787, result.Outputs!.CapacityKnM, 9);
+        Assert.Equal(83.97816111045181, result.Outputs.EquilibriumNeutralAxisDepthMm, 9);
     }
 
     [Fact]

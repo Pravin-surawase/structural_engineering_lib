@@ -15,7 +15,7 @@ python3 -m structural_lib install-preflight
 
 ## Typed workflows from the current source
 
-`complete_member_workflow.py` is the frozen LIB-MEMBER-WORKFLOW-001 acceptance
+`complete_member_workflow.py` includes the frozen LIB-MEMBER-WORKFLOW-001 acceptance
 case: a 300 × 500 mm ordinary beam with separate ULS/SLS loads, actual bars,
 19 required leaf checks, physical BBS, quantities and an HTML calculation report.
 Its [source and independent evidence](../../docs/planning/library-usability-improvement.md#lib-member-workflow-001-frozen-acceptance-case)
@@ -25,6 +25,17 @@ It requires the current source build; it is not present in the older public whee
 ```bash
 python3 -m pip install -e ./Python
 python3 Python/examples/complete_member_workflow.py --output-dir /tmp/complete-beam
+```
+
+Use `--case multilayer` for LIB-MEMBER-WORKFLOW-002: two layers on each face,
+27 required checks, 43 physical bars and per-bar ULS strains/stresses in the
+report. The [multilayer acceptance record](../../docs/planning/multilayer-member-workflow.md)
+defines the inputs, independent reference and limits. Both cases retain SLS
+cracked-section evidence and span/depth screening, without a calculated
+long-term deflection claim.
+
+```bash
+python3 Python/examples/complete_member_workflow.py --case multilayer --output-dir /tmp/multilayer-beam
 ```
 
 Open `report.html`; `calculation.json` retains every input/result/source identity

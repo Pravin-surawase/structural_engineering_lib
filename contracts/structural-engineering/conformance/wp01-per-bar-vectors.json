@@ -1,0 +1,4174 @@
+{
+  "schema_version": "wp01-per-bar-reference/v1",
+  "generator": "Python/tests/data/benchmark_vectors/generate_multilayer_reference.py",
+  "source": "IS 456:2000 38.1 / Fig 21-23 / Annex G; controlled PDF SHA256 964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+  "solver": "SciPy 1.17.1 brentq; independent NumPy interpolation; no production imports",
+  "tolerances": {
+    "axis_mm": 1e-07,
+    "moment_knm": 1e-07,
+    "stress_n_per_mm2": 1e-06,
+    "force_n": 1e-06
+  },
+  "design_block_comparison": {
+    "design_block_capacity_knm": 235.95656263285005,
+    "integrated_fig21_capacity_knm": 236.56319857865324,
+    "difference_percent": -0.2564371590543457,
+    "meaning": "Different concrete-block approximations, not an identical-model comparison"
+  },
+  "vectors": [
+    {
+      "id": "fe250-bottom20-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 250,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 88.5825913523701,
+        "capacity_knm": 105.77671370000738,
+        "engineering": "pass",
+        "force_residual_n": -2.9103830456733704e-11,
+        "maximum_tension_strain": 0.014280017224093767,
+        "minimum_tension_strain": 0.0030869565217391307,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.014280017224093767,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -68295.49246934333
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.014280017224093767,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -68295.49246934333
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.011316681020078139,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -68295.49246934333
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.011316681020078139,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -68295.49246934333
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.001524442530656248,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 10.535317552272563,
+            "net_force_n": 41590.8639019506
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.001524442530656248,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 10.535317552272563,
+            "net_force_n": 41590.8639019506
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -0.0014388936733593799,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -24586.3772889636
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -0.0014388936733593799,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -24586.3772889636
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe250-bottom20-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 250,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 88.5825913523701,
+        "capacity_knm": 105.77671370000738,
+        "engineering": "pass",
+        "force_residual_n": -2.9103830456733704e-11,
+        "maximum_tension_strain": 0.014280017224093767,
+        "minimum_tension_strain": 0.0030869565217391307,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.014280017224093767,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -68295.49246934333
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.014280017224093767,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -68295.49246934333
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.011316681020078139,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -68295.49246934333
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.011316681020078139,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -68295.49246934333
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.001524442530656248,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 10.535317552272563,
+            "net_force_n": 41590.8639019506
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.001524442530656248,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 10.535317552272563,
+            "net_force_n": 41590.8639019506
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -0.0014388936733593799,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -24586.3772889636
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -0.0014388936733593799,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -24586.3772889636
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe250-bottom25-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 250,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 126.65388760996447,
+        "capacity_knm": 153.49300962602877,
+        "engineering": "pass",
+        "force_residual_n": -5.820766091346741e-11,
+        "maximum_tension_strain": 0.008935465106687236,
+        "minimum_tension_strain": 0.0030869565217391307,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.008935465106687236,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -106711.70698334895
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.008935465106687236,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -106711.70698334895
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.00686288758890603,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -106711.70698334895
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.00686288758890603,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -106711.70698334895
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021182816548125294,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 41463.92363061423
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021182816548125294,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 41463.92363061423
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 4.5704137031323397e-05,
+            "steel_stress_n_per_mm2": 9.140827406264679,
+            "displaced_concrete_stress_n_per_mm2": 0.5045314399539803,
+            "net_force_n": 976.7420626315986
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 4.5704137031323397e-05,
+            "steel_stress_n_per_mm2": 9.140827406264679,
+            "displaced_concrete_stress_n_per_mm2": 0.5045314399539803,
+            "net_force_n": 976.7420626315986
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe250-bottom25-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 250,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 126.65388760996447,
+        "capacity_knm": 153.49300962602877,
+        "engineering": "pass",
+        "force_residual_n": -5.820766091346741e-11,
+        "maximum_tension_strain": 0.008935465106687236,
+        "minimum_tension_strain": 0.0030869565217391307,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.008935465106687236,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -106711.70698334895
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.008935465106687236,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -106711.70698334895
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.00686288758890603,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -106711.70698334895
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.00686288758890603,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -106711.70698334895
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021182816548125294,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 41463.92363061423
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021182816548125294,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 41463.92363061423
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 4.5704137031323397e-05,
+            "steel_stress_n_per_mm2": 9.140827406264679,
+            "displaced_concrete_stress_n_per_mm2": 0.5045314399539803,
+            "net_force_n": 976.7420626315986
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 4.5704137031323397e-05,
+            "steel_stress_n_per_mm2": 9.140827406264679,
+            "displaced_concrete_stress_n_per_mm2": 0.5045314399539803,
+            "net_force_n": 976.7420626315986
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe250-bottom32-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 250,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 210.94928180013392,
+        "capacity_knm": 228.01435515796473,
+        "engineering": "pass",
+        "force_residual_n": 0.0,
+        "maximum_tension_strain": 0.003966249643325404,
+        "minimum_tension_strain": 0.0030869565217391307,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.003966249643325404,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -174836.46072151893
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.003966249643325404,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -174836.46072151893
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0027218747027711702,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -174836.46072151893
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0027218747027711702,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -174836.46072151893
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0026704167062971775,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 41463.92363061423
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0026704167062971775,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 41463.92363061423
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0014260417657429433,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 10.247013347375455,
+            "net_force_n": 23427.467382242954
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0014260417657429433,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 10.247013347375455,
+            "net_force_n": 23427.467382242954
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe250-bottom32-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 250,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 210.94928180013392,
+        "capacity_knm": 228.01435515796473,
+        "engineering": "pass",
+        "force_residual_n": 0.0,
+        "maximum_tension_strain": 0.003966249643325404,
+        "minimum_tension_strain": 0.0030869565217391307,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.003966249643325404,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -174836.46072151893
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.003966249643325404,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -174836.46072151893
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0027218747027711702,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -174836.46072151893
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0027218747027711702,
+            "steel_stress_n_per_mm2": -217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -174836.46072151893
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0026704167062971775,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 41463.92363061423
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0026704167062971775,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 41463.92363061423
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0014260417657429433,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 10.247013347375455,
+            "net_force_n": 23427.467382242954
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0014260417657429433,
+            "steel_stress_n_per_mm2": 217.3913043478261,
+            "displaced_concrete_stress_n_per_mm2": 10.247013347375455,
+            "net_force_n": 23427.467382242954
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe415-bottom20-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 121.9444422941737,
+        "capacity_knm": 164.28422016392145,
+        "engineering": "pass",
+        "force_residual_n": 5.820766091346741e-11,
+        "maximum_tension_strain": 0.009415717767608757,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.009415717767608757,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.009415717767608757,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.007263098139673963,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.007263098139673963,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0020649202480434716,
+            "steel_stress_n_per_mm2": 329.9726743182298,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 64099.75113974029
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0020649202480434716,
+            "steel_stress_n_per_mm2": 329.9726743182298,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 64099.75113974029
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -8.769937989132139e-05,
+            "steel_stress_n_per_mm2": -17.539875978264277,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -1983.713238654881
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -8.769937989132139e-05,
+            "steel_stress_n_per_mm2": -17.539875978264277,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -1983.713238654881
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe415-bottom20-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 121.9444422941737,
+        "capacity_knm": 164.28422016392145,
+        "engineering": "pass",
+        "force_residual_n": 5.820766091346741e-11,
+        "maximum_tension_strain": 0.009415717767608757,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.009415717767608757,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.009415717767608757,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.007263098139673963,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.007263098139673963,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0020649202480434716,
+            "steel_stress_n_per_mm2": 329.9726743182298,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 64099.75113974029
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0020649202480434716,
+            "steel_stress_n_per_mm2": 329.9726743182298,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 64099.75113974029
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -8.769937989132139e-05,
+            "steel_stress_n_per_mm2": -17.539875978264277,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -1983.713238654881
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -8.769937989132139e-05,
+            "steel_stress_n_per_mm2": -17.539875978264277,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -1983.713238654881
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe415-bottom25-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 191.40904714821968,
+        "capacity_knm": 235.95656263285005,
+        "engineering": "pass",
+        "force_residual_n": 2.3283064365386963e-10,
+        "maximum_tension_strain": 0.004728451180682079,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.004728451180682079,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.004728451180682079,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0033570426505683993,
+            "steel_stress_n_per_mm2": -357.00827249060603,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -175246.0259573861
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0033570426505683993,
+            "steel_stress_n_per_mm2": -357.00827249060603,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -175246.0259573861
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.00258572764659088,
+            "steel_stress_n_per_mm2": 347.31193532820254,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 67586.0164202271
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.00258572764659088,
+            "steel_stress_n_per_mm2": 347.31193532820254,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 67586.0164202271
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0012143191164772004,
+            "steel_stress_n_per_mm2": 242.86382329544008,
+            "displaced_concrete_stress_n_per_mm2": 9.443386325036576,
+            "net_force_n": 26399.229479421803
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0012143191164772004,
+            "steel_stress_n_per_mm2": 242.86382329544008,
+            "displaced_concrete_stress_n_per_mm2": 9.443386325036576,
+            "net_force_n": 26399.229479421803
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe415-bottom25-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 191.40904714821968,
+        "capacity_knm": 235.95656263285005,
+        "engineering": "pass",
+        "force_residual_n": 2.3283064365386963e-10,
+        "maximum_tension_strain": 0.004728451180682079,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.004728451180682079,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.004728451180682079,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0033570426505683993,
+            "steel_stress_n_per_mm2": -357.00827249060603,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -175246.0259573861
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0033570426505683993,
+            "steel_stress_n_per_mm2": -357.00827249060603,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -175246.0259573861
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.00258572764659088,
+            "steel_stress_n_per_mm2": 347.31193532820254,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 67586.0164202271
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.00258572764659088,
+            "steel_stress_n_per_mm2": 347.31193532820254,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 67586.0164202271
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0012143191164772004,
+            "steel_stress_n_per_mm2": 242.86382329544008,
+            "displaced_concrete_stress_n_per_mm2": 9.443386325036576,
+            "net_force_n": 26399.229479421803
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0012143191164772004,
+            "steel_stress_n_per_mm2": 242.86382329544008,
+            "displaced_concrete_stress_n_per_mm2": 9.443386325036576,
+            "net_force_n": 26399.229479421803
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe415-bottom32-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 274.918103897369,
+        "capacity_knm": 295.50571215184414,
+        "engineering": "fail",
+        "force_residual_n": -1.1641532182693481e-10,
+        "maximum_tension_strain": 0.0022289788401420475,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0022289788401420475,
+            "steel_stress_n_per_mm2": -336.0111945595521,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -270236.2368901682
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0022289788401420475,
+            "steel_stress_n_per_mm2": -336.0111945595521,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -270236.2368901682
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0012741490334517063,
+            "steel_stress_n_per_mm2": -254.82980669034126,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -204946.2908452053
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0012741490334517063,
+            "steel_stress_n_per_mm2": -254.82980669034126,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -204946.2908452053
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0028634467955397725,
+            "steel_stress_n_per_mm2": 352.7473826344047,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 68678.8779451
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0028634467955397725,
+            "steel_stress_n_per_mm2": 352.7473826344047,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 68678.8779451
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0019086169888494315,
+            "steel_stress_n_per_mm2": 323.8316180333355,
+            "displaced_concrete_stress_n_per_mm2": 11.143353863887278,
+            "net_force_n": 35364.209528825384
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0019086169888494315,
+            "steel_stress_n_per_mm2": 323.8316180333355,
+            "displaced_concrete_stress_n_per_mm2": 11.143353863887278,
+            "net_force_n": 35364.209528825384
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe415-bottom32-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 274.918103897369,
+        "capacity_knm": 295.50571215184414,
+        "engineering": "fail",
+        "force_residual_n": -1.1641532182693481e-10,
+        "maximum_tension_strain": 0.0022289788401420475,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0022289788401420475,
+            "steel_stress_n_per_mm2": -336.0111945595521,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -270236.2368901682
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0022289788401420475,
+            "steel_stress_n_per_mm2": -336.0111945595521,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -270236.2368901682
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0012741490334517063,
+            "steel_stress_n_per_mm2": -254.82980669034126,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -204946.2908452053
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.0012741490334517063,
+            "steel_stress_n_per_mm2": -254.82980669034126,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -204946.2908452053
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0028634467955397725,
+            "steel_stress_n_per_mm2": 352.7473826344047,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 68678.8779451
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0028634467955397725,
+            "steel_stress_n_per_mm2": 352.7473826344047,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 68678.8779451
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0019086169888494315,
+            "steel_stress_n_per_mm2": 323.8316180333355,
+            "displaced_concrete_stress_n_per_mm2": 11.143353863887278,
+            "net_force_n": 35364.209528825384
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0019086169888494315,
+            "steel_stress_n_per_mm2": 323.8316180333355,
+            "displaced_concrete_stress_n_per_mm2": 11.143353863887278,
+            "net_force_n": 35364.209528825384
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe500-bottom20-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 500,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 139.8927913813,
+        "capacity_knm": 193.54987391242835,
+        "engineering": "pass",
+        "force_residual_n": 0.0,
+        "maximum_tension_strain": 0.007758621580486502,
+        "minimum_tension_strain": 0.004173913043478261,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.007758621580486502,
+            "steel_stress_n_per_mm2": -434.7826086956522,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -136590.98493868666
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.007758621580486502,
+            "steel_stress_n_per_mm2": -434.7826086956522,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -136590.98493868666
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.005882184650405417,
+            "steel_stress_n_per_mm2": -434.7826086956522,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -136590.98493868666
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.005882184650405417,
+            "steel_stress_n_per_mm2": -434.7826086956522,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -136590.98493868666
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.002249042046612611,
+            "steel_stress_n_per_mm2": 390.7776089163811,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 76325.30863321613
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.002249042046612611,
+            "steel_stress_n_per_mm2": 390.7776089163811,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 76325.30863321613
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0003726051165315275,
+            "steel_stress_n_per_mm2": 74.52102330630551,
+            "displaced_concrete_stress_n_per_mm2": 3.7731772853526118,
+            "net_force_n": 8001.3928794021895
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0003726051165315275,
+            "steel_stress_n_per_mm2": 74.52102330630551,
+            "displaced_concrete_stress_n_per_mm2": 3.7731772853526118,
+            "net_force_n": 8001.3928794021895
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe500-bottom20-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 500,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 139.8927913813,
+        "capacity_knm": 193.54987391242835,
+        "engineering": "pass",
+        "force_residual_n": 0.0,
+        "maximum_tension_strain": 0.007758621580486502,
+        "minimum_tension_strain": 0.004173913043478261,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.007758621580486502,
+            "steel_stress_n_per_mm2": -434.7826086956522,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -136590.98493868666
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.007758621580486502,
+            "steel_stress_n_per_mm2": -434.7826086956522,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -136590.98493868666
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.005882184650405417,
+            "steel_stress_n_per_mm2": -434.7826086956522,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -136590.98493868666
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.005882184650405417,
+            "steel_stress_n_per_mm2": -434.7826086956522,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -136590.98493868666
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.002249042046612611,
+            "steel_stress_n_per_mm2": 390.7776089163811,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 76325.30863321613
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.002249042046612611,
+            "steel_stress_n_per_mm2": 390.7776089163811,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 76325.30863321613
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0003726051165315275,
+            "steel_stress_n_per_mm2": 74.52102330630551,
+            "displaced_concrete_stress_n_per_mm2": 3.7731772853526118,
+            "net_force_n": 8001.3928794021895
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0003726051165315275,
+            "steel_stress_n_per_mm2": 74.52102330630551,
+            "displaced_concrete_stress_n_per_mm2": 3.7731772853526118,
+            "net_force_n": 8001.3928794021895
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe500-bottom25-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 500,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 218.71318955987388,
+        "capacity_knm": 267.3816268598908,
+        "engineering": "fail",
+        "force_residual_n": 1.1641532182693481e-10,
+        "maximum_tension_strain": 0.003701211793259663,
+        "minimum_tension_strain": 0.004173913043478261,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.003701211793259663,
+            "steel_stress_n_per_mm2": -429.909399930512,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -211031.28320795202
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.003701211793259663,
+            "steel_stress_n_per_mm2": -429.909399930512,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -211031.28320795202
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0025010098277163857,
+            "steel_stress_n_per_mm2": -401.7525567400165,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -197209.8251273988
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0025010098277163857,
+            "steel_stress_n_per_mm2": -401.7525567400165,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -197209.8251273988
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0026998653563044817,
+            "steel_stress_n_per_mm2": 410.25065625232827,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 80240.59711024768
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0026998653563044817,
+            "steel_stress_n_per_mm2": 410.25065625232827,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 80240.59711024768
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.001499663390761205,
+            "steel_stress_n_per_mm2": 299.93267815224095,
+            "displaced_concrete_stress_n_per_mm2": 10.467809982896394,
+            "net_force_n": 32737.70531927343
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.001499663390761205,
+            "steel_stress_n_per_mm2": 299.93267815224095,
+            "displaced_concrete_stress_n_per_mm2": 10.467809982896394,
+            "net_force_n": 32737.70531927343
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe500-bottom25-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 500,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 218.71318955987388,
+        "capacity_knm": 267.3816268598908,
+        "engineering": "fail",
+        "force_residual_n": 1.1641532182693481e-10,
+        "maximum_tension_strain": 0.003701211793259663,
+        "minimum_tension_strain": 0.004173913043478261,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.003701211793259663,
+            "steel_stress_n_per_mm2": -429.909399930512,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -211031.28320795202
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.003701211793259663,
+            "steel_stress_n_per_mm2": -429.909399930512,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -211031.28320795202
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0025010098277163857,
+            "steel_stress_n_per_mm2": -401.7525567400165,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -197209.8251273988
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0025010098277163857,
+            "steel_stress_n_per_mm2": -401.7525567400165,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -197209.8251273988
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0026998653563044817,
+            "steel_stress_n_per_mm2": 410.25065625232827,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 80240.59711024768
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0026998653563044817,
+            "steel_stress_n_per_mm2": 410.25065625232827,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 80240.59711024768
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.001499663390761205,
+            "steel_stress_n_per_mm2": 299.93267815224095,
+            "displaced_concrete_stress_n_per_mm2": 10.467809982896394,
+            "net_force_n": 32737.70531927343
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.001499663390761205,
+            "steel_stress_n_per_mm2": 299.93267815224095,
+            "displaced_concrete_stress_n_per_mm2": 10.467809982896394,
+            "net_force_n": 32737.70531927343
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe500-bottom32-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 500,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 279.69087899021633,
+        "capacity_knm": 313.77425365551466,
+        "engineering": "fail",
+        "force_residual_n": 1.1641532182693481e-10,
+        "maximum_tension_strain": 0.002131216883747911,
+        "minimum_tension_strain": 0.004173913043478261,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.002131216883747911,
+            "steel_stress_n_per_mm2": -382.4800622357684,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -307608.71773810097
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.002131216883747911,
+            "steel_stress_n_per_mm2": -382.4800622357684,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -307608.71773810097
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.001192680736456592,
+            "steel_stress_n_per_mm2": -238.53614729131843,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -191842.1524341808
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.001192680736456592,
+            "steel_stress_n_per_mm2": -238.53614729131843,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -191842.1524341808
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.002874309235139121,
+            "steel_stress_n_per_mm2": 416.38985383862337,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 81474.9560245543
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.002874309235139121,
+            "steel_stress_n_per_mm2": 416.38985383862337,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 81474.9560245543
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0019357730878478024,
+            "steel_stress_n_per_mm2": 368.3096966508127,
+            "displaced_concrete_stress_n_per_mm2": 11.155150772983808,
+            "net_force_n": 40393.227510935496
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0019357730878478024,
+            "steel_stress_n_per_mm2": 368.3096966508127,
+            "displaced_concrete_stress_n_per_mm2": 11.155150772983808,
+            "net_force_n": 40393.227510935496
+          }
+        ]
+      }
+    },
+    {
+      "id": "fe500-bottom32-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 500,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 32,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 32,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 279.69087899021633,
+        "capacity_knm": 313.77425365551466,
+        "engineering": "fail",
+        "force_residual_n": 1.1641532182693481e-10,
+        "maximum_tension_strain": 0.002131216883747911,
+        "minimum_tension_strain": 0.004173913043478261,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.002131216883747911,
+            "steel_stress_n_per_mm2": -382.4800622357684,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -307608.71773810097
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.002131216883747911,
+            "steel_stress_n_per_mm2": -382.4800622357684,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -307608.71773810097
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.001192680736456592,
+            "steel_stress_n_per_mm2": -238.53614729131843,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -191842.1524341808
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 804.247719318987,
+            "strain": -0.001192680736456592,
+            "steel_stress_n_per_mm2": -238.53614729131843,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -191842.1524341808
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.002874309235139121,
+            "steel_stress_n_per_mm2": 416.38985383862337,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 81474.9560245543
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.002874309235139121,
+            "steel_stress_n_per_mm2": 416.38985383862337,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 81474.9560245543
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0019357730878478024,
+            "steel_stress_n_per_mm2": 368.3096966508127,
+            "displaced_concrete_stress_n_per_mm2": 11.155150772983808,
+            "net_force_n": 40393.227510935496
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0019357730878478024,
+            "steel_stress_n_per_mm2": 368.3096966508127,
+            "displaced_concrete_stress_n_per_mm2": 11.155150772983808,
+            "net_force_n": 40393.227510935496
+          }
+        ]
+      }
+    },
+    {
+      "id": "m20-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 20,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 223.90174540855256,
+        "capacity_knm": 223.35258742294187,
+        "engineering": "fail",
+        "force_residual_n": 0.0,
+        "maximum_tension_strain": 0.0035343355167960135,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0035343355167960135,
+            "steel_stress_n_per_mm2": -358.5387257300124,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -175997.28543450823
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0035343355167960135,
+            "steel_stress_n_per_mm2": -358.5387257300124,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -175997.28543450823
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.002361946263996678,
+            "steel_stress_n_per_mm2": -340.90533920697305,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -167341.51706596298
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.002361946263996678,
+            "steel_stress_n_per_mm2": -340.90533920697305,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -167341.51706596298
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0027184071648004428,
+            "steel_stress_n_per_mm2": 350.780407772736,
+            "displaced_concrete_stress_n_per_mm2": 8.933333333333334,
+            "net_force_n": 68732.4324934394
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0027184071648004428,
+            "steel_stress_n_per_mm2": 350.780407772736,
+            "displaced_concrete_stress_n_per_mm2": 8.933333333333334,
+            "net_force_n": 68732.4324934394
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0015460179120011075,
+            "steel_stress_n_per_mm2": 298.4222705098193,
+            "displaced_concrete_stress_n_per_mm2": 8.473043922433437,
+            "net_force_n": 32792.48496579506
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0015460179120011075,
+            "steel_stress_n_per_mm2": 298.4222705098193,
+            "displaced_concrete_stress_n_per_mm2": 8.473043922433437,
+            "net_force_n": 32792.48496579506
+          }
+        ]
+      }
+    },
+    {
+      "id": "m20-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 20,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 223.90174540855256,
+        "capacity_knm": 223.35258742294187,
+        "engineering": "fail",
+        "force_residual_n": 0.0,
+        "maximum_tension_strain": 0.0035343355167960135,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0035343355167960135,
+            "steel_stress_n_per_mm2": -358.5387257300124,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -175997.28543450823
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0035343355167960135,
+            "steel_stress_n_per_mm2": -358.5387257300124,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -175997.28543450823
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.002361946263996678,
+            "steel_stress_n_per_mm2": -340.90533920697305,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -167341.51706596298
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.002361946263996678,
+            "steel_stress_n_per_mm2": -340.90533920697305,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -167341.51706596298
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0027184071648004428,
+            "steel_stress_n_per_mm2": 350.780407772736,
+            "displaced_concrete_stress_n_per_mm2": 8.933333333333334,
+            "net_force_n": 68732.4324934394
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0027184071648004428,
+            "steel_stress_n_per_mm2": 350.780407772736,
+            "displaced_concrete_stress_n_per_mm2": 8.933333333333334,
+            "net_force_n": 68732.4324934394
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0015460179120011075,
+            "steel_stress_n_per_mm2": 298.4222705098193,
+            "displaced_concrete_stress_n_per_mm2": 8.473043922433437,
+            "net_force_n": 32792.48496579506
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0015460179120011075,
+            "steel_stress_n_per_mm2": 298.4222705098193,
+            "displaced_concrete_stress_n_per_mm2": 8.473043922433437,
+            "net_force_n": 32792.48496579506
+          }
+        ]
+      }
+    },
+    {
+      "id": "m40-bottom",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 40,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 132.63935951952578,
+        "capacity_knm": 252.9581465581344,
+        "engineering": "pass",
+        "force_residual_n": 1.1641532182693481e-10,
+        "maximum_tension_strain": 0.008374303417215649,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.008374303417215649,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.008374303417215649,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.006395252847679707,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.006395252847679707,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021806329536427057,
+            "steel_stress_n_per_mm2": 334.2317229056961,
+            "displaced_concrete_stress_n_per_mm2": 17.866666666666667,
+            "net_force_n": 63608.96873811562
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021806329536427057,
+            "steel_stress_n_per_mm2": 334.2317229056961,
+            "displaced_concrete_stress_n_per_mm2": 17.866666666666667,
+            "net_force_n": 63608.96873811562
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.00020158238410676423,
+            "steel_stress_n_per_mm2": 40.31647682135284,
+            "displaced_concrete_stress_n_per_mm2": 3.420100218840509,
+            "net_force_n": 4172.881884427263
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.00020158238410676423,
+            "steel_stress_n_per_mm2": 40.31647682135284,
+            "displaced_concrete_stress_n_per_mm2": 3.420100218840509,
+            "net_force_n": 4172.881884427263
+          }
+        ]
+      }
+    },
+    {
+      "id": "m40-top",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 40,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 132.63935951952578,
+        "capacity_knm": 252.9581465581344,
+        "engineering": "pass",
+        "force_residual_n": 1.1641532182693481e-10,
+        "maximum_tension_strain": 0.008374303417215649,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.008374303417215649,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.008374303417215649,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.006395252847679707,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.006395252847679707,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021806329536427057,
+            "steel_stress_n_per_mm2": 334.2317229056961,
+            "displaced_concrete_stress_n_per_mm2": 17.866666666666667,
+            "net_force_n": 63608.96873811562
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021806329536427057,
+            "steel_stress_n_per_mm2": 334.2317229056961,
+            "displaced_concrete_stress_n_per_mm2": 17.866666666666667,
+            "net_force_n": 63608.96873811562
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.00020158238410676423,
+            "steel_stress_n_per_mm2": 40.31647682135284,
+            "displaced_concrete_stress_n_per_mm2": 3.420100218840509,
+            "net_force_n": 4172.881884427263
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.00020158238410676423,
+            "steel_stress_n_per_mm2": 40.31647682135284,
+            "displaced_concrete_stress_n_per_mm2": 3.420100218840509,
+            "net_force_n": 4172.881884427263
+          }
+        ]
+      }
+    },
+    {
+      "id": "same-arrangement-reverse-bending",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "top"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 87.57625226358358,
+        "capacity_knm": 109.32121154274145,
+        "engineering": "pass",
+        "force_residual_n": 2.9103830456733704e-11,
+        "maximum_tension_strain": 0.014484327477951746,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 490.8738521234052,
+            "strain": 0.001501741391338695,
+            "steel_stress_n_per_mm2": 294.2223262641277,
+            "displaced_concrete_stress_n_per_mm2": 10.473602918581596,
+            "net_force_n": 139284.82886372658
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 490.8738521234052,
+            "strain": 0.001501741391338695,
+            "steel_stress_n_per_mm2": 294.2223262641277,
+            "displaced_concrete_stress_n_per_mm2": 10.473602918581596,
+            "net_force_n": 139284.82886372658
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0014956465216532627,
+            "steel_stress_n_per_mm2": -293.6441843396809,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -144142.25192045447
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.0014956465216532627,
+            "steel_stress_n_per_mm2": -293.6441843396809,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -144142.25192045447
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 201.06192982974676,
+            "strain": -0.014484327477951746,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -72557.13119943035
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 201.06192982974676,
+            "strain": -0.014484327477951746,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -72557.13119943035
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -0.011486939564959789,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -40813.38629967957
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -0.011486939564959789,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -40813.38629967957
+          }
+        ]
+      }
+    },
+    {
+      "id": "t_beam",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "t_beam",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom",
+        "flange_width_mm": 800,
+        "flange_thickness_mm": 100
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 90.57964061997684,
+        "capacity_knm": 269.1654196026782,
+        "engineering": "pass",
+        "force_residual_n": 1.1641532182693481e-10,
+        "maximum_tension_strain": 0.01388801334626451,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.01388801334626451,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.01388801334626451,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.01099001112188709,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.01099001112188709,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0015679985170817215,
+            "steel_stress_n_per_mm2": 300.5072879060376,
+            "displaced_concrete_stress_n_per_mm2": 10.645671089861638,
+            "net_force_n": 58280.13606063092
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0015679985170817215,
+            "steel_stress_n_per_mm2": 300.5072879060376,
+            "displaced_concrete_stress_n_per_mm2": 10.645671089861638,
+            "net_force_n": 58280.13606063092
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -0.0013300037072956964,
+            "steel_stress_n_per_mm2": -266.00074145913925,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -30083.975107828912
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": -0.0013300037072956964,
+            "steel_stress_n_per_mm2": -266.00074145913925,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -30083.975107828912
+          }
+        ]
+      }
+    },
+    {
+      "id": "l_beam",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-002",
+        "section_kind": "l_beam",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B3",
+            "diameter_mm": 25,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "B4",
+            "diameter_mm": 25,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 375,
+            "face": "bottom",
+            "layer": 2
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T3",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          },
+          {
+            "bar_id": "T4",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 125,
+            "face": "top",
+            "layer": 2
+          }
+        ],
+        "tension_face": "bottom",
+        "flange_width_mm": 800,
+        "flange_thickness_mm": 40
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 129.31703006706135,
+        "capacity_knm": 261.72416924127106,
+        "engineering": "pass",
+        "force_residual_n": 0.0,
+        "maximum_tension_strain": 0.00867937033647645,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.00867937033647645,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.00867937033647645,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B3",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.00664947528039704,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "B4",
+            "depth_from_compression_face_mm": 375.0,
+            "area_mm2": 490.8738521234052,
+            "strain": -0.00664947528039704,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -177141.43359235927
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021467366292803945,
+            "steel_stress_n_per_mm2": 332.98409766309214,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 64705.233728992665
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0021467366292803945,
+            "steel_stress_n_per_mm2": 332.98409766309214,
+            "displaced_concrete_stress_n_per_mm2": 11.166666666666666,
+            "net_force_n": 64705.233728992665
+          },
+          {
+            "bar_id": "T3",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.00011684157320098661,
+            "steel_stress_n_per_mm2": 23.368314640197323,
+            "displaced_concrete_stress_n_per_mm2": 1.266619197982623,
+            "net_force_n": 2499.6428651930655
+          },
+          {
+            "bar_id": "T4",
+            "depth_from_compression_face_mm": 125.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.00011684157320098661,
+            "steel_stress_n_per_mm2": 23.368314640197323,
+            "displaced_concrete_stress_n_per_mm2": 1.266619197982623,
+            "net_force_n": 2499.6428651930655
+          }
+        ]
+      }
+    },
+    {
+      "id": "workflow-001",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-001",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "T1",
+            "diameter_mm": 12,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          },
+          {
+            "bar_id": "T2",
+            "diameter_mm": 12,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50,
+            "face": "top",
+            "layer": 1
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 68.69663783551161,
+        "capacity_knm": 94.6188554984915,
+        "engineering": "pass",
+        "force_residual_n": 5.820766091346741e-11,
+        "maximum_tension_strain": 0.01942688622944265,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.01942688622944265,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.01942688622944265,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "T1",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0009525681967285945,
+            "steel_stress_n_per_mm2": 190.5136393457189,
+            "displaced_concrete_stress_n_per_mm2": 8.103891807175248,
+            "net_force_n": 20630.056421169273
+          },
+          {
+            "bar_id": "T2",
+            "depth_from_compression_face_mm": 50.0,
+            "area_mm2": 113.09733552923255,
+            "strain": 0.0009525681967285945,
+            "steel_stress_n_per_mm2": 190.5136393457189,
+            "displaced_concrete_stress_n_per_mm2": 8.103891807175248,
+            "net_force_n": 20630.056421169273
+          }
+        ]
+      }
+    },
+    {
+      "id": "singly-reinforced",
+      "input": {
+        "profile_id": "LIB-MEMBER-WORKFLOW-001",
+        "section_kind": "rectangular",
+        "web_width_mm": 300,
+        "depth_mm": 500,
+        "concrete_strength_n_per_mm2": 25,
+        "steel_yield_strength_n_per_mm2": 415,
+        "bars": [
+          {
+            "bar_id": "B1",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          },
+          {
+            "bar_id": "B2",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450,
+            "face": "bottom",
+            "layer": 1
+          }
+        ],
+        "tension_face": "bottom"
+      },
+      "expected": {
+        "neutral_axis_depth_mm": 83.97816111045162,
+        "capacity_knm": 94.03612177887791,
+        "engineering": "pass",
+        "force_residual_n": -4.94765117764473e-10,
+        "maximum_tension_strain": 0.01525487601983203,
+        "minimum_tension_strain": 0.003804347826086957,
+        "bar_responses": [
+          {
+            "bar_id": "B1",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.01525487601983203,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "B2",
+            "depth_from_compression_face_mm": 450.0,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.01525487601983203,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0.0,
+            "net_force_n": -113370.51749910993
+          }
+        ]
+      }
+    }
+  ]
+}

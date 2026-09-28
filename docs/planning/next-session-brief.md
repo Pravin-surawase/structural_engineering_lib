@@ -3,21 +3,21 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-09-27
-- Focus: Complete one frozen public beam workflow through checked physical reinforcement, BBS and report, with independent evidence and measured caller effort.
-- Completed: Added the complete ordinary-beam example with all 19 required leaves and 39 physical bars through HTML/JSON/CSV artifacts.; Repaired support extension, continuous-bar qualification, conditional opposite-face torsion checks and report revision binding in Python/.NET.; Retained independent source/calculation evidence, failure propagation and explicit remaining scope limits.
+- Date: 2026-09-28
+- Focus: Complete the frozen multilayer beam with independently verified per-bar section equilibrium through BBS/report.
+- Completed: Replaced centroid/yielded-tension assumptions in Python/.NET with signed per-bar strains, stresses, forces and moments.; Added 27 independent reference vectors and the 27-check/43-bar multilayer replay.; Retained draft outcomes for missing/failed evidence and explicit serviceability limits.
 - Recurrence controls: RR-004 x34 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-**Development device — 27 September:** continue on the Mac. This handoff intake
+**Development device — 28 September:** continue on the Mac. This handoff intake
 fetched GitHub and verified clean `main` equal to `origin/main` at
-`90da51072a60bc0656b295d5b625c8c8699eefe5` (PR #1015, intake baseline
-for LIB-MEMBER-WORKFLOW-001). Use the latest merged head after a fresh fetch; do not reset to this
+`0793a34f2bbefd6253a3b608c1c4226fdf56fc84` (PR #1016, intake baseline
+for LIB-MEMBER-WORKFLOW-002). Use the latest merged head after a fresh fetch; do not reset to this
 historical observation. No open non-dependency PR was found at intake. The
 Windows checkout was not inspected; preserve its retained C# edit and installed
-evidence. All 33 Mac worktree records remain preserved, including the unrelated
+evidence. All 31 Mac worktree records observed at this intake remain preserved, including the unrelated
 dirty architecture worktree and two unavailable temporary entries. No writer
 ownership or installed-artifact authority is transferred by this session brief.
 
@@ -34,6 +34,12 @@ records the implemented frozen case and its integration fixes. The
 retains sources, numerical comparisons, failure behavior and remaining limits.
 The earlier [progress assessment](library-usability-improvement.md#progress-assessment-and-next-acceptance-milestone)
 explains why this milestone followed the three deep-review packets.
+
+The [multilayer acceptance record](multilayer-member-workflow.md) records the
+owner-authorized next case, the v3 per-bar root-cause repair, 27 independent
+reference vectors, 27 required leaves and 43 physical bars. The milestone PR on
+`codex/lib-member-workflow-002` owns final hosted-check and merge facts. The
+earlier single-layer case also remains accepted under the corrected method.
 
 Routine work now uses cohesive commits, affected checks once after the batch,
 one PR and required hosted checks. The delivery ledger and separate local audit
@@ -65,21 +71,27 @@ strain compatibility and complete support geometry remain separate work.
    connects public inputs to all 19 required checks, 39 physical bars, BBS,
    quantities and an HTML/JSON/CSV report. Inspect [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016) for final hosted and
    merge status before resuming; do not reopen accepted work by default.
-2. A following engineering packet must freeze its own supported case/profile
-   and acceptance evidence. General per-bar strain/multilayer capability,
-   calculated long-term serviceability and broader families remain open.
-   The current case uses source-checked admission, single-layer compression
-   steel, cracked-section SLS inputs and span/depth screening.
-3. Retain the full-process timing and manual-step boundary in the acceptance
+2. **LIB-MEMBER-WORKFLOW-002 — implemented:** run the same example with
+   `--case multilayer`. Its source-checked rectangular case uses actual per-bar
+   strains, local displaced concrete, equilibrium and extreme-bar ductility.
+   Read its [acceptance and limits](multilayer-member-workflow.md) and inspect
+   the milestone PR's integration before starting subsequent work.
+3. **Next proposed engineering packet:** calculated service-stress/crack inputs
+   and short/long-term deflection. Freeze its load-history and source evidence
+   before implementation. Current complete cases use independently derived
+   cracked SLS inputs and span/depth screening. General axial/biaxial section
+   analysis, support congestion/fit and broader families remain separate.
+4. Retain the full-process timing and manual-step boundary in the acceptance
    record. This establishes one case's elapsed time, without a comparative
    speedup or whole-building throughput claim. Avoid a general maintenance
    campaign unless a confirmed blocker requires it.
-4. Prepare a consolidated release candidate/changelog and upgrade/install
+5. Prepare a consolidated release candidate/changelog and upgrade/install
    evidence when release work is selected. Publication remains separately
    authorized; current users of the older public wheel do not receive source
    changes automatically.
 
-These are proposed packets, not active implementation or release authority.
+The following serviceability and release packets are proposals. This handoff
+does not authorize their implementation or publication.
 
 ### Resume library work safely
 

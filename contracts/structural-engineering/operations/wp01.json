@@ -45,7 +45,7 @@
       "kind": "capacity",
       "purpose": "Calculate supported supplied-section flexural capacity without deciding demand adequacy.",
       "required_inputs": [{"name": "section", "unit": "mm"}, {"name": "materials", "unit": "N/mm2"}, {"name": "bars", "unit": "resolved coordinates"}, {"name": "tension_face", "unit": "enum"}],
-      "outputs": [{"name": "capacity_knm", "unit": "kNm"}, {"name": "neutral_axis_depth_mm", "unit": "mm"}],
+      "outputs": [{"name": "capacity_knm", "unit": "kNm"}, {"name": "neutral_axis_depth_mm", "unit": "mm"}, {"name": "bar_responses", "unit": "per bar: mm, mm2, strain, N/mm2, N; compression positive"}, {"name": "force_residual_n", "unit": "N"}, {"name": "maximum_tension_strain", "unit": "strain"}, {"name": "minimum_tension_strain", "unit": "strain"}],
       "python_projection": "structural_lib.beam.flexural_capacity",
       "dotnet_projection": "StructuralEngineering.Codes.IS456.Flexure.Capacity",
       "valid_example": "wp01-rectangular-capacity",

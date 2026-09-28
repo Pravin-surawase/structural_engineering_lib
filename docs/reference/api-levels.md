@@ -80,8 +80,9 @@ review scope.
 ## Physical beam and project workflows
 
 The [physical section and fit review](../planning/library-usability-improvement.md#function-review-lib-deep-review-003)
-records the separate steel-area limits, cross-face gaps, rounded-link enclosure
-and the bounded centroid-model assumptions.
+records the separate steel-area limits, cross-face gaps and rounded-link
+enclosure. The [multilayer milestone](../planning/multilayer-member-workflow.md)
+adds per-bar strain, material-profile and equilibrium outputs.
 
 `structural_lib.beam` exposes the newer explicit physical-bar, analysis,
 serviceability, detailing and complete-member workflow. Construction quantities
@@ -104,6 +105,11 @@ source-checked case admission and independent calculations through physical BBS
 and HTML/JSON/CSV output. The [acceptance record](../planning/library-usability-improvement.md#lib-member-workflow-001-frozen-acceptance-case)
 distinguishes this case from the smaller teaching profiles and from general
 member design or professional approval.
+
+Select `--case multilayer` for the second frozen case: two layers on each face,
+27 required checks, 43 bars, independent section references and a per-bar
+stress/force report. Both cases use span/depth screening and independently
+supplied cracked SLS inputs; neither calculates long-term displacement.
 
 ## Expert calculation and compatibility
 
