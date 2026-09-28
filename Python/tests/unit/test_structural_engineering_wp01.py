@@ -194,9 +194,9 @@ def test_independent_rectangular_capacity_vector() -> None:
         BarPosition("B2", 20, 220, 450, Face.BOTTOM),
     )
     result = flexural_capacity(_capacity(bars=bars))
-    assert result.outputs["capacity_knm"] == pytest.approx(94.07913916844615)
+    assert result.outputs["capacity_knm"] == pytest.approx(94.03612177887787)
     assert result.outputs["equilibrium_neutral_axis_depth_mm"] == pytest.approx(
-        84.02015019100702
+        83.97816111045181
     )
 
 

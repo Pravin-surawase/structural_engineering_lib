@@ -128,7 +128,17 @@ public sealed record FlexuralCapacityOutput(
     // Retain the positional constructor and legacy property as a per-group alias.
     public double MaximumTensionSteelAreaMm2 => MaximumTotalSteelAreaMm2;
     public double MaximumCompressionSteelAreaMm2 => MaximumTotalSteelAreaMm2;
+    public IReadOnlyList<FlexuralBarResponse> BarResponses { get; init; } = [];
+    public double ForceResidualN { get; init; }
+    public double MaximumTensionStrain { get; init; }
+    public double MinimumTensionStrain { get; init; }
+    public double ExtremeTensionDepthMm { get; init; }
 }
+
+public sealed record FlexuralBarResponse(
+    string BarId, Face Face, int Layer, double DepthFromCompressionFaceMm,
+    double AreaMm2, double Strain, double SteelStressNPerMm2,
+    double DisplacedConcreteStressNPerMm2, double NetForceN);
 
 public sealed record FlexureCheckRequest(
     FlexuralCapacityRequest Capacity,

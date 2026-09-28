@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-27 — Library deep-review packets 001–003 merged; progress assessment and handoff prepared; complete member workflow proposed; live ETABS work remains held
+**Updated:** 2026-09-28 — Complete multilayer beam implemented with independent per-bar evidence; live ETABS work remains held
 
 ---
 
@@ -27,11 +27,12 @@
 | LIB-DEEP-REVIEW-002 | Review supplied bars, source bond/anchorage and bounded serviceability | P0 | Done: PR #1013 | [Function reads, source benchmarks and corrections](planning/library-usability-improvement.md#function-review-lib-deep-review-002); final verification in the packet PR |
 | LIB-DEEP-REVIEW-003 | Correct physical group limits, cross-face gaps and rounded-link enclosure | P0 | Done: PR #1014 | [Exact function reads, reproducers and independent comparison](planning/library-usability-improvement.md#function-review-lib-deep-review-003); final verification in the packet PR |
 | LIB-MEMBER-WORKFLOW-001 | Complete one representative public beam workflow through checked reinforcement, BBS and report | P0 | Implemented: [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016) owns hosted closeout | [19 required checks, 39 physical bars, independent calculations, installed-wheel replay and 1.240 s full-process median](planning/library-usability-improvement.md#lib-member-workflow-001-frozen-acceptance-case) |
+| LIB-MEMBER-WORKFLOW-002 | Complete a multilayer beam with per-bar strain/stress equilibrium | P0 | Implemented; milestone PR owns final hosted closeout | [Frozen plan and acceptance](planning/multilayer-member-workflow.md): shared independent vectors, 27 required checks, 43 bars, BBS/report and installed-wheel replay |
 
-**Next library milestone:** use the representative complete workflow to select
-essential calculation and integration repairs, including matched-material
-strain/multilayer and support-fit evidence where required. Whole-library deep
-review, Level B/C serviceability and the remaining families are still open.
+**Next proposed library milestone:** calculated service-stress/crack inputs and
+short/long-term deflection, with separately frozen source and load-history
+evidence. General support-fit, whole-library deep review, Level B/C serviceability
+and the remaining families are still open.
 Record source reads and independent outcomes, not just inventory or test
 counts. Consolidated release preparation remains a separate proposed packet.
 

@@ -1,7 +1,7 @@
-"""LIB-MEMBER-WORKFLOW-001: one frozen ordinary beam, through BBS and report.
+"""LIB-MEMBER-WORKFLOW-001/002: frozen ordinary beams through BBS and report.
 
 Run with the current library build:
-    python3 complete_member_workflow.py --output-dir /tmp/complete-beam
+    python3 complete_member_workflow.py --case multilayer --output-dir /tmp/multilayer-beam
 
 The case is retained here so this file also runs against an installed wheel
 outside the source tree. This is a qualified worked case, not a general design
@@ -91,6 +91,8 @@ class Workflow:
     results: dict[str, b.OperationResult]
     member_request: b.MemberDesignRequest
     package_request: r.CalculationPackageRequest
+    case_admission: tuple[str, ...]
+    leaf_results: dict[str, str]
 
     @property
     def package(self) -> dict[str, Any]:
@@ -103,9 +105,8 @@ def _completed(result: b.OperationResult) -> b.OperationResult:
     return result
 
 
-def _leaf(leaf_id: str, result: b.OperationResult) -> b.MemberLeafEvidence:
+def _leaf(leaf_id: str, result: b.OperationResult, name: str) -> b.MemberLeafEvidence:
     """Copy numerical summaries from the actual check, without changing states."""
-    name = LEAF_RESULTS[leaf_id]
     output = result.outputs
     values: dict[str, Any] = {}
     if name == "flexure":
@@ -155,7 +156,8 @@ def _leaf(leaf_id: str, result: b.OperationResult) -> b.MemberLeafEvidence:
 
 def run_workflow(
     *,
-    ultimate_load_n_per_mm: float = 12,
+    multilayer: bool = False,
+    ultimate_load_n_per_mm: float | None = None,
     left_bar_end_mm: float = -175,
     omit_checks: tuple[str, ...] = (),
 ) -> Workflow:
@@ -164,15 +166,64 @@ def run_workflow(
     Probe parameters are not a general design interface. SLS remains its own
     retained load case when an ultimate overload is tested.
     """
-    results: dict[str, b.OperationResult] = {}
-    bars = tuple(
-        b.BarPosition(name, diameter, x, y, face)
-        for name, diameter, x, y, face in (
-            ("B1", 20, 50, 450, b.Face.BOTTOM),
-            ("B2", 20, 250, 450, b.Face.BOTTOM),
-            ("T1", 12, 50, 50, b.Face.TOP),
-            ("T2", 12, 250, 50, b.Face.TOP),
+    profile_id = "LIB-MEMBER-WORKFLOW-002" if multilayer else PROFILE
+    detail = "continuous-4T25-2T16-2T12-L8-r1" if multilayer else DETAIL
+    source = f"IS 456:2000 through Amendment 6; frozen {profile_id} case"
+    ultimate_load = (
+        ultimate_load_n_per_mm
+        if ultimate_load_n_per_mm is not None
+        else (36 if multilayer else 12)
+    )
+    service_load = 24 if multilayer else 8
+    depth = 412.5 if multilayer else 450
+    service_axis = 156.466321740276 if multilayer else 104.82470668199647
+    service_stress = 104.62253728760916 if multilayer else 96.03729860524084
+    surface_strain = 0.0007018874490960149 if multilayer else 0.0005497433967678369
+    admission = CASE_ADMISSION
+    if multilayer:
+        admission = (
+            admission[0],
+            "Lateral restraints at bearings: 5000 <= min(60*300,250*300^2/412.5) mm (23.3).",
+            "Clear span 4600 mm plus d=412.5 mm exceeds centre span 5000 mm; effective span is 5000 mm (22.2).",
+            *admission[3:7],
+            "Fig 4 tension factor conservatively 1.0 for p=1.586663%, fs=104.6225 N/mm2; "
+            "no compression/flange enhancement. This is span/depth screening, not calculated deflection.",
+            admission[8],
+            "Bottom 2T25 at y=450 mm and 2T25 at y=375 mm; top 2T16 at y=50 mm and 2T12 at y=125 mm. "
+            "Each pair at section x=50/250 mm. ULS/SLS total loads 36/24 N/mm, including self weight.",
+            "SLS cracked transformed section: x=156.466321740276 mm, Icr=1468328057.5917387 mm4; "
+            "the supplied steel stress is at the bottom group's centroid, d=412.5 mm.",
         )
+    results: dict[str, b.OperationResult] = {}
+    rows = (
+        (
+            ("B1", 25, 50, 450, b.Face.BOTTOM, 1),
+            ("B2", 25, 250, 450, b.Face.BOTTOM, 1),
+            ("B3", 25, 50, 375, b.Face.BOTTOM, 2),
+            ("B4", 25, 250, 375, b.Face.BOTTOM, 2),
+            ("T1", 16, 50, 50, b.Face.TOP, 1),
+            ("T2", 16, 250, 50, b.Face.TOP, 1),
+            ("T3", 12, 50, 125, b.Face.TOP, 2),
+            ("T4", 12, 250, 125, b.Face.TOP, 2),
+        )
+        if multilayer
+        else (
+            ("B1", 20, 50, 450, b.Face.BOTTOM, 1),
+            ("B2", 20, 250, 450, b.Face.BOTTOM, 1),
+            ("T1", 12, 50, 50, b.Face.TOP, 1),
+            ("T2", 12, 250, 50, b.Face.TOP, 1),
+        )
+    )
+    bars = tuple(b.BarPosition(*row) for row in rows)
+    leaf_results = {
+        f"{name}@{MEMBER}": name for name, _, _ in RULES if name != "anchorage"
+    }
+    leaf_results.update(
+        {
+            f"anchorage@{bar.bar_id}-{side}": f"anchorage-{bar.bar_id}-{side}"
+            for bar in bars
+            for side in ("left", "right")
+        }
     )
     axes = b.LocalAxes(
         "B1-axes", b.Vector3(1, 0, 0), b.Vector3(0, 1, 0), b.Vector3(0, 0, 1)
@@ -191,7 +242,7 @@ def run_workflow(
                         "S1",
                         "A",
                         "B",
-                        450,
+                        depth,
                         (b.SectionRegion("R1", "300x500", 0, 5000),),
                     ),
                 ),
@@ -199,7 +250,7 @@ def run_workflow(
             )
         )
     )
-    for name, load in (("ULS", ultimate_load_n_per_mm), ("SLS", 8)):
+    for name, load in (("ULS", ultimate_load), ("SLS", service_load)):
         analysis = _completed(
             b.solve_beam_line(
                 b.BeamLineRequest(
@@ -255,11 +306,11 @@ def run_workflow(
     uls = results["analysis-ULS"].outputs["stations"]
     moment = max(row["m3_nmm"] for row in uls) / 1e6
     shear = max(abs(row["v2_n"]) for row in uls) / 1000
-    geometry = b.ReinforcementGeometryRequest(PROFILE, 300, 500, 25, 8, 25, bars)
+    geometry = b.ReinforcementGeometryRequest(profile_id, 300, 500, 25, 8, 25, bars)
     results["geometry"] = b.evaluate_geometry(geometry)
     results["depth"] = b.effective_depth(geometry, b.Face.BOTTOM)
     capacity_request = b.FlexuralCapacityRequest(
-        PROFILE, b.SectionKind.RECTANGULAR, 300, 500, 25, 415, bars, b.Face.BOTTOM
+        profile_id, b.SectionKind.RECTANGULAR, 300, 500, 25, 415, bars, b.Face.BOTTOM
     )
     results["capacity"] = b.flexural_capacity(capacity_request)
     capacity = results["capacity"].outputs
@@ -271,10 +322,10 @@ def run_workflow(
         b.ShearCheckRequest(
             (
                 b.ShearCapacityRequest(
-                    PROFILE,
+                    profile_id,
                     b.ShearAxis.V2,
                     300,
-                    450,
+                    depth,
                     25,
                     capacity["tension_steel_area_mm2"],
                     link,
@@ -289,7 +340,7 @@ def run_workflow(
     # Zero torsion, concurrent with the governing flexural source row.
     results["torsion"] = b.check_torsion(
         b.TorsionCheckRequest(
-            PROFILE,
+            profile_id,
             b.ConcurrentActionRow(
                 "ULS-25",
                 "S1-mid",
@@ -308,38 +359,38 @@ def run_workflow(
     )
     results["deflection"] = b.check_deflection(
         b.DeflectionCheckRequest(
-            PROFILE,
+            profile_id,
             b.DeflectionMethod.SPAN_DEPTH_SCREENING,
             screening=b.DeflectionScreeningBasis(
                 5000,
-                450,
+                depth,
                 b.SupportCondition.SIMPLY_SUPPORTED,
                 1,
                 1,
                 1,
                 results["topology"].result_id,
-                CASE_ADMISSION[7],
+                admission[7],
             ),
         )
     )
     results["crack"] = b.check_crack_width(
         b.CrackWidthCheckRequest(
-            PROFILE,
+            profile_id,
             MEMBER,
             "S1-mid",
             "SLS-25",
-            DETAIL,
+            detail,
             300,
             500,
-            104.82470668199647,
+            service_axis,
             b.Face.BOTTOM,
             bars,
             150,
-            96.03729860524084,
+            service_stress,
             415,
             200000,
-            0.0005497433967678369,
-            b.CrackWidthLimitRequest(PROFILE, b.ExposureClass.MILD, False),
+            surface_strain,
+            b.CrackWidthLimitRequest(profile_id, b.ExposureClass.MILD, False),
         )
     )
     for side, face, centre, direction in (
@@ -350,9 +401,9 @@ def run_workflow(
             bottom = bar.face is b.Face.BOTTOM
             results[f"anchorage-{bar.bar_id}-{side}"] = b.check_anchorage(
                 b.AnchorageCheckRequest(
-                    PROFILE,
+                    profile_id,
                     MEMBER,
-                    DETAIL,
+                    detail,
                     (
                         b.AnchoragePath(
                             bar.bar_id,
@@ -372,7 +423,7 @@ def run_workflow(
                             (),
                             None,
                             b.DevelopmentLengthRequest(
-                                PROFILE,
+                                profile_id,
                                 bar.diameter_mm,
                                 0.87 * 415,
                                 415,
@@ -400,7 +451,7 @@ def run_workflow(
     longitudinal = tuple(
         b.LongitudinalBarPath(
             bar.bar_id,
-            bar.face.value,
+            f"{bar.face.value}-T{bar.diameter_mm:g}",
             (
                 b.ReinforcementRole.BOTTOM_LONGITUDINAL
                 if bar.face is b.Face.BOTTOM
@@ -418,14 +469,14 @@ def run_workflow(
     )
     results["continuity"] = b.check_laps_and_curtailment(
         b.LapCurtailmentCheckRequest(
-            PROFILE,
+            profile_id,
             MEMBER,
             "S1",
             results["actions-ULS"].result_id,
-            DETAIL,
+            detail,
             200,
             4800,
-            450,
+            depth,
             25,
             415,
             b.BarSurface.DEFORMED,
@@ -449,10 +500,10 @@ def run_workflow(
     )
     results["arrangement"] = b.check_reinforcement_arrangement(
         b.ReinforcementArrangementCheckRequest(
-            PROFILE,
+            profile_id,
             MEMBER,
             "uniform-section",
-            DETAIL,
+            detail,
             300,
             500,
             25,
@@ -467,22 +518,24 @@ def run_workflow(
         )
     )
     results["seismic"] = b.check_seismic_detailing(
-        b.SeismicDetailingCheckRequest(PROFILE, b.SeismicApplicability.ORDINARY_IS456)
+        b.SeismicDetailingCheckRequest(
+            profile_id, b.SeismicApplicability.ORDINARY_IS456
+        )
     )
 
     results["project"] = _completed(
         b.create_beam_project(
             b.BeamProjectRequest(
                 b.BeamProjectDefinition(
-                    PROFILE, "Complete ordinary beam worked case", "r1"
+                    profile_id, "Complete ordinary beam worked case", "r1"
                 ),
                 b.StructuralUnitBasis("mm", "N", "Nmm", "N/mm2"),
                 tuple(
-                    b.RevisionBinding(name, revision, SOURCE)
+                    b.RevisionBinding(name, revision, source)
                     for name, _, revision in RULES
                 ),
                 b.BeamDesignProfile(
-                    PROFILE,
+                    profile_id,
                     "complete-profile-r1",
                     "IS 456:2000",
                     b.SeismicDesignProfile.ORDINARY_IS456,
@@ -500,15 +553,15 @@ def run_workflow(
                                 if name == "seismic"
                                 else b.ApplicabilityState.APPLICABLE
                             ),
-                            SOURCE,
+                            source,
                             name,
                         )
                         for name, operation, _ in RULES
                     ),
                     (
-                        b.DesignCriterion("cover", 25, "mm", CASE_ADMISSION[0]),
+                        b.DesignCriterion("cover", 25, "mm", admission[0]),
                         b.DesignCriterion(
-                            "lateral-restraint-spacing", 5000, "mm", CASE_ADMISSION[1]
+                            "lateral-restraint-spacing", 5000, "mm", admission[1]
                         ),
                     ),
                 ),
@@ -519,7 +572,7 @@ def run_workflow(
     seeds = tuple(
         b.BarPathSeed(
             bar.bar_id,
-            bar.face.value,
+            f"{bar.face.value}-T{bar.diameter_mm:g}",
             (
                 b.BarPathRole.BOTTOM_LONGITUDINAL
                 if bar.face is b.Face.BOTTOM
@@ -581,13 +634,13 @@ def run_workflow(
     results["paths"] = _completed(
         b.resolve_bar_paths(
             b.BarPathRequest(
-                PROFILE,
+                profile_id,
                 project.project_basis_id,
                 project.profile.revision_id,
                 MEMBER,
                 "S1",
                 results["topology"].result_id,
-                DETAIL,
+                detail,
                 b.MemberLocalCoordinateSystem(
                     "B1-local",
                     "member_station_x",
@@ -608,7 +661,7 @@ def run_workflow(
         MEMBER,
         results["topology"].result_id,
         results["actions-ULS"].result_id,
-        DETAIL,
+        detail,
         "complete-scope-r1",
         tuple(
             b.MemberScopeInstance(
@@ -620,19 +673,19 @@ def run_workflow(
         (
             b.EffectiveDepthIteration(
                 1,
-                DETAIL,
-                450,
+                detail,
+                depth,
                 tuple(
                     results[name].result_id
-                    for name in LEAF_RESULTS.values()
+                    for name in leaf_results.values()
                     if name != "seismic"
                 ),
                 True,
             ),
         ),
         tuple(
-            _leaf(leaf_id, results[name])
-            for leaf_id, name in LEAF_RESULTS.items()
+            _leaf(leaf_id, results[name], name)
+            for leaf_id, name in leaf_results.items()
             if name not in omit_checks
         ),
     )
@@ -642,10 +695,10 @@ def run_workflow(
     results["bbs"] = _completed(
         c.create_bbs(
             c.BbsRequest(
-                PROFILE,
+                profile_id,
                 project.project_basis_id,
                 MEMBER,
-                DETAIL,
+                detail,
                 schedule_binding.result_id,
                 schedule_binding.output_payload_id,
                 schedule,
@@ -663,10 +716,10 @@ def run_workflow(
     results["quantities"] = _completed(
         c.calculate_construction_quantities(
             c.ConstructionQuantityRequest(
-                PROFILE,
+                profile_id,
                 project.project_basis_id,
                 MEMBER,
-                DETAIL,
+                detail,
                 bbs_binding.result_id,
                 bbs_binding.output_payload_id,
                 bbs,
@@ -702,20 +755,20 @@ def run_workflow(
     member = results["member"].output_as("member_design", b.MemberDesignOutput)
     package_request = r.CalculationPackageRequest(
         r.CalculationPackageMetadata(
-            PROFILE,
+            profile_id,
             project.project.name,
             "r1",
             MEMBER,
             "r1",
             "python-structural-engineering-v1",
             tuple(binding.revision_id for binding in project.code_data_revisions),
-            "2026-09-27T00:00:00+00:00",
+            "2026-09-28T00:00:00+00:00",
         ),
         r.CalculationPackageProfile(
-            PROFILE,
+            profile_id,
             "r1",
             "complete-beam-r1",
-            tuple(LEAF_RESULTS),
+            tuple(leaf_results),
             (
                 "inputs",
                 "calculations",
@@ -735,21 +788,21 @@ def run_workflow(
         r.result_binding(results["quantities"], "quantities"),
         None,
         None,
-        CASE_ADMISSION + SOURCE_IDENTITIES,
+        admission + SOURCE_IDENTITIES,
         tuple(
             r.CalculationTrace(
                 f"trace-{item.expectation.leaf_id}",
                 item.expectation.leaf_id,
                 "; ".join(
                     results[
-                        LEAF_RESULTS[item.expectation.leaf_id]
+                        leaf_results[item.expectation.leaf_id]
                     ].provenance.source_references
                 ),
                 results[
-                    LEAF_RESULTS[item.expectation.leaf_id]
+                    leaf_results[item.expectation.leaf_id]
                 ].provenance.method_revision_id,
                 json.dumps(
-                    results[LEAF_RESULTS[item.expectation.leaf_id]].effective_inputs,
+                    results[leaf_results[item.expectation.leaf_id]].effective_inputs,
                     sort_keys=True,
                 ),
                 item.evidence.required_value if item.evidence else None,
@@ -765,7 +818,7 @@ def run_workflow(
             r.DrawingView(
                 "physical-paths",
                 "bar_schedule",
-                DETAIL,
+                detail,
                 tuple(
                     r.DrawingDatum(
                         bar.bar_id,
@@ -780,13 +833,13 @@ def run_workflow(
         ),
         (
             "One frozen ordinary beam with the stated source inputs and case-admission evidence.",
-            "Centroid flexure with conservative displaced-concrete deduction; not a general multilayer strain solver.",
+            "Per-bar IS 456 section equilibrium; no axial/biaxial or moment-curvature analysis.",
             "Span/depth screening does not report calculated long-term displacement.",
             "Engineering/package readiness is separate from professional approval and construction issue.",
         ),
     )
     results["package"] = _completed(r.create_calculation_package(package_request))
-    return Workflow(results, member_request, package_request)
+    return Workflow(results, member_request, package_request, admission, leaf_results)
 
 
 def write_artifacts(workflow: Workflow, output_dir: Path) -> None:
@@ -794,7 +847,7 @@ def write_artifacts(workflow: Workflow, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     package = workflow.package
     payload = {
-        "case_admission": CASE_ADMISSION,
+        "case_admission": workflow.case_admission,
         "source_identities": SOURCE_IDENTITIES,
         "results": {
             name: result.to_dict() for name, result in workflow.results.items()
@@ -853,7 +906,17 @@ def write_artifacts(workflow: Workflow, output_dir: Path) -> None:
         f"<td>{row.theoretical_mass_kg:.3f}</td></tr>"
         for row in bbs.rows
     )
-    admission = "".join(f"<li>{html.escape(item)}</li>" for item in CASE_ADMISSION)
+    admission = "".join(
+        f"<li>{html.escape(item)}</li>" for item in workflow.case_admission
+    )
+    capacity = workflow.results["capacity"].outputs
+    steel_rows = "".join(
+        f"<tr><td>{html.escape(row['bar_id'])}</td><td>{row['layer']}</td>"
+        f"<td>{row['depth_from_compression_face_mm']:g}</td><td>{row['strain']:.8f}</td>"
+        f"<td>{row['steel_stress_n_per_mm2']:.6f}</td><td>{row['displaced_concrete_stress_n_per_mm2']:.6f}</td>"
+        f"<td>{row['net_force_n']:.3f}</td></tr>"
+        for row in capacity["bar_responses"]
+    )
     quantities = workflow.package_request.quantities
     flexure = workflow.results["flexure"].outputs["checks"][0]
     shear = max(
@@ -867,9 +930,16 @@ td,th{{text-align:left;padding:8px;border-bottom:1px solid #ddd}}pre{{white-spac
 <p>300 × 500 mm, 5 m span, M25 / Fe415. Professional approval: none.</p>
 <p>Member engineering state: <strong>{html.escape(str(workflow.results['member'].engineering))}</strong>.
 ULS moment {flexure['demand_knm']:.3f} kNm; ULS shear {abs(shear['signed_demand_kn']):.3f} kN.
-SLS midspan moment 25 kNm. Bottom 2T20, top 2T12, two-leg 8 mm links at 150 mm.</p>
+SLS midspan moment {max(row["m3_nmm"] for row in workflow.results["analysis-SLS"].outputs["stations"]) / 1e6:g} kNm.
+Two-leg 8 mm links at 150 mm; actual longitudinal layers appear below.</p>
 <h2>Frozen inputs and admission</h2><ul>{admission}</ul>
-<h2>All 19 required checks</h2>
+<h2>Per-bar section equilibrium at ULS resistance</h2>
+<p>Compression is positive; tension is negative. Neutral axis {capacity['equilibrium_neutral_axis_depth_mm']:.6f} mm;
+resistance {capacity['capacity_knm']:.6f} kNm; axial force residual {capacity['force_residual_n']:.3g} N.
+These are ultimate resistance strains and stresses, not the applied-load SLS stresses.</p>
+<table><tr><th>Bar</th><th>Layer</th><th>Depth (mm)</th><th>Strain</th><th>Steel stress (N/mm²)</th>
+<th>Displaced concrete stress (N/mm²)</th><th>Net force (N)</th></tr>{steel_rows}</table>
+<h2>All {len(workflow.leaf_results)} required checks</h2>
 <p>ULS and SLS are separate cases. Values below are demand/limit comparisons; inspect the retained effective inputs.</p>
 <p>Anchorage compares Ld with the equivalent available length, including three times actual support extension.
 An ordinary seismic non-applicability result is explicitly qualified. Blank numerical cells use the retained geometric or identity checks.</p>
@@ -888,8 +958,11 @@ Both files carry the package issue state. These files do not supply professional
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument(
+        "--case", choices=("single-layer", "multilayer"), default="single-layer"
+    )
     args = parser.parse_args()
-    workflow = run_workflow()
+    workflow = run_workflow(multilayer=args.case == "multilayer")
     if args.output_dir:
         write_artifacts(workflow, args.output_dir)
     print(
@@ -897,7 +970,7 @@ def main() -> None:
             {
                 "member": workflow.results["member"].engineering,
                 "issue_state": workflow.package["issue_state"],
-                "required_checks": len(LEAF_RESULTS),
+                "required_checks": len(workflow.leaf_results),
                 "physical_bars": len(workflow.package_request.schedule.paths),
                 "steel_kg": workflow.package_request.bbs.scheduled_steel_mass_kg,
                 "professional_approval": workflow.package["active_approval"],

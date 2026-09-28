@@ -143,18 +143,27 @@ def test_independent_statics_and_single_layer_force_equilibrium(workflow):
             x = row["x_mm"]
             assert row["m3_nmm"] == pytest.approx(load * x * (5000 - x) / 2, abs=1e-7)
             assert abs(row["v2_n"]) == pytest.approx(abs(load * (2500 - x)), abs=1e-8)
-    # Independently reduce equilibrium to a quadratic. For this one-layer
-    # compression group every individual bar remains elastic, so centroid and
-    # per-bar strains coincide. The declared profile deducts 0.446 fck at Asc.
-    ast, asc = 2 * math.pi * 20**2 / 4, 2 * math.pi * 12**2 / 4
-    force = 0.87 * 415 * ast
-    a = 0.36 * 25 * 300
-    coefficient = asc * (200000 * 0.0035 - 0.446 * 25) - force
-    x = (-coefficient + math.sqrt(coefficient**2 + 4 * a * asc * 700 * 50)) / (2 * a)
-    per_bar_strain = 0.0035 * (x - 50) / x
-    assert per_bar_strain < 0.00144  # below Fe415's first inelastic point
-    compression = asc * (200000 * per_bar_strain - 0.446 * 25)
-    moment = (a * x * (450 - 0.42 * x) + compression * 400) / 1e6
+    # Independent SciPy reference is generated without production imports.
+    reference = json.loads(
+        (
+            Path(__file__).resolve().parents[3]
+            / "contracts/structural-engineering/conformance/wp01-per-bar-vectors.json"
+        ).read_text(encoding="utf-8")
+    )
+    expected = next(
+        v["expected"] for v in reference["vectors"] if v["id"] == "workflow-001"
+    )
+    x = expected["neutral_axis_depth_mm"]
+    ast, asc = 200 * math.pi, 72 * math.pi
+    strain = 0.0035 * (1 - 50 / x)
+    assert strain < 0.8 * (415 / 1.15) / 200000
+    ratio = strain / 0.002
+    displaced = (0.67 / 1.5) * 25 * (2 * ratio - ratio * ratio)
+    compression = asc * (200000 * strain - displaced)
+    assert 0.36 * 25 * 300 * x + compression == pytest.approx(
+        ast * 415 / 1.15, abs=1e-7
+    )
+    moment = (0.36 * 25 * 300 * x * (450 - 0.42 * x) + compression * 400) / 1e6
     actual = workflow.results["capacity"].outputs
     assert actual["equilibrium_neutral_axis_depth_mm"] == pytest.approx(x, abs=1e-10)
     assert actual["capacity_knm"] == pytest.approx(moment, abs=1e-10)
@@ -239,3 +248,133 @@ def test_independent_shear_anchorage_and_physical_bbs(workflow):
     assert workflow.package_request.bbs.scheduled_steel_mass_kg == pytest.approx(mass)
     assert workflow.package_request.quantities.concrete_volume_m3 == pytest.approx(0.81)
     assert workflow.package_request.quantities.formwork_area_m2 == pytest.approx(7.08)
+
+
+@pytest.fixture(scope="module")
+def multilayer(example):
+    return example.run_workflow(multilayer=True)
+
+
+def test_multilayer_complete_case_and_independent_sls_bbs(
+    example, multilayer, tmp_path
+):
+    result = multilayer.results
+    assert result["member"].engineering == "pass"
+    assert multilayer.package["issue_state"] == "issue_ready"
+    assert multilayer.package["active_approval"] is False
+    assert len(multilayer.package["leaves"]) == 27
+    assert all(leaf["qualified"] for leaf in multilayer.package["leaves"])
+    assert len(multilayer.package_request.schedule.paths) == 43
+    assert result["capacity"].outputs["effective_depth_mm"] == 412.5
+    assert result["capacity"].outputs["capacity_knm"] == pytest.approx(
+        235.95656263285005, abs=1e-7, rel=0
+    )
+    for name, load in (("ULS", 36), ("SLS", 24)):
+        for row in result[f"analysis-{name}"].outputs["stations"]:
+            x = row["x_mm"]
+            assert row["m3_nmm"] == pytest.approx(load * x * (5000 - x) / 2, abs=1e-7)
+            assert abs(row["v2_n"]) == pytest.approx(abs(load * (2500 - x)), abs=1e-8)
+    # Solve the transformed-section first moment independently, then sum each
+    # row's second moment. Both top layers lie inside this cracked neutral axis.
+    layers = [
+        (2 * math.pi * 25**2 / 4, 450, 8),
+        (2 * math.pi * 25**2 / 4, 375, 8),
+        (2 * math.pi * 16**2 / 4, 50, 7),
+        (2 * math.pi * 12**2 / 4, 125, 7),
+    ]
+    q = sum(n * area for area, y, n in layers)
+    first = sum(n * area * y for area, y, n in layers)
+    x = (-q + math.sqrt(q * q + 600 * first)) / 300
+    assert x > 125
+    inertia = 300 * x**3 / 3 + sum(n * area * (y - x) ** 2 for area, y, n in layers)
+    stress = 75e6 * 8 * (412.5 - x) / inertia
+    surface = 75e6 * (500 - x) / (25000 * inertia)
+    distance = math.hypot(100, 50) - 12.5
+    width = 3 * distance * surface / (1 + 2 * (distance - 37.5) / (500 - x))
+    crack = result["crack"].outputs
+    assert crack["neutral_axis_depth_mm"] == pytest.approx(x, abs=1e-9)
+    assert crack["service_steel_stress_n_per_mm2"] == pytest.approx(stress, abs=1e-9)
+    assert crack["calculated_crack_width_mm"] == pytest.approx(width, abs=1e-10)
+    assert result["deflection"].outputs["actual_span_depth_ratio"] == 5000 / 412.5
+    link_length = (
+        2 * 100 + 2 * 442 + 242 + math.hypot(242, 10) + 100 * (math.pi / 2 - 2)
+    )
+    mass = (
+        (
+            5350 * sum(area for area, y, n in layers)
+            + 35 * link_length * math.pi * 8**2 / 4
+        )
+        * 7850
+        / 1e9
+    )
+    assert multilayer.package_request.bbs.scheduled_steel_mass_kg == pytest.approx(mass)
+    assert multilayer.package_request.quantities.concrete_volume_m3 == pytest.approx(
+        0.81
+    )
+    for bar in ("B1", "B2", "B3", "B4"):
+        for side in ("left", "right"):
+            anchorage = result[f"anchorage-{bar}-{side}"].outputs["checks"][0]
+            assert anchorage["required_development_length_mm"] == pytest.approx(
+                25 * 0.87 * 415 / (4 * 1.4 * 1.6)
+            )
+            assert anchorage["available_for_criterion_mm"] == 1125
+    example.write_artifacts(multilayer, tmp_path)
+    saved = json.loads((tmp_path / "calculation.json").read_text(encoding="utf-8"))
+    assert (
+        saved["results"]["capacity"]["outputs"]["bar_responses"]
+        == result["capacity"].outputs["bar_responses"]
+    )
+    report = (tmp_path / "report.html").read_text(encoding="utf-8")
+    assert "All 27 required checks" in report
+    assert "Per-bar section equilibrium" in report
+    with (tmp_path / "bbs.csv").open(encoding="utf-8", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    assert len(rows) == 43
+    assert {row["issue_state"] for row in rows} == {"issue_ready"}
+
+
+MULTILAYER_LEAVES = [
+    "geometry",
+    "depth",
+    "flexure",
+    "shear",
+    "torsion",
+    "deflection",
+    "crack",
+    "continuity",
+    "arrangement",
+    "paths",
+    "seismic",
+]
+MULTILAYER_LEAVES += [
+    f"anchorage-{bar}-{side}"
+    for bar in ("B1", "B2", "B3", "B4", "T1", "T2", "T3", "T4")
+    for side in ("left", "right")
+]
+
+
+@pytest.mark.parametrize("missing", MULTILAYER_LEAVES)
+def test_multilayer_missing_required_evidence_stays_draft(example, missing):
+    workflow = example.run_workflow(multilayer=True, omit_checks=(missing,))
+    assert workflow.results["member"].engineering == "not_evaluated"
+    assert workflow.package["issue_state"] == "draft"
+    assert len(workflow.package["leaves"]) == 27
+    leaf_id = next(
+        key for key, value in workflow.leaf_results.items() if value == missing
+    )
+    assert not next(
+        leaf for leaf in workflow.package["leaves"] if leaf["leaf_id"] == leaf_id
+    )["qualified"]
+
+
+@pytest.mark.parametrize(
+    "probe", [{"ultimate_load_n_per_mm": 90}, {"left_bar_end_mm": 195}]
+)
+def test_multilayer_failed_engineering_stays_draft(example, probe, tmp_path):
+    workflow = example.run_workflow(multilayer=True, **probe)
+    assert workflow.results["member"].engineering == "fail"
+    assert workflow.package["issue_state"] == "draft"
+    example.write_artifacts(workflow, tmp_path)
+    assert "ISSUE_READY" not in (tmp_path / "report.html").read_text(encoding="utf-8")
+    with (tmp_path / "bbs.csv").open(encoding="utf-8", newline="") as stream:
+        assert {row["issue_state"] for row in csv.DictReader(stream)} == {"draft"}
