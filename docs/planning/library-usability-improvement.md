@@ -1,11 +1,393 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-27
+last_updated: 2026-09-28
 doc_type: spec
 ---
 
-# Library usability and implementation quality
+# Library completion, usability and implementation quality
+
+## 50-day library completion plan
+
+**Type:** Plan and evidence record
+
+**Audience:** Repository owner, developers and engineering reviewer
+
+**Status:** Proposed delivery baseline; library-only scope and one implementation stream with weekly owner review are confirmed
+
+**Importance:** Critical
+
+**Created:** 2026-09-27
+
+**Last Updated:** 2026-09-28
+
+### Charter and finish line
+
+The owner requested a professional recovery plan on 28 September and clarified
+the deliverable as **the library**, with **one implementation stream and weekly
+owner review**. This section owns the proposed 50-day schedule. The existing
+task board owns live task state; the evidence sections below remain historical
+acceptance records. Planning does not authorize a package publication or claim
+that the remaining engineering work has passed.
+
+**Day 1 is 28 September; Day 50 ends on 16 November 2026, Asia/Kolkata.** These
+are calendar days, counted inclusively. Success means a reproducibly installable,
+documented and independently reviewed release candidate for an explicitly frozen
+library subset, with no unresolved defect that invalidates a promised workflow.
+Public release is a separate, scheduled owner decision. Without the qualified
+review, report "software candidate ready; engineering acceptance outstanding",
+not professional completion. Without publication authorization, deliver the
+accepted candidate and release packet without calling it published.
+
+The primary deliverable is the Python library. Preserve the existing native
+Python/.NET common beam semantics and their maintained callers; do not promise
+.NET implementations for all Python families. CLI, serialization, BBS, quantities
+and reports belong to the library journey. API/React/Excel callers receive only
+repairs required by changed library contracts. New applications, live ETABS
+qualification, copied-model optimization, solver research and other repositories
+are outside this schedule.
+
+This is a **conditional forecast, currently AMBER**, not a proven throughput
+commitment. The named reviewer, available focused hours, leave/holidays and the
+remaining engineering defect volume are unknown. Freeze those by the first
+weekly review; reforecast from actual remaining work each week.
+
+### What the audit established
+
+Intake fetched the repository on 28 September and found clean `main` at
+`96170d81cd94d323b56f0914ed0214d1bff967b8`, equal to the fetched `origin/main`.
+GitHub readback confirms [#1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016)
+and [#1018](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1018)
+are merged. The intake found ten open dependency PRs and no non-dependency PR;
+no open issues were returned by the issue search. This does not mean no work
+remains: the task board, maintained plans and capability registries carry it.
+Other-device state was not inspected. Held/dirty sibling worktrees are preserved.
+The held solver candidate `91207365` overlaps the next-session brief, and the
+retained XLL architecture candidate `ffd6a4f1` overlaps that brief and the
+planning index. Both require an explicit replan/rebind before future integration;
+neither is a predecessor authorized for execution by this plan. This proposal
+is delivered as a draft PR while its baseline decisions remain open.
+
+| Evidence | Delivery implication |
+|---|---|
+| The live [API classification](../reference/api-classification.json) lists 13 canonical family journeys across 11 facade modules, 25 advanced exports and zero stable exports. | Freeze a row-level inventory; neither the family count nor the word library means whole-standard support or a stable API promise. |
+| Usability, typed/JSON intake and installed family journeys are already recorded as accepted in the evidence below. | Reuse their evidence where still applicable. Do not repeat facade reconstruction or turn every historical plan into new work. |
+| Single-layer and multilayer member workflows are merged, with 19/27 required leaves and 39/43 physical bars respectively. | Retain both as integration cases. Their service inputs are independently supplied; span/depth screening is not calculated long-term deflection. |
+| Whole-library deep review, general serviceability and support-fit remain explicitly open in the current handoff. | Review supported main-process outcomes and define the remaining finite acceptance boundary before implementation. |
+| The [Indian-code programme](indian-code-completion-plan.md) records bounded family acceptance, explicit raft/pile-cap holds and incomplete cumulative qualified review. | Existing accepted flat-slab/wall/stair/deep/combined/strap cases stay in the inventory; do not reopen held families to fill the calendar. |
+| Package metadata is 0.24.0 while newer source changes are merged. | An old released wheel is not evidence for the new source. Select the next version and verify the exact candidate artifact near completion. |
+| Older planning-index/task roadmap rows still describe superseded intermediate work. | Use dated source/PR evidence and a small current queue. Historical status tables are not the execution order. |
+
+This was a planning and evidence audit, not a fresh numerical audit of every
+function or a rerun of the test suites. No honest overall completion percentage
+or historical project-wide rework cost can be derived from these records.
+
+### What was missing or applied too late
+
+The project already has a charter, source controls, architecture, task board,
+benchmarks and release gates. The failure was not absence of all process.
+Several controls arrived late, differed between documents, or did not follow
+the actual user journey. The following separates observed failures from present
+planning gaps.
+
+| Gap and evidence | Consequence | Control in this plan |
+|---|---|---|
+| Oversized delivery boundary: [WP09 postmortem](xll-product/wp09-postmortem.md) records six surfaces, 13 product repair commits and 14 repair batches. | A change in one layer invalidated several later checks. | One milestone branch may contain bounded sequential units, each with explicit inputs, outputs, callers and acceptance. One final hosted cycle after the batch. |
+| Acceptance and host assumptions discovered after coding; recurrence RR-002 records 47 occurrences at intake. | Correct-looking local work failed at the real boundary. | Freeze the supported case and independent reference first; probe any required environment before implementation. Host work is otherwise excluded here. |
+| Early evidence freeze: RR-003 records ten occurrences. | Repeated source changes required evidence rework. | Finish behavior, docs and generated projections before freezing the candidate; rerun only invalidated evidence after repair. |
+| Missed production callers: RR-021 and #1016's eight workbook failures. | A correct library repair broke a maintained consumer. | Map Python, .NET, CLI, transport and sample callers for each changed contract before writing it. |
+| Function-level success did not prove complete member behavior: #1016 fixed anchorage, continuity and report-identity composition; #1018 fixed per-bar equilibrium. | Passing isolated operations could conceal a wrong end result. | Keep complete supported journeys and independently derived expected outcomes as acceptance anchors. |
+| Routine process and record requirements differed: #1018 needed a documentation-only hosted repair. | Administration caused another candidate cycle after engineering passed. | Check applicable record requirements before freezing; use one PR record for routine work and the existing detailed track only when required. |
+| A current calendar, capacity baseline, named final reviewer and remaining-effort forecast were not established by this intake. | A completion date cannot yet be defended. | WBS estimates, weekly capacity, explicit decisions, contingency and forecast triggers below. |
+| Several generations of roadmap and completion claims coexist. | Completed work can be repeated and future scope silently reactivated. | This schedule owns the 50-day priority; current contracts own technical meaning; older plans supply evidence only. |
+
+WP09's postmortem estimates 120–165 minutes of preventable rework within its
+396.381-minute session. Those are bounded historical estimates, not measured
+active labor, a total for this project, or a saving forecast. Child recurrence
+times overlap and must not be summed. These host-product lessons inform library
+delivery controls without adding host-product work to this plan.
+
+### Product scope and measurable goals
+
+**Must preserve and qualify:** the 13 current family journeys: beam, torsion,
+supplied-steel column check, one-way/continuous-one-way/two-way slab, braced
+axial wall, straight-flight stair, simply-supported deep beam, regular-interior
+flat slab, concentric isolated footing, symmetric combined footing and
+property-line strap footing. Each retains its existing geometry, action,
+reinforcement, support and code limitations. Also reconcile the 25 advertised
+advanced exports, compatibility routes, bounded IS 13920 checks and the common
+native beam operations. Classify them explicitly; do not infer acceptance from
+registration. Preserve existing support unless the owner accepts a named change.
+
+**Proposed bounded addition:** derive service stresses/crack inputs and
+short/long-term deflection for the two admitted ordinary rectangular member
+cases under a frozen load-history/material/support profile. First establish
+source, method, expected values and limitations. This is the largest estimate
+risk; it becomes a commitment only in D01/D02 below. General section analysis,
+arbitrary load histories, general support congestion, or a broader Level B/C
+claim do not follow automatically. If the packet cannot fit, the owner chooses
+a smaller explicit release scope or revises the date; it must not be silently
+removed after being promised.
+
+**Excluded:** new structural families/profiles; raft and pile-cap activation;
+IS 13920 wall/foundation expansion; new IS 875/1893, ACI or EC2 work; a general
+FEM/building solver; complete-building design; new web/Excel features; ETABS
+capture/write-back; broad tool/agent/CI modernization; unsolicited dependency
+upgrades; repository cleanup. Existing flat-slab and other accepted bounded
+families are not excluded merely because an older plan excluded them.
+
+| Goal | Acceptance measure and evidence | Accountable role |
+|---|---|---|
+| G1 — One finite library promise | 100% of the 13 journeys plus each promoted advanced/common-native route is classified as supported, compatibility, held or excluded with owner-approved reasons; every supported claim links a source, case, outcome and remaining task. | Owner for scope; delivery lead for inventory |
+| G2 — Correct complete outcomes | Both accepted physical member cases remain reproducible; any selected SLS addition has independent expected values/tolerances. Every advertised family has relevant independent evidence and an explicit applicability decision; zero unresolved release-blocking main-process defects. | Engineering reviewer for adequacy; implementer for fixes |
+| G3 — Usable public product | Promoted entry points have typed/unit-explicit contracts, errors, limitations and runnable examples. All 13 family recipes and both member examples run from the exact installed candidate with expected PASS/FAIL/HOLD behavior. | Delivery lead |
+| G4 — Compatible, reproducible distribution | All changed maintained callers pass affected checks; common Python/.NET semantics agree; clean wheel/sdist and native artifacts as applicable retain source/version/hash identity, migration evidence and supported-runtime results. | Delivery lead |
+| G5 — Accepted handover by Day 50 | Exact-candidate qualified review, owner acceptance, support/upgrade instructions and a bounded residual backlog exist. Publication is either explicitly authorized and verified or explicitly recorded as not performed. | Owner and qualified reviewer |
+
+G1 coverage measures classified promises, not engineering completion. G2–G5
+require their actual evidence. A HOLD never counts as supported acceptance.
+Any newly discovered missing required check inside the frozen scope is a defect,
+not an optional enhancement.
+
+### Capacity, estimates and funding
+
+The calendar has **36 weekdays** before leave/holidays. The planning assumption
+is **six focused implementation hours per weekday**, or **216 hours gross**.
+This is unconfirmed capacity, not observed velocity and not continuous agent
+availability. The WBS budgets **168 hours**, leaving **48 hours (22.2%)** of
+protected reserve. Weekend work is not assumed. First-week planning and the
+release/handover work are included, not free overhead.
+
+| Availability scenario | Gross capacity | Capacity after 168 planned hours | Decision |
+|---|---:|---:|---|
+| 6 h × 36 weekdays, no leave | 216 h | 48 h reserve | Conditional baseline; confirm by 2 October. |
+| 6 h × 32 available weekdays | 192 h | 24 h reserve | AMBER; reduce optional work or strengthen estimates. |
+| 4 h × 36 weekdays | 144 h | 24 h short before any reserve | RED; the current scope/date do not fit. |
+
+WBS hours are initial planning allowances, not promises that an unknown defect
+can be repaired in that time. The separate schedule data retains optimistic,
+base and pessimistic totals of **112 / 168 / 300 hours**. The adverse case does
+not fit the 216-hour capacity assumption; it requires an explicit scope/date
+decision. These ranges have no calibrated probability attached. Use actual focused time and revised remaining
+effort after Week 1; do not extrapolate commit counts, test counts or short
+agent sessions into delivery velocity.
+
+The owner review allowance is 45 minutes each Friday, seven reviews (5.25 h),
+plus the final acceptance on 16 November. A qualified reviewer needs an
+estimated 12–20 h separately, provisionally 2–6 November; that person and their
+availability are **unassigned**. This is an external acceptance dependency,
+not a second implementation stream. Fees, compute/CI usage and the spending
+ceiling are unknown. D03 must record them; no purchase is authorized. Source
+implementation and normalized IS-code distribution permission are already
+granted in the [permission record](../verification/is456-public-distribution-permission.json).
+Do not reopen that gate. A new package release still needs its own authorization.
+
+Developer experience and nonfunctional acceptance are part of the baseline:
+clean base installation must not require Excel, CSI or optional export packages;
+typed/JSON results preserve units, inputs, method and status; supported runtime
+versions follow the selected package/CI contracts; and failures are inspectable
+without being converted to successful designs. Freeze representative library
+performance workloads in WBS 1.3. The proposed regression trigger is a greater
+than 20% median slowdown against the intake candidate on the same host, runtime
+and workload over at least seven fresh processes. Record memory and output size;
+set any absolute budget from the actual user workload at M0, not from the ETABS
+product's unrelated limits. Correctness cannot be traded for a timing pass.
+
+### Work breakdown and dependency schedule
+
+The [schedule and planning snapshot](library-50-day-plan.json) contains the same
+21 WBS units, dates, effort ranges, dependencies, roles, deliverables and
+acceptance evidence. Dates are target windows; statuses start as proposed.
+Dependencies below are technical predecessors. Work is serialized by the one
+implementation stream even where dependencies would permit parallel work.
+An owner review is a milestone, not permission to invent an approval.
+
+| WBS | Deliverable / bounded work | Window | Base hours | Predecessor | Exit evidence |
+|---|---|---|---:|---|---|
+| 1.1 | Reconcile current plans, accepted PRs, remaining work and recurrence lessons | 28–29 Sep | 8 | — | Current baseline and one remaining-work queue; historical work not reopened |
+| 1.2 | Freeze scope, people, calendar and acceptance decisions | 2 Oct | 4 | 1.3 | D01–D04 recorded; reviewer/date and owner review slots confirmed or marked blocked |
+| 1.3 | Map requirements and public promises to source, caller, reference and acceptance | 29 Sep–1 Oct | 12 | 1.1 | G1 matrix covers every selected journey and advanced/common-native promise |
+| 2.1 | Trace the two accepted member journeys and changed callers | 5 Oct | 6 | 1.2 | Concrete remaining beam blockers with owner/functions and reproducible symptoms |
+| 2.2 | Freeze narrow SLS method, load history and independent reference | 6 Oct | 6 | 2.1 | Source-backed method and numeric tolerances agreed before implementation |
+| 2.3 | Calculated service stresses, crack inputs and short-term result for the selected cases | 7–9 Oct | 18 | 2.2 | Independent expected values, actual native callers and supported-case results agree |
+| 2.4 | Bounded long-term deflection and load-history semantics | 12–14 Oct | 18 | 2.3 | Explicit creep/shrinkage/history assumptions and independent result; unsupported histories remain visible |
+| 2.5 | Integrate beam calculation → required checks → physical bars → BBS/report | 15 Oct | 6 | 2.4 | Both full journeys and affected native callers pass without losing required leaves |
+| 3.1 | Supplied-steel column and isolated-footing supported outcomes | 16 Oct | 6 | 1.2 | Trace/benchmark reconciliation and confirmed blocker repairs within existing scope |
+| 3.2 | Three solid-slab journeys and torsion composition | 19–20 Oct | 8 | 1.2 | Supported-case sources, sign/units and outcome evidence match their public contract |
+| 3.3 | Existing wall, stair, deep, flat, combined and strap bounded cases | 20–22 Oct | 12 | 1.2 | All six accepted/held boundaries reconciled; main-process defects fixed or explicitly block release |
+| 3.4 | Existing IS 13920 and cross-family status/provenance | 23 Oct | 4 | 3.1, 3.2, 3.3 | Calculation, benchmark, review and approval statuses remain distinct |
+| 4.1 | Public API, compatibility and changed-caller closure | 26–27 Oct | 8 | 2.5, 3.4 | No accidental break; changed Python/.NET/transport callers and migration map verified |
+| 4.2 | Executable reference, examples and developer onboarding | 27–28 Oct | 6 | 4.1 | Promoted examples execute; strict docs and one recommended entry route agree |
+| 4.3 | Freeze supported scope, source revision, acceptance dossier and candidate version | 29 Oct | 6 | 4.2 | Immutable candidate and complete review packet; no outstanding scope ambiguity |
+| 5.1 | Build and qualify exact release artifacts and supported runtimes | 2–3 Nov | 12 | 4.3 | Release preflight, installed recipes/member journeys, artifact identity and dependency boundary verified |
+| 5.2 | Measure representative library performance/resource use | 4 Nov | 4 | 5.1 | Declared host/workload/repetitions and frozen budgets; no ETABS PF9 certification claim |
+| 5.3 | Qualified review disposition and acceptance blockers | 5–6 Nov | 8 | 5.1, 5.2 | Named reviewer signs exact scope/candidate; repairs consume reserve and get affected re-review |
+| 6.1 | Developer UAT, upgrade/rollback rehearsal and maintenance handover | 9–10 Nov | 8 | 5.3 | A retained consumer can install, run, inspect and upgrade; previous artifact recovery documented |
+| 6.2 | Optional authorized publication or unpublished-release handoff | 11 Nov | 4 | 6.1 | Exact authorized artifact verified after publication, or explicit unpublished RC receipt |
+| 6.3 | Final acceptance and residual-backlog closure | 16 Nov | 4 | 6.2 | G1–G5 disposition, open limits/owners and accepted finish recorded |
+
+Review rows 3.1–3.4 reuse existing accepted independent evidence. They are not
+an exhaustive helper-by-helper audit or an estimate for new element design.
+Reviews add no tests merely to expand coverage. Implementation fixes receive
+focused regressions and independent comparisons appropriate to their outcome.
+An unexpectedly large confirmed defect triggers a forecast change, not a
+smaller test or hidden qualification gap.
+
+| Milestone / weekly review | Date | Required decision or demonstration |
+|---|---|---|
+| M0 — Baseline agreed | Fri 2 Oct, Day 5 | Scope/requirements, capacity, reviewer and supported subset frozen |
+| M1 — First SLS result | Fri 9 Oct, Day 12 | Demonstrate narrow short-term journey; decide whether long-term estimate still fits |
+| M2 — Beam journey closed | Fri 16 Oct, Day 19 | Both beam cases and selected serviceability accepted as software evidence |
+| M3 — Family scope closed | Fri 23 Oct, Day 26 | Every promised family/advanced route has a disposition and evidence; unresolved blockers exposed |
+| M4 — Feature/API freeze | Fri 30 Oct, Day 33 | Candidate dossier ready; only release-blocking repairs after this date |
+| M5 — Exact candidate reviewed | Fri 6 Nov, Day 40 | Artifact evidence and qualified review; no silent acceptance of unresolved findings |
+| M6 — Delivery decision | Fri 13 Nov, Day 47 | Upgrade/handover demonstrated; publication fact or explicit unpublished state |
+| M7 — Finish | Mon 16 Nov, Day 50 | Owner accepts G1–G5 or records the exact unmet exit criterion and revised forecast |
+
+```mermaid
+gantt
+    title Library completion — proposed 50-day baseline
+    dateFormat YYYY-MM-DD
+    axisFormat %d %b
+    section One implementation stream
+    Scope and acceptance baseline :2026-09-28, 5d
+    Beam and bounded serviceability :2026-10-05, 11d
+    Existing family closure :2026-10-16, 8d
+    API, examples and freeze :2026-10-26, 5d
+    Artifact qualification and review :2026-11-02, 5d
+    Delivery and protected contingency :2026-11-09, 7d
+    Final acceptance :milestone, 2026-11-16, 0d
+```
+
+The critical dependency chain is scope → SLS method → beam integration → API
+freeze → exact artifact → qualified review → UAT → acceptance. Family closure
+feeds the same API freeze. The one-stream resource constraint makes delays in
+either branch consume shared slack. Protected reserve by calendar week is
+6, 0, 0, 6, 10, 6, 18 and 2 hours. The final 2 hours are on Day 50. Earlier
+unused reserve does not create work capacity in a past week; reforecast against
+remaining dates. Reserve funds defects, review response and unavailable days;
+it is not available for additional features.
+
+### Ownership and operating rules
+
+| Responsibility | Responsible | Accountable / decision authority |
+|---|---|---|
+| WBS, daily queue, dependency/effort forecast and evidence links | Codex acting as delivery lead | Repository owner (Pravin) |
+| Implementation, maintained callers, focused verification and PR | One active implementation stream | Delivery lead for software delivery |
+| Code interpretation, independent evidence adequacy and final engineering review | Qualified reviewer — unassigned | Named qualified engineering authority |
+| Scope, tradeoffs, capacity, paid review and final acceptance | Owner, with delivery-lead recommendation | Repository owner |
+| Version, tag, package upload and GitHub Release | Delivery lead prepares exact packet | Owner's per-release authorization |
+
+No additional agent team is planned. Weekly product review does not substitute
+for engineering qualification. The assistant may prepare and repair authorized
+work autonomously but cannot create a person's review or professional approval.
+
+**Definition of ready for each WBS unit:** a user-visible result; inputs and
+code/source basis; supported/excluded cases; maintained owners/callers; exact
+dependencies; estimate; expected outputs and acceptance evidence. Discover
+current test selectors from source. Missing optional context can be a labeled
+assumption; a required engineering input cannot become an invented PASS.
+
+**Definition of done:** the promised outcome is demonstrated, relevant
+independent evidence is retained, root causes of confirmed defects are fixed,
+affected callers/docs agree, required checks pass on the reviewed head, and the
+accepted PR/evidence is linked in the task board. For release/engineering
+acceptance, add exact-artifact evidence and the required human disposition.
+"Implemented", "merged", "installed", "reviewed" and "published" remain
+separate facts. Do not award fractional completion from lines of code.
+
+**Cadence:** one active parent task and one implementation unit; a blocked item
+may yield to the next dependency-ready unit without starting a second writer.
+During active sessions update only the current task/PR when state changes.
+Each Friday provide: accepted outcomes and evidence, planned vs actual effort,
+remaining estimate, blockers, reserve left, forecast date and at most three
+owner decisions. The owner review is 45 minutes; no recurring automation or
+out-of-session work is implied by this plan.
+
+**Verification:** follow the current AGENTS contract over older plan commands.
+Finish the intended unit/batch, then batch affected formatting, focused tests,
+independent references and callers once. Use one milestone PR and required
+hosted checks on its final head. Do not rerun broad suites after each internal
+unit. WBS 5.1 explicitly selects one full release preflight because the
+integrated distribution and cross-family shared contracts are the risk; rerun
+only invalidated evidence after repair, unless a shared-boundary change requires
+the broad gate again. Do not add a second implementation of production formulas
+as a purported independent benchmark.
+
+**Change control:** record `CR-id, request, reason, affected G/WBS/contract,
+effort range, schedule/reserve impact, evidence impact, recommendation, owner
+decision/date`. Accept a new feature only by an explicit scope/date/capacity
+tradeoff. The owner alone changes the frozen promise. Delivery lead may order
+and repair in-scope work; safety/correctness blockers cannot be demoted to hit a
+date. After 30 October, new features go to the residual backlog. Never erase
+rejected evidence or silently alter expected values/tolerances to obtain PASS.
+
+### Risk, assumption, dependency and decision register
+
+| ID / type | Current condition | Owner / due date | Trigger and response |
+|---|---|---|---|
+| R1 — High, engineering | New SLS scope may exceed its 42 h method/implementation allowance. | Delivery lead, 9 Oct | If remaining work exceeds allowance or a reference cannot be established, present a scoped alternative/date impact at M1. Preserve current screening claims. |
+| R2 — High, defects | Whole-library supported-outcome review is incomplete; unknown fixes may exceed family allowance. | Delivery lead, weekly | An outcome-changing blocker consumes reserve; projected use above available reserve makes forecast RED. |
+| R3 — High, reviewer dependency | No named qualified reviewer or booking is confirmed. | Owner, 2 Oct | If unavailable by M0, escalate the professional finish risk immediately; software work can proceed, but no engineering completion claim. |
+| R4 — High, capacity assumption | 6 focused h/weekday and all 36 weekdays are unconfirmed. | Owner, 2 Oct | Record leave/holidays and competing work; fewer than 192 h gross requires explicit scope/date review. |
+| R5 — Medium, compatibility | Shared physical/semantic changes can affect native/transport/example callers. | Implementer, every affected unit | Trace callers before change, include exact affected checks, preserve wire/method identities and migration policy. |
+| R6 — Medium, scope | Older programmes, new ideas and dependency PRs can consume the fixed budget. | Owner + delivery lead, every intake | Admit only confirmed completion blockers; new scope requires a CR and explicit tradeoff. |
+| R7 — High, artifact dependency | Source success does not prove clean installation or the released bytes. | Delivery lead, 6 Nov | Exact wheel/native artifact failure blocks acceptance; preserve known-good prior artifact and repair the owning packaging boundary. |
+| R8 — Medium, evidence | A late change invalidates a review/source/artifact binding. | Delivery lead + reviewer, after freeze | New candidate identity and affected re-review; no reuse of an invalid receipt. |
+| R9 — Medium, source availability | New SLS method needs controlled source/reference evidence, even though source-use permission is granted. | Engineering reviewer, 6 Oct | Missing method evidence blocks promotion of that scope; retained working cases remain usable under their existing claim boundary. |
+| R10 — Medium, delivery decision | Publication/version choice may wait beyond the software finish. | Owner, 6 Nov | Prepare concrete artifacts/release notes first; retain accepted unpublished RC if authorization is absent. |
+| A1 — Assumption | Existing accepted family evidence is reusable when the source/contract has not changed. | Delivery lead, WBS 1.3 | Any mismatch gets a named affected-evidence task; historical green results are not relabeled current. |
+| D01 — Pending | Approve exact 13-journey/advanced/common-native claim matrix and the proposed SLS addition. | Owner, 2 Oct | Record scope/versioned acceptance digest; neither "all IS 456" nor blanket stable API is implied. |
+| D02 — Pending | Confirm actual hours, days off, weekly review slot and estimate contingency. | Owner, 2 Oct | Recompute capacity and deadline forecast; the current estimate remains provisional until then. |
+| D03 — Pending | Name reviewer, agree scope, book 2–6 Nov, and set any fee/compute budget. | Owner, 2 Oct | External acceptance dependency stays visible; no inferred authority or spending. |
+| D04 — Pending | Confirm release-candidate finish and intended maturity/version policy. | Owner, 2 Oct | Package version remains TBD. Publication approval is requested only for the concrete candidate later. |
+
+**Escalation thresholds:** a blocker older than one working day, more than one
+working day of critical-path slip, more than six unplanned focused hours in a
+week, or less than 24 h reserve before feature freeze triggers a reforecast.
+The delivery lead can continue dependency-ready authorized work. Any scope or
+date change waits for an actual owner decision; weekly silence is not approval.
+Two unsuccessful repairs of the same root cause trigger a bounded re-diagnosis,
+not a general maintenance campaign or automatic abandonment.
+
+### Tracking, traceability and handover
+
+Keep the system small: this document owns goals and controls;
+[library-50-day-plan.json](library-50-day-plan.json) owns the WBS estimates and
+schedule; [TASKS](../TASKS.md) owns current task state; existing source/benchmark
+registries own technical facts; PRs own changes and check evidence. Jira,
+Confluence and portfolio tools have not been made additional authorities.
+Do not create duplicate task records unless the owner selects a tracker.
+
+WBS 1.3 produces the requirement-to-evidence mapping by extending maintained
+capability/reference owners. Each row needs: `requirement ID → public journey /
+operation → supported case / exclusions → source / method revision → code owner
+→ independent expected value and tolerance → caller / artifact → acceptance
+evidence → reviewer / disposition → WBS / PR`. There must be no unassigned
+advertised promise. The current 13-journey IDs and source snapshot are retained
+in the schedule data; this planning pass does not pretend that the full mapping
+or its engineering review has already been completed.
+
+Track accepted WBS outcomes, blocker count/age, focused hours spent and remaining,
+reserve used, review first-pass acceptance and rework hours with their cause.
+Rework ratio is repair hours divided by observed implementation/review hours;
+its baseline is unknown until measured. Overall readiness is the G1–G5 evidence
+table, not test totals, health scores or a fabricated percentage. A weekly
+forecast must state remaining capacity as well as remaining estimated effort.
+
+Final handover contains the frozen scope/limitations, version and artifact
+hashes, supported environments, runnable quickstart and migration instructions,
+independent references and review disposition, actual release/publication
+status, known residual issues with owners, and the maintenance/contact route.
+No branch deletion, issue closure, live-model operation or new release is
+authorized by accepting this planning document.
+
+**First executable next step:** WBS 1.1/1.3, reconcile the 13 family journeys,
+25 advanced exports and common native operations against the current code and
+accepted evidence; prepare D01–D04 for 2 October. Do not start another broad
+feature or repeat the already accepted multilayer milestone.
+
+## Existing implementation and acceptance evidence
 
 **28 September update:** [LIB-MEMBER-WORKFLOW-002](multilayer-member-workflow.md)
 adds the complete multilayer case and supersedes the physical centroid-capacity

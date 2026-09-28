@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-09-02
+**Last Updated:** 2026-09-28
 
 ---
 
@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [50-Day Library Completion Plan](library-usability-improvement.md#50-day-library-completion-plan) | Current library-only recovery schedule: goals, 21-unit WBS, weekly milestones, capacity, acceptance, risks and scope controls through 16 November |
 | [Python Library Workflow Improvement Plan](python-library-workflow-improvement-plan.md) | Reliable Python design, detailing, schedule and export acceptance |
 | [Excel-DNA XLL Plan and Research Handoff](xll-product/README.md) | Separate XLL planning/learning track: original P0–P6, shell-only Windows packet, research/cost map and portable handoff; no implementation acceptance implied |
 | [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md) | Human-facing six-phase programme from trusted ETABS acquisition through owned-copy reanalysis and convergence |
@@ -50,8 +51,14 @@ Internal planning documents and research notes.
 ## Document Status
 
 ### Active (current priorities)
+
+The owner-selected 28 September priority is the library-only 50-day plan below.
+Older rows retain their dated programme snapshots and do not reactivate work or
+override the latest task board, handoff and accepted PR evidence.
+
 | Document | Last Updated | Status |
 |----------|-------------|--------|
+| `library-usability-improvement.md` | 2026-09-28 | Proposed 50-day delivery baseline; library-only and one stream/weekly review confirmed; scope/capacity/reviewer decisions due 2 October |
 | `beam-design-optimization-master-plan.md` | 2026-09-02 | 🔄 Six-phase master plan frozen; Phase 1 is the only active phase and C2 exact-schema parsing is next |
 | `legacy-vba-dataflow-and-workflow-lessons.md` | 2026-09-02 | ✅ Transient result-batch policy and legacy workflow idea inventory recorded; later-phase implementation remains gated |
 | `commit-pr-validation-consolidation-plan.md` | 2026-09-02 | ✅ Accepted in PR #949; ordinary commits run three mutation-safety hooks and comprehensive assurance runs once on the batched PR |
