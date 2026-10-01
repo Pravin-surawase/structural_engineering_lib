@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 from datetime import date
@@ -86,7 +87,12 @@ def test_python_runtime_launcher_uses_explicit_interpreter():
     env["STRUCTURAL_LIB_PYTHON"] = sys.executable
 
     result = subprocess.run(
-        ["bash", str(launcher), "-c", "import sys; print(sys.executable)"],
+        [
+            shutil.which("bash"),
+            str(launcher),
+            "-c",
+            "import sys; print(sys.executable)",
+        ],
         cwd=REPO_ROOT,
         env=env,
         capture_output=True,
@@ -135,7 +141,7 @@ print(json.dumps({
 """
 
     result = subprocess.run(
-        ["bash", str(launcher), "-c", probe],
+        [shutil.which("bash"), str(launcher), "-c", probe],
         cwd=REPO_ROOT,
         env=env,
         capture_output=True,
@@ -159,7 +165,7 @@ def test_python_runtime_diagnostic_proves_worktree_source_binding():
     env["STRUCTURAL_LIB_PYTHON"] = sys.executable
 
     result = subprocess.run(
-        ["bash", str(launcher), "--diagnose"],
+        [shutil.which("bash"), str(launcher), "--diagnose"],
         cwd=REPO_ROOT,
         env=env,
         capture_output=True,
@@ -409,7 +415,7 @@ def test_active_agent_instructions_use_worktree_safe_python_launcher():
 
 def test_watch_help_does_not_require_fswatch():
     result = subprocess.run(
-        ["bash", str(SCRIPTS_DIR / "watch_tests.sh"), "--help"],
+        [shutil.which("bash"), str(SCRIPTS_DIR / "watch_tests.sh"), "--help"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,

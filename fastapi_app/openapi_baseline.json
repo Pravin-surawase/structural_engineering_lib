@@ -3775,9 +3775,33 @@
             "type": "number"
           },
           "Pb_kN": {
-            "description": "Balanced failure load (kN)",
+            "description": "Legacy x-plane alias of Pb_x_kN (kN)",
             "title": "Pb Kn",
             "type": "number"
+          },
+          "Pb_x_kN": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "x-plane prescribed-strain Pb (kN)",
+            "title": "Pb X Kn"
+          },
+          "Pb_y_kN": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "y-plane prescribed-strain Pb (kN)",
+            "title": "Pb Y Kn"
           },
           "Pu_kN": {
             "description": "Applied axial load (kN)",
@@ -3821,9 +3845,33 @@
             "type": "boolean"
           },
           "k": {
-            "description": "Reduction factor per Cl 39.7.1.1",
+            "description": "Legacy x-plane alias of k_x per Cl 39.7.1.1",
             "title": "K",
             "type": "number"
+          },
+          "k_x": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "x-plane reduction factor",
+            "title": "K X"
+          },
+          "k_y": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "y-plane reduction factor",
+            "title": "K Y"
           },
           "lex_mm": {
             "description": "Effective length x-axis (mm)",
@@ -3834,6 +3882,18 @@
             "description": "Effective length y-axis (mm)",
             "title": "Ley Mm",
             "type": "number"
+          },
+          "reduction_method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Versioned per-plane reduction convention",
+            "title": "Reduction Method"
           },
           "slenderness_ratio_x": {
             "description": "le_x / D",
@@ -11001,6 +11061,18 @@
             "description": "Actual eccentricity e = M/P (mm)",
             "title": "Eccentricity Mm",
             "type": "number"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Versioned concrete and steel section-equilibrium profile",
+            "title": "Method"
           },
           "ok": {
             "description": "True if (Pu, Mu) is within the P-M interaction capacity envelope",
@@ -23864,8 +23936,33 @@
             "type": "number"
           },
           "Pb_kN": {
+            "description": "Legacy x-plane alias of Pb_x_kN (kN)",
             "title": "Pb Kn",
             "type": "number"
+          },
+          "Pb_x_kN": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "x-plane prescribed-strain Pb (kN)",
+            "title": "Pb X Kn"
+          },
+          "Pb_y_kN": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "y-plane prescribed-strain Pb (kN)",
+            "title": "Pb Y Kn"
           },
           "Pu_kN": {
             "title": "Pu Kn",
@@ -23925,8 +24022,33 @@
             "type": "boolean"
           },
           "k": {
+            "description": "Legacy x-plane alias of k_x per Cl 39.7.1.1",
             "title": "K",
             "type": "number"
+          },
+          "k_x": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "x-plane reduction factor",
+            "title": "K X"
+          },
+          "k_y": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "y-plane reduction factor",
+            "title": "K Y"
           },
           "lex_mm": {
             "title": "Lex Mm",
@@ -23935,6 +24057,18 @@
           "ley_mm": {
             "title": "Ley Mm",
             "type": "number"
+          },
+          "reduction_method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Versioned per-plane reduction convention",
+            "title": "Reduction Method"
           },
           "warnings": {
             "default": [],
@@ -24862,6 +24996,18 @@
             "description": "Steel yield strength used (N/mm\u00b2)",
             "title": "Fy",
             "type": "number"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Versioned concrete and steel section-equilibrium profile",
+            "title": "Method"
           },
           "points": {
             "description": "Points on the P-M interaction curve",

@@ -156,8 +156,8 @@ def test_design_flanged_beam_bisection_breaks_on_exact_target():
     high = xu_max
     mid = (low + high) / 2.0
 
-    # Replicate get_moment_t(mid) exactly.
-    if (Df / d) <= 0.2:
+    # Independently form the G-2.3 ordinary state at the selected depth.
+    if (Df / mid) <= 0.43:
         yf_val = Df
     else:
         yf_val = 0.15 * mid + 0.65 * Df
@@ -191,5 +191,5 @@ def test_design_flanged_beam_bisection_breaks_on_exact_target():
         fy=fy,
     )
 
-    # When the target matches the first mid-point exactly, the solver should hit the early-break path.
+    # The supported depth must satisfy demand, irrespective of root algorithm.
     assert res.xu == pytest.approx(mid)

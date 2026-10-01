@@ -330,11 +330,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 174,
-        "registered_known_references": 98,
-        "metadata_only_references": 76,
+        "known_references": 179,
+        "registered_known_references": 104,
+        "metadata_only_references": 75,
         "registration_only_references": 0,
-        "registration_pct": 56.3
+        "registration_pct": 58.1
       },
       "references": [
         {
@@ -397,7 +397,6 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.serviceability.check_deflection_span_depth",
-            "structural_lib.codes.is456.beam.serviceability.get_long_term_deflection_factor",
             "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.slab.serviceability.check_slab_span_depth_serviceability",
             "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
@@ -1625,8 +1624,11 @@
           "reference_type": "clause",
           "title": "Minimum Eccentricity for Column Design",
           "category": "columns",
-          "registration_status": "METADATA_ONLY",
-          "functions": []
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.pmm.experimental_pmm_interaction_surface",
+            "structural_lib.codes.is456.column.pmm.pm_interaction_slice_for_layout"
+          ]
         },
         {
           "reference_id": "IS456:2000:39.3",
@@ -1951,6 +1953,18 @@
           "functions": []
         },
         {
+          "reference_id": "IS456:2000:6.2.5.1",
+          "reference": "6.2.5.1",
+          "reference_type": "clause",
+          "title": "Default ultimate creep coefficients at stated loading ages",
+          "category": "materials",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.serviceability.check_deflection_level_c",
+            "structural_lib.codes.is456.beam.serviceability.get_creep_coefficient"
+          ]
+        },
+        {
           "reference_id": "IS456:2000:Annex E",
           "reference": "Annex E",
           "reference_type": "annexure",
@@ -2062,17 +2076,16 @@
           "reference_id": "IS456:2000:C-2",
           "reference": "C-2",
           "reference_type": "annexure",
-          "title": "Concrete Stress Block Parameters — Creep and Shrinkage",
+          "title": "Immediate service deflection and effective inertia",
           "category": "serviceability",
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.serviceability.calculate_cracked_moment_of_inertia",
             "structural_lib.codes.is456.beam.serviceability.calculate_cracking_moment",
-            "structural_lib.codes.is456.beam.serviceability.calculate_creep_deflection",
             "structural_lib.codes.is456.beam.serviceability.calculate_effective_moment_of_inertia",
             "structural_lib.codes.is456.beam.serviceability.calculate_gross_moment_of_inertia",
-            "structural_lib.codes.is456.beam.serviceability.check_deflection_level_c",
-            "structural_lib.codes.is456.beam.serviceability.get_creep_coefficient"
+            "structural_lib.codes.is456.beam.serviceability.check_deflection_level_b",
+            "structural_lib.codes.is456.beam.serviceability.check_deflection_level_c"
           ]
         },
         {
@@ -2085,6 +2098,18 @@
           "functions": [
             "structural_lib.codes.is456.beam.serviceability.calculate_shrinkage_curvature",
             "structural_lib.codes.is456.beam.serviceability.calculate_shrinkage_deflection",
+            "structural_lib.codes.is456.beam.serviceability.check_deflection_level_c"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:C-4",
+          "reference": "C-4",
+          "reference_type": "annexure",
+          "title": "Additional creep deflection from changed effective modulus",
+          "category": "serviceability",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.serviceability.calculate_creep_deflection",
             "structural_lib.codes.is456.beam.serviceability.check_deflection_level_c"
           ]
         },
@@ -2165,14 +2190,49 @@
           ]
         },
         {
-          "reference_id": "IS456:2000:G-2.2",
-          "reference": "G-2.2",
+          "reference_id": "IS456:2000:G-2.1",
+          "reference": "G-2.1",
           "reference_type": "annexure",
-          "title": "Flanged Beams - Neutral Axis in Web",
+          "title": "Flange Containing the Compression Zone",
           "category": "flexure",
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.flexure.calculate_mu_lim_flanged",
+            "structural_lib.codes.is456.beam.flexure.design_flanged_beam"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:G-2.2",
+          "reference": "G-2.2",
+          "reference_type": "annexure",
+          "title": "Flanged Section Limiting Moment",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_mu_lim_flanged",
+            "structural_lib.codes.is456.beam.flexure.design_flanged_beam"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:G-2.2.1",
+          "reference": "G-2.2.1",
+          "reference_type": "annexure",
+          "title": "Limiting Moment with a Thick Flange",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_mu_lim_flanged",
+            "structural_lib.codes.is456.beam.flexure.design_flanged_beam"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:G-2.3",
+          "reference": "G-2.3",
+          "reference_type": "annexure",
+          "title": "Flanged Section Below the Limiting Depth",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
             "structural_lib.codes.is456.beam.flexure.design_flanged_beam"
           ]
         },

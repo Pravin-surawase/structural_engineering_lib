@@ -45,6 +45,10 @@ total final       = instantaneous total + creep additional + shrinkage
 after finishes    = max(0, total final - deflection at finish installation)
 ```
 
+The supplied creep multiplier is the additional/initial permanent-load
+deflection ratio established by its named model. It is not automatically the
+material creep coefficient theta: cracked-section stiffness can change.
+
 This operation does not predict creep, shrinkage, cracking, or effective
 stiffness from incomplete evidence. Missing conditional evidence produces a
 completed `not_evaluated` result. Invalid chronology or component geometry is
@@ -79,3 +83,70 @@ that exceeds its limit is a completed engineering failure.
 The conformance corpus includes equal-area arrangements with different bar
 spacing. Their crack widths differ because `acr` uses the nearest actual bar
 surface rather than an equivalent reinforcement area.
+
+
+## Legacy scalar Annex C correction — 1 October 2026
+
+The separate `codes/is456/beam/serviceability.py` Level-B/C helpers have a
+bounded source-defined profile `IS456_ANNEX_C_RECT_SINGLE_V1`. They are not
+WP04's supplied-component operation and do not populate its chronology or
+provenance by inference. Existing WP04/physical-beam code remains unchanged.
+
+Derive elastic section equilibrium and deflection from mechanics; original
+standards define the code-specific empirical relationships. Comparator source
+and independent benchmarks provide additional evidence. NPTEL is supporting
+reference material only. Direct inspection of original
+[IS 456 Annex C, printed pages 88–89](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf#page=101)
+and [Cl. 6.2.5.1](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf#page=29)
+identifies these corrections:
+
+- C-2.1 effective inertia uses `Icr/[1.2-(Mr/M)(z/d)(1-x/d)(bw/b)]`, with
+  `Icr <= Ieff <= Ig`. For the supported rectangle `bw/b=1`, `z=d-x/3`.
+  The former cubic Branson blend was a different model with incorrect IS attribution.
+- C-4.1 computes additional permanent-load creep as the difference between
+  long-term and initial deflection. `Ec_eff=Ec/(1+theta)` changes the modular
+  ratio, neutral axis, cracked inertia and effective inertia; multiplying
+  the initial deflection by theta at fixed inertia is not this procedure.
+- C-3.1 uses overall depth `D`: `phi_sh=k4*eps_cs/D`. The source-defined
+  percentage-based k4 branches and support k3 values remain empirical code
+  approximations; they are not replaced by an accuracy claim.
+- The source default ultimate theta is `2.2/1.6/1.1` at loading ages
+  `7/28/365 days`. The previous humidity/size equation, clamping and its
+  nonexistent Table C.2 attribution are removed. Intermediate ages need
+  a selected model; humidity/size context does not invent a calibration.
+- Double integration of `EI*v''=M(x)` gives `5*Mmid*L²/(48*EI)` for SS UDL
+  and `Mroot*L²/(3*EI)` for a cantilever end point load. The old `1/2`
+  cantilever coefficient corresponded to a different load pattern despite
+  its end-point label. Negative moments use magnitudes and zero external
+  moment retains the shrinkage estimate.
+
+The scalar profile supports singly reinforced rectangles with elastic service
+steel, same-direction unfactored permanent/live actions, and either SS UDL or
+cantilever end point loading. Concrete default linear creep is limited to
+permanent-load stress no greater than `fck/3`; default material parameters above
+M55 need additional data. This is a source-default ultimate estimate, not a
+finite-time, cyclic, construction-history or post-finishes calculation.
+
+| Missing basis or domain | Current result |
+|---|---|
+| Level B duration and one moment, without permanent load/loading age/shrinkage | `HOLD_UNSUPPORTED`, with immediate outputs when qualified |
+| Cracked helper call without neutral-axis and effective-depth geometry | `ValueError` naming the missing C-2.1 basis |
+| Shrinkage helper call without overall D or with `pt-pc < .25%` | Unsupported; no extrapolation |
+| Continuous scalar support, without support/midspan moments | `HOLD_UNSUPPORTED`; no assumed `.6` factor or blended support coefficient |
+| Compression steel without its depth/layout | `HOLD_UNSUPPORTED`; no assumed bar position |
+| Opposing sustained/live moments, unsupported loading age or nonlinear creep stress | `HOLD_UNSUPPORTED`; no safe total |
+
+Unsupported results have `is_ok=False`, `computed.status=HOLD_UNSUPPORTED`, a
+specific reason and no finite qualified total (`delta_total_mm=inf`). Direct
+helpers raise `ValueError` for missing basis. The legacy duration multiplier
+remains an explicitly unqualified compatibility helper and is not used by an
+IS456 Level-B/C total check. Additional geometry keywords on direct helpers
+are compatibility changes documented here rather than silently inferred.
+
+Independent fixtures in
+[`sls_annexc_reference.json`](../../../Python/tests/data/benchmark_vectors/sls_annexc_reference.json)
+use 60-digit Decimal equilibrium and virtual-work integration, with 62 numerical
+states and eight retained unsupported domains. Raw predecessor/new-model results
+and isolated-wheel evidence are retained with the material packet. Latest complete
+IS amendment-set verification remains open; the controlled Amendment-5 copy and
+targeted Amendment-6 check do not certify every later edition or material type.

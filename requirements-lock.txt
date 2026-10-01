@@ -11,7 +11,7 @@
 #   <temporary-venv>/bin/python -m pip install -r requirements.txt
 #   <temporary-venv>/bin/python -m pip freeze --exclude-editable
 #
-# Generated: 2026-08-07
+# Generated: 2026-10-01 (scoped pip-resolver advisory repair)
 # =============================================================================
 
 altair==6.2.2
@@ -104,7 +104,7 @@ pydantic_core==2.46.4
 pydeck==0.9.3
 pydyf==0.12.1
 Pygments==2.20.0
-PyJWT==2.13.0
+PyJWT==2.15.1
 pymdown-extensions==11.0.1
 pyparsing==3.3.2
 pyphen==0.17.2
@@ -113,7 +113,7 @@ pytest-asyncio==1.4.0
 pytest-benchmark==5.2.3
 pytest-cov==7.1.0
 python-dateutil==2.9.0.post0
-python-discovery==1.5.1
+python-discovery==1.6.0
 python-dotenv==1.2.2
 python-multipart==0.0.32
 pytokens==0.4.1
@@ -139,17 +139,17 @@ tenacity==9.1.4
 tinycss2==1.5.1
 tinyhtml5==2.1.0
 toml==0.10.2
-tornado==6.5.8
+tornado==6.5.9
 tqdm==4.70.0
 typing-inspection==0.4.2
 typing_extensions==4.16.0
 uc-micro-py==2.0.0
-urllib3==2.7.0
+urllib3==2.8.0
 uvicorn==0.52.1
-virtualenv==21.7.1
+virtualenv==21.7.13
 vtk==9.6.2
 watchdog==6.0.0
-weasyprint==69.0
+weasyprint==70.0
 webencodings==0.5.1
 websockets==17.0.1
 xyzservices==2026.3.0

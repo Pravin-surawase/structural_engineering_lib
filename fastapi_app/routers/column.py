@@ -317,6 +317,7 @@ async def design_column_uniaxial(
                     else None
                 ),
                 warnings=list(result["warnings"]),
+                method=result.get("method"),
             )
         )
 
@@ -351,8 +352,8 @@ async def pm_interaction_curve(
     Generate P-M interaction curve per IS 456 Cl. 39.5.
 
     Sweeps the neutral axis depth and computes (Pu, Mu) pairs
-    at each point using the IS 456 stress-block model and SP:16 Table I
-    coefficients for xu > D.
+    at each point using the integrated IS 456 Fig. 21 design curve and the
+    Cl. 39.1 strain domain. The response identifies the retained steel profile.
     """
     try:
         from structural_lib.services.api import pm_interaction_curve_is456
@@ -382,6 +383,7 @@ async def pm_interaction_curve(
                 d_prime_mm=result["d_prime_mm"],
                 clause_ref=result.get("clause_ref", "Cl. 39.5"),
                 warnings=result.get("warnings", []),
+                method=result.get("method"),
             )
         )
 

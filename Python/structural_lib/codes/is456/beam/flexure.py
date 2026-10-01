@@ -10,11 +10,13 @@ Traceability: Functions are decorated with @clause for IS 456 clause references.
 from __future__ import annotations
 
 import math
+from dataclasses import replace
 
 from structural_lib.codes.is456 import materials
 from structural_lib.codes.is456.common.stress_blocks import (
     calculate_ast_from_rectangular_stress_block,
 )
+from structural_lib.codes.is456.section_materials import section_concrete_stress
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import BeamType, DesignSectionType, FlexureResult
 from structural_lib.core.error_messages import (
@@ -28,6 +30,7 @@ from structural_lib.core.errors import (
     E_FLEXURE_002,
     E_FLEXURE_003,
     E_FLEXURE_004,
+    E_FLEXURE_005,
     E_INPUT_002,
     E_INPUT_003,
     E_INPUT_004,
@@ -601,9 +604,10 @@ def design_doubly_reinforced(
     # 3. Calculate Stress in Compression Steel (fsc)
     fsc = materials.get_steel_stress(strain_sc, fy)
 
-    # 4. Calculate Stress in Concrete at level of compression steel (fcc)
-    # fcc = 0.446 * fck
-    fcc = 0.446 * fck
+    # G-1.2 subtracts concrete at the actual compression-bar strain. A fixed
+    # peak overstates displaced concrete below Fig. 21's .002 plateau.
+    # This local design curve remains separate from the normative .36/.42 block.
+    fcc = section_concrete_stress(strain_sc, fck)
 
     # 5. Calculate Asc
     # Mu2 = Asc * (fsc - fcc) * (d - d')
@@ -668,6 +672,8 @@ def design_doubly_reinforced(
             "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
             "Ast": "IS 456 Cl 38.1, Annex G-1.1 and G-1.2",
             "Asc": "IS 456 Annex G-1.2",
+            "fsc": "IS 456 Cl 38.1(e), Fig.23 representative curve; gamma_s=1.15",
+            "fcc": "IS 456 Cl 38.1(c), Fig.21 at compression-bar strain; gamma_c=1.5",
             "xu_max_d": "IS 456 Table J",
             "Ast_min": "IS 456 Cl 26.5.1.1",
             "Ast_max": "IS 456 Cl 26.5.1.2",
@@ -675,7 +681,50 @@ def design_doubly_reinforced(
     )
 
 
-@clause("38.1", "G-2.2")
+def _flanged_web_root(
+    bw: float,
+    bf: float,
+    d: float,
+    Df: float,
+    xu_max: float,
+    fck: float,
+    moment_nmm: float,
+) -> tuple[float, float] | None:
+    """Solve each G-2.3 branch without interpolating its rounded boundary gaps.
+
+    With yf=a*xu+c, M=-A*xu**2+B*xu+C. The smaller root is
+    2*(M-C)/(B+sqrt(B**2-4*A*(M-C))), avoiding cancellation.
+    A candidate must obey its actual branch and satisfy the moment residual.
+    The separate G-2.2 limiting state is handled by the caller.
+    """
+    boundary = Df / 0.43
+    web_factor = 0.36 * fck * bw
+    flange_factor = 0.45 * fck * (bf - bw)
+    tolerance_nmm = max(1e-6, 1e-12 * abs(moment_nmm))
+    for a, c in ((0.15, 0.65 * Df), (0.0, Df)):
+        quadratic = 0.42 * web_factor + 0.5 * flange_factor * a * a
+        linear = web_factor * d + flange_factor * a * (d - c)
+        constant = flange_factor * c * (d - 0.5 * c)
+        demand = moment_nmm - constant
+        discriminant = linear * linear - 4.0 * quadratic * demand
+        if demand <= 0.0 or discriminant < 0.0:
+            continue
+        xu = 2.0 * demand / (linear + math.sqrt(discriminant))
+        if a == 0.0 and abs(xu - boundary) <= 4.0 * math.ulp(boundary):
+            xu = boundary
+        if not Df < xu < xu_max:
+            continue
+        if (a > 0.0 and xu >= boundary) or (a == 0.0 and xu < boundary):
+            continue
+        yf = Df if xu >= boundary else min(0.15 * xu + 0.65 * Df, Df)
+        resistance = web_factor * xu * (d - 0.42 * xu)
+        resistance += flange_factor * yf * (d - yf / 2.0)
+        if math.isfinite(resistance) and abs(resistance - moment_nmm) <= tolerance_nmm:
+            return xu, yf
+    return None
+
+
+@clause("38.1", "G-2.1", "G-2.2", "G-2.2.1")
 def calculate_mu_lim_flanged(
     bw: float, bf: float, d: float, Df: float, fck: float, fy: float
 ) -> float:
@@ -708,6 +757,10 @@ def calculate_mu_lim_flanged(
     """
     xu_max = materials.get_xu_max_d(fy) * d
 
+    if xu_max <= Df:
+        # The whole limiting compression zone lies in the flange (G-2.1).
+        return calculate_mu_lim(bf, d, fck, fy)
+
     # Check Df/d ratio for yf
     if (Df / d) <= 0.2:
         yf = Df
@@ -731,7 +784,7 @@ def calculate_mu_lim_flanged(
     return mu_web_knm + m_flange_knm
 
 
-@clause("38.1", "23.1.2", "G-2.2")
+@clause("38.1", "23.1.2", "G-2.1", "G-2.2", "G-2.2.1", "G-2.3")
 def design_flanged_beam(
     bw: float,
     bf: float,
@@ -860,6 +913,29 @@ def design_flanged_beam(
         )
 
     mu_abs = abs(mu_knm)
+    mu_target_nmm = mu_abs * 1000000.0
+    tolerance_nmm = max(1e-6, 1e-12 * mu_target_nmm)
+    xu_max = materials.get_xu_max_d(fy) * d
+    mu_lim_t = calculate_mu_lim_flanged(bw, bf, d, Df, fck, fy)
+
+    if xu_max <= Df:
+        # G-2.1: the limiting concrete block remains wholly in the flange.
+        if mu_abs <= mu_lim_t:
+            return design_singly_reinforced(bf, d, d_total, mu_knm, fck, fy)
+        rectangular = design_doubly_reinforced(bf, d, d_dash, d_total, mu_abs, fck, fy)
+        # Retain the existing flanged doubly-reinforced bw*D cap; changing that
+        # convention to gross T-section area is a separate qualification.
+        ast_max = 0.04 * bw * d_total
+        errors = list(rectangular.errors)
+        over_max = max(rectangular.Ast_required, rectangular.Asc_required) > ast_max
+        if over_max and not any(error.code == E_FLEXURE_003.code for error in errors):
+            errors.append(E_FLEXURE_003)
+        return replace(
+            rectangular,
+            Ast_max=ast_max,
+            is_safe=rectangular.is_safe and not over_max,
+            errors=errors,
+        )
 
     # 1. Check if Neutral Axis is in Flange
     # Calculate capacity assuming xu = Df
@@ -874,10 +950,7 @@ def design_flanged_beam(
 
     # 2. Neutral Axis in Web (xu > Df)
     # Check if Doubly Reinforced T-beam is needed
-    mu_lim_t = calculate_mu_lim_flanged(bw, bf, d, Df, fck, fy)
-    xu_max = materials.get_xu_max_d(fy) * d
-
-    if mu_abs > mu_lim_t:
+    if mu_target_nmm - mu_lim_t * 1000000.0 > tolerance_nmm:
         # Doubly Reinforced T-Beam
 
         # Calculate Flange Contribution at Limiting Depth
@@ -949,57 +1022,32 @@ def design_flanged_beam(
             },
         )
 
-    # 3. Singly Reinforced T-Beam (Df < xu <= xu_max)
-    # We need to find xu such that Moment(xu) = Mu
-
-    def get_moment_t(xu_val: float) -> float:
+    # 3. Singly reinforced web state per G-2.3; G-2.2 defines its separate cap.
+    at_limiting_depth = abs(mu_target_nmm - mu_lim_t * 1000000.0) <= tolerance_nmm
+    if at_limiting_depth:
+        xu_sol = xu_max
         if (Df / d) <= 0.2:
-            yf_val = Df
-        else:
-            yf_val = 0.15 * xu_val + 0.65 * Df
-            if yf_val > Df:
-                yf_val = Df
-
-        # Web
-        c_web = 0.36 * fck * bw * xu_val
-        m_web = c_web * (d - 0.42 * xu_val)
-
-        # Flange
-        c_flange_val = 0.45 * fck * (bf - bw) * yf_val
-        m_flange = c_flange_val * (d - yf_val / 2.0)
-
-        return m_web + m_flange
-
-    # Bisection Solver
-    low = Df
-    high = xu_max
-    mu_target_nmm = mu_abs * 1000000.0
-
-    xu_sol = high  # Default
-
-    for _ in range(50):
-        mid = (low + high) / 2.0
-        m_mid = get_moment_t(mid)
-
-        if abs(m_mid - mu_target_nmm) < 1000.0:  # 1 Nm tolerance
-            xu_sol = mid
-            break
-
-        if m_mid < mu_target_nmm:
-            low = mid
-        else:
-            high = mid
-    else:
-        xu_sol = (low + high) / 2.0
-
-    # Calculate Ast for this xu
-    # C = T => 0.36 fck bw xu + 0.45 fck (bf - bw) yf = 0.87 fy Ast
-    if (Df / d) <= 0.2:
-        yf_sol = Df
-    else:
-        yf_sol = 0.15 * xu_sol + 0.65 * Df
-        if yf_sol > Df:
             yf_sol = Df
+        else:
+            yf_sol = min(0.15 * xu_max + 0.65 * Df, Df)
+    else:
+        solution = _flanged_web_root(bw, bf, d, Df, xu_max, fck, mu_target_nmm)
+        if solution is None:
+            return FlexureResult(
+                Mu_lim=mu_lim_t,
+                Ast_required=0.0,
+                pt_provided=0.0,
+                section_type=DesignSectionType.UNDER_REINFORCED,
+                xu=0.0,
+                xu_max=xu_max,
+                is_safe=False,
+                errors=[E_FLEXURE_005],
+                clause_refs={
+                    "xu": "IS 456 Annex G-2.3",
+                    "Mu_lim": "IS 456 Annex G-2.2",
+                },
+            )
+        xu_sol, yf_sol = solution
 
     c_total = (0.36 * fck * bw * xu_sol) + (0.45 * fck * (bf - bw) * yf_sol)
     ast_required = c_total / (0.87 * fy)
@@ -1042,8 +1090,13 @@ def design_flanged_beam(
         Ast_min=ast_min,
         Ast_max=ast_max,
         clause_refs={
-            "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
-            "Ast": "IS 456 Cl 38.1, Annex G-1.1 and G-2.2",
+            "Mu_lim": "IS 456 Cl 38.1, Annex G-2.2",
+            "Ast": (
+                "IS 456 Cl 38.1, Annex G-2.2"
+                if at_limiting_depth
+                else "IS 456 Cl 38.1, Annex G-2.3"
+            ),
+            "xu": "IS 456 Annex G-2.2" if at_limiting_depth else "IS 456 Annex G-2.3",
             "xu_max_d": "IS 456 Table J",
             "Ast_min": "IS 456 Cl 26.5.1.1",
             "Ast_max": "IS 456 Cl 26.5.1.2",

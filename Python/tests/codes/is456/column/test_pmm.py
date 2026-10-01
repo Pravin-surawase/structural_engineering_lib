@@ -191,9 +191,9 @@ def test_oblique_response_matches_independent_closed_form_benchmark(
         fiber_y_mm=fiber_y_mm,
         fiber_area_mm2=fiber_area_mm2,
     )
-    assert result.Pu_kN == pytest.approx(145.723673469, abs=0.02)
-    assert result.Mx_kNm == pytest.approx(26.906093629, abs=0.001)
-    assert result.My_kNm == pytest.approx(-26.906093629, abs=0.001)
+    assert result.Pu_kN == pytest.approx(145.941496599, abs=0.02)
+    assert result.Mx_kNm == pytest.approx(27.072150076, abs=0.001)
+    assert result.My_kNm == pytest.approx(-27.072150076, abs=0.001)
     assert result.max_concrete_strain == pytest.approx(0.0035, rel=0.02)
 
 
@@ -216,10 +216,10 @@ def test_oblique_slice_preserves_independent_benchmark_signs(steel: Steel) -> No
         n_fibers_y=96,
         n_depths=240,
     )
-    mx_kNm, my_kNm = _signed_moments_at_axial_load(slice_, 145.723673469)
+    mx_kNm, my_kNm = _signed_moments_at_axial_load(slice_, 145.941496599)
 
-    assert mx_kNm == pytest.approx(26.906093629, abs=0.01)
-    assert my_kNm == pytest.approx(-26.906093629, abs=0.01)
+    assert mx_kNm == pytest.approx(27.072150076, abs=0.01)
+    assert my_kNm == pytest.approx(-27.072150076, abs=0.01)
 
 
 @pytest.mark.parametrize(

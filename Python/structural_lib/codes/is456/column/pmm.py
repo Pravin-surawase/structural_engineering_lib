@@ -24,19 +24,21 @@ except ModuleNotFoundError as exc:  # pragma: no cover - exercised by wheel smok
         "Install structural-lib-is456[pmm]."
     ) from exc
 
+from structural_lib.codes.is456.column._strain_compatibility import (
+    COLUMN_SECTION_METHOD,
+    CONCRETE_PEAK_FACTOR,
+    concrete_stress_at_strain,
+    extreme_compression_strain,
+)
 from structural_lib.codes.is456.common.constants import (
     COLUMN_CONCRETE_COEFF,
     COLUMN_MAX_STEEL_RATIO,
     COLUMN_MIN_STEEL_RATIO,
     COLUMN_STEEL_COEFF,
     EPSILON_C0,
-    EPSILON_CU,
     ES_STEEL_MPA,
-    STRESS_BLOCK_PEAK,
 )
-from structural_lib.codes.is456.common.stress_blocks import (
-    steel_stress_from_strain_5point,
-)
+from structural_lib.codes.is456.section_materials import section_steel_stress
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import (
     ColumnReinforcementBar,
@@ -203,16 +205,13 @@ def _concrete_stress_nmm2(strain: np.ndarray, fck_nmm2: float) -> np.ndarray:
     """Return IS 456 design concrete stress for compression-positive strain."""
     positive = np.maximum(strain, 0.0)
     ratio = np.minimum(positive / EPSILON_C0, 1.0)
-    parabolic = STRESS_BLOCK_PEAK * fck_nmm2 * (2.0 * ratio - ratio**2)
+    parabolic = CONCRETE_PEAK_FACTOR * fck_nmm2 * (2.0 * ratio - ratio**2)
     return np.where(positive > 0.0, parabolic, 0.0)
 
 
 def _concrete_stress_scalar(strain: float, fck_nmm2: float) -> float:
     """Scalar counterpart of :func:`_concrete_stress_nmm2`."""
-    if strain <= 0.0:
-        return 0.0
-    ratio = min(strain / EPSILON_C0, 1.0)
-    return STRESS_BLOCK_PEAK * fck_nmm2 * (2.0 * ratio - ratio**2)
+    return concrete_stress_at_strain(strain, fck_nmm2)
 
 
 def _fiber_grid(
@@ -248,28 +247,18 @@ def _section_response(
     cos_t = math.cos(theta_rad)
     projected_depth_mm = abs(b_mm * sin_t) + abs(D_mm * cos_t)
     q_max_mm = projected_depth_mm / 2.0
-    q_min_mm = q_max_mm - projected_depth_mm
 
     fiber_q_mm = fiber_x_mm * sin_t + fiber_y_mm * cos_t
-    if neutral_axis_depth_mm <= projected_depth_mm:
-        q_na_mm = q_max_mm - neutral_axis_depth_mm
-        concrete_strain = EPSILON_CU * ((fiber_q_mm - q_na_mm) / neutral_axis_depth_mm)
+    # IS 456 Cl. 38.1(a), 39.1(b): the same plane governs concrete and every bar.
+    maximum_strain = extreme_compression_strain(
+        neutral_axis_depth_mm, projected_depth_mm
+    )
+    concrete_strain = maximum_strain * (
+        1.0 - (q_max_mm - fiber_q_mm) / neutral_axis_depth_mm
+    )
 
-        def strain_at(q_mm: float) -> float:
-            return EPSILON_CU * ((q_mm - q_na_mm) / neutral_axis_depth_mm)
-
-    else:
-        # IS 456 Cl. 38.1: modified strain profile when the whole section
-        # is in compression and the neutral axis lies beyond the far face.
-        far_strain = EPSILON_CU * (
-            (neutral_axis_depth_mm - projected_depth_mm) / neutral_axis_depth_mm
-        )
-        maximum_strain = EPSILON_CU - 0.75 * far_strain
-        strain_gradient = (maximum_strain - far_strain) / projected_depth_mm
-        concrete_strain = far_strain + strain_gradient * (fiber_q_mm - q_min_mm)
-
-        def strain_at(q_mm: float) -> float:
-            return far_strain + strain_gradient * (q_mm - q_min_mm)
+    def strain_at(q_mm: float) -> float:
+        return maximum_strain * (1.0 - (q_max_mm - q_mm) / neutral_axis_depth_mm)
 
     concrete_stress = _concrete_stress_nmm2(concrete_strain, fck_nmm2)
     concrete_force_n = concrete_stress * fiber_area_mm2
@@ -283,7 +272,7 @@ def _section_response(
         bar_q_mm = bar.x_mm * sin_t + bar.y_mm * cos_t
         bar_strain = strain_at(bar_q_mm)
         steel_strains.append(bar_strain)
-        steel_stress = steel_stress_from_strain_5point(bar_strain, bar.material.fy)
+        steel_stress = section_steel_stress(bar_strain, bar.material.fy)
         displaced_concrete_stress = _concrete_stress_scalar(bar_strain, fck_nmm2)
         net_bar_force_n = (steel_stress - displaced_concrete_stress) * bar.area_mm2
         axial_force_n += net_bar_force_n
@@ -370,7 +359,7 @@ def _zero_axial_intersection(
     )
 
 
-@clause("38.1", "39.3", "39.5")
+@clause("38.1", "39.1", "39.3", "39.5")
 def pm_interaction_slice_for_layout(
     *,
     b_mm: float,
@@ -449,7 +438,7 @@ def pm_interaction_slice_for_layout(
     return PMMInteractionSlice(theta_deg=normalized_theta, points=tuple(accepted))
 
 
-@clause("38.1", "39.3", "39.5")
+@clause("38.1", "39.1", "39.3", "39.5")
 def experimental_pmm_interaction_surface(
     *,
     b_mm: float,
@@ -516,4 +505,6 @@ def experimental_pmm_interaction_surface(
         n_fibers_y=n_fibers_y,
         n_depths=n_depths,
         warnings=tuple(warnings),
+        method=f"{COLUMN_SECTION_METHOD}__FIBER_V2",
+        clause_refs=("Cl. 38.1", "Cl. 39.1", "Cl. 39.3", "Cl. 39.5"),
     )

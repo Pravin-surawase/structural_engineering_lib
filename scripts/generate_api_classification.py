@@ -15,17 +15,19 @@ import ast
 import hashlib
 import importlib
 import inspect
+import io
 import json
 import os
 import re
 import subprocess
 import sys
+import tokenize
 import warnings
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from types import ModuleType
-from typing import Any, get_args
+from typing import Any, TypeVar, get_args
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
@@ -369,9 +371,7 @@ def _documentation_record(
                 "REGISTERED_EXECUTABLE_EXAMPLE",
             ]
             if role == "CANONICAL_WORKFLOW_OPERATION"
-            else ["CLASSIFIED_PUBLIC_ROLE"]
-            if declared_export
-            else []
+            else ["CLASSIFIED_PUBLIC_ROLE"] if declared_export else []
         ),
         "signature": _signature(value) if kind == "function" else "",
         "docstring_sections": present_sections,
@@ -390,6 +390,28 @@ def _kind(value: object) -> str:
     return "value"
 
 
+def _normalize_signature_text(text: str) -> str:
+    """Normalize typing alias spellings without rewriting literal values."""
+
+    if "typing.Annotated[" not in text and "typing.Literal[" not in text:
+        return text
+    tokens = list(tokenize.generate_tokens(io.StringIO(text).readline))
+    removals = []
+    for index in range(len(tokens) - 3):
+        qualifier, dot, alias, bracket = tokens[index : index + 4]
+        if (
+            qualifier.type == tokenize.NAME
+            and qualifier.string == "typing"
+            and dot.string == "."
+            and alias.string in {"Annotated", "Literal"}
+            and bracket.string == "["
+        ):
+            removals.append((qualifier.start[1], alias.start[1]))
+    for start, end in reversed(removals):
+        text = text[:start] + text[end:]
+    return text
+
+
 def _signature(value: object) -> str:
     if not (
         inspect.isclass(value) or inspect.isfunction(value) or inspect.isbuiltin(value)
@@ -397,6 +419,10 @@ def _signature(value: object) -> str:
         return ""
     if inspect.isclass(value) and issubclass(value, Enum):
         return "(value)"
+    if value is TypeVar:
+        # This stdlib factory moved to C in Python 3.12 and is uninspectable
+        # there. Do not encode one runtime's constructor as a library contract.
+        return "(...)"
     try:
         signature = inspect.signature(value)
     except (TypeError, ValueError):
@@ -405,7 +431,7 @@ def _signature(value: object) -> str:
         parameters = list(signature.parameters.values())
         if parameters and parameters[0].name in {"self", "cls"}:
             signature = signature.replace(parameters=parameters[1:])
-    return str(signature).replace("typing.Annotated[", "Annotated[")
+    return _normalize_signature_text(str(signature))
 
 
 def _canonical_owner(value: object, fallback: str) -> str:

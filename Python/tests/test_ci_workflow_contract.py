@@ -6,6 +6,7 @@ import fnmatch
 import json
 import os
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -132,7 +133,7 @@ def _pr_gate_script() -> str:
 
 def _run_pr_gate(**overrides: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        ["bash", "-eu", "-o", "pipefail", "-c", _pr_gate_script()],
+        [shutil.which("bash"), "-eu", "-o", "pipefail", "-c", _pr_gate_script()],
         cwd=REPO_ROOT,
         env={**os.environ, **BASE_GATE_ENV, **overrides},
         capture_output=True,

@@ -534,6 +534,16 @@ E_FLEXURE_004 = DesignError(
     recovery="Reduce compression steel cover d'. d' should be \u2264 0.2d for effective compression steel contribution.",
 )
 
+E_FLEXURE_005 = DesignError(
+    code="E_FLEXURE_005",
+    severity=Severity.ERROR,
+    message="No admissible Annex G neutral-axis solution for the supplied moment",
+    field="Mu",
+    hint="The moment must have a physical root in its applicable flange branch.",
+    clause="Annex G-2.3",
+    recovery="Review the section and demand. Rounded Annex G branches may leave a boundary gap; an endpoint is not a converged design.",
+)
+
 # Shear Errors
 E_SHEAR_001 = DesignError(
     code="E_SHEAR_001",

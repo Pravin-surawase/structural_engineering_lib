@@ -111,7 +111,7 @@ def test_valid_boundaries_and_benchmarks_are_unchanged() -> None:
     assert materials.get_xu_max_d(550.0) == pytest.approx(700 / (1100 + 0.87 * 550))
     assert materials.get_ec(80.0) == pytest.approx(5000 * math.sqrt(80))
     assert materials.get_fcr(15.0) == pytest.approx(0.7 * math.sqrt(15))
-    assert materials.get_steel_stress(0.01, 300.0) == pytest.approx(0.87 * 300)
+    assert materials.get_steel_stress(0.01, 300.0) == pytest.approx(300 / 1.15)
 
 
 def test_internal_derived_reinforcement_uses_nearest_table_row() -> None:

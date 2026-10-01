@@ -61,19 +61,21 @@ def test_steel_stress_fe415():
     """
     Test stress interpolation for Fe415.
     """
-    # Point 1: 0.00144, 288.7
-    # Point 2: 0.00163, 306.7
-
-    # Test exact point
-    assert get_steel_stress(0.00144, 415) == pytest.approx(288.7, rel=1e-3)
+    # Source-defined design vertices; rounded Table A strains are not exact nodes.
+    strength = 415 / 1.15
+    first = 0.8 * strength / 200000
+    second = 0.0001 + 0.85 * strength / 200000
+    assert get_steel_stress(first, 415) == pytest.approx(0.8 * strength, abs=1e-10)
 
     # Test interpolation
-    mid_strain = (0.00144 + 0.00163) / 2
-    expected_stress = (288.7 + 306.7) / 2
-    assert get_steel_stress(mid_strain, 415) == pytest.approx(expected_stress, rel=1e-3)
+    mid_strain = (first + second) / 2
+    expected_stress = 0.825 * strength
+    assert get_steel_stress(mid_strain, 415) == pytest.approx(
+        expected_stress, abs=1e-10
+    )
 
     # Test yield plateau
-    assert get_steel_stress(0.005, 415) == pytest.approx(360.9, rel=1e-3)
+    assert get_steel_stress(0.005, 415) == pytest.approx(strength, abs=1e-10)
 
 
 def test_steel_stress_fe500():

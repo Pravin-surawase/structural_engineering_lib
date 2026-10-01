@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-27
+last_updated: 2026-09-30
 doc_type: spec
 ---
 
@@ -806,3 +806,125 @@ The linked-source harness then passed all 18 existing workbook engine/reader
 tests with no skips; it is an offline portability check and does not emulate
 Excel. [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016)
 owns the final hosted Windows result and integration state.
+
+## Bounded parallel work: LIB-SUPPORT-EVIDENCE-001
+
+**30 September 2026 — recommendation and local planning packet.** Keep
+Project_Manager completion first in its separate checkout. The replacement
+solver is the main product; this library supplies bounded reusable engineering
+operations. Start with current-source consumer evidence and a small reuse map.
+This contributes to the intake/evidence work proposed in
+[draft PR #1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019)
+without accepting its 21-package schedule, 168 hours plus 48 reserve, capacity,
+reviewer or proposed serviceability expansion.
+
+### Baseline and writer boundary
+
+- GitHub `main`, explicitly fetched on this Mac on 30 September, is
+  `96170d81cd94d323b56f0914ed0214d1bff967b8`. The initially clean planning
+  checkout was `codex/library-50-day-plan` at `d8ca7ff99491237bbed34c0e5b6900575b5b5bed`,
+  matching draft #1019. Accepted beam milestones
+  [#1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016)
+  and [#1018](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1018)
+  remain complete; their engineering work is not reopened.
+- This packet uses the new local branch `codex/library-next-evidence-20260930`,
+  based on that fetched main. The Mac task is its writer. No source or installed
+  evidence ownership is transferred from Windows. The original planning branch
+  and held/dirty sibling worktrees are preserved; two historical temporary
+  worktree entries remain unavailable and are not treated as clean candidates.
+- #1019 edits this same canonical document. Before any later publication,
+  explicitly reconcile its final disposition and this appendix against the
+  then-current main. Independent checkouts do not remove that overlap.
+  Held solver/XLL candidates still need their own replan/rebind; this packet
+  does not reactivate them.
+- No `.agents/skills` directory exists here. Use the maintained
+  [API Discovery skill](../../.github/skills/api-discovery/SKILL.md),
+  [documentation rules](../../.github/instructions/docs.instructions.md) and
+  [single-writer procedure](../git-automation/git-workflow-single-source.md#multi-device-rule-one-branch-one-writer-device).
+  No push, merge, dependency upgrade, installation, external post or
+  installed-application run is selected.
+
+### Revision-specific evidence
+
+| Observation | Meaning for this packet |
+|---|---|
+| [PR #1017](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1017) is open; [run 36374778128](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36374778128) succeeded on `2b2fac77dcbb49d54e38fcca1f59df58a0058c47`. | Dependency/code-owner review remains separate. Successful validation is not a predecessor to these source diagnostics. |
+| The commit-filtered Actions read returned one run for main `96170d81`: [documentation run 36419537597](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36419537597), successful. | Documentation passed; current dependency, installed-wheel, CLI and full-stack qualification are not established by that run. |
+| Parent intake identified [older weekly run 36371114483](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36371114483) as failed on `0793a34f`. | This does not establish that current main is broken. Select a maintenance repair only after a current reproducible failure. |
+
+The [family contracts](../reference/api-classification.json) and
+[cookbook](../cookbook/python/family-facades.md) retain 13 journey IDs, 25 advanced
+exports and zero stable exports. These differ from the cross-standard
+capability-family inventory. The existing
+[`recipe_specs`/`run_recipes` owner](../../scripts/verify_lib_pro_013_f0_family_artifact.py)
+expects two-way slab `FAIL`, stair `HOLD` and 11 other `PASS` results. Preserving
+those outcomes is acceptance. Source recipe replay establishes wrapper and
+serialization behavior; it is not a new independent engineering benchmark or
+qualified review of all helpers.
+
+### Small executable plan
+
+Allow **1–3 focused hours**: intake 15–30 minutes, mapping 30–90 minutes and
+verification/closeout 15–60 minutes. This uncalibrated estimate depends mainly
+on source/caller ambiguity. It commits no daily capacity, date or reviewer and
+yields to Project_Manager. Report any numerical repair's exact owner,
+reproducer and proposed scope to the parent before implementation.
+
+| Step | Measurable exit | Actual dependency |
+|---|---|---|
+| 1. Bind the current baseline. | Exact source, PR states, local writer and artifact limits recorded; completed beam work stays complete. | Clean Git state, repository identity and fresh fetch/readback; complete at intake. |
+| 2. Map the two accepted beam journeys. | Source owners, input obligations, retained acceptance and limits in the table below. Full G1 review of advanced exports remains separate. | Existing contracts/worked cases; neither #1017 nor approval of #1019 is required. |
+| 3. Replay lightweight source evidence once. | Generated docs match; classification/convergence and selected CLI checks pass; all 13 recipe statuses and invalid-input rejection match their owner. | Existing worktree-bound Python; no new tests, installation, wheel build, host run or broad suite. |
+| 4. Return the next boundary. | Planning-only result and any confirmed failure reported to the parent; broader features and artifact qualification remain explicit decisions. | Steps 1–3; optional owner direction handled by the parent. |
+
+| Reusable boundary | Source/caller and retained evidence | Consumer obligation and limit |
+|---|---|---|
+| Typed beam design and supplied-steel check | [`design.is456.beam`](../../Python/structural_lib/design/is456/beam.py), [facade contract](../reference/beam-facade.md), [supplied-check recipe](../cookbook/python/beam-supplied-check.md). The compatibility `design_beam_is456` signature was checked through API Discovery. | Supply admitted geometry, materials, unit-explicit actions, depth basis, reinforcement and source identity; preserve separate intake/calculation/engineering/review statuses. No project-load generation or professional approval is implied. |
+| Single-layer physical member | [`complete_member_workflow.py`](../../Python/examples/complete_member_workflow.py) uses public `structural_lib.beam`, `construction`, `reporting`; [accepted case](#lib-member-workflow-001-frozen-acceptance-case), [workflow checks](../../Python/tests/integration/test_complete_member_workflow.py). | Retain 19 required leaves and 39 bars through BBS/report. Historical centroid-method numbers are superseded by current v3 case/reference values. |
+| Multilayer physical member | Same example with `--case multilayer`; [source, independent references and acceptance](multilayer-member-workflow.md). | Retain 27 leaves, 43 bars, signed per-bar equilibrium and draft outcomes for missing/failed evidence. Supplied cracked SLS basis and span/depth screening stay explicit; calculated long-term displacement, general support fit and axial/biaxial sections remain outside this case. |
+
+The full-member example is a frozen worked case, not a general beam input
+builder. Source success does not qualify an older published wheel for
+later merged changes. Reuse the existing independent references; do not rerun
+the already-passed per-bar packet merely for this planning change. No
+engineering requirement or tolerance changes.
+
+Focused commands for step 3:
+
+```bash
+./scripts/python_runtime.sh scripts/generate_family_facade_docs.py --check
+./scripts/python_runtime.sh -m pytest --no-cov -q \
+  Python/tests/test_api_classification.py \
+  Python/tests/integration/test_family_facade_convergence.py \
+  Python/tests/integration/test_cli.py::test_cli_help \
+  Python/tests/integration/test_cli.py::test_capabilities_json_matches_python_contract
+./scripts/python_runtime.sh -c 'import runpy; checks = runpy.run_path("scripts/verify_lib_pro_013_f0_family_artifact.py"); rows = checks["run_recipes"](); print([(row["journey_id"], row["engineering_status"]) for row in rows])'
+./run.sh efficiency check
+```
+
+The smallest useful follow-on is exact-artifact consumer qualification with the
+existing wheel verifier: identify the candidate/source/hash, replay the recipes
+against that artifact, and retain its result and identity. Allow a provisional
+**1–3 additional focused hours** if the existing verifier/runtime are usable;
+packaging or runtime failures require a fresh bounded estimate. This needs
+explicit authorization for an isolated installation, outside this task.
+Proposed code scope is currently **none**: no current main-process failure has
+been established. If solver needs expose missing library behavior, select one
+explicit contract/case before numerical work. Full-stack, live ETABS, broader
+family review, serviceability expansion and publication remain separate packets.
+
+### Local verification — 30 September
+
+The single focused batch passed on source `96170d81` with only this planning
+document edited: **39 existing classification/convergence/CLI tests**, generated
+facade docs current across **17 files**, and **13 source recipes** matching
+their expected statuses with invalid-input rejection and finite JSON. The
+existing link scanner, limited to this document, resolved **30 local targets**
+with zero broken links. `./run.sh efficiency check` passed. No tests were added.
+
+This closes the bounded local source-evidence packet. It establishes no new
+numerical benchmark, installed-wheel qualification, general helper review,
+current full-stack verdict or release authority. The broader proposed G1
+matrix still needs row-level advanced/native evidence and scope decisions.
+There is no confirmed code repair to queue from these checks. The parent owns
+the optional solver-supporting versus broader-library direction decision.

@@ -1,0 +1,1438 @@
+{
+  "source": {
+    "standard": "IS456:2000 Cl38.1(e), Fig23A/B; Fig21; AnnexG1.2",
+    "primary_url": "https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf#page=83",
+    "controlled_source_sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+    "controlled_printed_pages": [
+      69,
+      70,
+      96
+    ],
+    "original_SP16_url": "https://law.resource.org/pub/in/bis/S03/is.sp.16.1980.pdf#page=29",
+    "original_SP16_sha256": "d2a6246a5dc7504568f4e55f310dd4be9d925fb1a8b04b6d7f5132c93f66c76e",
+    "SP16_TableA": "printed6 six rounded points; corroboration, not exact engine",
+    "method": "IS456_FIG23_REP_GS115_V1",
+    "arithmetic": "60-digit Decimal",
+    "family_scope": "existing Fe250 definite-yield convention; other supported fy use parameterized representative Fig23A. Not a manufacturer-tested law for arbitrary steel types; no nearest-grade table extrapolation.",
+    "source_limit": "Amd5 consolidation and Amd6 inspected; latest complete amendment set not certified",
+    "separate_code_design_coefficients": [
+      0.36,
+      0.42,
+      0.87
+    ]
+  },
+  "steel_states": [
+    {
+      "id": "Fe250-state0",
+      "fy": 250,
+      "strain": -0.01,
+      "stress_nmm2": -217.3913043478261,
+      "exact_strain": "-0.01",
+      "exact_stress_nmm2": "-217.391304347826086956521739130434782608695652173913043478261",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state1",
+      "fy": 250,
+      "strain": -0.003,
+      "stress_nmm2": -217.3913043478261,
+      "exact_strain": "-0.003",
+      "exact_stress_nmm2": "-217.391304347826086956521739130434782608695652173913043478261",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state2",
+      "fy": 250,
+      "strain": -0.0010869565217391304,
+      "stress_nmm2": -217.3913043478261,
+      "exact_strain": "-0.00108695652173913043478260869565217391304347826086956521739130",
+      "exact_stress_nmm2": "-217.391304347826086956521739130434782608695652173913043478260",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state3",
+      "fy": 250,
+      "strain": -0.001,
+      "stress_nmm2": -200.0,
+      "exact_strain": "-0.001",
+      "exact_stress_nmm2": "-200.000",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state4",
+      "fy": 250,
+      "strain": -0.0005,
+      "stress_nmm2": -100.0,
+      "exact_strain": "-0.0005",
+      "exact_stress_nmm2": "-100.0000",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state5",
+      "fy": 250,
+      "strain": 0.0,
+      "stress_nmm2": 0.0,
+      "exact_strain": "0",
+      "exact_stress_nmm2": "0",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state6",
+      "fy": 250,
+      "strain": 0.0005,
+      "stress_nmm2": 100.0,
+      "exact_strain": "0.0005",
+      "exact_stress_nmm2": "100.0000",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state7",
+      "fy": 250,
+      "strain": 0.001,
+      "stress_nmm2": 200.0,
+      "exact_strain": "0.001",
+      "exact_stress_nmm2": "200.000",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state8",
+      "fy": 250,
+      "strain": 0.0010869565217391304,
+      "stress_nmm2": 217.3913043478261,
+      "exact_strain": "0.00108695652173913043478260869565217391304347826086956521739130",
+      "exact_stress_nmm2": "217.391304347826086956521739130434782608695652173913043478260",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state9",
+      "fy": 250,
+      "strain": 0.003,
+      "stress_nmm2": 217.3913043478261,
+      "exact_strain": "0.003",
+      "exact_stress_nmm2": "217.391304347826086956521739130434782608695652173913043478261",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe250-state10",
+      "fy": 250,
+      "strain": 0.01,
+      "stress_nmm2": 217.3913043478261,
+      "exact_strain": "0.01",
+      "exact_stress_nmm2": "217.391304347826086956521739130434782608695652173913043478261",
+      "family": "Fig23B definite-yield"
+    },
+    {
+      "id": "Fe415-state0",
+      "fy": 415,
+      "strain": -0.01,
+      "stress_nmm2": -360.8695652173913,
+      "exact_strain": "-0.01",
+      "exact_stress_nmm2": "-360.869565217391304347826086956521739130434782608695652173913",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state1",
+      "fy": 415,
+      "strain": -0.0038043478260869567,
+      "stress_nmm2": -360.8695652173913,
+      "exact_strain": "-0.00380434782608695652173913043478260869565217391304347826086956",
+      "exact_stress_nmm2": "-360.869565217391304347826086956521739130434782608695652173913",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state2",
+      "fy": 415,
+      "strain": -0.0032817934782608696,
+      "stress_nmm2": -356.35869565217394,
+      "exact_strain": "-0.00328179347826086956521739130434782608695652173913043478260869",
+      "exact_stress_nmm2": "-356.358695652173913043478260869565217391304347826086956521739",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state3",
+      "fy": 415,
+      "strain": -0.003,
+      "stress_nmm2": -353.92615704628184,
+      "exact_strain": "-0.003",
+      "exact_stress_nmm2": "-353.926157046281851274050962038481539261570462818512740509620",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state4",
+      "fy": 415,
+      "strain": -0.0027592391304347825,
+      "stress_nmm2": -351.8478260869565,
+      "exact_strain": "-0.00275923913043478260869565217391304347826086956521739130434782",
+      "exact_stress_nmm2": "-351.847826086956521739130434782608695652173913043478260869566",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state5",
+      "fy": 415,
+      "strain": -0.002586684782608696,
+      "stress_nmm2": -347.3369565217391,
+      "exact_strain": "-0.00258668478260869565217391304347826086956521739130434782608695",
+      "exact_stress_nmm2": "-347.336956521739130434782608695652173913043478260869565217390",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state6",
+      "fy": 415,
+      "strain": -0.0025,
+      "stress_nmm2": -345.07086614173227,
+      "exact_strain": "-0.0025",
+      "exact_stress_nmm2": "-345.070866141732283464566929133858267716535433070866141732285",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state7",
+      "fy": 415,
+      "strain": -0.002414130434782609,
+      "stress_nmm2": -342.82608695652175,
+      "exact_strain": "-0.00241413043478260869565217391304347826086956521739130434782608",
+      "exact_stress_nmm2": "-342.826086956521739130434782608695652173913043478260869565216",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state8",
+      "fy": 415,
+      "strain": -0.002169021739130435,
+      "stress_nmm2": -333.80434782608694,
+      "exact_strain": "-0.00216902173913043478260869565217391304347826086956521739130434",
+      "exact_stress_nmm2": "-333.804347826086956521739130434782608695652173913043478260870",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state9",
+      "fy": 415,
+      "strain": -0.0019239130434782609,
+      "stress_nmm2": -324.7826086956522,
+      "exact_strain": "-0.00192391304347826086956521739130434782608695652173913043478261",
+      "exact_stress_nmm2": "-324.782608695652173913043478260869565217391304347826086956522",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state10",
+      "fy": 415,
+      "strain": -0.0017788043478260869,
+      "stress_nmm2": -315.7608695652174,
+      "exact_strain": "-0.00177880434782608695652173913043478260869565217391304347826087",
+      "exact_stress_nmm2": "-315.760869565217391304347826086956521739130434782608695652174",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state11",
+      "fy": 415,
+      "strain": -0.001633695652173913,
+      "stress_nmm2": -306.7391304347826,
+      "exact_strain": "-0.00163369565217391304347826086956521739130434782608695652173913",
+      "exact_stress_nmm2": "-306.739130434782608695652173913043478260869565217391304347826",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state12",
+      "fy": 415,
+      "strain": -0.0015385869565217392,
+      "stress_nmm2": -297.7173913043478,
+      "exact_strain": "-0.00153858695652173913043478260869565217391304347826086956521739",
+      "exact_stress_nmm2": "-297.717391304347826086956521739130434782608695652173913043478",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state13",
+      "fy": 415,
+      "strain": -0.0014434782608695653,
+      "stress_nmm2": -288.69565217391306,
+      "exact_strain": "-0.00144347826086956521739130434782608695652173913043478260869565",
+      "exact_stress_nmm2": "-288.695652173913043478260869565217391304347826086956521739130",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state14",
+      "fy": 415,
+      "strain": -0.001,
+      "stress_nmm2": -200.0,
+      "exact_strain": "-0.001",
+      "exact_stress_nmm2": "-2E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state15",
+      "fy": 415,
+      "strain": -0.0005,
+      "stress_nmm2": -100.0,
+      "exact_strain": "-0.0005",
+      "exact_stress_nmm2": "-1E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state16",
+      "fy": 415,
+      "strain": 0.0,
+      "stress_nmm2": 0.0,
+      "exact_strain": "0",
+      "exact_stress_nmm2": "0",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state17",
+      "fy": 415,
+      "strain": 0.0005,
+      "stress_nmm2": 100.0,
+      "exact_strain": "0.0005",
+      "exact_stress_nmm2": "1E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state18",
+      "fy": 415,
+      "strain": 0.001,
+      "stress_nmm2": 200.0,
+      "exact_strain": "0.001",
+      "exact_stress_nmm2": "2E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state19",
+      "fy": 415,
+      "strain": 0.0014434782608695653,
+      "stress_nmm2": 288.69565217391306,
+      "exact_strain": "0.00144347826086956521739130434782608695652173913043478260869565",
+      "exact_stress_nmm2": "288.695652173913043478260869565217391304347826086956521739130",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state20",
+      "fy": 415,
+      "strain": 0.0015385869565217392,
+      "stress_nmm2": 297.7173913043478,
+      "exact_strain": "0.00153858695652173913043478260869565217391304347826086956521739",
+      "exact_stress_nmm2": "297.717391304347826086956521739130434782608695652173913043478",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state21",
+      "fy": 415,
+      "strain": 0.001633695652173913,
+      "stress_nmm2": 306.7391304347826,
+      "exact_strain": "0.00163369565217391304347826086956521739130434782608695652173913",
+      "exact_stress_nmm2": "306.739130434782608695652173913043478260869565217391304347826",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state22",
+      "fy": 415,
+      "strain": 0.0017788043478260869,
+      "stress_nmm2": 315.7608695652174,
+      "exact_strain": "0.00177880434782608695652173913043478260869565217391304347826087",
+      "exact_stress_nmm2": "315.760869565217391304347826086956521739130434782608695652174",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state23",
+      "fy": 415,
+      "strain": 0.0019239130434782609,
+      "stress_nmm2": 324.7826086956522,
+      "exact_strain": "0.00192391304347826086956521739130434782608695652173913043478261",
+      "exact_stress_nmm2": "324.782608695652173913043478260869565217391304347826086956522",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state24",
+      "fy": 415,
+      "strain": 0.002169021739130435,
+      "stress_nmm2": 333.80434782608694,
+      "exact_strain": "0.00216902173913043478260869565217391304347826086956521739130434",
+      "exact_stress_nmm2": "333.804347826086956521739130434782608695652173913043478260870",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state25",
+      "fy": 415,
+      "strain": 0.002414130434782609,
+      "stress_nmm2": 342.82608695652175,
+      "exact_strain": "0.00241413043478260869565217391304347826086956521739130434782608",
+      "exact_stress_nmm2": "342.826086956521739130434782608695652173913043478260869565216",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state26",
+      "fy": 415,
+      "strain": 0.0025,
+      "stress_nmm2": 345.07086614173227,
+      "exact_strain": "0.0025",
+      "exact_stress_nmm2": "345.070866141732283464566929133858267716535433070866141732285",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state27",
+      "fy": 415,
+      "strain": 0.002586684782608696,
+      "stress_nmm2": 347.3369565217391,
+      "exact_strain": "0.00258668478260869565217391304347826086956521739130434782608695",
+      "exact_stress_nmm2": "347.336956521739130434782608695652173913043478260869565217390",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state28",
+      "fy": 415,
+      "strain": 0.0027592391304347825,
+      "stress_nmm2": 351.8478260869565,
+      "exact_strain": "0.00275923913043478260869565217391304347826086956521739130434782",
+      "exact_stress_nmm2": "351.847826086956521739130434782608695652173913043478260869566",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state29",
+      "fy": 415,
+      "strain": 0.003,
+      "stress_nmm2": 353.92615704628184,
+      "exact_strain": "0.003",
+      "exact_stress_nmm2": "353.926157046281851274050962038481539261570462818512740509620",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state30",
+      "fy": 415,
+      "strain": 0.0032817934782608696,
+      "stress_nmm2": 356.35869565217394,
+      "exact_strain": "0.00328179347826086956521739130434782608695652173913043478260869",
+      "exact_stress_nmm2": "356.358695652173913043478260869565217391304347826086956521739",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state31",
+      "fy": 415,
+      "strain": 0.0038043478260869567,
+      "stress_nmm2": 360.8695652173913,
+      "exact_strain": "0.00380434782608695652173913043478260869565217391304347826086956",
+      "exact_stress_nmm2": "360.869565217391304347826086956521739130434782608695652173913",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe415-state32",
+      "fy": 415,
+      "strain": 0.01,
+      "stress_nmm2": 360.8695652173913,
+      "exact_strain": "0.01",
+      "exact_stress_nmm2": "360.869565217391304347826086956521739130434782608695652173913",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state0",
+      "fy": 500,
+      "strain": -0.01,
+      "stress_nmm2": -434.7826086956522,
+      "exact_strain": "-0.01",
+      "exact_stress_nmm2": "-434.782608695652173913043478260869565217391304347826086956522",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state1",
+      "fy": 500,
+      "strain": -0.0041739130434782605,
+      "stress_nmm2": -434.7826086956522,
+      "exact_strain": "-0.00417391304347826086956521739130434782608695652173913043478261",
+      "exact_stress_nmm2": "-434.782608695652173913043478260869565217391304347826086956522",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state2",
+      "fy": 500,
+      "strain": -0.0036467391304347827,
+      "stress_nmm2": -429.3478260869565,
+      "exact_strain": "-0.00364673913043478260869565217391304347826086956521739130434782",
+      "exact_stress_nmm2": "-429.347826086956521739130434782608695652173913043478260869565",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state3",
+      "fy": 500,
+      "strain": -0.0031195652173913045,
+      "stress_nmm2": -423.9130434782609,
+      "exact_strain": "-0.00311956521739130434782608695652173913043478260869565217391304",
+      "exact_stress_nmm2": "-423.913043478260869565217391304347826086956521739130434782609",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state4",
+      "fy": 500,
+      "strain": -0.003,
+      "stress_nmm2": -420.2453987730061,
+      "exact_strain": "-0.003",
+      "exact_stress_nmm2": "-420.245398773006134969325153374233128834355828220858895705523",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state5",
+      "fy": 500,
+      "strain": -0.002942391304347826,
+      "stress_nmm2": -418.4782608695652,
+      "exact_strain": "-0.00294239130434782608695652173913043478260869565217391304347826",
+      "exact_stress_nmm2": "-418.478260869565217391304347826086956521739130434782608695654",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state6",
+      "fy": 500,
+      "strain": -0.002765217391304348,
+      "stress_nmm2": -413.04347826086956,
+      "exact_strain": "-0.00276521739130434782608695652173913043478260869565217391304348",
+      "exact_stress_nmm2": "-413.043478260869565217391304347826086956521739130434782608695",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state7",
+      "fy": 500,
+      "strain": -0.0025108695652173913,
+      "stress_nmm2": -402.17391304347825,
+      "exact_strain": "-0.00251086956521739130434782608695652173913043478260869565217392",
+      "exact_stress_nmm2": "-402.173913043478260869565217391304347826086956521739130434783",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state8",
+      "fy": 500,
+      "strain": -0.0025,
+      "stress_nmm2": -401.70940170940173,
+      "exact_strain": "-0.0025",
+      "exact_stress_nmm2": "-401.709401709401709401709401709401709401709401709401709401711",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state9",
+      "fy": 500,
+      "strain": -0.002256521739130435,
+      "stress_nmm2": -391.30434782608694,
+      "exact_strain": "-0.00225652173913043478260869565217391304347826086956521739130435",
+      "exact_stress_nmm2": "-391.304347826086956521739130434782608695652173913043478260871",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state10",
+      "fy": 500,
+      "strain": -0.002102173913043478,
+      "stress_nmm2": -380.4347826086956,
+      "exact_strain": "-0.00210217391304347826086956521739130434782608695652173913043478",
+      "exact_stress_nmm2": "-380.434782608695652173913043478260869565217391304347826086956",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state11",
+      "fy": 500,
+      "strain": -0.0019478260869565218,
+      "stress_nmm2": -369.5652173913044,
+      "exact_strain": "-0.00194782608695652173913043478260869565217391304347826086956522",
+      "exact_stress_nmm2": "-369.565217391304347826086956521739130434782608695652173913044",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state12",
+      "fy": 500,
+      "strain": -0.0018434782608695653,
+      "stress_nmm2": -358.69565217391306,
+      "exact_strain": "-0.00184347826086956521739130434782608695652173913043478260869566",
+      "exact_stress_nmm2": "-358.695652173913043478260869565217391304347826086956521739131",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state13",
+      "fy": 500,
+      "strain": -0.0017391304347826088,
+      "stress_nmm2": -347.82608695652175,
+      "exact_strain": "-0.00173913043478260869565217391304347826086956521739130434782609",
+      "exact_stress_nmm2": "-347.826086956521739130434782608695652173913043478260869565218",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state14",
+      "fy": 500,
+      "strain": -0.001,
+      "stress_nmm2": -200.0,
+      "exact_strain": "-0.001",
+      "exact_stress_nmm2": "-2E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state15",
+      "fy": 500,
+      "strain": -0.0005,
+      "stress_nmm2": -100.0,
+      "exact_strain": "-0.0005",
+      "exact_stress_nmm2": "-1E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state16",
+      "fy": 500,
+      "strain": 0.0,
+      "stress_nmm2": 0.0,
+      "exact_strain": "0",
+      "exact_stress_nmm2": "0",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state17",
+      "fy": 500,
+      "strain": 0.0005,
+      "stress_nmm2": 100.0,
+      "exact_strain": "0.0005",
+      "exact_stress_nmm2": "1E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state18",
+      "fy": 500,
+      "strain": 0.001,
+      "stress_nmm2": 200.0,
+      "exact_strain": "0.001",
+      "exact_stress_nmm2": "2E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state19",
+      "fy": 500,
+      "strain": 0.0017391304347826088,
+      "stress_nmm2": 347.82608695652175,
+      "exact_strain": "0.00173913043478260869565217391304347826086956521739130434782609",
+      "exact_stress_nmm2": "347.826086956521739130434782608695652173913043478260869565218",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state20",
+      "fy": 500,
+      "strain": 0.0018434782608695653,
+      "stress_nmm2": 358.69565217391306,
+      "exact_strain": "0.00184347826086956521739130434782608695652173913043478260869566",
+      "exact_stress_nmm2": "358.695652173913043478260869565217391304347826086956521739131",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state21",
+      "fy": 500,
+      "strain": 0.0019478260869565218,
+      "stress_nmm2": 369.5652173913044,
+      "exact_strain": "0.00194782608695652173913043478260869565217391304347826086956522",
+      "exact_stress_nmm2": "369.565217391304347826086956521739130434782608695652173913044",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state22",
+      "fy": 500,
+      "strain": 0.002102173913043478,
+      "stress_nmm2": 380.4347826086956,
+      "exact_strain": "0.00210217391304347826086956521739130434782608695652173913043478",
+      "exact_stress_nmm2": "380.434782608695652173913043478260869565217391304347826086956",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state23",
+      "fy": 500,
+      "strain": 0.002256521739130435,
+      "stress_nmm2": 391.30434782608694,
+      "exact_strain": "0.00225652173913043478260869565217391304347826086956521739130435",
+      "exact_stress_nmm2": "391.304347826086956521739130434782608695652173913043478260871",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state24",
+      "fy": 500,
+      "strain": 0.0025,
+      "stress_nmm2": 401.70940170940173,
+      "exact_strain": "0.0025",
+      "exact_stress_nmm2": "401.709401709401709401709401709401709401709401709401709401711",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state25",
+      "fy": 500,
+      "strain": 0.0025108695652173913,
+      "stress_nmm2": 402.17391304347825,
+      "exact_strain": "0.00251086956521739130434782608695652173913043478260869565217392",
+      "exact_stress_nmm2": "402.173913043478260869565217391304347826086956521739130434783",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state26",
+      "fy": 500,
+      "strain": 0.002765217391304348,
+      "stress_nmm2": 413.04347826086956,
+      "exact_strain": "0.00276521739130434782608695652173913043478260869565217391304348",
+      "exact_stress_nmm2": "413.043478260869565217391304347826086956521739130434782608695",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state27",
+      "fy": 500,
+      "strain": 0.002942391304347826,
+      "stress_nmm2": 418.4782608695652,
+      "exact_strain": "0.00294239130434782608695652173913043478260869565217391304347826",
+      "exact_stress_nmm2": "418.478260869565217391304347826086956521739130434782608695654",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state28",
+      "fy": 500,
+      "strain": 0.003,
+      "stress_nmm2": 420.2453987730061,
+      "exact_strain": "0.003",
+      "exact_stress_nmm2": "420.245398773006134969325153374233128834355828220858895705523",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state29",
+      "fy": 500,
+      "strain": 0.0031195652173913045,
+      "stress_nmm2": 423.9130434782609,
+      "exact_strain": "0.00311956521739130434782608695652173913043478260869565217391304",
+      "exact_stress_nmm2": "423.913043478260869565217391304347826086956521739130434782609",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state30",
+      "fy": 500,
+      "strain": 0.0036467391304347827,
+      "stress_nmm2": 429.3478260869565,
+      "exact_strain": "0.00364673913043478260869565217391304347826086956521739130434782",
+      "exact_stress_nmm2": "429.347826086956521739130434782608695652173913043478260869565",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state31",
+      "fy": 500,
+      "strain": 0.0041739130434782605,
+      "stress_nmm2": 434.7826086956522,
+      "exact_strain": "0.00417391304347826086956521739130434782608695652173913043478261",
+      "exact_stress_nmm2": "434.782608695652173913043478260869565217391304347826086956522",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe500-state32",
+      "fy": 500,
+      "strain": 0.01,
+      "stress_nmm2": 434.7826086956522,
+      "exact_strain": "0.01",
+      "exact_stress_nmm2": "434.782608695652173913043478260869565217391304347826086956522",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state0",
+      "fy": 550,
+      "strain": -0.01,
+      "stress_nmm2": -478.2608695652174,
+      "exact_strain": "-0.01",
+      "exact_stress_nmm2": "-478.260869565217391304347826086956521739130434782608695652174",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state1",
+      "fy": 550,
+      "strain": -0.004391304347826087,
+      "stress_nmm2": -478.2608695652174,
+      "exact_strain": "-0.00439130434782608695652173913043478260869565217391304347826087",
+      "exact_stress_nmm2": "-478.260869565217391304347826086956521739130434782608695652174",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state2",
+      "fy": 550,
+      "strain": -0.0038614130434782607,
+      "stress_nmm2": -472.2826086956522,
+      "exact_strain": "-0.00386141304347826086956521739130434782608695652173913043478261",
+      "exact_stress_nmm2": "-472.282608695652173913043478260869565217391304347826086956522",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state3",
+      "fy": 550,
+      "strain": -0.003331521739130435,
+      "stress_nmm2": -466.30434782608694,
+      "exact_strain": "-0.00333152173913043478260869565217391304347826086956521739130435",
+      "exact_stress_nmm2": "-466.304347826086956521739130434782608695652173913043478260871",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state4",
+      "fy": 550,
+      "strain": -0.0031516304347826087,
+      "stress_nmm2": -460.32608695652175,
+      "exact_strain": "-0.00315163043478260869565217391304347826086956521739130434782608",
+      "exact_stress_nmm2": "-460.326086956521739130434782608695652173913043478260869565216",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state5",
+      "fy": 550,
+      "strain": -0.003,
+      "stress_nmm2": -455.2870090634441,
+      "exact_strain": "-0.003",
+      "exact_stress_nmm2": "-455.287009063444108761329305135951661631419939577039274924470",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state6",
+      "fy": 550,
+      "strain": -0.0029717391304347825,
+      "stress_nmm2": -454.3478260869565,
+      "exact_strain": "-0.00297173913043478260869565217391304347826086956521739130434782",
+      "exact_stress_nmm2": "-454.347826086956521739130434782608695652173913043478260869565",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state7",
+      "fy": 550,
+      "strain": -0.0027119565217391304,
+      "stress_nmm2": -442.39130434782606,
+      "exact_strain": "-0.00271195652173913043478260869565217391304347826086956521739130",
+      "exact_stress_nmm2": "-442.391304347826086956521739130434782608695652173913043478261",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state8",
+      "fy": 550,
+      "strain": -0.0025,
+      "stress_nmm2": -432.63598326359835,
+      "exact_strain": "-0.0025",
+      "exact_stress_nmm2": "-432.635983263598326359832635983263598326359832635983263598328",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state9",
+      "fy": 550,
+      "strain": -0.0024521739130434783,
+      "stress_nmm2": -430.4347826086956,
+      "exact_strain": "-0.00245217391304347826086956521739130434782608695652173913043478",
+      "exact_stress_nmm2": "-430.434782608695652173913043478260869565217391304347826086957",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state10",
+      "fy": 550,
+      "strain": -0.002292391304347826,
+      "stress_nmm2": -418.4782608695652,
+      "exact_strain": "-0.00229239130434782608695652173913043478260869565217391304347826",
+      "exact_stress_nmm2": "-418.478260869565217391304347826086956521739130434782608695652",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state11",
+      "fy": 550,
+      "strain": -0.0021326086956521737,
+      "stress_nmm2": -406.5217391304348,
+      "exact_strain": "-0.00213260869565217391304347826086956521739130434782608695652174",
+      "exact_stress_nmm2": "-406.521739130434782608695652173913043478260869565217391304348",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state12",
+      "fy": 550,
+      "strain": -0.0020228260869565215,
+      "stress_nmm2": -394.5652173913044,
+      "exact_strain": "-0.00202282608695652173913043478260869565217391304347826086956522",
+      "exact_stress_nmm2": "-394.565217391304347826086956521739130434782608695652173913043",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state13",
+      "fy": 550,
+      "strain": -0.0019130434782608696,
+      "stress_nmm2": -382.60869565217394,
+      "exact_strain": "-0.00191304347826086956521739130434782608695652173913043478260870",
+      "exact_stress_nmm2": "-382.608695652173913043478260869565217391304347826086956521739",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state14",
+      "fy": 550,
+      "strain": -0.001,
+      "stress_nmm2": -200.0,
+      "exact_strain": "-0.001",
+      "exact_stress_nmm2": "-199.999999999999999999999999999999999999999999999999999999999",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state15",
+      "fy": 550,
+      "strain": -0.0005,
+      "stress_nmm2": -100.0,
+      "exact_strain": "-0.0005",
+      "exact_stress_nmm2": "-1E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state16",
+      "fy": 550,
+      "strain": 0.0,
+      "stress_nmm2": 0.0,
+      "exact_strain": "0",
+      "exact_stress_nmm2": "0",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state17",
+      "fy": 550,
+      "strain": 0.0005,
+      "stress_nmm2": 100.0,
+      "exact_strain": "0.0005",
+      "exact_stress_nmm2": "1E+2",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state18",
+      "fy": 550,
+      "strain": 0.001,
+      "stress_nmm2": 200.0,
+      "exact_strain": "0.001",
+      "exact_stress_nmm2": "199.999999999999999999999999999999999999999999999999999999999",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state19",
+      "fy": 550,
+      "strain": 0.0019130434782608696,
+      "stress_nmm2": 382.60869565217394,
+      "exact_strain": "0.00191304347826086956521739130434782608695652173913043478260870",
+      "exact_stress_nmm2": "382.608695652173913043478260869565217391304347826086956521739",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state20",
+      "fy": 550,
+      "strain": 0.0020228260869565215,
+      "stress_nmm2": 394.5652173913044,
+      "exact_strain": "0.00202282608695652173913043478260869565217391304347826086956522",
+      "exact_stress_nmm2": "394.565217391304347826086956521739130434782608695652173913043",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state21",
+      "fy": 550,
+      "strain": 0.0021326086956521737,
+      "stress_nmm2": 406.5217391304348,
+      "exact_strain": "0.00213260869565217391304347826086956521739130434782608695652174",
+      "exact_stress_nmm2": "406.521739130434782608695652173913043478260869565217391304348",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state22",
+      "fy": 550,
+      "strain": 0.002292391304347826,
+      "stress_nmm2": 418.4782608695652,
+      "exact_strain": "0.00229239130434782608695652173913043478260869565217391304347826",
+      "exact_stress_nmm2": "418.478260869565217391304347826086956521739130434782608695652",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state23",
+      "fy": 550,
+      "strain": 0.0024521739130434783,
+      "stress_nmm2": 430.4347826086956,
+      "exact_strain": "0.00245217391304347826086956521739130434782608695652173913043478",
+      "exact_stress_nmm2": "430.434782608695652173913043478260869565217391304347826086957",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state24",
+      "fy": 550,
+      "strain": 0.0025,
+      "stress_nmm2": 432.63598326359835,
+      "exact_strain": "0.0025",
+      "exact_stress_nmm2": "432.635983263598326359832635983263598326359832635983263598328",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state25",
+      "fy": 550,
+      "strain": 0.0027119565217391304,
+      "stress_nmm2": 442.39130434782606,
+      "exact_strain": "0.00271195652173913043478260869565217391304347826086956521739130",
+      "exact_stress_nmm2": "442.391304347826086956521739130434782608695652173913043478261",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state26",
+      "fy": 550,
+      "strain": 0.0029717391304347825,
+      "stress_nmm2": 454.3478260869565,
+      "exact_strain": "0.00297173913043478260869565217391304347826086956521739130434782",
+      "exact_stress_nmm2": "454.347826086956521739130434782608695652173913043478260869565",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state27",
+      "fy": 550,
+      "strain": 0.003,
+      "stress_nmm2": 455.2870090634441,
+      "exact_strain": "0.003",
+      "exact_stress_nmm2": "455.287009063444108761329305135951661631419939577039274924470",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state28",
+      "fy": 550,
+      "strain": 0.0031516304347826087,
+      "stress_nmm2": 460.32608695652175,
+      "exact_strain": "0.00315163043478260869565217391304347826086956521739130434782608",
+      "exact_stress_nmm2": "460.326086956521739130434782608695652173913043478260869565216",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state29",
+      "fy": 550,
+      "strain": 0.003331521739130435,
+      "stress_nmm2": 466.30434782608694,
+      "exact_strain": "0.00333152173913043478260869565217391304347826086956521739130435",
+      "exact_stress_nmm2": "466.304347826086956521739130434782608695652173913043478260871",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state30",
+      "fy": 550,
+      "strain": 0.0038614130434782607,
+      "stress_nmm2": 472.2826086956522,
+      "exact_strain": "0.00386141304347826086956521739130434782608695652173913043478261",
+      "exact_stress_nmm2": "472.282608695652173913043478260869565217391304347826086956522",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state31",
+      "fy": 550,
+      "strain": 0.004391304347826087,
+      "stress_nmm2": 478.2608695652174,
+      "exact_strain": "0.00439130434782608695652173913043478260869565217391304347826087",
+      "exact_stress_nmm2": "478.260869565217391304347826086956521739130434782608695652174",
+      "family": "Fig23A representative cold-worked"
+    },
+    {
+      "id": "Fe550-state32",
+      "fy": 550,
+      "strain": 0.01,
+      "stress_nmm2": 478.2608695652174,
+      "exact_strain": "0.01",
+      "exact_stress_nmm2": "478.260869565217391304347826086956521739130434782608695652174",
+      "family": "Fig23A representative cold-worked"
+    }
+  ],
+  "doubly_reinforced": [
+    {
+      "id": "Fe250-cover50",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 50,
+        "d_total": 500,
+        "mu_knm": 265.2730285,
+        "fck": 25,
+        "fy": 250
+      },
+      "expected": {
+        "Mu_lim": 225.2730285,
+        "xu": 238.5,
+        "strain_sc": 0.0027662473794549266,
+        "fsc": 217.3913043478261,
+        "fcc": 11.166666666666666,
+        "Ast_required": 3420.4597701149423,
+        "Asc_required": 484.9081134263326,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "484.908113426332618855195193084788643311430478934607681225623",
+      "exact_Ast": "3420.45977011494252873563218390804597701149425287356321839081"
+    },
+    {
+      "id": "Fe250-cover100",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 100,
+        "d_total": 500,
+        "mu_knm": 265.2730285,
+        "fck": 25,
+        "fy": 250
+      },
+      "expected": {
+        "Mu_lim": 225.2730285,
+        "xu": 238.5,
+        "strain_sc": 0.002032494758909853,
+        "fsc": 217.3913043478261,
+        "fcc": 11.166666666666666,
+        "Ast_required": 3486.1412151067325,
+        "Asc_required": 554.1807010586658,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "554.180701058665850120223077811187020927349118782408778543569",
+      "exact_Ast": "3486.14121510673234811165845648604269293924466338259441707718"
+    },
+    {
+      "id": "Fe250-cover175",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 175,
+        "d_total": 500,
+        "mu_knm": 265.2730285,
+        "fck": 25,
+        "fy": 250
+      },
+      "expected": {
+        "Mu_lim": 225.2730285,
+        "xu": 238.5,
+        "strain_sc": 0.0009318658280922431,
+        "fsc": 186.37316561844864,
+        "fcc": 7.981624549324848,
+        "Ast_required": 3629.44618599791,
+        "Asc_required": 815.3668306401603,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "815.366830640160283735423191757351738583981446022228851148829",
+      "exact_Ast": "3629.44618599791013584117032392894461859979101358411703239290"
+    },
+    {
+      "id": "Fe415-cover50",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 50,
+        "d_total": 500,
+        "mu_knm": 249.532096,
+        "fck": 25,
+        "fy": 415
+      },
+      "expected": {
+        "Mu_lim": 209.532096,
+        "xu": 216.0,
+        "strain_sc": 0.002689814814814815,
+        "fsc": 350.0329542140566,
+        "fcc": 11.166666666666666,
+        "Ast_required": 1892.2586899321423,
+        "Asc_required": 295.10164827480855,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "295.101648274808569049611759314441606836650609201164399329588",
+      "exact_Ast": "1892.25868993214236255366292757235839911369616396620966625122"
+    },
+    {
+      "id": "Fe415-cover100",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 100,
+        "d_total": 500,
+        "mu_knm": 249.532096,
+        "fck": 25,
+        "fy": 415
+      },
+      "expected": {
+        "Mu_lim": 209.532096,
+        "xu": 216.0,
+        "strain_sc": 0.0018796296296296295,
+        "fsc": 322.0294076848384,
+        "fcc": 11.126218135573845,
+        "Ast_required": 1931.825825469365,
+        "Asc_required": 367.59260801216385,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "367.592608012163866624471549081015083718847916553723770351641",
+      "exact_Ast": "1931.82582546936514531030526045066967376896749559815617148397"
+    },
+    {
+      "id": "Fe415-cover175",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 175,
+        "d_total": 500,
+        "mu_knm": 249.532096,
+        "fck": 25,
+        "fy": 415
+      },
+      "expected": {
+        "Mu_lim": 209.532096,
+        "xu": 216.0,
+        "strain_sc": 0.0006643518518518518,
+        "fsc": 132.87037037037038,
+        "fcc": 6.186456234639346,
+        "Ast_required": 2018.1541211869421,
+        "Asc_required": 1148.1690193018767,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "1148.16901930187677625540086831173529035595800081541874145655",
+      "exact_Ast": "2018.15412118694212587025216854880336392592312824967581926452"
+    },
+    {
+      "id": "Fe500-cover50",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 50,
+        "d_total": 500,
+        "mu_knm": 242.914234,
+        "fck": 25,
+        "fy": 500
+      },
+      "expected": {
+        "Mu_lim": 202.914234,
+        "xu": 207.0,
+        "strain_sc": 0.0026545893719806765,
+        "fsc": 408.31578512737934,
+        "fcc": 11.166666666666666,
+        "Ast_required": 1514.712643678161,
+        "Asc_required": 251.7945913806487,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "251.794591380648724296358668030627679034308117711450301601971",
+      "exact_Ast": "1514.71264367816091954022988505747126436781609195402298850575"
+    },
+    {
+      "id": "Fe500-cover100",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 100,
+        "d_total": 500,
+        "mu_knm": 242.914234,
+        "fck": 25,
+        "fy": 500
+      },
+      "expected": {
+        "Mu_lim": 202.914234,
+        "xu": 207.0,
+        "strain_sc": 0.0018091787439613526,
+        "fsc": 355.1227858293076,
+        "fcc": 11.065014401347367,
+        "Ast_required": 1547.5533661740558,
+        "Asc_required": 332.1701289041912,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "332.170128904191181525691111861734883955996325606407107709992",
+      "exact_Ast": "1547.55336617405582922824302134646962233169129720853858784894"
+    },
+    {
+      "id": "Fe500-cover175",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 175,
+        "d_total": 500,
+        "mu_knm": 242.914234,
+        "fck": 25,
+        "fy": 500
+      },
+      "expected": {
+        "Mu_lim": 202.914234,
+        "xu": 207.0,
+        "strain_sc": 0.0005410628019323671,
+        "fsc": 108.21256038647343,
+        "fcc": 5.224610453763993,
+        "Ast_required": 1619.2058516196448,
+        "Asc_required": 1412.3452845656502,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "1412.34528456565029086147327146959137551632697715512522180684",
+      "exact_Ast": "1619.20585161964472309299895506792058516196447230929989550680"
+    },
+    {
+      "id": "Fe550-cover50",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 50,
+        "d_total": 500,
+        "mu_knm": 237.30212732484108,
+        "fck": 25,
+        "fy": 550
+      },
+      "expected": {
+        "Mu_lim": 197.30212732484108,
+        "xu": 199.55654101995566,
+        "strain_sc": 0.0026230555555555556,
+        "fsc": 438.2996280799628,
+        "fcc": 11.166666666666666,
+        "Ast_required": 1335.0107852745668,
+        "Asc_required": 234.11913627344592,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "234.119136273445926751512631658001029645294814876088828130867",
+      "exact_Ast": "1335.01078527456690924845982572108422708621500578072181405770"
+    },
+    {
+      "id": "Fe550-cover100",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 100,
+        "d_total": 500,
+        "mu_knm": 237.30212732484108,
+        "fck": 25,
+        "fy": 550
+      },
+      "expected": {
+        "Mu_lim": 197.30212732484108,
+        "xu": 199.55654101995566,
+        "strain_sc": 0.001746111111111111,
+        "fsc": 349.22222222222223,
+        "fcc": 10.986717039609054,
+        "Ast_required": 1364.8659875435624,
+        "Asc_required": 337.88798790952325,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "337.887987909523246438177803422222933292149156049255792880034",
+      "exact_Ast": "1364.86598754356228169210813143835546159882882873937235891514"
+    },
+    {
+      "id": "Fe550-cover175",
+      "inputs": {
+        "b": 300,
+        "d": 450,
+        "d_dash": 175,
+        "d_total": 500,
+        "mu_knm": 237.30212732484108,
+        "fck": 25,
+        "fy": 550
+      },
+      "expected": {
+        "Mu_lim": 197.30212732484108,
+        "xu": 199.55654101995566,
+        "strain_sc": 0.00043069444444444443,
+        "fsc": 86.13888888888889,
+        "fcc": 4.291573537969393,
+        "Ast_required": 1430.0046106759157,
+        "Asc_required": 1777.1449781939777,
+        "Ast_max": 6000,
+        "is_safe": true
+      },
+      "exact_Asc": "1777.14497819397783156926725717853795091964069174506361029003",
+      "exact_Ast": "1430.00461067591582156915898027603815508089535155824627496774"
+    },
+    {
+      "id": "G5",
+      "inputs": {
+        "b": 300,
+        "d": 500,
+        "d_dash": 50,
+        "d_total": 550,
+        "mu_knm": 350,
+        "fck": 25,
+        "fy": 500
+      },
+      "expected": {
+        "Mu_lim": 250.5114,
+        "xu": 230.0,
+        "strain_sc": 0.0027391304347826086,
+        "fsc": 411.92865105908584,
+        "fcc": 11.166666666666666,
+        "Ast_required": 1935.829374201788,
+        "Asc_required": 551.6635469129088,
+        "Ast_max": 6600.0,
+        "is_safe": true,
+        "base_compression_force_n": 621000.0,
+        "excess_moment_nmm": 99488600.0
+      },
+      "exact_Asc": "551.663546912908844680400259446307456855924309924284888365301",
+      "exact_Ast": "1935.82937420178799489144316730523627075351213282247765006386",
+      "source": "Independent Decimal G1.2 bar equilibrium and G2.2 limiting flange block; added after legacy expectation failures, no production imports."
+    }
+  ],
+  "flanged_compression": [
+    {
+      "id": "web-full-flange-block",
+      "inputs": {
+        "bw": 300,
+        "bf": 1000,
+        "d": 500,
+        "Df": 100,
+        "d_total": 550,
+        "mu_knm": 1000,
+        "fck": 25,
+        "fy": 500,
+        "d_dash": 50
+      },
+      "expected": {
+        "Mu_lim": 604.8864,
+        "xu": 230.0,
+        "strain_sc": 0.0027391304347826086,
+        "fsc": 411.92865105908584,
+        "fcc": 11.166666666666666,
+        "Ast_required": 5256.391315453385,
+        "Asc_required": 2190.901972784101,
+        "Ast_max": 6600.0,
+        "is_safe": true,
+        "base_compression_force_n": 1408500.0,
+        "excess_moment_nmm": 395113600.0
+      },
+      "exact_Asc": "2190.90197278410089290143590271412549764685537259243701959433",
+      "exact_Ast": "5256.39131545338441890166028097062579821200510855683269476372",
+      "source": "Independent Decimal G1.2 bar equilibrium and G2.2 limiting flange block; added after legacy expectation failures, no production imports."
+    },
+    {
+      "id": "web-split-flange-block",
+      "inputs": {
+        "bw": 230,
+        "bf": 1000,
+        "d": 450,
+        "Df": 120,
+        "d_total": 500,
+        "mu_knm": 800,
+        "fck": 25,
+        "fy": 415,
+        "d_dash": 100
+      },
+      "expected": {
+        "Mu_lim": 538.2043056,
+        "xu": 216.0,
+        "strain_sc": 0.0018796296296296295,
+        "fsc": 322.0294076848384,
+        "fcc": 11.126218135573845,
+        "Ast_required": 5958.8635875521795,
+        "Asc_required": 2405.854051771286,
+        "Ast_max": 4600.0,
+        "is_safe": false,
+        "base_compression_force_n": 1403460.0,
+        "excess_moment_nmm": 261795694.4
+      },
+      "exact_Asc": "2405.85405177128607773856283061770064247624811705438423412485",
+      "exact_Ast": "5958.86358755217915998971254476032207648327299345163906858964",
+      "source": "Independent Decimal G1.2 bar equilibrium and G2.2 limiting flange block; added after legacy expectation failures, no production imports."
+    },
+    {
+      "id": "full-flange-rectangle",
+      "inputs": {
+        "bw": 300,
+        "bf": 1000,
+        "d": 500,
+        "Df": 300,
+        "d_total": 550,
+        "mu_knm": 1000,
+        "fck": 25,
+        "fy": 500,
+        "d_dash": 50
+      },
+      "expected": {
+        "Mu_lim": 835.038,
+        "xu": 230.0,
+        "strain_sc": 0.0027391304347826086,
+        "fsc": 411.92865105908584,
+        "fcc": 11.166666666666666,
+        "Ast_required": 5601.338441890166,
+        "Asc_required": 914.7130628619487,
+        "Ast_max": 6600.0,
+        "is_safe": true,
+        "base_compression_force_n": 2070000.0,
+        "excess_moment_nmm": 164962000.0
+      },
+      "exact_Asc": "914.713062861948693982709452125990019940646325445627778001870",
+      "exact_Ast": "5601.33844189016602809706257982120051085568326947637292464878",
+      "source": "Independent Decimal G1.2 bar equilibrium and G2.2 limiting flange block; added after legacy expectation failures, no production imports."
+    }
+  ]
+}

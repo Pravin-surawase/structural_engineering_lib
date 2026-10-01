@@ -296,7 +296,14 @@ jobs:
           python -m pip install -e "Python/[dev,dxf]"
 
       - name: Run cross-platform suite
-        run: python -m pytest Python/tests -q -m "not slow and not performance"
+        shell: bash
+        run: |
+          test_python="$(command -v python)"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            export PATH="/usr/bin:$PATH"
+          fi
+          STRUCTURAL_LIB_PYTHON="$test_python" ./scripts/python_runtime.sh \
+            -m pytest Python/tests -q -m "not slow and not performance"
 
   summary:
     name: Weekly Verification Summary

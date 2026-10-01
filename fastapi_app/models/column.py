@@ -353,6 +353,9 @@ class ColumnUniaxialResponse(BaseModel):
         default_factory=list,
         description="Code compliance warnings",
     )
+    method: str | None = Field(
+        None, description="Versioned concrete and steel section-equilibrium profile"
+    )
 
 
 # =============================================================================
@@ -453,6 +456,9 @@ class PMInteractionResponse(BaseModel):
     d_prime_mm: float = Field(..., description="Cover to steel centroid (mm)")
     clause_ref: str = Field(default="Cl. 39.5", description="IS 456 clause reference")
     warnings: list[str] = Field(default_factory=list, description="Design warnings")
+    method: str | None = Field(
+        None, description="Versioned concrete and steel section-equilibrium profile"
+    )
 
 
 # =============================================================================
@@ -675,7 +681,9 @@ class AdditionalMomentResponse(BaseModel):
     slenderness_ratio_y: float = Field(description="le_y / b")
     is_slender_y: bool = Field(description="True if le_y/b >= 12")
 
-    k: float = Field(description="Reduction factor per Cl 39.7.1.1")
+    k: float = Field(description="Legacy x-plane alias of k_x per Cl 39.7.1.1")
+    k_x: float | None = Field(default=None, description="x-plane reduction factor")
+    k_y: float | None = Field(default=None, description="y-plane reduction factor")
     Max_reduced_kNm: float = Field(
         description="Reduced additional moment x-axis (kN·m)"
     )
@@ -683,7 +691,16 @@ class AdditionalMomentResponse(BaseModel):
         description="Reduced additional moment y-axis (kN·m)"
     )
     Puz_kN: float = Field(description="Pure axial crush capacity (kN)")
-    Pb_kN: float = Field(description="Balanced failure load (kN)")
+    Pb_kN: float = Field(description="Legacy x-plane alias of Pb_x_kN (kN)")
+    Pb_x_kN: float | None = Field(
+        default=None, description="x-plane prescribed-strain Pb (kN)"
+    )
+    Pb_y_kN: float | None = Field(
+        default=None, description="y-plane prescribed-strain Pb (kN)"
+    )
+    reduction_method: str | None = Field(
+        default=None, description="Versioned per-plane reduction convention"
+    )
 
     Pu_kN: float = Field(description="Applied axial load (kN)")
     b_mm: float = Field(description="Column width (mm)")
@@ -797,13 +814,24 @@ class LongColumnResponse(BaseModel):
     eadd_y_mm: float
     Max_kNm: float
     May_kNm: float
-    k: float
+    k: float = Field(description="Legacy x-plane alias of k_x per Cl 39.7.1.1")
+    k_x: float | None = Field(default=None, description="x-plane reduction factor")
+    k_y: float | None = Field(default=None, description="y-plane reduction factor")
     Max_reduced_kNm: float
     May_reduced_kNm: float
     interaction_ratio: float
     governing_check: str
     Puz_kN: float
-    Pb_kN: float
+    Pb_kN: float = Field(description="Legacy x-plane alias of Pb_x_kN (kN)")
+    Pb_x_kN: float | None = Field(
+        default=None, description="x-plane prescribed-strain Pb (kN)"
+    )
+    Pb_y_kN: float | None = Field(
+        default=None, description="y-plane prescribed-strain Pb (kN)"
+    )
+    reduction_method: str | None = Field(
+        default=None, description="Versioned per-plane reduction convention"
+    )
     b_mm: float
     D_mm: float
     lex_mm: float

@@ -51,7 +51,7 @@ def check_types(element, verbose=False):
     # Check for result type in data_types.py
     dt_file = REPO_ROOT / "Python" / "structural_lib" / "core" / "data_types.py"
     if dt_file.exists():
-        content = dt_file.read_text()
+        content = dt_file.read_text(encoding="utf-8")
         # Look for class names containing element name (case-insensitive)
         elem_cap = element.capitalize()
         # Handle special cases
@@ -103,7 +103,7 @@ def check_types(element, verbose=False):
     # Check for error codes in errors.py
     err_file = REPO_ROOT / "Python" / "structural_lib" / "core" / "errors.py"
     if err_file.exists():
-        content = err_file.read_text()
+        content = err_file.read_text(encoding="utf-8")
         err_prefix = f"E_{element.upper()}_"
         error_count = content.count(err_prefix)
         checks["error_codes"] = error_count
@@ -145,7 +145,7 @@ def check_math(element, verbose=False):
         clause_count = 0
         for py_file in py_files:
             try:
-                tree = ast.parse(py_file.read_text())
+                tree = ast.parse(py_file.read_text(encoding="utf-8"))
                 for node in ast.walk(tree):
                     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                         for dec in node.decorator_list:
@@ -171,7 +171,7 @@ def check_math(element, verbose=False):
 
         # Count @clause decorated functions in single file
         try:
-            tree = ast.parse(element_file.read_text())
+            tree = ast.parse(element_file.read_text(encoding="utf-8"))
             clause_count = 0
             for node in ast.walk(tree):
                 if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
@@ -213,7 +213,7 @@ def check_tests(element, verbose=False):
     test_count = 0
     for tf in test_files:
         try:
-            tree = ast.parse(tf.read_text())
+            tree = ast.parse(tf.read_text(encoding="utf-8"))
             for node in ast.walk(tree):
                 if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
                     test_count += 1
@@ -231,7 +231,7 @@ def check_api(element, verbose=False):
     api_file = REPO_ROOT / "Python" / "structural_lib" / "services" / "api.py"
 
     if api_file.exists():
-        content = api_file.read_text()
+        content = api_file.read_text(encoding="utf-8")
         # Look for design_<element>_is456 or <element> related functions
         elem_lower = element.lower()
         # Count defined and re-exported public functions related to element.
@@ -284,7 +284,7 @@ def check_endpoint(element, verbose=False):
     if not router_file.exists():
         for rf in routers_dir.glob("*.py"):
             try:
-                content = rf.read_text()
+                content = rf.read_text(encoding="utf-8")
                 if element.lower() in content.lower() and "@router" in content:
                     checks["served_by"] = rf.name
                     checks["router_exists"] = True

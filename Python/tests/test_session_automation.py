@@ -6,6 +6,7 @@ import copy
 import importlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 from datetime import UTC, date, datetime, timedelta
@@ -56,7 +57,7 @@ def test_agent_brief_filters_multiline_closed_task_ids_without_awk_failure(tmp_p
     )
 
     result = subprocess.run(
-        ["bash", str(REPO_ROOT / "scripts" / "agent_brief.sh")],
+        [shutil.which("bash"), str(REPO_ROOT / "scripts" / "agent_brief.sh")],
         cwd=REPO_ROOT,
         env=env,
         capture_output=True,
@@ -75,7 +76,13 @@ def test_agent_brief_filters_multiline_closed_task_ids_without_awk_failure(tmp_p
 
 def test_run_sh_routes_receipt_bound_handoff_help():
     result = subprocess.run(
-        ["bash", str(REPO_ROOT / "run.sh"), "session", "handoff", "--help"],
+        [
+            shutil.which("bash"),
+            str(REPO_ROOT / "run.sh"),
+            "session",
+            "handoff",
+            "--help",
+        ],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
@@ -89,7 +96,7 @@ def test_run_sh_routes_receipt_bound_handoff_help():
 def test_run_sh_routes_compact_recurrence_index():
     result = subprocess.run(
         [
-            "bash",
+            shutil.which("bash"),
             str(REPO_ROOT / "run.sh"),
             "session",
             "recurrence",
@@ -666,21 +673,33 @@ def test_run_task_brief_and_context_help_are_read_only():
     ).stdout
 
     brief = subprocess.run(
-        ["bash", str(REPO_ROOT / "run.sh"), "task", "brief", "fix CSV import"],
+        [
+            shutil.which("bash"),
+            str(REPO_ROOT / "run.sh"),
+            "task",
+            "brief",
+            "fix CSV import",
+        ],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
         timeout=20,
     )
     help_result = subprocess.run(
-        ["bash", str(REPO_ROOT / "run.sh"), "context", "summary", "--help"],
+        [
+            shutil.which("bash"),
+            str(REPO_ROOT / "run.sh"),
+            "context",
+            "summary",
+            "--help",
+        ],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
         timeout=20,
     )
     task_help = subprocess.run(
-        ["bash", str(REPO_ROOT / "run.sh"), "task", "brief", "--help"],
+        [shutil.which("bash"), str(REPO_ROOT / "run.sh"), "task", "brief", "--help"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
@@ -716,7 +735,7 @@ def test_context_summary_replaces_index_routes_without_writes():
 
     result = subprocess.run(
         [
-            "bash",
+            shutil.which("bash"),
             str(REPO_ROOT / "run.sh"),
             "context",
             "summary",
@@ -743,7 +762,7 @@ def test_context_summary_replaces_index_routes_without_writes():
 def test_retired_index_generate_routes_are_rejected():
     for subcommand in ("indexes", "docs-index"):
         result = subprocess.run(
-            ["bash", str(REPO_ROOT / "run.sh"), "generate", subcommand],
+            [shutil.which("bash"), str(REPO_ROOT / "run.sh"), "generate", subcommand],
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,

@@ -5,8 +5,8 @@
     "title": "Plain and Reinforced Concrete - Code of Practice",
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
-    "last_updated": "2026-08-24",
-    "total_clauses": 179,
+    "last_updated": "2026-09-30",
+    "total_clauses": 180,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -1907,6 +1907,16 @@
         "capacity design",
         "tie beams"
       ]
+    },
+    "6.2.5.1": {
+      "title": "Default ultimate creep coefficients at stated loading ages",
+      "section": "6 - Concrete",
+      "category": "materials",
+      "keywords": [
+        "creep",
+        "loading age",
+        "default coefficients"
+      ]
     }
   },
   "tables": {
@@ -2000,8 +2010,18 @@
         "moment resistance"
       ]
     },
+    "G-2.1": {
+      "title": "Flange Containing the Compression Zone",
+      "section": "Annex G - Moment of Resistance",
+      "category": "flexure",
+      "keywords": [
+        "flanged beam",
+        "neutral axis in flange",
+        "rectangular compression zone"
+      ]
+    },
     "G-2.2": {
-      "title": "Flanged Beams - Neutral Axis in Web",
+      "title": "Flanged Section Limiting Moment",
       "section": "Annex G - Moment of Resistance",
       "category": "flexure",
       "keywords": [
@@ -2012,16 +2032,37 @@
         "flange contribution"
       ]
     },
+    "G-2.2.1": {
+      "title": "Limiting Moment with a Thick Flange",
+      "section": "Annex G - Moment of Resistance",
+      "category": "flexure",
+      "keywords": [
+        "flanged beam",
+        "limiting depth",
+        "effective flange depth"
+      ]
+    },
+    "G-2.3": {
+      "title": "Flanged Section Below the Limiting Depth",
+      "section": "Annex G - Moment of Resistance",
+      "category": "flexure",
+      "keywords": [
+        "flanged beam",
+        "neutral axis in web",
+        "Df/xu",
+        "ordinary moment resistance"
+      ]
+    },
     "C-2": {
-      "title": "Concrete Stress Block Parameters — Creep and Shrinkage",
+      "title": "Immediate service deflection and effective inertia",
       "section": "Annex C - Serviceability Calculations",
       "category": "serviceability",
       "keywords": [
-        "creep",
-        "creep coefficient",
-        "stress block",
-        "long-term deflection",
-        "moment of inertia"
+        "service moment",
+        "elastic stiffness",
+        "cracked section",
+        "effective inertia",
+        "Annex C2.1"
       ]
     },
     "C-3": {
@@ -2033,6 +2074,16 @@
         "shrinkage strain",
         "shrinkage curvature",
         "shrinkage deflection"
+      ]
+    },
+    "C-4": {
+      "title": "Additional creep deflection from changed effective modulus",
+      "section": "Annex C - Serviceability Calculations",
+      "category": "serviceability",
+      "keywords": [
+        "permanent service load",
+        "effective modulus",
+        "Annex C4.1"
       ]
     }
   }

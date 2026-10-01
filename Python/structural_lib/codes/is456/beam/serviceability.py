@@ -16,6 +16,7 @@ Note: This module intentionally avoids embedding copyrighted clause text.
 
 from __future__ import annotations
 
+import math
 from dataclasses import asdict
 from typing import Any
 
@@ -583,52 +584,35 @@ def calculate_effective_moment_of_inertia(
     ma_knm: float,
     igross_mm4: float,
     icr_mm4: float,
+    d_mm: float | None = None,
+    x_mm: float | None = None,
 ) -> float:
-    """Calculate effective moment of inertia Ieff per IS 456 Annex C.
+    """Annex C-2.1 effective inertia for a singly reinforced rectangle.
 
-    Branson's equation:
-    Ieff = Icr + (Igross - Icr) × (Mcr / Ma)³
-
-    For Ma < Mcr, section is uncracked: Ieff = Igross
-
-    Args:
-        mcr_knm: Cracking moment (kN·m)
-        ma_knm: Applied service moment (kN·m), absolute value
-        igross_mm4: Gross moment of inertia (mm^4)
-        icr_mm4: Cracked moment of inertia (mm^4)
-
-    Returns:
-        Effective moment of inertia in mm^4
+    For cracked sections z=d-x/3 and bw/b=1. The source expression is
+    Icr/[1.2-(Mr/|M|)(z/d)(1-x/d)], bounded by Icr and Ig. The formerly
+    used cubic Branson expression is a different model. Calls without the
+    required geometry can determine an uncracked Ig, but cannot qualify a
+    cracked-section IS456 result. Moments are unfactored service moments.
     """
+    if not all(math.isfinite(v) and v > 0 for v in (igross_mm4, icr_mm4)):
+        raise ValueError("Gross and cracked inertias must be finite and positive.")
+    if icr_mm4 > igross_mm4:
+        raise ValueError("Annex C bounds require Icr <= Ig for this section model.")
+    if not math.isfinite(mcr_knm) or mcr_knm <= 0 or not math.isfinite(ma_knm):
+        raise ValueError("Cracking moment must be positive; service moment finite.")
     ma_abs = abs(ma_knm)
-
-    if igross_mm4 <= 0:
-        raise ValueError(
-            f"Gross moment of inertia igross_mm4 must be positive, got {igross_mm4}"
-        )
-    if icr_mm4 <= 0:
-        raise ValueError(
-            f"Cracked moment of inertia icr_mm4 must be positive, got {icr_mm4}"
-        )
-
-    if ma_abs <= 0:
-        return igross_mm4
-
     if ma_abs <= mcr_knm:
-        # Uncracked section
         return igross_mm4
-
-    # Branson's equation
-    ratio = mcr_knm / ma_abs
-    ratio_cubed = ratio**3
-
-    ieff = icr_mm4 + (igross_mm4 - icr_mm4) * ratio_cubed
-
-    # Ieff should not be less than Icr
-    return max(ieff, icr_mm4)
+    if d_mm is None or x_mm is None:
+        raise ValueError("Annex C-2.1 requires d_mm and cracked neutral axis x_mm.")
+    if not (math.isfinite(d_mm) and math.isfinite(x_mm) and 0 < x_mm < d_mm):
+        raise ValueError("Require finite 0 < x_mm < d_mm.")
+    z_mm = d_mm - x_mm / 3
+    denominator = 1.2 - (mcr_knm / ma_abs) * (z_mm / d_mm) * (1 - x_mm / d_mm)
+    return min(igross_mm4, max(icr_mm4, icr_mm4 / denominator))
 
 
-@clause("23.2.1")
 def get_long_term_deflection_factor(
     *,
     duration_months: int = 60,
@@ -636,31 +620,12 @@ def get_long_term_deflection_factor(
     b_mm: float = 0.0,
     d_mm: float = 0.0,
 ) -> float:
-    """Calculate long-term deflection multiplier per IS 456 Cl 23.2.1.
+    """Legacy empirical multiplier retained for compatibility, without IS attribution.
 
-    The multiplier accounts for creep and shrinkage:
-    λ = ξ / (1 + 50 × ρ')
-
-    where:
-    - ξ = time-dependent factor (Table below)
-    - ρ' = Asc / (b × d) = compression steel ratio
-
-    ξ values (IS 456 Cl 23.2.1):
-    - 3 months: 1.0
-    - 6 months: 1.2
-    - 12 months: 1.4
-    - 60 months (5 years) or more: 2.0
-
-    Args:
-        duration_months: Duration of load in months. Default 60 (5 years).
-        asc_mm2: Area of compression steel (mm²). Default 0.
-        b_mm: Beam width (mm). Required if asc_mm2 > 0.
-        d_mm: Effective depth (mm). Required if asc_mm2 > 0.
-
-    Returns:
-        Long-term deflection multiplier (λ)
+    xi/(1+50*rho') and the 3/6/12/60 month xi values are not the source
+    Annex C-3/C-4 procedure. This helper does not qualify an IS456 long-term
+    check and is not used by Level B/C. No code-derived accuracy is claimed.
     """
-    # Time-dependent factor ξ
     if duration_months >= 60:
         xi = 2.0
     elif duration_months >= 12:
@@ -670,21 +635,36 @@ def get_long_term_deflection_factor(
     elif duration_months >= 3:
         xi = 1.0
     else:
-        xi = 0.5  # Very short term
+        xi = 0.5
+    rho_prime = (
+        asc_mm2 / (b_mm * d_mm) if asc_mm2 > 0 and b_mm > 0 and d_mm > 0 else 0.0
+    )
+    return xi / (1 + 50 * rho_prime)
 
-    # Compression steel ratio
-    rho_prime = 0.0
-    if asc_mm2 > 0 and b_mm > 0 and d_mm > 0:
-        rho_prime = asc_mm2 / (b_mm * d_mm)
 
-    # Long-term factor
-    denominator = 1 + 50 * rho_prime
-    if denominator <= 0:
-        denominator = 1.0
+def _sls_support(value: SupportCondition | str) -> SupportCondition:
+    support, note = _normalize_support_condition(value)
+    if note:
+        raise ValueError(
+            "Unsupported support condition; no assumed boundary condition."
+        )
+    if support == SupportCondition.CONTINUOUS:
+        raise ValueError(
+            "Continuous Annex C checks require support/midspan moments and Table 25 averaging."
+        )
+    return support
 
-    lambda_factor = xi / denominator
 
-    return lambda_factor
+def _elastic_deflection(
+    moment_knm: float,
+    span_mm: float,
+    ec_nmm2: float,
+    inertia_mm4: float,
+    support: SupportCondition,
+) -> float:
+    # Double integration of EI*v''=M(x): SS UDL, or cantilever end point load.
+    coefficient = 1 / 3 if support == SupportCondition.CANTILEVER else 5 / 48
+    return coefficient * abs(moment_knm) * 1e6 * span_mm**2 / (ec_nmm2 * inertia_mm4)
 
 
 @clause("23.2")
@@ -696,56 +676,145 @@ def calculate_short_term_deflection(
     fck_nmm2: float,
     support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
 ) -> float:
-    """Calculate short-term (immediate) deflection using elastic analysis.
+    """Elastic deflection magnitude for the declared service load pattern.
 
-    For simply supported beam with UDL:
-    δ = 5 × M × L² / (48 × Ec × Ieff)
-
-    where M is at midspan.
-
-    For cantilever with point load at end:
-    δ = M × L² / (2 × Ec × Ieff)
-
-    For continuous beam (approximation):
-    δ = 0.6 × simply supported deflection
-
-    Args:
-        ma_knm: Applied service moment at critical section (kN·m)
-        span_mm: Span length (mm)
-        ieff_mm4: Effective moment of inertia (mm^4)
-        fck_nmm2: Characteristic concrete strength (N/mm²)
-        support_condition: Support type
-
-    Returns:
-        Short-term deflection in mm
+    SS uniformly distributed load: 5*|Mmid|*L²/(48*Ec*I).
+    Cantilever end point load: |Mroot|*L²/(3*Ec*I), from P*L³/(3*Ec*I).
+    A continuous frame or another load pattern cannot be inferred from one M.
+    Ec=5000*sqrt(fck); no ultimate material factors enter this SLS calculation.
     """
-    import math
-
-    if ma_knm <= 0 or span_mm <= 0 or ieff_mm4 <= 0 or fck_nmm2 <= 0:
-        return 0.0
-
-    ec = 5000 * math.sqrt(fck_nmm2)  # N/mm²
-
-    # Convert moment to N·mm
-    ma_nmm = abs(ma_knm) * 1e6
-
-    support, _ = _normalize_support_condition(support_condition)
-
-    if support == SupportCondition.CANTILEVER:
-        # Cantilever: δ = M × L² / (2 × Ec × Ieff)
-        # Using equivalent formula
-        delta = ma_nmm * (span_mm**2) / (2 * ec * ieff_mm4)
-    elif support == SupportCondition.CONTINUOUS:
-        # Continuous: approximately 60% of simply supported
-        delta = 0.6 * 5 * ma_nmm * (span_mm**2) / (48 * ec * ieff_mm4)
-    else:
-        # Simply supported: δ = 5 × M × L² / (48 × Ec × Ieff)
-        delta = 5 * ma_nmm * (span_mm**2) / (48 * ec * ieff_mm4)
-
-    return delta
+    if not all(
+        math.isfinite(v) and v > 0 for v in (span_mm, ieff_mm4, fck_nmm2)
+    ) or not math.isfinite(ma_knm):
+        raise ValueError(
+            "Require finite service moment and positive span, inertia and fck."
+        )
+    return _elastic_deflection(
+        ma_knm,
+        span_mm,
+        5000 * math.sqrt(fck_nmm2),
+        ieff_mm4,
+        _sls_support(support_condition),
+    )
 
 
-@clause("23.2")
+SLS_METHOD = "IS456_ANNEX_C_RECT_SINGLE_V1"
+
+
+def _sls_geometry(
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    ast_mm2: float,
+    asc_mm2: float,
+    fck_nmm2: float,
+    es_nmm2: float,
+    limit_ratio: float,
+) -> None:
+    if (
+        not all(math.isfinite(v) and v > 0 for v in (b_mm, D_mm, d_mm, span_mm))
+        or d_mm >= D_mm
+    ):
+        raise ValueError(
+            "Invalid geometry: require positive dimensions and d_mm < D_mm."
+        )
+    if (
+        not math.isfinite(ast_mm2)
+        or ast_mm2 <= 0
+        or not math.isfinite(asc_mm2)
+        or asc_mm2 < 0
+    ):
+        raise ValueError("Invalid input: require Ast > 0 and Asc >= 0.")
+    if asc_mm2:
+        raise ValueError(
+            "Compression steel requires its depth/layout for the cracked section; this scalar API lacks it."
+        )
+    if not math.isfinite(fck_nmm2) or not 15 <= fck_nmm2 <= 55:
+        raise ValueError(
+            "Default IS456 SLS material parameters require 15 <= fck <= 55; higher grades need additional data."
+        )
+    if not all(math.isfinite(v) and v > 0 for v in (es_nmm2, limit_ratio)):
+        raise ValueError("Require positive finite Es and deflection limit ratio.")
+
+
+def _sls_section(
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    ast_mm2: float,
+    ec_nmm2: float,
+    es_nmm2: float,
+    mcr_knm: float,
+    moment_knm: float,
+) -> dict[str, float]:
+    transformed_steel = (es_nmm2 / ec_nmm2) * ast_mm2
+    x = (
+        2
+        * transformed_steel
+        * d_mm
+        / (
+            transformed_steel
+            + math.sqrt(transformed_steel**2 + 2 * b_mm * transformed_steel * d_mm)
+        )
+    )
+    icr = b_mm * x**3 / 3 + transformed_steel * (d_mm - x) ** 2
+    ig = b_mm * D_mm**3 / 12
+    ieff = calculate_effective_moment_of_inertia(
+        mcr_knm=mcr_knm,
+        ma_knm=moment_knm,
+        igross_mm4=ig,
+        icr_mm4=icr,
+        d_mm=d_mm,
+        x_mm=x,
+    )
+    return {
+        "ec_nmm2": ec_nmm2,
+        "x_mm": x,
+        "z_mm": d_mm - x / 3,
+        "icr_mm4": icr,
+        "igross_mm4": ig,
+        "ieff_mm4": ieff,
+    }
+
+
+def _sls_hold(
+    result_type: type[DeflectionLevelBResult] | type[DeflectionLevelCResult],
+    inputs: dict[str, Any],
+    reason: str,
+    support: SupportCondition = SupportCondition.SIMPLY_SUPPORTED,
+    computed: dict[str, Any] | None = None,
+    **values: float,
+) -> DeflectionLevelBResult | DeflectionLevelCResult:
+    details = {
+        "method": SLS_METHOD,
+        "status": "HOLD_UNSUPPORTED",
+        "reason": reason,
+        **(computed or {}),
+    }
+    ratio = inputs["deflection_limit_ratio"]
+    span = inputs["span_mm"]
+    limit = (
+        span / ratio
+        if math.isfinite(ratio) and ratio > 0 and math.isfinite(span) and span > 0
+        else 0.0
+    )
+    return result_type(
+        is_ok=False,
+        remarks=f"HOLD_UNSUPPORTED: {reason}",
+        support_condition=support,
+        assumptions=[
+            "No qualified total deflection is available for this input domain."
+        ],
+        inputs=inputs,
+        computed=details,
+        delta_total_mm=math.inf,
+        delta_limit_mm=limit,
+        **values,
+    )
+
+
+@clause("23.2", "C-2")
 def check_deflection_level_b(
     *,
     b_mm: float,
@@ -761,57 +830,14 @@ def check_deflection_level_b(
     deflection_limit_ratio: float = 250.0,
     es_nmm2: float = 200000.0,
 ) -> DeflectionLevelBResult:
-    """Level B deflection check with full curvature-based calculation.
+    """Report Annex C immediate deflection; hold the unqualified long-term check.
 
-    IS 456 Cl 23.2 / Annex C method:
-    1. Calculate cracking moment Mcr
-    2. Calculate effective moment of inertia Ieff (Branson's equation)
-    3. Calculate short-term deflection
-    4. Apply long-term factor for creep/shrinkage
-    5. Compare total deflection against limit (span/250 or span/350)
-
-    Units:
-    - All dimensions: mm
-    - Areas: mm²
-    - Stresses: N/mm²
-    - Moments: kN·m
-    - Deflections: mm
-
-    Args:
-        b_mm: Beam width (mm)
-        D_mm: Overall depth (mm)
-        d_mm: Effective depth (mm)
-        span_mm: Span length (mm)
-        ma_service_knm: Service moment at critical section (kN·m), unfactored
-        ast_mm2: Area of tension steel (mm²)
-        fck_nmm2: Characteristic concrete strength (N/mm²)
-        support_condition: Support type
-        asc_mm2: Area of compression steel (mm²). Default 0.
-        duration_months: Duration of sustained load in months. Default 60.
-        deflection_limit_ratio: Limit as span/ratio. Default 250 (total).
-        es_nmm2: Elastic modulus of steel (N/mm²). Default 200000.
-
-    Returns:
-        DeflectionLevelBResult with detailed outputs
-
-    Limitations:
-        - Rectangular sections only; flanged beam (T/L) sections require
-          separate Igross and Icr calculations with flange contribution.
-        - Simply supported, cantilever, and continuous beams with
-          standard deflection coefficients; irregular loading patterns
-          or multi-span continuous beams require frame analysis.
-        - Long-term deflection uses simplified multiplier method
-          (IS 456 Cl. 23.2); does not use age-adjusted effective
-          modulus or step-by-step creep integration.
-        - Service (unfactored) moment must be supplied; the function
-          does not perform load factoring or combination.
-        - Shrinkage deflection is estimated via long-term factor only;
-          separate shrinkage curvature calculation available in
-          ``check_deflection_level_c`` for more accurate results.
-        - Does not account for construction sequence, shoring removal
-          timing, or composite action with non-structural elements.
+    One service moment and a duration cannot identify permanent load, loading
+    age or shrinkage. The previous duration multiplier was not the IS456
+    Annex C method. This retained API returns is_ok=False/HOLD_UNSUPPORTED,
+    with qualified immediate outputs where possible. Use Level C for its
+    explicitly supported permanent/live service-load and shrinkage domain.
     """
-    assumptions = []
     inputs = {
         "b_mm": b_mm,
         "D_mm": D_mm,
@@ -823,194 +849,72 @@ def check_deflection_level_b(
         "asc_mm2": asc_mm2,
         "duration_months": duration_months,
         "deflection_limit_ratio": deflection_limit_ratio,
+        "es_nmm2": es_nmm2,
+        "support_condition": str(support_condition),
     }
-
-    # Validate inputs
-    if b_mm <= 0 or D_mm <= 0 or d_mm <= 0 or span_mm <= 0:
-        return DeflectionLevelBResult(
-            is_ok=False,
-            remarks="Invalid geometry: all dimensions must be > 0.",
-            support_condition=SupportCondition.SIMPLY_SUPPORTED,
-            assumptions=["Invalid inputs"],
-            inputs=inputs,
-            computed={},
+    support = SupportCondition.SIMPLY_SUPPORTED
+    try:
+        _sls_geometry(
+            b_mm,
+            D_mm,
+            d_mm,
+            span_mm,
+            ast_mm2,
+            asc_mm2,
+            fck_nmm2,
+            es_nmm2,
+            deflection_limit_ratio,
         )
-
-    if ast_mm2 <= 0:
-        return DeflectionLevelBResult(
-            is_ok=False,
-            remarks="Invalid input: ast_mm2 must be > 0.",
-            support_condition=SupportCondition.SIMPLY_SUPPORTED,
-            assumptions=["Invalid inputs"],
-            inputs=inputs,
-            computed={},
+        support = _sls_support(support_condition)
+        if not math.isfinite(ma_service_knm):
+            raise ValueError("Service moment must be finite.")
+        mcr = calculate_cracking_moment(b_mm=b_mm, D_mm=D_mm, fck_nmm2=fck_nmm2)
+        section = _sls_section(
+            b_mm,
+            D_mm,
+            d_mm,
+            ast_mm2,
+            5000 * math.sqrt(fck_nmm2),
+            es_nmm2,
+            mcr,
+            ma_service_knm,
         )
-
-    if ma_service_knm <= 0:
-        assumptions.append("Service moment is zero or negative; deflection = 0.")
-        return DeflectionLevelBResult(
-            is_ok=True,
-            remarks="No load applied (Ma ≤ 0). Deflection = 0.",
-            support_condition=SupportCondition.SIMPLY_SUPPORTED,
-            assumptions=assumptions,
-            inputs=inputs,
-            computed={"delta_total_mm": 0.0},
-            delta_total_mm=0.0,
-            delta_limit_mm=span_mm / deflection_limit_ratio,
+        short = _elastic_deflection(
+            ma_service_knm, span_mm, section["ec_nmm2"], section["ieff_mm4"], support
         )
-
-    support, support_note = _normalize_support_condition(support_condition)
-    if support_note:
-        assumptions.append(support_note)
-
-    # Step 1: Cracking moment
-    mcr_knm = calculate_cracking_moment(b_mm=b_mm, D_mm=D_mm, fck_nmm2=fck_nmm2)
-
-    # Step 2: Gross moment of inertia
-    igross = calculate_gross_moment_of_inertia(b_mm=b_mm, D_mm=D_mm)
-
-    # Step 3: Cracked moment of inertia
-    icr = calculate_cracked_moment_of_inertia(
-        b_mm=b_mm, d_mm=d_mm, ast_mm2=ast_mm2, fck_nmm2=fck_nmm2, es_nmm2=es_nmm2
-    )
-
-    # Step 4: Effective moment of inertia (Branson's equation)
-    ieff = calculate_effective_moment_of_inertia(
-        mcr_knm=mcr_knm, ma_knm=ma_service_knm, igross_mm4=igross, icr_mm4=icr
-    )
-
-    if ma_service_knm <= mcr_knm:
-        assumptions.append(
-            f"Section uncracked (Ma={ma_service_knm:.2f} ≤ Mcr={mcr_knm:.2f}). Using Igross."
-        )
-
-    # Step 5: Short-term deflection
-    delta_short = calculate_short_term_deflection(
-        ma_knm=ma_service_knm,
-        span_mm=span_mm,
-        ieff_mm4=ieff,
-        fck_nmm2=fck_nmm2,
-        support_condition=support,
-    )
-
-    # Step 6: Long-term factor
-    long_term_factor = get_long_term_deflection_factor(
-        duration_months=duration_months,
-        asc_mm2=asc_mm2,
-        b_mm=b_mm,
-        d_mm=d_mm,
-    )
-
-    # Step 7: Long-term deflection (additional due to creep/shrinkage)
-    delta_long = delta_short * long_term_factor
-
-    # Step 8: Total deflection
-    delta_total = delta_short + delta_long
-
-    # Step 9: Allowable deflection
-    delta_limit = span_mm / deflection_limit_ratio
-
-    # Step 10: Check
-    is_ok = delta_total <= delta_limit
-
-    if is_ok:
-        remarks = f"OK: δ_total={delta_total:.2f} mm ≤ limit={delta_limit:.2f} mm (span/{deflection_limit_ratio:.0f})"
-    else:
-        remarks = f"NOT OK: δ_total={delta_total:.2f} mm > limit={delta_limit:.2f} mm (span/{deflection_limit_ratio:.0f})"
-
-    computed = {
-        "mcr_knm": mcr_knm,
-        "igross_mm4": igross,
-        "icr_mm4": icr,
-        "ieff_mm4": ieff,
-        "delta_short_mm": delta_short,
-        "long_term_factor": long_term_factor,
-        "delta_long_mm": delta_long,
-        "delta_total_mm": delta_total,
-        "delta_limit_mm": delta_limit,
-    }
-
-    return DeflectionLevelBResult(
-        is_ok=is_ok,
-        remarks=remarks,
-        support_condition=support,
-        assumptions=assumptions,
-        inputs=inputs,
-        computed=computed,
-        mcr_knm=mcr_knm,
-        igross_mm4=igross,
-        icr_mm4=icr,
-        ieff_mm4=ieff,
-        delta_short_mm=delta_short,
-        delta_long_mm=delta_long,
-        delta_total_mm=delta_total,
-        delta_limit_mm=delta_limit,
-        long_term_factor=long_term_factor,
-    )
+    except ValueError as exc:
+        return _sls_hold(DeflectionLevelBResult, inputs, str(exc), support)  # type: ignore[return-value]
+    return _sls_hold(DeflectionLevelBResult, inputs, "Long-term basis missing: permanent load, loading age and shrinkage cannot be inferred from duration_months.", support, computed={**section, "mcr_knm": mcr, "delta_short_mm": short, "load_basis": "UNFACTORED_SERVICE"}, mcr_knm=mcr, igross_mm4=section["igross_mm4"], icr_mm4=section["icr_mm4"], ieff_mm4=section["ieff_mm4"], delta_short_mm=short, delta_long_mm=math.inf, long_term_factor=math.inf)  # type: ignore[return-value]
 
 
-# =============================================================================
-# Level C Serviceability Functions (IS 456 Annex C - Detailed Method)
-# =============================================================================
-
-
-@clause("C-2")
+@clause("6.2.5.1")
 def get_creep_coefficient(
     *,
     age_at_loading_days: int = 28,
     relative_humidity_percent: float = 50.0,
     notional_size_mm: float = 150.0,
 ) -> float:
-    """Calculate creep coefficient (θ) per IS 456 Annex C.
+    """Ultimate default theta at the three source loading ages: 7/28/365 days.
 
-    The creep coefficient depends on:
-    - Age of concrete at loading
-    - Relative humidity of environment
-    - Notional size of member (2 * Ac / u, where u = perimeter exposed)
-
-    IS 456 Table C.2 provides values for different conditions.
-    This function interpolates based on the simplified model.
-
-    Args:
-        age_at_loading_days: Age of concrete when load is applied (days). Default 28.
-        relative_humidity_percent: Ambient relative humidity (%). Default 50.
-        notional_size_mm: Notional size = 2 * Ac / u (mm). Default 150.
-
-    Returns:
-        Creep coefficient θ (dimensionless)
-
-    Reference:
-        IS 456:2000, Annex C, Table C.2
+    IS456 Cl6.2.5.1 gives 2.2/1.6/1.1 in the absence of experimental data.
+    It does not give the former humidity/size equation or an interpolation
+    rule. Humidity and size are retained context inputs, not calibrated
+    modifiers. An intermediate age requires a separately established model.
+    These are ultimate coefficients, not a finite-time creep history.
     """
-    # Base creep coefficient at 28 days loading, 50% RH, h0 = 150mm
-    # θ0 ≈ 2.5 for normal conditions
-
-    # Age factor: older concrete has less creep
-    # θ(t0) = θ0 / (0.1 + t0^0.2) where t0 = age in days
-    if age_at_loading_days < 1:
-        age_at_loading_days = 1
-    age_factor = 1.0 / (0.1 + (age_at_loading_days**0.2))
-
-    # Humidity factor: higher humidity = less creep
-    # φRH = 1 + (1 - RH/100) / (0.1 * h0^(1/3))
-    if relative_humidity_percent < 20:
-        relative_humidity_percent = 20
-    if relative_humidity_percent > 100:
-        relative_humidity_percent = 100
-
-    rh_factor = 1.0 + (1.0 - relative_humidity_percent / 100.0) / (
-        0.1 * (notional_size_mm ** (1 / 3))
-    )
-
-    # Base coefficient
-    theta_0 = 2.5
-
-    # Final creep coefficient
-    theta = theta_0 * age_factor * rh_factor
-
-    # Limit to reasonable range (0.8 to 4.0)
-    result: float = max(0.8, min(4.0, theta))
-    return result
+    if (
+        not math.isfinite(relative_humidity_percent)
+        or not 0 < relative_humidity_percent <= 100
+        or not math.isfinite(notional_size_mm)
+        or notional_size_mm <= 0
+    ):
+        raise ValueError("Require valid humidity and positive notional size.")
+    values = {7: 2.2, 28: 1.6, 365: 1.1}
+    if age_at_loading_days not in values:
+        raise ValueError(
+            "Source default creep coefficients exist only at loading ages 7, 28 and 365 days; no interpolation model is selected."
+        )
+    return values[age_at_loading_days]
 
 
 @clause("C-3")
@@ -1023,88 +927,64 @@ def calculate_shrinkage_curvature(
     b_mm: float,
     es_nmm2: float = 200000.0,
     fck_nmm2: float = 25.0,
+    D_mm: float | None = None,
 ) -> float:
-    """Calculate shrinkage curvature per IS 456 Annex C.
+    """Annex C-3.1: phi_sh=k4*eps_cs/D, with percentages pt/pc=100*A/(b*d).
 
-    Shrinkage causes curvature due to unequal shrinkage restraint from
-    tension and compression steel.
-
-    Shrinkage curvature: φsh = εcs × S / Ieff
-
-    where:
-    - εcs = shrinkage strain (typically 0.0003 for normal conditions)
-    - S = first moment of area of reinforcement about centroid
-    - Ieff = effective moment of inertia
-
-    Simplified approach using steel ratio:
-    φsh ≈ εcs × (ρ - ρ') / d × correction factor
-
-    Args:
-        eps_cs: Shrinkage strain (dimensionless). Default 0.0003.
-        d_mm: Effective depth (mm)
-        ast_mm2: Area of tension steel (mm²)
-        asc_mm2: Area of compression steel (mm²). Default 0.
-        b_mm: Beam width (mm)
-        es_nmm2: Elastic modulus of steel (N/mm²). Default 200000.
-        fck_nmm2: Characteristic concrete strength (N/mm²). Default 25.
-
-    Returns:
-        Shrinkage curvature (1/mm)
-
-    Reference:
-        IS 456:2000, Annex C, Cl C-3
+    The listed empirical k4 branches (.72 or .65, capped at 1) apply when
+    pt-pc >= .25 percent. Overall D is required; d is not a substitute.
+    Es/fck remain compatibility inputs but do not enter the source k4 formula.
+    The source does not specify the lower imbalance domain; no extrapolation
+    or absolute-value workaround is applied there.
     """
-    if d_mm <= 0 or b_mm <= 0 or ast_mm2 <= 0:
-        return 0.0
-
-    # Steel ratios
-    rho_t = ast_mm2 / (b_mm * d_mm)  # Tension steel ratio
-    rho_c = asc_mm2 / (b_mm * d_mm)  # Compression steel ratio
-
-    # Modular ratio
-    ec_nmm2 = 5000 * (fck_nmm2**0.5)
-    m = es_nmm2 / ec_nmm2
-
-    # Shrinkage curvature per IS 456 Annex C
-    # φsh = εcs × m × (ρ - ρ') / (1 + m × ρ) × (1/d)
-    numerator = eps_cs * m * (rho_t - rho_c)
-    denominator = (1 + m * rho_t) * d_mm
-
-    if denominator <= 0:
-        return 0.0
-
-    phi_sh = numerator / denominator
-
-    result: float = abs(phi_sh)
-    return result
+    if D_mm is None:
+        raise ValueError("Annex C-3.1 requires overall depth D_mm.")
+    if (
+        not all(math.isfinite(v) and v > 0 for v in (b_mm, d_mm, D_mm, ast_mm2))
+        or d_mm >= D_mm
+        or not math.isfinite(asc_mm2)
+        or asc_mm2 < 0
+        or not math.isfinite(eps_cs)
+        or eps_cs < 0
+    ):
+        raise ValueError("Invalid shrinkage geometry, steel area or strain.")
+    pt = 100 * ast_mm2 / (b_mm * d_mm)
+    pc = 100 * asc_mm2 / (b_mm * d_mm)
+    imbalance = pt - pc
+    if imbalance < 0.25:
+        raise ValueError(
+            "Annex C-3.1 k4 domain requires pt-pc >= .25 percent; lower imbalance is unsupported."
+        )
+    k4 = min(1.0, (0.72 if imbalance < 1.0 else 0.65) * imbalance / math.sqrt(pt))
+    return k4 * eps_cs / D_mm
 
 
-@clause("C-2")
+@clause("C-4")
 def calculate_creep_deflection(
     *,
     delta_sustained_mm: float,
     creep_coefficient: float,
+    delta_long_term_mm: float | None = None,
 ) -> float:
-    """Calculate creep deflection component.
+    """Additional creep is the permanent-load long-term minus initial deflection.
 
-    Creep deflection = Immediate deflection under sustained load × θ
-
-    Args:
-        delta_sustained_mm: Immediate deflection under sustained load (mm)
-        creep_coefficient: Creep coefficient θ (dimensionless)
-
-    Returns:
-        Creep deflection (mm)
-
-    Reference:
-        IS 456:2000, Annex C, Cl C-2
+    C-4.1 requires Ec/(1+theta), including the changed transformed section.
+    A scalar theta and initial deflection do not determine cracked stiffness.
+    The caller must supply the recomputed long-term permanent-load deflection.
     """
-    if delta_sustained_mm < 0:
-        delta_sustained_mm = 0.0
-    if creep_coefficient < 0:
-        creep_coefficient = 0.0
-
-    return delta_sustained_mm * creep_coefficient
+    if delta_long_term_mm is None:
+        raise ValueError(
+            "C-4.1 requires permanent-load deflection recomputed with effective Ec."
+        )
+    if (
+        not all(
+            math.isfinite(v) and v >= 0
+            for v in (delta_sustained_mm, creep_coefficient, delta_long_term_mm)
+        )
+        or delta_long_term_mm < delta_sustained_mm
+    ):
+        raise ValueError("Require nonnegative deflections and long-term >= initial.")
+    return delta_long_term_mm - delta_sustained_mm
 
 
 @clause("C-3")
@@ -1114,47 +994,25 @@ def calculate_shrinkage_deflection(
     span_mm: float,
     support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
 ) -> float:
-    """Calculate shrinkage deflection from shrinkage curvature.
+    """Uniform shrinkage curvature: SS k3=1/8, cantilever k3=1/2.
 
-    Shrinkage deflection depends on curvature distribution and support.
-
-    For simply supported: δsh = k × φsh × L²
-    where k depends on curvature distribution (typically 0.125 for uniform)
-
-    Args:
-        phi_sh: Shrinkage curvature (1/mm)
-        span_mm: Span length (mm)
-        support_condition: Support type
-
-    Returns:
-        Shrinkage deflection (mm)
-
-    Reference:
-        IS 456:2000, Annex C, Cl C-3
+    Continuous-one-end and fully continuous k3 are distinct source cases;
+    the generic CONTINUOUS enum cannot select one, so it is unsupported here.
     """
-    if phi_sh <= 0 or span_mm <= 0:
-        return 0.0
-
-    support, _ = _normalize_support_condition(support_condition)
-
-    # Deflection coefficient based on support
-    # For parabolic curvature distribution:
-    # Simply supported: k = 1/8
-    # Cantilever: k = 1/2
-    # Continuous: k = 1/12 (approximate)
-    if support == SupportCondition.CANTILEVER:
-        k = 0.5
-    elif support == SupportCondition.CONTINUOUS:
-        k = 1 / 12
-    else:
-        k = 1 / 8
-
-    delta_sh = k * phi_sh * span_mm * span_mm
-
-    return delta_sh
+    if (
+        not math.isfinite(phi_sh)
+        or phi_sh < 0
+        or not math.isfinite(span_mm)
+        or span_mm <= 0
+    ):
+        raise ValueError("Require nonnegative finite curvature and positive span.")
+    support = _sls_support(support_condition)
+    return (
+        (0.5 if support == SupportCondition.CANTILEVER else 0.125) * phi_sh * span_mm**2
+    )
 
 
-@clause("C-2", "C-3")
+@clause("C-2", "C-3", "C-4", "6.2.5.1")
 def check_deflection_level_c(
     *,
     b_mm: float,
@@ -1173,52 +1031,20 @@ def check_deflection_level_c(
     deflection_limit_ratio: float = 250.0,
     es_nmm2: float = 200000.0,
 ) -> DeflectionLevelCResult:
-    """Level C deflection check with separate creep and shrinkage.
+    """Annex C default ultimate deflection for a singly reinforced rectangle.
 
-    IS 456 Annex C detailed method with:
-    - Separate creep and shrinkage components
-    - Sustained vs live load differentiation
-    - Humidity and age of loading factors
+    Unfactored permanent and variable service moments must have the same
+    direction. SS means UDL; cantilever means end point load. Immediate
+    stiffness uses the total moment. Creep uses independent initial and
+    Ec/(1+theta) permanent-load paths, recalculating neutral axis and inertia.
+    Shrinkage uses C-3.1's k4 and overall D. All reported components are
+    magnitudes; shrinkage is added in the adverse direction.
 
-    Total deflection = δi,sus + δi,live + δcreep + δshrinkage
-
-    where:
-    - δi,sus = immediate deflection under sustained load
-    - δi,live = immediate deflection under live load
-    - δcreep = creep deflection = θ × δi,sus
-    - δshrinkage = shrinkage deflection from curvature
-
-    Units:
-    - All dimensions: mm
-    - Areas: mm²
-    - Stresses: N/mm²
-    - Moments: kN·m
-    - Deflections: mm
-
-    Args:
-        b_mm: Beam width (mm)
-        D_mm: Overall depth (mm)
-        d_mm: Effective depth (mm)
-        span_mm: Span length (mm)
-        ma_sustained_knm: Service moment under sustained load (kN·m), unfactored
-        ma_live_knm: Service moment under live load (kN·m), unfactored. Default 0.
-        ast_mm2: Area of tension steel (mm²)
-        fck_nmm2: Characteristic concrete strength (N/mm²)
-        support_condition: Support type
-        asc_mm2: Area of compression steel (mm²). Default 0.
-        age_at_loading_days: Age of concrete at loading (days). Default 28.
-        relative_humidity_percent: Ambient relative humidity (%). Default 50.
-        shrinkage_strain: Shrinkage strain εcs. Default 0.0003.
-        deflection_limit_ratio: Limit as span/ratio. Default 250 (total).
-        es_nmm2: Elastic modulus of steel (N/mm²). Default 200000.
-
-    Returns:
-        DeflectionLevelCResult with detailed outputs including separate components
-
-    Reference:
-        IS 456:2000, Annex C
+    Missing compression-bar depth, continuous support moments, opposing load
+    history, non-source loading ages or nonlinear concrete creep stress return
+    HOLD_UNSUPPORTED. Default ultimate creep/shrinkage are estimates without
+    experimental data, not a finite-time or construction-history analysis.
     """
-    assumptions = []
     inputs = {
         "b_mm": b_mm,
         "D_mm": D_mm,
@@ -1233,184 +1059,151 @@ def check_deflection_level_c(
         "relative_humidity_percent": relative_humidity_percent,
         "shrinkage_strain": shrinkage_strain,
         "deflection_limit_ratio": deflection_limit_ratio,
+        "es_nmm2": es_nmm2,
+        "support_condition": str(support_condition),
     }
-
-    # Validate inputs
-    if b_mm <= 0 or D_mm <= 0 or d_mm <= 0 or span_mm <= 0:
-        return DeflectionLevelCResult(
-            is_ok=False,
-            remarks="Invalid geometry: all dimensions must be > 0.",
-            support_condition=SupportCondition.SIMPLY_SUPPORTED,
-            assumptions=["Invalid inputs"],
-            inputs=inputs,
-            computed={},
+    support = SupportCondition.SIMPLY_SUPPORTED
+    try:
+        _sls_geometry(
+            b_mm,
+            D_mm,
+            d_mm,
+            span_mm,
+            ast_mm2,
+            asc_mm2,
+            fck_nmm2,
+            es_nmm2,
+            deflection_limit_ratio,
         )
-
-    if ast_mm2 <= 0:
-        return DeflectionLevelCResult(
-            is_ok=False,
-            remarks="Invalid input: ast_mm2 must be > 0.",
-            support_condition=SupportCondition.SIMPLY_SUPPORTED,
-            assumptions=["Invalid inputs"],
-            inputs=inputs,
-            computed={},
+        support = _sls_support(support_condition)
+        if not all(math.isfinite(v) for v in (ma_sustained_knm, ma_live_knm)):
+            raise ValueError("Service moments must be finite.")
+        if ma_sustained_knm * ma_live_knm < 0:
+            raise ValueError(
+                "Opposing permanent/live moments need a cracking and load-history model."
+            )
+        mcr = calculate_cracking_moment(b_mm=b_mm, D_mm=D_mm, fck_nmm2=fck_nmm2)
+        ec = 5000 * math.sqrt(fck_nmm2)
+        immediate = _sls_section(
+            b_mm, D_mm, d_mm, ast_mm2, ec, es_nmm2, mcr, ma_sustained_knm + ma_live_knm
         )
-
-    ma_total_knm = ma_sustained_knm + ma_live_knm
-    if ma_total_knm <= 0:
-        assumptions.append("Total service moment is zero or negative; deflection = 0.")
-        return DeflectionLevelCResult(
-            is_ok=True,
-            remarks="No load applied (Ma ≤ 0). Deflection = 0.",
-            support_condition=SupportCondition.SIMPLY_SUPPORTED,
-            assumptions=assumptions,
-            inputs=inputs,
-            computed={"delta_total_mm": 0.0},
-            delta_total_mm=0.0,
-            delta_limit_mm=span_mm / deflection_limit_ratio,
+        permanent = _sls_section(
+            b_mm, D_mm, d_mm, ast_mm2, ec, es_nmm2, mcr, ma_sustained_knm
         )
-
-    support, support_note = _normalize_support_condition(support_condition)
-    if support_note:
-        assumptions.append(support_note)
-
-    # Notional size for creep calculation
-    # h0 = 2 * Ac / u ≈ 2 * b * D / (2 * (b + D)) = b * D / (b + D)
-    notional_size = b_mm * D_mm / (b_mm + D_mm)
-
-    # Step 1: Cracking moment
-    mcr_knm = calculate_cracking_moment(b_mm=b_mm, D_mm=D_mm, fck_nmm2=fck_nmm2)
-
-    # Step 2: Gross moment of inertia
-    igross = calculate_gross_moment_of_inertia(b_mm=b_mm, D_mm=D_mm)
-
-    # Step 3: Cracked moment of inertia
-    icr = calculate_cracked_moment_of_inertia(
-        b_mm=b_mm, d_mm=d_mm, ast_mm2=ast_mm2, fck_nmm2=fck_nmm2, es_nmm2=es_nmm2
-    )
-
-    # Step 4: Effective moment of inertia at total load
-    ieff = calculate_effective_moment_of_inertia(
-        mcr_knm=mcr_knm, ma_knm=ma_total_knm, igross_mm4=igross, icr_mm4=icr
-    )
-
-    if ma_total_knm <= mcr_knm:
-        assumptions.append(
-            f"Section uncracked (Ma={ma_total_knm:.2f} ≤ Mcr={mcr_knm:.2f}). Using Igross."
+        stress = (
+            abs(ma_sustained_knm)
+            * 1e6
+            * (
+                D_mm / 2 / permanent["igross_mm4"]
+                if abs(ma_sustained_knm) <= mcr
+                else permanent["x_mm"] / permanent["icr_mm4"]
+            )
         )
-
-    # Step 5: Immediate deflection under sustained load
-    delta_i_sus = 0.0
-    if ma_sustained_knm > 0:
-        delta_i_sus = calculate_short_term_deflection(
-            ma_knm=ma_sustained_knm,
-            span_mm=span_mm,
-            ieff_mm4=ieff,
+        if stress > fck_nmm2 / 3:
+            raise ValueError(
+                "Permanent-load concrete stress exceeds fck/3; default proportional creep is unsupported (Cl6.2.5)."
+            )
+        theta = (
+            get_creep_coefficient(
+                age_at_loading_days=age_at_loading_days,
+                relative_humidity_percent=relative_humidity_percent,
+            )
+            if ma_sustained_knm
+            else 0.0
+        )
+        long_term = _sls_section(
+            b_mm, D_mm, d_mm, ast_mm2, ec / (1 + theta), es_nmm2, mcr, ma_sustained_knm
+        )
+        delta_initial = _elastic_deflection(
+            ma_sustained_knm + ma_live_knm, span_mm, ec, immediate["ieff_mm4"], support
+        )
+        delta_permanent = _elastic_deflection(
+            ma_sustained_knm, span_mm, ec, permanent["ieff_mm4"], support
+        )
+        delta_permanent_long = _elastic_deflection(
+            ma_sustained_knm,
+            span_mm,
+            long_term["ec_nmm2"],
+            long_term["ieff_mm4"],
+            support,
+        )
+        creep = calculate_creep_deflection(
+            delta_sustained_mm=delta_permanent,
+            creep_coefficient=theta,
+            delta_long_term_mm=delta_permanent_long,
+        )
+        phi = calculate_shrinkage_curvature(
+            eps_cs=shrinkage_strain,
+            d_mm=d_mm,
+            D_mm=D_mm,
+            ast_mm2=ast_mm2,
+            asc_mm2=asc_mm2,
+            b_mm=b_mm,
+            es_nmm2=es_nmm2,
             fck_nmm2=fck_nmm2,
-            support_condition=support,
         )
-
-    # Step 6: Immediate deflection under live load
-    delta_i_live = 0.0
-    if ma_live_knm > 0:
-        delta_i_live = calculate_short_term_deflection(
-            ma_knm=ma_live_knm,
-            span_mm=span_mm,
-            ieff_mm4=ieff,
-            fck_nmm2=fck_nmm2,
-            support_condition=support,
+        shrink = calculate_shrinkage_deflection(
+            phi_sh=phi, span_mm=span_mm, support_condition=support
         )
-
-    # Total immediate deflection
-    delta_immediate = delta_i_sus + delta_i_live
-
-    # Step 7: Creep coefficient
-    theta = get_creep_coefficient(
-        age_at_loading_days=age_at_loading_days,
-        relative_humidity_percent=relative_humidity_percent,
-        notional_size_mm=notional_size,
-    )
-
-    # Step 8: Creep deflection (only on sustained load)
-    delta_creep = calculate_creep_deflection(
-        delta_sustained_mm=delta_i_sus,
-        creep_coefficient=theta,
-    )
-
-    # Step 9: Shrinkage curvature
-    phi_sh = calculate_shrinkage_curvature(
-        eps_cs=shrinkage_strain,
-        d_mm=d_mm,
-        ast_mm2=ast_mm2,
-        asc_mm2=asc_mm2,
-        b_mm=b_mm,
-        es_nmm2=es_nmm2,
-        fck_nmm2=fck_nmm2,
-    )
-
-    # Step 10: Shrinkage deflection
-    delta_shrinkage = calculate_shrinkage_deflection(
-        phi_sh=phi_sh,
-        span_mm=span_mm,
-        support_condition=support,
-    )
-
-    # Step 11: Total deflection
-    delta_total = delta_immediate + delta_creep + delta_shrinkage
-
-    # Step 12: Allowable deflection
-    delta_limit = span_mm / deflection_limit_ratio
-
-    # Step 13: Check
-    is_ok = delta_total <= delta_limit
-
-    if is_ok:
-        remarks = (
-            f"OK: δ_total={delta_total:.2f} mm ≤ limit={delta_limit:.2f} mm "
-            f"(span/{deflection_limit_ratio:.0f}). "
-            f"Components: δ_imm={delta_immediate:.2f}, δ_creep={delta_creep:.2f}, "
-            f"δ_shrink={delta_shrinkage:.2f}"
-        )
-    else:
-        remarks = (
-            f"NOT OK: δ_total={delta_total:.2f} mm > limit={delta_limit:.2f} mm "
-            f"(span/{deflection_limit_ratio:.0f}). "
-            f"Components: δ_imm={delta_immediate:.2f}, δ_creep={delta_creep:.2f}, "
-            f"δ_shrink={delta_shrinkage:.2f}"
-        )
-
+    except ValueError as exc:
+        return _sls_hold(DeflectionLevelCResult, inputs, str(exc), support)  # type: ignore[return-value]
+    total = delta_initial + creep + shrink
+    limit = span_mm / deflection_limit_ratio
+    is_ok = total <= limit
     computed = {
-        "mcr_knm": mcr_knm,
-        "igross_mm4": igross,
-        "icr_mm4": icr,
-        "ieff_mm4": ieff,
-        "delta_i_sustained_mm": delta_i_sus,
-        "delta_i_live_mm": delta_i_live,
-        "delta_immediate_mm": delta_immediate,
+        "method": SLS_METHOD,
+        "status": "PASS" if is_ok else "FAIL",
+        "load_basis": "UNFACTORED_SERVICE",
+        "load_pattern": (
+            "CANTILEVER_END_POINT"
+            if support == SupportCondition.CANTILEVER
+            else "SIMPLY_SUPPORTED_UDL"
+        ),
+        "mcr_knm": mcr,
+        **immediate,
+        "permanent_initial_section": permanent,
+        "permanent_long_term_section": long_term,
+        "permanent_concrete_stress_nmm2": stress,
+        "delta_permanent_initial_mm": delta_permanent,
+        "delta_permanent_long_term_mm": delta_permanent_long,
+        "delta_immediate_mm": delta_initial,
+        "delta_creep_mm": creep,
+        "delta_shrinkage_mm": shrink,
+        "delta_total_mm": total,
+        "delta_limit_mm": limit,
         "creep_coefficient": theta,
-        "delta_creep_mm": delta_creep,
-        "shrinkage_curvature": phi_sh,
-        "delta_shrinkage_mm": delta_shrinkage,
-        "delta_total_mm": delta_total,
-        "delta_limit_mm": delta_limit,
+        "shrinkage_curvature": phi,
+        "clause_refs": [
+            "6.2.3.1",
+            "6.2.4.1",
+            "6.2.5/6.2.5.1",
+            "C-2.1",
+            "C-3.1",
+            "C-4.1",
+        ],
     }
-
     return DeflectionLevelCResult(
         is_ok=is_ok,
-        remarks=remarks,
+        remarks=f"{'OK' if is_ok else 'NOT OK'}: ultimate estimated δ_total={total:.3f} mm; limit={limit:.3f} mm.",
         support_condition=support,
-        assumptions=assumptions,
+        assumptions=[
+            "Singly reinforced rectangular section; service moments are supplied unfactored.",
+            "Concrete Ec=5000*sqrt(fck); elastic steel and transformed cracked section, without ULS factors.",
+            "Source default ultimate creep and supplied shrinkage strain; no finite-time humidity/size calibration.",
+            "Common declared load pattern and direction; shrinkage magnitude acts adversely.",
+            "Continuous/other load patterns and construction history require a separate analysis basis.",
+        ],
         inputs=inputs,
         computed=computed,
-        mcr_knm=mcr_knm,
-        igross_mm4=igross,
-        icr_mm4=icr,
-        ieff_mm4=ieff,
-        delta_immediate_mm=delta_immediate,
-        delta_creep_mm=delta_creep,
-        delta_shrinkage_mm=delta_shrinkage,
-        delta_total_mm=delta_total,
-        delta_limit_mm=delta_limit,
+        mcr_knm=mcr,
+        igross_mm4=immediate["igross_mm4"],
+        icr_mm4=immediate["icr_mm4"],
+        ieff_mm4=immediate["ieff_mm4"],
+        delta_immediate_mm=delta_initial,
+        delta_creep_mm=creep,
+        delta_shrinkage_mm=shrink,
+        delta_total_mm=total,
+        delta_limit_mm=limit,
         creep_coefficient=theta,
-        shrinkage_curvature=phi_sh,
+        shrinkage_curvature=phi,
     )

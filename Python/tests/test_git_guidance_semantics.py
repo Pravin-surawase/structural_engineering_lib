@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib
 import json
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -164,7 +165,7 @@ def test_archive_path_is_explicitly_excluded_from_live_authority(tmp_path: Path)
 def test_live_aliases_route_to_receipt_and_not_retired_mutation():
     result = subprocess.run(
         [
-            "bash",
+            shutil.which("bash"),
             str(REPO_ROOT / "scripts/python_runtime.sh"),
             "scripts/find_automation.py",
             "task git handoff receipt",

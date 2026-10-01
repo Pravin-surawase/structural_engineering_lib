@@ -25,9 +25,9 @@ class TestMaterialsEdges(unittest.TestCase):
         s1 = materials.get_steel_stress(0.0005, 250)
         self.assertAlmostEqual(s1, 200000.0 * 0.0005)
 
-        # Above yield: sigma = 0.87 fy
+        # Above yield: source design strength fy/gamma_s.
         s2 = materials.get_steel_stress(0.01, 250)
-        self.assertAlmostEqual(s2, 0.87 * 250)
+        self.assertAlmostEqual(s2, 250 / 1.15)
 
     def test_get_steel_stress_fe415_interpolation_and_plateau(self):
         # In the elastic region (< first point)
@@ -40,7 +40,7 @@ class TestMaterialsEdges(unittest.TestCase):
 
         # Beyond last point: plateau at last point
         s_pl = materials.get_steel_stress(0.01, 415)
-        self.assertAlmostEqual(s_pl, 360.9)
+        self.assertAlmostEqual(s_pl, 415 / 1.15)
 
 
 class TestTablesEdges(unittest.TestCase):

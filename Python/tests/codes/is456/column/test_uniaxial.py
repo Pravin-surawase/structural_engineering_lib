@@ -330,9 +330,11 @@ class TestUniaxialErrors:
             design_short_column_uniaxial(**kwargs)
 
     def test_unrounded_utilization_controls_safety_at_display_boundary(self):
+        # Independent 200-interval Fig.21 reference in column_strain_compatibility.json.
+        # The load exceeds capacity slightly even though displayed utilization is 1.0.
         result = design_short_column_uniaxial(
             Pu_kN=500.0,
-            Mu_kNm=240.49446624425235,
+            Mu_kNm=240.87336217183497,
             b_mm=400.0,
             D_mm=400.0,
             le_mm=1950.0,

@@ -1654,7 +1654,7 @@ class TestServiceabilityEdgeCases:
             calculate_effective_moment_of_inertia,
         )
 
-        with pytest.raises(ValueError, match="igross"):
+        with pytest.raises(ValueError, match="inertias"):
             calculate_effective_moment_of_inertia(
                 mcr_knm=50,
                 ma_knm=100,
@@ -1667,7 +1667,7 @@ class TestServiceabilityEdgeCases:
             calculate_effective_moment_of_inertia,
         )
 
-        with pytest.raises(ValueError, match="icr"):
+        with pytest.raises(ValueError, match="inertias"):
             calculate_effective_moment_of_inertia(
                 mcr_knm=50,
                 ma_knm=100,
@@ -1719,26 +1719,18 @@ class TestServiceabilityEdgeCases:
         assert delta > 0
 
     def test_short_term_deflection_continuous(self):
-        """Continuous beam deflection — 60% of simply supported."""
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_short_term_deflection,
         )
 
-        delta_ss = calculate_short_term_deflection(
-            ma_knm=50,
-            span_mm=6000,
-            ieff_mm4=1e9,
-            fck_nmm2=25,
-            support_condition="simply_supported",
-        )
-        delta_cont = calculate_short_term_deflection(
-            ma_knm=50,
-            span_mm=6000,
-            ieff_mm4=1e9,
-            fck_nmm2=25,
-            support_condition="continuous",
-        )
-        assert delta_cont == pytest.approx(0.6 * delta_ss, rel=0.01)
+        with pytest.raises(ValueError, match="support/midspan"):
+            calculate_short_term_deflection(
+                ma_knm=50,
+                span_mm=6000,
+                ieff_mm4=1e9,
+                fck_nmm2=25,
+                support_condition="continuous",
+            )
 
     def test_short_term_deflection_zero_returns_zero(self):
         from structural_lib.codes.is456.beam.serviceability import (
@@ -1856,7 +1848,8 @@ class TestServiceabilityEdgeCases:
             span_mm=6000,
             ma_service_knm=0,
         )
-        assert result.is_ok  # No load → no deflection
+        assert not result.is_ok
+        assert result.computed["status"] == "HOLD_UNSUPPORTED"
 
     def test_check_deflection_level_b_ok_case(self):
         from structural_lib.codes.is456.beam.serviceability import (
@@ -1961,12 +1954,10 @@ class TestServiceabilityEdgeCases:
             calculate_shrinkage_deflection,
         )
 
-        delta = calculate_shrinkage_deflection(
-            phi_sh=1e-6,
-            span_mm=6000,
-            support_condition="continuous",
-        )
-        assert delta > 0
+        with pytest.raises(ValueError, match="support/midspan"):
+            calculate_shrinkage_deflection(
+                phi_sh=1e-6, span_mm=6000, support_condition="continuous"
+            )
 
     def test_shrinkage_deflection_zero_curvature(self):
         from structural_lib.codes.is456.beam.serviceability import (
@@ -1985,22 +1976,20 @@ class TestServiceabilityEdgeCases:
             calculate_creep_deflection,
         )
 
-        delta = calculate_creep_deflection(
-            delta_sustained_mm=-5.0,
-            creep_coefficient=2.0,
-        )
-        assert delta == 0.0
+        with pytest.raises(ValueError):
+            calculate_creep_deflection(
+                delta_sustained_mm=-5, creep_coefficient=2, delta_long_term_mm=8
+            )
 
     def test_creep_deflection_negative_coefficient(self):
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_creep_deflection,
         )
 
-        delta = calculate_creep_deflection(
-            delta_sustained_mm=5.0,
-            creep_coefficient=-2.0,
-        )
-        assert delta == 0.0
+        with pytest.raises(ValueError):
+            calculate_creep_deflection(
+                delta_sustained_mm=5, creep_coefficient=-2, delta_long_term_mm=8
+            )
 
 
 # ============================================================================
@@ -2370,31 +2359,22 @@ class TestServiceabilityUncoveredBranches:
         assert icr > 0
 
     def test_creep_coefficient_very_young_concrete(self):
-        """Line 946: age_at_loading_days < 1 gets clamped to 1."""
         from structural_lib.codes.is456.beam.serviceability import get_creep_coefficient
 
-        theta = get_creep_coefficient(age_at_loading_days=0)
-        assert theta > 0
-        # Compare with age=1 (should be the same)
-        theta_1 = get_creep_coefficient(age_at_loading_days=1)
-        assert abs(theta - theta_1) < 0.01
+        with pytest.raises(ValueError, match="no interpolation"):
+            get_creep_coefficient(age_at_loading_days=0)
 
     def test_creep_coefficient_low_humidity(self):
-        """Line 952: relative_humidity_percent < 20 gets clamped to 20."""
         from structural_lib.codes.is456.beam.serviceability import get_creep_coefficient
 
         theta = get_creep_coefficient(relative_humidity_percent=5)
-        # Should be same as RH=20
-        theta_20 = get_creep_coefficient(relative_humidity_percent=20)
-        assert abs(theta - theta_20) < 0.01
+        assert theta == get_creep_coefficient(relative_humidity_percent=20) == 1.6
 
     def test_creep_coefficient_high_humidity(self):
-        """Line 954: relative_humidity_percent > 100 gets clamped to 100."""
         from structural_lib.codes.is456.beam.serviceability import get_creep_coefficient
 
-        theta = get_creep_coefficient(relative_humidity_percent=120)
-        theta_100 = get_creep_coefficient(relative_humidity_percent=100)
-        assert abs(theta - theta_100) < 0.01
+        with pytest.raises(ValueError):
+            get_creep_coefficient(relative_humidity_percent=120)
 
     def test_deflection_level_b_uncracked_section_assumption(self):
         """Line 819: When Ma <= Mcr, uncracked section assumption is logged."""
@@ -2412,8 +2392,8 @@ class TestServiceabilityUncoveredBranches:
             ast_mm2=400,
             fck_nmm2=25,
         )
-        assert result.is_ok
-        assert any("uncracked" in a.lower() for a in result.assumptions)
+        assert not result.is_ok
+        assert result.ieff_mm4 == result.igross_mm4
 
     def test_deflection_level_c_uncracked_section_assumption(self):
         """Line 1230: Level C uncracked section assumption."""
@@ -2431,25 +2411,27 @@ class TestServiceabilityUncoveredBranches:
             fck_nmm2=25,
         )
         assert result.is_ok
-        assert any("uncracked" in a.lower() for a in result.assumptions)
+        assert result.ieff_mm4 == result.igross_mm4
 
     def test_deflection_level_c_failing_case(self):
-        """Line 1330: Level C NOT OK branch."""
         from structural_lib.codes.is456.beam.serviceability import (
             check_deflection_level_c,
         )
 
-        # Very long span, high moment → deflection exceeds limit
         result = check_deflection_level_c(
-            b_mm=200,
-            D_mm=300,
-            d_mm=260,
-            span_mm=12000,
-            ma_sustained_knm=60,
-            ma_live_knm=30,
-            ast_mm2=600,
-            fck_nmm2=20,
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=3000,
+            ma_sustained_knm=52.5,
+            ma_live_knm=78.75,
+            ast_mm2=1200,
+            fck_nmm2=25,
+            support_condition="cantilever",
+            age_at_loading_days=7,
         )
+        assert not result.is_ok
+        assert result.computed["status"] == "FAIL"
         assert "NOT OK" in result.remarks
 
     def test_crack_width_h_mm_less_than_x_mm(self):
@@ -2547,14 +2529,16 @@ class TestServiceabilityUncoveredBranches:
 
         phi_no_comp = calculate_shrinkage_curvature(
             d_mm=450,
-            ast_mm2=600,
+            D_mm=500,
+            ast_mm2=1200,
             asc_mm2=0,
             b_mm=300,
         )
         phi_with_comp = calculate_shrinkage_curvature(
             d_mm=450,
-            ast_mm2=600,
-            asc_mm2=300,
+            D_mm=500,
+            ast_mm2=1200,
+            asc_mm2=600,
             b_mm=300,
         )
         # Compression steel reduces shrinkage curvature
@@ -2578,7 +2562,8 @@ class TestServiceabilityUncoveredBranches:
             asc_mm2=200,
         )
         assert result.delta_total_mm > 0
-        assert result.delta_creep_mm > 0
+        assert not result.is_ok
+        assert "depth/layout" in result.computed["reason"]
 
 
 class TestColumnDetailingUncoveredBranches:
@@ -2989,7 +2974,7 @@ class TestMaterialsUncoveredBranches:
         from structural_lib.codes.is456.materials import get_steel_stress
 
         stress = get_steel_stress(0.005, 250)
-        assert abs(stress - 0.87 * 250) < 0.1
+        assert abs(stress - 250 / 1.15) < 1e-10
 
     def test_get_steel_stress_nonstandard_grade(self):
         """Materials: Non-standard grade (e.g., Fe300) uses fallback formula."""
@@ -2997,7 +2982,7 @@ class TestMaterialsUncoveredBranches:
 
         # Fe300: uses fallback elasto-plastic model
         stress = get_steel_stress(0.01, 300)
-        assert abs(stress - 0.87 * 300) < 0.1
+        assert abs(stress - 300 / 1.15) < 1e-10
 
     def test_get_steel_stress_fe500_interpolation(self):
         """Materials: Fe500 in inelastic region → interpolation."""
@@ -3637,6 +3622,8 @@ class TestServiceabilityBranchCoverage:
 
         ieff = calculate_effective_moment_of_inertia(
             mcr_knm=30,
+            d_mm=450,
+            x_mm=150,
             ma_knm=100,
             igross_mm4=1e9,
             icr_mm4=5e8,
@@ -3649,7 +3636,7 @@ class TestServiceabilityBranchCoverage:
             calculate_effective_moment_of_inertia,
         )
 
-        with pytest.raises(ValueError, match="igross_mm4"):
+        with pytest.raises(ValueError, match="inertias"):
             calculate_effective_moment_of_inertia(
                 mcr_knm=50,
                 ma_knm=100,
@@ -3663,7 +3650,7 @@ class TestServiceabilityBranchCoverage:
             calculate_effective_moment_of_inertia,
         )
 
-        with pytest.raises(ValueError, match="icr_mm4"):
+        with pytest.raises(ValueError, match="inertias"):
             calculate_effective_moment_of_inertia(
                 mcr_knm=50,
                 ma_knm=100,
@@ -3738,26 +3725,18 @@ class TestServiceabilityBranchCoverage:
         assert delta > 0
 
     def test_short_term_deflection_continuous(self):
-        """Continuous beam deflection = 0.6 × simply supported."""
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_short_term_deflection,
         )
 
-        delta_ss = calculate_short_term_deflection(
-            ma_knm=50,
-            span_mm=6000,
-            ieff_mm4=5e8,
-            fck_nmm2=25,
-            support_condition="ss",
-        )
-        delta_cont = calculate_short_term_deflection(
-            ma_knm=50,
-            span_mm=6000,
-            ieff_mm4=5e8,
-            fck_nmm2=25,
-            support_condition="continuous",
-        )
-        assert abs(delta_cont - 0.6 * delta_ss) < 0.01
+        with pytest.raises(ValueError, match="support/midspan"):
+            calculate_short_term_deflection(
+                ma_knm=50,
+                span_mm=6000,
+                ieff_mm4=1e9,
+                fck_nmm2=25,
+                support_condition="continuous",
+            )
 
     def test_short_term_deflection_zero_moment(self):
         """Zero moment → zero deflection."""
@@ -3823,8 +3802,8 @@ class TestServiceabilityBranchCoverage:
             ast_mm2=600,
             fck_nmm2=25,
         )
-        assert result.is_ok
-        assert result.delta_total_mm == 0.0
+        assert not result.is_ok
+        assert result.delta_short_mm == 0.0
 
     def test_deflection_level_b_with_compression_steel(self):
         """Level B: compression steel reduces long-term deflection."""
@@ -3852,7 +3831,9 @@ class TestServiceabilityBranchCoverage:
             fck_nmm2=25,
             asc_mm2=400,
         )
-        assert result_with_comp.delta_total_mm < result_no_comp.delta_total_mm
+        assert not result_no_comp.is_ok
+        assert not result_with_comp.is_ok
+        assert "depth/layout" in result_with_comp.computed["reason"]
 
     def test_deflection_level_c_invalid_geometry(self):
         """Level C: invalid geometry → NOT OK."""
@@ -3905,7 +3886,7 @@ class TestServiceabilityBranchCoverage:
             fck_nmm2=25,
         )
         assert result.is_ok
-        assert result.delta_total_mm == 0.0
+        assert result.delta_total_mm == result.delta_shrinkage_mm > 0
 
     def test_deflection_level_c_cantilever(self):
         """Level C with cantilever support."""
@@ -3945,17 +3926,14 @@ class TestServiceabilityBranchCoverage:
         assert abs(delta_cant / delta_ss - 4.0) < 0.01
 
     def test_shrinkage_deflection_continuous(self):
-        """Shrinkage deflection coefficient k=1/12 for continuous."""
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_shrinkage_deflection,
         )
 
-        delta_cont = calculate_shrinkage_deflection(
-            phi_sh=1e-6,
-            span_mm=6000,
-            support_condition="continuous",
-        )
-        assert delta_cont > 0
+        with pytest.raises(ValueError, match="support/midspan"):
+            calculate_shrinkage_deflection(
+                phi_sh=1e-6, span_mm=6000, support_condition="continuous"
+            )
 
     def test_shrinkage_deflection_zero_curvature(self):
         """Zero curvature → zero deflection."""
@@ -3967,25 +3945,24 @@ class TestServiceabilityBranchCoverage:
         assert delta == 0.0
 
     def test_shrinkage_curvature_zero_dims(self):
-        """Zero dimensions → zero curvature."""
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_shrinkage_curvature,
         )
 
-        phi = calculate_shrinkage_curvature(d_mm=0, ast_mm2=600, b_mm=300)
-        assert phi == 0.0
+        with pytest.raises(ValueError):
+            calculate_shrinkage_curvature(
+                d_mm=450, D_mm=500, ast_mm2=0, asc_mm2=0, b_mm=300
+            )
 
     def test_creep_deflection_negative_inputs(self):
-        """Negative inputs are clamped to zero."""
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_creep_deflection,
         )
 
-        delta = calculate_creep_deflection(
-            delta_sustained_mm=-5,
-            creep_coefficient=-1,
-        )
-        assert delta == 0.0
+        with pytest.raises(ValueError):
+            calculate_creep_deflection(
+                delta_sustained_mm=-5, creep_coefficient=-2, delta_long_term_mm=8
+            )
 
     def test_support_condition_string_aliases(self):
         """Various string aliases for support conditions."""
@@ -4431,7 +4408,7 @@ class TestMaterialsBranchCoverage:
 
         # yield_strain = 0.87 * 300 / 200000 + 0.002 = 0.001305 + 0.002 = 0.003305
         stress = get_steel_stress(0.005, 300)
-        assert abs(stress - 0.87 * 300) < 0.1
+        assert abs(stress - 300 / 1.15) < 1e-10
 
 
 # ============================================================================
@@ -4552,7 +4529,8 @@ class TestDeflectionLevelBInvalidSupport:
             support_condition="unknown_type",
         )
         # Should still compute (defaults to SIMPLY_SUPPORTED) and record assumption
-        assert any("Unknown support condition" in a for a in result.assumptions)
+        assert not result.is_ok
+        assert "Unsupported support" in result.computed["reason"]
 
     def test_non_string_support_condition_adds_assumption(self):
         """Passing a non-string type adds a warning assumption."""
@@ -4570,7 +4548,8 @@ class TestDeflectionLevelBInvalidSupport:
             fck_nmm2=25,
             support_condition=42,  # type: ignore[arg-type]
         )
-        assert any("Invalid support condition" in a for a in result.assumptions)
+        assert not result.is_ok
+        assert "Unsupported support" in result.computed["reason"]
 
 
 class TestShrinkageCurvatureDenominatorGuard:
@@ -4582,24 +4561,24 @@ class TestShrinkageCurvatureDenominatorGuard:
     """
 
     def test_zero_tension_steel_returns_zero(self):
-        """ast_mm2 <= 0 short-circuits to return 0.0 (before denominator)."""
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_shrinkage_curvature,
         )
 
-        phi = calculate_shrinkage_curvature(d_mm=450, ast_mm2=0, b_mm=300)
-        assert phi == 0.0
+        with pytest.raises(ValueError):
+            calculate_shrinkage_curvature(
+                d_mm=450, D_mm=500, ast_mm2=0, asc_mm2=0, b_mm=300
+            )
 
     def test_equal_tension_compression_steel_gives_zero_curvature(self):
-        """When rho_t == rho_c, numerator is zero → curvature ≈ 0."""
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_shrinkage_curvature,
         )
 
-        phi = calculate_shrinkage_curvature(
-            d_mm=450, ast_mm2=942, asc_mm2=942, b_mm=300
-        )
-        assert phi == pytest.approx(0.0, abs=1e-15)
+        with pytest.raises(ValueError):
+            calculate_shrinkage_curvature(
+                d_mm=450, D_mm=500, ast_mm2=942, asc_mm2=942, b_mm=300
+            )
 
 
 class TestDeflectionLevelCZeroMoment:
@@ -4622,7 +4601,7 @@ class TestDeflectionLevelCZeroMoment:
             fck_nmm2=25,
         )
         assert result.is_ok is True
-        assert result.delta_total_mm == 0.0
+        assert result.delta_total_mm == result.delta_shrinkage_mm > 0
 
     def test_negative_total_moment_returns_ok(self):
         """Negative total moment → no load case."""
@@ -4641,6 +4620,7 @@ class TestDeflectionLevelCZeroMoment:
             fck_nmm2=25,
         )
         assert result.is_ok is True
+        assert result.delta_immediate_mm > 0
 
 
 class TestDeflectionLevelCSustainedZeroLivePositive:
@@ -4687,7 +4667,8 @@ class TestDeflectionLevelCSustainedZeroLivePositive:
             fck_nmm2=25,
             support_condition="bogus_value",
         )
-        assert any("Unknown support condition" in a for a in result.assumptions)
+        assert not result.is_ok
+        assert "Unsupported support" in result.computed["reason"]
 
 
 class TestColumnDetailingNaNInfGuard:

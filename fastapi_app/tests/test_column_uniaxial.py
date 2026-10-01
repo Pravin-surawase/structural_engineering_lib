@@ -45,6 +45,7 @@ class TestColumnUniaxialHappyPath:
         assert data["classification"] == "SHORT"
         assert data["Pu_cap_kN"] > 0
         assert data["Mu_cap_kNm"] > 0
+        assert data["method"] == "IS456_FIG21_INTEGRATED_V1__STEEL_FIG23_GS115_V1"
 
     def test_response_contains_all_fields(self):
         """Response includes all expected fields."""

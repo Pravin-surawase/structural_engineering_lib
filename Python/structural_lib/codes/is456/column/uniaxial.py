@@ -12,7 +12,7 @@ Implements:
 
 References:
     IS 456:2000, Cl. 39.5
-    SP:16:1980 Design Aids, Charts 27-62, Table I
+    IS 456:2000, Cl. 38.1(c), Fig. 21, Cl. 39.1
     Pillai & Menon, "Reinforced Concrete Design", 3rd Ed.
 """
 
@@ -22,19 +22,20 @@ import math
 import warnings as _warnings_mod
 
 from structural_lib.codes.is456.column._common import _require_column_steel_ratio
+from structural_lib.codes.is456.column._strain_compatibility import (
+    COLUMN_SECTION_METHOD,
+    concrete_stress_at_strain,
+    extreme_compression_strain,
+    rectangular_concrete_resultants,
+)
 from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.common.constants import (
     COLUMN_AXIAL_EMIN_FACTOR,
     COLUMN_CONCRETE_COEFF,
     COLUMN_STEEL_COEFF,
     EPSILON_CU,
-    STRESS_BLOCK_DEPTH,
-    STRESS_BLOCK_FACTOR,
-    STRESS_BLOCK_PEAK,
 )
-from structural_lib.codes.is456.common.stress_blocks import (
-    steel_stress_from_strain_5point,
-)
+from structural_lib.codes.is456.section_materials import section_steel_stress
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import (
     ColumnClassification,
@@ -71,120 +72,11 @@ def _require_finite_column_value(
         )
 
 
-# ---------------------------------------------------------------------------
-# SP:16 Table I -- Stress-block coefficients for xu > D
-# k = D / xu -> (C1, C2)
-#   Cc = C1 * 0.36 * fck * b * D
-#   Centroid at C2 * D from compression face
-# ---------------------------------------------------------------------------
-_SP16_TABLE_I_KEYS: tuple[float, ...] = (
-    0.05,
-    0.10,
-    0.15,
-    0.20,
-    0.25,
-    0.30,
-    0.35,
-    0.40,
-    0.45,
-    0.50,
-    0.55,
-    0.60,
-    0.65,
-    0.70,
-    0.75,
-    0.80,
-    0.85,
-    0.90,
-    0.95,
-    1.00,
-)
-
-_SP16_TABLE_I_C1: tuple[float, ...] = (
-    0.112,
-    0.194,
-    0.269,
-    0.338,
-    0.401,
-    0.458,
-    0.511,
-    0.558,
-    0.601,
-    0.640,
-    0.675,
-    0.706,
-    0.733,
-    0.756,
-    0.775,
-    0.790,
-    0.802,
-    0.811,
-    0.816,
-    1.0,
-)
-
-_SP16_TABLE_I_C2: tuple[float, ...] = (
-    0.072,
-    0.105,
-    0.135,
-    0.160,
-    0.182,
-    0.204,
-    0.223,
-    0.241,
-    0.258,
-    0.273,
-    0.287,
-    0.300,
-    0.313,
-    0.324,
-    0.335,
-    0.346,
-    0.356,
-    0.366,
-    0.376,
-    0.42,
-)
-
 # Number of points to sweep for the P-M interaction envelope
 _ENVELOPE_POINTS: int = 200
 
 # Tolerance for radial distance comparisons
 _RADIAL_TOL: float = 1e-6
-
-
-def _interp_sp16_table_i(k: float) -> tuple[float, float]:
-    """Interpolate SP:16 Table I coefficients for a given k = D/xu.
-
-    Args:
-        k: Ratio D/xu (0 < k <= 1.0). Clamped to [0.05, 1.0].
-
-    Returns:
-        Tuple (C1, C2) interpolated from SP:16 Table I.
-    """
-    # Clamp k to table bounds -- never extrapolate
-    if k <= _SP16_TABLE_I_KEYS[0]:
-        return _SP16_TABLE_I_C1[0], _SP16_TABLE_I_C2[0]
-    if k >= _SP16_TABLE_I_KEYS[-1]:
-        return _SP16_TABLE_I_C1[-1], _SP16_TABLE_I_C2[-1]
-
-    # Find bounding entries
-    for i in range(len(_SP16_TABLE_I_KEYS) - 1):
-        k_lo = _SP16_TABLE_I_KEYS[i]
-        k_hi = _SP16_TABLE_I_KEYS[i + 1]
-        if k_lo <= k <= k_hi:
-            # Linear interpolation
-            t = safe_divide(k - k_lo, k_hi - k_lo, default=0.0)
-            c1 = _SP16_TABLE_I_C1[i] + t * (
-                _SP16_TABLE_I_C1[i + 1] - _SP16_TABLE_I_C1[i]
-            )
-            c2 = _SP16_TABLE_I_C2[i] + t * (
-                _SP16_TABLE_I_C2[i + 1] - _SP16_TABLE_I_C2[i]
-            )
-            return c1, c2
-
-    # Fallback (should not reach here)
-    return _SP16_TABLE_I_C1[-1], _SP16_TABLE_I_C2[-1]
 
 
 def _pm_envelope_point(
@@ -214,53 +106,26 @@ def _pm_envelope_point(
     """
     d_eff = D_mm - d_prime_mm  # Depth to tension steel centroid
 
-    # --- Concrete contribution ---
-    if xu <= D_mm:
-        # IS 456 Cl 38.1: Cc = 0.36 * fck * b * xu
-        Cc_N = STRESS_BLOCK_FACTOR * fck * b_mm * xu
-        # Centroid of stress block at 0.42 * xu from comp. face
-        y_cc = STRESS_BLOCK_DEPTH * xu
-    else:
-        # xu > D: entire section in compression -- use SP:16 Table I
-        k = safe_divide(D_mm, xu, default=1.0)
-        c1, c2 = _interp_sp16_table_i(k)
-        # IS 456 + SP:16 Table I: Cc = C1 * 0.36 * fck * b * D
-        Cc_N = c1 * STRESS_BLOCK_FACTOR * fck * b_mm * D_mm
-        y_cc = c2 * D_mm
+    # IS 456 Cl. 38.1(c), Fig. 21, 39.1: one consistent integrated design curve.
+    Cc_N, Mc_Nmm = rectangular_concrete_resultants(xu, b_mm, D_mm, fck)
 
     # --- Steel strains (compression and tension faces) ---
     if xu <= _RADIAL_TOL:
         eps_sc = 0.0
         eps_st = 0.0
-    elif xu <= D_mm:
-        # IS 456 Cl 38.1: standard strain profile (max 0.0035 at comp face, zero at NA)
-        eps_sc = EPSILON_CU * safe_divide(xu - d_prime_mm, xu, default=0.0)
-        eps_st = EPSILON_CU * safe_divide(xu - d_eff, xu, default=0.0)
     else:
-        # IS 456 Cl 38.1: modified strain profile for xu > D (entire section in compression)
-        # Strain at far face (least compressed):
-        eps_far = EPSILON_CU * safe_divide(xu - D_mm, xu, default=0.0)
-        # Strain at compression face: 0.0035 - 0.75 * eps_far (IS 456 Cl 38.1)
-        eps_max = EPSILON_CU - 0.75 * eps_far
-        # Linear interpolation across section depth
-        eps_sc = eps_max - (eps_max - eps_far) * d_prime_mm / D_mm
-        eps_st = eps_max - (eps_max - eps_far) * d_eff / D_mm
+        # IS 456 Cl. 38.1(a), 39.1(b): preserve the requested zero-strain axis.
+        eps_max = extreme_compression_strain(xu, D_mm)
+        eps_sc = eps_max * (1.0 - d_prime_mm / xu)
+        eps_st = eps_max * (1.0 - d_eff / xu)
 
-    f_sc = steel_stress_from_strain_5point(eps_sc, fy)
-    # IS 456 Cl 38.1: subtract displaced concrete (already counted in Cc)
-    # Net steel stress = f_sc - 0.446 * fck (if bar is in compression)
-    if eps_sc > 0.0:
-        f_sc_net = f_sc - STRESS_BLOCK_PEAK * fck
-    else:
-        f_sc_net = f_sc
+    f_sc = section_steel_stress(eps_sc, fy)
+    # The gross concrete integral includes the bar area: subtract its local stress.
+    f_sc_net = f_sc - concrete_stress_at_strain(eps_sc, fck)
     F_sc_N = f_sc_net * Asc_half_mm2
 
-    f_st = steel_stress_from_strain_5point(eps_st, fy)
-    # Subtract displaced concrete only if bar is in compression zone
-    if eps_st > 0.0:
-        f_st_net = f_st - STRESS_BLOCK_PEAK * fck
-    else:
-        f_st_net = f_st
+    f_st = section_steel_stress(eps_st, fy)
+    f_st_net = f_st - concrete_stress_at_strain(eps_st, fck)
     F_st_N = f_st_net * Asc_half_mm2
 
     # --- Axial force: Pu = Cc + F_sc + F_st ---
@@ -268,7 +133,7 @@ def _pm_envelope_point(
 
     # --- Moment about centroid (D/2 from comp. face) ---
     mid = D_mm / 2.0
-    Mu_Nmm = Cc_N * (mid - y_cc) + F_sc_N * (mid - d_prime_mm) + F_st_N * (mid - d_eff)
+    Mu_Nmm = Mc_Nmm + F_sc_N * (mid - d_prime_mm) + F_st_N * (mid - d_eff)
 
     # Convert to kN, kNm
     Pu_kN = Pu_N / 1000.0
@@ -332,7 +197,7 @@ def design_short_column_uniaxial(
         IS 456:2000, Cl. 39.5 (P-M interaction)
         IS 456:2000, Cl. 25.4 (minimum eccentricity)
         IS 456:2000, Cl. 25.1.2 (column classification)
-        SP:16:1980 Table I (stress-block coefficients for xu > D)
+        IS 456:2000 Fig. 21 integrated design curve and Cl. 39.1 strain domain
 
     Limitations:
         - Short columns only (le/D < 12 per Cl. 25.1.2); if the column
@@ -551,6 +416,7 @@ def design_short_column_uniaxial(
             governing_check="No load applied",
             clause_ref="Cl. 39.5",
             warnings=tuple(warnings),
+            method=COLUMN_SECTION_METHOD,
         )
 
     # Radial distance of applied point from origin
@@ -672,6 +538,7 @@ def design_short_column_uniaxial(
         governing_check=governing,
         clause_ref="Cl. 39.5",
         warnings=tuple(warnings),
+        method=COLUMN_SECTION_METHOD,
     )
 
 
@@ -723,7 +590,7 @@ def pm_interaction_curve(
     References:
         IS 456:2000, Cl. 39.5 (P-M interaction)
         IS 456:2000, Cl. 39.3 (pure axial capacity)
-        SP:16:1980 Table I (stress-block coefficients for xu > D)
+        IS 456:2000 Fig. 21 integrated design curve and Cl. 39.1 strain domain
 
     Limitations:
         - Rectangular sections only; circular columns require polar
@@ -894,4 +761,5 @@ def pm_interaction_curve(
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
         warnings=tuple(warnings),
+        method=COLUMN_SECTION_METHOD,
     )
