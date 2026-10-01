@@ -131,6 +131,12 @@ metadata changed.
 
 ## Source availability and edition gate
 
+The subsequent [bounded issued-amendment slab corrections](slab-issued-amendment-corrections.md)
+address the two demonstrated distribution-spacing and solid-slab maximum-shear
+outcomes. Their independent mapping review, separate numerical commits and exact
+wheel evidence belong to a new candidate. They preserve the cumulative edition,
+material/applicability and installed-Windows qualifications listed below.
+
 The controlled IS456:2000 collection includes Amendments 1-5 and reaffirmation
 markers through 2021, SHA-256
 `964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264`,

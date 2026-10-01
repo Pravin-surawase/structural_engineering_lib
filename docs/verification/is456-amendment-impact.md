@@ -7,10 +7,15 @@ doc_type: reference
 
 # IS 456 Amendment 3-6 source and supported-caller reconciliation
 
-This documentation packet identifies two supported-slab discrepancies and
+The original documentation packet identifies two supported-slab discrepancies and
 retains the unresolved edition and applicability qualifications. It changes no
 calculation code. The accepted PR #1020 numerical candidate remains unchanged
 at merge commit `32576ae0893bc246de152e6e9912efec89642717`.
+
+The separately authorized
+[bounded slab correction packet](slab-issued-amendment-corrections.md) implements
+those two findings. The matrix rows, diagnostics and owner hashes below retain
+their original numerical baseline; they do not describe the corrected candidate.
 
 The [dated source inventory](is456-official-source-inventory.json) binds the
 official Fourth Revision status, six numbered amendments and two controlled

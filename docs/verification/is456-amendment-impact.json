@@ -3,6 +3,12 @@
   "status": "SOURCE_CALLER_RECONCILED; FULL_AMENDMENT_QUALIFICATION_HOLD",
   "date_utc": "2026-10-01",
   "source_commit": "32576ae0893bc246de152e6e9912efec89642717",
+  "owner_snapshot_semantics": "Owner hashes, dispositions and read_only_diagnostics describe source_commit, before the separately authorized numerical corrections. Compare these hashes to that immutable baseline, not a later working tree.",
+  "implementation_follow_up": {
+    "record": "slab-issued-amendment-corrections.md",
+    "rows": ["AMD3-014", "AMD5-022"],
+    "scope": "Basic/composed supported slab distribution checks and composed solid-slab maximum shear only; cumulative qualification HOLDs remain."
+  },
   "source_inventory": "is456-official-source-inventory.json",
   "scope_authorities": [
     {
