@@ -13,8 +13,8 @@ Tests verify mathematical invariants for IS 456 serviceability checks:
 
 from hypothesis import assume, given, settings
 from hypothesis import strategies as st
-from structural_lib import serviceability
 
+from structural_lib import serviceability
 from tests.property.strategies import (
     beam_section,
     beam_width,

@@ -8,12 +8,12 @@ import json
 import math
 
 import pytest
+
 from structural_lib.codes.is456.beam import shear, torsion
 from structural_lib.core.errors import InputContractError
 from structural_lib.design.is456 import beam
 from structural_lib.services import beam_audit
 from structural_lib.services.bbs import parse_bar_mark
-
 from tests.unit.test_beam_audit import _evaluate, _request
 from tests.unit.test_etabs_w3_contracts import _present
 
