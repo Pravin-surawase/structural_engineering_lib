@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import importlib
 import json
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -206,7 +207,7 @@ def test_retired_generator_bridges_are_absent_and_context_stays_canonical() -> N
         assert (repository_root / "scripts" / "_archive" / name).exists()
 
     result = subprocess.run(
-        ["bash", str(repository_root / "run.sh"), "context", "validate"],
+        [shutil.which("bash"), str(repository_root / "run.sh"), "context", "validate"],
         cwd=repository_root,
         capture_output=True,
         text=True,
