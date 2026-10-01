@@ -5,6 +5,77 @@
 
 ---
 
+<a id="is456-stair-spacing-20261002"></a>
+
+## 2026-10-01 — Session: Bounded staircase Amendment 3 spacing correction
+
+**Task:** is456-a1-a2-reconciliation-20261002
+**Agent:** MAIN (sole Library writer; independent read-only source/case and implementation review)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Correct the demonstrated spacing false pass in the maintained solid longitudinal staircase while preserving the separate A1-2 checkpoint and accepted slab evidence.
+
+### Completed
+
+- Preserved separately reviewed A1-2 documentation commit 8479cb8f and its verified local recovery bundle; no publication performed.
+- Independently traced the waist-slab case and non-main distribution role to exact Cl. 33/26.3.3 targets and A3; A4-6 do not reverse the 300 mm cap.
+- Changed only the staircase distribution scalar ceiling from 450 to 300 mm, retaining the 5d bound, main spacing and all other numerical owners; carried source provenance and physical-datum limitations through existing callers.
+- Replayed seven source-bound scalar fixtures: the adequate 14@400 case now returns canonical FAIL, 300 mm equality passes, and the 250/251 mm depth boundary is retained.
+- Completed separate frozen implementation and generated-ledger reviews with zero essential blockers; passed 92 focused cases, full Python 8664, FastAPI 614 and React 293 tests, and all 32 repository checks (10 unchanged-input results reused).
+- Built the existing-version candidate wheel offline; eight isolated installed Mac cases pass with 224 verified installed module origins and no source fallback. The two changed package members match the reviewed sources; the other 320 members retain pre-correction bytes.
+
+### Verification and scope
+
+The independent source/case and frozen implementation reviews accept this
+bounded software repair. Actual focused/full component results and the full
+repository gate pass; the initial ledger failure history remains retained.
+Python has 8664 passes, 14 skips and six deselections. FastAPI/React retain
+their successful full-product component results because those implementation
+and test inputs are unchanged in the final freeze. The repository gate reused
+ten results with unchanged inputs. Final metadata binds both reviews, the
+frozen candidate, logs and isolated local wheel receipts. The A1-2 checkpoint
+and every historical A3-6 matrix value remain intact.
+
+The altered 4000 mm fixture is not the published 5100 mm NPTEL example. Its
+area exceeds minimum steel and its diameter/basic L/d pass, isolating spacing.
+No engineering-use certification, package release, merge or external publication
+is authorized. The parent coordinates publication.
+
+### Issues encountered
+
+The source rule concerns horizontal spacing, while the existing scalar has no
+qualified drawing/orientation datum. A conservative scalar ceiling can reject
+some along-soffit pitches whose horizontal projections satisfy the source.
+
+Initial full validation found one generated caller-ledger drift from the new
+canonical regression calls: Python 8663 pass, one ledger-test failure, 14 skips
+and six deselections; repository checks 31/32 with the same ledger failure.
+FastAPI 614 and React 293 pass. The combined suite command's final success
+status did not erase its earlier Python failure. Original failed logs remain
+retained. Canonical ledger regeneration and a fresh full Python/final
+repository run resolve the ledger failure; no failure is counted as passed.
+The aggregate runner exit-propagation defect is a separate authorized
+follow-on after the numerical and bearing-documentation checkpoints.
+
+### Root causes and resolutions
+
+The local staircase owner retained the unamended 450 mm value after the shared
+slab detailing owner was corrected. Apply the A3 ceiling conservatively without
+coordinate conversion; preserve the physical datum/drawing HOLD. The 400 mm
+fixture fails either interpretation because its projection is about 344 mm.
+Regenerate the canonical compatibility ledger for the new maintained test
+calls; API classifications and the 25 advanced exports remain unchanged.
+
+### What next
+
+Preserve the reviewed local numerical commit and recovery identities, then
+finish the separate current-source concrete-bearing documentation follow-up
+and independently review it. The parent authorized a later bounded regression
+and repair of the demonstrated aggregate runner false-success defect. Keep
+physical/engineering and installed-host HOLDs and coordinate publication with
+the parent. Stop at a safe verified checkpoint before 2 October 2026 03:30 UTC.
+
+---
+
 <a id="is456-a1-a2-reconciliation-20261002"></a>
 
 ## 2026-10-01 — Session: Ordered Amendment 1-2 Library reconciliation

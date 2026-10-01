@@ -11127,5 +11127,751 @@
       "release_authorized": false,
       "engineering_use_certification": false
     }
+  },
+  "staircase_spacing_follow_up": {
+    "date_utc": "2026-10-01",
+    "status": "ACCEPTED_LOCAL_BOUNDED_SOFTWARE_REPAIR; ENGINEERING_QUALIFICATION_HOLD",
+    "history_semantics": "Separate current-operation follow-up after A1-A2 documentation checkpoint8479cb8f. Original A3-A6 and the A1-A2 snapshot values remain immutable historical evidence; this record resolves only the declared software scalar ceiling for the existing straight-flight operation.",
+    "source_baseline": "c45cb89f13e8821716553b096003eb22763e083e",
+    "documentation_checkpoint": "8479cb8f4d442e375cb5569e789de0af81b1a427",
+    "instruction_id": "AMD3-014",
+    "source": {
+      "sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+      "base_pdf_page": 47,
+      "base_printed_page": 46,
+      "amendment3_pdf_page": 112,
+      "amendment3_printed_page": 2,
+      "provision": "26.3.3(b)(2)",
+      "stair_identity_pdf_page": 64,
+      "stair_identity_printed_page": 63,
+      "stair_identity_provision": "33.1(c),33.3"
+    },
+    "later_amendment_order": "A4-A6 targets separately inspected by the source/case reviewer; no recorded later replacement reverses the A3 distribution-spacing cap.",
+    "maintained_callers": [
+      {
+        "id": "is456.staircase.straight-flight/v1",
+        "actual_owner": {
+          "path": "Python/structural_lib/design/is456/staircase.py",
+          "line": 190,
+          "symbol": "design",
+          "sha256": "ce45ddca663fd795e4994ad9efb3a63665ac359bb1895d50c8a99b76c1cd19c9"
+        }
+      },
+      {
+        "id": "api.design_straight_flight_staircase_is456",
+        "actual_owner": {
+          "path": "Python/structural_lib/services/staircase_api.py",
+          "line": 125,
+          "symbol": "design_straight_flight_staircase_is456",
+          "sha256": "be44f904e8fec95ad4e8bb759d31774af3504c63760b30349b73aca1f48da6a9"
+        }
+      }
+    ],
+    "numeric_owner": {
+      "path": "Python/structural_lib/codes/is456/staircase/design.py",
+      "line": 198,
+      "symbol": "design_straight_flight_staircase",
+      "sha256": "52af097105efce04f1a40cd55c3ed2e85e62d9ede1b039c79ccd4879e76cccb1"
+    },
+    "scope": "One cast-in-situ solid longitudinal waist-slab flight and two collinear co-spanning landing segments between outer beam/wall supports; supplied non-main distribution bars, no computed crack-width exception. No alternate stairs, coordinate conversion or new supported operation.",
+    "confirmed_defect": "At d224mm, adequate14@400mm on the altered4000mm fixture passed the old450mm scalar ceiling and produced canonical PASS. The A3 absolute bound is300mm; the robust fixture also exceeds300mm horizontally if400mm denotes along-soffit pitch (projection approximately344.117mm).",
+    "correction": "Apply min(5d,300mm) conservatively to the existing distribution-spacing scalar, including equality. Main-spacing min(3d,300mm), material laws, flexure and shared solid-slab shear owner remain unchanged.",
+    "physical_datum_boundary": "HOLD: FAIL above the software scalar ceiling does not prove every along-soffit pitch violates the horizontal-distance rule. The400mm fixture is robust because its horizontal projection is approximately344.117mm.",
+    "read_only_diagnostics": {
+      "status": "PASS_BOUNDED_SCALAR_REPLAY; PHYSICAL_QUALIFICATION_HOLD",
+      "pre_correction_source_commit": "c45cb89f13e8821716553b096003eb22763e083e",
+      "documentation_checkpoint": "8479cb8f4d442e375cb5569e789de0af81b1a427",
+      "source": {
+        "sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+        "base_pdf_page": 47,
+        "base_printed_page": 46,
+        "amendment3_pdf_page": 112,
+        "amendment3_printed_page": 2,
+        "provision": "26.3.3(b)(2)",
+        "stair_identity_pdf_page": 64,
+        "stair_identity_printed_page": 63,
+        "stair_identity_provision": "33.1(c),33.3"
+      },
+      "source_case_review_sha256": "42dae6e3686d5c688a5bf2a6aa4d5509538c23e67d4dc3de6dccac86a764a666",
+      "pre_correction_diagnostic_sha256": "5816dbf66c533136b49ff661ebeac9532b872de8c31d3bce3c9006e2217686f7",
+      "pre_correction_input_label_limit": "The old diagnostic inherited the NPTEL reference but shortened the span and changed distribution bars; these are altered fixtures, not the published example. New fixture identities explicitly distinguish them.",
+      "independent_rule": "A3 scalar acceptance ceiling min(5d,300mm), equality included; source horizontal rule is applied conservatively without coordinate conversion.",
+      "physical_spacing_datum": "HOLD: FAIL above the software scalar ceiling does not prove every along-soffit pitch violates the horizontal-distance rule. The400mm fixture is robust because its horizontal projection is approximately344.117mm.",
+      "case_count": 7,
+      "cases": [
+        {
+          "case_id": "AMD3-STAIR-SCALAR-D224-S300",
+          "fixture_semantics": "Altered software scalar-boundary fixture, not a published NPTEL example or physical project acceptance.",
+          "input": {
+            "identity_source": {
+              "identity": {
+                "family_id": "stair",
+                "case_id": "AMD3-STAIR-SCALAR-D224-S300",
+                "member_id": "AMD3-STAIR-SCALAR-D224-S300",
+                "story": "AMD3",
+                "source_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE"
+              },
+              "load_basis_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE; NOT NPTEL EX9.1"
+            },
+            "geometry_topology": {
+              "lower_landing_effective_length_mm": 750.0,
+              "going_mm": 2700.0,
+              "upper_landing_effective_length_mm": 550.0,
+              "flight_width_mm": 1500.0,
+              "riser_mm": 160.0,
+              "tread_mm": 270.0,
+              "waist_thickness_mm": 250.0,
+              "landing_thickness_mm": 200.0,
+              "support_case": "landings_span_with_flight",
+              "span_direction": "longitudinal",
+              "landings_collinear": true,
+              "has_stringer_beams": false,
+              "is_cast_in_situ_solid": true
+            },
+            "actions": {
+              "lower_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "flight_superimposed_service_load_kn_per_m2": 6.0,
+              "upper_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "lower_landing_load_share": 0.5,
+              "upper_landing_load_share": 1.0,
+              "concrete_unit_weight_kn_per_m3": 25.0,
+              "ultimate_load_factor": 1.5
+            },
+            "materials_reinforcement": {
+              "effective_depth_mm": 224.0,
+              "fck_nmm2": 20.0,
+              "fy_nmm2": 415.0,
+              "main_bar_diameter_mm": 12.0,
+              "main_bar_spacing_mm": 120.0,
+              "distribution_bar_diameter_mm": 14.0,
+              "distribution_bar_spacing_mm": 300.0
+            },
+            "evidence_review": {
+              "qualified_review_required": true
+            }
+          },
+          "independent_expected": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_passed": true,
+            "engineering_status": "PASS"
+          },
+          "actual": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_actual_mm": 300.0,
+            "spacing_passed": true,
+            "all_other_governing_checks_passed": true,
+            "owner_status": "PASS",
+            "canonical_engineering_status": "PASS",
+            "distribution_area_mm2_per_m": 513.1268000863329,
+            "minimum_distribution_area_mm2_per_m": 300.0,
+            "main_spacing_limit_mm": 300.0,
+            "qualified_review_required": true,
+            "complete_engineering_design_approved": false
+          },
+          "source_refs": [
+            "IS 456:2000 Cl. 23.2.1, 26.3.3, 26.5.2.1, 38.1, 40.1 and 40.2",
+            "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)",
+            "IS 456:2000 Table 19 and Table 20",
+            "NPTEL-M9L20-EX9.1"
+          ],
+          "public_limitations": [
+            "Distribution-spacing checks conservatively cap the supplied scalar; physical horizontal/soffit datum and drawing qualification remain held.",
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
+            "PASS is bounded software evidence; qualified engineering review and professional approval remain required."
+          ]
+        },
+        {
+          "case_id": "AMD3-STAIR-SCALAR-D224-S301",
+          "fixture_semantics": "Altered software scalar-boundary fixture, not a published NPTEL example or physical project acceptance.",
+          "input": {
+            "identity_source": {
+              "identity": {
+                "family_id": "stair",
+                "case_id": "AMD3-STAIR-SCALAR-D224-S301",
+                "member_id": "AMD3-STAIR-SCALAR-D224-S301",
+                "story": "AMD3",
+                "source_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE"
+              },
+              "load_basis_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE; NOT NPTEL EX9.1"
+            },
+            "geometry_topology": {
+              "lower_landing_effective_length_mm": 750.0,
+              "going_mm": 2700.0,
+              "upper_landing_effective_length_mm": 550.0,
+              "flight_width_mm": 1500.0,
+              "riser_mm": 160.0,
+              "tread_mm": 270.0,
+              "waist_thickness_mm": 250.0,
+              "landing_thickness_mm": 200.0,
+              "support_case": "landings_span_with_flight",
+              "span_direction": "longitudinal",
+              "landings_collinear": true,
+              "has_stringer_beams": false,
+              "is_cast_in_situ_solid": true
+            },
+            "actions": {
+              "lower_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "flight_superimposed_service_load_kn_per_m2": 6.0,
+              "upper_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "lower_landing_load_share": 0.5,
+              "upper_landing_load_share": 1.0,
+              "concrete_unit_weight_kn_per_m3": 25.0,
+              "ultimate_load_factor": 1.5
+            },
+            "materials_reinforcement": {
+              "effective_depth_mm": 224.0,
+              "fck_nmm2": 20.0,
+              "fy_nmm2": 415.0,
+              "main_bar_diameter_mm": 12.0,
+              "main_bar_spacing_mm": 120.0,
+              "distribution_bar_diameter_mm": 14.0,
+              "distribution_bar_spacing_mm": 301.0
+            },
+            "evidence_review": {
+              "qualified_review_required": true
+            }
+          },
+          "independent_expected": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_passed": false,
+            "engineering_status": "FAIL"
+          },
+          "actual": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_actual_mm": 301.0,
+            "spacing_passed": false,
+            "all_other_governing_checks_passed": true,
+            "owner_status": "FAIL",
+            "canonical_engineering_status": "FAIL",
+            "distribution_area_mm2_per_m": 511.4220598867105,
+            "minimum_distribution_area_mm2_per_m": 300.0,
+            "main_spacing_limit_mm": 300.0,
+            "qualified_review_required": true,
+            "complete_engineering_design_approved": false
+          },
+          "source_refs": [
+            "IS 456:2000 Cl. 23.2.1, 26.3.3, 26.5.2.1, 38.1, 40.1 and 40.2",
+            "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)",
+            "IS 456:2000 Table 19 and Table 20",
+            "NPTEL-M9L20-EX9.1"
+          ],
+          "public_limitations": [
+            "Distribution-spacing checks conservatively cap the supplied scalar; physical horizontal/soffit datum and drawing qualification remain held.",
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
+            "PASS is bounded software evidence; qualified engineering review and professional approval remain required."
+          ]
+        },
+        {
+          "case_id": "AMD3-STAIR-SCALAR-D224-S400",
+          "fixture_semantics": "Altered software scalar-boundary fixture, not a published NPTEL example or physical project acceptance.",
+          "input": {
+            "identity_source": {
+              "identity": {
+                "family_id": "stair",
+                "case_id": "AMD3-STAIR-SCALAR-D224-S400",
+                "member_id": "AMD3-STAIR-SCALAR-D224-S400",
+                "story": "AMD3",
+                "source_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE"
+              },
+              "load_basis_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE; NOT NPTEL EX9.1"
+            },
+            "geometry_topology": {
+              "lower_landing_effective_length_mm": 750.0,
+              "going_mm": 2700.0,
+              "upper_landing_effective_length_mm": 550.0,
+              "flight_width_mm": 1500.0,
+              "riser_mm": 160.0,
+              "tread_mm": 270.0,
+              "waist_thickness_mm": 250.0,
+              "landing_thickness_mm": 200.0,
+              "support_case": "landings_span_with_flight",
+              "span_direction": "longitudinal",
+              "landings_collinear": true,
+              "has_stringer_beams": false,
+              "is_cast_in_situ_solid": true
+            },
+            "actions": {
+              "lower_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "flight_superimposed_service_load_kn_per_m2": 6.0,
+              "upper_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "lower_landing_load_share": 0.5,
+              "upper_landing_load_share": 1.0,
+              "concrete_unit_weight_kn_per_m3": 25.0,
+              "ultimate_load_factor": 1.5
+            },
+            "materials_reinforcement": {
+              "effective_depth_mm": 224.0,
+              "fck_nmm2": 20.0,
+              "fy_nmm2": 415.0,
+              "main_bar_diameter_mm": 12.0,
+              "main_bar_spacing_mm": 120.0,
+              "distribution_bar_diameter_mm": 14.0,
+              "distribution_bar_spacing_mm": 400.0
+            },
+            "evidence_review": {
+              "qualified_review_required": true
+            }
+          },
+          "independent_expected": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_passed": false,
+            "engineering_status": "FAIL"
+          },
+          "actual": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_actual_mm": 400.0,
+            "spacing_passed": false,
+            "all_other_governing_checks_passed": true,
+            "owner_status": "FAIL",
+            "canonical_engineering_status": "FAIL",
+            "distribution_area_mm2_per_m": 384.84510006474966,
+            "minimum_distribution_area_mm2_per_m": 300.0,
+            "main_spacing_limit_mm": 300.0,
+            "qualified_review_required": true,
+            "complete_engineering_design_approved": false
+          },
+          "source_refs": [
+            "IS 456:2000 Cl. 23.2.1, 26.3.3, 26.5.2.1, 38.1, 40.1 and 40.2",
+            "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)",
+            "IS 456:2000 Table 19 and Table 20",
+            "NPTEL-M9L20-EX9.1"
+          ],
+          "public_limitations": [
+            "Distribution-spacing checks conservatively cap the supplied scalar; physical horizontal/soffit datum and drawing qualification remain held.",
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
+            "PASS is bounded software evidence; qualified engineering review and professional approval remain required."
+          ]
+        },
+        {
+          "case_id": "AMD3-STAIR-SCALAR-D224-S450",
+          "fixture_semantics": "Altered software scalar-boundary fixture, not a published NPTEL example or physical project acceptance.",
+          "input": {
+            "identity_source": {
+              "identity": {
+                "family_id": "stair",
+                "case_id": "AMD3-STAIR-SCALAR-D224-S450",
+                "member_id": "AMD3-STAIR-SCALAR-D224-S450",
+                "story": "AMD3",
+                "source_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE"
+              },
+              "load_basis_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE; NOT NPTEL EX9.1"
+            },
+            "geometry_topology": {
+              "lower_landing_effective_length_mm": 750.0,
+              "going_mm": 2700.0,
+              "upper_landing_effective_length_mm": 550.0,
+              "flight_width_mm": 1500.0,
+              "riser_mm": 160.0,
+              "tread_mm": 270.0,
+              "waist_thickness_mm": 250.0,
+              "landing_thickness_mm": 200.0,
+              "support_case": "landings_span_with_flight",
+              "span_direction": "longitudinal",
+              "landings_collinear": true,
+              "has_stringer_beams": false,
+              "is_cast_in_situ_solid": true
+            },
+            "actions": {
+              "lower_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "flight_superimposed_service_load_kn_per_m2": 6.0,
+              "upper_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "lower_landing_load_share": 0.5,
+              "upper_landing_load_share": 1.0,
+              "concrete_unit_weight_kn_per_m3": 25.0,
+              "ultimate_load_factor": 1.5
+            },
+            "materials_reinforcement": {
+              "effective_depth_mm": 224.0,
+              "fck_nmm2": 20.0,
+              "fy_nmm2": 415.0,
+              "main_bar_diameter_mm": 12.0,
+              "main_bar_spacing_mm": 120.0,
+              "distribution_bar_diameter_mm": 14.0,
+              "distribution_bar_spacing_mm": 450.0
+            },
+            "evidence_review": {
+              "qualified_review_required": true
+            }
+          },
+          "independent_expected": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_passed": false,
+            "engineering_status": "FAIL"
+          },
+          "actual": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_actual_mm": 450.0,
+            "spacing_passed": false,
+            "all_other_governing_checks_passed": true,
+            "owner_status": "FAIL",
+            "canonical_engineering_status": "FAIL",
+            "distribution_area_mm2_per_m": 342.08453339088857,
+            "minimum_distribution_area_mm2_per_m": 300.0,
+            "main_spacing_limit_mm": 300.0,
+            "qualified_review_required": true,
+            "complete_engineering_design_approved": false
+          },
+          "source_refs": [
+            "IS 456:2000 Cl. 23.2.1, 26.3.3, 26.5.2.1, 38.1, 40.1 and 40.2",
+            "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)",
+            "IS 456:2000 Table 19 and Table 20",
+            "NPTEL-M9L20-EX9.1"
+          ],
+          "public_limitations": [
+            "Distribution-spacing checks conservatively cap the supplied scalar; physical horizontal/soffit datum and drawing qualification remain held.",
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
+            "PASS is bounded software evidence; qualified engineering review and professional approval remain required."
+          ]
+        },
+        {
+          "case_id": "AMD3-STAIR-SCALAR-D224-S451",
+          "fixture_semantics": "Altered software scalar-boundary fixture, not a published NPTEL example or physical project acceptance.",
+          "input": {
+            "identity_source": {
+              "identity": {
+                "family_id": "stair",
+                "case_id": "AMD3-STAIR-SCALAR-D224-S451",
+                "member_id": "AMD3-STAIR-SCALAR-D224-S451",
+                "story": "AMD3",
+                "source_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE"
+              },
+              "load_basis_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE; NOT NPTEL EX9.1"
+            },
+            "geometry_topology": {
+              "lower_landing_effective_length_mm": 750.0,
+              "going_mm": 2700.0,
+              "upper_landing_effective_length_mm": 550.0,
+              "flight_width_mm": 1500.0,
+              "riser_mm": 160.0,
+              "tread_mm": 270.0,
+              "waist_thickness_mm": 250.0,
+              "landing_thickness_mm": 200.0,
+              "support_case": "landings_span_with_flight",
+              "span_direction": "longitudinal",
+              "landings_collinear": true,
+              "has_stringer_beams": false,
+              "is_cast_in_situ_solid": true
+            },
+            "actions": {
+              "lower_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "flight_superimposed_service_load_kn_per_m2": 6.0,
+              "upper_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "lower_landing_load_share": 0.5,
+              "upper_landing_load_share": 1.0,
+              "concrete_unit_weight_kn_per_m3": 25.0,
+              "ultimate_load_factor": 1.5
+            },
+            "materials_reinforcement": {
+              "effective_depth_mm": 224.0,
+              "fck_nmm2": 20.0,
+              "fy_nmm2": 415.0,
+              "main_bar_diameter_mm": 12.0,
+              "main_bar_spacing_mm": 120.0,
+              "distribution_bar_diameter_mm": 14.0,
+              "distribution_bar_spacing_mm": 451.0
+            },
+            "evidence_review": {
+              "qualified_review_required": true
+            }
+          },
+          "independent_expected": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_passed": false,
+            "engineering_status": "FAIL"
+          },
+          "actual": {
+            "maximum_distribution_spacing_mm": 300.0,
+            "spacing_actual_mm": 451.0,
+            "spacing_passed": false,
+            "all_other_governing_checks_passed": true,
+            "owner_status": "FAIL",
+            "canonical_engineering_status": "FAIL",
+            "distribution_area_mm2_per_m": 341.32603109955625,
+            "minimum_distribution_area_mm2_per_m": 300.0,
+            "main_spacing_limit_mm": 300.0,
+            "qualified_review_required": true,
+            "complete_engineering_design_approved": false
+          },
+          "source_refs": [
+            "IS 456:2000 Cl. 23.2.1, 26.3.3, 26.5.2.1, 38.1, 40.1 and 40.2",
+            "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)",
+            "IS 456:2000 Table 19 and Table 20",
+            "NPTEL-M9L20-EX9.1"
+          ],
+          "public_limitations": [
+            "Distribution-spacing checks conservatively cap the supplied scalar; physical horizontal/soffit datum and drawing qualification remain held.",
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
+            "PASS is bounded software evidence; qualified engineering review and professional approval remain required."
+          ]
+        },
+        {
+          "case_id": "AMD3-STAIR-SCALAR-D50-S250",
+          "fixture_semantics": "Altered software scalar-boundary fixture, not a published NPTEL example or physical project acceptance.",
+          "input": {
+            "identity_source": {
+              "identity": {
+                "family_id": "stair",
+                "case_id": "AMD3-STAIR-SCALAR-D50-S250",
+                "member_id": "AMD3-STAIR-SCALAR-D50-S250",
+                "story": "AMD3",
+                "source_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE"
+              },
+              "load_basis_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE; NOT NPTEL EX9.1"
+            },
+            "geometry_topology": {
+              "lower_landing_effective_length_mm": 100.0,
+              "going_mm": 300.0,
+              "upper_landing_effective_length_mm": 100.0,
+              "flight_width_mm": 1500.0,
+              "riser_mm": 160.0,
+              "tread_mm": 270.0,
+              "waist_thickness_mm": 75.0,
+              "landing_thickness_mm": 75.0,
+              "support_case": "landings_span_with_flight",
+              "span_direction": "longitudinal",
+              "landings_collinear": true,
+              "has_stringer_beams": false,
+              "is_cast_in_situ_solid": true
+            },
+            "actions": {
+              "lower_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "flight_superimposed_service_load_kn_per_m2": 6.0,
+              "upper_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "lower_landing_load_share": 0.5,
+              "upper_landing_load_share": 1.0,
+              "concrete_unit_weight_kn_per_m3": 25.0,
+              "ultimate_load_factor": 1.5
+            },
+            "materials_reinforcement": {
+              "effective_depth_mm": 50.0,
+              "fck_nmm2": 20.0,
+              "fy_nmm2": 415.0,
+              "main_bar_diameter_mm": 8.0,
+              "main_bar_spacing_mm": 100.0,
+              "distribution_bar_diameter_mm": 8.0,
+              "distribution_bar_spacing_mm": 250.0
+            },
+            "evidence_review": {
+              "qualified_review_required": true
+            }
+          },
+          "independent_expected": {
+            "maximum_distribution_spacing_mm": 250.0,
+            "spacing_passed": true,
+            "engineering_status": "PASS"
+          },
+          "actual": {
+            "maximum_distribution_spacing_mm": 250.0,
+            "spacing_actual_mm": 250.0,
+            "spacing_passed": true,
+            "all_other_governing_checks_passed": true,
+            "owner_status": "PASS",
+            "canonical_engineering_status": "PASS",
+            "distribution_area_mm2_per_m": 201.06192982974676,
+            "minimum_distribution_area_mm2_per_m": 90.0,
+            "main_spacing_limit_mm": 150.0,
+            "qualified_review_required": true,
+            "complete_engineering_design_approved": false
+          },
+          "source_refs": [
+            "IS 456:2000 Cl. 23.2.1, 26.3.3, 26.5.2.1, 38.1, 40.1 and 40.2",
+            "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)",
+            "IS 456:2000 Table 19 and Table 20",
+            "NPTEL-M9L20-EX9.1"
+          ],
+          "public_limitations": [
+            "Distribution-spacing checks conservatively cap the supplied scalar; physical horizontal/soffit datum and drawing qualification remain held.",
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
+            "PASS is bounded software evidence; qualified engineering review and professional approval remain required."
+          ]
+        },
+        {
+          "case_id": "AMD3-STAIR-SCALAR-D50-S251",
+          "fixture_semantics": "Altered software scalar-boundary fixture, not a published NPTEL example or physical project acceptance.",
+          "input": {
+            "identity_source": {
+              "identity": {
+                "family_id": "stair",
+                "case_id": "AMD3-STAIR-SCALAR-D50-S251",
+                "member_id": "AMD3-STAIR-SCALAR-D50-S251",
+                "story": "AMD3",
+                "source_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE"
+              },
+              "load_basis_reference": "ALTERED-SOFTWARE-BOUNDARY-FIXTURE; NOT NPTEL EX9.1"
+            },
+            "geometry_topology": {
+              "lower_landing_effective_length_mm": 100.0,
+              "going_mm": 300.0,
+              "upper_landing_effective_length_mm": 100.0,
+              "flight_width_mm": 1500.0,
+              "riser_mm": 160.0,
+              "tread_mm": 270.0,
+              "waist_thickness_mm": 75.0,
+              "landing_thickness_mm": 75.0,
+              "support_case": "landings_span_with_flight",
+              "span_direction": "longitudinal",
+              "landings_collinear": true,
+              "has_stringer_beams": false,
+              "is_cast_in_situ_solid": true
+            },
+            "actions": {
+              "lower_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "flight_superimposed_service_load_kn_per_m2": 6.0,
+              "upper_landing_superimposed_service_load_kn_per_m2": 6.0,
+              "lower_landing_load_share": 0.5,
+              "upper_landing_load_share": 1.0,
+              "concrete_unit_weight_kn_per_m3": 25.0,
+              "ultimate_load_factor": 1.5
+            },
+            "materials_reinforcement": {
+              "effective_depth_mm": 50.0,
+              "fck_nmm2": 20.0,
+              "fy_nmm2": 415.0,
+              "main_bar_diameter_mm": 8.0,
+              "main_bar_spacing_mm": 100.0,
+              "distribution_bar_diameter_mm": 8.0,
+              "distribution_bar_spacing_mm": 251.0
+            },
+            "evidence_review": {
+              "qualified_review_required": true
+            }
+          },
+          "independent_expected": {
+            "maximum_distribution_spacing_mm": 250.0,
+            "spacing_passed": false,
+            "engineering_status": "FAIL"
+          },
+          "actual": {
+            "maximum_distribution_spacing_mm": 250.0,
+            "spacing_actual_mm": 251.0,
+            "spacing_passed": false,
+            "all_other_governing_checks_passed": true,
+            "owner_status": "FAIL",
+            "canonical_engineering_status": "FAIL",
+            "distribution_area_mm2_per_m": 200.26088628460832,
+            "minimum_distribution_area_mm2_per_m": 90.0,
+            "main_spacing_limit_mm": 150.0,
+            "qualified_review_required": true,
+            "complete_engineering_design_approved": false
+          },
+          "source_refs": [
+            "IS 456:2000 Cl. 23.2.1, 26.3.3, 26.5.2.1, 38.1, 40.1 and 40.2",
+            "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)",
+            "IS 456:2000 Table 19 and Table 20",
+            "NPTEL-M9L20-EX9.1"
+          ],
+          "public_limitations": [
+            "Distribution-spacing checks conservatively cap the supplied scalar; physical horizontal/soffit datum and drawing qualification remain held.",
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
+            "PASS is bounded software evidence; qualified engineering review and professional approval remain required."
+          ]
+        }
+      ],
+      "owner_file_snapshots": [
+        {
+          "path": "Python/structural_lib/codes/is456/staircase/design.py",
+          "sha256": "52af097105efce04f1a40cd55c3ed2e85e62d9ede1b039c79ccd4879e76cccb1"
+        },
+        {
+          "path": "Python/structural_lib/services/staircase_api.py",
+          "sha256": "be44f904e8fec95ad4e8bb759d31774af3504c63760b30349b73aca1f48da6a9"
+        }
+      ],
+      "unchanged_other_production_files": true,
+      "engineering_use_certification": false,
+      "release_authorized": false
+    },
+    "independent_source_case_review": {
+      "artifact_sha256": "42dae6e3686d5c688a5bf2a6aa4d5509538c23e67d4dc3de6dccac86a764a666",
+      "verdict": "CONFIRMED_BOUNDED_DEFECT_AND_CONSERVATIVE_SCALAR_CORRECTION_SUPPORTED",
+      "implementation_edits_or_execution_by_reviewer": false
+    },
+    "independent_implementation_review": {
+      "verdict": "ACCEPT_BOUNDED_IMPLEMENTATION",
+      "essential_blockers": 0,
+      "complete_review01_sha256": "826b7053413d1699bbf6b15f8387145a67a87e5722344d711fda36bedfdbeaba",
+      "final_review02_sha256": "ed7b41ed8e2b9bb98a9ffe396cdc22cde39803ca3e7b9b60cb21f3952740da3f",
+      "frozen_candidate02_sha256": "5d3e5cb194d1c6cb25fb7aff31707b7959256cab543e686d09d78269ccacee65",
+      "reviewed_file_count": 13,
+      "reviewed_implementation_and_tests_unchanged_after_freeze": true,
+      "truthful_final_metadata_permitted_subject_to_semantic_and_hash_checks": true,
+      "implementation_edits_or_test_execution_by_reviewer": false
+    },
+    "verification_plan": "Frozen focused staircase/HTTP/boundary regressions and retained slab cases; full Python, FastAPI, React and repository validation because changed PASS/FAIL flows through canonical/serialized/HTTP callers. Recorded successful outcomes only are acceptance evidence.",
+    "qualification_holds": [
+      "Physical horizontal/soffit spacing datum, bar orientation and drawing qualification remain HOLD; rejection above this software scalar ceiling is not automatic proof that every such soffit pitch violates the source horizontal-distance rule.",
+      "Full six-amendment engineering qualification remains HOLD. Existing physical material/coating/manufacturer, above-M60, finite-creep, foundation/other caller applicability and installed Windows/ETABS/Excel/XLL questions remain held.",
+      "Original source matrices and accepted PR1022 evidence are preserved. This packet does not add a supported journey/export or certify engineering use."
+    ],
+    "protected_prose_or_images_included": false,
+    "engineering_use_certification": false,
+    "release_authorized": false,
+    "external_publication": "Not performed; parent coordinates.",
+    "verification_results": {
+      "status": "PASS_BOUNDED_SOFTWARE_REPAIR; PHYSICAL_AND_ENGINEERING_QUALIFICATION_HOLD",
+      "validation_receipt_sha256": "d86ca1759f792e65a357008eaaa8455e8ae6001329102f96d8457142d8c79c53",
+      "focused": {
+        "passed": 92,
+        "exit_code": 0,
+        "log_sha256": "8a4ecf30138ba5ba52323b30c7c8b8ffd0790ca85de91089440ecc9bb6284f92",
+        "count_method": "92 explicit success dots across two pytest progress lines; configured double-quiet output suppresses textual total."
+      },
+      "python": {
+        "passed": 8664,
+        "failed": 0,
+        "skipped": 14,
+        "deselected": 6,
+        "exit_code": 0,
+        "log_sha256": "70c9a919d5cc97e9a168f662363ab394d2f2fe52cfea5614d7f303d8fdef756a"
+      },
+      "fastapi": {
+        "passed": 614,
+        "failed": 0,
+        "basis": "Initial full-product run; production/tests unchanged in frozen02."
+      },
+      "react": {
+        "passed": 293,
+        "files": 52,
+        "failed": 0,
+        "basis": "Initial full-product run; production/tests unchanged in frozen02."
+      },
+      "full_repository": {
+        "passed": 32,
+        "failed": 0,
+        "unchanged_input_results_reused": 10,
+        "exit_code": 0,
+        "log_sha256": "8010653855924d85d7104cee8be535963fc085f6c9f312e405a17baa39c6959b"
+      },
+      "installed_mac_wheel": {
+        "passed_cases": 8,
+        "verified_installed_origins": 224,
+        "source_fallback_count": 0,
+        "wheel_sha256": "ce62341b302a7260e3422bc1cf816b1558e7be1fe131c50f8e563cc19963957b",
+        "package_members": 322,
+        "unchanged_from_pre_correction_members": 320,
+        "installed_validation_sha256": "986b115c4982b66e88aa7a6026384ddd7e5e52b3c13e4a7537a10c87e157fc51",
+        "packaged_source_identity_sha256": "9f4a399a825ec5357806c4927cf7481a734338aacdf41884161c67f7687f21b8",
+        "isolated_dependency_reuse_sha256": "8ad7bbe28ccf6297b94afd068db90d1871a7143c4c71ef8fed0a83b569c00591"
+      },
+      "initial_failure_history": "One generated caller-ledger failure in the initial Python/full-repository runs; preserved raw logs. Canonical regeneration added four existing facade calls and no classification/scope changes; fresh full Python and full repository checks passed. Aggregate --all exit status did not erase that earlier failure.",
+      "dependency_downloads_or_upgrades": 0,
+      "installed_windows_etabs_excel_xll_qualification": "HOLD",
+      "engineering_use_certification": false,
+      "external_publication": false
+    }
   }
 }

@@ -181,6 +181,17 @@ repair are accepted for bounded documentation purposes; six affected checks
 and identity/count validation pass. No calculation code changed and no new
 numerical defect was demonstrated by this A1-2 packet.
 
+The separately authorized [staircase spacing follow-up](is456-amendment-impact.md#current-staircase-spacing-follow-up--1-october-2026)
+subsequently confirmed and locally corrected the old 450 mm scalar ceiling in
+the maintained longitudinal waist-slab route. Independent frozen review
+accepts the software correction; 92 focused cases, full Python 8,664, FastAPI
+614, React 293 and repository 32/32 pass (ten unchanged-input check results
+reused). The original ledger failure history is preserved. Eight isolated
+installed Mac wheel cases pass, with 224 installed module origins and no source
+fallback. Physical spacing datum/drawing, installed Windows/ETABS/Excel/XLL
+qualification and full engineering approval stay HOLD. It preserves the
+original A3-6 and A1-2 snapshots and accepted PR #1022 numerical evidence.
+
 The full six-amendment impact gate remains HOLD. The two demonstrated slab
 outcomes are corrected in merged PR #1022. A1-2 inventory/caller coverage is
 now recorded; remaining engineering qualification requires physical

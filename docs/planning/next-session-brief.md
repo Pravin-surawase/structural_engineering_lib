@@ -4,9 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-10-01
-- Focus: Reconcile issued A1-2 instructions and later-amendment interactions against the maintained Library callers while preserving accepted A3-6 evidence.
-- Completed: Verified the actual Mac checkout, remote and clean PR #1023 main at c45cb89f; created an isolated branch and preserved other worktrees/private evidence.; Visually inspected all eight A1-2 physical pages with a separate source worker: 42 instruction blocks, seven content pages and one blank verso.; Appended a current-source matrix extension with all 38 maintained callers, 1,596 dispositions, ordered later-amendment relationships and separate owner hashes; retained every historical A3-6 JSON value.
-- Recurrence controls: RR-004 x35 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
+- Focus: Correct the demonstrated spacing false pass in the maintained solid longitudinal staircase while preserving the separate A1-2 checkpoint and accepted slab evidence.
+- Completed: Preserved separately reviewed A1-2 documentation commit 8479cb8f and its verified local recovery bundle; no publication performed.; Independently traced the waist-slab case and non-main distribution role to exact Cl. 33/26.3.3 targets and A3; A4-6 do not reverse the 300 mm cap.; Changed only the staircase distribution scalar ceiling from 450 to 300 mm, retaining the 5d bound, main spacing and all other numerical owners; carried source provenance and physical-datum limitations through existing callers.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -93,6 +92,21 @@ essential classification repair are independently accepted for documentation
 purposes; six affected checks and identity/count validation pass. Preserve the
 local checkpoint and recovery handoff before parent-coordinated publication.
 No new numerical defect was demonstrated in the A1-2 source pass.
+
+The separate [current staircase follow-up](../verification/is456-amendment-impact.md#current-staircase-spacing-follow-up--1-october-2026)
+confirmed the remaining A3 spacing false pass in the maintained solid
+longitudinal waist-slab case. Its local correction applies a conservative
+`min(5d,300 mm)` scalar ceiling and retains physical spacing-datum/drawing
+HOLDs. Independent frozen implementation review accepts the bounded software
+repair. Actual checks pass: 92 focused cases; Python 8,664 with 14 skips/six
+deselections; FastAPI 614; React 293; repository 32/32 with ten unchanged-input
+results reused. Eight isolated installed Mac wheel cases pass with 224 installed
+module origins and zero source fallback; this remains a private candidate of
+the existing version. Initial failing logs are retained. Preserve the separate
+A1-2 commit and accepted PR #1022 evidence. The historical concrete-bearing
+A3-6 classification has a separate current-operation documentation follow-up
+in progress. After those checkpoints, a separately authorized bounded runner
+exit-propagation repair will test the demonstrated false-success behavior.
 
 - Start from the [dated source inventory](../verification/is456-official-source-inventory.json),
   controlled source hashes and [existing impact matrix](../verification/is456-amendment-impact.json).

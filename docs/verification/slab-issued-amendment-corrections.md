@@ -85,6 +85,13 @@ Excel or XLL engineering qualification.
 
 ## Qualifications retained and finite stop
 
+The staircase's separately authorized current-source follow-up is recorded in
+[the amendment reconciliation](is456-amendment-impact.md#current-staircase-spacing-follow-up--1-october-2026).
+It corrects only the conservative distribution-spacing scalar ceiling in the
+maintained solid longitudinal waist-slab operation. The original PR #1022
+candidate, boundary evidence and qualifications below remain historical;
+physical staircase spacing datum and drawing qualification stay HOLD.
+
 This packet corrects two demonstrated supported-slab outcomes. It does not
 close cumulative IS 456 qualification. All matrix HOLDs remain: A1-2 cumulative
 mapping; physical material, coating and manufacturer eligibility; above-M60

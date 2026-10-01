@@ -79,6 +79,59 @@ The six affected repository checks and external identity/count validation pass;
 session-policy and efficiency checks pass. Publication remains coordinated with
 the parent; no release or engineering-use certification is authorized.
 
+## Current staircase spacing follow-up — 1 October 2026
+
+A separate source/case review traced the maintained solid longitudinal
+waist-slab flight and its two collinear co-spanning landings to Cl. 33.1(c)
+and 33.3, controlled PDF64/printed63. Non-main distribution bars are checked
+separately from main flexural steel. Cl. 26.3.3(b)(2), base PDF47/printed46,
+is amended by A3 PDF112/printed2 to a 300 mm absolute maximum; the separately
+reviewed A4-6 targets do not reverse that cap. The protected source remains
+private, with the same controlled collection hash recorded above.
+
+The existing staircase owner still used `min(5d,450 mm)`. An altered software
+fixture with 4,000 mm span, `d=224 mm` and `14@400` distribution bars returned
+canonical PASS despite exceeding the amended bound. Its area is 384.8451
+mm2/m against a 300 mm2/m minimum, its diameter is below 31.25 mm, and its
+basic span/depth ratio is below 20. The spacing discrepancy therefore changes
+the supplied-detailing outcome. This shortened/altered fixture is distinct
+from the published 5,100 mm NPTEL example.
+
+The separate local correction applies `min(5d,300 mm)` conservatively to the
+existing software spacing scalar. It returns FAIL for the 400 mm fixture;
+300 mm equality passes and the `d=50 mm` depth bound remains 250 mm. Source
+provenance and the physical-datum limitation propagate through the existing
+advanced, canonical/serialized and HTTP callers. Main-bar spacing, flexure,
+material laws and the accepted shared slab-shear owner remain unchanged.
+
+The source rule concerns horizontal distance; this packet adds no coordinate
+conversion or drawing/orientation qualification. A scalar no greater than
+300 mm is a conservative ceiling for either horizontal spacing or an
+along-soffit pitch. Software rejection above 300 mm does not prove that every
+such soffit pitch violates the horizontal-distance rule. The 400 mm fixture
+is robust under either interpretation: its inclined-pitch projection is about
+344 mm. Physical spacing datum and drawings remain **HOLD**.
+
+The separate `staircase_spacing_follow_up` in the
+[matrix](is456-amendment-impact.json) binds both existing maintained callers,
+exact owners, the original false-pass diagnostic, seven actual boundary
+replays and independent source/case review. It does not add to the 137 source
+instruction inventory or replace any historical matrix values. Both frozen
+implementation reviews accept the bounded software correction with zero
+essential blockers. Actual validation passes: 92 focused cases, Python 8,664
+(14 skipped, six deselected), FastAPI 614, React 293 and repository 32/32
+(ten unchanged-input results reused). The initial generated caller-ledger
+failure and misleading aggregate exit status remain recorded; canonical
+regeneration and fresh Python/repository runs resolve the ledger failure.
+
+An offline wheel of the existing version passes eight isolated installed Mac
+cases, with 224 installed module origins and no source fallback. Its SHA256 is
+`ce62341b302a7260e3422bc1cf816b1558e7be1fe131c50f8e563cc19963957b`;
+322 package members match current sources, and 320 retain pre-correction bytes.
+This private candidate artifact grants no installed Windows/ETABS/Excel/XLL
+qualification, engineering-use certification or external publication. The
+matrix binds exact reviews, source identities, successful logs and receipts.
+
 ## Historical Amendment 3-6 packet and accepted correction
 
 The original documentation packet identifies two supported-slab discrepancies and

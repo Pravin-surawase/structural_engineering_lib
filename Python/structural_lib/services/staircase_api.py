@@ -38,6 +38,7 @@ _SUPPORTED_CASE = (
     "superimposed service loads, concrete unit weight, and ultimate load factor."
 )
 _HELD_CASES = (
+    "Distribution-spacing checks conservatively cap the supplied scalar; physical horizontal/soffit datum and drawing qualification remain held.",
     "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
     "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
     "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
