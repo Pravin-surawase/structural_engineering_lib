@@ -48,6 +48,10 @@ regression file; staging that intended file resolved the validation gate without
 changing code, tests or generated API outputs. Both original gate logs remain
 retained, with their exact failure/reuse counts.
 
+The final session-policy check found a missing required recurrence heading in
+this latest phase entry. Restored the reader's section without changing any
+reviewed implementation or adding an invented recurrence count or duration.
+
 ### Root causes and resolutions
 
 Each selected component must return its actual status explicitly. Aggregate
@@ -55,6 +59,10 @@ dispatch retains the first nonzero status and reports every failed component
 while continuing the remaining suites. Failed test preconditions prevent that
 runtime from launching. Usage-recording failure continues to leave the product
 result intact; no broad timing-wrapper rewrite is selected.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Retain the inherited session/handoff reader control and restore its required heading at closeout; no new recurrence count or timed event is claimed.
 
 ### What next
 
