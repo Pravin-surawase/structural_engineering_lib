@@ -58,6 +58,13 @@ The exact diagnostic inputs, independent arithmetic and actual results are in
 spacing diagnostic are labelled diagnostic fixtures; they are not engineering
 approval. No tests were added during this source review.
 
+The basic `design_one_way_slab_is456` export also delegates to the same
+provided-bar checker and is affected by AMD3-014. Its independently replayed
+`d=125 mm`, `14@400 mm` input returns a 450 mm maximum and adequate detailing
+on the original numerical baseline. It performs no shear check, so it is not
+an AMD5-022 shear consumer. The flexure-only `design_two_way_slab_is456` remains
+distinct from both provided-bar and shear consumers.
+
 ## Remaining qualifications
 
 - A1-2 cumulative provision/caller coverage is not requalified here. Their

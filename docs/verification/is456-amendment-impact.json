@@ -402,7 +402,7 @@
     {
       "id": "api.design_one_way_slab_is456",
       "surface": "advanced_export",
-      "category": "slab_flexure",
+      "category": "slab_one_way_detailing",
       "actual_owner": {
         "path": "Python/structural_lib/services/slab_api.py",
         "line": 158,
@@ -724,7 +724,6 @@
       "api.design_continuous_one_way_slab_is456"
     ],
     "case.slab_flexure": [
-      "api.design_one_way_slab_is456",
       "api.design_two_way_slab_is456"
     ],
     "case.slab_one_way": [
@@ -770,6 +769,9 @@
       "api.design_symmetric_combined_footing_is456",
       "is456.strap-footing.property-line/v1",
       "api.design_property_line_strap_footing_is456"
+    ],
+    "case.slab_one_way_detailing": [
+      "api.design_one_way_slab_is456"
     ]
   },
   "disposition_definitions": {
@@ -1954,19 +1956,24 @@
           {
             "caller_set": "geometry",
             "disposition": "D002"
+          },
+          {
+            "caller_set": "case.slab_one_way_detailing",
+            "disposition": "D010"
           }
         ],
         "expanded_caller_count": 38,
         "expanded_disposition_counts": {
-          "affected/confirmed_discrepancy": 8,
+          "affected/confirmed_discrepancy": 9,
           "affected/unverified": 2,
           "unchanged/current_conforms": 2,
-          "unchanged/not_applicable": 20,
+          "unchanged/not_applicable": 19,
           "unknown/unverified": 6
         }
       },
       "evidence_notes": [
-        "AMD3-SLAB-DISTRIBUTION-SPACING-DIAGNOSTIC"
+        "AMD3-SLAB-DISTRIBUTION-SPACING-DIAGNOSTIC",
+        "Basic design_one_way_slab_is456 at services/slab_api.py:158 delegates to the same provided-bar checker at196; independent diagnostic d125mm,14@400mm returns450mm and adequate before correction. It performs no shear check, so AMD5-022 applicability is unchanged."
       ]
     },
     {
