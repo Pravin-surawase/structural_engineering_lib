@@ -26,6 +26,7 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
+
 from structural_lib.codes.is456 import tables
 from structural_lib.codes.is456.slab.detailing import (
     ProvidedSlabBars,

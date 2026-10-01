@@ -7,6 +7,7 @@ from __future__ import annotations
 from dataclasses import replace
 
 import pytest
+
 from structural_lib.codes.is456.slab.models import (
     SlabContractError,
     SolidRectangularSlabGeometry,
