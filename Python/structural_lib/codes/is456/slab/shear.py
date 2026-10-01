@@ -122,7 +122,7 @@ def check_solid_slab_one_way_shear(design_input: SlabShearInput) -> SlabShearRes
     )
     depth_factor = slab_depth_shear_factor(design_input.overall_depth_mm)
     design_tau_c = base_tau_c * depth_factor
-    tau_c_max = tables.get_tc_max_value(design_input.fck_n_per_mm2)
+    tau_c_max = 0.5 * tables.get_tc_max_value(design_input.fck_n_per_mm2)
     if tau_v > tau_c_max:
         status = SlabShearStatus.EXCEEDS_MAXIMUM_SHEAR_STRESS
     elif tau_v > design_tau_c:
@@ -144,6 +144,7 @@ def check_solid_slab_one_way_shear(design_input: SlabShearInput) -> SlabShearRes
         source_refs=(
             "IS 456:2000 Cl. 40.1 and 40.2.1.1",
             "IS 456:2000 Table 19 and Table 20",
+            "IS 456:2000 Cl. 40.2.3.1, Amendment 5 (July 2019)",
             "IIT Kharagpur/NPTEL Module 8 Lesson 18 pp. 6 and 15",
         ),
     )
