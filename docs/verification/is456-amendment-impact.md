@@ -16,6 +16,12 @@ The separately authorized
 [bounded slab correction packet](slab-issued-amendment-corrections.md) implements
 those two findings. The matrix rows, diagnostics and owner hashes below retain
 their original numerical baseline; they do not describe the corrected candidate.
+That correction integrated in
+[PR #1022](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1022)
+at `617cec0692680e38a82308b8705d9845d3758503`, with independent boundary/caller
+acceptance and required/broad hosted checks passed. AMD3-014 and AMD5-022 are
+corrected in current source; the source matrix's historical hashes, diagnostic
+outputs and remaining HOLD dispositions are preserved.
 
 The [dated source inventory](is456-official-source-inventory.json) binds the
 official Fourth Revision status, six numbered amendments and two controlled
@@ -102,7 +108,11 @@ distinct from both provided-bar and shear consumers.
   arbitrary reinforcement layouts and manufacturer steel-family applicability
   retain their existing gates. Hosted platform tests do not close them.
 
-## Proposed next correction packet
+## Original proposed correction packet — completed in PR #1022
+
+The following scope and acceptance were the finite proposal for the now
+integrated [correction packet](slab-issued-amendment-corrections.md). They are
+retained as history, not an instruction to repeat the accepted fixes.
 
 Subject to a separate explicit implementation scope, correct the demonstrated
 slab distribution cap and solid-slab maximum-shear classification in their
