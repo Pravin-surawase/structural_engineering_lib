@@ -11,7 +11,7 @@ import sys
 import warnings
 from pathlib import Path
 from types import ModuleType
-from typing import Any
+from typing import Any, TypeVar
 
 import pytest
 
@@ -206,10 +206,26 @@ def test_optional_dependency_stub_identity_is_environment_independent() -> None:
 
 def test_signature_identity_is_python_version_independent() -> None:
     assert classification._signature(structural_lib.LoadType) == "(value)"
+    assert classification._signature(TypeVar) == "(...)"
 
     model_signature = classification._signature(structural_lib.BeamGeometry)
     assert "Annotated[" in model_signature
     assert "typing.Annotated[" not in model_signature
+
+
+def test_nested_typing_signature_spelling_preserves_values() -> None:
+    # The 3.12 weekly run renders these nested aliases without the 3.11
+    # qualifiers. Literal/default strings must retain their actual contents.
+    prefixed = (
+        "(actions: typing.Annotated[tuple[typing.Literal['P', 'M3'], ...], "
+        "MinLen(min_length=1)], label='typing.Literal[') -> None"
+    )
+    expected = (
+        "(actions: Annotated[tuple[Literal['P', 'M3'], ...], "
+        "MinLen(min_length=1)], label='typing.Literal[') -> None"
+    )
+    assert classification._normalize_signature_text(prefixed) == expected
+    assert classification._normalize_signature_text(expected) == expected
 
 
 def test_api_hub_is_an_identity_only_subset(ledger: dict[str, Any]) -> None:
