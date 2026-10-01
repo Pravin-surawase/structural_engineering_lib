@@ -132,6 +132,48 @@ This private candidate artifact grants no installed Windows/ETABS/Excel/XLL
 qualification, engineering-use certification or external publication. The
 matrix binds exact reviews, source identities, successful logs and receipts.
 
+## Current concrete-bearing operation follow-up — 1 October 2026
+
+The historical `geometry` override grouped `api.check_bearing_pressure` with
+`api.size_footing` and assigned D002 to all 95 A3-6 rows. The actual bearing
+owner checks column-to-footing concrete stress under Cl. 34.4: supplied `fck`
+scales the permissible stress and decides `is_safe`. Soil sizing is a separate
+service-load/external-soil-pressure geometry primitive. Supporting-area
+approval acknowledges the contained-frustum geometry; it does not approve
+concrete constituents, grade, exposure or the complete footing.
+
+The separate `concrete_bearing_current_operation_follow_up` in the
+[matrix](is456-amendment-impact.json) records 95 explicit current-operation
+dispositions and all 173 existing target locators, with current owner hashes.
+It retains every historical A3-6, A1-2 and staircase value. These 95 records
+overlap the existing instruction inventory; they do not enlarge the 137-block,
+5,206-disposition multi-snapshot inventory or the 13 journeys/25 advanced
+exports. The operation retains its advanced/preview classification.
+
+| Current disposition | Count | Actual operation boundary |
+|---|---:|---|
+| unknown / unverified | 43 | Concrete constituents, grade, durability, mixed concrete references and general crack/exposure prerequisites require physical evidence absent from this scalar bearing check. |
+| outside_supported_scope / not_applicable | 36 | SCC/fibre, production/site/construction and working-stress procedures are external to this operation; their external acceptance remains required where applicable. |
+| unchanged / not_applicable | 16 | Reinforcement, bond, shear, torsion, panel and other changed calculations are not evaluated by this bearing owner; no complete-footing or coated-bar acceptance follows. |
+
+Read later replacements in order. An additional full-page source check binds
+AMD4-010 and AMD5-014 to the same Cl. 8.2.5.4 second-paragraph/item (b): A5's
+complete item replacement controls the enclosed A4 edits. Both issued base-page
+pointers (21 and 20) and both historical rows remain intact; this correspondence
+does not accept any material. Seven other ordered relationships retain their
+bounded replacement/addition roles. AMD5-018's formwork-column ambiguity and
+AMD6-002's unnamed renumbering remain unresolved.
+
+No A3-6 instruction directly targets Cl. 34.4, and this packet demonstrates no
+new numerical defect. It changes no bearing formula, grade range, test or public
+classification. Independent frozen review accepts all 95 current dispositions,
+173 locators and eight relationships for bounded documentation purposes, with
+zero essential blockers. Identity/coverage verification and 12/12 affected
+repository checks pass, with six unchanged-input results reused; exact review,
+frozen-candidate and successful check hashes are bound in the appendix. Full
+engineering and actual installed Windows/ETABS/Excel/XLL qualification remain
+**HOLD**; publication is coordinated with the parent.
+
 ## Historical Amendment 3-6 packet and accepted correction
 
 The original documentation packet identifies two supported-slab discrepancies and

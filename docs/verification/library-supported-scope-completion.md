@@ -192,6 +192,16 @@ fallback. Physical spacing datum/drawing, installed Windows/ETABS/Excel/XLL
 qualification and full engineering approval stay HOLD. It preserves the
 original A3-6 and A1-2 snapshots and accepted PR #1022 numerical evidence.
 
+The separate [current concrete-bearing reconciliation](is456-amendment-impact.md#current-concrete-bearing-operation-follow-up--1-october-2026)
+traces the actual Cl. 34.4 `fck` consumer across 95 A3-6 instruction blocks:
+43 unknowns, 36 external procedures and 16 absent changed calculations. The
+original geometry-only assignments remain historical; the current appendix
+retains physical material/grade/exposure HOLDs and the advanced/preview scope.
+Independent frozen review accepts the bounded operation documentation;
+identity/coverage checks and 12/12 affected repository checks pass, with six
+unchanged-input results reused. No numerical defect or new supported capability
+is demonstrated by that documentation packet.
+
 The full six-amendment impact gate remains HOLD. The two demonstrated slab
 outcomes are corrected in merged PR #1022. A1-2 inventory/caller coverage is
 now recorded; remaining engineering qualification requires physical

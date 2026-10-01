@@ -60,8 +60,15 @@ inventory counts, not accepted calculations. See the
 Independent frozen review required one current classification repair:
 `api.check_bearing_pressure` consumes concrete strength, while only
 `api.size_footing` is geometry-only. Its A1-2 assignments now retain the physical
-material HOLDs. The corresponding historical A3-6 operation dispositions are
-preserved and need a separate current-source follow-up.
+material HOLDs. The corresponding historical A3-6 operation dispositions remain preserved.
+The [current concrete-bearing appendix](../verification/is456-amendment-impact.md#current-concrete-bearing-operation-follow-up--1-october-2026)
+now traces all 95 existing blocks/173 targets to its actual Cl. 34.4 `fck` owner.
+Its 43 unknowns, 36 external procedures and 16 absent changed checks preserve
+the actual physical input and complete-footing boundaries. Independent frozen
+review accepts all 95 dispositions and eight relationships with zero essential
+blockers; identity/coverage and 12/12 affected checks pass, with six unchanged-input
+results reused. No numerical correction is supported by this packet and no
+advanced/preview operation is promoted.
 
 Complete engineering approval remains false. Full six-amendment qualification,
 material/coating/manufacturer eligibility, above-M60 substantiation, unresolved
@@ -104,8 +111,8 @@ results reused. Eight isolated installed Mac wheel cases pass with 224 installed
 module origins and zero source fallback; this remains a private candidate of
 the existing version. Initial failing logs are retained. Preserve the separate
 A1-2 commit and accepted PR #1022 evidence. The historical concrete-bearing
-A3-6 classification has a separate current-operation documentation follow-up
-in progress. After those checkpoints, a separately authorized bounded runner
+A3-6 classification now has a separately reviewed current-operation
+documentation follow-up. After those checkpoints, a separately authorized bounded runner
 exit-propagation repair will test the demonstrated false-success behavior.
 
 - Start from the [dated source inventory](../verification/is456-official-source-inventory.json),

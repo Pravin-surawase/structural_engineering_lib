@@ -5,6 +5,58 @@
 
 ---
 
+<a id="is456-bearing-current-20261002"></a>
+
+## 2026-10-01 — Session: Current concrete-bearing A3-6 reconciliation
+
+**Task:** is456-a1-a2-reconciliation-20261002
+**Agent:** MAIN (sole Library writer; separate read-only source and operation review)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Repair the current interpretation of the concrete-bearing owner while preserving every historical source matrix and the separately accepted staircase checkpoint.
+
+### Completed
+
+- Preserved documentation checkpoint 8479cb8f and independently reviewed staircase correction 4cd194d9, with verified local bundles and the private installed Mac wheel proof.
+- Traced the concrete Cl. 34.4 owner, its fck delegate and advanced/preview export separately from soil-pressure geometry sizing.
+- Appended 95 current-operation dispositions across 173 existing targets: 43 unknown/unverified, 36 outside/not-applicable and 16 unchanged/not-applicable, preserving all historical rows, counts, source ambiguities and prior follow-ups.
+- Main and a separate source worker visually confirmed the A4/A5 item(b) replacement correspondence; retained both differing issued base-page pointers without guessing their cause.
+- Independent frozen operation review accepts all 95 current dispositions/173 locators and eight relationships with zero essential blockers. Identity/coverage verification and all 12 affected repository checks pass, with six unchanged-input results reused.
+
+### Verification and scope
+
+Independent frozen operation review and affected documentation/identity checks
+pass for this bounded documentation purpose, with zero essential blockers.
+Exact frozen/review/check hashes and preserved semantic digests are bound in
+the current appendix. No calculation code, test, grade domain or API classification
+changes. This appendix overlaps the existing instruction inventory and does
+not enlarge the 13 journeys/25 advanced exports or establish physical input,
+complete-footing or six-amendment qualification. Protected sources and renders
+remain private. Local commits are authorized; the parent owns publication.
+
+### Issues encountered
+
+Historical D002 states that concrete bearing consumes no RC strength because it
+was grouped with soil sizing. The actual check delegates supplied fck to its
+permissible stress and is_safe outcome, so material prerequisites cannot be
+dismissed as geometry-only. A5 formwork-column and A6 unnamed-renumbering
+ambiguities remain unresolved and are not needed to change this bearing rule.
+
+### Root causes and resolutions
+
+Trace each actual operation instead of inferring applicability from a broad
+foundation/geometry family. Retain immutable historical assignments and add a
+dated current operation record. No issued A3-6 target directly changes Cl.34.4;
+no physical case or numerical mismatch supports a bearing formula correction.
+
+### What next
+
+Preserve this separately reviewed documentation commit and local recovery
+checkpoint. Then inspect and independently review the parent-authorized bounded
+aggregate-runner exit-propagation fix using injected component failures.
+Stop at a safe verified checkpoint before 2 October 2026 03:30 UTC.
+
+---
+
 <a id="is456-stair-spacing-20261002"></a>
 
 ## 2026-10-01 — Session: Bounded staircase Amendment 3 spacing correction
