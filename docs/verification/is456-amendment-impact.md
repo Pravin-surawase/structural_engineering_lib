@@ -5,7 +5,81 @@ last_updated: 2026-10-01
 doc_type: reference
 ---
 
-# IS 456 Amendment 3-6 source and supported-caller reconciliation
+# IS 456 issued-amendment source and supported-caller reconciliation
+
+## Amendment 1-2 current-source packet — 1 October 2026
+
+The owner resumed Library work after the earlier pause. This bounded
+documentation packet starts from PR #1023 main,
+`c45cb89f13e8821716553b096003eb22763e083e`, and changes no calculation code.
+The `amendment_1_2_reconciliation` extension in the
+[impact matrix](is456-amendment-impact.json) records 42 issued instruction
+blocks: 28 in A1 and 14 in A2. Every row assigns the same 13 maintained family
+journeys and 25 advanced exports exactly one disposition: 1,596 source/caller
+dispositions. Their current implementation anchors and 48 file hashes are
+separate from the original A3-6 snapshot.
+
+Main and a separate read-only source worker visually inspected all eight
+physical A1-2 pages: seven content pages and one blank verso. The
+`amendment_1_2_follow_up` in the
+[source inventory](is456-official-source-inventory.json) binds the controlled
+PDF hash, PDF/printed page locators, continuation boundaries and private render
+hashes. A1 Annex H is one replacement block spanning PDF104-107, not four
+instructions. A1 Cl. 16.1 and Annex B labels were read visually; OCR does not
+govern their clause identities. A2 Cl. 5.2.1.3 is the rice-husk-ash note.
+Protected source prose, images, committee names and watermarks remain private.
+The dated official catalogue observation is reused as history; this packet
+does not claim a fresh BIS or companion-standard edition check.
+
+The union with the preserved 95-row A3-6 inventory is 137 instruction blocks,
+5,206 dispositions and 28 physical pages. These are inventory counts across
+two source snapshots. They are not 137 accepted calculations or a newly
+qualified cumulative candidate. Full six-amendment engineering qualification
+remains **HOLD**.
+
+| Issued target and exact amendment locator | Current maintained disposition |
+|---|---|
+| A1 PDF103/printed1; workability, Table 11 and material/process corrections | A3 partly changes the workability table; A4 replaces Table 11. Construction acceptance is external. Material/durability eligibility stays unverified rather than being inferred from supplied strengths. |
+| A1 PDF104/printed2; Cl. 23.1.2(c) | Four isolated-beam formula-symbol substitutions are indexed. The promoted flanged route is monolithic sagging T-beam; it does not qualify the isolated T/L formula. Exact old typography is not reconstructed. |
+| A1 PDF104/printed2; Cl. 26.5.3.2(c)(2) | Minimum lateral-tie diameter is 6 mm. The low-level helper agrees, but maintained column strength callers do not qualify a complete physical tie schedule. The helper is not added to supported capability. |
+| A1 PDF104/printed2; Cl. 32.2.5 | The braced-wall axial owner uses effective height squared. The canonical 2,250 mm effective-height, 150 mm thick fixture gives additional eccentricity 13.5 mm by independent arithmetic. Wall shear remains excluded. |
+| A1 PDF104/printed2; Cl. 34.2.4.1(a), and A2 PDF109/printed1; Cl. 34.2.4.2 | Soil one-way-shear sections remain at distance `d`; the pile `d/2` branch is distinct. Isolated and symmetric combined soil owners conform within their declared cases. Strap footing slabs remain externally verified prerequisites. |
+| A1 PDF104/printed2; Table 18 column 4, DL+IL row | The correction removes a wind-factor entry in the collapse row. It does not revise dead/imposed-load or serviceability factors. General load-combination generation is outside the maintained routes. |
+| A1 PDF104/printed2; Cl. 40.1 | Traced ordinary beam, equivalent torsion, solid-slab, staircase, soil-footing and strap-beam owners use width times effective depth. This denominator check does not close maximum-shear, near-support or member-applicability HOLDs. |
+| A1 PDF104/printed2; Annex B, Figure 27 and Annex F | Working-stress rules remain distinct from limit-state strength and named elastic SLS profiles. Figure 27 is an unbraced-frame effective-length chart, not a slab aspect ratio. Annex F's editorial relocation does not qualify general crack width or mean-strain generation. |
+| A2 PDF109/printed1; mineral admixtures and Annex A | Apply A5's local/shared blending changes and A6's later common introduction in order. A5 updates the fly-ash reference year; neither source references nor possession qualify physical materials or a new companion-code domain. |
+| A2 PDF109/printed1; Cl. 34.3.1(a), 34.4.3 | The one-way-footing wording does not remove either direction or the rectangular central band in two-way isolated cases. Combined-footing direction classification stays unverified. Isolated and combined dowel owners check the inclusive column-bar-diameter-plus-3 mm bound. |
+| A2 PDF110/printed2; Table 26 Case 2, column 2 | Built-in complete two-way routes select Case 2 for one discontinuous short edge and Case 3 for one discontinuous long edge. Four canonical orientation replays agree with independent source-table moments. External coefficient provenance remains unverified; the legacy all-continuous flexure export is a different case. |
+| A2 PDF110/printed2; G-1.1(c)/(d) | The limiting-moment symbol and flexural 38.1 pointer agree with traced rectangular owners. A separate Fe415 rectangle probe agrees with independent arithmetic. Dedicated T-beam flange equilibrium remains separate. No material/manufacturer or above-M60 acceptance is inferred. |
+
+The extension contains 11 actual read-only canonical/owner diagnostics with
+inputs, independent expectations and results. Supplied review/bracing/SLS
+acknowledgements are diagnostic fixtures; they are not engineering approval.
+No new numerical discrepancy was demonstrated by this packet. The two
+previous slab corrections and their accepted evidence remain unchanged.
+
+Independent frozen review found one essential classification error:
+`api.check_bearing_pressure` calculates concrete bearing capacity from `fck`
+under Cl. 34.4; it is not a geometry-only soil-sizing primitive. The current
+A1-2 extension now leaves only `api.size_footing` in that exclusion, repairs
+23 assignments and retains seven additional material eligibility unknowns.
+No numerical formula changed. The historical A3-6 values remain intact;
+their corresponding concrete-bearing classification needs a separate current
+operation reconciliation and remains HOLD.
+
+The 302 new `unknown/unverified` dispositions include physical material and
+cover eligibility, ties, combined-footing direction classification and
+external coefficient provenance. Exact old isolated-beam/figure typography
+also remains unverified within excluded methods. All remaining A3-6 source
+interpretations and caller/material/installed-host limits retain their
+recorded HOLDs. The complete frozen review and bounded essential-repair review
+accept this source/caller index for documentation purposes with zero essential
+blockers. Their hashes and frozen-candidate binding are in `independent_review`.
+The six affected repository checks and external identity/count validation pass;
+session-policy and efficiency checks pass. Publication remains coordinated with
+the parent; no release or engineering-use certification is authorized.
+
+## Historical Amendment 3-6 packet and accepted correction
 
 The original documentation packet identifies two supported-slab discrepancies and
 retains the unresolved edition and applicability qualifications. It changes no
@@ -42,9 +116,12 @@ disjoint overrides: 3,610 source/caller dispositions. This count includes
 explicit unknowns and cases outside the changed provision; it is not a count
 of qualified cases. Every caller has its actual implementation owner; every
 disposition has scope/owner anchors whose file hashes bind this source commit.
-Shared material eligibility is retained separately from construction-process
-exclusions. The two geometry-only bearing/sizing primitives have no RC material
-or reinforcement calculation to qualify.
+Shared material eligibility was retained separately from construction-process
+exclusions. That historical matrix classified two bearing/sizing primitives
+as geometry-only. Current independent review establishes that only
+`api.size_footing` fits that rationale; `api.check_bearing_pressure` consumes
+concrete strength. Its A3-6 dispositions remain historical and require the
+separate current-operation follow-up noted above.
 
 The supported coefficient slab routes retain Tables 12/13/26/27 and their
 declared case restrictions. A4's redistributed panel-moment rule does not
@@ -76,7 +153,11 @@ on the original numerical baseline. It performs no shear check, so it is not
 an AMD5-022 shear consumer. The flexure-only `design_two_way_slab_is456` remains
 distinct from both provided-bar and shear consumers.
 
-## Remaining qualifications
+## Qualifications recorded by the historical Amendment 3-6 packet
+
+The following list records that packet's original boundary. The A1-2 extension
+above supersedes its missing-inventory item only; it does not close the full
+six-amendment or physical/installed-host gates.
 
 - A1-2 cumulative provision/caller coverage is not requalified here. Their
   presence and accepted historical anchors do not close the full six-amendment

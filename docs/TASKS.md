@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-10-01 — PRs #1020/#1022 merged; owner requested a pause after documentation and maintenance closeout
+**Updated:** 2026-10-01 — PRs #1020/#1022/#1023 integrated; owner resumed bounded Library qualification overnight
 
 ---
 
@@ -30,13 +30,17 @@
 | LIB-MEMBER-WORKFLOW-002 | Complete a multilayer beam with per-bar strain/stress equilibrium | P0 | Implemented; milestone PR owns final hosted closeout | [Frozen plan and acceptance](planning/multilayer-member-workflow.md): shared independent vectors, 27 required checks, 43 bars, BBS/report and installed-wheel replay |
 | LIB-SUPPORTED-CORRECTNESS | Correct supported column, flange, material and bounded SLS paths | P0 | Done: [PR #1020](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1020) merged at 32576ae0 | Required and broad hosted checks passed; [accepted scope and remaining qualifications](verification/library-supported-scope-completion.md) |
 | IS456-SLAB-AMENDMENTS | Map issued A3-6 instructions and correct the two demonstrated supported-slab limits | P0 | Done: [PR #1022](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1022) merged at 617cec06 | Independently reviewed tree matches merge; required/broad checks passed; [corrections and retained HOLDs](verification/slab-issued-amendment-corrections.md) |
+| IS456-A1-A2-RECONCILIATION | Reconcile ordered A1-2 instructions against maintained callers without rewriting A3-6 history | P0 | Local documentation checkpoint accepted; publication coordinated with parent | 42 blocks, all 38 callers, 1,596 independently reviewed dispositions, six affected checks PASS and exact source/current-owner identities; [current packet](verification/is456-amendment-impact.md#amendment-1-2-current-source-packet--1-october-2026); full six-amendment qualification remains HOLD |
 
-**Paused by owner — 1 October:** no next engineering packet is selected. The
-smallest proposed qualification is ordered Amendment 1-2 source/caller mapping
+**Resumed by owner — 1 October:** bounded Library work is authorized overnight
+through 2 October 2026 03:30 UTC. The selected qualification is ordered
+Amendment 1-2 source/caller mapping
 against the existing [source inventory](verification/is456-official-source-inventory.json)
-and [impact matrix](verification/is456-amendment-impact.md). Stop with a dated
-source/caller verdict and explicit unresolved rows; any new numerical correction
-requires its own scope and evidence. Material/coating/manufacturer eligibility,
+and [impact matrix](verification/is456-amendment-impact.md). Finish a dated,
+independently reviewed local verdict and recovery evidence. A demonstrated
+defect may receive a separate bounded correction with regression tests and
+independent verification; broader changes need evidence and a separate scope.
+Coordinate publication with the parent. Material/coating/manufacturer eligibility,
 above-M60 substantiation, remaining interpretations and real installed
 Windows/ETABS/Excel/XLL evidence retain their HOLDs. The bounded SLS profile
 does not qualify finite creep history or general Level B/C serviceability.

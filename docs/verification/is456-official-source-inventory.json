@@ -320,5 +320,209 @@
   },
   "scope_boundary": "Source inventory and 20-page visual inspection do not certify all supported calculations, concrete/steel-family eligibility, finite creep history or installed ETABS acceptance.",
   "follow_up": "is456-amendment-impact.json",
-  "impact_matrix": "is456-amendment-impact.json"
+  "impact_matrix": "is456-amendment-impact.json",
+  "amendment_1_2_follow_up": {
+    "date_utc": "2026-10-01",
+    "source_commit": "c45cb89f13e8821716553b096003eb22763e083e",
+    "status": "A1_A2_PAGE_AND_INSTRUCTION_INVENTORY_RECONCILED; FULL_QUALIFICATION_HOLD",
+    "historical_record_semantics": "Original official observation, source-chain review flags and A3-A6 page reviews/counts remain the original dated PR1020 packet. Read this separate follow-up for the later A1-A2 inspection; do not treat the old A1-A2 flags as the current observation.",
+    "controlled_source_id": "IS456-CONTROLLED-COLLECTION",
+    "source_sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+    "source_hash_recomputed": true,
+    "method": "Native macOS PDFKit renders; every physical page visually inspected by main and a separate read-only source worker. Extracted text used only for navigation; source images govern clause letters, cells and instruction boundaries.",
+    "counts": {
+      "physical_pages": 8,
+      "content_pages": 7,
+      "blank_versos": 1,
+      "instruction_blocks": 42,
+      "by_amendment": {
+        "1": 28,
+        "2": 14
+      },
+      "block_starts_by_pdf_page": {
+        "103": 11,
+        "104": 17,
+        "105": 0,
+        "106": 0,
+        "107": 0,
+        "108": 0,
+        "109": 9,
+        "110": 5
+      },
+      "project_authored_target_locators": 51,
+      "source_lettered_instruction_sublabels": 4
+    },
+    "counting_semantics": {
+      "instruction_block": "One separately parenthesized/bracketed source target heading and its complete directive/body, including all continuation pages and every subinstruction.",
+      "lettered_instruction_sublabels": "A1 clause15.3(a,b) and AnnexF(a,b) contain four explicit lettered instruction sublabels in two blocks. Clause16.1(a) is a changed clause target rather than a new instruction heading.",
+      "target_locators": "Project-authored locator count includes the workability table note, clause/notes, dual threshold forms and four formula tokens. It is not an additional instruction-block count. Printed table column numbers and numbered clause/table subtargets are recorded within their governing rows; no separate block is invented per cell or visual line."
+    },
+    "page_reviews": [
+      {
+        "amendment": 1,
+        "pdf_page": 103,
+        "printed_page": 1,
+        "content": "content",
+        "instruction_block_starts": 11,
+        "rows": [
+          "AMD1-001",
+          "AMD1-002",
+          "AMD1-003",
+          "AMD1-004",
+          "AMD1-005",
+          "AMD1-006",
+          "AMD1-007",
+          "AMD1-008",
+          "AMD1-009",
+          "AMD1-010",
+          "AMD1-011"
+        ],
+        "visual_review": "complete_by_main_and_source_worker",
+        "private_render_sha256": "d33f53d8482d384c63d5042ce3b96cd178234e1bd5a64aafc27d8e74154fda1e"
+      },
+      {
+        "amendment": 1,
+        "pdf_page": 104,
+        "printed_page": 2,
+        "content": "content",
+        "instruction_block_starts": 17,
+        "rows": [
+          "AMD1-012",
+          "AMD1-013",
+          "AMD1-014",
+          "AMD1-015",
+          "AMD1-016",
+          "AMD1-017",
+          "AMD1-018",
+          "AMD1-019",
+          "AMD1-020",
+          "AMD1-021",
+          "AMD1-022",
+          "AMD1-023",
+          "AMD1-024",
+          "AMD1-025",
+          "AMD1-026",
+          "AMD1-027",
+          "AMD1-028"
+        ],
+        "visual_review": "complete_by_main_and_source_worker",
+        "private_render_sha256": "a91fe637fcbda0b343ca87b30f034875018197eaf33f48c81287c4385f592d00"
+      },
+      {
+        "amendment": 1,
+        "pdf_page": 105,
+        "printed_page": 3,
+        "content": "annex_continuation",
+        "instruction_block_starts": 0,
+        "rows": [
+          "AMD1-028"
+        ],
+        "visual_review": "complete_by_main_and_source_worker",
+        "private_render_sha256": "bb2d990bd9c5decac6f7ed566bf537bc90471f4b47e72e8c5dcf98505e6b98c7"
+      },
+      {
+        "amendment": 1,
+        "pdf_page": 106,
+        "printed_page": 4,
+        "content": "annex_continuation",
+        "instruction_block_starts": 0,
+        "rows": [
+          "AMD1-028"
+        ],
+        "visual_review": "complete_by_main_and_source_worker",
+        "private_render_sha256": "98eee07b038f8bd67a77a6496cee8169ae6ab708e4aecc72acb8318ec3df99c1"
+      },
+      {
+        "amendment": 1,
+        "pdf_page": 107,
+        "printed_page": 5,
+        "content": "annex_continuation",
+        "instruction_block_starts": 0,
+        "rows": [
+          "AMD1-028"
+        ],
+        "visual_review": "complete_by_main_and_source_worker",
+        "private_render_sha256": "7bd059cc09394941af8186c25d366861e36b75489a9c30dd697c62d85a801310"
+      },
+      {
+        "amendment": 1,
+        "pdf_page": 108,
+        "printed_page": null,
+        "content": "blank_verso",
+        "instruction_block_starts": 0,
+        "rows": [],
+        "visual_review": "complete_by_main_and_source_worker",
+        "private_render_sha256": "291506fafe0ea801392a50ed2fd16aeac51f432b7df9de6ec7557ec86a5783aa"
+      },
+      {
+        "amendment": 2,
+        "pdf_page": 109,
+        "printed_page": 1,
+        "content": "content",
+        "instruction_block_starts": 9,
+        "rows": [
+          "AMD2-001",
+          "AMD2-002",
+          "AMD2-003",
+          "AMD2-004",
+          "AMD2-005",
+          "AMD2-006",
+          "AMD2-007",
+          "AMD2-008",
+          "AMD2-009"
+        ],
+        "visual_review": "complete_by_main_and_source_worker",
+        "private_render_sha256": "272df3bf4dd421395ebff95e85e1c0959e617bd9b9f9c49bf9354dcfc3b2b7c5"
+      },
+      {
+        "amendment": 2,
+        "pdf_page": 110,
+        "printed_page": 2,
+        "content": "content",
+        "instruction_block_starts": 5,
+        "rows": [
+          "AMD2-010",
+          "AMD2-011",
+          "AMD2-012",
+          "AMD2-013",
+          "AMD2-014"
+        ],
+        "visual_review": "complete_by_main_and_source_worker",
+        "private_render_sha256": "06401c3fb97b3ddcdb374483326235dcf76d3494a1608d21386d2cf95cd9d94f"
+      }
+    ],
+    "additional_base_page_observations": [
+      {
+        "pdf_page": 92,
+        "printed_page": 91,
+        "target": "Table26 Case2 column2",
+        "observation": "The base retains a continuous-short-edge label; appended A2PDF110/printed2 corrects it to discontinuous. Treat the base as partially consolidated.",
+        "private_render_sha256": "3db04625787cf6654f744c82244ba0b1d701a5a5b48712f22d19c94d1909fdfb"
+      },
+      {
+        "pdf_page": 97,
+        "printed_page": 96,
+        "target": "G-1.1(d)",
+        "observation": "The base retains39.1; appended A2PDF110/printed2 corrects the flexural reference to38.1.",
+        "private_render_sha256": "33cac5c765bd124fa6e9c00888a4c78f41f3adfc8c8ed4466b6079b119379982"
+      }
+    ],
+    "cumulative_inventory_counts": {
+      "instruction_blocks": 137,
+      "caller_dispositions": 5206,
+      "physical_pages_reviewed": 28,
+      "content_pages": 25,
+      "blank_versos": 3,
+      "semantics": "Arithmetic union of the historical A3-A6 inventory and this A1-A2 extension; not one newly requalified source snapshot and not137 accepted calculations."
+    },
+    "source_reading_limits": [
+      "AMD1-013: four23.1.2(c) formula-token substitutions have exact target boundaries; old typography is not certified. The isolated-beam case is outside the promoted route.",
+      "AMD1-026: Figure27 effective-length ratio label and target are identified; exact typeface/subscript reconstruction is not certified. General unbraced-frame chart derivation is outside this packet."
+    ],
+    "official_status_rechecked": false,
+    "new_source_downloads": 0,
+    "impact_matrix": "is456-amendment-impact.json#amendment_1_2_reconciliation",
+    "full_six_amendment_qualification": "HOLD",
+    "protected_images_prose_watermarks_or_contact_details_included": false
+  }
 }

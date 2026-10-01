@@ -168,10 +168,25 @@ full Table 20 instead of half. No numerical change was made in this source
 packet. The matrix records existing bounded conformance separately from
 unverified applicability and source interpretations.
 
+The resumed A1-2 follow-up on PR #1023 main,
+`c45cb89f13e8821716553b096003eb22763e083e`, visually indexes eight additional
+physical pages and 42 instruction blocks against the same 38 maintained
+callers: 1,596 new dispositions. Its current owner hashes and 11 read-only
+canonical/owner diagnostics are separate from the original A3-6 evidence.
+The arithmetic union is 137 blocks and 5,206 dispositions across the two
+snapshots; these counts include explicit unknowns and exclusions. See the
+[current A1-2 packet](is456-amendment-impact.md#amendment-1-2-current-source-packet--1-october-2026).
+Complete independent review and its essential concrete-bearing classification
+repair are accepted for bounded documentation purposes; six affected checks
+and identity/count validation pass. No calculation code changed and no new
+numerical defect was demonstrated by this A1-2 packet.
+
 The full six-amendment impact gate remains HOLD. The two demonstrated slab
-outcomes are corrected in merged PR #1022. The remaining gate requires A1-2
-cumulative coverage, above-M60 material substantiation, declared physical material/coating domains
-and the unresolved caller/source interpretations recorded in the matrix.
+outcomes are corrected in merged PR #1022. A1-2 inventory/caller coverage is
+now recorded; remaining engineering qualification requires physical
+material/coating domains, above-M60 substantiation, unverified cover/tie,
+coefficient/direction bindings and the unresolved caller/source interpretations
+recorded in both snapshots.
 Source possession and page-count coverage do not close those qualifications.
 A circulated draft is not an adopted standard. Companion-code scope retains
 its own source version; no IS13920 or code-family scope expansion is inferred.
@@ -197,11 +212,14 @@ baseline matrix hashes and accepted private receipts remain historical evidence.
 Software integration is complete for these two bounded packets. The cumulative
 edition/material/applicability and installed Windows/ETABS/Excel/XLL HOLDs
 remain; complete engineering approval remains false. No new package, tag or
-release was published. Draft #1019's programme remains unaccepted. The owner
-requested a pause after documentation and maintenance; no new engineering
-packet is selected. Use the [current brief](../planning/next-session-brief.md)
-for the finite next qualification proposal and preserve the separate solver's
-coordinator and priority.
+release was published. Draft #1019's programme remains unaccepted. PR #1023
+integrated the prior closing documentation. The owner subsequently resumed
+bounded Library qualification overnight through 2 October 2026 03:30 UTC,
+superseding the pause. The A1-2 documentation checkpoint has bounded independent
+acceptance and passed affected local checks; external publication is
+coordinated with the parent. Use the [current brief](../planning/next-session-brief.md)
+and preserve the separate solver's coordinator and priority. Overnight work
+does not authorize a release, merge or engineering-use certification.
 
 ### Historical qualification freeze and publication proposal
 

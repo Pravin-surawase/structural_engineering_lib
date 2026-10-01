@@ -5,6 +5,78 @@
 
 ---
 
+<a id="is456-a1-a2-reconciliation-20261002"></a>
+
+## 2026-10-01 — Session: Ordered Amendment 1-2 Library reconciliation
+
+**Task:** is456-a1-a2-reconciliation-20261002
+**Agent:** MAIN (sole Library writer; bounded read-only source/review workers)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Reconcile issued A1-2 instructions and later-amendment interactions against the maintained Library callers while preserving accepted A3-6 evidence.
+
+### Completed
+
+- Verified the actual Mac checkout, remote and clean PR #1023 main at c45cb89f; created an isolated branch and preserved other worktrees/private evidence.
+- Visually inspected all eight A1-2 physical pages with a separate source worker: 42 instruction blocks, seven content pages and one blank verso.
+- Appended a current-source matrix extension with all 38 maintained callers, 1,596 dispositions, ordered later-amendment relationships and separate owner hashes; retained every historical A3-6 JSON value.
+- Replayed 11 read-only canonical/owner cases with independent expectations; no new numerical defect was demonstrated and no calculation code changed.
+- Completed independent frozen review of all 42 instructions, 30 ordered relationships, 38 callers and 1,596 dispositions; repaired its single concrete-bearing classification finding in the current extension while preserving historical A3-6 values.
+
+### Verification and scope
+
+The owner resumed Library work overnight through 2 October 2026 03:30 UTC,
+superseding the earlier pause. The sole Library writer uses the task-owned
+worktree; the replacement solver remains a separate project with its own
+writer/coordinator. Draft #1019's broad programme is not adopted.
+
+The [current A1-2 packet](verification/is456-amendment-impact.md#amendment-1-2-current-source-packet--1-october-2026)
+owns exact source/current-owner identities, row dispositions and diagnostics.
+The first frozen review accepted the source index and required one essential
+caller repair: concrete bearing capacity consumes `fck`, while only soil sizing
+is geometry-only. The repaired extension retains 302 unknowns; independent
+bounded re-review accepts it with zero essential blockers. All six affected
+repository checks, external identity/count validation, session-policy and
+efficiency checks pass. The source-worker inventory is separate supporting
+evidence, not numerical acceptance. Protected PDFs, extractions and renders
+remain private; only normalized summaries, locators and hashes are tracked.
+
+Full six-amendment engineering qualification remains HOLD. Physical materials,
+coatings, manufacturer steel profiles, above-M60 substantiation, unverified
+caller/source interpretations, finite creep histories and actual installed
+Windows/ETABS/Excel/XLL evidence remain unresolved. No new release, merge,
+package publication or engineering-use certification is authorized.
+
+### Issues encountered
+
+The controlled collection is partially consolidated: its base retains the
+old Table 26 Case 2 label and G-1.1(d) pointer. Extracted text also confuses
+Annex B labels and some formula typefaces. Source possession and OCR therefore
+cannot decide the current ordered rule or its supported caller.
+
+### Root causes and resolutions
+
+Read every issued instruction visually, keep exact PDF/printed target
+locators and order later replacements/coexisting provisions explicitly.
+Keep two excluded formula/figure typography readings unverified rather than
+guessing. Separate this c45cb89f source snapshot from the historical PR #1020
+A3-6 matrix and the accepted PR #1022 corrections. Correct the current
+concrete-bearing classification and its 23 rationale assignments; retain its
+historical A3-6 classification gap as an explicit HOLD for separate follow-up.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Retained the inherited counter; this packet refreshes the resumed handoff without inventing a new timed recurrence.
+
+### What next
+
+Preserve this separately reviewed documentation checkpoint and its local
+recovery evidence; coordinate publication with the parent. Subsequent
+qualification work must use a named remaining row and actual
+evidence. Stop at a safe verified checkpoint by the owner's deadline, retaining
+the exact unverified work and every physical/installed-host HOLD.
+
+---
+
 <a id="postmerge-maintenance-20261001"></a>
 
 ## 2026-10-01 — Session: Pause after supported-library corrections and maintenance

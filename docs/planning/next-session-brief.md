@@ -4,24 +4,29 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-10-01
-- Focus: Preserve the accepted library corrections, refresh the current qualification handoff and finish maintenance before the owner's pause.
-- Completed: Refreshed the handoff and task board against merged PRs #1020 and #1022, retaining the supported-scope checklist and all unresolved qualification HOLDs.; Ran maintenance diagnostics: health 100/100, context and token-efficiency checks PASS; retained the one unproved tester-output feedback item.; Fast-forwarded clean Mac main to the fetched merge at 617cec06 before creating this documentation branch; preserved accepted evidence, old branches and unrelated worktrees.
+- Focus: Reconcile issued A1-2 instructions and later-amendment interactions against the maintained Library callers while preserving accepted A3-6 evidence.
+- Completed: Verified the actual Mac checkout, remote and clean PR #1023 main at c45cb89f; created an isolated branch and preserved other worktrees/private evidence.; Visually inspected all eight A1-2 physical pages with a separate source worker: 42 instruction blocks, seven content pages and one blank verso.; Appended a current-source matrix extension with all 38 maintained callers, 1,596 dispositions, ordered later-amendment relationships and separate owner hashes; retained every historical A3-6 JSON value.
 - Recurrence controls: RR-004 x35 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-**Owner pause — 1 October:** stop engineering work after this documentation and
-maintenance closeout. No next engineering packet is selected. Current-source
-corrections are integrated; no new package, tag or release was published.
+**Owner resume — 1 October:** the owner resumed Library work overnight through
+2 October 2026 03:30 UTC. This supersedes the earlier pause and selects bounded
+ordered Amendment 1-2 source/caller reconciliation. Local documentation,
+diagnostics, tests and commits are authorized; publication is coordinated with
+the parent. No public release, merge, package publication or engineering-use
+certification is authorized by the overnight work.
 
 **Development device — 1 October:** the Mac intake fetched GitHub, verified the
 repository and remote, and fast-forwarded clean local main to
-`617cec0692680e38a82308b8705d9845d3758503` before creating the maintenance
-branch. This is a dated observation: fetch again before resuming and use current
-main. Preserved old branches/worktrees, unrelated dirty architecture work,
-unavailable temporary entries and private evidence remain intact. Windows was
-not inspected; no device writer or installed-application authority changes.
+`c45cb89f13e8821716553b096003eb22763e083e` (PR #1023 documentation closeout)
+for this resumed task. Primary main is clean; the sole Library writer uses the
+isolated `codex/is456-a1-a2-reconciliation-20261002` worktree. This is a dated
+observation: fetch again before another writer takes over. Preserved old
+branches/worktrees, unrelated dirty architecture work, unavailable temporary
+entries and private evidence remain intact. Windows and installed applications
+were not inspected; no installed-host authority changes.
 
 [PR #1020](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1020)
 merged as `32576ae0`, correcting supported column strain/axis behavior, flange
@@ -45,6 +50,20 @@ receipts remain immutable. The earlier
 and [multilayer acceptance](multilayer-member-workflow.md) retain their bounded
 cases and exclusions.
 
+The local A1-2 extension now indexes 42 additional instruction blocks and
+1,596 dispositions against the same 38 callers. Main and a separate source
+worker visually checked eight physical pages, and 11 read-only canonical/owner
+diagnostics agree with independent expectations. Current A1-2 anchors/hashes
+are separate from the preserved A3-6 baseline. The arithmetic union is 137
+blocks and 5,206 dispositions, including exclusions and unknowns; these are
+inventory counts, not accepted calculations. See the
+[current-source A1-2 packet](../verification/is456-amendment-impact.md#amendment-1-2-current-source-packet--1-october-2026).
+Independent frozen review required one current classification repair:
+`api.check_bearing_pressure` consumes concrete strength, while only
+`api.size_footing` is geometry-only. Its A1-2 assignments now retain the physical
+material HOLDs. The corresponding historical A3-6 operation dispositions are
+preserved and need a separate current-source follow-up.
+
 Complete engineering approval remains false. Full six-amendment qualification,
 material/coating/manufacturer eligibility, above-M60 substantiation, unresolved
 caller/source interpretations, finite creep history and real installed
@@ -55,7 +74,7 @@ and normalized-data distribution permission remain passed.
 The replacement solver remains the main product with its own coordinator;
 Project_Manager V1 retains priority on the shared Mac. Draft
 [PR #1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019)
-is an unaccepted broad programme proposal. This pause/handoff neither adopts
+is an unaccepted broad programme proposal. This resumed handoff neither adopts
 that programme nor duplicates the solver's source organization. Any future
 integration of the draft requires explicit replanning and rebinding against
 current main; its historical base does not select or block this authorized
@@ -66,11 +85,14 @@ PR and required hosted checks. Use the
 [maintenance playbook](../governance/maintenance-playbook.md); detailed ledger
 controls remain opt-in.
 
-## Next proposed work on the Mac
+## Selected qualification packet and next justified work on the Mac
 
-The smallest proposed packet is **ordered Amendment 1-2 source/caller
-reconciliation** within the existing supported library. It is a proposal for
-selection on resume, not an implementation authorization.
+The resumed packet is **ordered Amendment 1-2 source/caller reconciliation**
+within the existing supported Library. Its complete source/caller review and
+essential classification repair are independently accepted for documentation
+purposes; six affected checks and identity/count validation pass. Preserve the
+local checkpoint and recovery handoff before parent-coordinated publication.
+No new numerical defect was demonstrated in the A1-2 source pass.
 
 - Start from the [dated source inventory](../verification/is456-official-source-inventory.json),
   controlled source hashes and [existing impact matrix](../verification/is456-amendment-impact.json).
@@ -81,9 +103,15 @@ selection on resume, not an implementation authorization.
   amendment relationship, maintained caller/owner anchor and explicit qualified,
   outside-case or unresolved disposition. Preserve A3-6 history and existing
   acceptance; source possession alone is insufficient.
-- Stop after one dated documentation verdict identifies coverage and remaining
-  unknowns. Any newly demonstrated numerical defect needs its own explicit
-  correction scope and independent boundary evidence before edits.
+- Finish one dated documentation verdict with coverage, independent review and
+  remaining unknowns. A demonstrated defect may receive a separate bounded
+  local correction with regression tests and independent verification within
+  the resumed work; do not turn a source ambiguity into a formula edit.
+- Subsequent work must be justified by actual remaining evidence. The smallest
+  candidate is a source/owner/case trace of a named unresolved staircase or
+  foundation applicability row, preserving prior acceptance and shared HOLDs.
+  Do not import draft #1019 as an approved programme or promote experimental
+  helpers. Stop at a verified checkpoint by the owner's deadline.
 - Material/manufacturer substantiation and unresolved formwork/renumbering
   interpretations require actual primary evidence, not guessed defaults.
   Real installed Windows/ETABS work also needs access and an exact installed
