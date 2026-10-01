@@ -17,9 +17,13 @@ References:
 
 from __future__ import annotations
 
-from structural_lib.codes.is456.column._common import _calculate_puz
-from structural_lib.codes.is456.column.uniaxial import pm_interaction_curve
+from structural_lib.codes.is456.column._common import (
+    _calculate_puz,
+    _require_column_steel_ratio,
+)
+from structural_lib.codes.is456.column.uniaxial import _pm_envelope_point
 from structural_lib.codes.is456.common.constants import (
+    EPSILON_CU,
     MAX_SLENDERNESS_RATIO,
     SHORT_COLUMN_SLENDERNESS_LIMIT,
 )
@@ -33,6 +37,52 @@ __all__ = [
 
 # IS 456 Cl 39.7.1: eadd denominator constant
 _EADD_DENOMINATOR: float = 2000.0
+
+# IS 456 Cl 39.7.1.1 specifies this tensile strain independently of steel yield.
+_PB_TENSION_STRAIN: float = 0.002
+_REDUCTION_METHOD: str = "IS456_39_7_1_1_PER_AXIS_V1"
+
+
+def _balanced_load_for_additional_moment(
+    b_mm: float,
+    D_mm: float,
+    fck: float,
+    fy: float,
+    Asc_mm2: float,
+    d_prime_mm: float,
+) -> float:
+    """Return Cl 39.7.1.1 Pb (kN) for the supported symmetric two-face section.
+
+    Plane sections give xu = (D-d')*0.0035/(0.0035+0.002). Evaluate axial
+    equilibrium with the selected section profile, including displaced concrete.
+    This is distinct from the public P-M curve's yield-balanced point. Callers
+    validate positive dimensions/materials before entering this helper.
+    """
+    if d_prime_mm <= 0 or d_prime_mm >= D_mm / 2.0:
+        raise DimensionError(
+            f"Cover d_prime_mm must be > 0 and < D/2={D_mm / 2.0}, got {d_prime_mm}",
+            details={"d_prime_mm": d_prime_mm, "D_mm": D_mm},
+            clause_ref="Cl. 26.4",
+        )
+    if Asc_mm2 <= 0:
+        raise DimensionError(
+            f"Total steel area Asc_mm2 must be > 0, got {Asc_mm2}",
+            details={"Asc_mm2": Asc_mm2},
+            clause_ref="Cl. 26.5.3.1",
+        )
+    _require_column_steel_ratio(b_mm * D_mm, Asc_mm2)
+    xu = (D_mm - d_prime_mm) * EPSILON_CU / (EPSILON_CU + _PB_TENSION_STRAIN)
+    axial_kn, _ = _pm_envelope_point(xu, b_mm, D_mm, fck, fy, Asc_mm2 / 2.0, d_prime_mm)
+    return axial_kn
+
+
+def _additional_moment_reduction(pu_kn: float, puz_kn: float, pb_kn: float) -> float:
+    """Cl 39.7.1.1 reduction for one prescribed bending-plane state."""
+    if pu_kn > puz_kn:
+        return 0.0
+    if abs(pu_kn) < 1e-6 or abs(puz_kn - pb_kn) < 1e-6:
+        return 1.0
+    return max(0.0, min(1.0, (puz_kn - pu_kn) / (puz_kn - pb_kn)))
 
 
 def _additional_eccentricity(le_mm: float, D_mm: float) -> float:
@@ -86,7 +136,8 @@ def calculate_additional_moment(
 
     Returns:
         AdditionalMomentResult with additional eccentricities, moments,
-        k-factor, and reduced moments for both axes.
+        plane-specific k-factors and reduced moments for both axes. Legacy
+        ``k`` and ``Pb_kN`` are x-plane aliases; use ``k_y`` for the y-plane.
 
     Raises:
         DimensionError: If any dimension is non-positive or Pu is negative.
@@ -166,8 +217,8 @@ def calculate_additional_moment(
     # k = (Puz - Pu) / (Puz - Pb), clamped to [0, 1.0]
     puz_kN = _calculate_puz(b_mm, D_mm, fck, fy, Asc_mm2)  # noqa: N806
 
-    # Get balanced point from P-M interaction curve
-    pm_result = pm_interaction_curve(
+    # Cl 39.7.1.1 uses epsilon_t=0.002, not the yield-balanced public P-M point.
+    pb_kN = _balanced_load_for_additional_moment(  # noqa: N806
         b_mm=b_mm,
         D_mm=D_mm,
         fck=fck,
@@ -175,7 +226,14 @@ def calculate_additional_moment(
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
     )
-    pb_kN = pm_result.Pu_bal_kN  # noqa: N806
+    pb_y_kn = _balanced_load_for_additional_moment(
+        b_mm=D_mm,
+        D_mm=b_mm,
+        fck=fck,
+        fy=fy,
+        Asc_mm2=Asc_mm2,
+        d_prime_mm=d_prime_mm,
+    )
 
     # k-factor calculation
     if Pu_kN > puz_kN:
@@ -183,23 +241,12 @@ def calculate_additional_moment(
             f"Pu ({Pu_kN:.1f} kN) exceeds Puz ({puz_kN:.1f} kN) "
             "— section may be overloaded"
         )
-        k = 0.0
-    else:
-        denom = puz_kN - pb_kN
-        if abs(denom) < 1e-6:
-            # Puz ≈ Pb — degenerate case, use k = 1.0
-            k = 1.0
-        else:
-            k = (puz_kN - Pu_kN) / denom
-            # Clamp to [0, 1.0]
-            if k > 1.0:
-                k = 1.0
-            elif k < 0.0:
-                k = 0.0
+    k = _additional_moment_reduction(Pu_kN, puz_kN, pb_kN)
+    k_y = _additional_moment_reduction(Pu_kN, puz_kN, pb_y_kn)
 
     # Reduced additional moments
     max_reduced_kNm = k * max_kNm  # noqa: N806
-    may_reduced_kNm = k * may_kNm  # noqa: N806
+    may_reduced_kNm = k_y * may_kNm  # noqa: N806
 
     return AdditionalMomentResult(
         eadd_x_mm=eadd_x_mm,
@@ -221,4 +268,9 @@ def calculate_additional_moment(
         lex_mm=lex_mm,
         ley_mm=ley_mm,
         warnings=tuple(warnings),
+        k_x=k,
+        k_y=k_y,
+        Pb_x_kN=pb_kN,
+        Pb_y_kN=pb_y_kn,
+        reduction_method=_REDUCTION_METHOD,
     )

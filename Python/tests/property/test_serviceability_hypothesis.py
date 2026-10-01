@@ -13,8 +13,8 @@ Tests verify mathematical invariants for IS 456 serviceability checks:
 
 from hypothesis import assume, given, settings
 from hypothesis import strategies as st
-
 from structural_lib import serviceability
+
 from tests.property.strategies import (
     beam_section,
     beam_width,
@@ -156,69 +156,78 @@ class TestCrackWidthProperties:
         )
 
 
+def _cracked_rectangle_inputs(b_mm: float, D_mm: float, x_over_d: float) -> dict:
+    """Elastic rectangle: choose Ast from b*x²/2 = n*Ast*(d-x), n=8.
+
+    M25 has Ec=25000 and Es=200000 N/mm². These are geometry/empirical
+    inertia properties, not service-stress or construction approval.
+    """
+    d_mm = 0.9 * D_mm
+    x_mm = x_over_d * d_mm
+    n_ast_mm2 = b_mm * x_mm**2 / (2 * (d_mm - x_mm))
+    igross = b_mm * D_mm**3 / 12
+    icr = b_mm * x_mm**3 / 3 + n_ast_mm2 * (d_mm - x_mm) ** 2
+    return {
+        "igross_mm4": igross,
+        "icr_mm4": icr,
+        "d_mm": d_mm,
+        "x_mm": x_mm,
+        "mcr_knm": 3.5 * igross / (D_mm / 2) / 1e6,
+    }
+
+
 class TestEffectiveMomentOfInertiaProperties:
     """Property tests for calculate_effective_moment_of_inertia."""
 
     @settings(max_examples=50)
     @given(
-        igross=st.floats(
-            min_value=1e8, max_value=1e12, allow_nan=False, allow_infinity=False
-        ),
-        ratio=st.floats(
-            min_value=0.05, max_value=0.8, allow_nan=False, allow_infinity=False
+        b_mm=beam_width(),
+        D_mm=total_depth(),
+        x_over_d=st.floats(
+            min_value=0.16, max_value=0.45, allow_nan=False, allow_infinity=False
         ),
         ma_mcr_ratio=st.floats(
             min_value=1.1, max_value=10.0, allow_nan=False, allow_infinity=False
         ),
     )
     def test_bounded_between_icr_and_igross(
-        self, igross: float, ratio: float, ma_mcr_ratio: float
+        self, b_mm: float, D_mm: float, x_over_d: float, ma_mcr_ratio: float
     ) -> None:
         """Ieff should be bounded: Icr <= Ieff <= Igross."""
-        icr = igross * ratio  # Icr < Igross
-        mcr = 50.0
-        ma = mcr * ma_mcr_ratio  # Ma > Mcr → cracked
+        section = _cracked_rectangle_inputs(b_mm, D_mm, x_over_d)
+        igross, icr = section["igross_mm4"], section["icr_mm4"]
+        ma = section["mcr_knm"] * ma_mcr_ratio  # Ma > Mcr → cracked
 
         ieff = serviceability.calculate_effective_moment_of_inertia(
-            mcr_knm=mcr,
             ma_knm=ma,
-            igross_mm4=igross,
-            icr_mm4=icr,
+            **section,
         )
         assert ieff >= icr - 1e-6, f"Ieff={ieff} < Icr={icr}"
         assert ieff <= igross + 1e-6, f"Ieff={ieff} > Igross={igross}"
 
     @settings(max_examples=50)
     @given(
-        igross=st.floats(
-            min_value=1e8, max_value=1e12, allow_nan=False, allow_infinity=False
-        ),
-        ratio=st.floats(
-            min_value=0.05, max_value=0.8, allow_nan=False, allow_infinity=False
-        ),
-        mcr=st.floats(
-            min_value=10.0, max_value=200.0, allow_nan=False, allow_infinity=False
+        b_mm=beam_width(),
+        D_mm=total_depth(),
+        x_over_d=st.floats(
+            min_value=0.16, max_value=0.45, allow_nan=False, allow_infinity=False
         ),
     )
     def test_decreases_as_ma_mcr_increases(
-        self, igross: float, ratio: float, mcr: float
+        self, b_mm: float, D_mm: float, x_over_d: float
     ) -> None:
         """Monotonicity: as Ma/Mcr increases, Ieff decreases toward Icr."""
-        icr = igross * ratio
-        ma1 = mcr * 1.5
-        ma2 = mcr * 3.0  # Larger Ma/Mcr ratio
+        section = _cracked_rectangle_inputs(b_mm, D_mm, x_over_d)
+        ma1 = section["mcr_knm"] * 1.5
+        ma2 = section["mcr_knm"] * 3.0  # Larger Ma/Mcr ratio
 
         ieff1 = serviceability.calculate_effective_moment_of_inertia(
-            mcr_knm=mcr,
             ma_knm=ma1,
-            igross_mm4=igross,
-            icr_mm4=icr,
+            **section,
         )
         ieff2 = serviceability.calculate_effective_moment_of_inertia(
-            mcr_knm=mcr,
             ma_knm=ma2,
-            igross_mm4=igross,
-            icr_mm4=icr,
+            **section,
         )
         assert (
             ieff2 <= ieff1 + 1e-6

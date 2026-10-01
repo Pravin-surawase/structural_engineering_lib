@@ -141,7 +141,7 @@
       "case_id": "G5",
       "category": "beam_flexure",
       "description": "Doubly reinforced beam — Mu exceeds Mu_lim (M25/Fe500, b=300mm, d=500mm, Mu=350kNm)",
-      "source": "SP:16:1980 doubly reinforced case geometry with IS 456:2000 Cl 38.1 and Annex G-1.1 exact Ast1 equilibrium replay",
+      "source": "Independent Decimal Fig23 representative steel and local Fig21 displacement, AnnexG1.2; material_profile_reference.json G5. Prescribed .36/.42/.87 code-design conventions retained.",
       "tolerance": 0.001,
       "inputs": {
         "b_mm": 300.0,
@@ -159,7 +159,7 @@
         "flexure": {
           "mu_lim": 250.5114,
           "ast_required": 1935.8293742017877,
-          "asc_required": 551.9740674637147,
+          "asc_required": 551.6635469129088,
           "xu": 230.0,
           "xu_max": 230.0,
           "is_safe": true
@@ -514,7 +514,7 @@
         "a_mm": 450,
         "b_mm": 300,
         "fck": 25,
-        "pt": 0.20
+        "pt": 0.2
       },
       "expected": {
         "tau_v_nmm2": 0.40476190476190477,
@@ -594,7 +594,9 @@
         "end_condition": "FIXED_FIXED",
         "use_theoretical": false
       },
-      "expected": { "le_mm": 1950.0 }
+      "expected": {
+        "le_mm": 1950.0
+      }
     },
     {
       "case_id": "GC-EL2",
@@ -607,7 +609,9 @@
         "end_condition": "FIXED_HINGED",
         "use_theoretical": false
       },
-      "expected": { "le_mm": 2400.0 }
+      "expected": {
+        "le_mm": 2400.0
+      }
     },
     {
       "case_id": "GC-EL3",
@@ -620,7 +624,9 @@
         "end_condition": "HINGED_HINGED",
         "use_theoretical": false
       },
-      "expected": { "le_mm": 3000.0 }
+      "expected": {
+        "le_mm": 3000.0
+      }
     },
     {
       "case_id": "GC-EL4",
@@ -633,7 +639,9 @@
         "end_condition": "FIXED_FREE",
         "use_theoretical": false
       },
-      "expected": { "le_mm": 6000.0 }
+      "expected": {
+        "le_mm": 6000.0
+      }
     },
     {
       "case_id": "GC-EL5",
@@ -646,7 +654,9 @@
         "end_condition": "FIXED_FIXED_SWAY",
         "use_theoretical": false
       },
-      "expected": { "le_mm": 3600.0 }
+      "expected": {
+        "le_mm": 3600.0
+      }
     }
   ],
   "column_classification_cases": [
@@ -655,24 +665,39 @@
       "category": "column_classification",
       "description": "Short column — le/D = 4.875 < 12",
       "source": "IS 456:2000, Cl 25.1.2 — le/D < 12 → SHORT",
-      "inputs": { "le_mm": 1950, "D_mm": 400 },
-      "expected": { "classification": "SHORT" }
+      "inputs": {
+        "le_mm": 1950,
+        "D_mm": 400
+      },
+      "expected": {
+        "classification": "SHORT"
+      }
     },
     {
       "case_id": "GC-CL2",
       "category": "column_classification",
       "description": "Slender column — le/D = 15.0 >= 12",
       "source": "IS 456:2000, Cl 25.1.2 — le/D >= 12 → SLENDER",
-      "inputs": { "le_mm": 6000, "D_mm": 400 },
-      "expected": { "classification": "SLENDER" }
+      "inputs": {
+        "le_mm": 6000,
+        "D_mm": 400
+      },
+      "expected": {
+        "classification": "SLENDER"
+      }
     },
     {
       "case_id": "GC-CL3",
       "category": "column_classification",
       "description": "Boundary case — le/D = 12.0 exactly (should be SLENDER per strict <12)",
       "source": "IS 456:2000, Cl 25.1.2 — le/D < 12 is short, == 12 is SLENDER",
-      "inputs": { "le_mm": 4800, "D_mm": 400 },
-      "expected": { "classification": "SLENDER" }
+      "inputs": {
+        "le_mm": 4800,
+        "D_mm": 400
+      },
+      "expected": {
+        "classification": "SLENDER"
+      }
     }
   ],
   "column_min_eccentricity_cases": [
@@ -682,8 +707,13 @@
       "description": "Min eccentricity governed by 20mm floor — L=3000, D=400",
       "source": "IS 456:2000, Cl 25.4 — e_min = max(3000/500+400/30, 20) = max(19.33, 20) = 20mm",
       "tolerance": 1e-12,
-      "inputs": { "l_unsupported_mm": 3000, "D_mm": 400 },
-      "expected": { "e_min_mm": 20.0 }
+      "inputs": {
+        "l_unsupported_mm": 3000,
+        "D_mm": 400
+      },
+      "expected": {
+        "e_min_mm": 20.0
+      }
     },
     {
       "case_id": "GC-ME2",
@@ -691,8 +721,13 @@
       "description": "Min eccentricity governed by formula — L=6000, D=400",
       "source": "IS 456:2000, Cl 25.4 — e_min = max(6000/500+400/30, 20) = max(25.33, 20) = 25.33mm",
       "tolerance": 1e-12,
-      "inputs": { "l_unsupported_mm": 6000, "D_mm": 400 },
-      "expected": { "e_min_mm": 25.333333333333336 }
+      "inputs": {
+        "l_unsupported_mm": 6000,
+        "D_mm": 400
+      },
+      "expected": {
+        "e_min_mm": 25.333333333333336
+      }
     },
     {
       "case_id": "GC-ME3",
@@ -700,8 +735,13 @@
       "description": "Min eccentricity — shorter column L=4000, D=300",
       "source": "IS 456:2000, Cl 25.4 — e_min = max(4000/500+300/30, 20) = max(18, 20) = 20mm",
       "tolerance": 1e-12,
-      "inputs": { "l_unsupported_mm": 4000, "D_mm": 300 },
-      "expected": { "e_min_mm": 20.0 }
+      "inputs": {
+        "l_unsupported_mm": 4000,
+        "D_mm": 300
+      },
+      "expected": {
+        "e_min_mm": 20.0
+      }
     }
   ],
   "column_axial_cases": [
@@ -747,7 +787,7 @@
       "case_id": "GC-PM1",
       "category": "column_pm_curve",
       "description": "P-M interaction curve — 400×400, M25/Fe415, 8-16mm bars, d'=50mm",
-      "source": "IS 456:2000, Cl 39.5, SP:16 Charts 27-62",
+      "source": "Independent Fig.21 integral, Cl.39.1/39.5; column_strain_compatibility.json GC-PM1; STEEL_FIG23_GS115_V1; independently parameterized Fig23 representative steel, gamma_s=1.15",
       "tolerance": 0.001,
       "inputs": {
         "b_mm": 400,
@@ -759,10 +799,10 @@
       },
       "expected": {
         "Pu_0_kN": 2031.157202326909,
-        "Pu_bal_kN": 580.7071246473993,
-        "Mu_bal_kNm": 161.87619333626915,
-        "Mu_0_kNm": 92.26859241630802,
-        "_note": "8-16mm bars, Asc=1608.5 mm², p=1.0%"
+        "Pu_bal_kN": 583.8110975482554,
+        "Mu_bal_kNm": 162.65689597201768,
+        "Mu_0_kNm": 92.31008429107558,
+        "_note": "Independent full-precision GC-PM1 in column_strain_compatibility.json; representative Fig23 steel; nominal caps and prescribed code-design coefficients remain separate."
       }
     }
   ],
@@ -771,7 +811,7 @@
       "case_id": "GC-UNI1",
       "category": "column_uniaxial",
       "description": "Short column uniaxial check — 400×400, M25/Fe415, Pu=1000kN, Mu=100kNm",
-      "source": "IS 456:2000, Cl 39.5 (P-M interaction), 4-25mm bars",
+      "source": "Independent Fig.21 integral, Cl.39.1/39.5; column_strain_compatibility.json GC-UNI1; STEEL_FIG23_GS115_V1; independently parameterized Fig23 representative steel, gamma_s=1.15",
       "tolerance": 0.01,
       "inputs": {
         "Pu_kN": 1000,
@@ -786,11 +826,11 @@
       },
       "expected": {
         "is_safe": true,
-        "Pu_cap_kN": 1385.55,
-        "Mu_cap_kNm": 138.56,
-        "utilization_ratio": 0.7217,
+        "Pu_cap_kN": 1401.4463586815982,
+        "Mu_cap_kNm": 140.14463586815984,
+        "utilization_ratio": 0.7135485377697536,
         "eccentricity_mm": 100.0,
-        "_note": "le/D=6.5 → short, utilization ~72%"
+        "_note": "Independent full-precision GC-UNI1 in column_strain_compatibility.json; representative Fig23 steel; nominal caps and prescribed code-design coefficients remain separate."
       }
     }
   ],
@@ -799,7 +839,7 @@
       "case_id": "GC-BI1",
       "category": "column_biaxial",
       "description": "Biaxial bending — 400×500, M25/Fe415, Pu=1200kN, Mux=80kNm, Muy=60kNm",
-      "source": "IS 456:2000, Cl 39.6 — Bresler load contour with Asc=2400mm²",
+      "source": "Cl.39.6 Bresler interaction with independently integrated Fig.21 uniaxial curves; column_strain_compatibility.json GC-BI1; independently parameterized Fig23 representative steel, gamma_s=1.15",
       "tolerance": 0.01,
       "inputs": {
         "Pu_kN": 1200,
@@ -816,11 +856,11 @@
       "expected": {
         "is_safe": true,
         "Puz_kN": 2970.0,
-        "alpha_n": 1.3401,
-        "interaction_ratio": 0.3631,
-        "Mux1_kNm": 282.75,
-        "Muy1_kNm": 216.7,
-        "_note": "Pu/Puz=0.404, alpha_n=1.34, well within capacity"
+        "alpha_n": 1.34006734006734,
+        "interaction_ratio": 0.35646040675885393,
+        "Mux1_kNm": 286.49377403538426,
+        "Muy1_kNm": 219.82847249843013,
+        "_note": "Independent full-precision GC-BI1 in column_strain_compatibility.json; representative Fig23 steel; nominal caps and prescribed code-design coefficients remain separate."
       }
     }
   ],
@@ -829,7 +869,7 @@
       "case_id": "GC-AM1",
       "category": "column_additional_moment",
       "description": "Slender column additional moment — 300×500, M25/Fe415, lex=7000, ley=5000",
-      "source": "IS 456:2000, Cl 39.7.1 — eadd_x = 7000²/(2000×500) = 49mm",
+      "source": "IS 456:2000 Cl39.7.1/39.7.1.1; independently integrated Fig21 profile, Pb at epsilon_t=-0.002, frozen column_strain_compatibility.json GC-AM1; independently parameterized Fig23 representative steel, gamma_s=1.15",
       "tolerance": 0.01,
       "inputs": {
         "Pu_kN": 800,
@@ -848,9 +888,9 @@
         "eadd_x_mm": 49.0,
         "eadd_y_mm": 41.67,
         "Max_kNm": 39.2,
-        "May_kNm": 33.33,
-        "k": 0.8661,
-        "_note": "Slender both axes, k=0.866 (Puz=2407.5, Pb=551.4)"
+        "May_kNm": 33.333333333333336,
+        "k": 0.9960662600897539,
+        "_note": "Independent full-precision GC-AM1 in column_strain_compatibility.json; representative Fig23 steel; nominal caps and prescribed code-design coefficients remain separate."
       }
     }
   ],
@@ -859,7 +899,7 @@
       "case_id": "GC-LC1",
       "category": "column_long_design",
       "description": "Long column braced — 300×500, M25/Fe415, slender both axes",
-      "source": "IS 456:2000, Cl 39.7 — Mi + Ma_reduced, biaxial check",
+      "source": "IS 456:2000 Cl39.7/39.7.1 note2/39.7.1.1; independent prescribed-strain Pb and 50-interval biaxial capacities, frozen column_strain_compatibility.json GC-LC1; independently parameterized Fig23 representative steel, gamma_s=1.15",
       "tolerance": 0.01,
       "inputs": {
         "Pu_kN": 800,
@@ -881,12 +921,12 @@
         "is_safe": true,
         "is_slender_x": true,
         "is_slender_y": true,
-        "Mux_design_kNm": 97.95,
-        "Muy_design_kNm": 66.87,
-        "interaction_ratio": 0.7257,
+        "Mux_design_kNm": 103.04579739551835,
+        "Muy_design_kNm": 69.81592758701478,
+        "interaction_ratio": 0.7599359051683903,
         "governing_check": "biaxial",
-        "k": 0.8661,
-        "_note": "Braced, Mi_x=0.4×40+0.6×80=64, + 33.95 reduced Ma = 97.95"
+        "k": 0.9960662600897539,
+        "_note": "Independent full-precision GC-LC1 in column_strain_compatibility.json; representative Fig23 steel; nominal caps and prescribed code-design coefficients remain separate."
       }
     }
   ],

@@ -11,6 +11,28 @@ client = TestClient(app)
 URL = "/api/v1/design/column/additional-moment"
 
 
+def test_additional_moment_http_uses_clause39_7_strains_for_pb():
+    response = client.post(
+        URL,
+        json={
+            "Pu_kN": 1000,
+            "b_mm": 300,
+            "D_mm": 450,
+            "lex_mm": 6300,
+            "ley_mm": 3000,
+            "fck": 25,
+            "fy": 415,
+            "Asc_mm2": 2700,
+            "d_prime_mm": 50,
+        },
+    )
+    assert response.status_code == 200
+    data = unwrap(response)
+    assert data["Pb_kN"] == pytest.approx(708.6060293586912, abs=1e-8)
+    assert data["k"] == pytest.approx(0.8201431626314265, abs=1e-12)
+    assert data["Max_reduced_kNm"] == pytest.approx(36.16831347204591, abs=1e-9)
+
+
 class TestAdditionalMomentEndpoint:
     """FastAPI endpoint tests for additional moment (Cl 39.7.1)."""
 

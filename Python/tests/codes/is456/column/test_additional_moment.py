@@ -445,7 +445,7 @@ class TestAdditionalMomentKFactor:
             result.k * result.Max_kNm, rel=1e-9
         )
         assert result.May_reduced_kNm == pytest.approx(
-            result.k * result.May_kNm, rel=1e-9
+            result.k_y * result.May_kNm, rel=1e-9
         )
 
 

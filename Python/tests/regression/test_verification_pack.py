@@ -48,7 +48,10 @@ def test_verification_flexure_doubly_rectangular_case_02():
 
     assert r9(res.Mu_lim) == 202.914234
     assert r9(res.Ast_required) == 1555.435436782
-    assert r9(res.Asc_required) == 296.55513585
+    # Independent exact-rational Fig23 interpolation at .0035*(1-50/207):
+    # fsc=408.31578512737933, local Fig21 fcc=.67*25/1.5.
+    # Asc=(250-202.914234)*1e6/[(fsc-fcc)*(450-50)]. Same 9-place pin.
+    assert r9(res.Asc_required) == 296.398530245
     assert r9(res.xu) == 207.0
     assert r9(res.xu_max) == 207.0
 

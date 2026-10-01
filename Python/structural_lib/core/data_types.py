@@ -1208,6 +1208,7 @@ class ColumnUniaxialResult(DictCompatMixin):
         governing_check: Description of the governing design check
         clause_ref: IS 456 clause reference
         warnings: Tuple of warning messages
+        method: Versioned section-equilibrium concrete/steel profile, if supplied
     """
 
     Pu_kN: float
@@ -1222,6 +1223,7 @@ class ColumnUniaxialResult(DictCompatMixin):
     governing_check: str
     clause_ref: str
     warnings: tuple[str, ...] = ()
+    method: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -1242,6 +1244,7 @@ class ColumnUniaxialResult(DictCompatMixin):
             "governing_check": self.governing_check,
             "clause_ref": self.clause_ref,
             "warnings": list(self.warnings),
+            "method": self.method,
         }
 
     def summary(self) -> str:
@@ -1277,6 +1280,7 @@ class PMInteractionResult(DictCompatMixin):
         d_prime_mm: Cover to steel centroid (mm)
         clause_ref: IS 456 clause reference
         warnings: Tuple of warning messages
+        method: Versioned section-equilibrium concrete/steel profile, if supplied
     """
 
     points: tuple[tuple[float, float], ...]
@@ -1292,6 +1296,7 @@ class PMInteractionResult(DictCompatMixin):
     d_prime_mm: float
     clause_ref: str = "Cl. 39.5"
     warnings: tuple[str, ...] = ()
+    method: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -1309,6 +1314,7 @@ class PMInteractionResult(DictCompatMixin):
             "d_prime_mm": self.d_prime_mm,
             "clause_ref": self.clause_ref,
             "warnings": list(self.warnings),
+            "method": self.method,
         }
 
     def summary(self) -> str:
@@ -1484,6 +1490,8 @@ class AdditionalMomentResult(DictCompatMixin):
 
     The additional moment may be reduced by factor k per Cl 39.7.1.1:
     k = (Puz - Pu) / (Puz - Pb) ≤ 1.0
+    Each bending plane has its own prescribed Pb and reduction factor. Legacy
+    k and Pb_kN are x-plane aliases; k_y applies to May_reduced_kNm.
     """
 
     # Per x-axis (bending about x → depth D governs)
@@ -1499,11 +1507,11 @@ class AdditionalMomentResult(DictCompatMixin):
     is_slender_y: bool  # True if le_y/b >= 12
 
     # k-factor reduction (Cl 39.7.1.1)
-    k: float  # Reduction factor (Puz - Pu) / (Puz - Pb), clamped ≤ 1.0
-    Max_reduced_kNm: float  # k × Max_kNm
-    May_reduced_kNm: float  # k × May_kNm
+    k: float  # Legacy x-plane reduction-factor alias
+    Max_reduced_kNm: float  # k_x × Max_kNm
+    May_reduced_kNm: float  # k_y × May_kNm
     Puz_kN: float  # Pure axial crush load
-    Pb_kN: float  # Balanced failure axial load
+    Pb_kN: float  # Legacy x-plane prescribed-load alias (kN)
 
     # Input echo
     Pu_kN: float
@@ -1514,6 +1522,11 @@ class AdditionalMomentResult(DictCompatMixin):
 
     clause_ref: str = "Cl. 39.7.1"
     warnings: tuple[str, ...] = ()
+    k_x: float | None = None
+    k_y: float | None = None
+    Pb_x_kN: float | None = None
+    Pb_y_kN: float | None = None
+    reduction_method: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -1546,9 +1559,15 @@ class AdditionalMomentResult(DictCompatMixin):
                 f"  Y-axis: le/b = {self.slenderness_ratio_y:.1f} "
                 f"— SHORT, no additional moment"
             )
-        lines.append(
-            f"  k = {self.k:.3f} (Puz = {self.Puz_kN:.1f} kN, Pb = {self.Pb_kN:.1f} kN)"
-        )
+        if self.k_x is not None and self.k_y is not None:
+            lines.append(
+                f"  k = (x: {self.k_x:.3f}, y: {self.k_y:.3f}); "
+                f"Puz = {self.Puz_kN:.1f} kN"
+            )
+        else:
+            lines.append(
+                f"  k = {self.k:.3f} (Puz = {self.Puz_kN:.1f} kN, Pb = {self.Pb_kN:.1f} kN)"
+            )
         return "\n".join(lines)
 
 
@@ -1574,13 +1593,13 @@ class LongColumnResult(DictCompatMixin):
         eadd_y_mm: Additional eccentricity about y-axis (mm)
         Max_kNm: Additional moment about x-axis (kN·m)
         May_kNm: Additional moment about y-axis (kN·m)
-        k: k-factor reduction (Cl 39.7.1.1)
-        Max_reduced_kNm: k × Max_kNm (kN·m)
-        May_reduced_kNm: k × May_kNm (kN·m)
+        k: Legacy x-plane k-factor alias (Cl 39.7.1.1)
+        Max_reduced_kNm: k_x × Max_kNm (kN·m)
+        May_reduced_kNm: k_y × May_kNm (kN·m)
         interaction_ratio: From biaxial or uniaxial check
         governing_check: "biaxial" or "uniaxial_x" or "uniaxial_y"
         Puz_kN: Pure axial crush capacity (kN)
-        Pb_kN: Balanced failure axial load (kN)
+        Pb_kN: Legacy x-plane prescribed-load alias (kN)
         b_mm: Column width (mm)
         D_mm: Column depth (mm)
         lex_mm: Effective length about x-axis (mm)
@@ -1588,6 +1607,9 @@ class LongColumnResult(DictCompatMixin):
         braced: True if column is braced
         clause_ref: IS 456 clause reference
         warnings: Tuple of warning messages
+        k_x, k_y: Plane-specific reduction factors
+        Pb_x_kN, Pb_y_kN: Plane-specific prescribed-strain axial loads (kN)
+        reduction_method: Versioned per-plane reduction convention, if supplied
     """
 
     Pu_kN: float
@@ -1616,6 +1638,11 @@ class LongColumnResult(DictCompatMixin):
     braced: bool
     clause_ref: str = "Cl. 39.7"
     warnings: tuple[str, ...] = ()
+    k_x: float | None = None
+    k_y: float | None = None
+    Pb_x_kN: float | None = None
+    Pb_y_kN: float | None = None
+    reduction_method: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -1639,13 +1666,18 @@ class LongColumnResult(DictCompatMixin):
         if self.is_slender_y:
             slender_axes.append("y")
         slender_str = "+".join(slender_axes) if slender_axes else "none"
+        factors = (
+            f"k=(x:{self.k_x:.3f}, y:{self.k_y:.3f})"
+            if self.k_x is not None and self.k_y is not None
+            else f"k={self.k:.3f}"
+        )
         return (
             f"Long Column Check ({status}): "
             f"Pu={self.Pu_kN:.1f}kN, "
             f"Mux_des={self.Mux_design_kNm:.1f}kNm, "
             f"Muy_des={self.Muy_design_kNm:.1f}kNm, "
             f"IR={self.interaction_ratio:.3f}, "
-            f"slender={slender_str}, k={self.k:.3f}"
+            f"slender={slender_str}, {factors}"
         )
 
 

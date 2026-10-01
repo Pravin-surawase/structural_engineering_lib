@@ -58,6 +58,7 @@ class TestPMInteractionCurveHappyPath:
         assert data["Asc_mm2"] == 2400.0
         assert data["d_prime_mm"] == 50.0
         assert data["clause_ref"] == "Cl. 39.5"
+        assert data["method"] == "IS456_FIG21_INTEGRATED_V1__STEEL_FIG23_GS115_V1"
 
     def test_pm_interaction_curve_custom_n_points(self):
         """n_points=100 returns n_points+1 sweep points + pure axial cap point."""

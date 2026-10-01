@@ -35,23 +35,22 @@ def test_get_tc_for_grade_nan_pt_returns_last_value():
     assert tc == pytest.approx(0.82)
 
 
-def test_get_steel_stress_other_grade_fallback_branches():
-    # Cover the fallback branch for grades other than 250/415/500.
+def test_get_steel_stress_fe550_representative_curve():
+    # Fig23A parameterized law, not a nearest-grade or ideal-plastic fallback.
     fy = 550.0
 
-    # Below yield_strain but strain*Es exceeds 0.87fy => min(...) path clamps to 0.87fy.
+    # Independent 60-digit Decimal fixture: between .95 and .975 vertices.
     s = materials.get_steel_stress(0.003, fy)
-    assert s == pytest.approx(0.87 * fy)
+    assert s == pytest.approx(455.2870090634441, abs=1e-10)
 
-    # Below yield_strain and strain*Es below 0.87fy => linear.
+    # Below the first source vertex, the law is elastic.
     s2 = materials.get_steel_stress(0.001, fy)
     assert s2 == pytest.approx(200000.0 * 0.001)
 
     # Above yield_strain => plateau.
-    # yield_strain = 0.87fy/Es + 0.002
-    yield_strain = (0.87 * fy) / 200000.0 + 0.002
+    yield_strain = (fy / 1.15) / 200000.0 + 0.002
     s3 = materials.get_steel_stress(yield_strain + 1e-6, fy)
-    assert s3 == pytest.approx(0.87 * fy)
+    assert s3 == pytest.approx(fy / 1.15)
 
 
 def test_get_fcr_positive_value():
@@ -195,7 +194,7 @@ def test_flexure_calculate_ast_required_over_reinforced_returns_minus_one():
     assert ast == -1.0
 
 
-def test_flexure_doubly_reinforced_denom_nonpositive_path():
+def test_flexure_shallow_compression_bar_requires_more_than_the_steel_cap():
     from structural_lib import flexure
     from structural_lib import materials as mat
 
@@ -212,11 +211,10 @@ def test_flexure_doubly_reinforced_denom_nonpositive_path():
         b, d, d_dash, d_total, mu_lim + 10.0, fck, fy
     )
     assert res.is_safe is False
-    # Check for d_dash/geometry error in errors list
-    assert any(
-        "d'" in err.message.lower() or "d_dash" in err.field.lower()
-        for err in res.errors
-    )
+    # Local concrete stress also approaches zero; net bar force remains positive.
+    # The required steel exceeds the retained design cap, rather than a fictitious
+    # constant concrete stress producing a nonpositive bar-force denominator.
+    assert res.Asc_required > res.Ast_max
 
 
 def test_flexure_doubly_reinforced_hits_asc_exceeds_max_branch():
@@ -544,4 +542,5 @@ def test_flexure_flanged_bisection_else_branch_with_nan_mu():
     )
 
     assert math.isfinite(res.xu)
-    assert res.ast_required > 0
+    assert res.is_safe is False
+    assert any(error.code == "E_FLEXURE_005" for error in res.errors)

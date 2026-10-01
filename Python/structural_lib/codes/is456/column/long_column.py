@@ -33,11 +33,13 @@ from structural_lib.codes.is456.column._common import (
 )
 from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.column.biaxial import biaxial_bending_check
-from structural_lib.codes.is456.column.slenderness import _additional_eccentricity
-from structural_lib.codes.is456.column.uniaxial import (
-    design_short_column_uniaxial,
-    pm_interaction_curve,
+from structural_lib.codes.is456.column.slenderness import (
+    _REDUCTION_METHOD,
+    _additional_eccentricity,
+    _additional_moment_reduction,
+    _balanced_load_for_additional_moment,
 )
+from structural_lib.codes.is456.column.uniaxial import design_short_column_uniaxial
 from structural_lib.codes.is456.common.constants import MAX_SLENDERNESS_RATIO
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import ColumnClassification, LongColumnResult
@@ -49,6 +51,19 @@ __all__ = [
 
 # Tolerance for near-zero values
 _TOL: float = 1e-6
+
+
+def _initial_moment(m1_knm: float, m2_knm: float, braced: bool) -> float:
+    """Cl 39.7.1 note 2 magnitude, preserving relative end-moment curvature.
+
+    M2 is the larger end moment. Orient the plane so M2 is positive; M1 then
+    remains negative only for double curvature. Global sign reversal cannot
+    reduce the added moment or change the symmetric section's safety outcome.
+    """
+    if not braced:
+        return abs(m2_knm)
+    smaller = m1_knm * math.copysign(1.0, m2_knm)
+    return max(0.4 * smaller + 0.6 * abs(m2_knm), 0.4 * abs(m2_knm))
 
 
 @clause("39.7")
@@ -78,7 +93,7 @@ def design_long_column(
     1. Classify per axis: le/D >= 12 → SLENDER
     2. Calculate additional eccentricity eadd = le² / (2000 × D)
     3. Calculate additional moment Ma = Pu × eadd
-    4. Reduce by k-factor: Ma_red = k × Ma
+    4. Reduce each additional moment by its bending-plane k-factor
     5. Combine with end moments to get design moment
     6. Check via biaxial or uniaxial interaction
 
@@ -108,6 +123,8 @@ def design_long_column(
 
     Returns:
         LongColumnResult with augmented design moments and capacity check.
+        ``k_x``/``k_y`` and ``Pb_x_kN``/``Pb_y_kN`` identify both planes;
+        legacy ``k`` and ``Pb_kN`` remain x-plane aliases.
 
     Raises:
         DimensionError: If geometric dimensions are invalid or le/D > 60.
@@ -245,8 +262,8 @@ def design_long_column(
     # IS 456 Cl 39.7.1.1: k = (Puz - Pu) / (Puz - Pb) ≤ 1.0
     Puz_kN = _calculate_puz(b_mm, D_mm, fck, fy, Asc_mm2)
 
-    # Get balanced point from P-M interaction curve
-    pm_result = pm_interaction_curve(
+    # Cl 39.7.1.1: concrete strain .0035 and outer tension-steel strain .002.
+    Pb_kN = _balanced_load_for_additional_moment(
         b_mm=b_mm,
         D_mm=D_mm,
         fck=fck,
@@ -254,46 +271,33 @@ def design_long_column(
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
     )
-    Pb_kN = pm_result.Pu_bal_kN
+    Pb_y_kN = _balanced_load_for_additional_moment(
+        b_mm=D_mm,
+        D_mm=b_mm,
+        fck=fck,
+        fy=fy,
+        Asc_mm2=Asc_mm2,
+        d_prime_mm=d_prime_mm,
+    )
 
     # k-factor calculation
     if Pu_kN > Puz_kN:
         warnings.append(
             f"Pu ({Pu_kN:.1f} kN) exceeds Puz ({Puz_kN:.1f} kN) "
-            "— section is overloaded, k set to 0"
+            "— section is overloaded, both k factors set to 0"
         )
-        k = 0.0
-    elif abs(Pu_kN) < _TOL:
-        # IS 456 Cl 39.7.1: Pu = 0 → no additional moment
-        k = 1.0
-    else:
-        denom = Puz_kN - Pb_kN
-        if abs(denom) < _TOL:
-            # Puz ≈ Pb — degenerate case
-            k = 1.0
-        else:
-            # IS 456 Cl 39.7.1.1: k = (Puz - Pu) / (Puz - Pb)
-            k_raw = (Puz_kN - Pu_kN) / denom
-            # Clamp to [0.0, 1.0]
-            k = max(0.0, min(1.0, k_raw))
+    k = _additional_moment_reduction(Pu_kN, Puz_kN, Pb_kN)
+    k_y = _additional_moment_reduction(Pu_kN, Puz_kN, Pb_y_kN)
 
     # Reduced additional moments
     Max_reduced_kNm = k * Max_kNm
-    May_reduced_kNm = k * May_kNm
+    May_reduced_kNm = k_y * May_kNm
 
     # ===========================================================
     # 5. Initial moment from end moments (IS 456 Cl 39.7.1)
     # ===========================================================
-    if braced:
-        # IS 456 Cl 39.7.1 (braced): Mi = 0.4*M1 + 0.6*M2, but Mi >= 0.4*M2
-        Mi_x = 0.4 * M1x_kNm + 0.6 * M2x_kNm
-        Mi_x = max(Mi_x, 0.4 * M2x_kNm)
-        Mi_y = 0.4 * M1y_kNm + 0.6 * M2y_kNm
-        Mi_y = max(Mi_y, 0.4 * M2y_kNm)
-    else:
-        # IS 456 Cl 39.7.1 (unbraced): Mi = M2
-        Mi_x = M2x_kNm
-        Mi_y = M2y_kNm
+    Mi_x = _initial_moment(M1x_kNm, M2x_kNm, braced)
+    Mi_y = _initial_moment(M1y_kNm, M2y_kNm, braced)
 
     # ===========================================================
     # 6. Design moment = Mi + Ma_reduced (IS 456 Cl 39.7)
@@ -417,4 +421,9 @@ def design_long_column(
         ley_mm=ley_mm,
         braced=braced,
         warnings=tuple(warnings),
+        k_x=round(k, 4),
+        k_y=round(k_y, 4),
+        Pb_x_kN=round(Pb_kN, 2),
+        Pb_y_kN=round(Pb_y_kN, 2),
+        reduction_method=_REDUCTION_METHOD,
     )

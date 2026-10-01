@@ -65,7 +65,7 @@ def test_flanged_beam_neutral_axis_in_web_singly_reinforced():
     # C = T
     # yf check
     xu = res.xu
-    if (Df / d) <= 0.2:
+    if (Df / xu) <= 0.43:
         yf = Df
     else:
         yf = 0.15 * xu + 0.65 * Df
@@ -76,6 +76,9 @@ def test_flanged_beam_neutral_axis_in_web_singly_reinforced():
     T = 0.87 * fy * res.Ast_required
 
     assert C == pytest.approx(T, rel=1e-3)
+    resistance = 0.36 * fck * bw * xu * (d - 0.42 * xu)
+    resistance += 0.45 * fck * (bf - bw) * yf * (d - yf / 2)
+    assert resistance / 1e6 == pytest.approx(mu, rel=1e-12)
 
 
 def test_flanged_beam_doubly_reinforced():

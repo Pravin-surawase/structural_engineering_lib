@@ -190,11 +190,12 @@ _STRESS_RATIOS_5PT: tuple[float, ...] = (0.80, 0.85, 0.90, 0.95, 1.00)
 
 @clause("Fig. 23")
 def steel_stress_from_strain_5point(strain: float, fy: float) -> float:
-    """Compute design steel stress using the 5-point idealised curve per IS 456 Fig. 23.
+    """Legacy five-point/.87fy compatibility curve; retained without numeric changes.
 
     Unlike the bilinear model in :func:`steel_stress_from_strain`, this uses
-    the 5-point piecewise-linear curve (IS 456 Fig. 23 / SP:16 Table F)
-    which is required for column interaction-diagram accuracy.
+    a five-point piecewise-linear approximation. The source Fig23A and
+    SP16 Table A have six salient points, including .975. Supported column
+    analysis now uses ``section_materials.section_steel_stress`` instead.
 
     The five points define stress as fractions of the design yield stress
     ``f_yd = 0.87 * fy``, with corresponding total strains computed as::
@@ -217,7 +218,7 @@ def steel_stress_from_strain_5point(strain: float, fy: float) -> float:
 
     References:
         IS 456:2000 Fig. 23
-        SP:16:1980 Table F
+        SP:16:1980 Table A (six source points; this helper is a legacy approximation)
     """
     if fy <= 0:
         raise ValueError(f"fy must be positive, got {fy}")

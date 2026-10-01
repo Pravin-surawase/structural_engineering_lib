@@ -16,7 +16,6 @@ Reference: IS 456:2000
 import math
 
 import pytest
-
 from structural_lib import detailing, flexure, materials, serviceability, shear, tables
 from structural_lib.core.types import DesignSectionType
 
@@ -306,10 +305,19 @@ class TestEffectiveMomentOfInertia:
 
     def test_ieff_approaches_icr_when_heavily_cracked(self):
         """When Ma >> Mcr, Ieff → Icr."""
+        # M25 rectangle b=300, D=500, d=450, x=150, n=8, Ast=1406.25.
+        # Zero axial force gives Icr=1.35e9; Ig=3.125e9 and Mr=43.75.
+        # At M/Mr=10 the Annex C denominator is 154/135>1: Icr governs.
         ieff = serviceability.calculate_effective_moment_of_inertia(
-            mcr_knm=30, ma_knm=300, igross_mm4=3e9, icr_mm4=1e9
+            mcr_knm=43.75,
+            ma_knm=437.5,
+            igross_mm4=3.125e9,
+            icr_mm4=1.35e9,
+            d_mm=450,
+            x_mm=150,
         )
-        assert ieff < 1.05e9  # Very close to Icr
+        assert ieff < 1.05 * 1.35e9  # Preserve the original relative upper bound.
+        assert ieff == pytest.approx(1.35e9, rel=1e-12)
 
     def test_ieff_never_exceeds_igross(self):
         """Ieff should never exceed Igross."""
@@ -320,10 +328,16 @@ class TestEffectiveMomentOfInertia:
 
     def test_ieff_never_less_than_icr(self):
         """Ieff should never be less than Icr."""
+        # Same independently equilibrated rectangle as the preceding anchor.
         ieff = serviceability.calculate_effective_moment_of_inertia(
-            mcr_knm=10, ma_knm=1000, igross_mm4=3e9, icr_mm4=1e9
+            mcr_knm=43.75,
+            ma_knm=4375,
+            igross_mm4=3.125e9,
+            icr_mm4=1.35e9,
+            d_mm=450,
+            x_mm=150,
         )
-        assert ieff >= 1e9
+        assert ieff >= 1.35e9
 
 
 class TestCrackingMomentEdges:

@@ -8,12 +8,12 @@ import json
 import math
 
 import pytest
-
 from structural_lib.codes.is456.beam import shear, torsion
 from structural_lib.core.errors import InputContractError
 from structural_lib.design.is456 import beam
 from structural_lib.services import beam_audit
 from structural_lib.services.bbs import parse_bar_mark
+
 from tests.unit.test_beam_audit import _evaluate, _request
 from tests.unit.test_etabs_w3_contracts import _present
 
@@ -32,7 +32,9 @@ def _canonical_payload():
         "calculation_basis": {
             "d_dash_mm": 56,
             "asv_mm2": 32 * math.pi,
-            "pt_percent": 1.0,
+            # Authored two 20 mm bars in EACH longitudinal zone: 200*pi mm².
+            # A fixed area remains honest when width/depth or tension face changes.
+            "ast_mm2_for_shear": 2 * math.pi * 20**2 / 4,
         },
         "detailing": {
             "standard": "IS456",
@@ -78,6 +80,11 @@ def test_centroid_cover_and_separate_grades_survive_real_journey():
         result.calculation.torsion.Ast_opposite_mm2
     )
     assert all(item.callout() == "2-20φ" for item in detailed.detailing.bottom_bars)
+    assert all(
+        item.count * math.pi * item.diameter**2 / 4
+        == pytest.approx(request.calculation_basis.ast_mm2_for_shear)
+        for item in detailed.detailing.bottom_bars
+    )
     assert all(item.callout() == "2-16φ" for item in detailed.detailing.top_bars)
     side = detailed.detailing.torsion.side_face_bars
     assert side is not None
@@ -115,6 +122,11 @@ def test_top_primary_face_is_preserved_through_detailing_and_bbs():
     assert detailed.detailing.torsion is not None
     assert detailed.detailing.torsion.primary_tension_face == "TOP"
     assert all(item.callout() == "2-20φ" for item in detailed.detailing.top_bars)
+    assert all(
+        item.count * math.pi * item.diameter**2 / 4
+        == pytest.approx(request.calculation_basis.ast_mm2_for_shear)
+        for item in detailed.detailing.top_bars
+    )
     assert all(item.callout() == "2-16φ" for item in detailed.detailing.bottom_bars)
     bbs = beam.bbs(detailed)
     bottom_items = [item for item in bbs.items if item.location == "bottom"]
