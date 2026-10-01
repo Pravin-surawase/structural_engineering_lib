@@ -7,7 +7,6 @@ from __future__ import annotations
 from dataclasses import replace
 
 import pytest
-
 from structural_lib.codes.is456.slab.models import (
     SlabContractError,
     SolidRectangularSlabGeometry,
@@ -64,7 +63,7 @@ def test_independent_benchmark_checks_provided_reinforcement_and_review_boundary
     assert result.distribution_reinforcement_provided_mm2 == pytest.approx(201.0619298)
     assert result.maximum_bar_diameter_mm == pytest.approx(18.75)
     assert result.maximum_main_spacing_mm == pytest.approx(300.0)
-    assert result.maximum_distribution_spacing_mm == pytest.approx(450.0)
+    assert result.maximum_distribution_spacing_mm == pytest.approx(300.0)
     assert result.basic_span_to_depth_ratio == pytest.approx(24.0)
     assert result.detailing_adequacy is DetailingAdequacyStatus.ADEQUATE
     assert (
@@ -139,7 +138,7 @@ def test_minimum_reinforcement_ratio_uses_supported_steel_grade(
         ({"main_bar_diameter_mm": 20}, "P8-MAIN-DIA-01"),
         ({"distribution_bar_diameter_mm": 20}, "P8-DIST-DIA-01"),
         ({"main_bar_spacing_mm": 301}, "P8-MAIN-SPACING-01"),
-        ({"distribution_bar_spacing_mm": 451}, "P8-DIST-SPACING-01"),
+        ({"distribution_bar_spacing_mm": 301}, "P8-DIST-SPACING-01"),
     ],
 )
 def test_provided_steel_spacing_and_diameter_failure_boundaries(

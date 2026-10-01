@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from numbers import Real
 
+from structural_lib.codes.is456.slab.detailing import DISTRIBUTION_SPACING_SOURCE_REF
 from structural_lib.codes.is456.slab.models import (
     SlabContractError,
     SolidRectangularSlabGeometry,
@@ -45,6 +46,7 @@ __all__ = [
 _SUPPORTED_FY_N_PER_MM2 = (250.0, 415.0, 500.0)
 _DEFAULT_STRIP_WIDTH_MM = 1000.0
 _P8_SOURCE_REFS: tuple[str, ...] = (
+    DISTRIBUTION_SPACING_SOURCE_REF,
     "P8-MIN-REINF-01",
     "P8-BAR-DIA-01",
     "P8-MAIN-SPACING-01",
@@ -297,7 +299,7 @@ def check_simply_supported_one_way_slab_detailing(
     )
     maximum_bar_diameter_mm = geometry.thickness_mm / 8.0
     maximum_main_spacing_mm = min(3.0 * flexure.input.d_mm, 300.0)
-    maximum_distribution_spacing_mm = min(5.0 * flexure.input.d_mm, 450.0)
+    maximum_distribution_spacing_mm = min(5.0 * flexure.input.d_mm, 300.0)
     basic_span_to_depth_ratio = flexure.effective_short_span_mm / flexure.input.d_mm
     basic_span_to_depth_limit = 20.0
 

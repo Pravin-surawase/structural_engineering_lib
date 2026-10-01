@@ -15,6 +15,7 @@ from structural_lib.codes.is456.slab.coefficients import (
     TwoWayPanelCoefficientSet,
 )
 from structural_lib.codes.is456.slab.detailing import (
+    DISTRIBUTION_SPACING_SOURCE_REF,
     ProvidedSlabBars,
     SlabReinforcementRegionResult,
     check_slab_reinforcement_region,
@@ -449,7 +450,10 @@ def design_continuous_one_way_slab_is456(
         )
     )
     return ContinuousOneWaySlabDesignResult(
-        flexure=flexure,
+        flexure=replace(
+            flexure,
+            source_refs=flexure.source_refs + (DISTRIBUTION_SPACING_SOURCE_REF,),
+        ),
         positive_reinforcement=positive,
         negative_reinforcement=negative,
         distribution_reinforcement=distribution,
@@ -558,6 +562,7 @@ def design_continuous_one_way_slab_builtin_is456(
         coefficient_correctness_verified_by_library=True,
         source_refs=(
             "IS 456:2000 Cl. 22.5, Table 12 and Table 13",
+            DISTRIBUTION_SPACING_SOURCE_REF,
             coefficients.source_reference,
             coefficients.qualified_acceptance_reference,
         ),
