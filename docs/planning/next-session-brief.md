@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-10-01
-- Focus: Correct the demonstrated spacing false pass in the maintained solid longitudinal staircase while preserving the separate A1-2 checkpoint and accepted slab evidence.
-- Completed: Preserved separately reviewed A1-2 documentation commit 8479cb8f and its verified local recovery bundle; no publication performed.; Independently traced the waist-slab case and non-main distribution role to exact Cl. 33/26.3.3 targets and A3; A4-6 do not reverse the 300 mm cap.; Changed only the staircase distribution scalar ceiling from 450 to 300 mm, retaining the 5d bound, main spacing and all other numerical owners; carried source provenance and physical-datum limitations through existing callers.
+- Focus: Preserve the independently reviewed local Library packets and coordinate their publication handoff with the parent, retaining engineering qualification HOLDs.
+- Completed: Independently reviewed local A1-2 checkpoint 8479cb8f, staircase correction 4cd194d9 with full component/repository validation and private installed Mac wheel proof, and current concrete-bearing documentation 87172810; verified local recovery bundles preserved.; Confirmed the aggregate runner's false success with the unchanged complete CLI in isolated stub fixtures; bounded status/precondition correction independently accepted, all 28 focused cases passed, and the sole initial caller-allowlist failure resolved by staging only the intended file and a successful 4/4 API rerun.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -112,8 +112,19 @@ module origins and zero source fallback; this remains a private candidate of
 the existing version. Initial failing logs are retained. Preserve the separate
 A1-2 commit and accepted PR #1022 evidence. The historical concrete-bearing
 A3-6 classification now has a separately reviewed current-operation
-documentation follow-up. After those checkpoints, a separately authorized bounded runner
-exit-propagation repair will test the demonstrated false-success behavior.
+documentation follow-up. The separately authorized bounded aggregate runner
+follow-up now reproduces Python/FastAPI failures followed by success as exit
+zero in the unchanged CLI. It also confirms ignored Python-directory/React
+readiness failures can be replaced by runtime success. The local correction
+retains the first nonzero component status while attempting every suite, and
+prevents a test runtime from launching after its failed precondition. Independent
+frozen review accepts the main outcome with zero essential blockers; 28 focused
+cases pass. The initial gate was 11/12 because the new test file was untracked;
+staging only that intended file resolved the allowlist gate, and the API rerun
+passed 4/4 with two unchanged-input results reused. Final affected metadata-gate
+evidence is kept in the local recovery handoff to the parent. Original failing
+logs, the timing recorder and every engineering qualification HOLD remain intact;
+product suites need no duplicate run for this dispatcher-only change.
 
 - Start from the [dated source inventory](../verification/is456-official-source-inventory.json),
   controlled source hashes and [existing impact matrix](../verification/is456-amendment-impact.json).

@@ -5,6 +5,70 @@
 
 ---
 
+<a id="library-test-runner-exit-20261002"></a>
+
+## 2026-10-01 — Session: Aggregate test-runner exit propagation
+
+**Task:** is456-a1-a2-reconciliation-20261002
+**Agent:** MAIN (sole Library writer; independent read-only source and frozen implementation review)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Correct the demonstrated aggregate test-runner false-success behavior after preserving the separate source, staircase and bearing checkpoints.
+
+### Completed
+
+- Preserved A1-2 checkpoint 8479cb8f, staircase correction 4cd194d9 and current bearing documentation 87172810 with independently reviewed evidence and verified local bundles.
+- Main and a separate source reviewer traced the lost status to the timing wrapper's intentional disabled errexit and unguarded aggregate commands; the recorder itself faithfully records the status it receives.
+- Copied the complete original CLI into isolated fixtures: Python/FastAPI failures followed by success, ignored React readiness and ignored Python-directory failures each incorrectly returned zero. The all-success control also returned zero; no real suite or shared session store was reached.
+- Implemented first-nonzero aggregate status while attempting the same three suites in order; retained existing single-suite arguments and added explicit returns for the necessary working-directory/dependency preconditions.
+- Added complete-entry-point regressions for all eight aggregate success/failure combinations, single-suite selection/forwarding, default/explicit Python paths, usage-recorder failure and failed preconditions.
+- Independent frozen review accepts the bounded correction with zero essential blockers; 28 focused cases pass (26 new deterministic cases and two retained source contracts). Original Python17/FastAPI23 failures now return 17/23; failed readiness/directory cases return one, and the all-success control remains zero.
+
+### Verification and scope
+
+Frozen independent implementation review and all 28 deterministic/source
+contract cases pass. Bash syntax, Black and Ruff pass. The initial affected
+gate passed 11/12: its sole failure required staging the intended new caller
+file. No content changed; the API category then passed 4/4, with two unchanged
+results reused. The final affected metadata gate is required before committing
+and is bound separately in the local recovery record. This packet changes only
+test dispatch exit propagation/reporting and its necessary preconditions. The timing recorder,
+other commands, engineering code, classification, prior matrices and historical
+failure logs stay unchanged. Product suites are not repeated for this isolated
+dispatcher correction; the accepted staircase checkpoint owns their actual
+component outcomes. No public release or engineering qualification follows.
+
+### Issues encountered
+
+The original full-product command returned zero after Python's generated-ledger
+failure because later FastAPI/React success replaced it. With errexit disabled,
+failed cd/readiness commands could also be replaced by a later stub runtime's
+success. These are reproduced main-process failures, not guessed test results.
+The canonical caller allowlist also correctly rejected an untracked new
+regression file; staging that intended file resolved the validation gate without
+changing code, tests or generated API outputs. Both original gate logs remain
+retained, with their exact failure/reuse counts.
+
+### Root causes and resolutions
+
+Each selected component must return its actual status explicitly. Aggregate
+dispatch retains the first nonzero status and reports every failed component
+while continuing the remaining suites. Failed test preconditions prevent that
+runtime from launching. Usage-recording failure continues to leave the product
+result intact; no broad timing-wrapper rewrite is selected.
+
+### What next
+
+Preserve this independently accepted bounded local commit and recovery record
+after the final affected metadata gate, then close the exact task timer and
+hand the four separate packets and exact artifact identities to the parent.
+Full six-amendment, physical material/above-M60, staircase drawing/spacing datum,
+finite-creep and actual installed Windows/ETABS/Excel/XLL qualification remain
+HOLD. Publication remains with the parent; no release or engineering-use
+certification follows. Stop at a verified checkpoint before 2 October 2026
+03:30 UTC.
+
+---
+
 <a id="is456-bearing-current-20261002"></a>
 
 ## 2026-10-01 — Session: Current concrete-bearing A3-6 reconciliation

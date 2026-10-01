@@ -433,7 +433,7 @@ _cmd_test_impl() {
         --python)
             _require_venv
             (
-                cd "$REPO_ROOT/Python"
+                cd "$REPO_ROOT/Python" || return
                 "$VENV" -m pytest tests/ "${@:2}"
             )
             ;;
@@ -446,12 +446,20 @@ _cmd_test_impl() {
             ;;
         --all)
             _require_venv
-            (
-                cd "$REPO_ROOT/Python"
-                "$VENV" -m pytest tests/
-            )
-            "$VENV" -m pytest "$REPO_ROOT/fastapi_app/tests"
-            _cmd_frontend test
+            # The timing wrapper disables errexit; retain every suite's status.
+            local status=0 suite suite_status
+            for suite in --python --fastapi --react; do
+                if _cmd_test_impl "$suite"; then
+                    :
+                else
+                    suite_status=$?
+                    if [[ "$status" -eq 0 ]]; then
+                        status=$suite_status
+                    fi
+                    _error "${suite#--} test suite failed (exit $suite_status)"
+                fi
+            done
+            return "$status"
             ;;
         --help)
             _help_test
@@ -461,7 +469,7 @@ _cmd_test_impl() {
             # Backward-compatible default: run the Python package suite.
             _require_venv
             (
-                cd "$REPO_ROOT/Python"
+                cd "$REPO_ROOT/Python" || return
                 "$VENV" -m pytest tests/ -v "$@"
             )
             ;;
@@ -475,7 +483,7 @@ _cmd_test_impl() {
                 pytest_args+=("${value#Python/}")
             done
             (
-                cd "$REPO_ROOT/Python"
+                cd "$REPO_ROOT/Python" || return
                 "$VENV" -m pytest "${pytest_args[@]}"
             )
             ;;
@@ -553,7 +561,7 @@ _cmd_frontend() {
             _frontend_node npm --prefix react_app run lint "$@"
             ;;
         test)
-            _frontend_require_dependencies
+            _frontend_require_dependencies || return
             if [[ "$#" -gt 0 ]]; then
                 _frontend_node npm --prefix react_app test -- "$@"
             else
