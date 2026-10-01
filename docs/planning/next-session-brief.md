@@ -91,6 +91,31 @@ PR and required hosted checks. Use the
 [maintenance playbook](../governance/maintenance-playbook.md); detailed ledger
 controls remain opt-in.
 
+## Parent-selected isolated-footing shear continuation — 1 October 2026
+
+The parent accepted the clean five-commit checkpoint `b5510d20`, its exact
+handover and verified recovery bundle, retained this task as sole Library
+writer, and selected a separate concentric isolated-footing one-way shear
+source/caller trace. Fresh origin/main remains `c45cb89f` at this continuation
+intake; the five local commits remain preserved on the owned branch.
+
+The [current footing-shear follow-up](../verification/is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up--1-october-2026)
+records an unresolved issued-source member classification and a separately
+verified conditional raw-Table-19 bound. Every accepted current demand is
+below even the lowest hypothetical half-Table-20 ceiling. The possessed base
+already contains the half-table solid-slab statement, retained by A5; this
+does not establish footing applicability. Source and physical qualification
+remain HOLD, with the precise authoritative decision question recorded.
+No formula change is justified. Independent frozen review accepts the bounded
+record with zero essential blockers; the actual affected docs gate passed eight
+of eight checks and historical/current identity passed. Preserve the immutable
+review, original diagnostics and historical matrix values; final metadata
+receipts accompany the separate local recovery checkpoint.
+The separately scoped provided-bar role trace is the next evidence-supported
+gap after this useful checkpoint, without changing the shear source HOLD.
+Publication and installed-host acceptance remain outside this local work;
+finish a verified handover before 2 October 2026 03:30 UTC.
+
 ## Selected qualification packet and next justified work on the Mac
 
 The resumed packet is **ordered Amendment 1-2 source/caller reconciliation**

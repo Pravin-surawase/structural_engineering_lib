@@ -277,3 +277,28 @@ examples, transport and artifact criteria in the existing plan, with retained
 case exclusions and source evidence. The accepted packets close their bounded
 defects; they do not by themselves establish whole-library completion or
 qualified engineering/construction approval.
+
+
+## Current isolated-footing one-way shear evidence — 1 October 2026
+
+The [current-operation follow-up](is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up--1-october-2026)
+records the exact wide-beam versus solid-slab maximum-shear question for the
+concentric, uniform-depth soil-footing journey and two maintained APIs. Source
+applicability remains HOLD: the issued footing clause and its minimum-spacing
+cross-reference do not explicitly select the slab maximum. A5 retains the
+possessed base's half-Table-20 solid-slab statement; no numerical rule change
+for foundations is inferred.
+
+Separately, the current raw-Table-19 owner accepts only `tau_v <= tau_c`, where
+`tau_c <= 1.01 N/mm²` is below even the lowest hypothetical half-Table-20
+ceiling, `1.25 N/mm²`, in its validated runtime domain. The scalar proof covers
+required-steel screening and final provided-steel calls; it does not establish
+physical bar roles or source applicability. Existing composed/canonical
+benchmark replays and four primitive controls corroborate the bound. Frozen
+independent operation review accepts the bounded record with zero essential
+blockers; the actual documentation gate passed eight of eight checks and
+historical/current identity passed. Final metadata checks accompany recovery.
+No formula change or test is added; prior accepted calculations and the five
+local checkpoint commits remain preserved. The nine overlapping dispositions
+do not expand the amendment inventory or the 13-journey / 25-export scope.
+Shared material, complete engineering and actual installed-host HOLDs remain.

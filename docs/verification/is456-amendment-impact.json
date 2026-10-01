@@ -16953,5 +16953,624 @@
     "engineering_use_certification": false,
     "release_authorized": false,
     "external_publication": "Not performed; parent coordinates."
+  },
+  "isolated_footing_one_way_shear_current_operation_follow_up": {
+    "date_utc": "2026-10-01",
+    "status": "CURRENT_OPERATION_SOURCE_HOLD_AND_VERIFIED_CONDITIONAL_SOFTWARE_BOUND; INDEPENDENTLY_REVIEWED_LOCAL_DOCUMENTATION",
+    "prior_checkpoint": "b5510d20b17f0a8b1ad9dd2853c203e529cb60e6",
+    "history_semantics": "Append-only current selected-operation follow-up. Preserve all 24 preceding top-level JSON value, original 95 A3-A6 rows, 42 A1-A2 rows and accepted slab/stair/bearing packets. These 9 subtarget/caller dispositions overlap the existing index and are not new amendment instructions or an increase to 137/5206.",
+    "selected_callers": [
+      {
+        "id": "is456.isolated-footing.concentric/v1",
+        "surface": "family_journey",
+        "category": "isolated",
+        "entry_module": "structural_lib.design.is456.isolated_footing",
+        "contract": "concentric-isolated-footing-input/v1",
+        "actual_owner": {
+          "path": "Python/structural_lib/services/footing_api.py",
+          "line": 637,
+          "symbol": "design_concentric_isolated_footing_is456"
+        },
+        "registry_anchor": {
+          "path": "Python/structural_lib/services/family_facade_registry.py",
+          "line": 158
+        }
+      },
+      {
+        "id": "api.design_concentric_isolated_footing_is456",
+        "surface": "advanced_export",
+        "category": "isolated",
+        "actual_owner": {
+          "path": "Python/structural_lib/services/footing_api.py",
+          "line": 637,
+          "symbol": "design_concentric_isolated_footing_is456"
+        },
+        "export_binding": {
+          "path": "Python/structural_lib/services/api.py",
+          "line": 1
+        }
+      },
+      {
+        "id": "api.footing_one_way_shear",
+        "surface": "advanced_export",
+        "category": "isolated_primitive",
+        "actual_owner": {
+          "path": "Python/structural_lib/codes/is456/footing/one_way_shear.py",
+          "line": 79,
+          "symbol": "footing_one_way_shear"
+        },
+        "export_binding": {
+          "path": "Python/structural_lib/services/api.py",
+          "line": 1
+        }
+      }
+    ],
+    "classification_boundary": "Existing canonical/preview journey and advanced/preview APIs;13 journeys / 25 advanced exports unchanged. No experimental promotion.",
+    "necessary_final_detailed_PASS_grade_intersection_nmm2": [
+      20,
+      25,
+      30,
+      35,
+      40
+    ],
+    "grade_boundary": "Intake is broader; these necessary final detailed-PASS grade values do not qualify a physical concrete product or promise every input passes.",
+    "physical_case": "Concentric uniform-pressure soil footing, square/rectangular and uniform depth; both one-way directions. Provided-steel final checks remain distinct from required-steel screening. Approved soil/frustum/cover and full qualified review remain external declared evidence. Pile, eccentric/partial-contact, combined/strap/raft, shear-reinforced footing and coupling-beam domains are not added.",
+    "controlled_sources": [
+      {
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+        "targets": [
+          {
+            "pdf_pages_one_based": [
+              66
+            ],
+            "printed_pages": [
+              65
+            ],
+            "clauses": [
+              "34.2.4.1(a)",
+              "34.2.4.1(b)"
+            ]
+          },
+          {
+            "pdf_pages_one_based": [
+              67
+            ],
+            "printed_pages": [
+              66
+            ],
+            "clauses": [
+              "34.5.1"
+            ]
+          },
+          {
+            "pdf_pages_one_based": [
+              73
+            ],
+            "printed_pages": [
+              72
+            ],
+            "clauses": [
+              "40.1",
+              "40.2.1",
+              "40.2.1.1",
+              "40.2.3",
+              "40.2.3.1"
+            ]
+          },
+          {
+            "pdf_pages_one_based": [
+              74
+            ],
+            "printed_pages": [
+              73
+            ],
+            "tables": [
+              "19",
+              "20"
+            ]
+          },
+          {
+            "pdf_pages_one_based": [
+              104
+            ],
+            "printed_pages": [
+              2
+            ],
+            "amendment": 1,
+            "instruction_id": "AMD1-019",
+            "clause": "34.2.4.1(a):last line"
+          },
+          {
+            "pdf_pages_one_based": [
+              104
+            ],
+            "printed_pages": [
+              2
+            ],
+            "amendment": 1,
+            "instruction_id": "AMD1-021",
+            "clause": "40.1:formula denominator"
+          },
+          {
+            "pdf_pages_one_based": [
+              109
+            ],
+            "printed_pages": [
+              1
+            ],
+            "amendment": 2,
+            "instruction_id": "AMD2-005",
+            "clause": "34.2.4.2:line1"
+          },
+          {
+            "pdf_pages_one_based": [
+              119
+            ],
+            "printed_pages": [
+              5
+            ],
+            "amendment": 4,
+            "instruction_id": "AMD4-030",
+            "clause": "40.5.2:formula"
+          },
+          {
+            "pdf_pages_one_based": [
+              125,
+              126
+            ],
+            "printed_pages": [
+              5,
+              6
+            ],
+            "amendment": 5,
+            "instruction_id": "AMD5-022",
+            "clauses": [
+              "40.2.3.1",
+              "40.2.3.1(a)",
+              "40.2.3.1(b)"
+            ]
+          }
+        ]
+      },
+      {
+        "source_id": "IS456-AMD6-2024",
+        "sha256": "4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881",
+        "targets": [
+          {
+            "pdf_pages_one_based": [
+              1,
+              2,
+              3
+            ],
+            "amendment": 6,
+            "observation": "Full possessed instruction set has no later same-target cap reversal or footing/solid-slab applicability bridge."
+          }
+        ]
+      }
+    ],
+    "current_owner_snapshots": [
+      {
+        "path": "Python/structural_lib/codes/is456/tables.py",
+        "sha256": "003228214c2ae872287614f4684e4ecfd47e8de96eff0c303134c89ed76cbbb7",
+        "ast_anchors": [
+          {
+            "symbol": "_get_tc_for_grade",
+            "line": 29
+          },
+          {
+            "symbol": "_get_tc_value_for_derived_reinforcement",
+            "line": 68
+          },
+          {
+            "symbol": "_nearest_lower_grade",
+            "line": 83
+          },
+          {
+            "symbol": "get_tc_max_value",
+            "line": 97
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/footing/one_way_shear.py",
+        "sha256": "a7fd1dc2984765bf1b48a317b4301d1141d47a463d1b33ce32f9861aa8b92397",
+        "ast_anchors": [
+          {
+            "symbol": "_check_direction",
+            "line": 23
+          },
+          {
+            "symbol": "footing_one_way_shear",
+            "line": 79
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/footing/detailing.py",
+        "sha256": "a85e4fd602918adee4fbef9a573cd8b814cf0e0999f185140a11c77e42cb9551",
+        "ast_anchors": [
+          {
+            "symbol": "detail_isolated_footing_bottom_steel",
+            "line": 514
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/services/footing_api.py",
+        "sha256": "c6904b54aa094c1f988dd808f84fc88f1ed6166d29ba0598913630b5761f20c7",
+        "ast_anchors": [
+          {
+            "symbol": "ConcentricIsolatedFootingResult",
+            "line": 187
+          },
+          {
+            "symbol": "_validate_request",
+            "line": 271
+          },
+          {
+            "symbol": "_run_detailing",
+            "line": 590
+          },
+          {
+            "symbol": "design_concentric_isolated_footing_is456",
+            "line": 637
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/design/is456/isolated_footing.py",
+        "sha256": "e9396bcc620d36faa4f71841a8a464f725a8bfbc2b5a6092a6bc96e208fa4cbc",
+        "ast_anchors": [
+          {
+            "symbol": "design",
+            "line": 189
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/services/capabilities.py",
+        "sha256": "f5beac674c84e0e8a4ed6b6eecdb3edac0606be5ca70aa327d976db0cbf2cc6b",
+        "ast_anchors": []
+      },
+      {
+        "path": "Python/structural_lib/services/family_facade_registry.py",
+        "sha256": "3b996bba78ff69107c7fe2bf1a02c04e06e8ab099b2f9a989f025cb359189616",
+        "ast_anchors": []
+      },
+      {
+        "path": "docs/reference/api-classification.json",
+        "sha256": "d7be533accefe4082864259ba89c9e6705c93aa06a75b6a88539dceca4d83135",
+        "ast_anchors": []
+      },
+      {
+        "path": "Python/tests/integration/test_footing_composed_publication.py",
+        "sha256": "691df9576a26182ced6040c0e858e056007f970b3127f2090fca1c43ec46da9d",
+        "ast_anchors": []
+      },
+      {
+        "path": "docs/cookbook/python/isolated-footing-concentric.md",
+        "sha256": "7806d1f7cab6945783cdc1b2888952b54b39cfffc1d98747379b9c26974e810d",
+        "ast_anchors": []
+      },
+      {
+        "path": "Python/structural_lib/core/utilities.py",
+        "sha256": "c29150bc31da0b675c65064ab88d6d178197a55be63dd95abd2cacc351ac97a0",
+        "ast_anchors": [
+          {
+            "symbol": "linear_interp",
+            "line": 14
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/_validation.py",
+        "sha256": "95841acdee03691c611a315da619c65210205ead148fecf75f647ecbf58d5288",
+        "ast_anchors": []
+      },
+      {
+        "path": "Python/structural_lib/services/contracts/family_f3.py",
+        "sha256": "b563765e209b8a3053fa3d8915515f5335087b5e1a4c08d492d5cc0d9e39daf8",
+        "ast_anchors": [
+          {
+            "symbol": "IsolatedFootingInputV1",
+            "line": 83
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/services/api.py",
+        "sha256": "e1afabd4651f549d2debc55d40aa3a61fbb7ee63300a19fffd4de0c24ae5f852",
+        "ast_anchors": []
+      }
+    ],
+    "ordered_relationships": [
+      {
+        "earlier": "BASE34.2.4.1(a)",
+        "later": "AMD1-019",
+        "relationship": "insert_positions",
+        "effect": "Critical section d for soil and d/2 for piles; the selected current soil owner uses d. Piles are outside this case."
+      },
+      {
+        "earlier": "AMD1-019",
+        "later": "AMD2-005",
+        "relationship": "adjacent_clause_coexists",
+        "effect": "A2 corrects34.2.4.2 pile-reaction wording; it does not replace the soil/pile critical-section positions in34.2.4.1(a)."
+      },
+      {
+        "earlier": "BASE40.1",
+        "later": "AMD1-021",
+        "relationship": "denominator_correction",
+        "effect": "The prescribed nominal-shear denominator is b*d; current raw footing arithmetic matches it. This does not classify the member maximum."
+      },
+      {
+        "earlier": "BASE40.5.2",
+        "later": "AMD4-030",
+        "relationship": "separate_reinforced_shear_formula",
+        "effect": "The area-summation correction concerns bent-up/stirrup shear reinforcement; the selected concrete-only footing owner uses neither mechanism or multiplier. No table-wide or maximum change is inferred."
+      },
+      {
+        "earlier": "BASE40.2.3.1",
+        "later": "AMD5-022:body",
+        "relationship": "substitution_retains_solid_slab_cap",
+        "effect": "The possessed base already contains the half-Table 20 solid-slab statement; A5 retains it in the substituted block. Do not describe it as newly establishing footing applicability."
+      },
+      {
+        "earlier": "AMD5-022:body",
+        "later": "AMD5-022(a)/(b)",
+        "relationship": "same_substitution_member_specific_additions",
+        "effect": "Coupling-beam/shear-wall earthquake exceptions and detailing are distinct from the selected isolated soil-footing operation."
+      },
+      {
+        "earlier": "AMD5-022",
+        "later": "A6",
+        "relationship": "no_later_same_target_replacement_in_maintained_index",
+        "effect": "The existing six-amendment index records no later same-target reversal; this is an instruction-index observation, not full cumulative engineering qualification."
+      }
+    ],
+    "disposition_counts": {
+      "caller_count": 3,
+      "subtarget_count": 3,
+      "expanded_dispositions": 9,
+      "unknown_unverified": 3,
+      "outside_supported_scope_not_applicable": 6
+    },
+    "rows": [
+      {
+        "caller_id": "is456.isolated-footing.concentric/v1",
+        "surface": "family_journey",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1:solid-slab maximum",
+        "impact": "unknown",
+        "resolution": "unverified",
+        "source_applicability": "HOLD",
+        "current_software_consequence": "conditionally_verified_no_current_accepted_half_Table 20_exceedance",
+        "rationale": "Possessed issued text does not explicitly bridge wide-beam footing action to the solid-slab maximum. Separately, this raw non-enhanced Table 19 owner accepts only tau_v<=tau_c, with tau_c<=1.01N/mm2 below every hypothetical half-Table 20 ceiling in its 15-40N/mm2 runtime domain. The bound does not dispose physical/source applicability.",
+        "remaining_prerequisites": [
+          "authoritative member/maximum-shear interpretation",
+          "physical material and Table 19 reinforcement prerequisites",
+          "complete engineering and installed-host acceptance"
+        ]
+      },
+      {
+        "caller_id": "is456.isolated-footing.concentric/v1",
+        "surface": "family_journey",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1(a)",
+        "impact": "outside_supported_scope",
+        "resolution": "not_applicable",
+        "rationale": "The selected concentric isolated soil footing does not model an earthquake coupling beam or coupled shear wall. This disposes only this explicitly different member subtarget; it does not dismiss the solid-slab maximum or physical material HOLDs."
+      },
+      {
+        "caller_id": "is456.isolated-footing.concentric/v1",
+        "surface": "family_journey",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1(b)",
+        "impact": "outside_supported_scope",
+        "resolution": "not_applicable",
+        "rationale": "The selected concentric isolated soil footing does not model an earthquake coupling beam or coupled shear wall. This disposes only this explicitly different member subtarget; it does not dismiss the solid-slab maximum or physical material HOLDs."
+      },
+      {
+        "caller_id": "api.design_concentric_isolated_footing_is456",
+        "surface": "advanced_export",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1:solid-slab maximum",
+        "impact": "unknown",
+        "resolution": "unverified",
+        "source_applicability": "HOLD",
+        "current_software_consequence": "conditionally_verified_no_current_accepted_half_Table 20_exceedance",
+        "rationale": "Possessed issued text does not explicitly bridge wide-beam footing action to the solid-slab maximum. Separately, this raw non-enhanced Table 19 owner accepts only tau_v<=tau_c, with tau_c<=1.01N/mm2 below every hypothetical half-Table 20 ceiling in its 15-40N/mm2 runtime domain. The bound does not dispose physical/source applicability.",
+        "remaining_prerequisites": [
+          "authoritative member/maximum-shear interpretation",
+          "physical material and Table 19 reinforcement prerequisites",
+          "complete engineering and installed-host acceptance"
+        ]
+      },
+      {
+        "caller_id": "api.design_concentric_isolated_footing_is456",
+        "surface": "advanced_export",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1(a)",
+        "impact": "outside_supported_scope",
+        "resolution": "not_applicable",
+        "rationale": "The selected concentric isolated soil footing does not model an earthquake coupling beam or coupled shear wall. This disposes only this explicitly different member subtarget; it does not dismiss the solid-slab maximum or physical material HOLDs."
+      },
+      {
+        "caller_id": "api.design_concentric_isolated_footing_is456",
+        "surface": "advanced_export",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1(b)",
+        "impact": "outside_supported_scope",
+        "resolution": "not_applicable",
+        "rationale": "The selected concentric isolated soil footing does not model an earthquake coupling beam or coupled shear wall. This disposes only this explicitly different member subtarget; it does not dismiss the solid-slab maximum or physical material HOLDs."
+      },
+      {
+        "caller_id": "api.footing_one_way_shear",
+        "surface": "advanced_export",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1:solid-slab maximum",
+        "impact": "unknown",
+        "resolution": "unverified",
+        "source_applicability": "HOLD",
+        "current_software_consequence": "conditionally_verified_no_current_accepted_half_Table 20_exceedance",
+        "rationale": "Possessed issued text does not explicitly bridge wide-beam footing action to the solid-slab maximum. Separately, this raw non-enhanced Table 19 owner accepts only tau_v<=tau_c, with tau_c<=1.01N/mm2 below every hypothetical half-Table 20 ceiling in its 15-40N/mm2 runtime domain. The bound does not dispose physical/source applicability.",
+        "remaining_prerequisites": [
+          "authoritative member/maximum-shear interpretation",
+          "physical material and Table 19 reinforcement prerequisites",
+          "complete engineering and installed-host acceptance"
+        ]
+      },
+      {
+        "caller_id": "api.footing_one_way_shear",
+        "surface": "advanced_export",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1(a)",
+        "impact": "outside_supported_scope",
+        "resolution": "not_applicable",
+        "rationale": "The selected concentric isolated soil footing does not model an earthquake coupling beam or coupled shear wall. This disposes only this explicitly different member subtarget; it does not dismiss the solid-slab maximum or physical material HOLDs."
+      },
+      {
+        "caller_id": "api.footing_one_way_shear",
+        "surface": "advanced_export",
+        "historical_row": "AMD5-022",
+        "changed_subtarget": "40.2.3.1(b)",
+        "impact": "outside_supported_scope",
+        "resolution": "not_applicable",
+        "rationale": "The selected concentric isolated soil footing does not model an earthquake coupling beam or coupled shear wall. This disposes only this explicitly different member subtarget; it does not dismiss the solid-slab maximum or physical material HOLDs."
+      }
+    ],
+    "source_disposition": {
+      "status": "HOLD",
+      "exact_missing_bridge": "34.2.4.1(a) identifies wide-beam action but no explicit Section40/Table 20 bridge;34.2.4.1(b) separately points punching to31.6;34.5.1 imports solid-slab minimum reinforcement/spacing, not maximum shear. A5 retains the solid-slab cap without a footing-specific classification bridge.",
+      "authoritative_decision_question": "For the declared concentric, uniform-depth square/rectangular soil footing without designed shear reinforcement, does the one-way action under 34.2.4.1(a) select the solid-slab half-Table 20 maximum in 40.2.3.1 or the beam maximum in 40.2.3? Identify the authoritative source/cross-reference or accepted interpretation supporting that classification; 34.5.1's minimum-reinforcement/spacing import alone does not answer it."
+    },
+    "source_research": {
+      "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/review/footing-shear-issued-source-review-01.json",
+      "sha256": "a569c57bd4bd4a1ac84b11da670d8804b059aa225a408e1f04012ce96139a1f8"
+    },
+    "instruction_relevance_inventory": {
+      "existing_blocks_inspected": 137,
+      "relevant_instruction_ids": [
+        "AMD1-019",
+        "AMD1-021",
+        "AMD2-005",
+        "AMD4-030",
+        "AMD5-022"
+      ],
+      "interpretation": "Target-relevance inspection, not137 newly qualified instructions or a full engineering disposition."
+    },
+    "independent_caller_inventory": {
+      "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/review/footing-shear-current-caller-inventory-01.json",
+      "sha256": "d3a67e6bb1c4dbf67e44d2905c60bc11fc2e30f1ccef53e7db88952c24ab38eb"
+    },
+    "conditional_numerical_evidence": {
+      "diagnostic": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/footing-shear-current-diagnostics-01.json",
+        "sha256": "c157c91ba00db315d82634e115b1a91a7eeac3758bd2fe3bac9ea169d9e7684b"
+      },
+      "source_checkpoint": "b5510d20b17f0a8b1ad9dd2853c203e529cb60e6",
+      "bound": {
+        "validated_runtime_fck_domain_nmm2": [
+          15,
+          40
+        ],
+        "directional_pt_domain": "finite nonnegative; private derived lookup clamps to <=0.15 and >=3.0 source boundary rows",
+        "global_table19_upper_bound_nmm2": "1.01",
+        "global_half_table20_lower_bound_nmm2": "1.25",
+        "strict_global_gap_nmm2": "0.24",
+        "reason": "Nearest-lower fck column plus in-row nonnegative linear interpolation/clamped source boundary rows cannot exceed the largest encoded/source column value. Table 20 linear interpolation is bounded below by its smallest grade value. Every evaluated accepted positive demand satisfies tau_v<=tau_c; a non-positive shear length returns tau_v=0. No strength enhancement or shear reinforcement enters this owner.",
+        "consequence": "If a half-Table 20 maximum were selected for this exact operation, it cannot turn a current accepted demand into a maximum-cap failure. This does not establish that the solid-slab rule applies, nor certify material, geometry, reinforcement, Table 19 physical prerequisites, or a complete footing.",
+        "bar_role_acceptance_needed_for_this_software_bound": false
+      },
+      "normalized_envelopes": [
+        {
+          "grade": 15,
+          "table19_column_maximum_nmm2": "0.71",
+          "half_table20_nmm2": "1.25"
+        },
+        {
+          "grade": 20,
+          "table19_column_maximum_nmm2": "0.82",
+          "half_table20_nmm2": "1.4"
+        },
+        {
+          "grade": 25,
+          "table19_column_maximum_nmm2": "0.92",
+          "half_table20_nmm2": "1.55"
+        },
+        {
+          "grade": 30,
+          "table19_column_maximum_nmm2": "0.96",
+          "half_table20_nmm2": "1.75"
+        },
+        {
+          "grade": 35,
+          "table19_column_maximum_nmm2": "0.99",
+          "half_table20_nmm2": "1.85"
+        },
+        {
+          "grade": 40,
+          "table19_column_maximum_nmm2": "1.01",
+          "half_table20_nmm2": "2.0"
+        }
+      ],
+      "finite_lookup_observations": 55,
+      "primitive_observations": 4,
+      "existing_composed_and_canonical_replays": 2,
+      "benchmark_tau_v_nmm2": 0.3,
+      "benchmark_tau_c_nmm2": 0.31364821916450203,
+      "benchmark_hypothetical_half_Table20_nmm2": 1.55,
+      "sampling_is_not_the_analytic_proof": true,
+      "bar_role_acceptance_needed_for_software_bound": false
+    },
+    "no_numerical_correction_basis": "No maintained accepted demand exceeding a hypothetical half-Table 20 maximum is demonstrated. The analytic conditional bound precludes it in the current raw-Table 19 runtime domain. Do not select a new maximum, enhancement or formula to repair source ambiguity.",
+    "independent_operation_review": {
+      "status": "ACCEPTED_FOR_BOUNDED_CURRENT_OPERATION_DOCUMENTATION",
+      "artifact": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/review/footing-shear-current-operation-review-01.json",
+        "sha256": "51cec5036eadcac5d30ee536ed745355c1755673b384d1a928b98218a2879004"
+      },
+      "frozen_candidate": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/review/footing-shear-current-frozen-01.json",
+        "sha256": "95806f2c73154bf07427ccda325aac05fced0a9264508714662f3633c68ac359"
+      },
+      "essential_blockers": 0,
+      "expanded_dispositions_independently_reviewed": 9,
+      "ordered_relationships_independently_reviewed": 7,
+      "final_metadata_semantics": "Metadata-only closeout allowed by this review under exact immutable prior/packet/owner/asset checks; final metadata bytes are not claimed to have been frozen01 review inputs."
+    },
+    "verification": {
+      "status": "FROZEN_CANDIDATE_AFFECTED_DOCUMENTATION_8_OF_8_PASS; METADATA_ONLY_CLOSEOUT",
+      "affected_documentation_gate": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/footing-shear-docs-gate-01.json",
+        "sha256": "c0389286b0ea2bb4c5d39aefb7e19b24ec5ecf8c45781b39ad4f7b278c4ae2b4"
+      },
+      "identity_before_closeout": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/footing-shear-current-integrity-before-closeout.json",
+        "sha256": "ddbae7313a848781b4fd68f0e8ddca1ef38b91f6af4abaf5e1cb6e263931af2b"
+      },
+      "frozen_gate_counts": {
+        "total": 8,
+        "passed": 8,
+        "failed": 0,
+        "reused": 0
+      },
+      "final_gate_and_identity_receipts": "Separate final metadata checks accompany local recovery; they bind actual final bytes without changing the immutable source/owner/numerical semantics.",
+      "new_tests": 0,
+      "production_changes": 0,
+      "unchanged_expensive_suites_repeated": false,
+      "qualification": "HOLD; local checks are not engineering or installed-host acceptance"
+    },
+    "separate_bar_role_packet": "Not necessary for this scalar software bound. Table 19 qualifying longitudinal tension As and its one-effective-depth continuation/support exception remain separate physical prerequisites, not closed by scalar area/spacing. The footing main/distribution classification remains separately scoped underAMD3-014/D013; a following bounded trace may address it without changing this source HOLD.",
+    "qualification_holds": [
+      "current footing/solid-slab maximum-shear source classification",
+      "physical material/aboveM60/coating/manufacturer and Table 19 prerequisites",
+      "full six-amendment/finite-creep/complete engineering acceptance",
+      "actual installed Windows/ETABS/Excel/XLL qualification"
+    ],
+    "protected_source_prose_or_images_included": false,
+    "engineering_use_certification": false,
+    "release_authorized": false,
+    "external_publication": false
   }
 }

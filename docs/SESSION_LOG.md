@@ -5,6 +5,62 @@
 
 ---
 
+<a id="is456-footing-shear-current-20261002"></a>
+
+## 2026-10-01 — Session: Isolated-footing one-way shear source boundary
+
+**Task:** is456-isolated-footing-shear-applicability-20261002
+**Agent:** MAIN (sole Library writer; separate read-only source and caller review)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Trace the declared isolated soil-footing operation without presuming a source interpretation or numerical defect.
+
+### Completed
+
+- Reverified clean worktree checkpoint b5510d20, clean primary main and origin identity; fresh fetch retains origin/main c45cb89f. Preserved all five local commits and recovery bundles.
+- Independently read base footing/shear sources and ordered A1/A2/A5 relationships. Soil section remains d; pile d/2, punching 31.6 and earthquake coupling-beam provisions remain distinct.
+- Recorded the precise footing/solid-slab maximum-shear source question as HOLD, with three unknown and six outside-member current subtarget/caller dispositions; historical matrices and scope unchanged.
+- Verified the separate current scalar bound tau_v<=tau_c<=1.01<1.25<=hypothetical half-Table20 in the raw Table19 runtime domain, including zero-demand and final provided-steel calls.
+- Recorded 55 supporting lookup observations, four primitive controls and existing composed/canonical benchmark replays. These are read-only development evidence; no source applicability, new physical approval or complete qualification is inferred.
+
+### Verification and scope
+
+Separate issued-source and caller inventories agree with the held
+interpretation and conditional arithmetic. Exact frozen operation review
+accepts the bounded record with zero essential blockers. The actual frozen
+documentation gate passed eight of eight checks with zero reuses, and
+historical/current identity passed. Final metadata checks accompany recovery. No production/test/classification file changes are selected; do not
+repeat unchanged expensive suites or installed-wheel proof for this documentation
+packet. Full six-amendment, material, finite-creep and installed-host HOLDs remain.
+
+### Issues encountered
+
+The possessed sources provide no explicit footing-to-solid-slab maximum
+classification bridge. The initial external diagnostic writer also used two
+nonexistent result aliases after its calculations; the actual dataclass fields
+were read and the evidence writer corrected. Its original failed log is retained;
+no library defect or earlier successful receipt is inferred from that failed run.
+
+### Root causes and resolutions
+
+Keep source applicability separate from the mathematical consequence of a
+hypothetical cap. Current raw Table19 acceptance already has the smaller
+scalar ceiling, so changing a table/formula cannot repair the interpretation
+gap. An authoritative member/operation basis is the exact remaining question.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Preserve the inherited reader/handoff control and required section; no new recurrence count or timed event is claimed.
+
+### What next
+
+Preserve this independently reviewed bounded disposition and its actual
+docs/identity receipts in a separate local checkpoint and recovery. Continue the provided-bar
+role trace as a separate evidence-supported packet while retaining the shear
+source HOLD. No push, merge, release, package publication or installed-host
+acceptance; reserve time for final honest handover before 03:30 UTC.
+
+---
+
 <a id="library-test-runner-exit-20261002"></a>
 
 ## 2026-10-01 — Session: Aggregate test-runner exit propagation

@@ -174,6 +174,68 @@ frozen-candidate and successful check hashes are bound in the appendix. Full
 engineering and actual installed Windows/ETABS/Excel/XLL qualification remain
 **HOLD**; publication is coordinated with the parent.
 
+## Current isolated-footing one-way shear follow-up — 1 October 2026
+
+The parent accepted the five-commit local checkpoint `b5510d20` and selected
+this separate bounded trace. It covers the concentric isolated-footing journey,
+its composed API and `api.footing_one_way_shear`. The nine current caller/subtarget
+dispositions overlap `AMD5-022`: three maximum-shear interpretations remain
+unknown/unverified and six earthquake coupling-beam subtargets are outside the
+declared case. They do not add to the 137 instruction blocks or 5,206 inventory
+dispositions. All historical matrices and earlier follow-ups remain unchanged.
+
+| Exact issued locator | Current selected-operation conclusion |
+|---|---|
+| Base PDF 66 / printed 65; Cl. 34.2.4.1(a), A1 PDF 104 / printed 2; AMD1-019 | Soil critical section is at `d`; the distinct pile branch is at `d/2`. The current soil owner uses `d`. A2 PDF 109 / printed 1 changes adjacent 34.2.4.2 pile wording, not this position. A1 also corrects the nominal-shear `b*d` denominator in 40.1 without classifying the maximum. |
+| Base PDF 66 / printed 65; Cl. 34.2.4.1(b) | The two-way/punching condition explicitly points to 31.6. Its member/operation route is separate from the one-way maximum question. |
+| Base PDF 67 / printed 66; Cl. 34.5.1 | The solid-slab import names minimum reinforcement and spacing. It supplies no explicit maximum-shear classification bridge. |
+| Base PDF 73 / printed 72; Cl. 40.2.3/40.2.3.1, A5 PDF 125–126 / printed 5–6; AMD5-022 | The possessed base already states the half-Table-20 solid-slab cap; A5 retains it in its substituted block and adds earthquake coupling-beam provisions. No footing-specific applicability bridge is identified. Source classification remains HOLD. |
+| A4 PDF 119 / printed 5; AMD4-030 / Cl. 40.5.2 | The area-summation correction belongs to a reinforced-shear formula; no such reinforcement or enhancement enters this current concrete-only owner. |
+| Base PDF 74 / printed 73; Tables 19/20 | Current raw Table-19 acceptance has a separately verified scalar bound. This is software consequence evidence, not a source classification or physical-material verdict. |
+
+The exact source decision question is whether the declared uniform-depth
+concentric soil footing's one-way action selects the solid-slab maximum under
+40.2.3.1 or the beam maximum under 40.2.3, and which authoritative source or
+accepted interpretation supplies that classification. The wide-beam label and
+the minimum-reinforcement/spacing import do not independently settle it.
+
+For every accepted finite nonnegative directional steel percentage in the
+current runtime `fck=15–40 N/mm²` domain, nearest-lower grade selection and
+Table-19 interpolation/boundary rows give `tau_c <= 1.01 N/mm²`. Half of the
+lowest Table-20 value is `1.25 N/mm²`. The owner accepts positive demand only
+when `tau_v <= tau_c`; its zero-demand branch returns zero after validating
+the same table lookup. It uses no shear-reinforcement or strength-enhancement
+factor. Therefore selecting a hypothetical half-Table-20 ceiling cannot fail
+an already accepted demand in this exact current owner. This conditional bound
+does not prove that the slab ceiling governs this physical member.
+
+The composed final detailed-PASS grade set is necessarily within M20/M25/M30/
+M35/M40; broader positive intake is not material eligibility. Screening and
+final provided-steel calls retain the common analysis depth; detailing checks
+the physical bar depths separately. The Table-19 qualifying longitudinal-area
+continuation/support exception remains a separate physical prerequisite. None
+of these physical meanings is established by the scalar bound.
+
+Main recorded 55 supporting lookup observations, three positive-demand
+primitive controls, a zero-demand control and the existing composed/canonical
+benchmark replays. Finite observations corroborate the analytic bound; they
+do not substitute for it. The existing M25 benchmark gives `tau_v=0.3 N/mm²`,
+actual provided-steel `tau_c=0.31364821916450203 N/mm²` and utilization
+`0.9564855837509352`; the hypothetical half-table value is `1.55 N/mm²`.
+Required-steel screening and final provided-steel receipts remain distinct.
+Approval flags in these authored fixtures are not new real-project evidence.
+
+Separate source and caller inventories agree on the HOLD and conditional
+bound. Exact frozen operation review accepts all nine dispositions and seven
+relationships for this bounded documentation purpose, with zero essential
+blockers. The actual frozen-candidate documentation gate passed eight of eight
+checks with zero reuses; historical/current identity checks passed. Final
+metadata receipts accompany the separate local recovery checkpoint. No numerical defect, production change or new regression test is
+asserted. The separate provided-bar role question is not a dependency of this
+scalar bound and remains a following bounded packet. Full engineering,
+physical material, finite-creep and installed-host qualifications remain HOLD.
+No public release, package publication or engineering-use certification follows.
+
 ## Historical Amendment 3-6 packet and accepted correction
 
 The original documentation packet identifies two supported-slab discrepancies and
