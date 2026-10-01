@@ -1,0 +1,300 @@
+{
+  "schema_version": "1.0",
+  "purpose": "planning baseline; does not certify supported amendment impact",
+  "observed_at_utc": "2026-10-01T07:20:25.136656+00:00",
+  "source_commit": "32576ae0893bc246de152e6e9912efec89642717",
+  "accepted_predecessor_head": "371c1fe5117aec2c78568a993d3d9e936091e7b7",
+  "git_binding": {
+    "worktree": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/external_data/task-worktrees/is456-amendment-qualification-20261001",
+    "branch": "codex/is456-source-qualification-plan-20261001",
+    "base": "32576ae0893bc246de152e6e9912efec89642717",
+    "remote": "git@github.com:Pravin-surawase/structural_engineering_lib.git",
+    "git_fetch_completed": true,
+    "connected_github_main_comparison": "identical",
+    "primary_checkout_preserved": true,
+    "active_worktrees_preserved": true,
+    "remote_freshness_note": "git_state.py itself reports NOT_CHECKED; explicit successful fetch and connected GitHub comparison supply separate current-main evidence",
+    "original_planning_worktree": "/private/tmp/structlib-is456-source-plan-20261001"
+  },
+  "official_status": {
+    "url": "https://standards.bis.gov.in/website/standard-details?encryptedId=eyJpdiI6InVIejZUOFI5V1Z5RXZMWEZGNnh4a1E9PSIsInZhbHVlIjoiZ1ZhcnlpWEFRVE00Q1dndk1Tc3lrQT09IiwibWFjIjoiYjAzMjg2ZDY3YWE0NzhkNGRlZDczYzI2ZGJiZTVkNThiNThlYmZmNTI3MDFmZTA0MzljNWM5Njg1ZWNmYjhhNiIsInRhZyI6IiJ9",
+    "observation_date_utc": "2026-10-01",
+    "method": "direct rendered browser catalogue and Amendment tab",
+    "standard": "IS456:2000",
+    "revision": 4,
+    "reviewed_in": 2025,
+    "reaffirmation": "2025-07",
+    "amendment_count": 6,
+    "amendment_years": [
+      2001,
+      2005,
+      2007,
+      2013,
+      2019,
+      2024
+    ],
+    "web_reader_result": "JavaScript shell",
+    "browser_result": "edition, basic details and numbered amendment table successfully read",
+    "new_source_downloads": 0
+  },
+  "controlled_documents": [
+    {
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "private_relative_path": "private_sources/is456_library_first/source_pdfs/is456_2000_amd5_reff2021.pdf",
+      "sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+      "bytes": 5216013,
+      "pages": 127,
+      "extracted_record_sha256": "942f89b639f2d6e9b7d10147a9df3a5cda82b57808416e632c569c9f08c8db4f",
+      "source_corpus_review_state": "UNREVIEWED_SOURCE_CORPUS",
+      "provision_impact_qualified": false
+    },
+    {
+      "source_id": "IS456-AMD6-2024",
+      "private_relative_path": "private_sources/is456_library_first/source_pdfs/is456_amd_06_2024.pdf",
+      "sha256": "4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881",
+      "bytes": 1490260,
+      "pages": 3,
+      "extracted_record_sha256": "c636cdbdd980dd540ed207417ecf6661b0042f6a65b71fb8973c97b3e6c19130",
+      "source_corpus_review_state": "UNREVIEWED_SOURCE_CORPUS",
+      "provision_impact_qualified": false
+    }
+  ],
+  "amendment_page_inventory": [
+    {
+      "number": 1,
+      "date": "2001-06",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        103,
+        108
+      ],
+      "heading_visually_inspected": false,
+      "entire_amendment_visually_inspected": false,
+      "supported_impact_status": "NOT_REQUALIFIED_IN_THIS_PACKET"
+    },
+    {
+      "number": 2,
+      "date": "2005-09",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        109,
+        110
+      ],
+      "heading_visually_inspected": false,
+      "entire_amendment_visually_inspected": false,
+      "supported_impact_status": "NOT_REQUALIFIED_IN_THIS_PACKET"
+    },
+    {
+      "number": 3,
+      "date": "2007-08",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        111,
+        114
+      ],
+      "heading_visually_inspected": true,
+      "entire_amendment_visually_inspected": true,
+      "supported_impact_status": "HOLD_PENDING_REVIEWED_MATRIX"
+    },
+    {
+      "number": 4,
+      "date": "2013-05",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        115,
+        120
+      ],
+      "heading_visually_inspected": true,
+      "entire_amendment_visually_inspected": true,
+      "supported_impact_status": "HOLD_PENDING_REVIEWED_MATRIX"
+    },
+    {
+      "number": 5,
+      "date": "2019-07",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        121,
+        127
+      ],
+      "heading_visually_inspected": true,
+      "entire_amendment_visually_inspected": true,
+      "supported_impact_status": "HOLD_PENDING_REVIEWED_MATRIX"
+    },
+    {
+      "number": 6,
+      "date": "2024-06",
+      "source_id": "IS456-AMD6-2024",
+      "pdf_pages_one_based": [
+        1,
+        3
+      ],
+      "heading_visually_inspected": true,
+      "entire_amendment_visually_inspected": true,
+      "supported_impact_status": "HOLD_PENDING_REVIEWED_MATRIX"
+    }
+  ],
+  "base_cover_observation": {
+    "pdf_page": 1,
+    "reprint": "2014-08",
+    "amendments_named_on_cover": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "reaffirmation_markers": [
+      2011,
+      2016,
+      2021
+    ],
+    "amendment_5_appended": true,
+    "fully_integrated_base_provisions_claimed": false
+  },
+  "scope_snapshot": {
+    "family_journey_count": 13,
+    "family_journey_ids": [
+      "is456.beam.design/v1",
+      "is456.torsion.design/v1",
+      "is456.column.supplied-steel-check/v1",
+      "is456.slab.one-way/v1",
+      "is456.slab.continuous-one-way/v1",
+      "is456.slab.two-way/v1",
+      "is456.wall.braced-axial/v1",
+      "is456.staircase.straight-flight/v1",
+      "is456.deep-beam.simply-supported/v1",
+      "is456.flat-slab.regular-interior/v1",
+      "is456.isolated-footing.concentric/v1",
+      "is456.combined-footing.symmetric/v1",
+      "is456.strap-footing.property-line/v1"
+    ],
+    "advanced_capability_export_count": 25,
+    "advanced_capability_exports": [
+      "check_beam_is456",
+      "check_bearing_pressure",
+      "check_isolated_footing_load_transfer",
+      "design_braced_wall_is456",
+      "design_column_is456",
+      "design_complete_one_way_slab_is456",
+      "design_concentric_isolated_footing_is456",
+      "design_continuous_one_way_slab_builtin_is456",
+      "design_continuous_one_way_slab_is456",
+      "design_flanged_beam_is456",
+      "design_long_column_is456",
+      "design_one_way_slab_is456",
+      "design_property_line_strap_footing_is456",
+      "design_regular_interior_flat_slab_is456",
+      "design_simply_supported_deep_beam_is456",
+      "design_straight_flight_staircase_is456",
+      "design_symmetric_combined_footing_is456",
+      "design_two_way_slab_is456",
+      "design_two_way_slab_panel_builtin_is456",
+      "design_two_way_slab_panel_is456",
+      "detail_beam_is456",
+      "footing_flexure",
+      "footing_one_way_shear",
+      "footing_punching_shear",
+      "size_footing"
+    ],
+    "owner_files": [
+      {
+        "path": "Python/structural_lib/services/family_facade_registry.py",
+        "sha256": "3b996bba78ff69107c7fe2bf1a02c04e06e8ab099b2f9a989f025cb359189616"
+      },
+      {
+        "path": "Python/structural_lib/services/capabilities.py",
+        "sha256": "f5beac674c84e0e8a4ed6b6eecdb3edac0606be5ca70aa327d976db0cbf2cc6b"
+      },
+      {
+        "path": "docs/reference/api-classification.json",
+        "sha256": "d7be533accefe4082864259ba89c9e6705c93aa06a75b6a88539dceca4d83135"
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/clauses.json",
+        "sha256": "f17ecb81e77784ec8980d98fb71107e5d620e69d7175f7cfb17b398fcd11c3f4"
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/materials.py",
+        "sha256": "de50f2a330ca8714b07b3a73af0bc1894f3224de02459d3a057a03f82e48d159"
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/section_materials.py",
+        "sha256": "e971a94a8020afa9d343d5ef468c1ddcdd9f1c1da52ec8c3debb24d08f1516c2"
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/beam/serviceability.py",
+        "sha256": "ed7123efd12f48142e79ae95969a39f74de76d6c313e7888cae8d072330672f9"
+      },
+      {
+        "path": "docs/verification/indian-code-capability-coverage.json",
+        "sha256": "13ce6184bf5097d2df5034cc0884b9d96dc1dc5a458a4a6ca3a0cf1c6fa39986"
+      },
+      {
+        "path": "docs/verification/library-supported-scope-completion.md",
+        "sha256": "0025307cbd864826bb73961052fd5d6a5b540d1ae6a8291236a1410da91c56c5"
+      },
+      {
+        "path": "docs/verification/column-pmm-benchmark.md",
+        "sha256": "3d189c031fd3dbeb25f346693c3ec872a53f74bc1f3d00398a94aaf9a9e3cc82"
+      },
+      {
+        "path": "docs/verification/is456-library-first-evidence.md",
+        "sha256": "3a47d498ba82d4dc53dd8d99bc37346d09fe585b9eed9f6682af788eefdcdc4c"
+      },
+      {
+        "path": "docs/verification/india-2-deep-g0-scope-evidence.md",
+        "sha256": "300737e95db2082120b8a451ea716391dff48a1247e39c666a232d7f79210b8f"
+      },
+      {
+        "path": "docs/reference/clause-map.json",
+        "sha256": "db0b9e26045353539085c8813e0b1edcdd2eeda787de9ee84e60b0ebca03d688"
+      },
+      {
+        "path": "Python/structural_lib/services/contracts/beam_serviceability.py",
+        "sha256": "f5c4f6837eb9116b35095e84bdae21c5b559e115e99bcd402a8e8289ad110965"
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/slab/built_in_coefficients.py",
+        "sha256": "010272c5f3324ed1315e8f540f32887cb42436406258233590b1ee0c601dd39a"
+      }
+    ],
+    "clauses_registry_count": 180,
+    "older_clause_map_registry_count": 119,
+    "older_clause_map_complete_scope_authority": false
+  },
+  "next_packet": {
+    "review_amendments": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "visual_page_review_count": 20,
+    "effort_hours_range": [
+      2,
+      6
+    ],
+    "production_calculation_edits_authorized_by_this_plan": false,
+    "full_amendment_gate_closed": false,
+    "installed_etabs_gate_closed": false,
+    "six_hour_checkpoint": "record investigation progress and every unresolved row; elapsed time is not a conclusion deadline or permission to guess/drop evidence",
+    "source_review_completed_pages": 20,
+    "impact_matrix": "docs/verification/is456-amendment-impact.json"
+  },
+  "protection": {
+    "source_content_included": false,
+    "protected_prose_or_images_included": false,
+    "watermark_or_contact_details_included": false,
+    "licensing_gate": "passed for approved normalized data; protected source files remain private",
+    "new_installations": 0,
+    "new_accounts_or_purchases": 0,
+    "release_publication_authorized": false
+  },
+  "relocation": {
+    "date_utc": "2026-10-01",
+    "from": "/private/tmp/structlib-is456-source-plan-20261001",
+    "to": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/external_data/task-worktrees/is456-amendment-qualification-20261001",
+    "original_documents_and_receipt_preserved_at": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/external_data/library-evidence/32576ae0/is456-amendment-qualification-20261001/predecessor-planning",
+    "parent_authorized_documentation_execution": true,
+    "six_hour_rule": "investigation checkpoint; never guess or drop unresolved evidence to meet it"
+  }
+}

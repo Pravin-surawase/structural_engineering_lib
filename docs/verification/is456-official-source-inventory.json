@@ -1,0 +1,324 @@
+{
+  "schema_version": "1.0",
+  "status": "SOURCE_PAGES_RECONCILED; FULL_AMENDMENT_QUALIFICATION_HOLD",
+  "date_utc": "2026-10-01",
+  "source_commit": "32576ae0893bc246de152e6e9912efec89642717",
+  "official_status": {
+    "url": "https://standards.bis.gov.in/website/standard-details?encryptedId=eyJpdiI6InVIejZUOFI5V1Z5RXZMWEZGNnh4a1E9PSIsInZhbHVlIjoiZ1ZhcnlpWEFRVE00Q1dndk1Tc3lrQT09IiwibWFjIjoiYjAzMjg2ZDY3YWE0NzhkNGRlZDczYzI2ZGJiZTVkNThiNThlYmZmNTI3MDFmZTA0MzljNWM5Njg1ZWNmYjhhNiIsInRhZyI6IiJ9",
+    "observation_date_utc": "2026-10-01",
+    "method": "direct rendered browser catalogue and Amendment tab",
+    "standard": "IS456:2000",
+    "revision": 4,
+    "reviewed_in": 2025,
+    "reaffirmation": "2025-07",
+    "amendment_count": 6,
+    "amendment_years": [
+      2001,
+      2005,
+      2007,
+      2013,
+      2019,
+      2024
+    ],
+    "web_reader_result": "JavaScript shell",
+    "browser_result": "edition, basic details and numbered amendment table successfully read",
+    "new_source_downloads": 0
+  },
+  "source_documents": [
+    {
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "private_relative_path": "private_sources/is456_library_first/source_pdfs/is456_2000_amd5_reff2021.pdf",
+      "sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+      "bytes": 5216013,
+      "pages": 127,
+      "extracted_record_sha256": "942f89b639f2d6e9b7d10147a9df3a5cda82b57808416e632c569c9f08c8db4f",
+      "source_corpus_review_state": "UNREVIEWED_SOURCE_CORPUS",
+      "provision_impact_qualified": false
+    },
+    {
+      "source_id": "IS456-AMD6-2024",
+      "private_relative_path": "private_sources/is456_library_first/source_pdfs/is456_amd_06_2024.pdf",
+      "sha256": "4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881",
+      "bytes": 1490260,
+      "pages": 3,
+      "extracted_record_sha256": "c636cdbdd980dd540ed207417ecf6661b0042f6a65b71fb8973c97b3e6c19130",
+      "source_corpus_review_state": "UNREVIEWED_SOURCE_CORPUS",
+      "provision_impact_qualified": false
+    }
+  ],
+  "source_chain": [
+    {
+      "number": 1,
+      "date": "2001-06",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        103,
+        108
+      ],
+      "heading_visually_inspected": false,
+      "entire_amendment_visually_inspected": false,
+      "supported_impact_status": "NOT_REQUALIFIED_IN_THIS_PACKET"
+    },
+    {
+      "number": 2,
+      "date": "2005-09",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        109,
+        110
+      ],
+      "heading_visually_inspected": false,
+      "entire_amendment_visually_inspected": false,
+      "supported_impact_status": "NOT_REQUALIFIED_IN_THIS_PACKET"
+    },
+    {
+      "number": 3,
+      "date": "2007-08",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        111,
+        114
+      ],
+      "heading_visually_inspected": true,
+      "entire_amendment_visually_inspected": true,
+      "supported_impact_status": "DISPOSITIONS_RECORDED; FULL_QUALIFICATION_HOLD"
+    },
+    {
+      "number": 4,
+      "date": "2013-05",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        115,
+        120
+      ],
+      "heading_visually_inspected": true,
+      "entire_amendment_visually_inspected": true,
+      "supported_impact_status": "DISPOSITIONS_RECORDED; FULL_QUALIFICATION_HOLD"
+    },
+    {
+      "number": 5,
+      "date": "2019-07",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        121,
+        127
+      ],
+      "heading_visually_inspected": true,
+      "entire_amendment_visually_inspected": true,
+      "supported_impact_status": "DISPOSITIONS_RECORDED; FULL_QUALIFICATION_HOLD"
+    },
+    {
+      "number": 6,
+      "date": "2024-06",
+      "source_id": "IS456-AMD6-2024",
+      "pdf_pages_one_based": [
+        1,
+        3
+      ],
+      "heading_visually_inspected": true,
+      "entire_amendment_visually_inspected": true,
+      "supported_impact_status": "DISPOSITIONS_RECORDED; FULL_QUALIFICATION_HOLD"
+    }
+  ],
+  "integration_observation": {
+    "cover": {
+      "pdf_page": 1,
+      "reprint": "2014-08",
+      "amendments_named_on_cover": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "reaffirmation_markers": [
+        2011,
+        2016,
+        2021
+      ],
+      "amendment_5_appended": true,
+      "fully_integrated_base_provisions_claimed": false
+    },
+    "base_provisions_not_uniformly_amended": "Controlled base PDF47/printed46 still shows450mm, while appended A3PDF112/printed2 substitutes300mm forCl26.3.3(b)(2). Apply ordered amendment instructions; do not treat collection naming or cover as proof of consolidated text.",
+    "current_reaffirmation_does_not_create_new_calculation_edition": true
+  },
+  "page_reviews": [
+    {
+      "amendment": 3,
+      "pdf_page": 111,
+      "printed_page": 1,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "1f5d70471a97ae268c47088a7b85824ebc2c307fd219a758112b83b428bd0f0a"
+    },
+    {
+      "amendment": 3,
+      "pdf_page": 112,
+      "printed_page": 2,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "badcdca0763cb7c9b6fd116939e704c9eb61db0a3a3c0cbb061c131629b7695c"
+    },
+    {
+      "amendment": 3,
+      "pdf_page": 113,
+      "printed_page": 3,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "22556eb934668816b93cf3b16b86ef4b2a4dfa76c36b5809e5658cd71e9ded58"
+    },
+    {
+      "amendment": 3,
+      "pdf_page": 114,
+      "printed_page": null,
+      "content": "blank_verso",
+      "visual_review": "complete",
+      "private_render_sha256": "99c31f0b43d9eb2c1cb5768fe1363357aace53116d84c13f75d37442f6e60b0e"
+    },
+    {
+      "amendment": 4,
+      "pdf_page": 115,
+      "printed_page": 1,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "da9331f5e9d9bdd02ae32170476ab53374c4c3231df6cb1cbfce072f4999467d"
+    },
+    {
+      "amendment": 4,
+      "pdf_page": 116,
+      "printed_page": 2,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "bbbdeaefcbe7e944458c848d6fc9394e16321e1753c572640e18ae63835da6e0"
+    },
+    {
+      "amendment": 4,
+      "pdf_page": 117,
+      "printed_page": 3,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "20b1babdac936b7195bcdb3974ef7080620fd3ff25ac1d1df31aee43c9c43d1c"
+    },
+    {
+      "amendment": 4,
+      "pdf_page": 118,
+      "printed_page": 4,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "f6b16775638359fb67ea669363cbc36a2a76e42d0ebd1fee0dad90c8653f3f14"
+    },
+    {
+      "amendment": 4,
+      "pdf_page": 119,
+      "printed_page": 5,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "b0bb83642bfc2dc0a41343dc65146d807ed9c3ddfd0b8aa94c6d81f03c77401e"
+    },
+    {
+      "amendment": 4,
+      "pdf_page": 120,
+      "printed_page": null,
+      "content": "blank_verso",
+      "visual_review": "complete",
+      "private_render_sha256": "a5e9b3622f6bce4d3e240ea0aa96d6abcb542d73e2a4daf2c20859195fa14bdb"
+    },
+    {
+      "amendment": 5,
+      "pdf_page": 121,
+      "printed_page": 1,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "ad412b1c4fccc4fe99b4c2aed50c484f888795d550eaa0733556bff1b3f11970"
+    },
+    {
+      "amendment": 5,
+      "pdf_page": 122,
+      "printed_page": 2,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "6e696c13d5b00432e611d79da9a65587281f01b59cbf2e96872b9fdc5d6ba174"
+    },
+    {
+      "amendment": 5,
+      "pdf_page": 123,
+      "printed_page": 3,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "5effe63dad04defb9e2acbfa57248c5bfbd5e965f98cff9a8860508fcd6f92ba"
+    },
+    {
+      "amendment": 5,
+      "pdf_page": 124,
+      "printed_page": 4,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "9d9225cfe9100b3459a037e1658ae0517624ce2440424580aa2cb7a586b78f84"
+    },
+    {
+      "amendment": 5,
+      "pdf_page": 125,
+      "printed_page": 5,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "3fbb07231297a617dd6dbccdecdb03d9ace3fd9c02d1c3aa6d75fabf0e45e5b4"
+    },
+    {
+      "amendment": 5,
+      "pdf_page": 126,
+      "printed_page": 6,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "7596236542d70f472c1098c2de894116734c4f4f67f47ad322e5b99bdbed432a"
+    },
+    {
+      "amendment": 5,
+      "pdf_page": 127,
+      "printed_page": 7,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "498423269202091ce54d041e32defc3937a5b0521d7a21b87d189e6d370faa88"
+    },
+    {
+      "amendment": 6,
+      "pdf_page": 1,
+      "printed_page": 1,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "9fff853c184cc8945f1d18e46fe00fc8562d302817c503562055952cd601b391"
+    },
+    {
+      "amendment": 6,
+      "pdf_page": 2,
+      "printed_page": 2,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "08061a76355f1b8bd0f328bf595ceb75ae7ac1cde9ea55c2c20f51c9bda0411e"
+    },
+    {
+      "amendment": 6,
+      "pdf_page": 3,
+      "printed_page": 3,
+      "content": "instruction_or_continuation",
+      "visual_review": "complete",
+      "private_render_sha256": "25cad3e1018f002e2a75fa4c8f54a538e6b53d5dde8c66fc2a77bc0a5613417f"
+    }
+  ],
+  "instruction_counts": {
+    "3": 18,
+    "4": 33,
+    "5": 25,
+    "6": 19,
+    "total": 95
+  },
+  "definition_of_row": "One amendment instruction block; every numbered inserted target listed within that row. A continuation or blank verso does not create an additional instruction.",
+  "earlier_amendment_status": "A1-2 sheets present; not comprehensively requalified here. Reuse requires exact accepted source/case anchors.",
+  "protection": {
+    "protected_source_prose_included": false,
+    "protected_images_included": false,
+    "source_watermarks_or_contact_details_included": false,
+    "normalized_data_distribution_permission": "passed; source PDFs/extractions/renders remain private"
+  },
+  "scope_boundary": "Source inventory and 20-page visual inspection do not certify all supported calculations, concrete/steel-family eligibility, finite creep history or installed ETABS acceptance.",
+  "follow_up": "is456-amendment-impact.json",
+  "impact_matrix": "is456-amendment-impact.json"
+}
