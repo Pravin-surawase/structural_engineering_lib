@@ -3,105 +3,105 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-09-28
-- Focus: Complete the frozen multilayer beam with independently verified per-bar section equilibrium through BBS/report.
-- Completed: Replaced centroid/yielded-tension assumptions in Python/.NET with signed per-bar strains, stresses, forces and moments.; Added 27 independent reference vectors and the 27-check/43-bar multilayer replay.; Retained draft outcomes for missing/failed evidence and explicit serviceability limits.
-- Recurrence controls: RR-004 x34 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
+- Date: 2026-10-01
+- Focus: Preserve the accepted library corrections, refresh the current qualification handoff and finish maintenance before the owner's pause.
+- Completed: Refreshed the handoff and task board against merged PRs #1020 and #1022, retaining the supported-scope checklist and all unresolved qualification HOLDs.; Ran maintenance diagnostics: health 100/100, context and token-efficiency checks PASS; retained the one unproved tester-output feedback item.; Fast-forwarded clean Mac main to the fetched merge at 617cec06 before creating this documentation branch; preserved accepted evidence, old branches and unrelated worktrees.
+- Recurrence controls: RR-004 x35 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-**Development device — 28 September:** continue on the Mac. This handoff intake
-fetched GitHub and verified clean `main` equal to `origin/main` at
-`0793a34f2bbefd6253a3b608c1c4226fdf56fc84` (PR #1016, intake baseline
-for LIB-MEMBER-WORKFLOW-002). Use the latest merged head after a fresh fetch; do not reset to this
-historical observation. No open non-dependency PR was found at intake. The
-Windows checkout was not inspected; preserve its retained C# edit and installed
-evidence. All 31 Mac worktree records observed at this intake remain preserved, including the unrelated
-dirty architecture worktree and two unavailable temporary entries. No writer
-ownership or installed-artifact authority is transferred by this session brief.
+**Owner pause — 1 October:** stop engineering work after this documentation and
+maintenance closeout. No next engineering packet is selected. Current-source
+corrections are integrated; no new package, tag or release was published.
 
-The [24-hour report](../SESSION_LOG.md#maint-20260927-24h) covers
-26 September 10:10 to 27 September 10:10 IST: 11 merged PRs carrying 32 commits.
-The [library usability evidence](library-usability-improvement.md) records typed
-family APIs, strict JSON intake, lossless design/depth propagation, real physical
-and candidate workflows, installed-wheel replay and measured import improvement.
-The current-source improvements are not a new published package release.
+**Development device — 1 October:** the Mac intake fetched GitHub, verified the
+repository and remote, and fast-forwarded clean local main to
+`617cec0692680e38a82308b8705d9845d3758503` before creating the maintenance
+branch. This is a dated observation: fetch again before resuming and use current
+main. Preserved old branches/worktrees, unrelated dirty architecture work,
+unavailable temporary entries and private evidence remain intact. Windows was
+not inspected; no device writer or installed-application authority changes.
 
-The [complete beam handoff](../SESSION_LOG.md#lib-member-workflow-001-20260927)
-records the implemented frozen case and its integration fixes. The
-[independent acceptance evidence](library-usability-improvement.md#complete-beam-implementation-and-independent-evidence)
-retains sources, numerical comparisons, failure behavior and remaining limits.
-The earlier [progress assessment](library-usability-improvement.md#progress-assessment-and-next-acceptance-milestone)
-explains why this milestone followed the three deep-review packets.
+[PR #1020](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1020)
+merged as `32576ae0`, correcting supported column strain/axis behavior, flange
+branch equilibrium and the named material/bounded SLS profiles.
+[PR #1022](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1022)
+merged as `617cec06`, mapping 95 Amendment 3-6 instruction blocks against 38
+supported callers and correcting distribution spacing to `min(5d,300 mm)` and
+solid-slab maximum shear to half of Table 20. Both required and broad hosted
+cycles passed, including full suites, dependency audits, clean wheel/CLI,
+Docker and Windows/macOS Python smoke. Their merge trees match the reviewed
+heads. GitHub owns exact check and merge facts.
 
-The [multilayer acceptance record](multilayer-member-workflow.md) records the
-owner-authorized next case, the v3 per-bar root-cause repair, 27 independent
-reference vectors, 27 required leaves and 43 physical bars. The milestone PR on
-`codex/lib-member-workflow-002` owns final hosted-check and merge facts. The
-earlier single-layer case also remains accepted under the corrected method.
+The [supported-scope completion checklist](../verification/library-supported-scope-completion.md),
+[issued-amendment correction record](../verification/slab-issued-amendment-corrections.md)
+and [source/caller reconciliation](../verification/is456-amendment-impact.md)
+own accepted evidence and remaining limits. The source matrix's original
+PR #1020 hashes and diagnostic outputs are historical; do not rewrite them to
+look like current runtime results. The accepted numerical packets and private
+receipts remain immutable. The earlier
+[complete ordinary-beam evidence](library-usability-improvement.md#complete-beam-implementation-and-independent-evidence)
+and [multilayer acceptance](multilayer-member-workflow.md) retain their bounded
+cases and exclusions.
 
-Routine work now uses cohesive commits, affected checks once after the batch,
-one PR and required hosted checks. The delivery ledger and separate local audit
-are opt-in; do not restore them through an older guide. Use the
-[maintenance playbook](../governance/maintenance-playbook.md).
+Complete engineering approval remains false. Full six-amendment qualification,
+material/coating/manufacturer eligibility, above-M60 substantiation, unresolved
+caller/source interpretations, finite creep history and real installed
+Windows/ETABS/Excel/XLL evidence remain HOLD. Hosted platform smoke is software
+evidence; it does not close installed-host engineering acceptance. Source-use
+and normalized-data distribution permission remain passed.
+
+The replacement solver remains the main product with its own coordinator;
+Project_Manager V1 retains priority on the shared Mac. Draft
+[PR #1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019)
+is an unaccepted broad programme proposal. This pause/handoff neither adopts
+that programme nor duplicates the solver's source organization. Any future
+integration of the draft requires explicit replanning and rebinding against
+current main; its historical base does not select or block this authorized
+maintenance closeout.
+
+Routine work uses cohesive commits, affected checks once after the batch, one
+PR and required hosted checks. Use the
+[maintenance playbook](../governance/maintenance-playbook.md); detailed ledger
+controls remain opt-in.
 
 ## Next proposed work on the Mac
 
-The owner requested visible, deeper function review after the usability
-milestone. [LIB-DEEP-REVIEW-001](library-usability-improvement.md#function-review-lib-deep-review-001)
-records the beam source reads, signature/options decisions, SciPy comparison
-and the repaired longitudinal shear-basis binding. Whole-library deep review
-remains open; an inventory or a green suite does not establish that review.
+The smallest proposed packet is **ordered Amendment 1-2 source/caller
+reconciliation** within the existing supported library. It is a proposal for
+selection on resume, not an implementation authorization.
 
-[LIB-DEEP-REVIEW-002](library-usability-improvement.md#function-review-lib-deep-review-002)
-continues with supplied-bar contracts, maximum-area checks, source-verified
-M40-and-above bond stress, exact support development length and zero shear.
-The canonical Level A serviceability path was read and checked with 81
-independent decimal vectors; its service-analysis prerequisites remain explicit.
+- Start from the [dated source inventory](../verification/is456-official-source-inventory.json),
+  controlled source hashes and [existing impact matrix](../verification/is456-amendment-impact.json).
+  Read original issued instructions and trace their cumulative effect through
+  the existing supported callers. Fundamentals and original standards govern;
+  NPTEL and comparator implementations remain supporting evidence.
+- Acceptance: every A1-2 instruction has an exact source locator, ordered
+  amendment relationship, maintained caller/owner anchor and explicit qualified,
+  outside-case or unresolved disposition. Preserve A3-6 history and existing
+  acceptance; source possession alone is insufficient.
+- Stop after one dated documentation verdict identifies coverage and remaining
+  unknowns. Any newly demonstrated numerical defect needs its own explicit
+  correction scope and independent boundary evidence before edits.
+- Material/manufacturer substantiation and unresolved formwork/renumbering
+  interpretations require actual primary evidence, not guessed defaults.
+  Real installed Windows/ETABS work also needs access and an exact installed
+  candidate; its existing access hold has no confirmed return date. No purchase,
+  account creation or restriction bypass is selected.
 
-[LIB-DEEP-REVIEW-003](library-usability-improvement.md#function-review-lib-deep-review-003)
-corrects separate physical steel limits, opposite-face spacing and rounded-link
-enclosure in Python/C#. It traces actual failed arrangement evidence into member
-acceptance and compares 36 bounded capacity cases with SciPy. General per-bar
-strain compatibility and complete support geometry remain separate work.
-
-1. **LIB-MEMBER-WORKFLOW-001 — implemented:** the
-   [complete example](../../Python/examples/complete_member_workflow.py) now
-   connects public inputs to all 19 required checks, 39 physical bars, BBS,
-   quantities and an HTML/JSON/CSV report. Inspect [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016) for final hosted and
-   merge status before resuming; do not reopen accepted work by default.
-2. **LIB-MEMBER-WORKFLOW-002 — implemented:** run the same example with
-   `--case multilayer`. Its source-checked rectangular case uses actual per-bar
-   strains, local displaced concrete, equilibrium and extreme-bar ductility.
-   Read its [acceptance and limits](multilayer-member-workflow.md) and inspect
-   the milestone PR's integration before starting subsequent work.
-3. **Next proposed engineering packet:** calculated service-stress/crack inputs
-   and short/long-term deflection. Freeze its load-history and source evidence
-   before implementation. Current complete cases use independently derived
-   cracked SLS inputs and span/depth screening. General axial/biaxial section
-   analysis, support congestion/fit and broader families remain separate.
-4. Retain the full-process timing and manual-step boundary in the acceptance
-   record. This establishes one case's elapsed time, without a comparative
-   speedup or whole-building throughput claim. Avoid a general maintenance
-   campaign unless a confirmed blocker requires it.
-5. Prepare a consolidated release candidate/changelog and upgrade/install
-   evidence when release work is selected. Publication remains separately
-   authorized; current users of the older public wheel do not receive source
-   changes automatically.
-
-The following serviceability and release packets are proposals. This handoff
-does not authorize their implementation or publication.
+General support fit, arbitrary reinforcement layouts, broader serviceability
+and family extensions remain separate. Release preparation and publication
+retain per-release owner authorization and evidence gates.
 
 ### Resume library work safely
 
 Confirm the actual checkout and remote for `Pravin-surawase/structural_engineering_lib`.
 On the Mac the verified checkout is
 `/Users/pravinsurawase/VS_code_project/structural_engineering_lib`.
-After selecting a new exact packet, start its timer and inspect fresh Git state:
+After selecting a new exact packet, inspect fresh Git state before writes:
 
 ```bash
-./run.sh session begin --task-id <selected-task-id> --agent MAIN
 git remote get-url origin
 git fetch origin
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
@@ -109,6 +109,7 @@ git fetch origin
 
 Follow the [multi-device Git procedure](../git-automation/git-workflow-single-source.md#multi-device-rule-one-branch-one-writer-device)
 to fast-forward a clean ancestral `main` and create a new `codex/` task branch.
+Then start one timer with `./run.sh session begin --task-id <selected-task-id> --agent MAIN`.
 Inspect any dirty/diverged checkout before switching; retain other-device work.
 Use the API chooser and runnable examples below to select the real caller, then
 record the frozen case and required checks before changing engineering logic.

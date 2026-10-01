@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-09-28 — Complete multilayer beam implemented with independent per-bar evidence; live ETABS work remains held
+**Updated:** 2026-10-01 — PRs #1020/#1022 merged; owner requested a pause after documentation and maintenance closeout
 
 ---
 
@@ -28,13 +28,23 @@
 | LIB-DEEP-REVIEW-003 | Correct physical group limits, cross-face gaps and rounded-link enclosure | P0 | Done: PR #1014 | [Exact function reads, reproducers and independent comparison](planning/library-usability-improvement.md#function-review-lib-deep-review-003); final verification in the packet PR |
 | LIB-MEMBER-WORKFLOW-001 | Complete one representative public beam workflow through checked reinforcement, BBS and report | P0 | Implemented: [PR #1016](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1016) owns hosted closeout | [19 required checks, 39 physical bars, independent calculations, installed-wheel replay and 1.240 s full-process median](planning/library-usability-improvement.md#lib-member-workflow-001-frozen-acceptance-case) |
 | LIB-MEMBER-WORKFLOW-002 | Complete a multilayer beam with per-bar strain/stress equilibrium | P0 | Implemented; milestone PR owns final hosted closeout | [Frozen plan and acceptance](planning/multilayer-member-workflow.md): shared independent vectors, 27 required checks, 43 bars, BBS/report and installed-wheel replay |
+| LIB-SUPPORTED-CORRECTNESS | Correct supported column, flange, material and bounded SLS paths | P0 | Done: [PR #1020](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1020) merged at 32576ae0 | Required and broad hosted checks passed; [accepted scope and remaining qualifications](verification/library-supported-scope-completion.md) |
+| IS456-SLAB-AMENDMENTS | Map issued A3-6 instructions and correct the two demonstrated supported-slab limits | P0 | Done: [PR #1022](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1022) merged at 617cec06 | Independently reviewed tree matches merge; required/broad checks passed; [corrections and retained HOLDs](verification/slab-issued-amendment-corrections.md) |
 
-**Next proposed library milestone:** calculated service-stress/crack inputs and
-short/long-term deflection, with separately frozen source and load-history
-evidence. General support-fit, whole-library deep review, Level B/C serviceability
-and the remaining families are still open.
-Record source reads and independent outcomes, not just inventory or test
-counts. Consolidated release preparation remains a separate proposed packet.
+**Paused by owner — 1 October:** no next engineering packet is selected. The
+smallest proposed qualification is ordered Amendment 1-2 source/caller mapping
+against the existing [source inventory](verification/is456-official-source-inventory.json)
+and [impact matrix](verification/is456-amendment-impact.md). Stop with a dated
+source/caller verdict and explicit unresolved rows; any new numerical correction
+requires its own scope and evidence. Material/coating/manufacturer eligibility,
+above-M60 substantiation, remaining interpretations and real installed
+Windows/ETABS/Excel/XLL evidence retain their HOLDs. The bounded SLS profile
+does not qualify finite creep history or general Level B/C serviceability.
+
+The replacement solver retains its own coordinator and main-product priority;
+Project_Manager V1 retains priority on the shared Mac. Draft
+[PR #1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019)
+is an unaccepted proposal. No package release is selected or authorized.
 
 ## Maintenance Recovery Dashboard
 

@@ -12,7 +12,8 @@ This separately authorized implementation follows the
 records the original PR #1020 numerical baseline; its diagnostic outputs and
 owner hashes remain historical evidence. The basic one-way caller mapping
 repair received a separate independent PASS before numerical implementation.
-Final numerical acceptance requires independent review of the frozen candidate.
+Independent review of the frozen numerical candidate passed. Subsequent hosted
+verification and integration are recorded below.
 
 ## Problem, source and correction
 
@@ -50,9 +51,37 @@ The local evidence receipt under
 `external_data/library-evidence/3101d295/slab-amendment-corrections-20261001/`
 binds the exact commits, tree, changed paths, wheel hash, package member
 comparison, source test results and isolated installed-wheel consumer results.
-Only successful recorded checks count as acceptance evidence. The wheel is a
-local candidate at the existing package version; no package publication,
-release, push or merge is authorized by this packet.
+Only successful recorded checks count as acceptance evidence. At the local
+implementation freeze, the wheel was a candidate at the existing package
+version; that packet authorized no push, merge or release. The later PR and
+owner-approved merge have their own scope and evidence below.
+
+## Integration and acceptance — 1 October 2026
+
+[PR #1022](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1022)
+merged as `617cec0692680e38a82308b8705d9845d3758503`. Its tree
+`880f67aaac124bd64eeb3176c8eb2858db22fbde` exactly matches the reviewed final
+head `fa3ec7aabcafdfb147d94650e10f633c9279c8be`. The final follow-up changed
+only the two test import-group blank lines required by the hosted Python
+working directory; test ASTs and all 322 package members match the accepted
+numerical candidate.
+
+Focused evidence includes 297 source cases, 295 isolated installed-wheel cases,
+224 module origins and zero source fallback. Independent primary-page review
+reproduced nine spacing and eighteen shear boundaries and passed 49 consumer
+checks. [Required PR validation](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36846112305)
+and [broad hosted verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36846206490)
+passed on the final head. The latter includes full Python/FastAPI/React,
+dependency audits, clean wheel/CLI, Docker and Windows/macOS Python smoke.
+[Post-merge documentation](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/36853741632)
+also passed. Hosted wheel SHA-256:
+`07c2b50f8df975f7f07dee7971544e6c3743d9f4c1c27be75e008f1d83d12147`.
+
+The private merge receipt is retained under
+`external_data/library-evidence/fa3ec7aa/slab-amendment-merge-20261001/`.
+The current source contains these corrections; no new package, tag or release
+was published. Hosted Python smoke does not close installed Windows/ETABS,
+Excel or XLL engineering qualification.
 
 ## Qualifications retained and finite stop
 

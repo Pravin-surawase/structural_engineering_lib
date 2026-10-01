@@ -168,9 +168,9 @@ full Table 20 instead of half. No numerical change was made in this source
 packet. The matrix records existing bounded conformance separately from
 unverified applicability and source interpretations.
 
-The full six-amendment impact gate remains HOLD. It requires A1-2 cumulative
-coverage, a separately scoped correction of the demonstrated outcomes,
-above-M60 material substantiation, declared physical material/coating domains
+The full six-amendment impact gate remains HOLD. The two demonstrated slab
+outcomes are corrected in merged PR #1022. The remaining gate requires A1-2
+cumulative coverage, above-M60 material substantiation, declared physical material/coating domains
 and the unresolved caller/source interpretations recorded in the matrix.
 Source possession and page-count coverage do not close those qualifications.
 A circulated draft is not an adopted standard. Companion-code scope retains
@@ -180,6 +180,30 @@ normalized-data distribution permission is passed; this is an edition and
 interpretation gate, not another licensing-permission request.
 
 ## Final integration and publication state
+
+### Current integrated state — 1 October 2026
+
+[PR #1020](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1020)
+merged the column, flange, material and bounded SLS corrections at
+`32576ae0893bc246de152e6e9912efec89642717`.
+[PR #1022](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1022)
+then integrated the issued-amendment mapping and two supported-slab corrections
+at `617cec0692680e38a82308b8705d9845d3758503`. Both merged trees match their
+reviewed heads, and their required and broad hosted checks passed. The
+[slab correction record](slab-issued-amendment-corrections.md#integration-and-acceptance--1-october-2026)
+binds the final candidate, wheel and check identities. Original failed runs,
+baseline matrix hashes and accepted private receipts remain historical evidence.
+
+Software integration is complete for these two bounded packets. The cumulative
+edition/material/applicability and installed Windows/ETABS/Excel/XLL HOLDs
+remain; complete engineering approval remains false. No new package, tag or
+release was published. Draft #1019's programme remains unaccepted. The owner
+requested a pause after documentation and maintenance; no new engineering
+packet is selected. Use the [current brief](../planning/next-session-brief.md)
+for the finite next qualification proposal and preserve the separate solver's
+coordinator and priority.
+
+### Historical qualification freeze and publication proposal
 
 At the original qualification freeze, the local branch was
 `codex/library-next-evidence-20260930`, HEAD/base

@@ -5,6 +5,72 @@
 
 ---
 
+<a id="postmerge-maintenance-20261001"></a>
+
+## 2026-10-01 — Session: Pause after supported-library corrections and maintenance
+
+**Task:** postmerge-maintenance-20261001
+**Agent:** codex (one parent, one bounded read-only maintenance worker)
+**Branch:** `codex/postmerge-maintenance-20261001`
+**Focus:** Preserve the accepted library corrections, refresh the current qualification handoff and finish maintenance before the owner's pause.
+
+### Completed
+
+- Refreshed the handoff and task board against merged PRs #1020 and #1022, retaining the supported-scope checklist and all unresolved qualification HOLDs.
+- Ran maintenance diagnostics: health 100/100, context and token-efficiency checks PASS; retained the one unproved tester-output feedback item.
+- Fast-forwarded clean Mac main to the fetched merge at 617cec06 before creating this documentation branch; preserved accepted evidence, old branches and unrelated worktrees.
+
+### Verification and scope
+
+[PR #1020](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1020)
+integrated the column, flange, material and bounded serviceability corrections.
+[PR #1022](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1022)
+integrated the Amendment 3 distribution-spacing and Amendment 5 solid-slab
+maximum-shear corrections at `617cec0692680e38a82308b8705d9845d3758503`.
+Their required and broad hosted checks passed; each merged tree matches its
+independently reviewed candidate. GitHub owns those exact check and merge facts.
+
+The [supported-scope checklist](verification/library-supported-scope-completion.md)
+and [issued-amendment correction record](verification/slab-issued-amendment-corrections.md)
+own the retained numerical acceptance and qualification limits. This maintenance
+changes documentation only. It does not reopen accepted calculations, implement
+another engineering packet or publish a release. The single maintenance PR owns
+its final documentation and repository checks.
+
+Windows and installed applications were not inspected. All other worktrees,
+including unrelated dirty work and unavailable temporary entries, are preserved.
+The separate solver keeps its coordinator and priority; draft #1019's broader
+programme remains unaccepted. No cross-device or installed-host authority changes.
+
+### Issues encountered
+
+The maintained handoff and task board still selected September 28 work after
+the two October 1 corrections had integrated. This could send the next session
+into superseded work instead of the remaining source/applicability qualification.
+
+### Root causes and resolutions
+
+The numerical packet records were current, but their completed milestone and
+remaining boundaries had not reached the maintained session/task owners.
+Refresh those owners together and regenerate the brief from this session entry.
+The successful health score alone did not establish semantic handoff freshness.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Refreshed the maintained milestone handoff and task selection against accepted current-main scope; this is one untimed event.
+
+### What next
+
+The owner requested a pause. No next engineering packet is selected. On resume,
+fetch current main and read the [current brief](planning/next-session-brief.md).
+The smallest proposed qualification is ordered Amendment 1-2 source/caller
+reconciliation using the existing inventory and matrix, with a finite
+documentation verdict and separately scoped implementation for any confirmed
+defect. Material eligibility, unresolved interpretation, installed Windows/ETABS
+evidence and release authorization remain separate boundaries.
+
+---
+
 <a id="lib-member-workflow-002-20260928"></a>
 
 ## 2026-09-28 — Session: Complete multilayer beam workflow
