@@ -13,6 +13,7 @@ from structural_lib.codes.is456.slab._flexure import (
 )
 from structural_lib.codes.is456.slab.coefficients import TwoWayPanelCoefficientSet
 from structural_lib.codes.is456.slab.detailing import (
+    DISTRIBUTION_SPACING_SOURCE_REF,
     ProvidedSlabBars,
     SlabReinforcementRegionResult,
     check_slab_reinforcement_region,
@@ -159,6 +160,7 @@ class TwoWayPanelDesignResult:
     serviceability_dependency: str
     punching_shear_disposition: str
     held_scope: tuple[str, ...]
+    source_refs: tuple[str, ...] = ()
 
     @property
     def provided_reinforcement_is_adequate(self) -> bool:
@@ -254,6 +256,7 @@ def design_two_way_slab_panel(
     source_refs = (
         "IS 456:2000 Cl. 24.4",
         "IS 456:2000 Cl. 38.1",
+        DISTRIBUTION_SPACING_SOURCE_REF,
         design_input.coefficients.source_reference,
         design_input.coefficients.qualified_acceptance_reference,
     )
@@ -390,6 +393,7 @@ def design_two_way_slab_panel(
         edge_strip_reinforcement=edge_strip,
         corner_torsion=tuple(corner_results),
         shear=shear,
+        source_refs=source_refs + shear.source_refs,
         coefficient_correctness_verified_by_library=coefficients.verified_by_library,
         complete_engineering_design_approved=False,
         serviceability_dependency=(

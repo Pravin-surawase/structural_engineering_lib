@@ -10,11 +10,16 @@ from dataclasses import dataclass
 from structural_lib.codes.is456.slab.models import SlabContractError
 
 __all__ = [
+    "DISTRIBUTION_SPACING_SOURCE_REF",
     "ProvidedSlabBars",
     "SlabReinforcementRegionResult",
     "check_slab_reinforcement_region",
     "minimum_slab_reinforcement_mm2_per_m",
 ]
+
+DISTRIBUTION_SPACING_SOURCE_REF = (
+    "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)"
+)
 
 
 @dataclass(frozen=True)
@@ -88,7 +93,7 @@ def check_slab_reinforcement_region(
     maximum_diameter = overall_depth_mm / 8.0
     maximum_spacing = min(
         5.0 * effective_depth_mm if distribution_only else 3.0 * effective_depth_mm,
-        450.0 if distribution_only else 300.0,
+        300.0,
     )
     provided = bars.area_mm2_per_m
     return SlabReinforcementRegionResult(

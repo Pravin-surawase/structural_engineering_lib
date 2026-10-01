@@ -131,34 +131,50 @@ metadata changed.
 
 ## Source availability and edition gate
 
-Available controlled sources are the IS456:2000 consolidation through Amendment
-5, reaffirmed 2021, SHA-256
+The subsequent [bounded issued-amendment slab corrections](slab-issued-amendment-corrections.md)
+address the two demonstrated distribution-spacing and solid-slab maximum-shear
+outcomes. Their independent mapping review, separate numerical commits and exact
+wheel evidence belong to a new candidate. They preserve the cumulative edition,
+material/applicability and installed-Windows qualifications listed below.
+
+The controlled IS456:2000 collection includes Amendments 1-5 and reaffirmation
+markers through 2021, SHA-256
 `964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264`,
 and Amendment 6, June 2024, SHA-256
 `4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881`.
-Both local PDFs survive and the relevant material/SLS/column pages were
-inspected. Original SP16 is corroborating historical evidence, not the selected
+Both PDFs match their recorded hashes. The collection's base provisions are
+not uniformly consolidated: PDF47/printed46 still shows 450 mm while appended
+A3 PDF112/printed2 changes Cl. 26.3.3(b)(2) to 300 mm. Apply ordered amendment
+instructions, rather than inferring conformance from the cover or file name.
+Original SP16 remains corroborating historical evidence, not the selected
 integration engine. Its age alone does not invalidate a provision.
 
 The lawful current-status sources are the
 [official BIS standards portal](https://standards.bis.gov.in/) and its
 [IS456 catalogue entry](https://standards.bis.gov.in/website/standard-details?encryptedId=eyJpdiI6InVIejZUOFI5V1Z5RXZMWEZGNnh4a1E9PSIsInZhbHVlIjoiZ1ZhcnlpWEFRVE00Q1dndk1Tc3lrQT09IiwibWFjIjoiYjAzMjg2ZDY3YWE0NzhkNGRlZDczYzI2ZGJiZTVkNThiNThlYmZmNTI3MDFmZTA0MzljNWM5Njg1ZWNmYjhhNiIsInRhZyI6IiJ9).
-On 1 October the official public page returned HTTP 200 but only a JavaScript
-shell; this bounded read did not retrieve its current edition/amendment list.
-The older public archival scan cannot certify that list. No particular later
-amendment is claimed missing or nonexistent.
+The original web reader received a JavaScript shell. The follow-up direct
+rendered-browser observation on 1 October successfully read Fourth Revision,
+reviewed 2025, reaffirmed July 2025, and six amendment rows with years
+2001/2005/2007/2013/2019/2024. The dated
+[source inventory](is456-official-source-inventory.json) separates official
+publication status, private source possession and provision qualification.
+All 20 physical A3-6 pages were visually reviewed, including two blank versos.
 
-The official entry's search-indexed metadata on 1 October reports review in
-2025 and six amendments. This is corroborating publication-status evidence;
-the direct page still did not expose dated current amendment details. The
-follow-up receipt distinguishes the indexed result from a fresh direct catalogue
-response and retains the supported-clause/table impact gate.
+The [reviewed impact matrix](is456-amendment-impact.md) indexes 95 instruction
+blocks against 13 supported family journeys and 25 advanced exports. It
+identifies two supported-slab discrepancies: the distribution-spacing cap
+retains 450 mm instead of amended 300 mm, and solid-slab maximum shear uses
+full Table 20 instead of half. No numerical change was made in this source
+packet. The matrix records existing bounded conformance separately from
+unverified applicability and source interpretations.
 
-Close this gate with dated official publication/status metadata, authorized
-copies of any applicable amendments not already consolidated, and an impact
-matrix covering the library's actual supported clauses/tables. A circulated
-draft is not an adopted standard. Companion-code scope must similarly retain
-its own source version; do not silently upgrade IS13920 or expand code families.
+The full six-amendment impact gate remains HOLD. It requires A1-2 cumulative
+coverage, a separately scoped correction of the demonstrated outcomes,
+above-M60 material substantiation, declared physical material/coating domains
+and the unresolved caller/source interpretations recorded in the matrix.
+Source possession and page-count coverage do not close those qualifications.
+A circulated draft is not an adopted standard. Companion-code scope retains
+its own source version; no IS13920 or code-family scope expansion is inferred.
 No new account, purchase or credentials were used. Standing source-use and
 normalized-data distribution permission is passed; this is an edition and
 interpretation gate, not another licensing-permission request.
