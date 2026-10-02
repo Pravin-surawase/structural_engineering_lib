@@ -168,10 +168,46 @@ full Table 20 instead of half. No numerical change was made in this source
 packet. The matrix records existing bounded conformance separately from
 unverified applicability and source interpretations.
 
+The resumed A1-2 follow-up on PR #1023 main,
+`c45cb89f13e8821716553b096003eb22763e083e`, visually indexes eight additional
+physical pages and 42 instruction blocks against the same 38 maintained
+callers: 1,596 new dispositions. Its current owner hashes and 11 read-only
+canonical/owner diagnostics are separate from the original A3-6 evidence.
+The arithmetic union is 137 blocks and 5,206 dispositions across the two
+snapshots; these counts include explicit unknowns and exclusions. See the
+[current A1-2 packet](is456-amendment-impact.md#amendment-1-2-current-source-packet--1-october-2026).
+Complete independent review and its essential concrete-bearing classification
+repair are accepted for bounded documentation purposes; six affected checks
+and identity/count validation pass. No calculation code changed and no new
+numerical defect was demonstrated by this A1-2 packet.
+
+The separately authorized [staircase spacing follow-up](is456-amendment-impact.md#current-staircase-spacing-follow-up--1-october-2026)
+subsequently confirmed and locally corrected the old 450 mm scalar ceiling in
+the maintained longitudinal waist-slab route. Independent frozen review
+accepts the software correction; 92 focused cases, full Python 8,664, FastAPI
+614, React 293 and repository 32/32 pass (ten unchanged-input check results
+reused). The original ledger failure history is preserved. Eight isolated
+installed Mac wheel cases pass, with 224 installed module origins and no source
+fallback. Physical spacing datum/drawing, installed Windows/ETABS/Excel/XLL
+qualification and full engineering approval stay HOLD. It preserves the
+original A3-6 and A1-2 snapshots and accepted PR #1022 numerical evidence.
+
+The separate [current concrete-bearing reconciliation](is456-amendment-impact.md#current-concrete-bearing-operation-follow-up--1-october-2026)
+traces the actual Cl. 34.4 `fck` consumer across 95 A3-6 instruction blocks:
+43 unknowns, 36 external procedures and 16 absent changed calculations. The
+original geometry-only assignments remain historical; the current appendix
+retains physical material/grade/exposure HOLDs and the advanced/preview scope.
+Independent frozen review accepts the bounded operation documentation;
+identity/coverage checks and 12/12 affected repository checks pass, with six
+unchanged-input results reused. No numerical defect or new supported capability
+is demonstrated by that documentation packet.
+
 The full six-amendment impact gate remains HOLD. The two demonstrated slab
-outcomes are corrected in merged PR #1022. The remaining gate requires A1-2
-cumulative coverage, above-M60 material substantiation, declared physical material/coating domains
-and the unresolved caller/source interpretations recorded in the matrix.
+outcomes are corrected in merged PR #1022. A1-2 inventory/caller coverage is
+now recorded; remaining engineering qualification requires physical
+material/coating domains, above-M60 substantiation, unverified cover/tie,
+coefficient/direction bindings and the unresolved caller/source interpretations
+recorded in both snapshots.
 Source possession and page-count coverage do not close those qualifications.
 A circulated draft is not an adopted standard. Companion-code scope retains
 its own source version; no IS13920 or code-family scope expansion is inferred.
@@ -197,11 +233,14 @@ baseline matrix hashes and accepted private receipts remain historical evidence.
 Software integration is complete for these two bounded packets. The cumulative
 edition/material/applicability and installed Windows/ETABS/Excel/XLL HOLDs
 remain; complete engineering approval remains false. No new package, tag or
-release was published. Draft #1019's programme remains unaccepted. The owner
-requested a pause after documentation and maintenance; no new engineering
-packet is selected. Use the [current brief](../planning/next-session-brief.md)
-for the finite next qualification proposal and preserve the separate solver's
-coordinator and priority.
+release was published. Draft #1019's programme remains unaccepted. PR #1023
+integrated the prior closing documentation. The owner subsequently resumed
+bounded Library qualification overnight through 2 October 2026 03:30 UTC,
+superseding the pause. The A1-2 documentation checkpoint has bounded independent
+acceptance and passed affected local checks; external publication is
+coordinated with the parent. Use the [current brief](../planning/next-session-brief.md)
+and preserve the separate solver's coordinator and priority. Overnight work
+does not authorize a release, merge or engineering-use certification.
 
 ### Historical qualification freeze and publication proposal
 
@@ -238,3 +277,50 @@ examples, transport and artifact criteria in the existing plan, with retained
 case exclusions and source evidence. The accepted packets close their bounded
 defects; they do not by themselves establish whole-library completion or
 qualified engineering/construction approval.
+
+
+## Current isolated-footing one-way shear evidence — 1 October 2026
+
+The [current-operation follow-up](is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up--1-october-2026)
+records the exact wide-beam versus solid-slab maximum-shear question for the
+concentric, uniform-depth soil-footing journey and two maintained APIs. Source
+applicability remains HOLD: the issued footing clause and its minimum-spacing
+cross-reference do not explicitly select the slab maximum. A5 retains the
+possessed base's half-Table-20 solid-slab statement; no numerical rule change
+for foundations is inferred.
+
+Separately, the current raw-Table-19 owner accepts only `tau_v <= tau_c`, where
+`tau_c <= 1.01 N/mm²` is below even the lowest hypothetical half-Table-20
+ceiling, `1.25 N/mm²`, in its validated runtime domain. The scalar proof covers
+required-steel screening and final provided-steel calls; it does not establish
+physical bar roles or source applicability. Existing composed/canonical
+benchmark replays and four primitive controls corroborate the bound. Frozen
+independent operation review accepts the bounded record with zero essential
+blockers; the actual documentation gate passed eight of eight checks and
+historical/current identity passed. Final metadata checks accompany recovery.
+No formula change or test is added; prior accepted calculations and the five
+local checkpoint commits remain preserved. The nine overlapping dispositions
+do not expand the amendment inventory or the 13-journey / 25-export scope.
+Shared material, complete engineering and actual installed-host HOLDs remain.
+
+
+## Current isolated-footing selected-bar role evidence — 1 October 2026
+
+The [current role follow-up](is456-amendment-impact.md#current-isolated-footing-selected-bar-role-follow-up--1-october-2026)
+records a named inference matching the completed model's separately designed
+L/B bending bars to the unchanged main-spacing category. For those two
+maintained callers, A3's shrinkage/temperature-only change is conditionally
+`unchanged/not_applicable`; original historical dispositions remain preserved.
+Four read-only observations/eight schedules support the intended-model trace.
+This does not classify actual drawing bars, additional secondary sets or other
+footing cases. Internal helpers remain owners within the existing scope.
+
+Table-19 note applicability, qualifying longitudinal area, continuation and
+support exception remain HOLD independently of role/area/spacing/anchorage
+results. The conditional straight-square geometric screen is a precise held
+interpretation question, not a numerical failure. The prior maximum-shear,
+material, complete engineering and actual installed-host HOLDs remain. Frozen
+independent review accepts the bounded record with zero essential blockers;
+the actual documentation gate passed eight of eight checks with zero reuses
+and historical/current identity passed. Final metadata checks accompany recovery;
+there is no formula change, new test, experimental promotion or release.

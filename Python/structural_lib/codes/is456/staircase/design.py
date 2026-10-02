@@ -40,10 +40,12 @@ __all__ = [
 _SUPPORTED_FY_N_PER_MM2 = (250.0, 415.0, 500.0)
 _SOURCE_REFS = (
     "IS 456:2000 Cl. 23.2.1, 26.3.3, 26.5.2.1, 38.1, 40.1 and 40.2",
+    "IS 456:2000 Cl. 26.3.3(b)(2), Amendment 3 (August 2007)",
     "IS 456:2000 Table 19 and Table 20",
     "NPTEL-M9L20-EX9.1",
 )
 _LIMITATIONS = (
+    "HOLD: distribution spacing uses a conservative scalar ceiling; physical horizontal/soffit spacing datum and drawings require qualified review.",
     "HOLD: modification factors and direct deflection are not calculated.",
     "HOLD: crack width, development-length layout, landing torsion, and automatic bar selection are not implemented.",
     "HOLD: load generation, combinations, patterns, continuity, moment redistribution, and seismic behavior are not inferred.",
@@ -249,7 +251,9 @@ def design_straight_flight_staircase(
     )
     maximum_bar_diameter = geometry.waist_thickness_mm / 8.0
     maximum_main_spacing = min(3.0 * design_input.effective_depth_mm, 300.0)
-    maximum_distribution_spacing = min(5.0 * design_input.effective_depth_mm, 450.0)
+    # Apply the amended horizontal-distance maximum conservatively to the
+    # supplied scalar; this calculation does not qualify its physical datum.
+    maximum_distribution_spacing = min(5.0 * design_input.effective_depth_mm, 300.0)
     shear_result = check_solid_slab_one_way_shear(
         SlabShearInput(
             factored_shear_kn=shear_kn_per_m,

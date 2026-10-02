@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-10-01 — PRs #1020/#1022 merged; owner requested a pause after documentation and maintenance closeout
+**Updated:** 2026-10-01 — PRs #1020/#1022/#1023 integrated; owner resumed bounded Library qualification overnight
 
 ---
 
@@ -30,13 +30,22 @@
 | LIB-MEMBER-WORKFLOW-002 | Complete a multilayer beam with per-bar strain/stress equilibrium | P0 | Implemented; milestone PR owns final hosted closeout | [Frozen plan and acceptance](planning/multilayer-member-workflow.md): shared independent vectors, 27 required checks, 43 bars, BBS/report and installed-wheel replay |
 | LIB-SUPPORTED-CORRECTNESS | Correct supported column, flange, material and bounded SLS paths | P0 | Done: [PR #1020](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1020) merged at 32576ae0 | Required and broad hosted checks passed; [accepted scope and remaining qualifications](verification/library-supported-scope-completion.md) |
 | IS456-SLAB-AMENDMENTS | Map issued A3-6 instructions and correct the two demonstrated supported-slab limits | P0 | Done: [PR #1022](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1022) merged at 617cec06 | Independently reviewed tree matches merge; required/broad checks passed; [corrections and retained HOLDs](verification/slab-issued-amendment-corrections.md) |
+| IS456-A1-A2-RECONCILIATION | Reconcile ordered A1-2 instructions against maintained callers without rewriting A3-6 history | P0 | Local documentation checkpoint accepted; publication coordinated with parent | 42 blocks, all 38 callers, 1,596 independently reviewed dispositions, six affected checks PASS and exact source/current-owner identities; [current packet](verification/is456-amendment-impact.md#amendment-1-2-current-source-packet--1-october-2026); full six-amendment qualification remains HOLD |
+| IS456-STAIR-SPACING | Correct the source-confirmed distribution-spacing false pass in the maintained longitudinal waist-slab case | P0 | Independently accepted local software repair; full component/repository validation passed | A3 300 mm scalar ceiling, inclusive/depth boundaries and canonical/HTTP failure propagation; [current follow-up](verification/is456-amendment-impact.md#current-staircase-spacing-follow-up--1-october-2026); physical spacing datum and drawing qualification remain HOLD |
+| IS456-BEARING-CURRENT | Reconcile the actual concrete-strength bearing owner against all existing A3-6 instruction blocks | P0 | Independently accepted local documentation checkpoint; affected checks passed | 95 current dispositions/173 existing locators; original matrices and advanced/preview scope preserved; [current operation follow-up](verification/is456-amendment-impact.md#current-concrete-bearing-operation-follow-up--1-october-2026); physical material/grade/exposure and engineering qualification remain HOLD |
+| LIB-TEST-RUNNER-EXIT | Preserve failed component/precondition outcomes through aggregate test dispatch and usage recording | P0 | Independently accepted local repair; 28 focused cases and API rerun passed | Deterministic full-entry-point success/failure regressions; first nonzero aggregate status and no runtime after a failed test precondition; [dispatcher behavior](../scripts/README.md#preferred-entry-points); original failing logs retained |
+| IS456-ISO-SHEAR-CURRENT | Trace the exact isolated-footing one-way maximum-shear applicability and current accepted-demand bound | P0 | Independently reviewed local documentation; eight affected checks passed and source HOLD preserved | Three selected callers, exact issued-source/caller evidence, preserved historical values and affected documentation checks; [current follow-up](verification/is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up--1-october-2026); no formula change or qualification promotion |
+| IS456-ISO-BAR-ROLES-CURRENT | Trace the intended main/secondary roles of completed isolated-footing L/B bottom-bar schedules | P0 | Independently reviewed bounded intended-model correspondence; eight affected checks passed and physical/source HOLDs preserved | Two maintained callers; exact base/A2/A3 relationships, four observations/eight schedules, preserved historical values and explicit Table19 interpretation question; [current role follow-up](verification/is456-amendment-impact.md#current-isolated-footing-selected-bar-role-follow-up--1-october-2026); no formula change or physical acceptance |
 
-**Paused by owner — 1 October:** no next engineering packet is selected. The
-smallest proposed qualification is ordered Amendment 1-2 source/caller mapping
+**Resumed by owner — 1 October:** bounded Library work is authorized overnight
+through 2 October 2026 03:30 UTC. The selected qualification is ordered
+Amendment 1-2 source/caller mapping
 against the existing [source inventory](verification/is456-official-source-inventory.json)
-and [impact matrix](verification/is456-amendment-impact.md). Stop with a dated
-source/caller verdict and explicit unresolved rows; any new numerical correction
-requires its own scope and evidence. Material/coating/manufacturer eligibility,
+and [impact matrix](verification/is456-amendment-impact.md). Finish a dated,
+independently reviewed local verdict and recovery evidence. A demonstrated
+defect may receive a separate bounded correction with regression tests and
+independent verification; broader changes need evidence and a separate scope.
+Coordinate publication with the parent. Material/coating/manufacturer eligibility,
 above-M60 substantiation, remaining interpretations and real installed
 Windows/ETABS/Excel/XLL evidence retain their HOLDs. The bounded SLS profile
 does not qualify finite creep history or general Level B/C serviceability.

@@ -4,24 +4,28 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-10-01
-- Focus: Preserve the accepted library corrections, refresh the current qualification handoff and finish maintenance before the owner's pause.
-- Completed: Refreshed the handoff and task board against merged PRs #1020 and #1022, retaining the supported-scope checklist and all unresolved qualification HOLDs.; Ran maintenance diagnostics: health 100/100, context and token-efficiency checks PASS; retained the one unproved tester-output feedback item.; Fast-forwarded clean Mac main to the fetched merge at 617cec06 before creating this documentation branch; preserved accepted evidence, old branches and unrelated worktrees.
-- Recurrence controls: RR-004 x35 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
+- Focus: Preserve the independently reviewed local Library packets and coordinate their publication handoff with the parent, retaining engineering qualification HOLDs.
+- Completed: Preserved the five-commit checkpoint b5510d20 with ordered A1-2, staircase correction and component/Mac-wheel evidence, current concrete-bearing disposition, and the 28-case aggregate-runner repair; separately accepted shear checkpoint d0c436cb records the held source category and conditional raw-Table19 bound; exact selected-bar role review accepts two conditional intended-model dispositions with the actual eight-check documentation and identity pass, retaining drawing/Table19/maximum-shear/material/engineering/installed-host HOLDs. Final metadata checks, separate recovery and precise source/physical questions accompany the parent handover.
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-**Owner pause — 1 October:** stop engineering work after this documentation and
-maintenance closeout. No next engineering packet is selected. Current-source
-corrections are integrated; no new package, tag or release was published.
+**Owner resume — 1 October:** the owner resumed Library work overnight through
+2 October 2026 03:30 UTC. This supersedes the earlier pause and selects bounded
+ordered Amendment 1-2 source/caller reconciliation. Local documentation,
+diagnostics, tests and commits are authorized; publication is coordinated with
+the parent. No public release, merge, package publication or engineering-use
+certification is authorized by the overnight work.
 
 **Development device — 1 October:** the Mac intake fetched GitHub, verified the
 repository and remote, and fast-forwarded clean local main to
-`617cec0692680e38a82308b8705d9845d3758503` before creating the maintenance
-branch. This is a dated observation: fetch again before resuming and use current
-main. Preserved old branches/worktrees, unrelated dirty architecture work,
-unavailable temporary entries and private evidence remain intact. Windows was
-not inspected; no device writer or installed-application authority changes.
+`c45cb89f13e8821716553b096003eb22763e083e` (PR #1023 documentation closeout)
+for this resumed task. Primary main is clean; the sole Library writer uses the
+isolated `codex/is456-a1-a2-reconciliation-20261002` worktree. This is a dated
+observation: fetch again before another writer takes over. Preserved old
+branches/worktrees, unrelated dirty architecture work, unavailable temporary
+entries and private evidence remain intact. Windows and installed applications
+were not inspected; no installed-host authority changes.
 
 [PR #1020](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1020)
 merged as `32576ae0`, correcting supported column strain/axis behavior, flange
@@ -45,6 +49,27 @@ receipts remain immutable. The earlier
 and [multilayer acceptance](multilayer-member-workflow.md) retain their bounded
 cases and exclusions.
 
+The local A1-2 extension now indexes 42 additional instruction blocks and
+1,596 dispositions against the same 38 callers. Main and a separate source
+worker visually checked eight physical pages, and 11 read-only canonical/owner
+diagnostics agree with independent expectations. Current A1-2 anchors/hashes
+are separate from the preserved A3-6 baseline. The arithmetic union is 137
+blocks and 5,206 dispositions, including exclusions and unknowns; these are
+inventory counts, not accepted calculations. See the
+[current-source A1-2 packet](../verification/is456-amendment-impact.md#amendment-1-2-current-source-packet--1-october-2026).
+Independent frozen review required one current classification repair:
+`api.check_bearing_pressure` consumes concrete strength, while only
+`api.size_footing` is geometry-only. Its A1-2 assignments now retain the physical
+material HOLDs. The corresponding historical A3-6 operation dispositions remain preserved.
+The [current concrete-bearing appendix](../verification/is456-amendment-impact.md#current-concrete-bearing-operation-follow-up--1-october-2026)
+now traces all 95 existing blocks/173 targets to its actual Cl. 34.4 `fck` owner.
+Its 43 unknowns, 36 external procedures and 16 absent changed checks preserve
+the actual physical input and complete-footing boundaries. Independent frozen
+review accepts all 95 dispositions and eight relationships with zero essential
+blockers; identity/coverage and 12/12 affected checks pass, with six unchanged-input
+results reused. No numerical correction is supported by this packet and no
+advanced/preview operation is promoted.
+
 Complete engineering approval remains false. Full six-amendment qualification,
 material/coating/manufacturer eligibility, above-M60 substantiation, unresolved
 caller/source interpretations, finite creep history and real installed
@@ -55,7 +80,7 @@ and normalized-data distribution permission remain passed.
 The replacement solver remains the main product with its own coordinator;
 Project_Manager V1 retains priority on the shared Mac. Draft
 [PR #1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019)
-is an unaccepted broad programme proposal. This pause/handoff neither adopts
+is an unaccepted broad programme proposal. This resumed handoff neither adopts
 that programme nor duplicates the solver's source organization. Any future
 integration of the draft requires explicit replanning and rebinding against
 current main; its historical base does not select or block this authorized
@@ -66,11 +91,86 @@ PR and required hosted checks. Use the
 [maintenance playbook](../governance/maintenance-playbook.md); detailed ledger
 controls remain opt-in.
 
-## Next proposed work on the Mac
+## Parent-selected isolated-footing shear continuation — 1 October 2026
 
-The smallest proposed packet is **ordered Amendment 1-2 source/caller
-reconciliation** within the existing supported library. It is a proposal for
-selection on resume, not an implementation authorization.
+The parent accepted the clean five-commit checkpoint `b5510d20`, its exact
+handover and verified recovery bundle, retained this task as sole Library
+writer, and selected a separate concentric isolated-footing one-way shear
+source/caller trace. Fresh origin/main remains `c45cb89f` at this continuation
+intake; the five local commits remain preserved on the owned branch.
+
+The [current footing-shear follow-up](../verification/is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up--1-october-2026)
+records an unresolved issued-source member classification and a separately
+verified conditional raw-Table-19 bound. Every accepted current demand is
+below even the lowest hypothetical half-Table-20 ceiling. The possessed base
+already contains the half-table solid-slab statement, retained by A5; this
+does not establish footing applicability. Source and physical qualification
+remain HOLD, with the precise authoritative decision question recorded.
+No formula change is justified. Independent frozen review accepts the bounded
+record with zero essential blockers; the actual affected docs gate passed eight
+of eight checks and historical/current identity passed. Preserve the immutable
+review, original diagnostics and historical matrix values; final metadata
+receipts accompany the separate local recovery checkpoint.
+The separately scoped provided-bar role trace is the next evidence-supported
+gap after this useful checkpoint, without changing the shear source HOLD.
+Publication and installed-host acceptance remain outside this local work;
+finish a verified handover before 2 October 2026 03:30 UTC.
+
+## Separate isolated-footing provided-bar role trace — 1 October 2026
+
+The [selected-bar follow-up](../verification/is456-amendment-impact.md#current-isolated-footing-selected-bar-role-follow-up--1-october-2026)
+records the named inferred main-flexural correspondence for the completed
+provided L/B bottom-bar model, based on 34.3 bending purpose and actual
+independent directional demands. A2 changes the separate one-way distribution
+item only; A3 changes the shrinkage/temperature spacing item only. Both intended
+flexural sets retain the unchanged main `min(3d,300 mm)` rule. This supports two
+bounded current `unchanged/not_applicable` dispositions for the secondary-only
+amendment. Exact frozen review accepts this documentation purpose with zero
+essential blockers; the actual docs gate passed eight of eight checks with zero
+reuses and prior/current identity passed. Final metadata checks accompany recovery.
+
+An actual drawing/purpose correspondence is still required. Additional
+temperature-only, one-way-only, combined/strap and unrelated bar sets are not
+classified. The Table-19 note's applicability, depth/direction datum and
+continuation/support exception remain precise source/physical questions; the
+authored straight square's conditional 350/400 mm geometric screen is not a
+failure verdict. The preceding maximum-shear classification remains HOLD.
+No production/test/classification change or installed-host acceptance follows.
+
+## Selected qualification packet and next justified work on the Mac
+
+The resumed packet is **ordered Amendment 1-2 source/caller reconciliation**
+within the existing supported Library. Its complete source/caller review and
+essential classification repair are independently accepted for documentation
+purposes; six affected checks and identity/count validation pass. Preserve the
+local checkpoint and recovery handoff before parent-coordinated publication.
+No new numerical defect was demonstrated in the A1-2 source pass.
+
+The separate [current staircase follow-up](../verification/is456-amendment-impact.md#current-staircase-spacing-follow-up--1-october-2026)
+confirmed the remaining A3 spacing false pass in the maintained solid
+longitudinal waist-slab case. Its local correction applies a conservative
+`min(5d,300 mm)` scalar ceiling and retains physical spacing-datum/drawing
+HOLDs. Independent frozen implementation review accepts the bounded software
+repair. Actual checks pass: 92 focused cases; Python 8,664 with 14 skips/six
+deselections; FastAPI 614; React 293; repository 32/32 with ten unchanged-input
+results reused. Eight isolated installed Mac wheel cases pass with 224 installed
+module origins and zero source fallback; this remains a private candidate of
+the existing version. Initial failing logs are retained. Preserve the separate
+A1-2 commit and accepted PR #1022 evidence. The historical concrete-bearing
+A3-6 classification now has a separately reviewed current-operation
+documentation follow-up. The separately authorized bounded aggregate runner
+follow-up now reproduces Python/FastAPI failures followed by success as exit
+zero in the unchanged CLI. It also confirms ignored Python-directory/React
+readiness failures can be replaced by runtime success. The local correction
+retains the first nonzero component status while attempting every suite, and
+prevents a test runtime from launching after its failed precondition. Independent
+frozen review accepts the main outcome with zero essential blockers; 28 focused
+cases pass. The initial gate was 11/12 because the new test file was untracked;
+staging only that intended file resolved the allowlist gate, and the API rerun
+passed 4/4 with two unchanged-input results reused. Final affected metadata-gate
+evidence is kept in the local recovery handoff to the parent. Original failing
+logs, the timing recorder and every engineering qualification HOLD remain intact;
+product suites need no duplicate run for this dispatcher-only change.
 
 - Start from the [dated source inventory](../verification/is456-official-source-inventory.json),
   controlled source hashes and [existing impact matrix](../verification/is456-amendment-impact.json).
@@ -81,9 +181,15 @@ selection on resume, not an implementation authorization.
   amendment relationship, maintained caller/owner anchor and explicit qualified,
   outside-case or unresolved disposition. Preserve A3-6 history and existing
   acceptance; source possession alone is insufficient.
-- Stop after one dated documentation verdict identifies coverage and remaining
-  unknowns. Any newly demonstrated numerical defect needs its own explicit
-  correction scope and independent boundary evidence before edits.
+- Finish one dated documentation verdict with coverage, independent review and
+  remaining unknowns. A demonstrated defect may receive a separate bounded
+  local correction with regression tests and independent verification within
+  the resumed work; do not turn a source ambiguity into a formula edit.
+- Subsequent work must be justified by actual remaining evidence. The smallest
+  candidate is a source/owner/case trace of a named unresolved staircase or
+  foundation applicability row, preserving prior acceptance and shared HOLDs.
+  Do not import draft #1019 as an approved programme or promote experimental
+  helpers. Stop at a verified checkpoint by the owner's deadline.
 - Material/manufacturer substantiation and unresolved formwork/renumbering
   interpretations require actual primary evidence, not guessed defaults.
   Real installed Windows/ETABS work also needs access and an exact installed

@@ -5,6 +5,382 @@
 
 ---
 
+<a id="is456-footing-bar-roles-current-20261002"></a>
+
+## 2026-10-01 — Session: Isolated-footing selected bottom-bar roles
+
+**Task:** is456-isolated-footing-shear-applicability-20261002 (separate sequential role packet)
+**Agent:** MAIN (sole Library writer; read-only issued-source and exact operation reviews)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Classify the intended completed L/B bottom-bar model without inferring physical acceptance or changing the preceding shear HOLD.
+
+### Completed
+
+- Preserved the preceding accepted shear checkpoint and all earlier local commits; no production/test/classification bytes changed.
+- Independently matched base 34.3 bending purpose and 34.3.1(b)/(c) spatial placement to both current directional Mu/Ast selections.
+- Kept A2's one-way-only qualifier deletion and A3's secondary-only absolute-spacing change distinct from the unchanged main rule.
+- Recorded the explicitly named inferred main-flexural correspondence for the completed two-direction model, with two conditional current proposals and unchanged historical matrices/scope.
+- Recorded four read-only observations/eight schedules, including reversed layers, central/outer bands and a transposed rectangle; authored approval flags are not new real-project evidence.
+
+### Verification and scope
+
+Issued-source and exact frozen operation reviews accept the bounded intended-
+model correspondence with zero essential blockers. The actual documentation
+gate passed eight of eight checks with zero reuses and prior/current identity
+passed. Final metadata checks and exact byte bindings accompany local recovery. No numerical defect, formula change or new test is selected.
+Do not repeat unchanged expensive suites or installed-wheel proof for these
+documentation-only semantics; actual physical/engineering qualification stays HOLD.
+
+### Issues encountered
+
+The source does not literally classify every footing direction as main.
+Additional temperature-only and one-way-only roles require their own evidence.
+The Table19 qualifying-area note's source/case applicability and continuation
+remain separate questions from bottom-bar purpose and bending-plane anchorage.
+
+### Root causes and resolutions
+
+Use an expressly named inference from source-defined bending purpose and actual
+directional demands, rather than a family, layer or distribution-zone label.
+Retain the conditional authored straight-square 350/400 mm continuation screen
+as a precise held interpretation question, with no failure verdict or numerical fix.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Preserve the inherited reader/handoff control; no new recurrence count or timed event is claimed.
+
+### What next
+
+Preserve the independently reviewed bounded disposition and its actual final
+checks/local recovery. Give the parent the exact remaining source/physical
+questions and separately retained decision packet. Continue only evidence-supported bounded work and reserve the final
+verified handover before 03:30 UTC. No publication, merge or host substitution.
+
+---
+
+<a id="is456-footing-shear-current-20261002"></a>
+
+## 2026-10-01 — Session: Isolated-footing one-way shear source boundary
+
+**Task:** is456-isolated-footing-shear-applicability-20261002
+**Agent:** MAIN (sole Library writer; separate read-only source and caller review)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Trace the declared isolated soil-footing operation without presuming a source interpretation or numerical defect.
+
+### Completed
+
+- Reverified clean worktree checkpoint b5510d20, clean primary main and origin identity; fresh fetch retains origin/main c45cb89f. Preserved all five local commits and recovery bundles.
+- Independently read base footing/shear sources and ordered A1/A2/A5 relationships. Soil section remains d; pile d/2, punching 31.6 and earthquake coupling-beam provisions remain distinct.
+- Recorded the precise footing/solid-slab maximum-shear source question as HOLD, with three unknown and six outside-member current subtarget/caller dispositions; historical matrices and scope unchanged.
+- Verified the separate current scalar bound tau_v<=tau_c<=1.01<1.25<=hypothetical half-Table20 in the raw Table19 runtime domain, including zero-demand and final provided-steel calls.
+- Recorded 55 supporting lookup observations, four primitive controls and existing composed/canonical benchmark replays. These are read-only development evidence; no source applicability, new physical approval or complete qualification is inferred.
+
+### Verification and scope
+
+Separate issued-source and caller inventories agree with the held
+interpretation and conditional arithmetic. Exact frozen operation review
+accepts the bounded record with zero essential blockers. The actual frozen
+documentation gate passed eight of eight checks with zero reuses, and
+historical/current identity passed. Final metadata checks accompany recovery. No production/test/classification file changes are selected; do not
+repeat unchanged expensive suites or installed-wheel proof for this documentation
+packet. Full six-amendment, material, finite-creep and installed-host HOLDs remain.
+
+### Issues encountered
+
+The possessed sources provide no explicit footing-to-solid-slab maximum
+classification bridge. The initial external diagnostic writer also used two
+nonexistent result aliases after its calculations; the actual dataclass fields
+were read and the evidence writer corrected. Its original failed log is retained;
+no library defect or earlier successful receipt is inferred from that failed run.
+
+### Root causes and resolutions
+
+Keep source applicability separate from the mathematical consequence of a
+hypothetical cap. Current raw Table19 acceptance already has the smaller
+scalar ceiling, so changing a table/formula cannot repair the interpretation
+gap. An authoritative member/operation basis is the exact remaining question.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Preserve the inherited reader/handoff control and required section; no new recurrence count or timed event is claimed.
+
+### What next
+
+Preserve this independently reviewed bounded disposition and its actual
+docs/identity receipts in a separate local checkpoint and recovery. Continue the provided-bar
+role trace as a separate evidence-supported packet while retaining the shear
+source HOLD. No push, merge, release, package publication or installed-host
+acceptance; reserve time for final honest handover before 03:30 UTC.
+
+---
+
+<a id="library-test-runner-exit-20261002"></a>
+
+## 2026-10-01 — Session: Aggregate test-runner exit propagation
+
+**Task:** is456-a1-a2-reconciliation-20261002
+**Agent:** MAIN (sole Library writer; independent read-only source and frozen implementation review)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Correct the demonstrated aggregate test-runner false-success behavior after preserving the separate source, staircase and bearing checkpoints.
+
+### Completed
+
+- Preserved A1-2 checkpoint 8479cb8f, staircase correction 4cd194d9 and current bearing documentation 87172810 with independently reviewed evidence and verified local bundles.
+- Main and a separate source reviewer traced the lost status to the timing wrapper's intentional disabled errexit and unguarded aggregate commands; the recorder itself faithfully records the status it receives.
+- Copied the complete original CLI into isolated fixtures: Python/FastAPI failures followed by success, ignored React readiness and ignored Python-directory failures each incorrectly returned zero. The all-success control also returned zero; no real suite or shared session store was reached.
+- Implemented first-nonzero aggregate status while attempting the same three suites in order; retained existing single-suite arguments and added explicit returns for the necessary working-directory/dependency preconditions.
+- Added complete-entry-point regressions for all eight aggregate success/failure combinations, single-suite selection/forwarding, default/explicit Python paths, usage-recorder failure and failed preconditions.
+- Independent frozen review accepts the bounded correction with zero essential blockers; 28 focused cases pass (26 new deterministic cases and two retained source contracts). Original Python17/FastAPI23 failures now return 17/23; failed readiness/directory cases return one, and the all-success control remains zero.
+
+### Verification and scope
+
+Frozen independent implementation review and all 28 deterministic/source
+contract cases pass. Bash syntax, Black and Ruff pass. The initial affected
+gate passed 11/12: its sole failure required staging the intended new caller
+file. No content changed; the API category then passed 4/4, with two unchanged
+results reused. The final affected metadata gate is required before committing
+and is bound separately in the local recovery record. This packet changes only
+test dispatch exit propagation/reporting and its necessary preconditions. The timing recorder,
+other commands, engineering code, classification, prior matrices and historical
+failure logs stay unchanged. Product suites are not repeated for this isolated
+dispatcher correction; the accepted staircase checkpoint owns their actual
+component outcomes. No public release or engineering qualification follows.
+
+### Issues encountered
+
+The original full-product command returned zero after Python's generated-ledger
+failure because later FastAPI/React success replaced it. With errexit disabled,
+failed cd/readiness commands could also be replaced by a later stub runtime's
+success. These are reproduced main-process failures, not guessed test results.
+The canonical caller allowlist also correctly rejected an untracked new
+regression file; staging that intended file resolved the validation gate without
+changing code, tests or generated API outputs. Both original gate logs remain
+retained, with their exact failure/reuse counts.
+
+The final session-policy check found a missing required recurrence heading in
+this latest phase entry. Restored the reader's section without changing any
+reviewed implementation or adding an invented recurrence count or duration.
+
+### Root causes and resolutions
+
+Each selected component must return its actual status explicitly. Aggregate
+dispatch retains the first nonzero status and reports every failed component
+while continuing the remaining suites. Failed test preconditions prevent that
+runtime from launching. Usage-recording failure continues to leave the product
+result intact; no broad timing-wrapper rewrite is selected.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Retain the inherited session/handoff reader control and restore its required heading at closeout; no new recurrence count or timed event is claimed.
+
+### What next
+
+Preserve this independently accepted bounded local commit and recovery record
+after the final affected metadata gate, then close the exact task timer and
+hand the four separate packets and exact artifact identities to the parent.
+Full six-amendment, physical material/above-M60, staircase drawing/spacing datum,
+finite-creep and actual installed Windows/ETABS/Excel/XLL qualification remain
+HOLD. Publication remains with the parent; no release or engineering-use
+certification follows. Stop at a verified checkpoint before 2 October 2026
+03:30 UTC.
+
+---
+
+<a id="is456-bearing-current-20261002"></a>
+
+## 2026-10-01 — Session: Current concrete-bearing A3-6 reconciliation
+
+**Task:** is456-a1-a2-reconciliation-20261002
+**Agent:** MAIN (sole Library writer; separate read-only source and operation review)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Repair the current interpretation of the concrete-bearing owner while preserving every historical source matrix and the separately accepted staircase checkpoint.
+
+### Completed
+
+- Preserved documentation checkpoint 8479cb8f and independently reviewed staircase correction 4cd194d9, with verified local bundles and the private installed Mac wheel proof.
+- Traced the concrete Cl. 34.4 owner, its fck delegate and advanced/preview export separately from soil-pressure geometry sizing.
+- Appended 95 current-operation dispositions across 173 existing targets: 43 unknown/unverified, 36 outside/not-applicable and 16 unchanged/not-applicable, preserving all historical rows, counts, source ambiguities and prior follow-ups.
+- Main and a separate source worker visually confirmed the A4/A5 item(b) replacement correspondence; retained both differing issued base-page pointers without guessing their cause.
+- Independent frozen operation review accepts all 95 current dispositions/173 locators and eight relationships with zero essential blockers. Identity/coverage verification and all 12 affected repository checks pass, with six unchanged-input results reused.
+
+### Verification and scope
+
+Independent frozen operation review and affected documentation/identity checks
+pass for this bounded documentation purpose, with zero essential blockers.
+Exact frozen/review/check hashes and preserved semantic digests are bound in
+the current appendix. No calculation code, test, grade domain or API classification
+changes. This appendix overlaps the existing instruction inventory and does
+not enlarge the 13 journeys/25 advanced exports or establish physical input,
+complete-footing or six-amendment qualification. Protected sources and renders
+remain private. Local commits are authorized; the parent owns publication.
+
+### Issues encountered
+
+Historical D002 states that concrete bearing consumes no RC strength because it
+was grouped with soil sizing. The actual check delegates supplied fck to its
+permissible stress and is_safe outcome, so material prerequisites cannot be
+dismissed as geometry-only. A5 formwork-column and A6 unnamed-renumbering
+ambiguities remain unresolved and are not needed to change this bearing rule.
+
+### Root causes and resolutions
+
+Trace each actual operation instead of inferring applicability from a broad
+foundation/geometry family. Retain immutable historical assignments and add a
+dated current operation record. No issued A3-6 target directly changes Cl.34.4;
+no physical case or numerical mismatch supports a bearing formula correction.
+
+### What next
+
+Preserve this separately reviewed documentation commit and local recovery
+checkpoint. Then inspect and independently review the parent-authorized bounded
+aggregate-runner exit-propagation fix using injected component failures.
+Stop at a safe verified checkpoint before 2 October 2026 03:30 UTC.
+
+---
+
+<a id="is456-stair-spacing-20261002"></a>
+
+## 2026-10-01 — Session: Bounded staircase Amendment 3 spacing correction
+
+**Task:** is456-a1-a2-reconciliation-20261002
+**Agent:** MAIN (sole Library writer; independent read-only source/case and implementation review)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Correct the demonstrated spacing false pass in the maintained solid longitudinal staircase while preserving the separate A1-2 checkpoint and accepted slab evidence.
+
+### Completed
+
+- Preserved separately reviewed A1-2 documentation commit 8479cb8f and its verified local recovery bundle; no publication performed.
+- Independently traced the waist-slab case and non-main distribution role to exact Cl. 33/26.3.3 targets and A3; A4-6 do not reverse the 300 mm cap.
+- Changed only the staircase distribution scalar ceiling from 450 to 300 mm, retaining the 5d bound, main spacing and all other numerical owners; carried source provenance and physical-datum limitations through existing callers.
+- Replayed seven source-bound scalar fixtures: the adequate 14@400 case now returns canonical FAIL, 300 mm equality passes, and the 250/251 mm depth boundary is retained.
+- Completed separate frozen implementation and generated-ledger reviews with zero essential blockers; passed 92 focused cases, full Python 8664, FastAPI 614 and React 293 tests, and all 32 repository checks (10 unchanged-input results reused).
+- Built the existing-version candidate wheel offline; eight isolated installed Mac cases pass with 224 verified installed module origins and no source fallback. The two changed package members match the reviewed sources; the other 320 members retain pre-correction bytes.
+
+### Verification and scope
+
+The independent source/case and frozen implementation reviews accept this
+bounded software repair. Actual focused/full component results and the full
+repository gate pass; the initial ledger failure history remains retained.
+Python has 8664 passes, 14 skips and six deselections. FastAPI/React retain
+their successful full-product component results because those implementation
+and test inputs are unchanged in the final freeze. The repository gate reused
+ten results with unchanged inputs. Final metadata binds both reviews, the
+frozen candidate, logs and isolated local wheel receipts. The A1-2 checkpoint
+and every historical A3-6 matrix value remain intact.
+
+The altered 4000 mm fixture is not the published 5100 mm NPTEL example. Its
+area exceeds minimum steel and its diameter/basic L/d pass, isolating spacing.
+No engineering-use certification, package release, merge or external publication
+is authorized. The parent coordinates publication.
+
+### Issues encountered
+
+The source rule concerns horizontal spacing, while the existing scalar has no
+qualified drawing/orientation datum. A conservative scalar ceiling can reject
+some along-soffit pitches whose horizontal projections satisfy the source.
+
+Initial full validation found one generated caller-ledger drift from the new
+canonical regression calls: Python 8663 pass, one ledger-test failure, 14 skips
+and six deselections; repository checks 31/32 with the same ledger failure.
+FastAPI 614 and React 293 pass. The combined suite command's final success
+status did not erase its earlier Python failure. Original failed logs remain
+retained. Canonical ledger regeneration and a fresh full Python/final
+repository run resolve the ledger failure; no failure is counted as passed.
+The aggregate runner exit-propagation defect is a separate authorized
+follow-on after the numerical and bearing-documentation checkpoints.
+
+### Root causes and resolutions
+
+The local staircase owner retained the unamended 450 mm value after the shared
+slab detailing owner was corrected. Apply the A3 ceiling conservatively without
+coordinate conversion; preserve the physical datum/drawing HOLD. The 400 mm
+fixture fails either interpretation because its projection is about 344 mm.
+Regenerate the canonical compatibility ledger for the new maintained test
+calls; API classifications and the 25 advanced exports remain unchanged.
+
+### What next
+
+Preserve the reviewed local numerical commit and recovery identities, then
+finish the separate current-source concrete-bearing documentation follow-up
+and independently review it. The parent authorized a later bounded regression
+and repair of the demonstrated aggregate runner false-success defect. Keep
+physical/engineering and installed-host HOLDs and coordinate publication with
+the parent. Stop at a safe verified checkpoint before 2 October 2026 03:30 UTC.
+
+---
+
+<a id="is456-a1-a2-reconciliation-20261002"></a>
+
+## 2026-10-01 — Session: Ordered Amendment 1-2 Library reconciliation
+
+**Task:** is456-a1-a2-reconciliation-20261002
+**Agent:** MAIN (sole Library writer; bounded read-only source/review workers)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Reconcile issued A1-2 instructions and later-amendment interactions against the maintained Library callers while preserving accepted A3-6 evidence.
+
+### Completed
+
+- Verified the actual Mac checkout, remote and clean PR #1023 main at c45cb89f; created an isolated branch and preserved other worktrees/private evidence.
+- Visually inspected all eight A1-2 physical pages with a separate source worker: 42 instruction blocks, seven content pages and one blank verso.
+- Appended a current-source matrix extension with all 38 maintained callers, 1,596 dispositions, ordered later-amendment relationships and separate owner hashes; retained every historical A3-6 JSON value.
+- Replayed 11 read-only canonical/owner cases with independent expectations; no new numerical defect was demonstrated and no calculation code changed.
+- Completed independent frozen review of all 42 instructions, 30 ordered relationships, 38 callers and 1,596 dispositions; repaired its single concrete-bearing classification finding in the current extension while preserving historical A3-6 values.
+
+### Verification and scope
+
+The owner resumed Library work overnight through 2 October 2026 03:30 UTC,
+superseding the earlier pause. The sole Library writer uses the task-owned
+worktree; the replacement solver remains a separate project with its own
+writer/coordinator. Draft #1019's broad programme is not adopted.
+
+The [current A1-2 packet](verification/is456-amendment-impact.md#amendment-1-2-current-source-packet--1-october-2026)
+owns exact source/current-owner identities, row dispositions and diagnostics.
+The first frozen review accepted the source index and required one essential
+caller repair: concrete bearing capacity consumes `fck`, while only soil sizing
+is geometry-only. The repaired extension retains 302 unknowns; independent
+bounded re-review accepts it with zero essential blockers. All six affected
+repository checks, external identity/count validation, session-policy and
+efficiency checks pass. The source-worker inventory is separate supporting
+evidence, not numerical acceptance. Protected PDFs, extractions and renders
+remain private; only normalized summaries, locators and hashes are tracked.
+
+Full six-amendment engineering qualification remains HOLD. Physical materials,
+coatings, manufacturer steel profiles, above-M60 substantiation, unverified
+caller/source interpretations, finite creep histories and actual installed
+Windows/ETABS/Excel/XLL evidence remain unresolved. No new release, merge,
+package publication or engineering-use certification is authorized.
+
+### Issues encountered
+
+The controlled collection is partially consolidated: its base retains the
+old Table 26 Case 2 label and G-1.1(d) pointer. Extracted text also confuses
+Annex B labels and some formula typefaces. Source possession and OCR therefore
+cannot decide the current ordered rule or its supported caller.
+
+### Root causes and resolutions
+
+Read every issued instruction visually, keep exact PDF/printed target
+locators and order later replacements/coexisting provisions explicitly.
+Keep two excluded formula/figure typography readings unverified rather than
+guessing. Separate this c45cb89f source snapshot from the historical PR #1020
+A3-6 matrix and the accepted PR #1022 corrections. Correct the current
+concrete-bearing classification and its 23 rationale assignments; retain its
+historical A3-6 classification gap as an explicit HOLD for separate follow-up.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Retained the inherited counter; this packet refreshes the resumed handoff without inventing a new timed recurrence.
+
+### What next
+
+Preserve this separately reviewed documentation checkpoint and its local
+recovery evidence; coordinate publication with the parent. Subsequent
+qualification work must use a named remaining row and actual
+evidence. Stop at a safe verified checkpoint by the owner's deadline, retaining
+the exact unverified work and every physical/installed-host HOLD.
+
+---
+
 <a id="postmerge-maintenance-20261001"></a>
 
 ## 2026-10-01 — Session: Pause after supported-library corrections and maintenance

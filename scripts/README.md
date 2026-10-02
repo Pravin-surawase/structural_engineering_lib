@@ -40,6 +40,12 @@ automatically recorded steps before allocating the seven closeout phases.
 `run.sh` is a thin dispatcher for project validation and discovery. It does not
 stage, commit, push, create PRs, merge, or recover Git state.
 
+`./run.sh test --all` attempts Python, FastAPI and React in order, then returns
+the first nonzero suite status if any fails. The timed usage event records that
+same aggregate status; a later passing suite cannot erase an earlier failure.
+Python working-directory and React dependency readiness failures also remain
+failures and prevent the affected test runtime from launching.
+
 ## Codex-native Git/GitHub boundary
 
 Codex must inspect the branch, worktree, and diff; stage only intended paths;

@@ -119,6 +119,36 @@ def test_staircase_capacity_failure_remains_json_safe_fail() -> None:
     assert main_check["limit"] is None
 
 
+@pytest.mark.parametrize(("spacing_mm", "status"), [(300.0, "PASS"), (400.0, "FAIL")])
+def test_amended_spacing_boundary_reaches_http_result(
+    spacing_mm: float, status: str
+) -> None:
+    payload = _payload()
+    payload.update(
+        case_id="AMD3-STAIR-ALTERED-4000MM-FIXTURE",
+        load_basis_reference="AMD3-STAIR-ALTERED-4000MM-FIXTURE",
+        upper_landing_effective_length_mm=550.0,
+        distribution_bar_diameter_mm=14.0,
+        distribution_bar_spacing_mm=spacing_mm,
+    )
+    response = TestClient(_app()).post(
+        "/api/v1/design/staircase/straight-flight", json=payload
+    )
+    assert response.status_code == 200
+    data = response.json()["data"]
+    spacing = next(
+        item
+        for item in data["design"]["governing_checks"]
+        if item["check_id"] == "INDIA-2C-DIST-SPACING-01"
+    )
+    assert spacing["actual"] == spacing_mm and spacing["limit"] == 300.0
+    assert spacing["passed"] is (status == "PASS")
+    assert data["status"] == data["design"]["status"] == status
+    assert data["qualified_review_required"] is True
+    assert data["complete_engineering_design_approved"] is False
+    assert any("physical horizontal/soffit" in item for item in data["held_cases"])
+
+
 def test_staircase_openapi_exposes_typed_success_schema() -> None:
     schema = _app().openapi()
     operation = schema["paths"]["/api/v1/design/staircase/straight-flight"]["post"]
