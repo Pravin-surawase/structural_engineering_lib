@@ -1,0 +1,3180 @@
+{
+  "$defs": {
+    "ActionBasis": {
+      "enum": [
+        "static_concurrent",
+        "staged_step",
+        "response_result",
+        "component_envelope",
+        "design_envelope"
+      ],
+      "title": "ActionBasis",
+      "type": "string"
+    },
+    "AnalysisCaseStatus": {
+      "enum": [
+        "finished",
+        "not_finished"
+      ],
+      "title": "AnalysisCaseStatus",
+      "type": "string"
+    },
+    "AnalysisSnapshotV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "structural.analysis_snapshot/v1",
+          "default": "structural.analysis_snapshot/v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "operation_semantic_id": {
+          "const": "etabs.beam_snapshot.import/v1",
+          "default": "etabs.beam_snapshot.import/v1",
+          "title": "Operation Semantic Id",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "minLength": 1,
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "snapshot_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Snapshot Sha256",
+          "type": "string"
+        },
+        "created_at_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$",
+          "title": "Created At Utc",
+          "type": "string"
+        },
+        "source_identity": {
+          "$ref": "#/$defs/SnapshotSourceIdentityV1"
+        },
+        "metadata": {
+          "$ref": "#/$defs/SnapshotMetadataV1"
+        },
+        "units": {
+          "$ref": "#/$defs/SnapshotUnitBasisV1"
+        },
+        "axes": {
+          "items": {
+            "$ref": "#/$defs/SnapshotAxisV1"
+          },
+          "minItems": 1,
+          "title": "Axes",
+          "type": "array"
+        },
+        "points": {
+          "items": {
+            "$ref": "#/$defs/SnapshotPointV1"
+          },
+          "minItems": 2,
+          "title": "Points",
+          "type": "array"
+        },
+        "materials": {
+          "items": {
+            "$ref": "#/$defs/SnapshotMaterialV1"
+          },
+          "minItems": 1,
+          "title": "Materials",
+          "type": "array"
+        },
+        "sections": {
+          "items": {
+            "$ref": "#/$defs/SnapshotSectionV1"
+          },
+          "minItems": 1,
+          "title": "Sections",
+          "type": "array"
+        },
+        "members": {
+          "items": {
+            "$ref": "#/$defs/SnapshotMemberV1"
+          },
+          "minItems": 1,
+          "title": "Members",
+          "type": "array"
+        },
+        "load_cases": {
+          "items": {
+            "$ref": "#/$defs/SnapshotLoadCaseV1"
+          },
+          "minItems": 1,
+          "title": "Load Cases",
+          "type": "array"
+        },
+        "load_combinations": {
+          "items": {
+            "$ref": "#/$defs/SnapshotLoadCombinationV1"
+          },
+          "title": "Load Combinations",
+          "type": "array"
+        },
+        "result_selections": {
+          "items": {
+            "$ref": "#/$defs/SnapshotResultSelectionV1"
+          },
+          "minItems": 1,
+          "title": "Result Selections",
+          "type": "array"
+        },
+        "stations": {
+          "items": {
+            "$ref": "#/$defs/SnapshotStationV1"
+          },
+          "minItems": 1,
+          "title": "Stations",
+          "type": "array"
+        },
+        "action_rows": {
+          "items": {
+            "$ref": "#/$defs/SnapshotActionRowV1"
+          },
+          "minItems": 1,
+          "title": "Action Rows",
+          "type": "array"
+        },
+        "row_ledger": {
+          "$ref": "#/$defs/SnapshotRowLedgerV1"
+        },
+        "normalization": {
+          "$ref": "#/$defs/SnapshotNormalizationV1"
+        },
+        "freshness": {
+          "$ref": "#/$defs/SnapshotFreshnessV1"
+        },
+        "diagnostics": {
+          "items": {
+            "$ref": "#/$defs/SnapshotDiagnosticV1"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SnapshotProvenanceV1"
+        },
+        "evidence_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evidence Manifest Sha256",
+          "type": "string"
+        },
+        "raw_capture": {
+          "$ref": "#/$defs/RawAnalysisCaptureV1"
+        }
+      },
+      "required": [
+        "snapshot_id",
+        "snapshot_sha256",
+        "created_at_utc",
+        "source_identity",
+        "metadata",
+        "units",
+        "axes",
+        "points",
+        "materials",
+        "sections",
+        "members",
+        "load_cases",
+        "load_combinations",
+        "result_selections",
+        "stations",
+        "action_rows",
+        "row_ledger",
+        "normalization",
+        "freshness",
+        "diagnostics",
+        "provenance",
+        "evidence_manifest_sha256",
+        "raw_capture"
+      ],
+      "title": "AnalysisSnapshotV1",
+      "type": "object"
+    },
+    "BeamInputLedgerV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "beam-input-ledger/v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "model_binding": {
+          "title": "Model Binding",
+          "type": "string"
+        },
+        "snapshot_sha256": {
+          "title": "Snapshot Sha256",
+          "type": "string"
+        },
+        "preset_revision": {
+          "title": "Preset Revision",
+          "type": "string"
+        },
+        "member_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Member Ids",
+          "type": "array"
+        },
+        "edits": {
+          "items": {
+            "$ref": "#/$defs/_Edit"
+          },
+          "title": "Edits",
+          "type": "array"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/_Field"
+          },
+          "title": "Fields",
+          "type": "array"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "model_binding",
+        "snapshot_sha256",
+        "preset_revision",
+        "member_ids",
+        "edits",
+        "fields",
+        "revision"
+      ],
+      "title": "BeamInputLedgerV1",
+      "type": "object"
+    },
+    "BeamMemberReadinessV1": {
+      "additionalProperties": false,
+      "properties": {
+        "member_id": {
+          "title": "Member Id",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "complete",
+            "needs_input",
+            "unsupported",
+            "failed",
+            "stale",
+            "incomplete",
+            "no_feasible_arrangement",
+            "cancelled"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "ready_for_selected_profile": {
+          "title": "Ready For Selected Profile",
+          "type": "boolean"
+        },
+        "effective_input_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Effective Input Id"
+        },
+        "diagnostics": {
+          "items": {
+            "$ref": "#/$defs/_Diagnostic"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        }
+      },
+      "required": [
+        "member_id",
+        "state",
+        "ready_for_selected_profile",
+        "effective_input_id",
+        "diagnostics"
+      ],
+      "title": "BeamMemberReadinessV1",
+      "type": "object"
+    },
+    "CallEffect": {
+      "enum": [
+        "getter"
+      ],
+      "title": "CallEffect",
+      "type": "string"
+    },
+    "CallStage": {
+      "enum": [
+        "started",
+        "returned"
+      ],
+      "title": "CallStage",
+      "type": "string"
+    },
+    "CombinationKind": {
+      "enum": [
+        "linear_add",
+        "envelope",
+        "other"
+      ],
+      "title": "CombinationKind",
+      "type": "string"
+    },
+    "ForceResultProvenanceV1": {
+      "additionalProperties": false,
+      "properties": {
+        "getter_method": {
+          "minLength": 1,
+          "title": "Getter Method",
+          "type": "string"
+        },
+        "signature_authority_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Signature Authority Sha256",
+          "type": "string"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "source_row_index": {
+          "minimum": 0,
+          "title": "Source Row Index",
+          "type": "integer"
+        },
+        "concurrency_basis": {
+          "minLength": 1,
+          "title": "Concurrency Basis",
+          "type": "string"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "getter_method",
+        "signature_authority_sha256",
+        "call_id",
+        "source_row_index",
+        "concurrency_basis",
+        "evidence_reference"
+      ],
+      "title": "ForceResultProvenanceV1",
+      "type": "object"
+    },
+    "LoadCaseKind": {
+      "enum": [
+        "linear_static",
+        "modal",
+        "response_spectrum",
+        "other"
+      ],
+      "title": "LoadCaseKind",
+      "type": "string"
+    },
+    "Matrix3V1": {
+      "additionalProperties": false,
+      "properties": {
+        "row_1": {
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Row 1",
+          "type": "array"
+        },
+        "row_2": {
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Row 2",
+          "type": "array"
+        },
+        "row_3": {
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Row 3",
+          "type": "array"
+        }
+      },
+      "required": [
+        "row_1",
+        "row_2",
+        "row_3"
+      ],
+      "title": "Matrix3V1",
+      "type": "object"
+    },
+    "OptionalEvidenceState": {
+      "enum": [
+        "supplied",
+        "not_requested",
+        "unavailable",
+        "not_applicable"
+      ],
+      "title": "OptionalEvidenceState",
+      "type": "string"
+    },
+    "PortableOptionalSha256V1": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "$ref": "#/$defs/OptionalEvidenceState"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason Code"
+        }
+      },
+      "required": [
+        "state",
+        "value",
+        "reason_code"
+      ],
+      "title": "PortableOptionalSha256V1",
+      "type": "object"
+    },
+    "PortableOptionalTextV1": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "$ref": "#/$defs/OptionalEvidenceState"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason Code"
+        }
+      },
+      "required": [
+        "state",
+        "value",
+        "reason_code"
+      ],
+      "title": "PortableOptionalTextV1",
+      "type": "object"
+    },
+    "RawAnalysisCaptureV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "structural.analysis_raw_capture/v1",
+          "default": "structural.analysis_raw_capture/v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "raw_capture_id": {
+          "minLength": 1,
+          "title": "Raw Capture Id",
+          "type": "string"
+        },
+        "raw_capture_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Raw Capture Sha256",
+          "type": "string"
+        },
+        "acquisition_id": {
+          "minLength": 1,
+          "title": "Acquisition Id",
+          "type": "string"
+        },
+        "model_revision_id": {
+          "minLength": 1,
+          "title": "Model Revision Id",
+          "type": "string"
+        },
+        "analysis_revision_id": {
+          "minLength": 1,
+          "title": "Analysis Revision Id",
+          "type": "string"
+        },
+        "result_epoch_id": {
+          "minLength": 1,
+          "title": "Result Epoch Id",
+          "type": "string"
+        },
+        "source_units": {
+          "$ref": "#/$defs/SourceUnitBasisV1"
+        },
+        "call_ledger": {
+          "$ref": "#/$defs/SnapshotCallLedgerV1"
+        },
+        "model_records": {
+          "items": {
+            "$ref": "#/$defs/RawModelRecordV1"
+          },
+          "minItems": 1,
+          "title": "Model Records",
+          "type": "array"
+        },
+        "force_rows": {
+          "items": {
+            "$ref": "#/$defs/RawForceRowV1"
+          },
+          "minItems": 1,
+          "title": "Force Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "raw_capture_id",
+        "raw_capture_sha256",
+        "acquisition_id",
+        "model_revision_id",
+        "analysis_revision_id",
+        "result_epoch_id",
+        "source_units",
+        "call_ledger",
+        "model_records",
+        "force_rows"
+      ],
+      "title": "RawAnalysisCaptureV1",
+      "type": "object"
+    },
+    "RawForceRowV1": {
+      "additionalProperties": false,
+      "properties": {
+        "source_row_id": {
+          "minLength": 1,
+          "title": "Source Row Id",
+          "type": "string"
+        },
+        "source_row_index": {
+          "minimum": 0,
+          "title": "Source Row Index",
+          "type": "integer"
+        },
+        "object_id": {
+          "minLength": 1,
+          "title": "Object Id",
+          "type": "string"
+        },
+        "analysis_element_id": {
+          "minLength": 1,
+          "title": "Analysis Element Id",
+          "type": "string"
+        },
+        "object_station": {
+          "title": "Object Station",
+          "type": "number"
+        },
+        "element_station": {
+          "title": "Element Station",
+          "type": "number"
+        },
+        "output_case_name": {
+          "minLength": 1,
+          "title": "Output Case Name",
+          "type": "string"
+        },
+        "step_type": {
+          "minLength": 1,
+          "title": "Step Type",
+          "type": "string"
+        },
+        "step_number": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Step Number"
+        },
+        "p": {
+          "title": "P",
+          "type": "number"
+        },
+        "v2": {
+          "title": "V2",
+          "type": "number"
+        },
+        "v3": {
+          "title": "V3",
+          "type": "number"
+        },
+        "t": {
+          "title": "T",
+          "type": "number"
+        },
+        "m2": {
+          "title": "M2",
+          "type": "number"
+        },
+        "m3": {
+          "title": "M3",
+          "type": "number"
+        }
+      },
+      "required": [
+        "source_row_id",
+        "source_row_index",
+        "object_id",
+        "analysis_element_id",
+        "object_station",
+        "element_station",
+        "output_case_name",
+        "step_type",
+        "step_number",
+        "p",
+        "v2",
+        "v3",
+        "t",
+        "m2",
+        "m3"
+      ],
+      "title": "RawForceRowV1",
+      "type": "object"
+    },
+    "RawModelRecordKind": {
+      "enum": [
+        "model_metadata",
+        "point",
+        "material",
+        "section",
+        "member",
+        "load_case",
+        "load_combination",
+        "result_selection",
+        "station"
+      ],
+      "title": "RawModelRecordKind",
+      "type": "string"
+    },
+    "RawModelRecordV1": {
+      "additionalProperties": false,
+      "properties": {
+        "record_kind": {
+          "$ref": "#/$defs/RawModelRecordKind"
+        },
+        "source_record_id": {
+          "minLength": 1,
+          "title": "Source Record Id",
+          "type": "string"
+        },
+        "fields": {
+          "additionalProperties": true,
+          "title": "Fields",
+          "type": "object"
+        }
+      },
+      "required": [
+        "record_kind",
+        "source_record_id",
+        "fields"
+      ],
+      "title": "RawModelRecordV1",
+      "type": "object"
+    },
+    "ResultSelectionKind": {
+      "enum": [
+        "load_case",
+        "load_combination"
+      ],
+      "title": "ResultSelectionKind",
+      "type": "string"
+    },
+    "RowDisposition": {
+      "enum": [
+        "accepted",
+        "approved_exclusion",
+        "blocked"
+      ],
+      "title": "RowDisposition",
+      "type": "string"
+    },
+    "SectionAssignmentKind": {
+      "enum": [
+        "direct",
+        "auto_select"
+      ],
+      "title": "SectionAssignmentKind",
+      "type": "string"
+    },
+    "SectionShape": {
+      "enum": [
+        "rectangular",
+        "general"
+      ],
+      "title": "SectionShape",
+      "type": "string"
+    },
+    "SnapshotActionRowV1": {
+      "additionalProperties": false,
+      "properties": {
+        "row_id": {
+          "minLength": 1,
+          "title": "Row Id",
+          "type": "string"
+        },
+        "source_row_id": {
+          "minLength": 1,
+          "title": "Source Row Id",
+          "type": "string"
+        },
+        "member_id": {
+          "minLength": 1,
+          "title": "Member Id",
+          "type": "string"
+        },
+        "object_id": {
+          "minLength": 1,
+          "title": "Object Id",
+          "type": "string"
+        },
+        "analysis_element_id": {
+          "minLength": 1,
+          "title": "Analysis Element Id",
+          "type": "string"
+        },
+        "station_id": {
+          "minLength": 1,
+          "title": "Station Id",
+          "type": "string"
+        },
+        "selection_id": {
+          "minLength": 1,
+          "title": "Selection Id",
+          "type": "string"
+        },
+        "output_case_name": {
+          "minLength": 1,
+          "title": "Output Case Name",
+          "type": "string"
+        },
+        "step_type": {
+          "minLength": 1,
+          "title": "Step Type",
+          "type": "string"
+        },
+        "step_number": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Step Number"
+        },
+        "action_basis": {
+          "$ref": "#/$defs/ActionBasis"
+        },
+        "p_kn": {
+          "title": "P Kn",
+          "type": "number"
+        },
+        "v2_kn": {
+          "title": "V2 Kn",
+          "type": "number"
+        },
+        "v3_kn": {
+          "title": "V3 Kn",
+          "type": "number"
+        },
+        "t_knm": {
+          "title": "T Knm",
+          "type": "number"
+        },
+        "m2_knm": {
+          "title": "M2 Knm",
+          "type": "number"
+        },
+        "m3_knm": {
+          "title": "M3 Knm",
+          "type": "number"
+        },
+        "force_unit": {
+          "const": "kN",
+          "default": "kN",
+          "title": "Force Unit",
+          "type": "string"
+        },
+        "moment_unit": {
+          "const": "kNm",
+          "default": "kNm",
+          "title": "Moment Unit",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ForceResultProvenanceV1"
+        }
+      },
+      "required": [
+        "row_id",
+        "source_row_id",
+        "member_id",
+        "object_id",
+        "analysis_element_id",
+        "station_id",
+        "selection_id",
+        "output_case_name",
+        "step_type",
+        "step_number",
+        "action_basis",
+        "p_kn",
+        "v2_kn",
+        "v3_kn",
+        "t_knm",
+        "m2_knm",
+        "m3_knm",
+        "provenance"
+      ],
+      "title": "SnapshotActionRowV1",
+      "type": "object"
+    },
+    "SnapshotAxisV1": {
+      "additionalProperties": false,
+      "properties": {
+        "axis_id": {
+          "minLength": 1,
+          "title": "Axis Id",
+          "type": "string"
+        },
+        "e1": {
+          "$ref": "#/$defs/Vector3V1"
+        },
+        "e2": {
+          "$ref": "#/$defs/Vector3V1"
+        },
+        "e3": {
+          "$ref": "#/$defs/Vector3V1"
+        },
+        "source_to_common": {
+          "$ref": "#/$defs/Matrix3V1"
+        },
+        "physical_top_face": {
+          "enum": [
+            "positive_local_2",
+            "negative_local_2"
+          ],
+          "title": "Physical Top Face",
+          "type": "string"
+        },
+        "physical_left_face": {
+          "enum": [
+            "positive_local_3",
+            "negative_local_3"
+          ],
+          "title": "Physical Left Face",
+          "type": "string"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "axis_id",
+        "e1",
+        "e2",
+        "e3",
+        "source_to_common",
+        "physical_top_face",
+        "physical_left_face",
+        "evidence_reference"
+      ],
+      "title": "SnapshotAxisV1",
+      "type": "object"
+    },
+    "SnapshotCallLedgerV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "structural.analysis_call_ledger/v1",
+          "default": "structural.analysis_call_ledger/v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "operation_id": {
+          "minLength": 1,
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "record_count": {
+          "minimum": 0,
+          "title": "Record Count",
+          "type": "integer"
+        },
+        "head_record_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Head Record Sha256"
+        },
+        "ledger_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Ledger Sha256",
+          "type": "string"
+        },
+        "records": {
+          "items": {
+            "$ref": "#/$defs/SnapshotCallRecordV1"
+          },
+          "title": "Records",
+          "type": "array"
+        }
+      },
+      "required": [
+        "operation_id",
+        "record_count",
+        "ledger_sha256",
+        "records"
+      ],
+      "title": "SnapshotCallLedgerV1",
+      "type": "object"
+    },
+    "SnapshotCallRecordV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "structural.analysis_call_record/v1",
+          "default": "structural.analysis_call_record/v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "operation_id": {
+          "minLength": 1,
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "previous_record_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Previous Record Sha256"
+        },
+        "stage": {
+          "$ref": "#/$defs/CallStage"
+        },
+        "method": {
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "signature_authority_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Signature Authority Sha256",
+          "type": "string"
+        },
+        "effect": {
+          "$ref": "#/$defs/CallEffect"
+        },
+        "arguments_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Arguments Sha256",
+          "type": "string"
+        },
+        "return_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Return Code"
+        },
+        "raw_shape": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Raw Shape"
+        },
+        "recorded_at_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$",
+          "title": "Recorded At Utc",
+          "type": "string"
+        },
+        "record_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Record Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation_id",
+        "call_id",
+        "sequence",
+        "stage",
+        "method",
+        "signature_authority_sha256",
+        "effect",
+        "arguments_sha256",
+        "return_code",
+        "raw_shape",
+        "recorded_at_utc",
+        "record_sha256"
+      ],
+      "title": "SnapshotCallRecordV1",
+      "type": "object"
+    },
+    "SnapshotCombinationFactorV1": {
+      "additionalProperties": false,
+      "properties": {
+        "ordinal": {
+          "minimum": 0,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "source_kind": {
+          "$ref": "#/$defs/ResultSelectionKind"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "scale_factor": {
+          "title": "Scale Factor",
+          "type": "number"
+        }
+      },
+      "required": [
+        "ordinal",
+        "source_kind",
+        "source_id",
+        "scale_factor"
+      ],
+      "title": "SnapshotCombinationFactorV1",
+      "type": "object"
+    },
+    "SnapshotDiagnosticV1": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "error",
+            "warning",
+            "info"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "field_or_location": {
+          "minLength": 1,
+          "title": "Field Or Location",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "remediation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Remediation"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "field_or_location",
+        "message",
+        "remediation"
+      ],
+      "title": "SnapshotDiagnosticV1",
+      "type": "object"
+    },
+    "SnapshotEndReleasesV1": {
+      "additionalProperties": false,
+      "properties": {
+        "u1": {
+          "title": "U1",
+          "type": "boolean"
+        },
+        "u2": {
+          "title": "U2",
+          "type": "boolean"
+        },
+        "u3": {
+          "title": "U3",
+          "type": "boolean"
+        },
+        "r1": {
+          "title": "R1",
+          "type": "boolean"
+        },
+        "r2": {
+          "title": "R2",
+          "type": "boolean"
+        },
+        "r3": {
+          "title": "R3",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "u1",
+        "u2",
+        "u3",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "title": "SnapshotEndReleasesV1",
+      "type": "object"
+    },
+    "SnapshotFreshnessV1": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "current",
+            "stale",
+            "unbound"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "model_revision_id": {
+          "minLength": 1,
+          "title": "Model Revision Id",
+          "type": "string"
+        },
+        "analysis_revision_id": {
+          "minLength": 1,
+          "title": "Analysis Revision Id",
+          "type": "string"
+        },
+        "result_epoch_id": {
+          "minLength": 1,
+          "title": "Result Epoch Id",
+          "type": "string"
+        },
+        "selection_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Selection Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "state",
+        "model_revision_id",
+        "analysis_revision_id",
+        "result_epoch_id",
+        "selection_ids"
+      ],
+      "title": "SnapshotFreshnessV1",
+      "type": "object"
+    },
+    "SnapshotLoadCaseV1": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "minLength": 1,
+          "title": "Case Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "case_kind": {
+          "$ref": "#/$defs/LoadCaseKind"
+        },
+        "status": {
+          "$ref": "#/$defs/AnalysisCaseStatus"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_id",
+        "source_name",
+        "case_kind",
+        "status",
+        "evidence_reference"
+      ],
+      "title": "SnapshotLoadCaseV1",
+      "type": "object"
+    },
+    "SnapshotLoadCombinationV1": {
+      "additionalProperties": false,
+      "properties": {
+        "combination_id": {
+          "minLength": 1,
+          "title": "Combination Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "combination_kind": {
+          "$ref": "#/$defs/CombinationKind"
+        },
+        "factors": {
+          "items": {
+            "$ref": "#/$defs/SnapshotCombinationFactorV1"
+          },
+          "minItems": 1,
+          "title": "Factors",
+          "type": "array"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "combination_id",
+        "source_name",
+        "combination_kind",
+        "factors",
+        "evidence_reference"
+      ],
+      "title": "SnapshotLoadCombinationV1",
+      "type": "object"
+    },
+    "SnapshotMaterialV1": {
+      "additionalProperties": false,
+      "properties": {
+        "material_id": {
+          "minLength": 1,
+          "title": "Material Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "material_kind": {
+          "minLength": 1,
+          "title": "Material Kind",
+          "type": "string"
+        },
+        "elastic_modulus_n_per_mm2": {
+          "exclusiveMinimum": 0,
+          "title": "Elastic Modulus N Per Mm2",
+          "type": "number"
+        },
+        "poisson_ratio": {
+          "exclusiveMaximum": 0.5,
+          "exclusiveMinimum": -1,
+          "title": "Poisson Ratio",
+          "type": "number"
+        },
+        "mass_density_kg_per_m3": {
+          "minimum": 0,
+          "title": "Mass Density Kg Per M3",
+          "type": "number"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "material_id",
+        "source_name",
+        "material_kind",
+        "elastic_modulus_n_per_mm2",
+        "poisson_ratio",
+        "mass_density_kg_per_m3",
+        "evidence_reference"
+      ],
+      "title": "SnapshotMaterialV1",
+      "type": "object"
+    },
+    "SnapshotMemberV1": {
+      "additionalProperties": false,
+      "properties": {
+        "member_id": {
+          "minLength": 1,
+          "title": "Member Id",
+          "type": "string"
+        },
+        "object_id": {
+          "minLength": 1,
+          "title": "Object Id",
+          "type": "string"
+        },
+        "source_label": {
+          "minLength": 1,
+          "title": "Source Label",
+          "type": "string"
+        },
+        "story_id": {
+          "minLength": 1,
+          "title": "Story Id",
+          "type": "string"
+        },
+        "point_i_id": {
+          "minLength": 1,
+          "title": "Point I Id",
+          "type": "string"
+        },
+        "point_j_id": {
+          "minLength": 1,
+          "title": "Point J Id",
+          "type": "string"
+        },
+        "section_id": {
+          "minLength": 1,
+          "title": "Section Id",
+          "type": "string"
+        },
+        "axis_id": {
+          "minLength": 1,
+          "title": "Axis Id",
+          "type": "string"
+        },
+        "assignment_kind": {
+          "$ref": "#/$defs/SectionAssignmentKind"
+        },
+        "auto_select_list_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Auto Select List Id"
+        },
+        "modifiers": {
+          "$ref": "#/$defs/SnapshotModifiersV1"
+        },
+        "offsets": {
+          "$ref": "#/$defs/SnapshotOffsetsV1"
+        },
+        "releases": {
+          "$ref": "#/$defs/SnapshotReleasesV1"
+        },
+        "analysis_element_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Analysis Element Ids",
+          "type": "array"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "member_id",
+        "object_id",
+        "source_label",
+        "story_id",
+        "point_i_id",
+        "point_j_id",
+        "section_id",
+        "axis_id",
+        "assignment_kind",
+        "auto_select_list_id",
+        "modifiers",
+        "offsets",
+        "releases",
+        "analysis_element_ids",
+        "evidence_reference"
+      ],
+      "title": "SnapshotMemberV1",
+      "type": "object"
+    },
+    "SnapshotMetadataV1": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "minLength": 1,
+          "title": "Project Id",
+          "type": "string"
+        },
+        "model_name": {
+          "minLength": 1,
+          "title": "Model Name",
+          "type": "string"
+        },
+        "model_guid": {
+          "$ref": "#/$defs/PortableOptionalTextV1"
+        },
+        "model_locked": {
+          "title": "Model Locked",
+          "type": "boolean"
+        },
+        "analysis_status": {
+          "$ref": "#/$defs/AnalysisCaseStatus"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "project_id",
+        "model_name",
+        "model_guid",
+        "model_locked",
+        "analysis_status",
+        "evidence_reference"
+      ],
+      "title": "SnapshotMetadataV1",
+      "type": "object"
+    },
+    "SnapshotModifiersV1": {
+      "additionalProperties": false,
+      "properties": {
+        "axial_area": {
+          "minimum": 0,
+          "title": "Axial Area",
+          "type": "number"
+        },
+        "shear_area_2": {
+          "minimum": 0,
+          "title": "Shear Area 2",
+          "type": "number"
+        },
+        "shear_area_3": {
+          "minimum": 0,
+          "title": "Shear Area 3",
+          "type": "number"
+        },
+        "torsion": {
+          "minimum": 0,
+          "title": "Torsion",
+          "type": "number"
+        },
+        "inertia_2": {
+          "minimum": 0,
+          "title": "Inertia 2",
+          "type": "number"
+        },
+        "inertia_3": {
+          "minimum": 0,
+          "title": "Inertia 3",
+          "type": "number"
+        },
+        "mass": {
+          "minimum": 0,
+          "title": "Mass",
+          "type": "number"
+        },
+        "weight": {
+          "minimum": 0,
+          "title": "Weight",
+          "type": "number"
+        }
+      },
+      "required": [
+        "axial_area",
+        "shear_area_2",
+        "shear_area_3",
+        "torsion",
+        "inertia_2",
+        "inertia_3",
+        "mass",
+        "weight"
+      ],
+      "title": "SnapshotModifiersV1",
+      "type": "object"
+    },
+    "SnapshotNormalizationV1": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "const": "structural.analysis_snapshot.normalize/v1",
+          "default": "structural.analysis_snapshot.normalize/v1",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "conversion_performed_once": {
+          "const": true,
+          "default": true,
+          "title": "Conversion Performed Once",
+          "type": "boolean"
+        },
+        "source_units_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Units Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_units_sha256"
+      ],
+      "title": "SnapshotNormalizationV1",
+      "type": "object"
+    },
+    "SnapshotOffsetsV1": {
+      "additionalProperties": false,
+      "properties": {
+        "automatic": {
+          "title": "Automatic",
+          "type": "boolean"
+        },
+        "end_i_mm": {
+          "minimum": 0,
+          "title": "End I Mm",
+          "type": "number"
+        },
+        "end_j_mm": {
+          "minimum": 0,
+          "title": "End J Mm",
+          "type": "number"
+        },
+        "rigid_zone_factor": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Rigid Zone Factor",
+          "type": "number"
+        }
+      },
+      "required": [
+        "automatic",
+        "end_i_mm",
+        "end_j_mm",
+        "rigid_zone_factor"
+      ],
+      "title": "SnapshotOffsetsV1",
+      "type": "object"
+    },
+    "SnapshotPointV1": {
+      "additionalProperties": false,
+      "properties": {
+        "point_id": {
+          "minLength": 1,
+          "title": "Point Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "x_mm": {
+          "title": "X Mm",
+          "type": "number"
+        },
+        "y_mm": {
+          "title": "Y Mm",
+          "type": "number"
+        },
+        "z_mm": {
+          "title": "Z Mm",
+          "type": "number"
+        },
+        "story_id": {
+          "minLength": 1,
+          "title": "Story Id",
+          "type": "string"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "point_id",
+        "source_name",
+        "x_mm",
+        "y_mm",
+        "z_mm",
+        "story_id",
+        "evidence_reference"
+      ],
+      "title": "SnapshotPointV1",
+      "type": "object"
+    },
+    "SnapshotProvenanceV1": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_revision_id": {
+          "const": "wp10-analysis-snapshot-contract-v1",
+          "default": "wp10-analysis-snapshot-contract-v1",
+          "title": "Contract Revision Id",
+          "type": "string"
+        },
+        "source_references": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source References",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_references",
+        "limitations"
+      ],
+      "title": "SnapshotProvenanceV1",
+      "type": "object"
+    },
+    "SnapshotReleasesV1": {
+      "additionalProperties": false,
+      "properties": {
+        "end_i": {
+          "$ref": "#/$defs/SnapshotEndReleasesV1"
+        },
+        "end_j": {
+          "$ref": "#/$defs/SnapshotEndReleasesV1"
+        }
+      },
+      "required": [
+        "end_i",
+        "end_j"
+      ],
+      "title": "SnapshotReleasesV1",
+      "type": "object"
+    },
+    "SnapshotResultSelectionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "selection_id": {
+          "minLength": 1,
+          "title": "Selection Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ResultSelectionKind"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "selected_for_output": {
+          "title": "Selected For Output",
+          "type": "boolean"
+        },
+        "action_basis": {
+          "$ref": "#/$defs/ActionBasis"
+        },
+        "result_epoch_id": {
+          "minLength": 1,
+          "title": "Result Epoch Id",
+          "type": "string"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "selection_id",
+        "kind",
+        "source_id",
+        "source_name",
+        "selected_for_output",
+        "action_basis",
+        "result_epoch_id",
+        "evidence_reference"
+      ],
+      "title": "SnapshotResultSelectionV1",
+      "type": "object"
+    },
+    "SnapshotRowDispositionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "source_record_id": {
+          "minLength": 1,
+          "title": "Source Record Id",
+          "type": "string"
+        },
+        "record_kind": {
+          "minLength": 1,
+          "title": "Record Kind",
+          "type": "string"
+        },
+        "disposition": {
+          "$ref": "#/$defs/RowDisposition"
+        },
+        "canonical_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Canonical Id"
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason Code"
+        },
+        "approval_reference": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Approval Reference"
+        },
+        "diagnostic_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Diagnostic Codes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_record_id",
+        "record_kind",
+        "disposition",
+        "canonical_id",
+        "reason_code",
+        "approval_reference",
+        "diagnostic_codes"
+      ],
+      "title": "SnapshotRowDispositionV1",
+      "type": "object"
+    },
+    "SnapshotRowLedgerV1": {
+      "additionalProperties": false,
+      "properties": {
+        "source_row_count": {
+          "minimum": 0,
+          "title": "Source Row Count",
+          "type": "integer"
+        },
+        "accepted_count": {
+          "minimum": 0,
+          "title": "Accepted Count",
+          "type": "integer"
+        },
+        "approved_exclusion_count": {
+          "minimum": 0,
+          "title": "Approved Exclusion Count",
+          "type": "integer"
+        },
+        "blocked_count": {
+          "minimum": 0,
+          "title": "Blocked Count",
+          "type": "integer"
+        },
+        "rows": {
+          "items": {
+            "$ref": "#/$defs/SnapshotRowDispositionV1"
+          },
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_row_count",
+        "accepted_count",
+        "approved_exclusion_count",
+        "blocked_count",
+        "rows"
+      ],
+      "title": "SnapshotRowLedgerV1",
+      "type": "object"
+    },
+    "SnapshotSectionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "section_id": {
+          "minLength": 1,
+          "title": "Section Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "shape": {
+          "$ref": "#/$defs/SectionShape"
+        },
+        "material_id": {
+          "minLength": 1,
+          "title": "Material Id",
+          "type": "string"
+        },
+        "area_mm2": {
+          "exclusiveMinimum": 0,
+          "title": "Area Mm2",
+          "type": "number"
+        },
+        "torsional_constant_mm4": {
+          "exclusiveMinimum": 0,
+          "title": "Torsional Constant Mm4",
+          "type": "number"
+        },
+        "inertia_2_mm4": {
+          "exclusiveMinimum": 0,
+          "title": "Inertia 2 Mm4",
+          "type": "number"
+        },
+        "inertia_3_mm4": {
+          "exclusiveMinimum": 0,
+          "title": "Inertia 3 Mm4",
+          "type": "number"
+        },
+        "width_mm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Width Mm"
+        },
+        "depth_mm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Depth Mm"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "section_id",
+        "source_name",
+        "shape",
+        "material_id",
+        "area_mm2",
+        "torsional_constant_mm4",
+        "inertia_2_mm4",
+        "inertia_3_mm4",
+        "width_mm",
+        "depth_mm",
+        "evidence_reference"
+      ],
+      "title": "SnapshotSectionV1",
+      "type": "object"
+    },
+    "SnapshotSourceIdentityV1": {
+      "additionalProperties": false,
+      "properties": {
+        "source_system": {
+          "const": "etabs",
+          "default": "etabs",
+          "title": "Source System",
+          "type": "string"
+        },
+        "source_version": {
+          "minLength": 1,
+          "title": "Source Version",
+          "type": "string"
+        },
+        "adapter_semantic_id": {
+          "const": "etabs.beam_snapshot.import/v1",
+          "default": "etabs.beam_snapshot.import/v1",
+          "title": "Adapter Semantic Id",
+          "type": "string"
+        },
+        "adapter_build_id": {
+          "minLength": 1,
+          "title": "Adapter Build Id",
+          "type": "string"
+        },
+        "acquisition_id": {
+          "minLength": 1,
+          "title": "Acquisition Id",
+          "type": "string"
+        },
+        "raw_capture_id": {
+          "minLength": 1,
+          "title": "Raw Capture Id",
+          "type": "string"
+        },
+        "raw_capture_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Raw Capture Sha256",
+          "type": "string"
+        },
+        "model_revision_id": {
+          "minLength": 1,
+          "title": "Model Revision Id",
+          "type": "string"
+        },
+        "analysis_revision_id": {
+          "minLength": 1,
+          "title": "Analysis Revision Id",
+          "type": "string"
+        },
+        "result_epoch_id": {
+          "minLength": 1,
+          "title": "Result Epoch Id",
+          "type": "string"
+        },
+        "runtime_fingerprint": {
+          "minLength": 1,
+          "title": "Runtime Fingerprint",
+          "type": "string"
+        },
+        "process_identity": {
+          "$ref": "#/$defs/PortableOptionalTextV1"
+        },
+        "model_file_sha256": {
+          "$ref": "#/$defs/PortableOptionalSha256V1"
+        }
+      },
+      "required": [
+        "source_version",
+        "adapter_build_id",
+        "acquisition_id",
+        "raw_capture_id",
+        "raw_capture_sha256",
+        "model_revision_id",
+        "analysis_revision_id",
+        "result_epoch_id",
+        "runtime_fingerprint",
+        "process_identity",
+        "model_file_sha256"
+      ],
+      "title": "SnapshotSourceIdentityV1",
+      "type": "object"
+    },
+    "SnapshotStationV1": {
+      "additionalProperties": false,
+      "properties": {
+        "station_id": {
+          "minLength": 1,
+          "title": "Station Id",
+          "type": "string"
+        },
+        "member_id": {
+          "minLength": 1,
+          "title": "Member Id",
+          "type": "string"
+        },
+        "object_id": {
+          "minLength": 1,
+          "title": "Object Id",
+          "type": "string"
+        },
+        "analysis_element_id": {
+          "minLength": 1,
+          "title": "Analysis Element Id",
+          "type": "string"
+        },
+        "physical_station_mm": {
+          "minimum": 0,
+          "title": "Physical Station Mm",
+          "type": "number"
+        },
+        "object_station_mm": {
+          "minimum": 0,
+          "title": "Object Station Mm",
+          "type": "number"
+        },
+        "element_station_mm": {
+          "minimum": 0,
+          "title": "Element Station Mm",
+          "type": "number"
+        },
+        "normalized_ratio": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Normalized Ratio",
+          "type": "number"
+        },
+        "side": {
+          "$ref": "#/$defs/StationSide"
+        },
+        "evidence_reference": {
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "station_id",
+        "member_id",
+        "object_id",
+        "analysis_element_id",
+        "physical_station_mm",
+        "object_station_mm",
+        "element_station_mm",
+        "normalized_ratio",
+        "side",
+        "evidence_reference"
+      ],
+      "title": "SnapshotStationV1",
+      "type": "object"
+    },
+    "SnapshotUnitBasisV1": {
+      "additionalProperties": false,
+      "properties": {
+        "length": {
+          "const": "mm",
+          "default": "mm",
+          "title": "Length",
+          "type": "string"
+        },
+        "force": {
+          "const": "kN",
+          "default": "kN",
+          "title": "Force",
+          "type": "string"
+        },
+        "moment": {
+          "const": "kNm",
+          "default": "kNm",
+          "title": "Moment",
+          "type": "string"
+        },
+        "stress": {
+          "const": "N/mm2",
+          "default": "N/mm2",
+          "title": "Stress",
+          "type": "string"
+        },
+        "mass_density": {
+          "const": "kg/m3",
+          "default": "kg/m3",
+          "title": "Mass Density",
+          "type": "string"
+        },
+        "original_source_units": {
+          "$ref": "#/$defs/SourceUnitBasisV1"
+        },
+        "conversion_to_canonical": {
+          "$ref": "#/$defs/UnitConversionV1"
+        }
+      },
+      "required": [
+        "original_source_units",
+        "conversion_to_canonical"
+      ],
+      "title": "SnapshotUnitBasisV1",
+      "type": "object"
+    },
+    "SourceUnitBasisV1": {
+      "additionalProperties": false,
+      "properties": {
+        "length": {
+          "minLength": 1,
+          "title": "Length",
+          "type": "string"
+        },
+        "force": {
+          "minLength": 1,
+          "title": "Force",
+          "type": "string"
+        },
+        "moment": {
+          "minLength": 1,
+          "title": "Moment",
+          "type": "string"
+        },
+        "stress": {
+          "minLength": 1,
+          "title": "Stress",
+          "type": "string"
+        },
+        "mass_density": {
+          "minLength": 1,
+          "title": "Mass Density",
+          "type": "string"
+        }
+      },
+      "required": [
+        "length",
+        "force",
+        "moment",
+        "stress",
+        "mass_density"
+      ],
+      "title": "SourceUnitBasisV1",
+      "type": "object"
+    },
+    "StationSide": {
+      "enum": [
+        "continuous",
+        "before",
+        "after"
+      ],
+      "title": "StationSide",
+      "type": "string"
+    },
+    "UnitConversionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "length_to_mm": {
+          "exclusiveMinimum": 0,
+          "title": "Length To Mm",
+          "type": "number"
+        },
+        "force_to_kn": {
+          "exclusiveMinimum": 0,
+          "title": "Force To Kn",
+          "type": "number"
+        },
+        "moment_to_knm": {
+          "exclusiveMinimum": 0,
+          "title": "Moment To Knm",
+          "type": "number"
+        },
+        "stress_to_n_per_mm2": {
+          "exclusiveMinimum": 0,
+          "title": "Stress To N Per Mm2",
+          "type": "number"
+        },
+        "mass_density_to_kg_per_m3": {
+          "exclusiveMinimum": 0,
+          "title": "Mass Density To Kg Per M3",
+          "type": "number"
+        }
+      },
+      "required": [
+        "length_to_mm",
+        "force_to_kn",
+        "moment_to_knm",
+        "stress_to_n_per_mm2",
+        "mass_density_to_kg_per_m3"
+      ],
+      "title": "UnitConversionV1",
+      "type": "object"
+    },
+    "Vector3V1": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        },
+        "z": {
+          "title": "Z",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "title": "Vector3V1",
+      "type": "object"
+    },
+    "_Acceptance": {
+      "additionalProperties": false,
+      "properties": {
+        "ledger_revision": {
+          "title": "Ledger Revision",
+          "type": "string"
+        },
+        "inputs": {
+          "$ref": "#/$defs/_Inputs"
+        }
+      },
+      "required": [
+        "ledger_revision",
+        "inputs"
+      ],
+      "title": "_Acceptance",
+      "type": "object"
+    },
+    "_Catalogue": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "longitudinal_diameters_mm": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Longitudinal Diameters Mm",
+          "type": "array"
+        },
+        "link_diameters_mm": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Link Diameters Mm",
+          "type": "array"
+        },
+        "link_spacings_mm": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Link Spacings Mm",
+          "type": "array"
+        },
+        "bar_counts": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Bar Counts",
+          "type": "array"
+        },
+        "layers": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Layers",
+          "type": "array"
+        },
+        "stock_lengths_mm": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Stock Lengths Mm",
+          "type": "array"
+        },
+        "maximum_candidates": {
+          "title": "Maximum Candidates",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "revision_id",
+        "longitudinal_diameters_mm",
+        "link_diameters_mm",
+        "link_spacings_mm",
+        "bar_counts",
+        "layers",
+        "stock_lengths_mm",
+        "maximum_candidates"
+      ],
+      "title": "_Catalogue",
+      "type": "object"
+    },
+    "_Context": {
+      "additionalProperties": false,
+      "properties": {
+        "member_id": {
+          "title": "Member Id",
+          "type": "string"
+        },
+        "source_member_id": {
+          "title": "Source Member Id",
+          "type": "string"
+        },
+        "physical_span_id": {
+          "title": "Physical Span Id",
+          "type": "string"
+        },
+        "support_condition": {
+          "enum": [
+            "simply_supported",
+            "continuous",
+            "unknown"
+          ],
+          "title": "Support Condition",
+          "type": "string"
+        },
+        "left_support_face_x_mm": {
+          "title": "Left Support Face X Mm",
+          "type": "number"
+        },
+        "right_support_face_x_mm": {
+          "title": "Right Support Face X Mm",
+          "type": "number"
+        },
+        "left_support_centre_x_mm": {
+          "title": "Left Support Centre X Mm",
+          "type": "number"
+        },
+        "right_support_centre_x_mm": {
+          "title": "Right Support Centre X Mm",
+          "type": "number"
+        },
+        "effective_span_mm": {
+          "title": "Effective Span Mm",
+          "type": "number"
+        },
+        "anchorage_start_x_mm": {
+          "title": "Anchorage Start X Mm",
+          "type": "number"
+        },
+        "anchorage_end_x_mm": {
+          "title": "Anchorage End X Mm",
+          "type": "number"
+        },
+        "nominal_cover_mm": {
+          "title": "Nominal Cover Mm",
+          "type": "number"
+        },
+        "maximum_aggregate_size_mm": {
+          "title": "Maximum Aggregate Size Mm",
+          "type": "number"
+        },
+        "exposure": {
+          "title": "Exposure",
+          "type": "string"
+        },
+        "cracking_harmful": {
+          "title": "Cracking Harmful",
+          "type": "boolean"
+        },
+        "ordinary_seismic": {
+          "title": "Ordinary Seismic",
+          "type": "boolean"
+        },
+        "screening_permitted": {
+          "title": "Screening Permitted",
+          "type": "boolean"
+        },
+        "horizontal": {
+          "title": "Horizontal",
+          "type": "boolean"
+        },
+        "top_mapping_normal": {
+          "title": "Top Mapping Normal",
+          "type": "boolean"
+        },
+        "evidence_revision_id": {
+          "title": "Evidence Revision Id",
+          "type": "string"
+        },
+        "fire_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/_Fire"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lateral_restraints": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/_Restraints"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "member_id",
+        "source_member_id",
+        "physical_span_id",
+        "support_condition",
+        "left_support_face_x_mm",
+        "right_support_face_x_mm",
+        "left_support_centre_x_mm",
+        "right_support_centre_x_mm",
+        "effective_span_mm",
+        "anchorage_start_x_mm",
+        "anchorage_end_x_mm",
+        "nominal_cover_mm",
+        "maximum_aggregate_size_mm",
+        "exposure",
+        "cracking_harmful",
+        "ordinary_seismic",
+        "screening_permitted",
+        "horizontal",
+        "top_mapping_normal",
+        "evidence_revision_id",
+        "fire_basis",
+        "lateral_restraints"
+      ],
+      "title": "_Context",
+      "type": "object"
+    },
+    "_Diagnostic": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "information",
+            "warning",
+            "error"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "operation_semantic_id": {
+          "title": "Operation Semantic Id",
+          "type": "string"
+        },
+        "field_or_location": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Field Or Location"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "remediation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Remediation"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "operation_semantic_id",
+        "field_or_location",
+        "source",
+        "remediation"
+      ],
+      "title": "_Diagnostic",
+      "type": "object"
+    },
+    "_Edit": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "scope": {
+          "enum": [
+            "project",
+            "material",
+            "story",
+            "physical_span",
+            "member",
+            "selection"
+          ],
+          "title": "Scope",
+          "type": "string"
+        },
+        "scope_id": {
+          "title": "Scope Id",
+          "type": "string"
+        },
+        "model_binding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model Binding"
+        },
+        "entered_text": {
+          "title": "Entered Text",
+          "type": "string"
+        },
+        "sequence": {
+          "title": "Sequence",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "key",
+        "scope",
+        "scope_id",
+        "model_binding",
+        "entered_text",
+        "sequence"
+      ],
+      "title": "_Edit",
+      "type": "object"
+    },
+    "_Field": {
+      "additionalProperties": false,
+      "properties": {
+        "subject_id": {
+          "title": "Subject Id",
+          "type": "string"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "source_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Text"
+        },
+        "entered_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Entered Text"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "source",
+            "preset",
+            "rule",
+            "override",
+            "last_valid",
+            "conflict_fallback",
+            "derived"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "rule_revision": {
+          "title": "Rule Revision",
+          "type": "string"
+        },
+        "preset_revision": {
+          "title": "Preset Revision",
+          "type": "string"
+        },
+        "edit_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Edit Ids",
+          "type": "array"
+        },
+        "last_valid_override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Last Valid Override"
+        },
+        "source_state": {
+          "enum": [
+            "absent",
+            "blank",
+            "zero",
+            "supplied"
+          ],
+          "title": "Source State",
+          "type": "string"
+        },
+        "entered_state": {
+          "enum": [
+            "absent",
+            "blank",
+            "zero",
+            "supplied",
+            "conflicting"
+          ],
+          "title": "Entered State",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "absent",
+            "blank",
+            "zero",
+            "supplied",
+            "defaulted",
+            "derived",
+            "conflicting"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "subject_id",
+        "key",
+        "unit",
+        "source_text",
+        "entered_text",
+        "value",
+        "origin",
+        "reason",
+        "rule_revision",
+        "preset_revision",
+        "edit_ids",
+        "last_valid_override",
+        "source_state",
+        "entered_state",
+        "state"
+      ],
+      "title": "_Field",
+      "type": "object"
+    },
+    "_Fire": {
+      "additionalProperties": false,
+      "properties": {
+        "requirement": {
+          "enum": [
+            "unspecified",
+            "not_required",
+            "required"
+          ],
+          "title": "Requirement",
+          "type": "string"
+        },
+        "decision_reference": {
+          "title": "Decision Reference",
+          "type": "string"
+        },
+        "required_minutes": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Required Minutes"
+        }
+      },
+      "required": [
+        "requirement",
+        "decision_reference",
+        "required_minutes"
+      ],
+      "title": "_Fire",
+      "type": "object"
+    },
+    "_Inputs": {
+      "additionalProperties": false,
+      "properties": {
+        "project": {
+          "$ref": "#/$defs/_Project"
+        },
+        "materials": {
+          "items": {
+            "$ref": "#/$defs/_Material"
+          },
+          "title": "Materials",
+          "type": "array"
+        },
+        "catalogue": {
+          "$ref": "#/$defs/_Catalogue"
+        },
+        "member_contexts": {
+          "items": {
+            "$ref": "#/$defs/_Context"
+          },
+          "title": "Member Contexts",
+          "type": "array"
+        },
+        "selection_roles": {
+          "items": {
+            "$ref": "#/$defs/_Role"
+          },
+          "title": "Selection Roles",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project",
+        "materials",
+        "catalogue",
+        "member_contexts",
+        "selection_roles"
+      ],
+      "title": "_Inputs",
+      "type": "object"
+    },
+    "_Material": {
+      "additionalProperties": false,
+      "properties": {
+        "material_id": {
+          "title": "Material Id",
+          "type": "string"
+        },
+        "concrete_strength_n_per_mm2": {
+          "title": "Concrete Strength N Per Mm2",
+          "type": "number"
+        },
+        "steel_yield_strength_n_per_mm2": {
+          "title": "Steel Yield Strength N Per Mm2",
+          "type": "number"
+        },
+        "link_steel_yield_strength_n_per_mm2": {
+          "title": "Link Steel Yield Strength N Per Mm2",
+          "type": "number"
+        },
+        "steel_modulus_n_per_mm2": {
+          "title": "Steel Modulus N Per Mm2",
+          "type": "number"
+        }
+      },
+      "required": [
+        "material_id",
+        "concrete_strength_n_per_mm2",
+        "steel_yield_strength_n_per_mm2",
+        "link_steel_yield_strength_n_per_mm2",
+        "steel_modulus_n_per_mm2"
+      ],
+      "title": "_Material",
+      "type": "object"
+    },
+    "_Preset": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "values": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Values",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "values"
+      ],
+      "title": "_Preset",
+      "type": "object"
+    },
+    "_Project": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "title": "Project Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "origin": {
+          "title": "Origin",
+          "type": "string"
+        },
+        "evidence_reference": {
+          "title": "Evidence Reference",
+          "type": "string"
+        },
+        "values_accepted": {
+          "title": "Values Accepted",
+          "type": "boolean"
+        },
+        "professional_approval_accepted": {
+          "title": "Professional Approval Accepted",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "project_id",
+        "revision_id",
+        "origin",
+        "evidence_reference",
+        "values_accepted",
+        "professional_approval_accepted"
+      ],
+      "title": "_Project",
+      "type": "object"
+    },
+    "_Request": {
+      "additionalProperties": false,
+      "properties": {
+        "cohort_id": {
+          "title": "Cohort Id",
+          "type": "string"
+        },
+        "member_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Member Ids",
+          "type": "array"
+        },
+        "snapshot": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AnalysisSnapshotV1"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "preset": {
+          "$ref": "#/$defs/_Preset"
+        },
+        "saved_ledger": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BeamInputLedgerV1"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "edits": {
+          "items": {
+            "$ref": "#/$defs/_Edit"
+          },
+          "title": "Edits",
+          "type": "array"
+        },
+        "acceptance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/_Acceptance"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "cohort_id",
+        "member_ids",
+        "snapshot",
+        "preset",
+        "saved_ledger",
+        "edits",
+        "acceptance"
+      ],
+      "title": "_Request",
+      "type": "object"
+    },
+    "_Restraints": {
+      "additionalProperties": false,
+      "properties": {
+        "restraint_stations_mm": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Restraint Stations Mm",
+          "type": "array"
+        },
+        "evidence_reference": {
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "restraint_stations_mm",
+        "evidence_reference"
+      ],
+      "title": "_Restraints",
+      "type": "object"
+    },
+    "_Role": {
+      "additionalProperties": false,
+      "properties": {
+        "selection_id": {
+          "title": "Selection Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "uls",
+            "sls_total",
+            "sls_sustained"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "selection_id",
+        "role"
+      ],
+      "title": "_Role",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Native-produced evidence. Parsing proves transport/binding integrity, not native rule execution.",
+  "properties": {
+    "schema_version": {
+      "const": "beam-readiness/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "profile_id": {
+      "const": "is456-ordinary-rectangular-simple-span-baseline-v1",
+      "title": "Profile Id",
+      "type": "string"
+    },
+    "policy_revision": {
+      "const": "beam-readiness-lnv01-v1",
+      "title": "Policy Revision",
+      "type": "string"
+    },
+    "engine_identity": {
+      "title": "Engine Identity",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "request": {
+      "$ref": "#/$defs/_Request"
+    },
+    "ledger": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BeamInputLedgerV1"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "members": {
+      "items": {
+        "$ref": "#/$defs/BeamMemberReadinessV1"
+      },
+      "title": "Members",
+      "type": "array"
+    },
+    "engineering": {
+      "const": "not_evaluated",
+      "title": "Engineering",
+      "type": "string"
+    },
+    "approval": {
+      "const": "unreviewed",
+      "title": "Approval",
+      "type": "string"
+    },
+    "source_qualification": {
+      "const": "offline_replay_only;physical_material_and_current_installed_qualification=HOLD;engineering_acceptance=not_granted",
+      "title": "Source Qualification",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "profile_id",
+    "policy_revision",
+    "engine_identity",
+    "request_id",
+    "document_id",
+    "request",
+    "ledger",
+    "members",
+    "engineering",
+    "approval",
+    "source_qualification"
+  ],
+  "title": "BeamReadinessDocumentV1",
+  "type": "object"
+}

@@ -1,7 +1,7 @@
 namespace StructuralEngineering.Contracts;
 
 public enum BeamInputScope { Project, Material, Story, PhysicalSpan, Member, Selection }
-public enum BeamValueOrigin { Source, Preset, Rule, Override, LastValid, ConflictFallback }
+public enum BeamValueOrigin { Source, Preset, Rule, Override, LastValid, ConflictFallback, Derived }
 public enum BeamReviewAvailability { Available, Example, Unavailable, Cancelled }
 
 /// <summary>Entered text is evidence, never an expression to execute. A scope is model-bound except Project.</summary>
@@ -13,7 +13,22 @@ public sealed record BeamFieldDefinition(string Key, string Unit, string Kind, s
 
 public sealed record BeamEffectiveField(string SubjectId, string Key, string Unit, string? SourceText,
     string? EnteredText, string Value, BeamValueOrigin Origin, string Reason, string RuleRevision,
-    string PresetRevision, IReadOnlyList<string> EditIds, string? LastValidOverride);
+    string PresetRevision, IReadOnlyList<string> EditIds, string? LastValidOverride)
+{
+    public string SourceState => TextState(SourceText);
+    public string EnteredState => Origin == BeamValueOrigin.ConflictFallback ? "conflicting" : TextState(EnteredText);
+    public string State => Origin switch
+    {
+        BeamValueOrigin.ConflictFallback => "conflicting",
+        BeamValueOrigin.Derived => "derived",
+        BeamValueOrigin.Preset or BeamValueOrigin.Rule or BeamValueOrigin.LastValid => "defaulted",
+        _ => TextState(Value)
+    };
+
+    private static string TextState(string? value) => value is null ? "absent" :
+        string.IsNullOrWhiteSpace(value) ? "blank" :
+        double.TryParse(value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var number) && number == 0 ? "zero" : "supplied";
+}
 
 public sealed record BeamReviewPreset(string Id, string Revision,
     IReadOnlyDictionary<string, string> Values);

@@ -61,3 +61,11 @@ these existing contracts. Its supplementary normalized source records under
 declare new language-neutral operations or Python projections. Existing
 WP01–WP10 semantic versions and conformance contracts remain authoritative.
 See [the native baseline contract](../../docs/library/reference/wp11-baseline-design.md).
+
+LIB-2 adds `beam-readiness.schema.json` and a native-produced
+`beam-readiness-v1.gz` conformance document (gzip-compressed JSON). This is an offline projection of
+the existing native ledger/profile mapper: Python strictly inspects the same
+document and checks explicit current bindings, without adding a Python baseline
+design engine or changing the WP01–WP10 operation catalogue. Ready inputs retain
+engineering `not_evaluated`, approval `unreviewed` and the existing qualification
+HOLDs. See the native baseline reference for the callable input-to-readiness flow.
