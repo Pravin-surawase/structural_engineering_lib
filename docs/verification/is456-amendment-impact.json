@@ -17572,5 +17572,588 @@
     "engineering_use_certification": false,
     "release_authorized": false,
     "external_publication": false
+  },
+  "isolated_footing_selected_bar_roles_current_operation_follow_up": {
+    "date_utc": "2026-10-01",
+    "status": "BOUNDED_MODELED_MAIN_FLEXURAL_CORRESPONDENCE; INDEPENDENTLY_REVIEWED_LOCAL_DOCUMENTATION",
+    "prior_checkpoint": "d0c436cb3cb34d7cbe98dd564b3b9975a56a2ed3",
+    "history_semantics": "Append-only current-operation follow-up. Preserve all 25 preceding top-level values, original 95 A3-A6 rows, 42 A1-A2 rows, and prior accepted stair/bearing/shear packets. These two current AMD3-014 caller dispositions overlap the original 137-block / 5206-disposition inventory; they do not add instructions or alter historical D013.",
+    "selected_callers": [
+      {
+        "id": "is456.isolated-footing.concentric/v1",
+        "surface": "family_journey",
+        "category": "isolated",
+        "entry_module": "structural_lib.design.is456.isolated_footing",
+        "contract": "concentric-isolated-footing-input/v1",
+        "actual_owner": {
+          "path": "Python/structural_lib/services/footing_api.py",
+          "line": 637,
+          "symbol": "design_concentric_isolated_footing_is456"
+        },
+        "registry_anchor": {
+          "path": "Python/structural_lib/services/family_facade_registry.py",
+          "line": 158
+        }
+      },
+      {
+        "id": "api.design_concentric_isolated_footing_is456",
+        "surface": "advanced_export",
+        "category": "isolated",
+        "actual_owner": {
+          "path": "Python/structural_lib/services/footing_api.py",
+          "line": 637,
+          "symbol": "design_concentric_isolated_footing_is456"
+        },
+        "export_binding": {
+          "path": "Python/structural_lib/services/api.py",
+          "line": 1
+        }
+      }
+    ],
+    "classification_boundary": "One existing canonical/preview journey and one advanced/preview API; 13 journeys / 25 advanced exports unchanged. The internal detailing helper is an owner, not a new supported export.",
+    "declared_case": "Completed provided two-direction bottom-bar model for a concentric uniform-depth square or rectangular isolated soil footing. Each selected L/B set supplies its own modeled bending resistance; physical drawing correspondence remains required.",
+    "controlled_source_bindings": [
+      {
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources/is456_library_first/source_pdfs/is456_2000_amd5_reff2021.pdf",
+        "sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+        "bytes_hash_reverified_in_this_packet": true
+      },
+      {
+        "source_id": "IS456-AMD6-2024",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources/is456_library_first/source_pdfs/is456_amd_06_2024.pdf",
+        "sha256": "4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881",
+        "bytes_hash_reverified_in_this_packet": true
+      }
+    ],
+    "base_locators": [
+      {
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          66
+        ],
+        "printed_pages": [
+          65
+        ],
+        "clauses": [
+          "34.3",
+          "34.3.1(b)",
+          "34.3.1(c)",
+          "34.2.4.3"
+        ]
+      },
+      {
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          67
+        ],
+        "printed_pages": [
+          66
+        ],
+        "clauses": [
+          "34.5.1"
+        ]
+      },
+      {
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          47
+        ],
+        "printed_pages": [
+          46
+        ],
+        "clauses": [
+          "26.3.3(b)(1)",
+          "26.3.3(b)(2)"
+        ]
+      },
+      {
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          74
+        ],
+        "printed_pages": [
+          73
+        ],
+        "target": "Table 19 As note: separate held physical prerequisite"
+      }
+    ],
+    "ordered_relationships": [
+      {
+        "earlier": "BASE34.3",
+        "later": "BASE34.3.1(b)/(c)",
+        "relationship": "bending_purpose_then_spatial_placement",
+        "effect": "Both square/rectangular directions distribute tensile bending reinforcement. Rectangular central/outer zones are spatial allocation of the short-direction set, not a source label for a temperature-only set."
+      },
+      {
+        "earlier": "BASE34.5.1",
+        "later": "BASE26.3.3(b)(1)/(2)",
+        "relationship": "solid_slab_minimum_reinforcement_and_spacing_import",
+        "effect": "Main-flexural and shrinkage/temperature spacing categories stay distinct. This explicit spacing import does not settle the separate maximum-shear classification."
+      },
+      {
+        "earlier": "BASE34.3.1(a)",
+        "later": "AMD2-006",
+        "relationship": "one_way_item_qualifier_deleted",
+        "effect": "A2 PDF 109 / printed 1 deletes the each-direction qualifier in item(a) only; items(b)/(c) are not replaced. No one-way-only or combined/strap case is imported into this packet."
+      },
+      {
+        "earlier": "BASE26.3.3(b)(2)",
+        "later": "AMD3-014",
+        "relationship": "secondary_absolute_cap_replaced",
+        "effect": "A3 PDF 112 / printed 2 changes 450 to 300 mm while retaining 5d in the shrinkage/temperature item. It leaves the main-flexural min(3d,300 mm) item(b)(1) unchanged."
+      },
+      {
+        "earlier": "AMD3-014",
+        "later": "A4-A6",
+        "relationship": "no_later_same_target_replacement_identified",
+        "effect": "The maintained complete target inventory and full possessed A6 pages identify no later replacement of these role/spacing targets. Material/coating/anchorage obligations are not thereby qualified."
+      }
+    ],
+    "direct_source_facts": [
+      {
+        "id": "R01",
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          66
+        ],
+        "printed_pages": [
+          65
+        ],
+        "targets": [
+          "34.3"
+        ],
+        "fact": "Tensile reinforcement is tied to the bending moment calculated under34.2.3; the resisting section must have sufficient moment resistance.",
+        "role_boundary": "The source does not literally label every footing direction as main or secondary."
+      },
+      {
+        "id": "R02",
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          66
+        ],
+        "printed_pages": [
+          65
+        ],
+        "targets": [
+          "34.3.1(b)"
+        ],
+        "fact": "For the two-way square case, the directional reinforcement is placed uniformly over the corresponding full width.",
+        "role_boundary": "The provision describes placement of tensile reinforcement in each direction; the spatial distribution wording is not itself a shrinkage/temperature role label."
+      },
+      {
+        "id": "R03",
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          66
+        ],
+        "printed_pages": [
+          65
+        ],
+        "targets": [
+          "34.3.1(c)"
+        ],
+        "fact": "For the two-way rectangular case, long-direction tensile steel is spread uniformly; short-direction tensile steel is divided between a central band and outer portions.",
+        "normalized_central_fraction": "2/(beta+1), beta=long_side/short_side",
+        "role_boundary": "Short direction, outer portion and central-band distribution do not by themselves establish a secondary role."
+      },
+      {
+        "id": "R04",
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          67
+        ],
+        "printed_pages": [
+          66
+        ],
+        "targets": [
+          "34.5.1"
+        ],
+        "fact": "There is an express solid-slab correspondence for the footing's minimum reinforcement and spacing.",
+        "role_boundary": "The reference supplies the slab spacing framework; it does not expressly assign a purpose to each provided footing bar direction."
+      },
+      {
+        "id": "R05",
+        "source_id": "IS456-CONTROLLED-COLLECTION",
+        "pdf_pages_one_based": [
+          47
+        ],
+        "printed_pages": [
+          46
+        ],
+        "targets": [
+          "26.3.3",
+          "26.3.3(b)(1)",
+          "26.3.3(b)(2)"
+        ],
+        "fact": "Item(b)(1) concerns parallel main bars. Item(b)(2) separately concerns bars provided against shrinkage and temperature.",
+        "normalized_main_rule": "horizontal_distance<=min(3*d,300mm)",
+        "normalized_base_shrinkage_temperature_rule": "horizontal_distance<=min(5*d,450mm)",
+        "role_boundary": "The base source distinguishes bar purpose, rather than identifying a secondary direction merely from its orientation.",
+        "context": "The general preamble retains its crack-width calculation condition and normal-exposure context. No greater-spacing exception or environment qualification is accepted here."
+      }
+    ],
+    "named_inferred_correspondence": {
+      "id": "FOOTING_SELECTED_TWO_DIRECTION_MAIN_FLEXURAL_CORRESPONDENCE",
+      "kind": "Explicit inference from source-defined tensile bending purpose plus actual owner demand/selection trace.",
+      "inference": "For the maintained completed selected-bottom-bar model, both L and B sets are intended to supply tensile flexural resistance to their respective moments under34.3. This supports treating each as main flexural reinforcement for26.3.3(b)(1).",
+      "direct_footing_specific_main_label_in_source": false,
+      "accepted_boundary": "The program's intended two-direction flexural-role correspondence is supported for this exact completed provided-bar model. This is not certification of an actual drawing or every bar in a footing.",
+      "required_conditions": [
+        "Both selected bottom sets correspond to their own modelled directional bending/tensile demands.",
+        "The reviewed square or rectangular two-way placement case remains the declared physical case.",
+        "The provided physical bar sets actually match the intended selected directions and source purpose."
+      ],
+      "not_evidence_for_the_inference": [
+        "family name",
+        "existing3*d/300 expression",
+        "short or long label",
+        "lower or upper layer label",
+        "central-band or distribution-zone label",
+        "caller approval/review flags"
+      ],
+      "minimum_area_governing": "A minimum-area-controlled selection does not by itself turn the model's intended flexural direction into a temperature-only set. This remains part of the named inference, not an explicit universal source statement.",
+      "physical_correspondence_certified": false
+    },
+    "current_owner_snapshots": [
+      {
+        "path": "Python/structural_lib/codes/is456/footing/flexure.py",
+        "sha256": "e9d635c19f669f10cebaaca78f52912ef6870999128f2ac9c257d613f6bb88e3",
+        "ast_anchors": [
+          {
+            "symbol": "_design_direction",
+            "line": 24,
+            "end_line": 79
+          },
+          {
+            "symbol": "footing_flexure",
+            "line": 83,
+            "end_line": 209
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/codes/is456/footing/detailing.py",
+        "sha256": "a85e4fd602918adee4fbef9a573cd8b814cf0e0999f185140a11c77e42cb9551",
+        "ast_anchors": [
+          {
+            "symbol": "FootingDirectionDetail",
+            "line": 123,
+            "end_line": 155
+          },
+          {
+            "symbol": "_uniform_zone",
+            "line": 269,
+            "end_line": 298
+          },
+          {
+            "symbol": "_central_band_zones",
+            "line": 301,
+            "end_line": 361
+          },
+          {
+            "symbol": "detail_isolated_footing_bottom_steel",
+            "line": 514,
+            "end_line": 1083
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/services/footing_api.py",
+        "sha256": "c6904b54aa094c1f988dd808f84fc88f1ed6166d29ba0598913630b5761f20c7",
+        "ast_anchors": [
+          {
+            "symbol": "_run_detailing",
+            "line": 590,
+            "end_line": 634
+          },
+          {
+            "symbol": "design_concentric_isolated_footing_is456",
+            "line": 637,
+            "end_line": 941
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/design/is456/isolated_footing.py",
+        "sha256": "e9396bcc620d36faa4f71841a8a464f725a8bfbc2b5a6092a6bc96e208fa4cbc",
+        "ast_anchors": [
+          {
+            "symbol": "design",
+            "line": 189,
+            "end_line": 287
+          }
+        ]
+      },
+      {
+        "path": "Python/structural_lib/services/contracts/family_f3.py",
+        "sha256": "b563765e209b8a3053fa3d8915515f5335087b5e1a4c08d492d5cc0d9e39daf8",
+        "ast_anchors": []
+      },
+      {
+        "path": "Python/structural_lib/services/api.py",
+        "sha256": "e1afabd4651f549d2debc55d40aa3a61fbb7ee63300a19fffd4de0c24ae5f852",
+        "ast_anchors": []
+      },
+      {
+        "path": "Python/tests/test_footing_detailing.py",
+        "sha256": "d0975e751bf176122e83b91e8469439f269aab1785e3b2950d151cc75418f851",
+        "ast_anchors": [
+          {
+            "symbol": "_case",
+            "line": 39,
+            "end_line": 64
+          }
+        ]
+      },
+      {
+        "path": "Python/tests/integration/test_footing_composed_publication.py",
+        "sha256": "691df9576a26182ced6040c0e858e056007f970b3127f2090fca1c43ec46da9d",
+        "ast_anchors": [
+          {
+            "symbol": "_benchmark_request",
+            "line": 17,
+            "end_line": 58
+          }
+        ]
+      },
+      {
+        "path": "docs/reference/api-classification.json",
+        "sha256": "d7be533accefe4082864259ba89c9e6705c93aa06a75b6a88539dceca4d83135"
+      },
+      {
+        "path": "docs/verification/india-1c-isolated-footing-workflow-evidence.md",
+        "sha256": "e6ec5ffc6d7b066309f481377e66f847064a3cb4e08732fb107460f9bbd9e8bb"
+      }
+    ],
+    "current_flow": [
+      {
+        "owner": "footing/flexure.py:_design_direction and footing_flexure",
+        "meaning": "Compute a positive directional Mu and its Ast independently for L and B; apply the existing slab-type minimum separately. An area minimum governing does not alone classify a direction as temperature-only."
+      },
+      {
+        "owner": "footing/detailing.py:detail_isolated_footing_bottom_steel",
+        "meaning": "At the separately determined physical L/B bar depths, select each direction's own Mu/Ast and the larger of physical-flexure, analysis-screening and minimum area. Explicit lower/upper order determines depths, not bar purpose."
+      },
+      {
+        "owner": "footing/detailing.py:_uniform_zone and _central_band_zones",
+        "meaning": "Apply min(3*physical_d,300 mm) to both intended main-flexural sets. The short rectangular direction distributes its total area into the 2/(beta+1) central fraction and two outer fractions; those zones do not create a third secondary set."
+      },
+      {
+        "owner": "services/footing_api.py:_run_detailing and design_concentric_isolated_footing_is456",
+        "meaning": "Complete detailing requires explicit cover/exposure/aggregate/directions/diameters/bar type and a consistent transfer receipt. Missing schedules or analysis-only calculations are not completed provided-bar conformity evidence."
+      },
+      {
+        "owner": "design/is456/isolated_footing.py:design",
+        "meaning": "The canonical journey translates its typed contract to the same composed owner. Qualified review remains required and preview classification is preserved."
+      }
+    ],
+    "rows": [
+      {
+        "caller_id": "is456.isolated-footing.concentric/v1",
+        "surface": "family_journey",
+        "historical_row": "AMD3-014",
+        "historical_disposition": "D013:unknown/unverified retained",
+        "current_impact": "unchanged",
+        "current_resolution": "not_applicable",
+        "conditional": true,
+        "subject": "Only the amended shrinkage/temperature-only absolute-limit change for the completed two-direction selected-bottom-bar model under the explicitly named inferred main-flexural correspondence.",
+        "rationale": "Each modeled selected direction supplies bending resistance under 34.3 and retains the unchanged main-bar min(3d,300 mm) item(b)(1). No temperature-only set is identified by the reviewed completed model. This is an operation-specific intended-role inference; physical drawing/role and separate shear/material prerequisites remain held.",
+        "inference_id": "FOOTING_SELECTED_TWO_DIRECTION_MAIN_FLEXURAL_CORRESPONDENCE",
+        "necessary_conditions": [
+          "Both selected bottom sets correspond to their own modelled directional bending/tensile demands.",
+          "The reviewed square or rectangular two-way placement case remains the declared physical case.",
+          "The provided physical bar sets actually match the intended selected directions and source purpose."
+        ],
+        "main_spacing_owner_rule": "min(3*physical_effective_depth_mm,300 mm)",
+        "main_spacing_software_observation": "current_conforms_for_reviewed_intended_main_flexural_case"
+      },
+      {
+        "caller_id": "api.design_concentric_isolated_footing_is456",
+        "surface": "advanced_export",
+        "historical_row": "AMD3-014",
+        "historical_disposition": "D013:unknown/unverified retained",
+        "current_impact": "unchanged",
+        "current_resolution": "not_applicable",
+        "conditional": true,
+        "subject": "Only the amended shrinkage/temperature-only absolute-limit change for the completed two-direction selected-bottom-bar model under the explicitly named inferred main-flexural correspondence.",
+        "rationale": "Each modeled selected direction supplies bending resistance under 34.3 and retains the unchanged main-bar min(3d,300 mm) item(b)(1). No temperature-only set is identified by the reviewed completed model. This is an operation-specific intended-role inference; physical drawing/role and separate shear/material prerequisites remain held.",
+        "inference_id": "FOOTING_SELECTED_TWO_DIRECTION_MAIN_FLEXURAL_CORRESPONDENCE",
+        "necessary_conditions": [
+          "Both selected bottom sets correspond to their own modelled directional bending/tensile demands.",
+          "The reviewed square or rectangular two-way placement case remains the declared physical case.",
+          "The provided physical bar sets actually match the intended selected directions and source purpose."
+        ],
+        "main_spacing_owner_rule": "min(3*physical_effective_depth_mm,300 mm)",
+        "main_spacing_software_observation": "current_conforms_for_reviewed_intended_main_flexural_case"
+      }
+    ],
+    "disposition_counts": {
+      "caller_count": 2,
+      "expanded_dispositions": 2,
+      "unchanged_not_applicable_conditional_on_named_role": 2
+    },
+    "historical_other_callers": "Combined and strap D013 callers and all unrelated callers remain unchanged and outside this current packet.",
+    "source_review": {
+      "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/review/footing-bar-roles-issued-source-review-01.json",
+      "sha256": "46779096712c91a5467eca327e15ade40e91f342fb168b604778e50c77e462d1"
+    },
+    "current_read_only_diagnostics": {
+      "receipt": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/footing-bar-roles-current-diagnostics-01.json",
+        "sha256": "e8a3dede5456e3494a710ce3d8abfb7d0fd144571df15d2f984fa235ee648a61"
+      },
+      "source_checkpoint": "b5510d20b17f0a8b1ad9dd2853c203e529cb60e6",
+      "code_bytes_identical_to_current_candidate": true,
+      "observations": 4,
+      "directional_schedules": 8,
+      "cases": [
+        "retained-square-L-lower",
+        "retained-square-B-lower",
+        "retained-rectangle-L3000-B2000",
+        "transposed-rectangle-L2000-B3000-B-lower"
+      ],
+      "new_physical_project_approval": false,
+      "finite_cases_are_not_complete_engineering_qualification": true
+    },
+    "secondary_distribution_boundary": {
+      "source_category": "26.3.3(b)(2):bars provided against shrinkage and temperature.",
+      "which_selected_direction_is_secondary": "None is identified as solely secondary by this model's separate directional Mu/Ast trace.",
+      "unresolved_categories": [
+        "additional shrinkage/temperature-only sets",
+        "a physical direction not actually assigned to bending resistance",
+        "one-way-only reinforced footing arrangements",
+        "other nominal/face/top bars or unsupported schedules"
+      ],
+      "do_not_infer": "Neither the rectangular short-direction central band nor the upper of two bottom layers identifies a temperature-only bar set.",
+      "applicable_rule_if_role_is_demonstrated": "Apply the ordered min(5*d,300mm) shrinkage/temperature rule, subject to the actual source context.",
+      "physical_decision_question": "For each actual selected L/B bottom set, is it provided to resist its corresponding34.3 bending moment, or solely for shrinkage/temperature? Identify the drawing and design-purpose evidence. If any set is temperature-only or the physical case is one-way-only, that role falls outside the accepted two-direction inference and must be mapped independently."
+    },
+    "table19_qualifying_area_prerequisite": {
+      "source_note_applicability_to_exact_footing_action": "HOLD",
+      "prerequisite_semantics": "Conditional on establishing source/case applicability; current getter use and bar-purpose inference do not settle it.",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_page_one_based": 74,
+      "printed_page": 73,
+      "target": "Table19:As note",
+      "normalized_role": "Qualifying longitudinal tension area with the required continuation beyond the checked section.",
+      "required_continuation": "at_least_one_effective_depth",
+      "support_exception_targets": [
+        "26.2.2",
+        "26.2.3"
+      ],
+      "current_software_connection": "The detailing owner computes provided directional pt from summed zone area and passes it to one-way shear. Its intended full-length selection and end-anchorage output do not themselves demonstrate the source's checked-section continuation or support exception.",
+      "source_boundary": "The As note is a separate physical shear prerequisite, not a consequence of adequate area or spacing and not closed by main-bar purpose.",
+      "status": "HOLD_TABLE19_NOTE_APPLICABILITY_AND_PHYSICAL_CONTINUATION",
+      "decision_question": "For each L/B checked soil-footing shear section, identify the actual longitudinal tension bars and area that satisfy the required continuation beyond that section; state the required continuation direction and show the physical length. If full-area-at-support is relied on, establish why this exact section qualifies as a support and demonstrate the26.2.2/26.2.3 detailing basis. Do not infer this from a software pt value, area/spacing PASS or a nominal full-length/anchorage label.",
+      "physical_qualifying_As_accepted": false,
+      "no_numerical_defect_inferred_from_open_prerequisite": true
+    },
+    "anchorage_and_conditional_continuation_boundary": {
+      "source_fact_id": "R06",
+      "source_id": "IS456-CONTROLLED-COLLECTION",
+      "pdf_pages_one_based": [
+        66
+      ],
+      "printed_pages": [
+        65
+      ],
+      "targets": [
+        "34.2.4.3",
+        "34.2.3",
+        "26.2.3"
+      ],
+      "direct_source_fact": "Footing development-length checks use the bending planes and abrupt section changes; curtailed reinforcement invokes the26.2.3 anchorage requirements.",
+      "separate_Table19_locator": {
+        "pdf_page_one_based": 74,
+        "printed_page": 73,
+        "target": "Table19:As note"
+      },
+      "boundary": "Development-length/anchorage evidence at the bending planes is distinct from the Table19 continuation beyond a checked section and its support exception. Neither result substitutes for the other without a demonstrated source/case correspondence.",
+      "conditional_geometry_screen": {
+        "case_id": "retained-square-L-lower",
+        "evidence_kind": "Parent-proposed simple geometric screen, checked by independent arithmetic only; not a product implementation run.",
+        "declared_L_and_B_mm": 2000,
+        "declared_column_width_mm": 400,
+        "declared_analysis_d_mm": 400,
+        "declared_nominal_cover_mm": 50,
+        "declared_straight_total_bar_length_mm": 1900,
+        "section_from_centre_mm": 600,
+        "straight_end_from_centre_mm": 950,
+        "assumed_edgeward_continuation_mm": 350,
+        "relation": "350mm<declared_analysis_d400mm",
+        "arithmetic": "column_width/2+analysis_d=600; straight_length/2=950;950-600=350.",
+        "conditions": "Assumes the displayed straight end, declared analysis depth and edgeward continuation direction for this authored square only.",
+        "source_note_applicability_decided": false,
+        "required_depth_or_continuation_direction_decided": false,
+        "support_exception_decided": false,
+        "bend_or_other_anchorage_satisfaction_decided": false,
+        "geometric_screen_is_a_defect_or_failure_verdict": false
+      },
+      "authoritative_interpretation_questions": [
+        "Does Table19's As continuation/support exception govern the exact soil-footing one-way action represented here? Identify the issued provision or authoritative source/case interpretation; existing getter use does not settle applicability.",
+        "If it governs, which checked plane, effective-depth datum and continuation direction does the note require for the selected L/B bars? Is the declared straight350mm screen relevant to that required correspondence?",
+        "Can the exact d-offset soil-footing shear section rely on the full-area-at-support exception, and what26.2.2/26.2.3 physical detailing demonstrates it? Do the separate34.2.4.3 bending-plane anchorage checks establish that exception or a different condition?"
+      ],
+      "status": "HOLD",
+      "no_role_area_spacing_or_anchorage_label_closure": true,
+      "no_numerical_change_or_engineering_acceptance": true
+    },
+    "maximum_shear_source_hold": "Unchanged from the preceding accepted current-operation shear packet; neither main-bar purpose nor the explicit spacing import establishes the solid-slab maximum-shear classification.",
+    "independent_operation_review": {
+      "status": "ACCEPTED_FOR_BOUNDED_CURRENT_OPERATION_DOCUMENTATION",
+      "artifact": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/review/footing-bar-roles-current-operation-review-01.json",
+        "sha256": "cb59eefc47ef9c119b026d14210656532d1a19f5971931cdbb111e28b9d404a5"
+      },
+      "frozen_candidate": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/review/footing-bar-roles-current-frozen-01.json",
+        "sha256": "bbcb24a2e30bf769f88bc17ae77c8413036d37ee1c4f5f8098604e55b4b3b055"
+      },
+      "essential_blockers": 0,
+      "conditional_caller_dispositions_independently_reviewed": 2,
+      "ordered_relationships_independently_reviewed": 5,
+      "role_meaning": "Named inferred correspondence for the completed intended model only; physical/source/engineering HOLDs remain.",
+      "final_metadata_semantics": "Truthful metadata-only closeout permitted under exact unchanged prior/semantic/source/owner/asset identities; final metadata bytes were not inputs to the frozen candidate review."
+    },
+    "verification": {
+      "status": "FROZEN_CANDIDATE_AFFECTED_DOCUMENTATION_8_OF_8_PASS; PERMITTED_METADATA_ONLY_CLOSEOUT",
+      "closeout_date_utc": "2026-10-02",
+      "affected_documentation_gate": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/footing-bar-roles-docs-gate-01.json",
+        "sha256": "055ee9248aac4249469c02d85353dc742eed0a2c545775255ebb94bcf2650b15"
+      },
+      "identity_before_closeout": {
+        "path": "/Users/pravinsurawase/Documents/Codex/2026-10-02/task-5/evidence/footing-bar-roles-current-integrity-before-closeout.json",
+        "sha256": "d5491de988b57c8a206d7dc595a783958317eb7718cf769a1da6a503fe1cc12f"
+      },
+      "frozen_gate_counts": {
+        "total": 8,
+        "passed": 8,
+        "failed": 0,
+        "reused": 0
+      },
+      "final_gate_and_identity_receipts": "Actual final metadata checks and byte bindings accompany the separate local recovery checkpoint; they do not change the immutable reviewed source/role/physical/numerical meanings.",
+      "production_changes": 0,
+      "new_repository_tests": 0,
+      "experimental_promotions": 0,
+      "unchanged_expensive_suites_repeated": false,
+      "qualification": "HOLD; local evidence is not engineering or installed-host acceptance"
+    },
+    "numerical_defect_demonstrated": false,
+    "numerical_correction_justified": false,
+    "protected_source_prose_or_images_included": false,
+    "physical_bar_correspondence_certified": false,
+    "engineering_use_certification": false,
+    "external_publication": false,
+    "release_authorized": false,
+    "qualification_holds": [
+      "actual drawing and bar-purpose correspondence",
+      "additional temperature-only or one-way-only bar roles",
+      "Table 19 note applicability, depth/direction datum, continuation and support exception",
+      "footing/solid-slab maximum-shear classification",
+      "full six-amendment/material/coating/manufacturer/finite-creep/engineering acceptance",
+      "actual installed Windows/ETABS/Excel/XLL qualification"
+    ]
   }
 }

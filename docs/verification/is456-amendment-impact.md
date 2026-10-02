@@ -236,6 +236,67 @@ scalar bound and remains a following bounded packet. Full engineering,
 physical material, finite-creep and installed-host qualifications remain HOLD.
 No public release, package publication or engineering-use certification follows.
 
+## Current isolated-footing selected-bar role follow-up — 1 October 2026
+
+This separate packet covers the completed provided two-direction bottom-bar
+model used by the concentric isolated-footing journey and its composed API.
+Its two current `AMD3-014` dispositions overlap the original inventory. All
+historical values, including `D013`, the combined/strap questions and the
+preceding maximum-shear HOLD remain unchanged.
+
+| Exact issued locator | Bounded role/spacing conclusion |
+|---|---|
+| Base PDF 66 / printed 65; 34.3, 34.3.1(b)/(c) | Both square/rectangular directions distribute tensile bending reinforcement. The rectangular central/outer zones allocate the short-direction total; the placement word does not label a temperature-only set. |
+| A2 PDF 109 / printed 1; AMD2-006 / 34.3.1(a) | The deleted direction qualifier belongs to the one-way item(a). The square/rectangular items(b)/(c) remain separate and unchanged by that instruction. |
+| Base PDF 67 / printed 66; 34.5.1; base PDF 47 / printed 46; 26.3.3(b)(1)/(2) | The solid-slab minimum-reinforcement/spacing import preserves distinct main-flexural and shrinkage/temperature spacing categories. The unchanged main rule is `min(3d,300 mm)`. |
+| A3 PDF 112 / printed 2; AMD3-014 | The amendment changes 450 to 300 mm in the shrinkage/temperature item(b)(2), retaining `5d`; it does not replace main item(b)(1). No later same-target replacement is identified in the maintained A4–6 inventory. |
+
+The named **selected two-direction main-flexural correspondence** is an
+explicit inference: source-defined bending purpose under 34.3 matches each
+selected direction's independently computed Mu/Ast and provided-area selection.
+The source does not literally label every footing direction as main. The
+inference is restricted to the reviewed completed model with those intended
+purposes; an actual drawing must demonstrate physical correspondence. Family,
+short side, upper/lower layer, central-band naming and the existing spacing
+expression are not independent evidence of role. A minimum area governing one
+direction also does not by itself make that set temperature-only.
+
+Under this named correspondence, AMD3-014's secondary-only change is
+`unchanged/not_applicable` for the two selected maintained callers. The owner
+uses `min(3*physical_effective_depth,300 mm)` for both intended flexural sets,
+with separately retained physical and analysis depths. The internal detailing
+helper is an owner, not a new supported API. Analysis-only results or missing
+provided-bar inputs do not establish completed bar-role/spacing conformity.
+Additional shrinkage/temperature-only sets, one-way-only arrangements and all
+unrelated footing cases remain separate questions.
+
+Four read-only current observations retain the square benchmark, reverse its
+layer order, replay the rectangular central-band case and transpose the
+rectangle/directions. All eight schedules retain their own positive directional
+bending demand and current main-spacing rule. In the 3000 by 2000 mm rectangle,
+the short-direction 1800 mm² minimum-governed area is still assigned to its own
+192 kNm modeled demand: 1440 mm² central and 180 mm² in each outer band. These
+observations corroborate the intended role trace and do not constitute a new
+real-project approval or complete physical/engineering acceptance.
+
+Table-19 qualifying longitudinal tension area and continuation remain HOLD.
+Base PDF 66 / printed 65; 34.2.4.3 bending-plane development-length checks are
+distinct from the Table-19 As note, PDF 74 / printed 73, and its 26.2.2/26.2.3
+support exception. In the authored straight-bar square only, an edgeward
+continuation screen with the declared analysis `d=400 mm` gives
+`1900/2-(400/2+400)=350 mm`. This conditional `350<400` geometry is not a
+failure verdict: note applicability, required depth/direction datum and support
+exception must first be established by authoritative source/case evidence.
+Role, adequate area/spacing or a separate anchorage label cannot close them.
+
+Separate exact frozen operation review accepts both conditional dispositions
+and all five relationships for this bounded documentation purpose, with zero
+essential blockers. The actual frozen-candidate documentation gate passed eight
+of eight checks with zero reuses; prior/current identity passed. Final permitted
+metadata checks and exact byte bindings accompany the local recovery checkpoint. No numerical defect, formula correction, new test or scope
+promotion is asserted. The prior maximum-shear interpretation, material,
+coating/manufacturer, finite-creep and actual installed-host HOLDs remain.
+
 ## Historical Amendment 3-6 packet and accepted correction
 
 The original documentation packet identifies two supported-slab discrepancies and

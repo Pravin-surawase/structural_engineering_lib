@@ -302,3 +302,25 @@ No formula change or test is added; prior accepted calculations and the five
 local checkpoint commits remain preserved. The nine overlapping dispositions
 do not expand the amendment inventory or the 13-journey / 25-export scope.
 Shared material, complete engineering and actual installed-host HOLDs remain.
+
+
+## Current isolated-footing selected-bar role evidence — 1 October 2026
+
+The [current role follow-up](is456-amendment-impact.md#current-isolated-footing-selected-bar-role-follow-up--1-october-2026)
+records a named inference matching the completed model's separately designed
+L/B bending bars to the unchanged main-spacing category. For those two
+maintained callers, A3's shrinkage/temperature-only change is conditionally
+`unchanged/not_applicable`; original historical dispositions remain preserved.
+Four read-only observations/eight schedules support the intended-model trace.
+This does not classify actual drawing bars, additional secondary sets or other
+footing cases. Internal helpers remain owners within the existing scope.
+
+Table-19 note applicability, qualifying longitudinal area, continuation and
+support exception remain HOLD independently of role/area/spacing/anchorage
+results. The conditional straight-square geometric screen is a precise held
+interpretation question, not a numerical failure. The prior maximum-shear,
+material, complete engineering and actual installed-host HOLDs remain. Frozen
+independent review accepts the bounded record with zero essential blockers;
+the actual documentation gate passed eight of eight checks with zero reuses
+and historical/current identity passed. Final metadata checks accompany recovery;
+there is no formula change, new test, experimental promotion or release.

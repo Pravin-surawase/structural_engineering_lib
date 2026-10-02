@@ -5,7 +5,7 @@
 <!-- HANDOFF:START -->
 - Date: 2026-10-01
 - Focus: Preserve the independently reviewed local Library packets and coordinate their publication handoff with the parent, retaining engineering qualification HOLDs.
-- Completed: Independently reviewed local A1-2 checkpoint 8479cb8f, staircase correction 4cd194d9 with full component/repository validation and private installed Mac wheel proof, and current concrete-bearing documentation 87172810; verified local recovery bundles preserved.; Confirmed the aggregate runner's false success with the unchanged complete CLI in isolated stub fixtures; bounded status/precondition correction independently accepted, all 28 focused cases passed, and the sole initial caller-allowlist failure resolved by staging only the intended file and a successful 4/4 API rerun.
+- Completed: Preserved the five-commit checkpoint b5510d20 with ordered A1-2, staircase correction and component/Mac-wheel evidence, current concrete-bearing disposition, and the 28-case aggregate-runner repair; separately accepted shear checkpoint d0c436cb records the held source category and conditional raw-Table19 bound; exact selected-bar role review accepts two conditional intended-model dispositions with the actual eight-check documentation and identity pass, retaining drawing/Table19/maximum-shear/material/engineering/installed-host HOLDs. Final metadata checks, separate recovery and precise source/physical questions accompany the parent handover.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -115,6 +115,27 @@ The separately scoped provided-bar role trace is the next evidence-supported
 gap after this useful checkpoint, without changing the shear source HOLD.
 Publication and installed-host acceptance remain outside this local work;
 finish a verified handover before 2 October 2026 03:30 UTC.
+
+## Separate isolated-footing provided-bar role trace — 1 October 2026
+
+The [selected-bar follow-up](../verification/is456-amendment-impact.md#current-isolated-footing-selected-bar-role-follow-up--1-october-2026)
+records the named inferred main-flexural correspondence for the completed
+provided L/B bottom-bar model, based on 34.3 bending purpose and actual
+independent directional demands. A2 changes the separate one-way distribution
+item only; A3 changes the shrinkage/temperature spacing item only. Both intended
+flexural sets retain the unchanged main `min(3d,300 mm)` rule. This supports two
+bounded current `unchanged/not_applicable` dispositions for the secondary-only
+amendment. Exact frozen review accepts this documentation purpose with zero
+essential blockers; the actual docs gate passed eight of eight checks with zero
+reuses and prior/current identity passed. Final metadata checks accompany recovery.
+
+An actual drawing/purpose correspondence is still required. Additional
+temperature-only, one-way-only, combined/strap and unrelated bar sets are not
+classified. The Table-19 note's applicability, depth/direction datum and
+continuation/support exception remain precise source/physical questions; the
+authored straight square's conditional 350/400 mm geometric screen is not a
+failure verdict. The preceding maximum-shear classification remains HOLD.
+No production/test/classification change or installed-host acceptance follows.
 
 ## Selected qualification packet and next justified work on the Mac
 

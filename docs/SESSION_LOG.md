@@ -5,6 +5,59 @@
 
 ---
 
+<a id="is456-footing-bar-roles-current-20261002"></a>
+
+## 2026-10-01 — Session: Isolated-footing selected bottom-bar roles
+
+**Task:** is456-isolated-footing-shear-applicability-20261002 (separate sequential role packet)
+**Agent:** MAIN (sole Library writer; read-only issued-source and exact operation reviews)
+**Branch:** `codex/is456-a1-a2-reconciliation-20261002`
+**Focus:** Classify the intended completed L/B bottom-bar model without inferring physical acceptance or changing the preceding shear HOLD.
+
+### Completed
+
+- Preserved the preceding accepted shear checkpoint and all earlier local commits; no production/test/classification bytes changed.
+- Independently matched base 34.3 bending purpose and 34.3.1(b)/(c) spatial placement to both current directional Mu/Ast selections.
+- Kept A2's one-way-only qualifier deletion and A3's secondary-only absolute-spacing change distinct from the unchanged main rule.
+- Recorded the explicitly named inferred main-flexural correspondence for the completed two-direction model, with two conditional current proposals and unchanged historical matrices/scope.
+- Recorded four read-only observations/eight schedules, including reversed layers, central/outer bands and a transposed rectangle; authored approval flags are not new real-project evidence.
+
+### Verification and scope
+
+Issued-source and exact frozen operation reviews accept the bounded intended-
+model correspondence with zero essential blockers. The actual documentation
+gate passed eight of eight checks with zero reuses and prior/current identity
+passed. Final metadata checks and exact byte bindings accompany local recovery. No numerical defect, formula change or new test is selected.
+Do not repeat unchanged expensive suites or installed-wheel proof for these
+documentation-only semantics; actual physical/engineering qualification stays HOLD.
+
+### Issues encountered
+
+The source does not literally classify every footing direction as main.
+Additional temperature-only and one-way-only roles require their own evidence.
+The Table19 qualifying-area note's source/case applicability and continuation
+remain separate questions from bottom-bar purpose and bending-plane anchorage.
+
+### Root causes and resolutions
+
+Use an expressly named inference from source-defined bending purpose and actual
+directional demands, rather than a family, layer or distribution-zone label.
+Retain the conditional authored straight-square 350/400 mm continuation screen
+as a precise held interpretation question, with no failure verdict or numerical fix.
+
+### Rework and recurrence
+
+- RR-004: occurrences=35; minutes=unknown. Preserve the inherited reader/handoff control; no new recurrence count or timed event is claimed.
+
+### What next
+
+Preserve the independently reviewed bounded disposition and its actual final
+checks/local recovery. Give the parent the exact remaining source/physical
+questions and separately retained decision packet. Continue only evidence-supported bounded work and reserve the final
+verified handover before 03:30 UTC. No publication, merge or host substitution.
+
+---
+
 <a id="is456-footing-shear-current-20261002"></a>
 
 ## 2026-10-01 — Session: Isolated-footing one-way shear source boundary
