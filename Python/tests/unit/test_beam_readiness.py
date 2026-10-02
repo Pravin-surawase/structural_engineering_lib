@@ -7,13 +7,15 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.beam.semantics import FreshnessState
+from structural_lib.beam import FreshnessState as PublicFreshnessState
+from structural_lib.beam.semantics import FreshnessState, canonical_json_bytes
 from structural_lib.beam_readiness import (
     BeamReadinessDocumentV1,
     beam_readiness_freshness,
     canonical_beam_readiness_json,
     parse_beam_readiness_json,
 )
+from structural_lib.core.freshness import FreshnessState as CoreFreshnessState
 
 ROOT = Path(__file__).resolve().parents[3]
 FIXTURE = ROOT / "contracts/structural-engineering/conformance/beam-readiness-v1.gz"
@@ -21,6 +23,16 @@ FIXTURE = ROOT / "contracts/structural-engineering/conformance/beam-readiness-v1
 
 def fixture_json() -> str:
     return gzip.decompress(FIXTURE.read_bytes()).decode("utf-8")
+
+
+def test_freshness_core_owner_preserves_public_identity_and_wire_values() -> None:
+    assert PublicFreshnessState is FreshnessState is CoreFreshnessState
+    assert FreshnessState.CURRENT is CoreFreshnessState.CURRENT
+    assert FreshnessState.STALE is CoreFreshnessState.STALE
+    assert FreshnessState.UNBOUND is CoreFreshnessState.UNBOUND
+    assert (
+        canonical_json_bytes(tuple(FreshnessState)) == b'["current","stale","unbound"]'
+    )
 
 
 def test_native_cohort_round_trips_without_changing_source_or_claims() -> None:

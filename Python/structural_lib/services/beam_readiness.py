@@ -6,9 +6,9 @@ import hashlib
 import json
 from typing import Any
 
-from structural_lib.beam.semantics import FreshnessState
 from structural_lib.core.analysis_snapshot import AnalysisSnapshotV1
 from structural_lib.core.beam_readiness import BeamReadinessDocumentV1
+from structural_lib.core.freshness import FreshnessState
 from structural_lib.services.analysis_snapshot import (
     canonical_snapshot_json_bytes,
     validate_analysis_snapshot,
