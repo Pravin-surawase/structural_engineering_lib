@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.25.0 (normal software release; broader development in progress)
+**Version:** 0.25.0 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -37,10 +37,13 @@ IS 456 reinforced-concrete design library (Python package).
 - **Additional bounded workflows:** braced walls, straight-flight staircases,
   simply supported deep beams, regular interior flat slabs, symmetric combined
   footings, and property-line strap footings expose case-qualified APIs.
-- **Release evidence:** exact-wheel UAT covers 29 positive and negative cases,
+- **Release verification matrix:** exact-wheel UAT exercises 29 positive and negative cases,
   15 CLI entries, and the 13 canonical family construction journeys.
 
 ## Install
+
+After the [release ledger](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/releases.md)
+confirms publication of the selected version:
 
 ```bash
 pip install structural-lib-is456==0.25.0         # exact normal release
@@ -48,7 +51,8 @@ pip install "structural-lib-is456[dxf]==0.25.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
-`0.24.0` is the current normal package version and is selected without `--pre`.
+`0.25.0` has a normal/final package version and is eligible for selection without
+`--pre` after publication. Confirm public artifact availability in the release ledger.
 The Beta maturity classifier and the explicit limitations above
 remain: broader library development and cumulative practicing-engineer review
 are still in progress.

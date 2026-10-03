@@ -13,7 +13,7 @@ The selected source version is **StructLib 0.25.0**. The append-only
 [release ledger](releases.md) owns its preparation, authorization and publication
 state. Confirm publication there and on PyPI before installing a new version.
 
-- [PyPI package](https://pypi.org/project/structural-lib-is456/0.25.0/)
+- [PyPI package and available versions](https://pypi.org/project/structural-lib-is456/)
 - [GitHub release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/latest)
 - [Exact publication receipt](releases.md)
 - [Changelog](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/CHANGELOG.md)
@@ -21,6 +21,7 @@ state. Confirm publication there and on PyPI before installing a new version.
 ## Install the exact release
 
 StructLib 0.25.0 requires Python 3.11 or newer.
+Run these commands after the ledger and public index confirm publication:
 
 ```bash
 python3 -m pip install "structural-lib-is456==0.25.0"
@@ -51,9 +52,10 @@ the boundary of a proposed workflow.
 
 ## Verification and claim boundary
 
-The public wheel and source distribution are bound to the GitHub release and
-the append-only publication receipt. Exact-wheel acceptance covered advertised
-positive and negative software journeys.
+The release process binds the public wheel and source distribution to the
+GitHub release and append-only publication receipt. The exact-wheel acceptance
+matrix must cover advertised positive and negative software journeys; consult
+the ledger for the selected version's completed evidence.
 
 Publication is not:
 

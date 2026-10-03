@@ -11,7 +11,7 @@ from typing import Any, Optional
 
 import httpx
 
-API_VERSION = "0.24.0"
+API_VERSION = "0.25.0"
 
 
 @dataclass
