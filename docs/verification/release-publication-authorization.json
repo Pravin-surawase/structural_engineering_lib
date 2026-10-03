@@ -1,57 +1,22 @@
 {
   "schema_version": "release-publication-authorization/v1",
   "decision": "AUTHORIZED",
-  "version": "0.24.0",
-  "tag": "v0.24.0",
+  "version": "0.25.0",
+  "tag": "v0.25.0",
   "authorized_targets": [
     "testpypi",
     "pypi",
     "github-release"
   ],
   "authorized_by": "Pravin Surawase (repository owner)",
-  "authorized_at_utc": "2026-08-28T06:57:29Z",
-  "exact_candidate_review_receipt": null,
-  "exact_candidate_review_receipt_sha256": null,
-  "independent_review_waiver": {
-    "schema_version": "owner-independent-review-waiver/v1",
-    "decision": "WAIVED_BY_OWNER",
-    "owner": {
-      "identity": "Pravin Surawase (repository owner)",
-      "role": "repository_owner",
-      "instruction": "Defer review until the intended library is complete rather than reviewing small work packets; prepare the next release as normal and state that work remains in progress.",
-      "waived_at_utc": "2026-08-28T06:57:00Z"
-    },
-    "waived_candidate": {
-      "head_sha": "6d0d2c150e391695fc2be7d39cbf240a20dd5a68",
-      "tree_sha": "61a0dcf58566bb9c7117b6f6f62549ecfaed5c00",
-      "python_tree_sha": "d4f1af4f9f7a78d069e641fba46e8bdf12cc4efa",
-      "version": "0.24.0",
-      "tag": "v0.24.0",
-      "authorized_targets": [
-        "testpypi",
-        "pypi",
-        "github-release"
-      ]
-    },
-    "hosted_checks": {
-      "required_pr_checks": {
-        "status": "PASS",
-        "head_sha": "6d0d2c150e391695fc2be7d39cbf240a20dd5a68",
-        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/33149305946"
-      },
-      "weekly_verification": {
-        "status": "PASS",
-        "head_sha": "6d0d2c150e391695fc2be7d39cbf240a20dd5a68",
-        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/33149315082"
-      }
-    },
-    "acknowledgements": {
-      "independent_software_review_performed": false,
-      "qualified_structural_engineering_review": false,
-      "professional_approval": false
-    }
-  },
+  "authorized_at_utc": "2026-10-03T10:24:08Z",
+  "owner_instruction": "please cont ue the work in the ibrary  and after the work is competed relese next version",
+  "owner_request_goal_created_at_utc": "2026-10-03T09:34:37Z",
+  "authorization_basis": "The current owner instruction explicitly authorizes the next version after the work is completed. Its condition is now satisfied for the selected LIB-2 plus LIB-5 delivery cohort, with LIB-3 evidence HOLD retained and LIB-4/installed-host scope excluded. authorized_at_utc records when this conditional authorization became effective after independent review and exact required PR/Weekly checks; it does not represent a new owner message.",
+  "exact_candidate_review_receipt": "docs/verification/library-0250-exact-candidate-review.json",
+  "exact_candidate_review_receipt_sha256": "0fbd96549a43d41e301e6fe86b22b7e80f24f325b1632814e9ed2778689c9834",
+  "independent_review_waiver": null,
   "qualified_structural_engineering_review": false,
   "professional_approval": false,
-  "note": "The repository owner authorized exact v0.24.0 as a normal software release and deferred review until the intended library is complete. Required PR and Weekly checks passed on the exact waived candidate before this authorization-only descendant. Normal package/GitHub release status does not imply stable-API compatibility, complete IS 456 coverage, qualified structural-engineering review, professional approval, engineering-use approval, or construction-use approval."
+  "note": "Normal software version v0.25.0 retains Beta maturity and the case-qualified supported scope. This software-distribution authorization does not grant complete IS 456 coverage, stable-API compatibility, professional approval, engineering/construction-use approval, or installed ETABS/Excel/XLL acceptance. Public artifact identity is established by the publication workflow manifest and subsequent registry verification."
 }

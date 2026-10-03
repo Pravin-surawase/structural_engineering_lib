@@ -1,0 +1,48 @@
+{
+  "schema_version": "exact-candidate-review-receipt/v1",
+  "decision": "ACCEPT",
+  "reviewed_candidate": {
+    "head_sha": "e8c5ede3cba9f5adbaaa918c4da6ac1bae5acafe",
+    "tree_sha": "56901f61833b604c0c750c7ed7dc7d82aca57061",
+    "python_tree_sha": "d20dae457da0ab9e2fe30d1311e3c4871c94b7ef",
+    "version": "0.25.0",
+    "tag": "v0.25.0",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ]
+  },
+  "reviewer": {
+    "identity": "Codex independent reviewer /root/release_review",
+    "independent": true,
+    "reviewed_at_utc": "2026-10-03T10:13:55Z"
+  },
+  "hosted_checks": {
+    "required_pr_checks": {
+      "status": "PASS",
+      "head_sha": "e8c5ede3cba9f5adbaaa918c4da6ac1bae5acafe",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/37115725523"
+    },
+    "weekly_verification": {
+      "status": "PASS",
+      "head_sha": "e8c5ede3cba9f5adbaaa918c4da6ac1bae5acafe",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/37115776772"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-10-03T10:24:08Z",
+  "hosted_checks_observed_by": "Codex release integrator /root",
+  "review_scope": "Essential source, member-readiness example, version synchronization, generated client/cookbook references, publication claims, and unchanged accepted engineering scope. No essential blockers.",
+  "local_verification": {
+    "release_preflight": "CANDIDATE_TECHNICALLY_READY; 0 warnings",
+    "source_tests_passed": 8716,
+    "fastapi_tests_passed": 608,
+    "installed_wheel_tests_passed": 7419,
+    "installed_wheel_cli": "PASS",
+    "wheel_package_matches_frozen_source": true,
+    "local_wheel_sha256": "1b876c0afe6fd20e307c8f45019a13ae471d396d8529f28b1b72bc8df4cda7cd",
+    "local_sdist_sha256": "c95580817b029d2ac867d77d70c03331aae59d4573627e3a56230bde218e90d8"
+  },
+  "qualified_structural_engineering_review": false,
+  "professional_approval": false
+}

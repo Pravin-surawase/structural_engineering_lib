@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.25.0] — Prepared candidate (unreleased; on hold)
+## [0.25.0] — 2026-10-03
 
-This cumulative normal software candidate includes the accepted Library work
+This owner-authorized normal software release includes the accepted Library work
 since v0.24.0. It retains Beta maturity and the existing supported-case,
-engineering-review and installed-application limits. Tag and publication await
-the exact candidate checks and final publication record.
+engineering-review and installed-application limits. Independent software review,
+required PR and Weekly checks, and exact-wheel verification passed on the frozen
+candidate before publication authorization.
 
 ### Added
 
