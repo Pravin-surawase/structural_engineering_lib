@@ -6,7 +6,7 @@ namespace StructuralEngineering.Beam;
 /// <summary>Executable field/consumer/fallback map shared by every review host.</summary>
 public static class BeamReviewFields
 {
-    public const string RuleRevision = "beam-review-resolution-v1";
+    public const string RuleRevision = "beam-review-resolution-v2";
     public static IReadOnlyList<BeamFieldDefinition> All { get; } =
     [
         F("design.code", "code", "text", "profile", "DATA-01", "preset"),
@@ -33,6 +33,7 @@ public static class BeamReviewFields
         F("detailing.widths", "mm", "positive-list", "future section catalogue", "DATA-12", "retain preference; alternatives unverified", false),
         F("detailing.depths", "mm", "positive-list", "future section catalogue", "DATA-12", "retain preference; alternatives unverified", false),
         F("catalogue.maximum_candidates", "count", "budget", "search budget", "DATA-15", "preset bounded to 10000"),
+        F("member.intent", "purpose", "intent", "readiness.member_intent", "DATA-03", "unknown physical purpose; source orientation and zero modifiers do not establish intent"),
         F("member.physical_span", "id", "text", "context.PhysicalSpanId", "DATA-03", "one captured member per assumed physical span"),
         F("member.support", "basis", "support", "context.SupportCondition", "DATA-03", "assumed simply supported scenario"),
         F("member.left_face", "mm", "number", "context.LeftSupportFaceXMm", "DATA-03", "assumed 500 mm from captured end, limited to span/4"),
@@ -67,11 +68,12 @@ public static class BeamReviewFields
         if (field is null || value.Length == 0 || value.StartsWith('=') || value.Length > 4096) return false;
         if (field.Kind == "text") return true;
         if (field.Kind == "bool") { if (!bool.TryParse(value, out var b)) return false; value = b ? "true" : "false"; return true; }
-        if (field.Kind is "role" or "support" or "exposure" or "fire")
+        if (field.Kind is "role" or "support" or "exposure" or "fire" or "intent")
         {
             var options = field.Kind switch
             {
                 "role" => new[] { "Uls", "SlsTotal", "SlsSustained" },
+                "intent" => ["OrdinaryBeam", "Other", "Unknown"],
                 "support" => ["SimplySupported", "Continuous", "Unknown"],
                 "fire" => ["Unspecified", "Required", "NotRequired"],
                 _ => ["Mild", "Moderate", "Severe", "VerySevere", "Extreme"]

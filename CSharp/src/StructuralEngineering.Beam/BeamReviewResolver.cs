@@ -45,6 +45,7 @@ public static class BeamReviewResolver
             var span = "assumed-span:" + id;
             var defaults = new Dictionary<string, string>(preset.Values, StringComparer.Ordinal)
             {
+                ["member.intent"] = "Unknown",
                 ["member.physical_span"] = span,
                 ["member.support"] = "SimplySupported",
                 ["member.left_face"] = N(Math.Min(500, length / 4)),
@@ -130,7 +131,9 @@ public static class BeamReviewResolver
                 candidates = candidates.Where(x => Priority(x.Scope) == priority).OrderBy(x => x.Id, StringComparer.Ordinal).ToArray();
                 var old = saved?.ModelBinding == binding ? saved.Fields.SingleOrDefault(x => x.SubjectId == subject && x.Key == definition.Key) : null;
                 var value = sourceText ?? fallback;
-                var origin = sourceText is not null ? BeamValueOrigin.Source : preset.Values.ContainsKey(definition.Key) ? BeamValueOrigin.Preset : BeamValueOrigin.Rule;
+                var origin = sourceText is not null ? BeamValueOrigin.Source :
+                    definition.Key == "member.horizontal" && pi is not null && pj is not null ? BeamValueOrigin.Derived :
+                    preset.Values.ContainsKey(definition.Key) ? BeamValueOrigin.Preset : BeamValueOrigin.Rule;
                 var reason = sourceText is not null ? "Immutable captured value" : definition.FallbackRule;
                 string? last = null;
                 if (candidates.Length > 0)

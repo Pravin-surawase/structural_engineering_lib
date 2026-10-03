@@ -1,7 +1,7 @@
 # WP11 supported native baseline beam design
 
 **Type:** Reference | **Audience:** Developers | **Status:** Active |
-**Importance:** High | **Created:** 2026-09-08 | **Last Updated:** 2026-09-19
+**Importance:** High | **Created:** 2026-09-08 | **Last Updated:** 2026-10-02
 
 `StructuralEngineering.Beam.BaselineDesignOperations` turns a validated WP10
 snapshot and explicitly accepted engineering inputs into actual reinforcement
@@ -57,6 +57,151 @@ owns installed qualification and the next work; the native APIs alone make no
 live acquisition, reanalysis or issued-report claim.
 
 ## Native contract and call path
+
+### Offline member intent and input readiness (LIB-2 / LNV-01)
+
+`BeamReadinessOperations` binds the existing review ledger to the existing
+`is456-ordinary-rectangular-simple-span-baseline-v1` input mapper. It performs
+input admission only: `Engineering=NotEvaluated`, `Approval=Unreviewed`, and
+physical/material/current installed qualification remains **HOLD**. A ready
+input is not a completed design or an engineering approval.
+
+```csharp
+// Supply member.intent=OrdinaryBeam, member.support and selection.role through
+// explicit scoped BeamReviewResolver.Edit records. Unknown intent stays Unknown.
+var resolved = BeamReviewResolver.Resolve(snapshot, memberIds, preset,
+    savedLedger, edits);
+// Optional: existing BaselineProjectInputs, separately and explicitly accepted.
+// Never turn the resolver's provisional ValuesAccepted=false into true implicitly.
+var acceptance = new BeamReadinessAcceptance(resolved.Ledger.Revision, acceptedInputs);
+var request = new BeamReadinessRequest("my-retained-cohort/v1", memberIds,
+    snapshot, preset, savedLedger, edits, acceptance);
+var readiness = BeamReadinessOperations.Assess(request);
+var portableJson = BeamReadinessOperations.Serialize(readiness);
+var replay = BeamReadinessOperations.Parse(portableJson); // reruns native owners
+var current = BeamReadinessOperations.IsCurrent(replay, currentRequest);
+```
+
+For a directly runnable retained input, load the shipped conformance document.
+Its stored engine identity includes runtime/platform/build, so `Parse` rightly
+requires the original engine. `ImportRequest` imports strict, identity-checked
+inputs without accepting its stored readiness; `Assess` uses the current engine:
+
+```csharp
+using var fixture = File.OpenRead(
+    "contracts/structural-engineering/conformance/beam-readiness-v1.gz");
+using var gzip = new System.IO.Compression.GZipStream(fixture,
+    System.IO.Compression.CompressionMode.Decompress);
+using var payload = new MemoryStream();
+gzip.CopyTo(payload);
+var imported = BeamReadinessOperations.ImportRequest(payload.ToArray());
+var preview = BeamReadinessOperations.Assess(imported with { Acceptance = null });
+// This named owned fixture already has explicit accepted project inputs.
+// After reviewing their match to the current ledger, rebind that existing basis:
+var rebound = imported with { Acceptance = imported.Acceptance! with {
+    LedgerRevision = preview.Ledger!.Revision } };
+var ready = BeamReadinessOperations.Assess(rebound);
+var changedEdits = BeamReviewResolver.ApplyEdit(rebound.Edits,
+    BeamReviewResolver.Edit("member.support", BeamInputScope.Member,
+        rebound.MemberIds[0], BeamReviewResolver.ModelBinding(rebound.Snapshot!),
+        "Continuous", 1000));
+var changed = BeamReadinessOperations.Assess(rebound with { Edits = changedEdits });
+// First member is Unsupported; peers remain accounted. The old result is stale.
+```
+
+The same edit API accepts `member.intent` (`OrdinaryBeam`, `Other`, `Unknown`)
+or `selection.role` at `BeamInputScope.Selection` with the source selection ID
+(`Uls`, `SlsTotal`, `SlsSustained`). New values must be reconciled with accepted
+inputs before rebinding; changing a revision label alone cannot bypass the
+effective-value comparison. File I/O in this example belongs to the caller.
+
+Pass `Acceptance=null` to inspect the provisional scenario, or `Snapshot=null`
+to account for missing retained input. The accepted basis must bind the exact
+resolved ledger revision and match its material, section, context, catalogue and
+action-role values. Evidence/revision labels remain independently recorded in
+the request; they are not silently overwritten in the supplied input. A changed
+ledger requires explicit reconciliation and rebinding. A change to any accepted
+project input or its provenance also changes the request identity, even when
+the resolved numeric values are unchanged. `IsCurrent` compares the full current
+request, not a snapshot timestamp or the ledger revision alone.
+
+Every distinct requested ID receives an ordered outcome, including a member
+absent from the snapshot. The existing `BaselineRunState` values have these
+readiness meanings:
+
+| State | Meaning in this input-only operation |
+|---|---|
+| `Complete`, `ReadyForSelectedProfile=true` | The existing strict mapper admits the supplied basis. |
+| `Incomplete` | Provisional assumptions or intent remain; review may continue. |
+| `NeedsInput` | Missing member/source, conflicting entry or mismatched accepted basis. |
+| `Unsupported` | The existing profile excludes the source action, geometry or intent. |
+| `Failed` | Invalid source evidence or a member projection failure; peers remain accounted. |
+| `Stale` | The retained source's recorded offline basis is stale. |
+
+The original validated snapshot travels with the request: source identities and
+result epoch, units, axes/physical faces, sections/materials, station side,
+case/combination/step, action basis, same-row vectors and getter provenance remain
+unchanged. Roles classify existing selections; they neither create combinations
+nor turn component envelopes into concurrent vectors. Known profile guards,
+including nonzero axial/minor-axis/torsional exclusion, are unchanged.
+
+Ledger fields expose `source_state`, `entered_state` and effective `state` beside
+their original text and origin. Zero, absence, blank input, source/supplied values,
+derived geometry, assumptions, invalid last-valid fallback and conflicts remain
+distinguishable. `member.intent` defaults to `Unknown`; old saved ledgers and
+presets migrate through the same resolver. Source orientation and zero mass or
+weight modifiers never establish physical purpose.
+
+Python exposes **inspection and binding validation** of the native-produced
+document through `structural_lib.beam_readiness`. It does not resolve changed
+inputs or run the native baseline engineering engine:
+
+```python
+from structural_lib.beam_readiness import (
+    parse_beam_readiness_json, canonical_beam_readiness_json,
+    beam_readiness_freshness,
+)
+
+document = parse_beam_readiness_json(native_json)
+same_json = canonical_beam_readiness_json(document)
+freshness = beam_readiness_freshness(
+    document, current_snapshot=current_snapshot,
+    current_ledger_revision=current_native_ledger_revision,
+    current_request_id=current_native_request_id,
+    current_engine_identity=current_native_engine_identity,
+)
+```
+
+The parser rejects unknown/duplicate fields, lossy projections, altered request
+or document hashes, incomplete member accounting and invalid snapshot claims.
+Hashes prove integrity, not who executed the native engine. Current bindings
+must come from the caller's current native request; stored readiness alone
+cannot establish currentness. Editing inputs requires another native `Assess`.
+The [portable schema](../../../contracts/structural-engineering/schemas/beam-readiness.schema.json)
+and [native-produced conformance document](../../../contracts/structural-engineering/conformance/beam-readiness-v1.gz)
+retain the complete exchange. The repository fixture is gzip-compressed using
+the existing retained-fixture pattern; its decompressed JSON has one final
+newline. Canonical payload hashes exclude that terminator and compression bytes.
+Python callers can use `gzip.decompress(path.read_bytes())` before parsing. Compact
+[negative-case deltas](../../../contracts/structural-engineering/conformance/beam-readiness-cases-v1.json)
+reconstruct native provisional, missing, unsupported and failed documents against
+the same base without copying its snapshot. The snapshot uses the existing AO16 canonical JSON
+owner; existing WP01–WP10 operations and numerical results are unchanged.
+
+The named cohort is `lnv01-wp11-owned-rectangular-v1`: `member:PF9_B0001`,
+`member:PF9_B0002`, `member:PF9_B0003` in the retained WP11 `.sasnap` fixture.
+Its file SHA-256 is
+`cd04be9d9a7ec41db0714f8259fb17bba14d19e73981e71241149da69d0b78f0` and snapshot
+SHA-256 is `9ced40204f6db621b4b22c7a8a755d1a77ec77c69aaf9a4d76dc12316a72bf84`.
+`BeamReadinessTests.ReadyRequest` supplies the exact ledger edits matching
+`BeamReviewExamples.Owned`; it includes three explicitly captured ULS/total
+SLS/sustained SLS selections. Negative scenarios retain separate identities.
+The external 153-member building snapshot remains optional negative evidence,
+not an additional admitted cohort. C0a's three noncollinear chains and five
+incomplete envelopes remain restricted, with physical support/member role
+qualification still absent. No new ETABS/Excel action or qualification follows.
+
+### Existing complete design operation
 
 The public records are `BaselineProjectInputs`, `BaselineDesignOptions`,
 `BaselineBatchDesignResult` and `BaselineReplayRequest` in

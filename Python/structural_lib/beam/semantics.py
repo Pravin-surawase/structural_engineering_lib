@@ -15,6 +15,8 @@ from dataclasses import asdict, dataclass, is_dataclass
 from enum import StrEnum
 from typing import Any, TypeVar
 
+from structural_lib.core.freshness import FreshnessState
+
 _OutputT = TypeVar("_OutputT")
 
 CANONICALIZATION_VERSION = "pf4-canonical-json-v1"
@@ -45,12 +47,6 @@ class EngineeringState(StrEnum):
 class CompletenessState(StrEnum):
     COMPLETE_FOR_SCOPE = "complete_for_scope"
     PARTIAL = "partial"
-
-
-class FreshnessState(StrEnum):
-    CURRENT = "current"
-    STALE = "stale"
-    UNBOUND = "unbound"
 
 
 class ApprovalState(StrEnum):
