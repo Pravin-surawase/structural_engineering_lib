@@ -13,7 +13,7 @@ Recommended import: `from structural_lib.design.is456 import beam`<br>
 Classification: pre-1.0 canonical workflow facade<br>
 Introduced contract family: `beam-design-input/v1`; supplied check added as
 `beam-supplied-check/v2`<br>
-Exact-wheel version: `structural-lib-is456==0.24.0`
+Exact-wheel version: `structural-lib-is456==0.25.0`
 
 ## Operations
 
