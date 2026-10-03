@@ -13,7 +13,7 @@ tags: []
 **Audience:** Users
 **Status:** Beta Maturity / Normal Software Release
 **Importance:** High
-**Version:** 0.24.0
+**Version:** 0.25.0
 **Created:** 2025-12-15
 **Last Updated:** 2026-08-28
 
@@ -31,7 +31,7 @@ This is the easiest path for beginners.
 python3 -m pip install --upgrade pip
 
 # Install the exact normal release
-python3 -m pip install "structural-lib-is456==0.24.0"
+python3 -m pip install "structural-lib-is456==0.25.0"
 
 # Optional DXF support
 python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
@@ -70,7 +70,7 @@ If you are on Windows, replace `python3` with `py`.
 3. Install the library:
    ```bash
    python3 -m pip install --upgrade pip
-   python3 -m pip install "structural-lib-is456==0.24.0"
+   python3 -m pip install "structural-lib-is456==0.25.0"
    python3 -m structural_lib install-preflight
    ```
 4. Optional DXF support:
@@ -183,7 +183,7 @@ installed wheel.
 ```bash
 git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
-python3 -m pip install "structural-lib-is456==0.24.0"
+python3 -m pip install "structural-lib-is456==0.25.0"
 cd Python
 python3 examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500
 ```

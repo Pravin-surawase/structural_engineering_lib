@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.24.0 (normal software release; broader development in progress)
+**Version:** 0.25.0 (normal software release; broader development in progress)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,21 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.24.0
+## New in v0.25.0
+
+- **Member input readiness:** native `beam-readiness/v1` evidence binds explicit
+  physical intent, support and ULS/SLS roles to the exact ledger, source and engine.
+  The public Python API preserves ready, provisional, missing, unsupported and
+  failed outcomes without converting input readiness into engineering approval.
+- **Reproducible delivery:** the public member-readiness example distinguishes
+  stored evidence from current bindings and rejects stale or altered inputs.
+- **Cumulative supported-case improvements:** complete ordinary/multilayer worked
+  members, physical reinforcement/anchorage repairs, supported column/flange/SLS
+  corrections and issued-amendment solid-slab/staircase fixes are included.
+- **Scope:** complete nonzero-torsion member admission remains held; existing
+  component torsion operations and the 13 family-facade journeys remain distinct.
+
+### Retained capabilities from v0.24.0
 
 - **Fail-closed project intake:** malformed, missing, unknown, or mixed-validity
   beam rows block the whole project instead of being defaulted or skipped.
@@ -29,8 +43,8 @@ IS 456 reinforced-concrete design library (Python package).
 ## Install
 
 ```bash
-pip install structural-lib-is456==0.24.0         # exact normal release
-pip install "structural-lib-is456[dxf]==0.24.0"  # release with DXF export
+pip install structural-lib-is456==0.25.0         # exact normal release
+pip install "structural-lib-is456[dxf]==0.25.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 

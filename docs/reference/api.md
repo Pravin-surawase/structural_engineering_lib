@@ -18,9 +18,9 @@ approval.
 **Audience:** Developers
 **Status:** Pre-1.0 Public API — Supported Cases Only
 **Importance:** Critical
-**Document Version:** 0.24.0
+**Document Version:** 0.25.0
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-30<br>
+**Last Updated:** 2026-10-03<br>
 
 ---
 

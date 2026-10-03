@@ -1486,3 +1486,18 @@ practicing-engineer review remain in progress.
 
 **Machine-readable receipt:**
 `docs/verification/release-0240-publication-receipt.json`.
+
+
+## [0.25.0] — Prepared candidate (unreleased; on hold)
+
+The owner requested continuation and release of the next completed Library
+version on 3 October 2026. This candidate is not tagged or published.
+It selects LIB-2 member intent/input readiness and LIB-5 public delivery, plus
+the cumulative accepted supported-scope fixes since v0.24.0. LIB-3 records the
+complete torsion-profile evidence HOLD; LIB-4 and the separate installed LIB-6
+pilot remain held. See the [profile decision and public example](../library/reference/wp11-baseline-design.md#next-version-admission-decision-lib-3-lnv-02).
+
+The target is normal software version v0.25.0 with Beta maturity. Required PR
+and Weekly checks, exact-wheel verification and immutable review precede the
+final publication record. Existing engineering, physical/material and installed
+application limits remain. No professional or construction-use approval follows.

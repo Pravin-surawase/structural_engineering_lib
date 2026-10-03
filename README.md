@@ -25,7 +25,9 @@ workflows under IS 456:2000.
 ![StructLib beam inspector showing a 3D building model, reinforcement view, utilization, and IS 456 checks](docs/images/product/beam-inspector.jpg)
 
 > [!IMPORTANT]
-> **v0.24.0 is a normal software release of the audited supported scope.** Support is case-qualified,
+> **v0.25.0 is a normal software release of the audited supported scope.** Support is case-qualified,
+> The source candidate remains unpublished until the [release ledger](docs/getting-started/releases.md)
+> records its final publication; use that record to confirm artifact availability.
 > not a claim of complete IS 456 coverage or professional design approval.
 > Outputs require independent review by a qualified structural engineer before
 > engineering or construction use. Broader library development and the one
@@ -91,7 +93,7 @@ reconciliation, or professional approval.
 ### Install the Python package
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.24.0"
+python3 -m pip install "structural-lib-is456==0.25.0"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
