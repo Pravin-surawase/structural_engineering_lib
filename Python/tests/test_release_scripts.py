@@ -25,6 +25,7 @@ PYTHON = sys.executable  # Use current Python interpreter
 BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"
 RELEASE_SCRIPT = REPO_ROOT / "scripts" / "release.py"
 release = importlib.import_module("scripts.release")
+bump_version = importlib.import_module("scripts.bump_version")
 
 # Files that bump_version.py would modify — snapshot checksums to detect changes
 VERSION_TRACKED_FILES = [
@@ -184,6 +185,38 @@ class TestBumpVersionSyncDocs:
         assert result.returncode == 0
         assert before == after, "--sync-docs --dry-run modified files!"
         assert "DRY RUN" in result.stdout
+
+    @pytest.mark.parametrize(
+        "status",
+        [
+            "normal software release; broader development in progress",
+            "normal/final version format; publication state is in the release ledger",
+        ],
+    )
+    def test_python_readme_sync_preserves_publication_boundary(
+        self, tmp_path: Path, status: str
+    ) -> None:
+        readme = tmp_path / "README.md"
+        readme.write_text(
+            f"**Version:** 0.24.0 ({status})\n"
+            "## New in v0.24.0\n"
+            "pip install structural-lib-is456==0.24.0\n"
+            "Publication requires owner authorization.\n",
+            encoding="utf-8",
+        )
+        patterns = bump_version.DOC_VERSION_FILES["Python/README.md"]
+        replacements = bump_version.release_format_kwargs("0.25.0", "2026-10-03")
+
+        assert bump_version.update_file(readme, patterns, replacements, dry_run=False)
+        assert readme.read_text(encoding="utf-8") == (
+            "**Version:** 0.25.0 (normal/final version format; publication state is in the release ledger)\n"
+            "## New in v0.25.0\n"
+            "pip install structural-lib-is456==0.25.0\n"
+            "Publication requires owner authorization.\n"
+        )
+        assert not bump_version.update_file(
+            readme, patterns, replacements, dry_run=True
+        )
 
 
 class TestBumpVersionPatternMatch:

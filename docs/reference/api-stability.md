@@ -13,7 +13,7 @@ tags: [api, beta, compatibility]
 **Audience:** Developers
 **Status:** Beta Maturity / Normal Software Release
 **Importance:** High
-**Version:** 0.24.0
+**Version:** 0.25.0
 **Last Updated:** 2026-08-24
 
 StructLib is a pre-1.0 Beta-maturity project distributed under a normal final
@@ -84,7 +84,7 @@ with no warning or removal version.
 Use exact release pins for reproducibility:
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.24.0"
+python3 -m pip install "structural-lib-is456==0.25.0"
 python3 -c "import structural_lib; print(structural_lib.__version__, structural_lib.__file__)"
 ```
 

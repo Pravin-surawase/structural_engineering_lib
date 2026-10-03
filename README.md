@@ -13,7 +13,7 @@ torsion, column, slab, wall, staircase, deep-beam, flat-slab, and footing
 workflows under IS 456:2000.
 
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
-[![Release](https://img.shields.io/badge/status-normal%20release-2563eb)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.24.0)
+[![Release](https://img.shields.io/badge/status-normal%20release-2563eb)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/latest)
 [![PR Gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e)](LICENSE)
@@ -25,13 +25,17 @@ workflows under IS 456:2000.
 ![StructLib beam inspector showing a 3D building model, reinforcement view, utilization, and IS 456 checks](docs/images/product/beam-inspector.jpg)
 
 > [!IMPORTANT]
-> **v0.24.0 is a normal software release of the audited supported scope.** Support is case-qualified,
-> not a claim of complete IS 456 coverage or professional design approval.
+> Target release classification (publication state is separate):
+> **v0.25.0 is a normal software release of the audited supported scope.**
+> This describes the target version format and scope. The candidate remains
+> prepared and unpublished until the [release ledger](docs/getting-started/releases.md)
+> records final publication. Support is case-qualified; complete IS 456 coverage
+> and professional design approval are not claimed.
 > Outputs require independent review by a qualified structural engineer before
 > engineering or construction use. Broader library development and the one
-> cumulative practicing-engineer review remain in progress. The exact release is
-> available from [PyPI](https://pypi.org/project/structural-lib-is456/0.24.0/)
-> and [GitHub Releases](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.24.0);
+> cumulative practicing-engineer review remain in progress. Confirm available
+> artifacts on [PyPI](https://pypi.org/project/structural-lib-is456/)
+> and [GitHub Releases](https://github.com/Pravin-surawase/structural_engineering_lib/releases/latest);
 > the [current-release page](docs/getting-started/release-status.md) links its
 > append-only artifact and verification evidence.
 
@@ -90,15 +94,17 @@ reconciliation, or professional approval.
 
 ### Install the Python package
 
+After the release ledger confirms publication of the selected version:
+
 ```bash
-python3 -m pip install "structural-lib-is456==0.24.0"
+python3 -m pip install "structural-lib-is456==0.25.0"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.24.0` is the current normal release, so ordinary package resolution selects
-it. Here, **normal** means a final PEP 440 version rather than an alpha, beta, or
+`0.25.0` uses a normal/final PEP 440 version, eligible for ordinary package
+resolution after publication. Here, **normal** means a final version rather than an alpha, beta, or
 release-candidate version string; the project's development-maturity classifier
 remains **Beta** until the separately stated pre-1.0 and engineering-review
 boundaries are closed. Pin the exact version for reproducible work. See the

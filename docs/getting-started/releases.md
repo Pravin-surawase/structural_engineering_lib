@@ -1486,3 +1486,46 @@ practicing-engineer review remain in progress.
 
 **Machine-readable receipt:**
 `docs/verification/release-0240-publication-receipt.json`.
+
+
+## [0.25.0] — Prepared candidate (unreleased; on hold)
+
+The owner requested continuation and release of the next completed Library
+version on 3 October 2026. This candidate is not tagged or published.
+It selects LIB-2 member intent/input readiness and LIB-5 public delivery, plus
+the cumulative accepted supported-scope fixes since v0.24.0. LIB-3 records the
+complete torsion-profile evidence HOLD; LIB-4 and the separate installed LIB-6
+pilot remain held. See the [profile decision and public example](../library/reference/wp11-baseline-design.md#next-version-admission-decision-lib-3-lnv-02).
+
+The target is normal software version v0.25.0 with Beta maturity. Required PR
+and Weekly checks, exact-wheel verification and immutable review precede the
+final publication record. Existing engineering, physical/material and installed
+application limits remain. No professional or construction-use approval follows.
+
+
+## [0.25.0] — 2026-10-03 — Release authorized
+
+This dated authorization supersedes the prepared candidate state above. The
+owner requested completion and release of the next Library version. The selected
+LIB-2 input/readiness and LIB-5 reproducible-delivery cohort is complete; the
+LIB-3 concurrent-torsion evidence decision remains HOLD, and LIB-4 plus the
+installed/native-host pilot remain outside this release.
+
+The immutable reviewed candidate is
+`e8c5ede3cba9f5adbaaa918c4da6ac1bae5acafe`, with Python tree
+`d20dae457da0ab9e2fe30d1311e3c4871c94b7ef`. Independent software review accepted
+it, the [required PR checks](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/37115725523)
+and [Weekly verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/37115776772)
+passed on that exact head, and the exact installed wheel passed its test and CLI
+workflow. The [review receipt](../verification/library-0250-exact-candidate-review.json)
+is bound by SHA-256 in the maintained publication authorization record.
+
+Publication sequence: TestPyPI rehearsal, merge preserving reviewed-candidate
+ancestry, immutable `v0.25.0` tag, production PyPI/GitHub release workflow, and
+public artifact hash/installed-identity verification. GitHub Actions and the
+release artifact manifest retain the actual publication outcomes.
+
+Normal software version format retains Beta maturity. Existing supported-case,
+engineering-review, physical/material, torsional-support/serviceability, and
+installed-application limits remain in force. This software release does not
+grant professional, engineering-use, construction-use, or installed-host approval.

@@ -153,7 +153,7 @@ def test_alpha_candidate_can_promote_to_normal_software_release(
         in root_readme.read_text(encoding="utf-8")
     )
     assert (
-        "Version:** 0.24.0 (normal software release; broader development in progress)"
+        "Version:** 0.24.0 (normal/final version format; publication state is in the release ledger)"
         in python_readme.read_text(encoding="utf-8")
     )
     citation_text = citation.read_text(encoding="utf-8")

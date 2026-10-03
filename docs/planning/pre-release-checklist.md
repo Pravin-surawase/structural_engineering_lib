@@ -5,11 +5,11 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-08-28
+**Last Updated:** 2026-10-03
 
 ## Current State
 
-Current source metadata: 0.24.0 (published normal software release)
+Current source metadata: 0.25.0 (published normal software release)
 Current public release: v0.24.0
 
 - **Published source:** annotated tag `v0.24.0` at merge `e66de6efa3bb80d3ebc54e6151b1d6c29275c502`, tree `e583493eed9943b7216d0b19c6749383f06a33a3`

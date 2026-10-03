@@ -93,7 +93,9 @@ DOC_VERSION_FILES = {
     "Python/README.md": [
         (
             r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?"
-            r"(?: \((?:Alpha development preview|normal software release; broader development in progress)\))?",
+            r"(?: \((?:Alpha development preview|"
+            r"normal software release; broader development in progress|"
+            r"normal/final version format; publication state is in the release ledger)\))?",
             "**Version:** {version} ({python_release_status})",
         ),
         (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "## New in v{version}"),
@@ -238,7 +240,7 @@ def release_format_kwargs(version: str, today: str) -> dict[str, str]:
         "python_release_status": (
             "Alpha development preview"
             if is_alpha
-            else "normal software release; broader development in progress"
+            else "normal/final version format; publication state is in the release ledger"
         ),
     }
 

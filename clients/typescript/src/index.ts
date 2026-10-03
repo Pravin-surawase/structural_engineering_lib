@@ -4,7 +4,7 @@
  * Auto-generated TypeScript client for the FastAPI structural design API.
  */
 
-export const API_VERSION = '0.24.0' as const;
+export const API_VERSION = '0.25.0' as const;
 
 export interface BeamDesignRequest {
   width: number;

@@ -168,5 +168,5 @@ dictionary and preserve `correlation_id`. See the
 [V1 migration](../../migration/beam-supplied-check-v2.md) and
 [beam facade reference](../../reference/beam-facade.md).
 
-These examples execute from `structural-lib-is456==0.24.0`. Software
+These examples execute from `structural-lib-is456==0.25.0`. Software
 status is not professional, engineering-use, or construction-use approval.

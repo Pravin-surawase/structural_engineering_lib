@@ -235,6 +235,96 @@ calculations retain every scope leaf and bind each unique calculation once.
 
 ## Supported engineering profile
 
+### Next-version admission decision: LIB-3 / LNV-02
+
+The 3 October 2026 next-version continuation selects the completed LIB-2
+input/readiness workflow and its public delivery examples. The conditional
+LIB-4 complete concurrent M3/V2/T extension is **HOLD**. The proposed cohort is
+one supplied ordinary, non-seismic rectangular member with aligned single-layer
+longitudinal bars and actual closed links, zero P/V3/M2, unchanged stiffness,
+no laps or cutoffs, and explicit signed same-row static ULS and SLS actions.
+No nonzero-torsion range, support condition, numerical tolerance or new
+engineering profile is admitted by this decision.
+
+The following matrix traces the essential obligations to existing owners.
+An available operation is reusable machinery; it is not full-profile evidence.
+
+| Required obligation | Existing owner | Evidence decision for the proposed torsion member |
+|---|---|---|
+| Concurrent signed actions, axes, units and row provenance | WP10 snapshot, `BaselineInputMapper`, LIB-2 ledger/readiness | Existing transport is qualified. The baseline mapper deliberately excludes nonzero T. |
+| Both-face flexure and torsion-induced opposite-face demand | AO01 flexure and AO08 `BeamOperations.CheckTorsion`; Python `beam.check_torsion` | Component implementation exists. A complete independently derived profile case set is not accepted. |
+| Equivalent shear, concrete maximum shear and supplied links | AO08; `BaselineStrengthDetailChecks` | Reuse component evidence only within its stated domain. No blanket baseline-guard removal. |
+| Corner/perimeter bars, closed links and consistent effective geometry | WP01/WP05 arrangement, WP06 paths; existing torsion-detailing packet | The authored torsion-detailing vector covers a bounded component arrangement. It does not qualify the complete proposed member. |
+| Torsional restraint, equilibrium/compatibility basis and load path | Accepted engineering member context and source analysis evidence | **Missing:** the current context records flexural simple/continuous support and lateral restraints, without a qualified torsional-restraint/load-path contract. |
+| Service torsion with bending/shear and both relevant faces | WP04 serviceability and `BaselineServiceChecks` | **Missing:** the current producer uses signed M3 for the flexural Annex F section and Figure 4 screening; it has no admitted combined-torsion SLS method/reference. |
+| Continuity, end development and torsion reinforcement anchorage | AO11/AO12, WP05 and `BaselineStrengthDetailChecks` | Existing flexural support/development and link templates are controls. Torsion-specific physical support correspondence remains unaccepted. |
+| Cover, durability, material eligibility, fit and lateral stability | WP01/WP05 and accepted member/material context | Preserve every existing physical/material HOLD and case restriction. |
+| Fire and seismic scope | Fixed required-leaf profile and accepted context | Explicit ordinary/non-seismic and no-required-fire-rating decisions remain necessary. |
+| Full-length bars, stock, marks, counts, cut lengths, BBS and quantities | WP06 construction paths, WP07 construction/BBS owners | Existing outputs are reusable only after all member obligations qualify on the same reinforcement revision. |
+| Completeness, freshness, approval and calculation record | WP06 member contract, PF4 semantics, WP08 reporting | Missing obligations must remain draft/held; renderers cannot grant approval. |
+
+The accepted [torsion-detailing component record](../../verification/etabs-w3-torsion-detailing-evidence.json)
+retains its authored 300 by 500 mm, 3 m, M/V/T vector, stated corner geometry,
+single-layer restrictions and serviceability HOLD. The
+[ordinary and multilayer member references](../../planning/library-usability-improvement.md#complete-beam-implementation-and-independent-evidence)
+retain their zero-torsion scope. Python/.NET conformance is transport/semantic
+evidence with disclosed shared rules, rather than an independent engineering
+reference. Sourcebook/StructProof leads have no accepted, exact complete-profile
+export bound to this decision.
+
+Resume LIB-4 only after the engineering-context owner supplies the exact torsional
+restraint and source load-path correspondence, the serviceability owner selects
+and substantiates the combined-action method, and the evidence owner accepts
+independently derived governing, opposite-face, boundary, failure and unsupported
+cases. Each case needs source/edition/amendment identity, signed same-row actions,
+units/axes, actual bar/link coordinates, expected outputs, justified tolerances
+and shared-lineage disclosure. Then freeze a separately named profile and its
+complete required-leaf set before implementation. These missing dependencies
+are an evidence HOLD, not a demonstrated defect in the current supported baseline.
+
+### Public readiness example and migration to 0.25.0: LIB-5 / LNV-04
+
+[The public example](../../../Python/examples/member_readiness_workflow.py)
+uses installed `structural_lib.beam_readiness` and snapshot APIs without changing
+Python's import path. From the repository root, using your chosen environment:
+
+Install the exact version after the release ledger confirms publication; the
+prepared source candidate can be exercised with the repository's bound runtime.
+
+```bash
+python3 -m pip install structural-lib-is456==0.25.0
+python3 Python/examples/member_readiness_workflow.py \
+  contracts/structural-engineering/conformance/beam-readiness-v1.gz
+```
+
+The three-member frozen control reports every requested member, its recorded
+ready state, input/policy/engine identities, `freshness=unbound`,
+`engineering=not_evaluated` and `approval=unreviewed`. This command inspects
+stored evidence; it does not establish that an actual project is current.
+The existing native negative-case deltas cover provisional, missing, unsupported
+and failed outcomes. The example also accepts native readiness JSON directly.
+
+For currentness, pass **all four** bindings obtained from the current native
+owner: `--current-snapshot <snapshot.json>`, `--current-ledger-revision <revision>`,
+`--current-request-id <identity>` and `--current-engine-identity <identity>`.
+The snapshot file must be the current validated source, independently of the
+stored readiness document. A changed binding reports stale and exits 2;
+altered evidence exits 1; partial binding input exits 2. Inspection without
+current bindings exits 0 but does not grant readiness for current use.
+
+Migration keeps all 13 existing family-facade journeys and ordinary numerical
+APIs. Readiness is a new `beam-readiness/v1` contract. Reuse existing ledger
+edits through the native resolver, supply explicit member intent, support and
+ULS/SLS roles, reconcile accepted inputs to the resulting ledger revision, then
+run native `Assess` again. Do not relabel an old result current or fabricate a
+new native readiness claim in Python. The identical freshness enum remains
+available from prior public beam imports and now has its neutral owner in Core.
+Native engine changes require replay and new current engine/request bindings.
+No new HTTP/CLI entry point, installed-host qualification or support expansion
+is selected. The new example's installed-package acceptance covers unbound
+inspection, current/stale bindings, rejected evidence and missing bindings;
+existing ordinary/multilayer examples and independent reference identities are reused.
+
 The frozen profile is an ordinary, horizontal, simply supported, prismatic
 rectangular beam at its captured dimensions, with normal positive-local-2 top
 mapping, direct section assignment and zero source end offsets. Accepted

@@ -4,6 +4,46 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.25.0] — 2026-10-03
+
+This owner-authorized normal software release includes the accepted Library work
+since v0.24.0. It retains Beta maturity and the existing supported-case,
+engineering-review and installed-application limits. Independent software review,
+required PR and Weekly checks, and exact-wheel verification passed on the frozen
+candidate before publication authorization.
+
+### Added
+
+- Explicit member intent and ULS/total-SLS/sustained-SLS input readiness for
+  the retained ordinary rectangular beam cohort, with complete member accounting,
+  revision-bound inputs, native replay and lossless public Python/JSON inspection.
+- A public readiness example showing inspection with unbound currentness,
+  explicit current bindings, stale-input rejection and preserved approval limits.
+- Complete ordinary and multilayer worked members through physical bars, BBS,
+  quantities and reports; multilayer flexure retains signed per-bar equilibrium.
+
+### Fixed
+
+- Supported column strain/axis, flanged-section equilibrium, material and bounded
+  serviceability paths, retaining their independently verified case restrictions.
+- Issued-amendment distribution spacing for solid slabs and staircases, and the
+  solid-slab maximum shear limit, with source/caller provenance and applicability.
+- Physical bar fit, anchorage, supplied reinforcement and same-source action
+  binding across the accepted member workflows.
+- Aggregate test dispatch now retains a component failure rather than reporting
+  success after a later suite passes. The shared freshness enum belongs to Core
+  while existing public imports preserve the same enum identity.
+- Compatible dependency and cross-platform runtime repairs integrated with the
+  accepted maintenance packets.
+
+### Scope decision
+
+- The complete concurrent M3/V2/T member extension remains HOLD: torsional
+  support/load-path evidence and a qualified combined-torsion SLS method/reference
+  are absent. Existing component torsion operations remain available; the native
+  baseline continues to reject nonzero torsion. No installed-host or professional
+  engineering acceptance is granted by this software release.
+
 ## [0.24.0] — 2026-08-28
 
 Owner-authorized normal software release for the cumulative supported scope
