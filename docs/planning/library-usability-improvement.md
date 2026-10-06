@@ -7,7 +7,7 @@ doc_type: spec
 
 # Library usability and implementation quality
 
-**Next release proposal:** [v0.26.0 — accuracy and professional quality](#next-version-proposal--6-october-2026)
+**Next release proposal:** [v0.26.0 — accuracy and professional quality](#next-version-proposal-6-october-2026)
 records the current release baseline, confirmed consumer defects, proposed
 milestones and conditional engineering additions. It is planning only.
 
