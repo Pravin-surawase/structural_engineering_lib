@@ -90,12 +90,14 @@ torsion = {
     "mu_knm": 150.0,
     "b": 300.0,
     "D": 500.0,
-    "d": 450.0,
+    "d": 444.0,
     "fck": 25.0,
     "fy": 500.0,
     "cover": 40.0,
     "stirrup_dia": 8.0,
     "pt": 1.0,
+    "corner_bar_centres_mm": (188.0, 388.0),
+    "d_opposite_mm": 444.0,
 }
 column = {
     "Pu_kN": 800.0,
