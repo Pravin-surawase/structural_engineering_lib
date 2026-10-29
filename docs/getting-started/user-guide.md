@@ -23,17 +23,21 @@ without files.
 
 ## 1. Install and verify
 
-StructLib 0.24.0 requires Python 3.11 or newer.
+StructLib 0.25.0 requires Python 3.11 or newer.
+
+The pin follows prepared source metadata. Confirm that exact version is published
+before registry installation; otherwise use the source-install route in the
+[installation guide](installation-notes.md#run-the-current-repository-workbench). Updating this pin does not publish a release.
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456==0.24.0"
+python3 -m pip install "structural-lib-is456==0.25.0"
 python3 -m structural_lib install-preflight
 ```
 
-The preflight must report version `0.24.0` and a package origin inside the
+The preflight must report version `0.25.0` and a package origin inside the
 active environment's `site-packages` directory.
 
 ## 2. Create strict beam input
@@ -73,7 +77,7 @@ These commands create:
 For DXF output:
 
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.25.0"
 python3 -m structural_lib dxf results.json -o drawings.dxf
 ```
 

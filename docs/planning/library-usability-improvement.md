@@ -1763,3 +1763,93 @@ After maintenance integration, freeze S3's declared public-contract population
 and decisive cross-caller cases. Existing source/engineering/native-host HOLDs
 and S4–S6 remain explicit; no new release, branch deletion or API implementation
 is performed by maintenance.
+
+<a id="s3-public-contracts--29-october-2026"></a>
+
+## S3 public contracts — 29 October 2026
+
+The owner selected S3 planning and implementation: signatures, inputs, schemas,
+defaults, compatibility, fixes, tests and independent review. Task
+`LIB-S3-20261029` uses `codex/lib-s3-contracts` from fetched main
+`ec3f230767dcfbdc1cbb18ccb48273f7e9db7682`, following maintenance #1035.
+Codex `/root` is the sole writer. Two bounded read-only reviewers inspect
+Python and HTTP/client contracts; the parent verifies their evidence and owns
+all implementation, documentation and generated records.
+
+### Declared population and acceptance
+
+Existing classification, compatibility ledger, manifests, strict request
+contracts, workflow registry and OpenAPI remain authoritative. Extend those
+owners; execution receipts are evidence, not a competing API catalogue.
+
+| Requirement | Declared work | Required proof |
+| --- | --- | --- |
+| S3-A1 — ownership/signatures | All 14 surfaces / 1,308 projections, 60 typed functions in 11 modules and 115 compatibility functions / 245 exports. | Callable/annotation/manifest/owner identity, parameter kind/order/default/return agreement and consumer/support dispositions; no promotion of internal helpers. |
+| S3-A2 — positional policy | All 32 legacy over-limit functions plus the root-only observation evidence API. | Reviewed exact owner/signature exception and reason; reject unexplained new deviations. Retain existing positional call forms. |
+| S3-A3 — input/default semantics | All 13 family requests / 564 field leaves plus promoted complete-member/readiness contracts. | Required/default/null/type/bool/string/finite/extra/enum/range/cross-field/provenance decisions, schema links and meaningful positive/rejected cases. Distinguish supplied inputs, derived facts and legacy defaults. |
+| S3-A4 — schema evolution | All 488 component schemas and referenced family request/result/error schemas. | Exhaustive owner/role/reachability/field/default/null/reference dispositions; meta-validation, meaningful positive/negative instances and round trips. Semantic review before snapshots; missing-description counts alone are not defects. |
+| S3-A5 — transports/clients | All 92 HTTP operations / 91 paths, CLI flows, separate WebSocket messages and maintained React callers. | Operation roles and request/result/error/coercion/mutation boundaries; actual promoted/selected payload, unit, status and member/source/unavailable-quantity assertions. Native evidence remains separately qualified. |
+| S3-A6 — help/examples | Promoted operations, indexed cells, 13 family journeys and maintained member/readiness examples. | Source/reference/schema agreement; purpose/units/default/return/error/limitation meaning; executable class, prerequisites and outcome dispositions. Reuse S2 evidence only for unchanged identities; replay changed consumers and frozen installed artifact. |
+| S3-A7 — compatibility | Canonical/projection/caller ledger, retained exceptions and affected saved/client payloads. | No ambiguous owner, unexplained drift or unapproved breaking migration. Every intentional correction has a compatibility decision and known-caller replay. |
+| S3-A8 — verification/integration | Frozen union of affected outcomes and generators. | Relevant format/lint/type/architecture checks, focused regressions, independent exact-head reviews, required hosted checks and matching merged tree. Broad local suites need a named shared-contract risk. |
+
+At intake all HTTP schemas are reachable: 125 request-only, 323 response-only
+and 40 shared; all 92 operations carry the shared problem-response contract.
+These are role/coverage measurements, not semantic acceptance. The 32 legacy
+positional deviations are retained exceptions, not numerical defects. Numeric
+boolean and duplicate-JSON probes reject across all 13 strict family journeys;
+the remaining matrix obligations still require their own evidence.
+
+### Confirmed transport failures and selected root repair
+
+Legacy `design_beam` WebSocket duplicates the REST projection and has diverged:
+missing envelope/depth-basis fields make React synthesize HOLD for known
+PASS/FAIL. Its `asv_required` omits division by effective depth while declaring
+mm²/mm; the measured error is 457-fold at d=457 mm. REST and WebSocket also cap
+the field described as governing utilization at 2.0, even when the core ratio
+is unavailable and its evidence already records null.
+
+Reuse one shared REST/WebSocket projection without changing IS mathematics,
+limits, bar geometry or support. Preserve physical/source identity and expose
+the actual finite-or-unavailable ratio with the existing typed reason vocabulary.
+Retain required legacy fields under an explicit compatibility decision rather
+than silently inventing an ordinary number. Update known React consumers to
+use authoritative ratios/status and display unavailable quantities honestly.
+Document schema/client evolution before regenerating snapshots.
+
+Wall and legacy WebSocket numeric-string conversions remain explicit adapter
+policies. Preserve supported conversions and validate at the canonical boundary;
+do not weaken strict family requests. Any additional outcome-changing default
+or schema discrepancy receives the same source-bound root-cause treatment.
+
+### Execution order and boundaries
+
+Complete live matrices and defect probes; implement the shared projection,
+client/result contracts, retained-exception policy and documentation at their
+owners. Add meaningful regressions during implementation. Freeze and run their
+focused union once; repairs refresh only affected evidence. Regenerate derived
+records after semantic review, preserve rejected probes, and bind artifact
+replays to installed origin and exact bytes. One milestone PR owns hosted
+checks/integration; no side merge may invalidate the reviewed candidate.
+
+S4 engineering/output qualification, S5 final released-version artifact and S6
+per-release authorization/publication remain later gates. Existing source,
+physical and native-host HOLDs and normalized-data distribution permission
+remain unchanged. S3 authorizes no tag, publication, support expansion or
+native application mutation.
+
+The complete S3 signature census additionally retains the existing root-only
+ETABS target-observation function: 33 unique reviewed owners across the public
+surfaces, of which 32 belong to the legacy compatibility manifest. Batch
+non-finite JSON, WebSocket unknown/duplicate input and active installation-pin
+drift are confirmed contract defects within this same selected milestone.
+The shared projection and actual/null client migration include dashboard ratio
+intake; no new engineering algorithm or native operation is selected.
+
+The final local FastAPI suite is justified by the shared response projection,
+problem decoding and all-operation schema reconciliation. The React suite and
+production type/build check are justified by shared response types and persisted
+batch/dashboard/viewport consumers. Python verification stays focused on the
+changed batch/dashboard owners, strict facade/member/readiness/CLI contracts,
+compatibility, schema and version tools. No broad Python or full repository
+suite is selected as a duplicate of hosted required checks.

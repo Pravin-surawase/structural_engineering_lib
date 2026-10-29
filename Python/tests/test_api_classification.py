@@ -54,6 +54,64 @@ def test_every_facade_symbol_has_exactly_one_classification() -> None:
         assert all(record["documentation"]["role"] for record in surface["symbols"])
 
 
+def test_positional_policy_retains_reviewed_forms_and_rejects_signature_drift(
+    monkeypatch,
+):
+    import inspect
+
+    from structural_lib import api
+
+    registry = classification.build_registry()
+    # 32 compatibility functions plus one root-only observation evidence API.
+    assert registry["signature_policy"]["reviewed_exception_count"] == 33
+    original = api.check_beam_ductility
+    signature = inspect.signature(original)
+    extra = inspect.Parameter(
+        "unreviewed_input", inspect.Parameter.KEYWORD_ONLY, default=None
+    )
+    monkeypatch.setattr(
+        original,
+        "__signature__",
+        signature.replace(parameters=[*signature.parameters.values(), extra]),
+        raising=False,
+    )
+    with pytest.raises(RuntimeError, match="Unreviewed positional signature deviation"):
+        classification.build_registry()
+
+
+def test_new_positional_deviation_fails_without_an_exception():
+    import types
+
+    module = types.ModuleType("s3_unreviewed_surface")
+
+    def new_api(a, b, c, d):
+        return a + b + c + d
+
+    module.new_api = new_api
+    sys.modules[module.__name__] = module
+    try:
+        with pytest.raises(
+            RuntimeError, match="Unreviewed positional signature deviation"
+        ):
+            classification._signature_policy(
+                [
+                    {
+                        "module": module.__name__,
+                        "symbols": [
+                            {
+                                "name": "new_api",
+                                "qualified_name": "s3_unreviewed_surface.new_api",
+                                "declared_export": True,
+                                "kind": "function",
+                            }
+                        ],
+                    }
+                ]
+            )
+    finally:
+        del sys.modules[module.__name__]
+
+
 def test_normal_pre1_registry_makes_no_stable_export_promise() -> None:
     registry = classification.build_registry()
 

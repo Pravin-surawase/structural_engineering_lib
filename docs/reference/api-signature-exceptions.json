@@ -1,0 +1,303 @@
+{
+  "schema_version": "api-signature-exceptions/v1",
+  "max_positional_parameters": 3,
+  "exceptions": [
+    {
+      "public_name": "biaxial_bending_check_is456",
+      "canonical_owner": "structural_lib.services.column_api.biaxial_bending_check_is456",
+      "signature": "(Pu_kN: 'float', Mux_kNm: 'float', Muy_kNm: 'float', b_mm: 'float', D_mm: 'float', le_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, l_unsupported_mm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnBiaxialResult'",
+      "positional_parameters": 11,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "calculate_additional_moment_is456",
+      "canonical_owner": "structural_lib.services.column_api.calculate_additional_moment_is456",
+      "signature": "(Pu_kN: 'float', b_mm: 'float', D_mm: 'float', lex_mm: 'float', ley_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'AdditionalMomentResult'",
+      "positional_parameters": 9,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "calculate_development_length_unrounded",
+      "canonical_owner": "structural_lib.codes.is456.beam.detailing.calculate_development_length_unrounded",
+      "signature": "(bar_dia: 'float', fck: 'float', fy: 'float', bar_type: 'str' = 'deformed', stress_ratio: 'float' = 0.87) -> 'float'",
+      "positional_parameters": 5,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "calculate_equivalent_moment",
+      "canonical_owner": "structural_lib.codes.is456.beam.torsion.calculate_equivalent_moment",
+      "signature": "(mu_knm: 'float', tu_knm: 'float', d: 'float', b: 'float', D_mm: 'float | None' = None) -> 'float'",
+      "positional_parameters": 5,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "calculate_longitudinal_torsion_steel",
+      "canonical_owner": "structural_lib.codes.is456.beam.torsion.calculate_longitudinal_torsion_steel",
+      "signature": "(tu_knm: 'float', vu_kn: 'float', b1: 'float', d1: 'float', fy: 'float', sv: 'float') -> 'float'",
+      "positional_parameters": 6,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "calculate_torsion_stirrup_area",
+      "canonical_owner": "structural_lib.codes.is456.beam.torsion.calculate_torsion_stirrup_area",
+      "signature": "(tu_knm: 'float', vu_kn: 'float', b: 'float', d: 'float', b1: 'float', d1: 'float', fy: 'float', tc: 'float') -> 'tuple[float, float, float]'",
+      "positional_parameters": 8,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "check_anchorage_at_simple_support",
+      "canonical_owner": "structural_lib.services.beam_api.check_anchorage_at_simple_support",
+      "signature": "(bar_dia_mm: 'float' = 0.0, fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, vu_kn: 'float' = 0.0, support_width_mm: 'float' = 0.0, cover_mm: 'float' = 40.0, bar_type: 'str' = 'deformed', has_standard_bend: 'bool' = True, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'detailing.AnchorageCheckResult'",
+      "positional_parameters": 8,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "check_beam_ductility",
+      "canonical_owner": "structural_lib.services.beam_api.check_beam_ductility",
+      "signature": "(b_mm: 'float | None' = None, D_mm: 'float | None' = None, d_mm: 'float | None' = None, fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, min_long_bar_dia: 'float' = 0.0, *, b: 'float | None' = None, D: 'float | None' = None, d: 'float | None' = None, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ductile.DuctileBeamResult'",
+      "positional_parameters": 6,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "check_beam_slenderness",
+      "canonical_owner": "structural_lib.services.beam_api.check_beam_slenderness",
+      "signature": "(b_mm: 'float', d_mm: 'float', l_eff_mm: 'float', beam_type: 'str' = 'simply_supported', has_lateral_restraint: 'bool' = False) -> 'slenderness.SlendernessResult'",
+      "positional_parameters": 5,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "check_bearing_pressure",
+      "canonical_owner": "structural_lib.codes.is456.footing.bearing.check_bearing_pressure",
+      "signature": "(Pu_kN: 'float', fck: 'float', column_b_mm: 'float', column_D_mm: 'float', footing_B_mm: 'float', footing_L_mm: 'float', *, effective_supporting_area_A1_mm2: 'float | None' = None, effective_supporting_area_is_approved: 'bool' = False) -> 'BearingPressureCheckResult'",
+      "positional_parameters": 6,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "check_compliance_report",
+      "canonical_owner": "structural_lib.services.beam_api.check_compliance_report",
+      "signature": "(cases: 'Sequence[dict[str, Any]]', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, deflection_defaults: 'DeflectionParams | None' = None, crack_width_defaults: 'CrackWidthParams | None' = None) -> 'ComplianceReport'",
+      "positional_parameters": 11,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "check_crack_width",
+      "canonical_owner": "structural_lib.services.beam_api.check_crack_width",
+      "signature": "(exposure_class: 'str' = 'moderate', limit_mm: 'float | None' = None, acr_mm: 'float | None' = None, cmin_mm: 'float | None' = None, h_mm: 'float | None' = None, x_mm: 'float | None' = None, epsilon_m: 'float | None' = None, fs_service_nmm2: 'float | None' = None, es_nmm2: 'float' = 200000.0) -> 'serviceability.CrackWidthResult'",
+      "positional_parameters": 9,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "check_deflection_span_depth",
+      "canonical_owner": "structural_lib.services.beam_api.check_deflection_span_depth",
+      "signature": "(span_mm: 'float', d_mm: 'float', support_condition: 'str' = 'simply_supported', base_allowable_ld: 'float | None' = None, mf_tension_steel: 'float | None' = None, mf_compression_steel: 'float | None' = None, mf_flanged: 'float | None' = None) -> 'serviceability.DeflectionResult'",
+      "positional_parameters": 7,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "check_helical_reinforcement_is456",
+      "canonical_owner": "structural_lib.services.column_api.check_helical_reinforcement_is456",
+      "signature": "(D_mm: 'float', D_core_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, d_helix_mm: 'float' = 0.0, pitch_mm: 'float' = 0.0, Pu_axial_kN: 'float' = 0.0, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'HelicalReinforcementResult'",
+      "positional_parameters": 7,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "compute_bmd_sfd",
+      "canonical_owner": "structural_lib.codes.is456.load_analysis.compute_bmd_sfd",
+      "signature": "(span_mm: 'float', support_condition: \"Literal['simply_supported', 'cantilever']\", loads: 'list[LoadDefinition]', num_points: 'int' = 101) -> 'LoadDiagramResult'",
+      "positional_parameters": 4,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "compute_rebar_positions",
+      "canonical_owner": "structural_lib.visualization.geometry_3d.compute_rebar_positions",
+      "signature": "(beam_width: 'float', beam_depth: 'float', cover: 'float', bar_count: 'int', bar_dia: 'float', stirrup_dia: 'float', is_top: 'bool' = False, layers: 'int' = 1) -> 'list[Point3D]'",
+      "positional_parameters": 8,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "compute_stirrup_path",
+      "canonical_owner": "structural_lib.visualization.geometry_3d.compute_stirrup_path",
+      "signature": "(beam_width: 'float', beam_depth: 'float', cover: 'float', stirrup_dia: 'float', position_x: 'float', legs: 'int' = 2) -> 'list[Point3D]'",
+      "positional_parameters": 6,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "compute_stirrup_positions",
+      "canonical_owner": "structural_lib.visualization.geometry_3d.compute_stirrup_positions",
+      "signature": "(span: 'float', stirrup_spacing_start: 'float', stirrup_spacing_mid: 'float', stirrup_spacing_end: 'float', zone_length: 'float | None' = None) -> 'list[float]'",
+      "positional_parameters": 5,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "create_calculation_certificate",
+      "canonical_owner": "structural_lib.services.audit.create_calculation_certificate",
+      "signature": "(inputs: 'dict[str, Any]', outputs: 'dict[str, Any]', project_id: 'str' = '', beam_id: 'str' = '', engineer: 'str' = '') -> 'dict[str, Any]'",
+      "positional_parameters": 5,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "design_column_axial_is456",
+      "canonical_owner": "structural_lib.services.column_api.design_column_axial_is456",
+      "signature": "(fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Ag_mm2: 'float' = 0.0, Asc_mm2: 'float' = 0.0, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnAxialResult'",
+      "positional_parameters": 4,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "design_column_is456",
+      "canonical_owner": "structural_lib.services.column_api.design_column_is456",
+      "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnDesignResult'",
+      "positional_parameters": 17,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "design_long_column_is456",
+      "canonical_owner": "structural_lib.services.column_api.design_long_column_is456",
+      "signature": "(Pu_kN: 'float', M1x_kNm: 'float', M2x_kNm: 'float', M1y_kNm: 'float', M2y_kNm: 'float', b_mm: 'float', D_mm: 'float', lex_mm: 'float', ley_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, braced: 'bool' = True, *, l_unsupported_mm: 'float', fck: 'float | None' = None, fy: 'float | None' = None) -> 'LongColumnResult'",
+      "positional_parameters": 14,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "design_short_column_uniaxial_is456",
+      "canonical_owner": "structural_lib.services.column_api.design_short_column_uniaxial_is456",
+      "signature": "(Pu_kN: 'float', Mu_kNm: 'float', b_mm: 'float', D_mm: 'float', le_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, l_unsupported_mm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnUniaxialResult'",
+      "positional_parameters": 10,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "design_torsion",
+      "canonical_owner": "structural_lib.codes.is456.beam.torsion.design_torsion",
+      "signature": "(tu_knm: 'float', vu_kn: 'float', mu_knm: 'float', b: 'float', D: 'float', d: 'float', fck: 'float', fy: 'float', cover: 'float', stirrup_dia: 'float' = 8, pt: 'float' = 1.0, *, fy_transverse_nmm2: 'float | None' = None, corner_bar_centres_mm: 'tuple[float, float] | None' = None, d_opposite_mm: 'float | None' = None) -> 'TorsionResult'",
+      "positional_parameters": 11,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "enhanced_shear_strength_is456",
+      "canonical_owner": "structural_lib.services.beam_api.enhanced_shear_strength_is456",
+      "signature": "(fck_nmm2: 'float', pt_percent: 'float', d_mm: 'float', av_mm: 'float') -> 'float'",
+      "positional_parameters": 4,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "footing_flexure",
+      "canonical_owner": "structural_lib.codes.is456.footing.flexure.footing_flexure",
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', fy: 'float', *, overall_thickness_mm: 'float') -> 'FootingFlexureResult'",
+      "positional_parameters": 8,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "footing_one_way_shear",
+      "canonical_owner": "structural_lib.codes.is456.footing.one_way_shear.footing_one_way_shear",
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', pt: 'float' = 0.15, *, pt_L_percent: 'float | None' = None, pt_B_percent: 'float | None' = None) -> 'FootingOneWayShearResult'",
+      "positional_parameters": 8,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "footing_punching_shear",
+      "canonical_owner": "structural_lib.codes.is456.footing.punching_shear.footing_punching_shear",
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float') -> 'FootingPunchingResult'",
+      "positional_parameters": 7,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "generate_calculation_report",
+      "canonical_owner": "structural_lib.services.calculation_report.generate_calculation_report",
+      "signature": "(result: 'Any', beam_id: 'str' = 'B1', story: 'str' = 'GF', project_info: 'dict[str, Any] | None' = None, output_path: 'str | Path | None' = None, output_format: 'str' = 'html') -> 'CalculationReport'",
+      "positional_parameters": 6,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "optimize_pareto_front",
+      "canonical_owner": "structural_lib.services.multi_objective_optimizer.optimize_pareto_front",
+      "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
+      "positional_parameters": 9,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "pm_interaction_curve_is456",
+      "canonical_owner": "structural_lib.services.column_api.pm_interaction_curve_is456",
+      "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, n_points: 'int' = 50, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'PMInteractionResult'",
+      "positional_parameters": 7,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "size_footing",
+      "canonical_owner": "structural_lib.codes.is456.footing.bearing.size_footing",
+      "signature": "(P_service_kN: 'float', q_safe_kPa: 'float', a_mm: 'float', b_mm: 'float', M_service_kNm: 'float' = 0.0, footing_type: 'FootingType' = <FootingType.ISOLATED_SQUARE: 1>) -> 'FootingBearingResult'",
+      "positional_parameters": 6,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "review": "LIB-S3-20261029"
+    },
+    {
+      "public_name": "observe_etabs_target_v1",
+      "canonical_owner": "structural_lib.services.etabs_session_guard.observe_etabs_target_v1",
+      "signature": "(process_instance: 'ETABSProcessInstanceV1', expected_intent: 'ETABSExpectedModelIntentV1', runtime_fingerprint: 'ETABSRuntimeFingerprintV1', session_identity: 'ETABSSessionIdentityV1', model_freshness: 'ETABSModelFreshnessV1', *, observed_at_utc: 'datetime | None' = None, ttl: 'timedelta' = datetime.timedelta(seconds=120), observation_id: 'str | None' = None) -> 'ETABSTargetObservationV1'",
+      "positional_parameters": 5,
+      "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
+      "reason": "Existing ETABS target-observation evidence callers retain positional identity binding. This exception authorizes no live mutation or engineering qualification.",
+      "review": "LIB-S3-20261029"
+    }
+  ]
+}

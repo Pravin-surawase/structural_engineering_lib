@@ -21,7 +21,21 @@ from datetime import datetime, timezone
 from typing import Any, Literal
 
 from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
-from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    TypeAdapter,
+    ValidationError,
+    field_validator,
+    model_validator,
+)
+from pydantic_core import PydanticCustomError
+from structural_lib.design.is456.beam import InputContractError, InputIssueV1
+from structural_lib.services.contracts.common import (
+    model_validate_or_error,
+    parse_json_or_error,
+)
 
 # Import the owning beam services with proper signature discovery.
 # See: scripts/discover_api_signatures.py design_beam_is456
@@ -30,9 +44,11 @@ from structural_lib.services.contracts.beam_supplied_check import (
     BeamSuppliedCheckRequestV2,
 )
 from structural_lib.services.supplied_beam_check import check_supplied_beam_v2
+from fastapi_app.beam_projection import project_beam_design_result
 from fastapi_app.auth import verify_ws_token
 from fastapi_app.error_utils import sanitize_error
-from fastapi_app.models.beam import BeamSuppliedCheckResponseV2
+from fastapi_app.models.beam import BeamDesignResponse, BeamSuppliedCheckResponseV2
+from fastapi_app.models.response import ProblemDetailResponse
 
 logger = logging.getLogger(__name__)
 
@@ -127,8 +143,12 @@ async def design_websocket(
                 width: 300,
                 depth: 500,
                 moment: 150,
+                shear: 75,
                 fck: 25,
-                fy: 500
+                fy: 500,
+                cover: 25,
+                stirrup_dia_mm: 8,
+                main_bar_dia_mm: 20
             }
         }));
         ```
@@ -141,13 +161,24 @@ async def design_websocket(
 
     try:
         while True:
-            # Receive message from client
-            data = await websocket.receive_json()
-            message_type = data.get("type", "unknown")
-
             try:
+                # Decode before dispatch without discarding duplicate actions or
+                # accepting non-standard numeric values such as NaN/Infinity.
+                data = parse_json_or_error(await websocket.receive_text())
+                if not isinstance(data, dict):
+                    raise InputContractError(
+                        (
+                            InputIssueV1(
+                                code="INPUT_TYPE_INVALID",
+                                path="$",
+                                message="A WebSocket message must be a JSON object.",
+                            ),
+                        )
+                    )
+                message_type = data.get("type", "unknown")
                 if message_type == "design_beam":
-                    await handle_design_beam(session_id, data.get("params", {}))
+                    validated = model_validate_or_error(WSDesignMessage, data)
+                    await handle_design_beam(session_id, validated.params.model_dump())
 
                 elif message_type == "check_beam":
                     await handle_check_beam(session_id, data)
@@ -170,6 +201,15 @@ async def design_websocket(
                         },
                     )
 
+            except InputContractError as e:
+                await manager.send_json(
+                    session_id,
+                    {
+                        "type": "error",
+                        "message": f"Invalid input: {e.message}",
+                        "error": e.to_problem(),
+                    },
+                )
             except (ValueError, TypeError) as e:
                 await manager.send_json(
                     session_id,
@@ -195,7 +235,61 @@ async def design_websocket(
 
 
 class WSDesignParams(BaseModel):
-    """Validated parameters for design_beam WebSocket messages."""
+    """Legacy numeric-string adapter for the declared flexure/shear inputs.
+
+    Unknown inputs must not silently discard actions, depth or source identity.
+    ``clear_cover`` remains an accepted alias; ``length`` is viewport metadata,
+    not a declaration that span-dependent serviceability has been evaluated.
+    """
+
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_cover_alias(cls, value: Any) -> Any:
+        if not isinstance(value, dict) or "clear_cover" not in value:
+            return value
+        value = dict(value)
+        alias = value.pop("clear_cover")
+        if "cover" in value:
+            try:
+                equal = float(value["cover"]) == float(alias)
+            except (TypeError, ValueError):
+                raise PydanticCustomError(
+                    "float_type", "Cover aliases must be numeric"
+                ) from None
+            if not equal:
+                raise ValueError(
+                    "COVER_ALIAS_CONFLICT: cover and clear_cover must agree"
+                )
+        value.setdefault("cover", alias)
+        return value
+
+    @field_validator(
+        "width",
+        "depth",
+        "moment",
+        "shear",
+        "fck",
+        "fy",
+        "cover",
+        "stirrup_dia_mm",
+        "main_bar_dia_mm",
+        mode="before",
+        json_schema_input_type=float | str,
+    )
+    @classmethod
+    def reject_boolean_quantity(cls, value: Any) -> Any:
+        if isinstance(value, bool):
+            raise PydanticCustomError(
+                "float_type", "A boolean is not a numeric quantity"
+            )
+        return value
+
+    @field_validator("length", mode="before", json_schema_input_type=float | str | None)
+    @classmethod
+    def reject_boolean_length(cls, value: Any) -> Any:
+        return cls.reject_boolean_quantity(value)
 
     width: float = Field(..., ge=100, le=2000, description="Beam width in mm")
     depth: float = Field(..., ge=150, le=3000, description="Overall beam depth in mm")
@@ -212,6 +306,54 @@ class WSDesignParams(BaseModel):
     main_bar_dia_mm: float = Field(
         ..., ge=8, le=36, description="Main bar diameter in mm"
     )
+    length: float | None = Field(
+        default=None,
+        gt=0,
+        description="Optional viewport length in mm; no span-dependent check is performed",
+    )
+
+
+class WSDesignMessage(BaseModel):
+    """Declared compatibility design request; params retain numeric strings."""
+
+    model_config = ConfigDict(extra="forbid")
+    type: Literal["design_beam"]
+    params: WSDesignParams
+
+
+class WSDesignResultMessage(BaseModel):
+    """Same compatibility calculation payload as the HTTP beam endpoint."""
+
+    type: Literal["design_result"]
+    latency_ms: float = Field(ge=0, allow_inf_nan=False)
+    data: BeamDesignResponse
+
+
+class WSInputProblemMessage(BaseModel):
+    """Rejected JSON or request; no calculation outcome is implied."""
+
+    type: Literal["error"]
+    message: str
+    error: ProblemDetailResponse
+
+
+def beam_design_websocket_schema_v1() -> dict[str, Any]:
+    """Compatibility design and structured intake-error exchange schema."""
+    schema = TypeAdapter(
+        WSDesignMessage | WSDesignResultMessage | WSInputProblemMessage
+    ).json_schema()
+    params = schema["$defs"]["WSDesignParams"]
+    params["properties"]["clear_cover"] = dict(params["properties"]["cover"])
+    params["required"].remove("cover")
+    params["anyOf"] = [{"required": ["cover"]}, {"required": ["clear_cover"]}]
+    schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
+    schema["title"] = "Beam compatibility WebSocket design exchange V1"
+    schema["description"] = (
+        "Numeric strings remain accepted for legacy params; booleans, non-finite "
+        "values, duplicate JSON keys, conflicting cover aliases and unknown inputs reject. "
+        "clear_cover is an accepted input alias for cover. length is viewport metadata only."
+    )
+    return schema
 
 
 class WSBeamCheckMessageV2(BaseModel):
@@ -287,122 +429,58 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
 
     # Validate input with Pydantic
     try:
-        validated = WSDesignParams(**params)
-    except ValidationError as e:
+        validated = model_validate_or_error(
+            WSDesignParams, params, path_prefix="$.params"
+        )
+    except InputContractError as e:
         await manager.send_json(
             session_id,
-            {"type": "error", "message": sanitize_error(e, "live design input")},
+            {
+                "type": "error",
+                "message": f"Invalid input: {e.message}",
+                "error": e.to_problem(),
+            },
         )
         return
 
-    # Use the same declared section inputs as the REST beam route.
-    d_dash_mm = (
-        validated.cover + validated.stirrup_dia_mm + validated.main_bar_dia_mm / 2
-    )
-    d_mm = validated.depth - d_dash_mm
+    from structural_lib.services.project_beam import EffectiveDepthBasisV1
 
-    # Run design calculation in thread pool (non-blocking)
+    # The legacy adapter retains its documented numeric-string coercion. The
+    # calculated depth/basis uses the same explicit physical inputs as HTTP.
+    basis = EffectiveDepthBasisV1(
+        clear_cover_mm=validated.cover,
+        stirrup_diameter_mm=validated.stirrup_dia_mm,
+        tension_bar_diameter_mm=validated.main_bar_dia_mm,
+    )
     result = await asyncio.to_thread(
         design_beam_is456,
         units="IS456",
-        b_mm=float(validated.width),
-        D_mm=float(validated.depth),
-        d_mm=float(d_mm),
-        mu_knm=float(validated.moment),
-        vu_kn=float(validated.shear),
-        fck_nmm2=float(validated.fck),
-        fy_nmm2=float(validated.fy),
-        d_dash_mm=float(d_dash_mm),
+        b_mm=validated.width,
+        D_mm=validated.depth,
+        d_mm=None,
+        effective_depth_basis=basis,
+        mu_knm=validated.moment,
+        vu_kn=validated.shear,
+        fck_nmm2=validated.fck,
+        fy_nmm2=validated.fy,
+        d_dash_mm=validated.cover
+        + validated.stirrup_dia_mm
+        + validated.main_bar_dia_mm / 2,
+        cover_mm=validated.cover,
+        stirrup_dia_mm=validated.stirrup_dia_mm,
     )
-
-    # Calculate response time
-    end_time = datetime.now(timezone.utc)
-    latency_ms = (end_time - start_time).total_seconds() * 1000
-
-    flexure = result.flexure
-    shear = result.shear
-    warnings: list[str] = []
-    if flexure.Asc_required > 0:
-        warnings.append(
-            "Doubly reinforced design required because moment demand exceeds "
-            "the singly reinforced limit"
-        )
-    if flexure.xu > flexure.xu_max:
-        warnings.append("Section is over-reinforced - consider increasing depth")
-
-    from structural_lib.services.evidence import build_beam_evidence_envelope
-
-    evidence = build_beam_evidence_envelope(
-        inputs={
-            "units": "IS456",
-            "case_id": "CASE-1",
-            "mu_knm": validated.moment,
-            "vu_kn": validated.shear,
-            "b_mm": validated.width,
-            "D_mm": validated.depth,
-            "d_mm": d_mm,
-            "fck_nmm2": validated.fck,
-            "fy_nmm2": validated.fy,
-            "d_dash_mm": d_dash_mm,
-            "asv_mm2": 100.0,
-        },
-        is_ok=result.is_ok,
-        governing_utilization=result.governing_utilization,
-        utilizations=result.utilizations,
-    )
-
-    # Keep the WebSocket payload aligned with the REST BeamDesignResponse.
-    # The frontend can then switch transports without silently losing fields.
+    inputs = dict(result.design_inputs)
+    inputs.pop("pt_percent", None)
+    inputs.pop("ast_mm2_for_shear", None)
+    inputs["torsion_corner_bar_centres_mm"] = None
+    response = project_beam_design_result(result, evidence_inputs=inputs)
+    latency_ms = (datetime.now(timezone.utc) - start_time).total_seconds() * 1000
     await manager.send_json(
         session_id,
         {
             "type": "design_result",
             "latency_ms": round(latency_ms, 2),
-            "data": {
-                "success": result.is_ok,
-                "message": (
-                    f"Design complete: Ast = {flexure.Ast_required:.0f} mm²"
-                    if result.is_ok
-                    else f"Design failed: {result.remarks}"
-                ),
-                "flexure": {
-                    "ast_required": flexure.Ast_required,
-                    "ast_min": flexure.Ast_min,
-                    "ast_max": flexure.Ast_max,
-                    "xu": flexure.xu,
-                    "xu_max": flexure.xu_max,
-                    "is_under_reinforced": flexure.xu <= flexure.xu_max,
-                    "moment_capacity": flexure.Mu_lim,
-                    "asc_required": flexure.Asc_required,
-                },
-                "shear": (
-                    {
-                        "tau_v": shear.tau_v,
-                        "tau_c": shear.tau_c,
-                        "tau_c_max": shear.tau_c_max,
-                        "asv_required": (
-                            shear.Vus / (0.87 * validated.fy) * 1000
-                            if shear.Vus > 0
-                            else 0.0
-                        ),
-                        "stirrup_spacing": shear.spacing,
-                        "sv_max": 300.0,
-                        "shear_capacity": (
-                            shear.tau_c * validated.width * d_mm / 1000 + shear.Vus
-                            if shear.Vus > 0
-                            else validated.shear
-                        ),
-                    }
-                    if shear
-                    else None
-                ),
-                "ast_total": flexure.Ast_required,
-                "asc_total": flexure.Asc_required,
-                "utilization_ratio": min(result.governing_utilization, 2.0),
-                "effective_depth_used": d_mm,
-                "warnings": warnings,
-                "evidence": evidence,
-            },
+            "data": response.model_dump(mode="json"),
         },
     )
 

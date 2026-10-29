@@ -1,11 +1,12 @@
 import type { BeamDesignResponse } from '../api/client';
+import { governingUtilization } from '../api/client';
 
 export type TrustStatus = 'PASS' | 'FAIL' | 'HOLD';
 
 export interface TrustPresentation {
   status: TrustStatus;
-  exactUtilization: number;
-  margin: number;
+  exactUtilization: number | null;
+  margin: number | null;
   governingCheck: string;
   calculationIdentity: string | null;
   inputHash: string | null;
@@ -25,13 +26,15 @@ export function getTrustPresentation(result: BeamDesignResponse): TrustPresentat
   const evidence = result.evidence;
   const envelope = result.result_envelope;
   const identity = envelope.result_identity;
-  const exactUtilization = evidence?.exact_utilization ?? result.utilization_ratio;
-  const margin = evidence?.margin ?? 1 - exactUtilization;
+  const exactUtilization = governingUtilization(result);
+  const margin = typeof evidence?.margin === 'number' && Number.isFinite(evidence.margin)
+    ? evidence.margin : null;
   const hasIdentity = Boolean(
     evidence
     && evidence.support_status === 'SUPPORTED'
     && (evidence.status === 'PASS' || evidence.status === 'FAIL')
     && Number.isFinite(evidence.exact_utilization)
+    && exactUtilization === evidence.exact_utilization
     && Number.isFinite(evidence.margin)
     && hasText(identity?.library_version)
     && hasText(identity?.input_hash)
@@ -52,6 +55,7 @@ export function getTrustPresentation(result: BeamDesignResponse): TrustPresentat
   const canExport =
     status === 'PASS'
     && result.success
+    && exactUtilization !== null
     && exactUtilization <= 1
     && hasIdentity
     && !hasHold;
@@ -67,14 +71,14 @@ export function getTrustPresentation(result: BeamDesignResponse): TrustPresentat
   };
 }
 
-export function formatRatio(value: number): string {
-  return value.toFixed(6);
+export function formatRatio(value: number | null): string {
+  return value === null ? 'Unavailable' : value.toFixed(6);
 }
 
-export function formatPercent(value: number): string {
-  return `${(value * 100).toFixed(3)}%`;
+export function formatPercent(value: number | null): string {
+  return value === null ? 'Unavailable' : `${(value * 100).toFixed(3)}%`;
 }
 
-export function formatSignedRatio(value: number): string {
-  return `${value >= 0 ? '+' : ''}${value.toFixed(6)}`;
+export function formatSignedRatio(value: number | null): string {
+  return value === null ? 'Unavailable' : `${value >= 0 ? '+' : ''}${value.toFixed(6)}`;
 }

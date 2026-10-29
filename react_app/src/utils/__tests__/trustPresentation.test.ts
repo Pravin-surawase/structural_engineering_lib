@@ -111,3 +111,40 @@ describe('trust presentation', () => {
     expect(getTrustPresentation(contradictory).status).toBe('HOLD');
   });
 });
+
+it('preserves explicit unavailable values instead of the legacy display cap', () => {
+  const payload = result(2, 'FAIL');
+  payload.governing_utilization = null;
+  payload.evidence!.exact_utilization = null;
+  payload.evidence!.margin = null;
+  const trust = getTrustPresentation(payload);
+  expect(trust.exactUtilization).toBeNull();
+  expect(trust.margin).toBeNull();
+  expect(formatRatio(trust.exactUtilization)).toBe('Unavailable');
+  expect(formatPercent(trust.exactUtilization)).toBe('Unavailable');
+  expect(trust.canExport).toBe(false);
+});
+
+it('uses uncapped actual utilization and never reconstructs it from a display field', () => {
+  const payload = result(3.25, 'FAIL');
+  payload.utilization_ratio = 2;
+  payload.governing_utilization = 3.25;
+  expect(getTrustPresentation(payload).exactUtilization).toBe(3.25);
+  payload.evidence = null;
+  delete payload.governing_utilization;
+  expect(getTrustPresentation(payload).exactUtilization).toBeNull();
+});
+
+it('holds a projection that contradicts its evidence quantity', () => {
+  const payload = result(0.5, 'PASS');
+  payload.governing_utilization = 0.6;
+  expect(getTrustPresentation(payload).status).toBe('HOLD');
+  expect(getTrustPresentation(payload).canExport).toBe(false);
+});
+
+it('retains a finite saved batch-v1 ratio but never overrides explicit null', async () => {
+  const { batchGoverningUtilization } = await import('../../api/client');
+  expect(batchGoverningUtilization({ utilization_ratio: 3.25 })).toBe(3.25);
+  expect(batchGoverningUtilization({ utilization_ratio: 2, governing_utilization: null })).toBeNull();
+  expect(batchGoverningUtilization({ utilization_ratio: 2, evidence: { exact_utilization: null } })).toBeNull();
+});

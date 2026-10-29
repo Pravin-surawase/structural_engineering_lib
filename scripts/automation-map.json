@@ -2,7 +2,7 @@
   "_comment": "GENERATED compatibility projection from scripts/control-plane.json; do not edit directly",
   "_usage": "Use ./run.sh find <query> or ./run.sh control find <query>",
   "_source": "scripts/control-plane.json",
-  "_coverage": "108/108 top-level scripts registered",
+  "_coverage": "109/109 top-level scripts registered",
   "tasks": {
     "discover etabs api": {
       "script": "./scripts/python_runtime.sh scripts/etabs_api.py <command>",
@@ -1206,6 +1206,18 @@
       "group": "Infrastructure",
       "description": "Registry of available tools with metadata and permission mappings",
       "permission": "ReadOnlyTerminal"
+    },
+    "audit public contracts": {
+      "script": "./scripts/python_runtime.sh scripts/audit_public_contracts.py",
+      "group": "Quality",
+      "description": "Reconcile all public contract schema/operation owners, field policies and maintained instance-test evidence without engineering acceptance",
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "--write": "WorkspaceWrite"
+      },
+      "options": {
+        "--write": "Write the S3 contract matrix after semantic review"
+      }
     }
   }
 }

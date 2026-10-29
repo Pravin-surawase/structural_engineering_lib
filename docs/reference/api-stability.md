@@ -92,3 +92,80 @@ See [Which API should I use?](api-levels.md), the [P7 migration
 guide](../migration/lib-pro-007-p7-compatibility-convergence.md), the
 [deprecation policy](deprecation-policy.md), and the [release
 policy](../getting-started/releases.md#current-release-process-29-october-2026).
+
+## S3 contract review and migration — 29 October 2026
+
+The S3 audit reconciles 14 Python surfaces, 1,308 classified projections,
+60 typed facade functions, 115 compatibility functions, 13 family requests
+with 564 field leaves, 92 HTTP operations and 488 OpenAPI components. The
+[contract matrix](../verification/library-s3-contract-matrix.json) records every
+HTTP owner and schema role, required/default/null/enum counts and maintained
+instance-test locations. Its component names resolve directly into the existing
+OpenAPI baseline; family field policies remain in the classification registry.
+Run `./scripts/python_runtime.sh scripts/audit_public_contracts.py` to check it.
+Schema reachability and meta-validation establish structure; selected positive,
+negative and round-trip tests establish the named software behavior. Neither
+establishes independent engineering or native-host acceptance.
+
+The review uses [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0.html),
+[JSON Schema 2020-12 validation](https://json-schema.org/draft/2020-12/json-schema-validation)
+and [Pydantic strict-mode behavior](https://docs.pydantic.dev/latest/concepts/strict_mode/).
+Required, default and nullable are separate decisions: a schema default does
+not itself insert a runtime value, and JSON Schema does not evaluate engineering
+units or cross-field physical relationships. Owning request validators perform
+those checks. Strict family requests reject numeric booleans/strings, non-finite
+values and unknown fields. Legacy wall and WebSocket numeric-string conversion
+remains an explicit compatibility policy. Python's
+[PEP 387](https://peps.python.org/pep-0387/) informs the review of argument order,
+return meaning and exceptions; its CPython policy is not a new library guarantee.
+
+The [signature exceptions](api-signature-exceptions.json) retain all 32 existing
+compatibility functions with more than three positional parameters, plus the
+root-only ETABS observation-evidence API. Each exact owner/signature has an
+explicit retention reason. The maintained classifier rejects unexplained new,
+changed or stale exceptions. Existing positional binding remains intact; new
+callers should use the documented keyword arguments.
+
+### Beam HTTP and WebSocket quantities
+
+Both transports now use one response projection, including the same physical
+effective-depth basis, canonical result envelope, calculation identity and shear
+quantity `Asv/s` in mm²/mm. Previously WebSocket omitted the division by effective
+depth and omitted the envelope, causing a wrong shear quantity and a synthetic
+React HOLD. These are transport corrections; IS 456 mathematics is unchanged.
+
+`utilization_ratio` remains a required number capped at 2.0 for legacy display
+compatibility and is marked deprecated. New responses always include
+`governing_utilization`: the uncapped finite ratio, or `null` with
+`unavailable_utilizations` carrying the existing typed reason. Use the actual
+field for decisions; rolling clients may read `evidence.exact_utilization` from
+older servers. An explicit null must survive that fallback. Missing evidence or
+a mismatch between projection and evidence remains HOLD for export purposes.
+Known React consumers preserve null and show “Unavailable”; they never infer a
+capacity or PASS from the capped display field. Unidentified old records carrying
+only a display ratio show unavailable until rerun. Saved batch-v1 finite ratios
+remain readable because that contract has always carried an uncapped quantity.
+
+Batch service/SSE/polling now serialize non-finite ratios as null with reasons.
+This corrects previously invalid JSON containing `Infinity`. Dashboard intake
+accepts the actual uncapped ratio or null; unavailable members are excluded from
+ratio statistics, while their status still contributes to the outcome counts.
+If every member ratio is unavailable, min/mean/max are null. Zero is an observed
+ratio and participates in the statistics. An empty dashboard retains its existing
+empty-state zeros. Building export remains gated by current qualified results.
+
+The compatibility WebSocket rejects duplicate JSON keys, numeric booleans,
+non-finite values, conflicting cover aliases and unknown structural inputs.
+Previously those inputs could silently change the action/depth basis. Supply
+all nine calculation-bearing fields; `cover` and `clear_cover` remain equivalent
+aliases when consistent. Optional `length` is viewport metadata in mm and does
+not request a serviceability check. Torsion/serviceability use canonical HTTP;
+this adapter's existing material/range limits are unchanged. Its
+[machine schema](beam-design-websocket-v1.schema.json) is checked with the OpenAPI
+and supplied-check V2 snapshots. Rejected input is a structured problem and the
+connection remains usable for a corrected message.
+
+No removal date, public release, new support scope, native application mutation
+or professional approval is selected by S3. S4 engineering/output qualification,
+S5 final-version artifact qualification and S6 per-release authorization remain
+separate programme gates.

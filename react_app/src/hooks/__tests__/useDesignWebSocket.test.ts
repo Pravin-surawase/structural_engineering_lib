@@ -80,3 +80,33 @@ describe('normalizeWebSocketDesignResult', () => {
     expect(requiresCanonicalHttp({ torsion: 0, include_serviceability: false })).toBe(false);
   });
 });
+
+it('retains an authoritative unavailable utilization and its reason', () => {
+  const unavailable = { governing_utilization: { code: 'UTILIZATION_NOT_EVALUATED' as const, reason: 'Capacity cannot be evaluated' } };
+  const normalized = normalizeWebSocketDesignResult({
+    flexure: { ast_required: 900, mu_lim: 140, is_safe: false },
+    utilization_ratio: 2,
+    governing_utilization: null,
+    unavailable_utilizations: unavailable,
+  });
+  expect(normalized.governing_utilization).toBeNull();
+  expect(normalized.unavailable_utilizations).toEqual(unavailable);
+  expect(normalized.result_envelope.engineering_status).toBe('HOLD');
+});
+
+it.each(['PASS', 'FAIL'] as const)('preserves a declared %s envelope', (status) => {
+  const normalized = normalizeWebSocketDesignResult({
+    success: status === 'PASS',
+    flexure: { ast_required: 900, mu_lim: 140 },
+    governing_utilization: 0.9,
+    result_envelope: {
+      schema_version: 'structural-result-envelope/v2',
+      intake_status: 'VALID', calculation_status: 'COMPLETED',
+      engineering_status: status, overall_status: status,
+      review_status: 'QUALIFIED_REVIEW_REQUIRED', qualified_review_required: true,
+      freshness_status: 'CURRENT', issues: [], result_identity: null,
+    },
+  });
+  expect(normalized.result_envelope.engineering_status).toBe(status);
+  expect(normalized.result_envelope.overall_status).toBe(status);
+});

@@ -35,7 +35,12 @@ export const VIEWPORT_STATUS_STYLE: Record<
 function currentUtilization(member: WorkspaceMember): number | null {
   const data = member.result?.data;
   if (data === null || typeof data !== 'object' || Array.isArray(data)) return null;
-  const value = data.utilization_ratio;
+  const evidence = data.evidence;
+  const value = data.governing_utilization !== undefined
+    ? data.governing_utilization
+    : evidence && typeof evidence === 'object' && !Array.isArray(evidence)
+      ? evidence.exact_utilization
+      : data.design_succeeded === true ? data.utilization_ratio : null;
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 

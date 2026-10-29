@@ -6,6 +6,37 @@
 ---
 
 
+## 2026-10-29 — Session: S3 public contracts
+
+**Task:** LIB-S3-20261029
+**Agent:** MAIN (sole Mac writer; two bounded read-only contract reviewers)
+**Branch:** `codex/lib-s3-contracts`
+**Focus:** Complete public API signatures, inputs, schemas, defaults and compatibility with corrected transports and verified consumers.
+
+### Completed
+
+- Froze the S3 population at 14 surfaces, 1,308 projections, 13 family requests, 92 HTTP operations and 488 schemas after maintenance PR #1035 integrated at ec3f230.
+- Implemented one HTTP/WebSocket beam projection, correct Asv/s units, actual nullable utilization, strict JSON intake and explicit legacy compatibility policies.
+- Added exact retained signature exceptions, per-family admission/default vectors, schema/operation ownership reconciliation and known-client migration; 352 focused Python tests, full FastAPI/React baseline with affected repairs, strict docs, type/build and installed-wheel replays pass; GitHub owns final review/check/integration.
+
+### Issues encountered
+
+Duplicated WebSocket projection omitted physical depth/envelope and the depth divisor. A legacy display cap was consumed as an actual quantity; batch emitted non-standard Infinity. Unknown WebSocket actions and duplicate keys silently changed input meaning. Several active install routes retained old release pins outside their checker population.
+
+### Root causes and resolutions
+
+Consolidate transport projection, preserve canonical finite/null semantics and provenance, reject ambiguous input before calculation, migrate maintained consumers and expand the existing pin checker. Preserve positional binding through exact reviewed exceptions. Source-bound intake is ec3f230767dcfbdc1cbb18ccb48273f7e9db7682; older squash-merged lanes and artifacts remain preserved.
+
+### Rework and recurrence
+
+- RR-004: occurrences=36; minutes=unknown. Retain the existing milestone/handoff control; this selected task update adds no new recurrence occurrence.
+
+### What next
+
+The S3 packet is implemented and locally verified. Its one PR owns independent exact-head review, required hosted checks and reviewed/merged tree identity. After accepted integration, select the bounded S4 engineering/output qualification packet. The [S3 plan](planning/library-usability-improvement.md#s3-public-contracts--29-october-2026) and [execution receipt](verification/library-s3-20261029.json) own the remaining work. S4 engineering/output, S5 final-version artifact and S6 per-release authorization remain later gates.
+
+---
+
 ## 2026-10-29 — Session: Post-S2 maintenance
 
 **Task:** LIB-MAINT-20261029

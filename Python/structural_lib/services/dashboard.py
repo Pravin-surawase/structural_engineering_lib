@@ -25,9 +25,9 @@ class DashboardSummary:
     passed: int = 0
     failed: int = 0
     warnings_count: int = 0
-    avg_utilization: float = 0.0
-    max_utilization: float = 0.0
-    min_utilization: float = float("inf")
+    avg_utilization: float | None = 0.0
+    max_utilization: float | None = 0.0
+    min_utilization: float | None = float("inf")
     total_steel_kg: float = 0.0
     total_concrete_m3: float = 0.0
     critical_beams: list[str] = field(default_factory=list)
@@ -40,12 +40,21 @@ class DashboardSummary:
             "failed": self.failed,
             "warnings_count": self.warnings_count,
             "pass_rate": round(self.passed / max(self.total_beams, 1) * 100, 1),
-            "avg_utilization": round(self.avg_utilization, 2),
-            "max_utilization": round(self.max_utilization, 2),
+            "avg_utilization": (
+                round(self.avg_utilization, 2)
+                if self.avg_utilization is not None
+                else None
+            ),
+            "max_utilization": (
+                round(self.max_utilization, 2)
+                if self.max_utilization is not None
+                else None
+            ),
             "min_utilization": (
                 round(self.min_utilization, 2)
-                if self.min_utilization != float("inf")
-                else 0.0
+                if self.min_utilization is not None
+                and self.min_utilization != float("inf")
+                else (None if self.min_utilization is None else 0.0)
             ),
             "total_steel_kg": round(self.total_steel_kg, 1),
             "total_concrete_m3": round(self.total_concrete_m3, 3),
@@ -158,7 +167,7 @@ def generate_dashboard(
         summary.total_beams += 1
 
         is_valid = _safe_get(result, ["is_valid", "valid", "success"], True)
-        utilization = _safe_get(result, ["utilization", "util"], 0.0)
+        utilization = _safe_get(result, ["utilization", "util"], None)
         beam_id = _safe_get(
             result, ["beam_id", "id", "name"], f"beam_{summary.total_beams}"
         )
@@ -170,10 +179,13 @@ def generate_dashboard(
             summary.failed += 1
 
         # Track utilization
-        if isinstance(utilization, (int, float)) and utilization > 0:
+        if (
+            isinstance(utilization, (int, float))
+            and not isinstance(utilization, bool)
+            and math.isfinite(utilization)
+            and utilization >= 0
+        ):
             utilizations.append(float(utilization))
-            summary.max_utilization = max(summary.max_utilization, float(utilization))
-            summary.min_utilization = min(summary.min_utilization, float(utilization))
 
         # Critical beams (utilization > 0.95 or failed)
         if not is_valid or (
@@ -215,6 +227,12 @@ def generate_dashboard(
     # Calculate averages
     if utilizations:
         summary.avg_utilization = sum(utilizations) / len(utilizations)
+        summary.max_utilization = max(utilizations)
+        summary.min_utilization = min(utilizations)
+    elif summary.total_beams:
+        summary.avg_utilization = summary.max_utilization = summary.min_utilization = (
+            None
+        )
 
     return summary
 

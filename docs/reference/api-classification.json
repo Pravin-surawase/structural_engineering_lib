@@ -1,7 +1,13 @@
 {
   "schema_version": "2.0",
+  "signature_policy": {
+    "max_positional_parameters": 3,
+    "reviewed_exception_count": 33,
+    "exception_owner": "docs/reference/api-signature-exceptions.json",
+    "new_or_changed_deviations": "FAIL_UNLESS_EXPLICITLY_REVIEWED"
+  },
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
-  "generated": "2026-10-03",
+  "generated": "2026-10-29",
   "package_version": "0.25.0",
   "release_channel": "normal",
   "classifications": {

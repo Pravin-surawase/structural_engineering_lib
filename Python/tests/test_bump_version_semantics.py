@@ -186,6 +186,9 @@ def test_doc_sync_preserves_public_release_identity(tmp_path: Path, monkeypatch)
     [
         "docs/getting-started/python-quickstart.md",
         "docs/getting-started/beginners-guide.md",
+        "docs/getting-started/user-guide.md",
+        "docs/getting-started/installation-notes.md",
+        "docs/cookbook/python-recipes.md",
         "docs/getting-started/colab-workflow.md",
         "Python/examples/README.md",
         "Python/examples/colab_workflow.py",

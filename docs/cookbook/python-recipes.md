@@ -20,10 +20,14 @@ the named compatibility or low-level API.
 
 ## Setup
 
+The pin follows prepared source metadata. Confirm that exact version is published
+before registry installation; otherwise use the source-install route in the
+[installation guide](../getting-started/installation-notes.md#run-the-current-repository-workbench). Updating this pin does not publish a release.
+
 ```bash
-pip install "structural-lib-is456==0.24.0"
+pip install "structural-lib-is456==0.25.0"
 # For DXF support:
-pip install "structural-lib-is456[dxf]==0.24.0"
+pip install "structural-lib-is456[dxf]==0.25.0"
 ```
 
 ```python

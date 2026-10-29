@@ -20,7 +20,7 @@ export interface BeamResult {
   beam_id: string;
   story: string;
   is_valid: boolean;
-  utilization: number;
+  utilization: number | null;
   ast_provided: number;
   b_mm: number;
   D_mm: number;
@@ -42,9 +42,9 @@ export interface DashboardData {
   failed: number;
   pass_rate: number;
   warnings_count: number;
-  avg_utilization: number;
-  max_utilization: number;
-  min_utilization: number;
+  avg_utilization: number | null;
+  max_utilization: number | null;
+  min_utilization: number | null;
   total_steel_kg: number;
   total_concrete_m3: number;
   critical_beams: string[];

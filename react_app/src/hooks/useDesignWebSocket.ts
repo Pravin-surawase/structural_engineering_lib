@@ -115,6 +115,8 @@ export function normalizeWebSocketDesignResult(data: WebSocketDesignData): BeamD
     ast_total: data.ast_total ?? flexure.ast_required ?? 0,
     asc_total: data.asc_total ?? flexure.asc_required ?? 0,
     utilization_ratio: data.utilization_ratio ?? 0,
+    governing_utilization: data.governing_utilization,
+    unavailable_utilizations: data.unavailable_utilizations,
     effective_depth_used: data.effective_depth_used,
     effective_depth_basis: data.effective_depth_basis,
     result_envelope: resultEnvelope,
