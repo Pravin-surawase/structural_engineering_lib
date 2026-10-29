@@ -1627,3 +1627,139 @@ recorded on the milestone PR after this local freeze. S3 contract completion,
 S4 engineering/output qualification, S5 final release-artifact verification and
 S6 authorization/publication remain later work. No source version bump,
 package/tag/PyPI/GitHub Release or professional approval is performed by S2.
+
+<a id="post-s2-maintenance--29-october-2026"></a>
+
+## Post-S2 maintenance — 29 October 2026
+
+### Selected packet and ownership
+
+The owner selected a maintenance plan followed by execution before S3.
+`LIB-MAINT-20261029` has one Mac writer, Codex `/root`, on
+`codex/lib-maintenance-20261029` in a fresh managed worktree from fetched main
+`afe785be5c6a72cd22de75ba48c3da6ea1d19a34`. The completed S2 branch and its
+sample outputs remain preserved. One bounded read-only reviewer traces live
+CI/dependency evidence; the parent owns all edits and independently checks the
+result.
+
+| Work | Question and action | Acceptance |
+| --- | --- | --- |
+| M1 — source and delivery | Verify S0/S1 and S2 integration, current main, source-bound runtime, task-owned candidates and retained artifacts. | Clean fresh lane; no unfinished operation or conflicting writer; exact reviewed/merged identities retained. |
+| M2 — next-session truth | Reconcile the task board and startup handoff with the released v0.25.0 and integrated S0–S2. Preserve dated source/engineering records. | Actual startup routes to maintenance/S3; no expired overnight instruction or superseded release/feature number is presented as current authority. |
+| M3 — CI failures | Inspect current required checks and the failed 26 October Weekly Verification run. Trace its failed step to current source before selecting a fix. | The failure has a confirmed current repair or an explicit evidence-bound disposition; no passing PR is substituted for an unexecuted scheduled suite. |
+| M4 — dependencies | Classify the 11 open PRs and the consumers of changed manifests. Adopt an update only for a demonstrated compatibility/delivery need. | Stale-base checks are not current-candidate proof; no bulk or unrelated major upgrade. Required domain routing follows actual workflow installers. |
+| M5 — controls and recurrence | Inspect health, feedback, context/instruction composition and the existing recurrence index. Reuse RR-004 for the confirmed milestone-to-handoff propagation miss. | Index count, evidence basis, last-seen task and generated handoff agree; no invented root cause or rework timing. |
+| M6 — freeze and integrate | Finish intended edits, then run the affected checks once, review the essential diff and use one normal PR if changes are needed. | Required hosted checks pass on the reviewed head; merge tree matches; task timer closes once. |
+
+### Baseline and confirmed repair scope
+
+Health is 100/100 with zero reported issues, feedback has no pending items,
+context validation passes, scoped instructions compose exactly and the
+configuration audit has no conflicts. These are repository diagnostics, not
+engineering acceptance. Runtime diagnosis binds imports to this worktree.
+
+The material defect is stale operational routing: startup reads the maintained
+handoff's 1 October focus, while the task board still calls v0.24.0 current and
+assigns v0.25 to an older ACI proposal. Release #1026 and S0/S1 #1032 plus S2
+#1034 were not propagated to those owners. Refresh the current projections and
+retain the old dated evidence under an explicit historical boundary. This is
+one further RR-004 event, not one event per affected document.
+
+The 26 October scheduled run failed its strict Python dependency audit with
+55 advisory entries in six locked packages, and its Python ledger comparison.
+S1 already repaired the demonstrated Pydantic metadata spelling difference;
+reuse its regression and current generator check. The exact current audit
+reproduces 70 advisory entries in seven packages. These are audit entries, not
+a claim of 70 distinct vulnerabilities or a reproduced exploit. A constrained
+resolver selected fixed Black, Brotli, Certifi, Filelock, Pillow, Tornado and
+Virtualenv versions; Virtualenv also requires python-discovery 1.6.1. Preserve
+the rest of the locked inventory and synchronize the direct Black pin in both
+root requirements and package dev metadata. The production npm audit reports
+zero findings. Current S2 selected PR checks and post-merge documentation
+deployment passed; neither observation reruns the older scheduled workflow. Dependency #1033 and tooling #1028 are
+behind current main. The existing #1033 candidate does not lift Filelock or
+Pillow to the fixed branches, so it is not an adequate repair as-is. #1028
+bundles Black with an unrelated Ruff update; take only the demonstrated Black
+security pin into this packet and leave its other tooling change unselected.
+The other older React/.NET/mypy updates and draft #1019 are preserved and do
+not select current work. The root-requirements rule correctly selects FastAPI and
+repository checks: Python and documentation PR jobs use their own package and
+explicit documentation installers. Shared dependency names alone do not
+justify routing unrelated domains or changing their gates.
+
+### Boundaries and verification plan
+
+No engineering formula, public API contract, native host, publication,
+GitHub setting, branch deletion or broad dependency migration is selected.
+Existing normalized IS-data distribution permission remains passed. S3–S6
+and their engineering, installed-artifact and release gates remain separate.
+
+For the operational-document repair, exercise the actual startup brief and
+existing handoff/recurrence readers, the focused session automation tests,
+documentation metadata/links, context and instruction checks. Run the
+essential changed-area gate after content freeze; do not duplicate the S2
+341-case suite or add broad suites without a named failure requiring them.
+The dependency repair requires the exact strict lock audit, a clean constrained
+installation and pip check, formatter compatibility and existing focused
+Pillow/report/DXF, virtualenv/runtime, API ledger/schema and FastAPI consumer
+evidence. This is the concrete reason for testing those changed dependency
+consumers. Any confirmed workflow repair gets its affected command/selector evidence.
+Keep final hosted-check, review and merge facts on the maintenance PR.
+
+
+### Local candidate evidence and next handoff
+
+The constrained clean Python 3.11 installation retains all 140 packages with no
+additions or removals. Only the following versions change; Black is also
+synchronized in root requirements and package dev metadata.
+
+| Package | Before | Final candidate |
+| --- | --- | --- |
+| Black | 26.5.1 | 26.10.1 |
+| Brotli | 1.2.0 | 1.2.1 |
+| Certifi | 2026.7.22 | 2026.10.19 |
+| Filelock | 3.32.2 | 4.2.1 |
+| Pillow | 12.3.0 | 13.0.0 |
+| python-discovery | 1.6.0 | 1.6.1 |
+| Tornado | 6.5.9 | 6.6 |
+| Virtualenv | 21.7.13 | 21.14.13 |
+
+The initial Virtualenv 21.14.9 candidate still reported one advisory and is
+rejected. The [upstream advisory](https://github.com/pypa/virtualenv/security/advisories/GHSA-4f8h-vr72-p32c)
+identifies 21.14.10 as patched; the final 21.14.13 package resolves, installs and
+passes the repeated exact strict audit. Preserve that rejected report separately
+from final acceptance; do not count a candidate repair as another occurrence.
+
+Final local results:
+
+- Exact `pip-audit --strict --no-deps --requirement requirements-lock.txt`:
+  zero known findings across the 140-package final inventory. This is the
+  observed advisory-service result, not a claim of no possible vulnerability.
+  The command's default resolver reports 139 records, omitting Packaging;
+  the supplemental `--disable-pip` pre-resolved audit reports all 140 exact
+  pins, including Packaging, with zero findings and no skipped dependency.
+- Clean constrained install and `pip check` pass. The final Virtualenv creates
+  a new environment using a task-owned app-data cache; its pip runs successfully.
+- Focused dependency/caller/handoff union: 314 passed, no failures/errors/skips.
+  The final Virtualenv patch has 18 overlapping environment/runtime checks plus
+  actual creation proof; these are not additional distinct test counts.
+- Black 26.10.1 accepts the maintained session owner and its existing test file.
+  No unrelated formatting or Ruff upgrade is introduced.
+- Strict MkDocs succeeds in the same constrained environment. Actual five-beam
+  design/BBS/DXF/report and PDF/PNG generation succeed; the PDF has 11 pages and
+  all D450/500/600/700 mm labels. No source calculation or report golden changes.
+- Production npm audit:zero findings; no React lock or application change.
+- RR-004 increments once to 36 for the operational projection miss. RR-051
+  records one continuing dependency-lock audit event. Counts, basis, last task
+  and deep links are synchronized; old session bytes remain unchanged.
+
+The local receipts reside under `/tmp/lib-maint-20261029-*` during execution.
+After final source freeze, preserve copies and source hashes in the task's
+local verification output folder. Required changed-area checks, independent
+exact-head review, hosted checks and integration remain owned by the milestone
+PR. This source record does not claim a rerun of the complete scheduled workflow.
+
+After maintenance integration, freeze S3's declared public-contract population
+and decisive cross-caller cases. Existing source/engineering/native-host HOLDs
+and S4–S6 remain explicit; no new release, branch deletion or API implementation
+is performed by maintenance.

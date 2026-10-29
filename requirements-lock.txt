@@ -11,7 +11,13 @@
 #   <temporary-venv>/bin/python -m pip install -r requirements.txt
 #   <temporary-venv>/bin/python -m pip freeze --exclude-editable
 #
-# Generated: 2026-10-01; scoped docs resolver refresh: 2026-10-29
+# For a constrained refresh, seed the reviewed prior inventory with only the
+# selected fixed pins and required resolver companions; install that seed
+# together with requirements.txt before freezing. Preserve original package
+# spellings/order when projecting the verified freeze; compare normalized
+# package/version maps to ensure no unrelated inventory change.
+#
+# Generated: 2026-10-29; constrained security refresh, retained inventory
 # =============================================================================
 
 altair==6.2.2
@@ -23,11 +29,11 @@ attrs==26.1.0
 babel==2.18.0
 backrefs==8.0
 bandit==1.9.4
-black==26.5.1
+black==26.10.1
 blinker==1.9.0
 bokeh==3.9.2
-brotli==1.2.0
-certifi==2026.7.22
+brotli==1.2.1
+certifi==2026.10.19
 cffi==2.1.1
 cfgv==3.5.0
 charset-normalizer==3.4.9
@@ -43,7 +49,7 @@ distlib==0.4.3
 docstring_parser==0.18.0
 ezdxf==1.4.4
 fastapi==0.141.1
-filelock==3.32.2
+filelock==4.2.1
 fonttools==4.63.0
 ghp-import==2.1.0
 griffelib==2.1.0
@@ -89,7 +95,7 @@ panel==1.9.3
 panel-material-ui==0.14.1
 param==2.4.1
 pathspec==1.1.1
-pillow==12.3.0
+pillow==13.0.0
 platformdirs==4.11.0
 pluggy==1.6.0
 pooch==1.9.0
@@ -113,7 +119,7 @@ pytest-asyncio==1.4.0
 pytest-benchmark==5.2.3
 pytest-cov==7.1.0
 python-dateutil==2.9.0.post0
-python-discovery==1.6.0
+python-discovery==1.6.1
 python-dotenv==1.2.2
 python-multipart==0.0.32
 pytokens==0.4.1
@@ -139,14 +145,14 @@ tenacity==9.1.4
 tinycss2==1.5.1
 tinyhtml5==2.1.0
 toml==0.10.2
-tornado==6.5.9
+tornado==6.6
 tqdm==4.70.0
 typing-inspection==0.4.2
 typing_extensions==4.16.0
 uc-micro-py==2.0.0
 urllib3==2.8.0
 uvicorn==0.52.1
-virtualenv==21.7.13
+virtualenv==21.14.13
 vtk==9.6.2
 watchdog==6.0.0
 weasyprint==70.0

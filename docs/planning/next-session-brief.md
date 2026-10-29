@@ -3,12 +3,41 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-10-01
-- Focus: Preserve the independently reviewed local Library packets and coordinate their publication handoff with the parent, retaining engineering qualification HOLDs.
-- Completed: Preserved the five-commit checkpoint b5510d20 with ordered A1-2, staircase correction and component/Mac-wheel evidence, current concrete-bearing disposition, and the 28-case aggregate-runner repair; separately accepted shear checkpoint d0c436cb records the held source category and conditional raw-Table19 bound; exact selected-bar role review accepts two conditional intended-model dispositions with the actual eight-check documentation and identity pass, retaining drawing/Table19/maximum-shear/material/engineering/installed-host HOLDs. Final metadata checks, separate recovery and precise source/physical questions accompany the parent handover.
+- Date: 2026-10-29
+- Focus: Complete post-S2 maintenance and prepare the S3 public-contract handoff.
+- Completed: Reconciled the v0.25.0/S0-S2 task board and startup handoff; S3 is next and dated engineering/native records remain intact.; Regenerated the retained 140-package lock with eight reviewed updates; synchronized Black pins and passed the exact strict Python audit and production npm audit with zero known findings.; Passed 314 focused checks, the 18 overlapping final environment checks, pip check, actual Virtualenv creation, strict docs and five-beam PDF/DXF/PNG generation.
+- Recurrence controls: RR-004 x36 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.; RR-051 x1 / unknown: Resolve fixed versions against the retained inventory, synchronize direct pins, and require the exact strict audit plus affected consumer evidence.
 <!-- HANDOFF:END -->
 
-## Current boundary
+## Current boundary — 29 October 2026
+
+The owner selected bounded post-S2 maintenance, followed by the proposed S3
+public-contract milestone. Codex `/root` is the sole writer on Mac in
+`codex/lib-maintenance-20261029`, a clean source-bound managed worktree from
+fetched main `afe785be5c6a72cd22de75ba48c3da6ea1d19a34` at intake. The completed
+S2 branch and stable outputs remain preserved. Fetch and inspect before a new
+writer or task takes over; this is not current remote proof for a later session.
+
+| State | Next action / claim boundary |
+|---|---|
+| **Current** | v0.25.0 was published in [PR #1026](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1026). S0/S1 [#1032](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1032) and S2 [#1034](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1034) are integrated. Current work is [post-S2 maintenance](library-usability-improvement.md#post-s2-maintenance--29-october-2026): operational routing, scheduled failures, dependency compatibility and confirmed recurring causes. |
+| **Next** | After maintenance integration, freeze S3's public API/signature/input/schema/default/compatibility population and its cross-caller acceptance cases. This maintenance selection does not start S3 implementation. |
+| Later gates | S4 engineering/output qualification, S5 exact final-version artifact and S6 per-release authorization/publication remain separate. The S2 local development wheel is not the published v0.25.0 wheel. |
+| Preserved boundaries | Keep conditional engineering FAIL/HOLD, source/physical restrictions and native Excel/ETABS/XLL acceptance intact. Normalized IS-data distribution permission is already passed. No current native-host access or new engineering approval is inferred. |
+
+The [task board](../TASKS.md) and
+[quality programme](library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence)
+own the current sequence. Draft #1019 remains an unaccepted historical calendar
+under the existing successor/rebinding decision. Its old base does not select
+or block this maintenance lane. Use normal affected checks and required PR
+checks; preserve unrelated branches and device evidence.
+
+## Historical handoff boundary — 1 October 2026
+
+The following dated amendment, solver and installed-host notes are preserved
+as historical evidence. Their overnight authorization window and next-work
+instructions do not override the current boundary above; unresolved engineering
+and installed-host qualifications remain explicit at their maintained owners.
 
 **Owner resume — 1 October:** the owner resumed Library work overnight through
 2 October 2026 03:30 UTC. This supersedes the earlier pause and selects bounded

@@ -5,6 +5,49 @@
 
 ---
 
+
+## 2026-10-29 — Session: Post-S2 maintenance
+
+**Task:** LIB-MAINT-20261029
+**Agent:** MAIN (sole Mac writer; bounded read-only CI triage)
+**Branch:** `codex/lib-maintenance-20261029`
+**Focus:** Complete post-S2 maintenance and prepare the S3 public-contract handoff.
+
+### Completed
+
+- Reconciled the v0.25.0/S0-S2 task board and startup handoff; S3 is next and dated engineering/native records remain intact.
+- Regenerated the retained 140-package lock with eight reviewed updates; synchronized Black pins and passed the exact strict Python audit and production npm audit with zero known findings.
+- Passed 314 focused checks, the 18 overlapping final environment checks, pip check, actual Virtualenv creation, strict docs and five-beam PDF/DXF/PNG generation.
+- Confirmed baseline health, context/instruction composition, configuration and efficiency diagnostics pass; no pending feedback.
+
+### Issues encountered
+
+Startup and the task board retained the pre-release 1 October next-work boundary.
+The 26 October scheduled audit also failed on known locked dependency findings;
+the constrained repair now passes its exact strict audit and affected consumers.
+
+### Root causes and resolutions
+
+Material milestone completion was not propagated to the two operational
+owners. Refreshed those projections together while preserving old evidence and
+release/engineering boundaries. Frozen dependency versions lagged published
+fixes; a clean constrained regeneration updates only the seven affected packages
+and one resolver companion. The initially selected Virtualenv patch still had
+one advisory; the final patch passes without an audit waiver or ignore.
+
+### Rework and recurrence
+
+- RR-004: occurrences=36; minutes=unknown. One confirmed milestone-to-handoff propagation miss; the existing index owns its basis and prevention control.
+- RR-051: occurrences=1; minutes=unknown. One continuing locked-dependency audit failure; exact current findings and constrained resolution are tracked in the selected maintenance packet.
+
+### What next
+
+The [selected maintenance packet](planning/library-usability-improvement.md#post-s2-maintenance--29-october-2026) is locally complete. Its milestone PR owns final source-bound review, required checks and integration; verify those facts before the next writer proceeds.
+Then freeze S3's public-contract population before implementation. S4–S6,
+engineering/native acceptance and per-release publication remain separate.
+
+---
+
 <a id="is456-footing-bar-roles-current-20261002"></a>
 
 ## 2026-10-01 — Session: Isolated-footing selected bottom-bar roles

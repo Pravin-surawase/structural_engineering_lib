@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-10-01 — PRs #1020/#1022/#1023 integrated; owner resumed bounded Library qualification overnight
+**Updated:** 2026-10-29 — v0.25.0 released; S0/S1 and S2 integrated; post-S2 maintenance selected before S3
 
 ---
 
@@ -14,7 +14,21 @@
 
 ---
 
-## Python Library Improvement
+## Current Library Programme
+
+| ID | Task | Priority | Status | Exit condition |
+|---|---|---|---|---|
+| LIB-S0-S1 | Preserve finite FAIL/HOLD results and faithful smart input composition | P0 | Done: [PR #1032](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1032), main a3ea3f0d | [Source/evidence](verification/library-s0-s1-20261029.json); hosted checks and reviewed/merged tree identity on PR |
+| LIB-S2 | Repair first-use inputs, pins, guidance and PDF/drawing outputs | P1 | Done: [PR #1034](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1034), main afe785be | [Local evidence](verification/library-s2-20261029.json); required checks, exact-head reviews and matching merge tree on PR |
+| LIB-MAINT-20261029 | Reconcile operational handoff and investigate scheduled dependency/verification failures | P1 | Local candidate complete; milestone PR owns final checks/integration | [Selected maintenance packet](planning/library-usability-improvement.md#post-s2-maintenance--29-october-2026); confirmed causes repaired, affected evidence and required hosted checks |
+| LIB-S3 | Complete public signatures, input/schema semantics, defaults and cross-caller compatibility | P1 | Next milestone; not started by maintenance | [S3 scope and gate](planning/library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence); freeze declared population before implementation |
+
+The dated qualification and installed-host records below retain their own
+evidence and HOLDs. Their expired overnight instruction does not select current
+work or override the maintenance/S3 sequence above. S4–S6 remain later gates;
+no new package release is selected by this maintenance task.
+
+## Python Library Improvement — earlier delivery and qualification records
 
 | ID | Task | Priority | Status | Exit condition |
 |---|---|---|---|---|
@@ -37,7 +51,7 @@
 | IS456-ISO-SHEAR-CURRENT | Trace the exact isolated-footing one-way maximum-shear applicability and current accepted-demand bound | P0 | Independently reviewed local documentation; eight affected checks passed and source HOLD preserved | Three selected callers, exact issued-source/caller evidence, preserved historical values and affected documentation checks; [current follow-up](verification/is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up--1-october-2026); no formula change or qualification promotion |
 | IS456-ISO-BAR-ROLES-CURRENT | Trace the intended main/secondary roles of completed isolated-footing L/B bottom-bar schedules | P0 | Independently reviewed bounded intended-model correspondence; eight affected checks passed and physical/source HOLDs preserved | Two maintained callers; exact base/A2/A3 relationships, four observations/eight schedules, preserved historical values and explicit Table19 interpretation question; [current role follow-up](verification/is456-amendment-impact.md#current-isolated-footing-selected-bar-role-follow-up--1-october-2026); no formula change or physical acceptance |
 
-**Resumed by owner — 1 October:** bounded Library work is authorized overnight
+**Historical owner resume — 1 October:** bounded Library work was authorized overnight
 through 2 October 2026 03:30 UTC. The selected qualification is ordered
 Amendment 1-2 source/caller mapping
 against the existing [source inventory](verification/is456-official-source-inventory.json)
@@ -53,7 +67,7 @@ does not qualify finite creep history or general Level B/C serviceability.
 The replacement solver retains its own coordinator and main-product priority;
 Project_Manager V1 retains priority on the shared Mac. Draft
 [PR #1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019)
-is an unaccepted proposal. No package release is selected or authorized.
+is an unaccepted proposal. It does not select a subsequent package release.
 
 ## Maintenance Recovery Dashboard
 
@@ -110,12 +124,12 @@ is an unaccepted proposal. No package release is selected or authorized.
 
 ## Current Release
 
-| **Current public release** | v0.24.0 | ✅ NORMAL SOFTWARE RELEASE — immutable tag and non-prerelease GitHub/PyPI artifacts recorded; Beta maturity and supported-scope limitations remain |
-| **Release candidate** | — | No later candidate is selected or authorized |
-- **Release evidence:** tag target `e66de6ef`; public wheel SHA-256 `7b5bc0b6…a093`; public sdist SHA-256 `d530f10c…6640`; production workflow `33150227524`, exact-wheel UAT, and isolated public install are green
-- **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
-- **Focus:** API introspection → security hardening → performance baselines → stabilization
-- **Target:** keep later roadmap work inactive until separately activated
+| **Current public release** | v0.25.0 | Published 3 October 2026; normal software version, Beta maturity and bounded support; [public release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.25.0) |
+| **Release candidate** | — | S0–S6 quality programme is in progress; final version, artifact qualification and per-release authorization remain later gates |
+- **Release evidence:** [v0.25.0/LIB-2 and LIB-5 record](getting-started/releases.md) and [PR #1026](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1026) own the exact tag, package and public readback evidence. The S2 development wheel is a different, unpublished artifact.
+- **Strategy:** Complete the selected quality milestones and qualify the final artifact before publication.
+- **Focus:** Post-S2 maintenance, then S3 public-contract completion.
+- **Target:** S4 engineering/output qualification, S5 exact-artifact verification and S6 release remain separately gated.
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
 
@@ -134,7 +148,8 @@ is an unaccepted proposal. No package release is selected or authorized.
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
 | **v0.23** | Bounded IS 456 slabs + footing completion | ✅ ALPHA RELEASED | Case-qualified development preview; professional review remains a final stable/engineering-use gate |
 | **v0.24** | Multi-Code Infrastructure and bounded IS 456 external preview | ✅ NORMAL SOFTWARE RELEASED | `v0.24.0` contains accepted S0/B0/F0/R0 and the cumulative audit; normal distribution does not claim stable API, complete IS 456, or professional approval |
-| **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
+| **v0.25.0** | LIB-2 intent/readiness and LIB-5 delivery | Released | [Published bounded scope](getting-started/releases.md); not an ACI release |
+| Unassigned future version (former v0.25 proposal) | ACI 318-19 Beam | Proposed; not selected by current quality work | ACI beam flexure + shear and independent evidence need a separately selected scope/version |
 | **v1.0** | Production Multi-Code | 📋 PLANNED | IS 456 complete, ACI 318 beam+column, EC2 beam, API stability guarantee |
 
 ### React migration status
@@ -167,7 +182,17 @@ is an unaccepted proposal. No package release is selected or authorized.
 
 ## Active
 
-**Development device — 26 September:** the owner is working on the Mac.
+| ID | Task | Owner | Status |
+|---|---|---|---|
+| LIB-MAINT-20261029 | Complete the bounded post-S2 maintenance packet | MAIN / Mac | Local candidate complete; PR owns integration |
+
+Current intake uses a clean, source-bound managed worktree from fetched main
+`afe785be`; preserve the completed S2 branch and its outputs. The following
+dated notes describe earlier lanes and do not override this intake or the
+current Library programme above. Current native-host access has not been
+rechecked; offline evidence does not establish installed acceptance.
+
+**Historical development device — 26 September:** the owner was working on the Mac.
 Mac main was synchronized to GitHub `6b71d7cf` before
 `MAINT-MAC-2026-09-26`. Continue from the merged maintenance head on a fresh
 task branch. Preserve the Windows checkout/edit and all older worktrees;
@@ -1094,6 +1119,10 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 ---
 
 ## v0.25 — ACI 318-19 Beam
+
+This is the historical version allocation for a proposed ACI feature. The
+actual v0.25.0 release delivered bounded IS 456 LIB-2/LIB-5 work; ACI scope and
+its future release number remain unselected by the current quality programme.
 
 **Ref:** Architecture doc §20.8 + [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.md) Phase 3
 
