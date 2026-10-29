@@ -1612,3 +1612,25 @@ exact PyPI identities, rechecks attached assets, adds release evidence and then
 publishes. The qualified-base SBOM records the tested base dependency resolution;
 optional profiles remain separately qualified. Final registry and GitHub file
 readback plus public identity-only installation complete the release.
+
+## v0.26.0 — Release authorized (2026-10-29)
+
+The owner selected S6 after S5 integration. Release authorized for TestPyPI,
+exact tag `v0.26.0`, PyPI and GitHub Release after independent software review
+and exact-head PR/Weekly checks passed at `92728bb1283555555d08d730df3d4641c17fd367`.
+The tooling merge `641119b7452f1bb49fe345950a6c78124cfcfb4b` preserves that ancestry
+and reviewed tree. This appended entry records authorization; the publication
+workflow, release assets and subsequent registry byte readback establish delivery.
+
+- Retained wheel SHA-256: `40d322304d59a96f583496f0946493ab34edd728f824dc1b223293f71424aa8b`.
+- Retained sdist SHA-256: `62da876554191db59963b8bcf50a9c8b4d1321078b3ff5e50bfb50434716f7c7`.
+- Frozen Python tree: `442d4abb561e7df482438229fde36ccf381f49e8`.
+- [Exact review receipt](../verification/library-0260-exact-candidate-review.json),
+  [target authorization](../verification/release-publication-authorization.json) and
+  [S5 artifact record](../verification/library-0260-release-artifacts.json).
+
+S5's 16 installed profiles, 29-case installed UAT and 106 independent metrics per
+archive are reused only for these exact bytes. Maturity remains pre-1.0/Beta;
+full-amendment, native-host, fabrication and professional acceptance retain their
+explicit HOLDs/exclusions. No complete-standard or professional approval claim
+follows from this normal software release.

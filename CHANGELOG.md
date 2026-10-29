@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.26.0] — Prepared candidate (unreleased; on hold)
+## [0.26.0] — 2026-10-29
 
-This source candidate incorporates the accepted S0–S5 quality programme.
-The retained wheel/sdist passed all16 installed profiles,17 standalone examples,
-106 independent numerical comparisons per archive and eight PDF output reviews.
-S6 is selected; final publication authorization and public readback are recorded
-separately from this prepared candidate.
+This owner-authorized normal software release incorporates the accepted S0–S5
+quality programme. The retained wheel/sdist passed all 16 installed profiles,
+17 standalone examples, 106 independent numerical comparisons per archive and
+eight PDF output reviews. Independent software review and exact-head required
+PR/Weekly checks passed. S6 publishes those qualified bytes without rebuilding;
+public artifact identities are recorded in the release manifest and readback.
 
 ### Fixed
 
