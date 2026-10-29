@@ -267,5 +267,12 @@
     "family_replay": "installed-families.json",
     "family_recipe_count": 13,
     "boundary": "Unpublished local development wheel with 0.25.0 metadata; distinct from released registry wheel. Source-free Python/CLI, strict JSON batch unknown ratio and exact-application HTTP/WS parity passed. S5 final released-version qualification remains later."
-  }
+  },
+  "hosted_repairs": [
+    {
+      "failed_candidate": "ea547992eaf92a6be14dd2775f1503decbf5e62b",
+      "control_plane": "New top-level audit script lacked a registered operation. Added the read-only audit command and explicit --write permission at the canonical owner; regenerated only the deterministic automation-map projection.",
+      "fastapi_compatibility": "Hosted FastAPI0.162 uses lazy included routers, so direct app.routes unique-ID lookup missed operations. Use its public iter_route_contexts iterator when available; retain flat-route behavior for older supported releases. No route/response/math change."
+    }
+  ]
 }

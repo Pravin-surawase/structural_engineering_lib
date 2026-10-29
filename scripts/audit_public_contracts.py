@@ -66,6 +66,7 @@ def _test_calls() -> list[tuple[str, str, str]]:
 
 
 def build_matrix() -> dict[str, Any]:
+    from fastapi import routing
     from fastapi_app.main import app
     from scripts.generate_api_classification import build_registry
 
@@ -73,7 +74,14 @@ def build_matrix() -> dict[str, Any]:
     spec = app.openapi()
     schemas = spec["components"]["schemas"]
     test_calls = _test_calls()
-    route_by_id = {r.unique_id: r for r in app.routes if hasattr(r, "unique_id")}
+    # New FastAPI releases retain included routers as lazy contexts. Their
+    # public iterator exposes the effective IDs/prefixes used by OpenAPI;
+    # older releases already expose those effective routes directly.
+    contexts = getattr(routing, "iter_route_contexts", None)
+    routes = contexts(app.routes) if contexts is not None else app.routes
+    route_by_id = {
+        (r.operation_id or r.unique_id): r for r in routes if hasattr(r, "unique_id")
+    }
     operations = []
     roles: dict[str, dict[str, set[int]]] = {
         name: {"request": set(), "response": set()} for name in schemas
