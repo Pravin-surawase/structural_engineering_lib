@@ -1,0 +1,115 @@
+{
+  "schema_version": "library-s5-execution/v1",
+  "task": "LIB-S5-20261029",
+  "objective": "Plan S5/S6 efficiently and execute S5 artifact qualification",
+  "status": "PLANNED_IMPLEMENTATION_ACTIVE",
+  "branch": "codex/lib-s5-artifact",
+  "base": "a39e02b24c85ed1c2852021c3e511375366b9112",
+  "worktree": "/Users/pravinsurawase/.codex/worktrees/library-s5-artifact/structural_engineering_lib",
+  "source_bound": true,
+  "candidate_version": "0.26.0",
+  "current_public_version": "0.25.0",
+  "publication_selected": false,
+  "engineering_owner": "Pravin Surawase; no separate external-reviewer dependency",
+  "requirements": [
+    {
+      "id": "S5-A1",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "S5-A2",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "S5-A3",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "S5-A4",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "S5-A5",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "S5-A6",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "S5-A7",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "S5-A8",
+      "status": "IN_PROGRESS"
+    }
+  ],
+  "declared_extras": {
+    "dev": [
+      "pytest",
+      "pytest-asyncio>=1.3,<2.0",
+      "pytest-cov",
+      "pytest-benchmark",
+      "black==26.10.1",
+      "mypy>=1.19,<2",
+      "numpy>=2.0,<2.5",
+      "pre-commit",
+      "ruff==0.16.1",
+      "bandit",
+      "hypothesis>=6.0",
+      "httpx>=0.27",
+      "jsonschema>=4.21"
+    ],
+    "dxf": [
+      "ezdxf>=1.0"
+    ],
+    "render": [
+      "ezdxf>=1.0",
+      "matplotlib>=3.5"
+    ],
+    "report": [
+      "jinja2>=3.1"
+    ],
+    "pdf": [
+      "reportlab>=4.0",
+      "weasyprint>=70.0"
+    ],
+    "validation": [
+      "jsonschema>=4.21"
+    ],
+    "cad": [
+      "pyvista>=0.43"
+    ],
+    "pmm": [
+      "numpy>=2.0,<2.5"
+    ],
+    "docs": [
+      "mkdocs-material>=9.5",
+      "mkdocstrings[python]>=1.0.7,<2"
+    ],
+    "etabs": [
+      "comtypes>=1.4,<2; platform_system == 'Windows'"
+    ]
+  },
+  "reuse": [
+    "scripts/release.py",
+    "scripts/bump_version.py",
+    "scripts/verify_lib_pro_013_f0_family_artifact.py",
+    "scripts/verify_lib_pro_012_s0_artifact.py",
+    "scripts/verify_canonical_transport_artifact.py",
+    "Python/tests/data/benchmark_vectors/family_review_reference.json",
+    "Python/examples/complete_member_workflow.py"
+  ],
+  "confirmed_gaps": [
+    "Source0.25.0/current-public0.24.0 checklist wording would falsely label bumped0.26.0 published.",
+    "Active Alpha-only maintainer procedure contradicts later normal-release authority and current release CLI.",
+    "Existing wheel drivers do not establish sdist install, all declared extra profiles or installed106metric/physical export qualification."
+  ],
+  "verification_policy": "One implementation batch; one source broad regression through frozen artifact preflight, narrow installed profiles, affected repair refreshes, exact-head reviews and one milestone PR. No publication target.",
+  "later_gates": [
+    "S6 per-target publication authorization and public hash readback",
+    "Full amendment qualification HOLD retained",
+    "Native Excel/ETABS/XLL/CAD/fabrication/professional acceptance remains separately bounded"
+  ]
+}

@@ -1938,3 +1938,64 @@ export/binding behavior and the two shear consumers justify these checks;
 required hosted broad suites cover integration. No duplicate local full Python
 or full repository run is selected. Exact commands/results and final integration
 belong to this milestone PR and its retained execution receipt.
+
+
+<a id="s5-s6-efficient-artifact-and-release-plan--29-october-2026"></a>
+
+## S5/S6 efficient artifact and release plan — 29 October 2026
+
+The owner selected planning and S5 execution after S4 PR #1039 integrated at
+`a39e02b24c85ed1c2852021c3e511375366b9112`. Task `LIB-S5-20261029` uses
+`codex/lib-s5-artifact`; Codex is the sole writer, with at most two bounded
+read-only reviewers. Prepare **0.26.0** as the unpublished normal candidate for
+the audited supported scope. This minor candidate records additive physical
+exports and intentional corrections to unsafe results/unresolved geometry;
+pre-1.0 compatibility notes must identify those corrections. Pravin Surawase is
+the engineering owner; no external-reviewer dependency is reintroduced.
+
+### S5 obligations and decisive evidence
+
+| Gate | Required outcome and evidence |
+| --- | --- |
+| S5-A1 — coherent candidate | One prepared/unpublished version across package, app, API, citation and active guidance; current public0.25.0 remains identified. Preserve historical release facts, exclusions and HOLDs. |
+| S5-A2 — one frozen distribution pair | Build one wheel/sdist pair after implementation/docs freeze. Record SHA256, build inputs, source commit and Python-tree identity. Inspect membership/data/templates and reject forbidden research/migration/test payloads. Evidence-only integration commits must preserve the exact frozen build-input tree; runtime/build-input repairs invalidate and rebuild/requalify the affected candidate. |
+| S5-A3 — isolated base/contract/numerical behavior | Fresh installed wheel and sdist environments prove site-packages origin before/after execution, declared dependencies and pip-check. Replay all13 promoted family journeys, their106 S4 independent metrics and valid/invalid/FAIL/HOLD behavior; retain S0/S3 canonical Python/CLI/HTTP/WS/batch coverage through existing drivers. No checkout structural_lib import or broad root requirements may mask missing dependencies. |
+| S5-A4 — declared extras | Inventory every declared extra: dev,dxf,render,report,pdf,validation,cad,pmm,docs,etabs. Verify each dependency closure in an isolated profile and exercise its advertised non-native behavior. Windows-only etabs markers are checked on this Mac; installed Windows/Excel/ETABS acceptance stays explicit and unclaimed. Experimental cad/pmm boundaries remain unchanged. |
+| S5-A5 — installed physical/output fidelity | From the installed export-capable wheel replay ordinary and multilayer member cases, parse actual JSON/BBS/DXF identities/paths/layers/lengths/masses and HTML/PDF/report outputs, then inspect rendered artifacts. Bind results to the exact distribution hashes. Package data/template probes must execute from installed resources. |
+| S5-A6 — representative performance | Measure fixed valid ordinary-beam, batch and family workflows with warmups/repeated timings, record environment and error counts. Set budgets before measurement; compare supported common calls with the public0.25.0 baseline when suitable. This is a representative regression check, not a general speed guarantee. |
+| S5-A7 — one integrated verification cycle | Finish code/docs/tests first. Run affected focused checks, one named broad Python release regression and affected FastAPI/React through the canonical frozen-candidate preflight. Use only `preflight --wheel <exact-path>` after the version bump; do not duplicate a pre-bump full suite or Docker path. Independent exact-head reviews and required hosted checks bind the final milestone PR. Repairs rerun affected evidence only. |
+| S5-A8 — reviewed integration | One milestone PR integrates the accepted candidate. Verify final reviewed/merged tree and frozen Python/build-input identity; retain exact artifact, environment, numerical, export and timing receipts. All support exclusions/HOLDs remain visible. S5 completes without any publication target. |
+
+Reuse the release CLI, version generator, F0/S0/canonical artifact drivers,
+S4 reference inputs and physical workflow. Extend the maintained artifact owner
+for missing sdist/installed-numerical/extra/export evidence rather than copying
+an independent build/release lifecycle. Upgrade/version syntax is validated by
+`release run` before its mutation; the single final artifact preflight owns
+broad source verification. All source changes, including actual packaging
+repairs found by clean installs, belong to the same milestone candidate.
+
+One source broad regression and narrow installed profiles answer different
+questions. Do not rerun a second broad source suite merely to repeat a green
+result. Archive the first failed candidate evidence; do not change reference
+values or weaken origins/claims to obtain a pass. Build/install commands use
+unique disposable environments and pip caches; never clean unrelated outputs.
+
+### S6 execution packet, kept separate
+
+S6 consumes the exact accepted S5 artifacts and identities. First revalidate
+version/support/migration notes and the publication mechanism's ability to use
+those bytes or reproduce their hashes. Any byte-changing rebuild requires
+artifact requalification before upload. Prepare one bounded publication-state
+packet: dated citation/changelog, an appended authorized ledger entry and the
+maintained per-version authorization record, with the frozen Python tree
+unchanged. Run the existing publication-surface and exact-target authorization
+checks. TestPyPI, tag creation/push, PyPI and GitHub Release require the owner's
+explicit per-version/target authorization; S5 does not select those actions.
+
+After authorization, verify the TestPyPI/public files against the retained
+hash manifest and install/import identities. Publish user-facing changes,
+compatibility corrections, tested installation profiles and support exclusions.
+Reuse exact installed UAT for identical bytes; rerun it only if identity differs
+or prior evidence does not cover the selected target. Final public readback
+must match the accepted manifest. Native/professional-use claims retain their
+separate evidence; a normal software release grants neither by itself.
