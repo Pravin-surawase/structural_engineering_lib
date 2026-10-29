@@ -240,7 +240,7 @@
     },
     {
       "path": ".github/workflows/fast-checks.yml",
-      "sha256": "a94af2338b424f9bb2449b99f598c31e39e2a9d1b0e3770f734a8ae35a2379fb",
+      "sha256": "d7f812d73aa120284484287ca9a9b1266e1675ffb46688b11b3f85b41e61ee1d",
       "owner": "GitHub workflow",
       "authority": "required PR candidate checks",
       "status": "current",
@@ -1007,7 +1007,7 @@
       },
       {
         "path": ".github/workflows/deploy-docs.yml",
-        "sha256": "cfee0e1b63965d221adfe06d935766e330db152da342b06ba10a0f10c3dfe216",
+        "sha256": "e9a3696fc984f8f358d72fe6549d8646c801327da7f632df165e658e73c4eddd",
         "declared_owner": "unspecified",
         "accountable_owner": "Codex /root; Pravin Surawase for authority decisions",
         "declared_status": "unspecified",
@@ -1024,7 +1024,7 @@
       },
       {
         "path": ".github/workflows/fast-checks.yml",
-        "sha256": "a94af2338b424f9bb2449b99f598c31e39e2a9d1b0e3770f734a8ae35a2379fb",
+        "sha256": "d7f812d73aa120284484287ca9a9b1266e1675ffb46688b11b3f85b41e61ee1d",
         "declared_owner": "unspecified",
         "accountable_owner": "Codex /root; Pravin Surawase for authority decisions",
         "declared_status": "unspecified",
@@ -7839,6 +7839,26 @@
     {
       "path": "Python/tests/integration/test_cli_report_regression.py",
       "sha256": "0ff9889fe767f50b8b92b477bdf845e5e92c61e1603be7d4342437582aa619de"
+    },
+    {
+      "path": "Python/pyproject.toml",
+      "sha256": "65a080e082f543cfe4c28b8496c8f26763aced4c926c8fe7de5a35bea993c675"
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "49997121ba4ce7beb3060f27bea2f7b086223c804e334e96926cd9c078584420"
+    },
+    {
+      "path": "requirements-lock.txt",
+      "sha256": "c5cbcf41a66a8478c6888e98130bf19559aabdec1f8b0bfe8da58e0fefafbba2"
+    },
+    {
+      "path": ".github/workflows/fast-checks.yml",
+      "sha256": "d7f812d73aa120284484287ca9a9b1266e1675ffb46688b11b3f85b41e61ee1d"
+    },
+    {
+      "path": ".github/workflows/deploy-docs.yml",
+      "sha256": "e9a3696fc984f8f358d72fe6549d8646c801327da7f632df165e658e73c4eddd"
     }
   ],
   "local_validation": {
@@ -8247,6 +8267,44 @@
         "summary_counts_callers_owners_and_other_rows": "UNCHANGED",
         "projections": 522
       }
+    },
+    "documentation_toolchain_repair": {
+      "failed_head": "0e63be4bb154d9491d63db5d98e7cd043994ba7a",
+      "failed_run_id": 40832489269,
+      "failed_job": "Documentation Validation",
+      "confirmed_cause": "The workflow forced mkdocstrings0.30.1 while Material9.8.0 resolved Pymdown12.3. Its Highlight constructor requires the Markdown instance; the old mkdocstrings Highlighter omitted it. API classification had passed in this run.",
+      "upstream_evidence": [
+        "https://github.com/mkdocstrings/mkdocstrings/issues/829",
+        "https://mkdocstrings.github.io/changelog/#107-2026-10-10"
+      ],
+      "repair": "Require mkdocstrings[python]>=1.0.7,<2 across docs extra, root requirements and both CI/deploy installers. The upstream1.0.7 fix supports Pymdown12.2+. No runtime requirement changed.",
+      "lock_generation": {
+        "status": "PASS",
+        "method": "pip --dry-run --ignore-installed with every existing lock pin constrained except the repaired distribution; machine update from resolver JSON",
+        "changed_pin": "mkdocstrings1.0.6 to1.0.8",
+        "other_lock_pins": "UNCHANGED"
+      },
+      "fresh_source_bound_validation": {
+        "status": "PASS",
+        "environment": "Fresh isolated Python3.11 venv, editable current source; active .venv unchanged",
+        "install": "pip install 'mkdocs-material>=9.5,<10' -e 'Python/[docs,validation]'",
+        "build": "python -m mkdocs build --strict",
+        "dependency_check": "pip check: No broken requirements found.",
+        "versions": {
+          "mkdocstrings": "1.0.8",
+          "mkdocstrings-python": "2.0.10",
+          "pymdown-extensions": "12.3",
+          "mkdocs-material": "9.8.0"
+        }
+      },
+      "previous_head_other_hosted_domains": {
+        "Python Validation": "PASS",
+        "FastAPI Validation": "PASS",
+        "Repository Validation": "PASS",
+        "Control Plane Validation": "PASS"
+      },
+      "final_head_state": "Independent review and hosted checks are recorded on PR1032; preceding results do not substitute for final-head evidence.",
+      "boundary": "Strict build is documentation software evidence, not semantic acceptance of all guides, deployed Pages proof or package release."
     }
   }
 }
