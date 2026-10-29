@@ -83,6 +83,9 @@ Desktop.ini
 # -----------------------------------------------------------------------------
 # Project-specific
 # -----------------------------------------------------------------------------
+# Generated local artifacts and verification receipts; retain locally.
+/output/
+
 # Scratch workbooks created by Excel
 Excel/Book*.xlsx
 
