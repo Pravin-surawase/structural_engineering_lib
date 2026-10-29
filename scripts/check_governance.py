@@ -182,6 +182,9 @@ DEFAULT_RULES = {
                 "visualization",
             ],
         },
+        "layer_aliases": {
+            "services": ["beam", "reporting", "construction"],
+        },
         "layer_import_exceptions": {
             "codes/is456/beam/detailing.py": ["visualization"],
             "codes/is456/detailing.py": ["visualization"],
@@ -750,12 +753,45 @@ def check_python_layer_boundaries(report: GovernanceReport) -> None:
         )
         return
 
-    configured_layers = set(layer_imports.keys())
+    # Canonical workflow-domain packages share the services layer. They are
+    # real owners, unlike the retained root compatibility modules. Scan their
+    # sources too so aliases cannot become an unexamined upward-import route.
+    package_layers = {layer: layer for layer in layer_imports}
+    aliases = RULES.get("python_lib", {}).get("layer_aliases", {})
+    if not isinstance(aliases, dict):
+        report.add_error(
+            "Invalid layer alias map",
+            location="python_lib.layer_aliases",
+            rule="Layer boundaries",
+        )
+        return
+    for layer, packages in aliases.items():
+        if layer not in layer_imports or not isinstance(packages, list):
+            report.add_error(
+                "Invalid logical layer alias owner",
+                location="python_lib.layer_aliases",
+                rule="Layer boundaries",
+            )
+            return
+        for package in packages:
+            if (
+                not isinstance(package, str)
+                or not package.isidentifier()
+                or package in package_layers
+            ):
+                report.add_error(
+                    "Invalid or duplicate layer alias",
+                    location="python_lib.layer_aliases",
+                    rule="Layer boundaries",
+                )
+                return
+            package_layers[package] = layer
     violations: list[str] = []
 
-    for layer, allowed_list in layer_imports.items():
+    for package, layer in package_layers.items():
+        allowed_list = layer_imports[layer]
         allowed = set(allowed_list) if isinstance(allowed_list, list) else set()
-        for py_file in _iter_layer_files(lib_root, layer):
+        for py_file in _iter_layer_files(lib_root, package):
             rel = py_file.relative_to(REPO_ROOT)
             rel_in_lib = py_file.relative_to(lib_root).as_posix()
             file_exceptions = set(exceptions.get(rel_in_lib, []))
@@ -763,8 +799,8 @@ def check_python_layer_boundaries(report: GovernanceReport) -> None:
                 parts = module.split(".")
                 if len(parts) < 2:
                     continue
-                target_layer = parts[1]
-                if target_layer not in configured_layers:
+                target_layer = package_layers.get(parts[1])
+                if target_layer is None:
                     violations.append(
                         f"{rel}:{line_no} imports legacy root module {module}"
                     )

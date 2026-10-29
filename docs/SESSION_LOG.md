@@ -18,7 +18,7 @@
 - Froze 13 public journey payloads and 106 independent source-equation metrics, preserving11 PASS/two-wayFAIL/stairHOLD. Retained governing material/flange/column/SLS and physical-member reference owners.
 - Corrected strap vertical-stirrup design grade to415 and the shared ordinary HTTP/WS Asv/s basis; retained longitudinal grade and separate torsion formulas.
 - Corrected physical path layer identity and generic link offset; added path/package-bound DXF with true longitudinal cut, actual3D paths, BBS and draft/issue identity.
-- Generated and inspected both beam cases' drawings and three-page PDF reports, retaining digital/source identities and approval state. 1,642 unique focused checks pass after affected repairs; affected format/type/architecture/import, API/schema and strict docs pass. Exact-head review and hosted integration belong to the milestone PR.
+- Generated and inspected both beam cases' drawings and three-page PDF reports, retaining digital/source identities and approval state. 1,677 unique focused checks pass after affected repairs; affected format/type/architecture/import, API/schema and strict docs pass. Exact-head review and hosted integration belong to the milestone PR.
 - The owner self-identifies as structural engineer and removes a separate external-reviewer dependency; independent numerical/technical reviews remain required.
 
 ### Issues encountered
@@ -37,8 +37,10 @@ retains exact reproducers, source locators, tolerances and artifact hashes.
 
 ### Rework and recurrence
 
+- None encountered.
+
 No new recurrence count or speculative root cause. RR-004 x36 remains the
-historical maintenance control; routine corrected command construction is not
+historical maintenance control; corrected command/record formatting is not
 a recurring engineering failure.
 
 ### What next

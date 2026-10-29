@@ -87,6 +87,13 @@
       "services/rebar.py": [
         "visualization"
       ]
+    },
+    "layer_aliases": {
+      "services": [
+        "beam",
+        "reporting",
+        "construction"
+      ]
     }
   }
 }

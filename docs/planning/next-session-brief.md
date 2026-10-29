@@ -5,7 +5,7 @@
 <!-- HANDOFF:START -->
 - Date: 2026-10-29
 - Focus: S4 engineering accuracy and faithful physical/report outputs after S3 PR #1038 merged at 7e19a23b.
-- Completed: Implemented four confirmed root repairs; added 106 independent numerical comparisons across all13 promoted family journeys; generated and inspected ordinary/multilayer JSON/BBS/DXF/HTML/PDF outputs. 1,642 unique focused tests pass after affected repairs; format/type/architecture/import, API/schema, strict docs and rendered outputs pass. The milestone PR owns exact-head review and hosted integration.
+- Completed: Implemented four confirmed root repairs; added 106 independent numerical comparisons across all13 promoted family journeys; generated and inspected ordinary/multilayer JSON/BBS/DXF/HTML/PDF outputs. 1,677 unique focused tests pass after affected repairs; format/type/architecture/import, API/schema, strict docs and rendered outputs pass. The milestone PR owns exact-head review and hosted integration.
 - Recurrence controls: RR-004 x36 / unknown remains historical. Refresh this handoff at material milestone/device changes; no new recurrence asserted by S4.
 <!-- HANDOFF:END -->
 
