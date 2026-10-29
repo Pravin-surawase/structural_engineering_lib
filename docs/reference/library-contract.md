@@ -1,101 +1,60 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-10-29
 doc_type: reference
 complexity: intermediate
-tags: []
+tags: [api, compatibility, support]
 ---
 
-# Library Contract (v1) - Beam-Only IS 456
+# Library Contract
 
-**Type:** Specification
-**Audience:** Developers
-**Status:** Production Ready
+**Type:** Reference
+**Audience:** Users and integrators
+**Status:** Active
 **Importance:** High
-**Created:** 2025-01-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-10-29
 
----
+The maintained compatibility policy is [API Stability and Classification](api-stability.md).
+Use [Which API should I use?](api-levels.md) to choose an entrypoint and the
+[machine-readable classification](api-classification.json) and
+[compatibility ledger](api-compatibility-ledger.json) to inspect the exact public
+surface. This page routes to those owners rather than defining a second policy.
 
-This document defines the stability promises for the beam design library.
-It is written for developers who want to depend on the library as a core
-building block (not a full product).
+## Scope and support
 
-## 1) Scope (v1.x)
+The library includes multiple declared IS 456 family workflows. The
+[family cookbook](../cookbook/python/family-facades.md) records their consumer
+journeys and supported, advanced or held scope. It is not beam-only, and a
+callable operation is not evidence of whole-standard or complete-building support.
+The wheel contains the Python library and CLI; FastAPI and React are separate
+source/application surfaces. Follow the support class of the chosen operation.
 
-Included:
-- IS 456 beam design checks (flexure, shear, serviceability).
-- Beam detailing outputs (BBS, DXF) and batch workflows (CSV/JSON).
-- Stable JSON schemas for job and results outputs.
+## Versioning and compatibility
 
-Explicitly excluded until after v1.0:
-- Frame/structure analysis solver, load generation.
-- Multi-code plugins (ACI/EC2).
-- Full BIM workflow or drafting replacement.
+A normal final package version and Beta development maturity can coexist.
+The project remains pre-1.0: no exported Python symbol currently has a
+post-1.0 stable-API commitment. Exact release pins provide reproducibility,
+not professional approval. Current source may include unreleased corrections;
+source identity and a published wheel are different artifacts. Publication
+needs the [current release process](../getting-started/releases.md#current-release-process-29-october-2026)
+and its exact candidate evidence and per-release owner authorization.
 
-## 2) Stability Tiers
+`structural_lib.api` and root-module stubs retain their documented compatibility
+role. Do not treat an old v1 aspiration or re-export as a frozen public contract,
+remove a retained alias without its disposition, or place new implementation in
+a compatibility stub. New callers use the promoted typed facade for their task.
 
-### 2.1 Stable Core API (frozen)
-Pure functions and dataclasses with deterministic behavior:
-- `flexure.design_*`
-- `flexure.calculate_effective_flange_width`
-- `shear.design_shear`
-- `serviceability.check_deflection_span_depth`
-- `serviceability.check_deflection_level_b`
-- `serviceability.check_crack_width`
-- `detailing.get_development_length`
-- `detailing.get_lap_length`
-- `detailing.create_beam_detailing`
+## Result contract
 
-### 2.2 Stable Orchestration (public entrypoints)
-These are the recommended product-facing entrypoints:
-- `api.design_beam_is456`
-- `api.check_beam_is456`
-- `api.check_compliance_report` (IS456 units only)
-- `api.detail_beam_is456`
-- `api.check_beam_ductility`
-- `beam_pipeline.design_single_beam`
-- `beam_pipeline.design_multiple_beams`
-- `beam_pipeline.validate_units`
+Invalid input is rejected before design. An admitted engineering result may be
+`PASS`, `FAIL` or `HOLD`; read its reasons, provenance, completeness, freshness
+and approval fields. A known unavailable utilization is `null` plus an explicit
+reason in transport, not a zero or passing check. Preserve that meaning when
+saving, composing or displaying results. A passing software test, supported-case
+recipe or normal package release does not grant qualified engineering,
+professional, construction-use or native-host acceptance.
 
-### 2.3 Adapters / Experimental
-May evolve faster; prefer APIs or schemas for long-term integrations:
-- CLI (`python -m structural_lib`)
-- `report` and `report_svg`
-- `excel_integration`
-
-## 3) Contracts (non-negotiable)
-
-### 3.1 Schema contracts
-Breaking changes require a `schema_version` bump and migration note.
-- Job schema: `docs/specs/v0.9-job-schema.md`
-- Results schema: `beam_pipeline.SCHEMA_VERSION` + `docs/reference/api.md`
-- BBS CSV columns and meanings are stable.
-- DXF layer/text contract is stable (documented in DXF/BBS plan).
-
-### 3.2 Error codes
-Error codes are part of the public contract.
-- `E_*` codes must remain stable across v1.x.
-- Any change requires a deprecation note and migration guidance.
-See `docs/reference/error-schema.md`.
-
-### 3.3 Determinism
-Same inputs must produce the same outputs.
-- Stable ordering for batch outputs.
-- Fixed formatting (no locale-dependent formats).
-- No hidden defaults in public APIs.
-
-## 4) Versioning and Compatibility
-
-- SemVer is used for the Python package.
-- v1.x promise: additive changes only in minor versions.
-- No renaming/removing required fields without a major bump.
-- Deprecations are documented and kept for at least one minor version.
-
-## 5) Guidance for Integrators
-
-If you are building a product on top:
-- Prefer `api.py` or `beam_pipeline.py` for stability.
-- Treat CLI/report/Excel tools as reference adapters, not the core contract.
-- Use schemas for interchange; validate inputs before design runs.
+See the [API reference](api.md) for concrete parameters, units, result schemas,
+limitations and existing error identities. Review compatibility at those
+maintained owners before changing a caller.

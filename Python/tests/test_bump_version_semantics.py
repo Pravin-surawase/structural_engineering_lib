@@ -4,6 +4,8 @@ import importlib
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
@@ -175,5 +177,48 @@ def test_doc_sync_preserves_public_release_identity(tmp_path: Path, monkeypatch)
     assert "0.23.1a2" in readme_content
     assert "Current source metadata: 0.24.0a1" in checklist.read_text(encoding="utf-8")
 
+    monkeypatch.setattr(sys, "argv", ["bump_version.py", "--check-docs"])
+    assert bump_version.main() == 0
+
+
+@pytest.mark.parametrize(
+    "guide",
+    [
+        "docs/getting-started/python-quickstart.md",
+        "docs/getting-started/beginners-guide.md",
+        "docs/getting-started/colab-workflow.md",
+        "Python/examples/README.md",
+        "Python/examples/colab_workflow.py",
+        "docs/cookbook/cli-reference.md",
+    ],
+)
+def test_active_recipe_check_and_sync_cover_extras_and_tagged_inputs(
+    tmp_path: Path, monkeypatch, guide: str
+) -> None:
+    pyproject = tmp_path / "Python/pyproject.toml"
+    pyproject.parent.mkdir()
+    pyproject.write_text('[project]\nversion = "0.25.0"\n', encoding="utf-8")
+    path = tmp_path / guide
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        "**Version:** 0.24.0\n"
+        "Runnable examples for `structural-lib-is456` 0.24.0.\n"
+        'pip install "structural-lib-is456==0.24.0"\n'
+        '%pip install "structural-lib-is456[dxf,render]==0.24.0"\n'
+        "https://raw.githubusercontent.com/Pravin-surawase/structural_engineering_lib/v0.24.0/Python/examples/sample_beam_design.csv\n"
+        "Expected structural_lib: 0.24.0\n"
+        "Historical publication: v0.24.0 on the original date.\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(bump_version, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["bump_version.py", "--check-docs"])
+    assert bump_version.main() == 1
+    monkeypatch.setattr(sys, "argv", ["bump_version.py", "--sync-docs"])
+    assert bump_version.main() == 0
+    updated = path.read_text(encoding="utf-8")
+    assert "structural-lib-is456==0.25.0" in updated
+    assert "structural-lib-is456[dxf,render]==0.25.0" in updated
+    assert "/v0.25.0/Python/examples/sample_beam_design.csv" in updated
+    assert "Historical publication: v0.24.0 on the original date." in updated
     monkeypatch.setattr(sys, "argv", ["bump_version.py", "--check-docs"])
     assert bump_version.main() == 0

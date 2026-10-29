@@ -1529,3 +1529,35 @@ Normal software version format retains Beta maturity. Existing supported-case,
 engineering-review, physical/material, torsional-support/serviceability, and
 installed-application limits remain in force. This software release does not
 grant professional, engineering-use, construction-use, or installed-host approval.
+
+
+## Current release process (29 October 2026)
+
+This current process supersedes the older Alpha-only process at the top of this
+append-only ledger. Past entries and their observations remain historical.
+The source of the compatibility/maturity policy is [API Stability and
+Classification](../reference/api-stability.md), and [AGENTS.md](../../AGENTS.md)
+owns task execution and native Git delivery.
+
+The release tooling accepts a selected normal PEP 440 `X.Y.Z` version or an
+explicit Alpha `X.Y.ZaN` identifier. A normal final identifier does not promise
+a stable API, complete IS 456 support, qualified engineering review or
+professional/construction-use approval. The latest release entries above and
+the registry/artifact evidence identify what was actually published; source
+version metadata or an authorization record alone does not prove publication.
+Current source can contain unreleased corrections under the same metadata.
+
+Prepare and verify the exact selected candidate with the maintained
+`./run.sh release` commands from the repository root. In particular,
+`release preflight`, exact-wheel verification, required hosted checks,
+independent candidate review, TestPyPI rehearsal, and publication-surface checks
+retain their recorded release scope and order. Consult `./run.sh release --help`
+and the selected candidate plan for real arguments; no placeholder command in
+an old ledger entry authorizes publication.
+
+Source/document version synchronization prepares references. It does not grant
+an immutable tag, install availability, package upload, a GitHub Release or
+Pages deployment. Each release requires its own owner authorization and exact
+artifact/source/registry readback. Existing normalized IS-data source-use and
+public-distribution permission is passed; do not reopen that completed gate.
+GitHub Pages/native-host/professional claims need their separate evidence.

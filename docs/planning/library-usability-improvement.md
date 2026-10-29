@@ -7,18 +7,22 @@ doc_type: spec
 
 # Library usability and implementation quality
 
-**Current execution:** [S0/S1 — correctness and input preservation](#s0s1-execution-29-october-2026)
-records the selected scope, compatibility decision and verification owners.
-The [S0/S1 record](../verification/library-s0-s1-20261029.json) owns the current
-authority census, acceptance rows and local evidence. Required hosted review
-and integration facts belong to the milestone pull request.
+**Current execution:** [S0/S1](#s0s1-execution-29-october-2026) is integrated in
+[PR #1032](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1032).
+[S2 — dependable first use and outputs](#s2-execution-29-october-2026) records the
+next selected packet. The [S0/S1 record](../verification/library-s0-s1-20261029.json)
+preserves its census baseline; the [S2 record](../verification/library-s2-20261029.json)
+binds the changed guides, physical inputs, rendered outputs and local evidence.
+Required exact-head review, hosted checks and integration facts belong to each
+milestone PR.
 
 **Current next release plan:** [Professional standards programme — revision 2](#professional-standards-programme-8-october-2026-revision-2)
 extends the [6 October proposal](#next-version-proposal-6-october-2026) with an
 evidence-led whole-library assessment, 18 quality areas and seven delivery
 milestones. The [assessment record](../verification/library-professional-standards-20261008.json)
 contains the inspected inventory, executable receipts, findings and evidence
-limits. This is a plan; runtime repairs and release remain later work.
+limits. The execution sections record implementation; later engineering,
+installed-host, final-artifact and release gates remain separate.
 
 **28 September update:** [LIB-MEMBER-WORKFLOW-002](multilayer-member-workflow.md)
 adds the complete multilayer case and supersedes the physical centroid-capacity
@@ -1526,3 +1530,100 @@ installed-wheel qualification remain later work unless essential review exposes
 a concrete additional local risk. S2–S6, LIB-3/LIB-4 torsion, native-host runs,
 professional acceptance and per-version package publication remain outside this
 packet. There is no release authorization or claim of engineering-use approval.
+
+
+## S2 execution — 29 October 2026
+
+The owner selected Q-F02/Q-F03/Q-F05 and PS-F06/PS-F07, with complete tests and
+review. The writer lane is `codex/lib-s2-first-use` in a fresh managed checkout
+of main `a3ea3f0d9bf6cd7904ed3182522cf13e615e5b87`, following integrated S0/S1.
+The previous squash-merged branch is preserved. Codex `/root` owns all writes;
+bounded read-only agents diagnosed first-use/guidance/output paths and review
+the frozen result. Draft #1019 and its unconfirmed calendar remain preserved
+under the existing successor/rebinding decision.
+
+### Physical starter inputs and first use
+
+The five-beam source CSV now declares `tension_bar_diameter_mm`, clear cover and
+link diameter instead of stale supplied effective depths. The existing strict
+admission derives the strength depth and the actual generated one-layer layout
+must match it. No effective-depth, bar-fit or multilayer check is relaxed.
+
+| Member | Main bar diameter (mm) | Generated bottom count | Resolved depth (mm) |
+| --- | --- | --- | --- |
+| B1 | 16 | 5 | 444 |
+| B2 | 16 | 4 | 394 |
+| B3 | 20 | 4 | 540 |
+| B4 | 20 | 4 | 442 |
+| B5 | 20 | 6 | 630 |
+
+The beginner and quickstart compatibility cells use the same physical basis.
+The Colab B2 teaching section is explicitly 240 mm wide so its four 16 mm bars
+fit a verifiable layer; the old 230 mm case still rejects as unverified rather
+than acquiring an invented centroid. Required first-run files are supplied,
+DXF/render extras are explicit, and caller-file/serviceability command forms
+are distinguished from runnable first-use recipes. The external CLI harness
+uses the same strict shipped CSV. Source onboarding points to actual paths and
+file outputs. Excel/VBA/XLL are separate artifact/host tracks, not a promised
+add-in installed by the Python wheel.
+
+### Version and guide owners
+
+The maintained bump/check population includes the beginner/Colab/example and
+CLI guides. One matcher covers base/extras pins and tagged raw-input links;
+regressions catch the former false PASS while preserving historical release
+claims. Current public pins resolve exactly to 0.25.0. The corrected CSV is
+supplied inline/current source instead of sending beginners to an immutable
+older-tag sample with inconsistent depths. A source sync does not grant a tag,
+registry availability or publication; the S6 version decision remains later.
+
+The coding-standard owner, connected coding/reuse/onboarding guides and library
+contract now route to four-layer ownership, the bound runtime, frozen-batch
+verification, promoted family APIs and the existing pre-1.0 compatibility
+policy. Retired migration commands are removed or explicitly historical.
+The six missing canonical references are resolved to maintained scoped owners;
+old Week 3 sketches are historical and old 3D timings are dated measurements.
+The append-only release ledger gains a current process that supersedes its
+older Alpha-only instructions without rewriting past entries. This does not
+claim semantic qualification of every guide in the S0 inventory.
+
+### PDF/drawing meaning and visible output
+
+The report SVG reserves annotation space inside its viewport so its depth label
+is visible in the actual WeasyPrint PDF. The report is explicitly a
+calculation-depth schematic, not an invented physical bar-count drawing. It
+retains the actual stirrup area from the design inputs instead of displaying a
+false missing-value warning. Print-only spacing keeps the short units-status
+section with its calculation tables; the five-member report has 11 pages rather
+than five orphan units-status pages added to a 16-page report.
+
+The DXF preview helper renders dark lines/text on white while preserving the
+source DXF. The export owner separates span dimensions, bottom-bar callouts,
+link callouts and development/lap notes into shared bands and reserves their
+extents in grid layout. This repairs the actual small-beam label collisions
+and text over reinforcement, without changing engineering bar geometry, units,
+marks or calculation results. BBS/drawing mark parity and actual five-member
+outputs are checked. The modelspace preview is not a qualified fabrication
+sheet or native CAD/print acceptance.
+
+### Evidence and remaining gates
+
+The [S2 record](../verification/library-s2-20261029.json) binds the source-free
+local development wheel, current source hashes, commands, outputs, targeted
+repairs, focused regressions and visual review. All 17 promoted scripts and the
+13 family pages (27 Python cells) replay; the family controls retain 11 PASS,
+one intentional FAIL and one intentional HOLD. Beginner/quickstart/Colab
+library and CLI cells, the source-onboarding and sample-job flow, exact public
+pin resolution and the external CLI harness have their own receipts. Colab's
+browser download UI and native Excel/ETABS/XLL acceptance are not implied.
+
+The 341-case focused union passes. Outcome-changing final drawing/report
+repairs have their affected 23/54-case refreshes; these are overlapping evidence,
+not additional distinct test counts. Mypy passes for 330 library files, with an
+affected drawing-owner recheck. Four HTML goldens are intentionally refreshed
+after actual rendered review; numerical/status content is retained.
+Independent exact-head software review, required hosted checks and merge are
+recorded on the milestone PR after this local freeze. S3 contract completion,
+S4 engineering/output qualification, S5 final release-artifact verification and
+S6 authorization/publication remain later work. No source version bump,
+package/tag/PyPI/GitHub Release or professional approval is performed by S2.

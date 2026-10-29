@@ -211,6 +211,16 @@ h2 {
     font-size: 12px;
     color: #a0aec0;
 }
+
+/* Keep a member's short status sections with its calculation tables in print. */
+@media print {
+    .section { padding: 12px 16px; margin: 16px 0; box-shadow: none; }
+    .summary { padding: 12px 16px; }
+    h2 { margin-top: 12px; margin-bottom: 12px; padding: 6px 10px; }
+    .sanity-table th, .sanity-table td,
+    .scorecard-table th, .scorecard-table td,
+    .units-table th, .units-table td { padding: 5px 8px; }
+}
 </style>
 </head>
 <body>

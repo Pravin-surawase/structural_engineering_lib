@@ -5,8 +5,8 @@ Render DXF drawings to PNG or PDF using ezdxf + matplotlib.
 When to use: After generating DXF files. Renders DXF drawings to PNG or PDF for visual inspection.
 
 Example:
-  python scripts/dxf_render.py drawings.dxf -o drawings.png
-  python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+  ./scripts/python_runtime.sh scripts/dxf_render.py drawings.dxf -o drawings.png
+  ./scripts/python_runtime.sh scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
 """
 
 from __future__ import annotations
@@ -67,6 +67,7 @@ def render_dxf(input_path: Path, output_path: Path, dpi: int, pad_mm: float) -> 
 
     import ezdxf
     from ezdxf.addons import drawing
+    from ezdxf.addons.drawing.config import BackgroundPolicy, ColorPolicy, Configuration
     from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
 
     import matplotlib
@@ -84,7 +85,13 @@ def render_dxf(input_path: Path, output_path: Path, dpi: int, pad_mm: float) -> 
 
     ctx = drawing.RenderContext(doc)
     backend = MatplotlibBackend(ax)
-    frontend = drawing.Frontend(ctx, backend)
+    # CAD colors such as yellow/cyan are legible on a dark modelspace, but not
+    # on a white printed sheet. Change only the render policy, not the DXF.
+    config = Configuration(
+        color_policy=ColorPolicy.BLACK,
+        background_policy=BackgroundPolicy.WHITE,
+    )
+    frontend = drawing.Frontend(ctx, backend, config=config)
     frontend.draw_layout(msp)
     backend.finalize()
     ax.autoscale()

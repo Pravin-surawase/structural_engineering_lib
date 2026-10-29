@@ -91,4 +91,4 @@ python3 -c "import structural_lib; print(structural_lib.__version__, structural_
 See [Which API should I use?](api-levels.md), the [P7 migration
 guide](../migration/lib-pro-007-p7-compatibility-convergence.md), the
 [deprecation policy](deprecation-policy.md), and the [release
-policy](../getting-started/releases.md).
+policy](../getting-started/releases.md#current-release-process-29-october-2026).

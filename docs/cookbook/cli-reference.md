@@ -14,12 +14,16 @@ Complete command-line reference for `structural_lib`.
 ## Installation
 
 ```bash
-pip install structural-lib-is456
+python -m pip install "structural-lib-is456==0.25.0"
 # For DXF support:
-pip install structural-lib-is456[dxf]
+python -m pip install "structural-lib-is456[dxf]==0.25.0"
 ```
 
 ## Quick Start
+
+The command forms below require the named input files; they are reference
+templates, not a single sequential script. For complete copy/paste inputs and
+required/optional steps, use the [Python quickstart](../getting-started/python-quickstart.md).
 
 ```bash
 # Discover supported and held workflows as canonical JSON
@@ -98,7 +102,7 @@ python -m structural_lib design <input> [-o <output>] [--deflection] [--summary 
 
 ```csv
 BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
-B1,Story1,300,500,450,4000,40,25,500,150,100,8,150
+B1,Story1,300,500,444,4000,40,25,500,150,100,8,150
 B2,Story1,300,450,400,3000,40,25,500,100,80,8,175
 ```
 
@@ -124,20 +128,22 @@ Notes:
   from explicit `D`, cover, stirrup diameter, and tension-bar diameter.
 - Any invalid or unaccounted row/field blocks the whole file before calculation.
 
-**Examples:**
+**Examples:** These source-sample commands assume the repository root.
+Commands naming other JSON/CSV/parameter files require those caller-supplied
+files; they are optional command forms.
 
 ```bash
 # Design from CSV, output to file
-python -m structural_lib design examples/sample_beam_design.csv -o results.json
+python -m structural_lib design Python/examples/sample_beam_design.csv -o results.json
 
 # Design with Level A deflection check
-python -m structural_lib design examples/sample_beam_design.csv -o results.json --deflection
+python -m structural_lib design Python/examples/sample_beam_design.csv -o results.json --deflection
 
 # Design with summary CSV (default name)
-python -m structural_lib design examples/sample_beam_design.csv -o results.json --summary
+python -m structural_lib design Python/examples/sample_beam_design.csv -o results.json --summary
 
 # Design with crack width params (JSON)
-python -m structural_lib design examples/sample_beam_design.csv -o results.json \
+python -m structural_lib design Python/examples/sample_beam_design.csv -o results.json \
   --crack-width-params crack_width_params.json
 
 # Design from CSV, print to stdout
@@ -348,16 +354,22 @@ python -m structural_lib dxf all_beams.json -o drawings.dxf
 
 **DXF to PNG/PDF (optional):**
 
-Use the helper script if you need a shareable preview:
+This helper is supplied by a source checkout, not the installed wheel. From
+the checkout root, with its selected source-bound environment and optional
+render dependencies available, generate a high-contrast modelspace preview:
 
 ```bash
 # Install render dependencies
-pip install "structural-lib-is456[dxf]" matplotlib
+./scripts/python_runtime.sh -m pip install "structural-lib-is456[dxf,render]==0.25.0"
 
 # Render to PNG or PDF
-.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.png
-.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+./scripts/python_runtime.sh scripts/dxf_render.py drawings.dxf -o drawings.png
+./scripts/python_runtime.sh scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
 ```
+This preview preserves modelspace extents. Choose the intended paper size and
+scale in the separate CAD delivery workflow; preview software checks do not
+qualify a fabrication sheet.
+
 - Multi-beam grid layout (when multiple beams)
 - Optional deliverable border + title block (use `--title-block`)
 - DXF R2010 format (AC1024, compatible with most CAD software)
@@ -429,7 +441,7 @@ python -m structural_lib job <input> -o <output_dir>
 
 ```bash
 # Run job with all outputs
-python -m structural_lib job examples/sample_job_is456.json -o output/
+python -m structural_lib job Python/examples/sample_job_is456.json -o output/
 
 # Results in output/:
 #   - inputs/job.json
@@ -468,7 +480,7 @@ python -m structural_lib dxf design_results.json -o drawings.dxf
 ```bash
 # Create minimal CSV
 echo "BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
-B1,GF,300,500,450,5000,40,25,500,180,100,8,150" > beam.csv
+B1,GF,300,500,442,5000,40,25,500,180,100,8,150" > beam.csv
 
 # Run design and view output
 python -m structural_lib design beam.csv

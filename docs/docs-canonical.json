@@ -1,33 +1,46 @@
 {
   "_comment": "Canonical document registry - prevents duplication by mapping topics to single source of truth",
-  "_updated": "2026-04-06",
+  "_updated": "2026-10-29",
   "_usage": "Before creating a new document, check if a canonical doc exists for that topic",
-
   "topics": {
     "etabs-api": {
       "canonical": "docs/guides/etabs-api-integration.md",
       "description": "Version-bound ETABS method discovery, workflow lookup, refresh and integration boundaries",
-      "also_see": [".github/skills/api-discovery/SKILL.md", "docs/planning/xll-product/etabs-design-workflow.md"]
+      "also_see": [
+        ".github/skills/api-discovery/SKILL.md",
+        "docs/planning/xll-product/etabs-design-workflow.md"
+      ]
     },
     "agent-onboarding": {
       "canonical": "docs/getting-started/agent-bootstrap.md",
       "description": "Primary entry point for new agents",
-      "also_see": ["docs/getting-started/agent-essentials.md", "docs/getting-started/ai-context-pack.md"]
+      "also_see": [
+        "docs/getting-started/agent-essentials.md",
+        "docs/getting-started/ai-context-pack.md"
+      ]
     },
     "git-workflow": {
       "canonical": "docs/git-automation/git-workflow-single-source.md",
-      "description": "Git automation single source of truth — workflow, scripts, hooks, recovery",
-      "also_see": ["docs/_archive/git-automation-consolidated/workflow-guide.md", "docs/_archive/git-automation-consolidated/automation-scripts.md"]
+      "description": "Git automation single source of truth \u2014 workflow, scripts, hooks, recovery",
+      "also_see": [
+        "docs/_archive/git-automation-consolidated/workflow-guide.md",
+        "docs/_archive/git-automation-consolidated/automation-scripts.md"
+      ]
     },
     "api-reference": {
       "canonical": "docs/reference/api.md",
       "description": "Public API documentation",
-      "also_see": ["docs/reference/api-stability.md", "docs/reference/api-levels.md"]
+      "also_see": [
+        "docs/reference/api-stability.md",
+        "docs/reference/api-levels.md"
+      ]
     },
     "api-levels": {
       "canonical": "docs/reference/api-levels.md",
-      "description": "Which API level to use — decision tree for service API vs module-level vs REST",
-      "also_see": ["docs/reference/api.md"]
+      "description": "Which API level to use \u2014 decision tree for service API vs module-level vs REST",
+      "also_see": [
+        "docs/reference/api.md"
+      ]
     },
     "coding-standards": {
       "canonical": "docs/contributing/agent-coding-standards.md",
@@ -35,23 +48,25 @@
       "also_see": []
     },
     "torsion": {
-      "canonical": "docs/research/torsion-design-research.md",
-      "description": "Torsion design implementation and IS 456 compliance",
-      "also_see": []
+      "canonical": "docs/cookbook/python/torsion-design.md",
+      "description": "Typed torsion consumer journey and its declared case/support limits",
+      "also_see": [
+        "docs/library/reference/wp02-shear-torsion.md"
+      ]
     },
     "boq": {
-      "canonical": "docs/reference/boq-export.md",
-      "description": "Bill of Quantities export and material estimation",
+      "canonical": "docs/library/reference/wp07-construction-calculation-package.md",
+      "description": "Physical BBS, declared quantities/cost and construction-package contract; bounded support applies",
       "also_see": []
     },
     "load-calculator": {
-      "canonical": "docs/reference/load-calculator.md",
-      "description": "Load calculation and combination utilities",
+      "canonical": "docs/library/reference/wp03-actions-analysis-topology.md",
+      "description": "Declared actions, topology and bounded beam-line analysis; not a general load-generation claim",
       "also_see": []
     },
     "sse-streaming": {
-      "canonical": "docs/reference/sse-streaming.md",
-      "description": "Server-Sent Events streaming for real-time design updates",
+      "canonical": "docs/reference/fastapi-rest-api.md",
+      "description": "Current source/application HTTP discovery, including SSE; live OpenAPI owns operation details",
       "also_see": []
     },
     "folder-structure": {
@@ -62,7 +77,9 @@
     "known-issues": {
       "canonical": "docs/reference/known-pitfalls.md",
       "description": "Common mistakes and how to avoid them",
-      "also_see": ["docs/contributing/session-issues.md"]
+      "also_see": [
+        "docs/contributing/session-issues.md"
+      ]
     },
     "testing-strategy": {
       "canonical": "docs/contributing/testing-strategy.md",
@@ -71,13 +88,20 @@
     },
     "architecture": {
       "canonical": "docs/architecture/unified-architecture-v1.md",
-      "description": "Comprehensive system architecture — 4-layer design, API principles, provenance, security, testing, observability (1,108 lines, 9-agent reviewed)",
-      "also_see": ["docs/architecture/project-overview.md", "docs/architecture/mission-and-principles.md"]
+      "description": "Comprehensive system architecture \u2014 4-layer design, API principles, provenance, security, testing, observability (1,108 lines, 9-agent reviewed)",
+      "also_see": [
+        "docs/architecture/project-overview.md",
+        "docs/architecture/mission-and-principles.md"
+      ]
     },
     "unified-architecture": {
       "canonical": "docs/architecture/unified-architecture-v1.md",
-      "description": "Single source of truth for architecture decisions, quality gates, safety guarantees, and development workflow — enhanced to 1,108 lines with 8 new sections (API Design, Provenance, Security, Client SDK, Testing, Backward Compat, Observability, Library Comparison) via 9-agent review",
-      "also_see": ["docs/architecture/project-overview.md", "docs/architecture/mission-and-principles.md", "docs/planning/library-expansion-blueprint-v5.md"]
+      "description": "Single source of truth for architecture decisions, quality gates, safety guarantees, and development workflow \u2014 enhanced to 1,108 lines with 8 new sections (API Design, Provenance, Security, Client SDK, Testing, Backward Compat, Observability, Library Comparison) via 9-agent review",
+      "also_see": [
+        "docs/architecture/project-overview.md",
+        "docs/architecture/mission-and-principles.md",
+        "docs/planning/library-expansion-blueprint-v5.md"
+      ]
     },
     "agent-mistakes": {
       "canonical": "docs/_archive/2026-08/agent-8-mistakes-prevention-guide.md",
@@ -87,7 +111,9 @@
     "session-handoff": {
       "canonical": "docs/planning/next-session-brief.md",
       "description": "Current work status and next steps",
-      "also_see": ["docs/SESSION_LOG.md"]
+      "also_see": [
+        "docs/SESSION_LOG.md"
+      ]
     },
     "task-tracking": {
       "canonical": "docs/TASKS.md",
@@ -97,7 +123,9 @@
     "library-expansion": {
       "canonical": "docs/planning/library-expansion-blueprint-v5.md",
       "description": "Multi-code multi-element expansion master plan (IS 456 + ACI 318 + EC2)",
-      "also_see": ["docs/_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md"]
+      "also_see": [
+        "docs/_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md"
+      ]
     },
     "commit-conventions": {
       "canonical": "docs/contributing/commit-message-conventions.md",
@@ -107,42 +135,67 @@
     "automation-catalog": {
       "canonical": "docs/reference/automation-catalog.md",
       "description": "All automation scripts with usage",
-      "also_see": ["scripts/control-plane.json", "scripts/context-manifest.json"]
+      "also_see": [
+        "scripts/control-plane.json",
+        "scripts/context-manifest.json"
+      ]
     },
     "3d-visualization": {
-      "canonical": "docs/research/live-3d-visualization-architecture.md",
-      "description": "3D rendering architecture and patterns",
-      "also_see": ["docs/research/pyvista-evaluation.md"]
+      "canonical": "docs/architecture/unified-architecture-v1.md",
+      "description": "Current four-layer application/3D ownership; performance measurements have their dated scope",
+      "also_see": [
+        "docs/reference/3d-visualization-performance.md"
+      ]
     },
     "column-design": {
       "canonical": "docs/planning/library-expansion-blueprint-v5.md",
-      "description": "Column design implementation (IS 456 Cl 25, 39) — classify, axial, uniaxial, P-M curve, biaxial, effective length, slenderness",
-      "aliases": ["column", "columns", "axial capacity", "P-M interaction", "biaxial bending"]
+      "description": "Column design implementation (IS 456 Cl 25, 39) \u2014 classify, axial, uniaxial, P-M curve, biaxial, effective length, slenderness",
+      "aliases": [
+        "column",
+        "columns",
+        "axial capacity",
+        "P-M interaction",
+        "biaxial bending"
+      ]
     },
     "quality-pipeline": {
       "canonical": ".github/skills/function-quality-pipeline/SKILL.md",
-      "description": "9-step quality pipeline for IS 456 functions — mandatory for every new function",
-      "aliases": ["function quality", "12-point checklist", "quality gate"]
+      "description": "9-step quality pipeline for IS 456 functions \u2014 mandatory for every new function",
+      "aliases": [
+        "function quality",
+        "12-point checklist",
+        "quality gate"
+      ]
     },
     "governance": {
       "canonical": "docs/governance/maintenance-playbook.md",
       "description": "Project governance, maintenance schedules, quality gates, incident response",
-      "aliases": ["maintenance", "playbook", "weekly maintenance", "release checklist"]
+      "aliases": [
+        "maintenance",
+        "playbook",
+        "weekly maintenance",
+        "release checklist"
+      ]
     },
     "error-handling": {
       "canonical": "docs/guidelines/error-handling-standard.md",
       "description": "Error hierarchy, DesignError schema, recovery field, error codes",
-      "aliases": ["errors", "DesignError", "recovery", "error codes", "E_FLEXURE", "E_COLUMN"]
+      "aliases": [
+        "errors",
+        "DesignError",
+        "recovery",
+        "error codes",
+        "E_FLEXURE",
+        "E_COLUMN"
+      ]
     }
   },
-
   "naming_conventions": {
     "guides": "guide-{topic}.md or {topic}-guide.md",
     "references": "reference-{topic}.md or {topic}.md in reference/",
     "research": "research-{topic}.md or {topic}-research.md",
     "decisions": "decision-{topic}.md or adr-NNN-{topic}.md"
   },
-
   "forbidden_patterns": [
     "ALL_CAPS_NAMES.md (except README, CHANGELOG, TASKS, SESSION_LOG)",
     "Numbered prefixes (01_, 02_) for non-ordered content",
