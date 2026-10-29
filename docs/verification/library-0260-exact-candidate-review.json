@@ -1,0 +1,61 @@
+{
+  "schema_version": "exact-candidate-review-receipt/v1",
+  "decision": "ACCEPT",
+  "reviewed_candidate": {
+    "head_sha": "92728bb1283555555d08d730df3d4641c17fd367",
+    "tree_sha": "e8543581c3e3b21ffa27921cb4f121bc92125733",
+    "python_tree_sha": "442d4abb561e7df482438229fde36ccf381f49e8",
+    "version": "0.26.0",
+    "tag": "v0.26.0",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ]
+  },
+  "reviewer": {
+    "identity": "Codex independent public-contract reviewer /root/public_contract_audit",
+    "independent": true,
+    "reviewed_at_utc": "2026-10-29T17:42:50Z"
+  },
+  "additional_review": {
+    "identity": "Codex independent provenance/guidance reviewer /root/coding_guidance_audit",
+    "decision": "ACCEPT",
+    "reviewed_at_utc": "2026-10-29T17:42:57Z"
+  },
+  "hosted_checks": {
+    "required_pr_checks": {
+      "status": "PASS",
+      "head_sha": "92728bb1283555555d08d730df3d4641c17fd367",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/40923944428"
+    },
+    "weekly_verification": {
+      "status": "PASS",
+      "head_sha": "92728bb1283555555d08d730df3d4641c17fd367",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/40923934942"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-10-29T17:52:43Z",
+  "hosted_checks_observed_by": "Codex release integrator /root",
+  "review_scope": "Essential retained-artifact source/payload identity, S5 qualification provenance, owner/review guards, explicit TestPyPI-to-PyPI-to-GitHub sequence, exact tag/draft binding and maintained release guidance. No essential blockers.",
+  "local_verification": {
+    "focused_release_and_workflow_checks": "PASS",
+    "black_ruff": "PASS",
+    "control_plane_and_api_projections": "PASS",
+    "strict_documentation_build": "PASS",
+    "retained_byte_and_source_verification": "PASS",
+    "python_files_changed": false,
+    "s5_installed_profiles_reused": 16,
+    "installed_uat_cases_reused": 29,
+    "independent_numerical_metrics_per_archive_reused": 106,
+    "retained_artifact_record": "docs/verification/library-0260-release-artifacts.json"
+  },
+  "s6_tooling_integration": {
+    "pull_request": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/1041",
+    "merge_sha": "641119b7452f1bb49fe345950a6c78124cfcfb4b",
+    "merge_tree_equals_reviewed_tree": true,
+    "reviewed_head_preserved_as_ancestor": true
+  },
+  "qualified_structural_engineering_review": false,
+  "professional_approval": false
+}
