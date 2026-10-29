@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-30
+last_updated: 2026-10-29
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -468,6 +468,37 @@ def design_beam_is456(
 
 `ComplianceCaseResult.result_envelope` is the canonical PASS/FAIL/HOLD carrier;
 `is_ok` remains a compatibility boolean.
+
+The S0/S1 development candidate preserves native floating-point utilization
+fields, including the positive-infinity sentinel used to rank failed cases.
+For JSON, use the result's `to_dict()` through canonical consumers or
+`services.serialization.to_transport_value()`. A check that could not evaluate
+its utilization is represented by `null` and an optional
+`unavailable_utilizations` record keyed by the exact field path, for example:
+
+```json
+{
+  "governing_utilization": null,
+  "utilizations": {"flexure": 9.556747467663845, "shear": null},
+  "unavailable_utilizations": {
+    "utilizations.shear": {
+      "code": "UTILIZATION_NOT_EVALUATED",
+      "reason": "shear (pt must be within Table 19 range (0.15-3.0 percent))"
+    },
+    "governing_utilization": {
+      "code": "UTILIZATION_NOT_EVALUATED",
+      "reason": "At least one governing check has no evaluated utilization."
+    }
+  }
+}
+```
+
+This is an admitted engineering FAIL, not a zero ratio, engineering PASS or
+input rejection. Existing finite ratios and failed-check identities are
+retained; unexpected NaN/infinity outside the declared unavailable fields
+still raises a calculation/transport error. Compliance reports apply the same
+rule to their governing and per-check summary ratios. These changes belong to
+the development candidate, not the already published v0.25.0 artifact.
 
 ### 1A.1A Bounded Sagging T-Beam (`design_flanged_beam_is456`)
 
@@ -1302,6 +1333,11 @@ Notes:
   that pipeline. Normalized advisory scores remain on a `0..1` scale in data and
   are multiplied by 100 only when rendered as text `/100`. Failed canonical
   designs are reported as `FAIL`, not reclassified as invalid input.
+  The S0/S1 candidate replays sensitivity from the original `design_inputs`,
+  including the compression-steel depth, stirrup area and serviceability basis.
+  If baseline or perturbed utilization is unavailable, sensitivity is `null`
+  with an explicit `metadata.unavailable_analyses.sensitivity` code/reason;
+  it does not emit NaN derivatives. A supplied engineering HOLD remains HOLD.
 
 ---
 

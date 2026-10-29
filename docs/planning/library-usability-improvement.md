@@ -1,11 +1,17 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-10-08
+last_updated: 2026-10-29
 doc_type: spec
 ---
 
 # Library usability and implementation quality
+
+**Current execution:** [S0/S1 — correctness and input preservation](#s0s1-execution-29-october-2026)
+records the selected scope, compatibility decision and verification owners.
+The [S0/S1 record](../verification/library-s0-s1-20261029.json) owns the current
+authority census, acceptance rows and local evidence. Required hosted review
+and integration facts belong to the milestone pull request.
 
 **Current next release plan:** [Professional standards programme — revision 2](#professional-standards-programme-8-october-2026-revision-2)
 extends the [6 October proposal](#next-version-proposal-6-october-2026) with an
@@ -1425,3 +1431,96 @@ review and release are future milestone work. It preserves the open draft
 [#1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019),
 the separate solver/library ownership boundary, the six-phase beam programme
 and XLL track, and the existing torsion and native-host gates.
+
+## S0/S1 execution — 29 October 2026
+
+The owner selected S0 and S1 and both P0 corrections. The selected writer lane
+is `codex/lib-s0-s1-correctness`, based on current main
+`eb6f8b51988a3f9b26a10f07164aa958309d0d84` plus the retained reviewed planning
+head `9c30032debc38d315a150809f36a96a047ed654d`. Codex `/root` owns the packet,
+integration and finite-result repair; `/root/public_contract_audit` implements
+the bounded smart adapter; `/root/coding_guidance_audit` performs read-only
+software review. Pravin Surawase retains scope/release decisions. A qualified
+engineering reviewer for later S4 is not appointed or implied by these roles.
+
+### S0 scope and authority decision
+
+The [S0/S1 record](../verification/library-s0-s1-20261029.json) assigns all 18
+quality areas, binds their public populations to the maintained API/schema
+owners, and expands the earlier six-root inventory to 371 guide/reference,
+instruction, workflow and authority records. Its 24 curated authority records
+include path-scoped rules, conditional calculation workflows, actual CI,
+source-use permission and historical release authority. Inventory/assignment
+does not claim every guide is semantically accepted or every example executed.
+Six missing canonical reference paths are explicitly assigned to later guide
+reconciliation; none is used as the engineering source for this repair.
+
+AGENTS and scoped four-layer/source-bound rules govern S1 where the active
+coding guide conflicts. PS-F06/PS-F07 remain S2 documentation repairs. Required
+normalized-data/public-distribution permission is already PASSED. All 32
+positional-policy deviations remain retained compatibility exceptions for
+this packet; S3 decides broader migration and documentation.
+
+The current 18-area quality programme, selected by the owner, supersedes the
+overlapping quality portion of draft #1019 for this packet. The S0/S1 candidate
+is explicitly rebound to current main and the retained planning predecessor;
+the older draft/calendar is not a predecessor for these repairs. Preserve its
+open draft and unconfirmed capacity/calendar. Its overlapping content must be
+rebound to the integrated S0/S1 successor before later integration. No closing,
+merging, branch disposal or schedule approval is granted for #1019.
+
+### S1 contract and root-cause correction
+
+Q-F01 originates in an unavailable check: overload produces excess tension
+steel, the maintained Table 19 domain check fails, and compatibility compliance
+uses positive infinity for its unevaluated utilization and governing ranking.
+The generic canonical serializer rejects that sentinel. This repair preserves
+the native numeric/ranking contract and the decisive failed checks, while the
+domain-owned transport projects only known unavailable ratios to `null` plus
+`UTILIZATION_NOT_EVALUATED` and a reason at their exact field paths. A finite
+known ratio is unchanged. Unexpected NaN, negative infinity or unexplained
+positive infinity still fails serialization; no safety limit or table lookup
+is relaxed. No IS456 engineering formula, factor or tolerance changes.
+
+The finite projection covers canonical beam/composed results, compatibility
+compliance/report transport and pipeline JSON. The canonical Python,
+`beam-v1` CLI and FastAPI v2 route consume the same result. Existing v1 HTTP
+display caps and broader schema/transport consistency remain S3 work; this
+packet does not claim all 92 operations have acquired new semantic parity.
+
+Q-F04 originates in a nested producer result being read as flat raw inputs.
+The strict `BeamDesignOutput.from_dict` owner restores current wrapped or
+standalone pipeline results without redesigning them or inventing facts.
+Identity, geometry, materials, actions, reinforcement/detailing, original
+`design_inputs`, depth receipt and result envelope are retained. Missing,
+unsupported, inconsistent or stale serialized results reject before smart
+analysis. Declared raw flat-input behavior remains separate and supported.
+
+The default smart path also replayed sensitivity from a partial input mapping,
+dropping compression depth, stirrup area and serviceability basis. It now uses
+the original calculation arguments, and refuses an unavailable baseline or
+perturbed finite-difference basis explicitly. The dashboard retains the source
+engineering FAIL/HOLD; unavailable sensitivity has a code/reason rather than
+NaN derivatives. Both reduced and default smart analyses are verification
+targets, so disabling optional analyses is not the completion criterion.
+
+### Verification and remaining gates
+
+Acceptance rows S0-A1–A3 and S1-A1–A6 live in the S0/S1 JSON record. Required
+evidence includes the actual published overload recipe, nominal and valid
+finite-failure retention, native governing-case ranking, unexpected non-finite
+error preservation, canonical CLI/HTTP parity, real-producer smart round trips,
+invalid serialized-basis rejection, original-input sensitivity replay and the
+default smart failure workflow. Retain the 13 family recipes and their existing
+PASS/FAIL/HOLD outcomes, and use existing serialization tests for the shared
+dataclass traversal risk.
+
+Finish the intended code/tests/docs, format changed files, run the union of
+focused checks once, then review the final candidate. Required changed-domain
+hosted checks and final integration must bind the same reviewed head. The JSON
+record captures local receipts; the pull request remains the authority for
+hosted-check, review and merge facts. The S5 broad release regression and exact
+installed-wheel qualification remain later work unless essential review exposes
+a concrete additional local risk. S2–S6, LIB-3/LIB-4 torsion, native-host runs,
+professional acceptance and per-version package publication remain outside this
+packet. There is no release authorization or claim of engineering-use approval.

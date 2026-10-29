@@ -8,6 +8,8 @@ Tests cover:
 - Normalized sensitivity coefficients
 """
 
+import pytest
+
 from structural_lib.insights import sensitivity_analysis
 from structural_lib.services.api import design_beam_is456
 
@@ -52,6 +54,12 @@ def _high_util_params():
         "fck_nmm2": 25.0,
         "fy_nmm2": 500.0,
     }
+
+
+def test_overloaded_baseline_has_no_finite_difference_sensitivity():
+    params = {**_base_params(), "mu_knm": 2000.0, "vu_kn": 75.0}
+    with pytest.raises(ValueError, match="finite evaluated baseline"):
+        sensitivity_analysis(design_beam_is456, params)
 
 
 # ==============================================================================
@@ -176,11 +184,11 @@ def test_sensitivity_high_utilization_beam():
 
 
 def test_sensitivity_failing_design():
-    """Design already failing (util > 1.0) should handle gracefully."""
+    """A finite evaluated failure still has meaningful sensitivity values."""
     params = {
         "units": "IS456",
-        "mu_knm": 300.0,  # Very high moment
-        "vu_kn": 150.0,
+        "mu_knm": 100.0,
+        "vu_kn": 300.0,  # Finite shear failure, not an unavailable table lookup
         "b_mm": 230.0,  # Small section
         "D_mm": 400.0,
         "d_mm": 350.0,
@@ -194,6 +202,9 @@ def test_sensitivity_failing_design():
 
     # Should still compute sensitivities
     assert len(sensitivities) == 2
+    import math
+
+    assert all(math.isfinite(item.sensitivity) for item in sensitivities)
 
     # Robustness should be poor (already failing)
     assert robustness.score <= 0.2, "Failing design should have poor robustness"

@@ -40,6 +40,25 @@ def test_v2_matches_canonical_python_result(client):
     assert response.json()["envelope"]["overall_status"] == "PASS"
 
 
+def test_v2_overloaded_beam_is_inspectable_fail_not_server_error(client):
+    payload = _payload()
+    payload["section"].update(D_mm=500, d_mm=457)
+    payload["calculation_basis"].update(d_dash_mm=43)
+    payload["actions"].update(mu_knm=2000, vu_kn=75)
+    expected = beam.design(beam.load(payload)).to_dict()
+
+    response = client.post("/api/v2/design/beam", json=payload)
+
+    assert response.status_code == 200
+    result = response.json()
+    assert result == expected
+    assert result["envelope"]["overall_status"] == "FAIL"
+    assert result["calculation"]["governing_utilization"] is None
+    assert result["calculation"]["utilizations"]["shear"] is None
+    assert result["calculation"]["failed_checks"]
+    assert json.loads(json.dumps(result, allow_nan=False)) == result
+
+
 def test_v2_rejects_duplicate_actions_before_design(client):
     raw = json.dumps(_payload()).replace('"vu_kn": 80', '"vu_kn": 500, "vu_kn": 80')
     response = client.post(

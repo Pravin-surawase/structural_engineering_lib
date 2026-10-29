@@ -19,8 +19,9 @@ Schema Version: 1
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-from dataclasses import asdict, dataclass, field
+import math
+from collections.abc import Mapping, Sequence
+from dataclasses import asdict, dataclass, field, fields
 from enum import Enum
 from typing import Any
 
@@ -30,6 +31,7 @@ from structural_lib.core.data_types import (
     CrackWidthParams,
     DeflectionParams,
     StirrupDict,
+    _utilization_transport_fields,
 )
 from structural_lib.core.errors import DesignError
 from structural_lib.services.beam_detailing_binding import (
@@ -231,9 +233,144 @@ class BeamDesignOutput:
     design_inputs: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        """Convert to dictionary for JSON serialization."""
+        """Serialize unavailable failed-check ratios with their reasons."""
         result: dict[str, Any] = _dataclass_to_dict(self)
+        values = {
+            "governing_utilization": self.governing_utilization,
+            "flexure.utilization": self.flexure.utilization,
+            "shear.utilization": self.shear.utilization,
+        }
+        reasons: dict[str, str] = {}
+        for name, check in (("flexure", self.flexure), ("shear", self.shear)):
+            if not self.is_ok and not check.is_safe and check.utilization == math.inf:
+                reasons[f"{name}.utilization"] = (
+                    check.remarks or f"{name} check has no evaluated utilization."
+                )
+        for name in ("deflection", "crack_width"):
+            value = getattr(self.serviceability, f"{name}_utilization")
+            path = f"serviceability.{name}_utilization"
+            if value is not None:
+                values[path] = value
+                if (
+                    not self.is_ok
+                    and getattr(self.serviceability, f"{name}_ok") is False
+                    and value == math.inf
+                ):
+                    reasons[path] = (
+                        getattr(self.serviceability, f"{name}_remarks")
+                        or f"{name} check has no evaluated utilization."
+                    )
+        if reasons:
+            reasons["governing_utilization"] = (
+                "At least one governing check has no evaluated utilization."
+            )
+        projected, unavailable = _utilization_transport_fields(values, reasons)
+        for path, value in projected.items():
+            if "." in path:
+                group, field_name = path.split(".", 1)
+                result[group][field_name] = value
+            else:
+                result[path] = value
+        if unavailable:
+            result["unavailable_utilizations"] = unavailable
         return result
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> BeamDesignOutput:
+        """Restore the current canonical pipeline result without inventing facts.
+
+        This is the inverse of :meth:`to_dict` for the versioned pipeline
+        result used by retained CLI consumers.  It deliberately requires every
+        calculation-bearing nested result and the original ``design_inputs``;
+        callers that need to accept an older or flat payload must choose and
+        document a separate migration path rather than receive defaults.
+        """
+        if not isinstance(payload, Mapping):
+            raise ValueError("Pipeline result must be a JSON object.")
+        if payload.get("schema_version") != SCHEMA_VERSION:
+            raise ValueError(
+                f"Unsupported pipeline result schema_version: "
+                f"{payload.get('schema_version')!r}."
+            )
+        if payload.get("code") != "IS456":
+            raise ValueError("Pipeline result code must be 'IS456'.")
+        validate_units(payload.get("units"))
+        _reject_nonfinite_transport_values(payload)
+
+        for name in (
+            "beam_id",
+            "story",
+            "geometry",
+            "materials",
+            "loads",
+            "flexure",
+            "shear",
+            "serviceability",
+            "detailing",
+            "is_ok",
+            "governing_utilization",
+            "governing_check",
+            "remarks",
+            "effective_depth_resolution",
+            "result_envelope",
+            "design_inputs",
+        ):
+            if name not in payload:
+                raise ValueError(f"Pipeline result missing required field '{name}'.")
+
+        restored_payload = _restore_unavailable_utilizations(payload)
+        geometry = _required_mapping(restored_payload, "geometry")
+        materials = _required_mapping(restored_payload, "materials")
+        loads = _required_mapping(restored_payload, "loads")
+        flexure = _required_mapping(restored_payload, "flexure")
+        shear = _required_mapping(restored_payload, "shear")
+        serviceability = _required_mapping(restored_payload, "serviceability")
+        design_inputs = _required_mapping(restored_payload, "design_inputs")
+        _validate_design_input_consistency(
+            design_inputs,
+            units=restored_payload["units"],
+            geometry=geometry,
+            materials=materials,
+            loads=loads,
+        )
+        detailing_payload = restored_payload.get("detailing")
+        effective_depth_resolution = _current_effective_depth_resolution(
+            restored_payload, geometry
+        )
+        result_envelope = _current_result_envelope(restored_payload)
+
+        if detailing_payload is not None and not isinstance(detailing_payload, Mapping):
+            raise ValueError(
+                "Pipeline result field 'detailing' must be an object or null."
+            )
+
+        return cls(
+            schema_version=SCHEMA_VERSION,
+            code="IS456",
+            units="IS456",
+            beam_id=_required_string(payload, "beam_id"),
+            story=_required_string(payload, "story"),
+            geometry=_restore_dataclass(BeamGeometry, geometry, "geometry"),
+            materials=_restore_dataclass(BeamMaterials, materials, "materials"),
+            loads=_restore_dataclass(BeamLoads, loads, "loads"),
+            flexure=_restore_dataclass(FlexureOutput, flexure, "flexure"),
+            shear=_restore_dataclass(ShearOutput, shear, "shear"),
+            serviceability=_restore_dataclass(
+                ServiceabilityOutput, serviceability, "serviceability"
+            ),
+            detailing=(
+                _restore_dataclass(DetailingOutput, detailing_payload, "detailing")
+                if detailing_payload is not None
+                else None
+            ),
+            is_ok=restored_payload["is_ok"],
+            governing_utilization=restored_payload["governing_utilization"],
+            governing_check=restored_payload["governing_check"],
+            remarks=restored_payload["remarks"],
+            effective_depth_resolution=effective_depth_resolution,
+            result_envelope=result_envelope,
+            design_inputs=dict(design_inputs),
+        )
 
 
 @dataclass
@@ -249,6 +386,7 @@ class MultiBeamOutput:
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         result: dict[str, Any] = _dataclass_to_dict(self)
+        result["beams"] = [beam.to_dict() for beam in self.beams]
         return result
 
 
@@ -264,6 +402,262 @@ def _dataclass_to_dict(obj: Any) -> Any:
         return obj.value if hasattr(obj, "value") else str(obj)
     else:
         return obj
+
+
+def _required_mapping(payload: Mapping[str, Any], name: str) -> dict[str, Any]:
+    """Read one required serialized object without flattening or defaults."""
+    value = payload.get(name)
+    if not isinstance(value, Mapping):
+        raise ValueError(f"Pipeline result field '{name}' must be an object.")
+    return dict(value)
+
+
+def _required_string(payload: Mapping[str, Any], name: str) -> str:
+    """Read one required non-blank identity field."""
+    value = payload.get(name)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"Pipeline result field '{name}' must be a non-blank string.")
+    return value
+
+
+def _restore_dataclass(model: type[Any], payload: Mapping[str, Any], name: str) -> Any:
+    """Restore one nested output only when its emitted fields are all present."""
+    missing = sorted(field.name for field in fields(model) if field.name not in payload)
+    if missing:
+        joined = ", ".join(missing)
+        raise ValueError(
+            f"Pipeline result field '{name}' missing required member(s): {joined}."
+        )
+    return model(**payload)
+
+
+_UNAVAILABLE_UTILIZATION_PATHS = frozenset(
+    {
+        "governing_utilization",
+        "flexure.utilization",
+        "shear.utilization",
+        "serviceability.deflection_utilization",
+        "serviceability.crack_width_utilization",
+    }
+)
+
+
+def _reject_nonfinite_transport_values(value: Any, path: str = "$") -> None:
+    """Reject generic JSON-invalid floats before restoring known sentinels."""
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ValueError(f"Pipeline result has non-finite value at '{path}'.")
+    if isinstance(value, Mapping):
+        for key, item in value.items():
+            _reject_nonfinite_transport_values(item, f"{path}.{key}")
+    elif isinstance(value, (list, tuple)):
+        for index, item in enumerate(value):
+            _reject_nonfinite_transport_values(item, f"{path}[{index}]")
+
+
+def _restore_unavailable_utilizations(
+    payload: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Restore only the documented JSON representation of failed ratios."""
+    restored = dict(payload)
+    metadata = payload.get("unavailable_utilizations")
+    if metadata is None:
+        markers: Mapping[str, Any] = {}
+    elif isinstance(metadata, Mapping):
+        markers = metadata
+    else:
+        raise ValueError(
+            "Pipeline result field 'unavailable_utilizations' must be an object."
+        )
+
+    for path, marker in markers.items():
+        if path not in _UNAVAILABLE_UTILIZATION_PATHS:
+            raise ValueError(f"Unknown unavailable utilization path '{path}'.")
+        if not isinstance(marker, Mapping):
+            raise ValueError(
+                f"Unavailable utilization marker for '{path}' must be an object."
+            )
+        if marker.get("code") != "UTILIZATION_NOT_EVALUATED":
+            raise ValueError(
+                f"Unavailable utilization marker for '{path}' has invalid code."
+            )
+        reason = marker.get("reason")
+        if not isinstance(reason, str) or not reason.strip():
+            raise ValueError(
+                f"Unavailable utilization marker for '{path}' needs a reason."
+            )
+        if payload.get("is_ok") is not False:
+            raise ValueError(
+                "Unavailable utilization markers require is_ok to be false."
+            )
+        if _path_value(payload, path) is not None:
+            raise ValueError(
+                f"Unavailable utilization marker for '{path}' requires a null value."
+            )
+        if not _path_has_failed_check(payload, path):
+            raise ValueError(
+                f"Unavailable utilization marker for '{path}' lacks a matching failed check."
+            )
+        if path == "governing_utilization" and not _governing_marker_has_component(
+            payload, markers
+        ):
+            raise ValueError(
+                "Unavailable governing utilization needs a marked unavailable component."
+            )
+        _set_path_value(restored, path, float("inf"))
+
+    for path in _UNAVAILABLE_UTILIZATION_PATHS:
+        if _path_value(restored, path) is None and path not in markers:
+            if path.startswith("serviceability.") and _serviceability_not_run(
+                restored, path
+            ):
+                continue
+            raise ValueError(
+                f"Pipeline result has null utilization at '{path}' without an unavailable marker."
+            )
+    return restored
+
+
+def _path_value(payload: Mapping[str, Any], path: str) -> Any:
+    value: Any = payload
+    for segment in path.split("."):
+        if not isinstance(value, Mapping) or segment not in value:
+            raise ValueError(f"Pipeline result missing utilization path '{path}'.")
+        value = value[segment]
+    return value
+
+
+def _set_path_value(payload: dict[str, Any], path: str, value: float) -> None:
+    segments = path.split(".")
+    container = payload
+    for segment in segments[:-1]:
+        nested = container.get(segment)
+        if not isinstance(nested, Mapping):
+            raise ValueError(f"Pipeline result missing utilization path '{path}'.")
+        copied = dict(nested)
+        container[segment] = copied
+        container = copied
+    container[segments[-1]] = value
+
+
+def _path_has_failed_check(payload: Mapping[str, Any], path: str) -> bool:
+    if path == "governing_utilization":
+        return isinstance(payload.get("governing_check"), str) and bool(
+            payload["governing_check"].strip()
+        )
+    if path == "flexure.utilization":
+        return _path_value(payload, "flexure.is_safe") is False
+    if path == "shear.utilization":
+        return _path_value(payload, "shear.is_safe") is False
+    status_path = path.replace("_utilization", "_status")
+    ok_path = path.replace("_utilization", "_ok")
+    return (
+        _path_value(payload, status_path) == "fail"
+        and _path_value(payload, ok_path) is False
+    )
+
+
+def _governing_marker_has_component(
+    payload: Mapping[str, Any], markers: Mapping[str, Any]
+) -> bool:
+    """A governing sentinel is meaningful only when a component is unavailable."""
+    return any(
+        path != "governing_utilization" and _path_value(payload, path) is None
+        for path in markers
+    )
+
+
+def _serviceability_not_run(payload: Mapping[str, Any], path: str) -> bool:
+    status_path = path.replace("_utilization", "_status")
+    ok_path = path.replace("_utilization", "_ok")
+    return (
+        _path_value(payload, status_path) == "not_run"
+        and _path_value(payload, ok_path) is None
+    )
+
+
+def _current_effective_depth_resolution(
+    payload: Mapping[str, Any], geometry: Mapping[str, Any]
+) -> dict[str, Any] | None:
+    """Keep a provided depth receipt only when it matches the retained geometry."""
+    resolution = payload.get("effective_depth_resolution")
+    if resolution is None:
+        return None
+    if not isinstance(resolution, Mapping):
+        raise ValueError(
+            "Pipeline result effective_depth_resolution must be an object or null."
+        )
+    for name in ("D_mm", "d_mm"):
+        if name not in resolution or resolution[name] != geometry.get(name):
+            raise ValueError(
+                f"Pipeline result effective_depth_resolution '{name}' disagrees with geometry."
+            )
+    return dict(resolution)
+
+
+def _current_result_envelope(payload: Mapping[str, Any]) -> dict[str, Any] | None:
+    """Do not present a retained stale result to smart analysis as current."""
+    envelope = payload.get("result_envelope")
+    if envelope is None:
+        return None
+    if not isinstance(envelope, Mapping):
+        raise ValueError("Pipeline result result_envelope must be an object or null.")
+    if envelope.get("freshness_status") != "CURRENT":
+        raise ValueError(
+            "Pipeline result is not current and cannot be used for smart analysis."
+        )
+    return dict(envelope)
+
+
+def _validate_design_input_consistency(
+    design_inputs: Mapping[str, Any],
+    *,
+    units: Any,
+    geometry: Mapping[str, Any],
+    materials: Mapping[str, Any],
+    loads: Mapping[str, Any],
+) -> None:
+    """Reject retained results whose consumed inputs disagree with their outputs."""
+    required = (
+        "units",
+        "case_id",
+        "b_mm",
+        "D_mm",
+        "d_mm",
+        "fck_nmm2",
+        "fy_nmm2",
+        "mu_knm",
+        "vu_kn",
+        "d_dash_mm",
+        "asv_mm2",
+    )
+    missing = sorted(name for name in required if name not in design_inputs)
+    if missing:
+        raise ValueError(
+            "Pipeline result design_inputs missing required member(s): "
+            + ", ".join(missing)
+            + "."
+        )
+    if validate_units(design_inputs["units"]) != validate_units(units):
+        raise ValueError(
+            "Pipeline result design_inputs units disagree with result units."
+        )
+
+    comparisons = (
+        ("case_id", design_inputs["case_id"], loads.get("case_id")),
+        ("b_mm", design_inputs["b_mm"], geometry.get("b_mm")),
+        ("D_mm", design_inputs["D_mm"], geometry.get("D_mm")),
+        ("d_mm", design_inputs["d_mm"], geometry.get("d_mm")),
+        ("d_dash_mm", design_inputs["d_dash_mm"], geometry.get("d_dash_mm")),
+        ("fck_nmm2", design_inputs["fck_nmm2"], materials.get("fck_nmm2")),
+        ("fy_nmm2", design_inputs["fy_nmm2"], materials.get("fy_nmm2")),
+        ("mu_knm", design_inputs["mu_knm"], loads.get("mu_knm")),
+        ("vu_kn", design_inputs["vu_kn"], loads.get("vu_kn")),
+    )
+    for name, consumed, retained in comparisons:
+        if consumed != retained:
+            raise ValueError(
+                f"Pipeline result design_inputs '{name}' disagrees with retained result."
+            )
 
 
 # =============================================================================

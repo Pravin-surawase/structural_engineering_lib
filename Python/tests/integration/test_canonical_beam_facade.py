@@ -229,6 +229,40 @@ def test_internal_calculation_errors_are_not_converted_to_intake_or_pass(
         beam.design(_request())
 
 
+def test_overloaded_beam_keeps_finite_fail_across_python_transport_and_cli(
+    tmp_path,
+    capsys,
+):
+    """Execute the published failing recipe through its actual public consumers."""
+    from structural_lib.services.serialization import to_transport_value
+
+    payload = _request().model_dump(mode="json")
+    payload["section"].update(D_mm=500, d_mm=457)
+    payload["calculation_basis"].update(d_dash_mm=43)
+    payload["actions"].update(mu_knm=2000, vu_kn=75)
+    result = beam.design(beam.load(payload))
+    encoded = result.to_dict()
+
+    assert result.engineering_status.value == "FAIL"
+    assert encoded["envelope"]["intake_status"] == "VALID"
+    assert encoded["envelope"]["calculation_status"] == "COMPLETED"
+    assert encoded["envelope"]["qualified_review_required"] is True
+    assert encoded["envelope"]["overall_status"] == "FAIL"
+    assert encoded["calculation"]["governing_utilization"] is None
+    assert encoded["calculation"]["utilizations"]["shear"] is None
+    assert (
+        encoded["calculation"]["unavailable_utilizations"]["utilizations.shear"]["code"]
+        == "UTILIZATION_NOT_EVALUATED"
+    )
+    assert to_transport_value(result)["calculation"] == encoded["calculation"]
+    assert json.loads(json.dumps(encoded, allow_nan=False)) == encoded
+
+    request_path = tmp_path / "overloaded.json"
+    request_path.write_text(json.dumps(payload), encoding="utf-8")
+    assert cli_main(["beam-v1", str(request_path)]) == 0
+    assert json.loads(capsys.readouterr().out) == encoded
+
+
 def test_detailing_requires_explicit_options_and_matching_standard():
     design_result = beam.design(_request())
     with pytest.raises(InputContractError) as exc_info:

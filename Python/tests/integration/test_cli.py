@@ -6,6 +6,7 @@ Tests cover all subcommands: design, bbs, dxf, and job.
 
 import csv
 import json
+import math
 import subprocess
 import sys
 from pathlib import Path
@@ -219,6 +220,284 @@ def test_cli_help():
     with pytest.raises(SystemExit) as exc:
         cli_main.main(["--help"])
     assert exc.value.code == 0
+
+
+def test_smart_uses_nested_pipeline_result_without_substituting_defaults(tmp_path):
+    """Smart analysis must retain the design result's nested engineering basis."""
+    from structural_lib.services.beam_pipeline import (
+        BeamDesignOutput,
+        design_single_beam,
+    )
+
+    produced = design_single_beam(
+        units="IS456",
+        beam_id="B-NESTED",
+        story="Level-4",
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=444.0,
+        span_mm=4321.0,
+        cover_mm=40.0,
+        fck_nmm2=30.0,
+        fy_nmm2=415.0,
+        mu_knm=125.0,
+        vu_kn=75.0,
+    )
+    beam = produced.to_dict()
+    assert BeamDesignOutput.from_dict(beam).to_dict() == beam
+    payload = {"schema_version": 1, "code": "IS456", "units": "IS456", "beams": [beam]}
+    result_path = tmp_path / "nested-result.json"
+    output_path = tmp_path / "smart.json"
+    result_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    rc = cli_main.main(
+        [
+            "smart",
+            str(result_path),
+            "--format",
+            "json",
+            "--no-cost",
+            "--no-suggestions",
+            "--no-sensitivity",
+            "--no-constructability",
+            "-o",
+            str(output_path),
+        ]
+    )
+
+    assert rc == 0
+    design = json.loads(output_path.read_text(encoding="utf-8"))["design_result"]
+    assert design["beam_id"] == "B-NESTED"
+    assert design["story"] == "Level-4"
+    assert design["geometry"]["d_mm"] == 444.0
+    assert design["geometry"]["cover_mm"] == 40.0
+    assert design["geometry"]["span_mm"] == 4321.0
+    assert design["materials"] == {"fck_nmm2": 30.0, "fy_nmm2": 415.0}
+    assert design["loads"]["mu_knm"] == 125.0
+    assert design["loads"]["vu_kn"] == 75.0
+    assert design["design_inputs"]["case_id"] == beam["design_inputs"]["case_id"]
+    assert design["design_inputs"]["cover_mm"] == beam["design_inputs"]["cover_mm"]
+    assert (
+        design["result_envelope"]["result_identity"]
+        == beam["result_envelope"]["result_identity"]
+    )
+    assert design["effective_depth_resolution"]["d_mm"] == 444.0
+    assert design["detailing"] == beam["detailing"]
+
+
+def test_smart_accepts_standalone_pipeline_result(tmp_path):
+    """A current single-beam pipeline document is not raw parameter input."""
+    from structural_lib.services.beam_pipeline import design_single_beam
+
+    beam = design_single_beam(
+        units="IS456",
+        beam_id="B-STANDALONE",
+        story="Level-2",
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=444.0,
+        span_mm=4321.0,
+        cover_mm=40.0,
+        fck_nmm2=30.0,
+        fy_nmm2=415.0,
+        mu_knm=125.0,
+        vu_kn=75.0,
+    ).to_dict()
+    result_path = tmp_path / "standalone-result.json"
+    output_path = tmp_path / "smart.json"
+    result_path.write_text(json.dumps(beam), encoding="utf-8")
+
+    rc = cli_main.main(
+        [
+            "smart",
+            str(result_path),
+            "--format",
+            "json",
+            "--no-cost",
+            "--no-suggestions",
+            "--no-sensitivity",
+            "--no-constructability",
+            "-o",
+            str(output_path),
+        ]
+    )
+
+    assert rc == 0
+    design = json.loads(output_path.read_text(encoding="utf-8"))["design_result"]
+    assert design["beam_id"] == "B-STANDALONE"
+    assert design["geometry"]["d_mm"] == 444.0
+
+
+def test_smart_rejects_incomplete_standalone_pipeline_marker(tmp_path, capsys):
+    """A malformed standalone result must not fall through to raw defaults."""
+    result_path = tmp_path / "incomplete-result.json"
+    result_path.write_text(json.dumps({"geometry": {}}), encoding="utf-8")
+
+    rc = cli_main.main(["smart", str(result_path), "--no-cost"])
+
+    assert rc == 1
+    assert "Unsupported pipeline result schema_version" in capsys.readouterr().err
+
+
+def test_smart_rejects_result_with_contradictory_design_inputs(
+    sample_design_results_file, tmp_path, capsys
+):
+    """Smart must not analyze a result whose replay input conflicts with geometry."""
+    payload = json.loads(sample_design_results_file.read_text(encoding="utf-8"))
+    payload["beams"][0]["design_inputs"]["d_mm"] = 450.0
+    result_path = tmp_path / "contradictory-result.json"
+    result_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    rc = cli_main.main(["smart", str(result_path), "--no-cost"])
+
+    assert rc == 1
+    assert "design_inputs 'd_mm' disagrees" in capsys.readouterr().err
+
+
+def test_smart_restores_only_marked_unavailable_utilizations(tmp_path):
+    """The FAIL transport marker restores the native sentinel without defaults."""
+    from structural_lib.services.beam_pipeline import (
+        BeamDesignOutput,
+        design_single_beam,
+    )
+
+    beam = design_single_beam(
+        units="IS456",
+        beam_id="B-FAIL",
+        story="Level-2",
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=444.0,
+        span_mm=4321.0,
+        cover_mm=40.0,
+        fck_nmm2=30.0,
+        fy_nmm2=415.0,
+        mu_knm=125.0,
+        vu_kn=600.0,
+    ).to_dict()
+    assert beam["is_ok"] is False
+    beam["governing_utilization"] = None
+    beam["shear"]["utilization"] = None
+    beam["unavailable_utilizations"] = {
+        "governing_utilization": {
+            "code": "UTILIZATION_NOT_EVALUATED",
+            "reason": "At least one governing check has no evaluated utilization.",
+        },
+        "shear.utilization": {
+            "code": "UTILIZATION_NOT_EVALUATED",
+            "reason": "Shear check could not establish a finite utilization.",
+        },
+    }
+
+    restored = BeamDesignOutput.from_dict(beam)
+
+    assert math.isinf(restored.governing_utilization)
+    assert math.isinf(restored.shear.utilization)
+
+
+def test_smart_rejects_governing_marker_without_marked_component(tmp_path):
+    """A governing unavailable marker cannot stand in for a failed component."""
+    from structural_lib.services.beam_pipeline import (
+        BeamDesignOutput,
+        design_single_beam,
+    )
+
+    beam = design_single_beam(
+        units="IS456",
+        beam_id="B-GOVERNING",
+        story="Level-2",
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=444.0,
+        span_mm=4321.0,
+        cover_mm=40.0,
+        fck_nmm2=30.0,
+        fy_nmm2=415.0,
+        mu_knm=125.0,
+        vu_kn=600.0,
+    ).to_dict()
+    beam["governing_utilization"] = None
+    beam["unavailable_utilizations"] = {
+        "governing_utilization": {
+            "code": "UTILIZATION_NOT_EVALUATED",
+            "reason": "At least one governing check has no evaluated utilization.",
+        }
+    }
+
+    with pytest.raises(ValueError, match="needs a marked unavailable component"):
+        BeamDesignOutput.from_dict(beam)
+
+
+@pytest.mark.parametrize(
+    ("mutate", "expected"),
+    [
+        (lambda beam: beam.pop("geometry"), "missing required field 'geometry'"),
+        (
+            lambda beam: beam.update({"schema_version": 99}),
+            "Unsupported pipeline result schema_version",
+        ),
+    ],
+)
+def test_smart_rejects_incomplete_or_unsupported_pipeline_result(
+    sample_design_results_file, tmp_path, capsys, mutate, expected
+):
+    """Pipeline-result intake must reject absent facts instead of adding defaults."""
+    payload = json.loads(sample_design_results_file.read_text(encoding="utf-8"))
+    mutate(payload["beams"][0])
+    result_path = tmp_path / "invalid-result.json"
+    result_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    rc = cli_main.main(["smart", str(result_path), "--no-cost"])
+
+    assert rc == 1
+    assert expected in capsys.readouterr().err
+
+
+def test_smart_default_workflow_preserves_real_overloaded_result(tmp_path):
+    from structural_lib.services.beam_pipeline import design_single_beam
+
+    design = design_single_beam(
+        units="IS456",
+        beam_id="OVERLOADED",
+        story="L4",
+        case_id="ULS-7",
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=457.0,
+        span_mm=4321.0,
+        cover_mm=25.0,
+        fck_nmm2=25.0,
+        fy_nmm2=500.0,
+        mu_knm=2000.0,
+        vu_kn=75.0,
+        d_dash_mm=43.0,
+        include_detailing=False,
+    )
+    source = design.to_dict()
+    input_path, output_path = tmp_path / "failed.json", tmp_path / "smart.json"
+    input_path.write_text(json.dumps(source, allow_nan=False), encoding="utf-8")
+
+    assert (
+        cli_main.main(
+            [
+                "smart",
+                str(input_path),
+                "--format",
+                "json",
+                "-o",
+                str(output_path),
+            ]
+        )
+        == 0
+    )
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert json.loads(json.dumps(payload, allow_nan=False)) == payload
+    assert payload["design_result"] == source
+    assert payload["summary"]["design_status"] == "FAIL"
+    assert payload["summary"]["governing_utilization"] is None
+    assert payload["metadata"]["unavailable_analyses"]["sensitivity"]["code"] == (
+        "UTILIZATION_NOT_EVALUATED"
+    )
 
 
 def test_cli_requires_command():

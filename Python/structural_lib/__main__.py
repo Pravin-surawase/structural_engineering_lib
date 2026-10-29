@@ -872,38 +872,45 @@ def cmd_smart(args: argparse.Namespace) -> int:
         with input_path.open("r", encoding="utf-8") as f:
             data = json.load(f)
 
-        # Check if it's a design result or need to design first
+        # Check if it is a retained pipeline result or needs a fresh design.
         if "beams" in data:
             # Design results JSON
-            if not data["beams"]:
+            if not isinstance(data["beams"], list) or not data["beams"]:
                 _print_error("No beams in design results")
                 return 1
 
-            # Use first beam for now (could enhance to process all)
+            # Use the first retained pipeline result for now.  Do not flatten
+            # its nested inputs and silently substitute defaults: smart analysis
+            # must describe the exact result that was supplied.
             beam = data["beams"][0]
+            from .services.beam_pipeline import BeamDesignOutput
 
-            # Extract parameters from metadata or beam dict
-            span_mm = args.span or beam.get("span_mm", 5000.0)
-            mu_knm = beam.get("loads", {}).get("mu_knm", beam.get("mu_knm", 120.0))
-            vu_kn = beam.get("loads", {}).get("vu_kn", beam.get("vu_kn", 80.0))
+            design_result = BeamDesignOutput.from_dict(beam)
 
-            # design_single_beam returns the correct BeamDesignOutput type
-            from .services.beam_pipeline import design_single_beam
-
-            design_result = design_single_beam(
-                units="IS456",
-                beam_id=beam.get("beam_id", "B1"),
-                story=beam.get("story", "Story1"),
-                b_mm=beam.get("b_mm", 300.0),
-                D_mm=beam.get("D_mm", 500.0),
-                d_mm=beam.get("d_mm", 450.0),
-                span_mm=span_mm,
-                cover_mm=beam.get("cover_mm", 30.0),
-                fck_nmm2=beam.get("fck_nmm2", 25.0),
-                fy_nmm2=beam.get("fy_nmm2", 500.0),
-                mu_knm=mu_knm,
-                vu_kn=vu_kn,
+            span_mm = args.span or design_result.geometry.span_mm
+            mu_knm = design_result.loads.mu_knm
+            vu_kn = design_result.loads.vu_kn
+        elif any(
+            name in data
+            for name in (
+                "schema_version",
+                "geometry",
+                "materials",
+                "loads",
+                "flexure",
+                "shear",
+                "design_inputs",
+                "result_envelope",
             )
+        ):
+            # A single current pipeline result is also a serialized engineering
+            # result, not a flat raw-input document eligible for CLI defaults.
+            from .services.beam_pipeline import BeamDesignOutput
+
+            design_result = BeamDesignOutput.from_dict(data)
+            span_mm = args.span or design_result.geometry.span_mm
+            mu_knm = design_result.loads.mu_knm
+            vu_kn = design_result.loads.vu_kn
         else:
             # Raw parameters - design via pipeline for correct BeamDesignOutput type
             from .services.beam_pipeline import design_single_beam
@@ -944,7 +951,7 @@ def cmd_smart(args: argparse.Namespace) -> int:
 
         # Output results
         if args.format == "json":
-            output = json.dumps(dashboard.to_dict(), indent=2)
+            output = json.dumps(dashboard.to_dict(), indent=2, allow_nan=False)
             if args.output:
                 out_path = Path(args.output)
                 out_path.parent.mkdir(parents=True, exist_ok=True)
