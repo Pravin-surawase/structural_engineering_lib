@@ -5175,7 +5175,7 @@
       },
       {
         "path": "docs/reference/api-compatibility-ledger.json",
-        "sha256": "a440348c54ca236f44b8001da36a20d399fada9fa476c5e4e64c4f6f925251df",
+        "sha256": "d0d6f4c8d83a15a2e5ec846005958ca6516e1e7d6f4fe759d818062724b9b274",
         "declared_owner": "unspecified",
         "accountable_owner": "Codex /root; Pravin Surawase for authority decisions",
         "declared_status": "unspecified",
@@ -7545,7 +7545,7 @@
       },
       {
         "path": "docs/reference/api-compatibility-ledger.json",
-        "sha256": "a440348c54ca236f44b8001da36a20d399fada9fa476c5e4e64c4f6f925251df",
+        "sha256": "d0d6f4c8d83a15a2e5ec846005958ca6516e1e7d6f4fe759d818062724b9b274",
         "intake_sha256": "1b00216d842eecf38a15d3c46b45aa107715b0e6df46ed79c8b98da6ad7412ed"
       },
       {
@@ -7697,7 +7697,8 @@
       "Python/tests/integration/test_smart_designer.py",
       "Python/tests/integration/test_insights_sensitivity.py",
       "Python/tests/unit/test_serialization.py",
-      "Python/tests/integration/test_beam_pipeline.py"
+      "Python/tests/integration/test_beam_pipeline.py",
+      "Python/tests/test_compatibility_convergence.py"
     ],
     "focused_http": [
       "fastapi_app/tests/test_canonical_beam_v2.py",
@@ -7808,12 +7809,20 @@
     {
       "path": "fastapi_app/tests/test_endpoints.py",
       "sha256": "350384f805afbd3cddc49bea32ced3c76f674410eae6dea0cfe2d3b7348a12ba"
+    },
+    {
+      "path": "scripts/generate_api_classification.py",
+      "sha256": "2b99ec4b6956813f113091e0a20fb0dc49273cee9af3b0574147c0b29200050f"
+    },
+    {
+      "path": "Python/tests/test_compatibility_convergence.py",
+      "sha256": "36858a3020af7c4be69bd98adfd3cf0e9c5ea2bb884b33e9171fd5a26f4a0f95"
     }
   ],
   "local_validation": {
     "scope": "S0/S1 local freeze; PR is authoritative for subsequent exact-head independent review, hosted checks and merge",
     "focused_population": {
-      "test_count": 262,
+      "test_count": 289,
       "by_file": {
         "Python/tests/unit/test_compliance.py": 9,
         "Python/tests/integration/test_canonical_beam_facade.py": 24,
@@ -7826,12 +7835,13 @@
         "fastapi_app/tests/test_canonical_beam_v2.py": 7,
         "fastapi_app/tests/test_typed_response_contracts.py": 5,
         "fastapi_app/tests/test_public_documentation_contract.py": 4,
-        "fastapi_app/tests/test_endpoints.py::TestAnalysisEndpoints": 13
+        "fastapi_app/tests/test_endpoints.py::TestAnalysisEndpoints": 13,
+        "Python/tests/test_compatibility_convergence.py": 27
       }
     },
     "focused_result": {
       "status": "PASS",
-      "total_validated": 262,
+      "total_validated": 289,
       "initial_run": {
         "passed": 246,
         "failed": 2
@@ -8144,6 +8154,24 @@
       "status": "PASS_WITH_EXISTING_ADVISORIES",
       "critical": 0,
       "boundary": "Existing unrelated config/async observations were not expanded into this S1 packet."
+    },
+    "hosted_repair": {
+      "failed_head": "b3ab4a8de2bc719e1b4f6294dfa6afe142e4dabc",
+      "failed_run_id": 40829106662,
+      "failed_job": "Documentation Validation",
+      "cause": "Pydantic2.13.4 emits _PydanticGeneralMetadata(allow_inf_nan=False),2.14.1 emits AllowInfNan(allow_inf_nan=False) for SectionProperties.d_mm; ledger signature/identity changed despite equivalent validation.",
+      "repair": "Token-aware normalization of exactly the old false-valued metadata spelling to the equivalent stable spelling; preserves True policy and quoted literal strings.",
+      "proof": {
+        "convergence_suite_tests": 27,
+        "status": "PASS",
+        "local_pydantic": "2.13.4",
+        "ci_pydantic": "2.14.1",
+        "bound_generation_check": "PASS_BOTH_VERSIONS",
+        "finite_depth_guard": "NaN,+inf,-inf rejected by actual model under both versions",
+        "ledger_delta": "Exactly the SectionProperties root-stub projection signature and identity_key; all counts, callers and other projections remain unchanged. The receipt describes the model without introducing a qualified compatibility-module reference."
+      },
+      "boundary": "No dependency pin/upgrade, validation weakening, runtime calculation or schema change. Final repaired-head review/hosted state is authoritative on milestone PR.",
+      "local_reconciliation": "The first evidence wording introduced a compatibility-module text reference, then its rewrite removed that reference; convergence checks caught the resulting ledger mismatch. Final unqualified wording and regenerated ledger preserve the original1887caller population. No caller filter or validation gate changed."
     }
   }
 }
