@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-10
+last_updated: 2026-10-29
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -224,6 +224,32 @@ Notes:
   and either `epsilon_m` or `fs_service_nmm2`.
 
 `section_type` values: UNDER_REINFORCED, BALANCED, OVER_REINFORCED.
+
+---
+
+### `smart` — Analyze a retained beam result
+
+```bash
+python -m structural_lib smart results.json --format json -o smart.json
+```
+
+In the S0/S1 development candidate, supply the complete current pipeline output
+from `design`, either its `beams` envelope or one standalone beam result.
+Smart analysis retains the nested member identity, geometry, materials, actions,
+detailing, original calculation inputs, depth receipt and result envelope.
+It analyzes the first beam in a multi-beam envelope, as before. Abbreviated
+illustrative JSON above is not a complete replay artifact: retain the actual
+producer's `design_inputs`, depth and status metadata.
+
+Incomplete, unsupported, contradictory or stale serialized results fail before
+analysis; they do not receive default geometry/materials. Raw flat parameter
+input retains its existing behavior. A valid engineering FAIL remains a result.
+Unavailable utilization fields serialize as `null` with per-path
+`unavailable_utilizations` code/reason records. When sensitivity cannot evaluate
+a finite baseline or perturbed ratio, the dashboard records its unavailable
+reason in `metadata.unavailable_analyses.sensitivity` rather than NaN values.
+These changes require the matching development build; the published v0.25.0
+artifact is unchanged.
 
 ---
 

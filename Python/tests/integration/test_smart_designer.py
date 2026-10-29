@@ -1,5 +1,7 @@
 """Tests for SmartDesigner unified dashboard."""
 
+import json
+
 import pytest
 
 from structural_lib import beam_pipeline
@@ -227,6 +229,122 @@ def test_failing_canonical_design_is_reported_not_reclassified_as_bad_input():
     assert dashboard.summary.safety_score == 0.0
 
 
+@pytest.mark.parametrize("include_analyses", [False, True])
+def test_unavailable_failed_ratio_stays_finite_in_smart_dashboard(include_analyses):
+    params = {**_base_params(), "mu_knm": 2000.0, "vu_kn": 75.0}
+    design = beam_pipeline.design_single_beam(
+        **params, beam_id="OVERLOADED", story="L1", include_detailing=False
+    )
+    restored = beam_pipeline.BeamDesignOutput.from_dict(design.to_dict())
+    dashboard = SmartDesigner.analyze(
+        design=restored,
+        span_mm=params["span_mm"],
+        mu_knm=params["mu_knm"],
+        vu_kn=params["vu_kn"],
+        include_cost=include_analyses,
+        include_suggestions=include_analyses,
+        include_sensitivity=include_analyses,
+        include_constructability=include_analyses,
+    )
+
+    payload = dashboard.to_dict()
+    assert json.loads(json.dumps(payload, allow_nan=False)) == payload
+    assert payload["summary"]["design_status"] == "FAIL"
+    assert payload["summary"]["safety_score"] == 0.0
+    assert payload["summary"]["governing_utilization"] is None
+    assert payload["summary"]["checks"][1]["utilization"] is None
+    assert (
+        payload["summary"]["unavailable_utilizations"]["checks[1].utilization"]["code"]
+        == "UTILIZATION_NOT_EVALUATED"
+    )
+    assert payload["design_result"] == design.to_dict()
+    if include_analyses:
+        assert payload["sensitivity"] is None
+        assert payload["metadata"]["unavailable_analyses"]["sensitivity"]["code"] == (
+            "UTILIZATION_NOT_EVALUATED"
+        )
+
+
+def test_smart_sensitivity_replays_nondefault_calculation_basis(monkeypatch):
+    from structural_lib.insights import sensitivity
+
+    design = beam_pipeline.design_single_beam(
+        units="IS456",
+        beam_id="REPLAY",
+        story="L4",
+        case_id="ULS-7",
+        b_mm=310.0,
+        D_mm=530.0,
+        d_mm=470.0,
+        span_mm=4321.0,
+        cover_mm=42.0,
+        fck_nmm2=30.0,
+        fy_nmm2=415.0,
+        mu_knm=135.0,
+        vu_kn=77.0,
+        d_dash_mm=43.0,
+        asv_mm2=157.0,
+        include_detailing=False,
+        deflection_params={
+            "span_mm": 4321.0,
+            "d_mm": 470.0,
+            "support_condition": "SIMPLY_SUPPORTED",
+            "mf_tension_steel": 1.5,
+        },
+    )
+    original = sensitivity.sensitivity_analysis
+    replayed = []
+
+    def observe(function, params, **kwargs):
+        replay = function(**params)
+        replayed.append(replay)
+        assert replay.design_inputs["d_dash_mm"] == 43.0
+        assert replay.design_inputs["asv_mm2"] == 157.0
+        assert replay.design_inputs["case_id"] == "ULS-7"
+        assert replay.flexure.Ast_required == design.flexure.ast_required_mm2
+        assert replay.shear.spacing == design.shear.sv_required_mm
+        assert replay.deflection is not None
+        assert replay.deflection.is_ok is design.serviceability.deflection_ok
+        return original(function, params, **kwargs)
+
+    monkeypatch.setattr(sensitivity, "sensitivity_analysis", observe)
+    dashboard = SmartDesigner.analyze(
+        design=design,
+        span_mm=4321.0,
+        mu_knm=135.0,
+        vu_kn=77.0,
+        include_cost=False,
+        include_suggestions=False,
+        include_constructability=False,
+    )
+    assert replayed
+    assert dashboard.sensitivity is not None
+    assert dashboard.to_dict()["design_result"] == design.to_dict()
+
+
+def test_smart_summary_preserves_explicit_engineering_hold():
+    params = _base_params()
+    design = _run_pipeline(params)
+    assert design.result_envelope is not None
+    design.result_envelope["engineering_status"] = "HOLD"
+    design.result_envelope["overall_status"] = "HOLD"
+    dashboard = SmartDesigner.analyze(
+        design=design,
+        span_mm=params["span_mm"],
+        mu_knm=params["mu_knm"],
+        vu_kn=params["vu_kn"],
+        include_cost=False,
+        include_suggestions=False,
+        include_sensitivity=False,
+        include_constructability=False,
+    )
+    assert dashboard.summary.design_status == "HOLD"
+    assert (
+        dashboard.to_dict()["design_result"]["result_envelope"]
+        == design.result_envelope
+    )
+
+
 def test_smart_designer_cost_analysis():
     """Test cost analysis component."""
     params = _base_params()
@@ -387,8 +505,10 @@ def test_smart_designer_invalid_design():
     assert dashboard.cost is None
     assert dashboard.metadata["warnings"] == [
         "Cost optimization unavailable: no candidate satisfies the explicit "
-        "engineering basis."
+        "engineering basis.",
+        "Sensitivity unavailable: Sensitivity requires a finite evaluated baseline utilization.",
     ]
+    assert dashboard.sensitivity is None
 
 
 # =============================================================================

@@ -172,10 +172,14 @@ async def smart_analyze_beam(
         # The core smart-analysis result owns check identity and arithmetic.
         # The transport only serializes those canonical checks.
         summary_checks = summary_data.get("checks", [])
+        unavailable_utilizations = summary_data.get("unavailable_utilizations", {})
         code_checks = []
         if request.include_code_checks:
-            for check in summary_checks:
+            for index, check in enumerate(summary_checks):
                 passed = bool(check["passed"])
+                unavailable = unavailable_utilizations.get(
+                    f"checks[{index}].utilization"
+                )
                 code_checks.append(
                     CodeCheck(
                         clause=check["clause_ref"],
@@ -183,8 +187,15 @@ async def smart_analyze_beam(
                         passed=passed,
                         calculated_value=check["utilization"],
                         limit_value=1.0,
+                        unavailable=unavailable,
                         message=(
-                            "Section is adequate" if passed else "Section overstressed"
+                            "Section is adequate"
+                            if passed
+                            else (
+                                unavailable["reason"]
+                                if unavailable is not None
+                                else "Section overstressed"
+                            )
                         ),
                     )
                 )
@@ -245,6 +256,11 @@ async def smart_analyze_beam(
             "fy_nmm2": request.fy,
             "design_status": summary_data["design_status"],
             "governing_utilization": summary_data.get("governing_utilization"),
+            "unavailable_utilizations": {
+                path: marker
+                for path, marker in unavailable_utilizations.items()
+                if path == "governing_utilization"
+            },
             "capacity_margin": summary_data.get("safety_score"),
             "governing_check": summary_data.get("governing_check"),
             "key_issues": summary_data.get("key_issues", []),

@@ -228,6 +228,22 @@ def test_nested_typing_signature_spelling_preserves_values() -> None:
     assert classification._normalize_signature_text(expected) == expected
 
 
+def test_pydantic_finite_metadata_spelling_is_version_independent() -> None:
+    old = "Annotated[float | None, _PydanticGeneralMetadata(allow_inf_nan=False)]"
+    current = "Annotated[float | None, AllowInfNan(allow_inf_nan=False)]"
+    different_policy = (
+        "Annotated[float | None, _PydanticGeneralMetadata(allow_inf_nan=True)]"
+    )
+
+    assert classification._normalize_signature_text(old) == current
+    assert classification._normalize_signature_text(current) == current
+    assert (
+        classification._normalize_signature_text(different_policy) == different_policy
+    )
+    literal = "'_PydanticGeneralMetadata(allow_inf_nan=False)'"
+    assert classification._normalize_signature_text(literal) == literal
+
+
 def test_api_hub_is_an_identity_only_subset(ledger: dict[str, Any]) -> None:
     record = ledger["additional_module_records"][0]
     hub = importlib.import_module("structural_lib.services.api_hub")

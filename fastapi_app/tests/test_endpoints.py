@@ -4,6 +4,7 @@ Integration Tests for FastAPI Endpoints.
 Tests all API endpoints using FastAPI TestClient.
 """
 
+import json
 import math
 
 import pytest
@@ -1019,6 +1020,48 @@ class TestAnalysisEndpoints:
             "Cost optimization unavailable: no candidate satisfies the explicit "
             "engineering basis."
         ]
+
+    def test_smart_analysis_projects_unavailable_overload_utilization(self, client):
+        """An admitted overloaded FAIL remains JSON-safe and explainable."""
+        payload = {
+            "width": 300.0,
+            "depth": 500.0,
+            "effective_depth": 457.0,
+            "span_length": 5000.0,
+            "moment": 2000.0,
+            "shear": 75.0,
+            "fck": 25.0,
+            "fy": 500.0,
+        }
+
+        response = client.post("/api/v1/analysis/beam/smart", json=payload)
+
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        summary = data["design_summary"]
+        assert summary["design_status"] == "FAIL"
+        assert summary["governing_utilization"] is None
+        marker = summary["unavailable_utilizations"]["governing_utilization"]
+        assert marker["code"] == "UTILIZATION_NOT_EVALUATED"
+        assert marker["reason"]
+        assert any(check["calculated_value"] is None for check in data["code_checks"])
+        unavailable_check = next(
+            check for check in data["code_checks"] if check["calculated_value"] is None
+        )
+        assert unavailable_check["unavailable"]["code"] == ("UTILIZATION_NOT_EVALUATED")
+        assert "Table 19" in unavailable_check["unavailable"]["reason"]
+        assert json.dumps(data, allow_nan=False)
+
+        hidden = client.post(
+            "/api/v1/analysis/beam/smart",
+            json={**payload, "include_code_checks": False},
+        )
+        assert hidden.status_code == status.HTTP_200_OK
+        hidden_data = unwrap(hidden)
+        assert hidden_data["code_checks"] == []
+        assert hidden_data["design_summary"]["unavailable_utilizations"] == (
+            summary["unavailable_utilizations"]
+        )
 
     def test_smart_analysis_hides_checks_without_changing_disposition(
         self, client, sample_analysis_request

@@ -19,7 +19,6 @@ from __future__ import annotations
 import logging
 import math
 from collections.abc import Sequence
-from dataclasses import asdict
 from enum import Enum
 from typing import Any
 
@@ -667,5 +666,5 @@ def report_to_dict(report: ComplianceReport) -> dict[str, Any]:
             return [_jsonable(v) for v in obj]
         return obj
 
-    result: dict[str, Any] = _jsonable(asdict(report))
+    result: dict[str, Any] = _jsonable(report.to_dict())
     return result

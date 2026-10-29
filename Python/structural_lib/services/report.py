@@ -33,8 +33,10 @@ import csv
 import html
 import io
 import json
+import math
 import re
 from dataclasses import dataclass
+from dataclasses import field as _field
 from pathlib import Path
 from typing import Any
 
@@ -274,7 +276,7 @@ class ReportData:
     # Computed fields
     is_ok: bool = False
     governing_case_id: str = ""
-    governing_utilization: float = 0.0
+    governing_utilization: float | None = 0.0
     evidence: dict[str, Any] | None = None
 
 
@@ -284,7 +286,7 @@ class CriticalCase:
 
     Attributes:
         case_id: Load case identifier
-        utilization: Governing utilization ratio (0.0 to 1.0+)
+        utilization: Governing ratio (0.0 to 1.0+), or None if unavailable
         flexure_util: Flexure utilization ratio
         shear_util: Shear utilization ratio
         is_ok: Whether design passes all checks
@@ -292,11 +294,12 @@ class CriticalCase:
     """
 
     case_id: str
-    utilization: float
-    flexure_util: float
-    shear_util: float
+    utilization: float | None
+    flexure_util: float | None
+    shear_util: float | None
     is_ok: bool
     json_path: str = ""
+    unavailable_utilizations: dict[str, Any] = _field(default_factory=dict)
 
 
 @dataclass
@@ -411,7 +414,9 @@ def load_report_data(
         results=results,
         is_ok=bool(results.get("is_ok", False)),
         governing_case_id=str(results.get("governing_case_id", "")),
-        governing_utilization=float(results.get("governing_utilization", 0.0)),
+        governing_utilization=_report_utilization(
+            results.get("governing_utilization", 0.0)
+        ),
     )
 
 
@@ -424,6 +429,26 @@ def _safe_float(value: Any) -> float | None:
 
 def _safe_dict(value: Any) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
+
+
+def _report_utilization(value: Any) -> float | None:
+    """Keep unavailable ratios out of numeric report displays and rankings."""
+    number = _safe_float(value)
+    return number if number is not None and math.isfinite(number) else None
+
+
+def _utilization_rank(value: float | None) -> tuple[bool, float]:
+    # An unevaluated case needs review before any numerically ranked case.
+    return value is None, value if value is not None else 0.0
+
+
+def _utilization_text(
+    value: float | None, marker: Any = None, *, percent: bool = True
+) -> str:
+    if value is not None:
+        return f"{value:.2%}" if percent else f"{value:.4f}"
+    reason = _safe_dict(marker).get("reason")
+    return f"Unavailable: {reason}" if reason else "Unavailable"
 
 
 def _make_sanity_check(
@@ -719,19 +744,15 @@ def get_input_sanity(data: ReportData) -> list[SanityCheck]:
     return checks
 
 
-def _case_utilization(case: dict[str, Any]) -> float:
-    util = case.get("governing_utilization")
-    if util is not None:
-        try:
-            return float(util)
-        except (TypeError, ValueError):
-            return 0.0
+def _case_utilization(case: dict[str, Any]) -> float | None:
+    if "governing_utilization" in case:
+        return _report_utilization(case["governing_utilization"])
     utils = case.get("utilizations", {})
     if isinstance(utils, dict) and utils:
-        try:
-            return max(float(v) for v in utils.values())
-        except (TypeError, ValueError):
-            return 0.0
+        values = [_report_utilization(value) for value in utils.values()]
+        if any(value is None for value in values):
+            return None
+        return max(value for value in values if value is not None)
     return 0.0
 
 
@@ -750,7 +771,7 @@ def _select_governing_case(data: ReportData) -> tuple[dict[str, Any] | None, int
     best_util = _case_utilization(cases_data[0])
     for idx, case in enumerate(cases_data[1:], start=1):
         util = _case_utilization(case)
-        if util > best_util:
+        if _utilization_rank(util) > _utilization_rank(best_util):
             best_util = util
             best_idx = idx
     return cases_data[best_idx], best_idx
@@ -926,7 +947,19 @@ def get_stability_scorecard(data: ReportData) -> list[ScorecardItem]:
             )
         )
 
-    if data.governing_utilization >= UTILIZATION_WARNING_THRESHOLD:
+    if data.governing_utilization is None:
+        marker = _safe_dict(data.results.get("unavailable_utilizations")).get(
+            "governing_utilization"
+        )
+        items.append(
+            ScorecardItem(
+                "governing_utilization",
+                "WARN",
+                _utilization_text(None, marker),
+                "governing_utilization",
+            )
+        )
+    elif data.governing_utilization >= UTILIZATION_WARNING_THRESHOLD:
         items.append(
             ScorecardItem(
                 "governing_utilization",
@@ -1066,6 +1099,8 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
     }
     if data.evidence is not None:
         output["evidence"] = data.evidence
+    if data.results.get("unavailable_utilizations"):
+        output["unavailable_utilizations"] = data.results["unavailable_utilizations"]
     return json.dumps(output, indent=indent, sort_keys=True, ensure_ascii=False)
 
 
@@ -1196,13 +1231,25 @@ def _render_report_sections(data: ReportData) -> str:
     status = "✓ PASS" if data.is_ok else "✗ FAIL"
     status_class = "status-pass" if data.is_ok else "status-fail"
     limit_note = ""
-    if data.is_ok and data.governing_utilization >= 0.9:
+    if (
+        data.is_ok
+        and data.governing_utilization is not None
+        and data.governing_utilization >= 0.9
+    ):
         limit_note = (
             "\n    <p><strong>Limit status:</strong> "
             '<span class="status-warn">Near limit (>= 0.90)</span></p>'
         )
     job_id = html.escape(data.job_id)
     code = html.escape(data.code)
+    utilization = html.escape(
+        _utilization_text(
+            data.governing_utilization,
+            _safe_dict(data.results.get("unavailable_utilizations")).get(
+                "governing_utilization"
+            ),
+        )
+    )
     svg = report_svg.render_section_svg_from_beam(data.beam)
     sanity_table = _render_sanity_table(get_input_sanity(data))
     scorecard_table = _render_scorecard_table(get_stability_scorecard(data))
@@ -1223,7 +1270,7 @@ def _render_report_sections(data: ReportData) -> str:
     <p><strong>Job ID:</strong> {job_id}</p>
     <p><strong>Code:</strong> {code}</p>
     <p><strong>Status:</strong> <span class="{status_class}">{status}</span></p>
-    <p><strong>Governing Utilization:</strong> {data.governing_utilization:.2%}</p>{limit_note}
+    <p><strong>Governing Utilization:</strong> {utilization}</p>{limit_note}
 </div>
 <div class="section">
     <h2>Cross-Section SVG</h2>
@@ -1351,20 +1398,28 @@ def _beam_report_data_from_design(
         "story": story,
     }
 
-    util_flexure = _safe_float(flexure.get("utilization"))
-    util_shear = _safe_float(shear.get("utilization"))
-    utilizations: dict[str, float] = {}
-    if util_flexure is not None:
-        utilizations["flexure"] = util_flexure
-    if util_shear is not None:
-        utilizations["shear"] = util_shear
-
-    defl_util = _safe_float(serviceability.get("deflection_utilization"))
-    crack_util = _safe_float(serviceability.get("crack_width_utilization"))
-    if defl_util is not None:
-        utilizations["deflection"] = defl_util
-    if crack_util is not None:
-        utilizations["crack_width"] = crack_util
+    source_unavailable = _safe_dict(beam.get("unavailable_utilizations"))
+    utilizations: dict[str, float | None] = {}
+    case_unavailable: dict[str, Any] = {}
+    for name, value, source_path in (
+        ("flexure", flexure.get("utilization"), "flexure.utilization"),
+        ("shear", shear.get("utilization"), "shear.utilization"),
+        (
+            "deflection",
+            serviceability.get("deflection_utilization"),
+            "serviceability.deflection_utilization",
+        ),
+        (
+            "crack_width",
+            serviceability.get("crack_width_utilization"),
+            "serviceability.crack_width_utilization",
+        ),
+    ):
+        util = _report_utilization(value)
+        if util is not None or source_path in source_unavailable:
+            utilizations[name] = util
+        if source_path in source_unavailable:
+            case_unavailable[f"utilizations.{name}"] = source_unavailable[source_path]
 
     ast_required = _safe_float(flexure.get("ast_required_mm2"))
     b_mm = _safe_float(geometry.get("b_mm"))
@@ -1374,9 +1429,15 @@ def _beam_report_data_from_design(
         pt_est = 100.0 * ast_required / (b_mm * d_mm)
 
     case_id = str(loads.get("case_id", "") or beam_id or "CASE_1")
-    governing_util = _safe_float(
-        beam.get("governing_utilization")
-    ) or _case_utilization({"utilizations": utilizations})
+    governing_util = (
+        _report_utilization(beam["governing_utilization"])
+        if "governing_utilization" in beam
+        else _case_utilization({"utilizations": utilizations})
+    )
+    if "governing_utilization" in source_unavailable:
+        case_unavailable["governing_utilization"] = source_unavailable[
+            "governing_utilization"
+        ]
 
     case = {
         "case_id": case_id,
@@ -1399,6 +1460,12 @@ def _beam_report_data_from_design(
         "cases": [case],
         "summary": {},
     }
+    if case_unavailable:
+        case["unavailable_utilizations"] = case_unavailable
+    if "governing_utilization" in source_unavailable:
+        results["unavailable_utilizations"] = {
+            "governing_utilization": source_unavailable["governing_utilization"]
+        }
 
     return ReportData(
         job_id=job_id,
@@ -1445,14 +1512,21 @@ def _render_batch_index_table(
         beam = item["beam"]
         label = html.escape(item["label"])
         slug = item["slug"]
-        util = _safe_float(beam.get("governing_utilization")) or 0.0
+        util = html.escape(
+            _utilization_text(
+                _report_utilization(beam.get("governing_utilization", 0.0)),
+                _safe_dict(beam.get("unavailable_utilizations")).get(
+                    "governing_utilization"
+                ),
+            )
+        )
         is_ok = bool(beam.get("is_ok", False))
         status = "PASS" if is_ok else "FAIL"
         status_class = "status-pass" if is_ok else "status-fail"
         rows.append(f"""        <tr>
             <td><a href="{link_prefix}{slug}{link_suffix}">{label}</a></td>
             <td class="{status_class}">{status}</td>
-            <td>{util:.2%}</td>
+            <td>{util}</td>
         </tr>""")
 
     rows_joined = "\n".join(rows)
@@ -1596,14 +1670,14 @@ def get_critical_set(
     *,
     top: int | None = None,
 ) -> list[CriticalCase]:
-    """Extract cases sorted by utilization (highest first).
+    """List unevaluated cases first, then finite ratios in descending order.
 
     Args:
         data: ReportData containing design results
         top: Limit to top N cases (None = all cases)
 
     Returns:
-        List of CriticalCase sorted by utilization descending
+        CriticalCase entries in review priority order
     """
     cases_data = data.results.get("cases", [])
     critical_cases: list[CriticalCase] = []
@@ -1620,11 +1694,9 @@ def get_critical_set(
             utils = {}
 
         # Governing utilization (max of flexure and shear)
-        flexure_util = float(utils.get("flexure", 0.0))
-        shear_util = float(utils.get("shear", 0.0))
-        governing_util = float(
-            case.get("governing_utilization", max(flexure_util, shear_util))
-        )
+        flexure_util = _report_utilization(utils.get("flexure", 0.0))
+        shear_util = _report_utilization(utils.get("shear", 0.0))
+        governing_util = _case_utilization(case)
 
         is_ok = bool(case.get("is_ok", False))
         json_path = f"cases[{idx}]"
@@ -1637,11 +1709,14 @@ def get_critical_set(
                 shear_util=shear_util,
                 is_ok=is_ok,
                 json_path=json_path,
+                unavailable_utilizations=_safe_dict(
+                    case.get("unavailable_utilizations")
+                ),
             )
         )
 
     # Sort by utilization descending (highest first)
-    critical_cases.sort(key=lambda c: c.utilization, reverse=True)
+    critical_cases.sort(key=lambda c: _utilization_rank(c.utilization), reverse=True)
 
     # Apply top N filter
     if top is not None and top > 0:
@@ -1676,9 +1751,21 @@ def export_critical_csv(cases: list[CriticalCase]) -> str:
         writer.writerow(
             {
                 "case_id": case.case_id,
-                "utilization": f"{case.utilization:.4f}",
-                "flexure_util": f"{case.flexure_util:.4f}",
-                "shear_util": f"{case.shear_util:.4f}",
+                "utilization": _utilization_text(
+                    case.utilization,
+                    case.unavailable_utilizations.get("governing_utilization"),
+                    percent=False,
+                ),
+                "flexure_util": _utilization_text(
+                    case.flexure_util,
+                    case.unavailable_utilizations.get("utilizations.flexure"),
+                    percent=False,
+                ),
+                "shear_util": _utilization_text(
+                    case.shear_util,
+                    case.unavailable_utilizations.get("utilizations.shear"),
+                    percent=False,
+                ),
                 "is_ok": "TRUE" if case.is_ok else "FALSE",
                 "json_path": case.json_path,
             }
@@ -1705,8 +1792,33 @@ def export_critical_html(
     rows_html = []
     for case in cases:
         # Utilization bar width (cap at 100% for display)
-        bar_width = min(case.utilization * 100, 100)
+        bar_width = (
+            min(case.utilization * 100, 100) if case.utilization is not None else 0
+        )
         bar_color = "#28a745" if case.is_ok else "#dc3545"  # green or red
+        bar = (
+            f'<div class="util-bar" style="width: {bar_width:.1f}%; background: {bar_color};"></div>'
+            if case.utilization is not None
+            else ""
+        )
+        utilization = html.escape(
+            _utilization_text(
+                case.utilization,
+                case.unavailable_utilizations.get("governing_utilization"),
+            )
+        )
+        flexure = html.escape(
+            _utilization_text(
+                case.flexure_util,
+                case.unavailable_utilizations.get("utilizations.flexure"),
+            )
+        )
+        shear = html.escape(
+            _utilization_text(
+                case.shear_util,
+                case.unavailable_utilizations.get("utilizations.shear"),
+            )
+        )
 
         status_badge = (
             '<span class="badge pass">✓ PASS</span>'
@@ -1718,12 +1830,12 @@ def export_critical_html(
             <td>{case.case_id}</td>
             <td>
                 <div class="util-bar-container">
-                    <div class="util-bar" style="width: {bar_width:.1f}%; background: {bar_color};"></div>
-                    <span class="util-value">{case.utilization:.2%}</span>
+                    {bar}
+                    <span class="util-value">{utilization}</span>
                 </div>
             </td>
-            <td>{case.flexure_util:.2%}</td>
-            <td>{case.shear_util:.2%}</td>
+            <td>{flexure}</td>
+            <td>{shear}</td>
             <td>{status_badge}</td>
         </tr>"""
         rows_html.append(row)

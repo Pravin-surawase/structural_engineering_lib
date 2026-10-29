@@ -1,11 +1,24 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-30
+last_updated: 2026-10-29
 doc_type: spec
 ---
 
 # Library usability and implementation quality
+
+**Current execution:** [S0/S1 — correctness and input preservation](#s0s1-execution-29-october-2026)
+records the selected scope, compatibility decision and verification owners.
+The [S0/S1 record](../verification/library-s0-s1-20261029.json) owns the current
+authority census, acceptance rows and local evidence. Required hosted review
+and integration facts belong to the milestone pull request.
+
+**Current next release plan:** [Professional standards programme — revision 2](#professional-standards-programme-8-october-2026-revision-2)
+extends the [6 October proposal](#next-version-proposal-6-october-2026) with an
+evidence-led whole-library assessment, 18 quality areas and seven delivery
+milestones. The [assessment record](../verification/library-professional-standards-20261008.json)
+contains the inspected inventory, executable receipts, findings and evidence
+limits. This is a plan; runtime repairs and release remain later work.
 
 **28 September update:** [LIB-MEMBER-WORKFLOW-002](multilayer-member-workflow.md)
 adds the complete multilayer case and supersedes the physical centroid-capacity
@@ -928,3 +941,588 @@ current full-stack verdict or release authority. The broader proposed G1
 matrix still needs row-level advanced/native evidence and scope decisions.
 There is no confirmed code repair to queue from these checks. The parent owns
 the optional solver-supporting versus broader-library direction decision.
+
+## Next-version proposal — 6 October 2026
+
+**Type:** Plan
+
+**Audience:** Library owner, developers and engineering reviewers
+
+**Status:** Draft proposal; planning requested, implementation scope not selected
+
+**Importance:** High
+
+**Created:** 2026-10-06
+
+**Last Updated:** 2026-10-06
+
+### Recommendation and intended user outcome
+
+Plan **v0.26.0: accuracy and professional quality** around dependable supported
+workflows. A user should be able to install one exact version, supply explicit
+engineering inputs, obtain an honest calculation outcome, inspect its basis,
+and carry the same result through JSON, assessment, BBS and reports.
+
+The mandatory candidate consists of the confirmed repairs below, numerical
+evidence for affected calculations, clearer caller contracts and consistent
+outputs. The highest-value proposed engineering addition is one bounded
+supplied rectangular member with concurrent bending, shear and torsion. Admit
+that addition only through the existing LIB-3 → LIB-4 evidence sequence.
+
+The version number is provisional. An additive public capability supports a
+minor release; if the selected deliverable contains only compatible repairs,
+use a patch release such as v0.25.1. Freeze the number before candidate and
+artifact preparation. This proposal does not authorize implementation, a tag,
+publication or professional approval, and does not revoke earlier approvals.
+
+### Current baseline and reused authority
+
+The [latest GitHub release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.25.0)
+and [PyPI package](https://pypi.org/project/structural-lib-is456/0.25.0/) were
+checked on 6 October 2026: v0.25.0 was published on 3 October. The fetched
+`origin/main` and clean local intake both resolve to
+`eb6f8b51988a3f9b26a10f07164aa958309d0d84`. Git-state `remote_freshness` remains
+`NOT_CHECKED`; the separate successful fetch and live release readback provide
+the dated remote evidence. No newer runtime change is assumed.
+
+Reuse these existing owners:
+
+- This document owns caller quality and the accepted single/multilayer member
+  work. Earlier dated observations remain historical; the September finding of
+  no repair to queue is superseded by the consumer reproductions below.
+- [Supported-scope completion](../verification/library-supported-scope-completion.md)
+  and [amendment impact](../verification/is456-amendment-impact.md) own accepted
+  corrections and unresolved source/material/applicability qualification.
+- [LIB-PRO-015](lib-pro-015-professional-api-and-documentation-renewal-plan.md)
+  supplies reference/migration patterns. Its August inventory is historical;
+  completed facade documentation and typed-builder work must not be repeated.
+- [LIB-1](https://pravinsurawase.atlassian.net/browse/LIB-1) through
+  [LIB-6](https://pravinsurawase.atlassian.net/browse/LIB-6) retain the existing
+  readiness → torsion evidence → physical member → delivery sequence.
+  LIB-2 readiness is present in the released source and
+  [public example](../../Python/examples/member_readiness_workflow.py).
+  Jira still reports all six tickets as To Do, with LIB-2's description saying
+  not started. Reconcile that mismatch against delivery evidence before using
+  tracker state to choose implementation; do not rebuild LIB-2.
+
+Keep the 13 existing family journeys and their individual supported/advanced/
+held classifications. The earlier consumer audit reproduced 11 PASS journeys,
+one intentional FAIL and one intentional HOLD; those outcomes are retention
+controls, not complete numerical qualification of every family.
+
+### Mandatory corrections, in outcome order
+
+| ID / priority | Confirmed main-process defect and root cause | Maintained owner | Required corrected outcome |
+|---|---|---|---|
+| Q-F01 / P0 | An admitted overloaded beam reaches engineering FAIL, but compliance produces infinite utilization and canonical output raises `CalculationError`. Reproduced on 6 October with `mu_knm=2000`, `vu_kn=75`, 300 × 500 mm, `d_mm=457`, M25/Fe500. | [Compliance](../../Python/structural_lib/codes/is456/compliance.py), [shear](../../Python/structural_lib/codes/is456/beam/shear.py), [canonical beam result](../../Python/structural_lib/services/canonical_beam.py) | Valid FAIL/HOLD remains inspectable and serializes as standards-compliant JSON with a typed unavailable value/reason where a ratio is undefined. Preserve the decisive status and issues; never clamp to PASS or permit Infinity/NaN. Review compatibility before selecting the representation. |
+| Q-F04 / P0 | `smart` accepts pipeline JSON but reads nested geometry/materials as flat fields, substituting defaults. Reproduced on 6 October: supplied 444 mm depth/40 mm cover become 450 mm/30 mm; generated bars need 454 mm. | [`cmd_smart`](../../Python/structural_lib/__main__.py) and the existing [pipeline result owner](../../Python/structural_lib/services/beam_pipeline.py) | Consume the maintained result/deserializer and retain member identity, geometry, material, actions, reinforcement/depth and source basis. Reject unsupported schema or absent required facts before recalculation; do not silently invent design inputs. |
+| Q-F02 / P1 | The shipped five-beam CSV fails at the first generated layout: strength depth 460 mm versus bar centroid 444 mm. Reproduced on 6 October. The earlier beginner replay failed for the same reason. | [Sample CSV](../../Python/examples/sample_beam_design.csv), [quickstart](../getting-started/python-quickstart.md), [depth binding](../../Python/structural_lib/services/beam_detailing_binding.py) | Every advertised starter case completes its promised design/detail/BBS/export journey using internally consistent inputs. Keep effective-depth validation; use explicit supplied or derived depth with the actual reinforcement basis. |
+| Q-F03 / P1 | The current quickstart installs base 0.25.0 but three optional/Colab commands pin 0.24.0 and its sample link points to that older tag. Reconfirmed in current source on 6 October. | [Quickstart](../getting-started/python-quickstart.md) and maintained release/version generation | Base, extras, Colab, example links and publication statements agree on the selected candidate. Resolver replay retains its exact version; fix the maintained generation/check boundary where it owns these pins. |
+| Q-F05 / P1 | The consumer audit's rendered PDF clips the section-depth label. Current SVG still places the label at x=264 inside a 300-wide viewBox, with no reserved annotation width. | [Report SVG](../../Python/structural_lib/services/report_svg.py), [report service](../../Python/structural_lib/services/report.py) | Dimension labels and units are fully visible in rendered HTML/PDF at ordinary size. Bind the candidate visual check to the actual exported file. The earlier PDF observation and present source binding are evidence; a fresh PDF replay is still required during implementation. |
+
+The October consumer audit was an installed-package exercise on one Mac with
+Python 3.11.15. It supplies concrete triggers, not whole-library acceptance.
+The present planning pass reproduced Q-F01/Q-F02/Q-F04 and inspected current
+Q-F03/Q-F05 owners. No implementation repair or new test was made in this pass.
+
+### Milestones and acceptance
+
+Use one implementation stream and one release scope. Responsible roles below
+are ownership requirements, not staffing assignments or agent-spawn requests.
+
+| Milestone | Deliverable and role | Measurable exit | Dependency |
+|---|---|---|---|
+| Q0 — Freeze the candidate scope | Owner and implementer bind the version, touched workflows, maintained callers, source editions/amendments, compatibility and unresolved holds. | Every selected change has an owner, reproducer or explicit product requirement, acceptance row and focused command. Retain completed work; reconcile LIB-2/LIB-5 delivery history without duplicating tickets. | Scope selection; current baseline above. |
+| Q1 — Correct result and assessment flow | Implementer fixes Q-F01/Q-F04 at their existing calculation/result/adapter owners. | Nominal PASS, valid engineering FAIL/HOLD and invalid-input rejection retain distinct outcomes across affected Python/JSON/CLI/HTTP callers. `smart` receives the exact original engineering basis or rejects it explicitly. | Q0. |
+| Q2 — Make first use and outputs dependable | Implementer/documentation owner completes Q-F02/Q-F03/Q-F05 and their maintained generation/check paths. | Unedited advertised examples finish their promised journeys; extras keep the candidate version; emitted BBS/drawings/reports agree on member, bars, dimensions and status; all required labels are visible. | Q1 for producer/consumer fixtures. |
+| Q3 — Qualify affected engineering behavior | Engineering evidence owner freezes and checks independent references for any numerical or applicability change. | Every changed engineering branch has exact source/case identity, independent expected values, justified tolerances, nominal/boundary/failure controls and an explicit verdict. Unchanged accepted benchmarks remain controls; disagreement is resolved at the calculation owner. | Frozen Q1/Q2 calculation behavior. |
+| Q4 — Improve professional consumption | Implementer/documentation owner extends existing contracts and reports only for selected caller needs below. | Selected public operations have accurate typed signatures, field basis, limitations, error/status examples and executable help. A result explains which checks ran, failed or were held and why; transport/export preserves its input and source identity. | Q1–Q3; demonstrated caller gaps. |
+| Q5 — Deliver the exact candidate | Release owner assembles migration/examples, reviewed candidate and artifact evidence using the existing release workflow. | Required hosted checks pass on the reviewed head; clean installed wheel reproduces promoted journeys and failures; source/wheel/sdist/tag/index identity matches; release authorization is recorded for this version. | Q1–Q4; optional feature only if admitted. |
+
+Q1/Q2 are mandatory fixes. Q3 is an accuracy gate for affected scope. Q4 is
+selected product completion, not a repository-wide API rewrite. Q5 retains
+the repository's software-release and professional-review distinction.
+
+### Additional points worth including
+
+Select these as user-facing improvements to existing owners, rather than
+inventing more calculation wrappers:
+
+1. **A coherent calculation dossier.** Carry input/depth basis, load role,
+   governing case, source/method revision, actual supplied reinforcement,
+   required/provided values, per-check verdict and review state from the
+   existing result to JSON and the report. Reuse current member/reporting
+   contracts. Add a projection only when a real consumer loses a required fact.
+2. **Actionable readiness and failures.** Surface the existing missing-input
+   and unsupported-profile diagnostics beside each requested member. Preserve
+   supplied zero versus absent, assumption versus source fact, and current
+   versus stale result. Every requested member remains accounted for.
+3. **One dependable recommended entry path.** Keep
+   `structural_lib.design.is456.<family>` for new integrations. Generate
+   reference/examples from the selected live contracts, document migrations,
+   and retain compatibility calls. Do not revive historical documentation debt
+   already closed by PRs #1006–#1010.
+4. **A shipped worked accuracy case.** Extend existing ordinary/multilayer
+   examples with the selected source-bound comparison and artifact receipt.
+   A user can replay the same inputs and inspect how the result was checked.
+   A worked case does not grant a general support or professional-use claim.
+
+A small runtime baseline should accompany any claimed performance improvement:
+same machine/runtime, input, process boundaries and before/after distribution.
+Do not optimize unmeasured code or add dependencies to meet an invented target.
+
+### Conditional engineering addition: concurrent bending, shear and torsion
+
+Reuse [LIB-3](https://pravinsurawase.atlassian.net/browse/LIB-3) to freeze one
+ordinary non-seismic rectangular supplied member with single-layer aligned
+longitudinal bars and actual closed links, using concurrent same-row M3/V2/T.
+Source/method, units/axes/signs, ranges, both faces, torsional support/load path,
+serviceability, anchorage/continuity, bar fit and construction outputs must all
+have an accepted applicability and evidence basis.
+
+After accepted LIB-3 evidence and separate implementation selection,
+[LIB-4](https://pravinsurawase.atlassian.net/browse/LIB-4) may carry that member
+through existing strength, physical bars/paths, BBS, quantities and report.
+Keep the existing operation/leaf owners; a second torsion wrapper adds no
+value. Retain exclusions for axial, weak-axis/biaxial action, arbitrary layouts,
+splice/cutoff cases, changed stiffness and automatic search expansion.
+
+Exit requires an independently reviewed complete required-check matrix,
+finite PASS/FAIL/HOLD transport, physical bar/BBS/report agreement and exact
+installed-wheel replay. If any essential source, SLS, support or physical
+obligation remains missing, record HOLD with resolver and resume condition;
+do not advertise a completed torsion member or make it block delivery of the
+separately selected mandatory quality repairs.
+
+[LIB-5](https://pravinsurawase.atlassian.net/browse/LIB-5) supplies examples and
+migration evidence for the actual selected scope, extending what v0.25.0
+already shipped. [LIB-6](https://pravinsurawase.atlassian.net/browse/LIB-6)
+remains a separate conditional installed force/station pilot.
+
+### Focused verification and release gates
+
+Implementation packets complete code, tests, documentation and intended output
+changes before one affected verification batch. The following existing owners
+provide starting commands; Q0 narrows test nodes and adds meaningful regression
+cases for the confirmed defects during implementation, not during this plan:
+
+```bash
+# Q1: finite result semantics and faithful producer/consumer composition
+./scripts/python_runtime.sh -m pytest --no-cov -q \
+  Python/tests/unit/test_compliance.py \
+  Python/tests/integration/test_canonical_beam_facade.py \
+  Python/tests/integration/test_canonical_transport_contract_v1.py \
+  Python/tests/integration/test_cli.py \
+  Python/tests/integration/test_smart_designer.py
+
+# Q2: depth binding and generated output behavior
+./scripts/python_runtime.sh -m pytest --no-cov -q \
+  Python/tests/integration/test_job_cli.py \
+  Python/tests/integration/test_cli_report_regression.py \
+  Python/tests/test_report_svg.py
+
+# Q4/Q5: current generated examples, documentation and changed-area checks
+./scripts/python_runtime.sh scripts/generate_family_facade_docs.py --check
+./run.sh check
+```
+
+Render and inspect the affected PDF/drawing; text extraction cannot prove
+visible annotations. Extend existing independent benchmarks only where a
+selected numerical branch or support claim changes. Freeze tolerances before
+comparison, disclose shared reference lineage, and preserve failures. Run the
+union of affected tests once on the final integrated candidate and required
+hosted checks once per candidate; repeat affected evidence after a repair.
+
+At release freeze, run the broad Python regression suite once for the concrete
+risk of shared result/serialization and engineering-owner changes across
+families. Use existing source/artifact verifiers for all 13 retained journeys,
+their negatives and the repaired caller examples. Prove installed `site-packages`
+origin without repository import paths, including affected CLI/HTTP adapters
+and selected extras. Independent-reference acceptance and visible export
+checks remain necessary even when all tests pass.
+
+Use existing release preflight, exact-wheel verification and publication-surface
+checks with the chosen version. Bind review, required checks, TestPyPI, final
+wheel/sdist hashes, owner authorization, merge/tag and PyPI/GitHub readback to
+the exact candidate. A normal software release does not imply qualified
+structural-engineering review; any professional-use claim needs the separate
+frozen-scope qualified review and recorded acceptance.
+
+### Scope, delivery order and next decision
+
+Solver continues to own structural analysis; Library owns member design,
+reinforcement/detailing and construction outputs. The six-phase beam/ETABS
+programme and separate XLL learning/product track keep their own authority.
+This release proposal adds no new code family, steel design, general building
+solver, global optimization, ETABS model mutation, UI redesign or installed
+Excel/XLL qualification. Current source/amendment/material/host holds remain
+visible. Owner permission for required normalized IS data and public
+distribution is already recorded; do not reopen that permission gate.
+
+The [draft 50-day plan PR #1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019)
+is still open, based at `96170d81`, head
+`d8ca7ff99491237bbed34c0e5b6900575b5b5bed`. Its six paths include this document
+and its calendar/capacity decisions remain unconfirmed. This proposal preserves
+that draft and selects no dates or daily capacity. Before publishing/integrating
+an overlapping planning packet, integrate the predecessor or explicitly replan
+and rebind the affected candidate to current main. This planning branch does
+not authorize merging or closing #1019 or disposing of another worktree.
+
+Recommended execution order: **Q0 → Q1 → Q2 → Q3 → Q4 → Q5**. LIB-3 evidence
+can be prepared once selected; LIB-4 enters only after its evidence gate.
+The inherited LIB-3/LIB-4 estimate is 14–25 active human engineering workdays,
+with low confidence and external waits excluded; it is not Codex elapsed time
+or a calendar commitment. Estimate the mandatory quality scope after Q0 names
+the affected callers and required independent references; do not reuse the
+unconfirmed 50-day schedule as a release promise.
+
+The next owner decision is concrete: select the mandatory quality candidate
+and Q4 additions, then decide whether to prepare LIB-3 evidence for this minor
+release or retain the torsion member as a later gated extension. Implementation
+and per-version release authorization remain later decisions. The present
+deliverable is the completed proposal and its planning validation.
+
+## Professional standards programme — 8 October 2026 (revision 2)
+
+The next version should be dependable for a developer, an engineer and an
+automated caller from installation through an inspectable result. This revision
+expands the six-milestone proposal above into a whole-library quality programme:
+public APIs, signatures, admission, schemas, errors, documentation, examples,
+coding practices, engineering qualification, physical outputs, adapters,
+packaging and release evidence. It retains Q-F01–Q-F05 and the separately gated
+LIB-3/LIB-4 extension. **S0–S6 below are the current execution sequence**;
+Q0–Q5 remain the earlier proposal and its reusable defect details.
+
+Candidate version **0.26.0 is provisional**. A compatibility review determines
+whether the selected changes fit that version and whether a schema migration
+is required. No date, capacity, new code family or professional-use approval is
+implied by this plan. Existing accepted capabilities should be made more
+reliable before adding another advertised workflow.
+
+### Applicable standards and authority
+
+“All standards” means a declared, applicable profile with an evidence boundary,
+not a claim of universal certification. S0 expands the register whenever a
+maintained consumer, supported platform or selected engineering claim adds a
+relevant obligation. Evaluate both the written obligation and the actual
+main-process behavior. Classify a confirmed defect, an approved compatibility
+exception, an advisory practice and an untested claim separately.
+
+| Authority | Application and evidence |
+| --- | --- |
+| Repository contract | [AGENTS.md](../../AGENTS.md), maintained path rules, control plane, canonical documentation registry and Git workflow govern execution and architecture. Reconcile subordinate active guides; do not follow obsolete examples as authority. |
+| Python practices and typing | [PEP 8](https://peps.python.org/pep-0008/), [PEP 257](https://peps.python.org/pep-0257/) and the [typing specification](https://typing.python.org/en/latest/spec/) inform configured style, public annotations and useful documentation. Record project exceptions. Retain the current rendered NumPy docstring convention rather than rewriting valid documentation for style alone. |
+| Public HTTP and JSON | Check the actual emitted [OpenAPI 3.1.0](https://spec.openapis.org/oas/v3.1.0), [JSON Schema 2020-12](https://json-schema.org/draft/2020-12/json-schema-core) and [RFC 8259 JSON](https://www.rfc-editor.org/rfc/rfc8259) boundaries. Schema validity, instance admission and engineering meaning are three separate checks. |
+| Packaging and compatibility | Apply [PyPA project metadata](https://packaging.python.org/en/latest/specifications/pyproject-toml/) and [version specifiers](https://packaging.python.org/en/latest/specifications/version-specifiers/), the current API taxonomy and the explicitly declared project compatibility policy. A snapshot update alone does not approve a breaking change. |
+| Engineering sources | Freeze applicable IS editions/amendments, clauses/tables, cases, assumptions, limits, units and tolerances per promoted claim. Preserve provenance and independent reference lineage. Software checks do not establish qualified engineering acceptance. |
+| Distribution and release | Required normalized IS data/public-distribution permission is already passed in the [owner record](../verification/is456-public-distribution-permission.json). Exact-candidate release authorization, engineering acceptance and installed/native-host acceptance retain their separate gates. |
+
+### Current assessment and what it proves
+
+The assessment is bound to released **v0.25.0**, source
+`eb6f8b51988a3f9b26a10f07164aa958309d0d84`, and planning head
+`7f1429501bb30d69b51b8833b84d10d65a551423`. The release was rechecked live;
+the current source contains the same library implementation. The branch has
+only planning changes at intake. A completed fetch is recorded separately;
+the Git-state receipt still labels remote freshness `NOT_CHECKED` and must not
+be represented as fresh-remote proof.
+
+The durable [assessment JSON](../verification/library-professional-standards-20261008.json)
+records commands, scopes, hashes, results and limits. Its six-root guidance
+inventory contains **127 files, including 118 Markdown documents and 705 Python
+fences**. Inventory is complete for those named roots, while semantic review
+was targeted. Instructions, skills, CI and registries were inspected separately;
+S0 must finish the applicable-authority census, including release, security and
+platform guidance outside those roots. Do not call all 705 cells executed or
+all documents semantically accepted.
+
+| Assessment | Observed result | Practical limit |
+| --- | --- | --- |
+| Configured formatting, lint and typing | Black: 325 files unchanged; Ruff: zero diagnostics; mypy: 325 source files pass. | Configuration-bound software checks; not proof of mathematical accuracy. |
+| Four-layer imports | Architecture check passes over 268 files: 31 core, 87 IS-code, 89 services, 61 UI. | Static boundary check, not every runtime path. |
+| Additional code controls | Custom annotations: 217 files / 1,950 functions pass. Function-quality scanner: 89 decorated functions, zero mandatory failures, 401 advisory observations. | The custom annotation subset is smaller than mypy's population. Advisory observations are not 401 defects; the scanner does not qualify every calculation. |
+| Standalone examples | All 17 current scripts exit successfully for their recorded invocation and scratch outputs. | Not every internal branch, the CSV job CLI or an independent engineering benchmark. |
+| Canonical family recipes | All 13 current positive round trips and their declared invalid cases pass the maintained verifier; intentional two-way slab FAIL and staircase HOLD remain visible. | One negative per recipe is not complete input admission coverage or new support authorization. |
+| Published copy-paste pages | 12 of 13 pages pass; 26 of 27 sequential Python cells pass. The beam engineering FAIL cell raises `CalculationError` for `inf`. | This is a fresh main-process failure, Q-F01. Generation consistency had passed without executing this failing cell. |
+| Public API inventory | 11 family modules / 60 function projections; 245 compatibility exports / 115 functions; 14 classified surfaces / 1,308 projections. | Projections are not 1,308 separately promoted end-user workflows. |
+| Signature policy | 32 compatibility functions exceed the guide's three-positional-parameter rule. | Classify retained exceptions or migrations; do not break legacy callers to satisfy a style rule. No numerical defect follows from this count. |
+| HTTP/schema inventory | 92 operations, 91 paths, 487 component schemas; all 487 pass Draft 2020-12 meta-validation and the maintained snapshot matches. | Meta-validation does not prove units, admission semantics, response meaning or compatibility. WebSocket evidence is separate. |
+| HTTP documentation signals | 12 operations lack descriptions; 3,054 of 3,955 direct component properties lack descriptions; 146 have an inline example. | Inventory signals to triage by field/consumer role, not counts of confirmed calculation defects. |
+| Existing contract checks | API binding and compatibility checks pass. Legacy schema snapshots cover five models and two enums. 32 React production callsites in 12 files match path/method. Twelve focused transport tests pass. | Snapshot/path checks and 12 tests do not establish full semantic or runtime parity across every HTTP operation. |
+| Guidance structure | Metadata, indexes, instruction composition and local links pass; 606 Markdown files / 1,847 local targets, zero broken targets in that check. | Active guide contradictions survive these structural checks. |
+
+This assessment did not rerun the broad Python/FastAPI/React suites, install a
+new wheel, qualify native Excel/ETABS/XLL execution, run candidate hosted checks,
+or obtain qualified professional acceptance. The older consumer PDF is bound
+to its original audit and present source; a fresh affected PDF remains required.
+The caller ledger was stale at intake because the 6 October plan added a
+maintained reference. Regenerate that derived record after this planning packet
+freezes; this is documentation consistency, not a runtime API migration.
+
+### Findings and dispositions
+
+Reuse the five confirmed consumer issues [above](#mandatory-corrections-in-outcome-order)
+at their existing root-cause owners. Q-F01 and Q-F04 are P0 because a legitimate
+engineering outcome becomes uninspectable or the caller's design basis changes.
+Q-F02, Q-F03 and Q-F05 are P1 first-use/output defects. Never fix them by
+weakening effective-depth checks, allowing non-finite JSON or hiding FAIL/HOLD.
+
+| Additional item | Classification and consequence | Planned closure |
+| --- | --- | --- |
+| PS-F06 — active coding guide contradicts architecture/execution | P1 confirmed guidance conflict. [Agent coding standards](../contributing/agent-coding-standards.md) says three layers and routes to retired UI paths; it also presents unbound commands and mutating validation. This can send the main implementation process to the wrong owner. | Reconcile this canonical guide with four-layer ownership, runtime binding and scoped frozen verification. Classify illustrative templates; current command examples must execute in their declared directory. |
+| PS-F07 — public stability guide conflicts with current API | P1 confirmed guidance conflict. [Library Contract](../reference/library-contract.md) is active, calls the library beam-only/production-ready and recommends older orchestration entrypoints, while [current API levels](../reference/api-levels.md) promote typed family facades. | Establish one current support/version/compatibility policy and label historical v1 aspirations. Every recommended entrypoint must agree with the maintained classification and declared release channel. |
+| PS-O01 — signature deviations | Policy deviations, not automatically runtime defects. Existing callers may rely on positional forms. | For all 32, choose a retained documented exception or a separately reviewed migration; new promoted signatures follow the selected standard. |
+| PS-O02 — operation/property documentation gaps | Measured inventory; missing prose alone is not an engineering failure. | Prioritize fields whose undocumented units, roles, defaults or admissibility can change the caller's result. Reuse shared schema descriptions where appropriate. |
+| PS-O03 — legacy coercion | A wall HTTP model accepts a numeric string and converts it to a float; canonical strict admission is not universal. No wrong result was demonstrated by this observation. | Declare strict/coercing policy per boundary and test semantically meaningful cases. Preserve supported legacy conversion through an explicit adapter if selected. |
+| PS-O04/05 — assurance controls overstate their reach | Generated recipe checks pass while the promoted FAIL cell crashes. Snapshots detect drift; route matching does not prove payload meaning; decorated scanners cover a subset. | Tie each public claim to an executing outcome gate and publish the checked population. Avoid calling a narrow check whole-library acceptance. |
+
+### Eighteen areas with measurable candidate gates
+
+Every area needs an accountable named person at S0; the role below identifies
+the maintained owner, not a new service or mandatory agent process. `PASS`
+requires its selected scope and evidence. `PARTIAL`, `FAIL`, `HOLD` and
+`NOT_RUN` must remain visible. Do not report an overall percentage that averages
+away a P0 defect or an engineering hold.
+
+| ID / area | Accountable role and priority | Acceptance on the selected candidate |
+| --- | --- | --- |
+| PS-01 — authority and guides | Governance/documentation; P1 | All applicable active guidance is inventoried with owner, authority and current/historical disposition. Resolve outcome-changing conflicts and link one maintained source for each rule. Include scoped instructions, workflow skills and platform/release guides. |
+| PS-02 — API ownership/discovery | API owner; P1 | Every maintained public projection maps to its canonical owner, intended consumer and support class. Every promoted journey has a complete callable recipe and one authoritative reference. Keep compatibility/internal helpers clearly scoped. |
+| PS-03 — signatures/units/typing | API and compatibility; P1 | Compare callable signature, manifest, IDE annotations, request schema and rendered documentation. Check parameter names, units, order, keyword policy, defaults and return/error types. Dispose of all 32 legacy deviations without an unapproved caller break. |
+| PS-04 — input admission | Request/domain owner; P0 for changed basis | Per contract: required/default/null/extra-field/type/coercion/enum/finite/range/cross-field rules are explicit. Geometry, actions, materials and reinforcement provenance survive loading. Meaningful rejected cases identify exact field paths and stable issue codes. |
+| PS-05 — schema semantics/evolution | Contract/transport; P1 | Classify every schema's role and owner; validate schema and positive/negative instances. Test round trips, references, discriminators, defaults, nullability and unknown fields. Review semantic/signature/schema diffs before updating snapshots; breaking changes have an approved version/migration. |
+| PS-06 — results/status/errors | Result/domain; P0 | Admitted PASS/FAIL/HOLD always yields finite inspectable output. Distinguish intake rejection, calculation failure, engineering status, completeness, freshness and approval. Undefined quantities have a typed reason. Preserve error identity and member/source basis across callers. |
+| PS-07 — documentation/help | Documentation/API; P1 | Promoted API docstrings and guides state purpose, units, parameter/return/error meaning, assumptions, supported cases, limitations and code basis. Generated reference agrees with source. Installation, extras, Colab and examples use the exact released candidate. |
+| PS-08 — examples/first use | Consumer/documentation; P1 | Classify every indexed code cell as standalone, sequential, fragment, template or historical. Every advertised runnable script/cell has invocation, prerequisites and asserted expected outcome; execute promoted recipes against source and clean-installed artifact, including meaningful valid FAIL/HOLD and rejected intake. |
+| PS-09 — transports/clients | HTTP/CLI/WebSocket/React owners; P0 for basis | Disposition all 92 HTTP operations and declared CLI/WebSocket/client flows. Execute promoted paths and selected maintenance operations. Compare actual payloads/errors/units/statuses and member identity, not only route names. Authentication/mutation/async boundaries follow existing applicable contracts. |
+| PS-10 — architecture/coding | Core/services maintainers; P1 | Changed code preserves Core ← IS-code ← Services ← UI, pure mathematics, explicit units, deterministic results and existing shared helpers. Configured format/lint/type and affected architecture checks pass. Review changed main-process behavior without a generic style rewrite. |
+| PS-11 — engineering accuracy | Domain owner + qualified independent reviewer; P0 for claims | Each promoted branch binds exact source edition/amendment/case, formulas/tables, units, assumptions and exclusions. Freeze reference lineage and tolerances before comparison. Accept meaningful normal/limit/failure cases and preserve unsupported/insufficient-evidence HOLD. |
+| PS-12 — detailing/exports | Physical-detailing/output; P1 | Calculation, physical bars, centroid/per-bar capacity, cover/spacing, BBS, drawings and report share the same member/input basis. Inspect exact rendered exports for dimensions, units and status. Invalid physical combinations remain rejected. |
+| PS-13 — package/install | Packaging; P1 | Exact wheel/sdist includes correct metadata, typing marker/data, declared dependencies and selected extras. Clean installs on the declared Python/platform matrix execute advertised workflows with site-packages origin and no repository imports. Base imports do not require undeclared extras. |
+| PS-14 — compatibility/migration | Compatibility; P1 | Canonical owner/projection/caller ledger reconciles and known callers are replayed for selected changes. Each intentional semantic, signature, schema or artifact-format change has a migration/disposition; no unapproved public break. |
+| PS-15 — verification/CI | Test/CI; P1 | Every promised candidate claim maps to a meaningful existing or affected outcome gate and published population. Execute examples rather than only generating them. Numerical changes include independent benchmarks. Required hosted checks use the frozen final head; changed-area tests are batched. |
+| PS-16 — performance/resources | Workflow/performance; P2 unless blocking use | Measure named representative imports and workflows, including batch/serialization behavior. Freeze meaningful baselines and limits; optimize only after correctness. No cap weakening or relaxed engineering tolerance to obtain a pass. |
+| PS-17 — security/distribution | Security/release; P1 for applicable exposure | Use existing security policies and required checks for exposed services, file/adapters and package provenance. Disposition consequential known findings; verify dependency/artifact identity. Avoid unrelated hardening or speculative checklist expansion. |
+| PS-18 — end-to-end/release | Release owner + separate qualified reviewer; P0 release gate | Exact installed final candidate completes selected caller journeys and affected visible outputs; required checks and per-version owner authorization pass. Report engineering/professional/native-host acceptance separately and publish only supported claims. |
+
+“Every” above means the declared population: all maintained projections are
+classified, all applicable guides are dispositioned, and every advertised
+runnable example is assigned and executed or explicitly demoted/withdrawn.
+It does not require a separate bespoke example for every private helper or
+calling an unsupported engineering route qualified. Existing valid HOLD
+outputs are evidence of honest boundaries, not release defects by themselves.
+
+### Contract and example assessment records
+
+S0 creates a current per-contract matrix using existing manifests, schema
+snapshots, compatibility ledger and family evidence records. Extend maintained
+owners rather than creating a competing catalogue. Required columns:
+
+- **Identity:** public module/operation, canonical owner, supported caller,
+  release/support class, request/result/error version and source hash.
+- **Signature:** exact parameter names/order/kinds, explicit units, types,
+  required/default behavior, return type, exception/error identity and retained
+  compatibility exception if applicable.
+- **Admission:** missing/null/unknown/duplicate fields; booleans versus numbers,
+  numeric strings, finite values, enums/ranges; relevant geometry/material/action
+  relationships and explicit supplied/derived facts. A case is required when
+  its outcome can change the advertised main process.
+- **Result:** valid nominal outcome, meaningful admitted engineering FAIL/HOLD,
+  invalid intake and calculation failure; finite JSON round trip; completeness,
+  freshness, approval and provenance; cross-caller meaning.
+- **Engineering/output:** applicable source/case, assumptions and exclusions,
+  independent reference/tolerance, physical basis, exact rendered artifact when
+  advertised, reviewer and acceptance boundary.
+- **Example:** guide/script and cell identity, executable class, preceding-cell
+  dependencies, prerequisites/extras, command/runtime, expected outcome, actual
+  assertions, source/artifact identity and replay receipt.
+
+Use the 13 current family journeys as the first promoted contract population,
+then the remaining promoted family operations and complete-member/readiness
+workflows. Classify all 60 family function projections and 115 compatibility
+functions; builders, loaders, calculations and exports have different case
+obligations. Classify the 92 HTTP operations into design, query, import/export,
+workflow and mutation roles so a model-definition endpoint is not mistaken for
+a qualified calculation endpoint. Review the separate WebSocket contract.
+
+The initial 705-fence census is a starting denominator, not a permanent
+execution list. Record each fence's file/hash and position, then its executable
+class and expected outcome. Sequential notebook/tutorial cells run with their
+declared context; templates and intentionally invalid snippets need explicit
+labels. After repairs, require **zero unexpected failures among advertised
+runnable examples**. Execute the shipped CSV job workflow as well as the 17
+script invocations; their current script passes did not resolve Q-F02.
+
+For API documentation, cover fields by semantic role and reuse shared owners:
+identity; geometry/units; materials; actions and sign convention; physical
+reinforcement; source/case; schema/version; result/status; freshness/approval;
+errors. An undocumented hidden engineering default is more consequential than
+a missing description on a generated wrapper identifier. Triage the measured
+3,054 missing descriptions accordingly, and publish disposition counts.
+
+### Delivery milestones, dependencies and completion evidence
+
+| Milestone | Deliverable and accountable roles | Dependency / exit gate |
+| --- | --- | --- |
+| S0 — freeze scope and authority | Parent/API/domain owners select the quality candidate; finish the guide/authority and contract census; name owners, support populations, applicable standards, compatibility exceptions, source/reviewer dependencies and measurements. Resolve overlap with draft #1019 before publication/integration. | Current source identity and scope approved; all 18 areas have owned obligations and honest current states. No calendar promise from the unconfirmed 50-day draft. |
+| S1 — repair outcome and input fidelity | Result/adapter owners implement Q-F01/Q-F04 at the calculation/result and producer/consumer owners. Cover finite FAIL/HOLD, explicit unavailable quantities and faithful deserialization. | S0. Affected Python/JSON/CLI/HTTP outcomes retain identity/basis/status; meaningful regression cases and compatibility review pass. |
+| S2 — dependable first use and guidance | Documentation/output owners complete Q-F02/Q-F03/Q-F05/PS-F06/PS-F07; reconcile active guides, version pins and physical starter inputs; execute promoted cells and inspect affected PDF/drawings. | S1 for shared fixtures. Advertised first-use workflows complete; active instructions route correctly; rendered exports preserve visible dimensions/units/status. |
+| S3 — complete public contracts | API/schema/adapter owners finish PS-02–PS-09/PS-14 matrices across declared populations. Resolve signature exceptions, semantic field documentation, input coercion policies and schema evolution; execute selected cross-caller outcomes. | S1/S2. No ambiguous promoted owner, undocumented outcome-changing default, unexplained public drift or unapproved compatibility break. Snapshots and ledger regenerate only after semantic review. |
+| S4 — qualify engineering and outputs | Domain owners and qualified independent reviewer accept selected existing support claims and affected calculation branches, physical detailing and export basis. Reuse LIB-2 evidence without reopening its completed implementation. | Frozen sources, tolerances and references. A numerical change is accepted only for its exercised scope; source/host/engineering holds remain explicit. LIB-3 evidence and LIB-4 torsion enter only if separately selected and their existing gates pass. |
+| S5 — freeze and verify the integrated artifact | Packaging/test owners freeze implementation/docs, run the union of focused evidence and affected independent benchmarks; verify clean installed base/extras and representative performance; run named release regression and required hosted checks. | S1–S4 accepted for candidate scope. Exact wheel/sdist/source/head identities agree; runnable examples and affected outputs pass on the artifact; all exclusions and holds are published. |
+| S6 — authorize and release the exact candidate | Release owner completes existing release preflight, TestPyPI/exact-wheel verification, final version authorization, publication-surface verification and user-facing migration/support notes. | S5 plus per-release owner authorization and unchanged reviewed candidate. PyPI/GitHub readback matches hashes. Professional-use or native-host claims require their separate recorded acceptance. |
+
+S1 is the first runtime packet; this audit and plan do not start it. Within each
+selected milestone, implement its code, meaningful regression cases and intended
+documentation before one affected verification batch. Cohesive internal units
+may share one milestone PR when authority and installed/external gates permit.
+Reuse the focused test owners above and existing canonical transport, family,
+example, schema and export verifiers. Do not add a new check for every advisory
+inventory observation or rerun unchanged broad suites after every edit.
+
+At S5, one broad Python regression is justified by shared result/serialization
+changes and cross-family artifact acceptance. FastAPI/React checks apply to
+their maintained callers and changed semantic boundaries. Host-specific
+execution is included only when the candidate advertises that host. A skipped
+native run cannot become PASS through fixture or source parity.
+
+Estimate duration after S0 measures the contract/example population and names
+independent engineering/reviewer/host dependencies. Track active implementation
+effort separately from source/reviewer/external wait. Schedule S1/S2 before
+optional additions; a new workflow cannot compensate for an unresolved P0/P1
+consumer defect. The earlier LIB-3/LIB-4 estimate remains only that extension's
+low-confidence estimate, not this programme's total duration.
+
+### Evidence and release admission
+
+Each candidate receipt records requirement ID, owned population, exact source
+or artifact hash, runtime/command, expected and observed main-process outcome,
+status and limitation. A claim lacking its required receipt stays `NOT_RUN` or
+`HOLD`. Changing a calculation/reference after evidence freeze invalidates its
+affected acceptance and requires that evidence to be rerun; do not broaden
+testing when no changed behavior or unresolved concern justifies it.
+
+Release admission requires all of the following for the selected scope:
+
+1. Zero unresolved P0/P1 defects that prevent or misrepresent an advertised
+   main-process outcome; Q-F01–Q-F05 and PS-F06/PS-F07 have accepted closures.
+2. Complete owner/support disposition of maintained public projections,
+   applicable active guidance, schemas and advertised code examples. Promoted
+   examples have zero unexpected runtime failures and assert intended outcomes.
+3. Signature/schema/input/result/documentation agreement for every promoted
+   contract, with recorded legacy exceptions and approved migration semantics.
+   PASS/FAIL/HOLD and approval/freshness remain distinct and finite.
+4. Accepted affected independent engineering references and physical/output
+   evidence, exact limits and exclusions. No unsupported source/amendment/case
+   or native-host claim is silently promoted by a passing software test.
+5. Final installed wheel/sdist identity, source/adapter/extras evidence, required
+   hosted checks, applicable security/provenance gates and per-version release
+   authorization agree on the unchanged candidate.
+
+If source evidence is insufficient, freeze the affected claim as HOLD or remove
+it from promoted scope through an explicit decision. If compatibility would
+break, present the concrete migration/version choice before changing retained
+callers. Neither uncertainty nor a policy deviation authorizes substituting
+engineering inputs, weakening validation or raising safeguards.
+
+This revision delivers the expanded assessment and executable plan. Its runtime
+fixes, deeper per-contract qualification, clean candidate artifact, qualified
+review and release are future milestone work. It preserves the open draft
+[#1019](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1019),
+the separate solver/library ownership boundary, the six-phase beam programme
+and XLL track, and the existing torsion and native-host gates.
+
+## S0/S1 execution — 29 October 2026
+
+The owner selected S0 and S1 and both P0 corrections. The selected writer lane
+is `codex/lib-s0-s1-correctness`, based on current main
+`eb6f8b51988a3f9b26a10f07164aa958309d0d84` plus the retained reviewed planning
+head `9c30032debc38d315a150809f36a96a047ed654d`. Codex `/root` owns the packet,
+integration and finite-result repair; `/root/public_contract_audit` implements
+the bounded smart adapter; `/root/coding_guidance_audit` performs read-only
+software review. Pravin Surawase retains scope/release decisions. A qualified
+engineering reviewer for later S4 is not appointed or implied by these roles.
+
+### S0 scope and authority decision
+
+The [S0/S1 record](../verification/library-s0-s1-20261029.json) assigns all 18
+quality areas, binds their public populations to the maintained API/schema
+owners, and expands the earlier six-root inventory to 371 guide/reference,
+instruction, workflow and authority records. Its 24 curated authority records
+include path-scoped rules, conditional calculation workflows, actual CI,
+source-use permission and historical release authority. Inventory/assignment
+does not claim every guide is semantically accepted or every example executed.
+Six missing canonical reference paths are explicitly assigned to later guide
+reconciliation; none is used as the engineering source for this repair.
+
+AGENTS and scoped four-layer/source-bound rules govern S1 where the active
+coding guide conflicts. PS-F06/PS-F07 remain S2 documentation repairs. Required
+normalized-data/public-distribution permission is already PASSED. All 32
+positional-policy deviations remain retained compatibility exceptions for
+this packet; S3 decides broader migration and documentation.
+
+The current 18-area quality programme, selected by the owner, supersedes the
+overlapping quality portion of draft #1019 for this packet. The S0/S1 candidate
+is explicitly rebound to current main and the retained planning predecessor;
+the older draft/calendar is not a predecessor for these repairs. Preserve its
+open draft and unconfirmed capacity/calendar. Its overlapping content must be
+rebound to the integrated S0/S1 successor before later integration. No closing,
+merging, branch disposal or schedule approval is granted for #1019.
+
+### S1 contract and root-cause correction
+
+Q-F01 originates in an unavailable check: overload produces excess tension
+steel, the maintained Table 19 domain check fails, and compatibility compliance
+uses positive infinity for its unevaluated utilization and governing ranking.
+The generic canonical serializer rejects that sentinel. This repair preserves
+the native numeric/ranking contract and the decisive failed checks, while the
+domain-owned transport projects only known unavailable ratios to `null` plus
+`UTILIZATION_NOT_EVALUATED` and a reason at their exact field paths. A finite
+known ratio is unchanged. Unexpected NaN, negative infinity or unexplained
+positive infinity still fails serialization; no safety limit or table lookup
+is relaxed. No IS456 engineering formula, factor or tolerance changes.
+
+The finite projection covers canonical beam/composed results, compatibility
+compliance/report transport and pipeline JSON. The canonical Python,
+`beam-v1` CLI and FastAPI v2 route consume the same result. The affected retained
+smart HTTP route also carries nullable utilization with the typed unavailable
+reason; a valid failed calculation is not rejected as HTTP input error. Existing
+v1 beam-design display caps and broader schema/transport consistency remain S3 work; this
+packet does not claim all 92 operations have acquired new semantic parity.
+
+Q-F04 originates in a nested producer result being read as flat raw inputs.
+The strict `BeamDesignOutput.from_dict` owner restores current wrapped or
+standalone pipeline results without redesigning them or inventing facts.
+Identity, geometry, materials, actions, reinforcement/detailing, original
+`design_inputs`, depth receipt and result envelope are retained. Missing,
+unsupported, inconsistent or stale serialized results reject before smart
+analysis. Declared raw flat-input behavior remains separate and supported.
+
+The default smart path also replayed sensitivity from a partial input mapping,
+dropping compression depth, stirrup area and serviceability basis. It now uses
+the original calculation arguments, and refuses an unavailable baseline or
+perturbed finite-difference basis explicitly. The dashboard retains the source
+engineering FAIL/HOLD; unavailable sensitivity has a code/reason rather than
+NaN derivatives. Both reduced and default smart analyses are verification
+targets, so disabling optional analyses is not the completion criterion.
+
+### Verification and remaining gates
+
+Acceptance rows S0-A1–A3 and S1-A1–A6 live in the S0/S1 JSON record. Required
+evidence includes the actual published overload recipe, nominal and valid
+finite-failure retention, native governing-case ranking, unexpected non-finite
+error preservation, canonical CLI/HTTP parity, real-producer smart round trips,
+invalid serialized-basis rejection, original-input sensitivity replay and the
+default smart failure workflow. Retain the 13 family recipes and their existing
+PASS/FAIL/HOLD outcomes, and use existing serialization tests for the shared
+dataclass traversal risk.
+
+Finish the intended code/tests/docs, format changed files, run the union of
+focused checks once, then review the final candidate. Required changed-domain
+hosted checks and final integration must bind the same reviewed head. The JSON
+record captures local receipts; the pull request remains the authority for
+hosted-check, review and merge facts. The S5 broad release regression and exact
+installed-wheel qualification remain later work unless essential review exposes
+a concrete additional local risk. S2–S6, LIB-3/LIB-4 torsion, native-host runs,
+professional acceptance and per-version package publication remain outside this
+packet. There is no release authorization or claim of engineering-use approval.

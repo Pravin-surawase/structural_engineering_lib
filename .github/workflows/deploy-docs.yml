@@ -33,7 +33,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install "mkdocs-material>=9.5,<10" "mkdocstrings[python]>=0.25,<1"
+          pip install "mkdocs-material>=9.5,<10" "mkdocstrings[python]>=1.0.7,<2"
           pip install -e Python/
 
       # GitHub Pages is intentionally owner-configured. Until its settings and

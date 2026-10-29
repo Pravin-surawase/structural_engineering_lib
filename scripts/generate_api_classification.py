@@ -393,6 +393,33 @@ def _kind(value: object) -> str:
 def _normalize_signature_text(text: str) -> str:
     """Normalize typing alias spellings without rewriting literal values."""
 
+    tokens = list(tokenize.generate_tokens(io.StringIO(text).readline))
+    pydantic_replacements = []
+    for index in range(len(tokens) - 5):
+        metadata, open_paren, name, equals, value, close_paren = tokens[
+            index : index + 6
+        ]
+        if (
+            metadata.type == tokenize.NAME
+            and metadata.string == "_PydanticGeneralMetadata"
+            and open_paren.string == "("
+            and name.type == tokenize.NAME
+            and name.string == "allow_inf_nan"
+            and equals.string == "="
+            and value.type == tokenize.NAME
+            and value.string == "False"
+            and close_paren.string == ")"
+        ):
+            pydantic_replacements.append(
+                (
+                    metadata.start[1],
+                    close_paren.end[1],
+                    "AllowInfNan(allow_inf_nan=False)",
+                )
+            )
+    for start, end, replacement in reversed(pydantic_replacements):
+        text = text[:start] + replacement + text[end:]
+
     if "typing.Annotated[" not in text and "typing.Literal[" not in text:
         return text
     tokens = list(tokenize.generate_tokens(io.StringIO(text).readline))

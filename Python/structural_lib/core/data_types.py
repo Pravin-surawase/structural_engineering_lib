@@ -764,6 +764,37 @@ class CrackWidthResult:
     computed: dict[str, Any]
 
 
+def _utilization_transport_fields(
+    values: dict[str, float],
+    unavailable_reasons: dict[str, str],
+) -> tuple[dict[str, float | None], dict[str, dict[str, str]]]:
+    """Project known failed-check sentinels without inventing numeric ratios.
+
+    Native compliance results retain positive infinity for legacy ranking.
+    Only an explicitly unavailable check may project that sentinel to JSON
+    null. Unexpected NaN/infinities remain calculation errors.
+    """
+    projected: dict[str, float | None] = {}
+    unavailable: dict[str, dict[str, str]] = {}
+    for path, value in values.items():
+        if math.isfinite(value):
+            projected[path] = value
+        elif value == math.inf and path in unavailable_reasons:
+            projected[path] = None
+            unavailable[path] = {
+                "code": "UTILIZATION_NOT_EVALUATED",
+                "reason": unavailable_reasons[path],
+            }
+        else:
+            from .errors import CalculationError
+
+            raise CalculationError(
+                "Result contains an unexplained non-finite utilization.",
+                details={"path": path, "value": str(value)},
+            )
+    return projected, unavailable
+
+
 @dataclass
 class ComplianceCaseResult:
     case_id: str
@@ -814,8 +845,46 @@ class ComplianceCaseResult:
         return self.Vu_kn
 
     def to_dict(self) -> dict[str, Any]:
-        """Convert result to a plain dictionary for serialization."""
-        return asdict(self)
+        """Serialize failed-check ratios as null with explicit reasons.
+
+        Finite results retain their existing representation. The native float
+        fields remain compatible with callers that rank failed candidates.
+        """
+        result = asdict(self)
+        failed = {
+            "flexure": not self.flexure.is_safe,
+            "shear": not self.shear.is_safe,
+            "deflection": self.deflection is not None and not self.deflection.is_ok,
+            "crack_width": self.crack_width is not None and not self.crack_width.is_ok,
+            "torsion": self.torsion is not None and not self.torsion.is_safe,
+        }
+        reasons = {
+            f"utilizations.{name}": "; ".join(
+                text for text in self.failed_checks if text.split(" (", 1)[0] == name
+            )
+            or f"{name} check failed without an evaluated utilization."
+            for name, value in self.utilizations.items()
+            if not self.is_ok and failed.get(name, False) and value == math.inf
+        }
+        if reasons:
+            reasons["governing_utilization"] = (
+                "At least one governing check has no evaluated utilization."
+            )
+        values = {
+            "governing_utilization": self.governing_utilization,
+            **{
+                f"utilizations.{name}": value
+                for name, value in self.utilizations.items()
+            },
+        }
+        projected, unavailable = _utilization_transport_fields(values, reasons)
+        result["governing_utilization"] = projected["governing_utilization"]
+        result["utilizations"] = {
+            name: projected[f"utilizations.{name}"] for name in self.utilizations
+        }
+        if unavailable:
+            result["unavailable_utilizations"] = unavailable
+        return result
 
 
 @dataclass
@@ -827,8 +896,50 @@ class ComplianceReport:
     summary: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        """Convert result to a plain dictionary for serialization."""
-        return asdict(self)
+        """Preserve governing failure and unavailable ratios in finite JSON."""
+        result = asdict(self)
+        cases = [case.to_dict() for case in self.cases]
+        result["cases"] = cases
+        reasons: dict[str, str] = {}
+        # Case identifiers need not be unique. Derive report unavailability
+        # from the evaluated cases instead of choosing the first matching ID.
+        for case in cases:
+            for path in case.get("unavailable_utilizations", {}):
+                if self.is_ok:
+                    continue
+                if path == "governing_utilization":
+                    reason = "At least one case has no evaluated governing utilization."
+                    reasons["governing_utilization"] = reason
+                    reasons["summary.governing_utilization"] = reason
+                elif path.startswith("utilizations."):
+                    name = path.split(".", 1)[1]
+                    reason = (
+                        f"At least one case has no evaluated {name} utilization; "
+                        "inspect cases[].unavailable_utilizations."
+                    )
+                    reasons[f"summary.max_util_{name}"] = reason
+                    if name == self.summary.get("governing_worst_check"):
+                        reasons["summary.governing_worst_utilization"] = reason
+        values = {"governing_utilization": self.governing_utilization}
+        values.update(
+            {
+                f"summary.{key}": value
+                for key, value in self.summary.items()
+                if value is not None
+                and (
+                    key.startswith(("max_util_", "governing_util"))
+                    or key == "governing_worst_utilization"
+                )
+            }
+        )
+        projected, unavailable = _utilization_transport_fields(values, reasons)
+        result["governing_utilization"] = projected.pop("governing_utilization")
+        result["summary"].update(
+            {path.split(".", 1)[1]: value for path, value in projected.items()}
+        )
+        if unavailable:
+            result["unavailable_utilizations"] = unavailable
+        return result
 
 
 @dataclass

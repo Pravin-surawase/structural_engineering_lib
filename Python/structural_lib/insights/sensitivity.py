@@ -4,10 +4,15 @@
 
 from __future__ import annotations
 
+import math
 from collections.abc import Callable, Iterable
 from typing import Any
 
 from .data_types import RobustnessScore, SensitivityResult
+
+
+class _SensitivityUnavailableError(ValueError):
+    """A finite-difference coefficient has no evaluated utilization basis."""
 
 
 def _classify_impact(sensitivity: float, critical: bool = False) -> str:
@@ -50,6 +55,11 @@ def sensitivity_analysis(
         - List[SensitivityResult]: Per-parameter sensitivities, sorted by |sensitivity|
         - RobustnessScore: Overall design robustness assessment
 
+    Raises:
+        ValueError: If perturbation is not positive, or a baseline/perturbed
+            utilization has no finite evaluated value. An unavailable ratio
+            cannot define a finite-difference sensitivity coefficient.
+
     Example:
         >>> from structural_lib.services.api import design_beam_is456
         >>> sens, robust = sensitivity_analysis(
@@ -71,6 +81,10 @@ def sensitivity_analysis(
     base_utilization = getattr(base_result, "governing_utilization", None)
     if base_utilization is None:
         raise ValueError("design_function must return governing_utilization")
+    if not math.isfinite(base_utilization):
+        raise _SensitivityUnavailableError(
+            "Sensitivity requires a finite evaluated baseline utilization."
+        )
 
     parameters = list(parameters_to_vary or base_params.keys())
     sensitivities: list[SensitivityResult] = []
@@ -100,6 +114,10 @@ def sensitivity_analysis(
             critical = True
             perturbed_util = max(float(base_utilization), 1.0)
 
+        if not math.isfinite(perturbed_util):
+            raise _SensitivityUnavailableError(
+                f"Sensitivity for {param} has no finite evaluated perturbed utilization."
+            )
         delta_util = perturbed_util - float(base_utilization)
         # Normalized sensitivity coefficient (dimensionless)
         # S = (ΔU/U) / (Δp/p) where U=utilization, p=parameter

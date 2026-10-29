@@ -30,7 +30,7 @@ from __future__ import annotations
 import json
 import math
 from collections.abc import Mapping
-from dataclasses import asdict, is_dataclass
+from dataclasses import fields, is_dataclass
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
@@ -38,6 +38,7 @@ from typing import Any, TypeVar
 
 from pydantic import BaseModel
 
+from structural_lib.core.data_types import ComplianceCaseResult, ComplianceReport
 from structural_lib.core.models import (
     BeamBatchInput,
     BeamBatchResult,
@@ -73,8 +74,13 @@ def to_transport_value(value: Any) -> Any:
         return to_transport_value(value.value)
     if isinstance(value, BaseModel):
         return to_transport_value(value.model_dump())
+    if isinstance(value, (ComplianceCaseResult, ComplianceReport)):
+        return to_transport_value(value.to_dict())
     if is_dataclass(value) and not isinstance(value, type):
-        return to_transport_value(asdict(value))
+        return {
+            field.name: to_transport_value(getattr(value, field.name))
+            for field in fields(value)
+        }
     if isinstance(value, Mapping):
         return {str(key): to_transport_value(item) for key, item in value.items()}
     if isinstance(value, (list, tuple)):

@@ -1,4 +1,11 @@
+import json
+import math
+
+import pytest
+
 from structural_lib.compliance import check_compliance_report
+from structural_lib.core.errors import CalculationError
+from structural_lib.services.serialization import to_transport_value
 
 
 def test_compliance_report_picks_governing_by_utilization():
@@ -125,3 +132,67 @@ def test_compliance_flexure_utilization_safe_doubly_is_one():
     )
     assert report.cases[0].flexure.is_safe is True
     assert report.cases[0].utilizations["flexure"] == 1.0
+
+
+@pytest.mark.parametrize("failed_case_id", ["OVERLOADED", "NOMINAL"])
+def test_unavailable_check_serializes_without_changing_failure_or_case_ranking(
+    failed_case_id,
+):
+    """The actual overloaded beam remains governing; no finite ratio is invented."""
+    from structural_lib.compliance import report_to_dict
+
+    report = check_compliance_report(
+        cases=[
+            {"case_id": "NOMINAL", "mu_knm": 150.0, "vu_kn": 75.0},
+            {"case_id": failed_case_id, "mu_knm": 2000.0, "vu_kn": 75.0},
+        ],
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=457.0,
+        fck_nmm2=25.0,
+        fy_nmm2=500.0,
+        d_dash_mm=43.0,
+    )
+    failed = report.cases[1]
+    assert report.is_ok is False
+    assert report.governing_case_id == failed_case_id
+    assert math.isinf(failed.governing_utilization)
+    assert failed.utilizations["flexure"] == pytest.approx(2000 / 209.2762215144)
+    assert any("Table 19" in check for check in failed.failed_checks)
+
+    payload = report_to_dict(report)
+    transported = to_transport_value(report)
+    assert transported["governing_utilization"] is None
+    assert transported["cases"][1]["utilizations"]["shear"] is None
+    assert json.loads(json.dumps(transported, allow_nan=False)) == transported
+    assert json.loads(json.dumps(payload, allow_nan=False)) == payload
+    assert payload["is_ok"] is False
+    assert payload["governing_case_id"] == failed_case_id
+    assert payload["governing_utilization"] is None
+    assert payload["summary"]["max_util_shear"] is None
+    assert payload["summary"]["governing_worst_utilization"] is None
+    assert payload["cases"][1]["utilizations"]["shear"] is None
+    assert (
+        "Table 19"
+        in payload["cases"][1]["unavailable_utilizations"]["utilizations.shear"][
+            "reason"
+        ]
+    )
+    assert payload["cases"][1]["failed_checks"] == failed.failed_checks
+    assert failed.governing_utilization == math.inf  # native compatibility preserved
+
+
+@pytest.mark.parametrize("invalid", [math.nan, -math.inf, math.inf])
+def test_unexplained_nonfinite_ratio_is_still_a_calculation_error(invalid):
+    report = check_compliance_report(
+        cases=[{"case_id": "NOMINAL", "mu_knm": 150.0, "vu_kn": 75.0}],
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=457.0,
+        fck_nmm2=25.0,
+        fy_nmm2=500.0,
+        d_dash_mm=43.0,
+    )
+    report.cases[0].utilizations["shear"] = invalid
+    with pytest.raises(CalculationError, match="unexplained non-finite"):
+        to_transport_value(report)

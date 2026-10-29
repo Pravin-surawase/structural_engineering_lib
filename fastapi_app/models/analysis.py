@@ -213,6 +213,13 @@ class Suggestion(BaseModel):
     )
 
 
+class UnavailableUtilization(BaseModel):
+    """Core-owned reason for a failed check without a finite utilization."""
+
+    code: Literal["UTILIZATION_NOT_EVALUATED"]
+    reason: str = Field(min_length=1)
+
+
 class CodeCheck(BaseModel):
     """Code compliance check result."""
 
@@ -222,6 +229,10 @@ class CodeCheck(BaseModel):
     calculated_value: float | None = Field(default=None, description="Calculated value")
     limit_value: float | None = Field(default=None, description="Code limit value")
     message: str | None = Field(default=None, description="Additional message")
+    unavailable: UnavailableUtilization | None = Field(
+        default=None,
+        description="Core-owned reason when utilization was not evaluated.",
+    )
 
 
 class SmartDesignSummary(BaseModel):
@@ -235,8 +246,12 @@ class SmartDesignSummary(BaseModel):
     shear_kn: float
     fck_nmm2: float
     fy_nmm2: float
-    design_status: Literal["PASS", "WARNING", "FAIL"]
-    governing_utilization: float = Field(ge=0)
+    design_status: Literal["PASS", "WARNING", "FAIL", "HOLD"]
+    governing_utilization: float | None = Field(ge=0)
+    unavailable_utilizations: dict[str, UnavailableUtilization] = Field(
+        default_factory=dict,
+        description="Core-owned reasons for utilization values unavailable on FAIL/HOLD.",
+    )
     capacity_margin: float = Field(ge=0, le=1)
     governing_check: str
     key_issues: list[str] = Field(default_factory=list)

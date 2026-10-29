@@ -142,10 +142,28 @@ class DashboardReport:
     constructability: ConstructabilityInsights | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        """Convert dashboard to dictionary for JSON serialization."""
+        """Preserve the design owner's finite failed-check representation."""
         from dataclasses import asdict
 
-        return asdict(self)
+        result = asdict(self)
+        design = self.design_result.to_dict()
+        result["design_result"] = design
+        summary = result["summary"]
+        summary["governing_utilization"] = design["governing_utilization"]
+        unavailable: dict[str, dict[str, str]] = {}
+        markers = design.get("unavailable_utilizations", {})
+        if "governing_utilization" in markers:
+            unavailable["governing_utilization"] = markers["governing_utilization"]
+        for index, check in enumerate(summary["checks"]):
+            name = check["check_id"]
+            check["utilization"] = design[name]["utilization"]
+            if f"{name}.utilization" in markers:
+                unavailable[f"checks[{index}].utilization"] = markers[
+                    f"{name}.utilization"
+                ]
+        if unavailable:
+            summary["unavailable_utilizations"] = unavailable
+        return result
 
     def to_json(self, path: str) -> None:
         """Save dashboard to JSON file."""
@@ -153,7 +171,9 @@ class DashboardReport:
         from pathlib import Path
 
         data = self.to_dict()
-        Path(path).write_text(json.dumps(data, indent=2))
+        Path(path).write_text(
+            json.dumps(data, indent=2, allow_nan=False), encoding="utf-8"
+        )
 
     def summary_text(self) -> str:
         """Generate human-readable summary text."""
@@ -420,57 +440,76 @@ class SmartDesigner:
                 top_3=suggestions_dicts[:3],
             )
 
-        # Sensitivity analysis
+        # Sensitivity replays the original calculation basis. Advisory metadata
+        # is preserved in the result but is not passed as calculation arguments.
         sensitivity_analysis = None
+        unavailable_analyses: dict[str, dict[str, str]] = {}
         if include_sensitivity:
-            # Need a design function for sensitivity analysis
+            from inspect import signature
+
             from ..api import design_beam_is456
 
-            # Extract parameters for sensitivity
+            parameters = signature(design_beam_is456).parameters
             base_params = {
-                "units": "IS456",
-                "b_mm": design.geometry.b_mm,
-                "D_mm": design.geometry.D_mm,
-                "d_mm": design.geometry.d_mm,
-                "fck_nmm2": design.materials.fck_nmm2,
-                "fy_nmm2": design.materials.fy_nmm2,
-                "mu_knm": mu_knm,
-                "vu_kn": vu_kn,
+                name: value
+                for name, value in design.design_inputs.items()
+                if name in parameters
             }
-
-            sens_results, robust_score = sensitivity.sensitivity_analysis(
-                design_beam_is456, base_params
-            )
-
-            # Identify critical parameters (top 3 by sensitivity)
-            sorted_sens = sorted(
-                sens_results, key=lambda x: abs(x.sensitivity), reverse=True
-            )
-            critical = [s.parameter for s in sorted_sens[:3]]
-
-            # Generate recommendations
-            recommendations = []
-            for s in sorted_sens[:3]:
-                if abs(s.sensitivity) > 0.3:
-                    recommendations.append(
-                        f"Tight control needed for {s.parameter} "
-                        f"(sensitivity: {s.sensitivity:.2f})"
+            missing = [
+                name
+                for name, parameter in parameters.items()
+                if parameter.default is parameter.empty and name not in base_params
+            ]
+            try:
+                if missing:
+                    raise sensitivity._SensitivityUnavailableError(
+                        "Original calculation inputs are missing: " + ", ".join(missing)
                     )
-
-            sensitivity_analysis = SensitivityInsights(
-                critical_parameters=critical,
-                robustness_score=robust_score.score,
-                robustness_level=robust_score.rating,
-                sensitivities=[
-                    {
-                        "parameter": s.parameter,
-                        "sensitivity": s.sensitivity,
-                        "impact": s.impact,
-                    }
-                    for s in sens_results
-                ],
-                recommendations=recommendations,
-            )
+                sens_results, robust_score = sensitivity.sensitivity_analysis(
+                    design_beam_is456,
+                    base_params,
+                    parameters_to_vary=(
+                        "b_mm",
+                        "D_mm",
+                        "d_mm",
+                        "fck_nmm2",
+                        "fy_nmm2",
+                        "mu_knm",
+                        "vu_kn",
+                    ),
+                )
+            except sensitivity._SensitivityUnavailableError as exc:
+                reason = str(exc)
+                analysis_warnings.append("Sensitivity unavailable: " + reason)
+                unavailable_analyses["sensitivity"] = {
+                    "code": "UTILIZATION_NOT_EVALUATED",
+                    "reason": reason,
+                }
+            else:
+                sorted_sens = sorted(
+                    sens_results, key=lambda x: abs(x.sensitivity), reverse=True
+                )
+                critical = [s.parameter for s in sorted_sens[:3]]
+                recommendations = [
+                    f"Tight control needed for {s.parameter} "
+                    f"(sensitivity: {s.sensitivity:.2f})"
+                    for s in sorted_sens[:3]
+                    if abs(s.sensitivity) > 0.3
+                ]
+                sensitivity_analysis = SensitivityInsights(
+                    critical_parameters=critical,
+                    robustness_score=robust_score.score,
+                    robustness_level=robust_score.rating,
+                    sensitivities=[
+                        {
+                            "parameter": s.parameter,
+                            "sensitivity": s.sensitivity,
+                            "impact": s.impact,
+                        }
+                        for s in sens_results
+                    ],
+                    recommendations=recommendations,
+                )
 
         # Constructability assessment
         constructability_analysis = None
@@ -568,7 +607,9 @@ class SmartDesigner:
             key_issues.append("Constructability concerns - congestion risk")
 
         # Design status
-        if design.is_ok and governing_utilization < 0.9:
+        if (design.result_envelope or {}).get("engineering_status") == "HOLD":
+            status = "HOLD"
+        elif design.is_ok and governing_utilization < 0.9:
             status = "PASS"
         elif design.is_ok:
             status = "WARNING"
@@ -619,6 +660,7 @@ class SmartDesigner:
             },
             "weights": weights,
             "warnings": analysis_warnings,
+            "unavailable_analyses": unavailable_analyses,
         }
 
         return DashboardReport(

@@ -60,7 +60,7 @@ cad = ["pyvista>=0.43"]  # CAD-quality 3D export (STL, screenshots)
 pmm = ["numpy>=2.0,<2.5"]  # Experimental column P-M-M analysis
 docs = [
     "mkdocs-material>=9.5",
-    "mkdocstrings[python]>=0.25",
+    "mkdocstrings[python]>=1.0.7,<2",
 ]
 etabs = ["comtypes>=1.4,<2; platform_system == 'Windows'"]
 

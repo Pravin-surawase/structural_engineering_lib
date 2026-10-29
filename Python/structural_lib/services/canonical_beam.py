@@ -95,6 +95,8 @@ def _jsonable(value: Any) -> Any:
         return value.value
     if hasattr(value, "model_dump"):
         return _jsonable(value.model_dump(mode="python"))
+    if isinstance(value, ComplianceCaseResult):
+        return _jsonable(value.to_dict())
     if is_dataclass(value) and not isinstance(value, type):
         return _jsonable(asdict(value))
     if hasattr(value, "to_dict"):
