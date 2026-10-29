@@ -5175,7 +5175,7 @@
       },
       {
         "path": "docs/reference/api-compatibility-ledger.json",
-        "sha256": "d0d6f4c8d83a15a2e5ec846005958ca6516e1e7d6f4fe759d818062724b9b274",
+        "sha256": "6d4e4e1f2db757120f6aa17c5bf8d0cdbcaab87372a9fcd1d24c462fb1a1647e",
         "declared_owner": "unspecified",
         "accountable_owner": "Codex /root; Pravin Surawase for authority decisions",
         "declared_status": "unspecified",
@@ -5257,7 +5257,7 @@
       },
       {
         "path": "docs/reference/api.md",
-        "sha256": "b15a42ea0370fb51065f3b51b29def339a72824783c7126942a82217822581b9",
+        "sha256": "dc18346bece3c933f16cb53fa41d37f179bce88205e47f2bf3edfda426478e73",
         "declared_owner": "Main Agent",
         "accountable_owner": "Codex /root; Pravin Surawase for authority decisions",
         "declared_status": "active",
@@ -7545,7 +7545,7 @@
       },
       {
         "path": "docs/reference/api-compatibility-ledger.json",
-        "sha256": "d0d6f4c8d83a15a2e5ec846005958ca6516e1e7d6f4fe759d818062724b9b274",
+        "sha256": "6d4e4e1f2db757120f6aa17c5bf8d0cdbcaab87372a9fcd1d24c462fb1a1647e",
         "intake_sha256": "1b00216d842eecf38a15d3c46b45aa107715b0e6df46ed79c8b98da6ad7412ed"
       },
       {
@@ -7603,6 +7603,11 @@
     {
       "id": "S0-C05",
       "decision": "Affected retained smart HTTP response admits null governing utilization with typed UTILIZATION_NOT_EVALUATED reason; CodeCheck gains an optional typed unavailable marker; existing required governing field stays required, numeric values stay unchanged, HOLD is explicitly allowed. No request/schema-version/route change. This repairs previously invalid failure output and is an additive response extension for the selected next minor candidate."
+    },
+    {
+      "id": "S0-C06",
+      "decision": "Finite golden outputs and critical CSV columns unchanged. ReportData governing annotation becomes optional. CriticalCase three ratio annotations become optional and gains a trailing defaulted unavailable_utilizations reason carrier. No required constructor argument, calculation or request changes.",
+      "reason": "Required to keep actual saved failed jobs reportable through the selected S1 main process; finite behavior remains compatible."
     }
   ],
   "candidate_rebinding": {
@@ -7698,7 +7703,12 @@
       "Python/tests/integration/test_insights_sensitivity.py",
       "Python/tests/unit/test_serialization.py",
       "Python/tests/integration/test_beam_pipeline.py",
-      "Python/tests/test_compatibility_convergence.py"
+      "Python/tests/test_compatibility_convergence.py",
+      "Python/tests/integration/test_report.py",
+      "Python/tests/regression/test_report_golden.py",
+      "Python/tests/test_reports.py",
+      "Python/tests/test_report_edge_cases.py",
+      "Python/tests/integration/test_cli_report_regression.py"
     ],
     "focused_http": [
       "fastapi_app/tests/test_canonical_beam_v2.py",
@@ -7817,12 +7827,24 @@
     {
       "path": "Python/tests/test_compatibility_convergence.py",
       "sha256": "36858a3020af7c4be69bd98adfd3cf0e9c5ea2bb884b33e9171fd5a26f4a0f95"
+    },
+    {
+      "path": "Python/structural_lib/services/report.py",
+      "sha256": "843068ce5075ded7e8b2c6e4efc5ef2f2f720a0f3c34d1faeef4392e7716f11e"
+    },
+    {
+      "path": "Python/tests/integration/test_report.py",
+      "sha256": "d3a28f47b639eee86701c51e1b46ce922f2f708fd55a7c07394b011852043a0a"
+    },
+    {
+      "path": "Python/tests/integration/test_cli_report_regression.py",
+      "sha256": "0ff9889fe767f50b8b92b477bdf845e5e92c61e1603be7d4342437582aa619de"
     }
   ],
   "local_validation": {
     "scope": "S0/S1 local freeze; PR is authoritative for subsequent exact-head independent review, hosted checks and merge",
     "focused_population": {
-      "test_count": 289,
+      "test_count": 404,
       "by_file": {
         "Python/tests/unit/test_compliance.py": 9,
         "Python/tests/integration/test_canonical_beam_facade.py": 24,
@@ -7836,12 +7858,17 @@
         "fastapi_app/tests/test_typed_response_contracts.py": 5,
         "fastapi_app/tests/test_public_documentation_contract.py": 4,
         "fastapi_app/tests/test_endpoints.py::TestAnalysisEndpoints": 13,
-        "Python/tests/test_compatibility_convergence.py": 27
+        "Python/tests/test_compatibility_convergence.py": 27,
+        "Python/tests/integration/test_report.py": 47,
+        "Python/tests/regression/test_report_golden.py": 4,
+        "Python/tests/test_reports.py": 31,
+        "Python/tests/test_report_edge_cases.py": 30,
+        "Python/tests/integration/test_cli_report_regression.py": 3
       }
     },
     "focused_result": {
       "status": "PASS",
-      "total_validated": 289,
+      "total_validated": 404,
       "initial_run": {
         "passed": 246,
         "failed": 2
@@ -8172,6 +8199,54 @@
       },
       "boundary": "No dependency pin/upgrade, validation weakening, runtime calculation or schema change. Final repaired-head review/hosted state is authoritative on milestone PR.",
       "local_reconciliation": "The first evidence wording introduced a compatibility-module text reference, then its rewrite removed that reference; convergence checks caught the resulting ledger mismatch. Final unqualified wording and regenerated ledger preserve the original1887caller population. No caller filter or validation gate changed."
+    },
+    "report_consumer_repair": {
+      "trigger": "Hosted review of the first published candidate identified the retained job report/critical consumer assuming a numeric ratio after domain transport legitimately emits null.",
+      "review": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/1032#discussion_r4409342297",
+      "reproducer": "Actual admitted 300x500 mm job, d457 mm, M25/Fe500, Mu2000 kNm and Vu75 kN. Job output succeeds; report JSON and critical CSV previously exit1 at float(None).",
+      "root_cause": "Report loader, scorecard, display formatting, critical ranking and pipeline adapters assumed every governing/component ratio is numeric; fallback adapters also fabricated a finite value from null.",
+      "repair": "Report and critical models carry optional ratios and retained core reasons. JSON preserves null plus marker; HTML/CSV display Unavailable with the owner-specific reason, without a percentage/bar. Critical ranking puts unavailable entries first for review, then finite values descending. Pipeline single/batch report adapters preserve the same disposition. Legacy infinite job results remain readable.",
+      "compatibility": "Finite golden outputs and critical CSV columns unchanged. ReportData governing annotation becomes optional. CriticalCase three ratio annotations become optional and gains a trailing defaulted unavailable_utilizations reason carrier. No required constructor argument, calculation or request changes.",
+      "verification": {
+        "status": "PASS",
+        "focused_tests": 115,
+        "by_file": {
+          "Python/tests/integration/test_report.py": 47,
+          "Python/tests/regression/test_report_golden.py": 4,
+          "Python/tests/test_reports.py": 31,
+          "Python/tests/test_report_edge_cases.py": 30,
+          "Python/tests/integration/test_cli_report_regression.py": 3
+        },
+        "finite_golden_tests": 4,
+        "real_job_cli_formats": [
+          "report-json",
+          "report-html",
+          "critical-csv",
+          "critical-html"
+        ],
+        "typing": {
+          "status": "PASS",
+          "command": "./scripts/python_runtime.sh -m mypy --config-file Python/pyproject.toml -p structural_lib",
+          "source_files": 330
+        },
+        "format_lint": "PASS"
+      },
+      "essential_checks": "11/12 pass on repaired report owners; API classification correctly detected the changed report-model annotations. Final ledger projection review and regeneration follow below; unchanged checks are not repeated.",
+      "final_contract_gate": "PASS_LOCAL_ONLY; exact-head independent review and required hosted checks remain authoritative on PR1032.",
+      "boundary": "Software report consumer repair only. No PDF/native-host/professional qualification claim.",
+      "ledger_projection_review": {
+        "status": "PASS",
+        "changed_rows": [
+          "CriticalCase: three existing ratios nullable, trailing defaulted unavailable-reason carrier",
+          "ReportData: governing ratio nullable"
+        ],
+        "changed_fields_per_row": [
+          "signature",
+          "identity_key"
+        ],
+        "summary_counts_callers_owners_and_other_rows": "UNCHANGED",
+        "projections": 522
+      }
     }
   }
 }

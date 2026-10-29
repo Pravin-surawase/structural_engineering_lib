@@ -5,6 +5,8 @@ Tests the report data loading, export functions, and critical set export.
 
 from __future__ import annotations
 
+import csv
+import io
 import json
 from pathlib import Path
 
@@ -707,3 +709,119 @@ class TestExportCriticalHtml:
         html = export_critical_html(critical, title="Custom Title")
 
         assert "Custom Title" in html
+
+
+class TestUnavailableUtilizationReports:
+    """A failed producer result stays inspectable through report consumers."""
+
+    def test_job_report_and_critical_set_preserve_unavailable(
+        self, sample_output_dir: Path
+    ) -> None:
+        results = json.loads(json.dumps(SAMPLE_RESULTS))
+        marker = {
+            "code": "UTILIZATION_NOT_EVALUATED",
+            "reason": "Shear could not be evaluated within the admitted table range.",
+        }
+        unavailable = {
+            "governing_utilization": marker,
+            "utilizations.shear": marker,
+        }
+        results.update(
+            is_ok=False,
+            governing_utilization=None,
+            unavailable_utilizations={"governing_utilization": marker},
+        )
+        results["cases"][0].update(
+            is_ok=False,
+            governing_utilization=2.4,
+            utilizations={"flexure": 2.4, "shear": 1.3},
+        )
+        results["cases"][1].update(
+            is_ok=False,
+            governing_utilization=None,
+            utilizations={"flexure": 9.55, "shear": None},
+            unavailable_utilizations=unavailable,
+        )
+        (sample_output_dir / "design/design_results.json").write_text(
+            json.dumps(results, allow_nan=False), encoding="utf-8"
+        )
+
+        data = load_report_data(sample_output_dir)
+        assert data.governing_utilization is None and data.is_ok is False
+        exported = json.loads(export_json(data))
+        json.dumps(exported, allow_nan=False)
+        assert exported["governing_utilization"] is None
+        assert exported["unavailable_utilizations"]["governing_utilization"] == marker
+        assert exported["cases"][1]["unavailable_utilizations"] == unavailable
+        score = next(
+            x
+            for x in get_stability_scorecard(data)
+            if x.check == "governing_utilization"
+        )
+        assert score.status == "WARN" and marker["reason"] in score.message
+        rendered = export_html(data)
+        assert "✗ FAIL" in rendered and f"Unavailable: {marker['reason']}" in rendered
+
+        critical = get_critical_set(data)
+        assert [(x.case_id, x.utilization) for x in critical] == [
+            ("LC2", None),
+            ("LC1", 2.4),
+        ]
+        assert get_critical_set(data, top=1)[0].case_id == "LC2"
+        rows = list(csv.DictReader(io.StringIO(export_critical_csv(critical))))
+        assert rows[0]["utilization"] == f"Unavailable: {marker['reason']}"
+        assert rows[0]["shear_util"] == f"Unavailable: {marker['reason']}"
+        assert rows[0]["flexure_util"] == "9.5500"
+        assert rows[1]["utilization"] == "2.4000"
+        rendered = export_critical_html(critical)
+        first_row = rendered.split('<tr data-source="cases[1]">')[1].split("</tr>")[0]
+        assert marker["reason"] in first_row
+        assert '<div class="util-bar"' not in first_row
+
+    def test_pipeline_report_preserves_null_and_reason(self, tmp_path: Path) -> None:
+        design = json.loads(json.dumps(SAMPLE_DESIGN_RESULTS))
+        beam = design["beams"][0]
+        marker = {
+            "code": "UTILIZATION_NOT_EVALUATED",
+            "reason": "Governing shear utilization could not be evaluated.",
+        }
+        beam.update(
+            is_ok=False,
+            governing_utilization=None,
+            unavailable_utilizations={
+                "governing_utilization": marker,
+                "shear.utilization": marker,
+            },
+        )
+        beam["shear"].update(utilization=None, is_safe=False)
+        result = json.loads(export_design_json(design))
+        json.dumps(result, allow_nan=False)
+        projected = result["beams"][0]
+        assert projected["governing_utilization"] is None
+        assert projected["cases"][0]["utilizations"]["shear"] is None
+        assert projected["unavailable_utilizations"]["governing_utilization"] == marker
+        assert "Unavailable" in render_design_report_single(design)
+        paths = write_design_report_package(
+            design, output_path=tmp_path / "reports", batch_threshold=1
+        )
+        assert any(
+            "Unavailable" in p.read_text(encoding="utf-8")
+            for p in paths
+            if p.suffix == ".html"
+        )
+        assert marker["reason"] in (tmp_path / "reports/index.html").read_text(
+            encoding="utf-8"
+        )
+
+    def test_legacy_infinite_job_ratio_remains_readable(
+        self, sample_output_dir: Path
+    ) -> None:
+        path = sample_output_dir / "design/design_results.json"
+        results = json.loads(path.read_text(encoding="utf-8"))
+        results.update(is_ok=False, governing_utilization=float("inf"))
+        results["cases"][1].update(is_ok=False, governing_utilization=float("inf"))
+        path.write_text(json.dumps(results), encoding="utf-8")
+        data = load_report_data(sample_output_dir)
+        assert data.governing_utilization is None
+        assert "Unavailable" in export_html(data)
+        assert get_critical_set(data)[0].utilization is None

@@ -500,6 +500,12 @@ still raises a calculation/transport error. Compliance reports apply the same
 rule to their governing and per-check summary ratios. These changes belong to
 the development candidate, not the already published v0.25.0 artifact.
 
+Saved job and pipeline reports preserve these null values and their reasons.
+HTML and critical-set CSV display `Unavailable` with the reason; they do not
+substitute a percentage. Critical sets list unevaluated cases first for review,
+then retain descending order for finite ratios. Finite report formats and CSV
+columns remain compatible.
+
 ### 1A.1A Bounded Sagging T-Beam (`design_flanged_beam_is456`)
 
 This dedicated route computes effective flange width from the declared span
