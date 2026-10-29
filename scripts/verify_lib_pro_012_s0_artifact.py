@@ -65,7 +65,7 @@ combined = {
     "vu_kn": 80.0,
     "b_mm": 300.0,
     "D_mm": 500.0,
-    "d_mm": 450.0,
+    "d_mm": 444.0,  # D500 - cover40 - link8 - selected T16/2.
     "cover_mm": 40.0,
     "fck_nmm2": 25.0,
     "fy_nmm2": 500.0,
@@ -147,7 +147,9 @@ if len(document.items) != 9 or document.summary.total_items != 9:
 invalid_detailing = copy.deepcopy(valid.detailing)
 invalid_detailing.span = 0.0
 rejections.append(rejects("bbs_direct_input", lambda: compute_bbs(invalid_detailing)))
-if not math.isclose(valid.design.flexure.Ast_required, 883.7158126109596):
+expected_xu = (444.0 - math.sqrt(444.0**2 - 4 * 0.42 * 150e6 / (0.36 * 25 * 300))) / (2 * 0.42)
+expected_ast = 0.36 * 25 * 300 * expected_xu / (0.87 * 500)
+if not math.isclose(valid.design.flexure.Ast_required, expected_ast):
     raise AssertionError(valid.design.flexure.Ast_required)
 valid_torsion = design_torsion(**torsion)
 if not math.isclose(valid_torsion.Ve_kn, 153.33333333333334):

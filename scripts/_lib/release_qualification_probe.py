@@ -540,7 +540,11 @@ def _examples(config: dict[str, Any]) -> dict[str, Any]:
             )
         ),
     ]
-    hashes = {}
+    hashes = {
+        str(inventory_path.relative_to(repo)): hashlib.sha256(
+            inventory_path.read_bytes()
+        ).hexdigest()
+    }
     for source in sources:
         relative = source.relative_to(repo)
         target = clone / relative
@@ -588,9 +592,21 @@ def _examples(config: dict[str, Any]) -> dict[str, Any]:
             schedule = script.parent / "beam_schedule_output.csv"
             with schedule.open() as stream:
                 rows = list(csv.DictReader(stream))
-            if len(rows) != len(expected) or "✗" in completed.stdout:
+            if (
+                len(rows) != len(expected)
+                or {item["BeamID"] for item in rows} != expected
+                or "Error -" in completed.stdout
+            ):
                 raise AssertionError(
                     f"Complete beam example concealed a failed workflow:\n{completed.stdout[-6000:]}"
+                )
+            # Engineering Check rows are valid outcomes, not execution failures.
+            if {item["BeamID"] for item in rows if item["Status"] == "Check"} != {
+                "B2",
+                "B8",
+            }:
+                raise AssertionError(
+                    "Complete beam example changed its explicit spacing failures"
                 )
             for beam in ("B1", "B2", "B3"):
                 if not (script.parent / "dxf_output" / f"{beam}.dxf").is_file():
@@ -606,7 +622,22 @@ def _examples(config: dict[str, Any]) -> dict[str, Any]:
                 if line.startswith("S5_RESULT=")
             )
         )
-        records.append({"path": row["path"], "args": args, "status": "PASS", **proof})
+        records.append(
+            {
+                "path": row["path"],
+                "args": args,
+                "status": "PASS",
+                **proof,
+                "files": [
+                    {
+                        "path": str(path.relative_to(output)),
+                        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                    }
+                    for path in sorted(target.rglob("*"))
+                    if path.is_file()
+                ],
+            }
+        )
     # The copied module has no conftest, pytest config, or package source tree.
     # Run in this guarded interpreter so imports are checked after collection too.
     import pytest
