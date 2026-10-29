@@ -2,7 +2,7 @@
   "schema_version": "library-s5-execution/v1",
   "task": "LIB-S5-20261029",
   "objective": "Plan S5/S6 efficiently and execute S5 artifact qualification",
-  "status": "IMPLEMENTED_CANDIDATE_FREEZE_AND_ARTIFACT_EXECUTION_PENDING",
+  "status": "LOCAL_QUALIFICATION_PASS_MILESTONE_PR_OWNS_FINAL_INTEGRATION",
   "branch": "codex/lib-s5-artifact",
   "base": "a39e02b24c85ed1c2852021c3e511375366b9112",
   "worktree": "/Users/pravinsurawase/.codex/worktrees/library-s5-artifact/structural_engineering_lib",
@@ -14,35 +14,35 @@
   "requirements": [
     {
       "id": "S5-A1",
-      "status": "IN_PROGRESS"
+      "status": "PASS"
     },
     {
       "id": "S5-A2",
-      "status": "IN_PROGRESS"
+      "status": "PASS"
     },
     {
       "id": "S5-A3",
-      "status": "IN_PROGRESS"
+      "status": "PASS"
     },
     {
       "id": "S5-A4",
-      "status": "IN_PROGRESS"
+      "status": "PASS"
     },
     {
       "id": "S5-A5",
-      "status": "IN_PROGRESS"
+      "status": "PASS"
     },
     {
       "id": "S5-A6",
-      "status": "IN_PROGRESS"
+      "status": "PASS"
     },
     {
       "id": "S5-A7",
-      "status": "IN_PROGRESS"
+      "status": "PASS"
     },
     {
       "id": "S5-A8",
-      "status": "IN_PROGRESS"
+      "status": "MILESTONE_PR_OWNS_REVIEW_CI_MERGE"
     }
   ],
   "declared_extras": {
@@ -141,9 +141,10 @@
       "etabs",
       "exports",
       "transport",
+      "examples",
       "baseline"
     ],
-    "existing_drivers": "F0 contracts, canonical transport and S0 artifact drivers reused; F0 origin proof corrected",
+    "existing_drivers": "F0 contracts, canonical transport and S0 artifact drivers reused; installed origins guarded. S0 valid seed reconciles current centroid and explicit torsion geometry.",
     "cad": "dependency-only availability, no current public library CAD/STL exporter; nativeHOLD",
     "performance_budgets": {
       "beam_p95_ms": 100,
@@ -157,6 +158,20 @@
       "report",
       "pdf",
       "validation"
+    ],
+    "example_install_extras": [
+      "dev",
+      "dxf",
+      "report"
+    ],
+    "generated_client_requirements": [
+      "fastapi>=0.115,<1.0",
+      "pydantic-settings>=2.14.2",
+      "PyJWT[crypto]>=2.15.1,<3.0",
+      "python-multipart>=0.0.32",
+      "sse-starlette>=2.0",
+      "httpx>=0.27",
+      "websockets>=17.0.1"
     ]
   },
   "local_prebuild_checks": {
@@ -168,8 +183,622 @@
     "source_surface_version_errors": []
   },
   "next_actions": [
-    "Freeze implementation commit and build exact wheel/sdist pair.",
-    "Run all15 isolated qualification profiles and inspect rendered outputs.",
-    "Run one final canonical artifact preflight, then record evidence and finish exact-head reviews/required hosted integration without publication."
-  ]
+    "Exact-head independent final review and required hosted checks on one milestone PR.",
+    "Integrate unchanged reviewed tree and record merge/main/artifact identity externally; milestone PR owns final integration facts.",
+    "S6 remains unselected; preserve original accepted pair and require separate per-target publication authorization."
+  ],
+  "artifacts": {
+    "wheel": {
+      "path": "/Users/pravinsurawase/.codex/worktrees/library-s5-artifact/structural_engineering_lib/Python/dist/structural_lib_is456-0.26.0-py3-none-any.whl",
+      "sha256": "4350bdea799442c917d4ef70fd991957540d9c476d5e22f8d1cc796e33a9e3eb"
+    },
+    "sdist": {
+      "path": "/Users/pravinsurawase/.codex/worktrees/library-s5-artifact/structural_engineering_lib/Python/dist/structural_lib_is456-0.26.0.tar.gz",
+      "sha256": "59e5591145e0183a3530a5ac1b9710593fb8bb80eb7dd3decdf7733593a87374"
+    },
+    "version": "0.26.0",
+    "package_payload_sha256": "e68a33964d9e86d1ce225fb1839c2217d1555d32a760853c378587b063c8bf48",
+    "package_file_count": 327,
+    "complete_source_membership_and_hash_match": true,
+    "retained_copy_directory": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/dist"
+  },
+  "source_binding": {
+    "original_build_head": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+    "original_build_python_tree": "81032d158f998947238f49efa99ea93e233d3217",
+    "source_date_epoch": "1793285067",
+    "review_code_head": "266c339ad7584102a33c7e539f6e746b25e864ae",
+    "review_python_tree": "6820252276b9fa1c367614e5cf321cec49b50ab5",
+    "source_build_inputs_sha256": {
+      "Python/pyproject.toml": "b14570866a70c0db43248954ec35c79547e525a92e9697aa0b7403cf90119f8e",
+      "Python/MANIFEST.in": "b703d2df94d48815b9660e1eae7473d32c051dd5bb57bc623775a0890f3773c3",
+      "Python/README.md": "0d0393fbed630b6fb929f4afce4075ac55e9384059119117f7df3d8a1a157afa",
+      "Python/LICENSE": "0c91bb1e93e3b9691835e161bbb54c647d43c75cc6d3f5c6b0cf0a472c844208"
+    },
+    "package_and_build_inputs_unchanged": true,
+    "verification_only_python_changes": [
+      "Python/tests/integration/test_dxf_content.py"
+    ],
+    "decision": "Explicitly rebind final review to the excluded test-fixture correction. Original qualified package bytes and build provenance remain unchanged; freeze the review Python tree for subsequent S6 metadata.",
+    "rebuild": [
+      {
+        "name": "structural_lib_is456-0.26.0-py3-none-any.whl",
+        "rebuilt_sha256": "4350bdea799442c917d4ef70fd991957540d9c476d5e22f8d1cc796e33a9e3eb",
+        "accepted_sha256": "4350bdea799442c917d4ef70fd991957540d9c476d5e22f8d1cc796e33a9e3eb",
+        "byte_identical": true
+      },
+      {
+        "name": "structural_lib_is456-0.26.0.tar.gz",
+        "rebuilt_sha256": "4741a5e936eadd1c5ee8fa75c950819799d16ce3fc36689c0a90f130625d3736",
+        "accepted_sha256": "59e5591145e0183a3530a5ac1b9710593fb8bb80eb7dd3decdf7733593a87374",
+        "byte_identical": false
+      }
+    ],
+    "selected_sdist": "original qualified bytes only; timestamp-different rebuild is not selected"
+  },
+  "qualification": {
+    "status": "PASS",
+    "required_profile_count": 16,
+    "profiles": {
+      "base": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_base_o4bssxmq/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_base_o4bssxmq/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 6.776990583981387
+      },
+      "sdist": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_sdist_36zq65uk/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_sdist_36zq65uk/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 5.952397292014211
+      },
+      "dev": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_dev_u3dv5i7b/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_dev_u3dv5i7b/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 30.442570208979305
+      },
+      "dxf": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_dxf_uj3uvjzk/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_dxf_uj3uvjzk/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 11.63779649999924
+      },
+      "render": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_render_c0ir53ib/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_render_c0ir53ib/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 17.099019124987535
+      },
+      "report": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_report_rz1eom9e/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_report_rz1eom9e/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 4.380461624998134
+      },
+      "pdf": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_pdf_u2rwmz5f/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_pdf_u2rwmz5f/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 13.178534707985818
+      },
+      "validation": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_validation_iglayc50/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_validation_iglayc50/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 4.296756167022977
+      },
+      "cad": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_cad_9cef581m/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_cad_9cef581m/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 329.13915616599843
+      },
+      "pmm": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_pmm_jguuewnm/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_pmm_jguuewnm/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 4.865703666990157
+      },
+      "docs": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_docs_81b014mv/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_docs_81b014mv/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 23.91579095798079
+      },
+      "etabs": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_etabs_hy2j2q5a/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_etabs_hy2j2q5a/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 3.7420242500375025
+      },
+      "exports": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_exports_j7lf8lqr/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_exports_j7lf8lqr/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 24.938527291989885
+      },
+      "transport": {
+        "status": "PASS",
+        "source_head_at_execution": "09b81d4459b7b6f768f4aa9ddf426630ab1343e0",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_transport_n9nf3x6y/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_transport_n9nf3x6y/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 11.552406750037335
+      },
+      "baseline": {
+        "status": "PASS",
+        "source_head_at_execution": "3afbcbf3662f7c0c50c6ac47d2e63d6a169f84c2",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_baseline_93n69ziz/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.25.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_baseline_93n69ziz/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.25.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 7.508730291039683
+      },
+      "examples": {
+        "status": "PASS",
+        "source_head_at_execution": "f1ca9c8f732dfb35d0c31969b8509772109aaebe",
+        "python_tree_at_execution": "81032d158f998947238f49efa99ea93e233d3217",
+        "identity_before": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_examples_q8skqqo9/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "identity_after": {
+          "origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_examples_q8skqqo9/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+          "version": "0.26.0",
+          "execution_mode": "INSTALLED_DISTRIBUTION"
+        },
+        "elapsed_seconds": 37.97200479102321
+      }
+    },
+    "wheel_and_sdist_uat_cases_each": 29,
+    "families_each": 13,
+    "independent_metrics_each": 106,
+    "software_outcomes": "11 PASS; two-way slab FAIL; staircase HOLD retained",
+    "standalone_examples": 17,
+    "public_example_and_guide_tests": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "educational_csv_spacing_checks": [
+      "B2",
+      "B8"
+    ],
+    "transport": "PASS Python/CLI/HTTP/WebSocket, batch FAIL serialization,15 S0 invalid-intake routes and F0 family parity",
+    "physical_exports": [
+      {
+        "case": "single-layer",
+        "package_id": "calculation_package_id:pf4-canonical-json-v1:43a3c22daea11ebe88bf94039cdb87c0a255c9cbf588843d630c8c3e8f12c52e",
+        "path_result_id": "result_id:pf4-canonical-json-v1:9549f18bcbd65e2e1b6084d5edc9841814e8aa18b13f25b46e38c814b16e7376",
+        "bbs_result_id": "result_id:pf4-canonical-json-v1:eb7d92d42ceb5d096f8fd921ab30f677ff44534562fa60e7e3a02e3daab98d15",
+        "physical_bars": 39,
+        "longitudinal_section_bars": 4,
+        "steel_kg": 56.95229312438693,
+        "issue_state": "issue_ready",
+        "active_approval": false,
+        "files": [
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/single-layer/bbs.csv",
+            "sha256": "44ec87c0510927218aa7240e6b76327c599eb6cd029c544077f38625e3370b9a"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/single-layer/calculation.json",
+            "sha256": "d0020b5ba53058570d03a093f96808776674ff7bed871adc8ad2e7e0ec475535"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/single-layer/drawing.pdf",
+            "sha256": "df65abaadefa00c27cb9a0d1515ee219d3ba35b3b03d243745e3c756e0366493"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/single-layer/drawing.png",
+            "sha256": "61a225afacceaecd85ddf9a0b4d1af85b45b1153898fa09e042891f6bbfcdf9b"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/single-layer/physical-beam.dxf",
+            "sha256": "418118a66ccd56998f21e0ec1d1092371a5678f31a3017a8336e9b037af4b9c9"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/single-layer/report.html",
+            "sha256": "380669826bc7c4d66c72cdd0a33867f0064d9e904ee8114669b931e6152d28ae"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/single-layer/report.pdf",
+            "sha256": "ff30e86f777f1cb43b1790385694e16ae5a8e8a36c39a7a5bad15455e0cde907"
+          }
+        ]
+      },
+      {
+        "case": "multilayer",
+        "package_id": "calculation_package_id:pf4-canonical-json-v1:f446b2c2c1e3afaf98b0e089c3a1989bb6f6edd3a954222b806735fe3ea0497f",
+        "path_result_id": "result_id:pf4-canonical-json-v1:8eabdfb54aa9a2ce96df18dfd4d1b613a68d0838b2f5cd4d28615614a9582ae4",
+        "bbs_result_id": "result_id:pf4-canonical-json-v1:4d321e82a2a208e98b2be089419e50c31d7df07659b51e02d85a2467acdce2ef",
+        "physical_bars": 43,
+        "longitudinal_section_bars": 8,
+        "steel_kg": 129.91458084481988,
+        "issue_state": "issue_ready",
+        "active_approval": false,
+        "files": [
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/multilayer/bbs.csv",
+            "sha256": "e6426bd408778f6379f93dee1edcf10b4b27627311f939e3748c0a5e5a272e5c"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/multilayer/calculation.json",
+            "sha256": "4ac853a5e9e452ac9fef8a8602afd155ef630647c65ec8f766622cc929554ed2"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/multilayer/drawing.pdf",
+            "sha256": "afc2eda8eb091effb701b8ef537afe0f14589ad9596d352f5ec2a9453dcbf074"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/multilayer/drawing.png",
+            "sha256": "fabd6a756c3e9791cce6c14031f524a489907d92422f1f84ac971d120cf9f5d2"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/multilayer/physical-beam.dxf",
+            "sha256": "772fd5b0ef7877fd26ba8c10fb5b2fa2310a610026737c8ea29de595318340fa"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/multilayer/report.html",
+            "sha256": "013d5fef3604da5ef18a40a91f3f0b8b3eade84149e4022178266d9b9cf12739"
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/installed-outputs/exports/multilayer/report.pdf",
+            "sha256": "77a47693b13e613ec942eb513165a6f7e5a4a18610d97137057f1bf6ee42dd50"
+          }
+        ]
+      }
+    ],
+    "pdf_review": {
+      "status": "PASS",
+      "pdf_count": 8,
+      "page_count": 16,
+      "records": [
+        {
+          "path": "installed-outputs/render/single-layer/drawing.pdf",
+          "sha256": "28484e5303403268df3c67fb25bc60cc108902da052501a3ddd086de322777b4",
+          "pages": 1,
+          "mass_kg": "56.952",
+          "verification": "outlined drawing glyphs: visual/raster comparison, bound DXF data parsed by installed probe",
+          "visual_review": "PASS"
+        },
+        {
+          "path": "installed-outputs/render/multilayer/drawing.pdf",
+          "sha256": "7f742247a538e84083ab990bff42314ab0478399f18b9d39332e608acb414055",
+          "pages": 1,
+          "mass_kg": "129.915",
+          "verification": "outlined drawing glyphs: visual/raster comparison, bound DXF data parsed by installed probe",
+          "visual_review": "PASS"
+        },
+        {
+          "path": "installed-outputs/pdf/single-layer/report.pdf",
+          "sha256": "7b643f725d70ee29e16418dce41ab59835be464cf14038dbafe64561b44f8562",
+          "pages": 3,
+          "mass_kg": "56.952",
+          "verification": "extracted report text and visual review",
+          "visual_review": "PASS"
+        },
+        {
+          "path": "installed-outputs/pdf/multilayer/report.pdf",
+          "sha256": "5e6efb199d554491db222dcd221d78448f4564eb698ff6a2863128e521572965",
+          "pages": 3,
+          "mass_kg": "129.915",
+          "verification": "extracted report text and visual review",
+          "visual_review": "PASS"
+        },
+        {
+          "path": "installed-outputs/exports/single-layer/drawing.pdf",
+          "sha256": "df65abaadefa00c27cb9a0d1515ee219d3ba35b3b03d243745e3c756e0366493",
+          "pages": 1,
+          "mass_kg": "56.952",
+          "verification": "outlined drawing glyphs: visual/raster comparison, bound DXF data parsed by installed probe",
+          "visual_review": "PASS"
+        },
+        {
+          "path": "installed-outputs/exports/single-layer/report.pdf",
+          "sha256": "ff30e86f777f1cb43b1790385694e16ae5a8e8a36c39a7a5bad15455e0cde907",
+          "pages": 3,
+          "mass_kg": "56.952",
+          "verification": "extracted report text and visual review",
+          "visual_review": "PASS"
+        },
+        {
+          "path": "installed-outputs/exports/multilayer/drawing.pdf",
+          "sha256": "afc2eda8eb091effb701b8ef537afe0f14589ad9596d352f5ec2a9453dcbf074",
+          "pages": 1,
+          "mass_kg": "129.915",
+          "verification": "outlined drawing glyphs: visual/raster comparison, bound DXF data parsed by installed probe",
+          "visual_review": "PASS"
+        },
+        {
+          "path": "installed-outputs/exports/multilayer/report.pdf",
+          "sha256": "77a47693b13e613ec942eb513165a6f7e5a4a18610d97137057f1bf6ee42dd50",
+          "pages": 3,
+          "mass_kg": "129.915",
+          "verification": "extracted report text and visual review",
+          "visual_review": "PASS"
+        }
+      ]
+    },
+    "performance": {
+      "beam": {
+        "samples": 25,
+        "median_ms": 0.8406670531257987,
+        "p95_ms": 1.0091669973917305,
+        "errors": 0
+      },
+      "batch100": {
+        "samples": 7,
+        "median_ms": 185.51387498155236,
+        "p95_ms": 190.5239580082707,
+        "errors": 0
+      },
+      "environment": {
+        "python": "3.11.15",
+        "platform": "macOS-27.0.1-arm64-arm-64bit",
+        "processor": "arm"
+      }
+    },
+    "family_max_p95_ms": 1.3549170107580721,
+    "baseline_comparison": {
+      "beam": {
+        "median_ratio": 0.9890688834699066,
+        "limit": 3.0,
+        "passed": true
+      },
+      "batch100": {
+        "median_ratio": 1.0797384976260833,
+        "limit": 3.0,
+        "passed": true
+      }
+    },
+    "public025_installed_wheel_hash_matches_registry": true
+  },
+  "source_preflight": {
+    "status": "CANDIDATE_TECHNICALLY_READY",
+    "command": "./run.sh release preflight --wheel Python/dist/structural_lib_is456-0.26.0-py3-none-any.whl",
+    "source_head": "266c339ad7584102a33c7e539f6e746b25e864ae",
+    "python": {
+      "passed": 8814,
+      "skipped": 4,
+      "deselected": 6
+    },
+    "fastapi": {
+      "passed": 626,
+      "deselected": 6
+    },
+    "react_build": "PASS on pinned runtime",
+    "attempts": 2,
+    "first_attempt": "NOT_READY: three Python failures (client versions/generator; generic DXF fixture) and one FastAPI client-version mismatch. Preserved failure log; narrow repairs passed before final green preflight.",
+    "duplicate_prebump_or_docker_suites": false,
+    "publication_target": null
+  },
+  "repairs": [
+    {
+      "problem": "Fresh application transport environment omitted SSE dependency",
+      "root_cause": "Verifier named-requirement selector omitted maintained sse-starlette constraint",
+      "fix": "Include explicit declared requirement; transport profile PASS"
+    },
+    {
+      "problem": "S0 historical valid inputs failed current physical intake",
+      "root_cause": "Stale450mm centroid and omitted explicit torsion corner/opposite geometry",
+      "fix": "Coherent444mm centroid/corner geometry with independent Ast assertion;15 invalid routes and valid cases PASS"
+    },
+    {
+      "problem": "Client release identity disagreed with prepared0.26.0",
+      "root_cause": "Canonical version owner omitted two maintained client API_VERSION assignments",
+      "fix": "Both pins updated and included in VERSION_FILES; source/client/FastAPI version checks PASS"
+    },
+    {
+      "problem": "Generic DXF text regression requested unresolved multilayer layout",
+      "root_cause": "Fixture900mm2 at230mm width creates two layers, now correctly rejected",
+      "fix": "Use700mm2 single-layer fixture; text checks and dedicated multilayer rejection PASS"
+    }
+  ],
+  "evidence_directory": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029",
+  "external_receipts": {
+    "artifact-qualification.json": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/artifact-qualification.json",
+      "sha256": "6dbcd5a5c46422bc6db26c4d194009d7b9bc8aa8b625ff0cf35f8055c5170a8b"
+    },
+    "package-payload.json": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/package-payload.json",
+      "sha256": "fc57a48141d74b2ccc79186c01619871a5f6d15637afd087d5e8733d88000107"
+    },
+    "build-receipt.json": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/build-receipt.json",
+      "sha256": "83f32199dc59f812dd90a36986f5b68f460d7ec9d548f634930add9aa8188d11"
+    },
+    "reproducible-build-receipt.json": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/reproducible-build-receipt.json",
+      "sha256": "1499c8ea191657622aae8ee31120f0eda390ade8dd5f4fd426463cd75d80510f"
+    },
+    "output-visual-review.json": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/output-visual-review.json",
+      "sha256": "a581a15b17770ae570a217d49288b0eddd334e13c4e833f72502ba0f9474f240"
+    },
+    "preflight-accepted.log": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/preflight-accepted.log",
+      "sha256": "b61433b2bbf0d3b1f28464d83da416b6e2a10480326de3b4955eb8a79822b3ee"
+    },
+    "preflight-initial-failure.log": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/preflight-initial-failure.log",
+      "sha256": "b35491ee30f08b9136c4ec9a5cd1573cdc8dd00259c6e55d5a6d4c5480343db4"
+    },
+    "preflight-focused-repair.log": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/preflight-focused-repair.log",
+      "sha256": "88c92b4bc501cfeb9403d9c73aa2b72b4ac359f0fe1709aae16bf798785fc1e7"
+    },
+    "final-essential.log": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/final-essential.log",
+      "sha256": "bb94ecfdb495803c55bac5d74ed0b6be74ddd60f54affcc7b2ac7b97069f45e4"
+    },
+    "final-control.log": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/final-control.log",
+      "sha256": "efc8abaf6281319f120b2d7f8bc050ce21712d7ea69a154cad872f66770a89c5"
+    },
+    "final-efficiency.log": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/final-efficiency.log",
+      "sha256": "aa6827449c47e1377396dc8060ed3598044348f9dfe0be3ffa729eccf1a58942"
+    },
+    "final-session.log": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s5-20261029/final-session.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "merge_order_review": "PASS: S0/S1#1032,S2#1034,S3#1038,S4#1039 squash-integrated. Old605012 planning lane preserved historical/superseded; no active predecessor stranded. Remote main separately fetched at a39e02b2.",
+  "local_final_checks": {
+    "essential": "12/12 PASS",
+    "control": "PASS125operations/109scripts",
+    "efficiency": "PASS",
+    "session": "PASS",
+    "diff_whitespace": "PASS"
+  }
 }

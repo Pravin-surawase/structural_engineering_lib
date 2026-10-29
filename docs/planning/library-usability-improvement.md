@@ -2028,3 +2028,37 @@ public0.25.0 performance baseline. Use `--qualification-profiles` only for an
 explicit affected-evidence repair against identical artifact hashes; incomplete
 populations remain PARTIAL. Source preflight and exact installed profiles must
 both pass before S5 acceptance. No command above selects publication.
+
+### S5 executed evidence and final source binding
+
+All16 installed profiles passed on the retained 0.26.0 pair. Wheel and sdist
+each passed29 negative-UAT cases, all13 family journeys and106 independent
+numerical comparisons. The copied17 standalone examples and eight maintained
+public-example/guide checks passed without a checkout package. Ordinary and
+multilayer exports retained39/43 physical bars, four/eight section bars and
+56.952293/129.914581 kg scheduled steel. All eight generated PDFs were rendered
+and inspected; the two engineering spacing failures in the educational CSV
+example remain explicit Check results.
+
+The first source preflight exposed stale generated-client version pins and a
+generic-DXF text fixture that unintentionally requested multilayer steel. The
+version owner now updates both clients. The text fixture uses a valid single
+layer; the dedicated multilayer rejection still passes. Affected checks passed,
+then the canonical preflight passed8814 Python tests,626 FastAPI tests and the
+pinned React production build. This was one failed attempt followed by the
+required final green preflight, with no pre-bump or Docker duplicate.
+
+The original build's Python-tree receipt remains its provenance. Final review
+uses a separately frozen Python tree: its only difference is the excluded DXF
+test fixture. All327 distributed files and all four build inputs are unchanged.
+This is an explicit verification-only source rebind, not a runtime change.
+A confirming rebuild reproduced the exact wheel; the sdist's338 file contents
+were identical but archive timestamps changed its outer hash. Retain the
+original qualified sdist bytes. S6 must consume the retained pair or requalify
+any different bytes; it must not substitute the timestamp-different rebuild.
+
+The [S5 receipt](../verification/library-s5-20261029.json) records exact hashes,
+build/review identities, profiles, timings, repairs and remaining boundaries.
+The [milestone PR](https://github.com/Pravin-surawase/structural_engineering_lib/pulls?q=is%3Apr+head%3Acodex%2Flib-s5-artifact)
+owns final exact-head review, required hosted checks and merge identity. Its
+accepted integration completes S5. S6 publication remains unselected.

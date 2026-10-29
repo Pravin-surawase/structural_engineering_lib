@@ -18,7 +18,8 @@
 - Selected S5 after verified S4 #1039 integration and froze eight artifact acceptance gates plus the separate S6 execution packet.
 - Prepared 0.26.0 source metadata with the canonical version tool; current public 0.25.0 is verified directly from PyPI. The candidate is not tagged or published.
 - Corrected active/historical release guidance and unpublished citation/changelog/checklist semantics.
-- Implemented isolated wheel/sdist, declared-extra, installed 13-family/106-metric, physical/export, origin/data and performance qualification at the existing release owner. Real built-artifact execution remains pending.
+- Implemented and passed all16 isolated profiles, wheel/sdist29-case UAT,13-family/106-metric numerical replay,17 copied examples/eight guide checks, physical/export origins/data and performance budgets. Rendered and inspected eight PDFs.
+- Final source preflight passed8814 Python tests,626 FastAPI tests and React build after the concrete repairs below; exact-head review and required hosted integration remain owned by the milestone PR.
 
 ### Issues encountered
 
@@ -26,6 +27,10 @@ Existing wheel replay omitted sdist and installed S4 numerical/physical evidence
 Active Alpha-only instructions and a stale checklist could mislabel a prepared
 normal candidate. CAD is a dependency-only extra with no public library CAD
 exporter; no export/native capability is claimed by dependency installation.
+The installed transport harness omitted the declared SSE dependency, and its
+S0 valid seeds lacked current centroid/torsion geometry. The first source
+preflight exposed omitted generated-client version targets and a multilayer
+fixture in the generic-DXF text test.
 
 ### Root causes and resolutions
 
@@ -34,6 +39,14 @@ payload equality and clean installed origins; reuse the accepted reference and
 transport owners. Fence historical instructions and retain current public and
 prepared candidate states separately. The [S5 receipt](verification/library-s5-20261029.json)
 records the population and remaining evidence.
+Added the explicit SSE requirement, reconciled verifier geometry and preserved
+the educational example's explicit spacing Check outcomes. Added both clients
+to the version owner and used single-layer steel for generic-DXF text coverage;
+the dedicated multilayer rejection remains intact. All327 package files and
+four build inputs match the original accepted bytes. Only an excluded test
+fixture changes the final review Python tree. Rebuild wheel bytes matched;
+the sdist's contents matched but timestamp bytes differed, so the original
+qualified sdist is retained and the rebuilt archive is explicitly unselected.
 
 ### Rework and recurrence
 
@@ -43,9 +56,9 @@ Historical RR-004 x36 remains unchanged; no speculative recurrence is added.
 
 ### What next
 
-Freeze code/docs, regenerate reviewed version projections and finish the
-focused checks. Build one exact pair, execute isolated profiles and one final
-canonical source preflight, review the exact candidate and integrate one PR.
+The milestone PR owns final exact-head review, required checks and merge
+identity. Accepted integration completes S5; preserve the retained pair and
+the separately recorded original-build/final-review tree binding for S6.
 S6 publication targets remain unselected.
 
 ---
