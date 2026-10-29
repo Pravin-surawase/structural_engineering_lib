@@ -14,9 +14,9 @@ Complete command-line reference for `structural_lib`.
 ## Installation
 
 ```bash
-python -m pip install "structural-lib-is456==0.25.0"
+python -m pip install "structural-lib-is456==0.26.0"
 # For DXF support:
-python -m pip install "structural-lib-is456[dxf]==0.25.0"
+python -m pip install "structural-lib-is456[dxf]==0.26.0"
 ```
 
 ## Quick Start
@@ -360,7 +360,7 @@ render dependencies available, generate a high-contrast modelspace preview:
 
 ```bash
 # Install render dependencies
-./scripts/python_runtime.sh -m pip install "structural-lib-is456[dxf,render]==0.25.0"
+./scripts/python_runtime.sh -m pip install "structural-lib-is456[dxf,render]==0.26.0"
 
 # Render to PNG or PDF
 ./scripts/python_runtime.sh scripts/dxf_render.py drawings.dxf -o drawings.png

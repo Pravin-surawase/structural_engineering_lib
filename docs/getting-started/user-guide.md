@@ -13,7 +13,7 @@ tags: [python, cli, beam, external-user]
 **Audience:** Users
 **Status:** Active
 **Importance:** High
-**Version:** 0.25.0
+**Version:** 0.26.0
 **Last Updated:** 2026-08-28
 
 This guide takes a new user from a clean installation to design results, a bar
@@ -23,7 +23,7 @@ without files.
 
 ## 1. Install and verify
 
-StructLib 0.25.0 requires Python 3.11 or newer.
+StructLib 0.26.0 requires Python 3.11 or newer.
 
 The pin follows prepared source metadata. Confirm that exact version is published
 before registry installation; otherwise use the source-install route in the
@@ -33,11 +33,11 @@ before registry installation; otherwise use the source-install route in the
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456==0.25.0"
+python3 -m pip install "structural-lib-is456==0.26.0"
 python3 -m structural_lib install-preflight
 ```
 
-The preflight must report version `0.25.0` and a package origin inside the
+The preflight must report version `0.26.0` and a package origin inside the
 active environment's `site-packages` directory.
 
 ## 2. Create strict beam input
@@ -77,7 +77,7 @@ These commands create:
 For DXF output:
 
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]==0.25.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.26.0"
 python3 -m structural_lib dxf results.json -o drawings.dxf
 ```
 

@@ -1703,6 +1703,58 @@ def cmd_verify(args: argparse.Namespace) -> int:
     identity_only = getattr(args, "identity_only", False)
     index_wait_seconds = getattr(args, "index_wait_seconds", 90)
 
+    if not getattr(args, "qualification", False) and any(
+        getattr(args, name, None)
+        for name in ("sdist", "receipt", "qualification_profiles")
+    ):
+        print(
+            "error: --sdist, --receipt and --qualification-profiles require --qualification"
+        )
+        return 2
+
+    if getattr(args, "qualification", False):
+        if (
+            args.source != "wheel"
+            or identity_only
+            or not args.sdist
+            or not args.receipt
+        ):
+            print(
+                "error: --qualification requires --source wheel, --sdist and --receipt; it cannot use --identity-only"
+            )
+            return 2
+        from _lib.release_qualification import qualify_artifacts
+
+        try:
+            result = qualify_artifacts(
+                repo=REPO_ROOT,
+                wheel=_find_wheel(wheel_dir, args.version),
+                sdist=Path(args.sdist),
+                version=args.version or _version_from_pyproject(),
+                receipt=Path(args.receipt),
+                profiles=(
+                    args.qualification_profiles.split(",")
+                    if args.qualification_profiles
+                    else None
+                ),
+            )
+        except (OSError, ValueError, RuntimeError, subprocess.TimeoutExpired) as exc:
+            print(f"error: {exc}")
+            return 1
+        print(
+            json.dumps(
+                {
+                    "status": result["status"],
+                    "version": result["artifact_identity"]["version"],
+                    "profiles": {
+                        name: item["status"]
+                        for name, item in result["profiles"].items()
+                    },
+                }
+            )
+        )
+        return 0
+
     with tempfile.TemporaryDirectory(prefix="verify_release_") as tmp:
         venv_dir = Path(tmp) / "venv"
         _run_check([sys.executable, "-m", "venv", str(venv_dir)])
@@ -2441,6 +2493,19 @@ def build_parser() -> argparse.ArgumentParser:
         "--source", choices=["wheel", "pypi"], default="wheel", help="Install source"
     )
     p_verify.add_argument("--wheel-dir", default="Python/dist", help="Wheel directory")
+    p_verify.add_argument(
+        "--qualification",
+        action="store_true",
+        help="S5 isolated wheel/sdist, all declared extras, engineering/export and performance evidence",
+    )
+    p_verify.add_argument(
+        "--sdist", help="Exact source distribution for S5 qualification"
+    )
+    p_verify.add_argument("--receipt", help="Qualification JSON receipt path")
+    p_verify.add_argument(
+        "--qualification-profiles",
+        help="Explicit comma-separated affected profiles; omit for the complete S5 matrix",
+    )
     p_verify.add_argument(
         "--job",
         default="Python/examples/sample_job_is456.json",

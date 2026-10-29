@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.26.0] — Prepared candidate (unreleased; on hold)
+
+This source candidate incorporates the accepted S0–S4 professional-quality
+programme. S5 package qualification is in progress; no v0.26.0 tag, TestPyPI/PyPI
+publication or GitHub Release is authorized or claimed.
+
+### Fixed
+
+- Finite inspectable FAIL/HOLD results, faithful smart composition and explicit
+  input/depth/default/schema behavior across maintained Python/CLI/HTTP/WS paths.
+- Fe500 vertical-stirrup design uses the IS456415 limit in property-line strap
+  shear and the ordinary wire Asv/s projection; longitudinal grade is retained.
+- Physical beam paths preserve actual layer identity. Digital drawings include
+  the link offset and bind resolved paths, section positions, BBS and issue state.
+- First-use examples, active guide routing, optional-install pins, PDF layout,
+  API signature ownership and known client quantity/status handling agree.
+
+### Added and compatibility
+
+- An opt-in resolved-path physical DXF exporter for the ordinary and multilayer
+  worked cases, with exact member/package/path/BBS identities.
+- Independent source-equation evidence across13 public family journeys and106
+  numerical metrics; existing governing branch references remain bounded.
+- Unresolved multilayer generic DXF now rejects instead of emitting one-row
+  geometry; use the bound physical-path exporter. Corrected unsafe numerical
+  outcomes, strict invalid intake and nullable unavailable quantities can change
+  results previously accepted by permissive callers.
+
+The library remains pre-1.0/Beta. Full-amendment qualification, native-host,
+fabrication and project-specific professional acceptance retain their explicit
+HOLDs/exclusions. This candidate does not add a supported code family or native
+application capability.
+
 ## [0.25.0] — 2026-10-03
 
 This owner-authorized normal software release includes the accepted Library work

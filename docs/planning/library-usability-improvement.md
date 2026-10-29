@@ -1938,3 +1938,133 @@ export/binding behavior and the two shear consumers justify these checks;
 required hosted broad suites cover integration. No duplicate local full Python
 or full repository run is selected. Exact commands/results and final integration
 belong to this milestone PR and its retained execution receipt.
+
+
+<a id="s5-s6-efficient-artifact-and-release-plan--29-october-2026"></a>
+
+## S5/S6 efficient artifact and release plan — 29 October 2026
+
+The owner selected planning and S5 execution after S4 PR #1039 integrated at
+`a39e02b24c85ed1c2852021c3e511375366b9112`. Task `LIB-S5-20261029` uses
+`codex/lib-s5-artifact`; Codex is the sole writer, with at most two bounded
+read-only reviewers. Prepare **0.26.0** as the unpublished normal candidate for
+the audited supported scope. This minor candidate records additive physical
+exports and intentional corrections to unsafe results/unresolved geometry;
+pre-1.0 compatibility notes must identify those corrections. Pravin Surawase is
+the engineering owner; no external-reviewer dependency is reintroduced.
+
+### S5 obligations and decisive evidence
+
+| Gate | Required outcome and evidence |
+| --- | --- |
+| S5-A1 — coherent candidate | One prepared/unpublished version across package, app, API, citation and active guidance; current public 0.25.0 remains identified. Preserve historical release facts, exclusions and HOLDs. |
+| S5-A2 — one frozen distribution pair | Build one wheel/sdist pair after implementation/docs freeze. Record SHA256, build inputs, source commit and Python-tree identity. Inspect membership/data/templates and reject forbidden research/migration/test payloads. Evidence-only integration commits must preserve the exact frozen build-input tree; runtime/build-input repairs invalidate and rebuild/requalify the affected candidate. |
+| S5-A3 — isolated base/contract/numerical behavior | Fresh installed wheel and sdist environments prove site-packages origin before/after execution, declared dependencies and pip-check. Replay all 13 promoted family journeys, their 106 S4 independent metrics and valid/invalid/FAIL/HOLD behavior; retain S0/S3 canonical Python/CLI/HTTP/WS/batch coverage through existing drivers. No checkout structural_lib import or broad root requirements may mask missing dependencies. |
+| S5-A4 — declared extras | Inventory every declared extra: dev,dxf,render,report,pdf,validation,cad,pmm,docs,etabs. Also verify the promoted combined export installation `[dxf,render,report,pdf,validation]`. Verify each dependency closure in an isolated profile and exercise its existing advertised non-native behavior. The cad extra currently supplies PyVista only: record dependency availability, no public library CAD/STL exporter, and native CAD HOLD. Windows-only etabs markers are checked on this Mac; installed Windows/Excel/ETABS acceptance stays explicit and unclaimed. The pmm experimental boundary remains unchanged. |
+| S5-A5 — installed physical/output fidelity | From the installed export-capable wheel replay ordinary and multilayer member cases, parse actual JSON/BBS/DXF identities/paths/layers/lengths/masses and HTML/PDF/report outputs, then inspect rendered artifacts. Bind results to the exact distribution hashes. Package data/template probes must execute from installed resources. |
+| S5-A6 — representative performance | Measure fixed valid ordinary-beam, batch and family workflows with warmups/repeated timings, record environment and error counts. Set budgets before measurement; compare supported common calls with the public 0.25.0 baseline when suitable. This is a representative regression check, not a general speed guarantee. |
+| S5-A7 — one integrated verification cycle | Finish code/docs/tests first. Run affected focused checks, one named broad Python release regression and affected FastAPI/React through the canonical frozen-candidate preflight. Use only `preflight --wheel <exact-path>` after the version bump; do not duplicate a pre-bump full suite or Docker path. Independent exact-head reviews and required hosted checks bind the final milestone PR. Repairs rerun affected evidence only. |
+| S5-A8 — reviewed integration | One milestone PR integrates the accepted candidate. Verify final reviewed/merged tree and frozen Python/build-input identity; retain exact artifact, environment, numerical, export and timing receipts. All support exclusions/HOLDs remain visible. S5 completes without any publication target. |
+
+Reuse the release CLI, version generator, F0/S0/canonical artifact drivers,
+S4 reference inputs and physical workflow. Extend the maintained artifact owner
+for missing sdist/installed-numerical/extra/export evidence rather than copying
+an independent build/release lifecycle. Upgrade/version syntax is validated by
+`release run` before its mutation; the single final artifact preflight owns
+broad source verification. All source changes, including actual packaging
+repairs found by clean installs, belong to the same milestone candidate.
+
+One source broad regression and narrow installed profiles answer different
+questions. Do not rerun a second broad source suite merely to repeat a green
+result. Archive the first failed candidate evidence; do not change reference
+values or weaken origins/claims to obtain a pass. Build/install commands use
+unique disposable environments and pip caches; never clean unrelated outputs.
+
+### S6 execution packet, kept separate
+
+S6 consumes the exact accepted S5 artifacts and identities. First revalidate
+version/support/migration notes and the publication mechanism's ability to use
+those bytes or reproduce their hashes. Any byte-changing rebuild requires
+artifact requalification before upload. Prepare one bounded publication-state
+packet: dated citation/changelog, an appended authorized ledger entry and the
+maintained per-version authorization record, with the frozen Python tree
+unchanged. Run the existing publication-surface and exact-target authorization
+checks. TestPyPI, tag creation/push, PyPI and GitHub Release require the owner's
+explicit per-version/target authorization; S5 does not select those actions.
+
+After authorization, verify the TestPyPI/public files against the retained
+hash manifest and install/import identities. Publish user-facing changes,
+compatibility corrections, tested installation profiles and support exclusions.
+Reuse exact installed UAT for identical bytes; rerun it only if identity differs
+or prior evidence does not cover the selected target. Final public readback
+must match the accepted manifest. Native/professional-use claims retain their
+separate evidence; a normal software release grants neither by itself.
+
+
+S5 timing budgets are frozen before measurement: ordinary-beam p95 <=100ms,
+100-member batch p95 <=2000ms, and each family journey p95 <=1000ms. Warmups and
+sample counts are retained in the receipt. Common valid beam/batch median time
+must not exceed 3x the public 0.25.0 baseline measured on the same host/runtime;
+absolute budgets also apply. No unrelated or intentionally corrected FAIL/HOLD
+case is used to claim a speed improvement.
+
+
+### Frozen S5 execution commands
+
+After the cohesive implementation commit is clean, build and qualify the exact
+pair. The example evidence directory is outside the Git checkout so receipts
+cannot dirty the frozen source; the execution receipt retains the actual path.
+
+```bash
+./scripts/python_runtime.sh -m build Python
+./run.sh release verify --qualification --version 0.26.0 --source wheel --sdist Python/dist/structural_lib_is456-0.26.0.tar.gz --receipt ../library-s5-evidence/qualification.json
+./run.sh release preflight --wheel Python/dist/structural_lib_is456-0.26.0-py3-none-any.whl
+```
+
+The qualifier defaults to all16 profiles: base, sdist, each of10 declared extras,
+the promoted combined export extras, canonical application transport, copied
+standalone examples and promoted starter guide cells, and the
+public0.25.0 performance baseline. Use `--qualification-profiles` only for an
+explicit affected-evidence repair against identical artifact hashes; incomplete
+populations remain PARTIAL. Source preflight and exact installed profiles must
+both pass before S5 acceptance. No command above selects publication.
+
+### S5 executed evidence and final source binding
+
+All16 installed profiles passed on the retained 0.26.0 pair. Wheel and sdist
+each passed29 negative-UAT cases, all13 family journeys and106 independent
+numerical comparisons. The copied17 standalone examples and eight maintained
+public-example/guide checks passed without a checkout package. Ordinary and
+multilayer exports retained39/43 physical bars, four/eight section bars and
+56.952293/129.914581 kg scheduled steel. All eight generated PDFs were rendered
+and inspected; the two engineering spacing failures in the educational CSV
+example remain explicit Check results.
+
+The first source preflight exposed stale generated-client version pins and a
+generic-DXF text fixture that unintentionally requested multilayer steel. The
+version owner now updates both clients; the text fixture uses one layer while
+the dedicated multilayer rejection remains intact. Hosted verification then
+found two declared optional imports missing from the external-package registry
+and a fresh pytest9.2/pytest-benchmark5.3 incompatibility. The registry now
+recognizes PyVista/MkDocs. Package and root dev requirements cap pytest below9.2;
+the dev profile executes the real maintained benchmark fixture, which passes
+with pytest9.1.1/pytest-benchmark5.3.0. See the
+[upstream report](https://github.com/ionelmc/pytest-benchmark/issues/321).
+
+The metadata repair changed artifact bytes, so the previous pair and receipts
+are explicitly superseded and preserved. All16 profiles ran again on the final
+pair from one build head. Its build and review Python trees match; all327
+distributed files and four build inputs match frozen source. The final exact-
+wheel canonical preflight passed8814 Python tests,626 FastAPI tests and the
+pinned React production build. Two earlier preflight attempts belong to the
+superseded candidate; no pre-bump or local Docker duplicate was run.
+
+An earlier confirming rebuild reproduced wheel bytes but changed sdist archive
+timestamps despite identical file contents. Preserve the final qualified pair
+by hash. S6 must consume those retained bytes or requalify any different bytes.
+
+The [S5 receipt](../verification/library-s5-20261029.json) records exact hashes,
+build/review identities, profiles, timings, repairs and remaining boundaries.
+The [milestone PR #1040](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040)
+owns final exact-head review, required hosted checks and merge identity. Its
+accepted integration completes S5. S6 publication remains unselected.

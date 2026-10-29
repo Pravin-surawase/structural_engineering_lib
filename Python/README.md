@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.25.0 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.26.0 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,7 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.25.0
+## New in v0.26.0
 
 - **Member input readiness:** native `beam-readiness/v1` evidence binds explicit
   physical intent, support and ULS/SLS roles to the exact ledger, source and engine.
@@ -46,8 +46,8 @@ After the [release ledger](https://github.com/Pravin-surawase/structural_enginee
 confirms publication of the selected version:
 
 ```bash
-pip install structural-lib-is456==0.25.0         # exact normal release
-pip install "structural-lib-is456[dxf]==0.25.0"  # release with DXF export
+pip install structural-lib-is456==0.26.0         # exact normal release
+pip install "structural-lib-is456[dxf]==0.26.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 

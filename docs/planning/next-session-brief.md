@@ -4,33 +4,36 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-10-29
-- Focus: S4 engineering accuracy and faithful physical/report outputs after S3 PR #1038 merged at 7e19a23b.
-- Completed: Implemented four confirmed root repairs; added 106 independent numerical comparisons across all13 promoted family journeys; generated and inspected ordinary/multilayer JSON/BBS/DXF/HTML/PDF outputs. 1,677 unique focused tests pass after affected repairs; format/type/architecture/import, API/schema, strict docs and rendered outputs pass. The milestone PR owns exact-head review and hosted integration.
-- Recurrence controls: RR-004 x36 / unknown remains historical. Refresh this handoff at material milestone/device changes; no new recurrence asserted by S4.
+- Focus: Qualify the prepared 0.26.0 wheel/sdist and installed profiles efficiently; preserve the S6 publication boundary.
+- Completed: S4 #1039 merged at a39e02b2; prepared unpublished 0.26.0; all16 installed profiles,17 examples/eight guide checks,106 independent metrics and eight PDF reviews passed. Final canonical preflight passed8814 Python tests,626 FastAPI tests and React build. Milestone PR owns S5 review/check/merge facts.
+- Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
 ## Current boundary — 29 October 2026
 
-The owner selected S4 implementation and identified himself as the structural
-engineer. Pravin Surawase is the engineering owner; no separate external-reviewer
-dependency remains. Independent numerical evidence and technical review remain
-required. Codex `/root` is the sole Mac writer on `codex/lib-s4-engineering`,
-a source-bound managed lane from fetched main
-`7e19a23b829022da98f562104f47b3fda6cbb85e`. S3
-[#1038](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1038)
-is integrated. Preserve older lanes and inspect live Git/GitHub before takeover.
+S5 is selected on `codex/lib-s5-artifact` from fetched main
+`a39e02b24c85ed1c2852021c3e511375366b9112`. Codex `/root` is the sole Mac
+writer. S0/S1 #1032, S2 #1034, maintenance #1035, S3 #1038 and S4 #1039 are
+integrated. Preserve their worktrees/artifacts. Pravin Surawase is the
+engineering owner; no external-reviewer dependency is reintroduced.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | Implemented [S4](library-usability-improvement.md#s4-engineering-and-outputs--29-october-2026): independent family/branch engineering evidence; capped415 strap shear and wire quantity; path-bound physical drawing and corrected layer identities. Local evidence passed; milestone PR owns exact-head review and integration. |
-| **Next** | Verify the S4 milestone PR exact-head review/check/merge evidence before selecting S5 final-version artifact qualification. |
-| Later gates | S5 final-version artifact and S6 per-release authorization/publication remain separate. Development metadata0.25.0 is distinct from the public wheel. |
-| Preserved boundaries | FAIL/HOLD, full-amendment qualification and native CAD/Excel/ETABS/XLL/fabrication acceptance remain explicit. Normalized IS-data distribution permission is passed. |
+| **Current** | Prepared/unpublished 0.26.0;16 installed profiles and final source preflight passed on the rebuilt pair with bounded dev dependencies. Final build/review Python trees match; superseded bytes/evidence are preserved separately. Public version remains 0.25.0. |
+| **Next** | The [S5 milestone PR #1040](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) owns exact-head reviews, required checks and accepted merge identity. After its integration S5 is complete; do not repeat qualification for identical bytes. |
+| Later gates | S6 consumes the accepted bytes and requires exact-target owner authorization for TestPyPI/tag/PyPI/GitHub Release and public readback. |
+| Preserved boundaries | Full-amendment, native/fabrication/professional HOLDs remain explicit. CAD extra is dependency-only with no current public exporter; PMM remains experimental; ETABS marker checks do not establish native acceptance. |
 
 The [task board](../TASKS.md), [programme](library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence)
-and [S4 receipt](../verification/library-s4-20261029.json) own current work.
-The owner removed the external-reviewer dependency; do not reopen it. No tag,
-package publication or native application mutation is selected.
+and [S5 receipt](../verification/library-s5-20261029.json) own current work.
+Source preflight repaired client pins and a DXF fixture; hosted checks then
+exposed optional-import classification and pytest-benchmark compatibility.
+The final metadata-bounded pair passed all16 profiles, including an actual
+benchmark fixture, and a new green `preflight --wheel`.
+Do not repeat broad source/installed suites for an unchanged candidate.
+Archive timestamps can change sdist rebuild bytes. Preserve the final qualified
+pair for S6; the old metadata-unbounded pair is explicitly superseded.
+No publication target or new native mutation is selected.
 
 ## Historical handoff boundary — 1 October 2026
 

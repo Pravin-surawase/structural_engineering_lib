@@ -6,6 +6,67 @@
 ---
 
 
+## 2026-10-29 — Session: S5 artifact qualification
+
+**Task:** LIB-S5-20261029
+**Agent:** MAIN (sole Mac writer; two bounded read-only reviewers)
+**Branch:** `codex/lib-s5-artifact`
+**Focus:** Qualify the prepared 0.26.0 wheel/sdist and installed profiles efficiently; preserve the S6 publication boundary.
+
+### Completed
+
+- Selected S5 after verified S4 #1039 integration and froze eight artifact acceptance gates plus the separate S6 execution packet.
+- Prepared 0.26.0 source metadata with the canonical version tool; current public 0.25.0 is verified directly from PyPI. The candidate is not tagged or published.
+- Corrected active/historical release guidance and unpublished citation/changelog/checklist semantics.
+- Implemented and passed all16 isolated profiles, wheel/sdist29-case UAT,13-family/106-metric numerical replay,17 copied examples/eight guide checks, physical/export origins/data and performance budgets. Rendered and inspected eight PDFs.
+- Final source preflight passed8814 Python tests,626 FastAPI tests and React build after the concrete repairs below; exact-head review and required hosted integration remain owned by the milestone PR.
+
+### Issues encountered
+
+Existing wheel replay omitted sdist and installed S4 numerical/physical evidence.
+Active Alpha-only instructions and a stale checklist could mislabel a prepared
+normal candidate. CAD is a dependency-only extra with no public library CAD
+exporter; no export/native capability is claimed by dependency installation.
+The installed transport harness omitted the declared SSE dependency, and its
+S0 valid seeds lacked current centroid/torsion geometry. The first source
+preflight exposed omitted generated-client version targets and a multilayer
+fixture in the generic-DXF text test.
+
+### Root causes and resolutions
+
+Extend the maintained artifact verifier and require complete distribution/source
+payload equality and clean installed origins; reuse the accepted reference and
+transport owners. Fence historical instructions and retain current public and
+prepared candidate states separately. The [S5 receipt](verification/library-s5-20261029.json)
+records the population and remaining evidence.
+Added the explicit SSE requirement, reconciled verifier geometry and preserved
+the educational example's explicit spacing Check outcomes. Added both clients
+to the version owner and used single-layer steel for generic-DXF text coverage;
+the dedicated multilayer rejection remains intact. Hosted validation exposed
+two missing optional external-import classifications and incompatible freshly
+resolved pytest9.2/pytest-benchmark5.3. The import registry now recognizes the
+declared dependencies; package/root dev pytest is bounded below9.2 and the dev
+profile actually runs the benchmark fixture. Because metadata changed bytes,
+the prior pair/evidence is preserved as superseded. All16 profiles and final
+canonical preflight passed again on the final pair from one build head, with
+matching build/review Python trees and327 distributed files. Preserve the final
+pair's exact hashes because sdist archive timestamps can change rebuild bytes.
+
+### Rework and recurrence
+
+- None encountered.
+
+Historical RR-004 x36 remains unchanged; no speculative recurrence is added.
+
+### What next
+
+The milestone PR #1040 owns final exact-head review, required checks and merge
+identity. Accepted integration completes S5; preserve the retained pair and
+its matching frozen build/review identity for S6.
+S6 publication targets remain unselected.
+
+---
+
 ## 2026-10-29 — Session: S4 engineering and outputs
 
 **Task:** LIB-S4-20261029

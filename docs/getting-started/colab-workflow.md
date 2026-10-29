@@ -13,7 +13,7 @@ tags: [colab, python, cli, beam]
 **Audience:** Users
 **Status:** Active
 **Importance:** Medium
-**Version:** 0.25.0
+**Version:** 0.26.0
 **Last Updated:** 2026-10-29
 
 This guide runs the selected package version in a clean Google Colab runtime.
@@ -29,7 +29,7 @@ before using a new candidate pin.
 Run this in the first cell:
 
 ```python
-%pip install -q "structural-lib-is456[dxf]==0.25.0"
+%pip install -q "structural-lib-is456[dxf]==0.26.0"
 ```
 
 Choose **Runtime → Restart session**, then verify the environment:
@@ -38,7 +38,7 @@ Choose **Runtime → Restart session**, then verify the environment:
 !python -m structural_lib install-preflight
 ```
 
-The output must show `structural_lib: 0.25.0` and a package origin under
+The output must show `structural_lib: 0.26.0` and a package origin under
 `site-packages`.
 
 ## 2. Run a canonical beam calculation

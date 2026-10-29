@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-10-29 — v0.25.0 released; S0/S1 and S2 integrated; S3 integrated; S4 engineering/output verification selected
+**Updated:** 2026-10-29 — v0.25.0 public; S0–S4 integrated; S5 0.26.0 artifact/preflight qualified; milestone PR owns final integration
 
 ---
 
@@ -22,12 +22,13 @@
 | LIB-S2 | Repair first-use inputs, pins, guidance and PDF/drawing outputs | P1 | Done: [PR #1034](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1034), main afe785be | [Local evidence](verification/library-s2-20261029.json); required checks, exact-head reviews and matching merge tree on PR |
 | LIB-MAINT-20261029 | Reconcile operational handoff and investigate scheduled dependency/verification failures | P1 | Done: PR #1035 merged at ec3f2307 | [Selected maintenance packet](planning/library-usability-improvement.md#post-s2-maintenance--29-october-2026); confirmed causes repaired, affected evidence and required hosted checks |
 | LIB-S3-20261029 | Complete public signatures, input/schema semantics, defaults and cross-caller compatibility | P1 | Done: PR #1038 merged at 7e19a23b | [S3 scope and gate](planning/library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence); declared population reconciled, local evidence passed; PR owns final integration |
-| LIB-S4-20261029 | Verify engineering accuracy and physical/output fidelity | P1 | Implemented and locally verified; final PR owns integration | [S4 scope and evidence](planning/library-usability-improvement.md#s4-engineering-and-outputs--29-october-2026); independent numerical/output acceptance and reviewed integration |
+| LIB-S4-20261029 | Verify engineering accuracy and physical/output fidelity | P1 | Done: PR #1039 merged at a39e02b2 | [S4 scope and evidence](planning/library-usability-improvement.md#s4-engineering-and-outputs--29-october-2026); independent numerical/output acceptance and reviewed integration |
+| LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Local qualification passed; [PR #1040 owns integration](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
-work or override the selected S4 sequence above. S5–S6 remain later gates;
-no new package release is selected by S4.
+work or override the selected programme above. S5's milestone PR owns its
+review/check/merge status. No S6 publication target is selected.
 
 ## Python Library Improvement — earlier delivery and qualification records
 
@@ -126,11 +127,11 @@ is an unaccepted proposal. It does not select a subsequent package release.
 ## Current Release
 
 | **Current public release** | v0.25.0 | Published 3 October 2026; normal software version, Beta maturity and bounded support; [public release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.25.0) |
-| **Release candidate** | — | S0–S6 quality programme is in progress; final version, artifact qualification and per-release authorization remain later gates |
+| **Release candidate** | v0.26.0 | Prepared/unpublished; S5 artifact and source preflight passed, final integration on its milestone PR; S6 authorization remains separate |
 - **Release evidence:** [v0.25.0/LIB-2 and LIB-5 record](getting-started/releases.md) and [PR #1026](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1026) own the exact tag, package and public readback evidence. The S2 development wheel is a different, unpublished artifact.
 - **Strategy:** Complete the selected quality milestones and qualify the final artifact before publication.
-- **Focus:** S4 engineering accuracy, independent benchmarks and physical/output verification.
-- **Target:** S4 engineering/output qualification, S5 exact-artifact verification and S6 release remain separately gated.
+- **Focus:** S5 exact-artifact qualification and installed user/agent workflows.
+- **Target:** Integrate the accepted S5 candidate; S6 release remains a separate owner selection.
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
 
@@ -185,10 +186,10 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-S4-20261029 | Complete source-based engineering and physical-output verification, fixes and reviewed integration | MAIN / Mac | Locally verified; PR owns final integration |
+| LIB-S5-20261029 | Integrate the qualified 0.26.0 candidate without publication | MAIN / Mac | Local gates passed; milestone PR owns final integration |
 
 Current intake uses a clean, source-bound managed worktree from fetched main
-`afe785be`; preserve the completed S2 branch and its outputs. The following
+`a39e02b2`; preserve completed predecessor branches and their outputs. The following
 dated notes describe earlier lanes and do not override this intake or the
 current Library programme above. Current native-host access has not been
 rechecked; offline evidence does not establish installed acceptance.

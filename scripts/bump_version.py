@@ -68,6 +68,16 @@ VERSION_FILES = {
     "fastapi_app/config.py": [
         (r'api_version: str = "[^"]+"', 'api_version: str = "{version}"'),
     ],
+    # Maintained clients advertise the same API release as the backend.
+    "clients/python/structural_client/client.py": [
+        (r'^API_VERSION = "[^"]+"', 'API_VERSION = "{version}"'),
+    ],
+    "clients/typescript/src/index.ts": [
+        (
+            r"^export const API_VERSION = '[^']+' as const;",
+            "export const API_VERSION = '{version}' as const;",
+        ),
+    ],
     # OpenAPI baseline (top-level info block)
     "fastapi_app/openapi_baseline.json": [
         (

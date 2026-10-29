@@ -26,7 +26,7 @@ workflows under IS 456:2000.
 
 > [!IMPORTANT]
 > Target release classification (publication state is separate):
-> **v0.25.0 is a normal software release of the audited supported scope.**
+> **v0.26.0 is a normal software release of the audited supported scope.**
 > This describes the target version format and scope. The candidate remains
 > prepared and unpublished until the [release ledger](docs/getting-started/releases.md)
 > records final publication. Support is case-qualified; complete IS 456 coverage
@@ -97,7 +97,7 @@ reconciliation, or professional approval.
 After the release ledger confirms publication of the selected version:
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.25.0"
+python3 -m pip install "structural-lib-is456==0.26.0"
 ```
 
 The package is installed as `structural-lib-is456` and imported as

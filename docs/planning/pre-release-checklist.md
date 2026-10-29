@@ -5,12 +5,29 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-10-03
+**Last Updated:** 2026-10-29
 
 ## Current State
 
-Current source metadata: 0.25.0 (published normal software release)
-Current public release: v0.24.0
+Current source metadata: 0.26.0 (prepared candidate; unpublished/on hold)
+Current public release: v0.25.0
+
+- **Candidate base:** S4 PR #1039 merged at `a39e02b24c85ed1c2852021c3e511375366b9112`.
+- **Candidate state:** selected S5 package qualification; not tagged or published.
+- **Current public source:** `v0.25.0`, release merge `eb6f8b51988a3f9b26a10f07164aa958309d0d84`.
+- **Engineering owner:** Pravin Surawase; no separate external-reviewer dependency.
+- [ ] Freeze and verify the exact 0.26.0 wheel/sdist and installed profiles under [S5](library-usability-improvement.md#s5-s6-efficient-artifact-and-release-plan--29-october-2026).
+- [ ] Complete independent exact-head review and required hosted integration.
+- [ ] Record separate owner authorization for each S6 publication target before any tag/upload/release.
+
+Historical release checkmarks below are receipts for their named versions and
+do not authorize 0.26.0. Source/native/fabrication/professional boundaries remain
+explicit; no blanket engineering-use approval follows from package testing.
+
+## Historical v0.24.0 publication evidence
+
+Historical published source metadata: 0.24.0
+Historical public release: v0.24.0
 
 - **Published source:** annotated tag `v0.24.0` at merge `e66de6efa3bb80d3ebc54e6151b1d6c29275c502`, tree `e583493eed9943b7216d0b19c6749383f06a33a3`
 - **Published wheel:** 822,111 bytes; SHA-256 `7b5bc0b6ca6721897ae9ccce9860b6aaaa3c5647ded9fefd0945872ed354a093`
