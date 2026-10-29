@@ -19,18 +19,20 @@ engineering owner; no external-reviewer dependency is reintroduced.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | Prepared/unpublished 0.26.0;16 installed profiles and final source preflight passed. Exact retained hashes and verification-only Python-tree rebind are in the S5 receipt. Public version remains 0.25.0. |
-| **Next** | The [S5 milestone PR](https://github.com/Pravin-surawase/structural_engineering_lib/pulls?q=is%3Apr+head%3Acodex%2Flib-s5-artifact) owns exact-head reviews, required checks and accepted merge identity. After its integration S5 is complete; do not repeat qualification for identical bytes. |
+| **Current** | Prepared/unpublished 0.26.0;16 installed profiles and final source preflight passed on the rebuilt pair with bounded dev dependencies. Final build/review Python trees match; superseded bytes/evidence are preserved separately. Public version remains 0.25.0. |
+| **Next** | The [S5 milestone PR #1040](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) owns exact-head reviews, required checks and accepted merge identity. After its integration S5 is complete; do not repeat qualification for identical bytes. |
 | Later gates | S6 consumes the accepted bytes and requires exact-target owner authorization for TestPyPI/tag/PyPI/GitHub Release and public readback. |
 | Preserved boundaries | Full-amendment, native/fabrication/professional HOLDs remain explicit. CAD extra is dependency-only with no current public exporter; PMM remains experimental; ETABS marker checks do not establish native acceptance. |
 
 The [task board](../TASKS.md), [programme](library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence)
 and [S5 receipt](../verification/library-s5-20261029.json) own current work.
-The first source preflight exposed stale client pins and a mismatched DXF test
-fixture; affected repairs and the final green `preflight --wheel` are recorded.
+Source preflight repaired client pins and a DXF fixture; hosted checks then
+exposed optional-import classification and pytest-benchmark compatibility.
+The final metadata-bounded pair passed all16 profiles, including an actual
+benchmark fixture, and a new green `preflight --wheel`.
 Do not repeat broad source/installed suites for an unchanged candidate.
-The confirming rebuild matched wheel bytes; timestamp-different sdist bytes are
-unselected. Preserve the original qualified pair for S6.
+Archive timestamps can change sdist rebuild bytes. Preserve the final qualified
+pair for S6; the old metadata-unbounded pair is explicitly superseded.
 No publication target or new native mutation is selected.
 
 ## Historical handoff boundary — 1 October 2026

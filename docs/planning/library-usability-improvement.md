@@ -2042,23 +2042,29 @@ example remain explicit Check results.
 
 The first source preflight exposed stale generated-client version pins and a
 generic-DXF text fixture that unintentionally requested multilayer steel. The
-version owner now updates both clients. The text fixture uses a valid single
-layer; the dedicated multilayer rejection still passes. Affected checks passed,
-then the canonical preflight passed8814 Python tests,626 FastAPI tests and the
-pinned React production build. This was one failed attempt followed by the
-required final green preflight, with no pre-bump or Docker duplicate.
+version owner now updates both clients; the text fixture uses one layer while
+the dedicated multilayer rejection remains intact. Hosted verification then
+found two declared optional imports missing from the external-package registry
+and a fresh pytest9.2/pytest-benchmark5.3 incompatibility. The registry now
+recognizes PyVista/MkDocs. Package and root dev requirements cap pytest below9.2;
+the dev profile executes the real maintained benchmark fixture, which passes
+with pytest9.1.1/pytest-benchmark5.3.0. See the
+[upstream report](https://github.com/ionelmc/pytest-benchmark/issues/321).
 
-The original build's Python-tree receipt remains its provenance. Final review
-uses a separately frozen Python tree: its only difference is the excluded DXF
-test fixture. All327 distributed files and all four build inputs are unchanged.
-This is an explicit verification-only source rebind, not a runtime change.
-A confirming rebuild reproduced the exact wheel; the sdist's338 file contents
-were identical but archive timestamps changed its outer hash. Retain the
-original qualified sdist bytes. S6 must consume the retained pair or requalify
-any different bytes; it must not substitute the timestamp-different rebuild.
+The metadata repair changed artifact bytes, so the previous pair and receipts
+are explicitly superseded and preserved. All16 profiles ran again on the final
+pair from one build head. Its build and review Python trees match; all327
+distributed files and four build inputs match frozen source. The final exact-
+wheel canonical preflight passed8814 Python tests,626 FastAPI tests and the
+pinned React production build. Two earlier preflight attempts belong to the
+superseded candidate; no pre-bump or local Docker duplicate was run.
+
+An earlier confirming rebuild reproduced wheel bytes but changed sdist archive
+timestamps despite identical file contents. Preserve the final qualified pair
+by hash. S6 must consume those retained bytes or requalify any different bytes.
 
 The [S5 receipt](../verification/library-s5-20261029.json) records exact hashes,
 build/review identities, profiles, timings, repairs and remaining boundaries.
-The [milestone PR](https://github.com/Pravin-surawase/structural_engineering_lib/pulls?q=is%3Apr+head%3Acodex%2Flib-s5-artifact)
+The [milestone PR #1040](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040)
 owns final exact-head review, required hosted checks and merge identity. Its
 accepted integration completes S5. S6 publication remains unselected.

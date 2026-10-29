@@ -42,11 +42,15 @@ records the population and remaining evidence.
 Added the explicit SSE requirement, reconciled verifier geometry and preserved
 the educational example's explicit spacing Check outcomes. Added both clients
 to the version owner and used single-layer steel for generic-DXF text coverage;
-the dedicated multilayer rejection remains intact. All327 package files and
-four build inputs match the original accepted bytes. Only an excluded test
-fixture changes the final review Python tree. Rebuild wheel bytes matched;
-the sdist's contents matched but timestamp bytes differed, so the original
-qualified sdist is retained and the rebuilt archive is explicitly unselected.
+the dedicated multilayer rejection remains intact. Hosted validation exposed
+two missing optional external-import classifications and incompatible freshly
+resolved pytest9.2/pytest-benchmark5.3. The import registry now recognizes the
+declared dependencies; package/root dev pytest is bounded below9.2 and the dev
+profile actually runs the benchmark fixture. Because metadata changed bytes,
+the prior pair/evidence is preserved as superseded. All16 profiles and final
+canonical preflight passed again on the final pair from one build head, with
+matching build/review Python trees and327 distributed files. Preserve the final
+pair's exact hashes because sdist archive timestamps can change rebuild bytes.
 
 ### Rework and recurrence
 
@@ -56,9 +60,9 @@ Historical RR-004 x36 remains unchanged; no speculative recurrence is added.
 
 ### What next
 
-The milestone PR owns final exact-head review, required checks and merge
+The milestone PR #1040 owns final exact-head review, required checks and merge
 identity. Accepted integration completes S5; preserve the retained pair and
-the separately recorded original-build/final-review tree binding for S6.
+its matching frozen build/review identity for S6.
 S6 publication targets remain unselected.
 
 ---
