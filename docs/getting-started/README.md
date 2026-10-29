@@ -2,7 +2,7 @@
 
 Quick onboarding guides for new users of the structural engineering library.
 
-**Current release:** 0.24.0 | **Updated:** 2026-08-28
+**Current release:** 0.25.0 | **Updated:** 2026-08-28
 
 ---
 

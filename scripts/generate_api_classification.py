@@ -1123,6 +1123,53 @@ def _build_surface(
     }
 
 
+def _signature_policy(surfaces: list[dict[str, Any]]) -> dict[str, Any]:
+    """Fail new or changed positional deviations against reviewed exceptions."""
+    policy = json.loads(
+        (REPO_ROOT / "docs/reference/api-signature-exceptions.json").read_text()
+    )
+    exceptions = {row["canonical_owner"]: row for row in policy["exceptions"]}
+    if len(exceptions) != len(policy["exceptions"]):
+        raise RuntimeError("Duplicate signature exception owner")
+    observed: set[str] = set()
+    for surface in surfaces:
+        module = importlib.import_module(surface["module"])
+        for row in surface["symbols"]:
+            if not row["declared_export"] or row["kind"] != "function":
+                continue
+            value = getattr(module, row["name"])
+            count = sum(
+                p.kind in (p.POSITIONAL_ONLY, p.POSITIONAL_OR_KEYWORD)
+                for p in inspect.signature(value).parameters.values()
+            )
+            if count <= policy["max_positional_parameters"]:
+                continue
+            owner = _canonical_owner(value, row["qualified_name"])
+            expected = exceptions.get(owner)
+            if (
+                expected is None
+                or expected["signature"] != _signature(value)
+                or expected["positional_parameters"] != count
+                or not expected.get("reason")
+                or expected.get("disposition") != "RETAIN_POSITIONAL_COMPATIBILITY"
+            ):
+                raise RuntimeError(
+                    f"Unreviewed positional signature deviation: {owner}"
+                )
+            observed.add(owner)
+    if observed != set(exceptions):
+        raise RuntimeError(
+            "Stale signature exception owner(s): "
+            + ", ".join(sorted(set(exceptions) - observed))
+        )
+    return {
+        "max_positional_parameters": policy["max_positional_parameters"],
+        "reviewed_exception_count": len(exceptions),
+        "exception_owner": "docs/reference/api-signature-exceptions.json",
+        "new_or_changed_deviations": "FAIL_UNLESS_EXPLICITLY_REVIEWED",
+    }
+
+
 def _release_channel(version: str) -> str:
     """Return the repository's supported public distribution channel."""
     if re.fullmatch(r"\d+\.\d+\.\d+", version):
@@ -1193,8 +1240,10 @@ def build_registry() -> dict[str, Any]:
         for module_name, export_class in SURFACE_POLICY
     ]
     documentation_contract = _documentation_contract(surfaces)
+    signature_policy = _signature_policy(surfaces)
     return {
         "schema_version": "2.0",
+        "signature_policy": signature_policy,
         "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "package_version": __version__,

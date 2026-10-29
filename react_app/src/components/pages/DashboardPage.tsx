@@ -25,6 +25,8 @@ import {
 import type { WorkspaceSnapshotV1 } from "../../workspace/types";
 import { useWorkspaceStore } from "../../workspace/workspaceStore";
 import { projectStagePath } from "../../app/navigation";
+import { batchGoverningUtilization } from "../../api/client";
+import { formatPercent, formatRatio } from "../../utils/trustPresentation";
 
 function getEnvelopeMu(beam: ReturnType<typeof useImportedBeamsStore.getState>['beams'][number]): number {
   return Math.max(
@@ -51,6 +53,8 @@ function projectExportRows(
     const beam = beams.find((candidate) => (candidate.source_id ?? candidate.id) === member.memberId);
     const result = currentBatchResult(snapshot, member.memberId);
     if (!beam || !result) return [];
+    const utilization = batchGoverningUtilization(result);
+    if (utilization === null) return [];
     return [{
       beam_id: member.sourceId,
       story: beam.story ?? '',
@@ -68,7 +72,7 @@ function projectExportRows(
       bar_diameter: beam.bar_diameter,
       stirrup_diameter: beam.stirrup_diameter ?? 8,
       stirrup_spacing: result.shear?.stirrup_spacing,
-      utilization: result.utilization_ratio ?? 0,
+      utilization,
       is_safe: result.status === 'PASS' && result.is_safe,
       status: result.status,
     }];
@@ -105,7 +109,7 @@ export function DashboardPage() {
         beam_id: member.sourceId,
         story: member.story ?? "Unknown",
         is_valid: result?.status === 'PASS' && result.is_safe,
-        utilization: result?.utilization_ratio ?? 0,
+        utilization: result ? batchGoverningUtilization(result) : null,
         ast_provided: beam?.ast_provided ?? 0,
         b_mm: beam?.b ?? 0,
         D_mm: beam?.D ?? 0,
@@ -241,7 +245,7 @@ export function DashboardPage() {
 
 function DashboardContent({ data }: { data: DashboardData }) {
   const passColor = data.pass_rate >= 90 ? "text-emerald-400" : data.pass_rate >= 70 ? "text-amber-400" : "text-rose-400";
-  const utilColor = data.avg_utilization <= 0.85 ? "text-emerald-400" : "text-amber-400";
+  const utilColor = data.avg_utilization !== null && data.avg_utilization <= 0.85 ? "text-emerald-400" : "text-amber-400";
 
   return (
     <BentoGrid className="auto-rows-auto">
@@ -265,16 +269,16 @@ function DashboardContent({ data }: { data: DashboardData }) {
       <BentoCard colSpan={3} variant="default">
         <BentoCardHeader title="Avg Utilization" icon={<BarChart3 className="w-4 h-4" />} />
         <p className={`text-4xl font-bold tabular-nums mt-1 ${utilColor}`}>
-          {(data.avg_utilization * 100).toFixed(3)}%
+          {formatPercent(data.avg_utilization)}
         </p>
         <div className="mt-2 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
           <div
             className={`h-full rounded-full ${utilColor.replace("text-", "bg-")}`}
-            style={{ width: `${Math.min(data.avg_utilization * 100, 100)}%` }}
+            style={{ width: `${Math.min((data.avg_utilization ?? 0) * 100, 100)}%` }}
           />
         </div>
         <p className="text-[10px] text-zinc-500 mt-1 font-mono">
-          avg ratio {data.avg_utilization.toFixed(6)} · max {(data.max_utilization * 100).toFixed(3)}% ({data.max_utilization.toFixed(6)})
+          avg ratio {formatRatio(data.avg_utilization)} · max {formatPercent(data.max_utilization)} ({formatRatio(data.max_utilization)})
         </p>
       </BentoCard>
 

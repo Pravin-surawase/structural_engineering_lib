@@ -77,7 +77,7 @@ describe('viewport contracts', () => {
       libraryVersion: '0.23.0',
       decision: 'PASS',
       supportStatus: 'SUPPORTED',
-      data: { utilization_ratio: 0.8 },
+      data: { utilization_ratio: 0.8, governing_utilization: 0.8 },
       settledAt: '2026-08-10T00:00:00.000Z',
     });
 

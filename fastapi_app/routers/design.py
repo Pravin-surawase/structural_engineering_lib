@@ -13,6 +13,8 @@ from structural_lib.services.contracts.beam_supplied_check import (
 )
 from structural_lib.services.supplied_beam_check import check_supplied_beam_v2
 
+from fastapi_app.beam_projection import project_beam_design_result
+
 from fastapi_app.error_utils import (
     sanitize_error,
     sanitize_error_string,
@@ -22,16 +24,8 @@ from fastapi_app.models.beam import (
     BeamDesignRequest,
     BeamDesignResponse,
     BeamSuppliedCheckResponseV2,
-    CombinedBeamActions,
-    CrackWidthCheckResult,
-    DeflectionCheckResult,
-    EffectiveDepthResolutionResponse,
-    EvidenceEnvelopeResponse,
     EnhancedShearRequest,
     EnhancedShearResponse,
-    FlexureResult,
-    IntegratedTorsionResult,
-    ShearResult,
     TorsionDesignRequest,
     TorsionDesignResponse,
 )
@@ -50,7 +44,6 @@ from fastapi_app.models.compliance import (
 )
 from fastapi_app.models.response import (
     APIResponse,
-    StructuralResultEnvelopeResponse,
     error_response,
     success_response,
 )
@@ -98,10 +91,6 @@ async def design_beam(request: BeamDesignRequest):
     """
     try:
         from structural_lib.services.api import design_beam_is456
-        from structural_lib.services.evidence import (
-            build_beam_evidence_envelope,
-            build_beam_result_envelope,
-        )
         from structural_lib.services.project_beam import (
             EffectiveDepthBasisV1,
             resolve_effective_depth_v1,
@@ -178,176 +167,31 @@ async def design_beam(request: BeamDesignRequest):
             stirrup_dia_mm=request.stirrup_dia_mm,
         )
 
-        # Extract flexure results directly from ComplianceCaseResult
-        flexure_result = result.flexure
-
-        # Build flexure result
-        flexure = FlexureResult(
-            ast_required=flexure_result.Ast_required,
-            ast_min=flexure_result.Ast_min,
-            ast_max=flexure_result.Ast_max,
-            xu=flexure_result.xu,
-            xu_max=flexure_result.xu_max,
-            is_under_reinforced=flexure_result.xu <= flexure_result.xu_max,
-            moment_capacity=flexure_result.Mu_lim,
-            asc_required=flexure_result.Asc_required,
-        )
-
-        # Build shear result if shear was provided
-        shear_result = None
-        if (request.shear > 0 or request.torsion > 0) and result.shear:
-            shear = result.shear
-            asv_required = (
-                shear.Vus * 1000 / (0.87 * request.fy * effective_depth)
-                if shear.Vus > 0
-                else 0.0
-            )
-            stirrup_spacing = shear.spacing
-            if result.torsion is not None:
-                asv_required = result.torsion.Asv_total
-                stirrup_spacing = result.torsion.stirrup_spacing
-            shear_result = ShearResult(
-                tau_v=shear.tau_v,
-                tau_c=shear.tau_c,
-                tau_c_max=shear.tau_c_max,
-                asv_required=asv_required,
-                stirrup_spacing=stirrup_spacing,
-                sv_max=300.0,
-                shear_capacity=(
-                    shear.tau_c * request.width * effective_depth / 1000 + shear.Vus
-                    if shear.Vus > 0
-                    else request.shear
-                ),
-            )
-
-        # Reuse the canonical compliance utilization. In particular, a valid
-        # doubly reinforced design is 1.0 rather than Mu/Mu_lim > 1.0 because
-        # Mu_lim is only the singly reinforced limit, not the final capacity.
-        utilization = result.governing_utilization
-        evidence = build_beam_evidence_envelope(
-            inputs={
-                "units": "IS456",
-                "case_id": "CASE-1",
-                "mu_knm": request.moment,
-                "vu_kn": request.shear if request.shear > 0 else 0.0,
-                "tu_knm": request.torsion,
-                "torsion_corner_bar_centres_mm": torsion_centres,
-                "b_mm": request.width,
-                "D_mm": request.depth,
-                "d_mm": effective_depth,
-                "fck_nmm2": request.fck,
-                "fy_nmm2": request.fy,
-                "d_dash_mm": request.clear_cover
-                + request.stirrup_dia_mm
-                + request.main_bar_dia_mm / 2,
-                "asv_mm2": 100.0,
-                "cover_mm": request.clear_cover,
-                "stirrup_dia_mm": request.stirrup_dia_mm,
-                "include_serviceability": request.include_serviceability,
-                "deflection_params": deflection_params,
-                "crack_width_params": crack_width_params,
-            },
-            is_ok=result.is_ok,
-            governing_utilization=utilization,
-            utilizations=result.utilizations,
-        )
-        result_envelope = StructuralResultEnvelopeResponse.model_validate(
-            result.result_envelope
-            or build_beam_result_envelope(
-                is_ok=result.is_ok,
-                evidence=evidence,
-            ).to_dict()
-        )
-        holds: list[str] = []
-
-        deflection_check = None
-        if result.deflection is not None:
-            deflection_check = DeflectionCheckResult(
-                is_ok=result.deflection.is_ok,
-                span_depth_actual=result.deflection.computed.get("ld_ratio"),
-                span_depth_allowable=result.deflection.computed.get("allowable_ld"),
-                remarks=result.deflection.remarks,
-            )
-
-        crack_width_check = None
-        if result.crack_width is not None:
-            crack_width_check = CrackWidthCheckResult(
-                is_ok=result.crack_width.is_ok,
-                crack_width_mm=result.crack_width.computed.get("wcr_mm"),
-                crack_width_limit_mm=result.crack_width.computed.get("limit_mm"),
-                remarks=result.crack_width.remarks,
-            )
-
-        combined_actions = None
-        torsion_result = None
-        if result.torsion is not None:
-            combined_actions = CombinedBeamActions(
-                mu_knm=result.Mu_knm,
-                vu_kn=result.Vu_kn,
-                tu_knm=result.Tu_knm,
-                me_knm=result.torsion.Me_knm,
-                ve_kn=result.torsion.Ve_kn,
-            )
-            torsion_result = IntegratedTorsionResult(
-                is_safe=result.torsion.is_safe,
-                tau_ve=result.torsion.tau_ve,
-                tau_c=result.torsion.tau_c,
-                tau_c_max=result.torsion.tau_c_max,
-                asv_torsion=result.torsion.Asv_torsion,
-                asv_shear=result.torsion.Asv_shear,
-                asv_total=result.torsion.Asv_total,
-                stirrup_spacing=result.torsion.stirrup_spacing,
-                al_torsion=result.torsion.Al_torsion,
-                me_opposite_knm=result.torsion.Me_opposite_knm,
-                ast_opposite_mm2=result.torsion.Ast_opposite_mm2,
-                requires_closed_stirrups=result.torsion.requires_closed_stirrups,
-                errors=[error.to_dict() for error in result.torsion.errors],
-                clause_refs=result.torsion.clause_refs,
-            )
-
-        # Collect warnings
-        warnings = []
-        if flexure_result.Asc_required > 0:
-            warnings.append(
-                "Doubly reinforced design required because moment demand exceeds "
-                "the singly reinforced limit"
-            )
-        if flexure_result.xu > flexure_result.xu_max:
-            warnings.append("Section is over-reinforced - consider increasing depth")
-        if result.torsion is not None and result.torsion.requires_closed_stirrups:
-            warnings.append("Closed stirrups mandatory for torsion (IS 456 Cl 41.4.3)")
-        for error in result.torsion.errors if result.torsion is not None else []:
-            warnings.append(sanitize_error_string(error.message, "beam design"))
-
         return success_response(
-            BeamDesignResponse(
-                success=result.is_ok,
-                message=(
-                    f"Design complete: Ast = {flexure.ast_required:.0f} mm²"
-                    if result.is_ok
-                    else f"Design failed: {result.remarks}"
-                ),
-                flexure=flexure,
-                shear=shear_result,
-                ast_total=flexure.ast_required,
-                asc_total=flexure.asc_required,
-                utilization_ratio=min(utilization, 2.0),
-                effective_depth_used=effective_depth,
-                effective_depth_basis=EffectiveDepthResolutionResponse.model_validate(
-                    result.effective_depth_resolution
-                ),
-                result_envelope=result_envelope,
-                deflection_check=deflection_check,
-                crack_width_check=crack_width_check,
-                combined_actions=combined_actions,
-                torsion=torsion_result,
-                holds=holds,
-                warnings=warnings,
-                evidence=(
-                    EvidenceEnvelopeResponse.model_validate(evidence)
-                    if evidence is not None
-                    else None
-                ),
+            project_beam_design_result(
+                result,
+                evidence_inputs={
+                    "units": "IS456",
+                    "case_id": "CASE-1",
+                    "mu_knm": request.moment,
+                    "vu_kn": request.shear if request.shear > 0 else 0.0,
+                    "tu_knm": request.torsion,
+                    "torsion_corner_bar_centres_mm": torsion_centres,
+                    "b_mm": request.width,
+                    "D_mm": request.depth,
+                    "d_mm": effective_depth,
+                    "fck_nmm2": request.fck,
+                    "fy_nmm2": request.fy,
+                    "d_dash_mm": request.clear_cover
+                    + request.stirrup_dia_mm
+                    + request.main_bar_dia_mm / 2,
+                    "asv_mm2": 100.0,
+                    "cover_mm": request.clear_cover,
+                    "stirrup_dia_mm": request.stirrup_dia_mm,
+                    "include_serviceability": request.include_serviceability,
+                    "deflection_params": deflection_params,
+                    "crack_width_params": crack_width_params,
+                },
             )
         )
 

@@ -63,7 +63,19 @@ if result["effective_depth_resolution"]["d_mm"] != 443.0:
     raise AssertionError(result["effective_depth_resolution"])
 if result["result_envelope"]["engineering_status"] != "FAIL":
     raise AssertionError(result["result_envelope"])
+from structural_lib.services.batch import design_project_beams_v1
+from structural_lib.services.dashboard import generate_dashboard
+batch = design_project_beams_v1([dict(schema_version="project-beam-design/v1", member_id="S3-OVERLOAD", b_mm=300, D_mm=500, d_mm=450, mu_knm=2000, vu_kn=75, fck_nmm2=25, fy_nmm2=500)], units="IS456").to_dict()
+json.dumps(batch, allow_nan=False)
+calculation = batch["members"][0]["calculation"]
+if calculation["governing_utilization"] is not None or not calculation["unavailable_utilizations"]:
+    raise AssertionError(calculation)
+if batch["members"][0]["engineering_status"] != "FAIL":
+    raise AssertionError(batch)
+if generate_dashboard([{"is_valid": False, "utilization": None}]).to_dict()["avg_utilization"] is not None:
+    raise AssertionError("Unavailable batch ratio became an observed dashboard value")
 print(json.dumps({
+    "batch_overload": "FAIL_NULL_WITH_REASON_STRICT_JSON",
     "origin": str(origin),
     "version_identity": identity.to_dict(),
     "engineering_status": result["result_envelope"]["engineering_status"],
@@ -84,7 +96,8 @@ installed_root = Path(os.environ["A1_INSTALLED_ROOT"]).resolve()
 origin = Path(structural_lib.__file__).resolve()
 if not origin.is_relative_to(installed_root):
     raise AssertionError(f"FastAPI imported checkout structural_lib: {origin}")
-response = TestClient(app).post("/api/v1/design/beam", json={
+client = TestClient(app)
+response = client.post("/api/v1/design/beam", json={
     "width": 300.0,
     "depth": 500.0,
     "clear_cover": 40.0,
@@ -105,7 +118,19 @@ if result["effective_depth_basis"]["d_mm"] != 443.0:
     raise AssertionError(result["effective_depth_basis"])
 if result["result_envelope"]["engineering_status"] != "FAIL":
     raise AssertionError(result["result_envelope"])
+from fastapi_app.auth import create_access_token
+jwt = create_access_token({"sub": "S3-artifact-replay", "scopes": ["design"]})
+with client.websocket_connect("/ws/design/s3-artifact?token=" + jwt) as ws:
+    ws.send_json({"type": "design_beam", "params": {"width": 300, "depth": 500, "cover": 40, "stirrup_dia_mm": 8, "main_bar_dia_mm": 18, "moment": 150, "shear": 420, "fck": 25, "fy": 500}})
+    websocket = ws.receive_json()
+if websocket["type"] != "design_result":
+    raise AssertionError(websocket)
+for field in ("shear", "result_envelope", "effective_depth_basis", "governing_utilization", "unavailable_utilizations"):
+    if websocket["data"][field] != result[field]:
+        raise AssertionError(field)
+json.dumps(websocket, allow_nan=False)
 print(json.dumps({
+    "websocket_http_parity": "PASS",
     "structural_lib_origin": str(origin),
     "fastapi_origin": str(Path(__import__("fastapi_app").__file__).resolve()),
     "http_status": response.status_code,

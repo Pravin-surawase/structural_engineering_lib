@@ -103,7 +103,7 @@ export interface StructuralResultEnvelope {
   review_status: 'QUALIFIED_REVIEW_REQUIRED' | 'REVIEWED_ACCEPTED' | 'REVIEWED_REJECTED';
   qualified_review_required: boolean;
   freshness_status: 'CURRENT' | 'STALE';
-  serviceability_escalation: string | null;
+  serviceability_escalation?: string | null;
   overall_status: 'BLOCKED' | 'ERROR' | 'NOT_EVALUATED' | 'STALE' | 'PASS' | 'FAIL' | 'HOLD';
   issues: Array<{ code: string; path: string; message: string }>;
   result_identity: {
@@ -127,6 +127,38 @@ export interface EffectiveDepthResolution {
   } | { centroid_cover_mm: number } | null;
 }
 
+export interface UnavailableUtilization {
+  code: 'UTILIZATION_NOT_EVALUATED';
+  reason: string;
+}
+
+/** Read authoritative quantities, respecting an explicit unavailable value.
+ * Old servers can supply the same exact value in evidence; the legacy display
+ * cap is never used to reconstruct a calculation quantity.
+ */
+export function governingUtilization(value: {
+  governing_utilization?: number | null;
+  evidence?: { exact_utilization: number | null } | null;
+}): number | null {
+  const actual = value.governing_utilization !== undefined
+    ? value.governing_utilization
+    : value.evidence?.exact_utilization;
+  return typeof actual === 'number' && Number.isFinite(actual) && actual >= 0
+    ? actual : null;
+}
+
+/** Batch v1 has always used an uncapped ratio; retain finite saved records. */
+export function batchGoverningUtilization(value: {
+  governing_utilization?: number | null;
+  utilization_ratio?: number | null;
+  evidence?: { exact_utilization: number | null } | null;
+}): number | null {
+  return governingUtilization({ governing_utilization:
+    value.governing_utilization !== undefined ? value.governing_utilization
+      : value.evidence ? value.evidence.exact_utilization : value.utilization_ratio,
+  });
+}
+
 export interface BeamDesignResponse {
   success: boolean;
   message: string;
@@ -135,6 +167,9 @@ export interface BeamDesignResponse {
   ast_total: number;
   asc_total: number;
   utilization_ratio: number;
+  /** Deprecated utilization_ratio is a capped display field. */
+  governing_utilization?: number | null;
+  unavailable_utilizations?: Record<string, UnavailableUtilization>;
   effective_depth_used?: number;
   effective_depth_basis?: EffectiveDepthResolution;
   result_envelope: StructuralResultEnvelope;
@@ -445,7 +480,8 @@ export function parseStructuralResultEnvelope(
     || !validIdentity
     || typeof value.qualified_review_required !== 'boolean'
     || (
-      value.serviceability_escalation !== null
+      value.serviceability_escalation !== undefined
+      && value.serviceability_escalation !== null
       && typeof value.serviceability_escalation !== 'string'
     )
   ) {

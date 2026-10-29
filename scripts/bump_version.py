@@ -160,9 +160,30 @@ DOC_VERSION_FILES = {
         ),
     ],
     "docs/getting-started/user-guide.md": [
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
+        (
+            r"StructLib [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)? requires",
+            "StructLib {version} requires",
+        ),
+        (
+            r"The preflight must report version `[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?`",
+            "The preflight must report version `{version}`",
+        ),
         (
             r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "**Version:** {version}",
+        ),
+    ],
+    "docs/getting-started/installation-notes.md": [
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
+    ],
+    "docs/cookbook/python-recipes.md": [
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
+    ],
+    "docs/cookbook/python/beam.md": [
+        (
+            r"Prepared recipe version: `structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?`",
+            "Prepared recipe version: `structural-lib-is456=={version}`",
         ),
     ],
     "docs/planning/pre-release-checklist.md": [

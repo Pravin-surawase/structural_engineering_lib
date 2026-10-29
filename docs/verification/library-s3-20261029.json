@@ -1,0 +1,271 @@
+{
+  "schema_version": "library-s3-execution/v1",
+  "task": "LIB-S3-20261029",
+  "date_local": "2026-10-29",
+  "status": "LOCAL_PASS_PR_GATES_PENDING",
+  "objective": "Complete S3 API signatures, inputs, schemas, defaults and compatibility, repair confirmed issues, complete tests and review.",
+  "source_identity": {
+    "base": "ec3f230767dcfbdc1cbb18ccb48273f7e9db7682",
+    "branch": "codex/lib-s3-contracts",
+    "worktree": "/Users/pravinsurawase/.codex/worktrees/library-s3-contracts/structural_engineering_lib",
+    "source_bound": true,
+    "predecessor_pr": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/1035"
+  },
+  "requirements": [
+    {
+      "id": "S3-A1",
+      "requirement": "All maintained projections/functions have reconciled owners, signatures, types, defaults and support/caller dispositions.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-A2",
+      "requirement": "All 32 retained positional-policy exceptions are explicitly reviewed and unexpected new/changed deviations fail the maintained gate.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-A3",
+      "requirement": "All 13 family request contracts/564 field leaves plus promoted member/readiness inputs have explicit admission/default/basis semantics and meaningful positive/rejected evidence.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-A4",
+      "requirement": "All 488component schemas and referenced request/result/error schemas have role/owner/field/evolution dispositions and applicable schema/instance/round-trip evidence.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-A5",
+      "requirement": "All 92HTTP operations, declaredCLI/WebSocket/client flows are dispositioned; promoted and selected paths preserve actual payload/units/status/source/undefined meaning.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-A6",
+      "requirement": "Promoted help/examples and indexed-cell classifications agree with source/schema/default/limitations; changed consumers and frozen installed artifact replay successfully.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-A7",
+      "requirement": "All affected intentional corrections have reviewed compatibility/migration decisions and known-caller replay; no ambiguous owner or unapproved public break.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-A8",
+      "requirement": "Frozen relevant formatting/lint/typing/architecture and focused outcomes, independent exact-head reviews, required hosted checks and matching reviewed/merged tree.",
+      "status": "LOCAL_PASS_EXACT_HEAD_REVIEW_AND_HOSTED_INTEGRATION_PENDING"
+    }
+  ],
+  "maintained_owners": [
+    "docs/reference/api-classification.json",
+    "docs/reference/api-compatibility-ledger.json",
+    "docs/reference/api-manifest.json",
+    "docs/reference/family-facade-contracts.md",
+    "fastapi_app/openapi_baseline.json"
+  ],
+  "intake_population": {
+    "classified_surfaces": 14,
+    "classified_projections": 1308,
+    "typed_family_modules": 11,
+    "typed_function_projections": 60,
+    "compatibility_functions": 115,
+    "compatibility_exports": 245,
+    "retained_positional_deviations": 32,
+    "family_journeys": 13,
+    "request_field_leaves": 564,
+    "http_operations": 92,
+    "http_paths": 91,
+    "component_schemas": 488,
+    "schema_roles": {
+      "request_only": 125,
+      "response_only": 323,
+      "shared": 40,
+      "orphan": 0
+    },
+    "retained_signature_owners_all_surfaces": 33
+  },
+  "confirmed_defects": [
+    {
+      "id": "S3-F01",
+      "problem": "WebSocket omits canonical envelope and physical depth basis; maintained React client synthesizes HOLD for real PASS/FAIL.",
+      "owner": "fastapi_app/routers/websocket.py",
+      "fix": "One shared typed compatibility projection for HTTP/WS, with actual core envelope/depth/evidence.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-F02",
+      "problem": "WebSocket Asv/s projection omits effective depth; observed 457-fold units error.",
+      "owner": "fastapi_app/routers/websocket.py",
+      "fix": "Reuse correct REST projection in new fastapi_app/beam_projection.py. No mathematical kernel/limit change.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-F03",
+      "problem": "Shared legacy display cap 2.0 is labelled and consumed as the governing engineering utilization; undefined raw ratio becomes an ordinary number.",
+      "owner": "fastapi_app/models/beam.py and maintained React consumers",
+      "fix": "Add exact finite/null governing ratio and typed unavailable reasons; retain/deprecate legacy display field; migrate known client decisions.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-F04",
+      "problem": "Legacy WebSocket silently drops extra torsion/effective_depth, returning PASS for a different action/depth basis.",
+      "owner": "fastapi_app/routers/websocket.py:WSDesignParams",
+      "fix": "Reject unknown inputs and booleans/non-finite quantities; preserve numeric-string compatibility and consistent clear_cover alias; declare existing viewport length metadata.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-F05",
+      "problem": "WebSocket JSON decoding discarded duplicate action keys and accepted non-standard numeric constants.",
+      "owner": "fastapi_app/routers/websocket.py",
+      "fix": "Use canonical duplicate/finite JSON parser before dispatch, structured errors and a usable connection after rejection.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-F06",
+      "problem": "Overloaded batch service, SSE and polling emitted Infinity, which is invalid JSON and cannot be parsed by maintained strict clients.",
+      "owner": "Python/structural_lib/services/batch.py",
+      "fix": "Use canonical finite/null transport conversion with typed unavailable reasons; migrate batch/dashboard/viewport consumers.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-F07",
+      "problem": "Active install routes retained 0.24.0 pins outside complete version-checker ownership after 0.25.0 release.",
+      "owner": "scripts/bump_version.py",
+      "fix": "Update affected active pins, expand existing checker population and preserve prepared-version/publication and historical minimum distinctions.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S3-F08",
+      "problem": "React envelope parser rejected omission of an optional schema field, while the client type incorrectly required it.",
+      "owner": "react_app/src/api/client.ts",
+      "fix": "Align the serviceability escalation type and parser with the declared optional/default-null schema; valid omitted values preserve PASS/FAIL.",
+      "status": "LOCAL_PASS"
+    }
+  ],
+  "compatibility_decisions": [
+    {
+      "id": "S3-C01",
+      "decision": "No removal, keyword-only conversion or changed positional binding for32 legacy exceptions. Bind each retained owner/signature to reviewed metadata."
+    },
+    {
+      "id": "S3-C02",
+      "decision": "Preserve required utilization_ratio:number with its legacy 0..2 display behavior, explicitly deprecated and described. Add optional authoritative governing_utilization:number|null and existing typed unavailable marker vocabulary. New servers always populate actual fields; known clients use actual/evidence quantities, never infer exact ratios from the cap."
+    },
+    {
+      "id": "S3-C03",
+      "decision": "Legacy WS numeric-string conversion remains explicit; inconsistent cover aliases, bool/non-finite quantities and previously ignored unknown structural/action inputs reject rather than silently changing basis. Consistent cover/clear_cover and existing length metadata remain accepted."
+    },
+    {
+      "id": "S3-C04",
+      "decision": "Retained coercing wall adapter remains supported and documented; strict canonical family requests are not weakened."
+    },
+    {
+      "id": "S3-C05",
+      "decision": "Batch non-finite ratios become null plus reasons, correcting invalid JSON. Dashboard accepts uncapped finite or null; unknown values do not enter ratio statistics and all-unknown statistics become null. Existing finite saved batch-v1 values remain readable; beam legacy display caps never become authoritative."
+    },
+    {
+      "id": "S3-C06",
+      "decision": "Retain the root-only ETABS observation API exact positional binding in addition to all 32 compatibility-manifest exceptions. This is observation evidence, not native mutation/acceptance."
+    },
+    {
+      "id": "S3-C07",
+      "decision": "DashboardSummary constructor retains parameter order/defaults. Its three utilization annotations widen from float to float|None for explicitly unavailable aggregates; no active maintained stub caller exists. Known dashboard consumers handle null and retain independent status."
+    }
+  ],
+  "local_probes": {
+    "family_intake": "Independent diagnosis:30existing family-convergence tests passed; all13numericboolean/duplicate-key probes reject with stable codes. Not final frozen acceptance.",
+    "shared_backend": "Parent comparedHTTP/WS ordinary150/75, shearFAIL150/300 and overloaded2000/75. Shear quantities, envelope, effective-depthbasis, exact/unavailable utilization and calculation identity agree; overloaded exact governing ratio is null with FAIL.",
+    "unsupported_ws_inputs": "Beforefix torsion100+effectivedepth200 returnedPASS at derived457; afterfix each extra rejects. Consistentcoveralias+length4000 stillPASS.",
+    "implementation_regressions": "67 selected new/existing family, beam-transport and signature tests passed during implementation. This is not final frozen union acceptance."
+  },
+  "later_gates": [
+    "S4independent engineering/output qualification",
+    "S5final released-version artifactqualification",
+    "S6per-release authorization/publication",
+    "NativeExcel/ETABS/XLL acceptance and new support are not selected."
+  ],
+  "next_actions": [
+    "Independent exact-head reviews, required hosted PR checks and reviewed/merged tree identity.",
+    "After S3 integration, S4 engineering/output qualification is the next programme packet; it requires its own selected scope."
+  ],
+  "matrix": "docs/verification/library-s3-contract-matrix.json",
+  "semantic_schema_review": {
+    "operations_added": 0,
+    "operations_removed": 0,
+    "components_added": 0,
+    "components_removed": 0,
+    "changed_components": [
+      "BeamDesignResponse",
+      "BeamResult",
+      "DashboardResponse"
+    ],
+    "meaning": "Add actual nullable beam ratio and unavailable reasons; mark existing capped display field deprecated; dashboard accepts uncapped finite/null and returns null statistics when all member ratios are unavailable. Snapshot update follows reviewed semantics."
+  },
+  "preserved_example_evidence": {
+    "owner": "docs/verification/library-s2-20261029.json",
+    "boundary": "Reuse only unchanged promoted script and family-recipe identities. S3 changes active install pins/protocol help; version tests and frozen installed candidate replay supply affected evidence. No claim all indexed cells were executed."
+  },
+  "verification_plan": {
+    "python": "Affected batch/dashboard, facade/member/readiness/CLI, compatibility and generator/version modules; no broad Python suite.",
+    "fastapi": "Full maintained suite justified by shared beam/error decoder/projection and all-operation schemas.",
+    "react": "Maintained suite plus lint/type/production build justified by shared client types and persisted/dashboard/viewport consumers.",
+    "integration": "Independent exact-head read-only reviews, required hosted checks and matching reviewed/merged tree remain pending."
+  },
+  "verification": {
+    "python_focused": {
+      "passed": 352,
+      "log": "python-focused.log"
+    },
+    "fastapi_full": {
+      "passed_initial": 623,
+      "failed_initial": 2,
+      "deselected": 6,
+      "log": "fastapi-suite.log",
+      "repair": "Preserve legacy Invalid input outer prefix with structured problem details; affected WS/transport suite 31 passed.",
+      "affected_final_log": "fastapi-affected-refresh.log"
+    },
+    "react_full": {
+      "passed_initial": 297,
+      "failed_initial": 3,
+      "files": 52,
+      "log": "react-check.log",
+      "repair": "Align valid optional envelope omission and authoritative viewport fixture; 75 affected tests passed. Nullable display/storage consumers compile; lint and production build passed.",
+      "affected_final_log": "react-affected-final.log",
+      "production_build": "react-build-refresh.log"
+    },
+    "python_tools_refresh": {
+      "passed": 14,
+      "log": "python-tools-refresh.log"
+    },
+    "typing": "Mypy: success for both changed core service owners.",
+    "essential": "Initial 11/12 pass; two direct Core imports corrected to declared public/service exports. Final affected architecture refresh passes all 269 scanned files; unchanged checks retained. Final format and record checks follow metadata freeze.",
+    "documentation": "Strict MkDocs build passed; family docs check passed (17 files); active prepared-version pins check passed.",
+    "schema_roles": {
+      "request_only": 125,
+      "response_only": 323,
+      "shared": 40,
+      "orphan": 0
+    },
+    "schema_field_totals": {
+      "properties": 3961,
+      "required": 3149,
+      "default": 401,
+      "nullable": 412,
+      "enum": 147
+    },
+    "http_instance_index": "87/92 operations have literal-path maintained instance-test links. Five others retain explicit schema/shared-envelope-only evidence disposition; native acceptance is separate.",
+    "compatibility_semantic_diff": "1308 projections,682 canonical owners,522 root-stub projections,1887 caller records,zero ambiguous callers. Five owners/projections gain maintained caller paths; DashboardSummary constructor annotations widen to nullable aggregate values with parameter order/defaults retained.",
+    "unchanged_promoted_evidence": {
+      "scripts": 17,
+      "family_pages": 13,
+      "sha256_mismatches": 0,
+      "owner": "docs/verification/library-s2-20261029.json"
+    },
+    "output_directory": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s3-20261029"
+  },
+  "artifacts": {
+    "wheel": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s3-20261029/wheel/structural_lib_is456-0.25.0-py3-none-any.whl",
+    "sha256": "fba1a335ef93b1abe231765ea000386ba80b6f0397c2e48ce5a8aeeb26cef3c3",
+    "canonical_replay": "installed-canonical-final.json",
+    "family_replay": "installed-families.json",
+    "family_recipe_count": 13,
+    "boundary": "Unpublished local development wheel with 0.25.0 metadata; distinct from released registry wheel. Source-free Python/CLI, strict JSON batch unknown ratio and exact-application HTTP/WS parity passed. S5 final released-version qualification remains later."
+  }
+}

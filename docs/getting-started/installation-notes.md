@@ -11,15 +11,19 @@ tags: [installation, react, fastapi, python]
 
 ## Install the current public release
 
+The pin follows prepared source metadata. Confirm that exact version is published
+before registry installation; otherwise use the source-install route in the
+[installation guide](installation-notes.md#run-the-current-repository-workbench). Updating this pin does not publish a release.
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456==0.24.0"
+python3 -m pip install "structural-lib-is456==0.25.0"
 python3 -m structural_lib install-preflight
 ```
 
-The exact pin resolves the immutable `v0.24.0` normal release. The preflight
+The preflight
 prints the interpreter, installed version, package origin, and optional extras
 so an editable checkout cannot be mistaken for the published wheel.
 
@@ -49,9 +53,9 @@ restore or follow `streamlit_app` commands from historical release records.
 ## Optional package capabilities
 
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
-python3 -m pip install "structural-lib-is456[report,pdf]==0.24.0"
-python3 -m pip install "structural-lib-is456[render]==0.24.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.25.0"
+python3 -m pip install "structural-lib-is456[report,pdf]==0.25.0"
+python3 -m pip install "structural-lib-is456[render]==0.25.0"
 ```
 
 Optional extras should be selected only for their stated purpose. An installed

@@ -11,6 +11,7 @@ import { useExportBBS, useExportDXF, useExportReport } from "../../hooks/useExpo
 import { useLoadAnalysis } from "../../hooks/useLoadAnalysis";
 import type { LoadAnalysisResponse } from "../../api/client";
 import type { BeamCrackWidthParams, BeamDesignResponse } from "../../api/client";
+import { governingUtilization } from "../../api/client";
 import { useDesignStore } from "../../store/designStore";
 import { useLiveDesign } from "../../hooks/useLiveDesign";
 import { useCodeChecks, useRebarSuggestions } from "../../hooks/useInsights";
@@ -398,7 +399,7 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                         ...exportParams,
                         ast_required: state.result?.flexure?.ast_required,
                         ast_provided: state.result?.ast_total,
-                        utilization: state.result?.utilization_ratio,
+                        utilization: state.result ? governingUtilization(state.result) ?? undefined : undefined,
                         is_safe: state.result?.success,
                         effective_depth: state.result?.effective_depth_used,
                         clear_cover: inputs.clear_cover,
@@ -503,9 +504,9 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
 /** Single-line summary bar shown when results panel is collapsed */
 function CompactResultsBar({ result }: { result: BeamDesignResponse }) {
   const trust = getTrustPresentation(result);
-  const pct = trust.exactUtilization * 100;
+  const pct = (trust.exactUtilization ?? 0) * 100;
   const isOk = trust.status === "PASS";
-  const barColor = trust.exactUtilization > 1 ? "bg-rose-500" : trust.exactUtilization > 0.9 ? "bg-amber-400" : "bg-emerald-400";
+  const barColor = trust.exactUtilization === null ? "bg-amber-400" : trust.exactUtilization > 1 ? "bg-rose-500" : trust.exactUtilization > 0.9 ? "bg-amber-400" : "bg-emerald-400";
   return (
     <div className="flex items-center gap-3 flex-1 min-w-0">
       <span className={`text-xs font-semibold ${isOk ? "text-emerald-400" : trust.status === "HOLD" ? "text-amber-400" : "text-rose-400"}`}>

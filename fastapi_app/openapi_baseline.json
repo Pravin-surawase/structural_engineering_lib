@@ -5481,6 +5481,19 @@
           "flexure": {
             "$ref": "#/components/schemas/FlexureResult"
           },
+          "governing_utilization": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Exact dimensionless governing compliance ratio, without a display cap. Null means not evaluated; inspect unavailable_utilizations.",
+            "title": "Governing Utilization"
+          },
           "holds": {
             "items": {
               "type": "string"
@@ -5521,8 +5534,17 @@
               }
             ]
           },
+          "unavailable_utilizations": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/UnavailableUtilization"
+            },
+            "description": "Core-owned utilization paths and explicit unavailable reasons. governing_utilization identifies a missing exact governing ratio.",
+            "title": "Unavailable Utilizations",
+            "type": "object"
+          },
           "utilization_ratio": {
-            "description": "Governing IS 456 compliance utilization ratio",
+            "deprecated": true,
+            "description": "Deprecated compatibility display ratio capped at 2.0; not the exact engineering ratio. Use governing_utilization and result_envelope.",
             "maximum": 2.0,
             "minimum": 0.0,
             "title": "Utilization Ratio",
@@ -6301,12 +6323,18 @@
             "type": "string"
           },
           "utilization": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "default": 0.0,
-            "description": "Utilization ratio",
-            "maximum": 2.0,
-            "minimum": 0.0,
-            "title": "Utilization",
-            "type": "number"
+            "description": "Uncapped utilization ratio; null means unavailable and is excluded from ratio statistics",
+            "title": "Utilization"
           },
           "warnings": {
             "description": "Warning messages",
@@ -14790,9 +14818,16 @@
         "description": "Response model for dashboard with aggregated statistics.",
         "properties": {
           "avg_utilization": {
-            "description": "Average utilization",
-            "title": "Avg Utilization",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Average observed utilization; null when all member ratios are unavailable",
+            "title": "Avg Utilization"
           },
           "by_story": {
             "additionalProperties": {
@@ -14816,9 +14851,16 @@
             "type": "integer"
           },
           "max_utilization": {
-            "description": "Maximum utilization",
-            "title": "Max Utilization",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Maximum observed utilization; null when all member ratios are unavailable",
+            "title": "Max Utilization"
           },
           "message": {
             "description": "Summary message",
@@ -14826,9 +14868,16 @@
             "type": "string"
           },
           "min_utilization": {
-            "description": "Minimum utilization",
-            "title": "Min Utilization",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Minimum observed utilization; null when all member ratios are unavailable",
+            "title": "Min Utilization"
           },
           "pass_rate": {
             "description": "Pass rate percentage",

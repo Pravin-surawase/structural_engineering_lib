@@ -1,4 +1,5 @@
 import type { BatchResult } from '../hooks/useBatchDesign';
+import { batchGoverningUtilization } from '../api/client';
 import type { BeamCSVRow } from '../types/csv';
 import { memberIdentity, recordCanExport } from './identity';
 import type {
@@ -220,7 +221,7 @@ export function applyBatchResultToBeam(
     bar_count: layout.count,
     bar_diameter: layout.dia,
     ast_provided: layout.count * Math.PI * (layout.dia / 2) ** 2,
-    utilization: result.utilization_ratio,
+    utilization: batchGoverningUtilization(result) ?? undefined,
     is_valid: designPassed,
     status: designPassed ? 'pass' : 'fail',
     remarks: result.error ? [result.error] : result.failed_checks,

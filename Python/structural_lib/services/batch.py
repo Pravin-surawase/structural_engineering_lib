@@ -25,6 +25,7 @@ from .project_beam import (
     ProjectBeamOverallStatus,
     validate_project_beam_design_input_v1,
 )
+from .serialization import to_transport_value
 
 __all__ = [
     "design_beams",
@@ -270,35 +271,41 @@ def _calculation_payload(
         source_metadata=beam.source_metadata,
     )
     is_safe = result.is_ok
-    return {
-        "design_succeeded": True,
-        "is_safe": is_safe,
-        "status": "PASS" if is_safe else "FAIL",
-        "flexure": {
-            "ast_required": result.flexure.Ast_required,
-            "asc_required": result.flexure.Asc_required,
-            "mu_lim": result.flexure.Mu_lim,
-            "xu": result.flexure.xu,
-            "is_safe": result.flexure.is_safe,
-        },
-        "shear": (
-            {
-                "tau_v": result.shear.tau_v,
-                "tau_c": result.shear.tau_c,
-                "tau_c_max": result.shear.tau_c_max,
-                "vus": result.shear.Vus,
-                "stirrup_spacing": result.shear.spacing,
-                "is_safe": result.shear.is_safe,
-            }
-            if result.shear
-            else None
-        ),
-        "utilization_ratio": result.governing_utilization,
-        "utilizations": dict(result.utilizations),
-        "failed_checks": list(result.failed_checks),
-        "remarks": result.remarks,
-        "evidence": evidence,
-    }
+    transport = to_transport_value(result)
+    calculation: dict[str, Any] = to_transport_value(
+        {
+            "design_succeeded": True,
+            "is_safe": is_safe,
+            "status": "PASS" if is_safe else "FAIL",
+            "flexure": {
+                "ast_required": result.flexure.Ast_required,
+                "asc_required": result.flexure.Asc_required,
+                "mu_lim": result.flexure.Mu_lim,
+                "xu": result.flexure.xu,
+                "is_safe": result.flexure.is_safe,
+            },
+            "shear": (
+                {
+                    "tau_v": result.shear.tau_v,
+                    "tau_c": result.shear.tau_c,
+                    "tau_c_max": result.shear.tau_c_max,
+                    "vus": result.shear.Vus,
+                    "stirrup_spacing": result.shear.spacing,
+                    "is_safe": result.shear.is_safe,
+                }
+                if result.shear
+                else None
+            ),
+            "utilization_ratio": transport["governing_utilization"],
+            "governing_utilization": transport["governing_utilization"],
+            "utilizations": transport["utilizations"],
+            "unavailable_utilizations": transport.get("unavailable_utilizations", {}),
+            "failed_checks": list(result.failed_checks),
+            "remarks": result.remarks,
+            "evidence": evidence,
+        }
+    )
+    return calculation
 
 
 def _blocked_member(

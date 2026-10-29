@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import sys
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -172,3 +173,65 @@ def test_capability_truth_remains_thirteen_supported_and_held_families_unchanged
         "combined_footing",
         "strap_footing",
     }
+
+
+@pytest.mark.parametrize("recipe", recipes.recipe_specs(), ids=lambda r: r.journey_id)
+def test_every_family_admission_defaults_schema_and_json_policy(recipe):
+    """Exercise shared policy through each real facade, including JSON intake."""
+    from jsonschema import Draft202012Validator
+
+    module = __import__(recipe.module, fromlist=[recipe.loader])
+    load = getattr(module, recipe.loader)
+    load_json = getattr(module, recipe.loader + "_json")
+    request = load(recipe.payload)
+    schema = type(request).model_json_schema()
+    Draft202012Validator.check_schema(schema)
+    Draft202012Validator(schema).validate(request.model_dump(mode="json"))
+    assert (
+        request.schema_version == type(request).model_fields["schema_version"].default
+    )
+    assert load_json(request.model_dump_json()) == request
+
+    def numeric_leaf(value, model, path=()):
+        for name, item in value.items():
+            if type(item) in (int, float) and model.model_fields[name].is_required():
+                return (*path, name)
+            if isinstance(item, dict):
+                found = numeric_leaf(item, getattr(model, name), (*path, name))
+                if found:
+                    return found
+        return None
+
+    path = numeric_leaf(recipe.payload, request)
+    assert path is not None
+    for invalid in (True, None, "123", float("inf"), float("nan")):
+        payload = deepcopy(recipe.payload)
+        parent = payload
+        for part in path[:-1]:
+            parent = parent[part]
+        parent[path[-1]] = invalid
+        with pytest.raises(InputContractError):
+            load(payload)
+        with pytest.raises(InputContractError):
+            load_json(json.dumps(payload))
+
+    with pytest.raises(InputContractError):
+        load({**recipe.payload, "ignored_structural_input": 1})
+    group = next(k for k, v in recipe.payload.items() if isinstance(v, dict))
+    payload = deepcopy(recipe.payload)
+    payload[group]["ignored_structural_input"] = 1
+    with pytest.raises(InputContractError):
+        load(payload)
+    payload = deepcopy(recipe.payload)
+    del payload[group]
+    with pytest.raises(InputContractError):
+        load(payload)
+    duplicate = (
+        '{"schema_version":'
+        + json.dumps(request.schema_version)
+        + ","
+        + request.model_dump_json()[1:]
+    )
+    with pytest.raises(InputContractError) as error:
+        load_json(duplicate)
+    assert any(issue.code == "DUPLICATE_JSON_KEY" for issue in error.value.issues)

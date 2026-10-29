@@ -45,8 +45,11 @@ class BeamResult(BaseModel):
     beam_id: str = Field(max_length=200, description="Beam identifier")
     story: str = Field(default="Unknown", max_length=200, description="Story/floor")
     is_valid: bool = Field(default=True, description="Whether design passed")
-    utilization: float = Field(
-        default=0.0, ge=0.0, le=2.0, description="Utilization ratio"
+    utilization: float | None = Field(
+        default=0.0,
+        ge=0.0,
+        allow_inf_nan=False,
+        description="Uncapped utilization ratio; null means unavailable and is excluded from ratio statistics",
     )
     ast_provided: float = Field(default=0.0, description="Steel area provided (mm²)")
     b_mm: float = Field(default=300.0, description="Beam width (mm)")
@@ -81,9 +84,15 @@ class DashboardResponse(BaseModel):
     failed: int = Field(description="Number of failed beams")
     pass_rate: float = Field(description="Pass rate percentage")
     warnings_count: int = Field(description="Total warning count")
-    avg_utilization: float = Field(description="Average utilization")
-    max_utilization: float = Field(description="Maximum utilization")
-    min_utilization: float = Field(description="Minimum utilization")
+    avg_utilization: float | None = Field(
+        description="Average observed utilization; null when all member ratios are unavailable"
+    )
+    max_utilization: float | None = Field(
+        description="Maximum observed utilization; null when all member ratios are unavailable"
+    )
+    min_utilization: float | None = Field(
+        description="Minimum observed utilization; null when all member ratios are unavailable"
+    )
     total_steel_kg: float = Field(description="Total steel quantity (kg)")
     total_concrete_m3: float = Field(description="Total concrete volume (m³)")
     critical_beams: list[str] = Field(description="List of critical beam IDs")

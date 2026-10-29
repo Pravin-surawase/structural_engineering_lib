@@ -1,0 +1,1279 @@
+{
+  "$defs": {
+    "BeamDesignResponse": {
+      "description": "Response model for beam design calculation.",
+      "properties": {
+        "asc_total": {
+          "default": 0.0,
+          "description": "Total compression steel (mm\u00b2)",
+          "title": "Asc Total",
+          "type": "number"
+        },
+        "ast_total": {
+          "description": "Total tension steel required (mm\u00b2)",
+          "title": "Ast Total",
+          "type": "number"
+        },
+        "combined_actions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CombinedBeamActions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "crack_width_check": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CrackWidthCheckResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "deflection_check": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeflectionCheckResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "effective_depth_basis": {
+          "$ref": "#/$defs/EffectiveDepthResolutionResponse"
+        },
+        "effective_depth_used": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Actual effective depth used in calculation (mm)",
+          "title": "Effective Depth Used"
+        },
+        "evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceEnvelopeResponse"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Traceable calculation identity and supported-case boundary"
+        },
+        "flexure": {
+          "$ref": "#/$defs/FlexureResult"
+        },
+        "governing_utilization": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Exact dimensionless governing compliance ratio, without a display cap. Null means not evaluated; inspect unavailable_utilizations.",
+          "title": "Governing Utilization"
+        },
+        "holds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Holds",
+          "type": "array"
+        },
+        "message": {
+          "description": "Summary message",
+          "title": "Message",
+          "type": "string"
+        },
+        "result_envelope": {
+          "$ref": "#/$defs/StructuralResultEnvelopeResponse"
+        },
+        "shear": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ShearResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "success": {
+          "description": "Compatibility engineering boolean; use result_envelope for the canonical PASS, FAIL, or HOLD disposition",
+          "title": "Success",
+          "type": "boolean"
+        },
+        "torsion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/IntegratedTorsionResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "unavailable_utilizations": {
+          "additionalProperties": {
+            "$ref": "#/$defs/UnavailableUtilization"
+          },
+          "description": "Core-owned utilization paths and explicit unavailable reasons. governing_utilization identifies a missing exact governing ratio.",
+          "title": "Unavailable Utilizations",
+          "type": "object"
+        },
+        "utilization_ratio": {
+          "deprecated": true,
+          "description": "Deprecated compatibility display ratio capped at 2.0; not the exact engineering ratio. Use governing_utilization and result_envelope.",
+          "maximum": 2.0,
+          "minimum": 0,
+          "title": "Utilization Ratio",
+          "type": "number"
+        },
+        "warnings": {
+          "description": "Design warnings",
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "success",
+        "message",
+        "flexure",
+        "ast_total",
+        "utilization_ratio",
+        "effective_depth_basis",
+        "result_envelope"
+      ],
+      "title": "BeamDesignResponse",
+      "type": "object"
+    },
+    "CombinedBeamActions": {
+      "description": "Original and IS 456 equivalent actions used by the primary route.",
+      "properties": {
+        "me_knm": {
+          "title": "Me Knm",
+          "type": "number"
+        },
+        "mu_knm": {
+          "title": "Mu Knm",
+          "type": "number"
+        },
+        "tu_knm": {
+          "title": "Tu Knm",
+          "type": "number"
+        },
+        "ve_kn": {
+          "title": "Ve Kn",
+          "type": "number"
+        },
+        "vu_kn": {
+          "title": "Vu Kn",
+          "type": "number"
+        }
+      },
+      "required": [
+        "mu_knm",
+        "vu_kn",
+        "tu_knm",
+        "me_knm",
+        "ve_kn"
+      ],
+      "title": "CombinedBeamActions",
+      "type": "object"
+    },
+    "CrackWidthCheckResult": {
+      "description": "Result of crack width check.",
+      "properties": {
+        "crack_width_limit_mm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crack Width Limit Mm"
+        },
+        "crack_width_mm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crack Width Mm"
+        },
+        "is_ok": {
+          "title": "Is Ok",
+          "type": "boolean"
+        },
+        "remarks": {
+          "default": "",
+          "title": "Remarks",
+          "type": "string"
+        }
+      },
+      "required": [
+        "is_ok"
+      ],
+      "title": "CrackWidthCheckResult",
+      "type": "object"
+    },
+    "DeflectionCheckResult": {
+      "description": "Result of deflection span/depth check.",
+      "properties": {
+        "is_ok": {
+          "title": "Is Ok",
+          "type": "boolean"
+        },
+        "remarks": {
+          "default": "",
+          "title": "Remarks",
+          "type": "string"
+        },
+        "span_depth_actual": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Span Depth Actual"
+        },
+        "span_depth_allowable": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Span Depth Allowable"
+        }
+      },
+      "required": [
+        "is_ok"
+      ],
+      "title": "DeflectionCheckResult",
+      "type": "object"
+    },
+    "EffectiveDepthBasisResponse": {
+      "description": "Complete geometry basis used to derive beam effective depth.",
+      "properties": {
+        "clear_cover_mm": {
+          "title": "Clear Cover Mm",
+          "type": "number"
+        },
+        "stirrup_diameter_mm": {
+          "title": "Stirrup Diameter Mm",
+          "type": "number"
+        },
+        "tension_bar_diameter_mm": {
+          "title": "Tension Bar Diameter Mm",
+          "type": "number"
+        }
+      },
+      "required": [
+        "clear_cover_mm",
+        "stirrup_diameter_mm",
+        "tension_bar_diameter_mm"
+      ],
+      "title": "EffectiveDepthBasisResponse",
+      "type": "object"
+    },
+    "EffectiveDepthResolutionResponse": {
+      "description": "Explicit record of the effective depth consumed by the calculation.",
+      "properties": {
+        "D_mm": {
+          "title": "D Mm",
+          "type": "number"
+        },
+        "contract_version": {
+          "const": "effective-depth-basis/v1",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "d_mm": {
+          "title": "D Mm",
+          "type": "number"
+        },
+        "effective_depth_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EffectiveDepthBasisResponse"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source": {
+          "enum": [
+            "EXPLICIT",
+            "DERIVED"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "contract_version",
+        "source",
+        "D_mm",
+        "d_mm"
+      ],
+      "title": "EffectiveDepthResolutionResponse",
+      "type": "object"
+    },
+    "EvidenceEnvelopeResponse": {
+      "description": "Traceable identity metadata, not a professional approval certificate.",
+      "properties": {
+        "amendment_applicability": {
+          "title": "Amendment Applicability",
+          "type": "string"
+        },
+        "amendment_applicability_review_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Amendment Applicability Review Id"
+        },
+        "artifact_schema": {
+          "title": "Artifact Schema",
+          "type": "string"
+        },
+        "artifact_schema_version": {
+          "title": "Artifact Schema Version",
+          "type": "string"
+        },
+        "calculation_identity": {
+          "title": "Calculation Identity",
+          "type": "string"
+        },
+        "capability_id": {
+          "title": "Capability Id",
+          "type": "string"
+        },
+        "code_amendment_identity": {
+          "title": "Code Amendment Identity",
+          "type": "string"
+        },
+        "code_edition": {
+          "title": "Code Edition",
+          "type": "string"
+        },
+        "controlled_source_basis_hash": {
+          "title": "Controlled Source Basis Hash",
+          "type": "string"
+        },
+        "controlled_source_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Controlled Source Ids",
+          "type": "array"
+        },
+        "exact_utilization": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Exact Utilization"
+        },
+        "explicit_units": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Explicit Units",
+          "type": "object"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "governing_check": {
+          "title": "Governing Check",
+          "type": "string"
+        },
+        "library_content_identity": {
+          "title": "Library Content Identity",
+          "type": "string"
+        },
+        "library_version": {
+          "title": "Library Version",
+          "type": "string"
+        },
+        "margin": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Margin"
+        },
+        "normalized_input_hash": {
+          "title": "Normalized Input Hash",
+          "type": "string"
+        },
+        "provenance_hash": {
+          "title": "Provenance Hash",
+          "type": "string"
+        },
+        "qualified_review_required": {
+          "title": "Qualified Review Required",
+          "type": "boolean"
+        },
+        "qualified_review_requirement": {
+          "title": "Qualified Review Requirement",
+          "type": "string"
+        },
+        "replay_receipt": {
+          "additionalProperties": true,
+          "title": "Replay Receipt",
+          "type": "object"
+        },
+        "replay_receipt_hash": {
+          "title": "Replay Receipt Hash",
+          "type": "string"
+        },
+        "source_metadata": {
+          "additionalProperties": true,
+          "title": "Source Metadata",
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "HOLD"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "support_status": {
+          "enum": [
+            "SUPPORTED",
+            "HELD"
+          ],
+          "title": "Support Status",
+          "type": "string"
+        },
+        "unit_system": {
+          "title": "Unit System",
+          "type": "string"
+        },
+        "utilization_disposition": {
+          "enum": [
+            "FINITE",
+            "UNBOUNDED_FAILURE",
+            "NOT_EVALUATED"
+          ],
+          "title": "Utilization Disposition",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_schema",
+        "artifact_schema_version",
+        "library_version",
+        "library_content_identity",
+        "code_edition",
+        "code_amendment_identity",
+        "amendment_applicability",
+        "amendment_applicability_review_id",
+        "controlled_source_ids",
+        "controlled_source_basis_hash",
+        "capability_id",
+        "support_status",
+        "unit_system",
+        "explicit_units",
+        "normalized_input_hash",
+        "provenance_hash",
+        "source_metadata",
+        "calculation_identity",
+        "replay_receipt",
+        "replay_receipt_hash",
+        "governing_check",
+        "exact_utilization",
+        "utilization_disposition",
+        "margin",
+        "status",
+        "generated_at",
+        "qualified_review_required",
+        "qualified_review_requirement"
+      ],
+      "title": "EvidenceEnvelopeResponse",
+      "type": "object"
+    },
+    "FlexureResult": {
+      "description": "Flexure design result.",
+      "properties": {
+        "asc_required": {
+          "default": 0.0,
+          "description": "Compression steel if needed (mm\u00b2)",
+          "title": "Asc Required",
+          "type": "number"
+        },
+        "ast_max": {
+          "description": "Maximum allowed steel area (mm\u00b2)",
+          "title": "Ast Max",
+          "type": "number"
+        },
+        "ast_min": {
+          "description": "Minimum required steel area (mm\u00b2)",
+          "title": "Ast Min",
+          "type": "number"
+        },
+        "ast_required": {
+          "description": "Required tension steel area (mm\u00b2)",
+          "title": "Ast Required",
+          "type": "number"
+        },
+        "is_under_reinforced": {
+          "description": "Whether section is under-reinforced",
+          "title": "Is Under Reinforced",
+          "type": "boolean"
+        },
+        "moment_capacity": {
+          "description": "Singly reinforced limiting moment Mu,lim (kN\u00b7m)",
+          "title": "Moment Capacity",
+          "type": "number"
+        },
+        "xu": {
+          "description": "Neutral axis depth (mm)",
+          "title": "Xu",
+          "type": "number"
+        },
+        "xu_max": {
+          "description": "Limiting neutral axis depth (mm)",
+          "title": "Xu Max",
+          "type": "number"
+        }
+      },
+      "required": [
+        "ast_required",
+        "ast_min",
+        "ast_max",
+        "xu",
+        "xu_max",
+        "is_under_reinforced",
+        "moment_capacity"
+      ],
+      "title": "FlexureResult",
+      "type": "object"
+    },
+    "IntegratedTorsionResult": {
+      "description": "Torsion calculation details embedded in the primary beam result.",
+      "properties": {
+        "al_torsion": {
+          "description": "Total Me1/Me2 tension steel (mm\u00b2), not additive to flexure",
+          "title": "Al Torsion",
+          "type": "number"
+        },
+        "ast_opposite_mm2": {
+          "default": 0.0,
+          "title": "Ast Opposite Mm2",
+          "type": "number"
+        },
+        "asv_shear": {
+          "description": "Shear stirrup demand (mm\u00b2/mm)",
+          "title": "Asv Shear",
+          "type": "number"
+        },
+        "asv_torsion": {
+          "description": "Torsion stirrup demand (mm\u00b2/mm)",
+          "title": "Asv Torsion",
+          "type": "number"
+        },
+        "asv_total": {
+          "description": "Combined stirrup demand (mm\u00b2/mm)",
+          "title": "Asv Total",
+          "type": "number"
+        },
+        "clause_refs": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Clause Refs",
+          "type": "object"
+        },
+        "errors": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "is_safe": {
+          "title": "Is Safe",
+          "type": "boolean"
+        },
+        "me_opposite_knm": {
+          "default": 0.0,
+          "title": "Me Opposite Knm",
+          "type": "number"
+        },
+        "requires_closed_stirrups": {
+          "title": "Requires Closed Stirrups",
+          "type": "boolean"
+        },
+        "source": {
+          "const": "IS 456:2000",
+          "default": "IS 456:2000",
+          "title": "Source",
+          "type": "string"
+        },
+        "stirrup_spacing": {
+          "description": "Designed closed-stirrup spacing (mm)",
+          "title": "Stirrup Spacing",
+          "type": "number"
+        },
+        "tau_c": {
+          "description": "Concrete shear strength (N/mm\u00b2)",
+          "title": "Tau C",
+          "type": "number"
+        },
+        "tau_c_max": {
+          "description": "Maximum shear stress (N/mm\u00b2)",
+          "title": "Tau C Max",
+          "type": "number"
+        },
+        "tau_ve": {
+          "description": "Equivalent shear stress (N/mm\u00b2)",
+          "title": "Tau Ve",
+          "type": "number"
+        }
+      },
+      "required": [
+        "is_safe",
+        "tau_ve",
+        "tau_c",
+        "tau_c_max",
+        "asv_torsion",
+        "asv_shear",
+        "asv_total",
+        "stirrup_spacing",
+        "al_torsion",
+        "requires_closed_stirrups"
+      ],
+      "title": "IntegratedTorsionResult",
+      "type": "object"
+    },
+    "ProblemDetailResponse": {
+      "description": "Versioned problem body used by every maintained JSON error response.",
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "details": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Details"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "schema_version": {
+          "const": "structural-problem/v1",
+          "default": "structural-problem/v1",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ProblemDetailResponse",
+      "type": "object"
+    },
+    "ResultIdentityResponse": {
+      "description": "Replay identity attached to a calculation-bearing result.",
+      "properties": {
+        "artifact_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Sha256"
+        },
+        "calculation_identity": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Calculation Identity"
+        },
+        "contract_version": {
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "input_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Hash"
+        },
+        "library_version": {
+          "title": "Library Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "contract_version",
+        "library_version"
+      ],
+      "title": "ResultIdentityResponse",
+      "type": "object"
+    },
+    "ShearResult": {
+      "description": "Shear design result.",
+      "properties": {
+        "asv_required": {
+          "description": "Required stirrup area (mm\u00b2/mm)",
+          "title": "Asv Required",
+          "type": "number"
+        },
+        "asv_required_unit": {
+          "const": "mm\u00b2/mm",
+          "default": "mm\u00b2/mm",
+          "description": "Unit of asv_required (stirrup area per unit spacing)",
+          "title": "Asv Required Unit",
+          "type": "string"
+        },
+        "shear_capacity": {
+          "description": "Shear capacity Vu,cap (kN)",
+          "title": "Shear Capacity",
+          "type": "number"
+        },
+        "stirrup_spacing": {
+          "description": "Calculated stirrup spacing (mm)",
+          "title": "Stirrup Spacing",
+          "type": "number"
+        },
+        "sv_max": {
+          "description": "Maximum allowed spacing (mm)",
+          "title": "Sv Max",
+          "type": "number"
+        },
+        "tau_c": {
+          "description": "Concrete shear strength (N/mm\u00b2)",
+          "title": "Tau C",
+          "type": "number"
+        },
+        "tau_c_max": {
+          "description": "Maximum shear stress limit (N/mm\u00b2)",
+          "title": "Tau C Max",
+          "type": "number"
+        },
+        "tau_v": {
+          "description": "Nominal shear stress (N/mm\u00b2)",
+          "title": "Tau V",
+          "type": "number"
+        }
+      },
+      "required": [
+        "tau_v",
+        "tau_c",
+        "tau_c_max",
+        "asv_required",
+        "stirrup_spacing",
+        "sv_max",
+        "shear_capacity"
+      ],
+      "title": "ShearResult",
+      "type": "object"
+    },
+    "StructuralIssueResponse": {
+      "description": "Stable issue code, path, and explanation.",
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "path",
+        "message"
+      ],
+      "title": "StructuralIssueResponse",
+      "type": "object"
+    },
+    "StructuralResultEnvelopeResponse": {
+      "description": "Transport model of the canonical structural-result envelope.",
+      "properties": {
+        "calculation_status": {
+          "enum": [
+            "NOT_EVALUATED",
+            "COMPLETED",
+            "ERROR"
+          ],
+          "title": "Calculation Status",
+          "type": "string"
+        },
+        "engineering_status": {
+          "enum": [
+            "NOT_EVALUATED",
+            "PASS",
+            "FAIL",
+            "HOLD"
+          ],
+          "title": "Engineering Status",
+          "type": "string"
+        },
+        "freshness_status": {
+          "enum": [
+            "CURRENT",
+            "STALE"
+          ],
+          "title": "Freshness Status",
+          "type": "string"
+        },
+        "intake_status": {
+          "enum": [
+            "VALID",
+            "PARTIAL",
+            "BLOCKED"
+          ],
+          "title": "Intake Status",
+          "type": "string"
+        },
+        "issues": {
+          "items": {
+            "$ref": "#/$defs/StructuralIssueResponse"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "overall_status": {
+          "enum": [
+            "BLOCKED",
+            "ERROR",
+            "NOT_EVALUATED",
+            "STALE",
+            "PASS",
+            "FAIL",
+            "HOLD"
+          ],
+          "title": "Overall Status",
+          "type": "string"
+        },
+        "qualified_review_required": {
+          "title": "Qualified Review Required",
+          "type": "boolean"
+        },
+        "result_identity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResultIdentityResponse"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "review_status": {
+          "enum": [
+            "QUALIFIED_REVIEW_REQUIRED",
+            "REVIEWED_ACCEPTED",
+            "REVIEWED_REJECTED"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "structural-result-envelope/v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "serviceability_escalation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Serviceability Escalation"
+        }
+      },
+      "required": [
+        "schema_version",
+        "intake_status",
+        "calculation_status",
+        "engineering_status",
+        "review_status",
+        "qualified_review_required",
+        "freshness_status",
+        "overall_status"
+      ],
+      "title": "StructuralResultEnvelopeResponse",
+      "type": "object"
+    },
+    "UnavailableUtilization": {
+      "description": "Core-owned reason for a failed check without a finite utilization.",
+      "properties": {
+        "code": {
+          "const": "UTILIZATION_NOT_EVALUATED",
+          "title": "Code",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "reason"
+      ],
+      "title": "UnavailableUtilization",
+      "type": "object"
+    },
+    "WSDesignMessage": {
+      "additionalProperties": false,
+      "description": "Declared compatibility design request; params retain numeric strings.",
+      "properties": {
+        "params": {
+          "$ref": "#/$defs/WSDesignParams"
+        },
+        "type": {
+          "const": "design_beam",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "params"
+      ],
+      "title": "WSDesignMessage",
+      "type": "object"
+    },
+    "WSDesignParams": {
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "cover"
+          ]
+        },
+        {
+          "required": [
+            "clear_cover"
+          ]
+        }
+      ],
+      "description": "Legacy numeric-string adapter for the declared flexure/shear inputs.\n\nUnknown inputs must not silently discard actions, depth or source identity.\n``clear_cover`` remains an accepted alias; ``length`` is viewport metadata,\nnot a declaration that span-dependent serviceability has been evaluated.",
+      "properties": {
+        "clear_cover": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Clear cover in mm",
+          "title": "Cover"
+        },
+        "cover": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Clear cover in mm",
+          "title": "Cover"
+        },
+        "depth": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Overall beam depth in mm",
+          "title": "Depth"
+        },
+        "fck": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Concrete strength fck in N/mm\u00b2",
+          "title": "Fck"
+        },
+        "fy": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Steel yield strength fy in N/mm\u00b2",
+          "title": "Fy"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional viewport length in mm; no span-dependent check is performed",
+          "title": "Length"
+        },
+        "main_bar_dia_mm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Main bar diameter in mm",
+          "title": "Main Bar Dia Mm"
+        },
+        "moment": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Factored moment Mu in kN\u00b7m",
+          "title": "Moment"
+        },
+        "shear": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Factored shear Vu in kN",
+          "title": "Shear"
+        },
+        "stirrup_dia_mm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Stirrup diameter in mm",
+          "title": "Stirrup Dia Mm"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Beam width in mm",
+          "title": "Width"
+        }
+      },
+      "required": [
+        "width",
+        "depth",
+        "moment",
+        "shear",
+        "fck",
+        "fy",
+        "stirrup_dia_mm",
+        "main_bar_dia_mm"
+      ],
+      "title": "WSDesignParams",
+      "type": "object"
+    },
+    "WSDesignResultMessage": {
+      "description": "Same compatibility calculation payload as the HTTP beam endpoint.",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/BeamDesignResponse"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "number"
+        },
+        "type": {
+          "const": "design_result",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "latency_ms",
+        "data"
+      ],
+      "title": "WSDesignResultMessage",
+      "type": "object"
+    },
+    "WSInputProblemMessage": {
+      "description": "Rejected JSON or request; no calculation outcome is implied.",
+      "properties": {
+        "error": {
+          "$ref": "#/$defs/ProblemDetailResponse"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "type": {
+          "const": "error",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "message",
+        "error"
+      ],
+      "title": "WSInputProblemMessage",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/WSDesignMessage"
+    },
+    {
+      "$ref": "#/$defs/WSDesignResultMessage"
+    },
+    {
+      "$ref": "#/$defs/WSInputProblemMessage"
+    }
+  ],
+  "description": "Numeric strings remain accepted for legacy params; booleans, non-finite values, duplicate JSON keys, conflicting cover aliases and unknown inputs reject. clear_cover is an accepted input alias for cover. length is viewport metadata only.",
+  "title": "Beam compatibility WebSocket design exchange V1"
+}

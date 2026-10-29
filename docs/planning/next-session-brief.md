@@ -4,33 +4,30 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-10-29
-- Focus: Complete post-S2 maintenance and prepare the S3 public-contract handoff.
-- Completed: Reconciled the v0.25.0/S0-S2 task board and startup handoff; S3 is next and dated engineering/native records remain intact.; Regenerated the retained 140-package lock with eight reviewed updates; synchronized Black pins and passed the exact strict Python audit and production npm audit with zero known findings.; Passed 314 focused checks, the 18 overlapping final environment checks, pip check, actual Virtualenv creation, strict docs and five-beam PDF/DXF/PNG generation.
-- Recurrence controls: RR-004 x36 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.; RR-051 x1 / unknown: Resolve fixed versions against the retained inventory, synchronize direct pins, and require the exact strict audit plus affected consumer evidence.
+- Focus: Complete public API signatures, inputs, schemas, defaults and compatibility with corrected transports and verified consumers.
+- Completed: Froze the S3 population at 14 surfaces, 1,308 projections, 13 family requests, 92 HTTP operations and 488 schemas after maintenance PR #1035 integrated at ec3f230.; Implemented one HTTP/WebSocket beam projection, correct Asv/s units, actual nullable utilization, strict JSON intake and explicit legacy compatibility policies.; Added exact retained signature exceptions, per-family admission/default vectors, schema/operation ownership reconciliation and known-client migration; 352 focused Python tests, full FastAPI/React baseline with affected repairs, strict docs, type/build and installed-wheel replays pass; GitHub owns final review/check/integration.
+- Recurrence controls: RR-004 x36 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
 <!-- HANDOFF:END -->
 
 ## Current boundary — 29 October 2026
 
-The owner selected bounded post-S2 maintenance, followed by the proposed S3
-public-contract milestone. Codex `/root` is the sole writer on Mac in
-`codex/lib-maintenance-20261029`, a clean source-bound managed worktree from
-fetched main `afe785be5c6a72cd22de75ba48c3da6ea1d19a34` at intake. The completed
-S2 branch and stable outputs remain preserved. Fetch and inspect before a new
-writer or task takes over; this is not current remote proof for a later session.
+The owner selected S3 public-contract planning and implementation. Codex `/root`
+is the sole Mac writer on `codex/lib-s3-contracts`, a source-bound managed lane
+from fetched main `ec3f230767dcfbdc1cbb18ccb48273f7e9db7682`. Maintenance
+[#1035](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1035)
+is integrated after S0/S1 #1032 and S2 #1034. Older branches/artifacts remain
+preserved; inspect current Git/GitHub before any later writer takes over.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | v0.25.0 was published in [PR #1026](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1026). S0/S1 [#1032](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1032) and S2 [#1034](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1034) are integrated. Current work is [post-S2 maintenance](library-usability-improvement.md#post-s2-maintenance--29-october-2026): operational routing, scheduled failures, dependency compatibility and confirmed recurring causes. |
-| **Next** | After maintenance integration, freeze S3's public API/signature/input/schema/default/compatibility population and its cross-caller acceptance cases. This maintenance selection does not start S3 implementation. |
-| Later gates | S4 engineering/output qualification, S5 exact final-version artifact and S6 per-release authorization/publication remain separate. The S2 local development wheel is not the published v0.25.0 wheel. |
-| Preserved boundaries | Keep conditional engineering FAIL/HOLD, source/physical restrictions and native Excel/ETABS/XLL acceptance intact. Normalized IS-data distribution permission is already passed. No current native-host access or new engineering approval is inferred. |
+| **Current** | Implemented and locally verified [S3 public contracts](library-usability-improvement.md#s3-public-contracts--29-october-2026): signatures, inputs, schemas, defaults, compatibility, confirmed fixes and consumer verification. |
+| **Next** | Verify S3 exact-head reviews/required hosted integration on its PR, then select bounded S4 engineering/output qualification. |
+| Later gates | S4 engineering/output qualification, S5 final-version artifact and S6 per-release authorization/publication. The local candidate keeps 0.25.0 metadata and is distinct from the published wheel. |
+| Preserved boundaries | Keep engineering FAIL/HOLD, physical/source restrictions and separate native Excel/ETABS/XLL acceptance. Normalized IS-data distribution permission is passed. No new native mutation or release is authorized. |
 
-The [task board](../TASKS.md) and
-[quality programme](library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence)
-own the current sequence. Draft #1019 remains an unaccepted historical calendar
-under the existing successor/rebinding decision. Its old base does not select
-or block this maintenance lane. Use normal affected checks and required PR
-checks; preserve unrelated branches and device evidence.
+The [task board](../TASKS.md), [programme](library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence)
+and [S3 receipt](../verification/library-s3-20261029.json) own current work.
+Historical draft #1019 does not select or block this successor lane.
 
 ## Historical handoff boundary — 1 October 2026
 

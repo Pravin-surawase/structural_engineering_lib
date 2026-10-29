@@ -178,7 +178,7 @@ export function ResultsPanel() {
             <span className="text-[11px] text-zinc-400">Utilization</span>
             <span
               className={`text-sm font-semibold ${
-                trust.exactUtilization < 0.9 ? 'text-green-500' : trust.exactUtilization <= 1.0 ? 'text-amber-500' : 'text-red-500'
+                trust.exactUtilization === null ? 'text-amber-500' : trust.exactUtilization < 0.9 ? 'text-green-500' : trust.exactUtilization <= 1.0 ? 'text-amber-500' : 'text-red-500'
               }`}
             >
               {formatPercent(trust.exactUtilization)}

@@ -124,7 +124,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           bar_count: layout.count,
           bar_diameter: layout.dia,
           stirrup_spacing: data.shear?.stirrup_spacing ?? b.stirrup_spacing,
-          utilization: trust.exactUtilization,
+          utilization: trust.exactUtilization ?? undefined,
           is_valid: trust.status === "PASS",
           status: trust.status === "PASS" ? "pass" : trust.status === "HOLD" ? "warning" : "fail",
         }

@@ -27,6 +27,11 @@ WEBSOCKET_SCHEMA_PATH = (
 )
 
 
+LEGACY_WEBSOCKET_SCHEMA_PATH = (
+    REPO_ROOT / "docs/reference/beam-design-websocket-v1.schema.json"
+)
+
+
 def _collect_deep_diffs(
     baseline: object,
     current: object,
@@ -155,7 +160,11 @@ def _diff_specs(baseline: dict, current: dict) -> dict:
 
 def _has_changes(diff: dict) -> bool:
     """Check if any changes were detected."""
-    return bool(diff["details"] or diff.get("websocket_details"))
+    return bool(
+        diff["details"]
+        or diff.get("websocket_details")
+        or not diff.get("contract_matrix_matches", True)
+    )
 
 
 def main() -> int:
@@ -170,8 +179,14 @@ def main() -> int:
 
     # Generate current spec
     try:
+        from audit_public_contracts import OUTPUT as MATRIX_PATH, build_matrix
+
         current = _get_current_spec()
+        matrix = build_matrix()
         current_websocket = _get_current_websocket_schema()
+        from fastapi_app.routers.websocket import beam_design_websocket_schema_v1
+
+        legacy_websocket = beam_design_websocket_schema_v1()
     except Exception as e:  # noqa: BLE001 - report arbitrary app import failures
         if args.json:
             print(json.dumps({"error": f"Failed to load FastAPI app: {e}"}))
@@ -181,6 +196,11 @@ def main() -> int:
 
     # Update mode
     if args.update:
+        MATRIX_PATH.write_text(json.dumps(matrix, separators=(",", ":")) + "\n")
+        LEGACY_WEBSOCKET_SCHEMA_PATH.write_text(
+            json.dumps(legacy_websocket, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
         BASELINE_PATH.write_text(
             json.dumps(current, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
@@ -234,6 +254,21 @@ def main() -> int:
     diff["websocket_details"] = _collect_deep_diffs(
         baseline_websocket,
         current_websocket,
+    )
+    diff["websocket_details"].extend(
+        _collect_deep_diffs(
+            (
+                json.loads(LEGACY_WEBSOCKET_SCHEMA_PATH.read_text())
+                if LEGACY_WEBSOCKET_SCHEMA_PATH.exists()
+                else {}
+            ),
+            legacy_websocket,
+            "legacy_design_websocket",
+        )
+    )
+
+    diff["contract_matrix_matches"] = (
+        MATRIX_PATH.exists() and json.loads(MATRIX_PATH.read_text()) == matrix
     )
 
     if args.json:

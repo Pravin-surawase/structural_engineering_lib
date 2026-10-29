@@ -14,6 +14,7 @@ from structural_lib.services.contracts.beam_supplied_check import (
 )
 
 from fastapi_app.models.response import StructuralResultEnvelopeResponse
+from fastapi_app.models.analysis import UnavailableUtilization
 
 # =============================================================================
 # Design Request Models
@@ -553,7 +554,27 @@ class BeamDesignResponse(BaseModel):
     utilization_ratio: float = Field(
         ge=0,
         le=2.0,
-        description="Governing IS 456 compliance utilization ratio",
+        description=(
+            "Deprecated compatibility display ratio capped at 2.0; not the exact "
+            "engineering ratio. Use governing_utilization and result_envelope."
+        ),
+        deprecated=True,
+    )
+    governing_utilization: float | None = Field(
+        default=None,
+        ge=0,
+        allow_inf_nan=False,
+        description=(
+            "Exact dimensionless governing compliance ratio, without a display cap. "
+            "Null means not evaluated; inspect unavailable_utilizations."
+        ),
+    )
+    unavailable_utilizations: dict[str, UnavailableUtilization] = Field(
+        default_factory=dict,
+        description=(
+            "Core-owned utilization paths and explicit unavailable reasons. "
+            "governing_utilization identifies a missing exact governing ratio."
+        ),
     )
     effective_depth_used: float | None = Field(
         default=None,

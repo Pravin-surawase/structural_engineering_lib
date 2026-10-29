@@ -45,8 +45,10 @@ export interface BatchResult {
     stirrup_spacing: number;
     is_safe: boolean;
   };
-  utilization_ratio?: number;
-  utilizations?: Record<string, number>;
+  utilization_ratio?: number | null;
+  governing_utilization?: number | null;
+  unavailable_utilizations?: Record<string, import('../api/client').UnavailableUtilization>;
+  utilizations?: Record<string, number | null>;
   failed_checks?: string[];
   remarks?: string;
   error?: string;
@@ -312,6 +314,10 @@ function normalizedResult(data: ServerBatchResult): BatchResult | null {
     flexure: data.flexure,
     shear: data.shear,
     utilization_ratio: data.utilization_ratio,
+    governing_utilization: data.governing_utilization !== undefined
+      ? data.governing_utilization
+      : data.evidence ? data.evidence.exact_utilization : data.utilization_ratio,
+    unavailable_utilizations: data.unavailable_utilizations,
     utilizations: data.utilizations,
     failed_checks: data.failed_checks,
     remarks: data.remarks,
