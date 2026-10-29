@@ -25,6 +25,13 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 ALPHA_VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)a(\d+)$")
 LEGACY_STABLE_VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+DOC_INSTALL_VERSION_PATTERN = (
+    r"(?P<prefix>structural-lib-is456(?:\[[^\]]+\])?={2,3}|"
+    r"https://raw\.githubusercontent\.com/Pravin-surawase/"
+    r"structural_engineering_lib/v)"
+    r"[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?"
+)
+DOC_INSTALL_VERSION_REPLACEMENT = r"\g<prefix>{version}"
 
 # Files that need version updates (relative to repo root)
 # MINIMAL SET: Only files that MUST have hardcoded versions
@@ -75,9 +82,10 @@ VERSION_FILES = {
 }
 
 # Documentation references that should track the prepared source version.
-# Published tags, badges, install pins, and release-history surfaces are
-# intentionally excluded: advancing source metadata prepares a candidate but
-# does not authorize or prove publication.
+# Historical release claims, badges and ledger entries are excluded. Active
+# recipe pins (including extras and tagged sample URLs) track the prepared
+# source version together. Synchronizing them does not publish the candidate
+# or establish registry/tag availability; release evidence remains separate.
 DOC_VERSION_FILES = {
     "README.md": [
         (
@@ -86,8 +94,8 @@ DOC_VERSION_FILES = {
             "> **v{version} is {readme_release_status}.",
         ),
         (
-            r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "structural-lib-is456=={version}",
+            DOC_INSTALL_VERSION_PATTERN,
+            DOC_INSTALL_VERSION_REPLACEMENT,
         ),
     ],
     "Python/README.md": [
@@ -100,9 +108,8 @@ DOC_VERSION_FILES = {
         ),
         (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "## New in v{version}"),
         (
-            r"(structural-lib-is456(?:\[[^\]]+\])?)={2,3}"
-            r"[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            r"\g<1>=={version}",
+            DOC_INSTALL_VERSION_PATTERN,
+            DOC_INSTALL_VERSION_REPLACEMENT,
         ),
     ],
     "docs/getting-started/python-quickstart.md": [
@@ -111,9 +118,40 @@ DOC_VERSION_FILES = {
             "**Version:** {version}",
         ),
         (
-            r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "structural-lib-is456=={version}",
+            DOC_INSTALL_VERSION_PATTERN,
+            DOC_INSTALL_VERSION_REPLACEMENT,
         ),
+    ],
+    "docs/getting-started/beginners-guide.md": [
+        (
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "**Version:** {version}",
+        ),
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
+    ],
+    "docs/getting-started/colab-workflow.md": [
+        (
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "**Version:** {version}",
+        ),
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
+        (
+            r"structural_lib: [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "structural_lib: {version}",
+        ),
+    ],
+    "Python/examples/README.md": [
+        (
+            r"(Runnable examples for `structural-lib-is456` )[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            r"\g<1>{version}",
+        ),
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
+    ],
+    "Python/examples/colab_workflow.py": [
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
+    ],
+    "docs/cookbook/cli-reference.md": [
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
     ],
     "docs/reference/api.md": [
         (
@@ -139,8 +177,8 @@ DOC_VERSION_FILES = {
             "**Version:** {version}",
         ),
         (
-            r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "structural-lib-is456=={version}",
+            DOC_INSTALL_VERSION_PATTERN,
+            DOC_INSTALL_VERSION_REPLACEMENT,
         ),
     ],
     "docs/verification/validation-pack.md": [

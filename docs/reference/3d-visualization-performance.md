@@ -11,7 +11,7 @@ tags: []
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Production Ready
+**Status:** Dated benchmark reference
 **Importance:** Medium
 **Created:** 2026-01-18
 **Last Updated:** 2026-03-29
@@ -21,7 +21,7 @@ tags: []
 
 ## Overview
 
-This document provides performance benchmarks for the 3D beam visualization module (`react_app/src/components/viewport/Viewport3D.tsx`). These benchmarks ensure the visualization meets the <100ms latency target for live preview functionality.
+This document provides performance benchmarks for the 3D beam visualization module (`react_app/src/components/viewport/Viewport3D.tsx`). These are dated measurements for the recorded sessions, not current-build performance acceptance. Reproduce the applicable case on an exact current application build before claiming a latency target is met.
 
 ## Performance Targets
 

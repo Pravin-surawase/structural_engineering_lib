@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-28
+last_updated: 2026-10-29
 doc_type: guide
 complexity: beginner
 tags: [colab, python, cli, beam]
@@ -13,18 +13,23 @@ tags: [colab, python, cli, beam]
 **Audience:** Users
 **Status:** Active
 **Importance:** Medium
-**Version:** 0.24.0
-**Last Updated:** 2026-08-28
+**Version:** 0.25.0
+**Last Updated:** 2026-10-29
 
-This guide runs the published package in a clean Google Colab runtime. It does
-not require ETABS or a repository clone.
+This guide runs the selected package version in a clean Google Colab runtime.
+It does not require ETABS or a repository clone.
 
-## 1. Install the exact release
+Pins track the version prepared on this source branch. Registry installation
+requires that exact version to be published; a source version bump does not
+establish availability. Confirm publication in the [release record](releases.md)
+before using a new candidate pin.
+
+## 1. Install the selected version
 
 Run this in the first cell:
 
 ```python
-%pip install -q "structural-lib-is456[dxf]==0.24.0"
+%pip install -q "structural-lib-is456[dxf]==0.25.0"
 ```
 
 Choose **Runtime → Restart session**, then verify the environment:
@@ -33,7 +38,7 @@ Choose **Runtime → Restart session**, then verify the environment:
 !python -m structural_lib install-preflight
 ```
 
-The output must show `structural_lib: 0.24.0` and a package origin under
+The output must show `structural_lib: 0.25.0` and a package origin under
 `site-packages`.
 
 ## 2. Run a canonical beam calculation
@@ -73,10 +78,10 @@ Expected engineering status for this supplied case: `PASS`.
 from pathlib import Path
 
 Path("beams.csv").write_text(
-    """BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
-B1,Ground,300,500,450,4000,40,25,500,150,100,8,150
-B2,Ground,230,450,400,3500,40,20,415,80,75,8,175
-B3,First,350,600,550,5000,40,30,500,250,150,10,125
+    """BeamID,Story,b,D,tension_bar_diameter_mm,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
+B1,Ground,300,500,16,4000,40,25,500,150,100,8,150
+B2,Ground,240,450,16,3500,40,20,415,80,75,8,175
+B3,First,350,600,20,5000,40,30,500,250,150,10,125
 """,
     encoding="utf-8",
 )
@@ -84,6 +89,11 @@ B3,First,350,600,550,5000,40,30,500,250,150,10,125
 
 The CLI treats requested/reported steel and status as outputs. Do not add
 `Ast_req`, `Asc_req`, or `Status` to this input.
+The supplied bar diameters derive depths 444, 394 and 540 mm from the explicit
+cover and link diameters. B2 uses 240 mm width so its four 16 mm tension bars
+fit in one verifiable layer. A narrower or multilayer member needs its own
+physical arrangement and centroid evidence; a declared bar diameter alone
+does not prove the generated layout matches.
 
 ## 4. Run design, BBS, detailing, DXF, and report
 
@@ -107,11 +117,13 @@ from pathlib import Path
 data = json.loads(Path("results.json").read_text(encoding="utf-8"))
 print(data["summary"])
 for member in data["beams"]:
+    utilization = member["governing_utilization"]
     print(
         member["beam_id"],
         member["result_envelope"]["engineering_status"],
         member["governing_check"],
-        round(member["governing_utilization"], 3),
+        "Unavailable" if utilization is None else round(utilization, 3),
+        member.get("unavailable_utilizations", {}),
     )
 ```
 

@@ -256,6 +256,16 @@ h2 {
     font-size: 12px;
     color: #a0aec0;
 }
+
+/* Keep a member's short status sections with its calculation tables in print. */
+@media print {
+    .section { padding: 12px 16px; margin: 16px 0; box-shadow: none; }
+    .summary { padding: 12px 16px; }
+    h2 { margin-top: 12px; margin-bottom: 12px; padding: 6px 10px; }
+    .sanity-table th, .sanity-table td,
+    .scorecard-table th, .scorecard-table td,
+    .units-table th, .units-table td { padding: 5px 8px; }
+}
 """
 
 
@@ -1276,6 +1286,7 @@ def _render_report_sections(data: ReportData) -> str:
     <h2>Cross-Section SVG</h2>
     <div class="svg-wrap">{svg}</div>
     <div class="svg-legend"><span>d = effective depth</span><span>d&#39; = compression cover</span></div>
+    <p class="svg-legend">Calculation-depth schematic; bar symbols do not specify a physical bar count or arrangement.</p>
 </div>
 <div class="section">
     <h2>Input Sanity Heatmap</h2>
@@ -1397,6 +1408,9 @@ def _beam_report_data_from_design(
         "beam_id": beam_id,
         "story": story,
     }
+    design_inputs = _safe_dict(beam.get("design_inputs"))
+    if "asv_mm2" in design_inputs:
+        beam_info["asv_mm2"] = design_inputs["asv_mm2"]
 
     source_unavailable = _safe_dict(beam.get("unavailable_utilizations"))
     utilizations: dict[str, float | None] = {}

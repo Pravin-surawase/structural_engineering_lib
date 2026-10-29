@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-28
+last_updated: 2026-10-29
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -13,18 +13,18 @@ tags: []
 **Audience:** Users
 **Status:** Approved
 **Importance:** High
-**Version:** 1.0.0
+**Version:** 0.25.0
 **Created:** 2025-12-15
-**Last Updated:** 2026-08-28
+**Last Updated:** 2026-10-29
 
 ---
 
 This guide is written for engineers and students who are new to Python. The
 Python path is copy/paste friendly; the Excel path does not require Python.
 
-You have two ways to use this library:
-- Python (recommended for batch work and the CLI)
-- Excel/VBA (recommended if you live in spreadsheets)
+The Python route below is the reproducible starter workflow for the library
+and CLI. Excel/VBA is a separate host-integration track with its own artifacts
+and installed-host evidence; the Python wheel does not install an Excel add-in.
 
 ---
 
@@ -45,15 +45,19 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 ```
 
 ### Step 3: Install the library
+Pins track the version prepared on this source branch. The registry commands
+require verified publication in the [release record](releases.md); a source
+version bump alone does not make a candidate available to install.
+
 ```bash
 python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456==0.24.0"
+python3 -m pip install "structural-lib-is456==0.25.0"
 python3 -m structural_lib install-preflight
 ```
 
 Optional (only if you want DXF drawings):
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.25.0"
 ```
 
 ### Step 4: Run a first check (no files yet)
@@ -89,70 +93,62 @@ Ast required (mm^2): 906
 ### Step 5: Run the CLI with a tiny CSV
 Create a file named `beams.csv` with this content:
 ```csv
-BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
-B1,Ground,300,500,450,4000,40,25,500,150,100,8,150
+BeamID,Story,b,D,tension_bar_diameter_mm,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
+B1,Ground,300,500,16,4000,40,25,500,150,100,8,150
 ```
 
-Now run the full pipeline:
+The 16 mm tension bars, 40 mm clear cover and 8 mm links give
+`d = 500 - 40 - 8 - 16/2 = 444 mm`. This case fits one tension layer. Keep the
+depth/layout validation when adapting the example to a different member.
+
+Run design and schedule generation with the base package:
 ```bash
 python3 -m structural_lib design beams.csv -o results.json
 python3 -m structural_lib bbs results.json -o schedule.csv
+python3 -m structural_lib report results.json --format=html -o report.html
+```
+
+After installing the optional DXF extra in Step 3, you can also run:
+
+```bash
 python3 -m structural_lib dxf results.json -o drawings.dxf
 ```
 
 You will get:
 - `results.json` (design + compliance results)
 - `schedule.csv` (bar bending schedule)
+- `report.html` (inspectable design report)
 - `drawings.dxf` (only if DXF support is installed)
 
 ### Optional: Generate a 500-beam batch (no ETABS needed)
-If you are using the repo and want a big batch test, run:
+From a source checkout root, this optional larger source-bound batch writes
+under an explicit output directory:
 ```bash
-cd Python
-python3 examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500
+./scripts/python_runtime.sh Python/examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500
 ```
 Skip DXF if you want a faster run:
 ```bash
-python3 examples/full_pipeline_synthetic.py --count 500 --skip-dxf
+./scripts/python_runtime.sh Python/examples/full_pipeline_synthetic.py --count 500 --skip-dxf --output-dir ./output/demo_500
 ```
 
 ---
 
-## Path 2: Excel/VBA (no coding)
+## Path 2: Excel/VBA (separate host workflow)
 
-### Step 1: Get the Excel file
-Use one of these:
-- `Excel/StructEngLib.xlam` (add-in)
-- `Excel/BeamDesignApp.xlsm` (workbook)
-
-If you received a zip or release bundle, extract it first.
-
-### Step 2: Enable macros (required)
-In Excel:
-- File -> Options -> Trust Center -> Trust Center Settings
-- Macro Settings -> Enable all macros
-- Check "Trust access to the VBA project object model"
-
-### Step 3: Load the add-in (if using .xlam)
-- Excel -> File -> Options -> Add-ins
-- Manage: Excel Add-ins -> Go...
-- Browse -> select `StructEngLib.xlam` -> OK
-
-### Step 4: Try one formula
-In any cell, enter:
-```
-=IS456_MuLim(300, 450, 25, 500)
-```
-
-You should get a number around 196.5 (kN-m).
+The repository contains Excel/VBA source and a separate
+[Excel-DNA/XLL plan](../planning/xll-product/README.md). A Python-package install
+is not proof of a built, signed or qualified Excel workbook/add-in. Use the
+selected host packet's actual artifact, installation instructions and evidence;
+do not assume the historical `StructEngLib.xlam` or `BeamDesignApp.xlsm` names
+refer to files supplied by this package. Native Excel/ETABS/XLL qualification
+remains a separate gate and is not established by this Python starter replay.
 
 ---
 
 ## Common fixes
 - "Module not found": make sure the virtual environment is active.
 - "python3 not found" on Windows: use `py` instead of `python3`.
-- DXF not working: install `structural-lib-is456[dxf]`.
-- Excel formulas not showing: re-open Excel after enabling macros.
+- DXF not working: install `structural-lib-is456[dxf]==0.25.0`.
 
 ---
 
@@ -164,4 +160,4 @@ You should get a number around 196.5 (kN-m).
 - API reference: `docs/reference/api.md`
 - Learning path: `docs/learning/README.md`
 
-Document Version: 0.25.0 | Last Updated: 2026-10-03
+Document Version: 0.25.0 | Last Updated: 2026-10-29

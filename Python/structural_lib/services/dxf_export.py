@@ -86,6 +86,7 @@ LAYERS = {
 # Drawing parameters
 TEXT_HEIGHT = 50  # mm (scaled for drawing)
 DIM_OFFSET = 100  # Dimension line offset from beam
+_MAX_ANNOTATION_SCALE = 1.4
 REBAR_OFFSET = 30  # Offset from beam edge for rebar line
 DEFAULT_SHEET_MARGIN = 200.0  # mm
 DEFAULT_TITLE_BLOCK_WIDTH = 900.0  # mm
@@ -140,7 +141,16 @@ def _annotation_scale(span: float, depth: float) -> float:
     if span <= 0 or depth <= 0:
         return 1.0
     base = (span / 4000.0 + depth / 500.0) / 2.0
-    return max(0.75, min(1.4, base))
+    return max(0.75, min(_MAX_ANNOTATION_SCALE, base))
+
+
+def _lower_annotation_offsets(text_height: float) -> tuple[float, float, float, float]:
+    """Keep dimensions, bar/link callouts and notes clear of each other/steel."""
+    span_text = DIM_OFFSET + TEXT_HEIGHT
+    bottom_callout = span_text + 2 * TEXT_HEIGHT
+    stirrup_callout = bottom_callout + text_height + TEXT_HEIGHT / 2
+    development_note = stirrup_callout + 2 * (0.8 * text_height) + TEXT_HEIGHT / 2
+    return span_text, bottom_callout, stirrup_callout, development_note
 
 
 def _zone_label(zone: str) -> str:
@@ -491,7 +501,10 @@ def _annotation_extents(include_annotations: bool) -> tuple[float, float]:
     """Return (above_extent, below_extent) for annotations."""
     if include_annotations:
         above_extent = 150 + TEXT_HEIGHT * 1.5
-        below_extent = DIM_OFFSET + 200 + TEXT_HEIGHT
+        _, _, _, note_offset = _lower_annotation_offsets(
+            TEXT_HEIGHT * _MAX_ANNOTATION_SCALE
+        )
+        below_extent = note_offset + TEXT_HEIGHT
     else:
         above_extent = 100
         below_extent = DIM_OFFSET + 50
@@ -745,6 +758,7 @@ def draw_dimensions(
     msp.add_line((x0, y_dim), (x0 + span, y_dim), dxfattribs={"layer": "DIMENSIONS"})
 
     # Span text
+    span_text_offset, _, _, _ = _lower_annotation_offsets(TEXT_HEIGHT)
     msp.add_text(
         f"{int(span)} mm",
         dxfattribs={
@@ -752,7 +766,7 @@ def draw_dimensions(
             "height": TEXT_HEIGHT,
         },
     ).set_placement(
-        (x0 + span / 2, y_dim - TEXT_HEIGHT), align=_text_align("TOP_CENTER")
+        (x0 + span / 2, y0 - span_text_offset), align=_text_align("TOP_CENTER")
     )
 
     # Depth dimension (right side)
@@ -798,7 +812,9 @@ def draw_annotations(
 
     scale = _annotation_scale(span, D)
     text_height = TEXT_HEIGHT * scale
-    dim_offset = DIM_OFFSET * scale
+    _, bottom_offset, stirrup_offset, note_offset = _lower_annotation_offsets(
+        text_height
+    )
 
     mark_map = _bar_mark_map(detailing) if detailing else {}
 
@@ -830,7 +846,7 @@ def draw_annotations(
                     "height": text_height,
                 },
             ).set_placement(
-                (x, y0 - dim_offset - 100 * scale),
+                (x, y0 - bottom_offset),
                 align=_text_align("TOP_CENTER"),
             )
 
@@ -878,10 +894,10 @@ def draw_annotations(
                     "layer": "TEXT",
                     "height": text_height * 0.8,
                 },
-            ).set_placement((x, y0 + D / 2), align=_text_align("MIDDLE_CENTER"))
+            ).set_placement((x, y0 - stirrup_offset), align=_text_align("TOP_CENTER"))
 
     # Development length note
-    note_y = y0 - dim_offset - 200 * scale
+    note_y = y0 - note_offset
     msp.add_text(
         f"Ld = {int(ld)} mm, Lap = {int(lap)} mm",
         dxfattribs={

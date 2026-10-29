@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-09-01
+status: archived
+last_updated: 2026-10-29
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -11,13 +11,22 @@ tags: []
 
 **Type:** Learning
 **Audience:** Developers
-**Status:** Production Ready
+**Status:** Historical learning reference
 **Importance:** High
 **Created:** 2026-01-24
 **Last Updated:** 2026-09-01
 **Related Tasks:** TASK-WS-001, TASK-AUTH-001
 
 ---
+
+## Current-use boundary
+
+This is a dated Week 3 migration/learning record. Its implementation sketches,
+endpoint examples, authentication discussion and commands are historical, not
+copy/paste recipes or support/security guarantees for the current application.
+Use the [current HTTP reference](../reference/fastapi-rest-api.md), live OpenAPI
+and the maintained FastAPI routers for the selected exact source build. The
+Python wheel does not contain the FastAPI/React applications.
 
 ## Overview
 

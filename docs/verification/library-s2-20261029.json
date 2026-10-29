@@ -1,0 +1,828 @@
+{
+  "schema_version": "library-s2-execution/v1",
+  "created_at_utc": "2026-10-29T08:00:23.254648+00:00",
+  "status": "LOCAL_CANDIDATE_FROZEN_PR_GATES_PENDING",
+  "objective": "Start S2: repair starter examples, effective-depth inputs, version pins, active guides and PDF/drawing outputs; complete focused tests, independent software review and required hosted integration.",
+  "source_identity": {
+    "base": "a3ea3f0d9bf6cd7904ed3182522cf13e615e5b87",
+    "predecessor_pr": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/1032",
+    "branch": "codex/lib-s2-first-use",
+    "worktree": "/Users/pravinsurawase/.codex/worktrees/library-s2-first-use/structural_engineering_lib",
+    "source_bound": true,
+    "transition": "Fresh managed worktree from fetched main; preserve prior squash-merged branch. One parent writer, bounded read-only diagnosis/review agents."
+  },
+  "scope_ids": [
+    "Q-F02",
+    "Q-F03",
+    "Q-F05",
+    "PS-F06",
+    "PS-F07"
+  ],
+  "requirements": [
+    {
+      "id": "S2-A1",
+      "requirement": "All five shipped starter cases complete design/detail/BBS/DXF/report with strength depth equal to actual generated centroid; preserve mismatch/multilayer rejection.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S2-A2",
+      "requirement": "Beginner, quickstart and declared Colab recipe use complete physical inputs and declared base/optional/host prerequisites. Execute their library/CLI cells and required source-onboarding/job paths.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S2-A3",
+      "requirement": "Maintained version checker covers active base/extras/Colab/example pins and tagged input references. Source sync cannot authorize publication or rewrite release history.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S2-A4",
+      "requirement": "Current coding/contract guides route to four layers, bound runtime, typed families and actual compatibility/support policy; missing canonical references have maintained dispositions.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S2-A5",
+      "requirement": "Actual digital HTML/PDF labels, dimensions, units, status and BBS/DXF member/bar marks agree; report inputs remain truthful and preview text is clear. Physical print, native CAD and fabrication qualification remain S4.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S2-A6",
+      "requirement": "Replay all17 promoted source scripts and13 family recipe pages in declared contexts, retaining intentional engineering FAIL/HOLD. Bind the promoted runnable population and any prerequisite/template/host boundary.",
+      "status": "LOCAL_PASS"
+    },
+    {
+      "id": "S2-A7",
+      "requirement": "After content freeze: affected formatter/linter, focused regression union, semantic snapshot/ledger review, exact-head independent review, required hosted checks and normal PR integration.",
+      "status": "LOCAL_PASS_EXACT_HEAD_REVIEW_AND_HOSTED_INTEGRATION_PENDING"
+    }
+  ],
+  "confirmed_root_causes": [
+    "Five-beam CSV, beginner CSV and quickstart compatibility call supplied/derived depths ignored link/main-bar centroid. Colab B2 also generated an unverified two-layer arrangement at230mm; selected240mm teaching section fits a verified single layer.",
+    "bump_version active-doc population omitted beginner/Colab/example surfaces; its matcher missed extras and tagged raw-file version spellings. The checker falsely passed.",
+    "Report SVG scaled the section to almost the whole viewport without reserving the right-hand depth label.",
+    "DXF print helper used CAD colors on white; dimension offsets were fixed while lower annotations were scaled, producing overlap on smaller starter beams.",
+    "Pipeline report adapter omitted retained design_inputs.asv_mm2, producing a false missing-input warning.",
+    "Active coding/contract and connected onboarding guides used retired3-layer/Streamlit/stub ownership and stability/execution claims; canonical registry contained six missing paths.",
+    "Print card spacing stranded each units-status section on a nearly empty page; print-only padding/margins now keep it with the calculation tables, preserving font size and values."
+  ],
+  "physical_starter_basis": {
+    "formula": "d=D-clear_cover-stirrup_diameter-tension_bar_diameter/2; actual generated single-layer centroid must agree",
+    "five_beams": {
+      "B1": {
+        "d_mm": 444,
+        "bar_diameter_mm": 16,
+        "bottom_count": 5
+      },
+      "B2": {
+        "d_mm": 394,
+        "bar_diameter_mm": 16,
+        "bottom_count": 4
+      },
+      "B3": {
+        "d_mm": 540,
+        "bar_diameter_mm": 20,
+        "bottom_count": 4
+      },
+      "B4": {
+        "d_mm": 442,
+        "bar_diameter_mm": 20,
+        "bottom_count": 4
+      },
+      "B5": {
+        "d_mm": 630,
+        "bar_diameter_mm": 20,
+        "bottom_count": 6
+      }
+    },
+    "colab_B2": "b240mm,16mm bars,d394mm; keep multi-layer verification gate"
+  },
+  "published_identity": {
+    "version": "0.25.0",
+    "github_tag": "v0.25.0",
+    "github_published_at": "2026-10-03T10:36:24Z",
+    "live_read_url": "https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.25.0",
+    "candidate_release": "0.26.0 programme remains unpublished/unselected for release; no source version bump or publication authorized by S2"
+  },
+  "preliminary_evidence": {
+    "disposition": "Superseded by the frozen local evidence below. Earlier render candidates and initial installation-admission failures remain local diagnostic records and do not constitute a final passing candidate."
+  },
+  "later_gates": [
+    "S3 full public contract population",
+    "S4 qualified engineering/physical-output acceptance",
+    "S5 final exact released-version artifact qualification",
+    "S6 per-release owner authorization/publication",
+    "Native Excel/ETABS/XLL and hosted Colab UI qualification are not implied by local Python/CLI/software render evidence."
+  ],
+  "next_actions": [
+    "Bind independent review to exact committed head and tree.",
+    "One milestone PR: required hosted checks, no unresolved outcome blockers, normal merge and main-tree verification.",
+    "Close task timer and archive managed worktree only after stable artifact hash verification."
+  ],
+  "candidate_source_files": [
+    {
+      "path": "Python/examples/README.md",
+      "sha256": "e60fdeeab6bb760336bee940500e33a7042d28c420953b130534c5815650827f"
+    },
+    {
+      "path": "Python/examples/colab_workflow.py",
+      "sha256": "29164c86e2f2de592bef800a1099836ae0f975c78539c4dcc987d537f10c09f0"
+    },
+    {
+      "path": "Python/examples/sample_beam_design.csv",
+      "sha256": "e6e019df018ea37f2b0a3c37feb2c2604db1961b6fbf117f1b01dca115a2e993"
+    },
+    {
+      "path": "Python/structural_lib/services/dxf_export.py",
+      "sha256": "9fc1f4d5d40627747e533ba3ba090a6005b5987831b5a16981e4f69f10e93a46"
+    },
+    {
+      "path": "Python/structural_lib/services/report.py",
+      "sha256": "49b9450c83bbd78cd8ea11b8db6a9fae8b02cd639656bd74450f188b7adfa0d3"
+    },
+    {
+      "path": "Python/structural_lib/services/report_svg.py",
+      "sha256": "618be4cc87f888b58f1c6fc30f51c4f8ce196db75b786b519da7fc63c447ff43"
+    },
+    {
+      "path": "Python/tests/fixtures/report/report_batch_beam_G_B1.html",
+      "sha256": "08ddd279b30825ca73b11b0582ab021c935de429b0b8273986fdedc9df412ad6"
+    },
+    {
+      "path": "Python/tests/fixtures/report/report_batch_index_80.html",
+      "sha256": "fb71752f852e9e242a81969a401fcbe7d558b296f4fa3fb7538ed3cdf44f6be4"
+    },
+    {
+      "path": "Python/tests/fixtures/report/report_single_1.html",
+      "sha256": "616773ca46f35bd37afdd094dfdb67467a2c8eed98d3c530983d3b6b8144390f"
+    },
+    {
+      "path": "Python/tests/fixtures/report/report_single_79.html",
+      "sha256": "070bf9f6f5da45e9aa9c386982f26ecf5878fb568088c82b145ab884bd5d743c"
+    },
+    {
+      "path": "Python/tests/test_bump_version_semantics.py",
+      "sha256": "f30506c3e87080379d19631fa212a9cfb1b4be8665a83dec7bb8f4597f3edfbe"
+    },
+    {
+      "path": "Python/tests/test_dxf_render.py",
+      "sha256": "0f50548c1b6e7fe7d6861db7fe0004dff2271c6732e90e9298f97413365c9e2d"
+    },
+    {
+      "path": "Python/tests/test_public_examples.py",
+      "sha256": "173462a5319252a3c1521e49886ee7470f5bd85c01a9a8db55c4052d6b82cc83"
+    },
+    {
+      "path": "docs/contributing/agent-coding-standards.md",
+      "sha256": "c435e4465043daec50450f3263fe3db1a78f2ebe237ea0895a3c8cfc22fae546"
+    },
+    {
+      "path": "docs/cookbook/cli-reference.md",
+      "sha256": "d327426f689777c4c6d4bce12480ddf6c8816ee0b6963c68eb919ea1e2e0033b"
+    },
+    {
+      "path": "docs/docs-canonical.json",
+      "sha256": "9ce7af37442a83edf81927f6465e0b74ceed49f2a74fe7d2bae3441f0262e5cb"
+    },
+    {
+      "path": "docs/getting-started/NEW-DEVELOPER-ONBOARDING.md",
+      "sha256": "0502420a1a94e5be2aa0aa056f2b74540cd61bdbbcb8d8001ef23d82eda29195"
+    },
+    {
+      "path": "docs/getting-started/beginners-guide.md",
+      "sha256": "5c7f1e3dd4160742840a3407d29d19d25891ded70bc56f7f5a5302a267811f4b"
+    },
+    {
+      "path": "docs/getting-started/colab-workflow.md",
+      "sha256": "e30b35ba23c3fd94772d6b2aaa29243277216eed5effe726dbc20d30cc7841f8"
+    },
+    {
+      "path": "docs/getting-started/python-quickstart.md",
+      "sha256": "b7b451692e5a99c049b8dd8f187f73bc4f409863b0716caa9678b56d4a1259e9"
+    },
+    {
+      "path": "docs/getting-started/releases.md",
+      "sha256": "28786e5094a1f707f55cc8230c876fb82c45957cfa1ea81ae9e66df360f8a5b5"
+    },
+    {
+      "path": "docs/guides/ai-agent-coding-guide.md",
+      "sha256": "69bfa2d1706942e9d938b7c25c85dfac8651aaba5e725f0660ee7b1ba6f27800"
+    },
+    {
+      "path": "docs/guides/code-reuse-and-library-structure.md",
+      "sha256": "dd9df2bd1f406a9941fb833ff8d05473707d3b4454ff35f5b816ffd41a765419"
+    },
+    {
+      "path": "docs/guides/week3-realtime-features-guide.md",
+      "sha256": "b27e728f31d134d029afc2655a11ef336cdcdfac6bb4f62394732491139875dc"
+    },
+    {
+      "path": "docs/planning/library-usability-improvement.md",
+      "sha256": "cce83824584e6c380884d46bff2f174c483e3e1118d25923469a8437cc787218"
+    },
+    {
+      "path": "docs/reference/3d-visualization-performance.md",
+      "sha256": "6d93538b9a99c1bb0f2d25d35ea10fb97f7a17b12c92c1a2de7dc0051a9a4e3b"
+    },
+    {
+      "path": "docs/reference/api-stability.md",
+      "sha256": "30055a0c9fa88d7c383e5ebb6a906e2bf793c37a3265e99e5d8e049f9299af43"
+    },
+    {
+      "path": "docs/reference/library-contract.md",
+      "sha256": "ae5300794c146ab0a87196a1611348b1e7837e80c14965e26aa3514f5dfbf718"
+    },
+    {
+      "path": "scripts/bump_version.py",
+      "sha256": "09a7b65bbc57dc3276911e128dcf5ac87ce3f37269625022ce9de3d34b3d9ddd"
+    },
+    {
+      "path": "scripts/dxf_render.py",
+      "sha256": "89b7807b38870cd7f96f47e42e2606081ecc79e5852cb4bf532686ebbcc961cb"
+    },
+    {
+      "path": "scripts/external_cli_test.py",
+      "sha256": "4ce5b5fbd203458801a5317e1cf81c3e71fa5eb2de217907daab363fd9a50e85"
+    },
+    {
+      "path": "docs/reference/api-compatibility-ledger.json",
+      "sha256": "11da46708743043251f5588c5d45e2dfb2d414ac4c7c318c9c0902283ac3ee51"
+    }
+  ],
+  "local_freeze_at_utc": "2026-10-29T09:04:36.838124+00:00",
+  "verification": {
+    "boundary": "Local software and declared-consumer evidence only. Required hosted checks, exact-head reviews and merge facts belong to the milestone pull request after this record. No source version bump, tag, package publication or professional approval.",
+    "focused_test_union": {
+      "command": "./scripts/python_runtime.sh -m pytest <the 15 affected test modules listed below> --junitxml=/tmp/lib-s2-focused.xml",
+      "modules": [
+        "Python/tests/test_public_examples.py",
+        "Python/tests/test_bump_version_semantics.py",
+        "Python/tests/test_dxf_render.py",
+        "Python/tests/test_report_svg.py",
+        "Python/tests/integration/test_report.py",
+        "Python/tests/regression/test_report_golden.py",
+        "Python/tests/integration/test_cli_report_regression.py",
+        "Python/tests/integration/test_cli.py",
+        "Python/tests/integration/test_beam_pipeline.py",
+        "Python/tests/integration/test_dxf_export_smoke.py",
+        "Python/tests/integration/test_dxf_content.py",
+        "Python/tests/integration/test_dxf_export_edges.py",
+        "Python/tests/integration/test_bbs_dxf_consistency.py",
+        "Python/tests/test_release_scripts.py",
+        "fastapi_app/tests/test_export_bbs_dxf.py"
+      ],
+      "result": "341 passed, 0 failed, 0 errors, 0 skipped",
+      "receipt": "/tmp/lib-s2-focused.xml"
+    },
+    "final_affected_refreshes": [
+      {
+        "scope": "final drawing annotation bands",
+        "tests": 23,
+        "result": "PASS",
+        "receipt": "/tmp/lib-s2-final-dxf.xml",
+        "count_boundary": "Overlaps the341-case union; do not add as distinct tests."
+      },
+      {
+        "scope": "final report caption/print spacing",
+        "tests": 54,
+        "result": "PASS",
+        "receipt": "/tmp/lib-s2-final-report.xml",
+        "count_boundary": "Overlaps the341-case union; do not add as distinct tests."
+      },
+      {
+        "scope": "affected style and Colab negative control",
+        "tests": 2,
+        "result": "PASS",
+        "receipt": "/tmp/lib-s2-final-affected.xml",
+        "count_boundary": "Overlaps the341-case union; do not add as distinct tests."
+      }
+    ],
+    "format": "Black: 9 affected files unchanged; Ruff: all checks passed after final runtime edits.",
+    "typing": "Mypy package pass:330 source files; affected DXF-owner recheck:1 file pass.",
+    "essential_changed_area_gate": "PASS: ./run.sh check selected12 essential checks;12/12passed,0reused.",
+    "documentation": "PASS: all14 maintained version surfaces current;606Markdown files,1901local links,6images,0broken; strict MkDocs build passed using the clean declared docs environment; generator current and architecture/schema/OpenAPI snapshots pass. Token-efficiency policy passes.",
+    "negative_controls": [
+      "Supplied strength depth inconsistent with generated bar centroid remains rejected; no admission gate relaxed.",
+      "Colab former B2 width230mm remains DETAILING_EFFECTIVE_DEPTH_UNVERIFIED with no rejected output file.",
+      "Version regressions reject stale base/extras/Colab/tagged-input pins and preserve historical publication lines.",
+      "Monochrome DXF preview preserves source DXF hash; test validates actual neutral dark pixels."
+    ],
+    "golden_semantics": "Four HTML fixtures refreshed: only SVG geometry/label placement, schematic legend and print spacing change; calculation/status/table payloads are unchanged.",
+    "compatibility_ledger": {
+      "status": "PASS_SEMANTIC_DIFF_REVIEW",
+      "summary": {
+        "before": {
+          "canonical_owner_count": 682,
+          "facade_projection_count": 1308,
+          "root_stub_module_count": 45,
+          "root_stub_projection_count": 522,
+          "api_hub_export_count": 87,
+          "caller_record_count": 1887,
+          "blocked_ambiguous_caller_count": 0,
+          "disposition_counts": {
+            "CANONICAL_OWNER": 682,
+            "DELEGATING_COMPATIBILITY_SHIM": 1211,
+            "HELD_COMPATIBILITY": 40,
+            "INTENTIONAL_PUBLIC_FACADE": 1601,
+            "MAINTAINED_CALLER_MIGRATED": 513,
+            "OUT_OF_SCOPE_PRESERVED": 398
+          }
+        },
+        "after": {
+          "canonical_owner_count": 682,
+          "facade_projection_count": 1308,
+          "root_stub_module_count": 45,
+          "root_stub_projection_count": 522,
+          "api_hub_export_count": 87,
+          "caller_record_count": 1882,
+          "blocked_ambiguous_caller_count": 0,
+          "disposition_counts": {
+            "CANONICAL_OWNER": 682,
+            "DELEGATING_COMPATIBILITY_SHIM": 1210,
+            "HELD_COMPATIBILITY": 40,
+            "INTENTIONAL_PUBLIC_FACADE": 1600,
+            "MAINTAINED_CALLER_MIGRATED": 510,
+            "OUT_OF_SCOPE_PRESERVED": 398
+          }
+        }
+      },
+      "disposition": "Owner and projection identities/signatures/dispositions unchanged. Seven obsolete documentation caller records removed; two compatibility-ownership references added. Existing682 owners,1308facade projections,522root projections,87API hub exports and zero blocked callers retained. Classification date-only regeneration excluded."
+    }
+  },
+  "promoted_consumers": {
+    "status": "PASS",
+    "wheel_sha256": "996e3f275491ef775d9f0df7e3fc1d97c7a41b35f3c2679915ef4b59fa5037cc",
+    "declared_context": "Source-free temporary repository shape: copied examples and wp10/beam-readiness fixtures; clean child environment, installed site-packages origin asserted before each run. Each recipe page executes its Python cells sequentially.",
+    "receipt": "/tmp/lib-s2-consumer-replay-20261029/receipt.json",
+    "standalone_scripts": [
+      {
+        "label": "Python/examples/analysis_snapshot_replay.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "af2d0ca06febcd359c342288dab113ee800fd8baa72a587c608fe55f640f7b66",
+        "args": []
+      },
+      {
+        "label": "Python/examples/beam_checks_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "6d12baec76ef72f7e685f22578f1670d98789b68512f049e53e6dc728b6b8a04",
+        "args": []
+      },
+      {
+        "label": "Python/examples/bmd_sfd_example.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "4f38503a15bc039cacda18926d5791084aae84779fbb0d9de5584f4e35a38109",
+        "args": []
+      },
+      {
+        "label": "Python/examples/candidate_ranking_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "4d2a670f3622042e17a106f40aeb4fa1f03be0ae93905537598fca8e3f86fe1d",
+        "args": []
+      },
+      {
+        "label": "Python/examples/canonical_data_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "1b53caa7c5ed0d56ce50e1a29f50afdec4d37ccfffe06f60fc1c534b006bd1fc",
+        "args": []
+      },
+      {
+        "label": "Python/examples/canonical_workflows.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "70303af2d06463bbd91dcd638455a6e3b783a482a4bb25b5428bbcf240a03ade",
+        "args": []
+      },
+      {
+        "label": "Python/examples/colab_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "29164c86e2f2de592bef800a1099836ae0f975c78539c4dcc987d537f10c09f0",
+        "args": []
+      },
+      {
+        "label": "Python/examples/complete_beam_design.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "4fa00cf6bd81e4a41ca792c39cc24ae990b86cb2bbfb6a92fb608d32594841ed",
+        "args": []
+      },
+      {
+        "label": "Python/examples/complete_member_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "a6cf5eb2233cbc9af391cd6c572df33bd58377398dd40ed1f644531355193981",
+        "args": [
+          "--output-dir",
+          "/tmp/lib-s2-consumer-replay-20261029/complete_member_workflow/outputs"
+        ]
+      },
+      {
+        "label": "Python/examples/demo_intelligence.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "13f724ccd9f9e7f4338e7afcaa4292b22722db44f22d5d183db015a1d3ec3079",
+        "args": []
+      },
+      {
+        "label": "Python/examples/end_to_end_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "b4517b9770b9bf435e4a2ab58f346aad6fbcb00330b60009f5c67dc0319cfe54",
+        "args": []
+      },
+      {
+        "label": "Python/examples/full_pipeline_synthetic.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "7fbee57ed0bbc1ac26ea271ae2a6f0c2d2fd57c5e2599179af51276bf08e73a8",
+        "args": [
+          "--count",
+          "5",
+          "--output-dir",
+          "/tmp/lib-s2-consumer-replay-20261029/full_pipeline_synthetic/outputs"
+        ]
+      },
+      {
+        "label": "Python/examples/member_readiness_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "3f5bbd7e3c054b99a50d04658340a330c685e1761e88e06b4c378dc538d6ec0a",
+        "args": [
+          "/tmp/lib-s2-consumer-replay-20261029/member_readiness_workflow/repo/contracts/structural-engineering/conformance/beam-readiness-v1.gz"
+        ]
+      },
+      {
+        "label": "Python/examples/physical_member_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "96a56b743d9e0f73fa5e9b0fecf301548766281c4a9fb0fe1afee4fe594c987b",
+        "args": []
+      },
+      {
+        "label": "Python/examples/professional_workflow.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "9adc3c7a44e8beb1317f40ba3f30f84696df9995dfa4888e8d5129d7a75466c7",
+        "args": []
+      },
+      {
+        "label": "Python/examples/simple_examples.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "9d38f5412894e2d586ad6502a87f6f3d4794cf451e3fbce0be3c4dd563aea19e",
+        "args": []
+      },
+      {
+        "label": "Python/examples/validate_intelligence.py",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_sha256": "25a0985ced50aeeda9be877075c723374007ee69da8a3baccb58f8e34ecd5eb1",
+        "args": []
+      }
+    ],
+    "family_pages": [
+      {
+        "path": "docs/cookbook/python/beam-design.md",
+        "status": "PASS",
+        "source_sha256": "5b7f30ff8cba9e1241166c2fe0a7b87d6e48f1e0d7a756eba00fe18d926a47fa",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 77
+          },
+          {
+            "line": 92
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/column-supplied-steel-check.md",
+        "status": "PASS",
+        "source_sha256": "65ed22594f2367c21dbf27200cc1d8a3c5cfce0278ef48ff2bbf491dac9097bb",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 84
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/combined-footing-symmetric.md",
+        "status": "PASS",
+        "source_sha256": "7679d647d488d12d252f5a3a61ced240fddb94467a7ee3a06d9507ec31dd3dcf",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 135
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/deep-beam-simply-supported.md",
+        "status": "PASS",
+        "source_sha256": "e94842a29aa121d494766cdc40a9a1c34570f1dafeffedf3e6dfcc3cadcf6f4e",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 101
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/flat-slab-regular-interior.md",
+        "status": "PASS",
+        "source_sha256": "756ae7dc22b9f2ee6e4356910dd29d3abf9fcc1dcf55e400e13d9c9577223d57",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 152
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/isolated-footing-concentric.md",
+        "status": "PASS",
+        "source_sha256": "d65b479dae2a0824450af19330683fe1f146988a4d48f3dfc2279195b1c4a162",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 116
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/slab-continuous-one-way.md",
+        "status": "PASS",
+        "source_sha256": "058f5f4f30c8538d9e2b7be58d76701909676137899f5c5728ddceb9d881a734",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 98
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/slab-one-way.md",
+        "status": "PASS",
+        "source_sha256": "5917a1a5266429c2434790d76843320f3fd12c323f7592a757b02bd32c639167",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 87
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/slab-two-way.md",
+        "status": "PASS",
+        "source_sha256": "efe31ebf5812a7bd15ac397100aa534ee88677614419f2bc32a991bef9d0a166",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 100
+          }
+        ],
+        "engineering_status": "FAIL"
+      },
+      {
+        "path": "docs/cookbook/python/staircase-straight-flight.md",
+        "status": "PASS",
+        "source_sha256": "4638a40cb734eb143b3096c7b874ab0fcd391e65fd919cc8c813a83fbffa973b",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 98
+          }
+        ],
+        "engineering_status": "HOLD"
+      },
+      {
+        "path": "docs/cookbook/python/strap-footing-property-line.md",
+        "status": "PASS",
+        "source_sha256": "af04ee55782bda96ad34d23c45699390d086912b42f1280423ca08334c146fb0",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 169
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/torsion-design.md",
+        "status": "PASS",
+        "source_sha256": "8521bd8e9e69796a4633f87c095767e14856f87b1f71fd921c42fa9ebdf89438",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 81
+          }
+        ],
+        "engineering_status": "PASS"
+      },
+      {
+        "path": "docs/cookbook/python/wall-braced-axial.md",
+        "status": "PASS",
+        "source_sha256": "9183b829a19fd38d441ffab48d4a2efd788f057d081c4e1d45113a90297bbd9e",
+        "cells": [
+          {
+            "line": 24
+          },
+          {
+            "line": 90
+          }
+        ],
+        "engineering_status": "PASS"
+      }
+    ],
+    "counts": {
+      "scripts": 17,
+      "family_pages": 13,
+      "python_cells": 27,
+      "engineering_outcomes": {
+        "PASS": 11,
+        "FAIL": 1,
+        "HOLD": 1
+      }
+    },
+    "outcome_boundary": "Successful execution preserves intentional slab-two-way FAIL and staircase-straight-flight HOLD; software success does not convert them to engineering PASS."
+  },
+  "first_use": {
+    "status": "PASS",
+    "guides": [
+      {
+        "guide": "docs/getting-started/python-quickstart.md",
+        "sha256": "b7b451692e5a99c049b8dd8f187f73bc4f409863b0716caa9678b56d4a1259e9",
+        "status": "PASS",
+        "origin": "/private/tmp/lib-s2-installed-final-20261029/lib/python3.11/site-packages/structural_lib/__init__.py",
+        "members": 5,
+        "counts": {
+          "python_cells": 3,
+          "cli_commands": 5,
+          "install_pre_satisfied": 1,
+          "download_UI_not_run": 0
+        }
+      },
+      {
+        "guide": "docs/getting-started/beginners-guide.md",
+        "sha256": "5c7f1e3dd4160742840a3407d29d19d25891ded70bc56f7f5a5302a267811f4b",
+        "status": "PASS",
+        "origin": "/private/tmp/lib-s2-installed-final-20261029/lib/python3.11/site-packages/structural_lib/__init__.py",
+        "members": 1,
+        "counts": {
+          "python_cells": 1,
+          "cli_commands": 5,
+          "install_pre_satisfied": 0,
+          "download_UI_not_run": 0
+        }
+      },
+      {
+        "guide": "docs/getting-started/colab-workflow.md",
+        "sha256": "e30b35ba23c3fd94772d6b2aaa29243277216eed5effe726dbc20d30cc7841f8",
+        "status": "PASS",
+        "origin": "/private/tmp/lib-s2-installed-final-20261029/lib/python3.11/site-packages/structural_lib/__init__.py",
+        "members": 3,
+        "counts": {
+          "python_cells": 3,
+          "cli_commands": 6,
+          "install_pre_satisfied": 1,
+          "download_UI_not_run": 1
+        }
+      }
+    ],
+    "prior_full_replay_receipt": "/tmp/lib-s2-first-use-replay-20261029/receipt.json",
+    "source_onboarding_and_job": "Capabilities; shipped five-beam design/BBS; sample job, critical-set CSV and HTML report all passed in declared contexts.",
+    "external_cli_harness": "Copied strict standalone harness --include-dxf passed from outside the repository; embedded CSV is tested equal to shipped fixture.",
+    "public_pin_resolution": {
+      "result": "Exact base and[dxf]0.25.0 resolved from public index in dry-run; no publication performed.",
+      "receipt": "/tmp/lib-s2-public-pin-resolution.json"
+    },
+    "host_boundary": "Colab library/CLI cells and all five download target files are checked locally; google.colab.files download UI requires hosted browser/kernel and is not executed locally. Native Excel/ETABS/XLL remain separate.",
+    "version_policy": "Active pins track prepared source metadata; registry/tag availability must be separately verified. Guide prose now retains that condition across future candidate syncs; historical release entries are preserved."
+  },
+  "artifacts": {
+    "artifacts": {
+      "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s2-20261029/s2-starter-results.json": {
+        "sha256": "0425a6e65d561e894a67b2cff80a23adfeaed83ea8271bc78e17d38c48159acd",
+        "bytes": 23585
+      },
+      "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s2-20261029/s2-starter-schedule.csv": {
+        "sha256": "2dc7d42d8e09b4d636f2b31aeedca36a4291222dabafbd90d8cdad61a060652e",
+        "bytes": 3821
+      },
+      "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s2-20261029/s2-starter-drawings.dxf": {
+        "sha256": "83116739bc58d6f051e0933a9cb9ceffeb1e21ef3516e6de92bd50b2181ca48f",
+        "bytes": 161318
+      },
+      "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s2-20261029/s2-starter-report.html": {
+        "sha256": "a7409c27296e97e5ee0ea72f6120109de10fb39f906588d4d107d2157feb6766",
+        "bytes": 30442
+      },
+      "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s2-20261029/s2-starter-report.pdf": {
+        "sha256": "731e1a94c2750834cf17ea3f264b00cc5ab0a8b56f39389c7deacd1cdab0dfbf",
+        "bytes": 115002
+      },
+      "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s2-20261029/s2-starter-drawings.pdf": {
+        "sha256": "5d2bdfcf44782c7d9c683336a6eb0215c7cf0459e32fb2867f3499f811f16bff",
+        "bytes": 576049
+      }
+    },
+    "wheel": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s2-20261029/structural_lib_is456-0.25.0-py3-none-any.whl",
+      "sha256": "996e3f275491ef775d9f0df7e3fc1d97c7a41b35f3c2679915ef4b59fa5037cc",
+      "bytes": 1161651
+    },
+    "wheel_source_py_identity": "PASS",
+    "installed_identity": {
+      "package_origin": "/private/tmp/lib-s2-installed-final-20261029/lib/python3.11/site-packages/structural_lib/__init__.py",
+      "version": "0.25.0",
+      "installed_python_file_count": 317,
+      "wheel_source_and_installed_python_identity": "PASS",
+      "wheel_sha256": "996e3f275491ef775d9f0df7e3fc1d97c7a41b35f3c2679915ef4b59fa5037cc"
+    },
+    "report_pdf_pages": 11,
+    "local_development_boundary": "Unpublished local development wheel retains0.25.0 metadata; its hash identifies changed source separately from the published0.25.0 registry wheel. This is not S5 final-version artifact qualification.",
+    "runtime": {
+      "python": "3.11.15",
+      "Pydantic": "2.14.1",
+      "WeasyPrint": "70.0",
+      "ezdxf": "1.4.5",
+      "Matplotlib": "3.11.2",
+      "extras": [
+        "dxf",
+        "render",
+        "pdf",
+        "validation"
+      ]
+    },
+    "visual_review": {
+      "status": "PASS_FOR_DIGITAL_SCOPE",
+      "report": "Actual installed-wheel HTML rendered by WeasyPrint70.0;11pages rasterized and inspected. Depth labels D450/500/600/700 visible; five actual asv values present; each units-status card stays with its tables. Caption explicitly describes calculation-depth schematic.",
+      "drawing": "Five-member DXF rendered black on white with distinct span, bottom-bar, link and development-note bands. Units, dimensions, marks, bar geometry and BBS parity checked.",
+      "boundary": "The modelspace preview is not a qualified sheet scale, fabrication drawing, physical print or native CAD acceptance. Report PASS remains calculation status and independent professional review is required."
+    }
+  },
+  "guidance_dispositions": {
+    "status": "PASS_FOR_SELECTED_S2_SURFACES",
+    "current_owners": [
+      "docs/contributing/agent-coding-standards.md",
+      "docs/reference/library-contract.md",
+      "docs/guides/ai-agent-coding-guide.md",
+      "docs/guides/code-reuse-and-library-structure.md",
+      "docs/getting-started/NEW-DEVELOPER-ONBOARDING.md"
+    ],
+    "canonical_repairs": {
+      "torsion": "docs/cookbook/python/torsion-design.md; bounded WP02 owner also linked",
+      "boq": "docs/library/reference/wp07-construction-calculation-package.md",
+      "load-calculator": "docs/library/reference/wp03-actions-analysis-topology.md",
+      "sse-streaming": "docs/reference/fastapi-rest-api.md; live OpenAPI owns operations",
+      "3d-visualization": "docs/architecture/unified-architecture-v1.md and dated docs/reference/3d-visualization-performance.md replace two missing historical references"
+    },
+    "historical_dispositions": [
+      "Week3 realtime sketches explicitly historical; no current runnable-contract claim.",
+      "3D latency table explicitly dated; no current performance qualification.",
+      "Existing release-history bytes preserved with current-process section appended."
+    ],
+    "fence_boundary": "Beginner/quickstart/Colab Python/CSV/CLI cells replayed with declared optional extras. CLI reference caller-file command templates are labelled; render helper is source-checkout-only. Source-onboarding/job and copied example scripts have separate execution receipts. This is not semantic acceptance of all guide fences or every guide in the S0 inventory."
+  },
+  "review": {
+    "mode": "Parent essential diff plus bounded independent read-only coding/consumer passes; exact commit/tree and hosted review on the PR.",
+    "confirmed_final_repair": "Independent review found future Colab sync could claim an unpublished candidate was a released install; selected-version wording and verified-publication condition now cover the active first-use routes.",
+    "state": "INDEPENDENT_SCOPED_REVIEW_COMPLETE_EXACT_HEAD_BINDING_PENDING"
+  }
+}

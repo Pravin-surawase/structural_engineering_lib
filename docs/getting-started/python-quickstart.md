@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-28
+last_updated: 2026-10-29
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -15,7 +15,7 @@ tags: []
 **Importance:** High
 **Version:** 0.25.0
 **Created:** 2025-12-15
-**Last Updated:** 2026-08-28
+**Last Updated:** 2026-10-29
 
 ---
 
@@ -27,21 +27,26 @@ This guide shows how to install, run, and verify the Python library with simple,
 
 This is the easiest path for beginners.
 
+Pins track the version prepared on this source branch. Registry installation
+requires verified publication of that version in the [release record](releases.md).
+For an unpublished candidate, use the source-install route in the
+[examples guide](../../Python/examples/README.md) until publication is verified.
+
 ```bash
 python3 -m pip install --upgrade pip
 
-# Install the exact normal release
+# Install the selected version after verifying publication
 python3 -m pip install "structural-lib-is456==0.25.0"
 
 # Optional DXF support
-python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.25.0"
 
 # Verify the interpreter, package origin/version, and installed extras
 python3 -m structural_lib install-preflight
 ```
 
-`0.24.0` is the current normal PEP 440 release rather than a prerelease-tagged
-version. The project's development maturity remains Beta. Use the exact pin for
+The pinned package uses a normal PEP 440 version. The project's development
+maturity remains Beta. Use the exact pin for
 reproducibility. The release covers audited supported cases; it does not claim
 complete IS 456 coverage, professional approval, or construction readiness.
 Every result still requires independent review by a qualified structural
@@ -50,7 +55,7 @@ engineer.
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf]==0.24.0"
+%pip install -q "structural-lib-is456[dxf]==0.25.0"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.
@@ -75,7 +80,7 @@ If you are on Windows, replace `python3` with `py`.
    ```
 4. Optional DXF support:
    ```bash
-   python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
+   python3 -m pip install "structural-lib-is456[dxf]==0.25.0"
    ```
 
 ## 2) Canonical beam design (no files)
@@ -127,6 +132,7 @@ from structural_lib import api
 result = api.design_and_detail_beam_is456(
     units="IS456", beam_id="B1", story="GF",
     span_mm=5500, mu_knm=160, vu_kn=85, b_mm=300, D_mm=500,
+    d_mm=444,  # 500 - 40 clear cover - 8 link - 16/2 tension bar
 )
 print(result.summary())
 bbs = api.compute_bbs(result)
@@ -135,10 +141,10 @@ print(f"BBS weight: {bbs.summary.total_weight_kg:.1f} kg")
 
 `design_and_detail_beam_is456()` uses `beam_id`; the lower-level
 `design_beam_is456()` service uses `case_id`. Prefer unit-bearing names such as
-`fck_nmm2` and `fy_nmm2`. The published 0.24.0 wheel still accepts older
-`fck`/`fy` aliases on selected compatibility functions, but their warning text
-contains a stale v0.24 removal date; do not interpret that warning as proof that
-the aliases were removed from 0.24.0.
+`fck_nmm2` and `fy_nmm2`. This example fixes the physical basis at 40 mm clear
+cover, 8 mm links and a single layer of 16 mm tension bars. The strength depth
+must agree with the generated bar centroid. See the [compatibility policy](../reference/api-stability.md)
+for retained aliases and supported entrypoints.
 
 ## 3) Use the library in a script (optional)
 
@@ -202,31 +208,52 @@ python3 examples/full_pipeline_synthetic.py --count 500 --skip-dxf
 
 The unified CLI supports design, schedules, and drawings:
 
-Download the maintained
-[`sample_beam_design.csv`](https://raw.githubusercontent.com/Pravin-surawase/structural_engineering_lib/v0.24.0/Python/examples/sample_beam_design.csv)
-and save it as `beams.csv`, then run:
+Create `beams.csv` with the following complete input. It matches the corrected
+[source sample](../../Python/examples/sample_beam_design.csv); older release-tag
+copies have supplied depths that do not match their generated reinforcement.
+
+```csv
+BeamID,Story,b,D,tension_bar_diameter_mm,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
+B1,Story1,300,500,16,4000,40,25,500,150,100,8,150
+B2,Story1,300,450,16,3000,40,25,500,100,80,8,175
+B3,Story2,350,600,20,5000,40,30,500,250,150,10,125
+B4,Story2,300,500,20,4500,40,25,500,180,120,8,150
+B5,Ground,400,700,20,6000,50,30,500,400,200,10,100
+```
+
+Depth is derived as `D - Cover - Stirrup_Dia - tension_bar_diameter_mm / 2`.
+These starter sections fit the generated tension bars in one layer. If your
+actual arrangement differs, supply its verified centroid depth and complete
+physical reinforcement evidence; do not copy these example depths into another
+member or bypass a depth/layout rejection.
+
+The required first run uses only the base package:
 
 ```bash
 # Design beams from CSV
 python3 -m structural_lib design beams.csv -o results.json
 
-# Include Level A deflection check
-python3 -m structural_lib design beams.csv -o results.json --deflection
-
-# Include crack width check (explicit params JSON)
-python3 -m structural_lib design beams.csv -o results.json \
-  --crack-width-params crack_width_params.json
-
 # Generate bar bending schedule
 python3 -m structural_lib bbs results.json -o schedule.csv
 
+# Generate an inspectable HTML report
+python3 -m structural_lib report results.json --format=html -o report.html
+```
+
+With the optional `[dxf]` extra installed:
+
+```bash
 # Generate DXF drawings (requires ezdxf)
 python3 -m structural_lib dxf results.json -o drawings.dxf --title-block --title "Beam Sheet"
-
-# Run complete job from spec file
-python3 -m structural_lib job job.json -o ./output
 ```
-- Required CSV input columns: `BeamID, Story, b, D, eff_d, Span, Cover, fck, fy, Mu, Vu, Stirrup_Dia, Stirrup_Spacing`. Replace `eff_d` with `tension_bar_diameter_mm` only when deriving effective depth from the explicit cover and stirrup diameter.
+
+For optional serviceability checks, `design --deflection` adds Level A checking.
+The `--crack-width-params` option requires a separate, caller-supplied parameter
+JSON; it is not part of this first run. The separate job workflow requires a
+job specification, such as [sample_job_is456.json](../../Python/examples/sample_job_is456.json),
+and is documented in the [CLI reference](../cookbook/cli-reference.md).
+
+- Required CSV input columns are shown above. Use `eff_d` instead of `tension_bar_diameter_mm` only when supplying a verified depth; do not supply both.
 - The command blocks the whole file on malformed, missing, non-finite, unknown, duplicate, ambiguous, or mixed-validity records. It never uses `Ast_req`, `Asc_req`, or `Status` as design inputs.
 - Outputs:
   - `results.json` — Design results with compliance status.
@@ -293,7 +320,7 @@ For the supported-case boundary and rejected-input example, see the
 
 ## 9) Troubleshooting
 - "Module not found": ensure the venv is activated and you installed `structural-lib-is456`.
-- DXF generation missing: install `structural-lib-is456[dxf]`.
+- DXF generation missing: install `structural-lib-is456[dxf]==0.25.0`.
 - Tests failing on path issues: run commands from the repo root.
 ## 10) Sample Files & Examples
 

@@ -100,13 +100,17 @@ def render_section_svg(
         return _render_error_svg("Invalid beam geometry", width=width, height=height)
 
     margin = 20.0
-    usable_w = max(width - 2 * margin, 1.0)
+    depth_label = f"D = {D_mm:.0f} mm"
+    # Reserve the label's own space inside the SVG viewport. Scaling only the
+    # concrete section leaves its right-hand annotation clipped by PDF renderers.
+    annotation_w = 6.0 + len(depth_label) * 11.0 * 0.65
+    usable_w = max(width - 2 * margin - annotation_w, 1.0)
     usable_h = max(height - 2 * margin, 1.0)
     scale = min(usable_w / b_mm, usable_h / D_mm)
 
     section_w = b_mm * scale
     section_h = D_mm * scale
-    x0 = (width - section_w) / 2.0
+    x0 = margin + (usable_w - section_w) / 2.0
     y0 = (height - section_h) / 2.0
 
     bar_r = _clamp(min(section_w, section_h) * 0.03, 2.0, 6.0)
@@ -229,7 +233,7 @@ def render_section_svg(
         root,
         "text",
         attrib={
-            "x": _fmt(width / 2.0),
+            "x": _fmt(x0 + section_w / 2.0),
             "y": _fmt(y0 + section_h + 16),
             "text-anchor": "middle",
             "font-size": "11",
@@ -248,7 +252,7 @@ def render_section_svg(
             "fill": "#333333",
         },
     )
-    label_D.text = f"D = {D_mm:.0f} mm"
+    label_D.text = depth_label
 
     return ElementTree.tostring(root, encoding="unicode")
 
