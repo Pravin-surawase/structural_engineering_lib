@@ -143,6 +143,7 @@ def _client_requirements(repo: Path) -> list[str]:
         "pydantic-settings",
         "pyjwt",
         "python-multipart",
+        "sse-starlette",
         "httpx",
         "websockets",
     }
@@ -177,7 +178,15 @@ def qualify_artifacts(
     extras = project["optional-dependencies"]
     if set(pair["declared_extras"]) != set(extras):
         raise ValueError("Wheel extra inventory differs from source metadata")
-    required = ["base", "sdist", *extras, "exports", "transport", "baseline"]
+    required = [
+        "base",
+        "sdist",
+        *extras,
+        "exports",
+        "transport",
+        "examples",
+        "baseline",
+    ]
     selected = required if profiles is None else profiles
     if (
         not selected
@@ -274,6 +283,8 @@ def qualify_artifacts(
                     target += f"[{profile}]"
                 if profile == "exports":
                     target += "[dxf,render,report,pdf,validation]"
+                if profile == "examples":
+                    target += "[dev,dxf,report]"
                 if profile == "baseline":
                     target = "structural-lib-is456==0.25.0"
                 dependencies = (

@@ -2021,8 +2021,9 @@ cannot dirty the frozen source; the execution receipt retains the actual path.
 ./run.sh release preflight --wheel Python/dist/structural_lib_is456-0.26.0-py3-none-any.whl
 ```
 
-The qualifier defaults to all15 profiles: base, sdist, each of10 declared extras,
-the promoted combined export extras, canonical application transport, and the
+The qualifier defaults to all16 profiles: base, sdist, each of10 declared extras,
+the promoted combined export extras, canonical application transport, copied
+standalone examples and promoted starter guide cells, and the
 public0.25.0 performance baseline. Use `--qualification-profiles` only for an
 explicit affected-evidence repair against identical artifact hashes; incomplete
 populations remain PARTIAL. Source preflight and exact installed profiles must

@@ -10,6 +10,7 @@ import json
 import math
 import platform
 import runpy
+import shutil
 import statistics
 import subprocess
 import sys
@@ -297,6 +298,8 @@ def run_probe(config: dict[str, Any]) -> dict[str, Any]:
     before = assert_installed(config)
     profile = config["profile"]
     result: dict[str, Any] = {"identity_before": before, "profile_scope": profile}
+    if profile == "examples":
+        result["examples"] = _examples(config)
     if profile in ("base", "sdist"):
         from structural_lib.release_uat import run
 
@@ -495,10 +498,154 @@ def run_probe(config: dict[str, Any]) -> dict[str, Any]:
     return result
 
 
+def _example_child(config: dict[str, Any]) -> dict[str, Any]:
+    before = assert_installed(config)
+    script = Path(config["example_script"])
+    sys.path.insert(0, str(script.parent))
+    sys.argv = [str(script), *config["example_args"]]
+    try:
+        runpy.run_path(str(script), run_name="__main__")
+    except SystemExit as exc:
+        if exc.code not in (None, 0):
+            raise
+    return {"identity_before": before, "identity_after": assert_installed(config)}
+
+
+def _examples(config: dict[str, Any]) -> dict[str, Any]:
+    """Replay copied public drivers/fixtures with no checkout package available."""
+    repo, output = Path(config["repo"]), Path(config["output"])
+    clone = Path.cwd() / "example-drivers"
+    inventory_path = (
+        repo / "docs/verification/library-professional-standards-20261008.json"
+    )
+    inventory = json.loads(inventory_path.read_text())["standalone_examples"][
+        "examples"
+    ]
+    if len(inventory) != 17:
+        raise AssertionError("Standalone example population changed")
+    sources = [repo / row["path"] for row in inventory]
+    sources += list((repo / "Python/examples").glob("*.csv"))
+    sources += list((repo / "Python/examples").glob("*.json"))
+    sources += [
+        repo / "Python/tests/test_public_examples.py",
+        repo / "scripts/external_cli_test.py",
+        repo / "contracts/structural-engineering/conformance/wp10-vectors.json",
+        repo / "contracts/structural-engineering/conformance/beam-readiness-v1.gz",
+        *(
+            repo / "docs/getting-started" / name
+            for name in (
+                "python-quickstart.md",
+                "beginners-guide.md",
+                "colab-workflow.md",
+            )
+        ),
+    ]
+    hashes = {}
+    for source in sources:
+        relative = source.relative_to(repo)
+        target = clone / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+        hashes[str(relative)] = hashlib.sha256(source.read_bytes()).hexdigest()
+    if (clone / "Python/structural_lib").exists():
+        raise AssertionError("Example driver tree contains a package checkout")
+    records = []
+    for row in inventory:
+        script = clone / row["path"]
+        target = output / script.stem
+        target.mkdir(exist_ok=True)
+        args = []
+        if script.name == "complete_member_workflow.py":
+            args = ["--output-dir", str(target / "outputs"), "--dxf"]
+        elif script.name == "full_pipeline_synthetic.py":
+            args = ["--count", "5", "--output-dir", str(target / "outputs")]
+        elif script.name == "member_readiness_workflow.py":
+            args = [
+                str(
+                    clone
+                    / "contracts/structural-engineering/conformance/beam-readiness-v1.gz"
+                )
+            ]
+        child = {**config, "example_script": str(script), "example_args": args}
+        config_path = clone / "child.json"
+        config_path.write_text(json.dumps(child))
+        completed = subprocess.run(
+            [sys.executable, "-I", str(Path(__file__)), str(config_path)],
+            cwd=target,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+        (target / "stdout.log").write_text(completed.stdout)
+        (target / "stderr.log").write_text(completed.stderr)
+        if completed.returncode:
+            raise AssertionError(
+                f"Installed example failed: {script.name}\n{completed.stderr[-3000:]}\n{completed.stdout[-3000:]}"
+            )
+        if script.name == "complete_beam_design.py":
+            with (script.parent / "sample_building_beams.csv").open() as stream:
+                expected = {row["BeamID"] for row in csv.DictReader(stream)}
+            schedule = script.parent / "beam_schedule_output.csv"
+            with schedule.open() as stream:
+                rows = list(csv.DictReader(stream))
+            if len(rows) != len(expected) or "✗" in completed.stdout:
+                raise AssertionError(
+                    f"Complete beam example concealed a failed workflow:\n{completed.stdout[-6000:]}"
+                )
+            for beam in ("B1", "B2", "B3"):
+                if not (script.parent / "dxf_output" / f"{beam}.dxf").is_file():
+                    raise AssertionError(f"Complete beam example omitted {beam}.dxf")
+            shutil.copytree(
+                script.parent / "dxf_output", target / "dxf_output", dirs_exist_ok=True
+            )
+            shutil.copyfile(schedule, target / schedule.name)
+        proof = json.loads(
+            next(
+                line.removeprefix("S5_RESULT=")
+                for line in reversed(completed.stdout.splitlines())
+                if line.startswith("S5_RESULT=")
+            )
+        )
+        records.append({"path": row["path"], "args": args, "status": "PASS", **proof})
+    # The copied module has no conftest, pytest config, or package source tree.
+    # Run in this guarded interpreter so imports are checked after collection too.
+    import pytest
+
+    config_file = clone / "pytest.ini"
+    config_file.write_text("[pytest]\n")
+    junit = output / "public-examples.xml"
+    code = pytest.main(
+        [
+            "-q",
+            "-c",
+            str(config_file),
+            "--confcutdir",
+            str(clone),
+            "--junitxml",
+            str(junit),
+            str(clone / "Python/tests/test_public_examples.py"),
+        ]
+    )
+    if code != 0:
+        raise AssertionError(f"Installed public example/guide checks failed: {code}")
+    return {
+        "standalone": records,
+        "driver_inputs_sha256": hashes,
+        "public_example_tests_junit": str(junit),
+        "limits": ["Colab Files UI and native application replay are not exercised"],
+    }
+
+
 if __name__ == "__main__":
+    configuration = json.loads(Path(sys.argv[1]).read_text())
     print(
         "S5_RESULT="
         + json.dumps(
-            run_probe(json.loads(Path(sys.argv[1]).read_text())), allow_nan=False
+            (
+                _example_child(configuration)
+                if "example_script" in configuration
+                else run_probe(configuration)
+            ),
+            allow_nan=False,
         )
     )
