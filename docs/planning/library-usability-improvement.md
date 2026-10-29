@@ -2068,3 +2068,76 @@ build/review identities, profiles, timings, repairs and remaining boundaries.
 The [milestone PR #1040](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040)
 owns final exact-head review, required hosted checks and merge identity. Its
 accepted integration completes S5. S6 publication remains unselected.
+
+
+## S6 studied release plan — 29 October 2026
+
+The owner selected S6 after S5 PR #1040 merged at
+`f21fb5555c22f319f3b2399ff6aefa2fc43df309`: “thanks, now do s6.
+do it efficienlty, las few release were lot of rework, so plan study and replan
+then start”. This selects the established v0.26.0 TestPyPI, tag, PyPI and GitHub
+Release packet. Record the effective per-target authorization after its review
+conditions are satisfied. Source/table distribution permission remains passed;
+Pravin Surawase is the engineering owner, without an external-reviewer gate.
+
+### Confirmed causes and scope
+
+The current publisher always rebuilds distributions and repeats source tests
+and exact-wheel UAT. S5 already demonstrated timestamp-dependent sdist bytes.
+Those defaults cannot publish the retained S5 pair unchanged. The earlier
+v0.25 release also needed stale version/docs repairs; S5 exposed an omitted
+client pin target and an unbounded pytest/plugin compatibility combination.
+Their fixes are integrated and are not reopened by S6.
+
+The selected repair extends the existing release owner and workflow. A compact
+committed artifact record binds the retained pair, frozen Python/build inputs,
+all16 qualification profiles, installed29-case UAT and qualified-base SBOM.
+A collaborator-only draft GitHub Release transports the two local package files
+to hosted Actions. The retained path downloads and checks these exact assets;
+it never builds or reruns covered source/installed suites. Legacy source-build
+behavior remains for releases without a retained record. Retained tag-push
+runs validate the selected version but do not upload; production is an explicit
+dispatch from the exact tag after TestPyPI. Verify-only dispatch stays read-only
+with respect to registries and publication.
+
+### One bounded implementation cycle, then publication
+
+1. Freeze the tooling, artifact record, operational guidance and focused tests
+   together. Recheck retained files against S5 hashes and frozen Python tree
+   `442d4abb561e7df482438229fde36ccf381f49e8`. Keep all Python files unchanged.
+   Acceptance: wrong bytes, changed build/Python inputs and incomplete UAT/profile
+   evidence fail before upload; actual workflow routing keeps verify and tag-push
+   paths nonpublishing. No local rebuild, broad Python suite, full check or
+   duplicate S5 installation matrix is selected.
+2. One tooling PR owns essential independent review, required hosted checks and
+   one exact-head Weekly run. Merge this candidate with a merge commit so its
+   reviewed/check head remains an ancestor of the final publication head; this
+   avoids the existing exact-review guard's squash-ancestry mismatch.
+3. Make one final metadata packet after accepted review: dated CITATION/CHANGELOG,
+   appended release-ledger authorization, exact-candidate review receipt and
+   per-target authorization JSON. Only the maintained post-review evidence paths
+   change; Python remains frozen. Run publication-surface and the three target
+   authorization checks. Its required PR gate applies; do not repeat Weekly for
+   these bounded metadata paths.
+4. Create/populate the selected version's draft release at the verified final
+   publication commit. Upload the retained wheel/sdist only, then independently
+   read back their bytes. Verify transport through one nonpublishing retained
+   dispatch, followed by TestPyPI using the same source release ID and pair.
+   Confirm TestPyPI version/files/hashes and installed import identity.
+5. Create/push the exact version tag if absent, without replacing any tag.
+   Dispatch production from that tag, explicitly selecting PyPI. Before uploads,
+   the existing owner/review gates and exact hashes apply. Production also checks
+   the exact TestPyPI registry files; draft promotion checks exact PyPI files.
+   Publish the populated
+   draft only after PyPI succeeds; attach verified evidence without rebuilding
+   or replacing package assets. Record the final manifest, run and asset IDs.
+6. Independently read back PyPI and GitHub Release files, match both retained
+   SHA256 values and the tag/commit/Python tree, then perform identity-only public
+   installation. Reuse covered UAT for identical bytes. Close S6 only after the
+   public readback is complete; preserve all original/failure evidence.
+
+The current registry inspection found v0.26.0 absent from both PyPI and TestPyPI.
+Recheck availability immediately before irreversible upload. No release issue
+closure, branch deletion, native application mutation, full-amendment claim or
+professional approval is included. A failed boundary is repaired at its cause;
+repeat only affected evidence and the required changed candidate checks.

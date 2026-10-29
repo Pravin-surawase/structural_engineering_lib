@@ -2596,7 +2596,98 @@ def build_parser() -> argparse.ArgumentParser:
         "--version", help="Expected version (defaults to Python/pyproject.toml)"
     )
 
+    for command in ("retained-check", "promote-retained"):
+        retained = sub.add_parser(
+            command,
+            help="Verify retained qualified artifacts or publish their populated draft",
+        )
+        retained.add_argument("--version", required=True)
+        retained.add_argument("--dist-dir", required=True)
+        retained.add_argument("--evidence-dir", required=True)
+        retained.add_argument(
+            "--repository",
+            default=os.environ.get(
+                "GITHUB_REPOSITORY", "Pravin-surawase/structural_engineering_lib"
+            ),
+        )
+        retained.add_argument("--release-id", required=command == "promote-retained")
+
+    registry_check = sub.add_parser(
+        "retained-registry-check",
+        help="Read back exact qualified files from TestPyPI/PyPI",
+    )
+    registry_check.add_argument("--version", required=True)
+    registry_check.add_argument(
+        "--registry", required=True, choices=["testpypi", "pypi"]
+    )
+    registry_check.add_argument("--wait-seconds", type=float, default=0)
+
     return parser
+
+
+def cmd_retained_check(args: argparse.Namespace) -> int:
+    """Check or promote exact retained bytes through the maintained owner."""
+    from _lib.release_retained import download_pair, promote_draft, verify_retained
+
+    dist, evidence = Path(args.dist_dir).resolve(), Path(args.evidence_dir).resolve()
+    try:
+        common_errors = _public_distribution_permission_errors()
+        common_errors.extend(_footing_release_inclusion_errors())
+        if common_errors:
+            raise ValueError("; ".join(common_errors))
+        if args.command == "promote-retained":
+            errors = _release_publication_authorization_errors(
+                args.version, "github-release"
+            )
+            errors.extend(_publication_surface_errors(args.version))
+            if errors:
+                raise ValueError("; ".join(errors))
+            promote_draft(
+                REPO_ROOT,
+                args.version,
+                dist,
+                evidence,
+                args.repository,
+                args.release_id,
+            )
+        else:
+            if args.release_id:
+                download_pair(
+                    REPO_ROOT, args.version, dist, args.repository, args.release_id
+                )
+            manifest = verify_retained(REPO_ROOT, args.version, dist, evidence)
+            print(
+                json.dumps(
+                    {
+                        "status": "PASS",
+                        "version": args.version,
+                        "artifacts": manifest["artifacts"],
+                        "installed_uat_reused": True,
+                    }
+                )
+            )
+    except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as exc:
+        print(f"Retained artifact gate failed: {exc}")
+        return 1
+    return 0
+
+
+def cmd_retained_registry_check(args: argparse.Namespace) -> int:
+    """Read exact selected registry files without building or installing."""
+    from _lib.release_retained import verify_registry
+
+    try:
+        print(
+            json.dumps(
+                verify_registry(
+                    REPO_ROOT, args.version, args.registry, args.wait_seconds
+                )
+            )
+        )
+    except (OSError, ValueError, KeyError) as exc:
+        print(f"Registry identity gate failed: {exc}")
+        return 1
+    return 0
 
 
 def main() -> int:
@@ -2618,6 +2709,9 @@ def main() -> int:
         "publication-surface-check": cmd_publication_surface_check,
         "preflight": cmd_preflight,
         "candidate-check": cmd_candidate_check,
+        "retained-check": cmd_retained_check,
+        "promote-retained": cmd_retained_check,
+        "retained-registry-check": cmd_retained_registry_check,
     }
 
     return handlers[args.command](args)

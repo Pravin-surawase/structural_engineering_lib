@@ -1,0 +1,765 @@
+{
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.26.0-py3-none-any.whl",
+      "sha256": "40d322304d59a96f583496f0946493ab34edd728f824dc1b223293f71424aa8b",
+      "size_bytes": 1167584
+    },
+    {
+      "filename": "structural_lib_is456-0.26.0.tar.gz",
+      "sha256": "62da876554191db59963b8bcf50a9c8b4d1321078b3ff5e50bfb50434716f7c7",
+      "size_bytes": 990794
+    }
+  ],
+  "build_head": "1097911ed31519b5e69e08587db3b29110997423",
+  "installed_wheel_uat": {
+    "advertised_entry_points": {
+      "cli_entry_count": 15,
+      "entries": [
+        {
+          "acceptance": [
+            "installed_origin_check"
+          ],
+          "classification": "inspection",
+          "command": "install-preflight",
+          "id": "cli.install-preflight"
+        },
+        {
+          "acceptance": [
+            "capability_contract_test"
+          ],
+          "classification": "inspection",
+          "command": "capabilities",
+          "id": "cli.capabilities"
+        },
+        {
+          "acceptance": [
+            "test_cli_emits_same_versioned_bundle_from_json_request"
+          ],
+          "classification": "calculation_entry",
+          "command": "gravity-v1",
+          "id": "cli.gravity-v1"
+        },
+        {
+          "acceptance": [
+            "test_cli_requires_preview_hash_and_matches_python_result"
+          ],
+          "classification": "calculation_entry",
+          "command": "excel-v1",
+          "id": "cli.excel-v1"
+        },
+        {
+          "acceptance": [
+            "test_canonical_cli_preserves_result_and_problem_contracts"
+          ],
+          "classification": "calculation_entry",
+          "command": "beam-v1",
+          "id": "cli.beam-v1"
+        },
+        {
+          "acceptance": [
+            "cli_design_valid",
+            "cli_design_malformed_only",
+            "cli_design_mixed_validity",
+            "cli_design_empty",
+            "cli_design_missing_depth_basis",
+            "cli_design_non_finite",
+            "cli_design_unknown_field",
+            "cli_design_duplicate_identity",
+            "cli_design_ambiguous_format"
+          ],
+          "classification": "calculation_entry",
+          "command": "design",
+          "id": "cli.design"
+        },
+        {
+          "acceptance": [
+            "cli_design_downstream_consumers"
+          ],
+          "classification": "result_consumer",
+          "command": "bbs",
+          "id": "cli.bbs"
+        },
+        {
+          "acceptance": [
+            "cli_design_downstream_consumers"
+          ],
+          "classification": "result_consumer",
+          "command": "detail",
+          "id": "cli.detail"
+        },
+        {
+          "acceptance": [
+            "cli_design_downstream_consumers",
+            "dxf_optional_extra_contract"
+          ],
+          "classification": "result_consumer",
+          "command": "dxf",
+          "id": "cli.dxf"
+        },
+        {
+          "acceptance": [
+            "cli_validation_contract_test"
+          ],
+          "classification": "inspection",
+          "command": "validate",
+          "id": "cli.validate"
+        },
+        {
+          "acceptance": [
+            "bbs_dxf_consistency_contract_test"
+          ],
+          "classification": "inspection",
+          "command": "mark-diff",
+          "id": "cli.mark-diff"
+        },
+        {
+          "acceptance": [
+            "advisory_preview_contract_test"
+          ],
+          "classification": "compatibility",
+          "command": "smart",
+          "id": "cli.smart"
+        },
+        {
+          "acceptance": [
+            "release_verify_cli_job_flow"
+          ],
+          "classification": "calculation_entry",
+          "command": "job",
+          "id": "cli.job"
+        },
+        {
+          "acceptance": [
+            "release_verify_cli_job_flow"
+          ],
+          "classification": "result_consumer",
+          "command": "report",
+          "id": "cli.report"
+        },
+        {
+          "acceptance": [
+            "release_verify_cli_job_flow"
+          ],
+          "classification": "result_consumer",
+          "command": "critical",
+          "id": "cli.critical"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.canonical_beam.design",
+          "cookbook_path": "docs/cookbook/python/beam-design.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.beam.design/v1",
+          "journey_id": "is456.beam.design/v1",
+          "module": "structural_lib.design.is456.beam",
+          "request_contract": "beam-design-input/v1",
+          "result_contract": "beam-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.codes.is456.beam.torsion.design_torsion",
+          "cookbook_path": "docs/cookbook/python/torsion-design.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.torsion.design/v1",
+          "journey_id": "is456.torsion.design/v1",
+          "module": "structural_lib.design.is456.torsion",
+          "request_contract": "torsion-design-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.column_api.design_column_is456",
+          "cookbook_path": "docs/cookbook/python/column-supplied-steel-check.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.column.supplied-steel-check/v1",
+          "journey_id": "is456.column.supplied-steel-check/v1",
+          "module": "structural_lib.design.is456.column",
+          "request_contract": "column-supplied-steel-check-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.slab_api.design_complete_one_way_slab_is456",
+          "cookbook_path": "docs/cookbook/python/slab-one-way.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.slab.one-way/v1",
+          "journey_id": "is456.slab.one-way/v1",
+          "module": "structural_lib.design.is456.slab",
+          "request_contract": "one-way-slab-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.slab_api.design_continuous_one_way_slab_builtin_is456",
+          "cookbook_path": "docs/cookbook/python/slab-continuous-one-way.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.slab.continuous-one-way/v1",
+          "journey_id": "is456.slab.continuous-one-way/v1",
+          "module": "structural_lib.design.is456.slab",
+          "request_contract": "continuous-one-way-slab-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.slab_api.design_two_way_slab_panel_builtin_is456",
+          "cookbook_path": "docs/cookbook/python/slab-two-way.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.slab.two-way/v1",
+          "journey_id": "is456.slab.two-way/v1",
+          "module": "structural_lib.design.is456.slab",
+          "request_contract": "two-way-slab-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.wall_api.design_braced_wall_is456",
+          "cookbook_path": "docs/cookbook/python/wall-braced-axial.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.wall.braced-axial/v1",
+          "journey_id": "is456.wall.braced-axial/v1",
+          "module": "structural_lib.design.is456.wall",
+          "request_contract": "braced-wall-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.staircase_api.design_straight_flight_staircase_is456",
+          "cookbook_path": "docs/cookbook/python/staircase-straight-flight.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.staircase.straight-flight/v1",
+          "journey_id": "is456.staircase.straight-flight/v1",
+          "module": "structural_lib.design.is456.staircase",
+          "request_contract": "straight-flight-staircase-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.deep_beam_api.design_simply_supported_deep_beam_is456",
+          "cookbook_path": "docs/cookbook/python/deep-beam-simply-supported.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.deep-beam.simply-supported/v1",
+          "journey_id": "is456.deep-beam.simply-supported/v1",
+          "module": "structural_lib.design.is456.deep_beam",
+          "request_contract": "simply-supported-deep-beam-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.flat_slab_api.design_regular_interior_flat_slab_is456",
+          "cookbook_path": "docs/cookbook/python/flat-slab-regular-interior.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.flat-slab.regular-interior/v1",
+          "journey_id": "is456.flat-slab.regular-interior/v1",
+          "module": "structural_lib.design.is456.flat_slab",
+          "request_contract": "regular-interior-flat-slab-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.footing_api.design_concentric_isolated_footing_is456",
+          "cookbook_path": "docs/cookbook/python/isolated-footing-concentric.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.isolated-footing.concentric/v1",
+          "journey_id": "is456.isolated-footing.concentric/v1",
+          "module": "structural_lib.design.is456.isolated_footing",
+          "request_contract": "concentric-isolated-footing-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.combined_footing_api.design_symmetric_combined_footing_is456",
+          "cookbook_path": "docs/cookbook/python/combined-footing-symmetric.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.combined-footing.symmetric/v1",
+          "journey_id": "is456.combined-footing.symmetric/v1",
+          "module": "structural_lib.design.is456.combined_footing",
+          "request_contract": "symmetric-combined-footing-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.strap_footing_api.design_property_line_strap_footing_is456",
+          "cookbook_path": "docs/cookbook/python/strap-footing-property-line.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.strap-footing.property-line/v1",
+          "journey_id": "is456.strap-footing.property-line/v1",
+          "module": "structural_lib.design.is456.strap_footing",
+          "request_contract": "property-line-strap-footing-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        }
+      ],
+      "entry_count": 28,
+      "family_facade_entry_count": 13,
+      "schema_version": "advertised-entry-point-inventory/v2",
+      "sha256": "a406089f632a81c3caa5bba5fd590915dfe0ee089fbb4a5457bfcbf045b2e3b4"
+    },
+    "case_count": 29,
+    "cases": [
+      {
+        "detail": {
+          "overall_status": "PASS"
+        },
+        "expected": "VALID_COMPLETED",
+        "id": "complete_canonical_row",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "rows": 1
+        },
+        "expected": "ACCEPTED_WITH_LEDGER",
+        "id": "named_adapter_alias",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_UNKNOWN_FIELD"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "unknown_calculation_header",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_REQUIRED_FIELD"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "missing_required_value",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_INVALID_MEMBER_ID"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "empty_required_value",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_INVALID_NUMBER"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "malformed_numeric_value",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_NON_FINITE"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "non_finite_value",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_DEPTH_CONFLICT"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "conflicting_depth_basis",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "blocked": 2
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "duplicate_member_identity",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "vu_kn": 0.0
+        },
+        "expected": "VALID_COMPLETED",
+        "id": "explicit_valid_zero",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "overall_status": "BLOCKED"
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "empty_batch",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "candidates": [
+            "etabs",
+            "generic"
+          ]
+        },
+        "expected": "BLOCKED_WITH_CANDIDATES",
+        "id": "ambiguous_adapter",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "blocked_rows": 1
+        },
+        "expected": "BLOCKED_AND_ACCOUNTED",
+        "id": "invalid_import_row",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue": "import.adapter_row_loss"
+        },
+        "expected": "BLOCKED_AND_ACCOUNTED",
+        "id": "adapter_row_loss_guard",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "unmatched": 2
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "unmatched_geometry_force",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "blocked": true
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "column_missing_materials",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "status": "HOLD"
+        },
+        "expected": "HOLD",
+        "id": "assumed_footing_basis",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "status": "FAIL"
+        },
+        "expected": "FAIL",
+        "id": "insufficient_footing_dowels",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "beam": "PASS",
+          "slab_review_required": true
+        },
+        "expected": "PASS_REVIEW_REQUIRED",
+        "id": "safe_result_review_boundary",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "beams": 1,
+          "diagnostics_stream": "stderr",
+          "stderr_lines": 3
+        },
+        "expected": "VALID_BEAMS_ENVELOPE",
+        "id": "cli_design_valid",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.malformed_number] combined.rows[2].width_mm: Field 'width_mm' is not a valid number"
+        },
+        "expected": "BLOCKED_NO_OUTPUT",
+        "id": "cli_design_malformed_only",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.malformed_number] combined.rows[3].width_mm: Field 'width_mm' is not a valid number"
+        },
+        "expected": "BLOCKED_NO_PARTIAL_PASS",
+        "id": "cli_design_mixed_validity",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.adapter_row_loss] adapter.output: Adapter returned no usable geometry or force records"
+        },
+        "expected": "BLOCKED_NO_OUTPUT",
+        "id": "cli_design_empty",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [CLI_DESIGN_REQUIRED_DEPTH_BASIS] rows[2].d_mm: Supply d_mm or tension_bar_diameter_mm with explicit cover and stirrup diameter."
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "cli_design_missing_depth_basis",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [CLI_DESIGN_MALFORMED_JSON] $: Non-finite JSON number 'NaN' is not accepted"
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "cli_design_non_finite",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [CLI_DESIGN_UNKNOWN_FIELD] rows[2].mystery: Every CLI input field must belong to the versioned contract."
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "cli_design_unknown_field",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.duplicate_record_id] combined.rows[3].source_record_id: Duplicate source record identity 'B1_S1'"
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "cli_design_duplicate_identity",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.ambiguous_format] format_hint: Automatic detection requires exactly one adapter; candidates=['etabs', 'generic']"
+        },
+        "expected": "BLOCKED_WITH_CANDIDATES",
+        "id": "cli_design_ambiguous_format",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "bbs": true,
+          "detail": true,
+          "dxf_exercised": false
+        },
+        "expected": "VALID_CONSUMERS",
+        "id": "cli_design_downstream_consumers",
+        "status": "PASS"
+      }
+    ],
+    "library_content_identity": "02e5808bf4c8c5a3c2bfa8d73ecafd7fab8ef73e2d219f60436488f2de32efe6",
+    "matrix_schema_version": "release-negative-uat/v1",
+    "matrix_sha256": "dd52015061a443e16f93bb5828016b5e96a580e3e0ebe4516e31a29db88c7757",
+    "package_origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_base_h59llprx/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+    "package_version": "0.26.0",
+    "professional_approval": false,
+    "public_examples": {
+      "maintained_beam_service": true,
+      "python_readme_batch": true
+    },
+    "qualified_review_required": true,
+    "schema_version": "exact-wheel-uat-receipt/v1",
+    "status": "PASS"
+  },
+  "package_payload_sha256": "e68a33964d9e86d1ce225fb1839c2217d1555d32a760853c378587b063c8bf48",
+  "python_tree_sha": "442d4abb561e7df482438229fde36ccf381f49e8",
+  "qualification": {
+    "family_journeys_each": 13,
+    "independent_metrics_each": 106,
+    "integration_receipt_sha256": "d3455ec31574e53cf2d3d8d88debbed88d3ba3186753bb2bc2cba29591bb0180",
+    "pdf_count": 8,
+    "pdf_page_count": 16,
+    "professional_approval": false,
+    "profiles": {
+      "base": "PASS",
+      "baseline": "PASS",
+      "cad": "PASS",
+      "dev": "PASS",
+      "docs": "PASS",
+      "dxf": "PASS",
+      "etabs": "PASS",
+      "examples": "PASS",
+      "exports": "PASS",
+      "pdf": "PASS",
+      "pmm": "PASS",
+      "render": "PASS",
+      "report": "PASS",
+      "sdist": "PASS",
+      "transport": "PASS",
+      "validation": "PASS"
+    },
+    "public_example_guide_tests": 8,
+    "real_dev_benchmark_tests": 1,
+    "runtime_scope": "Qualified installed wheel/sdist and declared non-native profiles; retained FAIL/HOLD outcomes.",
+    "s5_pr": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040",
+    "source_receipt_sha256": "74bb83f907fec075ca445f3dee13cbec332d0b69f4ec944d2a896fb7a127d00b",
+    "standalone_examples": 17,
+    "status": "PASS"
+  },
+  "qualified_base_sbom": {
+    "bomFormat": "CycloneDX",
+    "components": [
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "9195d967ec791692a04438115466764fb8b9a27b31f14a760437694f40d6b454"
+          }
+        ],
+        "name": "pydantic",
+        "purl": "pkg:pypi/pydantic@2.14.1",
+        "type": "library",
+        "version": "2.14.1"
+      },
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "b6d0c2183008c188e19f4906d426b293bdc4f67ab17df8e180fe16cda208fa71"
+          }
+        ],
+        "name": "pydantic_core",
+        "purl": "pkg:pypi/pydantic_core@2.50.1",
+        "type": "library",
+        "version": "2.50.1"
+      },
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"
+          }
+        ],
+        "name": "annotated-types",
+        "purl": "pkg:pypi/annotated-types@0.8.0",
+        "type": "library",
+        "version": "0.8.0"
+      },
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+          }
+        ],
+        "name": "typing_extensions",
+        "purl": "pkg:pypi/typing_extensions@4.16.0",
+        "type": "library",
+        "version": "4.16.0"
+      },
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147"
+          }
+        ],
+        "name": "typing-inspection",
+        "purl": "pkg:pypi/typing-inspection@0.4.4",
+        "type": "library",
+        "version": "0.4.4"
+      }
+    ],
+    "metadata": {
+      "component": {
+        "name": "structural-lib-is456",
+        "purl": "pkg:pypi/structural-lib-is456@0.26.0",
+        "type": "library",
+        "version": "0.26.0"
+      }
+    },
+    "properties": [
+      {
+        "name": "structlib:evidence-scope",
+        "value": "S5 qualified base installation dependency resolution; optional-extra environments are separately qualified."
+      }
+    ],
+    "specVersion": "1.6",
+    "version": 1
+  },
+  "s5_merge_sha": "f21fb5555c22f319f3b2399ff6aefa2fc43df309",
+  "s5_reviewed_head": "c635df91db6a17c4997a07d9b26e703cd9f173e2",
+  "schema_version": "qualified-release-artifacts/v1",
+  "source_build_inputs_sha256": {
+    "Python/LICENSE": "0c91bb1e93e3b9691835e161bbb54c647d43c75cc6d3f5c6b0cf0a472c844208",
+    "Python/MANIFEST.in": "b703d2df94d48815b9660e1eae7473d32c051dd5bb57bc623775a0890f3773c3",
+    "Python/README.md": "0d0393fbed630b6fb929f4afce4075ac55e9384059119117f7df3d8a1a157afa",
+    "Python/pyproject.toml": "89249f930d9a61d6d9022acfe31610a7c57b927cf352e8d7e33af7bc4e4fb095"
+  },
+  "version": "0.26.0"
+}

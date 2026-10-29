@@ -755,7 +755,10 @@
       "permission": "ReadOnlyTerminal",
       "permission_modes": {
         "run": "DangerFullAccess",
-        "preflight": "ReadOnlyTerminal"
+        "preflight": "ReadOnlyTerminal",
+        "retained-check": "WorkspaceWrite",
+        "retained-registry-check": "ReadOnlyTerminal",
+        "promote-retained": "DangerFullAccess"
       }
     },
     "release preflight": {
