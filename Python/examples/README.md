@@ -51,6 +51,24 @@ This is one qualified worked case with span/depth screening and supplied,
 independently verified SLS section evidence. It is not a general beam-design
 profile, calculated long-term deflection, fabrication drawing or human approval.
 
+For a source-bound digital drawing, install the optional DXF dependency and add
+`--dxf` to either case:
+
+```bash
+python3 -m pip install -e './Python[dxf]'
+python3 Python/examples/complete_member_workflow.py --case multilayer --output-dir /tmp/multilayer-beam --dxf
+```
+
+`physical-beam.dxf` contains every resolved 3D centreline path, an elevation,
+a longitudinal-bar section and a labelled link-path projection. It preserves
+actual layers, bar IDs, BBS lengths/masses, package binding and draft/issue state.
+Coordinates are mm; the two enlarged views explicitly state their scale. This
+is a digital review artifact; native CAD/fabrication acceptance remains separate.
+The older generic `draw_beam_elevation` now includes the link diameter in bar
+offsets and rejects unresolved multilayer arrangements. Use
+`structural_lib.services.dxf_export.generate_physical_beam_dxf` with current
+WP06 paths and their bound WP07 package for physical multilayer geometry.
+
 `canonical_workflows.py` uses public request groups, a beam-to-BBS workflow,
 column and slab checks, structured errors and a JSON round-trip. The newly
 exposed group imports, slab builders, and JSON loaders require the current source build;

@@ -450,7 +450,9 @@ def _check_shear(
     reinforcement = footing_input.reinforcement
     width = geometry.strap_width_mm
     depth = geometry.strap_effective_depth_mm
-    fy = material.steel_grade_nmm2
+    # Cl. 40.4 and 26.5.1.6 cap vertical-stirrup design strength at 415.
+    # Longitudinal steel retains its supplied grade in the flexure check.
+    fy = min(material.steel_grade_nmm2, 415.0)
     fck = material.strap_concrete_grade_nmm2
     demand = actions.factored_clear_strap.governing_shear_demand_kn
     tension_area = (

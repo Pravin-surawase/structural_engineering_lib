@@ -61,7 +61,7 @@ def project_beam_design_result(
     if (result.Vu_kn > 0 or result.Tu_knm > 0) and shear:
         # Vus is kN; the response is Asv/s in mm²/mm, not a bar area in mm².
         asv_per_spacing = (
-            shear.Vus * 1000 / (0.87 * fy * depth) if shear.Vus > 0 else 0.0
+            shear.Vus * 1000 / (0.87 * min(fy, 415.0) * depth) if shear.Vus > 0 else 0.0
         )
         spacing = shear.spacing
         if result.torsion is not None:

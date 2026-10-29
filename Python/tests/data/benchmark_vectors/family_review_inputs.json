@@ -1,0 +1,783 @@
+{
+  "schema_version": "s4-family-review-inputs/v1",
+  "origin": "Frozen public F0 recipe inputs, independently evaluated by the adjacent reference generator",
+  "cases": [
+    {
+      "journey_id": "is456.beam.design/v1",
+      "request": {
+        "identity": {
+          "member_id": "B-F0",
+          "story": "F0",
+          "case_id": "B-F0"
+        },
+        "section": {
+          "span_mm": 5000.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 457.0
+        },
+        "materials": {
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "actions": {
+          "mu_knm": 150.0,
+          "vu_kn": 75.0,
+          "tu_knm": 0.0
+        },
+        "calculation_basis": {
+          "d_dash_mm": 43.0,
+          "asv_mm2": 100.53096491487338
+        },
+        "source_provenance": "LIB-PRO-013-F0"
+      }
+    },
+    {
+      "journey_id": "is456.torsion.design/v1",
+      "request": {
+        "identity": {
+          "family_id": "torsion",
+          "case_id": "TOR-F0",
+          "member_id": "TOR-F0",
+          "story": "F0",
+          "source_reference": "LIB-PRO-013-F0"
+        },
+        "geometry": {
+          "corner_bar_centres_b1_mm": 214.0,
+          "corner_bar_centres_d1_mm": 414.0,
+          "d_opposite_mm": 457.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 457.0,
+          "clear_cover_mm": 25.0
+        },
+        "actions": {
+          "tu_knm": 10.0,
+          "vu_kn": 75.0,
+          "mu_knm": 150.0
+        },
+        "materials": {
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "reinforcement": {
+          "stirrup_diameter_mm": 8.0,
+          "tension_steel_percent": 1.0
+        }
+      }
+    },
+    {
+      "journey_id": "is456.column.supplied-steel-check/v1",
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL-F0",
+          "member_id": "COL-F0",
+          "story": "F0",
+          "source_reference": "LIB-PRO-013-F0"
+        },
+        "geometry": {
+          "b_mm": 300.0,
+          "D_mm": 450.0,
+          "unsupported_length_mm": 3000.0,
+          "minimum_eccentricity_length_mm": 3000.0,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "actions": {
+          "pu_kn": 800.0,
+          "mux_knm": 120.0,
+          "muy_knm": 0.0,
+          "m1x_signed_knm": 120.0,
+          "m2x_signed_knm": 120.0,
+          "m1y_signed_knm": 0.0,
+          "m2y_signed_knm": 0.0
+        },
+        "materials": {
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 415.0
+        },
+        "reinforcement": {
+          "supplied_steel_area_mm2": 2400.0,
+          "reinforcement_centroid_depth_mm": 50.0
+        }
+      }
+    },
+    {
+      "journey_id": "is456.slab.one-way/v1",
+      "request": {
+        "identity": {
+          "family_id": "solid_slab",
+          "case_id": "SLAB-OW-F0",
+          "member_id": "SLAB-OW-F0",
+          "story": "F0",
+          "source_reference": "LIB-PRO-013-F0"
+        },
+        "geometry": {
+          "short_effective_span_mm": 3000.0,
+          "long_effective_span_mm": 7500.0,
+          "thickness_mm": 150.0,
+          "effective_depth_mm": 125.0,
+          "strip_width_mm": 1000.0
+        },
+        "actions": {
+          "factored_area_load_kn_per_m2": 10.0
+        },
+        "materials": {
+          "fck_nmm2": 20.0,
+          "fy_nmm2": 415.0
+        },
+        "reinforcement": {
+          "main_bar_diameter_mm": 10.0,
+          "main_bar_spacing_mm": 250.0,
+          "distribution_bar_diameter_mm": 8.0,
+          "distribution_bar_spacing_mm": 250.0
+        },
+        "serviceability_evidence": {
+          "reviewed_base_span_depth_limit": 20.0,
+          "reviewed_aggregate_modification_factor": 1.2,
+          "serviceability_limit_source_reference": "reviewed-limit:F0",
+          "serviceability_limit_source_is_approved": true,
+          "qualified_serviceability_acceptance_reference": "review:F0",
+          "qualified_serviceability_acceptance_acknowledged": true
+        }
+      }
+    },
+    {
+      "journey_id": "is456.slab.continuous-one-way/v1",
+      "request": {
+        "identity": {
+          "family_id": "solid_slab",
+          "case_id": "SLAB-C-F0",
+          "member_id": "SLAB-C-F0",
+          "story": "F0",
+          "source_reference": "LIB-PRO-013-F0"
+        },
+        "geometry": {
+          "short_effective_span_mm": 3000.0,
+          "long_effective_span_mm": 7500.0,
+          "thickness_mm": 160.0,
+          "effective_depth_mm": 130.0,
+          "strip_width_mm": 1000.0,
+          "number_of_spans": 3,
+          "maximum_span_variation_percent": 0.0,
+          "uniform_cross_section_acknowledged": true
+        },
+        "actions": {
+          "factored_dead_and_fixed_imposed_load_kn_per_m2": 7.5,
+          "factored_nonfixed_imposed_load_kn_per_m2": 2.5,
+          "positive_location": "end_span_positive",
+          "negative_location": "next_to_end_support_negative",
+          "shear_location": "end_support",
+          "substantially_uniform_load_acknowledged": true,
+          "redistribution_applied": false
+        },
+        "materials": {
+          "fck_nmm2": 20.0,
+          "fy_nmm2": 415.0
+        },
+        "reinforcement": {
+          "positive_bar_diameter_mm": 10.0,
+          "positive_bar_spacing_mm": 150.0,
+          "negative_bar_diameter_mm": 10.0,
+          "negative_bar_spacing_mm": 150.0,
+          "distribution_bar_diameter_mm": 8.0,
+          "distribution_bar_spacing_mm": 200.0
+        },
+        "serviceability_evidence": {
+          "reviewed_base_span_depth_limit": 20.0,
+          "reviewed_aggregate_modification_factor": 1.2,
+          "serviceability_limit_source_reference": "reviewed-limit:F0",
+          "serviceability_limit_source_is_approved": true,
+          "qualified_serviceability_acceptance_reference": "review:F0",
+          "qualified_serviceability_acceptance_acknowledged": true
+        }
+      }
+    },
+    {
+      "journey_id": "is456.slab.two-way/v1",
+      "request": {
+        "identity": {
+          "family_id": "solid_slab",
+          "case_id": "SLAB-TW-F0",
+          "member_id": "SLAB-TW-F0",
+          "story": "F0",
+          "source_reference": "LIB-PRO-013-F0"
+        },
+        "geometry": {
+          "x_effective_span_mm": 4000.0,
+          "y_effective_span_mm": 6000.0,
+          "thickness_mm": 160.0,
+          "d_x_mm": 135.0,
+          "d_y_mm": 125.0,
+          "x_min_edge": "discontinuous",
+          "x_max_edge": "continuous",
+          "y_min_edge": "discontinuous",
+          "y_max_edge": "continuous",
+          "corner_lift_condition": "restrained"
+        },
+        "actions": {
+          "factored_area_load_kn_per_m2": 15.5
+        },
+        "materials": {
+          "fck_nmm2": 20.0,
+          "fy_nmm2": 415.0
+        },
+        "reinforcement": {
+          "x_positive_bar_diameter_mm": 10.0,
+          "x_positive_bar_spacing_mm": 200.0,
+          "x_negative_bar_diameter_mm": 10.0,
+          "x_negative_bar_spacing_mm": 200.0,
+          "y_positive_bar_diameter_mm": 8.0,
+          "y_positive_bar_spacing_mm": 200.0,
+          "y_negative_bar_diameter_mm": 8.0,
+          "y_negative_bar_spacing_mm": 200.0,
+          "edge_strip_bar_diameter_mm": 8.0,
+          "edge_strip_bar_spacing_mm": 250.0,
+          "torsion_bar_diameter_mm": 8.0,
+          "torsion_bar_spacing_mm": 200.0
+        },
+        "serviceability_evidence": {
+          "reviewed_base_span_depth_limit": 30.0,
+          "reviewed_aggregate_modification_factor": 1.0,
+          "serviceability_limit_source_reference": "reviewed-limit:F0",
+          "serviceability_limit_source_is_approved": true,
+          "qualified_serviceability_acceptance_reference": "review:F0",
+          "qualified_serviceability_acceptance_acknowledged": true
+        }
+      }
+    },
+    {
+      "journey_id": "is456.wall.braced-axial/v1",
+      "request": {
+        "identity_source": {
+          "identity": {
+            "family_id": "wall",
+            "case_id": "WALL-F0",
+            "member_id": "WALL-F0",
+            "story": "F0",
+            "source_reference": "LIB-PRO-013-F0"
+          },
+          "bracing_basis_reference": "WALL-F0-BRACING"
+        },
+        "geometry_topology": {
+          "unsupported_height_mm": 3000.0,
+          "lateral_restraint_spacing_mm": 4000.0,
+          "wall_length_mm": 4000.0,
+          "wall_thickness_mm": 150.0,
+          "rotation_restraint": "restrained_both_ends",
+          "bracing_elements_in_two_directions": true,
+          "lateral_forces_resisted_by_bracing_system": true,
+          "diaphragm_transfer_confirmed": true,
+          "lateral_connection_capacity_confirmed": true
+        },
+        "actions": {
+          "factored_axial_load_kn": 2000.0,
+          "supplied_eccentricity_mm": 0.0,
+          "action_basis_reference": "WALL-F0-ACTIONS"
+        },
+        "materials_reinforcement": {
+          "concrete_grade_nmm2": 20,
+          "vertical_bar_diameter_mm": 8.0,
+          "vertical_bar_spacing_mm": 250.0,
+          "horizontal_bar_diameter_mm": 10.0,
+          "horizontal_bar_spacing_mm": 250.0,
+          "reinforcement_kind": "deformed_415_or_greater"
+        },
+        "evidence_review": {
+          "reinforcement_basis_reference": "WALL-F0-REINFORCEMENT",
+          "qualified_review_required": true
+        }
+      }
+    },
+    {
+      "journey_id": "is456.staircase.straight-flight/v1",
+      "request": {
+        "identity_source": {
+          "identity": {
+            "family_id": "stair",
+            "case_id": "STAIR-F0",
+            "member_id": "STAIR-F0",
+            "story": "F0",
+            "source_reference": "LIB-PRO-013-F0"
+          },
+          "load_basis_reference": "NPTEL-M9L20-EX9.1"
+        },
+        "geometry_topology": {
+          "lower_landing_effective_length_mm": 750.0,
+          "going_mm": 2700.0,
+          "upper_landing_effective_length_mm": 1650.0,
+          "flight_width_mm": 1500.0,
+          "riser_mm": 160.0,
+          "tread_mm": 270.0,
+          "waist_thickness_mm": 250.0,
+          "landing_thickness_mm": 200.0,
+          "support_case": "landings_span_with_flight",
+          "span_direction": "longitudinal",
+          "landings_collinear": true,
+          "has_stringer_beams": false,
+          "is_cast_in_situ_solid": true
+        },
+        "actions": {
+          "lower_landing_superimposed_service_load_kn_per_m2": 6.0,
+          "flight_superimposed_service_load_kn_per_m2": 6.0,
+          "upper_landing_superimposed_service_load_kn_per_m2": 6.0,
+          "lower_landing_load_share": 0.5,
+          "upper_landing_load_share": 1.0,
+          "concrete_unit_weight_kn_per_m3": 25.0,
+          "ultimate_load_factor": 1.5
+        },
+        "materials_reinforcement": {
+          "effective_depth_mm": 224.0,
+          "fck_nmm2": 20.0,
+          "fy_nmm2": 415.0,
+          "main_bar_diameter_mm": 12.0,
+          "main_bar_spacing_mm": 120.0,
+          "distribution_bar_diameter_mm": 8.0,
+          "distribution_bar_spacing_mm": 160.0
+        },
+        "evidence_review": {
+          "qualified_review_required": true
+        }
+      }
+    },
+    {
+      "journey_id": "is456.deep-beam.simply-supported/v1",
+      "request": {
+        "identity_source": {
+          "identity": {
+            "family_id": "deep_beam",
+            "case_id": "DEEP-F0",
+            "member_id": "DEEP-F0",
+            "story": "F0",
+            "source_reference": "LIB-PRO-013-F0"
+          },
+          "geometry_basis_reference": "DEEP-F0-GEOMETRY"
+        },
+        "geometry_topology": {
+          "centre_to_centre_span_mm": 3000.0,
+          "clear_span_mm": 2800.0,
+          "overall_depth_mm": 2000.0,
+          "beam_width_mm": 300.0,
+          "support_type": "simply_supported",
+          "solid_rectangular_section": true,
+          "openings_present": false,
+          "dapped_ends_present": false,
+          "top_loaded": true,
+          "hanging_action_required": false
+        },
+        "actions": {
+          "factored_positive_moment_knm": 900.0,
+          "action_basis_reference": "DEEP-F0-ACTIONS"
+        },
+        "materials_reinforcement": {
+          "concrete_grade_nmm2": 30,
+          "steel_grade_nmm2": 500,
+          "main_bar_count": 4,
+          "main_bar_diameter_mm": 22.0,
+          "furthest_main_bar_from_tension_face_mm": 250.0,
+          "main_bars_continuous_between_supports": true,
+          "main_bars_bundled": false,
+          "main_bar_splices_present": false,
+          "left_support_embedment_mm": 850.0,
+          "right_support_embedment_mm": 850.0,
+          "face_grid_count": 2,
+          "vertical_side_bar_diameter_mm": 10.0,
+          "vertical_side_bar_spacing_mm": 300.0,
+          "horizontal_side_bar_diameter_mm": 10.0,
+          "horizontal_side_bar_spacing_mm": 250.0
+        },
+        "evidence_review": {
+          "bearing_nodal_zone_verified": true,
+          "bearing_nodal_zone_reference": "DEEP-F0-BEARING",
+          "reinforcement_basis_reference": "DEEP-F0-REINFORCEMENT",
+          "qualified_review_required": true
+        }
+      }
+    },
+    {
+      "journey_id": "is456.flat-slab.regular-interior/v1",
+      "request": {
+        "identity_source": {
+          "identity": {
+            "family_id": "flat_slab",
+            "case_id": "FLAT-F0",
+            "member_id": "FLAT-F0",
+            "story": "F0",
+            "source_reference": "LIB-PRO-013-F0"
+          },
+          "geometry_basis_reference": "FLAT-F0-GEOMETRY",
+          "material_basis_reference": "FLAT-F0-MATERIAL",
+          "load_basis_reference": "FLAT-F0-LOAD"
+        },
+        "geometry_topology": {
+          "centre_to_centre_span_x_mm": 6000.0,
+          "centre_to_centre_span_y_mm": 6000.0,
+          "continuous_span_count_x": 3,
+          "continuous_span_count_y": 3,
+          "column_width_x_mm": 500.0,
+          "column_width_y_mm": 500.0,
+          "overall_depth_mm": 300.0,
+          "conservative_effective_depth_mm": 260.0,
+          "analysis_method": "direct_design",
+          "panel_location": "interior",
+          "all_spans_equal_x": true,
+          "all_spans_equal_y": true,
+          "columns_offset_from_grid": false,
+          "solid_slab": true,
+          "drop_present": false,
+          "column_head_present": false,
+          "marginal_beam_or_wall_present": false,
+          "openings_present": false
+        },
+        "actions": {
+          "service_dead_load_kn_per_m2": 9.0,
+          "service_live_load_kn_per_m2": 4.0,
+          "factored_uniform_load_kn_per_m2": 19.5,
+          "factored_support_reaction_kn": 702.0,
+          "self_weight_included": true,
+          "identical_full_loading_on_represented_panels": true,
+          "patterned_loading_required": false,
+          "unbalanced_or_lateral_moment_transfer_present": false,
+          "load_combination_approved": true
+        },
+        "materials_reinforcement": {
+          "concrete_grade_nmm2": 30,
+          "steel_grade_nmm2": 500,
+          "uncoated_deformed_bars": true,
+          "x": {
+            "column_strip_negative_bars": {
+              "diameter_mm": 12.0,
+              "spacing_mm": 160.0
+            },
+            "column_strip_positive_bars": {
+              "diameter_mm": 10.0,
+              "spacing_mm": 200.0
+            },
+            "middle_strip_negative_bars": {
+              "diameter_mm": 10.0,
+              "spacing_mm": 200.0
+            },
+            "middle_strip_positive_bars": {
+              "diameter_mm": 10.0,
+              "spacing_mm": 200.0
+            },
+            "support_top_extension_from_face_mm": 1650.0
+          },
+          "y": {
+            "column_strip_negative_bars": {
+              "diameter_mm": 12.0,
+              "spacing_mm": 160.0
+            },
+            "column_strip_positive_bars": {
+              "diameter_mm": 10.0,
+              "spacing_mm": 200.0
+            },
+            "middle_strip_negative_bars": {
+              "diameter_mm": 10.0,
+              "spacing_mm": 200.0
+            },
+            "middle_strip_positive_bars": {
+              "diameter_mm": 10.0,
+              "spacing_mm": 200.0
+            },
+            "support_top_extension_from_face_mm": 1650.0
+          }
+        },
+        "evidence_review": {
+          "straight_bars_only": true,
+          "all_bottom_bars_continuous": true,
+          "splices_present": false,
+          "serviceability_acceptance_acknowledged": true,
+          "centred_concentric_reaction": true,
+          "full_critical_perimeter_available": true,
+          "no_punching_reinforcement_provided": true,
+          "qualified_review_required": true,
+          "detailing_basis_reference": "FLAT-F0-DETAILING",
+          "serviceability_acceptance_reference": "FLAT-F0-SERVICEABILITY",
+          "support_reaction_basis_reference": "FLAT-F0-REACTION",
+          "punching_basis_reference": "FLAT-F0-PUNCHING"
+        }
+      }
+    },
+    {
+      "journey_id": "is456.isolated-footing.concentric/v1",
+      "request": {
+        "identity_source": {
+          "identity": {
+            "family_id": "isolated_footing",
+            "case_id": "ISO-F0",
+            "member_id": "ISO-F0",
+            "story": "F0",
+            "source_reference": "LIB-PRO-013-F0"
+          },
+          "service_load_combination_id": "SLS-GRAVITY-01",
+          "service_load_basis": "includes_footing_self_weight_and_overburden",
+          "service_load_origin": "provided",
+          "factored_load_combination_id": "ULS-GRAVITY-01",
+          "allowable_soil_pressure_source_reference": "GEO-REPORT-001",
+          "allowable_soil_pressure_origin": "verified"
+        },
+        "geometry_topology": {
+          "footing_type": "ISOLATED_SQUARE",
+          "column_length_mm": 400.0,
+          "column_width_mm": 400.0,
+          "minimum_overall_thickness_mm": 500.0,
+          "maximum_overall_thickness_mm": 500.0,
+          "thickness_increment_mm": 50.0,
+          "effective_depth_offset_length_mm": 100.0,
+          "effective_depth_offset_width_mm": 100.0
+        },
+        "actions": {
+          "service_axial_load_kn": 800.0,
+          "factored_axial_load_kn": 1200.0,
+          "allowable_soil_pressure_kpa": 200.0
+        },
+        "materials_reinforcement": {
+          "footing_concrete_fck_nmm2": 25.0,
+          "column_concrete_fck_nmm2": 25.0,
+          "steel_fy_nmm2": 415.0,
+          "dowel_count": 4,
+          "dowel_diameter_mm": 20.0,
+          "column_longitudinal_bar_diameter_mm": 20.0,
+          "available_dowel_development_length_into_footing_mm": 1000.0,
+          "available_dowel_development_length_into_column_mm": 1000.0,
+          "dowel_bar_type": "deformed",
+          "nominal_cover_mm": 50.0,
+          "nominal_max_aggregate_size_mm": 20.0,
+          "lower_bottom_bar_direction": "L",
+          "upper_bottom_bar_direction": "B",
+          "permitted_bottom_bar_diameters_mm": [
+            12,
+            16,
+            20,
+            25,
+            32
+          ],
+          "footing_bottom_bar_type": "deformed",
+          "bottom_bar_end_arrangement": "straight"
+        },
+        "evidence_review": {
+          "allowable_soil_pressure_is_externally_approved": true,
+          "effective_supporting_area_mm2": 640000.0,
+          "effective_supporting_area_basis": "largest_frustum_1v_2h",
+          "effective_supporting_area_origin": "provided",
+          "effective_supporting_area_is_approved": true,
+          "cover_exposure_basis": "approved severe footing schedule",
+          "cover_exposure_basis_is_approved": true,
+          "qualified_review_required": true
+        }
+      }
+    },
+    {
+      "journey_id": "is456.combined-footing.symmetric/v1",
+      "request": {
+        "identity_source": {
+          "identity": {
+            "family_id": "combined_footing",
+            "case_id": "COMBINED-F0",
+            "member_id": "COMBINED-F0",
+            "story": "F0",
+            "source_reference": "LIB-PRO-013-F0"
+          },
+          "geometry_basis_reference": "COMBINED-F0-GEOMETRY",
+          "rigidity_basis_reference": "COMBINED-F0-RIGIDITY",
+          "load_basis_reference": "COMBINED-F0-LOAD",
+          "bearing_settlement_basis_reference": "COMBINED-F0-BEARING",
+          "cancellation_basis_reference": "COMBINED-F0-CANCELLATION",
+          "material_basis_reference": "COMBINED-F0-MATERIAL"
+        },
+        "geometry_topology": {
+          "footing_length_mm": 6000.0,
+          "footing_width_mm": 2500.0,
+          "overall_depth_mm": 850.0,
+          "effective_depth_mm": 750.0,
+          "column_side_mm": 500.0,
+          "left_column_center_x_mm": 1000.0,
+          "right_column_center_x_mm": 5000.0,
+          "column_count": 2,
+          "columns_identical": true,
+          "columns_square": true,
+          "columns_centered_across_width": true,
+          "foundation_on_soil": true,
+          "constant_depth": true,
+          "openings_present": false,
+          "pedestals_present": false,
+          "analysis_method": "conventional_rigid",
+          "pressure_model": "uniform",
+          "rigid_footing_verified": true
+        },
+        "actions": {
+          "service_axial_load_each_kn": 900.0,
+          "factored_axial_load_each_kn": 1350.0,
+          "service_uniform_carrier_kn_per_m2": 25.0,
+          "factored_uniform_carrier_kn_per_m2": 37.5,
+          "allowable_gross_bearing_pressure_kn_per_m2": 150.0,
+          "load_combination_approved": true,
+          "bearing_and_settlement_approved": true,
+          "pressure_uniformity_approved": true,
+          "distributed_carrier_cancellation_approved": true,
+          "column_moments_present": false,
+          "horizontal_actions_present": false,
+          "uplift_or_load_reversal_present": false
+        },
+        "materials_reinforcement": {
+          "footing_concrete_grade_nmm2": 30,
+          "column_concrete_grade_nmm2": 30,
+          "steel_grade_nmm2": 500,
+          "uncoated_deformed_bars": true,
+          "top_longitudinal_diameter_mm": 16,
+          "top_longitudinal_spacing_mm": 190.0,
+          "bottom_longitudinal_diameter_mm": 16,
+          "bottom_longitudinal_spacing_mm": 190.0,
+          "transverse_diameter_mm": 12,
+          "transverse_spacing_mm": 110.0,
+          "nominal_cover_mm": 50.0,
+          "aggregate_size_mm": 20.0,
+          "available_top_longitudinal_anchorage_each_end_mm": 800.0,
+          "available_bottom_longitudinal_anchorage_each_end_mm": 800.0,
+          "available_transverse_anchorage_each_edge_mm": 800.0,
+          "straight_uncoated_deformed_bars": true,
+          "effective_depth_basis_approved": true,
+          "reinforcement_schedule_approved": true,
+          "effective_supporting_area_each_mm2": 250000.0,
+          "effective_supporting_area_basis": "largest_frustum_1v_2h",
+          "effective_supporting_area_approved": true,
+          "dowel_count_each": 4,
+          "dowel_diameter_mm": 20,
+          "column_longitudinal_bar_diameter_mm": 20,
+          "available_dowel_development_into_footing_mm": 800.0,
+          "available_dowel_development_into_column_mm": 800.0,
+          "uncoated_deformed_dowels": true
+        },
+        "evidence_review": {
+          "detailing_basis_reference": "COMBINED-F0-DETAILING",
+          "transfer_basis_reference": "COMBINED-F0-TRANSFER",
+          "qualified_review_required": true
+        }
+      }
+    },
+    {
+      "journey_id": "is456.strap-footing.property-line/v1",
+      "request": {
+        "identity_source": {
+          "identity": {
+            "family_id": "strap_footing",
+            "case_id": "STRAP-F0",
+            "member_id": "STRAP-F0",
+            "story": "F0",
+            "source_reference": "LIB-PRO-013-F0"
+          },
+          "geometry_basis_reference": "STRAP-F0-GEOMETRY",
+          "rigidity_basis_reference": "STRAP-F0-RIGIDITY",
+          "strap_isolation_basis_reference": "STRAP-F0-ISOLATION",
+          "load_basis_reference": "STRAP-F0-LOAD",
+          "bearing_settlement_basis_reference": "STRAP-F0-GEOTECH",
+          "footing_carrier_basis_reference": "STRAP-F0-CARRIER",
+          "strap_line_load_basis_reference": "STRAP-F0-LINE-LOAD",
+          "load_pattern_basis_reference": "STRAP-F0-PATTERN",
+          "material_basis_reference": "STRAP-F0-MATERIAL"
+        },
+        "geometry_topology": {
+          "exterior_footing_length_mm": 2400.0,
+          "exterior_footing_width_mm": 2500.0,
+          "exterior_footing_depth_mm": 700.0,
+          "interior_footing_length_mm": 2500.0,
+          "interior_footing_width_mm": 3200.0,
+          "interior_footing_depth_mm": 700.0,
+          "exterior_column_side_mm": 500.0,
+          "interior_column_side_mm": 500.0,
+          "exterior_column_center_x_mm": 400.0,
+          "interior_column_center_x_mm": 6400.0,
+          "strap_width_mm": 500.0,
+          "strap_overall_depth_mm": 950.0,
+          "strap_effective_depth_mm": 850.0,
+          "footing_count": 2,
+          "column_count": 2,
+          "footings_rectangular": true,
+          "footings_parallel": true,
+          "footings_constant_depth": true,
+          "columns_square": true,
+          "columns_and_strap_share_centerline": true,
+          "interior_column_centered_on_footing": true,
+          "strap_straight_and_prismatic": true,
+          "strap_centered_across_footings": true,
+          "foundation_on_soil": true,
+          "strap_soil_contact": false,
+          "openings_present": false,
+          "pedestals_present": false,
+          "analysis_method": "rigid_equal_pressure",
+          "pressure_model": "equal_uniform_net"
+        },
+        "actions": {
+          "service_exterior_column_load_kn": 1025.5625,
+          "service_interior_column_load_kn": 1741.4375,
+          "factored_exterior_column_load_kn": 1538.34375,
+          "factored_interior_column_load_kn": 2612.15625,
+          "service_clear_strap_line_load_kn_per_m": 12.0,
+          "factored_clear_strap_line_load_kn_per_m": 18.0,
+          "service_exterior_footing_carrier_kn_per_m2": 20.0,
+          "service_interior_footing_carrier_kn_per_m2": 20.0,
+          "factored_exterior_footing_carrier_kn_per_m2": 30.0,
+          "factored_interior_footing_carrier_kn_per_m2": 30.0,
+          "allowable_gross_bearing_pressure_kn_per_m2": 250.0,
+          "load_combination_approved": true,
+          "bearing_and_settlement_approved": true,
+          "equal_uniform_pressure_approved": true,
+          "footing_carrier_basis_approved": true,
+          "strap_line_load_basis_approved": true,
+          "load_pattern_compatible": true,
+          "column_moments_present": false,
+          "horizontal_actions_present": false,
+          "uplift_or_load_reversal_present": false,
+          "independently_factored_or_patterned_actions_present": false
+        },
+        "materials_reinforcement": {
+          "strap_concrete_grade_nmm2": 30,
+          "steel_grade_nmm2": 500,
+          "uncoated_deformed_bars": true,
+          "top_bar_count": 6,
+          "top_bar_diameter_mm": 25,
+          "bottom_bar_count": 4,
+          "bottom_bar_diameter_mm": 16,
+          "side_face_bar_count_each_face": 4,
+          "side_face_bar_diameter_mm": 12,
+          "side_face_vertical_spacing_mm": 250.0,
+          "stirrup_leg_count": 2,
+          "stirrup_diameter_mm": 10,
+          "stirrup_spacing_mm": 250.0,
+          "nominal_cover_mm": 50.0,
+          "required_nominal_cover_mm": 50.0,
+          "maximum_aggregate_size_mm": 20.0,
+          "available_top_anchorage_exterior_mm": 1200.0,
+          "available_top_anchorage_interior_mm": 1200.0,
+          "available_bottom_anchorage_exterior_mm": 1200.0,
+          "available_bottom_anchorage_interior_mm": 1200.0,
+          "vertical_closed_stirrups": true,
+          "straight_anchorage": true,
+          "bars_bundled": false,
+          "bars_spliced": false,
+          "bars_curtailed": false,
+          "reinforcement_schedule_approved": true,
+          "effective_depth_basis_approved": true,
+          "durability_cover_basis_approved": true
+        },
+        "evidence_review": {
+          "exterior_footing_design_verified": true,
+          "interior_footing_design_verified": true,
+          "column_and_strap_transfer_verified": true,
+          "footing_reinforcement_and_anchorage_verified": true,
+          "supporting_areas_verified": true,
+          "construction_clearances_verified": true,
+          "exterior_footing_verification_reference": "EXT-FOOTING-01",
+          "interior_footing_verification_reference": "INT-FOOTING-01",
+          "transfer_verification_reference": "TRANSFER-01",
+          "construction_verification_reference": "CONSTRUCTION-01",
+          "detailing_basis_reference": "STRAP-F0-DETAILING",
+          "durability_basis_reference": "STRAP-F0-DURABILITY",
+          "qualified_review_required": true
+        }
+      }
+    }
+  ]
+}

@@ -6,6 +6,49 @@
 ---
 
 
+## 2026-10-29 — Session: S4 engineering and outputs
+
+**Task:** LIB-S4-20261029
+**Agent:** MAIN (sole Mac writer; two bounded read-only technical reviewers)
+**Branch:** `codex/lib-s4-engineering`
+**Focus:** Verify independent engineering results and faithful physical outputs after S3 #1038.
+
+### Completed
+
+- Froze 13 public journey payloads and 106 independent source-equation metrics, preserving11 PASS/two-wayFAIL/stairHOLD. Retained governing material/flange/column/SLS and physical-member reference owners.
+- Corrected strap vertical-stirrup design grade to415 and the shared ordinary HTTP/WS Asv/s basis; retained longitudinal grade and separate torsion formulas.
+- Corrected physical path layer identity and generic link offset; added path/package-bound DXF with true longitudinal cut, actual3D paths, BBS and draft/issue identity.
+- Generated and inspected both beam cases' drawings and three-page PDF reports, retaining digital/source identities and approval state. 1,642 unique focused checks pass after affected repairs; affected format/type/architecture/import, API/schema and strict docs pass. Exact-head review and hosted integration belong to the milestone PR.
+- The owner self-identifies as structural engineer and removes a separate external-reviewer dependency; independent numerical/technical reviews remain required.
+
+### Issues encountered
+
+A valid Fe500 strap case falsely passed vertical shear between the correct415
+and raw500 capacities. The shared HTTP/WS projection understated Asv/s. Generic
+elevation omitted link offset and could collapse layers; the complete-member
+example forced every path seed to layer1.
+
+### Root causes and resolutions
+
+Repair the two uncapped stirrup-strength consumers at their owners, propagate
+physical layer identities, and render resolved paths bound to the current
+package rather than inferring a single row. The [execution receipt](verification/library-s4-20261029.json)
+retains exact reproducers, source locators, tolerances and artifact hashes.
+
+### Rework and recurrence
+
+No new recurrence count or speculative root cause. RR-004 x36 remains the
+historical maintenance control; routine corrected command construction is not
+a recurring engineering failure.
+
+### What next
+
+Freeze content, finish focused numerical/physical/transport and essential gates,
+review the exact candidate independently and integrate one PR after required
+hosted checks. S5 artifacts, S6 release and native acceptance remain separate.
+
+---
+
 ## 2026-10-29 — Session: S3 public contracts
 
 **Task:** LIB-S3-20261029

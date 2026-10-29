@@ -15,7 +15,8 @@ from structural_lib.services.beam_api import design_beam_is456
 
 
 @pytest.mark.parametrize(
-    "moment,shear,status", [(150, 75, "PASS"), (150, 300, "FAIL"), (2000, 75, "FAIL")]
+    "moment,shear,status",
+    [(150, 75, "PASS"), (150, 150, "PASS"), (150, 300, "FAIL"), (2000, 75, "FAIL")],
 )
 def test_http_websocket_share_actual_quantities_depth_status_and_identity(
     client, moment, shear, status
@@ -48,7 +49,14 @@ def test_http_websocket_share_actual_quantities_depth_status_and_identity(
     )
     assert actual["shear"]["asv_required_unit"] == "mm²/mm"
     if moment == 150 and shear == 75:
-        assert actual["shear"]["asv_required"] == pytest.approx(0.01037573975765039)
+        assert actual["shear"]["asv_required"] == pytest.approx(0.012500891274277579)
+    if moment == 150 and shear == 150:
+        # Cl40.4 uses at most Fe415 for the published vertical-stirrup ratio.
+        assert actual["shear"]["asv_required"] == pytest.approx(
+            (actual["shear"]["tau_v"] - actual["shear"]["tau_c"])
+            * params["width"]
+            / (0.87 * 415)
+        )
     if moment == 2000:
         assert actual["governing_utilization"] is None
         assert actual["unavailable_utilizations"]
