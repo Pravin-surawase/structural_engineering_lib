@@ -1484,8 +1484,10 @@ is relaxed. No IS456 engineering formula, factor or tolerance changes.
 
 The finite projection covers canonical beam/composed results, compatibility
 compliance/report transport and pipeline JSON. The canonical Python,
-`beam-v1` CLI and FastAPI v2 route consume the same result. Existing v1 HTTP
-display caps and broader schema/transport consistency remain S3 work; this
+`beam-v1` CLI and FastAPI v2 route consume the same result. The affected retained
+smart HTTP route also carries nullable utilization with the typed unavailable
+reason; a valid failed calculation is not rejected as HTTP input error. Existing
+v1 beam-design display caps and broader schema/transport consistency remain S3 work; this
 packet does not claim all 92 operations have acquired new semantic parity.
 
 Q-F04 originates in a nested producer result being read as flat raw inputs.

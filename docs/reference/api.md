@@ -1338,6 +1338,10 @@ Notes:
   If baseline or perturbed utilization is unavailable, sensitivity is `null`
   with an explicit `metadata.unavailable_analyses.sensitivity` code/reason;
   it does not emit NaN derivatives. A supplied engineering HOLD remains HOLD.
+  The affected retained smart HTTP response exposes a nullable
+  `design_summary.governing_utilization` with typed `unavailable_utilizations`.
+  An unavailable `code_checks[].calculated_value` has a typed `unavailable`
+  code/reason. Operational success is independent of engineering FAIL/HOLD.
 
 ---
 

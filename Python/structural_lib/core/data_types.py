@@ -900,29 +900,26 @@ class ComplianceReport:
         result = asdict(self)
         cases = [case.to_dict() for case in self.cases]
         result["cases"] = cases
-        governing = next(
-            (case for case in cases if case["case_id"] == self.governing_case_id), None
-        )
         reasons: dict[str, str] = {}
-        if governing and "governing_utilization" in governing.get(
-            "unavailable_utilizations", {}
-        ):
-            reason = governing["unavailable_utilizations"]["governing_utilization"][
-                "reason"
-            ]
-            reasons["governing_utilization"] = reason
-            reasons["summary.governing_utilization"] = reason
-            worst = self.summary.get("governing_worst_check")
-            if f"utilizations.{worst}" in governing["unavailable_utilizations"]:
-                reasons["summary.governing_worst_utilization"] = governing[
-                    "unavailable_utilizations"
-                ][f"utilizations.{worst}"]["reason"]
+        # Case identifiers need not be unique. Derive report unavailability
+        # from the evaluated cases instead of choosing the first matching ID.
         for case in cases:
-            for path, issue in case.get("unavailable_utilizations", {}).items():
-                if path.startswith("utilizations."):
-                    reasons[f"summary.max_util_{path.split('.', 1)[1]}"] = issue[
-                        "reason"
-                    ]
+            for path in case.get("unavailable_utilizations", {}):
+                if self.is_ok:
+                    continue
+                if path == "governing_utilization":
+                    reason = "At least one case has no evaluated governing utilization."
+                    reasons["governing_utilization"] = reason
+                    reasons["summary.governing_utilization"] = reason
+                elif path.startswith("utilizations."):
+                    name = path.split(".", 1)[1]
+                    reason = (
+                        f"At least one case has no evaluated {name} utilization; "
+                        "inspect cases[].unavailable_utilizations."
+                    )
+                    reasons[f"summary.max_util_{name}"] = reason
+                    if name == self.summary.get("governing_worst_check"):
+                        reasons["summary.governing_worst_utilization"] = reason
         values = {"governing_utilization": self.governing_utilization}
         values.update(
             {

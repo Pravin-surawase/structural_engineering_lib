@@ -134,14 +134,17 @@ def test_compliance_flexure_utilization_safe_doubly_is_one():
     assert report.cases[0].utilizations["flexure"] == 1.0
 
 
-def test_unavailable_check_serializes_without_changing_failure_or_case_ranking():
+@pytest.mark.parametrize("failed_case_id", ["OVERLOADED", "NOMINAL"])
+def test_unavailable_check_serializes_without_changing_failure_or_case_ranking(
+    failed_case_id,
+):
     """The actual overloaded beam remains governing; no finite ratio is invented."""
     from structural_lib.compliance import report_to_dict
 
     report = check_compliance_report(
         cases=[
             {"case_id": "NOMINAL", "mu_knm": 150.0, "vu_kn": 75.0},
-            {"case_id": "OVERLOADED", "mu_knm": 2000.0, "vu_kn": 75.0},
+            {"case_id": failed_case_id, "mu_knm": 2000.0, "vu_kn": 75.0},
         ],
         b_mm=300.0,
         D_mm=500.0,
@@ -152,7 +155,7 @@ def test_unavailable_check_serializes_without_changing_failure_or_case_ranking()
     )
     failed = report.cases[1]
     assert report.is_ok is False
-    assert report.governing_case_id == "OVERLOADED"
+    assert report.governing_case_id == failed_case_id
     assert math.isinf(failed.governing_utilization)
     assert failed.utilizations["flexure"] == pytest.approx(2000 / 209.2762215144)
     assert any("Table 19" in check for check in failed.failed_checks)
@@ -164,7 +167,7 @@ def test_unavailable_check_serializes_without_changing_failure_or_case_ranking()
     assert json.loads(json.dumps(transported, allow_nan=False)) == transported
     assert json.loads(json.dumps(payload, allow_nan=False)) == payload
     assert payload["is_ok"] is False
-    assert payload["governing_case_id"] == "OVERLOADED"
+    assert payload["governing_case_id"] == failed_case_id
     assert payload["governing_utilization"] is None
     assert payload["summary"]["max_util_shear"] is None
     assert payload["summary"]["governing_worst_utilization"] is None

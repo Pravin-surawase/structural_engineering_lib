@@ -9457,6 +9457,17 @@
             "description": "Whether check passed",
             "title": "Passed",
             "type": "boolean"
+          },
+          "unavailable": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UnavailableUtilization"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Core-owned reason when utilization was not evaluated."
           }
         },
         "required": [
@@ -27740,7 +27751,8 @@
             "enum": [
               "PASS",
               "WARNING",
-              "FAIL"
+              "FAIL",
+              "HOLD"
             ],
             "title": "Design Status",
             "type": "string"
@@ -27762,9 +27774,16 @@
             "type": "string"
           },
           "governing_utilization": {
-            "minimum": 0.0,
-            "title": "Governing Utilization",
-            "type": "number"
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Governing Utilization"
           },
           "key_issues": {
             "items": {
@@ -27791,6 +27810,14 @@
           "span_mm": {
             "title": "Span Mm",
             "type": "number"
+          },
+          "unavailable_utilizations": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/UnavailableUtilization"
+            },
+            "description": "Core-owned reasons for utilization values unavailable on FAIL/HOLD.",
+            "title": "Unavailable Utilizations",
+            "type": "object"
           },
           "width_mm": {
             "title": "Width Mm",
@@ -31297,6 +31324,27 @@
           "complete_engineering_design_approved"
         ],
         "title": "TwoWaySlabPanelDesignResponse",
+        "type": "object"
+      },
+      "UnavailableUtilization": {
+        "description": "Core-owned reason for a failed check without a finite utilization.",
+        "properties": {
+          "code": {
+            "const": "UTILIZATION_NOT_EVALUATED",
+            "title": "Code",
+            "type": "string"
+          },
+          "reason": {
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "reason"
+        ],
+        "title": "UnavailableUtilization",
         "type": "object"
       },
       "ValidationResult": {

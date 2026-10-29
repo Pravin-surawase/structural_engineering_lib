@@ -19,7 +19,8 @@
     ],
     "s1_outcomes": [
       "Q-F01 finite inspectable admitted FAIL/HOLD",
-      "Q-F04 faithful smart input preservation"
+      "Q-F04 faithful smart input preservation",
+      "Propagate unavailable smart ratios through the actually affected legacy HTTP consumer"
     ],
     "excluded": [
       "new torsion authority",
@@ -406,7 +407,7 @@
     {
       "id": "PS-05",
       "owner": "contract/transport owner",
-      "population": "changed schemas and HTTP representations",
+      "population": "488 candidate OpenAPI component schemas (487 released baseline plus 1 typed unavailable marker), with 92 HTTP operations; maintained canonical contracts remain separately owned.",
       "s0_gate": "no schema migration assumed",
       "later_gate": "S3 semantic instance and evolution review",
       "responsible_for_s0": "Codex /root",
@@ -5174,7 +5175,7 @@
       },
       {
         "path": "docs/reference/api-compatibility-ledger.json",
-        "sha256": "688a995a91063b5e036bc10eccb0c70d52d1f368ac1419d870e54941ade4fe51",
+        "sha256": "a440348c54ca236f44b8001da36a20d399fada9fa476c5e4e64c4f6f925251df",
         "declared_owner": "unspecified",
         "accountable_owner": "Codex /root; Pravin Surawase for authority decisions",
         "declared_status": "unspecified",
@@ -5256,7 +5257,7 @@
       },
       {
         "path": "docs/reference/api.md",
-        "sha256": "2b9fd594b4531e2ceb93ed749c73453015c005c53d01d23d72280571eb9e9b0a",
+        "sha256": "b15a42ea0370fb51065f3b51b29def339a72824783c7126942a82217822581b9",
         "declared_owner": "Main Agent",
         "accountable_owner": "Codex /root; Pravin Surawase for authority decisions",
         "declared_status": "active",
@@ -7544,7 +7545,7 @@
       },
       {
         "path": "docs/reference/api-compatibility-ledger.json",
-        "sha256": "688a995a91063b5e036bc10eccb0c70d52d1f368ac1419d870e54941ade4fe51",
+        "sha256": "a440348c54ca236f44b8001da36a20d399fada9fa476c5e4e64c4f6f925251df",
         "intake_sha256": "1b00216d842eecf38a15d3c46b45aa107715b0e6df46ed79c8b98da6ad7412ed"
       },
       {
@@ -7557,7 +7558,7 @@
       },
       {
         "path": "fastapi_app/openapi_baseline.json",
-        "sha256": "ba401bcc23ca5d95fa5158b79f320f0e32707cab24d08f0b094e431db2030126"
+        "sha256": "55fbc27bc01e367eb8dde58d82fa65b8c27faf69abe1e1acfb12727ce395fe2a"
       }
     ],
     "family_modules": 11,
@@ -7568,16 +7569,18 @@
     "classified_projections": 1308,
     "canonical_owners": 682,
     "http_operations": 92,
-    "component_schemas": 487,
+    "component_schemas": 488,
     "selected_s1_consumers": [
       "canonical Python beam results and composed JSON",
       "retained compliance result/report transport and pipeline JSON",
       "beam-v1 CLI design",
       "smart CLI current wrapped/standalone pipeline outputs, raw input retained",
       "canonical FastAPI v2 beam design",
-      "SmartDesigner default flow and original-basis sensitivity replay"
+      "SmartDesigner default flow and original-basis sensitivity replay",
+      "retained FastAPI v1 smart-analysis nullable failed-ratio projection"
     ],
-    "boundary": "Maintained inventories remain the owners; S3 completes deeper semantic contract matrices."
+    "boundary": "Maintained inventories remain the owners; S3 completes deeper semantic contract matrices.",
+    "baseline_component_schemas": 487
   },
   "compatibility_decisions": [
     {
@@ -7596,6 +7599,10 @@
     {
       "id": "S0-C04",
       "decision": "No IS456 formula/limit/table/factor/tolerance change or support expansion. Sensitivity retains original calculation parameters; undefined finite-difference basis has an explicit unavailable advisory state."
+    },
+    {
+      "id": "S0-C05",
+      "decision": "Affected retained smart HTTP response admits null governing utilization with typed UTILIZATION_NOT_EVALUATED reason; CodeCheck gains an optional typed unavailable marker; existing required governing field stays required, numeric values stay unchanged, HOLD is explicitly allowed. No request/schema-version/route change. This repairs previously invalid failure output and is an additive response extension for the selected next minor candidate."
     }
   ],
   "candidate_rebinding": {
@@ -7695,7 +7702,8 @@
     "focused_http": [
       "fastapi_app/tests/test_canonical_beam_v2.py",
       "fastapi_app/tests/test_typed_response_contracts.py",
-      "fastapi_app/tests/test_public_documentation_contract.py"
+      "fastapi_app/tests/test_public_documentation_contract.py",
+      "fastapi_app/tests/test_endpoints.py::TestAnalysisEndpoints"
     ],
     "retention": "13 current family recipes and declared invalid cases, preserving intentional FAIL/HOLD",
     "calculation_risk": "No engineering formula changes. Compare nominal arithmetic, original basis, failed-check identities and native ranking. Shared dataclass traversal also uses existing serialization tests.",
@@ -7743,7 +7751,7 @@
     },
     {
       "path": "Python/structural_lib/core/data_types.py",
-      "sha256": "6d9bc90c1fba87aaf57016fe3d2417f138508057e3535b3f3c96d26af7b6d5fd"
+      "sha256": "585ff278b9f702d7b84f0ff71c63ae688816c0d02e020f035469187f4afeb60b"
     },
     {
       "path": "Python/structural_lib/insights/sensitivity.py",
@@ -7783,19 +7791,31 @@
     },
     {
       "path": "Python/tests/unit/test_compliance.py",
-      "sha256": "f9e88f6c32ea3813b38c3f9e006755de1e01641f2d98ca8f930724b2df196add"
+      "sha256": "c0ccb8559a44ed7f260d7768265277eee2c8c6da1a346cc5cfa7dc287f64cdda"
+    },
+    {
+      "path": "fastapi_app/models/analysis.py",
+      "sha256": "5194444a46cfc44dd574d0faf9181e5c7aa04b76095c1b25a1e8929db914eec9"
+    },
+    {
+      "path": "fastapi_app/routers/analysis.py",
+      "sha256": "ecd2b340bc3f033a28c832249ff29da3258d5918366961845b3bcbd3b6af68d4"
     },
     {
       "path": "fastapi_app/tests/test_canonical_beam_v2.py",
       "sha256": "197b2070b8f7b43e3e603e5711a1b479057a92e56c8867ce202306212524b136"
+    },
+    {
+      "path": "fastapi_app/tests/test_endpoints.py",
+      "sha256": "350384f805afbd3cddc49bea32ced3c76f674410eae6dea0cfe2d3b7348a12ba"
     }
   ],
   "local_validation": {
     "scope": "S0/S1 local freeze; PR is authoritative for subsequent exact-head independent review, hosted checks and merge",
     "focused_population": {
-      "test_count": 248,
+      "test_count": 262,
       "by_file": {
-        "Python/tests/unit/test_compliance.py": 8,
+        "Python/tests/unit/test_compliance.py": 9,
         "Python/tests/integration/test_canonical_beam_facade.py": 24,
         "Python/tests/integration/test_canonical_transport_contract_v1.py": 3,
         "Python/tests/integration/test_cli.py": 87,
@@ -7805,12 +7825,13 @@
         "Python/tests/integration/test_beam_pipeline.py": 35,
         "fastapi_app/tests/test_canonical_beam_v2.py": 7,
         "fastapi_app/tests/test_typed_response_contracts.py": 5,
-        "fastapi_app/tests/test_public_documentation_contract.py": 4
+        "fastapi_app/tests/test_public_documentation_contract.py": 4,
+        "fastapi_app/tests/test_endpoints.py::TestAnalysisEndpoints": 13
       }
     },
     "focused_result": {
       "status": "PASS",
-      "total_validated": 248,
+      "total_validated": 262,
       "initial_run": {
         "passed": 246,
         "failed": 2
@@ -7824,14 +7845,26 @@
           "Python/tests/integration/test_smart_designer.py",
           "Python/tests/integration/test_insights_sensitivity.py"
         ],
-        "reason": "Updated legacy expectations: unavailable sensitivity warning is explicit; finite-failure fixture now uses actual finite shear failure, asserting finite derivatives. No runtime source changed after initial union run."
+        "reason": "Updated legacy expectations: unavailable sensitivity warning is explicit; finite-failure fixture now uses actual finite shear failure, asserting finite derivatives. No runtime source changed after initial union run. A further governing-report regression covers repeated case IDs; final 249-test union passed."
+      },
+      "final_union": {
+        "tests": 249,
+        "status": "PASS",
+        "failures": 0,
+        "errors": 0,
+        "reason": "Final shared report projection no longer assumes case identifiers are unique; whole focused union rerun after this outcome-changing repair."
       }
     },
     "typing": {
       "status": "PASS",
       "source_files": 325,
       "command": "../scripts/python_runtime.sh -m mypy",
-      "working_directory": "Python"
+      "working_directory": "Python",
+      "affected_core_recheck": {
+        "status": "PASS",
+        "command": "../scripts/python_runtime.sh -m mypy structural_lib/core/data_types.py",
+        "source_files": 1
+      }
     },
     "formatting": {
       "status": "PASS",
@@ -7842,7 +7875,8 @@
     "essential": {
       "status": "PASS",
       "checks": 12,
-      "command": "./run.sh check"
+      "command": "./run.sh check",
+      "final_recheck": "PASS:12/12 after affected legacy smart HTTP repair and reviewed OpenAPI update"
     },
     "api_compatibility": {
       "status": "PASS",
@@ -7855,9 +7889,7 @@
     "openapi_websocket_snapshot": {
       "status": "PASS",
       "operations": 92,
-      "component_schemas": 487,
-      "endpoint_changes": [],
-      "schema_changes": []
+      "component_schemas": 488
     },
     "family_retention": {
       "status": "PASS",
@@ -8017,7 +8049,8 @@
           }
         ],
         "failed_engineering_status": "FAIL",
-        "failed_finite_json": "FAIL"
+        "observed_engineering_status_after_json_roundtrip": "FAIL",
+        "finite_json_status": "PASS"
       }
     },
     "documentation": {
@@ -8031,6 +8064,86 @@
     },
     "independent_review": "NOT_RUN_AT_LOCAL_FREEZE; exact-head milestone PR carries final state",
     "required_hosted_checks": "NOT_RUN_AT_LOCAL_FREEZE; exact-head milestone PR carries final state",
-    "package_release": "NOT_AUTHORIZED_OR_PERFORMED"
+    "package_release": "NOT_AUTHORIZED_OR_PERFORMED",
+    "generated_caller_ledger": {
+      "status": "PASS_AFTER_RECEIPT_FREEZE",
+      "added_caller_records": [
+        {
+          "disposition": "OUT_OF_SCOPE_PRESERVED",
+          "module": "structural_lib",
+          "path": "docs/verification/library-s0-s1-20261029.json",
+          "public_name": "design",
+          "target": "structural_lib.design"
+        }
+      ],
+      "removed_caller_records": [],
+      "runtime_owner_projection_changes": false,
+      "boundary": "Final embedded recipe receipts add an assessment reference; current owners and projections unchanged."
+    },
+    "review_record_correction": "Independent reviewer identified ambiguous failed_finite_json label; it was an observed engineering FAIL after successful strict JSON roundtrip, now named explicitly with finite_json_status PASS.",
+    "affected_smart_http": {
+      "status": "PASS",
+      "tests": 13,
+      "failures": 0,
+      "command": "./scripts/python_runtime.sh -m pytest --no-cov -q fastapi_app/tests/test_endpoints.py::TestAnalysisEndpoints",
+      "case": "300x500 mm; d457 mm; L5000 mm; M25/Fe500; Mu2000 kNm; Vu75 kN",
+      "outcome": "200 admitted FAIL; null governing ratio; typed cause per governing/component; checks-hidden path preserves summary marker"
+    },
+    "openapi_semantic_review": {
+      "status": "PASS",
+      "diff": {
+        "endpoints": {
+          "added": [],
+          "removed": []
+        },
+        "schemas": {
+          "added": [
+            "UnavailableUtilization"
+          ],
+          "removed": [],
+          "changed": [
+            "CodeCheck",
+            "SmartDesignSummary"
+          ]
+        },
+        "baseline_endpoints": 92,
+        "current_endpoints": 92,
+        "baseline_schemas": 487,
+        "current_schemas": 488,
+        "details": [
+          "ADDED components.schemas.CodeCheck.properties.unavailable",
+          "CHANGED components.schemas.SmartDesignSummary.properties.design_status.enum.length: 3 -> 4",
+          "ADDED components.schemas.SmartDesignSummary.properties.governing_utilization.anyOf",
+          "REMOVED components.schemas.SmartDesignSummary.properties.governing_utilization.minimum",
+          "REMOVED components.schemas.SmartDesignSummary.properties.governing_utilization.type",
+          "ADDED components.schemas.SmartDesignSummary.properties.unavailable_utilizations",
+          "ADDED components.schemas.UnavailableUtilization"
+        ],
+        "websocket_details": [],
+        "has_changes": true
+      },
+      "required_fields": "governing_utilization stays required; only its previously invalid unavailable value becomes nullable",
+      "compatibility": "finite numeric responses and requests unchanged; optional typed cause fields and HOLD enum are additive; one new component schema; no endpoint or WebSocket change",
+      "snapshot_updated_after_review": true
+    },
+    "independent_python_review": {
+      "status": "PASS",
+      "reviewer": "Codex /root/coding_guidance_audit",
+      "scope": "Python owners and narrow 5-test independent slice; no main-process blocker; receipt label correction applied",
+      "boundary": "Final exact-head integrated HTTP delta review remains a PR gate."
+    },
+    "changed_schema_meta_validation": {
+      "status": "PASS",
+      "schemas": [
+        "UnavailableUtilization",
+        "CodeCheck",
+        "SmartDesignSummary"
+      ]
+    },
+    "fastapi_issues": {
+      "status": "PASS_WITH_EXISTING_ADVISORIES",
+      "critical": 0,
+      "boundary": "Existing unrelated config/async observations were not expanded into this S1 packet."
+    }
   }
 }
