@@ -1580,3 +1580,35 @@ TestPyPI/PyPI/GitHub publication and public hash readback remain separate.
 
 This prepared entry does not authorize a publication target, change Beta
 maturity, remove source/native HOLDs or imply professional approval.
+
+
+## Retained-artifact publication procedure — 29 October 2026
+
+For a version with a committed `library-<compact-version>-release-artifacts.json`
+record, the selected S6 plan takes precedence over the historical build-based
+commands. Preserve the qualified wheel/sdist; a draft release at the final
+publication commit transports those two files to Actions. Verify their actual
+uploaded bytes before dispatch. The following commands are templates: replace
+`<draft-release-id>` with the observed numeric ID. Run them only after the final
+metadata and exact-target authorization checks pass.
+
+```bash
+gh workflow run publish.yml --ref main -f version=0.26.0 -f publication_target=verify -f artifact_release_id=<draft-release-id>
+gh workflow run publish.yml --ref main -f version=0.26.0 -f publication_target=testpypi -f artifact_release_id=<draft-release-id>
+```
+
+After TestPyPI's two files match the retained hashes, create/push the exact tag
+at the verified publication commit if it does not already exist. Retained tag
+pushes never publish by themselves. Explicit production dispatch is:
+
+```bash
+gh workflow run publish.yml --ref v0.26.0 -f version=0.26.0 -f publication_target=pypi -f artifact_release_id=<draft-release-id>
+```
+
+The retained path checks package/source identities and reuses S5 qualification;
+it does not rebuild, run the source suite or repeat installed UAT. Production
+requires the exact TestPyPI file identities. GitHub draft promotion requires
+exact PyPI identities, rechecks attached assets, adds release evidence and then
+publishes. The qualified-base SBOM records the tested base dependency resolution;
+optional profiles remain separately qualified. Final registry and GitHub file
+readback plus public identity-only installation complete the release.

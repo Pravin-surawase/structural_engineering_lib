@@ -29,7 +29,8 @@
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
 work or override the selected programme above. S5's milestone PR owns its
-review/check/merge status. No S6 publication target is selected.
+review/check/merge status. S6 targets are selected; their effective authorization
+and publication evidence are recorded after the current review gates pass.
 
 ## Python Library Improvement — earlier delivery and qualification records
 

@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tarfile
+import urllib.error
 import zipfile
 
 import pytest
@@ -161,6 +162,9 @@ def test_draft_is_published_only_after_existing_package_assets_match(
         ],
     }
     calls = []
+    monkeypatch.setattr(
+        retained, "verify_registry", lambda *args, **kwargs: {"status": "PASS"}
+    )
 
     def fake_gh(*args, output=None):
         if output is None:
@@ -185,6 +189,55 @@ def test_draft_is_published_only_after_existing_package_assets_match(
         assert all(call[:3] == ["gh", "release", "upload"] for call in calls[:-1])
         assert calls[-1][:3] == ["gh", "release", "edit"]
         assert "--draft=false" in calls[-1] and "--verify-tag" in calls[-1]
+
+
+def test_direct_promotion_cannot_precede_exact_pypi_publication(candidate, monkeypatch):
+    repo, dist, evidence, _, _ = candidate
+
+    def absent_registry(*args, **kwargs):
+        raise ValueError("pypi does not yet contain the complete qualified pair")
+
+    monkeypatch.setattr(retained, "verify_registry", absent_registry)
+    monkeypatch.setattr(
+        retained,
+        "_gh",
+        lambda *args, **kwargs: pytest.fail("GitHub mutation before PyPI evidence"),
+    )
+    with pytest.raises(ValueError, match="pypi does not yet"):
+        retained.promote_draft(repo, "0.26.0", dist, evidence, "owner/repo", "123")
+
+
+@pytest.mark.parametrize("state", ["matching", "wrong-hash", "missing", "partial"])
+def test_registry_readback_requires_the_complete_exact_pair(
+    candidate, monkeypatch, state
+):
+    repo, _, _, _, record = candidate
+    data = {
+        "info": {"version": "0.26.0"},
+        "urls": [
+            {"filename": a["filename"], "digests": {"sha256": a["sha256"]}}
+            for a in record["artifacts"]
+        ],
+    }
+    if state == "wrong-hash":
+        data["urls"][0]["digests"]["sha256"] = "0" * 64
+    elif state == "partial":
+        data["urls"].pop()
+
+    def response(request, timeout):
+        if state == "missing":
+            raise urllib.error.HTTPError(
+                request.full_url, 404, "missing version", None, None
+            )
+        return io.BytesIO(retained.encoded(data))
+
+    monkeypatch.setattr(retained.urllib.request, "urlopen", response)
+    if state == "matching":
+        result = retained.verify_registry(repo, "0.26.0", "testpypi")
+        assert result["status"] == "PASS" and len(result["artifacts"]) == 2
+    else:
+        with pytest.raises(ValueError):
+            retained.verify_registry(repo, "0.26.0", "testpypi")
 
 
 @pytest.mark.parametrize(

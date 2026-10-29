@@ -757,6 +757,7 @@
         "run": "DangerFullAccess",
         "preflight": "ReadOnlyTerminal",
         "retained-check": "WorkspaceWrite",
+        "retained-registry-check": "ReadOnlyTerminal",
         "promote-retained": "DangerFullAccess"
       }
     },

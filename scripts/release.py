@@ -2612,6 +2612,16 @@ def build_parser() -> argparse.ArgumentParser:
         )
         retained.add_argument("--release-id", required=command == "promote-retained")
 
+    registry_check = sub.add_parser(
+        "retained-registry-check",
+        help="Read back exact qualified files from TestPyPI/PyPI",
+    )
+    registry_check.add_argument("--version", required=True)
+    registry_check.add_argument(
+        "--registry", required=True, choices=["testpypi", "pypi"]
+    )
+    registry_check.add_argument("--wait-seconds", type=float, default=0)
+
     return parser
 
 
@@ -2662,6 +2672,24 @@ def cmd_retained_check(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_retained_registry_check(args: argparse.Namespace) -> int:
+    """Read exact selected registry files without building or installing."""
+    from _lib.release_retained import verify_registry
+
+    try:
+        print(
+            json.dumps(
+                verify_registry(
+                    REPO_ROOT, args.version, args.registry, args.wait_seconds
+                )
+            )
+        )
+    except (OSError, ValueError, KeyError) as exc:
+        print(f"Registry identity gate failed: {exc}")
+        return 1
+    return 0
+
+
 def main() -> int:
     parser = build_parser()
     args = parser.parse_args()
@@ -2683,6 +2711,7 @@ def main() -> int:
         "candidate-check": cmd_candidate_check,
         "retained-check": cmd_retained_check,
         "promote-retained": cmd_retained_check,
+        "retained-registry-check": cmd_retained_registry_check,
     }
 
     return handlers[args.command](args)

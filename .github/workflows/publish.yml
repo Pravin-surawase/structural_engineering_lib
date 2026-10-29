@@ -183,10 +183,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ needs.validate.outputs.version }}
           RETAINED_RELEASE_ID: ${{ inputs.artifact_release_id }}
+          PUBLICATION_TARGET: ${{ needs.validate.outputs.target }}
         run: |
           python ../scripts/release.py retained-check --version "$RELEASE_VERSION" \
             --dist-dir dist --evidence-dir release-assets \
             --repository "$GITHUB_REPOSITORY" --release-id "$RETAINED_RELEASE_ID"
+          if [[ "$PUBLICATION_TARGET" == pypi ]]; then
+            python ../scripts/release.py retained-registry-check --version "$RELEASE_VERSION" \
+              --registry testpypi --wait-seconds 90 > release-assets/testpypi-readback.json
+          fi
           python -m pip install 'twine>=6,<7'
           python -m twine check dist/*
 

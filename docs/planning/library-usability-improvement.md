@@ -2126,7 +2126,9 @@ with respect to registries and publication.
    Confirm TestPyPI version/files/hashes and installed import identity.
 5. Create/push the exact version tag if absent, without replacing any tag.
    Dispatch production from that tag, explicitly selecting PyPI. Before uploads,
-   the existing owner/review gates and exact hashes apply. Publish the populated
+   the existing owner/review gates and exact hashes apply. Production also checks
+   the exact TestPyPI registry files; draft promotion checks exact PyPI files.
+   Publish the populated
    draft only after PyPI succeeds; attach verified evidence without rebuilding
    or replacing package assets. Record the final manifest, run and asset IDs.
 6. Independently read back PyPI and GitHub Release files, match both retained

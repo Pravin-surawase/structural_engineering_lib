@@ -12,6 +12,9 @@ import os
 import re
 import subprocess
 import tempfile
+import time
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Any
 
@@ -196,6 +199,53 @@ def verify_retained(
     return manifest
 
 
+def verify_registry(
+    repo: Path, version: str, registry: str, wait_seconds: float = 0
+) -> dict[str, Any]:
+    """Require the preceding registry phase's exact immutable file identities."""
+    if registry not in ("testpypi", "pypi") or not 0 <= wait_seconds <= 90:
+        raise ValueError("Select testpypi/pypi and a wait between0 and90 seconds")
+    record = json.loads(record_path(repo, version).read_text())
+    expected = {item["filename"]: item["sha256"] for item in record["artifacts"]}
+    host = "test.pypi.org" if registry == "testpypi" else "pypi.org"
+    url = f"https://{host}/pypi/structural-lib-is456/{version}/json"
+    deadline = time.monotonic() + wait_seconds
+    while True:
+        try:
+            request = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
+            with urllib.request.urlopen(request, timeout=30) as response:
+                data = json.load(response)
+        except urllib.error.HTTPError as exc:
+            if exc.code != 404:
+                raise ValueError(f"{registry} readback failed: HTTP{exc.code}") from exc
+            data = None
+        if data is not None:
+            actual = {
+                item["filename"]: item["digests"]["sha256"] for item in data["urls"]
+            }
+            if data["info"]["version"] != version or any(
+                name not in expected or sha != expected[name]
+                for name, sha in actual.items()
+            ):
+                raise ValueError(
+                    f"{registry} has different files/hashes for the selected version"
+                )
+            if actual == expected:
+                return {
+                    "schema_version": "retained-registry-readback/v1",
+                    "status": "PASS",
+                    "registry": registry,
+                    "version": version,
+                    "source_url": url,
+                    "artifacts": actual,
+                }
+        if time.monotonic() >= deadline:
+            raise ValueError(
+                f"{registry} does not yet contain the complete qualified pair"
+            )
+        time.sleep(min(3, max(0, deadline - time.monotonic())))
+
+
 def promote_draft(
     repo: Path,
     version: str,
@@ -206,6 +256,8 @@ def promote_draft(
 ) -> None:
     """Attach verified evidence once and publish the already populated draft."""
     verify_retained(repo, version, dist, evidence)
+    readback = verify_registry(repo, version, "pypi", wait_seconds=90)
+    (evidence / "pypi-readback.json").write_bytes(encoded(readback))
     release = _release(repo, version, repository, release_id)
     if _git(repo, "rev-parse", f"refs/tags/v{version}^{{commit}}") != _git(
         repo, "rev-parse", "HEAD"
