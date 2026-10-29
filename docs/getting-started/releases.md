@@ -27,7 +27,13 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ## Release Process
 
-### Publication policy
+Use the [current release process](#current-release-process-29-october-2026)
+and the selected [S5/S6 candidate plan](../planning/library-usability-improvement.md#s5-s6-efficient-artifact-and-release-plan--29-october-2026).
+The older Alpha-only procedures below are retained historical instructions;
+they do not select the current version or override the current normal/Alpha
+policy and exact-target publication authorization.
+
+### Historical Alpha publication policy
 
 `v0.23.1a2` is the currently published Alpha development preview. It is a
 historical release identifier and remains case-qualified; it does not imply
@@ -61,7 +67,7 @@ and no unresolved blocker. Alpha publication evidence does not grant qualified
 structural-engineering approval; that review remains a separate owner and
 qualified-engineer decision.
 
-### For maintainers: How to publish a new release
+### Historical Alpha maintainer procedure
 
 1. **Run preflight checks:**
    ```bash
@@ -103,7 +109,7 @@ qualified-engineer decision.
    .venv/bin/python scripts/release.py verify --version 0.X.YaN --source pypi --skip-cli
    ```
 
-### TestPyPI (for testing before release)
+### Historical Alpha TestPyPI procedure
 
 Use workflow_dispatch for a candidate version in `X.Y.ZaN` format:
 1. Go to Actions → Publish Release → Run workflow.
@@ -1561,3 +1567,16 @@ Pages deployment. Each release requires its own owner authorization and exact
 artifact/source/registry readback. Existing normalized IS-data source-use and
 public-distribution permission is passed; do not reopen that completed gate.
 GitHub Pages/native-host/professional claims need their separate evidence.
+
+
+## v0.26.0 — Prepared candidate (unreleased; on hold)
+
+The owner selected S5 preparation/qualification of the normal 0.26.0 candidate
+following S4 PR #1039. It is **not tagged or published**. Public0.25.0 remains the
+released package while S5 verifies the frozen wheel/sdist, installed profiles,
+independent references and physical/report outputs. The selected plan and S5
+execution receipt own candidate acceptance; S6 target-specific authorization,
+TestPyPI/PyPI/GitHub publication and public hash readback remain separate.
+
+This prepared entry does not authorize a publication target, change Beta
+maturity, remove source/native HOLDs or imply professional approval.

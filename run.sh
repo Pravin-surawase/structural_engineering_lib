@@ -333,14 +333,14 @@ Subcommands:
   publication-surface-check Validate final dated metadata before authorization
 
 Examples:
-  ./run.sh release preflight 0.24.0a1  # Validate an Alpha publication candidate
-  ./run.sh release run 0.24.0a1        # Bump to an Alpha publication candidate
-  ./run.sh release verify --version 0.24.0a1  # Verify exact release artifact
-  ./run.sh release verify --version 0.24.0a1 --source pypi --identity-only
-  ./run.sh release check-docs        # Check version in docs
-  ./run.sh release permission-check  # Check standing distribution permission
-  ./run.sh release footing-inclusion-check  # Check footing release inclusion
-  ./run.sh release publication-surface-check --version 0.24.0a1
+  ./run.sh release run 0.26.0 --no-open  # Prepare unpublished candidate metadata
+  ./run.sh release preflight --wheel Python/dist/structural_lib_is456-0.26.0-py3-none-any.whl
+  ./run.sh release verify --version 0.26.0 --source wheel
+  ./run.sh release verify --version 0.26.0 --source pypi --identity-only
+  ./run.sh release check-docs
+  ./run.sh release permission-check
+  ./run.sh release footing-inclusion-check
+  ./run.sh release publication-surface-check --version 0.26.0
 EOF
 }
 

@@ -11,7 +11,7 @@ tags: [beam, canonical-api, lib-pro-013-b0]
 
 Workflow ID: `is456.beam.design/v1` (design, design-and-detail, and BBS modes)
 
-Prepared recipe version: `structural-lib-is456==0.25.0`.
+Prepared recipe version: `structural-lib-is456==0.26.0`.
 
 Confirm publication of the prepared version before registry installation.
 

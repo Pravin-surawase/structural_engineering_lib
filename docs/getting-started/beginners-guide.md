@@ -13,7 +13,7 @@ tags: []
 **Audience:** Users
 **Status:** Approved
 **Importance:** High
-**Version:** 0.25.0
+**Version:** 0.26.0
 **Created:** 2025-12-15
 **Last Updated:** 2026-10-29
 
@@ -51,13 +51,13 @@ version bump alone does not make a candidate available to install.
 
 ```bash
 python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456==0.25.0"
+python3 -m pip install "structural-lib-is456==0.26.0"
 python3 -m structural_lib install-preflight
 ```
 
 Optional (only if you want DXF drawings):
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]==0.25.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.26.0"
 ```
 
 ### Step 4: Run a first check (no files yet)
@@ -148,7 +148,7 @@ remains a separate gate and is not established by this Python starter replay.
 ## Common fixes
 - "Module not found": make sure the virtual environment is active.
 - "python3 not found" on Windows: use `py` instead of `python3`.
-- DXF not working: install `structural-lib-is456[dxf]==0.25.0`.
+- DXF not working: install `structural-lib-is456[dxf]==0.26.0`.
 
 ---
 
@@ -160,4 +160,4 @@ remains a separate gate and is not established by this Python starter replay.
 - API reference: `docs/reference/api.md`
 - Learning path: `docs/learning/README.md`
 
-Document Version: 0.25.0 | Last Updated: 2026-10-29
+Document Version: 0.26.0 | Last Updated: 2026-10-29

@@ -837,6 +837,7 @@ def _clean_env(installed_root: Path) -> dict[str, str]:
     }
     env["PYTHONPATH"] = os.pathsep.join((str(installed_root), str(REPO_ROOT)))
     env["PYTHONDONTWRITEBYTECODE"] = "1"
+    env["F0_INSTALLED_ROOT"] = str(installed_root)
     return env
 
 
@@ -875,11 +876,21 @@ def verify(wheel: Path) -> dict[str, Any]:
         )
         if install.returncode:
             raise RuntimeError(install.stderr)
-        probe = (
-            "import json; "
-            "from scripts.verify_lib_pro_013_f0_family_artifact import run_recipes; "
-            "print(json.dumps(run_recipes()))"
-        )
+        probe = """
+import json, os, sys
+from pathlib import Path
+import structural_lib
+from scripts.verify_lib_pro_013_f0_family_artifact import run_recipes
+installed = Path(os.environ['F0_INSTALLED_ROOT']).resolve()
+origin = Path(structural_lib.__file__).resolve()
+assert origin.is_relative_to(installed), f'Foreign package import: {origin}'
+recipes = run_recipes()
+for name, module in list(sys.modules.items()):
+    location = getattr(module, '__file__', None)
+    if name.startswith('structural_lib') and location:
+        assert Path(location).resolve().is_relative_to(installed), name
+print(json.dumps({'recipes': recipes, 'installed_origin': str(origin)}))
+"""
         result = subprocess.run(
             [sys.executable, "-c", probe],
             cwd=temp_root,
@@ -892,13 +903,15 @@ def verify(wheel: Path) -> dict[str, Any]:
             raise RuntimeError(
                 f"source-free recipe probe failed\n{result.stdout}\n{result.stderr}"
             )
-        receipts = json.loads(result.stdout)
+        decoded = json.loads(result.stdout)
+        receipts = decoded["recipes"]
         return {
             "schema_version": "lib-pro-013-f0-artifact-evidence/v1",
             "wheel": str(wheel),
             "wheel_sha256": _sha256(wheel),
             "recipe_count": len(receipts),
             "source_free": True,
+            "installed_origin": decoded["installed_origin"],
             "recipes": receipts,
         }
 

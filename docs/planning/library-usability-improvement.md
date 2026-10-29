@@ -1957,12 +1957,12 @@ the engineering owner; no external-reviewer dependency is reintroduced.
 
 | Gate | Required outcome and evidence |
 | --- | --- |
-| S5-A1 — coherent candidate | One prepared/unpublished version across package, app, API, citation and active guidance; current public0.25.0 remains identified. Preserve historical release facts, exclusions and HOLDs. |
+| S5-A1 — coherent candidate | One prepared/unpublished version across package, app, API, citation and active guidance; current public 0.25.0 remains identified. Preserve historical release facts, exclusions and HOLDs. |
 | S5-A2 — one frozen distribution pair | Build one wheel/sdist pair after implementation/docs freeze. Record SHA256, build inputs, source commit and Python-tree identity. Inspect membership/data/templates and reject forbidden research/migration/test payloads. Evidence-only integration commits must preserve the exact frozen build-input tree; runtime/build-input repairs invalidate and rebuild/requalify the affected candidate. |
-| S5-A3 — isolated base/contract/numerical behavior | Fresh installed wheel and sdist environments prove site-packages origin before/after execution, declared dependencies and pip-check. Replay all13 promoted family journeys, their106 S4 independent metrics and valid/invalid/FAIL/HOLD behavior; retain S0/S3 canonical Python/CLI/HTTP/WS/batch coverage through existing drivers. No checkout structural_lib import or broad root requirements may mask missing dependencies. |
-| S5-A4 — declared extras | Inventory every declared extra: dev,dxf,render,report,pdf,validation,cad,pmm,docs,etabs. Verify each dependency closure in an isolated profile and exercise its advertised non-native behavior. Windows-only etabs markers are checked on this Mac; installed Windows/Excel/ETABS acceptance stays explicit and unclaimed. Experimental cad/pmm boundaries remain unchanged. |
+| S5-A3 — isolated base/contract/numerical behavior | Fresh installed wheel and sdist environments prove site-packages origin before/after execution, declared dependencies and pip-check. Replay all 13 promoted family journeys, their 106 S4 independent metrics and valid/invalid/FAIL/HOLD behavior; retain S0/S3 canonical Python/CLI/HTTP/WS/batch coverage through existing drivers. No checkout structural_lib import or broad root requirements may mask missing dependencies. |
+| S5-A4 — declared extras | Inventory every declared extra: dev,dxf,render,report,pdf,validation,cad,pmm,docs,etabs. Also verify the promoted combined export installation `[dxf,render,report,pdf,validation]`. Verify each dependency closure in an isolated profile and exercise its existing advertised non-native behavior. The cad extra currently supplies PyVista only: record dependency availability, no public library CAD/STL exporter, and native CAD HOLD. Windows-only etabs markers are checked on this Mac; installed Windows/Excel/ETABS acceptance stays explicit and unclaimed. The pmm experimental boundary remains unchanged. |
 | S5-A5 — installed physical/output fidelity | From the installed export-capable wheel replay ordinary and multilayer member cases, parse actual JSON/BBS/DXF identities/paths/layers/lengths/masses and HTML/PDF/report outputs, then inspect rendered artifacts. Bind results to the exact distribution hashes. Package data/template probes must execute from installed resources. |
-| S5-A6 — representative performance | Measure fixed valid ordinary-beam, batch and family workflows with warmups/repeated timings, record environment and error counts. Set budgets before measurement; compare supported common calls with the public0.25.0 baseline when suitable. This is a representative regression check, not a general speed guarantee. |
+| S5-A6 — representative performance | Measure fixed valid ordinary-beam, batch and family workflows with warmups/repeated timings, record environment and error counts. Set budgets before measurement; compare supported common calls with the public 0.25.0 baseline when suitable. This is a representative regression check, not a general speed guarantee. |
 | S5-A7 — one integrated verification cycle | Finish code/docs/tests first. Run affected focused checks, one named broad Python release regression and affected FastAPI/React through the canonical frozen-candidate preflight. Use only `preflight --wheel <exact-path>` after the version bump; do not duplicate a pre-bump full suite or Docker path. Independent exact-head reviews and required hosted checks bind the final milestone PR. Repairs rerun affected evidence only. |
 | S5-A8 — reviewed integration | One milestone PR integrates the accepted candidate. Verify final reviewed/merged tree and frozen Python/build-input identity; retain exact artifact, environment, numerical, export and timing receipts. All support exclusions/HOLDs remain visible. S5 completes without any publication target. |
 
@@ -1999,3 +1999,31 @@ Reuse exact installed UAT for identical bytes; rerun it only if identity differs
 or prior evidence does not cover the selected target. Final public readback
 must match the accepted manifest. Native/professional-use claims retain their
 separate evidence; a normal software release grants neither by itself.
+
+
+S5 timing budgets are frozen before measurement: ordinary-beam p95 <=100ms,
+100-member batch p95 <=2000ms, and each family journey p95 <=1000ms. Warmups and
+sample counts are retained in the receipt. Common valid beam/batch median time
+must not exceed 3x the public 0.25.0 baseline measured on the same host/runtime;
+absolute budgets also apply. No unrelated or intentionally corrected FAIL/HOLD
+case is used to claim a speed improvement.
+
+
+### Frozen S5 execution commands
+
+After the cohesive implementation commit is clean, build and qualify the exact
+pair. The example evidence directory is outside the Git checkout so receipts
+cannot dirty the frozen source; the execution receipt retains the actual path.
+
+```bash
+./scripts/python_runtime.sh -m build Python
+./run.sh release verify --qualification --version 0.26.0 --source wheel --sdist Python/dist/structural_lib_is456-0.26.0.tar.gz --receipt ../library-s5-evidence/qualification.json
+./run.sh release preflight --wheel Python/dist/structural_lib_is456-0.26.0-py3-none-any.whl
+```
+
+The qualifier defaults to all15 profiles: base, sdist, each of10 declared extras,
+the promoted combined export extras, canonical application transport, and the
+public0.25.0 performance baseline. Use `--qualification-profiles` only for an
+explicit affected-evidence repair against identical artifact hashes; incomplete
+populations remain PARTIAL. Source preflight and exact installed profiles must
+both pass before S5 acceptance. No command above selects publication.

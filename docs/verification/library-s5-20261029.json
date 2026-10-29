@@ -2,7 +2,7 @@
   "schema_version": "library-s5-execution/v1",
   "task": "LIB-S5-20261029",
   "objective": "Plan S5/S6 efficiently and execute S5 artifact qualification",
-  "status": "PLANNED_IMPLEMENTATION_ACTIVE",
+  "status": "IMPLEMENTED_CANDIDATE_FREEZE_AND_ARTIFACT_EXECUTION_PENDING",
   "branch": "codex/lib-s5-artifact",
   "base": "a39e02b24c85ed1c2852021c3e511375366b9112",
   "worktree": "/Users/pravinsurawase/.codex/worktrees/library-s5-artifact/structural_engineering_lib",
@@ -111,5 +111,65 @@
     "S6 per-target publication authorization and public hash readback",
     "Full amendment qualification HOLD retained",
     "Native Excel/ETABS/XLL/CAD/fabrication/professional acceptance remains separately bounded"
+  ],
+  "preparation": {
+    "version_tool": "./run.sh release run 0.26.0 --no-open; upgrade validated without broad pre-bump suites",
+    "source_surface_errors": [],
+    "official_pypi_latest": "0.25.0",
+    "candidate_already_public": false,
+    "public025_wheel_sha256": "0a1c3123f4296a99d3c076667b05f02aa6b387e62ce5d303670f74f86ff2b23e",
+    "public025_sdist_sha256": "55902805eec900ce40914b658cdbf5134a46d1dc5b7818fbc1a31ecf298661c8"
+  },
+  "artifact_verifier": {
+    "owner": "scripts/release.py verify --qualification",
+    "helpers": [
+      "scripts/_lib/release_qualification.py",
+      "scripts/_lib/release_qualification_probe.py"
+    ],
+    "profiles": [
+      "base",
+      "sdist",
+      "dev",
+      "dxf",
+      "render",
+      "report",
+      "pdf",
+      "validation",
+      "cad",
+      "pmm",
+      "docs",
+      "etabs",
+      "exports",
+      "transport",
+      "baseline"
+    ],
+    "existing_drivers": "F0 contracts, canonical transport and S0 artifact drivers reused; F0 origin proof corrected",
+    "cad": "dependency-only availability, no current public library CAD/STL exporter; nativeHOLD",
+    "performance_budgets": {
+      "beam_p95_ms": 100,
+      "batch100_p95_ms": 2000,
+      "family_p95_ms": 1000,
+      "median_regression_factor": 3
+    },
+    "combined_export_extras": [
+      "dxf",
+      "render",
+      "report",
+      "pdf",
+      "validation"
+    ]
+  },
+  "local_prebuild_checks": {
+    "focused_release_qualification_environment_version_contracts": "PASS; not slow selected",
+    "essential_changed_area_checks": "12/12 PASS",
+    "control_plane": "PASS;125operations/109scripts",
+    "session_record": "PASS",
+    "efficiency": "PASS",
+    "source_surface_version_errors": []
+  },
+  "next_actions": [
+    "Freeze implementation commit and build exact wheel/sdist pair.",
+    "Run all15 isolated qualification profiles and inspect rendered outputs.",
+    "Run one final canonical artifact preflight, then record evidence and finish exact-head reviews/required hosted integration without publication."
   ]
 }

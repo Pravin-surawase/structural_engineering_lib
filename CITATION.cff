@@ -1,8 +1,7 @@
 cff-version: 1.2.0
 title: "Structural Engineering Library (IS 456)"
-version: 0.25.0
-date-released: 2026-10-03
-message: "Owner-authorized normal software release v0.25.0. Case-qualified workflows still require independent verification and qualified professional review for engineering use."
+version: 0.26.0
+message: "Prepared normal software candidate v0.26.0; not tagged or published. Supported-case and professional/native acceptance boundaries remain explicit."
 repository-code: "https://github.com/Pravin-surawase/structural_engineering_lib"
 url: "https://pypi.org/project/structural-lib-is456/"
 authors:
