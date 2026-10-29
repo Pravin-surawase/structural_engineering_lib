@@ -247,6 +247,7 @@ def qualify_artifacts(
                 / "Python/tests/data/benchmark_vectors/family_review_reference.json",
                 repo / "Python/examples/complete_member_workflow.py",
                 repo / "scripts/dxf_render.py",
+                repo / "Python/tests/performance/test_benchmarks.py",
             )
         },
         "limits": [

@@ -456,6 +456,34 @@ def run_probe(config: dict[str, Any]) -> dict[str, Any]:
         for module in ("pytest", "hypothesis", "numpy", "black", "mypy", "ruff"):
             importlib.import_module(module)
         result["development_dependencies"] = "AVAILABLE"
+        import pytest
+
+        # Exercise the actual plugin fixture: importing it misses compatibility
+        # failures between a newly resolved pytest and pytest-benchmark.
+        driver = Path.cwd() / "test_installed_benchmark.py"
+        shutil.copyfile(repo / "Python/tests/performance/test_benchmarks.py", driver)
+        configuration = Path.cwd() / "pytest.ini"
+        configuration.write_text(
+            "[pytest]\nmarkers =\n    performance: numerical benchmark\n"
+        )
+        junit = Path(config["output"]) / "benchmark-plugin.xml"
+        code = pytest.main(
+            [
+                "-q",
+                "-c",
+                str(configuration),
+                "--confcutdir",
+                str(Path.cwd()),
+                "--junitxml",
+                str(junit),
+                str(driver) + "::test_benchmark_calculate_mu_lim",
+            ]
+        )
+        if code != 0:
+            raise AssertionError(
+                "Declared dev dependencies cannot execute benchmark fixture"
+            )
+        result["benchmark_fixture"] = {"status": "PASS", "junit": str(junit)}
     if profile == "docs":
         import mkdocs
 
