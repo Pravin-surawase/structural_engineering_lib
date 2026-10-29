@@ -4,36 +4,25 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-10-29
-- Focus: Qualify the prepared 0.26.0 wheel/sdist and installed profiles efficiently; preserve the S6 publication boundary.
+- Focus: Execute S6 retained-artifact release with one studied tooling packet and exact public hash readback.
 - Completed: S4 #1039 merged at a39e02b2; prepared unpublished 0.26.0; all16 installed profiles,17 examples/eight guide checks,106 independent metrics and eight PDF reviews passed. Final canonical preflight passed8814 Python tests,626 FastAPI tests and React build. Milestone PR owns S5 review/check/merge facts.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
 ## Current boundary — 29 October 2026
 
-S5 is selected on `codex/lib-s5-artifact` from fetched main
-`a39e02b24c85ed1c2852021c3e511375366b9112`. Codex `/root` is the sole Mac
-writer. S0/S1 #1032, S2 #1034, maintenance #1035, S3 #1038 and S4 #1039 are
-integrated. Preserve their worktrees/artifacts. Pravin Surawase is the
-engineering owner; no external-reviewer dependency is reintroduced.
+S5 completed in PR #1040 at `f21fb555`; all16 retained-artifact profiles and
+required/Weekly checks passed. S6 is now selected on `codex/lib-s6-release`.
+The [S6 studied plan](library-usability-improvement.md#s6-studied-release-plan--29-october-2026)
+requires one publisher/tooling packet, then the bounded final metadata and
+per-target authorization packet. Preserve the qualified pair and Python tree;
+never substitute a timestamp-different rebuild. The release ledger, registry
+and release assets own publication status. No duplicate S5 numerical/installed
+matrix or broad local suite is selected for unchanged package content.
 
-| State | Next action / claim boundary |
-|---|---|
-| **Current** | Prepared/unpublished 0.26.0;16 installed profiles and final source preflight passed on the rebuilt pair with bounded dev dependencies. Final build/review Python trees match; superseded bytes/evidence are preserved separately. Public version remains 0.25.0. |
-| **Next** | The [S5 milestone PR #1040](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) owns exact-head reviews, required checks and accepted merge identity. After its integration S5 is complete; do not repeat qualification for identical bytes. |
-| Later gates | S6 consumes the accepted bytes and requires exact-target owner authorization for TestPyPI/tag/PyPI/GitHub Release and public readback. |
-| Preserved boundaries | Full-amendment, native/fabrication/professional HOLDs remain explicit. CAD extra is dependency-only with no current public exporter; PMM remains experimental; ETABS marker checks do not establish native acceptance. |
-
-The [task board](../TASKS.md), [programme](library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence)
-and [S5 receipt](../verification/library-s5-20261029.json) own current work.
-Source preflight repaired client pins and a DXF fixture; hosted checks then
-exposed optional-import classification and pytest-benchmark compatibility.
-The final metadata-bounded pair passed all16 profiles, including an actual
-benchmark fixture, and a new green `preflight --wheel`.
-Do not repeat broad source/installed suites for an unchanged candidate.
-Archive timestamps can change sdist rebuild bytes. Preserve the final qualified
-pair for S6; the old metadata-unbounded pair is explicitly superseded.
-No publication target or new native mutation is selected.
+Pravin Surawase is engineering owner; no external-reviewer dependency is added.
+Native/fabrication/professional and full-amendment HOLDs remain explicit. CAD is
+dependency-only; PMM remains experimental. S6 does not close those later gates.
 
 ## Historical handoff boundary — 1 October 2026
 

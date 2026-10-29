@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ## [0.26.0] — Prepared candidate (unreleased; on hold)
 
-This source candidate incorporates the accepted S0–S4 professional-quality
-programme. S5 package qualification is in progress; no v0.26.0 tag, TestPyPI/PyPI
-publication or GitHub Release is authorized or claimed.
+This source candidate incorporates the accepted S0–S5 quality programme.
+The retained wheel/sdist passed all16 installed profiles,17 standalone examples,
+106 independent numerical comparisons per archive and eight PDF output reviews.
+S6 is selected; final publication authorization and public readback are recorded
+separately from this prepared candidate.
 
 ### Fixed
 
@@ -20,6 +22,8 @@ publication or GitHub Release is authorized or claimed.
   the link offset and bind resolved paths, section positions, BBS and issue state.
 - First-use examples, active guide routing, optional-install pins, PDF layout,
   API signature ownership and known client quantity/status handling agree.
+- The dev extra bounds pytest below9.2 for compatibility with pytest-benchmark;
+  the actual benchmark fixture is exercised in the installed qualification.
 
 ### Added and compatibility
 

@@ -27,9 +27,9 @@ workflows under IS 456:2000.
 > [!IMPORTANT]
 > Target release classification (publication state is separate):
 > **v0.26.0 is a normal software release of the audited supported scope.**
-> This describes the target version format and scope. The candidate remains
-> prepared and unpublished until the [release ledger](docs/getting-started/releases.md)
-> records final publication. Support is case-qualified; complete IS 456 coverage
+> This describes the version format and scope. Publication state and verified
+> artifact identities are recorded in the [release ledger](docs/getting-started/releases.md)
+> and matching registry/release assets. Support is case-qualified; complete IS 456 coverage
 > and professional design approval are not claimed.
 > Outputs require independent review by a qualified structural engineer before
 > engineering or construction use. Broader library development and the one
