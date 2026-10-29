@@ -1,0 +1,586 @@
+{
+  "schema_version": "library-s4-execution/v1",
+  "task": "LIB-S4-20261029",
+  "status": "LOCAL_CANDIDATE_VERIFIED;EXACT_HEAD_REVIEW_AND_INTEGRATION_OWNED_BY_MILESTONE_PR",
+  "base": "7e19a23b829022da98f562104f47b3fda6cbb85e",
+  "branch": "codex/lib-s4-engineering",
+  "worktree": "/Users/pravinsurawase/.codex/worktrees/library-s4-engineering/structural_engineering_lib",
+  "source_bound": true,
+  "owner_decision": {
+    "engineering_owner": "Pravin Surawase, owner self-identifies as structural engineer",
+    "external_review_dependency": "Removed by direct owner instruction on 2026-10-29",
+    "required": "Independent numerical checks and technical reviews; no project-specific professional approval implied"
+  },
+  "requirements": [
+    {
+      "id": "S4-A1",
+      "status": "LOCAL_EVIDENCE_PASS"
+    },
+    {
+      "id": "S4-A2",
+      "status": "LOCAL_EVIDENCE_PASS"
+    },
+    {
+      "id": "S4-A3",
+      "status": "LOCAL_EVIDENCE_PASS"
+    },
+    {
+      "id": "S4-A4",
+      "status": "LOCAL_EVIDENCE_PASS"
+    },
+    {
+      "id": "S4-A5",
+      "status": "LOCAL_EVIDENCE_PASS"
+    },
+    {
+      "id": "S4-A6",
+      "status": "LOCAL_EVIDENCE_PASS"
+    },
+    {
+      "id": "S4-A7",
+      "status": "FINAL_EXACT_HEAD_EVIDENCE_ON_PR"
+    },
+    {
+      "id": "S4-A8",
+      "status": "FINAL_EXACT_HEAD_EVIDENCE_ON_PR"
+    }
+  ],
+  "scope": {
+    "family_journeys": 13,
+    "complete_member_cases": [
+      "single-layer",
+      "multilayer"
+    ],
+    "governing_branches": [
+      "beam",
+      "material profile",
+      "flanged beam",
+      "column strain compatibility",
+      "SLS Annex C"
+    ],
+    "claim_owners": [
+      "Python/structural_lib/services/capabilities.py",
+      "Python/structural_lib/services/family_facade_registry.py",
+      "docs/planning/library-usability-improvement.md"
+    ],
+    "support_boundary": "Thirteen promoted IS456 facade journeys and ordinary/multilayer member profiles; governing unchanged branches retain their maintained support extent and independent references. No replacement of a supported claim by these demonstration inputs."
+  },
+  "controlled_sources": [
+    {
+      "id": "IS456-CONTROLLED-COLLECTION",
+      "sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+      "hash_verified": true,
+      "locators": {
+        "beam_and_column": "PDF70-74,76; Cl38.1/39.6/40.4 and AnnexG/Fig21/Fig23",
+        "slab": "PDF37 Tables12/13; PDF91-92 AnnexD/Tables26/27; issued A3/A5 bounds retained",
+        "wall": "PDF62-63, printed61-62; Cl32.2/32.5",
+        "stair_deep_flat_footing": "Cl33,29,31,34 and existing reference/benchmark packets"
+      }
+    },
+    {
+      "id": "IS456-AMD6-2024",
+      "sha256": "4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881",
+      "hash_verified": true,
+      "locators": "Issued June2024 Amendment6, selected Cl41.3.2 instruction does not amend Cl40.4 stirrup design-strength limit; existing full amendment disposition matrix retained."
+    }
+  ],
+  "confirmed_findings": [
+    {
+      "id": "S4-F01",
+      "problem": "Generic DXF omits link in longitudinal elevation position and collapses physical layers; complete-member workflow has no path-derived DXF.",
+      "owner": "Python/structural_lib/services/dxf_export.py and promoted complete-member output composition",
+      "independent_reproducer": "B1 bottom centre expected 40+8+16/2=56 mm, drawn 48 mm. Multilayer needs 50/125 mm levels and centroid 412.5 mm.",
+      "status": "REPAIRED",
+      "resolution": "Single-row elevation includes link offset; unresolved multilayer generic elevation raises ValueError with physical API route. Additive resolved-path API preserves all physical bars, section layers, identities, BBS and issue state.",
+      "compatibility": "Three mark-comparison fixtures and one DXF smoke fixture now explicitly use single-row detailing. The original two-layer specimen has a direct/facade rejection regression and no output file; genuine multilayer export is verified using43 resolved physical paths. compute_dxf retains structured CONSUMER_RESULT_NOT_ACCEPTED."
+    },
+    {
+      "id": "S4-F02",
+      "problem": "Complete-member path seeds force layer1 although supplied bars include layer2.",
+      "owner": "Python/examples/complete_member_workflow.py",
+      "resolution": "Propagate each supplied BarPosition.layer to its path seed; resolved geometry and package identity agree.",
+      "status": "REPAIRED"
+    },
+    {
+      "id": "S4-F03",
+      "problem": "Fe500 property-line strap vertical-stirrup design overstates capacity and understates minimum area.",
+      "root_cause": "Raw longitudinal fy reused in Cl40.4/26.5.1.6 vertical-stirrup checks instead of cap415.",
+      "owner": "Python/structural_lib/codes/is456/strap_footing/strength.py",
+      "independent_reproducer": "Valid canonical input gives requiredVus176.701047839kN; raw500 capacity191.322992604 falselyPASS; capped415 capacity158.798083861 mustFAIL. Other strength/detail checks pass.",
+      "resolution": "Use min(fy,415) for minimum Asv and vertical-stirrup capacity only; retain longitudinal grade and separate torsion41.4.3.",
+      "status": "REPAIRED"
+    },
+    {
+      "id": "S4-F04",
+      "problem": "Ordinary HTTP/WS beam Asv/s uses Fe500 despite core spacing already using415.",
+      "root_cause": "Shared transport projection repeats the shear conversion with uncapped grade.",
+      "owner": "fastapi_app/beam_projection.py",
+      "independent_reproducer": "300x500,d442,Mu150,Vu150,M25/Fe500: reported.401821047987 vs correct.484121744562mm2/mm; both transports share projection.",
+      "resolution": "Cap vertical-stirrup design grade415 in Asv/s projection, leaving torsion-specific quantities with their owner.",
+      "status": "REPAIRED"
+    }
+  ],
+  "evidence_gaps": [
+    {
+      "id": "S4-E01",
+      "problem": "Family contract recipes do not themselves furnish independent numerical expected values per journey.",
+      "action": "Bind all13 family journeys and governing branches to controlled reference lineage, expected/actual values, units and frozen tolerances.",
+      "status": "RESOLVED_FOR_DECLARED_POPULATION;106 independent numerical metrics, source methods/units/tolerances and exact13 input hashes"
+    }
+  ],
+  "later_gates": [
+    "S5 final-version artifact qualification",
+    "S6 per-release authorization/publication",
+    "Native CAD/Excel/ETABS/XLL and fabrication acceptance remain separately bounded."
+  ],
+  "next_actions": [
+    "Exact candidate technical review and required hosted checks on milestone PR; merge only unchanged reviewed head with no blocker.",
+    "After verified S4 integration, S5 final-version artifact qualification is the next separately selected milestone; S6 release and native approvals remain separate."
+  ],
+  "source_qualification": "FULL_AMENDMENT_QUALIFICATION_HOLD retained. Controlled hashes establish source identity; selected equations/cases and current relevant amendment dispositions establish only bounded numerical evidence.",
+  "amendment_authorities": [
+    "docs/verification/is456-official-source-inventory.json",
+    "docs/verification/is456-amendment-impact.json",
+    "docs/verification/is456-amendment-impact.md"
+  ],
+  "family_numerical_evidence": {
+    "inputs": "Python/tests/data/benchmark_vectors/family_review_inputs.json",
+    "generator": "Python/tests/data/benchmark_vectors/generate_family_review_reference.py",
+    "reference": "Python/tests/data/benchmark_vectors/family_review_reference.json",
+    "replay": "Python/tests/integration/test_family_engineering_reference.py",
+    "independence": "No production imports/outputs; Decimal force equilibrium, integrated loads/free bodies, normalized source coefficients and adjacent independent column integration.",
+    "metrics": 106,
+    "results_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/numerical-comparison.json",
+    "results_sha256": "36abda83dc45a15f9fb58b6f9557940345061be82e54c0f89d2cd37f0ec06674",
+    "journeys": [
+      {
+        "journey_id": "is456.beam.design/v1",
+        "metrics": 4,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "38.1",
+          "Annex G",
+          "40.1"
+        ]
+      },
+      {
+        "journey_id": "is456.torsion.design/v1",
+        "metrics": 6,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "41.3",
+          "41.4.3"
+        ]
+      },
+      {
+        "journey_id": "is456.column.supplied-steel-check/v1",
+        "metrics": 7,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "25.4",
+          "38.1",
+          "39.6",
+          "Fig21",
+          "Fig23"
+        ]
+      },
+      {
+        "journey_id": "is456.slab.one-way/v1",
+        "metrics": 8,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "38.1",
+          "26.5.2.1",
+          "26.3.3",
+          "40.2.1.1+A5",
+          "23.2.1"
+        ]
+      },
+      {
+        "journey_id": "is456.slab.continuous-one-way/v1",
+        "metrics": 6,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "Table12",
+          "Table13",
+          "38.1",
+          "26.5.2.1",
+          "26.3.3+A3"
+        ]
+      },
+      {
+        "journey_id": "is456.slab.two-way/v1",
+        "metrics": 16,
+        "engineering_status": "FAIL",
+        "source_clauses": [
+          "Annex D",
+          "Table26 case4+A2",
+          "26.5.2.1"
+        ]
+      },
+      {
+        "journey_id": "is456.wall.braced-axial/v1",
+        "metrics": 7,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "32.2",
+          "32.5",
+          "A6"
+        ]
+      },
+      {
+        "journey_id": "is456.staircase.straight-flight/v1",
+        "metrics": 8,
+        "engineering_status": "HOLD",
+        "source_clauses": [
+          "33.1-33.3",
+          "38.1",
+          "26.3.3+A3"
+        ]
+      },
+      {
+        "journey_id": "is456.deep-beam.simply-supported/v1",
+        "metrics": 7,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "29.2",
+          "29.3",
+          "26.2.1",
+          "32.5"
+        ]
+      },
+      {
+        "journey_id": "is456.flat-slab.regular-interior/v1",
+        "metrics": 11,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "31.4.2.2",
+          "31.6.3.2",
+          "Fig16",
+          "38.1"
+        ]
+      },
+      {
+        "journey_id": "is456.isolated-footing.concentric/v1",
+        "metrics": 9,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "34.1",
+          "34.2.3.1",
+          "34.2.4.1",
+          "Table19",
+          "31.6.3.2"
+        ]
+      },
+      {
+        "journey_id": "is456.combined-footing.symmetric/v1",
+        "metrics": 8,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "34.2.3",
+          "34.2.4",
+          "31.6",
+          "38.1"
+        ]
+      },
+      {
+        "journey_id": "is456.strap-footing.property-line/v1",
+        "metrics": 9,
+        "engineering_status": "PASS",
+        "source_clauses": [
+          "34.1",
+          "38.1",
+          "40.4",
+          "26.5.1.6",
+          "Table19"
+        ]
+      }
+    ]
+  },
+  "branch_evidence": [
+    {
+      "branch": "Rectangular beam/shear/torsion and material profiles",
+      "normal_limit_failure": "Independent yield/strain/capacity vectors; shear maximum-stress, minimum-area and grade415 limit; positive/opposite torsion and declared excluded grade paths.",
+      "tests": [
+        "Python/tests/unit/test_shear.py",
+        "Python/tests/unit/test_torsion.py",
+        "Python/tests/integration/test_material_profile_equilibrium.py",
+        "Python/tests/unit/test_beam_supplied_check_v2.py"
+      ],
+      "reference": "Python/tests/data/benchmark_vectors/material_profile_reference.json"
+    },
+    {
+      "branch": "Flanged section compression-block transitions",
+      "normal_limit_failure": "Independent neutral-axis-in-flange, partial/full overhang and limiting/doubly branches.",
+      "tests": [
+        "Python/tests/integration/test_flanged_branch_equilibrium.py"
+      ],
+      "reference": "Python/tests/data/benchmark_vectors/flanged_branch_reference.json"
+    },
+    {
+      "branch": "Column partial/full compression, axial/biaxial/slenderness",
+      "normal_limit_failure": "Independent Fig21/Fig23 integration, separate Pb vs yield-balanced strain, nominal cap, polygon intersections, additional-moment applicability.",
+      "tests": [
+        "Python/tests/codes/is456/column"
+      ],
+      "reference": "Python/tests/data/benchmark_vectors/column_strain_compatibility.json"
+    },
+    {
+      "branch": "AnnexC SLS",
+      "normal_limit_failure": "Independent cracked-section equilibrium and source surface strain, compression steel/flange and supplied-evidence refusal. Span/depth screening never becomes calculated long-term displacement.",
+      "tests": [
+        "Python/tests/integration/test_sls_annexc_equilibrium.py"
+      ],
+      "reference": "Python/tests/data/benchmark_vectors/sls_annexc_reference.json"
+    },
+    {
+      "branch": "Slab/wall/stair/deep/flat/combined/strap and isolated footing",
+      "normal_limit_failure": "All13 facade source-equation replay plus maintained coefficient, strength/detail failure, applicability and amendment tests. Two-wayFAIL and stairphysicalHOLD retained. Isolated final shear uses actual providedpt.",
+      "tests": [
+        "Python/tests/codes/is456",
+        "Python/tests/integration/test_slab_issued_amendments.py",
+        "Python/tests/integration/test_strap_footing_publication.py",
+        "fastapi_app/tests/test_strap_footing.py",
+        "fastapi_app/tests/test_footing.py"
+      ]
+    },
+    {
+      "branch": "Physical ordinary/multilayer members",
+      "normal_limit_failure": "Per-bar signed stress/equilibrium, depth412.5, geometric cover/spacing, physical bent paths, length/count/mass, anchorage, missing/overload/stale DRAFT and identity rejection.",
+      "tests": [
+        "Python/tests/integration/test_complete_member_workflow.py",
+        "Python/tests/integration/test_physical_beam_dxf.py",
+        "Python/tests/unit/test_physical_section_equilibrium.py",
+        "Python/tests/unit/test_structural_engineering_wp06.py",
+        "Python/tests/unit/test_structural_engineering_wp07.py"
+      ],
+      "reference": "contracts/structural-engineering/conformance/wp01-per-bar-vectors.json"
+    }
+  ],
+  "output_evidence": {
+    "receipt_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/output-receipt.json",
+    "receipt_sha256": "ef934e514222fb4e2d5197d2a79c0f4e0ab543d50fbc4b66d86f43ab12ce74dc",
+    "cases": [
+      {
+        "case": "single-layer",
+        "package_id": "calculation_package_id:pf4-canonical-json-v1:43a3c22daea11ebe88bf94039cdb87c0a255c9cbf588843d630c8c3e8f12c52e",
+        "path_result_id": "result_id:pf4-canonical-json-v1:9549f18bcbd65e2e1b6084d5edc9841814e8aa18b13f25b46e38c814b16e7376",
+        "bbs_result_id": "result_id:pf4-canonical-json-v1:eb7d92d42ceb5d096f8fd921ab30f677ff44534562fa60e7e3a02e3daab98d15",
+        "issue_state": "issue_ready",
+        "active_approval": false,
+        "report_pages": 3,
+        "drawing_pages": 1,
+        "pdf_identity_text_checks": "PASS",
+        "visual_review": "PASS; all6 report pages and both drawing PDFs rendered and inspected",
+        "files": [
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s4-20261029/single-layer/calculation-report.pdf",
+            "sha256": "638c7910a502eda1a12d26c4fb99020db7b42f67851b2896a7d1fbb5ab5e07df",
+            "bytes": 26592
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s4-20261029/single-layer/physical-drawing.pdf",
+            "sha256": "e0aa1f57f29c85c26ff5d1956e5dd3944239ed867bf5d6bc5704acca70de9cba",
+            "bytes": 173154
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/single-layer/bbs.csv",
+            "sha256": "44ec87c0510927218aa7240e6b76327c599eb6cd029c544077f38625e3370b9a",
+            "bytes": 10936
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/single-layer/calculation.json",
+            "sha256": "d0020b5ba53058570d03a093f96808776674ff7bed871adc8ad2e7e0ec475535",
+            "bytes": 2746677
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/single-layer/physical-beam.dxf",
+            "sha256": "5be20045c6b68c2627988c867996fbe0d47133eed196026649c63d81d655e264",
+            "bytes": 715367
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/single-layer/physical-preview.png",
+            "sha256": "127489d0627d0325d7318b6cbb49d306bca040d3c3e86068218d15d74125e53c",
+            "bytes": 161893
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/single-layer/report.html",
+            "sha256": "380669826bc7c4d66c72cdd0a33867f0064d9e904ee8114669b931e6152d28ae",
+            "bytes": 667099
+          }
+        ],
+        "source_content_sha256": {
+          "Python/examples/complete_member_workflow.py": "511492100a0ddf1458537c2463b09a3130cb020c741c2767dbe43b81eec1f0e2",
+          "Python/structural_lib/services/_physical_dxf.py": "8764988f4f5c6b1246185ca51ef24ffc1656f80f9a4da0cd95d0f9b0eab9b1e3",
+          "Python/structural_lib/services/dxf_export.py": "e021025f35c5684fe717ef2b59ba422c411ee454c8aaf55051fc62627a1b788c"
+        },
+        "final_source_replay": "PASS; same PNG geometry, exact HTML/JSON/CSV content and package/BBS/path identity; refreshed DXF tag serialization and PDF drawing container"
+      },
+      {
+        "case": "multilayer",
+        "package_id": "calculation_package_id:pf4-canonical-json-v1:f446b2c2c1e3afaf98b0e089c3a1989bb6f6edd3a954222b806735fe3ea0497f",
+        "path_result_id": "result_id:pf4-canonical-json-v1:8eabdfb54aa9a2ce96df18dfd4d1b613a68d0838b2f5cd4d28615614a9582ae4",
+        "bbs_result_id": "result_id:pf4-canonical-json-v1:4d321e82a2a208e98b2be089419e50c31d7df07659b51e02d85a2467acdce2ef",
+        "issue_state": "issue_ready",
+        "active_approval": false,
+        "report_pages": 3,
+        "drawing_pages": 1,
+        "pdf_identity_text_checks": "PASS",
+        "visual_review": "PASS; all6 report pages and both drawing PDFs rendered and inspected",
+        "files": [
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s4-20261029/multilayer/calculation-report.pdf",
+            "sha256": "c936e9b5366fee105d5c91f99945013fb50febe1bd3d4819392c74a3b3c40a52",
+            "bytes": 28187
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/pdf/library-s4-20261029/multilayer/physical-drawing.pdf",
+            "sha256": "862b9096678f116f85e463259701010ce84f555592edbbab7583d6d2896af78f",
+            "bytes": 192423
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/multilayer/bbs.csv",
+            "sha256": "e6426bd408778f6379f93dee1edcf10b4b27627311f939e3748c0a5e5a272e5c",
+            "bytes": 11898
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/multilayer/calculation.json",
+            "sha256": "4ac853a5e9e452ac9fef8a8602afd155ef630647c65ec8f766622cc929554ed2",
+            "bytes": 2931850
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/multilayer/physical-beam.dxf",
+            "sha256": "41965ff4edc887d554158c48fbea6118c4523a7f8352f7f369c900c14e91d22f",
+            "bytes": 721353
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/multilayer/physical-preview.png",
+            "sha256": "f9d48187f841cbd1721b0e55bd87592bebd9ec6d23269e6ad221f982340878c8",
+            "bytes": 183721
+          },
+          {
+            "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/verification/library-s4-20261029/multilayer/report.html",
+            "sha256": "013d5fef3604da5ef18a40a91f3f0b8b3eade84149e4022178266d9b9cf12739",
+            "bytes": 713390
+          }
+        ],
+        "source_content_sha256": {
+          "Python/examples/complete_member_workflow.py": "511492100a0ddf1458537c2463b09a3130cb020c741c2767dbe43b81eec1f0e2",
+          "Python/structural_lib/services/_physical_dxf.py": "8764988f4f5c6b1246185ca51ef24ffc1656f80f9a4da0cd95d0f9b0eab9b1e3",
+          "Python/structural_lib/services/dxf_export.py": "e021025f35c5684fe717ef2b59ba422c411ee454c8aaf55051fc62627a1b788c"
+        },
+        "final_source_replay": "PASS; same PNG geometry, exact HTML/JSON/CSV content and package/BBS/path identity; refreshed DXF tag serialization and PDF drawing container"
+      }
+    ],
+    "admission": "Current completed engineeringPASS paths bound to current package; DRAFT package remains DRAFT. Mismatch/stale/failed paths reject before write.",
+    "geometry": "Exact3D resolved paths; straight longitudinal cut at station2500; labelled link projection, maximum arc sagitta.02mm; enlarged viewsx3; all base CAD coordinatesmm.",
+    "scope_limit": "No native CAD/fabrication or construction approval. Curved longitudinal cut intersections require explicit resolved cut and are rejected."
+  },
+  "compatibility_decisions": [
+    "Additive generate_physical_beam_dxf at existing service and compatibility wildcard module; no api.__all__ expansion.",
+    "Example --dxf is opt-in; optional dependency remains separate. Generic unresolved multilayer elevation now rejects instead of drawing an incorrect single row.",
+    "Strap and ordinary wire Asv/s numerical corrections may change previously unsafe values/status; no schema/signature/default changes.",
+    "Physical multilayer path IDs and descendants change to reflect correct layer membership; lengths/masses and engineering demand/capacity are unchanged."
+  ],
+  "validation_plan": {
+    "focused_union": "All selected family code boundary suites, independent numerical branch suites, complete/physical member, BBS/DXF and strap/beam transport owners. See exact commands/counts in final PR.",
+    "risk_basis": "New shared physical export and example output projection plus two shear owners; use focused union and required hosted broad suites. No duplicate local fullPython or check--full selected.",
+    "frozen_gates": [
+      "affected Black/Ruff/mypy",
+      "architecture/import boundaries",
+      "public signature/classification/ledger and documentation checks",
+      "strict MkDocs",
+      "essential changed-area checks and efficiency",
+      "two independent exact-head technical reviews",
+      "required hosted PR checks"
+    ]
+  },
+  "local_verification": {
+    "unique_focused_tests_after_affected_repairs": 1677,
+    "batches": [
+      {
+        "name": "focused union",
+        "tests": 1572,
+        "passed": 1568,
+        "failed": 4,
+        "diagnosis": "Legacy mark-only fixtures unknowingly used two support layers; intentional unresolved-geometry rejection now asserted explicitly, normal mark/smoke fixtures remain single-row."
+      },
+      {
+        "name": "affected export/canonical/reference repair",
+        "tests": 83,
+        "passed": 83,
+        "failed": 0
+      },
+      {
+        "name": "public contract/classification convergence",
+        "tests": 28,
+        "passed": 28,
+        "failed": 0
+      },
+      {
+        "name": "hosted-governance integration repair",
+        "tests": 35,
+        "passed": 35,
+        "failed": 0
+      }
+    ],
+    "unresolved_failures": 0,
+    "checks": [
+      "Black14 changed Python files PASS",
+      "Ruff14 changed Python files PASS",
+      "mypy4 affected Python owners PASS",
+      "mypy shared FastAPI projection PASS",
+      "architecture269files no violations",
+      "all import resolution874files no broken imports",
+      "API manifest/classification/compatibility, schema/OpenAPI/public-contract audit PASS",
+      "strict MkDocs PASS",
+      "repository efficiency PASS",
+      "Final essential changed-area gate12/12 PASS after affected import/caller repair; earlier import-only failure retained in local logs.",
+      "Hosted Python/docs failures repaired: canonical beam/reporting/construction packages mapped and scanned as logical services; core/codes upward imports and alias-to-insights still fail. Session recurrence bullet protocol restored; exact check_governance --structure and session.py check PASS."
+    ],
+    "broad_local_suite": "Not duplicated; required hosted integration owns broad suites.",
+    "output_acceptance": "Exact39/43 physical paths,4/8 longitudinal section circles, actual layer metadata, d450/412.5, no stale/mismatched/failed-path acceptance, DRAFT preservation, BBS path IDs/counts/lengths/masses, report identity text and all8 rendered PDF pages inspected."
+  },
+  "prepublication_ordering": {
+    "origin_main": "7e19a23b829022da98f562104f47b3fda6cbb85e;explicit fetch succeeded2026-10-29, git_state default_base equal; NOT_CHECKED itself is not remote proof",
+    "predecessors": [
+      {
+        "pr": 1032,
+        "head": "d7ae6a4d183cf7d77f88ed2f6640fd97653d34d0",
+        "status": "MERGED"
+      },
+      {
+        "pr": 1034,
+        "head": "172960a4a89741c86333bc3570484f99fd8e70fc",
+        "status": "MERGED"
+      },
+      {
+        "pr": 1035,
+        "head": "96b8391699247ad26b65c26de236e655f25c9b77",
+        "status": "MERGED"
+      },
+      {
+        "pr": 1038,
+        "head": "e447800ccceeadef836ff20a16a2a88eb7b75125",
+        "status": "MERGED"
+      }
+    ],
+    "preserved": "Primary tracked files clean, only retained task output files untracked. Older plan/audit worktrees are historical preserved lanes; owner-selected integrated S0-S4 sequence supersedes their next-work projections. No reset, cleanup, branch/PR deletion or change to older candidates."
+  },
+  "hosted_first_candidate": {
+    "head": "f39f56d2b23243151ffc892b94dd1ef8719e7846",
+    "passed": [
+      "Repository Validation",
+      "FastAPI Validation"
+    ],
+    "failed": {
+      "Documentation Validation": "Latest session recurrence section was prose, not the bullet format consumed by validator.",
+      "Python Validation": "Governance layer map predated canonical beam/reporting/construction packages and misclassified four new imports as legacy root modules."
+    },
+    "root_repairs": [
+      "Add explicit canonical-domain service aliases and scan their sources under the same service restrictions, with no relative-import bypass or per-file exemption.",
+      "Use the existing None encountered bullet contract for no new recurrence; historical counts remain unchanged."
+    ],
+    "status": "AFFECTED_LOCAL_CHECKS_PASS;NEXT_HEAD_REVIEW_AND_REQUIRED_HOSTED_CHECKS_PENDING"
+  }
+}

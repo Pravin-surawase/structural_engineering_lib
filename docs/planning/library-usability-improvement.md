@@ -1853,3 +1853,88 @@ batch/dashboard/viewport consumers. Python verification stays focused on the
 changed batch/dashboard owners, strict facade/member/readiness/CLI contracts,
 compatibility, schema and version tools. No broad Python or full repository
 suite is selected as a duplicate of hosted required checks.
+
+<a id="s4-engineering-and-outputs--29-october-2026"></a>
+
+## S4 engineering and outputs — 29 October 2026
+
+The owner selected S4 implementation after S3 merged in PR #1038. Task
+`LIB-S4-20261029` runs on `codex/lib-s4-engineering` from fetched main
+`7e19a23b829022da98f562104f47b3fda6cbb85e`. Codex is the sole writer;
+bounded independent technical reviewers inspect engineering and physical
+outputs. On 29 October the owner identified himself as the structural engineer
+and directed that no separate external-reviewer dependency be added. Pravin
+Surawase is the engineering owner; independent numerical and technical review
+remain required. This does not grant project-specific professional approval.
+
+### Population and acceptance
+
+The existing capability/family/workflow registries remain the claim owners.
+Do not replace a supported claim with a smaller case merely to obtain a pass.
+Reconcile all 13 promoted family journeys, the promoted ordinary and multilayer
+complete-member cases, and their governing beam/material/flanged/column/SLS
+branches. Retain existing evidence for unchanged accepted branches only after
+checking source and case identity. Separately held source, physical and native
+claims remain visible; LIB-3/LIB-4 extensions are not selected.
+
+| Requirement | Work and proof |
+| --- | --- |
+| S4-A1 — claim and branch census | Map every promoted family, complete-member case and governing branch to its maintained implementation, support limits, source, benchmark and output owner. Preserve PASS/FAIL/HOLD and identify supplied external facts. |
+| S4-A2 — controlled sources | Verify the controlled IS 456:2000 collection and issued Amendment 6 hashes, applicable amendment/clause/table/figure locators and assumptions. Reconcile current relevant amendment dispositions; source possession or catalogue metadata is not calculation qualification. |
+| S4-A3 — independent engineering | Freeze independent expected values, units, reference lineage and justified absolute/relative tolerances before comparing production results. Exercise meaningful normal, limiting, failure and held cases across the declared branches. Golden values, wrapper parity and duplicated production formula calls do not substitute for independent calculation. |
+| S4-A4 — physical member consistency | Verify actual longitudinal layers, signed per-bar equilibrium, centroid/depth, cover/clear spacing, shear/link basis, anchorage/path geometry, lengths, counts, mass and quantities for ordinary and multilayer cases. Invalid combinations remain rejected or draft. |
+| S4-A5 — faithful exports | Carry identical member/source/result/schedule identity through JSON, physical BBS, DXF/drawings and HTML/PDF reports. Parse actual entities and quantities, then render and inspect final output dimensions, bar positions, units, marks, status and readability. Physical outputs must use resolved paths rather than a one-row schematic. |
+| S4-A6 — root repairs and compatibility | Repair confirmed outcome-changing math/applicability/physical-output defects at their owner; preserve public binding and known callers or document an intentional correction. Add meaningful implementation regressions and independent references for every changed numerical branch. |
+| S4-A7 — frozen verification and review | Complete intended code, tests, references and documentation before the focused union. Run affected format/lint/type/architecture and export/benchmark checks, independent exact-head technical reviews, and required hosted checks. Repaired candidates refresh affected evidence only. |
+| S4-A8 — integration and boundaries | One milestone PR integrates the reviewed candidate with matching merged tree. Retain reviewable source/case/expected/actual/tolerance and output receipts. S5 final-version artifact qualification, S6 release authorization and native-host acceptance remain separate. |
+
+### First confirmed output defect and repair direction
+
+The generic DXF elevation locates longitudinal steel at cover plus bar radius,
+omitting the link. Promoted B1 requires its bottom centre 56 mm from the bottom
+(40 mm cover + 8 mm link + T16 radius); the drawing puts it at 48 mm. More
+fundamentally the generic section projection collapses layers to one row and
+cannot represent the promoted multilayer schedule's 50/125 mm bottom-centre
+levels or its 412.5 mm tension centroid. Mark parity alone does not prove
+physical geometry. The complete-member example currently exports JSON/CSV/HTML
+and carries drawing metadata rather than a path-derived drawing.
+
+Correct the ordinary projection and provide a resolved schedule/path-bound
+physical drawing at the existing output owners, including identity and issue
+state. Do not disguise multilayer geometry by adjusting a single row. Verify
+actual DXF entities against the accepted physical paths and BBS, and inspect
+rendered output. Any additional engineering discrepancy must have an
+independent source-based reproducer before implementation.
+
+At intake the 13 family recipe replays establish contracts/statuses, not
+independent numerical qualification for every journey. S4 will bind each to
+controlled source-derived numerical evidence and retain existing stronger
+beam/per-bar/column/material/SLS references where identities agree. The old
+amendment diagnostic failures are historical and must not be presented as
+current defects without reproduction.
+
+
+### S4 implementation checkpoint
+
+The [execution receipt](../verification/library-s4-20261029.json) now binds all13
+journeys to106 independent metrics and the retained governing branch references.
+It records four source-confirmed repairs: strap vertical-stirrup strength capped
+at415; consistent ordinary HTTP/WS Asv/s; resolved physical layer identity; and
+link-aware, path-bound digital drawings. Both member cases have parsed DXF,
+JSON/BBS identities and visually inspected HTML-derived PDF reports/drawings.
+These cases exercise the declared supported models; they do not replace or
+silently narrow their support claims. Existing exclusion/applicability and
+normal/limit/failure tests remain part of the focused union.
+
+Pravin Surawase is the engineering owner by direct instruction. Independent
+numerical and exact-head technical reviews are required; a separate external
+engineering-review dependency is removed. Full amendment qualification remains
+HOLD at its existing owner. S4 software/evidence acceptance does not grant
+project-specific professional, native CAD/fabrication or release approval.
+
+The final local union covers the affected family code/boundary, independent
+material/flange/column/SLS, physical-member/export and HTTP/WS owners. New shared
+export/binding behavior and the two shear consumers justify these checks;
+required hosted broad suites cover integration. No duplicate local full Python
+or full repository run is selected. Exact commands/results and final integration
+belong to this milestone PR and its retained execution receipt.

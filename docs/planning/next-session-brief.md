@@ -4,30 +4,33 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-10-29
-- Focus: Complete public API signatures, inputs, schemas, defaults and compatibility with corrected transports and verified consumers.
-- Completed: Froze the S3 population at 14 surfaces, 1,308 projections, 13 family requests, 92 HTTP operations and 488 schemas after maintenance PR #1035 integrated at ec3f230.; Implemented one HTTP/WebSocket beam projection, correct Asv/s units, actual nullable utilization, strict JSON intake and explicit legacy compatibility policies.; Added exact retained signature exceptions, per-family admission/default vectors, schema/operation ownership reconciliation and known-client migration; 352 focused Python tests, full FastAPI/React baseline with affected repairs, strict docs, type/build and installed-wheel replays pass; GitHub owns final review/check/integration.
-- Recurrence controls: RR-004 x36 / unknown: Refresh handoff at material milestone/device changes; routine work uses compact delivery, and detailed ledger controls apply only when explicitly selected.
+- Focus: S4 engineering accuracy and faithful physical/report outputs after S3 PR #1038 merged at 7e19a23b.
+- Completed: Implemented four confirmed root repairs; added 106 independent numerical comparisons across all13 promoted family journeys; generated and inspected ordinary/multilayer JSON/BBS/DXF/HTML/PDF outputs. 1,677 unique focused tests pass after affected repairs; format/type/architecture/import, API/schema, strict docs and rendered outputs pass. The milestone PR owns exact-head review and hosted integration.
+- Recurrence controls: RR-004 x36 / unknown remains historical. Refresh this handoff at material milestone/device changes; no new recurrence asserted by S4.
 <!-- HANDOFF:END -->
 
 ## Current boundary — 29 October 2026
 
-The owner selected S3 public-contract planning and implementation. Codex `/root`
-is the sole Mac writer on `codex/lib-s3-contracts`, a source-bound managed lane
-from fetched main `ec3f230767dcfbdc1cbb18ccb48273f7e9db7682`. Maintenance
-[#1035](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1035)
-is integrated after S0/S1 #1032 and S2 #1034. Older branches/artifacts remain
-preserved; inspect current Git/GitHub before any later writer takes over.
+The owner selected S4 implementation and identified himself as the structural
+engineer. Pravin Surawase is the engineering owner; no separate external-reviewer
+dependency remains. Independent numerical evidence and technical review remain
+required. Codex `/root` is the sole Mac writer on `codex/lib-s4-engineering`,
+a source-bound managed lane from fetched main
+`7e19a23b829022da98f562104f47b3fda6cbb85e`. S3
+[#1038](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1038)
+is integrated. Preserve older lanes and inspect live Git/GitHub before takeover.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | Implemented and locally verified [S3 public contracts](library-usability-improvement.md#s3-public-contracts--29-october-2026): signatures, inputs, schemas, defaults, compatibility, confirmed fixes and consumer verification. |
-| **Next** | Verify S3 exact-head reviews/required hosted integration on its PR, then select bounded S4 engineering/output qualification. |
-| Later gates | S4 engineering/output qualification, S5 final-version artifact and S6 per-release authorization/publication. The local candidate keeps 0.25.0 metadata and is distinct from the published wheel. |
-| Preserved boundaries | Keep engineering FAIL/HOLD, physical/source restrictions and separate native Excel/ETABS/XLL acceptance. Normalized IS-data distribution permission is passed. No new native mutation or release is authorized. |
+| **Current** | Implemented [S4](library-usability-improvement.md#s4-engineering-and-outputs--29-october-2026): independent family/branch engineering evidence; capped415 strap shear and wire quantity; path-bound physical drawing and corrected layer identities. Local evidence passed; milestone PR owns exact-head review and integration. |
+| **Next** | Verify the S4 milestone PR exact-head review/check/merge evidence before selecting S5 final-version artifact qualification. |
+| Later gates | S5 final-version artifact and S6 per-release authorization/publication remain separate. Development metadata0.25.0 is distinct from the public wheel. |
+| Preserved boundaries | FAIL/HOLD, full-amendment qualification and native CAD/Excel/ETABS/XLL/fabrication acceptance remain explicit. Normalized IS-data distribution permission is passed. |
 
 The [task board](../TASKS.md), [programme](library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence)
-and [S3 receipt](../verification/library-s3-20261029.json) own current work.
-Historical draft #1019 does not select or block this successor lane.
+and [S4 receipt](../verification/library-s4-20261029.json) own current work.
+The owner removed the external-reviewer dependency; do not reopen it. No tag,
+package publication or native application mutation is selected.
 
 ## Historical handoff boundary — 1 October 2026
 

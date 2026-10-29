@@ -254,3 +254,40 @@ def test_governance_preserves_layer_exceptions_without_hiding_real_violations(
     assert len(report.errors) == 1
     assert len(report.errors[0].files) == 1
     assert "bad.py" in report.errors[0].files[0]
+
+
+@pytest.mark.parametrize(
+    "package,target,accepted",
+    [
+        ("services", "beam.semantics", True),
+        ("beam", "reporting.calculation_package", True),
+        ("reporting", "construction.contracts", True),
+        ("construction", "beam.bar_paths", True),
+        ("core", "beam.semantics", False),
+        ("codes", "reporting.calculation_package", False),
+        ("beam", "insights.sensitivity", False),
+    ],
+)
+def test_canonical_operation_domains_obey_logical_service_boundaries(
+    monkeypatch, tmp_path, package, target, accepted
+):
+    governance = importlib.import_module("check_governance")
+    monkeypatch.setattr(governance, "REPO_ROOT", tmp_path)
+    source = tmp_path / "Python/structural_lib" / package / "candidate.py"
+    source.parent.mkdir(parents=True)
+    source.write_text(f"import structural_lib.{target}\n", encoding="utf-8")
+    report = governance.GovernanceReport()
+    governance.check_python_layer_boundaries(report)
+    assert (not report.errors) is accepted
+    if not accepted:
+        assert "disallowed layer" in report.errors[0].files[0]
+
+
+def test_canonical_domain_alias_cannot_reclassify_an_existing_layer(monkeypatch):
+    governance = importlib.import_module("check_governance")
+    monkeypatch.setitem(
+        governance.RULES["python_lib"], "layer_aliases", {"services": ["core"]}
+    )
+    report = governance.GovernanceReport()
+    governance.check_python_layer_boundaries(report)
+    assert report.errors[0].message == "Invalid or duplicate layer alias"

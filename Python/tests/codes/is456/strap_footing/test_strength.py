@@ -145,11 +145,24 @@ def test_table_shear_and_vertical_stirrup_benchmark() -> None:
     assert result.stirrup_carried_shear_required_kn == pytest.approx(19.6274979428445)
     assert result.stirrup_area_provided_mm2 == pytest.approx(157.07963267949)
     assert result.minimum_stirrup_area_at_provided_spacing_mm2 == pytest.approx(
-        114.942528735632
+        138.48497438028
     )
-    assert result.stirrup_shear_capacity_provided_kn == pytest.approx(232.320776807564)
+    assert result.stirrup_shear_capacity_provided_kn == pytest.approx(192.826244688)
     assert result.maximum_stirrup_spacing_mm == pytest.approx(300.0)
     assert result.is_safe is True
+
+
+@pytest.mark.parametrize("grade", [415.0, 500.0])
+def test_vertical_stirrup_capacity_and_minimum_area_use_at_most_fe415(grade) -> None:
+    shear = check_property_line_strap_footing_strength(
+        _design_input(material=_material(steel_grade_nmm2=grade))
+    ).shear
+    assert shear.stirrup_shear_capacity_provided_kn == pytest.approx(
+        0.87 * 415 * (2 * math.pi * 10**2 / 4) * 850 / 250 / 1000
+    )
+    assert shear.minimum_stirrup_area_at_provided_spacing_mm2 == pytest.approx(
+        0.4 * 500 * 250 / (0.87 * 415)
+    )
 
 
 @pytest.mark.parametrize(

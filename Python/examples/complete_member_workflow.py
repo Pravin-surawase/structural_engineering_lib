@@ -578,7 +578,7 @@ def run_workflow(
                 if bar.face is b.Face.BOTTOM
                 else b.BarPathRole.TOP_LONGITUDINAL
             ),
-            1,
+            bar.layer,
             bar.diameter_mm,
             415,
             tuple(
@@ -842,10 +842,24 @@ def run_workflow(
     return Workflow(results, member_request, package_request, admission, leaf_results)
 
 
-def write_artifacts(workflow: Workflow, output_dir: Path) -> None:
+def write_artifacts(
+    workflow: Workflow, output_dir: Path, *, include_dxf: bool = False
+) -> None:
     """Render the unchanged semantic package; all artifacts retain its issue state."""
     output_dir.mkdir(parents=True, exist_ok=True)
     package = workflow.package
+    drawing_link = ""
+    if include_dxf:
+        from structural_lib.services.dxf_export import generate_physical_beam_dxf
+
+        generate_physical_beam_dxf(
+            workflow.results["paths"],
+            workflow.results["package"],
+            output_dir / "physical-beam.dxf",
+        )
+        drawing_link = (
+            ' · <a href="physical-beam.dxf">Download bound physical drawing</a>'
+        )
     payload = {
         "case_admission": workflow.case_admission,
         "source_identities": SOURCE_IDENTITIES,
@@ -926,6 +940,9 @@ def write_artifacts(workflow: Workflow, output_dir: Path) -> None:
     document = f"""<!doctype html><html lang="en"><meta charset="utf-8">
 <title>B1 calculation report</title><style>body{{font:16px system-ui;max-width:1100px;margin:40px auto;padding:0 24px}}
 td,th{{text-align:left;padding:8px;border-bottom:1px solid #ddd}}pre{{white-space:pre-wrap;overflow-wrap:anywhere}}
+@media print{{@page{{size:A4 landscape;margin:14mm;@bottom-right{{content:"B1 / " counter(page) " of " counter(pages);font-size:8px}}}}
+body{{font:11px sans-serif;max-width:none;margin:0;padding:0}}details{{display:none}}
+table{{width:100%;border-collapse:collapse}}td,th{{padding:5px}}tr{{break-inside:avoid}}h2{{break-after:avoid}}pre{{font-size:8px}}}}
 </style><h1>B1 — {html.escape(package['issue_state'].upper())}</h1>
 <p>300 × 500 mm, 5 m span, M25 / Fe415. Professional approval: none.</p>
 <p>Member engineering state: <strong>{html.escape(str(workflow.results['member'].engineering))}</strong>.
@@ -937,19 +954,24 @@ Two-leg 8 mm links at 150 mm; actual longitudinal layers appear below.</p>
 <p>Compression is positive; tension is negative. Neutral axis {capacity['equilibrium_neutral_axis_depth_mm']:.6f} mm;
 resistance {capacity['capacity_knm']:.6f} kNm; axial force residual {capacity['force_residual_n']:.3g} N.
 These are ultimate resistance strains and stresses, not the applied-load SLS stresses.</p>
-<table><tr><th>Bar</th><th>Layer</th><th>Depth (mm)</th><th>Strain</th><th>Steel stress (N/mm²)</th>
-<th>Displaced concrete stress (N/mm²)</th><th>Net force (N)</th></tr>{steel_rows}</table>
+<table><thead><tr><th>Bar</th><th>Layer</th><th>Depth (mm)</th><th>Strain</th><th>Steel stress (N/mm²)</th>
+<th>Displaced concrete stress (N/mm²)</th><th>Net force (N)</th></tr></thead><tbody>{steel_rows}</tbody></table>
 <h2>All {len(workflow.leaf_results)} required checks</h2>
 <p>ULS and SLS are separate cases. Values below are demand/limit comparisons; inspect the retained effective inputs.</p>
 <p>Anchorage compares Ld with the equivalent available length, including three times actual support extension.
 An ordinary seismic non-applicability result is explicitly qualified. Blank numerical cells use the retained geometric or identity checks.</p>
-<table><tr><th>Required check</th><th>Qualification</th><th>Demand</th><th>Capacity/limit</th><th>Unit</th><th>Reason</th></tr>{rows}</table>
+<table><thead><tr><th>Required check</th><th>Qualification</th><th>Demand</th><th>Capacity/limit</th><th>Unit</th><th>Reason</th></tr></thead><tbody>{rows}</tbody></table>
 <h2>Physical bar schedule</h2>
-<table><tr><th>Mark</th><th>Diameter (mm)</th><th>Count</th><th>Cut length each (mm)</th><th>Mass (kg)</th></tr>{bar_rows}</table>
+<table><thead><tr><th>Mark</th><th>Diameter (mm)</th><th>Count</th><th>Cut length each (mm)</th><th>Mass (kg)</th></tr></thead><tbody>{bar_rows}</tbody></table>
 <p>Scheduled steel {bbs.scheduled_steel_mass_kg:.3f} kg; concrete {quantities.concrete_volume_m3:.3f} m³;
 formwork {quantities.formwork_area_m2:.3f} m². Exact paths, bends, hooks, stock allocation and measurement policies remain in the package.</p>
-<p><a href="calculation.json">Download all calculations and inputs</a> · <a href="bbs.csv">Download physical bar rows</a>.
-Both files carry the package issue state. These files do not supply professional approval or fabrication drawings.</p>
+<p><a href="calculation.json">Download all calculations and inputs</a> · <a href="bbs.csv">Download physical bar rows</a>{drawing_link}.
+These files carry the package issue state. They do not supply professional approval or fabrication drawings.</p>
+<h2>Source and result identity</h2>
+<pre>Package: {html.escape(package['calculation_package_id'])}
+Paths: {html.escape(workflow.results['paths'].result_id)}
+BBS: {html.escape(workflow.results['bbs'].result_id)}
+{html.escape(json.dumps(SOURCE_IDENTITIES, indent=2))}</pre>
 <details><summary>Retained package: sources, inputs, calculations, paths and identities</summary>
 <pre>{html.escape(json.dumps(package, indent=2))}</pre></details></html>"""
     (output_dir / "report.html").write_text(document, encoding="utf-8")
@@ -959,12 +981,17 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument(
+        "--dxf",
+        action="store_true",
+        help="Include the bound physical drawing (requires the dxf extra)",
+    )
+    parser.add_argument(
         "--case", choices=("single-layer", "multilayer"), default="single-layer"
     )
     args = parser.parse_args()
     workflow = run_workflow(multilayer=args.case == "multilayer")
     if args.output_dir:
-        write_artifacts(workflow, args.output_dir)
+        write_artifacts(workflow, args.output_dir, include_dxf=args.dxf)
     print(
         json.dumps(
             {

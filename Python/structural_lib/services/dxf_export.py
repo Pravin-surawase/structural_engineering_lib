@@ -24,6 +24,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from structural_lib.beam import semantics as _semantics
+
 ezdxf: Any = None
 _units: Any = None
 _TextEntityAlignment: Any = None
@@ -673,7 +675,12 @@ def draw_beam_elevation(
             count=2, diameter=16, area_provided=402, spacing=100, layers=1
         )
     )
-    y_bot = y0 + cover + bot_bar.diameter / 2
+    if any(bar.layers > 1 for bar in (*top_bars, *bottom_bars)):
+        raise ValueError(
+            "Multilayer drawing requires resolved physical bar paths; use generate_physical_beam_dxf"
+        )
+    link_dia = stirrups[len(stirrups) // 2].diameter if stirrups else 0.0
+    y_bot = y0 + cover + link_dia + bot_bar.diameter / 2
     msp.add_line((x0, y_bot), (x0 + span, y_bot), dxfattribs={"layer": "REBAR_MAIN"})
 
     # Top bars
@@ -685,7 +692,7 @@ def draw_beam_elevation(
             count=2, diameter=12, area_provided=226, spacing=100, layers=1
         )
     )
-    y_top = y0 + D - cover - top_bar.diameter / 2
+    y_top = y0 + D - cover - link_dia - top_bar.diameter / 2
     msp.add_line((x0, y_top), (x0 + span, y_top), dxfattribs={"layer": "REBAR_MAIN"})
 
     # 4. Draw stirrups at intervals
@@ -1088,6 +1095,71 @@ def draw_section_cut(
 # =============================================================================
 
 
+def generate_physical_beam_dxf(
+    path_result: _semantics.OperationResult,
+    package_result: _semantics.OperationResult,
+    output_path: str | Path,
+    *,
+    section_station_mm: float | None = None,
+    max_arc_sagitta_mm: float = 0.02,
+) -> str:
+    """Render a physical beam drawing from bound calculation/package results.
+
+    Parameters
+    ----------
+    path_result : OperationResult
+        Completed, current WP06 reinforcement paths; their effective inputs
+        provide the actual member extents and section dimensions in mm.
+    package_result : OperationResult
+        Current calculation package binding exactly those paths and their BBS.
+        Its issue state and approval remain authoritative, including draft.
+    output_path : str or Path
+        Destination DXF R2010 file; the optional ``dxf`` extra is required.
+    section_station_mm : float, optional
+        True straight-longitudinal section station, defaulting to the centre
+        of the resolved member extent. Curved cut intersections reject.
+    max_arc_sagitta_mm : float
+        Maximum 3D chord deviation for projected resolved arcs, in mm.
+
+    Returns
+    -------
+    str
+        Saved file containing identified 3D paths, elevation, longitudinal
+        section and separately labelled link path projections; all in mm.
+
+    Raises
+    ------
+    ValueError
+        Physical/input/BBS/package binding, state or cut geometry disagrees.
+    ImportError
+        The optional DXF dependency is unavailable.
+
+    Examples
+    --------
+    ``generate_physical_beam_dxf(paths_result, package_result, "physical.dxf")``
+
+    Limitations
+    -----------
+    A source-bound digital review drawing does not provide fabrication,
+    native-CAD or professional approval. It does not invent missing geometry.
+
+    Provenance
+    ----------
+    Existing WP06 path and WP07 calculation-package result/payload identities
+    are retained in file metadata and every identified path entity.
+    """
+    check_ezdxf()
+    from ._physical_dxf import write_physical_dxf
+
+    return write_physical_dxf(
+        path_result,
+        package_result,
+        output_path,
+        section_station_mm=section_station_mm,
+        max_arc_sagitta_mm=max_arc_sagitta_mm,
+    )
+
+
 def generate_beam_dxf(
     detailing: BeamDetailingResult,
     output_path: str,
@@ -1118,6 +1190,10 @@ def generate_beam_dxf(
 
     Returns:
         Path to generated DXF file
+
+    Raises:
+        ValueError: A multilayer arrangement lacks resolved physical paths.
+            Use generate_physical_beam_dxf with a bound path/package result.
     """
     check_ezdxf()
 

@@ -888,6 +888,24 @@ def compute_dxf(
             )
         )
 
+    if any(
+        bar.layers > 1
+        for item in normalized
+        for bar in (*item.top_bars, *item.bottom_bars)
+    ):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_RESULT_NOT_ACCEPTED",
+                    path="detailing_list",
+                    message=(
+                        "Multilayer DXF requires resolved physical bar paths; "
+                        "use generate_physical_beam_dxf with the bound package"
+                    ),
+                ),
+            )
+        )
+
     from structural_lib.services import dxf_export as _dxf_export
 
     if _dxf_export is None:
