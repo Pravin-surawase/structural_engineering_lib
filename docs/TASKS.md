@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-11-07 — Layered column section response verified. Ordinary beam member workflows next.
+**Updated:** 2026-11-07 — Ordinary beam member replays verified. Versioned 0.27.0 qualification next.
 
 ---
 
@@ -26,7 +26,7 @@
 | LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Done: [PR #1040 integrated](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
-| LIB-027 | Deliver the bounded beam and column release | P1 | Goals 1–3 complete. Ordinary beam member workflows next | [Five goals](planning/library-usability-improvement.md#five-goals-and-acceptance) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
+| LIB-027 | Deliver the bounded beam and column release | P1 | Goals 1–4 complete. Versioned qualification and release next | [Five goals](planning/library-usability-improvement.md#five-goals-and-acceptance) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
@@ -190,7 +190,7 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-027 | Deliver the measured 0.27 release scope | MAIN / Mac | [Layered column response](cookbook/python/layered-column-section.md) delivered. [Goal 4 member plan](planning/library-usability-improvement.md#goal-4-ordinary-beam-member-workflows) next. |
+| LIB-027 | Deliver the measured 0.27 release scope | MAIN / Mac | [Beam member workflows](cookbook/python/ordinary-beam-member.md) verified. [Goal 5 candidate and release plan](planning/library-usability-improvement.md#goal-5-qualify-and-release-0270) next. |
 
 The [current handoff](planning/next-session-brief.md) identifies the selected
 preparation scope. The dated notes below retain earlier lanes and installed-host

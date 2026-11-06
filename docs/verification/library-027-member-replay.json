@@ -1,0 +1,136 @@
+{
+  "schema_version": "structlib-027-member-replay/v1",
+  "observed_date": "2026-11-07",
+  "status": "REPLAY_VERIFIED",
+  "scope": "Goal 4 member and supplied-beam replay using a source-bound development wheel. Goal 5 qualifies the versioned release archives.",
+  "library_source_commit": "d82542d0c7b80f77e8b42a01f42fd0d447a580f5",
+  "wheel_build_source_commit": "5db16c3d939ecce4556281c3ee02fe9247f196b1",
+  "source_trees_equal": true,
+  "installed_wheel_sha256": "4e44d526bb3af077520b99bbba80e2323e507c18f4dad6b960ef73c089aae6d7",
+  "interpreter": "CPython 3.11.15",
+  "example_sha256": "b9ea8ff810914763137a028b0c5b4bf45f3c46c0180911dd786523e9e16c690a",
+  "verifier_sha256": "328ea667c4a242f843dbb88415aecad2ad665bcf66a74fb8a31ec50370b397cd",
+  "installed_version": "0.26.0",
+  "package_origin": "site-packages",
+  "member_cases": {
+    "single-layer": {
+      "member": "pass",
+      "issue_state": "issue_ready",
+      "required_checks": 19,
+      "physical_bars": 39,
+      "scheduled_steel_kg": 56.95229312438693,
+      "loads_n_per_mm": {
+        "ULS": 12,
+        "SLS": 8
+      },
+      "unqualified_leaves": {},
+      "professional_approval": false,
+      "sha256": {
+        "calculation.json": "d0020b5ba53058570d03a093f96808776674ff7bed871adc8ad2e7e0ec475535",
+        "bbs.csv": "44ec87c0510927218aa7240e6b76327c599eb6cd029c544077f38625e3370b9a",
+        "report.html": "a3a6bdccaacc2628e0026e9dda932fbb04f303f9018f237a7752b4a92c14d398"
+      }
+    },
+    "single-layer-insufficient-for-demand": {
+      "member": "fail",
+      "issue_state": "draft",
+      "required_checks": 19,
+      "physical_bars": 39,
+      "scheduled_steel_kg": 56.95229312438693,
+      "loads_n_per_mm": {
+        "ULS": 40,
+        "SLS": 8
+      },
+      "unqualified_leaves": {
+        "flexure@B1": [
+          "LEAF.FAIL"
+        ],
+        "torsion@B1": [
+          "LEAF.FAIL"
+        ]
+      },
+      "professional_approval": false,
+      "sha256": {
+        "calculation.json": "e60d6519b7b1631752a3b860cfcc847ef6a85cd7749c86cfc23ff2defbd05e11",
+        "bbs.csv": "f83ba328aab45b632cdf64568e1b6fe598027c8b5c77d0892e32d9cb9ba68f39",
+        "report.html": "7602d20a36e39367c1780047649c827b2bd3f3a667a2ab4de1619e16d1eaf7fd"
+      }
+    },
+    "multilayer": {
+      "member": "pass",
+      "issue_state": "issue_ready",
+      "required_checks": 27,
+      "physical_bars": 43,
+      "scheduled_steel_kg": 129.91458084481988,
+      "loads_n_per_mm": {
+        "ULS": 36,
+        "SLS": 24
+      },
+      "unqualified_leaves": {},
+      "professional_approval": false,
+      "sha256": {
+        "calculation.json": "4ac853a5e9e452ac9fef8a8602afd155ef630647c65ec8f766622cc929554ed2",
+        "bbs.csv": "e6426bd408778f6379f93dee1edcf10b4b27627311f939e3748c0a5e5a272e5c",
+        "report.html": "82064568abf114316a7572fafb0be647e61b6e08af50449c1d7d2d1a4602db4e"
+      }
+    },
+    "multilayer-insufficient-for-demand": {
+      "member": "fail",
+      "issue_state": "draft",
+      "required_checks": 27,
+      "physical_bars": 43,
+      "scheduled_steel_kg": 129.91458084481988,
+      "loads_n_per_mm": {
+        "ULS": 100,
+        "SLS": 24
+      },
+      "unqualified_leaves": {
+        "flexure@B1": [
+          "LEAF.FAIL"
+        ],
+        "shear@B1": [
+          "LEAF.FAIL"
+        ],
+        "torsion@B1": [
+          "LEAF.FAIL"
+        ]
+      },
+      "professional_approval": false,
+      "sha256": {
+        "calculation.json": "d5a730f12176fc4d060ccb8bec205bcb4b807b5eb670edfec27e3be064ebdf3e",
+        "bbs.csv": "dcfb1213147c5edd2fed75d3c0ca246532ecfad905385792e3f86e2d5ae8df42",
+        "report.html": "c48743dfc29f044faf88bec3678c3f730270b660004a811168e10a97fb5c7606"
+      }
+    }
+  },
+  "supplied_check_controls": {
+    "adequate": {
+      "status": "PASS",
+      "issue_codes": [],
+      "sha256": "7e1e72a3fd97e8c5fcecf53b5d5422e2bc411642b90e47a089ae67ef8cae1729"
+    },
+    "missing_support_width": {
+      "status": "HOLD",
+      "issue_codes": [
+        "BEAM_SUPPORT_WIDTH_BASIS_NOT_SUPPLIED"
+      ],
+      "sha256": "bb1e755ca3c287c6b3c9f0442bbb5c6005c6568357718c8527ece7ee3ecce539"
+    },
+    "conflicting_depth": {
+      "status": "FAIL",
+      "issue_codes": [
+        "BEAM_SUPPLIED_EFFECTIVE_DEPTH_MISMATCH"
+      ],
+      "sha256": "e5384d0864c6f4374c819fc0700615a4c9a82c2fd488376598821521d14b9523"
+    },
+    "insufficient_reinforcement": {
+      "status": "FAIL",
+      "issue_codes": [
+        "BEAM_TENSION_REINFORCEMENT_AREA_INSUFFICIENT"
+      ],
+      "sha256": "ea6d8f2a8164b8e08acb05af70f1c5783236aab039e0d7f8df907f14cb970d9f",
+      "required_mm2": 905.7458469878037,
+      "provided_mm2": 628.3185307179587
+    }
+  }
+}
