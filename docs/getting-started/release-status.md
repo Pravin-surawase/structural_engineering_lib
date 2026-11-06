@@ -9,8 +9,8 @@ tags: [release, installation, external-user]
 
 # Current Release
 
-The current published package is **StructLib 0.26.0**. The 0.26.1 fixes are
-tracked under Unreleased in the changelog. Check the append-only
+The current published package is **StructLib 0.26.0**. The merged consumer
+fixes are tracked under Unreleased and planned for 0.27.0. Check the append-only
 [release ledger](releases.md) and PyPI for publication before switching your
 install to a newer version.
 
