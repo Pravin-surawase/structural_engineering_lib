@@ -31,7 +31,7 @@ def section() -> dict:
     }
 
 
-def test_layered_section_example_replays_both_independent_targets(
+def test_layered_section_example_replays_all_independent_targets(
     tmp_path: Path,
 ) -> None:
     example = ROOT / "Python/examples/layered_column_section.py"
@@ -42,6 +42,9 @@ def test_layered_section_example_replays_both_independent_targets(
     boundary = json.loads(
         (REFERENCES / "library-027-column-section-boundary.json").read_text()
     )
+    extension = json.loads(
+        (REFERENCES / "library-027-column-section-extension.json").read_text()
+    )
     completed = subprocess.run(
         [sys.executable, str(example)],
         cwd=tmp_path,
@@ -50,7 +53,12 @@ def test_layered_section_example_replays_both_independent_targets(
         check=True,
     )
     outcomes = json.loads(completed.stdout)
-    assert outcomes.keys() == {"frozen_900mm", "full_depth_boundary"}
+    assert outcomes.keys() == {
+        "frozen_900mm",
+        "full_depth_boundary",
+        "partial_compression",
+        "mixed_diameters",
+    }
     for name, expected, tolerances in (
         (
             "frozen_900mm",
@@ -58,6 +66,10 @@ def test_layered_section_example_replays_both_independent_targets(
             fixture["acceptance"]["absolute_tolerances"],
         ),
         ("full_depth_boundary", boundary["expected"], boundary["absolute_tolerances"]),
+        *(
+            (c["id"], c["expected"], extension["absolute_tolerances"])
+            for c in extension["cases"]
+        ),
     ):
         response = column.ColumnSectionResponseV1.model_validate_json(
             json.dumps(outcomes[name])
@@ -88,6 +100,22 @@ def test_layered_section_example_replays_both_independent_targets(
             + sum(r.centroid_moment_knm for r in response.layers)
         )
     assert outcomes["frozen_900mm"]["axial_kn"] > 1262.374193  # Comparator slice cap.
+    for case in extension["cases"]:
+        response = column.ColumnSectionResponseV1.model_validate_json(
+            json.dumps(outcomes[case["id"]])
+        )
+        assert response.request == column.load_layered_section(case["inputs"])
+        assert (
+            column.load_layered_section(response.request.model_dump_json())
+            == response.request
+        )
+        for group, expected in zip(
+            response.layers, case["expected_groups"], strict=True
+        ):
+            for field, target in expected.items():
+                assert getattr(group, field) == pytest.approx(
+                    target, abs=extension["group_absolute_tolerances"][field], rel=0
+                )
 
 
 def test_layered_section_round_trips_and_approaches_full_depth_boundary(
@@ -108,20 +136,22 @@ def test_layered_section_round_trips_and_approaches_full_depth_boundary(
     at = column.layered_section_response(
         column.load_layered_section({**section, "xu_mm": 450})
     )
-    above = column.layered_section_response(
-        column.load_layered_section({**section, "xu_mm": 450.000001})
-    )
-    assert above.far_face_strain > 0
-    assert above.axial_kn == pytest.approx(at.axial_kn, rel=0, abs=0.001)
-    assert above.centroid_moment_knm == pytest.approx(
-        at.centroid_moment_knm, rel=0, abs=0.001
-    )
+    for delta in (-0.000001, 0.000001):
+        near = column.layered_section_response(
+            column.load_layered_section({**section, "xu_mm": 450 + delta})
+        )
+        assert near.far_face_strain * delta > 0
+        assert near.axial_kn == pytest.approx(at.axial_kn, rel=0, abs=0.001)
+        assert near.centroid_moment_knm == pytest.approx(
+            at.centroid_moment_knm, rel=0, abs=0.001
+        )
 
 
 @pytest.mark.parametrize(
     ("changes", "code"),
     [
-        ({"xu_mm": 449.999}, "CROSS_FIELD_CONTRACT_INVALID"),
+        ({"xu_mm": 0}, "INPUT_OUT_OF_RANGE"),
+        ({"xu_mm": 5e-324}, "CROSS_FIELD_CONTRACT_INVALID"),
         ({"xu_mm": float("inf")}, "INPUT_NOT_FINITE"),
         ({"b_mm": 0}, "INPUT_OUT_OF_RANGE"),
         ({"fy_nmm2": 600}, "INPUT_OUT_OF_RANGE"),
@@ -139,7 +169,12 @@ def test_layered_section_round_trips_and_approaches_full_depth_boundary(
             "INPUT_OUT_OF_RANGE",
         ),
         (
-            {"layers": [{"depth_from_top_mm": 50, "count": 2, "diameter_mm": 16}] * 2},
+            {
+                "layers": [
+                    {"depth_from_top_mm": 50, "count": 8, "diameter_mm": 16},
+                    {"depth_from_top_mm": 50, "count": 6, "diameter_mm": 20},
+                ],
+            },
             "CROSS_FIELD_CONTRACT_INVALID",
         ),
         (

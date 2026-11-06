@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from math import fsum, pi
+from math import fsum, isfinite, pi
 from typing import Literal, Self
 
 from pydantic import Field, field_validator, model_validator
@@ -11,7 +11,7 @@ from structural_lib.services.contracts.common import StrictPublicModel
 
 
 class ColumnSectionLayerV1(StrictPublicModel):
-    """Bars of one diameter on a depth line parallel to the centroidal axis."""
+    """One diameter group on a depth line parallel to the centroidal axis."""
 
     depth_from_top_mm: float = Field(gt=0)
     count: int = Field(gt=0, le=2000)
@@ -23,7 +23,7 @@ class ColumnSectionLayerV1(StrictPublicModel):
 
 
 class ColumnSectionInputV1(StrictPublicModel):
-    """Prescribed full-compression response of a solid rectangular section."""
+    """Response of a solid rectangular section at a prescribed neutral axis."""
 
     schema_version: Literal["column-layered-section-input/v1"] = (
         "column-layered-section-input/v1"
@@ -43,9 +43,9 @@ class ColumnSectionInputV1(StrictPublicModel):
 
     @model_validator(mode="after")
     def validate_section(self) -> Self:
-        if self.xu_mm < self.D_mm:
-            raise ValueError("xu_mm must be at least D_mm for this strain profile")
-        depths = set()
+        if not isfinite(self.D_mm / self.xu_mm):
+            raise ValueError("xu_mm must give a finite section depth ratio")
+        widths_by_depth: dict[float, list[float]] = {}
         for index, layer in enumerate(self.layers):
             depth = layer.depth_from_top_mm
             radius = layer.diameter_mm / 2
@@ -53,20 +53,21 @@ class ColumnSectionInputV1(StrictPublicModel):
                 raise ValueError(
                     f"layers[{index}] bar diameter extends beyond a depth face"
                 )
-            if layer.count * layer.diameter_mm > self.b_mm:
+            widths_by_depth.setdefault(depth, []).append(
+                layer.count * layer.diameter_mm
+            )
+        for depth, widths in widths_by_depth.items():
+            if fsum(widths) > self.b_mm:
                 raise ValueError(
-                    f"layers[{index}] bar diameters exceed the section width"
+                    f"combined bar diameters at depth {depth:g} mm exceed the section width"
                 )
-            if depth in depths:
-                raise ValueError(f"layers[{index}] repeats a layer depth")
-            depths.add(depth)
         if fsum(layer.area_mm2 for layer in self.layers) >= self.b_mm * self.D_mm:
             raise ValueError("Total bar area must be below the gross section area")
         return self
 
 
 class ColumnSectionLayerResponseV1(StrictPublicModel):
-    """Strain and net contribution of one layer after concrete displacement."""
+    """Strain and net contribution of one diameter group after concrete displacement."""
 
     layer: ColumnSectionLayerV1
     area_mm2: float

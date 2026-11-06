@@ -16,6 +16,7 @@ HERE = Path(__file__).resolve().parent
 FIXTURE = HERE / "library-027-comparator-reference.json"
 BASELINE = HERE / "library-027-comparator-baseline.json"
 BOUNDARY = HERE / "library-027-column-section-boundary.json"
+EXTENSION = HERE / "library-027-column-section-extension.json"
 
 
 def circle_area(diameter):
@@ -194,6 +195,57 @@ def check_inputs(frozen, baseline):
             raise ValueError(f"Observed input {field} differs from frozen reference")
 
 
+def check_column_extension():
+    fixture = json.loads(EXTENSION.read_text())
+    for case in fixture["cases"]:
+        request = case["inputs"]
+        depth, xu = request["D_mm"], request["xu_mm"]
+        groups = request["layers"]
+        bar_layers = [
+            {
+                "depth_from_top_mm": row["depth_from_top_mm"],
+                "diameters_mm": [row["diameter_mm"]] * row["count"],
+            }
+            for row in groups
+        ]
+        data = {
+            "width_mm": request["b_mm"],
+            "depth_mm": depth,
+            "fck_nmm2": request["fck_nmm2"],
+            "fy_nmm2": request["fy_nmm2"],
+            "neutral_axis_depth_mm": xu,
+            "bar_layers": bar_layers,
+        }
+        top = 0.0035 if xu <= depth else 0.0035 / (1 + 0.75 * (1 - depth / xu))
+        values = dict(
+            reference({"inputs": data})["shared"],
+            top_strain=top,
+            far_face_strain=top * (1 - depth / xu),
+        )
+        check(case["id"], values, case["expected"], fixture["absolute_tolerances"])
+        for group, expected in zip(bar_layers, case["expected_groups"], strict=True):
+            y = group["depth_from_top_mm"]
+            area = math.fsum(map(circle_area, group["diameters_mm"]))
+            strain = top * (1 - y / xu)
+            fs = steel_stress(strain, data["fy_nmm2"])
+            fc = concrete_stress(strain, data["fck_nmm2"])
+            force = area * (fs - fc) / 1000
+            check(
+                case["id"],
+                dict(
+                    area_mm2=area,
+                    strain=strain,
+                    steel_stress_nmm2=fs,
+                    displaced_concrete_stress_nmm2=fc,
+                    net_axial_kn=force,
+                    centroid_moment_knm=force * (depth / 2 - y) / 1000,
+                ),
+                expected,
+                fixture["group_absolute_tolerances"],
+            )
+        print(f"PASS {case['id']}")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--print-expected", action="store_true")
@@ -263,6 +315,7 @@ def main():
     values = dict(reference(case)["shared"], top_strain=top, far_face_strain=0.0)
     check("column/xu=D", values, boundary["expected"], boundary["absolute_tolerances"])
     print("PASS column_three_layers at xu = D")
+    check_column_extension()
 
 
 if __name__ == "__main__":

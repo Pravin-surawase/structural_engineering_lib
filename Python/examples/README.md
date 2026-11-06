@@ -125,7 +125,7 @@ python3 Python/examples/analysis_snapshot_replay.py /path/to/snapshot.json
 | `complete_member_workflow.py` | Single-layer and multilayer beams through checks, physical paths, BBS and HTML. [Member guide](../../docs/cookbook/python/ordinary-beam-member.md) | Yes, with `--output-dir` |
 | `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
 | `beam_comparator_reference.py` | Installed-package section capacities for three supplied beam layouts. [Beam comparison guide](../../docs/cookbook/python/beam-comparator-reference.md) | No |
-| `layered_column_section.py` | Raw response of a layered rectangle at two prescribed neutral-axis depths. [Column section guide](../../docs/cookbook/python/layered-column-section.md) | No |
+| `layered_column_section.py` | Raw response of a layered rectangle with full compression, partial compression and mixed diameters. [Column section guide](../../docs/cookbook/python/layered-column-section.md) | No |
 | `beam_checks_workflow.py` | Explicit analysis, capacity, serviceability and detailing calls; evidence remains distinct | No |
 | `physical_member_workflow.py` | Physical bars → profile checks → BBS/quantities/cost/package; missing/stale evidence; current source build | No |
 | `candidate_ranking_workflow.py` | Genuine candidate calculations → finite-domain ranking; failed, budget and stale outcomes; current source build | No |

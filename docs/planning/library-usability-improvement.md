@@ -82,7 +82,7 @@ The existing member HOLD remains a regression control.
 ### Goal 3 layered column section response
 
 `column.load_layered_section` accepts a mapping or JSON and validates
-dimensions, strengths, a finite `xu >= D` and depth-wise layers. The
+dimensions, strengths, a positive `xu` with finite depth ratio and depth-wise layers. The
 section operation uses the closed-form Fig. 21 resultants and strain plane
 with the existing Fig. 23 steel law. It returns compression-positive
 axial force, signed centroidal moment, strains and contributions. The
@@ -118,13 +118,13 @@ interaction surfaces, moment–curvature and other layouts and code bases.
 
 | Order | Work | Evidence required before release |
 |---|---|---|
-| A | Finish the layered rectangular column section API | Admit a finite neutral axis inside the section and mixed diameters at the same depth. Reuse the existing strain plane and concrete and steel laws. Preserve the current input form, centroidal sign convention and raw response status. Verify both new cases below, bar tension and displaced-concrete handling, continuity at `xu = D`, strict JSON, invalid geometry, and the existing 450 mm and 900 mm cases. |
+| A | Finish the layered rectangular column section API | The existing request now accepts partial compression and mixed diameters as separate groups at one depth. Both new cases, signed steel stress, displacement, continuity at `xu = D`, strict JSON, invalid geometry, and the original 450 mm and 900 mm cases are covered. [Guide](../cookbook/python/layered-column-section.md) |
 | B | Close the remaining beam section comparison gaps | Add supplied inclined stirrups and bent-up bars to the section shear calculation. Freeze independent vertical, inclined, single-group and repeated-group cases, contribution limits and combinations, with no double counting. Verify sagging flanged flexure on both sides of the flange-depth boundary. Keep section capacity evidence distinct from member detailing. |
 | C | Finish an ordinary physical four-corner column member | Start with one short braced rectangular profile, four equal corner bars, declared cover and an actual closed tie. Derive physical bar centres and verify their equivalence to the existing two-face calculation basis for each admitted principal direction. Check bar fit, tie geometry, diameter and spacing. Run an independent passing case and separate inadequate and missing-evidence cases. Bind member checks and the report to the same bar and tie arrangement. Depends on a qualified section basis from A. |
 | D | Compose rectangular beam flexure, shear and torsion through detailing | Reuse the [torsion evidence plan](https://pravinsurawase.atlassian.net/browse/LIB-3) and [member implementation plan](https://pravinsurawase.atlassian.net/browse/LIB-4). Qualify one ordinary non-seismic supplied rectangular member with concurrent actions, actual closed links, and longitudinal steel on both relevant faces. Resolve torsional load path, support, serviceability, anchorage and fit before admission. Replay nonzero torsion, zero-torsion compatibility, missing evidence and insufficient provision. Match paths, BBS and report to the checked layout. |
 | E | Complete the ordinary sagging T-beam member workflow | Reuse the supported monolithic T-beam calculation and qualify one actual supplied layout with zero torsion. Prove flange geometry and bar fit, web shear width, anchorage, and agreement between member checks, detailing, paths, BBS and report. Verify a failed or held case alongside the passing case. |
 
-Packet A starts from the existing 230 × 450 mm M20/Fe415 fixture.
+Packet A extends the existing 230 × 450 mm M20/Fe415 fixture.
 The standard-library reference and pinned rcdesign 0.4.18 agree on these
 starting targets. Use absolute tolerances of 0.001 kN and 0.001 kN·m.
 
@@ -181,7 +181,7 @@ decision back to the owner.
 | Before Goal 5 | [Close the selected beam and column gaps](#beam-and-column-closure-before-goal-5), starting with the two layered column section cases. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | After closure. [Prepare and verify the exact candidate, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Start with packet A in the [beam and column closure plan](#beam-and-column-closure-before-goal-5).
+Continue with packet B in the [beam and column closure plan](#beam-and-column-closure-before-goal-5).
 There is no standalone 0.26.1 release. Candidate preparation uses the
 maintained version tooling after scoped implementation and documentation
 freeze. A Jira fix version is a

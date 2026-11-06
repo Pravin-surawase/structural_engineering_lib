@@ -232,8 +232,9 @@ def load_layered_section(
 
     Limitations
     -----------
-    The first profile admits a solid rectangle and finite ``xu_mm >= D_mm``.
-    Depths are measured from the top compression face.
+    The profile admits a solid rectangle and positive ``xu_mm`` with a finite
+    depth ratio. Depths are measured from the top compression face. Use
+    separate diameter groups at the same depth for mixed bars.
 
     Provenance
     ----------
@@ -266,7 +267,8 @@ def layered_section_response(request: ColumnSectionInputV1) -> ColumnSectionResp
     Examples
     --------
     Call ``layered_section_response(load_layered_section(payload))``. The
-    layered column section cookbook shows the 900 mm and full-depth cases.
+    layered column section cookbook shows full and partial compression and
+    mixed diameters.
 
     Limitations
     -----------
