@@ -152,7 +152,7 @@ def _concrete_block(
     if x_mm <= df:
         force = 0.36 * fck * bf * x_mm
         return force, force * (d_mm - 0.42 * x_mm), True
-    yf = min(df, 0.15 * x_mm + 0.65 * df)
+    yf = df if x_mm >= df / 0.43 else 0.15 * x_mm + 0.65 * df
     web_force = 0.36 * fck * bw * x_mm
     flange_force = 0.45 * fck * (bf - bw) * yf
     moment = web_force * (d_mm - 0.42 * x_mm) + flange_force * (d_mm - 0.5 * yf)
@@ -402,6 +402,34 @@ def flexural_capacity(request: FlexuralCapacityRequest) -> OperationResult:
         else:
             low = mid
     equilibrium_x = (low + high) / 2.0
+    flange_depth = request.flange_thickness_mm
+    web_compression = (
+        request.section_kind is not SectionKind.RECTANGULAR
+        and request.tension_face is Face.BOTTOM
+        and flange_depth is not None
+        and high > flange_depth
+    )
+    if web_compression:
+        provenance = _provenance(
+            request.code_data_revision_id, "is456-flexural-capacity-flanged-web-v1"
+        )
+        # The upper endpoint preserves the full flange branch at the cutoff.
+        equilibrium_x = high
+        concrete_force, _, _ = _concrete_block(request, equilibrium_x, d_mm)
+        if abs(residual(equilibrium_x)) > max(1e-6, 1e-12 * concrete_force):
+            return not_applicable_result(
+                FLEXURAL_CAPACITY_OPERATION,
+                inputs,
+                _diagnostic(
+                    FLEXURAL_CAPACITY_OPERATION,
+                    "FLEXURE.FLANGE_FORCE_GAP",
+                    "The rounded Annex G branches cannot equilibrate the supplied steel at the flange stress-block cutoff.",
+                    "flange_thickness_mm",
+                    "Use a verified section model that integrates the concrete stress distribution.",
+                    severity="information",
+                ),
+                provenance=provenance,
+            )
     extreme_depth = max(
         (
             bar.y_from_top_mm

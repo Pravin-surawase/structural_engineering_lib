@@ -1,0 +1,312 @@
+{
+  "schema_version": "library-027-beam-section-closure/v1",
+  "source_basis": [
+    "IS 456:2000 Cl. 26.5.1.5\u201326.5.1.6, Cl. 40.2 and 40.4 and Tables 19\u201320",
+    "IS 456:2000 Cl. 38.1, Fig. 23 and Annex G-2.1 to G-2.3",
+    "Controlled consolidated through Amendment 5 SHA-256 964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+    "Pinned rcdesign 0.4.18 commit ec8fe94b71dc02b07f7d83d12d3a4ddb511dd360 for component comparison"
+  ],
+  "shear_section": {
+    "web_width_mm": 300,
+    "effective_depth_mm": 450,
+    "fck_nmm2": 25,
+    "longitudinal_area_mm2": 1350,
+    "table_19_nmm2": 0.64,
+    "table_20_nmm2": 3.1
+  },
+  "shear_cases": [
+    {
+      "id": "vertical",
+      "stirrups": {
+        "diameters_mm": [
+          8,
+          8
+        ],
+        "angle_deg": 90,
+        "spacing_mm": 150,
+        "fy_nmm2": 415
+      },
+      "bent_up_bars": null,
+      "engineering": "pass",
+      "expected": {
+        "concrete_capacity_kn": 86.4,
+        "stirrup_capacity_kn": 108.89011464754509,
+        "bent_up_capacity_raw_kn": 0.0,
+        "bent_up_capacity_credited_kn": 0.0,
+        "limiting_capacity_kn": 418.5,
+        "provided_capacity_kn": 195.2901146475451
+      }
+    },
+    {
+      "id": "inclined",
+      "stirrups": {
+        "diameters_mm": [
+          8,
+          8
+        ],
+        "angle_deg": 45,
+        "spacing_mm": 150,
+        "fy_nmm2": 415
+      },
+      "bent_up_bars": null,
+      "engineering": "pass",
+      "expected": {
+        "concrete_capacity_kn": 86.4,
+        "stirrup_capacity_kn": 153.99387694291948,
+        "bent_up_capacity_raw_kn": 0.0,
+        "bent_up_capacity_credited_kn": 0.0,
+        "limiting_capacity_kn": 418.5,
+        "provided_capacity_kn": 240.3938769429195
+      }
+    },
+    {
+      "id": "single_bent_only",
+      "stirrups": null,
+      "bent_up_bars": {
+        "diameters_mm": [
+          16,
+          16
+        ],
+        "angle_deg": 45,
+        "spacing_mm": null,
+        "fy_nmm2": 415
+      },
+      "engineering": "fail",
+      "expected": {
+        "concrete_capacity_kn": 86.4,
+        "stirrup_capacity_kn": 0.0,
+        "bent_up_capacity_raw_kn": 102.66258462861298,
+        "bent_up_capacity_credited_kn": 0.0,
+        "limiting_capacity_kn": 418.5,
+        "provided_capacity_kn": 86.4
+      }
+    },
+    {
+      "id": "repeated_bent_only",
+      "stirrups": null,
+      "bent_up_bars": {
+        "diameters_mm": [
+          16,
+          16
+        ],
+        "angle_deg": 45,
+        "spacing_mm": 150,
+        "fy_nmm2": 415
+      },
+      "engineering": "fail",
+      "expected": {
+        "concrete_capacity_kn": 86.4,
+        "stirrup_capacity_kn": 0.0,
+        "bent_up_capacity_raw_kn": 615.9755077716779,
+        "bent_up_capacity_credited_kn": 0.0,
+        "limiting_capacity_kn": 418.5,
+        "provided_capacity_kn": 86.4
+      }
+    },
+    {
+      "id": "vertical_and_single",
+      "stirrups": {
+        "diameters_mm": [
+          8,
+          8
+        ],
+        "angle_deg": 90,
+        "spacing_mm": 150,
+        "fy_nmm2": 415
+      },
+      "bent_up_bars": {
+        "diameters_mm": [
+          16,
+          16
+        ],
+        "angle_deg": 45,
+        "spacing_mm": null,
+        "fy_nmm2": 415
+      },
+      "engineering": "pass",
+      "expected": {
+        "concrete_capacity_kn": 86.4,
+        "stirrup_capacity_kn": 108.89011464754509,
+        "bent_up_capacity_raw_kn": 102.66258462861298,
+        "bent_up_capacity_credited_kn": 102.66258462861298,
+        "limiting_capacity_kn": 418.5,
+        "provided_capacity_kn": 297.95269927615806
+      }
+    },
+    {
+      "id": "vertical_and_over_limit_single",
+      "stirrups": {
+        "diameters_mm": [
+          8,
+          8
+        ],
+        "angle_deg": 90,
+        "spacing_mm": 150,
+        "fy_nmm2": 415
+      },
+      "bent_up_bars": {
+        "diameters_mm": [
+          20,
+          20
+        ],
+        "angle_deg": 45,
+        "spacing_mm": null,
+        "fy_nmm2": 415
+      },
+      "engineering": "fail",
+      "expected": {
+        "concrete_capacity_kn": 86.4,
+        "stirrup_capacity_kn": 108.89011464754509,
+        "bent_up_capacity_raw_kn": 160.41028848220782,
+        "bent_up_capacity_credited_kn": 108.89011464754509,
+        "limiting_capacity_kn": 418.5,
+        "provided_capacity_kn": 304.18022929509016
+      }
+    },
+    {
+      "id": "inclined_and_over_limit_repeated",
+      "stirrups": {
+        "diameters_mm": [
+          8,
+          8
+        ],
+        "angle_deg": 45,
+        "spacing_mm": 150,
+        "fy_nmm2": 415
+      },
+      "bent_up_bars": {
+        "diameters_mm": [
+          16,
+          16
+        ],
+        "angle_deg": 45,
+        "spacing_mm": 150,
+        "fy_nmm2": 415
+      },
+      "engineering": "fail",
+      "expected": {
+        "concrete_capacity_kn": 86.4,
+        "stirrup_capacity_kn": 153.99387694291948,
+        "bent_up_capacity_raw_kn": 615.9755077716779,
+        "bent_up_capacity_credited_kn": 153.99387694291948,
+        "limiting_capacity_kn": 418.5,
+        "provided_capacity_kn": 394.38775388583895
+      }
+    },
+    {
+      "id": "inclined_and_repeated_at_table_20",
+      "stirrups": {
+        "diameters_mm": [
+          12,
+          12
+        ],
+        "angle_deg": 45,
+        "spacing_mm": 150,
+        "fy_nmm2": 500
+      },
+      "bent_up_bars": {
+        "diameters_mm": [
+          10,
+          10
+        ],
+        "angle_deg": 45,
+        "spacing_mm": 150,
+        "fy_nmm2": 415
+      },
+      "engineering": "pass",
+      "expected": {
+        "concrete_capacity_kn": 86.4,
+        "stirrup_capacity_kn": 346.4862231215688,
+        "bent_up_capacity_raw_kn": 240.6154327233117,
+        "bent_up_capacity_credited_kn": 240.6154327233117,
+        "limiting_capacity_kn": 418.5,
+        "provided_capacity_kn": 418.5
+      }
+    }
+  ],
+  "shear_abs_tolerances": {
+    "concrete_capacity_kn": 0.001,
+    "stirrup_capacity_kn": 0.001,
+    "bent_up_capacity_raw_kn": 0.001,
+    "bent_up_capacity_credited_kn": 0.001,
+    "limiting_capacity_kn": 0.001,
+    "provided_capacity_kn": 0.001
+  },
+  "flanged_section": {
+    "bw_mm": 300,
+    "bf_mm": 800,
+    "depth_mm": 475,
+    "fck_nmm2": 25,
+    "fy_nmm2": 415,
+    "tension_layers": [
+      {
+        "y_mm": 405,
+        "diameters_mm": [
+          18,
+          18
+        ]
+      },
+      {
+        "y_mm": 440,
+        "diameters_mm": [
+          20,
+          20,
+          20
+        ]
+      }
+    ]
+  },
+  "flanged_cases": [
+    {
+      "id": "within_flange",
+      "flange_thickness_mm": 150,
+      "branch": "within_flange",
+      "expected": {
+        "equilibrium_neutral_axis_depth_mm": 72.74608206192887,
+        "concrete_compression_force_n": 523771.7908458879,
+        "capacity_knm": 208.02849444497983
+      }
+    },
+    {
+      "id": "web_reduced_flange",
+      "flange_thickness_mm": 50,
+      "branch": "web_reduced_flange",
+      "expected": {
+        "equilibrium_neutral_axis_depth_mm": 96.21426196709356,
+        "concrete_compression_force_n": 523771.79084588785,
+        "capacity_knm": 207.3389479626249
+      }
+    },
+    {
+      "id": "web_full_flange",
+      "flange_thickness_mm": 30,
+      "branch": "web_full_flange",
+      "expected": {
+        "equilibrium_neutral_axis_depth_mm": 131.48955216514366,
+        "concrete_compression_force_n": 523771.7908458879,
+        "capacity_knm": 201.89393398937005
+      }
+    },
+    {
+      "id": "web_full_flange_near_boundary",
+      "flange_thickness_mm": 43.98938853503918,
+      "branch": "web_full_flange",
+      "expected": {
+        "equilibrium_neutral_axis_depth_mm": 102.34499271714533,
+        "concrete_compression_force_n": 523771.79084588785,
+        "capacity_knm": 206.71102544700742
+      }
+    },
+    {
+      "id": "rounded_force_gap",
+      "flange_thickness_mm": 44.0114829244111,
+      "branch": "rounded_force_gap",
+      "expected": {}
+    }
+  ],
+  "flanged_abs_tolerances": {
+    "equilibrium_neutral_axis_depth_mm": 1e-05,
+    "concrete_compression_force_n": 0.001,
+    "capacity_knm": 0.001
+  }
+}

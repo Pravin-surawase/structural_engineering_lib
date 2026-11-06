@@ -113,6 +113,11 @@ from .reinforcement import (
     evaluate_geometry,
     mass_per_length,
 )
+from .section_shear import (
+    SectionShearReinforcement,
+    SuppliedSectionShearRequest,
+    supplied_section_shear_capacity,
+)
 from .semantics import (
     ApplicabilityState,
     CompletenessState,
@@ -249,6 +254,8 @@ __all__ = [
     "ShearCapacityRequest",
     "ShearCheckRequest",
     "ShearDemand",
+    "SectionShearReinforcement",
+    "SuppliedSectionShearRequest",
     "SimpleSupportAnchorageEvidence",
     "SpliceDetail",
     "SpliceKind",
@@ -283,5 +290,6 @@ __all__ = [
     "resolve_bar_paths",
     "crack_width_limit",
     "shear_capacity",
+    "supplied_section_shear_capacity",
     "solve_beam_line",
 ]

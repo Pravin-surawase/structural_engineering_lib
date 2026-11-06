@@ -28,7 +28,12 @@ def test_per_bar_section_matches_independent_reference(vector):
     expected, actual = vector["expected"], result.outputs
     assert result.execution == "completed"
     assert result.engineering == expected["engineering"]
-    assert result.provenance.method_revision_id == "is456-flexural-capacity-wp01-v3"
+    expected_method = (
+        "is456-flexural-capacity-flanged-web-v1"
+        if vector["id"] == "l_beam"
+        else "is456-flexural-capacity-wp01-v3"
+    )
+    assert result.provenance.method_revision_id == expected_method
     assert actual["equilibrium_neutral_axis_depth_mm"] == pytest.approx(
         expected["neutral_axis_depth_mm"], abs=1e-7, rel=0
     )
