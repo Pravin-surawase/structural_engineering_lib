@@ -28,12 +28,13 @@ as HOLD and depth mismatch and insufficient steel as FAIL. Both full
 member overload replays produced draft artifacts.
 [Member guide and replay](../cookbook/python/ordinary-beam-member.md)
 
-Next is [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13).
-Prepare one versioned 0.27.0 wheel and source archive. Replay the section
-cases, member evidence, and merged consumer fixes from both isolated
-installations. Bind the reviewed artifacts to version-specific owner
-authorization before publication and verify the public file identities.
-[Goal 5 plan](library-usability-improvement.md#goal-5-qualify-and-release-0270)
+The owner selected beam and column closure for 0.27 and slabs and footings
+for 0.28. Next is the layered column section extension. Use the new
+partial-compression and mixed-diameter targets to freeze its contract.
+Complete the selected section and physical member packets before
+[LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) prepares
+the versioned candidate.
+[Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)
 
 ## Historical S6 handoff — 29 October 2026
 
