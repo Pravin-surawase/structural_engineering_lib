@@ -15,12 +15,13 @@ from __future__ import annotations
 
 import json
 import tempfile
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import pytest
 
-from structural_lib.core.data_types import ShearResult
+from structural_lib import api
+from structural_lib.core.data_types import DesignSectionType, ShearResult
 from structural_lib.services.api_results import DesignAndDetailResult
 from structural_lib.services.calculation_report import (
     CalculationReport,
@@ -41,8 +42,7 @@ class _FlexureFixture:
     """Explicit fixture for flexure results — replaces MagicMock (TE-3)."""
 
     Ast_required: float
-    ast_provided: float
-    beam_type: str
+    section_type: DesignSectionType = DesignSectionType.UNDER_REINFORCED
     pt_provided: float = 0.0
 
 
@@ -121,11 +121,7 @@ def mock_design_result(
     sample_input_section, sample_result_section
 ) -> DesignAndDetailResult:
     """Design result with real objects — no MagicMock (TE-3)."""
-    flexure = _FlexureFixture(
-        Ast_required=942.48,
-        ast_provided=1017.88,
-        beam_type="singly reinforced",
-    )
+    flexure = _FlexureFixture(Ast_required=942.48)
     shear = ShearResult(
         tau_v=1.45,
         tau_c=0.36,
@@ -145,6 +141,169 @@ def mock_design_result(
         materials=sample_input_section.materials,
         is_ok=True,
     )
+
+
+@pytest.fixture
+def combined_report_source():
+    return api.design_and_detail_beam_is456(
+        units="IS456",
+        beam_id="B1",
+        story="GF",
+        span_mm=6000,
+        b_mm=300,
+        D_mm=500,
+        d_mm=444,
+        cover_mm=40,
+        fck_nmm2=25,
+        fy_nmm2=500,
+        mu_knm=150,
+        vu_kn=100,
+    )
+
+
+@pytest.mark.parametrize("output_format", ["json", "html", "markdown"])
+def test_public_report_exports_actual_steel(
+    combined_report_source, output_format, tmp_path
+):
+    result = combined_report_source
+    assert result.is_ok is True
+    path = tmp_path / "reports" / f"beam.{output_format}"
+    report = api.generate_calculation_report(
+        result, output_path=path, output_format=output_format
+    )
+    content = path.read_text(encoding="utf-8")
+    assert report.report_id in content
+    assert report.results.flexure == {
+        "ast_required": pytest.approx(900.1166577522483),
+        "ast_provided": None,
+        "section_type": "UNDER_REINFORCED",
+        "is_safe": True,
+        "beam_type": None,
+    }
+    assert report.results.shear["Vu_kn"] == result.design.Vu_kn
+    assert report.results.shear["spacing"] == result.design.shear.spacing
+    assert report.results.detailing["status"] == "available"
+    assert report.results.detailing["is_valid"] is True
+    for face in ("top", "bottom"):
+        arrangements = getattr(result.detailing, f"{face}_bars")
+        rows = report.results.detailing[f"{face}_bars"]
+        assert [row["zone"] for row in rows] == ["start", "mid", "end"]
+        for row, bar in zip(rows, arrangements, strict=True):
+            assert row["count"] == bar.count
+            assert row["diameter_mm"] == bar.diameter
+            assert row["area_provided_mm2"] == bar.area_provided
+            assert row["spacing_mm"] == bar.spacing
+            assert row["layers"] == bar.layers
+    if output_format == "json":
+        assert json.loads(content) == report.to_dict()
+        return
+    assert "Required tension steel" in content
+    assert "900.12" in content
+    assert "UNDER_REINFORCED" in content
+    assert "Area provided (mm²)" in content
+    for zone in ("start", "mid", "end"):
+        for cells in (
+            ("Top", zone, 2, 12, 226, 192, 1),
+            ("Bottom", zone, 5, 16, 1005, 47, 1),
+        ):
+            if output_format == "html":
+                assert "".join(f"<td>{cell}</td>" for cell in cells) in content
+            else:
+                assert "| " + " | ".join(str(cell) for cell in cells) + " |" in content
+
+
+@pytest.mark.parametrize("output_format", ["json", "html", "markdown"])
+def test_public_design_only_report_explains_absent_detailing(output_format, tmp_path):
+    result = api.design_beam_is456(
+        units="IS456",
+        b_mm=300,
+        D_mm=500,
+        d_mm=444,
+        fck_nmm2=25,
+        fy_nmm2=500,
+        mu_knm=150,
+        vu_kn=100,
+    )
+    path = tmp_path / f"design.{output_format}"
+    report = api.generate_calculation_report(
+        result, output_path=path, output_format=output_format
+    )
+    content = path.read_text(encoding="utf-8")
+    assert report.results.flexure["ast_required"] == result.flexure.Ast_required
+    assert report.results.flexure["pt_provided"] == result.flexure.pt_provided
+    assert report.results.flexure["ast_provided"] is None
+    assert report.results.summary["is_ok"] is True
+    assert report.results.detailing == {
+        "status": "unavailable",
+        "reason": "design_only",
+    }
+    if output_format == "json":
+        assert json.loads(content) == report.to_dict()
+    else:
+        assert (
+            "Bar layout unavailable. This result contains design checks only."
+            in content
+        )
+        assert "PASS" in content
+
+
+def test_combined_report_without_detailing(combined_report_source, tmp_path):
+    result = replace(combined_report_source, detailing=None)
+    report = api.generate_calculation_report(result)
+    assert report.results.detailing == {
+        "status": "unavailable",
+        "reason": "missing_detailing",
+    }
+    assert report.results.flexure["ast_provided"] is None
+    for path in (
+        report.export_html(tmp_path / "beam.html"),
+        report.export_markdown(tmp_path / "beam.md"),
+    ):
+        assert "The combined result has no detailing record." in path.read_text(
+            encoding="utf-8"
+        )
+
+
+def test_partial_invalid_detailing_keeps_distinct_zone_rows(
+    combined_report_source, tmp_path
+):
+    result = combined_report_source
+    start = result.detailing.top_bars[0]
+    middle = replace(start, count=1, area_provided=113, spacing=0)
+    detail = replace(result.detailing, top_bars=[start, middle], is_valid=False)
+    report = api.generate_calculation_report(
+        replace(result, detailing=detail, is_ok=False)
+    )
+    parsed = json.loads(report.to_json())["results"]
+    assert parsed["detailing"]["is_valid"] is False
+    assert parsed["summary"]["is_ok"] is False
+    assert [
+        (r["zone"], r["area_provided_mm2"]) for r in parsed["detailing"]["top_bars"]
+    ] == [("start", 226), ("mid", 113)]
+    markdown = report.export_markdown(tmp_path / "beam.md").read_text(encoding="utf-8")
+    assert "| Top | mid | 1 | 12 | 113 | 0 | 1 |" in markdown
+    assert (
+        "Recorded detailing is invalid. Bar rows unavailable for Top end." in markdown
+    )
+    assert "FAIL" in markdown
+
+
+def test_direct_legacy_report_still_renders_scalar(sample_result_section, tmp_path):
+    report = CalculationReport(
+        report_id="legacy",
+        project_info=ProjectInfo(),
+        beam_id="B1",
+        story="GF",
+        inputs=InputSection(),
+        results=sample_result_section,
+    )
+    for path in (
+        report.export_html(tmp_path / "beam.html"),
+        report.export_markdown(tmp_path / "beam.md"),
+    ):
+        content = path.read_text(encoding="utf-8")
+        assert "1017.88" in content
+        assert "singly reinforced" in content
 
 
 # =============================================================================
@@ -283,8 +442,8 @@ class TestCalculationReport:
         """Test that flexure results are correctly extracted."""
         report = CalculationReport.from_design_result(result=mock_design_result)
         assert report.results.flexure["ast_required"] == 942.48
-        assert report.results.flexure["ast_provided"] == 1017.88
-        assert report.results.flexure["beam_type"] == "singly reinforced"
+        assert report.results.flexure["ast_provided"] is None
+        assert report.results.flexure["section_type"] == "UNDER_REINFORCED"
 
     def test_from_design_result_extracts_shear(self, mock_design_result):
         """Test that shear results are correctly extracted."""
@@ -602,7 +761,7 @@ class TestEdgeCases:
 
     def test_empty_result(self):
         """Test handling of minimal/empty result."""
-        flexure = _FlexureFixture(Ast_required=0, ast_provided=0, beam_type="unknown")
+        flexure = _FlexureFixture(Ast_required=0)
         shear = ShearResult(
             tau_v=0.0,
             tau_c=0.0,
@@ -699,11 +858,7 @@ class TestWithRealObjects:
 
     def test_from_design_result_real_shear(self):
         """Verify from_design_result works with real dataclass objects."""
-        flexure = _FlexureFixture(
-            Ast_required=942.48,
-            ast_provided=1017.88,
-            beam_type="singly reinforced",
-        )
+        flexure = _FlexureFixture(Ast_required=942.48)
         shear = ShearResult(
             tau_v=1.45,
             tau_c=0.36,

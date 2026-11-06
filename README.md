@@ -57,7 +57,7 @@ result, and producing usable deliverables.
 1. **Import** beam data from ETABS, SAFE, STAAD, or a generic CSV.
 2. **Design** individual members or a complete batch through the same Python core.
 3. **Review** geometry, reinforcement, governing utilization, and clause-linked checks.
-4. **Export** BBS, DXF, HTML/PDF reports, summaries, and project quantities.
+4. **Export** BBS, DXF, calculation reports, summaries, and project quantities.
 
 ## See the real application
 
@@ -94,7 +94,7 @@ reconciliation, or professional approval.
 
 ### Install the Python package
 
-After the release ledger confirms publication of the selected version:
+Install the published 0.26.0 package:
 
 ```bash
 python3 -m pip install "structural-lib-is456==0.26.0"
@@ -103,11 +103,9 @@ python3 -m pip install "structural-lib-is456==0.26.0"
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.25.0` uses a normal/final PEP 440 version, eligible for ordinary package
-resolution after publication. Here, **normal** means a final version rather than an alpha, beta, or
-release-candidate version string; the project's development-maturity classifier
-remains **Beta** until the separately stated pre-1.0 and engineering-review
-boundaries are closed. Pin the exact version for reproducible work. See the
+`0.26.0` is a final PEP 440 version eligible for ordinary package resolution.
+The project's development-maturity classifier remains **Beta**. Pin the exact
+version for reproducible work. See the
 [release status and policy](docs/getting-started/release-status.md) before
 selecting a build.
 
@@ -174,9 +172,14 @@ Optional capabilities:
 
 ```bash
 pip install "structural-lib-is456[dxf]"        # DXF export
-pip install "structural-lib-is456[report,pdf]" # HTML/PDF reports
+pip install "structural-lib-is456[pdf]"        # PDF export through the Python API
 pip install "structural-lib-is456[render]"     # DXF rendering
 ```
+
+The CLI `report` command exports JSON and HTML. The Python
+`api.generate_calculation_report()` function exports HTML, JSON and Markdown.
+For PDF, use `structural_lib.services.report.export_pdf(ReportData)` with the
+`pdf` extra.
 
 ### Run the full workbench
 
@@ -251,7 +254,7 @@ evidence are collected in the
 - **Design and detailing:** supported beam, column, isolated-footing, and slab utilities
 - **Batch processing:** lossless, accounted ETABS/SAFE/STAAD/Generic import into the strict beam project command
 - **Visual review:** interactive React Three Fiber building and reinforcement views
-- **Engineering outputs:** BBS CSV, DXF drawings, HTML/PDF reports, summaries, and BOQ
+- **Engineering outputs:** BBS CSV, DXF drawings, calculation reports, summaries, and BOQ
 - **Integration:** declared Python, command-line, HTTP, WebSocket, and SSE surfaces
 - **Traceability:** structured issues, explicit units, clause references, source identities, and bounded evidence
 

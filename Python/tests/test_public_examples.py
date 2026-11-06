@@ -12,6 +12,59 @@ from pathlib import Path
 
 import pytest
 
+from structural_lib import api
+from structural_lib.core.errors import InputContractError
+
+
+@pytest.mark.parametrize(
+    ("section", "result_name"),
+    [
+        ("### 1A.4 Combined Design + Detailing", "result"),
+        ("**Example (HTML report generation):**", "result"),
+        ("### Level 1: High-Level API", "full"),
+    ],
+)
+def test_api_reference_combined_beam_recipes(
+    tmp_path: Path, monkeypatch, section: str, result_name: str
+) -> None:
+    path = Path(__file__).resolve().parents[2] / "docs/reference/api.md"
+    _, _, recipe = path.read_text(encoding="utf-8").partition(section)
+    if section.startswith("### 1A.4"):
+        _, _, recipe = recipe.partition("**Example:**")
+    block = re.search(r"```python\n(.*?)\n```", recipe, re.S)
+    assert block is not None and "api.design_and_detail_beam_is456(" in block[1]
+
+    monkeypatch.chdir(tmp_path)
+    namespace: dict = {}
+    exec(compile(block[1], str(path), "exec"), namespace)
+    result = namespace[result_name]
+    assert result.is_ok and result.detailing.is_valid
+    assert result.geometry["d_mm"] == 444
+    assert result.design.flexure.Ast_required == pytest.approx(900.1166577522483)
+
+    if "HTML report generation" in section:
+        html = (tmp_path / "reports/B1_calculation.html").read_text(encoding="utf-8")
+        assert namespace["report"].report_id in html
+        assert "Provided longitudinal steel" in html
+
+
+def test_api_reference_beam_still_rejects_wrong_effective_depth() -> None:
+    with pytest.raises(InputContractError) as exc:
+        api.design_and_detail_beam_is456(
+            units="IS456",
+            beam_id="B1",
+            story="GF",
+            span_mm=6000,
+            b_mm=300,
+            D_mm=500,
+            d_mm=460,
+            mu_knm=150,
+            vu_kn=100,
+        )
+    assert {issue.code for issue in exc.value.issues} == {
+        "DETAILING_EFFECTIVE_DEPTH_MISMATCH"
+    }
+
 
 def test_canonical_workflows_use_public_types_and_complete_user_journeys(
     tmp_path: Path,
