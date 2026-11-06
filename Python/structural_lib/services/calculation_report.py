@@ -402,9 +402,7 @@ class CalculationReport:
         shear_status_text = (
             "PASS"
             if shear_status is True
-            else "FAIL"
-            if shear_status is False
-            else "NOT EVALUATED"
+            else "FAIL" if shear_status is False else "NOT EVALUATED"
         )
 
         html_content = f"""<!DOCTYPE html>
@@ -642,9 +640,7 @@ class CalculationReport:
         status = (
             "✅ PASS"
             if is_ok is True
-            else "❌ FAIL"
-            if is_ok is False
-            else "⚠️ NOT EVALUATED"
+            else "❌ FAIL" if is_ok is False else "⚠️ NOT EVALUATED"
         )
 
         md = f"""# Calculation Report: {self.beam_id} @ {self.story}
@@ -764,7 +760,7 @@ def _detailing_display(
             "design_only": "This result contains design checks only.",
             "missing_detailing": "The combined result has no detailing record.",
             "no_bar_rows": "The detailing record contains no longitudinal bar rows.",
-        }.get(detail.get("reason"), "")
+        }.get(detail.get("reason", ""), "")
         notice = f"Bar layout unavailable. {reason}".strip()
         if detail.get("is_valid") is False:
             notice += " Recorded detailing is invalid."
@@ -772,8 +768,8 @@ def _detailing_display(
     if detail.get("status") != "available":
         return "", []
 
-    rows = []
-    missing = []
+    rows: list[tuple[str, ...]] = []
+    missing: list[str] = []
     for face in ("Top", "Bottom"):
         bars = detail[f"{face.lower()}_bars"]
         zones = {bar["zone"] for bar in bars}
