@@ -12,7 +12,8 @@
 The [release status](../getting-started/release-status.md) and
 [release ledger](../getting-started/releases.md#v0260-published-and-verified)
 own current public package facts. The [0.27 preparation plan](library-usability-improvement.md#027-beam-and-column-release-preparation)
-lists the new candidate gates, including the separate 0.26.1 disposition.
+lists the five goals. Goal 5 qualifies and releases 0.27.0, including
+installed regression checks for the consumer fixes merged in PR #1045.
 The S5 checklist below preserves the 29 October prepublication snapshot.
 
 ## S5 prepublication snapshot

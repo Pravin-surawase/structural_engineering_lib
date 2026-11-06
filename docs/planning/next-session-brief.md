@@ -17,9 +17,10 @@ Freeze independent reference quantities and acceptance tolerances before
 implementation. The [measured baseline](../verification/library-027-comparator-baseline.json)
 shows three working beam comparisons and one layered column gap in the stable API.
 
-Public 0.26.0 and the merged 0.26.1 source fixes have separate evidence. Record
-the [0.26.1 versioned disposition](https://pravinsurawase.atlassian.net/browse/LIB-8)
-before preparing 0.27 release artifacts. The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
+The merged consumer fixes ship in 0.27.0. Replay their
+[installed regressions](https://pravinsurawase.atlassian.net/browse/LIB-8)
+inside Goal 5, which qualifies and releases the exact 0.27.0 candidate.
+The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
 owns the public identities. The solver, native-host qualification and further
 physical-member extensions retain their own workstreams and evidence.
 
