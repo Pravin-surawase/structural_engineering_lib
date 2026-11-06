@@ -33,6 +33,10 @@ from the top face in millimetres. Each bar carries its physical face and layer.
 This permits positive and negative bending to use actual bottom and top
 arrangements without inferring geometry from the sign alone.
 
+To calculate capacity from supplied bars and links, run the three section
+examples for singly reinforced, doubly reinforced, and flanged beams.
+[Beam comparison guide](../cookbook/python/beam-comparator-reference.md)
+
 WP03 analysis uses a separate explicit N/mm boundary. A simply supported beam
 with a downward 10 N/mm uniform load can be solved without Excel or ETABS:
 

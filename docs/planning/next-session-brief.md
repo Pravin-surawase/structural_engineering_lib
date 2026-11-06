@@ -13,12 +13,17 @@
 
 Goal 1 froze and replayed the
 [four section references](../verification/library-027-comparator-reference.md).
-Next is [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10): a
-public Python example and guide for all three beam comparisons. Use the
-existing operations and verify the seven output quantities against the
-StructLib targets. Explain the separate rcdesign method rather than changing
-beam calculations to make the rows equal. The layered column remains a
-stable API gap for Goal 3.
+Goal 2 delivered the [beam comparison guide and example](../cookbook/python/beam-comparator-reference.md).
+All 21 numerical outputs and both method identifiers passed using the
+installed 0.26.0 wheel. The separate doubly reinforced member check returned HOLD.
+
+Next is [LIB-11](https://pravinsurawase.atlassian.net/browse/LIB-11). Freeze a
+strict request and result for a solid rectangular column with explicit layers
+at a prescribed neutral-axis depth. The first planned scope uses the full
+compression strain plane. Verify the raw axial force and centroidal moment
+against the frozen fixture, then exercise the admission boundaries and the
+existing two-face member workflow.
+[Goal 3 plan](library-usability-improvement.md#goal-3-layered-column-section-response)
 
 The merged consumer fixes ship in 0.27.0. Replay their
 [installed regressions](https://pravinsurawase.atlassian.net/browse/LIB-8)

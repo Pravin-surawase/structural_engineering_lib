@@ -124,6 +124,7 @@ python3 Python/examples/analysis_snapshot_replay.py /path/to/snapshot.json
 |---|---|---|
 | `complete_member_workflow.py` | One independently checked ordinary beam → all required checks → physical BBS and report; current source build | Yes, with `--output-dir` |
 | `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
+| `beam_comparator_reference.py` | Installed-package section capacities for three supplied beam layouts. [Beam comparison guide](../../docs/cookbook/python/beam-comparator-reference.md) | No |
 | `beam_checks_workflow.py` | Explicit analysis, capacity, serviceability and detailing calls; evidence remains distinct | No |
 | `physical_member_workflow.py` | Physical bars → profile checks → BBS/quantities/cost/package; missing/stale evidence; current source build | No |
 | `candidate_ranking_workflow.py` | Genuine candidate calculations → finite-domain ranking; failed, budget and stale outcomes; current source build | No |
