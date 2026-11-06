@@ -1,0 +1,21 @@
+{
+  "schema_version": "structlib-column-section-boundary-reference/v1",
+  "source_fixture": "library-027-comparator-reference.json",
+  "case_id": "column_three_layers",
+  "state": "Use the frozen column geometry, materials and layers at xu = D.",
+  "expected": {
+    "xu_mm": 450.0,
+    "axial_kn": 1124.900363471761,
+    "centroid_moment_knm": 56.94294460375785,
+    "top_strain": 0.0035,
+    "far_face_strain": 0.0
+  },
+  "method": "At xu = D the Cl. 39.1(b) plane is 0.0035 at the top and zero at the far face. Integrate the Fig. 21 plateau over the first 3D/7 and the parabola to D. Sum net Fig. 23A steel forces after displaced concrete and take all moments at D/2.",
+  "absolute_tolerances": {
+    "xu_mm": 0.0,
+    "axial_kn": 0.001,
+    "centroid_moment_knm": 0.001,
+    "top_strain": 1e-12,
+    "far_face_strain": 1e-12
+  }
+}

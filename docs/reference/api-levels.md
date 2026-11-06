@@ -15,6 +15,7 @@ pin the installed distribution for reproducible calculations.
 | Task | Public entry point | Start here |
 |---|---|---|
 | Supported IS 456 element design/checks | `structural_lib.design.is456` | [Family cookbook](../cookbook/python/family-facades.md) |
+| Layered rectangular column response at a prescribed neutral axis | `structural_lib.design.is456.column.layered_section_response` | [Column section guide](../cookbook/python/layered-column-section.md) |
 | Physical beam reinforcement, analysis and project workflows | `structural_lib.beam` | [Beam library guide](../library/getting-started.md) |
 | Physical BBS, measured quantities, declared costs and package data | `structural_lib.construction`, `structural_lib.reporting` | [Construction guide](../library/reference/wp07-construction-calculation-package.md) |
 | Finite-domain candidate ranking with actual evidence | `structural_lib.beam_optimization` | [Candidate workflow](../library/reference/wp08-beam-optimization.md) |
