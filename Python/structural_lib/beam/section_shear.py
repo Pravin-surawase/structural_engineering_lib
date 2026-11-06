@@ -76,13 +76,14 @@ def _positive(value: float) -> bool:
 def _valid_group(group: SectionShearReinforcement, *, stirrups: bool) -> bool:
     angle = group.inclination_deg
     spacing = group.spacing_mm
+    spacing_valid = not stirrups if spacing is None else _positive(spacing)
     return (
         bool(group.group_id.strip())
         and _positive(group.area_mm2)
         and _positive(group.fy_nmm2)
         and _positive(angle)
         and (angle in (45.0, 90.0) if stirrups else 45.0 <= angle <= 90.0)
-        and (spacing is None and not stirrups or _positive(spacing))
+        and spacing_valid
     )
 
 
