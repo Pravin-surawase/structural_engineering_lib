@@ -86,7 +86,7 @@ INDIA-2 closeout.
 
 INDIA-3 is not another IS 456 element. It is the companion Indian-code wave.
 Its completed G0 is controlled by the
-[IS 13920 existing-surface truth-audit plan](india-3-g0-is13920-truth-audit.md).
+[IS 13920 existing-surface truth-audit plan](../_archive/planning/india-3-g0-is13920-truth-audit.md).
 G0 resolves source/amendment identity, clause mapping, independent benchmarks,
 and public-contract truth before any engineering repair or expansion packet is
 authorized.

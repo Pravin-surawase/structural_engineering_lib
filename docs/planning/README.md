@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-09-02
+**Last Updated:** 2026-11-06
 
 ---
 
@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [0.27 Beam and Column Release Preparation](library-usability-improvement.md#027-beam-and-column-release-preparation) | Measured comparison, ordered work, and candidate gates |
 | [Python Library Workflow Improvement Plan](python-library-workflow-improvement-plan.md) | Reliable Python design, detailing, schedule and export acceptance |
 | [Excel-DNA XLL Plan and Research Handoff](xll-product/README.md) | Separate XLL planning/learning track: original P0–P6, shell-only Windows packet, research/cost map and portable handoff; no implementation acceptance implied |
 | [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md) | Human-facing six-phase programme from trusted ETABS acquisition through owned-copy reanalysis and convergence |
@@ -28,14 +29,7 @@ Internal planning documents and research notes.
 | [ETABS COM, VBA and W3 Reanalysis Plan](etabs-w3-com-vba-and-reanalysis-plan.md) | PID-safe ETABS sessions, legacy VBA lessons, common candidate evaluation and owned-copy W3K/L transactions |
 | [LIB-PRO-013 Whole-Library Renewal Audit](lib-pro-013-whole-library-renewal-audit-plan.md) | Whole-product audit aligned to the six-cycle low-Git remediation programme |
 | [LIB-PRO-012 External API Remediation](lib-pro-012-external-api-remediation-plan.md) | Immediate Python/REST P0 safety plus canonical API work grouped into four implementation cycles |
-| [MAINT-0136 Cleanup Preservation](maint-0136-cleanup-preservation-plan.md) | Current topology, verified local recovery, and fail-closed Phase 2 gate |
-| [MAINT-0136 Phase 2B Preparation](maint-0136-phase-2b-preparation-plan.md) | Exact low-value cache ceiling, worktree-retirement opportunity, and recovery-first execution gate |
-| [MAINT-0136 Phase 2B-R Recovery](maint-0136-phase-2b-r-recovery-plan.md) | Exact ignored-state preservation boundary, destination requirement, and backup-only authorization gate |
-| [MAINT-0136 Phase 2B-R Google Drive Closeout](maint-0136-phase-2b-r-google-drive-backup-closeout.md) | Owner-only upload, authenticated byte match, full restore, and Phase 2B-W hold |
-| [MAINT-0136 Phase 2B-W Preparation](maint-0136-phase-2b-w-preparation-plan.md) | Exact 63-worktree target set, 7.16 GiB opportunity, recovery holds, and digest-bound execution gate |
-| [MAINT-0136 Phase 2B-W Execution Closeout](maint-0136-phase-2b-w-execution-closeout.md) | Exact 63/63 non-force removal, preserved branches/refs/recovery, and retained 15-worktree topology |
-| [MAINT-0136 Phase 2C Preparation](maint-0136-phase-2c-preparation-plan.md) | Exact four-local/two-remote branch target set, retained refs/archives, and digest-bound execution gate |
-| [MAINT-0136 Phase 2C Execution Closeout](maint-0136-phase-2c-execution-closeout.md) | Exact six-ref removal, preserved topology/recovery, and completed cleanup boundary |
+| [MAINT-0136 archive](../_archive/planning/maint-0136/README.md) | Completed preparation, recovery and cleanup records |
 | [MAINT-0133 Cleanup Completion](maint-0133-cleanup-inventory-and-authorization.md) | Exact inventory, four retained holds, and the owner-authorized two-move Packet A result |
 | [Pre-Release Input Safety and Professional Readiness Plan](pre-release-input-safety-and-professional-readiness-plan.md) | Active contract-first remediation and release holds from the one-storey usability pilot |
 | [Public Route Safety Closure Plan](public-route-safety-closure-plan.md) | Current exact-tree remediation sequence for reproduced lower-level public-route safety defects |
@@ -59,14 +53,7 @@ Internal planning documents and research notes.
 | `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Host/transaction sequence remains authoritative; ETABS/model calls remain separately gated |
 | `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-28 | 🔄 A0 and B0 integrated; F0 next, then R0 and one final engineer review |
 | `lib-pro-012-external-api-remediation-plan.md` | 2026-08-28 | 🔄 S0/A0/B0 integrated; F0 family convergence active next; Windows lane prepared for later exact R0 evidence |
-| `maint-0136-phase-2b-w-execution-closeout.md` | 2026-08-27 | ✅ Exact 63/63 worktree removal complete; 15 retained and all branches, refs, backups, and protected sources preserved |
-| `maint-0136-phase-2c-execution-closeout.md` | 2026-08-27 | ✅ Exact four-local/two-remote cleanup passed at `08a68419...b23c7`; all held surfaces preserved |
-| `maint-0136-phase-2c-preparation-plan.md` | 2026-08-27 | ✅ Exact digest authorized and executed through the Phase 2C closeout |
-| `maint-0136-phase-2b-w-preparation-plan.md` | 2026-08-27 | ✅ Exact digest authorized and executed without force |
-| `maint-0136-phase-2b-r-google-drive-backup-closeout.md` | 2026-08-27 | ✅ Owner-only archive and full restore preserved through Phase 2B-W execution |
-| `maint-0136-phase-2b-r-recovery-plan.md` | 2026-08-27 | ✅ Exact 123,164,574-byte source packet completed through verified Google Drive recovery |
-| `maint-0136-phase-2b-preparation-plan.md` | 2026-08-27 | ✅ Split completed through verified recovery and exact Phase 2B-W target freeze |
-| `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | ✅ Phase 0 through exact Phase 2C complete; consolidated integration candidate prepared after PR #874 |
+| [MAINT-0136 archive](../_archive/planning/maint-0136/README.md) | 2026-08-27 | ✅ Completed topology, backup, worktree and branch closeouts |
 | `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
 | `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
 | `next-session-brief.md` | 2026-09-02 | 🔄 Close Phase 1 next: C2 exact-schema parsing, then separately authorized fresh-result and repeatability evidence |

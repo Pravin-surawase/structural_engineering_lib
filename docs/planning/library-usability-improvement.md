@@ -1,28 +1,22 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-10-29
+last_updated: 2026-11-06
 doc_type: spec
 ---
 
 # Library usability and implementation quality
 
-**Current execution:** [S0/S1](#s0s1-execution-29-october-2026) is integrated in
-[PR #1032](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1032).
-[S2 — dependable first use and outputs](#s2-execution-29-october-2026) records the
-next selected packet. The [S0/S1 record](../verification/library-s0-s1-20261029.json)
-preserves its census baseline; the [S2 record](../verification/library-s2-20261029.json)
-binds the changed guides, physical inputs, rendered outputs and local evidence.
-Required exact-head review, hosted checks and integration facts belong to each
-milestone PR.
+**Current programme.** [0.27 beam and column release preparation](#027-beam-and-column-release-preparation)
+owns the next feature scope. The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
+records the published 0.26.0 artifacts. The 0.26.1 consumer fixes are merged in
+[PR #1045](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1045)
+and still need versioned qualification and release disposition.
 
-**Current next release plan:** [Professional standards programme — revision 2](#professional-standards-programme-8-october-2026-revision-2)
-extends the [6 October proposal](#next-version-proposal-6-october-2026) with an
-evidence-led whole-library assessment, 18 quality areas and seven delivery
-milestones. The [assessment record](../verification/library-professional-standards-20261008.json)
-contains the inspected inventory, executable receipts, findings and evidence
-limits. The execution sections record implementation; later engineering,
-installed-host, final-artifact and release gates remain separate.
+The [professional standards programme](#professional-standards-programme-8-october-2026-revision-2)
+and [assessment record](../verification/library-professional-standards-20261008.json)
+retain the earlier scope and delivery evidence. GitHub owns the exact
+reviewed-head, check and merge facts for each completed packet.
 
 **28 September update:** [LIB-MEMBER-WORKFLOW-002](multilayer-member-workflow.md)
 adds the complete multilayer case and supersedes the physical centroid-capacity
@@ -41,6 +35,81 @@ its limit. Assess the full caller journey and fix confirmed main-process
 defects in the current supported workflows. Keep calculation owners, explicit
 units, compatibility, and the distinction between software results and
 engineering approval intact.
+
+## 0.27 beam and column release preparation
+
+The next feature packet is limited to three supplied-beam section examples,
+one layered rectangular column section response and a reusable ordinary beam
+member journey. It reuses the existing beam and column families. This plan
+selects preparation, with implementation and release decisions tracked
+separately. Pravin Surawase owns the engineering scope decision.
+
+[Jira epic LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) owns work
+status and dependencies. [Confluence](https://pravinsurawase.atlassian.net/wiki/spaces/SD/pages/17989634/StructLib+0.27+release+preparation)
+summarizes the release for readers. The [comparison baseline](../verification/library-027-comparator-baseline.json)
+records exact inputs, outputs, package identities and open evidence. The
+[working roadmap](https://chatgpt.com/space/page_32cfec9f5b288191ac31548609dbe25f)
+keeps the staged programme and later member profiles.
+
+### Measured scope
+
+Published StructLib 0.26.0 and the installed build of main at `67c4555d`
+gave identical outputs. The public `structural_lib.beam` component operations
+already cover the supplied singly reinforced mixed-diameter beam, doubly
+reinforced beam and two-layer flanged beam. The maximum observed difference
+from rcdesign 0.4.18 was 0.32% or less for moment and total shear. The recorded
+differences guide the independent reference review.
+
+The installed column API rejects explicit layers. The experimental raw
+section kernel agreed with the comparator at the prescribed neutral-axis
+depth after aligning the moment datum. That fixed-depth point lies above the
+experimental interaction slice's nominal axial cap. A bounded public
+section-response result needs its own schema, source and admission checks
+and must preserve that distinction from a member design decision.
+
+The first column fixture is a 230 × 450 mm rectangle in M20/Fe415 with three
+layers of 16 mm bars at depths 50, 225 and 400 mm from the compression face.
+The section input declares the principal bending direction and the 900 mm
+neutral-axis depth from that face. The response returns axial force in kN,
+centroidal moment in kN·m, the strain basis and the applicable method
+identity. The response records its calculation state and leaves member
+acceptance unevaluated. Freeze the admissible input ranges and negative cases
+with the independent reference before exposing the public contract.
+
+The ordinary and multilayer worked members already produce bound calculation
+JSON, BBS CSV and HTML. The doubly reinforced comparator lacks support-width
+evidence and has a clear-cover/depth conflict under the member convention.
+The existing member HOLD remains a regression control.
+
+### Ordered work and acceptance
+
+| Work | Reuse and concrete exit |
+|---|---|
+| [LIB-9](https://pravinsurawase.atlassian.net/browse/LIB-9) Freeze references | Freeze the runnable bar lists, geometry, concrete and steel basis, link provision, exact code revision and amendments, moment datum, independently checked values and quantity-specific tolerances. Record the comparator's cwd dependency and its first example's prose/code disagreement. |
+| [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10) Promote beam comparisons | Reuse `flexural_capacity` and `shear_capacity` for the three exact layouts. Copyable installed examples report neutral axis, moment, concrete and link shear, total shear and the method used. Reconcile differences against independent reference values. |
+| [LIB-11](https://pravinsurawase.atlassian.net/browse/LIB-11) Add column section response | Start with the three-layer rectangular profile at a declared neutral-axis or strain state. Expose axial force and centroidal moment with explicit axes, units and method. Reject invalid or unsupported geometry and keep the existing two-face member route compatible. Qualify the raw response separately from the axial cap and member checks. |
+| [LIB-12](https://pravinsurawase.atlassian.net/browse/LIB-12) Promote ordinary beam member | Reuse the retained single-layer and multilayer examples and bind supports, ULS/SLS, actual bar and link geometry, checks, BBS and report to one physical revision. Verify output reconciliation, conflicting-depth and missing-support cases, and insufficient reinforcement. |
+| [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify the candidate | After the three delivery packets and the [0.26.1 disposition](https://pravinsurawase.atlassian.net/browse/LIB-8), freeze the candidate. Run affected source and required hosted checks, then the four public section replays, beam member artifacts and patch regressions from exact wheel and source-built installs. Retain versions, source and artifact hashes, independent comparisons and FAIL/HOLD evidence. |
+
+Begin with LIB-9. Candidate preparation uses the maintained version tooling
+after scoped implementation and documentation freeze. A Jira fix version is a
+planning record. Keep the public installation instructions tied to the latest
+verified publication. Follow the [release process](../getting-started/releases.md#current-release-process-29-october-2026)
+for version-specific authorization, tags and registry delivery.
+
+### Later release themes
+
+For 0.28, first compare one solid one-way slab and one concentric isolated
+footing. Preserve the continuous one-way, two-way, combined and strap cases as
+regressions. Compare selected checks on matching model and source assumptions.
+Keep raft and pile-cap source and benchmark HOLDs visible.
+
+For 0.29, choose one bounded next family, such as a straight-flight stair or
+braced axial wall, once its independent benchmark and installed user journey
+are ready. Keep physical four-corner column detailing, full torsion member
+composition, broader flanged detailing and installed native-host work in their
+own follow-up packets. The [October Jira plan](https://pravinsurawase.atlassian.net/browse/LIB-1)
+retains its original readiness and conditional torsion history.
 
 ## Work and completion evidence
 

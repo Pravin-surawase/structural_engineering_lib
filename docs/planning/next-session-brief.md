@@ -3,13 +3,27 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-10-29
-- Focus: Execute S6 retained-artifact release with one studied tooling packet and exact public hash readback.
-- Completed: S4 #1039 merged at a39e02b2; prepared unpublished 0.26.0; all16 installed profiles,17 examples/eight guide checks,106 independent metrics and eight PDF reviews passed. Final canonical preflight passed8814 Python tests,626 FastAPI tests and React build. Milestone PR owns S5 review/check/merge facts.
+- Date: 2026-11-06
+- Focus: Prepare the bounded 0.27 beam and column scope and freeze its independent comparison references.
+- Completed: S6 published 0.26.0. PR #1045 merged the 0.26.1 source fixes. All four rcdesign cases have installed baseline results and the LIB-7 backlog is prepared.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
-## Current boundary — 29 October 2026
+## Current boundary — 6 November 2026
+
+Start at [LIB-9](https://pravinsurawase.atlassian.net/browse/LIB-9) and the
+[0.27 release plan](library-usability-improvement.md#027-beam-and-column-release-preparation).
+Freeze independent reference quantities and acceptance tolerances before
+implementation. The [measured baseline](../verification/library-027-comparator-baseline.json)
+shows three working beam comparisons and one layered column gap in the stable API.
+
+Public 0.26.0 and the merged 0.26.1 source fixes have separate evidence. Record
+the [0.26.1 versioned disposition](https://pravinsurawase.atlassian.net/browse/LIB-8)
+before preparing 0.27 release artifacts. The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
+owns the public identities. The solver, native-host qualification and further
+physical-member extensions retain their own workstreams and evidence.
+
+## Historical S6 handoff — 29 October 2026
 
 S5 completed in PR #1040 at `f21fb555`; all16 retained-artifact profiles and
 required/Weekly checks passed. S6 is now selected on `codex/lib-s6-release`.

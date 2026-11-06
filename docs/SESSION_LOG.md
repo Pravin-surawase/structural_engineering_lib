@@ -5,6 +5,44 @@
 
 ---
 
+## 2026-11-06 — Session: 0.27 release preparation
+
+**Task:** LIB-027-RELEASE-PREPARATION-20261106
+**Agent:** DOCS
+**Branch:** `codex/library-027-release-preparation`
+**Focus:** Prepare the bounded beam and column release and reconcile its planning records.
+
+### Completed
+
+- Recorded the [installed comparison baseline](verification/library-027-comparator-baseline.json)
+  and selected the [0.27 work order](planning/library-usability-improvement.md#027-beam-and-column-release-preparation).
+- Reconciled the task board, handoff and publication ledger. Created unreleased
+  Jira versions and the [LIB-7 backlog](https://pravinsurawase.atlassian.net/browse/LIB-7),
+  with a separate 0.26.1 disposition task.
+- Archived nine completed planning records with redirects. Verified their
+  rebased links and preserved existing evidence receipts.
+
+### Issues encountered
+
+The current handoff still selected the completed S6 publication. Its refreshed
+date also requires a matching entry in the append-only session log.
+
+### Root causes and resolutions
+
+Record the verified publication in the release ledger and bind the dated
+handoff to this preparation decision. Keep package qualification,
+publication and implementation separate from the planning state.
+
+### Rework and recurrence
+
+- None encountered.
+
+### What next
+
+Freeze independent reference quantities and tolerances in LIB-9. Resolve the
+0.26.1 disposition before preparing the 0.27 versioned candidate.
+
+---
 
 ## 2026-10-29 — Session: S5 artifact qualification
 

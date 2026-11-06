@@ -5,11 +5,15 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-10-29
+**Last Updated:** 2026-11-06
 
-## Current State — S6 operational state
+## Current State
 
-The [S6 studied plan](library-usability-improvement.md#s6-studied-release-plan--29-october-2026), final authorization record and release ledger own current publication state. S5 is integrated as PR #1040. The following candidate checklist is its dated prepublication snapshot; it is not a live release-status source.
+The [release status](../getting-started/release-status.md) and
+[release ledger](../getting-started/releases.md#v0260-published-and-verified)
+own current public package facts. The [0.27 preparation plan](library-usability-improvement.md#027-beam-and-column-release-preparation)
+lists the new candidate gates, including the separate 0.26.1 disposition.
+The S5 checklist below preserves the 29 October prepublication snapshot.
 
 ## S5 prepublication snapshot
 
