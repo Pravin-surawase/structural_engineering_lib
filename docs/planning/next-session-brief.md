@@ -29,10 +29,11 @@ member overload replays produced draft artifacts.
 [Member guide and replay](../cookbook/python/ordinary-beam-member.md)
 
 The owner selected beam and column closure for 0.27 and slabs and footings
-for 0.28. Packet A extends the layered column section API for partial
-compression and mixed diameters. Packet B is next, covering inclined and
-bent-up shear reinforcement and both sagging flanged flexure branches.
-Complete the remaining section and physical member packets before
+for 0.28. Packet A qualified layered column sections with partial
+compression and mixed diameters. Packet B qualified supplied inclined and
+bent-up shear reinforcement and sagging flexure within the flange and in
+the web. Packet C is next and covers the physical four-corner column.
+Complete C, D and E before
 [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) prepares
 the versioned candidate.
 [Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)

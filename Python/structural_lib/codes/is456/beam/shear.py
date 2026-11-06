@@ -51,6 +51,22 @@ STANDARD_STIRRUP_SPACINGS = [75, 100, 125, 150, 175, 200, 225, 250, 275, 300]
 STANDARD_STIRRUP_DIAMETERS = [6, 8, 10, 12]
 
 
+@clause("40.4")
+def shear_reinforcement_component_kn(
+    area_mm2: float,
+    fy_nmm2: float,
+    d_mm: float,
+    angle_deg: float,
+    spacing_mm: float | None,
+) -> float:
+    """Return the raw contribution for one validated group, before any limits."""
+    alpha = math.radians(angle_deg)
+    design_force_kn = 0.87 * min(fy_nmm2, 415.0) * (area_mm2 / 1000.0)
+    if spacing_mm is None:
+        return design_force_kn * math.sin(alpha)
+    return design_force_kn * (d_mm / spacing_mm) * (math.sin(alpha) + math.cos(alpha))
+
+
 def round_to_practical_spacing(spacing_mm: float, round_down: bool = True) -> float:
     """
     Round calculated stirrup spacing to practical construction values.
