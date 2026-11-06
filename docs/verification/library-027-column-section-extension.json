@@ -1,0 +1,156 @@
+{
+  "schema_version": "structlib-column-section-extension-reference/v1",
+  "source_fixture": "library-027-comparator-reference.json",
+  "source_basis": "IS 456:2000 Cl. 38.1, Figs. 21 and 23, and Cl. 39.1(b); controlled source and amendments as recorded in the source fixture",
+  "comparison": "Independent piecewise concrete integration and representative steel law, checked against pinned rcdesign 0.4.18 raw section results",
+  "absolute_tolerances": {
+    "xu_mm": 0,
+    "axial_kn": 0.001,
+    "centroid_moment_knm": 0.001,
+    "top_strain": 1e-12,
+    "far_face_strain": 1e-12
+  },
+  "group_absolute_tolerances": {
+    "area_mm2": 1e-8,
+    "strain": 1e-12,
+    "steel_stress_nmm2": 0.000001,
+    "displaced_concrete_stress_nmm2": 0.000001,
+    "net_axial_kn": 0.000001,
+    "centroid_moment_knm": 0.000001
+  },
+  "cases": [
+    {
+      "id": "partial_compression",
+      "inputs": {
+        "b_mm": 230,
+        "D_mm": 450,
+        "fck_nmm2": 20,
+        "fy_nmm2": 415,
+        "xu_mm": 300,
+        "layers": [
+          {
+            "depth_from_top_mm": 50,
+            "count": 3,
+            "diameter_mm": 16
+          },
+          {
+            "depth_from_top_mm": 225,
+            "count": 2,
+            "diameter_mm": 16
+          },
+          {
+            "depth_from_top_mm": 400,
+            "count": 3,
+            "diameter_mm": 16
+          }
+        ]
+      },
+      "expected": {
+        "xu_mm": 300,
+        "axial_kn": 633.8239822309935,
+        "centroid_moment_knm": 110.97461440939917,
+        "top_strain": 0.0035,
+        "far_face_strain": -0.00175
+      },
+      "expected_groups": [
+        {
+          "area_mm2": 603.1857894892403,
+          "strain": 0.002916666666666667,
+          "steel_stress_nmm2": 353.2067949384642,
+          "displaced_concrete_stress_nmm2": 8.933333333333334,
+          "net_axial_kn": 207.66085973848453,
+          "centroid_moment_knm": 36.34065045423479
+        },
+        {
+          "area_mm2": 402.1238596594935,
+          "strain": 0.000875,
+          "steel_stress_nmm2": 175,
+          "displaced_concrete_stress_nmm2": 6.106770833333334,
+          "net_axial_kn": 67.91599718285534,
+          "centroid_moment_knm": 0
+        },
+        {
+          "area_mm2": 603.1857894892403,
+          "strain": -0.0011666666666666663,
+          "steel_stress_nmm2": -233.33333333333326,
+          "displaced_concrete_stress_nmm2": 0,
+          "net_axial_kn": -140.7433508808227,
+          "centroid_moment_knm": 24.630086404143974
+        }
+      ]
+    },
+    {
+      "id": "mixed_diameters",
+      "inputs": {
+        "b_mm": 230,
+        "D_mm": 450,
+        "fck_nmm2": 20,
+        "fy_nmm2": 415,
+        "xu_mm": 900,
+        "layers": [
+          {
+            "depth_from_top_mm": 50,
+            "count": 2,
+            "diameter_mm": 16
+          },
+          {
+            "depth_from_top_mm": 50,
+            "count": 1,
+            "diameter_mm": 20
+          },
+          {
+            "depth_from_top_mm": 225,
+            "count": 2,
+            "diameter_mm": 16
+          },
+          {
+            "depth_from_top_mm": 400,
+            "count": 3,
+            "diameter_mm": 16
+          }
+        ]
+      },
+      "expected": {
+        "xu_mm": 900,
+        "axial_kn": 1432.52718515401,
+        "centroid_moment_knm": 16.55685634852084,
+        "top_strain": 0.0025454545454545456,
+        "far_face_strain": 0.0012727272727272728
+      },
+      "expected_groups": [
+        {
+          "area_mm2": 402.1238596594935,
+          "strain": 0.002404040404040404,
+          "steel_stress_nmm2": 342.45470223297275,
+          "displaced_concrete_stress_nmm2": 8.933333333333334,
+          "net_axial_kn": 134.11690014084076,
+          "centroid_moment_knm": 23.47045752464713
+        },
+        {
+          "area_mm2": 314.1592653589793,
+          "strain": 0.002404040404040404,
+          "steel_stress_nmm2": 342.45470223297275,
+          "displaced_concrete_stress_nmm2": 8.933333333333334,
+          "net_axial_kn": 104.77882823503185,
+          "centroid_moment_knm": 18.336294941130575
+        },
+        {
+          "area_mm2": 402.1238596594935,
+          "strain": 0.0019090909090909093,
+          "steel_stress_nmm2": 323.86108273748727,
+          "displaced_concrete_stress_nmm2": 8.914876033057851,
+          "net_axial_kn": 126.6473842251018,
+          "centroid_moment_knm": 0
+        },
+        {
+          "area_mm2": 603.1857894892403,
+          "strain": 0.0014141414141414144,
+          "steel_stress_nmm2": 282.82828282828285,
+          "displaced_concrete_stress_nmm2": 8.166785702139238,
+          "net_axial_kn": 165.67191198632966,
+          "centroid_moment_knm": -28.99258459760769
+        }
+      ]
+    }
+  ]
+}
