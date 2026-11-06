@@ -18,6 +18,7 @@
     "amendment_disposition": "Issued Amendment 6 does not change these flexural, prescribed axial strain, or shear provisions for the frozen uncoated-bar sections. This is a route-specific review.",
     "rcdesign_version": "0.4.18",
     "rcdesign_quickstart_url": "https://rcdesign.readthedocs.io/en/latest/quickstart.html",
+    "rcdesign_quickstart_source_url": "https://github.com/satish-annigeri/rcdesign/blob/ec8fe94b71dc02b07f7d83d12d3a4ddb511dd360/docs/quickstart.rst",
     "rcdesign_quickstart_rst_sha256": "10b3d683301233afff479e34b4a87cb1dee8171695a482e27fc70b4c88dccbb3",
     "rcdesign_wheel_sha256": "1166d8c1a3719a616a439b0bbc138787fb92c681c97c248f1cd06942ea0914be",
     "rcdesign_sdist_sha256": "2cd0fe17baa90f28a24de6b4efd4d452283db9d2049009877c750347033fd2dd",

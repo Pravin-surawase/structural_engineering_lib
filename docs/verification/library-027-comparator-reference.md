@@ -117,8 +117,9 @@ imports neither engine. The four computed reference records are compared
 against the frozen fixture and the observed baseline.
 
 The external replay used [rcdesign 0.4.18](https://pypi.org/project/rcdesign/0.4.18/)
-and the exact archived quickstart source and artifacts named by SHA-256 in the
-fixture. The wheel import reads `pyproject.toml` from the current directory.
+and the [pinned quickstart source](https://github.com/satish-annigeri/rcdesign/blob/ec8fe94b71dc02b07f7d83d12d3a4ddb511dd360/docs/quickstart.rst).
+The fixture records the checked source and artifact SHA-256 values. The wheel
+import reads `pyproject.toml` from the current directory.
 To reproduce it, extract only that file from the verified source archive
 into an otherwise empty working directory and run each unchanged quickstart
 script with the isolated wheel interpreter. Confirm `rcdesign.__file__` is
