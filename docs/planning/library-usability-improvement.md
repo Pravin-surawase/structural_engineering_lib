@@ -63,8 +63,10 @@ already cover the supplied singly reinforced mixed-diameter beam, doubly
 reinforced beam and two-layer flanged beam. The maximum observed difference
 from rcdesign 0.4.18 was 0.32% or less for moment and total shear. Independent
 replay traced the offsets to the flexural block and shear conventions.
-Both engines pass their own reference targets, so Goal 2 can reuse the
-existing operations.
+Both engines pass their own reference targets. The public example exercises
+the existing operations and matched all 21 frozen values on an isolated
+0.26.0 wheel install.
+[Beam comparison guide](../cookbook/python/beam-comparator-reference.md)
 
 The installed column API rejects explicit layers. The experimental raw
 section kernel agreed with the comparator at the prescribed neutral-axis
@@ -73,31 +75,54 @@ experimental interaction slice's nominal axial cap. A bounded public
 section-response result needs its own schema, source and admission checks
 and must preserve that distinction from a member design decision.
 
-The first column fixture is a 230 × 450 mm rectangle in M20/Fe415 with three
-layers of 16 mm bars at depths 50, 225 and 400 mm from the compression face.
-The section input declares the principal bending direction and the 900 mm
-neutral-axis depth from that face. The response returns axial force in kN,
-centroidal moment in kN·m, the strain basis and the applicable method
-identity. The response records its calculation state and leaves member
-acceptance unevaluated. Freeze the admissible input ranges and negative cases
-with the independent reference before exposing the public contract.
-
 The ordinary and multilayer worked members already produce bound calculation
 JSON, BBS CSV and HTML. The doubly reinforced comparator lacks support-width
 evidence and has a clear-cover/depth conflict under the member convention.
 The existing member HOLD remains a regression control.
+
+### Goal 3 layered column section response
+
+Start with a separate section operation for a solid rectangle and one
+bending direction. The first proposed admission scope is a prescribed,
+finite `xu >= D` measured from the top compression face. Freeze the
+geometry, material, and layer ranges with the independent cases before
+exposing the contract. Use positive finite dimensions and explicit
+concrete and longitudinal steel strengths. Each layer declares its depth,
+bar count and diameter. Plan a strict versioned request and result with
+JSON round trips and structured diagnostics.
+
+Reuse the closed-form rectangular concrete and strain-plane helpers in
+`column/_strain_compatibility.py` and the representative steel law in
+`section_materials.py`. Sum gross concrete and each layer's steel force
+after subtracting the local displaced concrete force. Return axial force
+in kN, moment in kN·m about the section centroid, the strain basis and
+the method identity. Compression is positive and the signed moment uses
+lever arm `D/2 − y`. The result carries its calculation state and leaves
+member and detailing acceptance unevaluated. Keep the existing two-face
+member workflow compatible.
+
+First qualify the frozen 230 × 450 mm M20/Fe415 case with 3Ø16 at 50 mm,
+2Ø16 at 225 mm and 3Ø16 at 400 mm, all measured from the top. At
+`xu = 900 mm`, verify **+1394.806806989 kN** and **+9.955790170 kN·m**
+within 0.001 kN and 0.001 kN·m. Add an independent boundary case at
+`xu = D` and verify that the raw result above the interaction slice's
+nominal cap retains its section state. Reject missing layers, out-of-section
+depths, non-positive dimensions or bar counts, non-finite values and
+unsupported strain or material profiles. Then publish one public Python
+example and verify it in isolation.
+[Frozen column reference](../verification/library-027-comparator-reference.md#expected-values-and-acceptance)
 
 ### Five goals and acceptance
 
 | Goal | Reuse and concrete exit |
 |---|---|
 | 1. [LIB-9](https://pravinsurawase.atlassian.net/browse/LIB-9) Freeze references | [Four cases frozen and replayed](../verification/library-027-comparator-reference.md#expected-values-and-acceptance), with controlled source identity, independent values, numerical tolerances and separate engine methods. |
-| 2. [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10) Promote beam comparisons | Deliver one runnable public Python example and a guide for all three layouts. Use `flexural_capacity` and `shear_capacity`. Report `xu`, `d`, steel percentage, moment, concrete/link/total shear, and method identity. Check against the StructLib fixture rows and explain the comparator offsets. Current evidence calls for no calculation change. |
-| 3. [LIB-11](https://pravinsurawase.atlassian.net/browse/LIB-11) Add column section response | Start with the three-layer rectangular profile at a declared neutral-axis or strain state. Expose axial force and centroidal moment with explicit axes, units and method. Reject invalid or unsupported geometry and keep the existing two-face member route compatible. Qualify the raw response separately from the axial cap and member checks. |
+| 2. [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10) Promote beam comparisons | [Runnable example and guide](../cookbook/python/beam-comparator-reference.md) delivered. All seven values for each of the three sections and both method identifiers verified from the 0.26.0 wheel. The separate doubly reinforced member diagnostic retains HOLD. |
+| 3. [LIB-11](https://pravinsurawase.atlassian.net/browse/LIB-11) Add column section response | Next. [Freeze the request and result scope, reuse the pure section mechanics, and verify the raw response](#goal-3-layered-column-section-response). |
 | 4. [LIB-12](https://pravinsurawase.atlassian.net/browse/LIB-12) Promote ordinary beam member | Reuse the retained single-layer and multilayer examples and bind supports, ULS/SLS, actual bar and link geometry, checks, BBS and report to one physical revision. Verify output reconciliation, conflicting-depth and missing-support cases, and insufficient reinforcement. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | Freeze one candidate after Goals 1–4. Run affected source and required hosted checks. Replay the four section cases, beam member journeys and [consumer fix regressions](https://pravinsurawase.atlassian.net/browse/LIB-8) from the exact wheel and source-built installs. Retain hashes, independent comparisons and FAIL/HOLD evidence. Obtain version-specific owner authorization, publish the qualified artifacts, and verify the tag, PyPI files and GitHub Release against the release receipt. |
 
-Continue with LIB-10 using the [Goal 2 handoff](../verification/library-027-comparator-reference.md#handoff-to-goal-2).
+Continue with LIB-11 using the [Goal 3 plan](#goal-3-layered-column-section-response).
 There is no standalone 0.26.1 release. Candidate preparation uses the
 maintained version tooling after scoped implementation and documentation
 freeze. A Jira fix version is a
