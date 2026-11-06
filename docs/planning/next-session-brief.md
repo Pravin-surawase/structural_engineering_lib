@@ -11,11 +11,14 @@
 
 ## Current boundary — 6 November 2026
 
-Start at [LIB-9](https://pravinsurawase.atlassian.net/browse/LIB-9) and the
-[0.27 release plan](library-usability-improvement.md#027-beam-and-column-release-preparation).
-Freeze independent reference quantities and acceptance tolerances before
-implementation. The [measured baseline](../verification/library-027-comparator-baseline.json)
-shows three working beam comparisons and one layered column gap in the stable API.
+Goal 1 froze and replayed the
+[four section references](../verification/library-027-comparator-reference.md).
+Next is [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10): a
+public Python example and guide for all three beam comparisons. Use the
+existing operations and verify the seven output quantities against the
+StructLib targets. Explain the separate rcdesign method rather than changing
+beam calculations to make the rows equal. The layered column remains a
+stable API gap for Goal 3.
 
 The merged consumer fixes ship in 0.27.0. Replay their
 [installed regressions](https://pravinsurawase.atlassian.net/browse/LIB-8)

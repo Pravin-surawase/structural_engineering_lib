@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-11-06 — 0.26.0 published, 0.26.1 fixes merged, and 0.27 preparation selected
+**Updated:** 2026-11-06 — Four 0.27 section references frozen; beam examples next
 
 ---
 
@@ -26,7 +26,7 @@
 | LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Done: [PR #1040 integrated](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
-| LIB-027 | Deliver the bounded beam and column release | P1 | Baseline measured; start with independent references | [Five goals](planning/library-usability-improvement.md#five-goals-and-acceptance) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7); Goal 5 qualifies and releases 0.27.0 |
+| LIB-027 | Deliver the bounded beam and column release | P1 | Goal 1 references frozen; Goal 2 next | [Five goals](planning/library-usability-improvement.md#five-goals-and-acceptance) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7); Goal 5 qualifies and releases 0.27.0 |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
@@ -190,7 +190,7 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-027 | Prepare the measured 0.27 release scope | MAIN / Mac | Planning and reference preparation. Start with LIB-9 before implementation. |
+| LIB-027 | Deliver the measured 0.27 release scope | MAIN / Mac | [LIB-9 reference freeze](verification/library-027-comparator-reference.md) complete; [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10) beam examples and guide next. |
 
 The [current handoff](planning/next-session-brief.md) identifies the selected
 preparation scope. The dated notes below retain earlier lanes and installed-host
