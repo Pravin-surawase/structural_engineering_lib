@@ -122,7 +122,7 @@ python3 Python/examples/analysis_snapshot_replay.py /path/to/snapshot.json
 
 | Example | What it demonstrates | Writes files? |
 |---|---|---|
-| `complete_member_workflow.py` | One independently checked ordinary beam → all required checks → physical BBS and report; current source build | Yes, with `--output-dir` |
+| `complete_member_workflow.py` | Single-layer and multilayer beams through checks, physical paths, BBS and HTML. [Member guide](../../docs/cookbook/python/ordinary-beam-member.md) | Yes, with `--output-dir` |
 | `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
 | `beam_comparator_reference.py` | Installed-package section capacities for three supplied beam layouts. [Beam comparison guide](../../docs/cookbook/python/beam-comparator-reference.md) | No |
 | `layered_column_section.py` | Raw response of a layered rectangle at two prescribed neutral-axis depths. [Column section guide](../../docs/cookbook/python/layered-column-section.md) | No |

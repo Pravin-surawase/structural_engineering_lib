@@ -96,26 +96,44 @@ verification boundary for the installed replay in Goal 5.
 
 ### Goal 4 ordinary beam member workflows
 
-Start with `complete_member_workflow.py --case single-layer` and
-`--case multilayer`. Freeze the inputs for each example, including
-bearing widths, support faces, separate ULS and SLS cases, actual bars
-and links, and the declared scope of each required check.
-[Multilayer acceptance record](multilayer-member-workflow.md)
+Both member cases ran from a source-bound development wheel and their JSON,
+CSV and HTML agreed on the check set, physical revisions, bar paths and
+schedule. The single-layer case retained 19 checks and 39 paths. The multilayer
+case retained 27 checks and 43 paths. The supplied-beam diagnostic held for
+missing support width and failed for depth mismatch and insufficient
+reinforcement. The two full member overload replays produced draft artifacts
+with the actual load basis. Goal 5 reuses the replay verifier against both
+versioned archives.
+[Member guide](../cookbook/python/ordinary-beam-member.md)
+· [Installed replay receipt](../verification/library-027-member-replay.json)
 
-Run both cases from a candidate install and reconcile `calculation.json`,
-`bbs.csv`, and `report.html`. Check that the same topology and
-reinforcement revisions bind the member, path, schedule and report. The
-ordinary case should retain 19 required checks and 39 physical bars.
-The multilayer case should retain 27 required checks and 43 physical bars.
-Compare the scheduled bars and mass to the calculated physical paths and
-retain the supplied evidence for SLS screening.
+### Goal 5 qualify and release 0.27.0
 
-Replay missing support width and conflicting effective depth as intake
-or admission controls. Then exercise insufficient reinforcement and check
-that the engineering failure and draft artifact state survive all three
-outputs. Use the retained separate section case as a depth and support
-HOLD control. Finish with a public guide and reproducible positive and
-negative checks for the two admitted member cases.
+1. Prepare one versioned 0.27.0 candidate from the merged Goals 1–4. Use
+   maintained version tooling, record the commit and Python tree, and
+   retain one wheel and one sdist with their sizes and SHA-256 values.
+   Run `./run.sh release preflight --wheel <wheel>` on the built candidate.
+2. Run the required source and hosted checks and review the exact candidate.
+   Use `release verify --version 0.27.0 --source wheel --wheel-dir <dir>
+   --qualification --sdist <sdist> --receipt <receipt>` through `./run.sh`.
+   Update the installed example inventory as needed so both clean installs
+   exercise the three beam sections, the column at 900 mm and at `xu = D`,
+   and both beam member replays with the admission and draft controls.
+   Run the merged PR #1045 consumer regressions on both installations.
+   Check required and provided steel, absent detailing, report formats,
+   copied API recipes, effective-depth rejection and release guidance.
+   Retain the independent numerical and artifact comparisons.
+3. Check the publication surfaces and bind the qualified pair to the
+   review and the version-specific owner authorization for TestPyPI, the
+   exact tag, PyPI, and the GitHub Release. Use the retained-artifact
+   publication procedure. Verify both files on TestPyPI before creating the
+   exact tag and dispatching production. Use the qualified bytes for delivery.
+4. Read back the tag commit, PyPI wheel and sdist, and GitHub Release assets.
+   Verify their identities against the retained pair and run a fresh public
+   identity install. Append the publication receipt to the release ledger.
+   Keep install pins tied to verified registry availability.
+[Current release process](../getting-started/releases.md#current-release-process-29-october-2026)
+· [Retained artifact procedure](../getting-started/releases.md#retained-artifact-publication-procedure--29-october-2026)
 
 ### Five goals and acceptance
 
@@ -124,10 +142,10 @@ negative checks for the two admitted member cases.
 | 1. [LIB-9](https://pravinsurawase.atlassian.net/browse/LIB-9) Freeze references | [Four cases frozen and replayed](../verification/library-027-comparator-reference.md#expected-values-and-acceptance), with controlled source identity, independent values, numerical tolerances and separate engine methods. |
 | 2. [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10) Promote beam comparisons | [Runnable example and guide](../cookbook/python/beam-comparator-reference.md) delivered. All seven values for each of the three sections and both method identifiers verified from the 0.26.0 wheel. The separate doubly reinforced member diagnostic retains HOLD. |
 | 3. [LIB-11](https://pravinsurawase.atlassian.net/browse/LIB-11) Add column section response | [Public API and both benchmarks](#goal-3-layered-column-section-response) delivered, with a runnable example and separate member status. |
-| 4. [LIB-12](https://pravinsurawase.atlassian.net/browse/LIB-12) Promote ordinary beam member | Next. [Replay and reconcile the two member cases and their admission and failure controls](#goal-4-ordinary-beam-member-workflows). |
-| 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | Freeze one candidate after Goals 1–4. Run affected source and required hosted checks. Replay the four section cases, beam member journeys and [consumer fix regressions](https://pravinsurawase.atlassian.net/browse/LIB-8) from the exact wheel and source-built installs. Retain hashes, independent comparisons and FAIL/HOLD evidence. Obtain version-specific owner authorization, publish the qualified artifacts, and verify the tag, PyPI files and GitHub Release against the release receipt. |
+| 4. [LIB-12](https://pravinsurawase.atlassian.net/browse/LIB-12) Promote ordinary beam member | [Both member workflows and controls verified](#goal-4-ordinary-beam-member-workflows) with a public guide and repeatable artifact reconciliation. |
+| 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | Next. [Prepare and verify the exact candidate, replay the member and section cases and consumer fixes, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Continue with LIB-12 using the [Goal 4 plan](#goal-4-ordinary-beam-member-workflows).
+Continue with LIB-13 using the [Goal 5 plan](#goal-5-qualify-and-release-0270).
 There is no standalone 0.26.1 release. Candidate preparation uses the
 maintained version tooling after scoped implementation and documentation
 freeze. A Jira fix version is a

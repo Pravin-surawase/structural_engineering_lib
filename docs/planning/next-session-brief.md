@@ -9,7 +9,7 @@
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
-## Current boundary — 6 November 2026
+## Current boundary
 
 Goal 1 froze and replayed the
 [four section references](../verification/library-027-comparator-reference.md).
@@ -22,19 +22,18 @@ Goal 3 delivered the layered rectangular section API and verified the
 result keeps member and detailing acceptance unevaluated.
 [Layered column guide](../cookbook/python/layered-column-section.md)
 
-Next is [LIB-12](https://pravinsurawase.atlassian.net/browse/LIB-12). Replay
-the ordinary and multilayer member examples from an installed build.
-Reconcile their checks, physical revisions, calculation JSON, BBS and
-HTML. Exercise missing support width, conflicting depth and insufficient
-reinforcement.
-[Goal 4 plan](library-usability-improvement.md#goal-4-ordinary-beam-member-workflows)
+Goal 4 reconciled the single-layer and multilayer member examples across
+JSON, BBS, and HTML. The supplied-beam controls recorded missing support
+as HOLD and depth mismatch and insufficient steel as FAIL. Both full
+member overload replays produced draft artifacts.
+[Member guide and replay](../cookbook/python/ordinary-beam-member.md)
 
-The merged consumer fixes ship in 0.27.0. Replay their
-[installed regressions](https://pravinsurawase.atlassian.net/browse/LIB-8)
-inside Goal 5, which qualifies and releases the exact 0.27.0 candidate.
-The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
-owns the public identities. The solver, native-host qualification and further
-physical-member extensions retain their own workstreams and evidence.
+Next is [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13).
+Prepare one versioned 0.27.0 wheel and source archive. Replay the section
+cases, member evidence, and merged consumer fixes from both isolated
+installations. Bind the reviewed artifacts to version-specific owner
+authorization before publication and verify the public file identities.
+[Goal 5 plan](library-usability-improvement.md#goal-5-qualify-and-release-0270)
 
 ## Historical S6 handoff — 29 October 2026
 

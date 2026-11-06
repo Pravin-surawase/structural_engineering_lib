@@ -190,7 +190,8 @@ def run_workflow(
             "no compression/flange enhancement. This is span/depth screening, not calculated deflection.",
             admission[8],
             "Bottom 2T25 at y=450 mm and 2T25 at y=375 mm; top 2T16 at y=50 mm and 2T12 at y=125 mm. "
-            "Each pair at section x=50/250 mm. ULS/SLS total loads 36/24 N/mm, including self weight.",
+            "Each pair at section x=50/250 mm. ULS/SLS total loads "
+            f"{ultimate_load:g}/{service_load:g} N/mm, including self weight.",
             "SLS cracked transformed section: x=156.466321740276 mm, Icr=1468328057.5917387 mm4; "
             "the supplied steel stress is at the bottom group's centroid, d=412.5 mm.",
         )
