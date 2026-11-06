@@ -48,7 +48,10 @@ separately. Pravin Surawase owns the engineering scope decision.
 [Jira epic LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) owns work
 status and dependencies. [Confluence](https://pravinsurawase.atlassian.net/wiki/spaces/SD/pages/17989634/StructLib+0.27+release+preparation)
 summarizes the release for readers. The [comparison baseline](../verification/library-027-comparator-baseline.json)
-records exact inputs, outputs, package identities and open evidence. The
+records the observed outputs and package identities. The
+[frozen references](../verification/library-027-comparator-reference.md) give
+the independently derived targets, exact inputs, and method-specific replay
+tolerances for all four cases. The
 [working roadmap](https://chatgpt.com/space/page_32cfec9f5b288191ac31548609dbe25f)
 keeps the staged programme and later member profiles.
 
@@ -58,8 +61,10 @@ Published StructLib 0.26.0 and the installed build of main at `67c4555d`
 gave identical outputs. The public `structural_lib.beam` component operations
 already cover the supplied singly reinforced mixed-diameter beam, doubly
 reinforced beam and two-layer flanged beam. The maximum observed difference
-from rcdesign 0.4.18 was 0.32% or less for moment and total shear. The recorded
-differences guide the independent reference review.
+from rcdesign 0.4.18 was 0.32% or less for moment and total shear. Independent
+replay traced the offsets to the flexural block and shear conventions.
+Both engines pass their own reference targets, so Goal 2 can reuse the
+existing operations.
 
 The installed column API rejects explicit layers. The experimental raw
 section kernel agreed with the comparator at the prescribed neutral-axis
@@ -86,14 +91,16 @@ The existing member HOLD remains a regression control.
 
 | Goal | Reuse and concrete exit |
 |---|---|
-| 1. [LIB-9](https://pravinsurawase.atlassian.net/browse/LIB-9) Freeze references | Freeze the runnable bar lists, geometry, concrete and steel basis, link provision, exact code revision and amendments, moment datum, independently checked values and quantity-specific tolerances. Record the comparator's cwd dependency and its first example's prose/code disagreement. |
-| 2. [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10) Promote beam comparisons | Reuse `flexural_capacity` and `shear_capacity` for the three exact layouts. Copyable installed examples report neutral axis, moment, concrete and link shear, total shear and the method used. Reconcile differences against independent reference values. |
+| 1. [LIB-9](https://pravinsurawase.atlassian.net/browse/LIB-9) Freeze references | [Four cases frozen and replayed](../verification/library-027-comparator-reference.md#expected-values-and-acceptance), with controlled source identity, independent values, numerical tolerances and separate engine methods. |
+| 2. [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10) Promote beam comparisons | Deliver one runnable public Python example and a guide for all three layouts. Use `flexural_capacity` and `shear_capacity`. Report `xu`, `d`, steel percentage, moment, concrete/link/total shear, and method identity. Check against the StructLib fixture rows and explain the comparator offsets. Current evidence calls for no calculation change. |
 | 3. [LIB-11](https://pravinsurawase.atlassian.net/browse/LIB-11) Add column section response | Start with the three-layer rectangular profile at a declared neutral-axis or strain state. Expose axial force and centroidal moment with explicit axes, units and method. Reject invalid or unsupported geometry and keep the existing two-face member route compatible. Qualify the raw response separately from the axial cap and member checks. |
 | 4. [LIB-12](https://pravinsurawase.atlassian.net/browse/LIB-12) Promote ordinary beam member | Reuse the retained single-layer and multilayer examples and bind supports, ULS/SLS, actual bar and link geometry, checks, BBS and report to one physical revision. Verify output reconciliation, conflicting-depth and missing-support cases, and insufficient reinforcement. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | Freeze one candidate after Goals 1–4. Run affected source and required hosted checks. Replay the four section cases, beam member journeys and [consumer fix regressions](https://pravinsurawase.atlassian.net/browse/LIB-8) from the exact wheel and source-built installs. Retain hashes, independent comparisons and FAIL/HOLD evidence. Obtain version-specific owner authorization, publish the qualified artifacts, and verify the tag, PyPI files and GitHub Release against the release receipt. |
 
-Begin with LIB-9. There is no standalone 0.26.1 release. Candidate preparation uses the maintained version tooling
-after scoped implementation and documentation freeze. A Jira fix version is a
+Continue with LIB-10 using the [Goal 2 handoff](../verification/library-027-comparator-reference.md#handoff-to-goal-2).
+There is no standalone 0.26.1 release. Candidate preparation uses the
+maintained version tooling after scoped implementation and documentation
+freeze. A Jira fix version is a
 planning record. Keep the public installation instructions tied to the latest
 verified publication. Follow the [release process](../getting-started/releases.md#current-release-process-29-october-2026)
 for version-specific authorization, tags and registry delivery.
