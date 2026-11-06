@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-10-29 — S0–S5 integrated; S6 v0.26.0 retained-artifact release selected; publication facts belong to the release ledger and registry
+**Updated:** 2026-11-06 — 0.26.0 published, 0.26.1 fixes merged, and 0.27 preparation selected
 
 ---
 
@@ -24,13 +24,15 @@
 | LIB-S3-20261029 | Complete public signatures, input/schema semantics, defaults and cross-caller compatibility | P1 | Done: PR #1038 merged at 7e19a23b | [S3 scope and gate](planning/library-usability-improvement.md#delivery-milestones-dependencies-and-completion-evidence); declared population reconciled, local evidence passed; PR owns final integration |
 | LIB-S4-20261029 | Verify engineering accuracy and physical/output fidelity | P1 | Done: PR #1039 merged at a39e02b2 | [S4 scope and evidence](planning/library-usability-improvement.md#s4-engineering-and-outputs--29-october-2026); independent numerical/output acceptance and reviewed integration |
 | LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Done: [PR #1040 integrated](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
-| LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Selected; tooling and publication packet in progress | [S6 studied plan](planning/library-usability-improvement.md#s6-studied-release-plan--29-october-2026); exact hashes, authorization and public readback required |
+| LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
+| LIB-0261 | Qualify the versioned consumer patch | P1 | Source fixes merged in PR #1045. Versioned qualification and release disposition pending | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) |
+| LIB-027 | Prepare the bounded beam and column release | P1 | Preparation selected. Baseline measured and backlog prepared | [Release plan](planning/library-usability-improvement.md#027-beam-and-column-release-preparation) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
 work or override the selected programme above. S5's milestone PR owns its
-review/check/merge status. S6 targets are selected; their effective authorization
-and publication evidence are recorded after the current review gates pass.
+review, check and merge status. S6 publication and public file identities are
+recorded in the release ledger and release assets.
 
 ## Python Library Improvement — earlier delivery and qualification records
 
@@ -188,13 +190,11 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-S6-20261029 | Publish retained v0.26.0 artifacts with exact review/authorization/readback | MAIN / Mac | In progress; one bounded tooling packet, then metadata/publication |
+| LIB-027 | Prepare the measured 0.27 release scope | MAIN / Mac | Planning and reference preparation. Start with LIB-9 before implementation. |
 
-Current intake uses a clean, source-bound managed worktree from fetched main
-`a39e02b2`; preserve completed predecessor branches and their outputs. The following
-dated notes describe earlier lanes and do not override this intake or the
-current Library programme above. Current native-host access has not been
-rechecked; offline evidence does not establish installed acceptance.
+The [current handoff](planning/next-session-brief.md) identifies the selected
+preparation scope. The dated notes below retain earlier lanes and installed-host
+evidence boundaries.
 
 **Historical development device — 26 September:** the owner was working on the Mac.
 Mac main was synchronized to GitHub `6b71d7cf` before

@@ -1634,3 +1634,21 @@ archive are reused only for these exact bytes. Maturity remains pre-1.0/Beta;
 full-amendment, native-host, fabrication and professional acceptance retain their
 explicit HOLDs/exclusions. No complete-standard or professional approval claim
 follows from this normal software release.
+
+## v0.26.0 published and verified
+
+The normal release was published on 29 October 2026. GitHub reports the
+[published release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.26.0)
+at 18:01:31 UTC. The [publication run](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/40926579980/attempts/1)
+and [PyPI release files](https://pypi.org/project/structural-lib-is456/0.26.0/#files)
+bind the released artifacts to publication commit
+`9451748282929201c58bb1b643709524f8882a06`.
+
+- Wheel SHA-256 `40d322304d59a96f583496f0946493ab34edd728f824dc1b223293f71424aa8b`.
+- Source distribution SHA-256 `62da876554191db59963b8bcf50a9c8b4d1321078b3ff5e50bfb50434716f7c7`.
+- [TestPyPI readback](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.26.0/testpypi-readback.json)
+  and [production readback](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.26.0/pypi-readback.json).
+
+The verified file identities agree across the release assets and PyPI. The
+published engineering scope remains case-qualified and the package maturity
+remains Beta.

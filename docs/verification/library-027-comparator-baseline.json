@@ -1,0 +1,478 @@
+{
+  "schema_version": "structlib-comparator-baseline/v1",
+  "observed_date": "2026-11-06",
+  "planned_release": "0.27.0",
+  "status": "BASELINE_MEASURED",
+  "python_version": "3.13.18",
+  "structlib": {
+    "published_version": "0.26.0",
+    "published_wheel_sha256": "40d322304d59a96f583496f0946493ab34edd728f824dc1b223293f71424aa8b",
+    "main_source_commit": "67c4555d5a47b94409d9f7f4ac3c4dce600047be",
+    "published_and_main_outputs_equal": true,
+    "environment": "Separate site-packages installs outside the source checkout"
+  },
+  "rcdesign": {
+    "version": "0.4.18",
+    "wheel_sha256": "1166d8c1a3719a616a439b0bbc138787fb92c681c97c248f1cd06942ea0914be",
+    "source_distribution_sha256": "2cd0fe17baa90f28a24de6b4efd4d452283db9d2049009877c750347033fd2dd",
+    "quickstart_url": "https://rcdesign.readthedocs.io/en/latest/quickstart.html",
+    "quickstart_source_sha256": "10b3d683301233afff479e34b4a87cb1dee8171695a482e27fc70b4c88dccbb3",
+    "input_resolution": "The executable singly reinforced block uses [20, 16, 20]. The prose reverses the counts.",
+    "install_resolution": "The wheel import required pyproject.toml in cwd. All four unchanged snippets ran from a directory holding the released sdist metadata. Imports remained bound to the installed wheel."
+  },
+  "comparison_boundaries": [
+    "Beam section responses preserve actual bar diameters and reported depths. Symmetric transverse coordinates supplied for the section payload are not fit or cover evidence.",
+    "The doubly reinforced member diagnostic used separate test demands of 50 kN m and 50 kN and held for depth and support. It is not a competitor member run.",
+    "The column compares centroidal moment. The quickstart's 951.45 kN m is the intermediate moment about the neutral axis.",
+    "The raw column diagnostic exceeds the experimental interaction slice's nominal axial cap. The stable public layered-column request remains a gap.",
+    "Candidate reference tolerances and independently checked values remain open. The comparator baseline does not establish engineering or professional approval."
+  ],
+  "cases": [
+    {
+      "id": "singly_reinforced_rectangular",
+      "quickstart_block": 1,
+      "inputs": {
+        "section": "rectangular",
+        "width_mm": 230,
+        "depth_mm": 450,
+        "fck_nmm2": 20,
+        "fy_nmm2": 415,
+        "cover_mm_as_documented": 25,
+        "bar_layers": [
+          {
+            "depth_from_top_mm": 415,
+            "diameters_mm": [
+              20,
+              16,
+              20
+            ]
+          }
+        ],
+        "shear_links": {
+          "diameter_mm": 8,
+          "active_legs": 2,
+          "spacing_mm": 150,
+          "fy_nmm2": 415
+        }
+      },
+      "rcdesign_outputs": {
+        "report_Mu_kNm": 101.81,
+        "report_Vu_kN": 156.83,
+        "xu_mm": 179.94221161251255,
+        "mu_knm": 101.8062977041245,
+        "vuc_kn": 56.4618784568355,
+        "vus_kn": 100.370698159212,
+        "shear_total_kn": 156.8325766160475,
+        "d_mm": 415.00000000000006,
+        "pt_percent": 0.8689161451521271
+      },
+      "structlib_outputs": {
+        "public_component_results": {
+          "xu_mm": 180.73560760727673,
+          "mu_knm": 101.48932788416495,
+          "vuc_kn": 56.17613105314494,
+          "vus_kn": 100.42088350829161,
+          "shear_total_kn": 156.59701456143654,
+          "d_mm": 415.00000000000006,
+          "pt_percent": 0.8689161451521271
+        },
+        "engineering_flags": [
+          "pass",
+          "pass"
+        ],
+        "force_residual_n": 0,
+        "delta_percent": {
+          "xu_mm": 0.44091710758378255,
+          "mu_knm": -0.31134598458805174,
+          "vuc_kn": -0.5060890843527455,
+          "vus_kn": 0.0500000000000167,
+          "shear_total_kn": -0.1501996968318986,
+          "d_mm": 0.0,
+          "pt_percent": 0.0
+        },
+        "bar_responses": [
+          {
+            "bar_id": "L1-1",
+            "face": "bottom",
+            "layer": 1,
+            "depth_from_compression_face_mm": 415,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.004536601194581205,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "L1-2",
+            "face": "bottom",
+            "layer": 1,
+            "depth_from_compression_face_mm": 415,
+            "area_mm2": 201.06192982974676,
+            "strain": -0.004536601194581205,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -72557.13119943035
+          },
+          {
+            "bar_id": "L1-3",
+            "face": "bottom",
+            "layer": 1,
+            "depth_from_compression_face_mm": 415,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.004536601194581205,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -113370.51749910993
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubly_reinforced_rectangular",
+      "quickstart_block": 2,
+      "inputs": {
+        "section": "rectangular",
+        "width_mm": 230,
+        "depth_mm": 450,
+        "fck_nmm2": 20,
+        "fy_nmm2": 415,
+        "cover_mm_as_documented": 25,
+        "bar_layers": [
+          {
+            "depth_from_top_mm": 35,
+            "diameters_mm": [
+              16,
+              16
+            ]
+          },
+          {
+            "depth_from_top_mm": 415,
+            "diameters_mm": [
+              16,
+              16,
+              16
+            ]
+          }
+        ],
+        "shear_links": {
+          "diameter_mm": 8,
+          "active_legs": 2,
+          "spacing_mm": 150,
+          "fy_nmm2": 415
+        }
+      },
+      "rcdesign_outputs": {
+        "report_Mu_kNm": 83.68,
+        "report_Vu_kN": 150.44,
+        "xu_mm": 61.56827356601513,
+        "mu_knm": 83.67669358065291,
+        "vuc_kn": 50.06740391833297,
+        "vus_kn": 100.37069815921198,
+        "shear_total_kn": 150.43810207754495,
+        "d_mm": 415.0,
+        "pt_percent": 0.6319390146560925
+      },
+      "structlib_outputs": {
+        "public_component_results": {
+          "xu_mm": 61.72560387478674,
+          "mu_knm": 83.64277947111648,
+          "vuc_kn": 49.845945263655686,
+          "vus_kn": 100.4208835082916,
+          "shear_total_kn": 150.26682877194727,
+          "d_mm": 415,
+          "pt_percent": 0.6319390146560925
+        },
+        "engineering_flags": [
+          "pass",
+          "pass"
+        ],
+        "force_residual_n": 0,
+        "delta_percent": {
+          "xu_mm": 0.25553795755359765,
+          "mu_knm": -0.04052993502156044,
+          "vuc_kn": -0.44232102594836675,
+          "vus_kn": 0.0500000000000167,
+          "shear_total_kn": -0.11384968517443861,
+          "d_mm": 0.0,
+          "pt_percent": 0.0
+        },
+        "bar_responses": [
+          {
+            "bar_id": "L1-1",
+            "face": "top",
+            "layer": 1,
+            "depth_from_compression_face_mm": 35,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0015154102623524438,
+            "steel_stress_n_per_mm2": 295.51891631457465,
+            "displaced_concrete_stress_n_per_mm2": 8.40888588910557,
+            "net_force_n": 57726.89679082212
+          },
+          {
+            "bar_id": "L1-2",
+            "face": "top",
+            "layer": 1,
+            "depth_from_compression_face_mm": 35,
+            "area_mm2": 201.06192982974676,
+            "strain": 0.0015154102623524438,
+            "steel_stress_n_per_mm2": 295.51891631457465,
+            "displaced_concrete_stress_n_per_mm2": 8.40888588910557,
+            "net_force_n": 57726.89679082212
+          },
+          {
+            "bar_id": "L2-1",
+            "face": "bottom",
+            "layer": 2,
+            "depth_from_compression_face_mm": 415,
+            "area_mm2": 201.06192982974676,
+            "strain": -0.020031564032106736,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -72557.13119943035
+          },
+          {
+            "bar_id": "L2-2",
+            "face": "bottom",
+            "layer": 2,
+            "depth_from_compression_face_mm": 415,
+            "area_mm2": 201.06192982974676,
+            "strain": -0.020031564032106736,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -72557.13119943035
+          },
+          {
+            "bar_id": "L2-3",
+            "face": "bottom",
+            "layer": 2,
+            "depth_from_compression_face_mm": 415,
+            "area_mm2": 201.06192982974676,
+            "strain": -0.020031564032106736,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -72557.13119943035
+          }
+        ],
+        "member_diagnostic": {
+          "status": "HOLD",
+          "issues": [
+            "BEAM_SUPPLIED_EFFECTIVE_DEPTH_MISMATCH",
+            "BEAM_SUPPORT_WIDTH_BASIS_NOT_SUPPLIED"
+          ],
+          "compression_depth_mm": 41.0
+        }
+      }
+    },
+    {
+      "id": "flanged_two_tension_layers",
+      "quickstart_block": 3,
+      "inputs": {
+        "section": "flanged",
+        "web_width_mm": 300,
+        "depth_mm": 475,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "cover_mm_as_documented": 25,
+        "flange_width_mm": 800,
+        "flange_thickness_mm": 150,
+        "bar_layers": [
+          {
+            "depth_from_top_mm": 405,
+            "diameters_mm": [
+              18,
+              18
+            ]
+          },
+          {
+            "depth_from_top_mm": 440,
+            "diameters_mm": [
+              20,
+              20,
+              20
+            ]
+          }
+        ],
+        "shear_links": {
+          "diameter_mm": 8,
+          "active_legs": 2,
+          "spacing_mm": 150,
+          "fy_nmm2": 415
+        }
+      },
+      "rcdesign_outputs": {
+        "report_Mu_kNm": 208.25,
+        "report_Vu_kN": 189.58,
+        "xu_mm": 72.42674017403628,
+        "mu_knm": 208.25176006191384,
+        "vuc_kn": 86.1359283084289,
+        "vus_kn": 103.4488794828242,
+        "shear_total_kn": 189.5848077912531,
+        "d_mm": 427.72727272727275,
+        "pt_percent": 1.1311068980193641
+      },
+      "structlib_outputs": {
+        "public_component_results": {
+          "xu_mm": 72.74608206192886,
+          "mu_knm": 208.02849444497977,
+          "vuc_kn": 86.16125207027635,
+          "vus_kn": 103.5006039225656,
+          "shear_total_kn": 189.66185599284194,
+          "d_mm": 427.7272727272727,
+          "pt_percent": 1.1311068980193646
+        },
+        "engineering_flags": [
+          "pass",
+          "pass"
+        ],
+        "force_residual_n": -5.820766091346741e-11,
+        "delta_percent": {
+          "xu_mm": 0.44091710758378255,
+          "mu_knm": -0.10720947418052518,
+          "vuc_kn": 0.029399766560556095,
+          "vus_kn": 0.04999999999999449,
+          "shear_total_kn": 0.04064049355350097,
+          "d_mm": -1.1102230246251565e-14,
+          "pt_percent": 4.440892098500626e-14
+        },
+        "bar_responses": [
+          {
+            "bar_id": "L1-1",
+            "face": "bottom",
+            "layer": 1,
+            "depth_from_compression_face_mm": 405,
+            "area_mm2": 254.46900494077323,
+            "strain": -0.015985585475150128,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -91830.11917427904
+          },
+          {
+            "bar_id": "L1-2",
+            "face": "bottom",
+            "layer": 1,
+            "depth_from_compression_face_mm": 405,
+            "area_mm2": 254.46900494077323,
+            "strain": -0.015985585475150128,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -91830.11917427904
+          },
+          {
+            "bar_id": "L2-1",
+            "face": "bottom",
+            "layer": 2,
+            "depth_from_compression_face_mm": 440,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.017669524960656928,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "L2-2",
+            "face": "bottom",
+            "layer": 2,
+            "depth_from_compression_face_mm": 440,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.017669524960656928,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -113370.51749910993
+          },
+          {
+            "bar_id": "L2-3",
+            "face": "bottom",
+            "layer": 2,
+            "depth_from_compression_face_mm": 440,
+            "area_mm2": 314.1592653589793,
+            "strain": -0.017669524960656928,
+            "steel_stress_n_per_mm2": -360.8695652173913,
+            "displaced_concrete_stress_n_per_mm2": 0,
+            "net_force_n": -113370.51749910993
+          }
+        ]
+      }
+    },
+    {
+      "id": "column_three_layers",
+      "quickstart_block": 4,
+      "inputs": {
+        "section": "rectangular column",
+        "width_mm": 230,
+        "depth_mm": 450,
+        "fck_nmm2": 20,
+        "fy_nmm2": 415,
+        "neutral_axis_depth_mm": 900,
+        "bar_layers": [
+          {
+            "depth_from_top_mm": 50,
+            "diameters_mm": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "depth_from_top_mm": 225,
+            "diameters_mm": [
+              16,
+              16
+            ]
+          },
+          {
+            "depth_from_top_mm": 400,
+            "diameters_mm": [
+              16,
+              16,
+              16
+            ]
+          }
+        ]
+      },
+      "rcdesign_outputs": {
+        "report_Pu_kN": 1394.81,
+        "report_Mu_kNm": 9.96,
+        "xu_mm": 900.0,
+        "axial_kn": 1394.8068069893986,
+        "centroid_moment_knm": 9.955790169713975
+      },
+      "structlib_outputs": {
+        "public_input_issues": [
+          {
+            "code": "EXTRA_FIELD_FORBIDDEN",
+            "path": "reinforcement.layers"
+          }
+        ],
+        "experimental_200": {
+          "axial_kn": 1394.8072519827128,
+          "centroid_moment_knm": 9.955632544217458,
+          "my_knm": -9.313225746154785e-16
+        },
+        "experimental_2000": {
+          "axial_kn": 1394.806811447348,
+          "centroid_moment_knm": 9.95578859370759,
+          "my_knm": -9.313225746154785e-16
+        },
+        "experimental_slice_nominal_axial_cap_kn": 1262.374193204185
+      }
+    }
+  ],
+  "existing_installed_beam_member_examples": {
+    "single-layer": {
+      "member": "pass",
+      "issue_state": "issue_ready",
+      "required_checks": 19,
+      "physical_bars": 39,
+      "steel_kg": 56.95229312438693,
+      "professional_approval": false
+    },
+    "multilayer": {
+      "member": "pass",
+      "issue_state": "issue_ready",
+      "required_checks": 27,
+      "physical_bars": 43,
+      "steel_kg": 129.91458084481988,
+      "professional_approval": false
+    }
+  }
+}
