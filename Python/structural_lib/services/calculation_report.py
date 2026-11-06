@@ -35,6 +35,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from structural_lib.services.beam_api import _detailing_result_to_dict
+
 _logger = logging.getLogger(__name__)
 
 # -----------------------------------------------------------------------------
@@ -187,10 +189,26 @@ class CalculationReport:
                 "fy_nmm2": result.materials.get("fy_nmm2", 500),
             }
             results_section.flexure = {
-                "ast_required": design.flexure.Ast_required,
-                "ast_provided": design.flexure.ast_provided,
-                "beam_type": design.flexure.beam_type,
+                **_flexure_values(design.flexure),
+                "beam_type": None,
             }
+            detail = getattr(result, "detailing", None)
+            if detail is None:
+                results_section.detailing = {
+                    "status": "unavailable",
+                    "reason": "missing_detailing",
+                }
+            elif detail.top_bars or detail.bottom_bars:
+                results_section.detailing = {
+                    "status": "available",
+                    **_detailing_result_to_dict(detail),
+                }
+            else:
+                results_section.detailing = {
+                    "status": "unavailable",
+                    "reason": "no_bar_rows",
+                    "is_valid": detail.is_valid,
+                }
             results_section.shear = {
                 "Vu_kn": design.Vu_kn,
                 "tau_v": design.shear.tau_v,
@@ -208,8 +226,12 @@ class CalculationReport:
             # ComplianceCaseResult
             inputs.geometry = {"beam_id": beam_id, "story": story}
             results_section.flexure = {
-                "ast_required": result.flexure.Ast_required,
+                **_flexure_values(result.flexure),
                 "pt_provided": result.flexure.pt_provided,
+            }
+            results_section.detailing = {
+                "status": "unavailable",
+                "reason": "design_only",
             }
             results_section.shear = {
                 "spacing": result.shear.spacing,
@@ -337,6 +359,32 @@ class CalculationReport:
         def e(val: Any) -> str:
             return html.escape(str(val))
 
+        classification_label, classification, required = _flexure_display(
+            results.flexure
+        )
+        detail_notice, detail_rows = _detailing_display(results.detailing)
+        if detail_notice or detail_rows:
+            provided_row = ""
+            schedule = "<h3>Provided longitudinal steel</h3>" + (
+                f"<p>{e(detail_notice)}</p>" if detail_notice else ""
+            )
+            if detail_rows:
+                headers = "".join(f"<th>{e(h)}</th>" for h in _BAR_COLUMNS)
+                rows = "".join(
+                    "<tr>" + "".join(f"<td>{e(cell)}</td>" for cell in row) + "</tr>"
+                    for row in detail_rows
+                )
+                schedule += (
+                    f'<table class="data-table"><tr>{headers}</tr>{rows}</table>'
+                )
+        else:
+            provided = _format_number(results.flexure.get("ast_provided"))
+            provided_row = (
+                f'<tr><td>A<sub>st</sub> Provided</td><td class="number">{e(provided)}</td>'
+                "<td>mm²</td></tr>"
+            )
+            schedule = ""
+
         # Status class
         raw_shear_status = results.shear.get("is_safe")
         shear_status = raw_shear_status if type(raw_shear_status) is bool else None
@@ -354,7 +402,9 @@ class CalculationReport:
         shear_status_text = (
             "PASS"
             if shear_status is True
-            else "FAIL" if shear_status is False else "NOT EVALUATED"
+            else "FAIL"
+            if shear_status is False
+            else "NOT EVALUATED"
         )
 
         html_content = f"""<!DOCTYPE html>
@@ -498,16 +548,15 @@ class CalculationReport:
         <h3>2.1 Flexure Design</h3>
         <table class="data-table">
             <tr><th>Parameter</th><th>Value</th><th>Units</th></tr>
-            <tr><td>Beam Type</td><td>{
-            results.flexure.get("beam_type", "N/A")
+            <tr><td>{e(classification_label)}</td><td>{
+            e(classification)
         }</td><td>-</td></tr>
-            <tr><td>A<sub>st</sub> Required</td><td class="number">{
-            _format_number(results.flexure.get("ast_required"))
+            <tr><td>Required tension steel</td><td class="number">{
+            e(required)
         }</td><td>mm²</td></tr>
-            <tr><td>A<sub>st</sub> Provided</td><td class="number">{
-            _format_number(results.flexure.get("ast_provided"))
-        }</td><td>mm²</td></tr>
+            {provided_row}
         </table>
+        {schedule}
 
         <h3>2.2 Shear Design</h3>
         <table class="data-table">
@@ -561,6 +610,27 @@ class CalculationReport:
         inputs = self.inputs
         results = self.results
 
+        classification_label, classification, required = _flexure_display(
+            results.flexure
+        )
+        detail_notice, detail_rows = _detailing_display(results.detailing)
+        if detail_notice or detail_rows:
+            schedule_lines = ["", "#### Provided longitudinal steel", ""]
+            if detail_notice:
+                schedule_lines.extend((detail_notice, ""))
+            if detail_rows:
+                schedule_lines.append("| " + " | ".join(_BAR_COLUMNS) + " |")
+                schedule_lines.append(
+                    "| " + " | ".join(["---"] * len(_BAR_COLUMNS)) + " |"
+                )
+                schedule_lines.extend(
+                    "| " + " | ".join(row) + " |" for row in detail_rows
+                )
+            provided = "\n".join(schedule_lines)
+        else:
+            area = _format_number(results.flexure.get("ast_provided"))
+            provided = f"| Ast Provided | {area} | mm² |"
+
         raw_is_ok = results.summary.get("is_ok")
         is_ok = raw_is_ok if type(raw_is_ok) is bool else None
         raw_shear_status = results.shear.get("is_safe")
@@ -572,7 +642,9 @@ class CalculationReport:
         status = (
             "✅ PASS"
             if is_ok is True
-            else "❌ FAIL" if is_ok is False else "⚠️ NOT EVALUATED"
+            else "❌ FAIL"
+            if is_ok is False
+            else "⚠️ NOT EVALUATED"
         )
 
         md = f"""# Calculation Report: {self.beam_id} @ {self.story}
@@ -618,9 +690,9 @@ class CalculationReport:
 
 | Parameter | Value | Units |
 |-----------|-------|-------|
-| Beam Type | {results.flexure.get("beam_type", "N/A")} | - |
-| Ast Required | {_format_number(results.flexure.get("ast_required"))} | mm² |
-| Ast Provided | {_format_number(results.flexure.get("ast_provided"))} | mm² |
+| {classification_label} | {classification} | - |
+| Required tension steel | {required} | mm² |
+{provided}
 
 ### 2.2 Shear Design
 
@@ -650,6 +722,80 @@ class CalculationReport:
 *Generated by structural-lib-is456*
 """
         return md
+
+
+_BAR_COLUMNS = (
+    "Face",
+    "Zone",
+    "Count",
+    "Diameter (mm)",
+    "Area provided (mm²)",
+    "Spacing (mm)",
+    "Layers",
+)
+
+
+def _flexure_values(flexure: Any) -> dict[str, Any]:
+    section_type = getattr(flexure, "section_type", None)
+    return {
+        "ast_required": flexure.Ast_required,
+        "ast_provided": None,
+        "section_type": getattr(section_type, "name", None),
+        "is_safe": getattr(flexure, "is_safe", None),
+    }
+
+
+def _flexure_display(flexure: dict[str, Any]) -> tuple[str, str, str]:
+    section_type = flexure.get("section_type")
+    label = "Section classification" if section_type else "Beam Type"
+    classification = section_type or flexure.get("beam_type") or "N/A"
+    area = flexure.get("ast_required")
+    required = _format_number(area)
+    if area == 0 and flexure.get("is_safe") is False:
+        required = "N/A (flexure check failed)"
+    return label, classification, required
+
+
+def _detailing_display(
+    detail: dict[str, Any],
+) -> tuple[str, list[tuple[str, ...]]]:
+    if detail.get("status") == "unavailable":
+        reason = {
+            "design_only": "This result contains design checks only.",
+            "missing_detailing": "The combined result has no detailing record.",
+            "no_bar_rows": "The detailing record contains no longitudinal bar rows.",
+        }.get(detail.get("reason"), "")
+        notice = f"Bar layout unavailable. {reason}".strip()
+        if detail.get("is_valid") is False:
+            notice += " Recorded detailing is invalid."
+        return notice, []
+    if detail.get("status") != "available":
+        return "", []
+
+    rows = []
+    missing = []
+    for face in ("Top", "Bottom"):
+        bars = detail[f"{face.lower()}_bars"]
+        zones = {bar["zone"] for bar in bars}
+        missing.extend(
+            f"{face} {zone}" for zone in ("start", "mid", "end") if zone not in zones
+        )
+        rows.extend(
+            (
+                face,
+                bar["zone"],
+                _format_number(bar["count"]),
+                _format_number(bar["diameter_mm"]),
+                _format_number(bar["area_provided_mm2"]),
+                _format_number(bar["spacing_mm"]),
+                _format_number(bar["layers"]),
+            )
+            for bar in bars
+        )
+    notice = "Recorded detailing is invalid." if detail.get("is_valid") is False else ""
+    if missing:
+        notice = f"{notice} Bar rows unavailable for {', '.join(missing)}.".strip()
+    return notice, rows
 
 
 def _format_number(value: Any) -> str:

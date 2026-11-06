@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-10-03
+last_updated: 2026-11-06
 doc_type: guide
 complexity: beginner
 tags: [release, installation, external-user]
@@ -9,9 +9,10 @@ tags: [release, installation, external-user]
 
 # Current Release
 
-The selected source version is **StructLib 0.25.0**. The append-only
-[release ledger](releases.md) owns its preparation, authorization and publication
-state. Confirm publication there and on PyPI before installing a new version.
+The current published package is **StructLib 0.26.0**. The 0.26.1 fixes are
+tracked under Unreleased in the changelog. Check the append-only
+[release ledger](releases.md) and PyPI for publication before switching your
+install to a newer version.
 
 - [PyPI package and available versions](https://pypi.org/project/structural-lib-is456/)
 - [GitHub release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/latest)
@@ -20,27 +21,24 @@ state. Confirm publication there and on PyPI before installing a new version.
 
 ## Install the exact release
 
-StructLib 0.25.0 requires Python 3.11 or newer.
-Run these commands after the ledger and public index confirm publication:
+StructLib 0.26.0 requires Python 3.11 or newer.
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.25.0"
+python3 -m pip install "structural-lib-is456==0.26.0"
 python3 -m structural_lib install-preflight
 ```
 
 The preflight should show:
 
-- `structural_lib: 0.25.0`;
-- the interpreter you intended to use;
-- a package origin inside that environment's `site-packages`;
+- `structural_lib: 0.26.0`
+- the interpreter you intended to use
+- a package origin inside that environment's `site-packages`
 - the installed/not-installed state of optional extras.
 
 ## What “normal release” means
 
-`0.25.0` is a normal/final PEP 440 version rather than a prerelease-tagged
-version, so an ordinary
-`pip install structural-lib-is456` can select it after publication on a supported
-Python version.
+`0.26.0` is a final PEP 440 version. An ordinary
+`pip install structural-lib-is456` can select it on a supported Python version.
 The package retains Beta maturity: APIs may change before v1.0 and the supported
 engineering scope is case-qualified.
 

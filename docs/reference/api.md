@@ -497,8 +497,8 @@ This is an admitted engineering FAIL, not a zero ratio, engineering PASS or
 input rejection. Existing finite ratios and failed-check identities are
 retained; unexpected NaN/infinity outside the declared unavailable fields
 still raises a calculation/transport error. Compliance reports apply the same
-rule to their governing and per-check summary ratios. These changes belong to
-the development candidate, not the already published v0.25.0 artifact.
+rule to their governing and per-check summary ratios. These changes are
+included in the published 0.26.0 package.
 
 Saved job and pipeline reports preserve these null values and their reasons.
 HTML and critical-set CSV display `Unavailable` with the reason; they do not
@@ -617,7 +617,7 @@ def design_and_detail_beam_is456(
     vu_kn: float,
     b_mm: float,
     D_mm: float,
-    d_mm: float | None = None,  # Auto-calculated if None
+    d_mm: float | None = None,  # None uses a preliminary depth
     cover_mm: float = 40.0,
     fck_nmm2: float = 25.0,
     fy_nmm2: float = 500.0,
@@ -642,6 +642,8 @@ def design_and_detail_beam_is456(
 
 **Example:**
 ```python
+from structural_lib import api
+
 result = api.design_and_detail_beam_is456(
     units="IS456",
     beam_id="B1",
@@ -651,10 +653,16 @@ result = api.design_and_detail_beam_is456(
     vu_kn=80,
     b_mm=300,
     D_mm=500,
+    d_mm=444,
 )
-print(result.summary())  # 'B1@GF: 300×500mm, Ast=856mm², OK'
-print(result.design.flexure.ast_required)  # 856.26
+print(result.summary())  # 'B1@GF: 300×500mm, Ast=900mm², OK'
+print(round(result.design.flexure.Ast_required, 2))  # 900.12
 ```
+
+For these bars, `d_mm = 500 - 40 - 8 - 16/2 = 444`, measured to the
+tension-bar centroid. Omitting `d_mm` uses `D_mm - cover_mm` as the
+preliminary strength depth. The strength depth must match the generated
+centroid, or the combined call raises `DETAILING_EFFECTIVE_DEPTH_MISMATCH`.
 
 Compatibility identity note: `design_and_detail_beam_is456()` uses `beam_id`,
 while `design_beam_is456()` uses `case_id`.
@@ -1040,14 +1048,21 @@ def generate_calculation_report(
 ) -> CalculationReport
 ```
 
+The calculation report accepts a combined `DesignAndDetailResult` or a
+design-only `ComplianceCaseResult` and exports HTML, JSON or Markdown.
+Required tension steel is separate from selected bars. A combined report
+shows the provided areas by face and zone, while a design-only report
+identifies the bar layout as unavailable.
+
 **Example (HTML report generation):**
 ```python
 from structural_lib import api
 
 # Design the beam
 result = api.design_and_detail_beam_is456(
-    b_mm=300, D_mm=500, d_mm=460, fck=25, fy=500,
-    mu_knm=150, vu_kn=100, span_mm=6000, cover_mm=40,
+    units="IS456", beam_id="B1", story="GF", span_mm=6000,
+    b_mm=300, D_mm=500, d_mm=444, cover_mm=40,
+    fck_nmm2=25, fy_nmm2=500, mu_knm=150, vu_kn=100,
 )
 
 # Generate professional calculation report
@@ -4834,7 +4849,7 @@ t_beam = api.design_flanged_beam_is456(
 # Design + detailing in one call
 full = api.design_and_detail_beam_is456(
     units="IS456", beam_id="B1", story="GF", span_mm=6000,
-    b_mm=300, D_mm=500, mu_knm=150, vu_kn=100,
+    b_mm=300, D_mm=500, d_mm=444, mu_knm=150, vu_kn=100,
 )
 ```
 

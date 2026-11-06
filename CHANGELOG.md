@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Calculation reports use current beam design results and show selected steel
+  by face and zone in JSON, HTML and Markdown. Design-only reports explain
+  why a physical layout is unavailable.
+- Corrected the combined beam and report examples, published-package install
+  and API guidance, and the CLI and Python report format descriptions.
+
 ## [0.26.0] — 2026-10-29
 
 This owner-authorized normal software release incorporates the accepted S0–S5

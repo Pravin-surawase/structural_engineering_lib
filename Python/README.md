@@ -42,8 +42,8 @@ IS 456 reinforced-concrete design library (Python package).
 
 ## Install
 
-After the [release ledger](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/releases.md)
-confirms publication of the selected version:
+For an exact public install, use the version confirmed in the
+[release ledger](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/releases.md).
 
 ```bash
 pip install structural-lib-is456==0.26.0         # exact normal release
@@ -51,11 +51,8 @@ pip install "structural-lib-is456[dxf]==0.26.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
-`0.25.0` has a normal/final package version and is eligible for selection without
-`--pre` after publication. Confirm public artifact availability in the release ledger.
-The Beta maturity classifier and the explicit limitations above
-remain: broader library development and cumulative practicing-engineer review
-are still in progress.
+Final PEP 440 releases are eligible for ordinary package resolution. The package
+retains its Beta maturity classifier and the supported-case limits above.
 
 > **Requires Python 3.11+.** On Python 3.9–3.10, pip installs the older v0.16.x (beam-only, no column/footing).
 
@@ -68,20 +65,22 @@ For explicit physical beam reinforcement, analysis and project workflows, see
 `structural_lib.beam` and the source repository's `docs/library/getting-started.md`.
 Existing root and `api` imports remain supported compatibility routes.
 
-The current source adds typed family group imports, typed calculation results,
-slab `input_*` builders, and direct JSON loaders such as `beam.load_json`.
+The published package includes typed family group imports, typed calculation
+results, slab `input_*` builders and JSON loaders such as `beam.load_json`.
 JSON loaders reject ambiguous duplicate fields and return structured input errors.
-Run `Python/examples/canonical_workflows.py` after
-`pip install -e ./Python` from the repository root. These additions have not
-been published as a new release; the install commands above retain their exact
-published-version meaning.
 
-The same source build provides typed operation outputs and result-bound
-physical-member/candidate workflows. Run
+From a repository checkout, use `pip install -e ./Python` to run the examples
+against that checkout's source. Start with `Python/examples/canonical_workflows.py`.
+For typed operation outputs and result-bound physical-member and candidate workflows, run
 `Python/examples/physical_member_workflow.py` for project → checks → physical
 paths → quantities/package data, and `Python/examples/candidate_ranking_workflow.py`
 for ranking genuine calculations. Those teaching profiles state their limited
 engineering scope and retain missing, failed and stale outcomes.
+
+The CLI `report` command exports JSON and HTML. The Python
+`api.generate_calculation_report()` function exports HTML, JSON and Markdown.
+For PDF, use `structural_lib.services.report.export_pdf(ReportData)` with the
+`pdf` extra.
 
 ## If You Want To…
 
