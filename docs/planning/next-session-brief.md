@@ -17,13 +17,17 @@ Goal 2 delivered the [beam comparison guide and example](../cookbook/python/beam
 All 21 numerical outputs and both method identifiers passed using the
 installed 0.26.0 wheel. The separate doubly reinforced member check returned HOLD.
 
-Next is [LIB-11](https://pravinsurawase.atlassian.net/browse/LIB-11). Freeze a
-strict request and result for a solid rectangular column with explicit layers
-at a prescribed neutral-axis depth. The first planned scope uses the full
-compression strain plane. Verify the raw axial force and centroidal moment
-against the frozen fixture, then exercise the admission boundaries and the
-existing two-face member workflow.
-[Goal 3 plan](library-usability-improvement.md#goal-3-layered-column-section-response)
+Goal 3 delivered the layered rectangular section API and verified the
+900 mm case and `xu = D` boundary. The example runs both depths and the
+result keeps member and detailing acceptance unevaluated.
+[Layered column guide](../cookbook/python/layered-column-section.md)
+
+Next is [LIB-12](https://pravinsurawase.atlassian.net/browse/LIB-12). Replay
+the ordinary and multilayer member examples from an installed build.
+Reconcile their checks, physical revisions, calculation JSON, BBS and
+HTML. Exercise missing support width, conflicting depth and insufficient
+reinforcement.
+[Goal 4 plan](library-usability-improvement.md#goal-4-ordinary-beam-member-workflows)
 
 The merged consumer fixes ship in 0.27.0. Replay their
 [installed regressions](https://pravinsurawase.atlassian.net/browse/LIB-8)

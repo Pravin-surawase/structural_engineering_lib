@@ -1,9 +1,15 @@
-"""Curated supplied-steel column-check facade."""
+"""Supplied-steel column member checks and prescribed section response."""
 
 from __future__ import annotations
 
 from collections.abc import Mapping
 
+from structural_lib.codes.is456.column._layered_section import (
+    rectangular_layered_section,
+)
+from structural_lib.codes.is456.column._strain_compatibility import (
+    COLUMN_SECTION_METHOD,
+)
 from structural_lib.core.errors import InputContractError, InputIssueV1, ValidationError
 from structural_lib.core.result_contract import EngineeringStatus
 from structural_lib.services.canonical_family import (
@@ -14,6 +20,12 @@ from structural_lib.services.canonical_family import (
     translate_owner_input_error,
 )
 from structural_lib.services.column_api import ColumnDesignResult, design_column_is456
+from structural_lib.services.contracts.column_section import (
+    ColumnSectionInputV1,
+    ColumnSectionLayerResponseV1,
+    ColumnSectionLayerV1,
+    ColumnSectionResponseV1,
+)
 from structural_lib.services.contracts.common import (
     model_validate_json_or_error,
     model_validate_or_error,
@@ -35,13 +47,19 @@ __all__ = [
     "ColumnGeometryV1",
     "ColumnMaterialsV1",
     "ColumnReinforcementV1",
+    "ColumnSectionInputV1",
+    "ColumnSectionLayerResponseV1",
+    "ColumnSectionLayerV1",
+    "ColumnSectionResponseV1",
     "InputContractError",
     "InputIssueV1",
     "check",
     "design",
     "input",
+    "layered_section_response",
     "load",
     "load_json",
+    "load_layered_section",
 ]
 
 
@@ -185,6 +203,118 @@ def load_json(value: str | bytes) -> ColumnDesignInputV1:
     request model owns field, unit, and supported-scope validation.
     """
     return model_validate_json_or_error(ColumnDesignInputV1, value)
+
+
+def load_layered_section(
+    value: Mapping[str, object] | str | bytes | ColumnSectionInputV1,
+) -> ColumnSectionInputV1:
+    """Read a prescribed layered column section from Python or JSON.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or ColumnSectionInputV1
+        Explicit dimensions, strengths, neutral-axis depth and bar layers.
+
+    Returns
+    -------
+    ColumnSectionInputV1
+        An immutable section request with a versioned JSON schema.
+
+    Raises
+    ------
+    InputContractError
+        The input contains invalid fields, duplicate JSON keys or unsupported geometry.
+
+    Examples
+    --------
+    Use ``load_layered_section(request.model_dump_json())`` to restore a saved
+    request. See the layered column section cookbook for a complete example.
+
+    Limitations
+    -----------
+    The first profile admits a solid rectangle and finite ``xu_mm >= D_mm``.
+    Depths are measured from the top compression face.
+
+    Provenance
+    ----------
+    Both entry paths use ColumnSectionInputV1 and the shared strict input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(ColumnSectionInputV1, value)
+    return model_validate_or_error(ColumnSectionInputV1, value)
+
+
+def layered_section_response(request: ColumnSectionInputV1) -> ColumnSectionResponseV1:
+    """Evaluate the raw axial force and centroidal moment for a prescribed strain plane.
+
+    Parameters
+    ----------
+    request : ColumnSectionInputV1
+        Validated rectangular section, one bending axis and depth-wise bar layers.
+
+    Returns
+    -------
+    ColumnSectionResponseV1
+        Compression-positive axial force in kN, signed centroidal moment in kN m,
+        strains, force contributions, source references and calculation status.
+
+    Raises
+    ------
+    InputContractError
+        The request has the wrong type. Use load_layered_section for raw inputs.
+
+    Examples
+    --------
+    Call ``layered_section_response(load_layered_section(payload))``. The
+    layered column section cookbook shows the 900 mm and full-depth cases.
+
+    Limitations
+    -----------
+    This operation returns a section response at the supplied neutral axis.
+    The result leaves member and detailing acceptance unevaluated.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 38.1, Figs. 21 and 23, and Cl. 39.1(b).
+    """
+    require_request_type(request, ColumnSectionInputV1)
+    result = rectangular_layered_section(
+        b_mm=request.b_mm,
+        D_mm=request.D_mm,
+        xu_mm=request.xu_mm,
+        fck_nmm2=request.fck_nmm2,
+        fy_nmm2=request.fy_nmm2,
+        layer_depths_and_areas=tuple(
+            (layer.depth_from_top_mm, layer.area_mm2) for layer in request.layers
+        ),
+    )
+    return ColumnSectionResponseV1(
+        request=request,
+        method_revision_id=COLUMN_SECTION_METHOD,
+        source_references=(
+            "IS 456:2000 Cl. 36.4.2 and Cl. 38.1, Figs. 21 and 23",
+            "IS 456:2000 Cl. 39.1(b)",
+        ),
+        top_strain=result.top_strain,
+        far_face_strain=result.far_face_strain,
+        gross_concrete_axial_kn=result.gross_concrete_force_n / 1000,
+        gross_concrete_centroid_moment_knm=result.gross_concrete_centroid_moment_nmm
+        / 1e6,
+        axial_kn=result.axial_force_n / 1000,
+        centroid_moment_knm=result.centroid_moment_nmm / 1e6,
+        layers=tuple(
+            ColumnSectionLayerResponseV1(
+                layer=layer,
+                area_mm2=layer.area_mm2,
+                strain=response.strain,
+                steel_stress_nmm2=response.steel_stress_nmm2,
+                displaced_concrete_stress_nmm2=response.displaced_concrete_stress_nmm2,
+                net_axial_kn=response.net_force_n / 1000,
+                centroid_moment_knm=response.centroid_moment_nmm / 1e6,
+            )
+            for layer, response in zip(request.layers, result.layers, strict=True)
+        ),
+    )
 
 
 def design(request: ColumnDesignInputV1) -> CanonicalFamilyResultV1[ColumnDesignResult]:

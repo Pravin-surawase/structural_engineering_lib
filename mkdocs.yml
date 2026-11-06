@@ -119,6 +119,7 @@ nav:
   - Guides:
     - CLI Cookbook: cookbook/cli-reference.md
     - Compare Three Beam Sections: cookbook/python/beam-comparator-reference.md
+    - Calculate a Layered Column Section: cookbook/python/layered-column-section.md
     - Cost Optimization: getting-started/cost-optimization-guide.md
     - Design Suggestions: getting-started/design-suggestions-guide.md
     - ETABS API Integration: guides/etabs-api-integration.md

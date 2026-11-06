@@ -7,6 +7,7 @@ emit freshly derived values without reading either engine's recorded outputs.
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import math
 from pathlib import Path
@@ -14,6 +15,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 FIXTURE = HERE / "library-027-comparator-reference.json"
 BASELINE = HERE / "library-027-comparator-baseline.json"
+BOUNDARY = HERE / "library-027-column-section-boundary.json"
 
 
 def circle_area(diameter):
@@ -252,6 +254,15 @@ def main():
             if abs(lib["force_residual_n"]) > acceptance["beam_force_residual_n_max"]:
                 raise ValueError(f"{key}: recorded beam force equilibrium failed")
         print(f"PASS {key}")
+
+    boundary = json.loads(BOUNDARY.read_text())
+    case = copy.deepcopy(next(c for c in cases if c["id"] == boundary["case_id"]))
+    data = case["inputs"]
+    data["neutral_axis_depth_mm"] = data["depth_mm"]
+    top = 0.0035  # Cl. 39.1(b) at the zero-strain far face.
+    values = dict(reference(case)["shared"], top_strain=top, far_face_strain=0.0)
+    check("column/xu=D", values, boundary["expected"], boundary["absolute_tolerances"])
+    print("PASS column_three_layers at xu = D")
 
 
 if __name__ == "__main__":
