@@ -8,6 +8,20 @@ namespace StructuralEngineering.Tests;
 
 public class Wp06Tests
 {
+    [Theory]
+    [InlineData(BarPathRole.FlangeTransverse)]
+    [InlineData(BarPathRole.FlangeDistribution)]
+    public void FlangeRolesRemainUnchangedThroughGenericPathResolution(BarPathRole role)
+    {
+        var seed = Straight("FLANGE-1", "FLANGE", 0, 6000, 100) with { Role = role };
+        var result = BarPathOperations.Resolve(PathRequest(seed));
+
+        Assert.Equal(ExecutionState.Completed, result.Execution);
+        Assert.Equal(EngineeringState.Pass, result.Engineering);
+        Assert.Equal(role, result.Outputs!.Paths.Single().Role);
+        Assert.Equal(role, result.Outputs.Marks.Single().Role);
+    }
+
     [Fact]
     public void ProjectFixtureHasCrossLanguageIdentity()
     {

@@ -1,0 +1,282 @@
+{
+  "schema_version": "library-027-t-beam-qualification/v1",
+  "python_version": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "pydantic_version": "2.14.3",
+  "installed_metadata_version": "0.26.0",
+  "journeys": [
+    {
+      "case": "main",
+      "status": "PASS",
+      "issue_state": "issue_ready",
+      "qualified": 30,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "pass",
+      "member_completeness": "complete_for_scope",
+      "probe": "adequate"
+    },
+    {
+      "case": "width-limited",
+      "status": "PASS",
+      "issue_state": "issue_ready",
+      "qualified": 30,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "pass",
+      "member_completeness": "complete_for_scope",
+      "probe": "adequate"
+    },
+    {
+      "case": "main",
+      "status": "FAIL",
+      "issue_state": "draft",
+      "qualified": 24,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "not_evaluated",
+      "member_completeness": "partial",
+      "probe": "overload"
+    },
+    {
+      "case": "main",
+      "status": "FAIL",
+      "issue_state": "draft",
+      "qualified": 26,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "not_evaluated",
+      "member_completeness": "partial",
+      "probe": "insufficient-bars"
+    },
+    {
+      "case": "main",
+      "status": "FAIL",
+      "issue_state": "draft",
+      "qualified": 28,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "fail",
+      "member_completeness": "complete_for_scope",
+      "probe": "service-fail"
+    },
+    {
+      "case": "main",
+      "status": "FAIL",
+      "issue_state": "draft",
+      "qualified": 24,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "fail",
+      "member_completeness": "complete_for_scope",
+      "probe": "short-anchor"
+    },
+    {
+      "case": "main",
+      "status": "FAIL",
+      "issue_state": "draft",
+      "qualified": 29,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "fail",
+      "member_completeness": "complete_for_scope",
+      "probe": "short-hook"
+    },
+    {
+      "case": "main",
+      "status": "HOLD",
+      "issue_state": "draft",
+      "qualified": 24,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "not_evaluated",
+      "member_completeness": "partial",
+      "probe": "missing-support"
+    },
+    {
+      "case": "main",
+      "status": "HOLD",
+      "issue_state": "draft",
+      "qualified": 26,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "not_evaluated",
+      "member_completeness": "partial",
+      "probe": "missing-flange"
+    },
+    {
+      "case": "main",
+      "status": "HOLD",
+      "issue_state": "draft",
+      "qualified": 27,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "not_evaluated",
+      "member_completeness": "partial",
+      "probe": "missing-service"
+    },
+    {
+      "case": "main",
+      "status": "FAIL",
+      "issue_state": "draft",
+      "qualified": 24,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "not_evaluated",
+      "member_completeness": "partial",
+      "probe": "depth-conflict"
+    },
+    {
+      "case": "main",
+      "status": "FAIL",
+      "issue_state": "draft",
+      "qualified": 20,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "not_evaluated",
+      "member_completeness": "partial",
+      "probe": "shoulder-bar"
+    },
+    {
+      "case": "main",
+      "status": "FAIL",
+      "issue_state": "draft",
+      "qualified": 23,
+      "expected": 30,
+      "paths": 46,
+      "member_engineering": "not_evaluated",
+      "member_completeness": "partial",
+      "probe": "end-cover"
+    }
+  ],
+  "public_controls": "PASS stale geometry, unsupported flange/parallel main, missing adjacency, nonzero torsion and web shear-width trap",
+  "wheel": {
+    "name": "structural_lib_is456-0.26.0-py3-none-any.whl",
+    "sha256": "115dc090042e7edb38545d01fe9e7179431b62c7b808525d324b3be1168534c1",
+    "bytes": 1226427
+  },
+  "observed_on": "2026-11-07",
+  "evidence_boundary": "Source-matching development wheel, not a published 0.27 archive or professional approval. Required hosted checks and final candidate/merge identity are owned by the delivery PR. Goal 5 must qualify both exact versioned wheel and sdist before publication.",
+  "runtime_evidence": {
+    "fresh_venv": true,
+    "isolated_python_flag": "-I",
+    "neutral_working_directory": true,
+    "package_origin_kind": "site-packages",
+    "package_origin_outside_checkout": true,
+    "base_dependency_install_only": true,
+    "extras_installed": []
+  },
+  "source_parity": {
+    "packaged_python_modules": 332,
+    "all_packaged_python_bytes_match_source": true,
+    "packaged_python_tree_sha256": "bccbfc47511f67a82bef3dd4792c6a535385a77d324fdf1101f218304d112857",
+    "wheel_sha256": "115dc090042e7edb38545d01fe9e7179431b62c7b808525d324b3be1168534c1"
+  },
+  "qualification_input_sha256": {
+    "Python/examples/t_beam_member.py": "574aea236a256b57305e654f3ecfb141408d489e5973c7159b662585c80ff74a",
+    "docs/verification/library-027-t-beam-member.json": "754eee3e3262a95a113df2ce54cb391994577da4d4c95ea0c8b58e3f0209bbfb",
+    "docs/verification/check_library_027_t_beam_reference.py": "42147f0b9e270830cf0a67fcf22382afc48e6453fecdef03073d61e90baa4f9c",
+    "docs/verification/replay_library_027_t_member.py": "0bf8a5dcb43718663482877b77a437e30283bf6728f95403fd2d5a804f97eb2a"
+  },
+  "artifact_sets": [
+    {
+      "journey": "main-adequate",
+      "files": 17,
+      "manifest_sha256": "26ff3af3a197e6d1e55490e2c1f2b76e43aa5f3b1ff174b025aa6431ec869961"
+    },
+    {
+      "journey": "width-limited-adequate",
+      "files": 17,
+      "manifest_sha256": "8aceda551b31678ad9594bc3d801422d1f6dcd72c3cbd60f88d1ef85c4f12e6c"
+    },
+    {
+      "journey": "main-overload",
+      "files": 17,
+      "manifest_sha256": "b82d79d325f36232464312fa730eefea2ce3b8d0f7394cb1e5db65bb0ae7464d"
+    },
+    {
+      "journey": "main-insufficient-bars",
+      "files": 17,
+      "manifest_sha256": "6b76f3f5f6bc116b28b0095cf5dfb31fb85a605c50d7e551b6038023a5d71cf5"
+    },
+    {
+      "journey": "main-service-fail",
+      "files": 17,
+      "manifest_sha256": "bab396c0f7b6d5cf301c3b30bcc573105eee90d8896dee794f3628d25893196f"
+    },
+    {
+      "journey": "main-short-anchor",
+      "files": 17,
+      "manifest_sha256": "ae4337a41850775f04d9a051718a1aff4fd47f356640bcf0125c31567b9aa8e1"
+    },
+    {
+      "journey": "main-short-hook",
+      "files": 17,
+      "manifest_sha256": "f1f667a932565d441ce695133f234c89126e0ce012c451b34e2bf7b864235307"
+    },
+    {
+      "journey": "main-missing-support",
+      "files": 17,
+      "manifest_sha256": "5f012ab08077e45744dcf87d2c56331d4c29c8b22527528532391664b0b77910"
+    },
+    {
+      "journey": "main-missing-flange",
+      "files": 17,
+      "manifest_sha256": "6b11cbead907e0cd566c2821a91358eb28f7cafc4663d6ee98fe5875203e524d"
+    },
+    {
+      "journey": "main-missing-service",
+      "files": 17,
+      "manifest_sha256": "57724b8a7575b973da4e345bac8750a5af4575eeaa9b0f2de568e4ec089c6ed0"
+    },
+    {
+      "journey": "main-depth-conflict",
+      "files": 17,
+      "manifest_sha256": "69942ba7e50e1cc88142f789210a231bd7d043f59d71d3de81433ef4ced53592"
+    },
+    {
+      "journey": "main-shoulder-bar",
+      "files": 17,
+      "manifest_sha256": "45a34507b1eaed29e2f558f599858061f61bd9b6c11f6f900a2eeef1a8018a2e"
+    },
+    {
+      "journey": "main-end-cover",
+      "files": 17,
+      "manifest_sha256": "424e5b97937c8d46ee33e248ae8519c5972a637d06c7f754cf2421f268787932"
+    }
+  ],
+  "verification": {
+    "independent_stdlib_reference": "PASS; no structural_lib import",
+    "focused_new_tests": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "affected_existing_tests": {
+      "passed": 291,
+      "note": "Unchanged cases passed in the focused union; the 34 E cases passed after the affected trace-governing repair. No duplicate broad suite."
+    },
+    "mypy": "PASS; 340 source files",
+    "format_lint": "Black and Ruff PASS for affected Python files",
+    "strict_public_requests": [
+      "t-geometry",
+      "t-actions",
+      "t-zero-torsion",
+      "t-flange",
+      "t-serviceability",
+      "t-stability",
+      "member"
+    ],
+    "rendered_html": {
+      "method": "Local browser visual and DOM inspection of installed example artifacts",
+      "cases": [
+        "main-adequate",
+        "width-limited-adequate",
+        "main-end-cover",
+        "main-missing-service"
+      ],
+      "result": "PASS; actual T outline, web cage, physical/effective widths, steel ownership and PASS/FAIL/HOLD issue-state visible"
+    },
+    "bounded_independent_review": "PASS; controlled source, actual T geometry/service calculations, native metadata boundary and output consistency",
+    "native_boundary": "Append-only generic flange_transverse/flange_distribution path-role metadata and WP06/WP07 schemas. Two focused C# metadata cases require hosted .NET validation; no local SDK and no native T-member or T torsion-capacity API."
+  }
+}

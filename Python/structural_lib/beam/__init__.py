@@ -166,6 +166,28 @@ from .shear_torsion import (
     check_torsion,
     shear_capacity,
 )
+from .t_flange import (
+    TFlangeParticipationRequest,
+    TFlangeStripRequest,
+    check_t_flange_participation,
+)
+from .t_member_basis import (
+    TBeamActionBasisRequest,
+    TBeamLoadBasis,
+    TLateralStabilityRequest,
+    check_t_action_basis,
+    check_t_lateral_stability,
+    check_t_zero_torsion,
+)
+from .t_section_geometry import (
+    TGeometryCheckRequest,
+    TSectionGeometry,
+    check_t_geometry,
+)
+from .t_serviceability import (
+    TServiceabilityRequest,
+    check_t_serviceability,
+)
 from .torsional_serviceability import (
     TORSIONAL_SERVICEABILITY_REVISION,
     TorsionalServiceabilityRequest,
@@ -174,6 +196,20 @@ from .torsional_serviceability import (
 )
 
 __all__ = [
+    "TBeamActionBasisRequest",
+    "TBeamLoadBasis",
+    "TLateralStabilityRequest",
+    "TFlangeParticipationRequest",
+    "TFlangeStripRequest",
+    "TServiceabilityRequest",
+    "check_t_action_basis",
+    "check_t_lateral_stability",
+    "check_t_zero_torsion",
+    "check_t_flange_participation",
+    "check_t_serviceability",
+    "TGeometryCheckRequest",
+    "TSectionGeometry",
+    "check_t_geometry",
     "BearingReactionLine",
     "ClosedLinkDetailRequest",
     "MildDurabilityRequest",

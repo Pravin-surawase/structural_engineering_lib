@@ -17,8 +17,12 @@ def steel_stress(strain: float) -> float:
     points = [(0.0, 0.0)] + [
         (ratio * strength / 200000 + plastic, ratio * strength)
         for ratio, plastic in (
-            (0.8, 0), (0.85, 0.0001), (0.9, 0.0003),
-            (0.95, 0.0007), (0.975, 0.001), (1, 0.002),
+            (0.8, 0),
+            (0.85, 0.0001),
+            (0.9, 0.0003),
+            (0.95, 0.0007),
+            (0.975, 0.001),
+            (1, 0.002),
         )
     ]
     value = strength
@@ -29,37 +33,43 @@ def steel_stress(strain: float) -> float:
     return math.copysign(value, strain)
 
 
-def derive(physical_width: float) -> dict[str, float]:
+def derive(
+    physical_width: float, *, include_slab_parallel_steel: bool = False
+) -> dict[str, float]:
     bw, depth, flange, span, d = 300.0, 550.0, 150.0, 6000.0, 500.0
     effective = min(physical_width, span / 6 + bw + 6 * flange)
     area = physical_width * flange + bw * (depth - flange)
     bottom, top = 4 * math.pi * 20**2 / 4, 2 * math.pi * 16**2 / 4
     layers = ((50.0, top), (500.0, bottom))
+    if include_slab_parallel_steel:
+        # Actual 200mm distribution grid centred on web; only the centred
+        # effective-flange strip participates in this mechanical audit.
+        count = 2 * math.floor((effective / 2 - 24) / 200) + 1
+        slab_area = count * math.pi * 8**2 / 4
+        layers += ((49.0, slab_area), (101.0, slab_area))
     permanent = area * 25 / 1e6 + 2
     total, ultimate = permanent + 3, 1.5 * (permanent + 3)
 
     def integrals(x: float) -> tuple[float, float]:
         # Exact integrals of b(y)*(x-y) and b(y)*(x-y)^2 from 0 to x.
-        first = effective * (x * min(x, flange) - min(x, flange)**2 / 2)
-        second = effective * (x**3 - max(0, x - flange)**3) / 3
+        first = effective * (x * min(x, flange) - min(x, flange) ** 2 / 2)
+        second = effective * (x**3 - max(0, x - flange) ** 3) / 3
         if x > flange:
-            first += bw * (x - flange)**2 / 2
-            second += bw * (x - flange)**3 / 3
+            first += bw * (x - flange) ** 2 / 2
+            second += bw * (x - flange) ** 3 / 3
         return first, second
 
     lower, upper = 0.0, depth
     for _ in range(180):
         x = (lower + upper) / 2
-        force = integrals(x)[0] + sum(
-            (8 - int(y < x)) * a * (x - y) for y, a in layers
-        )
+        force = integrals(x)[0] + sum((8 - int(y < x)) * a * (x - y) for y, a in layers)
         if force > 0:
             upper = x
         else:
             lower = x
     axis = (lower + upper) / 2
     inertia = integrals(axis)[1] + sum(
-        (8 - int(y < axis)) * a * (y - axis)**2 for y, a in layers
+        (8 - int(y < axis)) * a * (y - axis) ** 2 for y, a in layers
     )
     curvature = total * span**2 / 8 / (25000 * inertia)
     strain, stress = curvature * (depth - axis), 200000 * curvature * (d - axis)
@@ -75,7 +85,7 @@ def derive(physical_width: float) -> dict[str, float]:
         for y, a in layers:
             e = 0.0035 * (1 - y / x)
             r = min(1.0, max(0.0, e / 0.002))
-            displaced = (0.67 / 1.5) * 25 * (2 * r - r*r)
+            displaced = (0.67 / 1.5) * 25 * (2 * r - r * r)
             result.append((y, a * (steel_stress(e) - displaced)))
         return tuple(result)
 
@@ -98,10 +108,11 @@ def derive(physical_width: float) -> dict[str, float]:
     links_area = 2 * math.pi * 8**2 / 4
     shear = (tau * bw * d + 0.87 * 415 * links_area * d / 150) / 1000
     link_length = (
-        2 * 100 + 2 * 492 + 242 + math.hypot(242, 10)
-        - 10 * 20 + 5 * math.pi / 2 * 20
+        2 * 100 + 2 * 492 + 242 + math.hypot(242, 10) - 10 * 20 + 5 * math.pi / 2 * 20
     )
-    steel_mass = (6900 * (bottom + top) + 40 * math.pi * 8**2 / 4 * link_length) * 7850 / 1e9
+    steel_mass = (
+        (6900 * (bottom + top) + 40 * math.pi * 8**2 / 4 * link_length) * 7850 / 1e9
+    )
     return {
         "physical_width_mm": physical_width,
         "effective_width_mm": effective,
@@ -137,13 +148,91 @@ def derive(physical_width: float) -> dict[str, float]:
     }
 
 
+def derive_flange_strip(physical_width: float) -> dict[str, float]:
+    span, width, d = physical_width, 600.0, 115.0
+    slab_load = 150 * 25 / 1000 + 5 * 1000 / physical_width  # kN/m²
+    design_line_load = 1.5 * slab_load * width / 1000  # N/mm
+    area = 4 * math.pi * 10**2 / 4
+
+    def forces(x: float) -> tuple[float, float]:
+        net = []
+        for y in (35.0, 115.0):
+            e = 0.0035 * (1 - y / x)
+            r = min(1.0, max(0.0, e / 0.002))
+            net.append(
+                (y, area * (steel_stress(e) - (0.67 / 1.5) * 25 * (2 * r - r * r)))
+            )
+        return (
+            0.36 * 25 * width * x + sum(f for _, f in net),
+            (0.36 * 25 * width * x * (d - 0.42 * x) + sum(f * (d - y) for y, f in net))
+            / 1e6,
+        )
+
+    lo, hi = 1e-8, 115.0
+    for _ in range(180):
+        middle = (lo + hi) / 2
+        if forces(middle)[0] > 0:
+            hi = middle
+        else:
+            lo = middle
+    return {
+        "service_area_load_kn_per_m2": slab_load,
+        "ultimate_line_load_600mm_n_per_mm": design_line_load,
+        "two_face_moment_envelope_knm": design_line_load * span**2 / 8 / 1e6,
+        "provided_main_area_600mm_mm2": area,
+        "minimum_area_each_direction_per_m_mm2": 180.0,
+        "provided_distribution_area_per_m_mm2": math.pi * 8**2 / 4 * 1000 / 200,
+        "strip_flexural_capacity_each_face_knm": forces((lo + hi) / 2)[1],
+        "full_stress_development_10_mm": 10 * 0.87 * 415 / (4 * 1.4 * 1.6),
+        "available_development_each_side_mm": span - 25,
+        "transverse_main_path_length_mm": 2 * span + 250,
+        "distribution_path_length_mm": 6950.0,
+        "physical_primary_path_count": 94.0,
+        "physical_distribution_path_count": 2
+        * (2 * math.floor((span + 126) / 200) + 1),
+    }
+
+
 def main() -> None:
-    reference = json.loads(Path(__file__).with_name("library-027-t-beam-member.json").read_text(encoding="utf-8"))
+    reference = json.loads(
+        Path(__file__)
+        .with_name("library-027-t-beam-member.json")
+        .read_text(encoding="utf-8")
+    )
     for name, width in (("main", 1000), ("width_limited", 2500)):
         actual = derive(width)
         for key, value in actual.items():
-            assert math.isclose(value, reference["cases"][name]["expected"][key], rel_tol=1e-11, abs_tol=1e-8), (name, key, value)
-    print("PASS independent Packet E physical widths, ULS/SLS statics, T section, Annex F, steel, hooks and quantities")
+            tolerance = 1e-3 if "inertia" in key else 1e-12 if "strain" in key else 1e-8
+            assert math.isclose(
+                value,
+                reference["cases"][name]["expected"][key],
+                rel_tol=0,
+                abs_tol=tolerance,
+            ), (name, key, value)
+        full = derive(width, include_slab_parallel_steel=True)
+        for key, expected in reference["cases"][name][
+            "slab_parallel_steel_audit"
+        ].items():
+            tolerance = 1e-3 if "inertia" in key else 1e-12 if "strain" in key else 1e-8
+            assert math.isclose(full[key], expected, rel_tol=0, abs_tol=tolerance), (
+                name,
+                key,
+                full[key],
+                expected,
+            )
+        assert full["maximum_crack_width_mm"] <= actual["maximum_crack_width_mm"]
+        assert full["flexural_capacity_knm"] >= actual["flexural_capacity_knm"]
+        for key, value in derive_flange_strip(width).items():
+            expected = reference["cases"][name]["flange_strip_reference"][key]
+            assert math.isclose(value, expected, rel_tol=0, abs_tol=1e-8), (
+                name,
+                key,
+                value,
+                expected,
+            )
+    print(
+        "PASS independent Packet E physical widths, ULS/SLS statics, T section, Annex F, steel, hooks and quantities"
+    )
 
 
 if __name__ == "__main__":

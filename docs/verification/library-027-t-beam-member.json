@@ -165,7 +165,14 @@
       "distribution_diameter_mm": 8,
       "distribution_spacing_mm": 200,
       "two_face_moment_envelope": "1.5*(slab_self_weight+superimposed_area_load+imposed_area_load)*adjacent_beam_centre_spacing^2/8; verify against two-span continuous analysis",
-      "span_basis": "two actual transverse spans between three parallel webs; main strip bars continue across the central web into both panels with full tension development"
+      "span_basis": "two actual transverse spans between three parallel webs; main strip bars continue across the central web into both panels with full tension development",
+      "actual_length_along_beam_mm": 7000,
+      "distribution_depths_mm": [
+        49,
+        101
+      ],
+      "reference_width_mm": 600,
+      "full_paths": "94 transverse main bars (47 each face) and centre-aligned200mm grid distribution bars on both actual y layers; retain full slab-domain paths, exclude from beam BBS."
     },
     "quantity_policy": "T member owns full 7000mm flange-plus-web-below union; supporting-system assembly must exclude that owned union. Slab steel is separately owned. Only clear-span web/flange soffits and web sides are exposed formwork; slab continuation and bearing interfaces are excluded."
   },
@@ -243,6 +250,30 @@
         "exposed_formwork_area_m2": 9.0,
         "actual_span_depth_ratio": 11.0,
         "conservative_allowable_span_depth_ratio": 16.0
+      },
+      "slab_parallel_steel_audit": {
+        "service_neutral_axis_mm": 89.14472203519853,
+        "cracked_inertia_mm4": 1940552373.4857845,
+        "service_bottom_steel_stress_nmm2": 89.55789338833021,
+        "elastic_bottom_surface_strain": 0.0005022842599938184,
+        "maximum_crack_width_mm": 0.08393778368157316,
+        "ultimate_neutral_axis_mm": 55.29185288603691,
+        "flexural_capacity_knm": 221.9358218125679
+      },
+      "flange_strip_reference": {
+        "service_area_load_kn_per_m2": 8.75,
+        "ultimate_line_load_600mm_n_per_mm": 7.875,
+        "two_face_moment_envelope_knm": 0.984375,
+        "provided_main_area_600mm_mm2": 314.1592653589793,
+        "minimum_area_each_direction_per_m_mm2": 180.0,
+        "provided_distribution_area_per_m_mm2": 251.32741228718342,
+        "strip_flexural_capacity_each_face_knm": 12.652188665536954,
+        "full_stress_development_10_mm": 402.9575892857143,
+        "available_development_each_side_mm": 975,
+        "transverse_main_path_length_mm": 2250,
+        "distribution_path_length_mm": 6950.0,
+        "physical_primary_path_count": 94.0,
+        "physical_distribution_path_count": 22
       }
     },
     "width_limited": {
@@ -282,6 +313,30 @@
         "exposed_formwork_area_m2": 16.5,
         "actual_span_depth_ratio": 11.0,
         "conservative_allowable_span_depth_ratio": 16.0
+      },
+      "slab_parallel_steel_audit": {
+        "service_neutral_axis_mm": 63.651870912381014,
+        "cracked_inertia_mm4": 2110750943.7089262,
+        "service_bottom_steel_stress_nmm2": 129.3074180816018,
+        "elastic_bottom_surface_strain": 0.0007206220981471145,
+        "maximum_crack_width_mm": 0.12094749764082295,
+        "ultimate_neutral_axis_mm": 40.45929827435526,
+        "flexural_capacity_knm": 240.60315560031083
+      },
+      "flange_strip_reference": {
+        "service_area_load_kn_per_m2": 5.75,
+        "ultimate_line_load_600mm_n_per_mm": 5.175,
+        "two_face_moment_envelope_knm": 4.04296875,
+        "provided_main_area_600mm_mm2": 314.1592653589793,
+        "minimum_area_each_direction_per_m_mm2": 180.0,
+        "provided_distribution_area_per_m_mm2": 251.32741228718342,
+        "strip_flexural_capacity_each_face_knm": 12.652188665536954,
+        "full_stress_development_10_mm": 402.9575892857143,
+        "available_development_each_side_mm": 2475,
+        "transverse_main_path_length_mm": 5250,
+        "distribution_path_length_mm": 6950.0,
+        "physical_primary_path_count": 94.0,
+        "physical_distribution_path_count": 54
       }
     }
   },
@@ -299,7 +354,18 @@
     "web_shear_width_trap": "FAIL/draft",
     "missing_or_stale_support_flange_service_action_identity": "HOLD/draft",
     "conflicting_depth": "FAIL/draft",
-    "nonzero_torsion_hogging_L_nonmonolithic": "unsupported/HOLD/draft"
+    "nonzero_torsion_hogging_L_nonmonolithic": "unsupported/HOLD/draft",
+    "physical_end_cover": "FAIL/draft for bare bar ends at declared concrete face, even with every full-stress development check PASS"
   },
-  "boundary": "Selected ordinary supplied symmetric sagging monolithic T member only. Engineering approval remains separate; no whole-floor, arbitrary-layout, sustained-torsion or 0.27 publication claim."
+  "boundary": "Selected ordinary supplied symmetric sagging monolithic T member only. Engineering approval remains separate; no whole-floor, arbitrary-layout, sustained-torsion or 0.27 publication claim.",
+  "supplemental_slab_steel_reference": {
+    "frozen_before_flange_service_implementation": true,
+    "reason": "Required physical slab distribution reinforcement has parallel steel. Retain its actual-y audit rather than omitting its possible effect. Original six-web-bar reference/design capacity is unchanged and no extra beam strength is credited.",
+    "source": "Second independent stdlib analytic calculation received before implementing T flange/service owners",
+    "layout": "Physical main5/wide13 bars per y-layer; effective-strip main5/wide11 per layer, each8mm at y49 and101; x=physical_flange_centre+200*k. Outer wide k=+-6 remains separately owned physical slab steel outside effective strip.",
+    "criteria": "Actual-y audit must remain ductile with capacity >= six-web-only design resistance; actual-T service crack bound must be <= selected conservative six-web-only bound, otherwise HOLD for another qualified model."
+  },
+  "freeze_scope": "Original six-web-bar baseline before production at reference commit4a70afe1; supplementary slab-strip/parallel-steel targets are separately disclosed below and were independently established before their flange/service orchestration.",
+  "python_zero_torque_operation": "is456.beam.t_zero_torsion.check/v1; demand admission over all current ULS,total-service,permanent rows; no torsion resistance calculation or native projection; shared WP02 rectangular resistance remains unchanged.",
+  "native_scope": "Append-only flange_transverse/flange_distribution generic path-role metadata and WP06/WP07 schemas only; no native T-member or T torsion-capacity interface."
 }
