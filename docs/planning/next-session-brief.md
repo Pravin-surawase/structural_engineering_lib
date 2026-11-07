@@ -7,6 +7,7 @@
 - Focus: LIB027-PUBLISH-BBS — owner authorized 0.27.0 PyPI/GitHub publication and public hash/clean-install readback after the final BBS repair and software gates. Use only a11e758aee65/dist; the 5c79 pair is retained historical evidence with L01, not deliverable.
 - Completed: integer/non-boolean splice admission and valid typed BBS handoff; 43 focused checks and independent installed review. New wheel/sdist pass all 18 profiles and 451 tests each. Current-candidate preflight passes 9015 Python, 629 FastAPI and React build with zero warnings. R1–R5 and A–E controls remain covered.
 - Next: observe the milestone PR's exact-head PR/Weekly checks and independent review; materialize the bounded exact-review/authorization metadata; preserve reviewed ancestry, then TestPyPI, exact tag, PyPI/GitHub and public hash/external-install readback. Resume from observed release receipts; do not rerun or republish completed stages.
+- Recurrence controls: RR-004 x37 / unknown: validate the dated handoff and newest session record together before freezing a candidate.
 <!-- HANDOFF:END -->
 
 ## Current boundary

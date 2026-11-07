@@ -5,6 +5,50 @@
 
 ---
 
+## 2026-11-08 — Session: BBS repair and 0.27 publication
+
+**Task:** LIB027-PUBLISH-BBS
+**Agent:** DEV
+**Branch:** `codex/lib027-bbs-and-publication`
+**Focus:** Repair L01 and publish only the newly qualified 0.27.0 wheel/sdist under the owner's current authorization.
+
+### Completed
+
+- Rejected noninteger and boolean splice hardware counts before accepted BBS
+  output; valid coupler one/lap zero retain typed quantity/cost handoffs.
+- Qualified the clean a11e758a pair through all 18 profiles and 451 tests per
+  archive. Independent installed review verifies 342 package files and 43
+  focused checks. Current-candidate preflight passes with zero warnings.
+- Updated the retained artifact record and handoff; preserved rejected archives
+  and deferred the separate serializer optimization. [PR #1065](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1065)
+  owns final checks, metadata, integration and publication readback.
+
+### Issues encountered
+
+The 8 November handoff initially had no matching dated session entry. Hosted
+Documentation Validation rejected that mismatch before publication.
+
+### Root causes and resolutions
+
+The handoff date changed without the coupled newest daily log entry. Add this
+bounded release-transition record and run the maintained session reader before
+freezing the corrected head. The package/build/verifier inputs and qualified
+archive hashes are unchanged; no rebuild or repeat archive qualification.
+
+### Rework and recurrence
+
+- RR-004: occurrences=37; minutes=unknown. One confirmed handoff/session-date mismatch; correction time was not separately measured.
+
+### What next
+
+Observe corrected-head required PR/Weekly acceptance and independent review,
+then add only the allowed exact-review/authorization and dated release metadata.
+Preserve reviewed ancestry, rehearse TestPyPI, tag the exact accepted tree,
+publish the same bytes to PyPI/GitHub and verify public hashes/clean install.
+Use actual workflow/release receipts to resume; do not repeat completed uploads.
+
+---
+
 ## 2026-11-07 — Session: physical four-corner column packet
 
 **Task:** LIB-027-CLOSURE-C
