@@ -11,6 +11,12 @@
 
 ## Current boundary
 
+| Release | Current state |
+|---|---|
+| **Current** | 0.26.0 is published and verified in the [release ledger](../getting-started/releases.md#v0260-published-and-verified). |
+| **Next** | 0.27.0 includes the merged section work and Packet C. Complete the rectangular torsion and sagging T-beam member packets, then qualify the versioned candidate. |
+
+
 Goal 1 froze and replayed the
 [four section references](../verification/library-027-comparator-reference.md).
 Goal 2 delivered the [beam comparison guide and example](../cookbook/python/beam-comparator-reference.md).
