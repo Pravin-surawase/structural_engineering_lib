@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: 0.27.0 publication handoff — exact archives qualified; obtain version/target-specific owner authorization before TestPyPI, tagging, PyPI or GitHub Release. Reuse retained bytes.
-- Completed: Goals 1–4, selected closure Packets A–E and Goal 5 archive qualification. All 18 profiles pass; both archive beam/column runs pass 378 tests plus 13 T-member journeys. Required final hosted/integration facts belong to GitHub. FAIL/HOLD and professional approval remain separate.
+- Focus: 0.27.0 publication HOLD — repair R1–R5 under the five-step pre-release plan, then qualify replacement archives. The original retained pair must not be published.
+- Completed: Goals 1–4, selected closure Packets A–E and initial Goal 5 qualification (18 profiles, 378 tests per archive). Later isolated review reproduced a P1 column-action defect and four P2 report/quickstart defects. The new repair plan is documented; implementation and replacement qualification have not started.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
@@ -14,7 +14,28 @@
 | Release | Current state |
 |---|---|
 | **Current** | 0.26.0 is published and verified in the [release ledger](../getting-started/releases.md#v0260-published-and-verified). |
-| **Next** | 0.27.0's exact wheel/sdist are qualified. Publication is pending separate owner authorization, TestPyPI verification, exact tagging and public file readback. |
+| **Next** | 0.27.0 publication is HOLD for confirmed R1–R5 defects. Repair the supported routes and qualify one replacement wheel/sdist pair before separate publication authorization. |
+
+## Next work — five-step pre-release repair plan
+
+Follow the [detailed plan](library-usability-improvement.md#027-pre-release-repair-plan):
+
+1. Reconcile applied column moments and signed end moments. The 400 kNm
+   applied/zero-end slender request must never return PASS on 20 kNm.
+2. Share an explicit canonical/legacy report adapter. Preserve inputs,
+   required/provided steel, actual detailing, status/review identity and
+   evaluated serviceability reasons across supported formats.
+3. Replace and execute the complete active developer quickstart.
+4. Verify the actual installed caller journeys and existing A–E controls,
+   with bounded independent review and one batched implementation candidate.
+5. Build a fresh hash-bound 0.27.0 wheel/sdist pair, run all 18 expanded
+   qualification profiles and final required hosted release checks, then
+   reassess readiness. Publication still requires separate authorization.
+
+This task changes planning/status records only. Keep the old archives and
+receipts as rejected baseline evidence. New column layouts, arbitrary P–M–M
+and broader beam member cases are outside this repair packet; 0.28 retains
+the slab/footing theme. Keep professional and installed-native HOLDs visible.
 
 
 Goal 1 froze and replayed the
@@ -52,8 +73,9 @@ indirect service stress/detail crack control. The full31-leaf case produces
 issue_ready outputs; the original D2-only command remains HOLD. Nonzero
 permanent torque, finite imposed duration and missing/asymmetric boundary
 evidence remain HOLD. Follow the guide's actual source and model boundaries.
-[LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) now owns the
-publication handoff after exact archive qualification.
+[LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) owns Goal 5;
+the local repair plan now precedes its publication handoff. This planning
+task does not assert that external Jira/Confluence status was synchronized.
 [Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)
 
 The [Packet E delivery record](library-usability-improvement.md#packet-e-implementation-plan--ordinary-sagging-t-beam-member)
@@ -75,7 +97,7 @@ these and D3 controls from **both** exact 0.27.0 archives. No tag, registry
 publication or GitHub Release was performed by Packet E. Required hosted
 checks and exact integration identities are recorded in GitHub.
 
-Goal 5 now qualifies the exact **0.27.0** wheel and sdist, superseding the
+Goal 5 initially qualified the exact **0.27.0** wheel and sdist, superseding the
 development-wheel evidence for release preparation. See the
 [retained artifact record](../verification/library-0270-release-artifacts.json).
 All 18 profiles pass; each archive's copied beam/column corpus passes 378
@@ -83,9 +105,11 @@ tests with no failures/errors/skips, plus independent and public-driver
 replays. Both base installs pass 29 UAT cases and 106 inherited numerical
 comparisons. Initial broad source-gate failures were repaired in generated
 manifests and explicit-unit recognition, with focused evidence; packaged
-bytes and frozen Python tree remain unchanged. Reuse the retained files in
-`output/releases/0.27.0/9a78d2be9314/dist/`. Bind the observed GitHub merge
-and final required PR/Weekly checks in the publication packet. The user
+bytes and frozen Python tree remained unchanged during initial qualification.
+Later isolated reviews reproduced R1–R5 in that retained candidate. Preserve
+the files in `output/releases/0.27.0/9a78d2be9314/dist/` as baseline evidence;
+do not upload them. Bind the replacement pair and final required PR/Weekly
+checks only after the repair plan passes. The user
 authorized qualification/readiness reporting, not publication. Professional,
 unsupported engineering and installed-native boundaries remain explicit.
 

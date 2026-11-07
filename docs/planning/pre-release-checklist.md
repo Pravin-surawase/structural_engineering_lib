@@ -23,8 +23,20 @@ The S5 checklist below preserves the 29 October prepublication snapshot.
 Current source metadata: 0.27.0 (prepared candidate; unpublished/on hold)
 Current public release: v0.26.0
 
+**Current verdict: HOLD for confirmed defects.** The initial profile passes
+below remain historical evidence. Complete the
+[five-step repair plan](library-usability-improvement.md#027-pre-release-repair-plan)
+before publication. The original archives must not be uploaded.
+
+- [ ] R1: reconcile column actions; close the 400 kNm → 20 kNm/PASS counterexample.
+- [ ] R2–R4: repair canonical report adaptation, retained input basis and evaluated failure/review evidence across supported formats.
+- [ ] R5: execute the complete corrected developer quickstart from an isolated install.
+- [ ] Qualify the expanded caller-journey inventory and preserve A–E FAIL/HOLD controls.
+- [ ] Freeze and build replacement wheel/sdist; bind new hashes and source/verifier identities; pass all 18 profiles and final required hosted checks.
+- [ ] Reassess readiness before separate target-specific authorization, TestPyPI, tagging and public delivery/readback.
+
 - Base: Packet E PR #1061 merged at `4eebc897f084e71165061c9d17ce89a867dadafa`.
-- Qualified one retained wheel and sdist: all 18 profiles, 378 beam/column/consumer tests per archive, selected A–E and PR #1045 regressions pass.
+- Initial retained wheel/sdist: all 18 profiles, 378 beam/column/consumer tests per archive, selected A–E and PR #1045 assertions passed; subsequent R1–R5 reproductions reject this pair for publication.
   [Retained artifact record](../verification/library-0270-release-artifacts.json).
 - Preserve failed/held member outputs as draft and engineering approval unreviewed.
 - Independent exact-candidate review and required PR/Weekly checks precede readiness.

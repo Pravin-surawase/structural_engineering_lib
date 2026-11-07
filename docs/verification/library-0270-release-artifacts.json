@@ -661,6 +661,24 @@
   },
   "professional_approval": false,
   "publication_state": "UNPUBLISHED_NOT_AUTHORIZED",
+  "release_readiness": {
+    "status": "HOLD_CONFIRMED_DEFECTS",
+    "as_of": "2026-11-07",
+    "reviewed_merged_head": "1c35d9485fa3499e69f1926657e91e84fe0d7bb8",
+    "artifact_disposition": "REJECTED_FOR_PUBLICATION_PENDING_REPAIR",
+    "initial_qualification_role": "Historical evidence for the selected assertions; later accepted-input and consumer counterexamples prevent publication",
+    "blocking_findings": [
+      "R1: P1 slender-column explicit end moments discard independently declared applied moment",
+      "R2: P2 canonical beam report false FAIL and calculation-report adapter crash",
+      "R3: P2 report input basis omitted",
+      "R4: P2 evaluated serviceability failure details and review boundary omitted",
+      "R5: P2 active developer quickstart uses retired API/result contracts"
+    ],
+    "repair_plan": "docs/planning/library-usability-improvement.md#027-pre-release-repair-plan",
+    "implementation_state": "PLANNED_NOT_STARTED",
+    "replacement_artifacts": null,
+    "required_next": "Repair R1-R5, freeze the expanded caller verification inventory, build a replacement wheel/sdist and qualify both before a new readiness decision"
+  },
   "python_tree_sha": "7c39b777349500fc86c5c792650e74f0336d176a",
   "qualification": {
     "beam_column_failures_errors_skips_each": 0,
@@ -823,8 +841,10 @@
     "version": 1
   },
   "remaining_publication_steps": [
+    "Repair R1-R5 under the five-step plan; do not publish the archives identified in this baseline record",
+    "Build and qualify a replacement 0.27.0 wheel/sdist with all required profiles and final hosted release checks, then reassess readiness",
     "Bind final GitHub review/check/merge receipts and obtain exact-target owner authorization",
-    "Verify the retained pair on TestPyPI before tagging",
+    "Verify the newly qualified replacement pair on TestPyPI before tagging",
     "Create the exact authorized tag and deliver the same qualified bytes to PyPI/GitHub Release",
     "Read back registry/release hashes and fresh public identity installation"
   ],
