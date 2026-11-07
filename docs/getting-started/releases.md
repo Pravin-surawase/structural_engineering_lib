@@ -1702,3 +1702,43 @@ and clean-install evidence are owned by the release workflows and attached recei
 The original9a and superseded5c pairs remain rejected evidence; never deliver
 them. Serializer optimization is deferred. Beta maturity, selected engineering
 profiles, native-host HOLDs and professional approval=false remain explicit.
+
+
+---
+
+## v0.27.0 published and verified
+
+**8 November 2026 (Asia/Kolkata).** [PyPI 0.27.0](https://pypi.org/project/structural-lib-is456/0.27.0/)
+and [GitHub v0.27.0](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.27.0)
+are public. Annotated tag `v0.27.0` targets
+`a78dcc6a8aa1db79b78c0210bfc8c06c54ca9c26`, preserving reviewed
+`8e827381ad4181046306403ccbc63a8b34d33722` and Python tree
+`c40b13515a01d54dc94559e3519e7c760a39e3ab`.
+
+The final BBS-repaired pair was built from clean `a11e758aee6580a0ff2489fa740517a231d9f352`:
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.27.0-py3-none-any.whl` | `205acfde8500909aaf766e9cf263fc13bf76bfa680376527e29048b954cd2ea6` | 1232554 |
+| `structural_lib_is456-0.27.0.tar.gz` | `942326fba6ee8c39ec81ac2bb341ee9d2926ebb1ae461d252804720e91953e6d` | 1051152 |
+
+All 18 qualification profiles and 451 copied consumer tests per archive pass.
+Independent installed review verifies the 342-file package and 43 BBS/quantity/cost
+checks. Required source PR/Weekly and final metadata PR checks pass.
+[TestPyPI](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/42404877417)
+and [production](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/42405073660)
+publication both pass without rebuilding.
+
+Four anonymous public downloads (wheel/sdist from each service) match the
+qualified bytes; a fresh no-cache PyPI install imports 0.27.0 from its isolated
+venv. The [public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.27.0/public-install-verification.json)
+has SHA-256 `abb751247fa78648d89c0272a695458be91b15f564d5135179a997f9aea92e08`.
+The [artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.27.0/artifact-manifest.json)
+and qualification/UAT/SBOM/readback assets retain full evidence.
+
+R1–R5 and L01 repairs are included. The original 9a78 and superseded 5c79 pairs
+remain rejected evidence; the 423 intermediate remains invalid. Serializer
+optimization was not part of this release. Development work after the tag is
+unreleased until separately qualified and authorized; the tag/public archives
+remain immutable. Beta, supported-profile and professional/native boundaries
+remain explicit.

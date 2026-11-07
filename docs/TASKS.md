@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-11-07 — Owner selected beam and column closure before 0.27.0 qualification.
+**Updated:** 2026-11-08 — 0.27.0 published; current-base serializer qualification follows.
 
 ---
 
@@ -26,7 +26,7 @@
 | LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Done: [PR #1040 integrated](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
-| LIB-027 | Deliver the selected beam and column release | P1 | Owner-authorized publication after L01 repair: 18 profiles, 451 tests per archive, independent installed review and current-candidate preflight PASS. Final milestone PR/Weekly, authorization metadata and public readback are owned by their actual receipts. | [BBS repair and publication](planning/library-usability-improvement.md#bbs-repair-and-publication) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
+| LIB-027 | Deliver the selected beam and column release | P1 | Done: 0.27.0 published and verified; all 18 profiles/451 tests per archive, public hashes and clean PyPI install pass. | [Publication receipt](getting-started/releases.md#v0270-published-and-verified) |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
@@ -190,7 +190,9 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | R1–R5 integrated in PR #1063. Later L01 BBS fraction/boolean admission is repaired; independent installed review, all 18 new profiles and 451 tests per archive PASS. [BBS repair results](planning/library-usability-improvement.md#bbs-repair-and-publication) and [retained evidence](verification/library-0270-release-artifacts.json) select a11e758a and preserve rejected history. Owner authorized same-byte TestPyPI/PyPI/GitHub delivery and public hash/clean-install readback after final PR/Weekly/review gates. Resume from actual publication receipts. Optimization/research and professional/native/unsupported boundaries remain separate. |
+| LIB-SEMANTICS-OPT-001 | Qualify the lab single-pass serializer on current 0.27 source | MAIN / Mac | Selected by owner after release. Freeze a documentation-updated baseline, preserve exact canonical/output/status/binding contracts and measure paired ordinary/T workflows before adoption. No new release is authorized. |
+| LIB-MEMBER-EVIDENCE-001 | Integrate producer-bound station coverage into member evidence | MAIN / Mac | Separate follow-up: lab R01-A3 reproduces S1-only evidence relabelled S2 through the public 0.27 API. Define coverage/caller compatibility and preserve valid two-station batches before implementation; no normal member-workflow failure or repair is claimed. |
+| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | Done: R1–R5 and L01 repairs are published in v0.27.0. Exact a11e758a pair, all 18 profiles/451 tests per archive, public download hashes and fresh PyPI installation PASS. [Publication receipt](getting-started/releases.md#v0270-published-and-verified) and PR #1065 retain the complete boundary. |
 
 The [current handoff](planning/next-session-brief.md) identifies the selected
 preparation scope. The dated notes below retain earlier lanes and installed-host

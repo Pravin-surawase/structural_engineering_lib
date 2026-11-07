@@ -5,6 +5,48 @@
 
 ---
 
+## 2026-11-08 — Session: post-release documentation and serializer update
+
+**Task:** LIB027-DOCS-LAB-OPTIMIZATION
+**Agent:** DEV
+**Branch:** `codex/lib027-docs-serializer`
+**Focus:** Reconcile the published 0.27 release/session records and qualify the lab's single-pass serializer on a fresh current base.
+
+### Completed
+
+- Verified prior publication receipts and refreshed current install/status,
+  append-only release ledger, artifact record, task board and handoff.
+- Inspected the latest lab handoff and R01-A1/A2/A3 evidence. BBS L01 is already
+  released; serializer timing remains historical until current-base measurement.
+- Replayed R01-A3 on the published wheel and recorded the deliberately relabelled
+  S1-only/S2 evidence contract gap as a separate compatibility/design follow-up.
+  No normal qualified-member journey failure or scope-contract repair is claimed.
+
+### Issues encountered
+
+Maintained docs still selected pending 0.27 publication/0.26 public installs.
+The lab has completed A2/A3 records beyond some older index summaries.
+
+### Root causes and resolutions
+
+Publication and newer lab receipts had not yet propagated to their maintained
+status owners. Refresh those records from actual immutable evidence, freeze a
+shared baseline and qualify only the serializer transfer. Preserve the release
+and scope boundaries and defer the separate member-evidence contract integration.
+
+### Rework and recurrence
+
+- None encountered.
+
+### What next
+
+Compare current-base installed baseline/candidate canonical results, exports,
+copy/error/binding contracts and consumer checks. Measure paired ordinary/T
+workflow/export timing; integrate only an accepted result with required PR checks.
+No release, lab-source mutation or member-contract expansion is selected.
+
+---
+
 ## 2026-11-08 — Session: BBS repair and 0.27 publication
 
 **Task:** LIB027-PUBLISH-BBS

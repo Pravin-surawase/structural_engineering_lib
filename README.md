@@ -94,11 +94,10 @@ reconciliation, or professional approval.
 
 ### Install the Python package
 
-This checkout prepares **0.27.0**, which is not yet published. The current
-public package is [0.26.0](https://pypi.org/project/structural-lib-is456/0.26.0/).
-For the candidate, install its retained local wheel with
-`python3 -m pip install /path/to/structural_lib_is456-0.27.0-py3-none-any.whl`.
-The registry command below applies after verified publication:
+**0.27.0 is published and verified** on
+[PyPI](https://pypi.org/project/structural-lib-is456/0.27.0/) and
+[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.27.0).
+Install the exact public version:
 
 ```bash
 python3 -m pip install "structural-lib-is456==0.27.0"
