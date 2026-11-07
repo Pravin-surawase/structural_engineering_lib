@@ -17,15 +17,29 @@
 - Verified prior publication receipts and refreshed current install/status,
   append-only release ledger, artifact record, task board and handoff.
 - Inspected the latest lab handoff and R01-A1/A2/A3 evidence. BBS L01 is already
-  released; serializer timing remains historical until current-base measurement.
+  released; historical serializer timing was superseded by fresh current-base evidence.
 - Replayed R01-A3 on the published wheel and recorded the deliberately relabelled
   S1-only/S2 evidence contract gap as a separate compatibility/design follow-up.
   No normal qualified-member journey failure or scope-contract repair is claimed.
+- Qualified the single-pass serializer on a shared fresh baseline: exact equality
+  across 16 workflows, 633 records, 230 exports and 525 canonical outcomes;
+  all 494 installed checks pass per wheel. Broader Python regression: 9018
+  passed, four skipped and six deselected; mypy/API/import checks pass.
+- Measured 30 alternating pairs in three rounds. Ordinary/T workflow median
+  time reductions are 28.23%/13.53%; export reductions are 44.16%/29.08%.
+  Independent read-only review accepted the source and recomputed evidence.
+- Applied one pinned Black line wrap, proved identical AST/executable code
+  excluding source locations, and passed all 43 final-source WP01/WP06 checks.
+  Recorded exact measured/successor identities and all raw timing pairs in the
+  [qualification record](verification/library-serializer-optimization.json).
 
 ### Issues encountered
 
 Maintained docs still selected pending 0.27 publication/0.26 public installs.
 The lab has completed A2/A3 records beyond some older index summaries.
+Its old Ruff constraint conflicted with the current package's declared dev pin;
+the initial preparation failed before tests. Pinned Black also required one
+layout-only wrap after measurement.
 
 ### Root causes and resolutions
 
@@ -33,6 +47,10 @@ Publication and newer lab receipts had not yet propagated to their maintained
 status owners. Refresh those records from actual immutable evidence, freeze a
 shared baseline and qualify only the serializer transfer. Preserve the release
 and scope boundaries and defer the separate member-evidence contract integration.
+Preserve the failed installation log and original lock, align only the owned
+verification constraint to the current declared Ruff pin, and resume without
+rebuilding the frozen wheels. Keep measured-wheel identities distinct from the
+proven formatting-only successor; no mathematical or outcome change occurred.
 
 ### Rework and recurrence
 
@@ -40,10 +58,11 @@ and scope boundaries and defer the separate member-evidence contract integration
 
 ### What next
 
-Compare current-base installed baseline/candidate canonical results, exports,
-copy/error/binding contracts and consumer checks. Measure paired ordinary/T
-workflow/export timing; integrate only an accepted result with required PR checks.
-No release, lab-source mutation or member-contract expansion is selected.
+Complete one milestone PR and its required hosted checks on the final head,
+then integrate the qualified source update. Preserve immutable public 0.27.0;
+no release, lab-source mutation or member-contract expansion is selected.
+Rebind draft research PR #1064 after this shared-plan update. The separate
+member-evidence coverage/caller contract remains a design follow-up.
 
 ---
 

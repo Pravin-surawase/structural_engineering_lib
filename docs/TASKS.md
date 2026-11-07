@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-11-08 — 0.27.0 published; current-base serializer qualification follows.
+**Updated:** 2026-11-08 — 0.27.0 published; current-base serializer qualification accepted locally, with final integration owned by its milestone PR.
 
 ---
 
@@ -190,9 +190,7 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-SEMANTICS-OPT-001 | Qualify the lab single-pass serializer on current 0.27 source | MAIN / Mac | Selected by owner after release. Freeze a documentation-updated baseline, preserve exact canonical/output/status/binding contracts and measure paired ordinary/T workflows before adoption. No new release is authorized. |
-| LIB-MEMBER-EVIDENCE-001 | Integrate producer-bound station coverage into member evidence | MAIN / Mac | Separate follow-up: lab R01-A3 reproduces S1-only evidence relabelled S2 through the public 0.27 API. Define coverage/caller compatibility and preserve valid two-station batches before implementation; no normal member-workflow failure or repair is claimed. |
-| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | Done: R1–R5 and L01 repairs are published in v0.27.0. Exact a11e758a pair, all 18 profiles/451 tests per archive, public download hashes and fresh PyPI installation PASS. [Publication receipt](getting-started/releases.md#v0270-published-and-verified) and PR #1065 retain the complete boundary. |
+| LIB-SEMANTICS-OPT-001 | Integrate the qualified single-pass serializer | MAIN / Mac | Local qualification accepted: 16 workflows/633 records/230 exports/525 outcomes match, 494 checks pass per installed wheel, and 9018 broader tests pass. Fresh ordinary/T workflow reductions are 28.23%/13.53%. [Evidence](verification/library-serializer-optimization.json); milestone PR owns required hosted checks and integration. Unreleased; no new publication is selected. |
 
 The [current handoff](planning/next-session-brief.md) identifies the selected
 preparation scope. The dated notes below retain earlier lanes and installed-host
@@ -569,6 +567,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| LIB-MEMBER-EVIDENCE-001 | Define producer-bound station coverage and caller compatibility before a separate member-evidence repair | MAIN / Mac | bounded design packet | P1 | Separate follow-up, not active implementation: lab R01-A3/published-wheel replay reproduces deliberately relabelled S1-only evidence qualifying as S2. Preserve valid two-station batches; no normal member-workflow failure or repair is claimed. |
 | ETABS-EXCEL-BEAM-W2-BASELINE | Freeze and implement the complete read-only beam/model topology, result-provenance, and independent-frame-analysis feasibility contract before any optimization or write-back | Main Agent | one local contract packet plus separate Windows acceptance | P1 | ✅ COMPLETE — PR #898 merged exact reviewed candidate `57f53d48...` as `f1873e7b...`, tree `bb20ba0c...`. Direct/REST/all seven Excel tables and 3,626,096 canonical bytes reconcile baseline `d4c28586...` with 3,502 stations while model identity/lock/units/selection remain exact. `HELD_NOT_SUPPORTED`, no-analysis/no-model-mutation, and professional-review holds remain. |
 | ETABS-W3-MASTER-PLAN-AUDIT | Freeze the dependency-ordered W3 data, audit, surrogate, optimization, ETABS-reanalysis, Excel and professional-evidence programme plus the guarded next-machine handoff | Main Agent | one planning/audit packet | P1 | ✅ ACCEPTED — PR #900 merged as `69399777b3ccdf9eb678ec567ab8a5c616959132`, tree `cc1f6528abce3c3a4532d8ad3c1a7b3dc852c71a`; owner authorized the bounded W3 campaign |
 | ETABS-EXCEL-BEAM-W3A-DEMAND-CONTRACT | Freeze versioned availability, load-pattern/case/combination, analysis-status/result-selection, same-row beam-action, scenario, envelope, governing-reference, paging and canonical-hash contracts before design expansion | Main Agent | one read-only contract packet; installed getter evidence separate | P1 | ✅ ACCEPTED — PR #901 merged unchanged as `b7351bb5...`, tree `b895008b...`; 34 focused W3A/W2 tests plus local and hosted gates passed; no ETABS/Excel/COM/design/solver/optimizer activity |

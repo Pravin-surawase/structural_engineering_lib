@@ -1,0 +1,375 @@
+{
+  "schema_version": 1,
+  "task": "LIB027-DOCS-LAB-OPTIMIZATION",
+  "experiment": "LIB-SEMANTICS-OPT-001",
+  "date": "2026-11-08",
+  "state": "LOCAL_QUALIFICATION_ACCEPTED_REQUIRED_PR_CHECKS_OWN_FINAL_INTEGRATION",
+  "release_boundary": {
+    "published_version": "0.27.0",
+    "published_tag_commit": "a78dcc6a8aa1db79b78c0210bfc8c06c54ca9c26",
+    "published_archives_changed": false,
+    "new_release_authorized": false,
+    "professional_approval": false
+  },
+  "change": {
+    "owner": "Python/structural_lib/beam/semantics.py",
+    "root_cause": "Repeated dataclasses.asdict deep traversal followed by recursive canonical normalization in OperationResult.to_dict and plain.",
+    "implementation": "Visit declared dataclass fields once through the existing plain normalizer; explicitly retain dataclass-class rejection.",
+    "measured_baseline_commit": "498d5c322630f87fabae1d0327bc6b1f2ebef5d9",
+    "measured_candidate_commit": "0a3e57d9c1e1beaaebf19e375ec2f0b3148bd07a",
+    "formatted_successor": {
+      "measured_commit": "0a3e57d9c1e1beaaebf19e375ec2f0b3148bd07a",
+      "measured_semantics_sha256": "61889e16ed30c34d0e26476c5bd906af558c0e3e833ed49f100607dbba1a7792",
+      "formatted_semantics_sha256": "484ad70f0ca7252bda583e3da2534b49b404c378a229c7ef7ea9d710a24a384a",
+      "only_change": "Pinned Black wraps the plain dataclass return comprehension; no other source change.",
+      "whole_module_ast_equal_ignoring_locations": true,
+      "ast_sha256": "d7d067f700f05fb8c4fb44a21aa8a9e918754028b207bb0824401ac89c415828",
+      "recursive_code_objects_equal_excluding_filename_and_source_locations": true,
+      "normalized_code_sha256": "4151bae80f1500ccef7e0246b830d1d73ce815b6f2d3228d90aea523eb238176",
+      "python": "3.11.15",
+      "rerun_policy": "Preserve exact measured wheel identities; no repeated timing or installed corpus for the proven layout-only successor. Focused final-source WP01/WP06 and required hosted checks qualify integration.",
+      "formatted_source_commit": "969a49043e97506fd4a7deccda9a96760d1f03a7",
+      "final_source_wp01_wp06_passed": 43
+    }
+  },
+  "provenance": {
+    "lab_owner": "structlib-coding-lab/docs/pending-single-pass-integration.md",
+    "lab_experiment": "LIB-LAB-003",
+    "historical_lab_base": "4eebc897f084e71165061c9d17ce89a867dadafa",
+    "historical_lab_patch_sha256": "385b7346dc0368098685b85ec150ccee21d88c1c1a020aa24999e0badaa2c89e",
+    "historical_metrics_used_as_current_evidence": false,
+    "current_intake": {
+      "experiment": "LIB-SEMANTICS-OPT-001",
+      "source_commit": "498d5c322630f87fabae1d0327bc6b1f2ebef5d9",
+      "prior_source_commit": "a78dcc6a8aa1db79b78c0210bfc8c06c54ca9c26",
+      "repository": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+      "exported_paths": [
+        "Python",
+        "contracts/structural-engineering/conformance",
+        "docs/developers/platform-guide.md",
+        "docs/getting-started/beginners-guide.md",
+        "docs/getting-started/colab-workflow.md",
+        "docs/getting-started/python-quickstart.md",
+        "docs/reference/api.md",
+        "docs/verification/check_library_027_beam_section_reference.py",
+        "docs/verification/check_library_027_four_corner_reference.py",
+        "docs/verification/check_library_027_references.py",
+        "docs/verification/check_library_027_t_beam_reference.py",
+        "docs/verification/check_library_027_torsion_physical_reference.py",
+        "docs/verification/check_library_027_torsion_reference.py",
+        "docs/verification/check_library_027_torsion_serviceability_reference.py",
+        "docs/verification/library-027-beam-section-closure.json",
+        "docs/verification/library-027-column-section-boundary.json",
+        "docs/verification/library-027-column-section-extension.json",
+        "docs/verification/library-027-comparator-baseline.json",
+        "docs/verification/library-027-comparator-reference.json",
+        "docs/verification/library-027-four-corner-column.json",
+        "docs/verification/library-027-member-replay.json",
+        "docs/verification/library-027-t-beam-member.json",
+        "docs/verification/library-027-t-beam-qualification.json",
+        "docs/verification/library-027-torsion-physical.json",
+        "docs/verification/library-027-torsion-serviceability.json",
+        "docs/verification/library-027-torsion-station.json",
+        "docs/verification/replay_library_027_members.py",
+        "docs/verification/replay_library_027_t_member.py",
+        "scripts/external_cli_test.py"
+      ],
+      "archive_sha256": "12811907f9a0cb70d7cd8f4b7c8bd7596eace3df46df9da66b49d4a10675297a",
+      "source_manifest_sha256": "1604e34c09ee819784e78d517f0607cf7658cd8c54fa9c42d6d5effd98ddb78f",
+      "serializer_unchanged_from_prior_baseline": true,
+      "source_date_epoch": "1794080173",
+      "patch_sha256": "385b7346dc0368098685b85ec150ccee21d88c1c1a020aa24999e0badaa2c89e",
+      "constraint_sha256": "bf3522bd2ccb5741bc5e1daf0a75811730f7409803d5f70bbcf09baa7758e89f",
+      "original_lab_constraint_sha256": "9fb12b8f019a336959d989c40dcfb879e2cb72501130dfab5d8793487a2c0193",
+      "preparation_resume": {
+        "reason": "Historical lab Ruff 0.16.10 constraint conflicts with current package dev extra Ruff 0.16.1; align only the owned verification constraint with current declared requirement.",
+        "preserved_failure_log": "baseline-check-env-install.log",
+        "wheels_rebuilt": false,
+        "baseline_runtime_environment_reinstalled": false,
+        "product_or_lab_dependencies_changed": false
+      },
+      "baseline_wheel_sha256": "c3bb69e5ef5370bec981523bb65bb289643089c4a8faf3c929b96acae5950990",
+      "baseline_semantics_sha256": "272739c8074d968f61cacab93c679ef8098a963d3b86d01d5dba603e1e0115bf",
+      "candidate_wheel_sha256": "d81d3d8375691b47bd95a49d1716e12b231cfa0eaa3f33764a8e2039fecb928c",
+      "candidate_semantics_sha256": "61889e16ed30c34d0e26476c5bd906af558c0e3e833ed49f100607dbba1a7792",
+      "changed_wheel_entries": [
+        "structural_lib/beam/semantics.py",
+        "structural_lib_is456-0.27.0.dist-info/RECORD"
+      ]
+    }
+  },
+  "isolation": {
+    "python": "3.11.15",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "separate_wheels_runtime_and_check_environments": true,
+    "installed_package_entries_verified_per_environment": 342,
+    "runtime_dependencies_identical": true,
+    "check_dependencies_identical": true,
+    "drivers_exclude_product_source": true,
+    "isolated_python": true,
+    "selector_environment_variables_removed": [
+      "PYTHONPATH",
+      "PYTHONHOME",
+      "VIRTUAL_ENV",
+      "STRUCTURAL_LIB_PYTHON"
+    ],
+    "timing_and_heavy_validation_sequential": true
+  },
+  "exact_equivalence": {
+    "status": "PASS",
+    "workflows": 16,
+    "operation_records": 633,
+    "exported_files": 230,
+    "canonical_outcomes": 525,
+    "canonical_accepted": 515,
+    "canonical_matching_rejections": 10,
+    "preserved": [
+      "canonical bytes and semantic/domain/result identities",
+      "inputs and typed result bindings",
+      "PASS/FAIL/HOLD and failure evidence",
+      "ordinary and T-member geometry/paths/BBS/quantities/JSON/HTML",
+      "nested mutable-copy independence",
+      "finite, integral and signed-zero normalization",
+      "dataclass-class rejection"
+    ],
+    "case_statuses": {
+      "ordinary-adequate": "PASS",
+      "ordinary-overload": "FAIL",
+      "ordinary-missing-deflection": "HOLD",
+      "t-main": "PASS",
+      "t-width-limited": "PASS",
+      "t-overload": "FAIL",
+      "t-insufficient-bars": "FAIL",
+      "t-service-fail": "FAIL",
+      "t-short-anchor": "FAIL",
+      "t-short-hook": "FAIL",
+      "t-missing-support": "HOLD",
+      "t-missing-flange": "HOLD",
+      "t-missing-service": "HOLD",
+      "t-depth-conflict": "FAIL",
+      "t-shoulder-bar": "FAIL",
+      "t-end-cover": "FAIL"
+    }
+  },
+  "installed_tests": {
+    "status": "PASS",
+    "passed_per_variant": 494,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "node_outcomes_identical": true,
+    "existing_tests_modified": false,
+    "new_contract_tests_frozen_and_passed_before_optimization": 3,
+    "test_modules": [
+      "integration/test_beam_comparator_example.py",
+      "integration/test_beam_primary_route_torsion.py",
+      "integration/test_beam_section_closure.py",
+      "integration/test_complete_member_workflow.py",
+      "integration/test_flanged_branch_equilibrium.py",
+      "integration/test_four_corner_column_member.py",
+      "integration/test_layered_column_section.py",
+      "integration/test_physical_torsion_member.py",
+      "integration/test_release_027_consumer_repairs.py",
+      "integration/test_t_beam_member.py",
+      "integration/test_torsion_corner_geometry.py",
+      "integration/test_torsional_serviceability.py",
+      "test_calculation_report.py",
+      "test_public_examples.py",
+      "unit/test_structural_engineering_wp01.py",
+      "unit/test_structural_engineering_wp06.py",
+      "unit/test_structural_engineering_wp07.py",
+      "unit/test_structural_engineering_wp08.py"
+    ],
+    "consumers": "Includes all 0.27 release-consumer modules, column action/report/quickstart repairs, BBS count and typed handoffs, and complete WP01/WP06 modules."
+  },
+  "broader_regression": {
+    "reason": "Shared OperationResult serialization across result families beyond the selected members.",
+    "source_commit": "0a3e57d9c1e1beaaebf19e375ec2f0b3148bd07a",
+    "command": "./run.sh test",
+    "result": "==== 9018 passed, 4 skipped, 6 deselected, 65 warnings in 152.35s (0:02:32) ====",
+    "log_sha256": "14318e49960460f1e8e56d0d6aa6ef438672c65eaf012ffd374b4c6094665111",
+    "formatted_successor_focus_command": "./scripts/python_runtime.sh -m pytest Python/tests/unit/test_structural_engineering_wp01.py Python/tests/unit/test_structural_engineering_wp06.py -q",
+    "formatted_successor_focus_log_sha256": "986dbc9a5d6b6525242d1315dd44f9f5e97162596004680091f1927df955e4ea",
+    "type_check": "Success: no issues found in 341 source files",
+    "api_manifest": "PASS; unchanged",
+    "internal_imports": "PASS; zero broken imports"
+  },
+  "measurements": {
+    "rounds": 3,
+    "pairs_per_round": 10,
+    "warmups_each_variant_per_round": 3,
+    "order": "Alternating baseline/candidate order within each round; sequential runs.",
+    "workflow_and_export_separate": true,
+    "reconciliation_outside_timers": true,
+    "exact_gate_every_sample": true,
+    "outliers_retained": true,
+    "summary": {
+      "ordinary-adequate": {
+        "workflow_ms": {
+          "baseline_median_ms": 135.850542,
+          "candidate_median_ms": 97.5020205,
+          "median_reduction_percent": 28.228464116101936,
+          "paired_median_reduction_percent": 30.08891182130465,
+          "candidate_faster_pairs": 29,
+          "baseline_range_ms": [
+            130.246417,
+            350.807125
+          ],
+          "candidate_range_ms": [
+            91.147375,
+            224.550416
+          ],
+          "per_round": [
+            {
+              "round": 1,
+              "baseline_median_ms": 136.595125,
+              "candidate_median_ms": 100.150229
+            },
+            {
+              "round": 2,
+              "baseline_median_ms": 136.2338955,
+              "candidate_median_ms": 97.195125
+            },
+            {
+              "round": 3,
+              "baseline_median_ms": 132.8955835,
+              "candidate_median_ms": 96.030896
+            }
+          ]
+        },
+        "export_ms": {
+          "baseline_median_ms": 109.177458,
+          "candidate_median_ms": 60.968583,
+          "median_reduction_percent": 44.15643657869375,
+          "paired_median_reduction_percent": 44.24083708197675,
+          "candidate_faster_pairs": 30,
+          "baseline_range_ms": [
+            94.25825,
+            142.427458
+          ],
+          "candidate_range_ms": [
+            58.794625,
+            75.317417
+          ],
+          "per_round": [
+            {
+              "round": 1,
+              "baseline_median_ms": 109.177458,
+              "candidate_median_ms": 60.9945
+            },
+            {
+              "round": 2,
+              "baseline_median_ms": 110.6167915,
+              "candidate_median_ms": 61.3635415
+            },
+            {
+              "round": 3,
+              "baseline_median_ms": 107.4387705,
+              "candidate_median_ms": 59.931521000000004
+            }
+          ]
+        }
+      },
+      "t-main": {
+        "workflow_ms": {
+          "baseline_median_ms": 1977.4577705,
+          "candidate_median_ms": 1709.887125,
+          "median_reduction_percent": 13.531042204372579,
+          "paired_median_reduction_percent": 13.638762426691187,
+          "candidate_faster_pairs": 30,
+          "baseline_range_ms": [
+            1909.585583,
+            3868.251625
+          ],
+          "candidate_range_ms": [
+            1652.449792,
+            2028.13775
+          ],
+          "per_round": [
+            {
+              "round": 1,
+              "baseline_median_ms": 2000.8557289999999,
+              "candidate_median_ms": 1712.786042
+            },
+            {
+              "round": 2,
+              "baseline_median_ms": 1960.5368330000001,
+              "candidate_median_ms": 1720.5014375
+            },
+            {
+              "round": 3,
+              "baseline_median_ms": 1936.514146,
+              "candidate_median_ms": 1687.620417
+            }
+          ]
+        },
+        "export_ms": {
+          "baseline_median_ms": 232.7878955,
+          "candidate_median_ms": 165.097417,
+          "median_reduction_percent": 29.078177950193286,
+          "paired_median_reduction_percent": 30.912339699697483,
+          "candidate_faster_pairs": 30,
+          "baseline_range_ms": [
+            225.351125,
+            564.451291
+          ],
+          "candidate_range_ms": [
+            154.744208,
+            198.483375
+          ],
+          "per_round": [
+            {
+              "round": 1,
+              "baseline_median_ms": 234.8515625,
+              "candidate_median_ms": 165.58472949999998
+            },
+            {
+              "round": 2,
+              "baseline_median_ms": 230.690146,
+              "candidate_median_ms": 163.3825625
+            },
+            {
+              "round": 3,
+              "baseline_median_ms": 230.4397705,
+              "candidate_median_ms": 164.789375
+            }
+          ]
+        }
+      }
+    },
+    "portable_raw_samples": {
+      "path": "docs/verification/library-serializer-optimization-samples.csv",
+      "sha256": "d3b4aa70cec045a2afd7f57fb7377677e40f8dbbbb9ed6a0a9730e94e324100c",
+      "rows": 30
+    },
+    "limits": "Local sequential unreserved macOS host; selected ordinary and T-member workflow/export paths. No universal speed, tail latency, throughput, memory, engineering-approval or release claim."
+  },
+  "independent_review": {
+    "code_and_documentation": "ACCEPT; bounded read-only essential review",
+    "harness_and_current_evidence": "ACCEPT; counts, 30-pair medians, per-round improvement and preparation resume independently recomputed",
+    "format_only_successor": "No timing/installed-corpus repeat required when whole-module AST and normalized code-object equivalence pass; final focused tests and required hosted checks remain."
+  },
+  "retained_local_evidence": {
+    "directory": "output/LIB027-DOCS-LAB-OPTIMIZATION/serializer-current",
+    "bulk_output_tracked": false,
+    "sha256": {
+      "harness/prepare.py": "4d0c80053e396361e205a8f40fd4f17c7d7cd6559521dc4d582cd47c8abab1a4",
+      "harness/resume_prepare.py": "cc820589f331232fef93666f727934bbbf5c54d62ada1e773eb68317515dc38e",
+      "harness/compare.py": "fbca3110ce8c40af8138cff9f43b878e2736c6f252893c84cf1938521e647873",
+      "harness/legacy_corpus.py": "8b40bf4f97de84b5eedd130262ab7457932320aa18fdb28a4b610e28f43569f6",
+      "harness/pilot_helpers.py": "632ea487a0d525db85b73632294c72fb3548bd207788bca0205c74a4fd26e7ad",
+      "run-001/comparison.json": "d3f7232542d508de845b94525542f51e44df4c51c54170f693536c9776539b47",
+      "run-001/equivalence.json": "0bdf27ba4bf1652b53de491168470c4570444345381fa2b087a85abdcaf902f8",
+      "run-001/baseline-tests.json": "1e872cce87304048f5061e07201144ad8b171204a4b95f89c37d98b09f4f3a19",
+      "run-001/candidate-tests.json": "fd2da7253cf0d6cd1cf5103c702dc611236ecc5ca13fa4d699b446c3a3926042"
+    }
+  },
+  "separate_followup": {
+    "id": "LIB-MEMBER-EVIDENCE-001",
+    "state": "DESIGN_AND_COMPATIBILITY_REQUIRED",
+    "finding": "Published-wheel direct API accepts deliberately relabelled S1-only shear evidence as S2. Genuine two-station batches remain valid.",
+    "normal_qualified_workflow_failure_demonstrated": false,
+    "scope_gate_prototype_integrated": false
+  },
+  "integration": "One normal milestone PR; exact final head, required hosted checks and merge facts remain in GitHub. No tag or package publication."
+}

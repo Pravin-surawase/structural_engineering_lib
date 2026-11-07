@@ -1077,6 +1077,13 @@ three rounds of ten alternating ordinary/T pairs with separate workflow/export
 timers and equality outside both. Keep an inconclusive or failing candidate
 unadopted; do not relax a golden or tolerance.
 
+The serializer is shared by all `OperationResult` consumers, so selected member
+examples alone do not establish regression coverage across result families. After
+the paired measurements finish, run the broad Python suite once for that concrete
+risk, plus affected formatting/type/API checks and the required hosted PR gates.
+Keep heavy validation outside the timing run. No release preflight or publication
+is selected for this source-only update.
+
 Latest-review reconciliation:
 
 - BBS R01-A2/L01 is fixed and published in 0.27.0, with 43 focused checks and
@@ -1091,8 +1098,44 @@ Latest-review reconciliation:
   must define producer-bound coverage, callers and compatibility before a separate
   fix; no lab scope-gate prototype is integrated in this optimization.
 
-Baseline/equivalence/timing evidence and final source adoption remain pending
-this task's observed gates. The milestone PR owns exact reviewed/merged heads.
+Current-base qualification is accepted locally. The shared baseline is
+`498d5c32`; measured candidate `0a3e57d9` changes only the serializer. Separate
+installed wheels preserve 16 workflows, 633 canonical operation records, 230
+exported files and 525 canonical outcomes (515 accepted/10 matching rejections).
+All 494 selected tests pass per wheel, including the release consumer repairs.
+The broader shared-result regression passes 9018 tests, with four skips and six
+deselections. Type checking passes all 341 source files; API/import checks pass.
+
+Three rounds of ten alternating pairs retain all outliers and show improvement
+in every round. Median times in milliseconds:
+
+| Workload | Baseline | Candidate | Reduction |
+|---|---:|---:|---:|
+| Ordinary workflow | 135.85 | 97.50 | 28.23% |
+| Ordinary export | 109.18 | 60.97 | 44.16% |
+| T-member workflow | 1977.46 | 1709.89 | 13.53% |
+| T-member export | 232.79 | 165.10 | 29.08% |
+
+These are sequential, local, unreserved-host measurements for the selected
+ordinary/T paths. They do not establish universal throughput, tail latency or
+memory gains. Equality reconciliation is outside the timers and passes every
+sample. Independent read-only review recomputed the evidence and accepted the
+source, harness, counts and measurements.
+
+Pinned Black required one comprehension line wrap after measurement. The
+formatted successor `969a4904` has identical whole-module AST and recursive code
+objects after excluding source locations, and all 43 WP01/WP06 checks pass on
+that final source. The exact measured wheels remain identified as `0a3e57d9`
+evidence; no byte-identical successor-wheel claim or repeated timing is made.
+The preparation also preserves the original failed lab-lock install and records
+the verification-only Ruff alignment to the current package's declared pin.
+
+The [portable qualification record](../verification/library-serializer-optimization.json)
+and [all 30 timing pairs](../verification/library-serializer-optimization-samples.csv)
+retain identities, digests, tests, round medians and limits. Bulk driver/run logs
+remain in `output/LIB027-DOCS-LAB-OPTIMIZATION/serializer-current/`.
+The milestone PR owns required hosted checks and exact reviewed/merged heads.
+This improvement remains unreleased; the public 0.27.0 archives are unchanged.
 
 ### Later release themes
 

@@ -5,7 +5,7 @@
 <!-- HANDOFF:START -->
 - Date: 2026-11-08
 - Focus: Reconcile the published 0.27 release/session records and qualify the lab's single-pass serializer on a fresh current base.
-- Completed: Verified prior publication receipts and refreshed current install/status, append-only release ledger, artifact record, task board and handoff.; Inspected the latest lab handoff and R01-A1/A2/A3 evidence. BBS L01 is already released; serializer timing remains historical until current-base measurement.; Replayed R01-A3 on the published wheel and recorded the deliberately relabelled S1-only/S2 evidence contract gap as a separate compatibility/design follow-up. No normal qualified-member journey failure or scope-contract repair is claimed.
+- Completed: Verified prior publication receipts and refreshed current install/status, append-only release ledger, artifact record, task board and handoff.; Inspected the latest lab handoff and R01-A1/A2/A3 evidence. BBS L01 is already released; historical serializer timing was superseded by fresh current-base evidence.; Replayed R01-A3 on the published wheel and recorded the deliberately relabelled S1-only/S2 evidence contract gap as a separate compatibility/design follow-up. No normal qualified-member journey failure or scope-contract repair is claimed.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -13,25 +13,30 @@
 | Release | Current state |
 |---|---|
 | **Current** | [0.27.0 is published and verified](../getting-started/releases.md#v0270-published-and-verified); tag a78dcc6a, exact repaired archives, 18 profiles/451 tests per archive and public install/hash receipts. |
-| **Next** | Current-base serializer qualification and documentation/session maintenance on codex/lib027-docs-serializer. Development source is unreleased; no version bump or publication is selected. |
+| **Next** | Qualified serializer source update on codex/lib027-docs-serializer; its milestone PR owns final hosted checks and integration. Development source is unreleased; no version bump or publication is selected. |
 
-## Selected work — current-base serializer qualification
+## Selected work — qualified serializer integration
 
 The owner selected this update after publication. The lab handoff is
 `structlib-coding-lab/docs/pending-single-pass-integration.md`; its historical
 LIB-LAB-003 base is `4eebc897f084e71165061c9d17ce89a867dadafa`. Its patch
 changes only `beam/semantics.py` to traverse declared dataclass fields once.
-The old 28.56%/13.46% workflow measurements are not current 0.27 results.
+The old measurements are historical. Fresh C1 `498d5c32` / C2 `0a3e57d9`
+installed-wheel evidence matches 16 workflows, 633 result records, 230 exports
+and 525 canonical outcomes. All 494 selected tests pass per wheel; the broader
+Python suite passes 9018 tests (four skipped/six deselected). Three rounds of ten
+alternating pairs reduce median ordinary/T workflow time by 28.23%/13.53% and
+export time by 44.16%/29.08%, for these local selected paths only.
 
-1. Finish the release/install/session status refresh and freeze a shared base.
-2. Build separate installed baseline/candidate wheels from that same base;
-   change only the selected serializer owner. Preserve canonical bytes, domain
-   result identities, statuses, failure/qualification/approval and copy/error contracts.
-3. Replay the current ordinary/T and BBS/report/column consumer checks. Measure
-   sequential alternating ordinary/T workflow and export timings, with equality
-   reconciliation outside the timers. A failing/inconclusive candidate stays unadopted.
-4. Record fresh evidence and use one normal milestone PR with required checks.
-   Do not tag or publish; a later release requires its own selected version/gates.
+Pinned formatting successor `969a4904` changes one line wrap only. Whole-module
+AST and executable-code equivalence pass, as do all 43 final-source WP01/WP06
+checks. Measured wheels remain identified as C2, separate from that successor.
+The [qualification record](../verification/library-serializer-optimization.json)
+includes exact identities, test/measurement boundaries and all 30 timing pairs.
+
+Finish one normal milestone PR with required checks on its final head, then
+integrate. GitHub owns exact check/merge facts. Do not tag or publish; a later
+release requires its own selected version and gates.
 
 ## Separate correctness follow-up
 
