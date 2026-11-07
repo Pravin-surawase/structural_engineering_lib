@@ -125,6 +125,7 @@ python3 Python/examples/analysis_snapshot_replay.py /path/to/snapshot.json
 | `complete_member_workflow.py` | Single-layer and multilayer beams through checks, physical paths, BBS and HTML. [Member guide](../../docs/cookbook/python/ordinary-beam-member.md) | Yes, with `--output-dir` |
 | `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
 | `beam_comparator_reference.py` | Installed-package section capacities for three supplied beam layouts. [Beam comparison guide](../../docs/cookbook/python/beam-comparator-reference.md) | No |
+| `torsion_station_reference.py` | Correct longitudinal-corner geometry for the torsion station check with passing/failing links and explicit full-member HOLD. [Torsion reference](../../docs/library/reference/wp02-shear-torsion.md#packet-d-corner-geometry-correction) | No |
 | `beam_section_closure.py` | Supplied inclined stirrups and bent-up bars, and sagging flexure across the flange and web. Requires the current source build. [Beam section guide](../../docs/cookbook/python/beam-section-closure.md) | No |
 | `four_corner_column_member.py` | Physical four-corner column, actual ties and matching JSON/HTML with PASS, FAIL and HOLD controls. Requires the current source build. [Column member guide](../../docs/cookbook/python/column-four-corner-member-check.md) | No |
 | `layered_column_section.py` | Raw response of a layered rectangle with full compression, partial compression and mixed diameters. [Column section guide](../../docs/cookbook/python/layered-column-section.md) | No |

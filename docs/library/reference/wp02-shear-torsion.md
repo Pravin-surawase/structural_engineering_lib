@@ -33,3 +33,34 @@ Under clause 41.4.2, the opposite face requires a tension check only when
 tension-steel requirement for compression/hanger bars. A positive opposite
 moment still receives the full face-specific flexure check. This applies to
 both signs of the supplied major-axis moment.
+
+## Packet D corner geometry correction
+
+For nonzero torsion, the operation resolves four aligned longitudinal corner
+bars and derives `b1,d1` from their centres. It uses these values in the
+Cl. 41.4.3 transverse reinforcement equation and retains the transverse
+stirrup dimensions in the pitch limit. Missing or nonrectangular corner
+geometry returns `not_evaluated`. Method
+`is456-torsion-check-wp02-v3` identifies this source correction.
+The response includes the derived corner dimensions and component demands.
+
+Run the source-build station comparison with the public API.
+
+```bash
+python -m pip install ./Python
+python Python/examples/torsion_station_reference.py
+```
+
+The 300 × 400 mm example has four Ø20 corner bars and concurrent
+V2/M3/T = 60 kN / 15 kN·m / 15 kN·m. Two Ø8 legs at 100 mm pass;
+at 125 mm they fail the required 0.914000831 mm²/mm. Both pitches are
+below the 146 mm pitch maximum. The former use of the larger stirrup
+rectangle understated this transverse demand.
+[Independent reference](../../verification/library-027-torsion-station.json)
+
+The example reports full-member admission HOLD and names the outstanding
+support/load-path, tension-anchorage, physical-output and torsional SLS
+obligations. The existing flexural crack method supplies flexural evidence.
+Cl. 41 supplies torsional collapse checks. An admitted torsion member
+also needs its traceable service method and acceptance criteria.
+[Revised Packet D plan](../../planning/library-usability-improvement.md#packet-d-revised-work-order-and-evidence-boundary)

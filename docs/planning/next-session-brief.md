@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: Continue 0.27 closure with Packet D, the supplied rectangular beam with concurrent torsion.
-- Completed: Goals 1–4 and closure Packets A and B merged. Packet C adds physical four-corner column checks, x/y references, actual ties and matching JSON/HTML. The current PR owns integration evidence.
+- Focus: Continue Packet D2 member evidence after the D1 torsion corner-geometry correction. Resolve support/load-path, tension anchorage, physical outputs and torsional SLS before admission.
+- Completed: Goals 1–4 and closure Packets A–C merged. Packet D1 corrects the station transverse demand to use longitudinal corner-bar centres, with independent Python/C# controls. Full Packet D remains open.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
@@ -40,8 +40,10 @@ compression and mixed diameters. Packet B qualified supplied inclined and
 bent-up shear reinforcement and sagging flexure within the flange and in
 the web. Packet C adds the physical four-corner column, independent x/y
 benchmarks and matching JSON/HTML with overload, inadequate-tie and
-missing-tie controls. Packet D is next, covering a rectangular beam member
-with concurrent torsion. Complete D and E before
+missing-tie controls. Packet D1 corrects the torsion station basis. Continue
+D2 and D3 for physical load path, both-face tension anchorage, serviceability
+and complete output evidence. Full torsion member admission remains HOLD.
+Complete D and E before
 [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) prepares
 the versioned candidate.
 [Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)

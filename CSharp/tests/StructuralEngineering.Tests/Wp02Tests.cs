@@ -125,4 +125,57 @@ public class Wp02Tests
         Assert.Equal(EngineeringState.Fail, result.Engineering);
         Assert.Contains(result.Diagnostics, diagnostic => diagnostic.Code == "TORSION.CLOSED_LINK_REQUIRED");
     }
+
+    [Theory]
+    [InlineData(100, true)]
+    [InlineData(125, false)]
+    public void TorsionUsesLongitudinalCornerCentres(double spacingMm, bool passed)
+    {
+        BarCoordinate[] bars =
+        [
+            new("TL", 20, 50, 50, Face.Top), new("TR", 20, 250, 50, Face.Top),
+            new("BL", 20, 50, 350, Face.Bottom), new("BR", 20, 250, 350, Face.Bottom)
+        ];
+        var section = new FlexuralCapacityRequest(
+            "LIB-027-D-STATION", SectionKind.Rectangular, 300, 400, 25, 415, bars, Face.Bottom);
+        var action = new ConcurrentActionRow(
+            "ULS-1", "interior", ActionBasis.StaticConcurrent, 60, 0, 15, 0, 15, "independent-static-row");
+        var link = new TransverseLink("S8", 8, 2, 2, spacingMm, 415, true, 242, 342);
+        var result = BeamOperations.CheckTorsion(new(
+            "LIB-027-D-STATION", action, section, link, ["TL", "TR", "BL", "BR"]));
+        Assert.Equal(passed ? EngineeringState.Pass : EngineeringState.Fail, result.Engineering);
+        Assert.Equal(0.9140008309098463, result.Outputs!.RequiredLinkAreaPerSpacingMm, 12);
+        Assert.Equal(140, result.Outputs.EquivalentShearKn, 10);
+        Assert.Equal(146, result.Outputs.MaximumSpacingMm, 10);
+        Assert.Equal(200, result.Outputs.CornerWidthMm!.Value, 10);
+        Assert.Equal(300, result.Outputs.CornerDepthMm!.Value, 10);
+        Assert.Equal(0.6924248719013987, result.Outputs.TorsionAreaPerSpacingMm!.Value, 12);
+        Assert.Equal(0.2215759590084476, result.Outputs.ShearAreaPerSpacingMm!.Value, 12);
+        Assert.True(result.Outputs.LongitudinalPass);
+        Assert.Equal(passed, result.Outputs.TransversePass);
+    }
+
+    [Fact]
+    public void TorsionRequiresResolvedRectangularCornerCentres()
+    {
+        var result = BeamOperations.CheckTorsion(new(
+            "IS456-WP02", Action(), FlexureRequest(), Link(), ["TL", "TR", "BL"]));
+        Assert.Equal(EngineeringState.NotEvaluated, result.Engineering);
+        Assert.Contains(result.Diagnostics, item => item.Code == "TORSION.CORNER_GEOMETRY_REQUIRED");
+    }
+
+    [Theory]
+    [InlineData(45)]
+    [InlineData(55)]
+    public void ZeroTorsionRetainsExistingPerimeterCheck(double topLeftDepthMm)
+    {
+        var bars = Bars.Select(bar => bar.BarId == "TL" ? bar with { YFromTopMm = topLeftDepthMm } : bar).ToArray();
+        var result = BeamOperations.CheckTorsion(new(
+            "IS456-WP02", Action() with { TorsionKnM = 0 },
+            FlexureRequest() with { Bars = bars }, Link(), ["TL", "TR", "BL", "BR"]));
+        Assert.Equal(EngineeringState.Pass, result.Engineering);
+        Assert.True(result.Outputs!.PerimeterPass);
+        Assert.Null(result.Outputs.CornerWidthMm);
+        Assert.Equal("is456-torsion-check-wp02-v2", result.Provenance.MethodRevisionId);
+    }
 }

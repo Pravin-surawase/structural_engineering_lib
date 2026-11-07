@@ -149,7 +149,8 @@ public static class BeamOperations
             ("flexural_capacity", request.FlexuralCapacity), ("link", request.Link),
             ("perimeter_bar_ids", request.PerimeterBarIds),
             ("code_data_revision_id", request.CodeDataRevisionId));
-        var provenance = new Provenance(request.CodeDataRevisionId, "is456-torsion-check-wp02-v2",
+        var provenance = new Provenance(request.CodeDataRevisionId,
+            request.Action.TorsionKnM == 0 ? "is456-torsion-check-wp02-v2" : "is456-torsion-check-wp02-v3",
             ["IS 456:2000 normalized WP02 shear and torsion rules"]);
         var action = request.Action;
         if (action.ActionBasis is not ActionBasis.StaticConcurrent and not ActionBasis.StagedStep)
@@ -215,6 +216,28 @@ public static class BeamOperations
             topPerimeter.Min(bar => bar.XFromLeftMm) < b / 2 && topPerimeter.Max(bar => bar.XFromLeftMm) > b / 2 &&
             bottomPerimeter.Min(bar => bar.XFromLeftMm) < b / 2 && bottomPerimeter.Max(bar => bar.XFromLeftMm) > b / 2;
         var perimeterPass = perimeterIds.Count >= 4 && perimeterIds.IsSubsetOf(availableIds) && fourCorners;
+        var cornerWidth = 0.0;
+        var cornerDepth = 0.0;
+        if (action.TorsionKnM != 0 && perimeterBars.Length > 0)
+        {
+            var left = perimeterBars.Min(bar => bar.XFromLeftMm);
+            var right = perimeterBars.Max(bar => bar.XFromLeftMm);
+            var top = perimeterBars.Min(bar => bar.YFromTopMm);
+            var bottom = perimeterBars.Max(bar => bar.YFromTopMm);
+            cornerWidth = right - left;
+            cornerDepth = bottom - top;
+            bool AtCorner(BarCoordinate bar, double x, double y) =>
+                Math.Abs(bar.XFromLeftMm - x) <= 1e-9 && Math.Abs(bar.YFromTopMm - y) <= 1e-9;
+            perimeterPass &= topPerimeter.Any(bar => AtCorner(bar, left, top)) &&
+                topPerimeter.Any(bar => AtCorner(bar, right, top)) &&
+                bottomPerimeter.Any(bar => AtCorner(bar, left, bottom)) &&
+                bottomPerimeter.Any(bar => AtCorner(bar, right, bottom));
+        }
+        if (action.TorsionKnM != 0 && (!perimeterPass || cornerWidth <= 0 || cornerDepth <= 0))
+            return ResultFactory.NotEvaluated<TorsionCheckOutput>(TorsionCheckOperation, inputs, provenance,
+                Error(TorsionCheckOperation, "TORSION.CORNER_GEOMETRY_REQUIRED",
+                    "The torsion equation requires four identified rectangular corner-bar centres.",
+                    "perimeter_bar_ids", "Resolve aligned top and bottom corner bars for b1 and d1."));
         var activeFace = action.M3KnM >= 0 ? Face.Bottom : Face.Top;
         var activeBars = bars.Where(bar => bar.Face == activeFace).ToArray();
         if (activeBars.Length == 0)
@@ -252,8 +275,11 @@ public static class BeamOperations
         var tauCMax = Shear.TauCMax(request.FlexuralCapacity.ConcreteStrengthNPerMm2);
         var tauVe = equivalentShear * 1000 / (b * d);
         var designFy = Math.Min(415, link.SteelYieldStrengthNPerMm2);
-        var requiredTorsion = torsion * 1e6 / (link.CentreWidthMm * link.CentreDepthMm * 0.87 * designFy);
-        var requiredShear = shear * 1000 / (2.5 * link.CentreDepthMm * 0.87 * designFy);
+        // Clause 41.4.3 b1/d1 belong to the longitudinal corner bars.
+        var transverseDepth = torsion == 0 ? link.CentreDepthMm : cornerDepth;
+        var requiredTorsion = torsion == 0 ? 0 :
+            torsion * 1e6 / (cornerWidth * cornerDepth * 0.87 * designFy);
+        var requiredShear = shear * 1000 / (2.5 * transverseDepth * 0.87 * designFy);
         var requiredFloor = Math.Max(0, (tauVe - tauC) * b / (0.87 * designFy));
         var required = Math.Max(Math.Max(requiredTorsion + requiredShear, requiredFloor), 0.4 * b / (0.87 * designFy));
         var provided = Shear.LinkArea(link, ShearAxis.V2) / link.SpacingMm;
@@ -278,7 +304,12 @@ public static class BeamOperations
         var result = new TorsionCheckOutput(action.RowId, action.StationId, equivalentShear, torsionMoment,
             primaryMoment, oppositeMoment, tauVe, tauC, tauCMax, required, provided, maximumSpacing,
             [.. perimeterIds.Order(StringComparer.Ordinal)], flexure.ResultId, stressPass, transversePass,
-            longitudinalPass, perimeterPass);
+            longitudinalPass, perimeterPass,
+            torsion == 0 ? null : cornerWidth,
+            torsion == 0 ? null : cornerDepth,
+            torsion == 0 ? null : requiredTorsion,
+            torsion == 0 ? null : requiredShear,
+            torsion == 0 ? null : requiredFloor);
         return ResultFactory.Completed(TorsionCheckOperation, inputs, result, provenance,
             pass ? EngineeringState.Pass : EngineeringState.Fail, [.. diagnostics]);
     }

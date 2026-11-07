@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace StructuralEngineering.Contracts;
 
 public enum ExecutionState { Completed, RejectedInput, NotRun, SoftwareError, Cancelled }
@@ -250,4 +252,9 @@ public sealed record TorsionCheckOutput(
     bool StressPass,
     bool TransversePass,
     bool LongitudinalPass,
-    bool PerimeterPass);
+    bool PerimeterPass,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] double? CornerWidthMm = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] double? CornerDepthMm = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] double? TorsionAreaPerSpacingMm = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] double? ShearAreaPerSpacingMm = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] double? ShearFloorAreaPerSpacingMm = null);

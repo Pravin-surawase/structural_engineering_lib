@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from structural_lib.codes.is456 import tables
+from structural_lib.codes.is456.beam.torsion import calculate_torsion_stirrup_area
 
 from .flexure import (
     FlexuralCapacityRequest,
@@ -462,7 +463,12 @@ def check_torsion(request: TorsionCheckRequest) -> OperationResult:
         code_data_revision_id=request.code_data_revision_id,
     )
     provenance = _provenance(
-        "is456-torsion-check-wp02-v2", request.code_data_revision_id
+        (
+            "is456-torsion-check-wp02-v3"
+            if request.action.torsion_knm != 0
+            else "is456-torsion-check-wp02-v2"
+        ),
+        request.code_data_revision_id,
     )
     action = request.action
     if action.action_basis not in (
@@ -650,6 +656,42 @@ def check_torsion(request: TorsionCheckRequest) -> OperationResult:
         else False
     )
     perimeter_pass = perimeter_resolved and has_four_corners
+    corner_width = corner_depth = 0.0
+    if action.torsion_knm != 0 and perimeter_bars:
+        left = min(bar.x_from_left_mm for bar in perimeter_bars)
+        right = max(bar.x_from_left_mm for bar in perimeter_bars)
+        top = min(bar.y_from_top_mm for bar in perimeter_bars)
+        bottom = max(bar.y_from_top_mm for bar in perimeter_bars)
+        corner_width, corner_depth = right - left, bottom - top
+        aligned_corners = all(
+            any(
+                math.isclose(bar.x_from_left_mm, x, rel_tol=0, abs_tol=1e-9)
+                and math.isclose(bar.y_from_top_mm, y, rel_tol=0, abs_tol=1e-9)
+                for bar in face_bars
+            )
+            for x, y, face_bars in (
+                (left, top, top_perimeter),
+                (right, top, top_perimeter),
+                (left, bottom, bottom_perimeter),
+                (right, bottom, bottom_perimeter),
+            )
+        )
+        perimeter_pass = perimeter_pass and aligned_corners
+    if action.torsion_knm != 0 and (
+        not perimeter_pass or corner_width <= 0 or corner_depth <= 0
+    ):
+        return not_evaluated_result(
+            TORSION_CHECK_OPERATION,
+            inputs,
+            _diagnostic(
+                TORSION_CHECK_OPERATION,
+                "TORSION.CORNER_GEOMETRY_REQUIRED",
+                "The torsion equation requires four identified rectangular corner-bar centres.",
+                "perimeter_bar_ids",
+                "Resolve aligned top and bottom corner bars for b1 and d1.",
+            ),
+            provenance=provenance,
+        )
     b = section_width
     depth = section_depth
     active_tension_face = Face.BOTTOM if action.m3_knm >= 0 else Face.TOP
@@ -729,14 +771,22 @@ def check_torsion(request: TorsionCheckRequest) -> OperationResult:
     )
     tau_ve = equivalent_shear_kn * 1000.0 / (b * d)
     design_fy = min(415.0, link.steel_yield_strength_n_per_mm2)
-    required_torsion = (
-        torsion * 1e6 / (link.centre_width_mm * link.centre_depth_mm * 0.87 * design_fy)
-    )
-    required_shear = shear * 1000.0 / (2.5 * link.centre_depth_mm * 0.87 * design_fy)
+    # Cl. 41.4.3 uses longitudinal corner-bar centres, while the spacing rule
+    # below uses the transverse stirrup dimensions.
     required_floor = max(0.0, (tau_ve - tau_c) * b / (0.87 * design_fy))
-    required_area_per_spacing = max(
-        required_torsion + required_shear, required_floor, 0.4 * b / (0.87 * design_fy)
-    )
+    if torsion:
+        required_torsion, required_shear, required_combined = (
+            calculate_torsion_stirrup_area(
+                torsion, shear, b, d, corner_width, corner_depth, design_fy, tau_c
+            )
+        )
+    else:
+        required_torsion = 0.0
+        required_shear = (
+            shear * 1000.0 / (2.5 * link.centre_depth_mm * 0.87 * design_fy)
+        )
+        required_combined = max(required_shear, required_floor)
+    required_area_per_spacing = max(required_combined, 0.4 * b / (0.87 * design_fy))
     provided_area_per_spacing = _link_area(link, ShearAxis.V2) / link.spacing_mm
     maximum_spacing = min(
         0.75 * d,
@@ -797,6 +847,17 @@ def check_torsion(request: TorsionCheckRequest) -> OperationResult:
         TORSION_CHECK_OPERATION,
         inputs,
         {
+            **(
+                {
+                    "corner_width_mm": corner_width,
+                    "corner_depth_mm": corner_depth,
+                    "torsion_area_per_spacing_mm": required_torsion,
+                    "shear_area_per_spacing_mm": required_shear,
+                    "shear_floor_area_per_spacing_mm": required_floor,
+                }
+                if torsion
+                else {}
+            ),
             "action_row_id": action.row_id,
             "station_id": action.station_id,
             "equivalent_shear_kn": equivalent_shear_kn,
