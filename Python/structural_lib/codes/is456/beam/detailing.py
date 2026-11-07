@@ -784,6 +784,48 @@ def calculate_stirrup_anchorage(
     }
 
 
+@clause("26.2.2")
+def ordinary_link_anchorage_limits(
+    diameter_mm: float, angle_degrees: int
+) -> tuple[float, float]:
+    """Return minimum tangent tail and internal radius, in mm.
+
+    IS 456 Cl. 26.2.2.4(b), ordinary secondary reinforcement only.
+    The bend is made around a bar
+    at least its own diameter; internal radius is half that mandrel diameter.
+    These are acceptance limits, not a fabrication radius recommendation.
+    """
+    diameter_mm = require_positive_real(diameter_mm, "diameter_mm")
+    factors = {90: 8, 135: 6, 180: 4}
+    if type(angle_degrees) is not int or angle_degrees not in factors:
+        raise ConfigurationError("Ordinary link angle must be 90, 135 or 180 degrees")
+    return factors[angle_degrees] * diameter_mm, diameter_mm / 2
+
+
+@clause("26.4")
+def mild_exposure_limits(
+    largest_bar_diameter_mm: float, cement_type: str
+) -> dict[str, float]:
+    """Normalized Tables 5/16 limits for reinforced concrete, 20 mm aggregate.
+
+    IS 456 Table 5, Table 16, Cl. 26.4.1 and Amendment 6 Table 5 note.
+    No cover reduction, aggregate adjustment or special exposure/fire claim.
+    """
+    diameter = require_positive_real(largest_bar_diameter_mm, "largest_bar_diameter_mm")
+    reductions = {"ordinary_portland": 0.0, "portland_calcined_clay_limestone": 0.05}
+    if cement_type not in reductions:
+        raise ConfigurationError(
+            "Unsupported cement type in the mild durability profile"
+        )
+    return {
+        "minimum_cover_mm": max(20.0, diameter),
+        "minimum_grade_nmm2": 20.0,
+        "minimum_cement_kg_per_m3": 300.0,
+        "maximum_cement_without_special_consideration_kg_per_m3": 450.0,
+        "maximum_water_cement_ratio": 0.55 - reductions[cement_type],
+    }
+
+
 @dataclass
 class AnchorageCheckResult:
     """Result of anchorage check at simple support.

@@ -59,7 +59,7 @@ public static class Detailing
                 !Finite(path.PathStartXMm, path.PathEndXMm, path.CriticalSectionXMm) || path.PathStartXMm >= path.PathEndXMm ||
                 path.CriticalSectionXMm < path.PathStartXMm || path.CriticalSectionXMm > path.PathEndXMm)
                 return Rejected<AnchorageCheckOutput>(AnchorageCheckOperation, inputs, source, "PATH.GEOMETRY", "Each bar needs an ordered path, critical section, direction, and location.", $"paths[{path.BarId}]");
-            var atSupport = path.Location is AnchorageLocation.SimpleSupport or AnchorageLocation.ContinuousSupport;
+            var atSupport = path.Location is AnchorageLocation.SimpleSupport or AnchorageLocation.ContinuousSupport or AnchorageLocation.DirectSupport;
             if (atSupport && (!Text(path.SupportId) || path.SupportNearFaceXMm is null || path.SupportCentreXMm is null ||
                 !Finite(path.SupportNearFaceXMm.Value, path.SupportCentreXMm.Value) || Math.Abs(path.CriticalSectionXMm - path.SupportNearFaceXMm.Value) > 1e-9))
                 return Rejected<AnchorageCheckOutput>(AnchorageCheckOperation, inputs, source, "SUPPORT.FACE_REQUIRED", "Support anchorage requires separate support identity, near-face, and centre coordinates; the critical section is the near face.", $"paths[{path.BarId}].support");

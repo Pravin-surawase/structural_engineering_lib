@@ -91,6 +91,16 @@ from .member import (
     MemberScopeInstance,
     design_member,
 )
+from .physical_torsion import (
+    BearingReactionLine,
+    ClosedLinkDetailRequest,
+    MildDurabilityRequest,
+    TorqueSupportDetail,
+    TorsionSupportTransferRequest,
+    check_closed_link_detail,
+    check_mild_durability,
+    check_torsion_support_transfer,
+)
 from .project import (
     BeamDesignProfile,
     BeamProject,
@@ -158,6 +168,14 @@ from .shear_torsion import (
 )
 
 __all__ = [
+    "BearingReactionLine",
+    "ClosedLinkDetailRequest",
+    "MildDurabilityRequest",
+    "TorqueSupportDetail",
+    "TorsionSupportTransferRequest",
+    "check_closed_link_detail",
+    "check_mild_durability",
+    "check_torsion_support_transfer",
     "ActionBasis",
     "ActionConcurrency",
     "ApplicabilityState",
