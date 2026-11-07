@@ -18,7 +18,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-from .release_qualification import inspect_distribution_pair
+from .release_qualification import inspect_distribution_pair, required_profiles
 
 
 def encoded(value: Any) -> bytes:
@@ -113,7 +113,8 @@ def verify_retained(
     if pair["package_payload_sha256"] != record["package_payload_sha256"]:
         raise ValueError("Qualified package payload changed")
     qualification = record["qualification"]
-    if len(qualification["profiles"]) != 16 or set(
+    expected_profiles = set(required_profiles(version, pair["declared_extras"]))
+    if set(qualification["profiles"]) != expected_profiles or set(
         qualification["profiles"].values()
     ) != {"PASS"}:
         raise ValueError("Complete S5 installed qualification is required")

@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: Goal 5 — prepare and qualify the exact versioned 0.27.0 wheel and sdist. Packet E's bounded T member and installed development-wheel replay are delivered; publication remains separate.
-- Completed: Goals 1–4 and closure Packets A–E for their documented profiles. D3 qualifies 31 obligations; both E members qualify 30, with 46 beam paths and explicit local flange provision. FAIL/HOLD and engineering approval remain separate.
+- Focus: 0.27.0 publication handoff — exact archives qualified; obtain version/target-specific owner authorization before TestPyPI, tagging, PyPI or GitHub Release. Reuse retained bytes.
+- Completed: Goals 1–4, selected closure Packets A–E and Goal 5 archive qualification. All 18 profiles pass; both archive beam/column runs pass 378 tests plus 13 T-member journeys. Required final hosted/integration facts belong to GitHub. FAIL/HOLD and professional approval remain separate.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
@@ -14,7 +14,7 @@
 | Release | Current state |
 |---|---|
 | **Current** | 0.26.0 is published and verified in the [release ledger](../getting-started/releases.md#v0260-published-and-verified). |
-| **Next** | 0.27.0 includes the selected section, column, torsion-member and sagging T-member work. Goal 5 must qualify both exact versioned archives before release authorization and publication. |
+| **Next** | 0.27.0's exact wheel/sdist are qualified. Publication is pending separate owner authorization, TestPyPI verification, exact tagging and public file readback. |
 
 
 Goal 1 froze and replayed the
@@ -52,8 +52,8 @@ indirect service stress/detail crack control. The full31-leaf case produces
 issue_ready outputs; the original D2-only command remains HOLD. Nonzero
 permanent torque, finite imposed duration and missing/asymmetric boundary
 evidence remain HOLD. Follow the guide's actual source and model boundaries.
-[LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) now prepares
-the versioned candidate after Packet E integration.
+[LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) now owns the
+publication handoff after exact archive qualification.
 [Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)
 
 The [Packet E delivery record](library-usability-improvement.md#packet-e-implementation-plan--ordinary-sagging-t-beam-member)
@@ -74,6 +74,20 @@ failure and three missing-evidence controls remain draft. Goal 5 must replay
 these and D3 controls from **both** exact 0.27.0 archives. No tag, registry
 publication or GitHub Release was performed by Packet E. Required hosted
 checks and exact integration identities are recorded in GitHub.
+
+Goal 5 now qualifies the exact **0.27.0** wheel and sdist, superseding the
+development-wheel evidence for release preparation. See the
+[retained artifact record](../verification/library-0270-release-artifacts.json).
+All 18 profiles pass; each archive's copied beam/column corpus passes 378
+tests with no failures/errors/skips, plus independent and public-driver
+replays. Both base installs pass 29 UAT cases and 106 inherited numerical
+comparisons. Initial broad source-gate failures were repaired in generated
+manifests and explicit-unit recognition, with focused evidence; packaged
+bytes and frozen Python tree remain unchanged. Reuse the retained files in
+`output/releases/0.27.0/9a78d2be9314/dist/`. Bind the observed GitHub merge
+and final required PR/Weekly checks in the publication packet. The user
+authorized qualification/readiness reporting, not publication. Professional,
+unsupported engineering and installed-native boundaries remain explicit.
 
 ## Historical S6 handoff — 29 October 2026
 

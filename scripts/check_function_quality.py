@@ -88,6 +88,7 @@ UNIT_SUFFIXES = {
     "_percent",
     "_nmm2",
     "_deg",
+    "_degrees",
     "_days",
     "_months",
 }

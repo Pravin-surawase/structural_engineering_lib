@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.27.0] — Prepared candidate (unreleased; on hold)
+
+This candidate closes the selected beam and column profiles. Exact wheel and
+source-distribution qualification, independent software review and required
+hosted checks precede release authorization. No tag or publication follows
+from this entry. Beta maturity and professional-review boundaries remain.
+
+### Added
+
+- Reproducible three-section beam comparisons and layered rectangular column
+  response at prescribed neutral axes, including partial compression, mixed
+  diameters, the 900 mm reference and the full-depth boundary.
+- Supplied inclined stirrup/bent-up shear and independently verified sagging
+  flange compression branches with explicit unsupported force-gap behavior.
+- Physical four-corner column checks in both principal directions, actual ties
+  and matching JSON/HTML with overload, inadequate and missing-tie controls.
+- One ordinary rectangular torsion member with physical support transfer,
+  actual cage/hooks and anchorage, plus a separately qualified transient
+  service model. Other service histories/boundaries retain HOLD.
+- Ordinary monolithic sagging T-member workflows with actual T containment,
+  web shear/cage, local flange provision, anchorage, bounded service screening
+  and matching paths, BBS, quantities, JSON and HTML. Nonzero T-member torsion
+  remains unsupported. Native additions preserve generic flange path roles;
+  they do not add a native T-member API.
+- Both archive installations replay the selected beam/column references,
+  complete members and FAIL/HOLD controls from copied consumer drivers.
+
 ### Fixed
 
 - Calculation reports use current beam design results and show selected steel
@@ -11,6 +38,8 @@ All notable changes to this project will be documented in this file.
   why a physical layout is unavailable.
 - Corrected the combined beam and report examples, published-package install
   and API guidance, and the CLI and Python report format descriptions.
+- Torsion station checks use longitudinal corner-bar centres for the source
+  geometry term while retaining link dimensions for the pitch rule.
 
 ## [0.26.0] — 2026-10-29
 

@@ -5,7 +5,7 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-06
+**Last Updated:** 2026-11-07
 
 ## Current State
 
@@ -18,9 +18,21 @@ must qualify before Goal 5 freezes the 0.27.0 candidate. Goal 5 also
 replays the consumer fixes merged in PR #1045.
 The S5 checklist below preserves the 29 October prepublication snapshot.
 
-## S5 prepublication snapshot
+## Goal 5 candidate qualification
 
-Current source metadata: 0.26.0 (prepared candidate; unpublished/on hold)
+Current source metadata: 0.27.0 (prepared candidate; unpublished/on hold)
+Current public release: v0.26.0
+
+- Base: Packet E PR #1061 merged at `4eebc897f084e71165061c9d17ce89a867dadafa`.
+- Qualified one retained wheel and sdist: all 18 profiles, 378 beam/column/consumer tests per archive, selected A–E and PR #1045 regressions pass.
+  [Retained artifact record](../verification/library-0270-release-artifacts.json).
+- Preserve failed/held member outputs as draft and engineering approval unreviewed.
+- Independent exact-candidate review and required PR/Weekly checks precede readiness.
+- Target-specific owner authorization, TestPyPI, tag, PyPI and GitHub Release remain pending.
+
+## Historical S5 prepublication snapshot — 29 October 2026
+
+Historical source metadata: 0.26.0 (then prepared/unpublished)
 Current public release: v0.25.0
 
 - **Candidate base:** S4 PR #1039 merged at `a39e02b24c85ed1c2852021c3e511375366b9112`.
