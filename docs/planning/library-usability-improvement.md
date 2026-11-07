@@ -268,12 +268,17 @@ retains the supplied 5000 mm analysis span separately from the Cl. 22.2
 effective-span geometry of 4350 mm; no action target was changed to the
 shorter span. Exact signed row targets, source identities, Ld, hook and
 physical-length targets are independently replayable.
+The nine concurrent action rows include both exact combined bending/torsion
+peaks either side of midspan; the governing equivalent moment is
+37.528258362 kNm rather than the plain bending peak of 37.5 kNm.
 
 For the eccentric 12 N/mm load, each end transfers 30 kN and an external
 -1.5 kNm torque through named reaction lines into a transverse receiver
 crosshead. Both support couples have the same global sign. The receiver
 loads, geometry, topology, case and real section flexure/shear results
 are bound together, including explicit gross factored receiver self-weight;
+actual receiver bars are staggered from the primary main bars and links,
+with a conservative 25 mm minimum crossing clearance against resolved paths;
 its end reactions define the supporting-system
 boundary. This packet does not design bearing/contact stresses, receiver
 end connections, other supporting members or foundations.
@@ -285,7 +290,7 @@ without a flexural M/V reduction. The actual path/cage binding, ordinary
 mild-exposure mix/cover are checked. The ordinary 135°/180° source limits
 are preserved without importing seismic tail floors.
 
-The profile declares 29 leaves before execution: 26 D2 qualifications and
+The profile declares 31 leaves before execution: 28 D2 qualifications and
 three held serviceability leaves. Draft JSON, BBS and HTML keep D2 results,
 the 54 physical paths and the D3 HOLD distinct. Inadequate or missing D2
 evidence cannot remove an obligation or turn the member into an accepted

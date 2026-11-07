@@ -14,7 +14,9 @@
     "statics": "Independent force/moment equilibrium for eccentric uniform vertical load; right-handed e1 X, e2 vertical Y, e3 transverse Z. External support T=-sum(Rup*(z-zref)) at BOTH ends; internal cut T changes sign.",
     "geometry": "Straight lengths plus circular fillets: sum(chords)-sum(2*r*tan(theta/2)-r*theta). Shared Euclidean geometry identity, no library calculation import.",
     "span_basis": "Provided statical analysis uses real 5000 mm support centres. The separate Cl22.2 effective-span geometry is min(4000+350,5000)=4350 mm; it is not substituted into the supplied action diagram.",
-    "receiver_load_revision": "Transfer-only component preserved; independently frozen total ULS receiver targets add gross1000x400 self-weight at25kN/m3 and factor1.5. No embedded-primary overlap deduction; symmetric gross weight has zero torque about receiver centre."
+    "receiver_load_revision": "Transfer-only component preserved; independently frozen total ULS receiver targets add gross1000x400 self-weight at25kN/m3 and factor1.5. No embedded-primary overlap deduction; symmetric gross weight has zero torque about receiver centre.",
+    "governing_stations": "Derivative of the concurrent uniform-load M(x)+Mt(absT(x)) gives x=L/2 +/- abs(e)*(1+D/b)/1.7. Both exact peak rows are retained; plain bending peaks at midspan.",
+    "joint_clearance": "Receiver bars are staggered from primary main bars and actual link planes. The conservative projected-path clearance is checked with the maintained ordinary clear-spacing owner (25mm for20mm aggregate/diameter). This is geometry, not receiver-joint capacity."
   },
   "inputs": {
     "b_mm": 300,
@@ -39,7 +41,18 @@
     "link_spacing_mm": 100,
     "cement_type": "ordinary_portland",
     "receiver_unit_weight_kn_per_m3": 25,
-    "receiver_self_weight_factor": 1.5
+    "receiver_self_weight_factor": 1.5,
+    "receiver_bar_section_x_mm": [
+      100,
+      400,
+      700,
+      900
+    ],
+    "receiver_bar_depths_mm": [
+      95,
+      305
+    ],
+    "receiver_aggregate_mm": 20
   },
   "expected": {
     "action_rows": [
@@ -62,10 +75,22 @@
         "torsion_knm": 0.99
       },
       {
+        "station_mm": 2431.372549019608,
+        "v2_kn": 0.8235294117647045,
+        "m3_knm": 37.4717416378316,
+        "torsion_knm": 0.04117647058823523
+      },
+      {
         "station_mm": 2500,
         "v2_kn": 0.0,
         "m3_knm": 37.5,
         "torsion_knm": 0.0
+      },
+      {
+        "station_mm": 2568.627450980392,
+        "v2_kn": -0.8235294117647045,
+        "m3_knm": 37.471741637831606,
+        "torsion_knm": -0.04117647058823523
       },
       {
         "station_mm": 4150,
@@ -145,7 +170,11 @@
     "receiver_transfer_only_peak_moment_knm": 21.7,
     "receiver_transfer_only_peak_shear_kn": 15.5,
     "receiver_factored_self_weight_n_per_mm": 15,
-    "receiver_gross_factored_self_weight_kn": 45
+    "receiver_gross_factored_self_weight_kn": 45,
+    "governing_equivalent_moment_knm": 37.5282583621684,
+    "expected_leaf_count": 31,
+    "d2_qualification_count": 28,
+    "minimum_receiver_primary_crossing_clearance_mm": 25
   },
   "absolute_tolerances": {
     "action_kN_kNm": 1e-08,

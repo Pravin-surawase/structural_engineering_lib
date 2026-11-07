@@ -102,8 +102,8 @@ def test_every_face_end_has_full_stress_direct_tension_anchorage(workflow):
 
 def test_full_expected_set_and_d3_hold_survive_d2_pass(workflow):
     member = workflow.results["member"].output_as("member_design", b.MemberDesignOutput)
-    assert len(member.expected_leaves) == 29
-    assert sum(q.qualified for q in member.leaf_qualifications) == 26
+    assert len(member.expected_leaves) == 31
+    assert sum(q.qualified for q in member.leaf_qualifications) == 28
     assert {
         q.expectation.rule_id for q in member.leaf_qualifications if not q.qualified
     } == {"crack", "deflection", "torsional_sls"}
@@ -176,7 +176,7 @@ def test_missing_transfer_is_hold_and_cannot_shrink_expected_checks(workflow):
     w = EXAMPLE["run_workflow"](omit_checks=("support_transfer",))
     assert w.d2_status == "HOLD"
     member = w.results["member"].output_as("member_design", b.MemberDesignOutput)
-    assert len(member.expected_leaves) == 29
+    assert len(member.expected_leaves) == 31
     q = next(
         q
         for q in member.leaf_qualifications
@@ -208,13 +208,23 @@ def test_actual_longitudinal_paths_cannot_differ_from_checked_cage(workflow):
         "wrong_bars",
         "wrong_load_case",
         "missing_self_weight",
+        "crossing_bar_collision",
+        "missing_primary_path",
         "stale",
     ),
 )
 def test_receiver_and_source_are_bound_to_actual_scope(workflow, change):
     req = request_for(workflow, "support_transfer", b.TorsionSupportTransferRequest)
     support = req.supports[0]
-    if change == "stale":
+    if change == "missing_primary_path":
+        req = replace(
+            req,
+            primary_paths=replace(
+                req.primary_paths,
+                paths=tuple(p for p in req.primary_paths.paths if p.bar_id != "TL"),
+            ),
+        )
+    elif change == "stale":
         req = replace(
             req,
             action_snapshot=replace(
@@ -265,6 +275,17 @@ def test_receiver_and_source_are_bound_to_actual_scope(workflow, change):
                     support.receiver_section,
                     bars=tuple(
                         replace(p, x_from_left_mm=1500)
+                        for p in support.receiver_section.bars
+                    ),
+                ),
+            )
+        if change == "crossing_bar_collision":
+            support = replace(
+                support,
+                receiver_section=replace(
+                    support.receiver_section,
+                    bars=tuple(
+                        replace(p, y_from_top_mm=50 if p.face is b.Face.TOP else 350)
                         for p in support.receiver_section.bars
                     ),
                 ),
@@ -323,3 +344,22 @@ def test_opposite_torsion_sign_has_balanced_same_orientation_support_couples():
     transfer = workflow.results["support_transfer"]
     assert transfer.outputs["global_equilibrium_pass"] is True
     assert [c["external_torque_knm"] for c in transfer.outputs["checks"]] == [1.5, 1.5]
+
+
+def test_true_combined_peak_and_crossing_clearance_are_checked(workflow):
+    target = REFERENCE["expected"]
+    peak = max(
+        result.outputs["primary_equivalent_moment_knm"]
+        for name, result in workflow.results.items()
+        if name.startswith("torsion-")
+    )
+    assert peak == pytest.approx(
+        target["governing_equivalent_moment_knm"], abs=1e-8, rel=0
+    )
+    assert peak > 37.5
+    for check in workflow.results["support_transfer"].outputs["checks"]:
+        assert check["receiver_bar_crossing_pass"] is True
+        assert check["minimum_receiver_primary_bar_clearance_mm"] == pytest.approx(
+            target["minimum_receiver_primary_crossing_clearance_mm"], abs=1e-8, rel=0
+        )
+        assert check["primary_path_result_id"] == workflow.results["paths"].result_id

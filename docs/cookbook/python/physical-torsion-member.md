@@ -54,18 +54,24 @@ The supplied analysis applies 12 N/mm downward over the 5000 mm support
 centre span at transverse eccentricity 50 mm. This deliberately retains
 the supplied centre-span action basis. The separate Cl. 22.2 topology
 effective-span value is 4350 mm; it is not substituted into those actions.
-The planar solver supplies V/M only. Independent static torque equilibrium
-supplies T, with all three components bound to each normalized source row.
+Closed-form static equilibrium supplies each concurrent source row,
+including the two exact combined-moment peaks. The independent planar
+solve cross-checks regular V/M stations; it supplies no torsional stiffness.
 
 | Station (mm) | V2 (kN) | M3 (kNm) | Internal T (kNm) |
 |---:|---:|---:|---:|
 | 0 | 30 | 0 | 1.5 |
 | 500, left face | 24 | 13.5 | 1.2 |
 | 850, d inside face | 19.8 | 21.165 | 0.99 |
+| 2431.372549, combined peak | 0.823529 | 37.471742 | 0.041176 |
 | 2500 | 0 | 37.5 | 0 |
+| 2568.627451, combined peak | -0.823529 | 37.471742 | -0.041176 |
 | 4150, d inside face | -19.8 | 21.165 | -0.99 |
 | 4500, right face | -24 | 13.5 | -1.2 |
 | 5000 | -30 | 0 | -1.5 |
+
+The governing primary equivalent moment is 37.528258362 kNm, slightly
+above the plain-bending midspan value. Both peak rows are checked.
 
 ## Torque transfer into the receiving system
 
@@ -80,8 +86,15 @@ At each support, actual upward reaction lines at transverse offsets
 -100/+100 mm carry 7.5/22.5 kN. Their sum is 30 kN. The opposite downward
 loads enter a transverse 3000 mm receiver crosshead at its stations
 1400/1600 mm. The crosshead is 1000 × 400 mm, M25/Fe415, with four
-Ø20 bars on each face at transverse section coordinates 50/350/650/950
-mm and depths 50/350 mm. Its declared four active Ø8 legs at 100 mm
+Ø20 bars on each face at section coordinates 100/400/700/900
+mm and depths 95/305 mm. Both sections share the same physical top datum.
+The staggered depths and horizontal positions
+avoid the actual primary main bars and link planes in the support joints.
+The transfer check binds the primary path request and verifies conservative
+projected crossing clearance, including circular bends. The governing
+clearance is 25 mm under the maintained ordinary bar-spacing criterion.
+This is a geometric clearance check, not a receiver-joint capacity check.
+The receiver's declared four active Ø8 legs at 100 mm
 provide section shear reinforcement. Receiver geometry, load identity,
 topology and source case are checked before section strength.
 
@@ -130,7 +143,7 @@ fields; `pydantic.TypeAdapter(RequestType).json_schema()` exposes the JSON
 schema. The workflow example shows complete request construction.
 No new HTTP or native-host route is claimed by this Python packet.
 
-The profile freezes 29 expected leaves before execution. Twenty-six D2
+The profile freezes 31 expected leaves before execution. Twenty-eight D2
 leaves qualify; flexural deflection, flexural cracking and torsional
 serviceability remain missing for D3. An ordinary non-seismic
 non-applicability result is qualified explicitly. The ordinary 19-leaf and
@@ -148,6 +161,7 @@ and [standard-library replay](../../verification/check_library_027_torsion_physi
 were prepared before production calculations. Tests replay adequate and
 insufficient anchorage, short hooks, mismatched actual pitch, reversed
 support couples, insufficient receiver/main steel, missing transfer
-evidence, changed/stale receiver bindings, and zero torsion. D3 HOLD is
+evidence, changed/stale receiver bindings, colliding support bars, both
+torsion signs and zero torsion. D3 HOLD is
 retained throughout. Its torsional serviceability method and applicable
 criteria must be independently verified before full member acceptance.

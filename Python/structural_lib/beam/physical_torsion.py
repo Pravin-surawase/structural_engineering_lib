@@ -10,6 +10,7 @@ import math
 from dataclasses import dataclass
 
 from structural_lib.codes.is456.beam.detailing import (
+    check_min_spacing,
     mild_exposure_limits,
     ordinary_link_anchorage_limits,
 )
@@ -27,6 +28,7 @@ from .bar_paths import (
     BarPathRole,
     BendKind,
     PathSegmentKind,
+    ResolvedBarPath,
     resolve_bar_paths,
 )
 from .detailing import (
@@ -115,6 +117,7 @@ class TorqueSupportDetail:
     receiver_nominal_cover_mm: float
     receiver_unit_weight_kn_per_m3: float
     receiver_self_weight_factor: float
+    receiver_maximum_aggregate_size_mm: float
     bearing_lines: tuple[BearingReactionLine, ...]
     torque_reference_station_mm: float
     load_path_reference: str
@@ -128,6 +131,7 @@ class TorsionSupportTransferRequest:
     action_snapshot: OperationResult
     primary_topology: BeamTopologyRequest
     primary_section: FlexuralCapacityRequest
+    primary_paths: BarPathRequest
     applied_vertical_load_kn: float
     applied_torque_knm: float
     supports: tuple[TorqueSupportDetail, ...]
@@ -166,6 +170,54 @@ def _passed(result: OperationResult) -> bool:
         result.execution is ExecutionState.COMPLETED
         and result.engineering is EngineeringState.PASS
     )
+
+
+def _crossing_clearance_mm(
+    x: float, y: float, diameter: float, path: ResolvedBarPath
+) -> float | None:
+    """Conservative surface clearance to a transverse receiver bar axis.
+
+    Project primary segments onto member-station/depth coordinates. Straight
+    projection distance is exact for an extended transverse axis; a projected
+    arc lies inside its centre/radius disk, giving a conservative lower bound.
+    """
+    gaps = []
+    for segment in path.segments:
+        if segment.kind is PathSegmentKind.BEND_ARC:
+            centre, radius = segment.bend_centre, segment.bend_radius_mm
+            if centre is None or radius is None:
+                return None
+            distance = max(
+                0.0,
+                math.hypot(x - centre.station_x_mm, y - centre.section_y_from_top_mm)
+                - radius,
+            )
+        else:
+            start, end = segment.start, segment.end
+            dx = end.station_x_mm - start.station_x_mm
+            dy = end.section_y_from_top_mm - start.section_y_from_top_mm
+            length2 = dx * dx + dy * dy
+            fraction = (
+                max(
+                    0.0,
+                    min(
+                        1.0,
+                        (
+                            (x - start.station_x_mm) * dx
+                            + (y - start.section_y_from_top_mm) * dy
+                        )
+                        / length2,
+                    ),
+                )
+                if length2
+                else 0.0
+            )
+            distance = math.hypot(
+                x - start.station_x_mm - fraction * dx,
+                y - start.section_y_from_top_mm - fraction * dy,
+            )
+        gaps.append(distance - (diameter + path.diameter_mm) / 2)
+    return min(gaps) if gaps else None
 
 
 def check_mild_durability(request: MildDurabilityRequest) -> OperationResult:
@@ -504,7 +556,8 @@ def check_torsion_support_transfer(
     Right-handed e1 along primary member, e2 vertically up, e3 transverse:
     external primary torque is minus sum(upward reaction * transverse arm).
     The receiver takes the opposite downward loads. Its own end reactions
-    are this operation's supporting-system boundary.
+    are this operation's supporting-system boundary. Primary and receiver
+    section depths share the same physical top datum in this profile.
     """
     op = TRANSFER_OPERATION
     inputs, provenance = effective_inputs(request=request), _provenance(op)
@@ -529,6 +582,68 @@ def check_torsion_support_transfer(
         )
     rows = {r["source_row_id"]: r for r in snapshot.outputs.get("rows", ())}
     primary = request.primary_topology
+    primary_path_result = resolve_bar_paths(request.primary_paths)
+    path_request = request.primary_paths
+    if (
+        not _passed(primary_path_result)
+        or path_request.member_id != request.member_id
+        or path_request.profile_id != request.profile_id
+        or path_request.detail_revision_id != request.reinforcement_revision_id
+        or path_request.section_width_mm != request.primary_section.web_width_mm
+        or path_request.section_depth_mm != request.primary_section.depth_mm
+        or path_request.topology_revision_id != define_beam_topology(primary).result_id
+    ):
+        return rejected_result(
+            op,
+            inputs,
+            (
+                _diag(
+                    op,
+                    "SUPPORT.PATH_BINDING",
+                    "primary_paths",
+                    "Receiver clearance requires the same current primary physical paths and topology.",
+                ),
+            ),
+            provenance=provenance,
+        )
+    primary_schedule = primary_path_result.output_as(
+        "reinforcement_schedule", BarPathOutput
+    )
+    main_seeds = {
+        p.bar_id: p
+        for p in path_request.paths
+        if p.role in (BarPathRole.TOP_LONGITUDINAL, BarPathRole.BOTTOM_LONGITUDINAL)
+    }
+    section_binding = set(main_seeds) == {
+        bar.bar_id for bar in request.primary_section.bars
+    }
+    for bar in request.primary_section.bars:
+        seed = main_seeds.get(bar.bar_id)
+        section_binding = section_binding and seed is not None
+        if seed is not None:
+            section_binding = (
+                section_binding
+                and seed.diameter_mm == bar.diameter_mm
+                and all(
+                    node.point.section_x_from_left_mm == bar.x_from_left_mm
+                    and node.point.section_y_from_top_mm == bar.y_from_top_mm
+                    for node in seed.nodes
+                )
+            )
+    if not section_binding:
+        return rejected_result(
+            op,
+            inputs,
+            (
+                _diag(
+                    op,
+                    "SUPPORT.PRIMARY_SECTION_BINDING",
+                    "primary_paths,primary_section",
+                    "Receiver clearance must use all actual primary section bars at their checked coordinates.",
+                ),
+            ),
+            provenance=provenance,
+        )
     if (
         not _passed(define_beam_topology(primary))
         or primary.member_id != request.member_id
@@ -711,6 +826,7 @@ def check_torsion_support_transfer(
             and len(analysis.nodes) == 2
             and _positive(support.receiver_unit_weight_kn_per_m3)
             and _positive(support.receiver_self_weight_factor)
+            and _positive(support.receiver_maximum_aggregate_size_mm)
             and math.isclose(
                 analysis.elements[0].uniform_load_n_per_mm,
                 -self_weight,
@@ -825,6 +941,34 @@ def check_torsion_support_transfer(
                 section.bars,
             )
         )
+        gaps = []
+        crossing_pass = True
+        for bar in section.bars:
+            for path in primary_schedule.paths:
+                gap = _crossing_clearance_mm(
+                    physical.left_face_x_mm + bar.x_from_left_mm,
+                    bar.y_from_top_mm,
+                    bar.diameter_mm,
+                    path,
+                )
+                if gap is None:
+                    crossing_pass = False
+                    continue
+                gaps.append(gap)
+                diameter = max(bar.diameter_mm, path.diameter_mm)
+                passed, _ = check_min_spacing(
+                    gap + diameter, diameter, support.receiver_maximum_aggregate_size_mm
+                )
+                crossing_pass = crossing_pass and passed
+        if not crossing_pass:
+            diagnostics.append(
+                _diag(
+                    op,
+                    "SUPPORT.RECEIVER_BAR_CLEARANCE",
+                    support.support_id,
+                    "Receiver bars do not meet the conservative crossing-clearance criterion against actual primary paths.",
+                )
+            )
         flexure = check_flexure(
             FlexureCheckRequest(section, positive_design_moment_knm=moment)
         )
@@ -886,6 +1030,11 @@ def check_torsion_support_transfer(
                 "receiver_moment_knm": moment,
                 "receiver_shear_kn": shear,
                 "receiver_factored_self_weight_n_per_mm": self_weight,
+                "minimum_receiver_primary_bar_clearance_mm": (
+                    min(gaps) if gaps else None
+                ),
+                "receiver_bar_crossing_pass": crossing_pass,
+                "primary_path_result_id": primary_path_result.result_id,
             }
         )
     equilibrium = math.isclose(

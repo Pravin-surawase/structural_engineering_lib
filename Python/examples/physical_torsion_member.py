@@ -21,7 +21,7 @@ PROFILE = "LIB-027-D2"
 MEMBER = "TORSION-B1"
 DETAIL = "4T20-L8-100-r1"
 SOURCE = "IS 456:2000 through Amendment 6; frozen LIB-027-D2 physical case"
-STATIONS = (0, 500, 850, 2500, 4150, 4500, 5000)
+STATIONS = (0, 500, 850, 2431.372549019608, 2500, 2568.627450980392, 4150, 4500, 5000)
 RULES = (
     (
         "geometry",
@@ -168,8 +168,17 @@ def run_workflow(
     )
     results["analysis"] = b.solve_beam_line(analysis)
     solved = {row["x_mm"]: row for row in results["analysis"].outputs["stations"]}
-    # T is independently specified from the eccentric-load free body. The
-    # planar solver supplies V/M only; no torsional stiffness is inferred.
+    # The source provider is the closed-form eccentric-UDL free body. Exact
+    # equivalent-moment peak stations are frozen inputs for this worked case.
+    # The planar solve independently cross-checks the regular V/M stations;
+    # it supplies no torsional stiffness or torsional serviceability claim.
+    for x in STATIONS:
+        if x in solved:
+            if (
+                abs(solved[x]["v2_n"] - load_n_per_mm * (2500 - x)) > 1e-6
+                or abs(solved[x]["m3_nmm"] - load_n_per_mm * x * (5000 - x) / 2) > 1e-3
+            ):
+                raise ValueError("Primary statical source disagrees with planar solve")
     raw = tuple(
         b.RawActionRow(
             f"ULS-{x}",
@@ -185,11 +194,11 @@ def run_workflow(
             None,
             b.ActionConcurrency.STATIC_CONCURRENT,
             0,
-            solved[x]["v2_n"],
+            load_n_per_mm * (2500 - x),
             0,
             load_n_per_mm * torsion_eccentricity_mm * (2500 - x),
             0,
-            solved[x]["m3_nmm"],
+            load_n_per_mm * x * (5000 - x) / 2,
         )
         for x in STATIONS
     )
@@ -524,7 +533,7 @@ def run_workflow(
             ),
             (
                 b.PhysicalSpan(
-                    "CS", "CL", "CR", 350, (b.SectionRegion("R", "1000x400", 0, 3000),)
+                    "CS", "CL", "CR", 305, (b.SectionRegion("R", "1000x400", 0, 3000),)
                 ),
             ),
             (b.AnalysisElementMapping("CE", "CS", 0, 3000),),
@@ -544,42 +553,46 @@ def run_workflow(
         )
         rbars = tuple(
             b.BarPosition(f"{face.value}-{y}", receiver_bar_diameter_mm, y, z, face)
-            for face, z in ((b.Face.TOP, 50), (b.Face.BOTTOM, 350))
-            for y in (50, 350, 650, 950)
+            for face, z in ((b.Face.TOP, 95), (b.Face.BOTTOM, 305))
+            for y in (100, 400, 700, 900)
         )
         rsection = b.FlexuralCapacityRequest(
             PROFILE, b.SectionKind.RECTANGULAR, 1000, 400, 25, 415, rbars, b.Face.BOTTOM
         )
         supports.append(
             b.TorqueSupportDetail(
-                name,
-                f"ULS-{x}",
-                x,
-                reaction,
-                -torque,
-                rtop,
-                ranalysis,
-                rsection,
-                b.TransverseLink("C-L8", 8, 4, 4, 100, 415, True, 942, 342),
-                25,
-                25,
-                1.5,
-                lines,
-                1500,
-                "Two named vertical bearing lines into a transverse RC crosshead; receiver end supports are the supporting-system boundary.",
+                support_id=name,
+                source_row_id=f"ULS-{x}",
+                source_station_mm=x,
+                vertical_reaction_kn=reaction,
+                external_torque_reaction_knm=-torque,
+                receiver_topology=rtop,
+                receiver_analysis=ranalysis,
+                receiver_section=rsection,
+                receiver_links=b.TransverseLink(
+                    "C-L8", 8, 4, 4, 100, 415, True, 942, 342
+                ),
+                receiver_nominal_cover_mm=25,
+                receiver_unit_weight_kn_per_m3=25,
+                receiver_self_weight_factor=1.5,
+                receiver_maximum_aggregate_size_mm=20,
+                bearing_lines=lines,
+                torque_reference_station_mm=1500,
+                load_path_reference="Two named vertical bearing lines into a transverse RC crosshead; receiver end supports are the supporting-system boundary.",
             )
         )
     results["support_transfer"] = b.check_torsion_support_transfer(
         b.TorsionSupportTransferRequest(
-            PROFILE,
-            MEMBER,
-            DETAIL,
-            results["actions"],
-            topology,
-            section,
-            load_n_per_mm * 5,
-            2 * torque,
-            tuple(supports),
+            profile_id=PROFILE,
+            member_id=MEMBER,
+            reinforcement_revision_id=DETAIL,
+            action_snapshot=results["actions"],
+            primary_topology=topology,
+            primary_section=section,
+            primary_paths=path_request,
+            applied_vertical_load_kn=load_n_per_mm * 5,
+            applied_torque_knm=2 * torque,
+            supports=tuple(supports),
         )
     )
     leaf_map = {

@@ -32,6 +32,20 @@ def main() -> None:
                 row,
                 value,
             )
+    offset = abs(eccentricity) * (1 + inputs["D_mm"] / inputs["b_mm"]) / 1.7
+    for station in (span / 2 - offset, span / 2 + offset):
+        assert any(
+            math.isclose(row["station_mm"], station, rel_tol=0, abs_tol=1e-8)
+            for row in expected["action_rows"]
+        )
+    governing = max(
+        row["m3_knm"]
+        + abs(row["torsion_knm"]) * (1 + inputs["D_mm"] / inputs["b_mm"]) / 1.7
+        for row in expected["action_rows"]
+    )
+    assert math.isclose(
+        governing, expected["governing_equivalent_moment_knm"], rel_tol=0, abs_tol=1e-8
+    )
     reaction = load * span / 2000
     torque = -load * eccentricity * span / 2e6
     lines = expected["support_line_forces_kn"]
