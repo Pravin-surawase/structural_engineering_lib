@@ -52,7 +52,9 @@ def main() -> None:
         / 3000
     )
     left_reaction = sum(lines) - right_reaction
-    assert [left_reaction, right_reaction] == expected["receiver_reactions_kn"]
+    assert [left_reaction, right_reaction] == expected[
+        "receiver_transfer_only_reactions_kn"
+    ]
     moments = [
         left_reaction * z
         - sum(
@@ -61,8 +63,35 @@ def main() -> None:
         )
         for z in expected["support_lines_mm"]
     ]
-    assert max(moments) / 1000 == expected["receiver_peak_moment_knm"]
-    assert max(left_reaction, right_reaction) == expected["receiver_peak_shear_kn"]
+    assert max(moments) / 1000 == expected["receiver_transfer_only_peak_moment_knm"]
+    assert (
+        max(left_reaction, right_reaction)
+        == expected["receiver_transfer_only_peak_shear_kn"]
+    )
+    receiver_load = (
+        1000
+        * 400
+        * inputs["receiver_unit_weight_kn_per_m3"]
+        * inputs["receiver_self_weight_factor"]
+        / 1e6
+    )
+    assert receiver_load == expected["receiver_factored_self_weight_n_per_mm"]
+    total_reactions = [
+        left_reaction + receiver_load * 3000 / 2000,
+        right_reaction + receiver_load * 3000 / 2000,
+    ]
+    assert total_reactions == expected["receiver_reactions_kn"]
+    total_moments = [
+        total_reactions[0] * z
+        - receiver_load * z * z / 2000
+        - sum(
+            f * max(0, z - p)
+            for f, p in zip(lines, expected["support_lines_mm"], strict=True)
+        )
+        for z in expected["support_lines_mm"]
+    ]
+    assert max(total_moments) / 1000 == expected["receiver_peak_moment_knm"]
+    assert max(total_reactions) == expected["receiver_peak_shear_kn"]
     assert math.isclose(
         20 * 0.87 * 415 / (4 * 1.4 * 1.6),
         expected["tension_development_mm"],

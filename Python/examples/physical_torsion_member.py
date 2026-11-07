@@ -533,7 +533,7 @@ def run_workflow(
             receiver,
             "ULS",
             (b.BeamNode("CL", 0, True, False), b.BeamNode("CR", 3000, True, False)),
-            (b.BeamElement("CE", "CS", "CL", "CR", 25000, 1000 * 400**3 / 12),),
+            (b.BeamElement("CE", "CS", "CL", "CR", 25000, 1000 * 400**3 / 12, -15),),
             tuple(
                 b.BeamPointLoad(
                     "CE", line.receiver_station_mm, -line.upward_reaction_kn * 1000
@@ -562,6 +562,8 @@ def run_workflow(
                 rsection,
                 b.TransverseLink("C-L8", 8, 4, 4, 100, 415, True, 942, 342),
                 25,
+                25,
+                1.5,
                 lines,
                 1500,
                 "Two named vertical bearing lines into a transverse RC crosshead; receiver end supports are the supporting-system boundary.",

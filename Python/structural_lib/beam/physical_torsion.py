@@ -113,6 +113,8 @@ class TorqueSupportDetail:
     receiver_section: FlexuralCapacityRequest
     receiver_links: TransverseLink
     receiver_nominal_cover_mm: float
+    receiver_unit_weight_kn_per_m3: float
+    receiver_self_weight_factor: float
     bearing_lines: tuple[BearingReactionLine, ...]
     torque_reference_station_mm: float
     load_path_reference: str
@@ -693,6 +695,13 @@ def check_torsion_support_transfer(
             (p.receiver_station_mm, -p.upward_reaction_kn * 1000) for p in lines
         )
         topology = define_beam_topology(support.receiver_topology)
+        self_weight = (
+            support.receiver_section.web_width_mm
+            * support.receiver_section.depth_mm
+            * support.receiver_unit_weight_kn_per_m3
+            * support.receiver_self_weight_factor
+            / 1e6
+        )
         receiver_positions = sorted(
             s.centre_x_mm for s in support.receiver_topology.supports
         )
@@ -700,7 +709,14 @@ def check_torsion_support_transfer(
             _passed(topology)
             and len(analysis.elements) == 1
             and len(analysis.nodes) == 2
-            and analysis.elements[0].uniform_load_n_per_mm == 0
+            and _positive(support.receiver_unit_weight_kn_per_m3)
+            and _positive(support.receiver_self_weight_factor)
+            and math.isclose(
+                analysis.elements[0].uniform_load_n_per_mm,
+                -self_weight,
+                rel_tol=0,
+                abs_tol=1e-9,
+            )
             and all(
                 n.nodal_force_n == 0
                 and n.nodal_moment_nmm == 0
@@ -869,6 +885,7 @@ def check_torsion_support_transfer(
                 "receiver_shear": shear_result.to_dict(),
                 "receiver_moment_knm": moment,
                 "receiver_shear_kn": shear,
+                "receiver_factored_self_weight_n_per_mm": self_weight,
             }
         )
     equilibrium = math.isclose(

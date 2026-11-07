@@ -273,7 +273,8 @@ For the eccentric 12 N/mm load, each end transfers 30 kN and an external
 -1.5 kNm torque through named reaction lines into a transverse receiver
 crosshead. Both support couples have the same global sign. The receiver
 loads, geometry, topology, case and real section flexure/shear results
-are bound together; its end reactions define the supporting-system
+are bound together, including explicit gross factored receiver self-weight;
+its end reactions define the supporting-system
 boundary. This packet does not design bearing/contact stresses, receiver
 end connections, other supporting members or foundations.
 

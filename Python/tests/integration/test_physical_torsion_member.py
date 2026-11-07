@@ -201,7 +201,15 @@ def test_actual_longitudinal_paths_cannot_differ_from_checked_cage(workflow):
 
 
 @pytest.mark.parametrize(
-    "change", ("wrong_member", "wrong_nodes", "wrong_bars", "wrong_load_case", "stale")
+    "change",
+    (
+        "wrong_member",
+        "wrong_nodes",
+        "wrong_bars",
+        "wrong_load_case",
+        "missing_self_weight",
+        "stale",
+    ),
 )
 def test_receiver_and_source_are_bound_to_actual_scope(workflow, change):
     req = request_for(workflow, "support_transfer", b.TorsionSupportTransferRequest)
@@ -237,6 +245,17 @@ def test_receiver_and_source_are_bound_to_actual_scope(workflow, change):
                 support,
                 receiver_analysis=replace(
                     support.receiver_analysis, load_case_id="other-case"
+                ),
+            )
+        if change == "missing_self_weight":
+            support = replace(
+                support,
+                receiver_analysis=replace(
+                    support.receiver_analysis,
+                    elements=tuple(
+                        replace(e, uniform_load_n_per_mm=0)
+                        for e in support.receiver_analysis.elements
+                    ),
                 ),
             )
         if change == "wrong_bars":

@@ -85,9 +85,13 @@ mm and depths 50/350 mm. Its declared four active Ø8 legs at 100 mm
 provide section shear reinforcement. Receiver geometry, load identity,
 topology and source case are checked before section strength.
 
-Each receiver develops 14.5/15.5 kN end reactions, maximum moment
-21.7 kNm and maximum shear 15.5 kN. The public flexure and shear owners
-check the actual section against these loads. Reversing only the right
+The transferred pair alone develops 14.5/15.5 kN receiver end reactions
+and 21.7 kNm maximum moment. Receiver strength also includes its explicit
+gross self-weight: 25 kN/m³, factor 1.5 and section 1000 × 400 mm give
+15 N/mm factored UDL. Total receiver end reactions are 37/38 kN, maximum
+moment 38.5 kNm and maximum shear 38 kN. No embedded-primary overlap is
+deducted from gross self-weight. The public flexure and shear owners
+check the actual section against these total loads. Reversing only the right
 support couple fails both source-action and global torque equilibrium.
 
 The interface stops at the receiver's end reactions and section-strength

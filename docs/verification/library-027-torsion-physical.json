@@ -13,7 +13,8 @@
     ],
     "statics": "Independent force/moment equilibrium for eccentric uniform vertical load; right-handed e1 X, e2 vertical Y, e3 transverse Z. External support T=-sum(Rup*(z-zref)) at BOTH ends; internal cut T changes sign.",
     "geometry": "Straight lengths plus circular fillets: sum(chords)-sum(2*r*tan(theta/2)-r*theta). Shared Euclidean geometry identity, no library calculation import.",
-    "span_basis": "Provided statical analysis uses real 5000 mm support centres. The separate Cl22.2 effective-span geometry is min(4000+350,5000)=4350 mm; it is not substituted into the supplied action diagram."
+    "span_basis": "Provided statical analysis uses real 5000 mm support centres. The separate Cl22.2 effective-span geometry is min(4000+350,5000)=4350 mm; it is not substituted into the supplied action diagram.",
+    "receiver_load_revision": "Transfer-only component preserved; independently frozen total ULS receiver targets add gross1000x400 self-weight at25kN/m3 and factor1.5. No embedded-primary overlap deduction; symmetric gross weight has zero torque about receiver centre."
   },
   "inputs": {
     "b_mm": 300,
@@ -36,7 +37,9 @@
     "link_start_mm": 50,
     "link_end_mm": 4950,
     "link_spacing_mm": 100,
-    "cement_type": "ordinary_portland"
+    "cement_type": "ordinary_portland",
+    "receiver_unit_weight_kn_per_m3": 25,
+    "receiver_self_weight_factor": 1.5
   },
   "expected": {
     "action_rows": [
@@ -97,11 +100,11 @@
     ],
     "receiver_span_mm": 3000,
     "receiver_reactions_kn": [
-      14.5,
-      15.5
+      37,
+      38
     ],
-    "receiver_peak_moment_knm": 21.7,
-    "receiver_peak_shear_kn": 15.5,
+    "receiver_peak_moment_knm": 38.5,
+    "receiver_peak_shear_kn": 38,
     "tension_bond_nmm2": 2.24,
     "tension_bar_stress_nmm2": 361.05,
     "tension_development_mm": 805.9151785714284,
@@ -134,7 +137,15 @@
     "code_effective_span_mm": 4350,
     "analysis_span_mm": 5000,
     "mild_pcc_limestone_water_cement_maximum_ratio": 0.5,
-    "ordinary_cement_maximum_without_special_consideration_kg_per_m3": 450
+    "ordinary_cement_maximum_without_special_consideration_kg_per_m3": 450,
+    "receiver_transfer_only_reactions_kn": [
+      14.5,
+      15.5
+    ],
+    "receiver_transfer_only_peak_moment_knm": 21.7,
+    "receiver_transfer_only_peak_shear_kn": 15.5,
+    "receiver_factored_self_weight_n_per_mm": 15,
+    "receiver_gross_factored_self_weight_kn": 45
   },
   "absolute_tolerances": {
     "action_kN_kNm": 1e-08,
