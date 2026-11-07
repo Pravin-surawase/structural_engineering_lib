@@ -20,6 +20,45 @@ sys.modules[_SPEC.name] = classification
 _SPEC.loader.exec_module(classification)
 
 
+@pytest.mark.parametrize("language", ["python", "", "bash"])
+def test_markdown_api_alias_does_not_turn_a_link_into_a_caller(
+    tmp_path, monkeypatch, language
+):
+    path = tmp_path / "guide.md"
+    path.write_text(
+        f"```{language}\nfrom structural_lib import api\napi.export_bbs(x, y)\n```\n"
+        "[API reference](../reference/api.md)\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(classification, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(classification, "_iter_text_files", lambda: [path])
+    _, _, callers = classification._scan_callers(
+        {"structural_lib.api": {"export_bbs"}}, {"structural_lib.api"}
+    )
+    assert [caller["target"] for caller in callers] == ["structural_lib.api.export_bbs"]
+
+
+def test_quickstart_compatibility_exception_is_per_consumer_symbol(
+    tmp_path, monkeypatch
+):
+    path = tmp_path / "docs/developers/platform-guide.md"
+    path.parent.mkdir(parents=True)
+    path.write_text(
+        "```python\nfrom structural_lib import api\napi.export_bbs(x, y)\n"
+        "api.design_beam_is456(x)\n```\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(classification, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(classification, "_iter_text_files", lambda: [path])
+    _, _, callers = classification._scan_callers(
+        {"structural_lib.api": {"export_bbs", "design_beam_is456"}},
+        {"structural_lib.api"},
+    )
+    outcomes = {caller["public_name"]: caller["disposition"] for caller in callers}
+    assert outcomes["export_bbs"] == "INTENTIONAL_PUBLIC_FACADE"
+    assert outcomes["design_beam_is456"] == "BLOCKED_AMBIGUOUS_OWNER"
+
+
 def test_parameterized_alias_owner_resolves_to_alias_not_typing_factory() -> None:
     from scripts.generate_api_classification import _canonical_owner
 

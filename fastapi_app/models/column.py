@@ -922,10 +922,16 @@ class ColumnDesignRequest(BaseModel):
         ..., ge=0, description="Factored axial load (kN)", examples=[1500.0]
     )
     Mux_kNm: float = Field(
-        0.0, ge=0, description="Applied moment about x (kNm)", examples=[120.0]
+        0.0,
+        ge=0,
+        description="Applied x-moment magnitude (kNm); for slender members abs(M2x) must cover this demand.",
+        examples=[120.0],
     )
     Muy_kNm: float = Field(
-        0.0, ge=0, description="Applied moment about y (kNm)", examples=[80.0]
+        0.0,
+        ge=0,
+        description="Applied y-moment magnitude (kNm); for slender members abs(M2y) must cover this demand.",
+        examples=[80.0],
     )
     b_mm: float = Field(
         ..., gt=0, le=2000, description="Column width (mm)", examples=[300.0]

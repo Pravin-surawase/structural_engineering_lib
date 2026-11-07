@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-29",
+  "generated": "2026-11-07",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 245,
@@ -92,7 +92,7 @@
     {
       "name": "CalculationReport",
       "kind": "class",
-      "signature": "(report_id: 'str', project_info: 'ProjectInfo', beam_id: 'str', story: 'str', inputs: 'InputSection', results: 'ResultSection', code_references: 'list[str]' = <factory>, notes: 'list[str]' = <factory>, verification_hash: 'str' = '', generated_at: 'str' = '') -> None"
+      "signature": "(report_id: 'str', project_info: 'ProjectInfo', beam_id: 'str', story: 'str', inputs: 'InputSection', results: 'ResultSection', code_references: 'list[str]' = <factory>, notes: 'list[str]' = <factory>, verification_hash: 'str' = '', generated_at: 'str' = '', source: 'dict[str, Any]' = <factory>) -> None"
     },
     {
       "name": "CheckCodeReport",
@@ -552,7 +552,7 @@
     {
       "name": "ResultSection",
       "kind": "class",
-      "signature": "(flexure: 'dict[str, Any]' = <factory>, shear: 'dict[str, Any]' = <factory>, serviceability: 'dict[str, Any]' = <factory>, detailing: 'dict[str, Any]' = <factory>, summary: 'dict[str, Any]' = <factory>) -> None"
+      "signature": "(flexure: 'dict[str, Any]' = <factory>, shear: 'dict[str, Any]' = <factory>, serviceability: 'dict[str, Any]' = <factory>, detailing: 'dict[str, Any]' = <factory>, summary: 'dict[str, Any]' = <factory>, torsion: 'dict[str, Any]' = <factory>) -> None"
     },
     {
       "name": "SimplySupportedDeepBeamDesignInput",

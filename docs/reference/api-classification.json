@@ -1897,6 +1897,7 @@
         "$defs": {
           "ColumnActionsV1": {
             "additionalProperties": false,
+            "description": "Applied magnitudes and signed curvature endpoints.\n\nOn the slender route, each larger absolute end moment must cover its\ndeclared applied magnitude; an independent peak outside that envelope\nis unsupported. Short checks use the applied magnitudes directly.",
             "properties": {
               "pu_kn": {
                 "minimum": 0,
@@ -1904,11 +1905,13 @@
                 "type": "number"
               },
               "mux_knm": {
+                "description": "Applied x-moment magnitude; slender signed ends must cover this demand (kNm).",
                 "minimum": 0,
                 "title": "Mux Knm",
                 "type": "number"
               },
               "muy_knm": {
+                "description": "Applied y-moment magnitude; slender signed ends must cover this demand (kNm).",
                 "minimum": 0,
                 "title": "Muy Knm",
                 "type": "number"
@@ -2141,7 +2144,7 @@
         "title": "ColumnDesignInputV1",
         "type": "object"
       },
-      "request_schema_sha256": "9974b5c7f061f55be6a85627211558145485483eeb7ee6b86e5fb4069685fa48",
+      "request_schema_sha256": "fc1a2b4549fee28db082dc541729856b6e21f97ee9e4d0f5ce3c7a69e939d961",
       "request_field_contracts": [
         {
           "path": "$",

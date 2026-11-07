@@ -267,10 +267,9 @@ class TestGenerateReportInputTypes:
         assert "B2" in html
 
     def test_input_with_non_dict_non_object(self) -> None:
-        """Non-dict, non-object input should be wrapped."""
-        html = generate_html_report("raw string data", beam_id="B3")
-        assert isinstance(html, str)
-        assert "B3" in html
+        """Unsupported input must not become a plausible engineering report."""
+        with pytest.raises(TypeError, match="supported beam result"):
+            generate_html_report("raw string data", beam_id="B3")
 
     def test_is_ok_from_nested_results(self) -> None:
         """is_ok should be extracted from results dict if not at top level."""
