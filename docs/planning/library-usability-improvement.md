@@ -225,17 +225,19 @@ establishes each actual torsion-face bar stress. The ordinary zero-torsion
 worked beam's top compression anchorage cannot establish tension anchorage
 for a torsion-induced opposite-face demand.
 
-D1 station PASS leaves the full member on HOLD. Packet D stays open through
-D2 and D3, and Goal 5 still waits for completed D and E. The runnable
+D1 station PASS leaves the full member on HOLD. D2 physical/ULS evidence
+is now implemented below; Packet D stays open through D3, and Goal 5
+still waits for completed D and E. The runnable
 station example makes this boundary explicit.
 [Station example](../../Python/examples/torsion_station_reference.py)
 
 #### Packet D2 requirement ownership
 
-The next implementation unit freezes its physical member and independent
-targets before extending orchestration. The D1 station is a section control;
+D2 froze its physical member and independent targets before extending
+orchestration. The D1 station is a section control;
 its actions do not establish a member load diagram or torsional restraint.
-The following matrix records the maintained reuse points and missing evidence.
+The following matrix retains the implementation requirements and reuse points;
+the worked-profile closeout below records their D2 disposition.
 
 | Required evidence | Reuse owner | D2 addition or qualification |
 |---|---|---|
@@ -342,7 +344,9 @@ criteria is not a reason to invent limits or reduce the 0.27 scope.
 | Before Goal 5 | [Close the selected beam and column gaps](#beam-and-column-closure-before-goal-5), starting with the two layered column section cases. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | After closure. [Prepare and verify the exact candidate, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Continue with packet D2 in the [beam and column closure plan](#beam-and-column-closure-before-goal-5).
+Continue by verifying the D3 serviceability basis in the
+[beam and column closure plan](#beam-and-column-closure-before-goal-5).
+D3 and full torsion-member admission remain HOLD.
 There is no standalone 0.26.1 release. Candidate preparation uses the
 maintained version tooling after scoped implementation and documentation
 freeze. A Jira fix version is a

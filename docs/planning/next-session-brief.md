@@ -40,8 +40,8 @@ compression and mixed diameters. Packet B qualified supplied inclined and
 bent-up shear reinforcement and sagging flexure within the flange and in
 the web. Packet C adds the physical four-corner column, independent x/y
 benchmarks and matching JSON/HTML with overload, inadequate-tie and
-missing-tie controls. Packet D1 corrects the torsion station basis. Continue
-the [D2 worked profile](../cookbook/python/physical-torsion-member.md) for
+missing-tie controls. Packet D1 corrects the torsion station basis. The
+[D2 worked profile](../cookbook/python/physical-torsion-member.md) now supplies
 physical load path, both-face direct tension anchorage, cage/hooks and draft
 outputs. Its receiver boundary is section flexure/shear; bearing/contact,
 receiver connections and foundations remain with the supporting-system owner.
