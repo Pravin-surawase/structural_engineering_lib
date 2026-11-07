@@ -209,6 +209,33 @@ D2 and D3, and Goal 5 still waits for completed D and E. The runnable
 station example makes this boundary explicit.
 [Station example](../../Python/examples/torsion_station_reference.py)
 
+#### Packet D2 requirement ownership
+
+The next implementation unit freezes its physical member and independent
+targets before extending orchestration. The D1 station is a section control;
+its actions do not establish a member load diagram or torsional restraint.
+The following matrix records the maintained reuse points and missing evidence.
+
+| Required evidence | Reuse owner | D2 addition or qualification |
+|---|---|---|
+| Concurrent actions and support-face/critical-station coordinates | `analysis.normalize_action_snapshot`, `analysis.define_beam_topology` | Bind every named station to its original concurrent row and topology revision. Preserve the separate source of analysis and support-restraint evidence. |
+| Combined section strength and both-face longitudinal demand | `shear_torsion.check_torsion` | Run D1 at the required stations and map primary/opposite equivalent moments to the actual top/bottom bars and paths. |
+| Perimeter cage, cover, clearances and enclosure | `detailing.check_reinforcement_arrangement` | Check every required physical arrangement with the same corner bars, closed links and reinforcement revision. Scalar steel area cannot replace fit evidence. |
+| Ordinary link hook/tail compliance and fabricated geometry | `bar_paths.resolve_bar_paths` supplies tangent, bend and tail geometry | Add a source-bound ordinary-link compliance check; path resolution alone does not verify hook requirements. |
+| Tension anchorage at both faces and both ends | `detailing.check_anchorage`, `DevelopmentLengthRequest`, `AnchoragePath` | Build face/end scopes at the actual critical support faces using tension development. The ordinary example's top compression anchorage is not reusable as this evidence. |
+| Continuous perimeter bars and station steel demand | `detailing.check_laps_and_curtailment` | Derive demands for every torsion-required face/role and bind them to the actual continuous runs. The ordinary example supplies bottom-role demand only. |
+| Torque equilibrium and transfer into each support | No complete member-evidence owner identified in the current beam composition | Add a narrow check of supplied actions, reactions and declared transfer evidence. Topology alone cannot establish torsional restraint; analysis/model validity stays with its analysis owner. |
+| Exposure, material and required cover | Arrangement checks actual supplied cover; project criteria carry references | Resolve the applicable source requirements and add a bound admission/check leaf. Neither supplied cover nor narrative criteria establish durability compliance. Reuse shared source helpers where available. |
+| Complete required check set | `member.MemberDesignRequest` and profile/check scopes | Freeze the expanded D2 leaf set before execution. Preserve the ordinary 19-leaf and multilayer 27-leaf regression profiles. Missing evidence keeps the member incomplete. |
+| Flexural and torsional serviceability | Existing flexural `serviceability.check_crack_width` and `check_deflection` | Retain their applicable flexural evidence. Torsional SLS stays a distinct D3 obligation with an adopted method, service actions and acceptance criteria. |
+
+Implementation order: freeze the physical/load-path profile and independent
+references; bind topology, actions and station strength; supply the missing
+hook, support-transfer and durability evidence owners; resolve the common
+physical paths, both-face tension anchorage and continuity; then compose all
+expected leaves and reconcile outputs. The profile remains HOLD while any
+essential evidence, including D3 torsional SLS, is missing.
+
 ### Goal 5 qualify and release 0.27.0
 
 1. Prepare one versioned 0.27.0 candidate from the merged Goals 1–4 and
