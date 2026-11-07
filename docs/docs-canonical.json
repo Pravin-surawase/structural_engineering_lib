@@ -158,6 +158,7 @@
         "biaxial bending"
       ],
       "also_see": [
+        "docs/cookbook/python/column-four-corner-member-check.md",
         "docs/cookbook/python/layered-column-section.md",
         "docs/planning/library-usability-improvement.md"
       ]

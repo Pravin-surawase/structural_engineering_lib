@@ -70,6 +70,19 @@ def _page(workflow: Any, recipe: Any) -> str:
     members = list(
         dict.fromkeys(workflow.constructor.split("/") + workflow.operation.split("/"))
     )
+    related_workflow = ""
+    if workflow.journey_id == "is456.column.supplied-steel-check/v1":
+        members.extend(
+            (
+                "load_four_corner_member",
+                "check_four_corner_member",
+                "render_four_corner_member_html",
+            )
+        )
+        related_workflow = (
+            "For four equal physical corner bars and actual closed ties, use the "
+            "[four-corner member guide](column-four-corner-member-check.md).\n\n"
+        )
     api_members = "\n".join(f"        - {name}" for name in members)
     engineering_failure = ""
     if workflow.journey_id == "is456.beam.design/v1":
@@ -149,7 +162,7 @@ except InputContractError as error:
     print([issue.to_dict() for issue in error.issues])
 ```
 
-{engineering_failure}## Python API
+{engineering_failure}{related_workflow}## Python API
 
 Typed request groups are exported from `{workflow.module}` alongside the
 operations below. Mapping inputs remain supported for JSON/HTTP callers.
