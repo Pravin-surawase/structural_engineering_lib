@@ -18,6 +18,13 @@
 
 ## Next work — five-step pre-release repair plan
 
+**Prepared goal:** `LIB027-REPAIR-QUALIFY` — repair R1–R5, verify supported
+caller journeys and qualify an exact replacement 0.27.0 wheel/sdist, then
+report release readiness. **Not started: awaiting the owner's review and
+explicit start.** The [ready-to-start goal](library-usability-improvement.md#ready-to-start-goal--repair-and-requalify-0270)
+defines execution, completion and authority. No implementation or publication
+is authorized by this preparation task.
+
 Follow the [detailed plan](library-usability-improvement.md#027-pre-release-repair-plan):
 
 1. Reconcile applied column moments and signed end moments. The 400 kNm

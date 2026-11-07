@@ -723,6 +723,73 @@ are the next work; their checkboxes remain open. The owner retains the
 separate release decision. Professional approval, unsupported engineering
 profiles and installed-native acceptance remain separate.
 
+#### Ready-to-start goal — repair and requalify 0.27.0
+
+**Goal ID:** `LIB027-REPAIR-QUALIFY`
+
+**Status:** Prepared for owner review; **not started**. The owner will review
+and explicitly start this goal. Writing it does not activate implementation.
+
+> Repair all five confirmed pre-release defects R1–R5 within StructLib's
+> agreed beam and column scope, verify the complete supported caller journeys,
+> and build and qualify one exact replacement 0.27.0 wheel and sdist. Preserve
+> valid existing behavior, independent engineering references and FAIL/HOLD
+> controls. Finish with an evidence-bound release-ready or HOLD report and
+> a reproducible handoff. Stop before TestPyPI, tagging, package upload or
+> GitHub Release; publication requires separate owner authorization.
+
+**Execution after the owner starts it:** use the five detailed steps below,
+in order, as one parent implementation goal:
+
+1. Fix and verify the column action contract (R1).
+2. Fix shared canonical/legacy report adaptation and retained evidence (R2–R4).
+3. Replace and execute the complete developer quickstart (R5).
+4. Qualify the actual installed caller journeys and preserve existing controls.
+5. Freeze, build and qualify replacement archives, complete required hosted
+   checks and reviewed integration, then issue the readiness report.
+
+At execution start, inspect the live Git/PR state and bind the planning
+candidate from [PR #1063](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1063)
+before implementation. Do not assume this draft is merged. Select the current
+required PR and full/cross-platform release checks from the maintained release
+procedure. Keep one writer and one milestone implementation PR, with bounded
+independent read-only review. Record completed steps and remaining work so a
+later session resumes from observed evidence rather than restarting the goal.
+
+**Completion requires all of the following:**
+
+- Every R1–R5 reproduction is closed by observed behavior. The conflicting
+  400 kNm/zero-end request cannot return PASS; supported canonical report
+  handoffs do not crash or change the source outcome; exported reports retain
+  known inputs, actual versus required steel, failure reasons and review state.
+- The exact documented quickstart runs from an isolated installation with
+  dependencies declared at their actual boundaries. All original selected
+  A–E controls retain their expected engineering and draft/issue states.
+- Both replacement archives independently pass all 18 required profiles and
+  the expanded beam/column, report and guide inventory. Verify site-packages
+  origin, package payload, sizes/SHA-256, source/build/verifier identities,
+  independent references and supported visible exports. Keep the old pair
+  unchanged as rejected baseline evidence; its passes do not qualify new bytes.
+- Required checks pass on the final immutable candidate; independent review,
+  merged/source-tree identity and retained-artifact verification agree. Update
+  the plan, handoff and artifact record with the actual result and limitations.
+- Deliver a concise readiness decision, completed-finding list, verification
+  evidence and any remaining blockers. An unresolved defect or required gate
+  failure keeps release HOLD. Software readiness does not confer professional
+  approval, installed-native acceptance or general beam/column completeness.
+
+**Decision boundary:** prefer structured rejection of contradictory column
+actions under the current profile. If preserving a valid caller requires a
+different engineering normalization, freeze its source basis and independent
+expected outcomes before implementation; seek an owner decision only when
+the evidence leaves a material scope choice unresolved. Do not manufacture
+missing inputs or promote unsupported profiles to PASS to finish the goal.
+
+**Excluded:** new reinforcement arrangements or stable actual-bar P–M–M,
+broader beam member profiles, new serviceability/detailing combinations,
+slab/footing implementation, licensing reconsideration and publication.
+The detailed repair steps and exclusions below remain the acceptance owner.
+
 The reviewed baseline is merged PR #1062,
 `1c35d9485fa3499e69f1926657e91e84fe0d7bb8`. The retained wheel SHA-256 is
 `cfbbc47b5ada59011ef0c4c9049781e8e30cbc9c341ef8eb8a813244139f3a79`.
