@@ -37,7 +37,7 @@ dated scope decision alongside the archived historical instructions.
 
 ### Rework and recurrence
 
-- The hook-fit repair passed its focused reproducer and regression.
+- None encountered.
 
 ### What next
 
