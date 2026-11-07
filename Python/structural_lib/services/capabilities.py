@@ -127,11 +127,7 @@ _CAPABILITIES = (
     ),
     IS456Capability(
         element="column",
-        public_workflows=(
-            "design_column_is456",
-            "design_long_column_is456",
-            "check_four_corner_member",
-        ),
+        public_workflows=("design_column_is456", "design_long_column_is456"),
         supported_case=(
             "Solid rectangular tied columns under factored compression with "
             "uniaxial or biaxial bending, using one total longitudinal-steel area "
