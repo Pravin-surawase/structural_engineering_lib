@@ -35,7 +35,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from structural_lib.services.beam_api import _detailing_result_to_dict
+from structural_lib.services._report_projection import (
+    project_beam_report,
+    report_evidence_html,
+    report_evidence_markdown,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -105,6 +109,7 @@ class ResultSection:
     serviceability: dict[str, Any] = field(default_factory=dict)
     detailing: dict[str, Any] = field(default_factory=dict)
     summary: dict[str, Any] = field(default_factory=dict)
+    torsion: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -137,6 +142,7 @@ class CalculationReport:
     notes: list[str] = field(default_factory=list)
     verification_hash: str = ""
     generated_at: str = ""
+    source: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.generated_at:
@@ -153,7 +159,8 @@ class CalculationReport:
         """Create report from a design result.
 
         Args:
-            result: DesignAndDetailResult or ComplianceCaseResult
+            result: Canonical BeamDesignResultV1/BeamDesignAndDetailResultV1,
+                legacy DesignAndDetailResult, or design-only ComplianceCaseResult.
             beam_id: Beam identifier
             story: Story/floor identifier
             project_info: Optional project information dict
@@ -167,77 +174,15 @@ class CalculationReport:
         timestamp = datetime.now(UTC).strftime("%Y%m%d%H%M%S")
         report_id = f"CALC-{beam_id}-{story}-{timestamp}"
 
-        # Extract inputs and results based on result type
-        inputs = InputSection()
-        results_section = ResultSection()
-
-        # Handle different result types
-        if hasattr(result, "design"):
-            # DesignAndDetailResult
-            design = result.design
-            inputs.geometry = {
-                "beam_id": beam_id,
-                "story": story,
-                "b_mm": result.geometry.get("b_mm", 0),
-                "D_mm": result.geometry.get("D_mm", 0),
-                "d_mm": result.geometry.get("d_mm", 0),
-                "span_mm": result.geometry.get("span_mm", 0),
-                "cover_mm": result.geometry.get("cover_mm", 40),
-            }
-            inputs.materials = {
-                "fck_nmm2": result.materials.get("fck_nmm2", 25),
-                "fy_nmm2": result.materials.get("fy_nmm2", 500),
-            }
-            results_section.flexure = {
-                **_flexure_values(design.flexure),
-                "beam_type": None,
-            }
-            detail = getattr(result, "detailing", None)
-            if detail is None:
-                results_section.detailing = {
-                    "status": "unavailable",
-                    "reason": "missing_detailing",
-                }
-            elif detail.top_bars or detail.bottom_bars:
-                results_section.detailing = {
-                    "status": "available",
-                    **_detailing_result_to_dict(detail),
-                }
-            else:
-                results_section.detailing = {
-                    "status": "unavailable",
-                    "reason": "no_bar_rows",
-                    "is_valid": detail.is_valid,
-                }
-            results_section.shear = {
-                "Vu_kn": design.Vu_kn,
-                "tau_v": design.shear.tau_v,
-                "tau_c": design.shear.tau_c,
-                "tau_c_max": design.shear.tau_c_max,
-                "Vus": design.shear.Vus,
-                "spacing": design.shear.spacing,
-                "is_safe": design.shear.is_safe,
-            }
-            results_section.summary = {
-                "is_ok": result.is_ok,
-                "summary": result.summary() if hasattr(result, "summary") else "",
-            }
-        elif hasattr(result, "flexure"):
-            # ComplianceCaseResult
-            inputs.geometry = {"beam_id": beam_id, "story": story}
-            results_section.flexure = {
-                **_flexure_values(result.flexure),
-                "pt_provided": result.flexure.pt_provided,
-            }
-            results_section.detailing = {
-                "status": "unavailable",
-                "reason": "design_only",
-            }
-            results_section.shear = {
-                "spacing": result.shear.spacing,
-                "is_safe": result.shear.is_safe,
-            }
-            results_section.summary = {"is_ok": result.is_ok}
+        projection = project_beam_report(result)
+        inputs = InputSection(**projection["inputs"])
+        results_section = ResultSection(**projection["results"])
+        identity = projection["source"]["identity"]
+        if beam_id == "B1":
+            beam_id = identity.get("member_id", beam_id)
+        if story == "GF":
+            story = identity.get("story", story)
+        report_id = f"CALC-{beam_id}-{story}-{timestamp}"
 
         return cls(
             report_id=report_id,
@@ -246,6 +191,7 @@ class CalculationReport:
             story=story,
             inputs=inputs,
             results=results_section,
+            source=projection["source"],
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -276,7 +222,10 @@ class CalculationReport:
                 "serviceability": self.results.serviceability,
                 "detailing": self.results.detailing,
                 "summary": self.results.summary,
+                "torsion": self.results.torsion,
             },
+            "source": self.source,
+            "result_envelope": self.source.get("envelope", {}),
             "code_references": self.code_references,
             "notes": self.notes,
             "verification_hash": self.verification_hash,
@@ -396,7 +345,9 @@ class CalculationReport:
             is_ok = None
         status_class = "status-pass" if is_ok is True else "status-fail"
         status_text = (
-            "PASS" if is_ok is True else "FAIL" if is_ok is False else "NOT EVALUATED"
+            "PASS"
+            if is_ok is True
+            else ("FAIL" if is_ok is False else _unevaluated_status(results.summary))
         )
         shear_status_class = "status-pass" if shear_status is True else "status-fail"
         shear_status_text = (
@@ -521,7 +472,7 @@ class CalculationReport:
             <tr><td>Effective Depth (d)</td><td class="number">{
             inputs.geometry.get("d_mm", "N/A")
         }</td><td>mm</td></tr>
-            <tr><td>Clear Span</td><td class="number">{
+            <tr><td>Span (as supplied)</td><td class="number">{
             inputs.geometry.get("span_mm", "N/A")
         }</td><td>mm</td></tr>
             <tr><td>Clear Cover</td><td class="number">{
@@ -586,6 +537,8 @@ class CalculationReport:
     <div class="summary-box">
         <h3>DESIGN STATUS: <span class="{status_class}">{status_text}</span></h3>
         <p>{e(results.summary.get("summary", ""))}</p>
+        <p>Failed checks: {e(", ".join(results.summary.get("failed_checks", [])) or "None recorded")}</p>
+        <p>Review status: {e(self.source.get("envelope", {}).get("review_status", "Unavailable"))}</p>
     </div>
 
     <div class="footer">
@@ -600,6 +553,11 @@ class CalculationReport:
     </div>
 </body>
 </html>"""
+        if self.source:
+            evidence = report_evidence_html(self.to_dict())
+            html_content = html_content.replace(
+                '<div class="footer">', evidence + '<div class="footer">'
+            )
         return html_content
 
     def _generate_markdown(self) -> str:
@@ -640,7 +598,11 @@ class CalculationReport:
         status = (
             "✅ PASS"
             if is_ok is True
-            else "❌ FAIL" if is_ok is False else "⚠️ NOT EVALUATED"
+            else (
+                "❌ FAIL"
+                if is_ok is False
+                else "⚠️ " + _unevaluated_status(results.summary)
+            )
         )
 
         md = f"""# Calculation Report: {self.beam_id} @ {self.story}
@@ -668,7 +630,7 @@ class CalculationReport:
 | Beam Width (b) | {inputs.geometry.get("b_mm", "N/A")} | mm |
 | Overall Depth (D) | {inputs.geometry.get("D_mm", "N/A")} | mm |
 | Effective Depth (d) | {inputs.geometry.get("d_mm", "N/A")} | mm |
-| Clear Span | {inputs.geometry.get("span_mm", "N/A")} | mm |
+| Span (as supplied) | {inputs.geometry.get("span_mm", "N/A")} | mm |
 | Clear Cover | {inputs.geometry.get("cover_mm", "N/A")} | mm |
 
 ### 1.2 Materials
@@ -707,6 +669,9 @@ class CalculationReport:
 
 **Design Status:** {status}
 
+**Failed checks:** {", ".join(results.summary.get("failed_checks", [])) or "None recorded"}
+**Review status:** {self.source.get("envelope", {}).get("review_status", "Unavailable")}
+
 {results.summary.get("summary", "")}
 
 ---
@@ -717,6 +682,8 @@ class CalculationReport:
 
 *Generated by structural-lib-is456*
 """
+        if self.source:
+            md += report_evidence_markdown(self.to_dict())
         return md
 
 
@@ -729,6 +696,12 @@ _BAR_COLUMNS = (
     "Spacing (mm)",
     "Layers",
 )
+
+
+def _unevaluated_status(summary: dict[str, Any]) -> str:
+    """Preserve HOLD while never promoting an unavailable required check."""
+    status = summary.get("engineering_status")
+    return status if status in {"HOLD", "NOT_EVALUATED"} else "NOT EVALUATED"
 
 
 def _flexure_values(flexure: Any) -> dict[str, Any]:
@@ -823,7 +796,9 @@ def generate_calculation_report(
     """Generate a calculation report from design result.
 
     Args:
-        result: DesignAndDetailResult or ComplianceCaseResult
+        result: Canonical beam design/combined result, legacy DesignAndDetailResult,
+            or design-only ComplianceCaseResult. Known inputs, actual detailing,
+            evaluated checks and review requirements are retained in every format.
         beam_id: Beam identifier
         story: Story/floor identifier
         project_info: Optional project information

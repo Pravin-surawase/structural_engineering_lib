@@ -72,139 +72,132 @@ A **Python library for structural engineering calculations** following IS 456:20
 
 **Goal:** Design a beam in < 15 minutes
 
-### Step 1: Install (2 minutes)
+### Step 1: Install the selected candidate
+
+This journey includes the 0.27.0 report repairs. Until 0.27.0 is published,
+install the exact replacement wheel selected by the
+[artifact record](../verification/library-0270-release-artifacts.json), rather
+than the rejected initial pair. The
+[current release page](../getting-started/release-status.md) owns registry
+availability. Do not assume that the public 0.26.0 package contains these fixes.
 
 ```bash
-# Python installation
-pip install git+https://github.com/Pravin-surawase/structural_engineering_lib.git
-
-# Or clone and install locally
-git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
-cd structural_engineering_lib/Python
-pip install -e .
+python3 -m venv .venv
+source .venv/bin/activate
+# Substitute the absolute path of the selected, qualified replacement wheel.
+python -m pip install /absolute/path/to/structural_lib_is456-0.27.0-py3-none-any.whl
+python -m structural_lib install-preflight
 ```
 
-**Dependencies:**
-- Python 3.11+
-- No required dependencies (ezdxf optional for DXF export)
+For source development, clone the repository and run
+`python -m pip install -e ./Python` from its root. Python 3.11+ and the base
+dependencies declared in the package metadata are required. DXF, Jinja2 and
+PDF rendering use their separately declared extras.
 
-### Step 2: Design Your First Beam (3 minutes)
+### Step 2: Design, detail, schedule and report one beam
+
+Save this complete block as `quick_start_example.py` and run it from any
+writable directory. Every geometric/material/detailing choice is explicit.
+These values illustrate one supported case; they are not a project approval.
 
 ```python
 # quick_start_example.py
-from structural_lib import design_beam_is456
+import json
+from pathlib import Path
 
-# Design a residential beam
-result = design_beam_is456(
-    beam_id="B1",
-    story="Ground Floor",
-    span_mm=5000,          # 5m span
-    b_mm=300,              # 300mm width
-    D_mm=500,              # 500mm total depth
-    cover_mm=25,           # 25mm clear cover
-    fck_nmm2=25.0,         # M25 concrete
-    fy_nmm2=500.0,         # Fe500 steel
-    mu_knm=120.0,          # 120 kN·m moment
-    vu_kn=80.0,            # 80 kN shear
-)
-
-# Check if design is OK
-if result.ok:
-    print(f"✓ Design successful!")
-    print(f"  Steel required: {result.ast_required_start:.0f} mm²")
-    print(f"  Provided: {result.bars_bottom_start.count}-T{result.bars_bottom_start.diameter}")
-    print(f"  Stirrups: {result.stirrups_start.callout()}")
-else:
-    print(f"✗ Design failed:")
-    for error in result.errors:
-        print(f"  - {error.error_message}")
-```
-
-**Run it:**
-```bash
-python quick_start_example.py
-```
-
-**Expected output:**
-```
-✓ Design successful!
-  Steel required: 1256 mm²
-  Provided: 4-T20
-  Stirrups: 2-legged T8 @ 150 mm c/c
-```
-
-### Step 3: Export Results (5 minutes)
-
-#### Generate Bar Bending Schedule (BBS)
-
-```python
-from structural_lib import generate_bbs_from_detailing
-
-# Continue from previous example
-bbs_items = generate_bbs_from_detailing(result)
-
-for item in bbs_items:
-    print(f"{item.bar_mark}: {item.count}x T{item.diameter} @ {item.length_mm}mm")
-```
-
-#### Export to DXF Drawing
-
-```python
-from structural_lib.services.dxf_export import quick_dxf
-
-# Generate CAD drawing (requires ezdxf: pip install ezdxf)
-dxf_path = quick_dxf(
-    detailing=result,
-    output_path="beam_B1.dxf",
-    include_title_block=True,
-    project_name="My Project"
-)
-
-print(f"DXF saved to: {dxf_path}")
-```
-
-#### Generate PDF Report
-
-```python
+from structural_lib import api
+from structural_lib.design.is456 import beam
 from structural_lib.reports import generate_html_report
 
-# Generate detailed HTML report
-html = generate_html_report(
-    design_result=result,
-    title="Beam B1 - Ground Floor",
-    show_detailed=True
+options = beam.BeamDetailingOptionsV1(
+    standard=beam.DetailingStandard.IS456,
+    clear_cover_mm=40,
+    tension_bar_diameter_mm=20,
+    compression_bar_diameter_mm=16,
+    nominal_top_steel_ratio=0.25,
+    stirrup_diameter_mm=8,
+    stirrup_legs=2,
+    stirrup_spacing_support_mm=150,
+    stirrup_spacing_mid_mm=200,
 )
+request = beam.load({
+    "identity": {"member_id": "B1", "story": "L1", "case_id": "ULS-1"},
+    "section": {"span_mm": 5000, "b_mm": 300, "D_mm": 550, "d_mm": 492},
+    "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+    "actions": {"mu_knm": 150, "vu_kn": 80},
+    "calculation_basis": {"d_dash_mm": 56, "asv_mm2": options.asv_mm2},
+    "detailing": options.model_dump(mode="json"),
+    "source_provenance": "Illustrative developer quickstart inputs",
+})
+result = beam.design_and_detail(request)
+print("Engineering status:", result.engineering_status.value)
+print("Qualified review required:", result.qualified_review_required)
 
-# Save to file
-with open("beam_B1.html", "w") as f:
-    f.write(html)
+# BBS admission uses the checked canonical result, including detailing.
+schedule = beam.bbs(result)
+print("BBS rows:", len(schedule.items))
+
+output = Path("beam_B1_outputs")
+output.mkdir(exist_ok=True)
+api.export_bbs(schedule, output / "beam_B1.bbs.json", fmt="json")
+api.export_bbs(schedule, output / "beam_B1.bbs.csv", fmt="csv")
+(output / "beam_B1.result.json").write_text(json.dumps(result.to_dict(), indent=2), encoding="utf-8")
+report = api.generate_calculation_report(result)
+report.export_json(output / "beam_B1.calculation.json")
+report.export_html(output / "beam_B1.html")
+report.export_markdown(output / "beam_B1.md")
+(output / "beam_B1.template.html").write_text(generate_html_report(result), encoding="utf-8")
 ```
 
-### Step 4: Validate & Check (5 minutes)
+Expected status: `PASS`; qualified review required: `True`; BBS rows: `9`.
+The calculation report contains required steel separately from the actual
+provided top/bottom bars. Missing detailing is unavailable, never inferred
+from required steel. `generate_html_report` uses a complete basic fallback
+without Jinja2; install `[report]` for the named Jinja2 templates. The raw
+canonical JSON export keeps its own result schema and envelope.
+
+### Step 3: Optional drawing and PDF exports
+
+Install the matching candidate with its `[dxf]` extra before running the DXF
+block. For example, use the quoted local wheel path with `[dxf]` appended in
+`python -m pip install`. Continue in the same Python session as Step 2:
 
 ```python
-from structural_lib import check_beam_is456
-
-# Comprehensive compliance check
-compliance = check_beam_is456(
-    b_mm=result.b,
-    D_mm=result.D,
-    ast_top_start_mm2=result.ast_top_start,
-    ast_bottom_start_mm2=result.ast_required_start,
-    fck_nmm2=25.0,
-    fy_nmm2=500.0,
-    # ... other parameters
-)
-
-if compliance.compliant:
-    print("✓ Design is IS 456 compliant")
-else:
-    print("✗ Compliance issues:")
-    for issue in compliance.violations:
-        print(f"  - {issue.clause}: {issue.message}")
+# optional_dxf_export
+api.compute_dxf(result, output / "beam_B1.dxf")
 ```
 
-**Congratulations!** You've designed, exported, and validated a beam in 15 minutes.
+The `[pdf]` extra supplies WeasyPrint; its platform renderer dependencies must
+also be available. PDF is a rendering of the same calculation HTML:
+
+```python
+# optional_pdf_export
+from weasyprint import HTML
+
+HTML(filename=str(output / "beam_B1.html")).write_pdf(output / "beam_B1.pdf")
+```
+
+### Step 4: Verify the exported basis and outcome
+
+```python
+# verify_quickstart_outputs
+import json
+
+saved = json.loads((output / "beam_B1.calculation.json").read_text(encoding="utf-8"))
+assert saved["source"]["identity"] == request.identity.model_dump(mode="json")
+assert saved["result_envelope"] == result.envelope.to_dict()
+assert saved["inputs"]["loads"][0]["mu_knm"] == 150
+assert saved["inputs"]["loads"][0]["vu_kn"] == 80
+assert saved["results"]["detailing"]["status"] == "available"
+assert saved["results"]["summary"]["engineering_status"] == "PASS"
+assert len(schedule.items) == 9
+```
+
+Read the source checks and issues when a calculation returns `FAIL` or `HOLD`.
+A failed/held case cannot become issue-ready because a file was exported.
+Automatic canonical detailing after explicit serviceability retains its
+existing scope HOLD; this quickstart does not expand that engineering profile.
+Qualified review and professional approval remain separate from these checks.
 
 ---
 

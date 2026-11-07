@@ -33,6 +33,16 @@ from this entry. Beta maturity and professional-review boundaries remain.
 
 ### Fixed
 
+- Slender-column orchestration rejects signed end moments that omit a declared
+  applied demand, with structured field errors preserved through Python and
+  HTTP. Ordered signed curvature and existing minimum-eccentricity defaults
+  remain supported.
+- Canonical and legacy beam reports share an explicit projection of inputs,
+  actions, required/provided reinforcement, evaluated failure reasons and
+  review identity. Canonical results no longer produce a false report FAIL or
+  crash the calculation-report adapter. Unsupported schemas fail explicitly.
+- Replaced the active developer quickstart with an executable canonical
+  design/detail/BBS/report journey and separately declared drawing/PDF extras.
 - Calculation reports use current beam design results and show selected steel
   by face and zone in JSON, HTML and Markdown. Design-only reports explain
   why a physical layout is unavailable.

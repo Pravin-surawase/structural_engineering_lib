@@ -717,9 +717,10 @@ for version-specific authorization, tags and registry delivery.
 
 **Decision and scope — 7 November 2026.** Repair the confirmed supported-route
 defects before 0.27.0 publication. This is a continuation of Goal 5, with
-five sequential steps and one implementation writer. The present task updates
-planning/status records only. Implementation, tests and replacement builds
-are the next work; their checkboxes remain open. The owner retains the
+five sequential steps and one implementation writer. The owner started
+`LIB027-REPAIR-QUALIFY` on 7 November 2026 and authorized all five steps,
+including replacement-archive qualification, with no publication. Checkboxes
+remain open until their complete evidence is observed. The owner retains the
 separate release decision. Professional approval, unsupported engineering
 profiles and installed-native acceptance remain separate.
 
@@ -727,8 +728,8 @@ profiles and installed-native acceptance remain separate.
 
 **Goal ID:** `LIB027-REPAIR-QUALIFY`
 
-**Status:** Prepared for owner review; **not started**. The owner will review
-and explicitly start this goal. Writing it does not activate implementation.
+**Status:** Started by the owner on 7 November 2026; implementation and
+qualification in progress. Publication remains outside this goal.
 
 > Repair all five confirmed pre-release defects R1–R5 within StructLib's
 > agreed beam and column scope, verify the complete supported caller journeys,
@@ -738,7 +739,7 @@ and explicitly start this goal. Writing it does not activate implementation.
 > a reproducible handoff. Stop before TestPyPI, tagging, package upload or
 > GitHub Release; publication requires separate owner authorization.
 
-**Execution after the owner starts it:** use the five detailed steps below,
+**Execution:** use the five detailed steps below,
 in order, as one parent implementation goal:
 
 1. Fix and verify the column action contract (R1).
@@ -789,6 +790,15 @@ missing inputs or promote unsupported profiles to PASS to finish the goal.
 broader beam member profiles, new serviceability/detailing combinations,
 slab/footing implementation, licensing reconsideration and publication.
 The detailed repair steps and exclusions below remain the acceptance owner.
+
+**Execution checkpoint:** R1's bounded end-envelope rejection and field-path
+contracts pass their focused Python/canonical/HTTP regressions; independent
+review accepted the rule. R2–R4 share the new explicit report projection,
+including the retained scalar compatibility protocol and missing-check
+status precedence; affected focused checks and independent review pass.
+The base developer journey now executes. Optional output and replacement
+archive replays, final candidate checks and release-readiness acceptance
+remain pending. No replacement artifacts have been qualified at this checkpoint.
 
 The reviewed baseline is merged PR #1062,
 `1c35d9485fa3499e69f1926657e91e84fe0d7bb8`. The retained wheel SHA-256 is

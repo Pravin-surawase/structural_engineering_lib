@@ -675,7 +675,8 @@
       "R5: P2 active developer quickstart uses retired API/result contracts"
     ],
     "repair_plan": "docs/planning/library-usability-improvement.md#027-pre-release-repair-plan",
-    "implementation_state": "PLANNED_NOT_STARTED",
+    "implementation_state": "SOURCE_REPAIRS_IN_PROGRESS_REPLACEMENT_QUALIFICATION_PENDING",
+    "repair_goal_id": "LIB027-REPAIR-QUALIFY",
     "replacement_artifacts": null,
     "required_next": "Repair R1-R5, freeze the expanded caller verification inventory, build a replacement wheel/sdist and qualify both before a new readiness decision"
   },

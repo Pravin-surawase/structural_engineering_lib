@@ -100,9 +100,22 @@ class ColumnGeometryV1(StrictPublicModel):
 
 
 class ColumnActionsV1(StrictPublicModel):
+    """Applied magnitudes and signed curvature endpoints.
+
+    On the slender route, each larger absolute end moment must cover its
+    declared applied magnitude; an independent peak outside that envelope
+    is unsupported. Short checks use the applied magnitudes directly.
+    """
+
     pu_kn: float = Field(ge=0)
-    mux_knm: float = Field(ge=0)
-    muy_knm: float = Field(ge=0)
+    mux_knm: float = Field(
+        ge=0,
+        description="Applied x-moment magnitude; slender signed ends must cover this demand (kNm).",
+    )
+    muy_knm: float = Field(
+        ge=0,
+        description="Applied y-moment magnitude; slender signed ends must cover this demand (kNm).",
+    )
     m1x_signed_knm: float
     m2x_signed_knm: float
     m1y_signed_knm: float

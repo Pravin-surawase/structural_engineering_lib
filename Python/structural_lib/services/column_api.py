@@ -36,6 +36,7 @@ from structural_lib.core.data_types import (
     LongColumnResult,
     PMInteractionResult,
 )
+from structural_lib.core.errors import InputContractError, InputIssueV1
 from structural_lib.core.result_contract import (
     CalculationStatus,
     EngineeringStatus,
@@ -1136,8 +1137,12 @@ def design_column_is456(
 
     Args:
         Pu_kN: Factored axial load (kN). Must be >= 0.
-        Mux_kNm: Applied factored moment about x-axis (kNm). Default: 0.0.
-        Muy_kNm: Applied factored moment about y-axis (kNm). Default: 0.0.
+        Mux_kNm: Applied factored moment magnitude about x-axis (kNm).
+            For a slender member, the larger resolved signed end moment must
+            cover this demand. Independent interior peaks beyond the end
+            envelope require a separate analysis and are rejected here.
+        Muy_kNm: Applied factored moment magnitude about y-axis (kNm), with
+            the same slender-member action contract as Mux_kNm.
         b_mm: Column width perpendicular to x-axis (mm). Default: 0.0.
             Typical: 100-2000.
         D_mm: Column depth in x-direction (mm). Default: 0.0.
@@ -1161,13 +1166,15 @@ def design_column_is456(
         braced: If True, assumes braced frame (sway prevented). Default: True.
             Affects slender column moment magnification.
         M1x_kNm: End moment 1 about x-axis (kNm) for slender columns.
-            If None and column is slender, assumes M1x = M2x = Mux.
+            If None, defaults to max(Mux_kNm, Mux_min_kNm).
         M2x_kNm: End moment 2 about x-axis (kNm) for slender columns.
-            If None and column is slender, assumes M2x = Mux.
+            Must cover abs(M1x) and Mux_kNm. If None, defaults to
+            max(Mux_kNm, Mux_min_kNm). Absolute tolerance: 1e-9 kNm.
         M1y_kNm: End moment 1 about y-axis (kNm) for slender columns.
-            If None and column is slender, assumes M1y = M2y = Muy.
+            If None, defaults to max(Muy_kNm, Muy_min_kNm).
         M2y_kNm: End moment 2 about y-axis (kNm) for slender columns.
-            If None and column is slender, assumes M2y = Muy.
+            Must cover abs(M1y) and Muy_kNm. If None, defaults to
+            max(Muy_kNm, Muy_min_kNm). Absolute tolerance: 1e-9 kNm.
 
     Returns:
         Dictionary with:
@@ -1411,6 +1418,38 @@ def design_column_is456(
         M2x = M2x_kNm if M2x_kNm is not None else Mux_design
         M1y = M1y_kNm if M1y_kNm is not None else Muy_design
         M2y = M2y_kNm if M2y_kNm is not None else Muy_design
+
+        # Signed ends describe curvature; they cannot discard an independently
+        # declared applied demand. Keep the existing minimum-eccentricity
+        # defaults, then reject inputs outside this end-moment-only profile.
+        issues = []
+        for axis, applied, m1, m2 in (
+            ("x", Mux_kNm, M1x, M2x),
+            ("y", Muy_kNm, M1y, M2y),
+        ):
+            if abs(m1) > abs(m2) + 1e-9:
+                issues.append(
+                    InputIssueV1(
+                        "COLUMN_END_MOMENT_ORDER",
+                        f"M2{axis}_kNm",
+                        "The second signed end moment must have the larger absolute magnitude.",
+                        received={"M1_kNm": m1, "M2_kNm": m2},
+                        constraint="abs(M1) <= abs(M2), tolerance 1e-9 kNm",
+                    )
+                )
+            elif applied > abs(m2) + 1e-9:
+                issues.append(
+                    InputIssueV1(
+                        "COLUMN_ACTION_CONFLICT",
+                        f"Mu{axis}_kNm",
+                        "The signed end-moment envelope does not cover the declared applied moment.",
+                        received={"applied_kNm": applied, "M1_kNm": m1, "M2_kNm": m2},
+                        constraint="applied <= abs(M2), tolerance 1e-9 kNm",
+                        suggestion="Supply consistent signed end moments or use a separately verified analysis for an interior peak.",
+                    )
+                )
+        if issues:
+            raise InputContractError(issues)
 
         # Call slender column design
         long_result = design_long_column_is456(

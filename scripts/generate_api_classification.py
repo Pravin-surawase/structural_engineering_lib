@@ -168,6 +168,24 @@ _INTENTIONAL_COMPATIBILITY_PREFIXES = (
     "docs/migration/",
     "docs/guidelines/migration-",
 )
+# These qualified consumer adapters accept canonical results; calculation in
+# the developer journey still belongs to the canonical beam facade. Keep the
+# exception per symbol so an unrelated legacy calculation cannot be added.
+_INTENTIONAL_COMPATIBILITY_CALLS = {
+    "docs/developers/platform-guide.md": frozenset(
+        {
+            "structural_lib.api.compute_dxf",
+            "structural_lib.api.export_bbs",
+            "structural_lib.api.generate_calculation_report",
+        }
+    ),
+    "scripts/_lib/release_beam_column.py": frozenset(
+        {
+            "structural_lib.api.design_beam_is456",
+            "structural_lib.api.generate_calculation_report",
+        }
+    ),
+}
 _OUT_OF_SCOPE_PREFIXES = (
     "docs/_archive/",
     "docs/_internal/",
@@ -866,6 +884,8 @@ def _scan_callers(
         disposition = _path_scope(
             relative, compatibility_module=module in compatibility_modules
         )
+        if f"{module}.{name}" in _INTENTIONAL_COMPATIBILITY_CALLS.get(relative, ()):
+            disposition = "INTENTIONAL_PUBLIC_FACADE"
         caller_records.add((relative, module, name, disposition))
 
     def record_module(relative: str, module: str) -> None:
@@ -932,11 +952,18 @@ def _scan_callers(
                                     record(relative, candidate, chain[split])
                 continue
 
+        # A short Python alias is meaningful inside executable Markdown code,
+        # not in a prose link such as ../reference/api.md.
+        alias_text = (
+            "\n".join(re.findall(r"```[^\n]*\n(.*?)```", text, re.DOTALL))
+            if path.suffix == ".md"
+            else text
+        )
         text_aliases: dict[str, str] = {}
         for match in re.finditer(
             r"\bimport\s+(structural_lib(?:\.[A-Za-z_][A-Za-z0-9_]*)*)"
             r"(?:\s+as\s+([A-Za-z_][A-Za-z0-9_]*))?",
-            text,
+            alias_text,
         ):
             module = match.group(1)
             if module in known:
@@ -945,7 +972,7 @@ def _scan_callers(
         for match in re.finditer(
             r"\bfrom\s+(structural_lib(?:\.[A-Za-z_][A-Za-z0-9_]*)*)"
             r"\s+import\s+(\([^)]*\)|[^\n#]+)",
-            text,
+            alias_text,
             re.DOTALL,
         ):
             module = match.group(1)
@@ -974,7 +1001,7 @@ def _scan_callers(
                     break
         for local_name, module in text_aliases.items():
             for match in re.finditer(
-                rf"\b{re.escape(local_name)}\.([A-Za-z_][A-Za-z0-9_]*)\b", text
+                rf"\b{re.escape(local_name)}\.([A-Za-z_][A-Za-z0-9_]*)\b", alias_text
             ):
                 record(
                     relative,

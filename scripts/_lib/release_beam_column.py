@@ -29,6 +29,7 @@ TESTS = tuple(
         "test_t_beam_member",
         "test_complete_member_workflow",
         "test_flanged_branch_equilibrium",
+        "test_release_027_consumer_repairs",
     )
 ) + (
     "Python/tests/test_calculation_report.py",
@@ -78,6 +79,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo
                 / "contracts/structural-engineering/conformance/wp01-per-bar-vectors.json",
                 repo / "docs/reference/api.md",
+                repo / "docs/developers/platform-guide.md",
                 repo / "scripts/external_cli_test.py",
                 *(
                     repo / "docs/getting-started" / name
@@ -90,6 +92,116 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
             }
         )
     )
+
+
+def qualify_consumer_journeys(
+    config: dict[str, Any], *, drawing: bool = False, pdf: bool = False
+) -> dict[str, Any]:
+    """Replay the copied developer guide and accepted report controls."""
+    import contextlib
+    import re
+    import shutil
+
+    from structural_lib import api
+    from structural_lib.reports import generator
+
+    target = Path(config["output"]) / "consumer-journeys"
+    target.mkdir(parents=True, exist_ok=True)
+    guide = target / "platform-guide.md"
+    shutil.copyfile(Path(config["repo"]) / "docs/developers/platform-guide.md", guide)
+    blocks = re.findall(r"```python\n(.*?)```", guide.read_text(encoding="utf-8"), re.S)
+    namespace: dict[str, Any] = {}
+    markers = ["# quick_start_example.py", "# verify_quickstart_outputs"]
+    if drawing:
+        markers.append("# optional_dxf_export")
+    if pdf:
+        markers.append("# optional_pdf_export")
+    with contextlib.chdir(target):
+        for marker in markers:
+            block = next(block for block in blocks if marker in block)
+            exec(compile(block, str(guide), "exec"), namespace)
+    if len(namespace["schedule"].items) != 9:
+        raise AssertionError("Developer quickstart schedule changed")
+    template_html = (target / "beam_B1_outputs/beam_B1.template.html").read_text(
+        encoding="utf-8"
+    )
+    badge = re.search(
+        r'<span class="(?:status-badge [^"]+|status)">\s*([^<]+)', template_html
+    )
+    if badge is None or badge[1].strip() != "PASS":
+        raise AssertionError(
+            "Canonical overall report badge disagrees with the source PASS"
+        )
+    common = dict(
+        units="IS456",
+        b_mm=300,
+        D_mm=500,
+        d_mm=444,
+        fck_nmm2=25,
+        fy_nmm2=500,
+        mu_knm=150,
+        vu_kn=100,
+    )
+    controls = {}
+    for name, params, expected in (
+        ("design-only", {}, "PASS"),
+        (
+            "deflection-failure",
+            {
+                "deflection_params": {
+                    "span_mm": 10000,
+                    "d_mm": 444,
+                    "support_condition": "simply_supported",
+                    "mf_tension_steel": 0.5,
+                }
+            },
+            "FAIL",
+        ),
+    ):
+        result = api.design_beam_is456(**common, **params)
+        report = api.generate_calculation_report(result)
+        if report.results.summary["engineering_status"] != expected:
+            raise AssertionError(f"{name} report changed engineering status")
+        if expected == "FAIL" and report.results.summary["failed_checks"] != [
+            "deflection"
+        ]:
+            raise AssertionError("Evaluated serviceability failure disappeared")
+        if (
+            report.inputs.loads[0]["mu_knm"] != 150
+            or report.inputs.materials["fck_nmm2"] != 25
+        ):
+            raise AssertionError("Report lost retained action/material basis")
+        for fmt in ("json", "html", "markdown"):
+            getattr(report, f"export_{fmt}")(target / f"{name}.{fmt}")
+        (target / f"{name}.template.html").write_text(
+            generator.generate_html_report(result), encoding="utf-8"
+        )
+        if pdf:
+            from weasyprint import HTML
+
+            HTML(filename=str(target / f"{name}.html")).write_pdf(
+                target / f"{name}.pdf"
+            )
+        controls[name] = {
+            "engineering_status": expected,
+            "failed_checks": report.results.summary["failed_checks"],
+        }
+    return {
+        "status": "PASS",
+        "guide_sha256": hashlib.sha256(guide.read_bytes()).hexdigest(),
+        "source_status": namespace["result"].engineering_status.value,
+        "review_status": namespace["report"].source["envelope"]["review_status"],
+        "bbs_rows": len(namespace["schedule"].items),
+        "jinja2_available": generator.JINJA2_AVAILABLE,
+        "drawing": drawing,
+        "pdf": pdf,
+        "controls": controls,
+        "files": {
+            str(path.relative_to(target)): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in sorted(target.rglob("*"))
+            if path.is_file()
+        },
+    }
 
 
 def qualify(config: dict[str, Any]) -> dict[str, Any]:

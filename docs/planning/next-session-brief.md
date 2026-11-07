@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: 0.27.0 publication HOLD — repair R1–R5 under the five-step pre-release plan, then qualify replacement archives. The original retained pair must not be published.
-- Completed: Goals 1–4, selected closure Packets A–E and initial Goal 5 qualification (18 profiles, 378 tests per archive). Later isolated review reproduced a P1 column-action defect and four P2 report/quickstart defects. The new repair plan is documented; implementation and replacement qualification have not started.
+- Focus: Active LIB027-REPAIR-QUALIFY — source repairs and focused consumer regressions implemented; qualify replacement archives and final checks next. Publication remains HOLD and the original pair must not be uploaded.
+- Completed: Goals 1–4, selected closure Packets A–E and initial Goal 5 qualification. R1 now rejects dropped column demands; R2–R4 share the explicit report projection with retained legacy compatibility; the base R5 quickstart executes. Independent source reviews accepted. Optional/installed replacement replays and final candidate acceptance are pending.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
@@ -18,12 +18,13 @@
 
 ## Next work — five-step pre-release repair plan
 
-**Prepared goal:** `LIB027-REPAIR-QUALIFY` — repair R1–R5, verify supported
+**Active goal:** `LIB027-REPAIR-QUALIFY` — repair R1–R5, verify supported
 caller journeys and qualify an exact replacement 0.27.0 wheel/sdist, then
-report release readiness. **Not started: awaiting the owner's review and
-explicit start.** The [ready-to-start goal](library-usability-improvement.md#ready-to-start-goal--repair-and-requalify-0270)
-defines execution, completion and authority. No implementation or publication
-is authorized by this preparation task.
+report release readiness. **Started by the owner on 7 November 2026.** The
+[goal](library-usability-improvement.md#ready-to-start-goal--repair-and-requalify-0270)
+defines execution, completion and authority. Source repairs and focused
+regressions are implemented; replacement archive qualification and final
+checks are pending. Publication is not authorized.
 
 Follow the [detailed plan](library-usability-improvement.md#027-pre-release-repair-plan):
 
@@ -39,7 +40,7 @@ Follow the [detailed plan](library-usability-improvement.md#027-pre-release-repa
    qualification profiles and final required hosted release checks, then
    reassess readiness. Publication still requires separate authorization.
 
-This task changes planning/status records only. Keep the old archives and
+This goal implements the selected repairs and qualification. Keep the old archives and
 receipts as rejected baseline evidence. New column layouts, arbitrary P–M–M
 and broader beam member cases are outside this repair packet; 0.28 retains
 the slab/footing theme. Keep professional and installed-native HOLDs visible.

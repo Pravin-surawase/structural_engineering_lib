@@ -20,6 +20,12 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from structural_lib.services._report_projection import (
+    project_beam_report,
+    report_evidence_html,
+    report_template_context,
+)
+
 _logger = logging.getLogger(__name__)
 
 # Check for Jinja2 availability
@@ -108,7 +114,7 @@ class ReportContext:
         )
 
 
-_SAFETY_SECTIONS = ("flexure", "shear", "deflection", "crack_width")
+_SAFETY_SECTIONS = ("flexure", "shear", "deflection", "crack_width", "torsion")
 
 
 def _status_fields(is_ok: bool | None) -> dict[str, Any]:
@@ -180,6 +186,12 @@ def _normalize_report_context(context: dict[str, Any]) -> dict[str, Any]:
 
     normalized["results"] = results
     normalized.update(_status_fields(overall_status))
+    projection = normalized.get("report_projection")
+    if isinstance(projection, dict):
+        engineering = projection["results"]["summary"]["engineering_status"]
+        if engineering in {"HOLD", "NOT_EVALUATED"} and overall_status is not False:
+            normalized.update(_status_fields(None))
+            normalized["status_text"] = engineering
     normalized["report_context_version"] = "1.0"
     return normalized
 
@@ -252,42 +264,36 @@ def generate_html_report(
         >>> with open("report.html", "w") as f:
         ...     f.write(html)
     """
-    if not JINJA2_AVAILABLE:
-        _logger.warning(
-            "Jinja2 not installed — using basic fallback report. "
-            "Install with: pip install structural-lib-is456[report]"
-        )
-        # Build minimal context for fallback
-        if hasattr(design_result, "to_dict"):
-            result_dict = design_result.to_dict()
-        elif isinstance(design_result, dict):
-            result_dict = design_result
-        else:
-            result_dict = {}
-        proj = project_info or {}
-        fallback_ctx = _normalize_report_context(
-            {
-                "beam_id": beam_id,
-                "project_name": proj.get("project_name", ""),
-                "results": result_dict.get("results", result_dict),
-                "is_ok": result_dict.get(
-                    "is_ok", result_dict.get("results", {}).get("is_ok", False)
-                ),
-            }
-        )
-        return _generate_fallback_html(fallback_ctx)
-
-    # Convert design result to dictionary if needed
-    if hasattr(design_result, "to_dict"):
-        result_dict = design_result.to_dict()
-    elif hasattr(design_result, "__dict__"):
-        result_dict = vars(design_result)
-    elif isinstance(design_result, dict):
+    projection = None
+    if isinstance(design_result, dict):
+        if str(design_result.get("schema_version", "")).startswith("beam-"):
+            raise TypeError(
+                "Use the typed canonical beam result for HTML; serialized result schemas are not report-context schemas."
+            )
         result_dict = design_result
     else:
-        result_dict = {"data": design_result}
+        try:
+            projection = project_beam_report(design_result)
+        except TypeError:
+            # Explicit legacy report-context protocol, not a result-shape guess.
+            result_dict = (
+                design_result.to_dict()
+                if callable(getattr(design_result, "to_dict", None))
+                else vars(design_result) if hasattr(design_result, "__dict__") else {}
+            )
+            if (
+                not isinstance(result_dict, dict)
+                or not {"inputs", "results"} <= result_dict.keys()
+            ):
+                raise TypeError(
+                    "Use a supported beam result or an explicit inputs/results report context."
+                ) from None
+        else:
+            result_dict = report_template_context(projection)
+            identity = projection["source"]["identity"]
+            if beam_id == "B1":
+                beam_id = identity.get("member_id", beam_id)
 
-    # Build context
     proj = project_info or {}
     context = ReportContext(
         beam_id=beam_id,
@@ -300,13 +306,12 @@ def generate_html_report(
         date=proj.get("date", ""),
         inputs=result_dict.get("inputs", {}),
         results=result_dict.get("results", result_dict),
-        is_ok=result_dict.get(
-            "is_ok", result_dict.get("results", {}).get("is_ok", False)
-        ),
+        is_ok=result_dict.get("is_ok", result_dict.get("results", {}).get("is_ok")),
         software_version=proj.get("software_version", ""),
-    )
-
-    return generate_html_report_from_dict(context.to_dict(), template=template)
+    ).to_dict()
+    if projection is not None:
+        context["report_projection"] = projection
+    return generate_html_report_from_dict(context, template=template)
 
 
 def generate_html_report_from_dict(
@@ -359,6 +364,10 @@ def generate_html_report_from_dict(
     # Load and render template
     tmpl = env.get_template(template_file)
     rendered: str = tmpl.render(**context)
+    if "report_projection" in context:
+        rendered = rendered.replace(
+            "</body>", report_evidence_html(context["report_projection"]) + "</body>"
+        )
     return rendered
 
 
@@ -410,6 +419,7 @@ def _generate_fallback_html(context: dict[str, Any]) -> str:
         <code>pip install structural-lib-is456[report]</code>
         <hr>
         <pre>{html.escape(str(normalized.get("results", {})))}</pre>
+        {report_evidence_html(normalized["report_projection"]) if "report_projection" in normalized else ""}
     </div>
 </body>
 </html>

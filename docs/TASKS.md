@@ -26,7 +26,7 @@
 | LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Done: [PR #1040 integrated](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
-| LIB-027 | Deliver the selected beam and column release | P1 | Publication HOLD: initial qualification passed, but R1–R5 column/report/quickstart defects require repair and replacement-archive qualification. Planning only; implementation pending. | [Five-step repair plan](planning/library-usability-improvement.md#027-pre-release-repair-plan) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
+| LIB-027 | Deliver the selected beam and column release | P1 | Active LIB027-REPAIR-QUALIFY: R1–R5 source repairs and focused regressions implemented; replacement-archive and final hosted qualification pending. Publication HOLD. | [Five-step repair plan](planning/library-usability-improvement.md#027-pre-release-repair-plan) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
