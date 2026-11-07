@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: Active LIB027-REPAIR-QUALIFY — source repairs and focused consumer regressions implemented; qualify replacement archives and final checks next. Publication remains HOLD and the original pair must not be uploaded.
-- Completed: Goals 1–4, selected closure Packets A–E and initial Goal 5 qualification. R1 now rejects dropped column demands; R2–R4 share the explicit report projection with retained legacy compatibility; the base R5 quickstart executes. Independent source reviews accepted. Optional/installed replacement replays and final candidate acceptance are pending.
+- Focus: 0.27.0 publication authorization handoff — use only the qualified replacement pair in 5c79c3b07dcb/dist. Final required check/review/merge facts are owned by PR #1063; publication remains unauthorized.
+- Completed: R1–R5 source and installed repairs; all 18 replacement profiles PASS, with 408 tests per archive and preserved FAIL/HOLD controls. Independent final wheel reviews accepted; all 19 changed report PDF pages visually passed. Retained record binds the clean source, new hashes and rejected-candidate history. GitHub owns the final required hosted/integration gate.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
@@ -14,34 +14,39 @@
 | Release | Current state |
 |---|---|
 | **Current** | 0.26.0 is published and verified in the [release ledger](../getting-started/releases.md#v0260-published-and-verified). |
-| **Next** | 0.27.0 publication is HOLD for confirmed R1–R5 defects. Repair the supported routes and qualify one replacement wheel/sdist pair before separate publication authorization. |
+| **Next** | R1–R5 repairs and exact replacement archive qualification pass. Final required GitHub acceptance and separate publication authorization precede delivery. |
 
-## Next work — five-step pre-release repair plan
+## Next work — final acceptance and publication handoff
 
-**Active goal:** `LIB027-REPAIR-QUALIFY` — repair R1–R5, verify supported
-caller journeys and qualify an exact replacement 0.27.0 wheel/sdist, then
-report release readiness. **Started by the owner on 7 November 2026.** The
-[goal](library-usability-improvement.md#ready-to-start-goal--repair-and-requalify-0270)
-defines execution, completion and authority. Source repairs and focused
-regressions are implemented; replacement archive qualification and final
-checks are pending. Publication is not authorized.
+**Selected goal:** `LIB027-REPAIR-QUALIFY`, started by the owner on
+7 November 2026. The
+[acceptance specification](library-usability-improvement.md#repair-goal--acceptance-history)
+retains the agreed scope and authority. Source repairs, independent
+installed review and replacement archive qualification pass. Final required
+hosted/integration facts belong to PR #1063. Publication is not authorized.
 
-Follow the [detailed plan](library-usability-improvement.md#027-pre-release-repair-plan):
+1. Read PR #1063's immutable-head required PR and Weekly/cross-platform
+   checks, independent review and merge facts. Complete any remaining gate.
+2. Bind the accepted merge and unchanged Python/build/verifier inputs to the
+   selected 5c79c3b07dcb archive pair; rerun retained-check on the accepted tree.
+3. Report readiness and leave publication for separate owner authorization.
 
-1. Reconcile applied column moments and signed end moments. The 400 kNm
-   applied/zero-end slender request must never return PASS on 20 kNm.
-2. Share an explicit canonical/legacy report adapter. Preserve inputs,
-   required/provided steel, actual detailing, status/review identity and
-   evaluated serviceability reasons across supported formats.
-3. Replace and execute the complete active developer quickstart.
-4. Verify the actual installed caller journeys and existing A–E controls,
-   with bounded independent review and one batched implementation candidate.
-5. Build a fresh hash-bound 0.27.0 wheel/sdist pair, run all 18 expanded
-   qualification profiles and final required hosted release checks, then
-   reassess readiness. Publication still requires separate authorization.
+The five repair steps in the [detailed plan](library-usability-improvement.md#027-pre-release-repair-plan)
+are completed implementation/qualification history, not instructions to
+restart R1–R5 or rebuild a passing archive pair.
 
-This goal implements the selected repairs and qualification. Keep the old archives and
-receipts as rejected baseline evidence. New column layouts, arbitrary P–M–M
+**Merge order:** this repair precedes draft
+[research PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064),
+whose head is `97743f405ed8987a047c43dc6929ff5225b184d9` on base
+`1c35d9485fa3499e69f1926657e91e84fe0d7bb8`. That proposal overlaps the shared
+plan and must rebind to the accepted repair/current main before later
+integration. Its existing draft already records this order. It does not
+expand this repair or authorize its proposed implementation.
+
+The [repair results](library-usability-improvement.md#repair-qualification-results--7-november-2026)
+bind the new pair in `output/releases/0.27.0/5c79c3b07dcb/dist/`. Preserve the
+original 9a78d2be9314 archives. The 423097e8 intermediate directory is invalid
+for delivery; only its historical receipts remain valid evidence. New column layouts, arbitrary P–M–M
 and broader beam member cases are outside this repair packet; 0.28 retains
 the slab/footing theme. Keep professional and installed-native HOLDs visible.
 

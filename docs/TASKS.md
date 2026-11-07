@@ -26,7 +26,7 @@
 | LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Done: [PR #1040 integrated](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
-| LIB-027 | Deliver the selected beam and column release | P1 | Active LIB027-REPAIR-QUALIFY: R1–R5 source repairs and focused regressions implemented; replacement-archive and final hosted qualification pending. Publication HOLD. | [Five-step repair plan](planning/library-usability-improvement.md#027-pre-release-repair-plan) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
+| LIB-027 | Deliver the selected beam and column release | P1 | R1–R5 repairs and replacement qualification pass: 18 profiles, 408 tests per archive, independent installed/PDF review. PR #1063 owns final hosted/integration acceptance; publication authorization remains pending. | [Five-step repair plan](planning/library-usability-improvement.md#027-pre-release-repair-plan) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
@@ -190,7 +190,7 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | Packets A–E delivered for their selected profiles. Initial Goal 5: 18 profiles and 378 tests per archive passed. Subsequent isolated review confirmed one P1 column-action and four P2 report/quickstart defects. Publication HOLD; [five-step repair plan](planning/library-usability-improvement.md#027-pre-release-repair-plan) documented, implementation pending. [Original retained evidence](verification/library-0270-release-artifacts.json) is preserved as the rejected baseline; replacement archives must qualify before readiness. Unsupported/professional/native boundaries remain separate. |
+| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | Packets A–E delivered for their selected profiles. Initial Goal 5: 18 profiles and 378 tests per archive passed. Subsequent isolated review confirmed one P1 column-action and four P2 report/quickstart defects. [Five-step repair results](planning/library-usability-improvement.md#repair-qualification-results--7-november-2026): R1–R5 closed by installed replays, all 18 replacement profiles and 408 tests per archive pass, independent installed/PDF review accepted. [Retained evidence](verification/library-0270-release-artifacts.json) selects the clean 5c79c3b0 pair and preserves rejected history. PR #1063 owns final hosted/integration acceptance; publication remains unauthorized. Unsupported/professional/native boundaries remain separate. |
 
 The [current handoff](planning/next-session-brief.md) identifies the selected
 preparation scope. The dated notes below retain earlier lanes and installed-host
