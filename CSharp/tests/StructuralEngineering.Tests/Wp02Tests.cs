@@ -163,4 +163,19 @@ public class Wp02Tests
         Assert.Equal(EngineeringState.NotEvaluated, result.Engineering);
         Assert.Contains(result.Diagnostics, item => item.Code == "TORSION.CORNER_GEOMETRY_REQUIRED");
     }
+
+    [Theory]
+    [InlineData(45)]
+    [InlineData(55)]
+    public void ZeroTorsionRetainsExistingPerimeterCheck(double topLeftDepthMm)
+    {
+        var bars = Bars.Select(bar => bar.BarId == "TL" ? bar with { YFromTopMm = topLeftDepthMm } : bar).ToArray();
+        var result = BeamOperations.CheckTorsion(new(
+            "IS456-WP02", Action() with { TorsionKnM = 0 },
+            FlexureRequest() with { Bars = bars }, Link(), ["TL", "TR", "BL", "BR"]));
+        Assert.Equal(EngineeringState.Pass, result.Engineering);
+        Assert.True(result.Outputs!.PerimeterPass);
+        Assert.Null(result.Outputs.CornerWidthMm);
+        Assert.Equal("is456-torsion-check-wp02-v2", result.Provenance.MethodRevisionId);
+    }
 }

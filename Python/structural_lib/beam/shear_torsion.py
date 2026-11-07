@@ -657,7 +657,7 @@ def check_torsion(request: TorsionCheckRequest) -> OperationResult:
     )
     perimeter_pass = perimeter_resolved and has_four_corners
     corner_width = corner_depth = 0.0
-    if perimeter_bars:
+    if action.torsion_knm != 0 and perimeter_bars:
         left = min(bar.x_from_left_mm for bar in perimeter_bars)
         right = max(bar.x_from_left_mm for bar in perimeter_bars)
         top = min(bar.y_from_top_mm for bar in perimeter_bars)

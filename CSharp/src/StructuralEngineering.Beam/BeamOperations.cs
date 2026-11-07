@@ -218,7 +218,7 @@ public static class BeamOperations
         var perimeterPass = perimeterIds.Count >= 4 && perimeterIds.IsSubsetOf(availableIds) && fourCorners;
         var cornerWidth = 0.0;
         var cornerDepth = 0.0;
-        if (perimeterBars.Length > 0)
+        if (action.TorsionKnM != 0 && perimeterBars.Length > 0)
         {
             var left = perimeterBars.Min(bar => bar.XFromLeftMm);
             var right = perimeterBars.Max(bar => bar.XFromLeftMm);

@@ -117,15 +117,31 @@ def test_unresolved_or_unaligned_corner_geometry_has_no_invented_capacity():
         }
 
 
-def test_zero_torsion_retains_the_existing_ordinary_check_method():
+@pytest.mark.parametrize("top_left_depth", (50, 60))
+def test_zero_torsion_retains_the_existing_ordinary_check_method(top_left_depth):
     original = request(REFERENCE["cases"][0])
     result = beam.check_torsion(
-        replace(original, action=replace(original.action, torsion_knm=0))
+        replace(
+            original,
+            action=replace(original.action, torsion_knm=0),
+            flexural_capacity=replace(
+                original.flexural_capacity,
+                bars=tuple(
+                    (
+                        replace(bar, y_from_top_mm=top_left_depth)
+                        if bar.bar_id == "TL"
+                        else bar
+                    )
+                    for bar in original.flexural_capacity.bars
+                ),
+            ),
+        )
     )
     assert result.engineering == "pass"
     assert result.provenance.method_revision_id == "is456-torsion-check-wp02-v2"
     assert "corner_width_mm" not in result.outputs
     assert result.outputs["equivalent_shear_kn"] == 60
+    assert result.outputs["perimeter_pass"] is True
 
 
 @pytest.mark.parametrize("moment", (15, -15))
