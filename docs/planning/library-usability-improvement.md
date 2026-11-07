@@ -168,6 +168,47 @@ determine the steel area and equivalent two-face depth.
 6. Close the packet with its merge evidence. Update the handoff for Packet D
    and archive superseded dated handoffs with their links and provenance.
 
+### Packet D revised work order and evidence boundary
+
+The source review found that the existing station check used transverse
+stirrup centre dimensions in the Cl. 41.4.3 reinforcement equation. That
+equation needs the distances between corner longitudinal-bar centres.
+The stirrup dimensions belong to the separate pitch rule in Cl. 26.5.1.7.
+
+D1 starts with this root correction in the Python and C# calculation owners.
+The frozen 300 × 400 mm M25/Fe415 station has four Ø20 corners at
+(50,50), (250,50), (50,350) and (250,350) mm. Use the same concurrent
+row with V2 = 60 kN, M3 = 15 kN·m and T = 15 kN·m. Corner dimensions
+are 200 × 300 mm; the Ø8 link centre dimensions are 242 × 342 mm.
+The independently required Asv/s is 0.914000831 mm²/mm. Two Ø8 legs
+at 100 mm supply 1.005309649 and pass this station check. At 125 mm they
+supply 0.804247719 and fail despite satisfying the 146 mm pitch limit.
+[Independent source and fixture](../verification/library-027-torsion-station.json)
+
+| Stage | Work and exit evidence | Current boundary |
+|---|---|---|
+| D1 | Freeze the source-correct station inputs, fix corner dimensions, expose method/basis, replay adequate and inadequate provision in Python and C#, and preserve the zero-torsion route. | Implemented source correction with an executable station replay. |
+| D2 | Freeze a physically coherent member and a requirement-to-owner matrix. Keep same-row station M3/V2/T, support-face distance and critical sections, torsion equilibrium and support torque transfer, all required perimeter steel, hook fit, tension anchorage on both faces, continuity and durability explicit. Add every obligation to the expected member leaf set before running it. | Full-member admission HOLD until these named inputs and independent checks qualify. |
+| D3 | Resolve torsional serviceability using an authoritative method and explicit acceptance criteria for the selected service load case. Then reconcile the complete member, paths, BBS, quantities, JSON and HTML, replay zero torsion, inadequate and missing evidence, and qualify an installed example. | Torsional SLS remains HOLD. The existing flexural crack and span/depth checks cannot satisfy this obligation. |
+
+The source review distinguishes collapse-limit torsion in Cl. 41 from the
+flexural deflection and crack provisions in Cl. 42–43 and Annex F.
+A supplementary uncracked elastic stress screen would need its own declared
+assumptions and does not supply torsional crack-width or twist acceptance.
+The resolver is an adopted and independently verified torsional SLS method
+with project acceptance criteria and traceable service actions. The next
+admitted profile must identify that basis before member acceptance.
+
+Use full design-stress anchorage unless a source-consistent calculation
+establishes each actual torsion-face bar stress. The ordinary zero-torsion
+worked beam's top compression anchorage cannot establish tension anchorage
+for a torsion-induced opposite-face demand.
+
+D1 station PASS leaves the full member on HOLD. Packet D stays open through
+D2 and D3, and Goal 5 still waits for completed D and E. The runnable
+station example makes this boundary explicit.
+[Station example](../../Python/examples/torsion_station_reference.py)
+
 ### Goal 5 qualify and release 0.27.0
 
 1. Prepare one versioned 0.27.0 candidate from the merged Goals 1–4 and
@@ -209,7 +250,7 @@ determine the steel area and equivalent two-face depth.
 | Before Goal 5 | [Close the selected beam and column gaps](#beam-and-column-closure-before-goal-5), starting with the two layered column section cases. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | After closure. [Prepare and verify the exact candidate, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Continue with packet D in the [beam and column closure plan](#beam-and-column-closure-before-goal-5).
+Continue with packet D2 in the [beam and column closure plan](#beam-and-column-closure-before-goal-5).
 There is no standalone 0.26.1 release. Candidate preparation uses the
 maintained version tooling after scoped implementation and documentation
 freeze. A Jira fix version is a
