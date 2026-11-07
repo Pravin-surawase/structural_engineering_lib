@@ -23,6 +23,7 @@ TESTS = tuple(
         "test_beam_section_closure",
         "test_four_corner_column_member",
         "test_torsion_corner_geometry",
+        "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
         "test_torsional_serviceability",
         "test_t_beam_member",
@@ -112,8 +113,22 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     commands = []
 
     def run(label: str, script: str, *args: str) -> str:
+        command = [sys.executable, "-I"]
+        if script in CHECKERS:
+            # -I deliberately excludes the script directory. These arithmetic
+            # drivers share sibling helpers; expose only their copied folder.
+            command.extend(
+                (
+                    "-c",
+                    "import runpy,sys;from pathlib import Path;"
+                    "sys.argv=sys.argv[1:];"
+                    "sys.path.insert(0,str(Path(sys.argv[0]).parent));"
+                    "runpy.run_path(sys.argv[0],run_name='__main__')",
+                )
+            )
+        command.extend((str(clone / script), *args))
         completed = subprocess.run(
-            [sys.executable, "-I", str(clone / script), *args],
+            command,
             cwd=clone,
             capture_output=True,
             text=True,
