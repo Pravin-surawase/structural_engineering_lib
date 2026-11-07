@@ -21,6 +21,7 @@ Internal planning documents and research notes.
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
 | [0.27 Beam and Column Release Preparation](library-usability-improvement.md#027-beam-and-column-release-preparation) | Measured comparison, ordered work, and candidate gates |
 | [Beam and Column Library Parity Research](library-usability-improvement.md#beam-and-column-library-parity-research) | Comparator evidence, existing capabilities, proposed additions, dependencies and acceptance criteria |
+| [Future Beam and Column Case Checklist](library-usability-improvement.md#future-case-checklist) | 39 tracked cases with maturity/packet mapping and a dated recheck of the five repaired consumer issues |
 | [Python Library Workflow Improvement Plan](python-library-workflow-improvement-plan.md) | Reliable Python design, detailing, schedule and export acceptance |
 | [Excel-DNA XLL Plan and Research Handoff](xll-product/README.md) | Separate XLL planning/learning track: original P0–P6, shell-only Windows packet, research/cost map and portable handoff; no implementation acceptance implied |
 | [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md) | Human-facing six-phase programme from trusted ETABS acquisition through owned-copy reanalysis and convergence |

@@ -800,11 +800,141 @@ and the named profile guides jointly define current admission. Legacy
 case-qualified physical T-member composition. Likewise the experimental PMM
 surface and a helix helper must not be advertised as complete column design.
 
+### Future case checklist
+
+Keep these **39 items** as the detailed backlog beneath BC00–BC12. **New**
+means no stable admitted workflow exists; **Extend** means implementation or
+bounded cases already exist; **Promote** means experimental work needs an
+approved support contract and qualification. Open boxes track the complete
+listed profile, not the absence of every underlying formula.
+
+The section-analysis features below are demonstrated comparison targets.
+Complete physical-member cases are StructLib's own admission gaps: a comparator
+that calculates their section response does not necessarily design their ties,
+anchorage, member serviceability or construction details. Optional items do not
+change the selected release scope.
+
+#### Column cases
+
+- [ ] **C01 Eight-bar rectangular columns** — Extend the four-corner member to
+  corners plus one intermediate bar on each face. BC03/BC04.
+- [ ] **C02 Six-bar rectangular columns** — Extend to both explicitly oriented
+  six-bar layouts. BC03/BC04.
+- [ ] **C03 Larger perimeter and multiple-row cages** — Extend to more than
+  eight bars and differing bar counts on faces, using actual coordinates. BC04.
+- [ ] **C04 Asymmetric and mixed-diameter physical cages** — Extend actual member
+  capacity and tie checks; mixed diameters already exist in prescribed section
+  response. BC03/BC04.
+- [ ] **C05 Actual-cage coupled biaxial member checks** — Extend beyond the
+  generic idealized equal-opposite-face steel basis. BC03/BC04.
+- [ ] **C06 Slender members with actual cages** — Extend admitted layouts with
+  the reconciled signed-action and additional-moment contract. BC02/BC04.
+- [ ] **C07 Circular tied columns** — New complete section/member workflow with
+  a physical reinforcement ring and restraint. BC05.
+- [ ] **C08 Circular spiral columns** — New complete workflow using the existing
+  helix check only for its declared component role. BC05.
+- [ ] **C09 Automatic column sizing and reinforcement selection** — New bounded
+  dimension/bar/tie selection through the same qualified checker. BC10.
+- [ ] **C10 Column construction outputs** — Extend longitudinal/tie paths, BBS,
+  quantities and reports to each newly checked physical layout. BC04/BC11.
+
+#### Beam member cases
+
+- [ ] **B01 Continuous beams** — Extend complete member checking to multiple
+  spans, positive/negative regions and governing stations. BC02/BC06.
+- [ ] **B02 Cantilever members** — Extend physical support anchorage, real bars
+  and matching serviceability beyond component/solver support. BC06/BC07.
+- [ ] **B03 Complete L-beam members** — Extend existing geometry/calculations to
+  physical containment, shear, anchorage and serviceability. BC06.
+- [ ] **B04 Hogging flanged members** — Extend flange-in-tension behavior with
+  actual top bars and support details. BC06.
+- [ ] **B05 Additional doubly reinforced and multilayer member layouts** — Extend
+  qualified arrangements beyond the selected members; retain existing section
+  mechanics and actual-layer depth checks. BC03/BC06.
+- [ ] **B06 Splices, laps and curtailment** — Extend complete profiles with actual
+  bar termination/development across varying demand regions. BC06.
+- [ ] **B07 Broader torsion profiles** — Extend T/L-member, sustained-torque and
+  other service histories through separately qualified load-path/service
+  models. This is future engineering scope, not a claim that all comparators
+  already provide complete torsion members. BC06/BC07.
+
+#### General section analysis
+
+- [ ] **S01 Stable action-driven actual-bar API** — Extend response at prescribed
+  `xu` into admitted axial-force/bending decisions. BC01/BC03.
+- [ ] **S02 General geometry** — New stable API for circular, polygonal, hollow
+  and voided regions with positioned bars, reusing existing section types. BC08.
+- [ ] **S03 General gross, transformed and cracked properties** — Extend common
+  property operations across admitted geometry/layouts. BC07/BC08.
+- [ ] **S04 General signed P–M diagrams** — Extend existing rectangular P–M
+  curves to actual layouts, additional shapes and both bending directions.
+  BC03/BC09.
+- [ ] **S05 Stable P–M–M analysis** — Promote the experimental kernel with a
+  distinction between fixed-axial-load biaxial slices and full domains.
+  BC03/BC09.
+- [ ] **S06 Moment–curvature analysis** — New declared-material analysis through
+  elastic/cracking/yield/ultimate response, with equilibrium and convergence.
+  BC09.
+- [ ] **S07 General service stress and strain-plane analysis** — Extend admitted
+  combined-action response and the retained service-state evidence. BC03/BC07.
+- [ ] **S08 General stress and strain plots** — Extend visualization so each
+  field is bound to its calculated section state. BC09/BC11.
+- [ ] **S09 Configurable material profiles** — Extend explicit service/ultimate,
+  steel-hardening and qualified confined-concrete laws while retaining named
+  IS 456 profiles. Each new law needs applicability evidence. BC01/BC09.
+- [ ] **S10 Composite section analysis** — New multiple-region section analysis,
+  including embedded structural steel and concrete-filled steel shapes. BC08/BC09.
+
+#### Serviceability cases
+
+- [ ] **V01 Actual-bar service stresses and cracked stiffness** — Extend reusable
+  derivation from the supplied service actions and checked bars. BC07.
+- [ ] **V02 Additional continuous and compression-reinforcement deflection cases**
+  — Extend the bounded existing serviceability models. BC06/BC07.
+- [ ] **V03 Broader finite load histories** — Extend sustained-load, creep,
+  shrinkage and finishes-history profiles; retain missing-evidence HOLD. BC07.
+- [ ] **V04 Wider flexural crack-width workflows** — Extend generation and
+  preservation of service-state evidence for additional layouts. The Annex F
+  calculation itself already exists. BC07.
+
+#### Design and user workflows
+
+- [ ] **W01 Unified supplied-combination checking** — Extend concurrent action
+  sets and identify the real governing combination/station per check. BC02.
+- [ ] **W02 Reinforcement alternatives across more profiles** — Extend existing
+  beam candidate search/catalogues, constructibility and completeness controls.
+  BC10.
+- [ ] **W03 Consistent public reports and exports across profiles** — Extend
+  one result projection to every advertised/newly promoted profile. The earlier
+  canonical beam and legacy report defects are repaired in the candidate
+  verified below; wider profile/output coverage remains open. BC00/BC11.
+- [ ] **W04 Revalidated editable schedules** — Extend Excel reinforcement round
+  trips so edited bars are checked before accepted outputs are regenerated.
+  BC10/BC11.
+- [ ] **W05 Editable Word calculation reports** — New optional reviewer format
+  alongside existing HTML/JSON/PDF/Markdown infrastructure. BC11.
+- [ ] **W06 Optional metric and US unit-aware input/reporting** — Later enhancement
+  at the public boundary; preserve explicit internal engineering units. BC01/BC11.
+
+#### Optional later breadth
+
+- [ ] **O01 Prestressed section analysis** — New separately qualified scope.
+  Comparator section analysis has its own restrictions; complete prestressed
+  member design would be a further project. BC08/BC09 plus a new profile decision.
+- [ ] **O02 Additional design-code profiles** — Select ACI, Eurocode, AS/NZS or
+  other codes by actual demand and qualify each independently. This is not
+  automatically part of the ordinary IS 456 parity target.
+
+General global-frame analysis, unrestricted seismic/joint design, fire/fatigue
+and cyclic response remain separate proposals rather than inferred competitor
+gaps. The reusable current formulas, solver, bar selection, BBS and exports in
+the capability table remain available within their admitted scope.
+
 ### Release repairs before capability expansion
 
-The isolated review of the stated baseline found the following outcomes.
-Track repairs in the current pre-release packet and recheck the exact repaired
-candidate; this research does not implement them.
+The isolated review of the stated baseline found the following outcomes. Keep
+them as the original reproduction record; the recent-repair verification below
+records their corrected candidate behavior.
 
 | Repair | Reproduced baseline outcome | Required result |
 |---|---|---|
@@ -812,6 +942,46 @@ candidate; this research does not implement them.
 | Canonical report handoff | A successful canonical beam produces a FAIL through `reports.generate_html_report`; `api.generate_calculation_report` raises a missing `geometry` AttributeError. | An explicit canonical-result adapter preserves the source outcome, request, checks and detailing, while retaining documented legacy support. [Generator](../../Python/structural_lib/reports/generator.py), [calculation report](../../Python/structural_lib/services/calculation_report.py) |
 | Report completeness | Accepted legacy calculation-report routes omit known inputs/actions and evaluated serviceability failure details. | JSON/HTML/Markdown show the same available inputs, governing checks/limits, failures and qualified-review status. |
 | Working onboarding | The active developer platform recipe raises `unexpected keyword argument 'beam_id'` at its first design call and uses obsolete result fields. | One maintained executable design → detail → BBS → report recipe, replayed from an installed release candidate. [Guide](../developers/platform-guide.md) |
+
+### Recent repair verification
+
+**Checked 7 November 2026:** all five earlier findings are corrected in the
+replacement candidate from [PR #1063](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1063),
+head `a5405fb7d081c6f5ab0765d6dab067c4d38ed9f7`. At this check it is unmerged;
+`main` remains `1c35d9485fa3499e69f1926657e91e84fe0d7bb8`. Fix verification is
+separate from merge, final qualification gates and publication.
+
+| Finding | Independently observed repaired behavior | State at the checked head |
+|---|---|---|
+| R1 Conflicting slender-column actions | Direct/canonical x/y requests reject with `COLUMN_ACTION_CONFLICT`; canonical path is `actions.mux_knm`; HTTP returns structured 422. Consistent negative 400 kN·m end moments retain `Mux_design=420 kN·m` and FAIL. | Fixed in repair source and exact replacement wheel; no discarded-demand PASS. |
+| R2 Canonical report outcome/crash | `api.generate_calculation_report` accepts the canonical result; `generate_html_report` reports PASS for all three templates with Jinja2 and the base fallback. Qualified-review status and nine BBS rows survive. | Fixed in exact replacement wheel. |
+| R3 Missing report input basis | Known 300 × 500 mm geometry, d=444 mm, M25/Fe500 and 150 kN·m/100 kN actions remain in the design-only report. | Fixed in exact replacement wheel; unknown inputs remain unavailable. |
+| R4 Lost serviceability failure | The deflection-only case retains FAIL, `failed_checks=[deflection]`, L/d=22.5225225 and allowable=10 in JSON/HTML/Markdown, with qualified-review state. | Fixed in exact replacement wheel. |
+| R5 Broken developer quickstart | The exact current guide blocks execute from the isolated installed wheel and produce PASS, review-required=True, nine BBS rows and matched report/schedule files. | Fixed in the checked guide and exact replacement wheel. |
+
+Verification used a separate source worktree and a fresh wheel-only environment
+with `-I` imports from site-packages. All **342 package files** matched both the
+wheel payload and the repaired source; **256 focused Python/HTTP tests passed**.
+The independent wheel replay passed R1–R5 first with only base dependencies,
+then with the declared Jinja2 report dependency. The sdist size and SHA-256
+matched the retained record; its full installation qualification belongs to
+that record rather than this independent wheel replay.
+
+The [replacement artifact record](https://github.com/Pravin-surawase/structural_engineering_lib/blob/a5405fb7d081c6f5ab0765d6dab067c4d38ed9f7/docs/verification/library-0270-release-artifacts.json)
+binds build head `5c79c3b07dcbdb5ac32a519ae50cacfde5054cac`, Python tree
+`7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf`, and these exact files:
+
+- Wheel SHA-256: `75debc1e9fdf0b3b7d1d903f1725829624b9032cf3eae8cc785964e381dfda39`.
+- Sdist SHA-256: `52e5dff065d54aeb373933bdef9c97f804a13344f7f6f662f02f27bf9f87ca59`.
+
+That receipt records all 18 expanded qualification profiles passing, including
+408 copied-driver tests per archive. Final
+[PR Validation](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/42394521686)
+passed on the checked head; the matching
+[Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/42394533224)
+was still in progress at the observation. Required integration/publication
+facts must be refreshed before delivery. No new future-case checkbox closes
+from these reliability repairs, and no publication was authorized by this work.
 
 ### Proposed implementation packets
 
@@ -823,10 +993,12 @@ presentation in UI/IO. Reuse the maintained owners in the capability table.
 
 #### BC00 Repair the current release journeys
 
-Close the release repairs above before feature expansion. Acceptance is exact
-installed-wheel/sdist replay of the previously failing action, report and
-onboarding cases, existing affected regressions and required hosted checks.
-Any package-source repair needs a newly qualified archive pair.
+The recent-repair verification closes the five reproduced defects in the
+named repair candidate and its replacement wheel. Complete the remaining final
+qualification/integration gates and bind the accepted tree before feature
+expansion. Acceptance retains installed-wheel/sdist replay, affected regressions
+and required hosted checks. Any further package-source repair needs a newly
+qualified archive pair.
 
 #### BC01 Establish shared section and action contracts
 
@@ -997,7 +1169,7 @@ waiting until the end.
 
 | Stage | Proposed work | Completion decision |
 |---|---|---|
-| Current release | BC00 | Previously reproduced action/report/onboarding failures are corrected on qualified replacement archives. |
+| Current release | BC00 | The five verified repairs retain their replacement archive identity; final checks, integration and the accepted-tree binding complete. |
 | Shared basis | BC01–BC03 | Real bars, actions and rectangular section decisions share stable identities and independently checked mechanics. |
 | Useful member breadth | BC04, BC06, relevant BC07; then BC05 | Selected rectangular/circular columns and common beam profiles complete the same check/detail/output journey. |
 | Selection and use | BC10/BC11 with the admitted profiles | A feasible candidate is selected and reviewed across all supplied cases, with alternatives and consistent exports. |
@@ -1036,8 +1208,8 @@ are separate later extensions. They are not prerequisites for useful ordinary
 IS 456 beam/column parity, and a comparator's example does not qualify their
 engineering assumptions here.
 
-The next implementation packet should close BC00. The next capability packet
-should freeze BC01/BC03 for the symmetric eight-bar rectangular column needed
+The next delivery step should close BC00's remaining integration gates. The next
+capability packet should freeze BC01/BC03 for the symmetric eight-bar rectangular column needed
 by BC04, with independent strength/layout/output targets. This delivers common
 column usefulness while the broader BC08/BC09 section research proceeds under
 its separate acceptance boundary. Rebind this baseline and check the current
