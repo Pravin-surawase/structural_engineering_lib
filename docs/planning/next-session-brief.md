@@ -3,10 +3,11 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-11-07
-- Focus: 0.27.0 publication authorization handoff — use only the qualified replacement pair in 5c79c3b07dcb/dist. Final required check/review/merge facts are owned by PR #1063; publication remains unauthorized.
-- Completed: R1–R5 source and installed repairs; all 18 replacement profiles PASS, with 408 tests per archive and preserved FAIL/HOLD controls. Independent final wheel reviews accepted; all 19 changed report PDF pages visually passed. Retained record binds the clean source, new hashes and rejected-candidate history. GitHub owns the final required hosted/integration gate.
-- Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
+- Date: 2026-11-08
+- Focus: LIB027-PUBLISH-BBS — owner authorized 0.27.0 PyPI/GitHub publication and public hash/clean-install readback after the final BBS repair and software gates. Use only a11e758aee65/dist; the 5c79 pair is retained historical evidence with L01, not deliverable.
+- Completed: integer/non-boolean splice admission and valid typed BBS handoff; 43 focused checks and independent installed review. New wheel/sdist pass all 18 profiles and 451 tests each. Current-candidate preflight passes 9015 Python, 629 FastAPI and React build with zero warnings. R1–R5 and A–E controls remain covered.
+- Next: observe the milestone PR's exact-head PR/Weekly checks and independent review; materialize the bounded exact-review/authorization metadata; preserve reviewed ancestry, then TestPyPI, exact tag, PyPI/GitHub and public hash/external-install readback. Resume from observed release receipts; do not rerun or republish completed stages.
+- Recurrence controls: RR-004 x37 / unknown: validate the dated handoff and newest session record together before freezing a candidate.
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -14,42 +15,34 @@
 | Release | Current state |
 |---|---|
 | **Current** | 0.26.0 is published and verified in the [release ledger](../getting-started/releases.md#v0260-published-and-verified). |
-| **Next** | R1–R5 repairs and exact replacement archive qualification pass. Final required GitHub acceptance and separate publication authorization precede delivery. |
+| **Next** | Owner-authorized 0.27.0 delivery selects the repaired a11e758aee65 pair. The milestone PR, exact-review/authorization receipt and release assets own final gate/delivery facts. |
 
-## Next work — final acceptance and publication handoff
+## Next work — owner-authorized 0.27.0 publication
 
-**Selected goal:** `LIB027-REPAIR-QUALIFY`, started by the owner on
-7 November 2026. The
-[acceptance specification](library-usability-improvement.md#repair-goal--acceptance-history)
-retains the agreed scope and authority. Source repairs, independent
-installed review and replacement archive qualification pass. Final required
-hosted/integration facts belong to PR #1063. Publication is not authorized.
+The owner selected `LIB027-PUBLISH-BBS` after completing
+`LIB027-REPAIR-QUALIFY`. The [BBS repair and publication record](library-usability-improvement.md#bbs-repair-and-publication)
+selects clean source `a11e758aee6580a0ff2489fa740517a231d9f352` and the exact
+pair in `output/releases/0.27.0/a11e758aee65/dist/`.
 
-1. Read PR #1063's immutable-head required PR and Weekly/cross-platform
-   checks, independent review and merge facts. Complete any remaining gate.
-2. Bind the accepted merge and unchanged Python/build/verifier inputs to the
-   selected 5c79c3b07dcb archive pair; rerun retained-check on the accepted tree.
-3. Report readiness and leave publication for separate owner authorization.
+1. Read the milestone PR's immutable-head required PR and full/cross-platform
+   Weekly evidence, plus the independent exact-candidate review.
+2. Add only the allowed dated publication metadata, review receipt and target
+   authorization. The owner's current instruction authorizes this; do not ask again.
+3. Preserve the reviewed head as an ancestor and keep Python/build/verifier
+   inputs unchanged. Recheck retained bytes on the accepted publication tree.
+4. Rehearse the same files on TestPyPI, tag the exact publication head, and
+   publish the retained pair to PyPI/GitHub. Verify public downloaded hashes and
+   a clean external install. Read actual release/workflow receipts before
+   resuming; never repeat an already completed publication stage.
 
-The five repair steps in the [detailed plan](library-usability-improvement.md#027-pre-release-repair-plan)
-are completed implementation/qualification history, not instructions to
-restart R1–R5 or rebuild a passing archive pair.
-
-**Merge order:** this repair precedes draft
-[research PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064),
-whose head is `97743f405ed8987a047c43dc6929ff5225b184d9` on base
-`1c35d9485fa3499e69f1926657e91e84fe0d7bb8`. That proposal overlaps the shared
-plan and must rebind to the accepted repair/current main before later
-integration. Its existing draft already records this order. It does not
-expand this repair or authorize its proposed implementation.
-
-The [repair results](library-usability-improvement.md#repair-qualification-results--7-november-2026)
-bind the new pair in `output/releases/0.27.0/5c79c3b07dcb/dist/`. Preserve the
-original 9a78d2be9314 archives. The 423097e8 intermediate directory is invalid
-for delivery; only its historical receipts remain valid evidence. New column layouts, arbitrary P–M–M
-and broader beam member cases are outside this repair packet; 0.28 retains
-the slab/footing theme. Keep professional and installed-native HOLDs visible.
-
+The original 9a78 archives and later 5c79 pair remain rejected baselines.
+The 423 intermediate directory remains invalid for delivery. The serializer
+optimization and draft [research PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
+remain separate; research head `1d7927f3ec49a92769de098ebcf07bca9dc9ac53` is
+based on accepted `edca7402` and must rebind shared plan changes after this
+publication milestone before later integration. No broader capability scope
+is adopted. Professional/native acceptance and unsupported engineering HOLDs
+remain separate; 0.28 retains the slab/footing theme.
 
 Goal 1 froze and replayed the
 [four section references](../verification/library-027-comparator-reference.md).

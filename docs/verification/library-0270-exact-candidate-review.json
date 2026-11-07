@@ -1,0 +1,68 @@
+{
+  "schema_version": "exact-candidate-review-receipt/v1",
+  "decision": "ACCEPT",
+  "reviewed_candidate": {
+    "head_sha": "8e827381ad4181046306403ccbc63a8b34d33722",
+    "tree_sha": "e8019f20e08cfc2cb9eb4cd2df0b74f67a18bc23",
+    "python_tree_sha": "c40b13515a01d54dc94559e3519e7c760a39e3ab",
+    "version": "0.27.0",
+    "tag": "v0.27.0",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ]
+  },
+  "reviewer": {
+    "identity": "Codex independent release-contract reviewer /root/publish_procedure",
+    "independent": true,
+    "reviewed_at_utc": "2026-11-07T18:43:31Z"
+  },
+  "additional_review": {
+    "identity": "Codex independent installed BBS reviewer /root/bbs_contract_review",
+    "decision": "ACCEPT",
+    "package_files_verified": 342,
+    "focused_tests_passed": 43
+  },
+  "hosted_checks": {
+    "required_pr_checks": {
+      "status": "PASS",
+      "head_sha": "8e827381ad4181046306403ccbc63a8b34d33722",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/42402669768"
+    },
+    "weekly_verification": {
+      "status": "PASS",
+      "head_sha": "8e827381ad4181046306403ccbc63a8b34d33722",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/42402690780"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-11-07T19:03:26Z",
+  "hosted_checks_observed_by": "Codex release integrator /root",
+  "review_scope": "Exact corrected candidate C8; BBS admission and typed quantity/cost handoff, 18-profile qualification/451 tests per archive, all342 package files, frozen source/build/verifier identities, rejected baseline preservation, session consistency and same-byte TestPyPI/PyPI/GitHub release contract. No essential blocker. Serializer optimization remains deferred.",
+  "local_verification": {
+    "preflight": "CANDIDATE_TECHNICALLY_READY; 0 warnings; 9015 Python/629 FastAPI passes and React build",
+    "installed_profiles": 18,
+    "consumer_tests_each_archive": 451,
+    "failures_errors_skips_each": 0,
+    "artifact_record": "docs/verification/library-0270-release-artifacts.json",
+    "artifact_record_sha256": "57dd20e024c9e3ca8909b92a25bfe863c9079ea50827b5e6d3bd06e03f1666da",
+    "qualification_receipt_sha256": "b2fcc47fa8e75a6c840fec4805018524c03044ea2fd330589bea8408168aa928",
+    "build_head": "a11e758aee6580a0ff2489fa740517a231d9f352",
+    "python_files_changed_after_build": false
+  },
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.27.0-py3-none-any.whl",
+      "sha256": "205acfde8500909aaf766e9cf263fc13bf76bfa680376527e29048b954cd2ea6",
+      "size_bytes": 1232554
+    },
+    {
+      "filename": "structural_lib_is456-0.27.0.tar.gz",
+      "sha256": "942326fba6ee8c39ec81ac2bb341ee9d2926ebb1ae461d252804720e91953e6d",
+      "size_bytes": 1051152
+    }
+  ],
+  "integration_requirement": "PR1065 final bounded metadata head must pass required checks and merge preserving this reviewed head as an ancestor and its Python tree unchanged.",
+  "qualified_structural_engineering_review": false,
+  "professional_approval": false
+}

@@ -1682,3 +1682,23 @@ changing packaged bytes; final PR/Weekly and merge facts are recorded in
 GitHub. Eight exported PDFs (16pages) were rendered and reviewed. The pair
 is retained for the later publication packet, which must bind the observed
 final merge and owner authorization before any external release action.
+
+
+---
+
+## v0.27.0 — Release authorized (2026-11-08)
+
+The owner authorized the exact 0.27.0 tag, TestPyPI rehearsal, PyPI and GitHub
+Release after the L01 BBS repair, replacement qualification and software gates.
+This entry records authorization; observed delivery, public downloaded hashes
+and clean-install evidence are owned by the release workflows and attached receipts.
+
+- Reviewed candidate: `8e827381ad4181046306403ccbc63a8b34d33722`; Python tree `c40b13515a01d54dc94559e3519e7c760a39e3ab`.
+- Clean build: `a11e758aee6580a0ff2489fa740517a231d9f352`; 18 profiles and 451 consumer tests per archive PASS.
+- Independent exact-candidate review and required PR/Weekly checks PASS; [PR #1065](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1065) owns reviewed integration.
+- [Exact review receipt](../verification/library-0270-exact-candidate-review.json) and [target authorization](../verification/release-publication-authorization.json) bind the unchanged qualified pair.
+- [Public release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.27.0), [artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.27.0/artifact-manifest.json) and [public installation receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.27.0/public-install-verification.json) carry the observed delivery/readback boundary. Do not infer completed publication merely from this authorization entry.
+
+The original9a and superseded5c pairs remain rejected evidence; never deliver
+them. Serializer optimization is deferred. Beta maturity, selected engineering
+profiles, native-host HOLDs and professional approval=false remain explicit.

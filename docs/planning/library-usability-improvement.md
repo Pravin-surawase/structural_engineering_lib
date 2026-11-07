@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-07
+last_updated: 2026-11-08
 doc_type: spec
 ---
 
@@ -963,11 +963,11 @@ readiness decision. Publication remains a distinct authorized action.
 
 #### Repair qualification results — 7 November 2026
 
-The selected replacement was built from clean commit
+The historical R1–R5 replacement below was built from clean commit
 `5c79c3b07dcbdb5ac32a519ae50cacfde5054cac`, frozen Python tree
-`7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf`, into a previously nonexistent
-guarded directory. Retain and use only
-`output/releases/0.27.0/5c79c3b07dcb/dist/` for a later authorized delivery.
+`7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf`. A later L01 coupler-count replay
+rejected its publication. Preserve it as historical evidence only; the
+[BBS repair below](#bbs-repair-and-publication) selects the current deliverable pair.
 
 | Step | Observed implementation and archive evidence |
 |---|---|
@@ -997,6 +997,50 @@ files or their passing receipts for delivery.
 No tag, TestPyPI/PyPI upload or GitHub Release was performed. Keep the final
 required hosted/integration receipts in GitHub, then obtain separate owner
 authorization before the publication procedure.
+
+#### BBS repair and publication
+
+**8 November 2026 — LIB027-PUBLISH-BBS.** The owner authorized release of
+0.27.0 to PyPI/GitHub with public hash and clean external-install readback,
+and requested the newly reproduced BBS validation repair first. This bounded
+instruction authorizes the necessary replacement qualification and subsequent
+same-byte delivery after the software gates; no repeated owner permission is needed.
+
+L01 was independently reproduced in merged source and retained 5c79 wheel:
+`coupler_count=1.5` returned completed/PASS/complete-for-scope, then strict
+`output_as("bbs", BbsOutput)` failed. The declared integer field had only a
+positivity check. The owner now checks integer type and excludes booleans
+before lap/coupler comparisons, returning `BBS.SPLICE` with no accepted output.
+Valid coupler one and lap zero retain PASS and typed quantity/cost handoffs.
+Nonfinite values retain the existing earlier canonical finite-value rejection.
+
+The replacement pair was built once from clean
+`a11e758aee6580a0ff2489fa740517a231d9f352`, Python tree
+`c40b13515a01d54dc94559e3519e7c760a39e3ab`, and retained in
+`output/releases/0.27.0/a11e758aee65/dist/`. Only the packaged BBS admission
+module differs from 5c79. The [artifact record](../verification/library-0270-release-artifacts.json)
+binds the exact new hashes, 342-file payload, receipts and rejected baselines.
+
+- All 18 expanded profiles PASS; each archive runs 451 copied-driver tests
+  with zero failures/errors/skips, preserving A–E and R1–R5 controls.
+- Independent neutral site-packages review verifies all 342 package files and
+  43 copied WP07/WP08 BBS/quantity/cost/candidate checks. Source focused checks,
+  affected Black/Ruff/mypy and API classification pass.
+- Current-candidate preflight passes 9015 Python tests (four skips, six
+  deselections), 629 FastAPI tests (six deselections), React build and exact-wheel
+  UAT/public examples, with zero preflight warnings.
+- Final required PR/full cross-platform Weekly and exact-head review precede
+  the bounded dated metadata/review/authorization packet. Preserve reviewed
+  ancestry and Python/build/verifier inputs; use the same files through
+  TestPyPI, exact tag, PyPI/GitHub and public hash/clean-install readback.
+  The milestone PR and release assets own actual gate/delivery results.
+
+The old 9a78 and 5c79 pairs are preserved and rejected for publication; the
+423 intermediate remains invalid. The serializer optimization stays separate:
+its older-base timing/equivalence evidence does not qualify a current-base
+rewrite. Draft research PR #1064 must rebind its shared plan after this
+milestone; its proposed capabilities and calendar are not adopted here.
+Professional approval remains false and native/unsupported HOLDs remain.
 
 #### Features outside this repair packet
 

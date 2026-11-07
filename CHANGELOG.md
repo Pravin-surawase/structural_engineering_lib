@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.27.0] — Prepared candidate (unreleased; on hold)
+## [0.27.0] — 2026-11-08
 
-This candidate closes the selected beam and column profiles. Exact wheel and
-source-distribution qualification, independent software review and required
-hosted checks precede release authorization. No tag or publication follows
-from this entry. Beta maturity and professional-review boundaries remain.
+Owner-authorized normal software release for the selected beam and column
+profiles, including the final BBS admission repair. The exact wheel/sdist pass
+all 18 profiles and 451 consumer tests per archive; independent software review
+and required PR/full cross-platform Weekly checks pass. Delivery uses these
+retained bytes without rebuilding. Beta and professional-review boundaries remain.
 
 ### Added
 
@@ -33,6 +34,9 @@ from this entry. Beta maturity and professional-review boundaries remain.
 
 ### Fixed
 
+- BBS splice admission requires integer, non-boolean hardware counts before
+  reporting PASS, keeping accepted output compatible with typed quantity/cost
+  handoffs. Qualified coupler one and lap zero remain supported.
 - Slender-column orchestration rejects signed end moments that omit a declared
   applied demand, with structured field errors preserved through Python and
   HTTP. Ordered signed curvature and existing minimum-eccentricity defaults

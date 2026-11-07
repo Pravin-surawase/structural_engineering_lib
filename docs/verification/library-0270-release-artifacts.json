@@ -2,17 +2,18 @@
   "artifacts": [
     {
       "filename": "structural_lib_is456-0.27.0-py3-none-any.whl",
-      "sha256": "75debc1e9fdf0b3b7d1d903f1725829624b9032cf3eae8cc785964e381dfda39",
-      "size_bytes": 1232535
+      "sha256": "205acfde8500909aaf766e9cf263fc13bf76bfa680376527e29048b954cd2ea6",
+      "size_bytes": 1232554
     },
     {
       "filename": "structural_lib_is456-0.27.0.tar.gz",
-      "sha256": "52e5dff065d54aeb373933bdef9c97f804a13344f7f6f662f02f27bf9f87ca59",
-      "size_bytes": 1051151
+      "sha256": "942326fba6ee8c39ec81ac2bb341ee9d2926ebb1ae461d252804720e91953e6d",
+      "size_bytes": 1051152
     }
   ],
-  "build_head": "5c79c3b07dcbdb5ac32a519ae50cacfde5054cac",
+  "build_head": "a11e758aee6580a0ff2489fa740517a231d9f352",
   "closed_findings": {
+    "L01": "BBS.SPLICE rejects noninteger and boolean splice hardware counts before accepted output. Explicit coupler1/lap0 retain PASS and strict BbsOutput projection; six negative controls and all43 WP07/WP08 checks pass in source and independent installed wheel.",
     "R1": "Structured x/y COLUMN_ACTION_CONFLICT rejection before slender dispatch; ordered signed ends and original minimum defaults retained; canonical/HTTP paths verified.",
     "R2": "Canonical typed reports preserve the actual overall badge; legacy aggregate FAIL has its own envelope,DETAILING_INVALID reason,and unminted aggregate identity explicitly unavailable; original calculation envelope/identity retained.",
     "R3": "Known input geometry/materials/actions and calculation basis survive JSON/HTML/Markdown/PDF; missing data remains unavailable.",
@@ -629,10 +630,10 @@
         "status": "PASS"
       }
     ],
-    "library_content_identity": "956d50aca61dfca0518b743f455e3769c75d1d30dd797f55e3418401a29ef24f",
+    "library_content_identity": "8e5f74352db20aefda77304a7cdbb9d28e7e2901d1ca1ecfdf8778345ac8489d",
     "matrix_schema_version": "release-negative-uat/v1",
     "matrix_sha256": "dd52015061a443e16f93bb5828016b5e96a580e3e0ebe4516e31a29db88c7757",
-    "package_origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_base_p0knfyz4/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+    "package_origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_base_fsdyaelo/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
     "package_version": "0.27.0",
     "professional_approval": false,
     "public_examples": {
@@ -643,15 +644,15 @@
     "schema_version": "exact-wheel-uat-receipt/v1",
     "status": "PASS"
   },
-  "integration_evidence_owner": "GitHub PR #1063 owns final immutable-head required checks, full/cross-platform verification and reviewed merge/tree identity. Bind the observed merge in any later publication packet.",
+  "integration_evidence_owner": "The LIB027-PUBLISH-BBS milestone PR owns final immutable-head required PR/Weekly checks, independent review and matching integration. The later allowlisted exact-review/authorization packet and release assets own publication/public readback.",
   "package_file_count": 342,
-  "package_payload_sha256": "e9e3c51e3dab949f4691223512fa3e787fbc15dcce645ef237e26160f5531b87",
+  "package_payload_sha256": "1ebb6f685200697c79cb612be54de8185a2f76acd7c102628c130e945c5a050f",
   "professional_approval": false,
-  "publication_state": "UNPUBLISHED_NOT_AUTHORIZED",
-  "python_tree_sha": "7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf",
+  "publication_state": "UNPUBLISHED_OWNER_AUTHORIZED_PENDING_FINAL_GATES",
+  "python_tree_sha": "c40b13515a01d54dc94559e3519e7c760a39e3ab",
   "qualification": {
     "beam_column_failures_errors_skips_each": 0,
-    "beam_column_tests_each_archive": 408,
+    "beam_column_tests_each_archive": 451,
     "consumer_journeys": {
       "base": {
         "bbs_rows": 9,
@@ -677,22 +678,22 @@
         "files": {
           "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
           "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
-          "beam_B1_outputs/beam_B1.calculation.json": "d68fc18435d0a0d33668c92608150b9ed53df38b002f0f99bf463acfa4f7fab1",
-          "beam_B1_outputs/beam_B1.html": "217c53522244240c0e1e984d5ca374fde77974324b8641de6985174dd5d7b6b2",
-          "beam_B1_outputs/beam_B1.md": "3be5a2d32f2111ee76352625581dad47033ebf0b915699ae6a3c1d188308e2b6",
-          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.calculation.json": "f5582f2412ac6039e253b2e0000d830d1adc3774b689bb4c59f6c86fe683e7e8",
+          "beam_B1_outputs/beam_B1.html": "cf1f7ce727f85824b21b96d9b3fecd87928222b5b36090135be6455ac9b78edb",
+          "beam_B1_outputs/beam_B1.md": "6886ba008144f929918d1324d9d7e0163f8393a0d29212f5455c0132454f3dab",
+          "beam_B1_outputs/beam_B1.result.json": "5830d90f89fe5fbc8c7b8fb081481499f3b81d952eb3aa7cab8583df82507142",
           "beam_B1_outputs/beam_B1.template.html": "784f28440b70c295e9f2f6da75caf7942b76cc9c8a0d82509b800ece6e5ad54f",
-          "deflection-failure.html": "26d44b9ba12fe8a31098b8a7b2ee3c12fbb238ba48d4ea7f62f5e49453ce4a9a",
-          "deflection-failure.json": "f65c76cca65aa0c473f49ad7cdf2c57bf462f505b4f9dee07be2c16ecd94b08c",
-          "deflection-failure.markdown": "597b81ceb99951ff0bd94b42d3465b9e178966dddcb1767e975e9b14df1f7895",
-          "deflection-failure.template.html": "64c5a083b611e3fe566c3bdb16667f90b8990e6819c77693eba2d8d047e95c7b",
-          "design-only.html": "3ed7e6a4ef8e023b1a24b917fe06a02eda99752863e29fa63bc9f8315cd48640",
-          "design-only.json": "bc553112c10494b0ba2d40c821a7a39318859b816ac3fc68438de19db1ac90c3",
-          "design-only.markdown": "114b084f209c31c8d4a642f93d1d1e6391ef79e7ce13f811e84f3b4522e281e3",
-          "design-only.template.html": "48f7894cd797e4cf01f329a103fbdb4ffbe84563bdb9181e91e402e8441c65c1",
-          "detailing-failure.html": "f9fc1eadf9091f397519f3c2385b41ac878048ab857ab3f21504e019f2042c93",
-          "detailing-failure.json": "564a6c3475a32d4dc3f5cf2cf8b617d44c7cb6770ec5981f55265683f4ce5256",
-          "detailing-failure.markdown": "56d53064acd6b3ebe9a060896e2c2c5ed6eb5ddae108c18a1535cd28e7512794",
+          "deflection-failure.html": "4a152465be1f85197376565d54ad01130656c4883058ae798d52513af7db68ec",
+          "deflection-failure.json": "ff1edaa561e8fad4062451a9ee184f6e2edac416410c1f23e62432fd9b7b7f29",
+          "deflection-failure.markdown": "2a0dc6e383345ec590d5849e6c4ba5b2ccc5d56be17f1819538322f860724728",
+          "deflection-failure.template.html": "407c3f1ec9883b0b998e5c07428d4a64c95c5dad20f0e8c47968abe937b1a383",
+          "design-only.html": "613befe34c0d752a888b18f995e5ccf38e554bfded6d4eabf0abc6200179993e",
+          "design-only.json": "933dcb86f851f1895430afa682bf86b3a8d56cd120bd88393267bfefa93fb723",
+          "design-only.markdown": "2db86d90adfe3c9a6f71f426ccdc107725b5449cf9ee2c4251498872dfc8bc6d",
+          "design-only.template.html": "fb6458aa12361af731bcdb72bcb07c0414589f92def643361828e07ac9cc1732",
+          "detailing-failure.html": "cfefd699f242b4ed9a348a33ff1c4d72405209c254b32ad9b237c7c70dae8fd0",
+          "detailing-failure.json": "97457d9f6ead1d90fc9ef9dbe7abdb71dd3247e4fccf01627ef0883a64b838a1",
+          "detailing-failure.markdown": "4570c01114d4985f20889760dc41950f86cfe07d1553fe84cf5f2a1145ba316f",
           "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
         },
         "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
@@ -726,23 +727,23 @@
         "files": {
           "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
           "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
-          "beam_B1_outputs/beam_B1.calculation.json": "7a4e5c65e949299f63a4b9741c307b11ac8a67727a16d588b78caae199fb6833",
-          "beam_B1_outputs/beam_B1.dxf": "96448ed179a77f52976b65dd91468b9211f7167b904f9da47ac678bdb165b544",
-          "beam_B1_outputs/beam_B1.html": "c1d6458f326aa9e7c36279ab5a3806f969fb7c7b147ce3135598f11ec975b74e",
-          "beam_B1_outputs/beam_B1.md": "8bfd7b0876b57c7d1304b94e9f188a3fb311f684e94bc82ae51b0937b9729868",
-          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.calculation.json": "b803817b348234d709a64e9196c562985b2d601ccf464617afd94d3ee4a8796c",
+          "beam_B1_outputs/beam_B1.dxf": "3dea264b85d219e3775fd094ba9762eff290685725b6307d8581710d473ff614",
+          "beam_B1_outputs/beam_B1.html": "514c78fa4f88e57c14017ba40ac6b733abf04c25b39aee3b55a5414231d5d3bf",
+          "beam_B1_outputs/beam_B1.md": "a56d13239e17cce3709f6011a5bbbbcca21c1747ecf35509527e9618977f68c1",
+          "beam_B1_outputs/beam_B1.result.json": "5830d90f89fe5fbc8c7b8fb081481499f3b81d952eb3aa7cab8583df82507142",
           "beam_B1_outputs/beam_B1.template.html": "784f28440b70c295e9f2f6da75caf7942b76cc9c8a0d82509b800ece6e5ad54f",
-          "deflection-failure.html": "5cb6313b83684f0d52a669e7f051852a4236547abbbc3f62ad5c40842492629a",
-          "deflection-failure.json": "7a23da091325875ca050ae81e40bddc5dbd18d9416b2c65829ce024b82cc42a1",
-          "deflection-failure.markdown": "75a1674aa8382185f018a6079d7b8b1f0ce29445fd97359925a072f3521c708e",
-          "deflection-failure.template.html": "64c5a083b611e3fe566c3bdb16667f90b8990e6819c77693eba2d8d047e95c7b",
-          "design-only.html": "346c3c9bf4ee863674baeb1377413de50bb885b97fd4f0551a84bd154a0b813c",
-          "design-only.json": "7eba76569a3dafe069fe233e1f67ecbcaf5d6138e162d8646b24fc7d1f3a67ab",
-          "design-only.markdown": "285102fba7954cb95b04cf3002e3a0a58da5f61d3c09e3798348e0eaa93c4079",
-          "design-only.template.html": "48f7894cd797e4cf01f329a103fbdb4ffbe84563bdb9181e91e402e8441c65c1",
-          "detailing-failure.html": "301010467a6e81b4ff1c8c1ddac403a811bcff22ab49427c2ace50d52dc500ed",
-          "detailing-failure.json": "c6f26462c652a80873f699a9c4fc0edfb042cb3237702b6f038bc397a67e8b85",
-          "detailing-failure.markdown": "5c1b28dc3a6e583bfe16ae8684965467ae0d3537760af27f164c4de068410db2",
+          "deflection-failure.html": "6c2936f757632eaa95e2a06593c6d078738e79ee84b8fc08b7f37c16a4915b24",
+          "deflection-failure.json": "bd165e5ba28deaf5966b08d199e186cd815d6879d2cf02f94dde25c5285a515a",
+          "deflection-failure.markdown": "bf879c2ac7e2844679cadd3faa9800432ad5ef038df39a15ada62353223216a0",
+          "deflection-failure.template.html": "407c3f1ec9883b0b998e5c07428d4a64c95c5dad20f0e8c47968abe937b1a383",
+          "design-only.html": "7a6a65b646ae2d35073ad6096fad977586df858228ba8d8e5850cc3ff3f08dc6",
+          "design-only.json": "eb8041a86351a8c047424833c1782e6e5e3a797527ec43507869abd9ef0af951",
+          "design-only.markdown": "ed93dac6a0955fcf2b7c8993f5dc3645a5c0b5885692ab9b1b778b6b8cb79f42",
+          "design-only.template.html": "fb6458aa12361af731bcdb72bcb07c0414589f92def643361828e07ac9cc1732",
+          "detailing-failure.html": "ed1070a45eb6ab470bc31a409070e980b1e141e2d1302550f628a73bfe83ffb3",
+          "detailing-failure.json": "83537dccbe4fad756fefe88c3a053124a014faec578fb1e8027460c2eda63c4d",
+          "detailing-failure.markdown": "267267b34c23908306ac4ded44111e33ce85c863eb4f07b5dabd797a6902e44f",
           "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
         },
         "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
@@ -776,27 +777,27 @@
         "files": {
           "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
           "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
-          "beam_B1_outputs/beam_B1.calculation.json": "248d21996a8588f1cdb6315d0808a95ea0710168066ad18436c8fae63425fbca",
-          "beam_B1_outputs/beam_B1.dxf": "36cc3fe3fc5491f15f94cf67f3dedeb6427e5f92ec67ddd147723d80e9a8f1c3",
-          "beam_B1_outputs/beam_B1.html": "bebd53815c95fe4e663bc14bced08cf710d16749bb663fc6c7d2b1ac24952bf0",
-          "beam_B1_outputs/beam_B1.md": "e4e70f6d2d6e011339604c5b692097e129a74fd453a2c705664855b102a2cc18",
-          "beam_B1_outputs/beam_B1.pdf": "985c9107645d69c1242873ef505162b8912306572268659e5a61cff542c72a0a",
-          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.calculation.json": "d51b0e5a5e2ec931f3c4e2cd68ee5f3686783f7060500d1e8d1ba66add9a7e2c",
+          "beam_B1_outputs/beam_B1.dxf": "7b5958280ac6be3474f0c31decb56f72f354715ad694e415e1ffea817466579a",
+          "beam_B1_outputs/beam_B1.html": "0c298345b907045a3fe111af8ecfd15cc508a94e907fde5163dc11325d4b9d86",
+          "beam_B1_outputs/beam_B1.md": "c28135e05fc08f419ba626e125ce9eba3a79d4b9acd058531629b218133a46ba",
+          "beam_B1_outputs/beam_B1.pdf": "54edf1dd1918521ea0034b7bcca48d05ed626961d2d06e689d59786a8a53b0e7",
+          "beam_B1_outputs/beam_B1.result.json": "5830d90f89fe5fbc8c7b8fb081481499f3b81d952eb3aa7cab8583df82507142",
           "beam_B1_outputs/beam_B1.template.html": "8da1a29bb2fde2892e0ef72a3d69e2cb25fecb8cc36e3063b5fab837a7328b60",
-          "deflection-failure.html": "53b0d914b3e98a1fa1d9540b1b1fa0b27de3e2356e3f78a62488b12a11c1c626",
-          "deflection-failure.json": "7663054b7c534cbfd6217e18b47176a2d1d832da5681e09cd4af6aef8211b5ef",
-          "deflection-failure.markdown": "c2e5723d08eefc3d524fbcc82281f3c4b386bc57ab06151122c76a64f85cc2a4",
-          "deflection-failure.pdf": "8ab7a640bb48e4c6cfd401a3b39a79e63af0fd9bd5f93045616655eabf6693aa",
-          "deflection-failure.template.html": "c59f787e3b5cc5cb1876861cead8c08809ba38a6a607d095bc5796e1d6ab7d29",
-          "design-only.html": "afcd4b5ae2824de7a5f70b426c067e74d721b8f3ced16a182bdc4cbb1a7b44d0",
-          "design-only.json": "4d9061c165aa0cb7dbbb21821843f7ecfec47ceda341b502346604f3160688cf",
-          "design-only.markdown": "3597bc6b7588709a5fe4d1897ff5d1cb923272015a9afa7976d2785b80b13acc",
-          "design-only.pdf": "504c4f01cb356c8670dac99fb5010a91fc627bee2d0b7d04a8662491283b0c09",
-          "design-only.template.html": "0a5d0f7862f79f9d303d602efe901830d65c4581e7865861ece6b6a75eeb3899",
-          "detailing-failure.html": "e8aff88c5a63811d46f4d0f411294d560197113c20ffed82ec28728d64518fc2",
-          "detailing-failure.json": "645427cfca7b0f83f7710127ceaefa664e404e96fe56e5125f870f8c61620474",
-          "detailing-failure.markdown": "aa96c99c82cfea80fa000ffed6e0b8d633064cb7949715a31550fc443e1c5298",
-          "detailing-failure.pdf": "caa6559987c552af651ac611893ca4d9d18639ada6aa08fb25a526ac5cd6c364",
+          "deflection-failure.html": "fb50070d13b056415a14ff522eccba279dada0f382ec7cc9746408a01a66156d",
+          "deflection-failure.json": "4c3bffc718e2d453198723e504901b8106e9415be2a9368bc1e0f1545ba44bfc",
+          "deflection-failure.markdown": "aa5b41295a2c7f4ad39ea0568d971835220d561bac7b49565e439091bbf61b6d",
+          "deflection-failure.pdf": "ef39fd65b45873c6698a3fba51a953c0d051e2557ab8fba0ddd99b5278d4e0d2",
+          "deflection-failure.template.html": "49a6ec594fca2e002e2c720bc3c9673993a5937fac9ccd1c7a2d5001cd706a89",
+          "design-only.html": "ea1ec152fad450f78915aa1c5ae6775f624ac47adf27dd0e77f166d19ac377da",
+          "design-only.json": "b18ca1f7ecb7868e16b81cf57ab31893c3fad279ea3be71585aebb92965dc543",
+          "design-only.markdown": "ed6754432a76aa561a40097f0981a50670bbcbc127f8c773bbb14c14dd73b545",
+          "design-only.pdf": "f1b1817d9edd81c543dd9a1eb86d760a2eb9919c81b450d341252b22d5f4c4ff",
+          "design-only.template.html": "cd8e54be22430021fe25cbe32706b0ae548b11e19200e4c9528aaeef3aa8dfac",
+          "detailing-failure.html": "56f2f726ce0d57e99b0190c3e1bc36b11c4eafc570ca91febd286014132bc68d",
+          "detailing-failure.json": "cb1c97f7dfac6414538ee8246398451d73a62a93500d8957cc07238dcebe04e3",
+          "detailing-failure.markdown": "d209a6df95cc54280f5fb89e927af1f119293d13f4cffe46fe6b8e6b3b4d6979",
+          "detailing-failure.pdf": "7773cf2bab2613a94469f7e09019b1d68852e89809f86a0e33cda4a3be536473",
           "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
         },
         "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
@@ -830,26 +831,26 @@
         "files": {
           "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
           "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
-          "beam_B1_outputs/beam_B1.calculation.json": "eba9396ba6c34455d3c7b877a1ff84f848a43472a326fb6ca6c03c62db649ddf",
-          "beam_B1_outputs/beam_B1.html": "ee9dbbef626111a29c3c8ed4d357b1c92ec1ca19d43375381b05cc5f5a5e0927",
-          "beam_B1_outputs/beam_B1.md": "f906048ad8c1bc86c229b5b325e9bc6e0d2f866e9b247eba8a335529f0238543",
-          "beam_B1_outputs/beam_B1.pdf": "92e73f62242ec09a59a4fd9ccab253d286864397183ad7a3fb73fbe812b929ab",
-          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.calculation.json": "991e8d28ee4aa26185255aab693dcb6cda380f46633cb399d3d6d50e69e80a83",
+          "beam_B1_outputs/beam_B1.html": "6757843c2579bb6213f5b17b48a03cc5539f81202538552a81302360d582b23f",
+          "beam_B1_outputs/beam_B1.md": "db9b44dfa43b6abe3df2adeb34b64558828794754e2a7a9e21abeaa501da9fe2",
+          "beam_B1_outputs/beam_B1.pdf": "c9ca86d1f41d057ba3e88bd1f0fbd47919bd9ee5de1f7b7a00c1d8a9f39623d6",
+          "beam_B1_outputs/beam_B1.result.json": "5830d90f89fe5fbc8c7b8fb081481499f3b81d952eb3aa7cab8583df82507142",
           "beam_B1_outputs/beam_B1.template.html": "784f28440b70c295e9f2f6da75caf7942b76cc9c8a0d82509b800ece6e5ad54f",
-          "deflection-failure.html": "06bbc12162d766590045a70e85275455cc49c31cfbba30a368ab7d80efaa2753",
-          "deflection-failure.json": "511166bea1af93f64325d5a839d74e3567de6f6e96d5fcfa5e29b69b79f676bf",
-          "deflection-failure.markdown": "a64116cab908d9e2e4ad16d2b818121c4bea0476fa8090d6f0e1126d0aab5e19",
-          "deflection-failure.pdf": "fddd32fb32a929b9780d31cdcf23a4699b4b9d04c5db0eab2ecaaa600a1c7fa6",
-          "deflection-failure.template.html": "64c5a083b611e3fe566c3bdb16667f90b8990e6819c77693eba2d8d047e95c7b",
-          "design-only.html": "52ad86c2b9a56b2703b4db851bc1e2d5c94d5948b79ef36b11eaf1732a881a04",
-          "design-only.json": "129de5e18389207d3c288621273d1ae3b7dca42ee60e297d9daefaf917237190",
-          "design-only.markdown": "4b1edc27cab859483517317eaa08c1788d26be767e22640a8d533c8007e5ac1e",
-          "design-only.pdf": "085d0cbbdf1d09e5721d51a31097e2d6ce053b3b0ffc80c5a67ff2b7bd914100",
-          "design-only.template.html": "48f7894cd797e4cf01f329a103fbdb4ffbe84563bdb9181e91e402e8441c65c1",
-          "detailing-failure.html": "17b21191b3926f1e30fc3758af7c192f0b972475062979c75b706cfb610b364b",
-          "detailing-failure.json": "c793d65b50f4f18ddd36102ff7c5745b1602525c61c3238a55c0198392eca9e6",
-          "detailing-failure.markdown": "5c8a58f9fadf0c3698d6d56115951925c17b175f5a88d6ac713bacfad55136cf",
-          "detailing-failure.pdf": "3964704755a1a668bfb6403e769c6608589676c78608320d3686f7afbe63776d",
+          "deflection-failure.html": "6134ce022ca49e84670d14cc0298dbe3f9860d48d7604cbb7082ef09a953c7b3",
+          "deflection-failure.json": "9f8b20a6ecbdf197f2b52b6f0ca248f73b5478879cccd57e91a4096ab2e81132",
+          "deflection-failure.markdown": "36b75140ae3262622294b9d7c9f0dc1607e3b150a68eeda87f74b22fcde298da",
+          "deflection-failure.pdf": "d007b2c74ae2b2b55dcf7a47a51e7309fcc64956a011147896ff925ea61ace4e",
+          "deflection-failure.template.html": "407c3f1ec9883b0b998e5c07428d4a64c95c5dad20f0e8c47968abe937b1a383",
+          "design-only.html": "7c8a9c58c2a88392564ab4fef00eb8e968d513c8d1340932baf8a715d2150c15",
+          "design-only.json": "a281072e68ec20fa33beb46e9171e553463cfeefefba1b33818e19abcf651a8c",
+          "design-only.markdown": "4dfffffce71ecab129637c0700aa3d506fdb1e68f4f08376eb1b4d4237dc7b53",
+          "design-only.pdf": "222bdcc76686582eccfb7897601509a963aa4fecad9916b7ef0ff1c764bf3ed1",
+          "design-only.template.html": "fb6458aa12361af731bcdb72bcb07c0414589f92def643361828e07ac9cc1732",
+          "detailing-failure.html": "17446f32d2fc991141f0c28e019580522eb9beb9e87eccf6703393d2805c07b5",
+          "detailing-failure.json": "a31c152db385797e9f07ed949765fbb22f5bb481cd3b60d4df32b9c88c2f1050",
+          "detailing-failure.markdown": "9bbdfc8508545e87c04e41551c1137b54f125a1935ac968c4a715195a2484430",
+          "detailing-failure.pdf": "c25b28b892882bd09aed98dcc9d91f4cca54f0ff3d8d71cfd325e5b06a9ae7c8",
           "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
         },
         "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
@@ -883,22 +884,22 @@
         "files": {
           "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
           "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
-          "beam_B1_outputs/beam_B1.calculation.json": "84d398aac044f4c07eae2facbc67e9b8bd33b5a6c54e05cbe9fe039dddc5eaa1",
-          "beam_B1_outputs/beam_B1.html": "f8a3324c61fe6d73f6211c524566eb655172ed99eb6ea34ce3910e96bb3a2b6a",
-          "beam_B1_outputs/beam_B1.md": "0cb2eee9282b7e8c57c3f039dbb9a50201a579693455a3b1f8b320e1f1d2bf73",
-          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.calculation.json": "6c2190697078ebd84d37afb78286bb398b95050805bbedd6d797bb4739e5b965",
+          "beam_B1_outputs/beam_B1.html": "c88a8ea011f4d6633f6f35b41147d4b0de0e6411f665ef2cd206d693dac199ed",
+          "beam_B1_outputs/beam_B1.md": "9b414d36870ceb0982a1630e9b7d72c11aef1daa163e356418d4edc4fca5f22b",
+          "beam_B1_outputs/beam_B1.result.json": "5830d90f89fe5fbc8c7b8fb081481499f3b81d952eb3aa7cab8583df82507142",
           "beam_B1_outputs/beam_B1.template.html": "8da1a29bb2fde2892e0ef72a3d69e2cb25fecb8cc36e3063b5fab837a7328b60",
-          "deflection-failure.html": "37d918c6da15aea7f9434eb9d5203dbc925b5dbd3ac170a4d921721953f022da",
-          "deflection-failure.json": "a3edaf0a0c5cd0b61571ea8a536823b3fb092912aad02906b979c8b959819fc0",
-          "deflection-failure.markdown": "9ef4607f5bd6ae4c7e1c49af1587ad1afca38ce3878181f7f99d6a72cabfefce",
-          "deflection-failure.template.html": "c59f787e3b5cc5cb1876861cead8c08809ba38a6a607d095bc5796e1d6ab7d29",
-          "design-only.html": "38bf6e2f4b67fdbbf14236dd60ecdabfb4fe3fe65d58136c3a1169d50cb7c099",
-          "design-only.json": "cc63f9e88ae7bfd51636072017b5dbda0b5318b84400a8bdeb9c91b4a0d79c06",
-          "design-only.markdown": "c62b29710014a03bc9a777c3ffb54a85994e8c206b5c27b60f8d15956cb61a08",
-          "design-only.template.html": "0a5d0f7862f79f9d303d602efe901830d65c4581e7865861ece6b6a75eeb3899",
-          "detailing-failure.html": "caf5d9ce2504322986682af3433b7898d695c2ba861aab8d7073009cb63d5925",
-          "detailing-failure.json": "f6d9a821e89f664de9a008e88a444efbefbbfde65e964a4b0652a1ea29e1fcd5",
-          "detailing-failure.markdown": "10dacd932822369d16a11ad0f591a16e824ea24d1966de101d1e9a9eb60bb7d0",
+          "deflection-failure.html": "00ef9f66aa5970946a04d3b36615bed8ad0ab0ecc436ae0d7bd229aeaa64bbed",
+          "deflection-failure.json": "b66773aec2df31d02ee10e5e4ff3eadb555b21c019231858a5fcd3c691482b1c",
+          "deflection-failure.markdown": "8b1a2d9ec6d6bac1de93a6516f36e217df0efe44011d8f4dd9d5122b304f7bcf",
+          "deflection-failure.template.html": "49a6ec594fca2e002e2c720bc3c9673993a5937fac9ccd1c7a2d5001cd706a89",
+          "design-only.html": "ffb48d8edfad4ea24cfaf4d6e9c863bcc78441a06884b9476831d573b2fd14f3",
+          "design-only.json": "119f712e94821f99193f29b5faddb606129101f0285ca10d70852a0542dcf11f",
+          "design-only.markdown": "ef4cd54cfbb512b234c703d407366313681f956404ace5a8c3d7f63207d797ae",
+          "design-only.template.html": "cd8e54be22430021fe25cbe32706b0ae548b11e19200e4c9528aaeef3aa8dfac",
+          "detailing-failure.html": "74eff15c2a5f95519aab87ddcf78a76a9997a6888ecf444d368d1883127ff80b",
+          "detailing-failure.json": "774703c3c72041ee6a1197574a52f08f25702ee09a1d828bc4795fe73ac77cad",
+          "detailing-failure.markdown": "9e44b88ba02c51a02eaabe6990e0cfac5f714691e56557917ff566a0679f56ea",
           "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
         },
         "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
@@ -932,22 +933,22 @@
         "files": {
           "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
           "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
-          "beam_B1_outputs/beam_B1.calculation.json": "9a46f898f47ee609b69fe8dfe0f525fad932dafac94a9a0295d5f2843e4dc62e",
-          "beam_B1_outputs/beam_B1.html": "460460856b67461349745a5da911942c13be5b4c6fe04a32523308fee57f86a9",
-          "beam_B1_outputs/beam_B1.md": "1469dba0620bbb035b09bab1cc59049b9ce6871b8d2ca632db392d1a597db6e3",
-          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.calculation.json": "16dc31197740daefdbd8c823b6f7d63974f4f3072ecd1534ca8127c1eaec4082",
+          "beam_B1_outputs/beam_B1.html": "8ae62b0b9c40fe6e23effefd11be14dcaefbfd2e4a8e610a8bda2161524ded20",
+          "beam_B1_outputs/beam_B1.md": "582742613937bd07e156fc54729b5d52d3bf51e16705591520a638435a3665e4",
+          "beam_B1_outputs/beam_B1.result.json": "5830d90f89fe5fbc8c7b8fb081481499f3b81d952eb3aa7cab8583df82507142",
           "beam_B1_outputs/beam_B1.template.html": "784f28440b70c295e9f2f6da75caf7942b76cc9c8a0d82509b800ece6e5ad54f",
-          "deflection-failure.html": "0217028b40b7f397285c1849f479a8f3b96e0e03e33244f29180a17acd0e71b5",
-          "deflection-failure.json": "2959e42185fc57fe43cb3bc688e5df2cb6f80ede6e68c4c6a2574bad393db17b",
-          "deflection-failure.markdown": "3a8c97b5cd9257c8a22c3a201011fbb3967b40c7f474f47e2375131e8f4dca65",
-          "deflection-failure.template.html": "64c5a083b611e3fe566c3bdb16667f90b8990e6819c77693eba2d8d047e95c7b",
-          "design-only.html": "c565a0506746194ea0051ae3810677d3dbfb32a73ccf9b35943550da0cccdd5c",
-          "design-only.json": "adb2f17d818c56e86dcaf5d982c26cbd4435c3e884fce8578f52873e9d872bbc",
-          "design-only.markdown": "a99d2e1851737ebd6334c5d767654676cba6210a5137d56a9a1eb69ec8cd1ef7",
-          "design-only.template.html": "48f7894cd797e4cf01f329a103fbdb4ffbe84563bdb9181e91e402e8441c65c1",
-          "detailing-failure.html": "a3c355ae6a110dc3a118b0b69de26fd1547eb99edb546570021e9c9669064894",
-          "detailing-failure.json": "7f6d687fe9d27c3a24d76bff3cbb3c90133634467e4725a4f87b2ccb949633e7",
-          "detailing-failure.markdown": "974ec93d8ecec2551f07f56b5af8ed32ce4a7dd68a17bce888bc0e8a202aa5ec",
+          "deflection-failure.html": "63a14cdcf5c2df86abebd01019bca24680f641a8b350f7c36094bb35e14858a6",
+          "deflection-failure.json": "9ddf49f4695b3f9461f8448bf4a53591b7875e07e6c9bf4d6180e70d04b1ec48",
+          "deflection-failure.markdown": "2b32cda18d3a9ec8faf21cff5bc5b9da8423bf02ff034800f747bf0f5d4ab8b0",
+          "deflection-failure.template.html": "407c3f1ec9883b0b998e5c07428d4a64c95c5dad20f0e8c47968abe937b1a383",
+          "design-only.html": "3e1ef59fb693f050b79f86b65b3ce806f5308cabc435c22bcebeef716860eda8",
+          "design-only.json": "81be764487ca67e3e7f316bd965560eca0572f578a5311e3ab70ccd4eef0470d",
+          "design-only.markdown": "7af6823183f65992a53e9528df1df86d5e3ae7b9549c5acf6e6b004e1877c2f6",
+          "design-only.template.html": "fb6458aa12361af731bcdb72bcb07c0414589f92def643361828e07ac9cc1732",
+          "detailing-failure.html": "9078c9bfcabbb64442361d3ff69ae5b8d62d5f4386c5cf617c72e3f20365f211",
+          "detailing-failure.json": "6bc30ba9c3ab706788dda5a57fd73c24b6cc624f9e40c713f7beca2c52958047",
+          "detailing-failure.markdown": "1524378afbddf8b5da098cd8792333db93e1363e8823d9f8220224985c719ee9",
           "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
         },
         "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
@@ -962,8 +963,10 @@
     "independent_metrics_each": 106,
     "independent_software_review": {
       "decision": "ACCEPT",
-      "scope": "Separate read-only installed R1 and R2-R5 reviews; own site-packages imports, exact wheel/hash and342payload files; visible overall badges, input/steel/failure/review preservation and legacy aggregate-negative controls.",
-      "source_head": "5c79c3b07dcbdb5ac32a519ae50cacfde5054cac"
+      "receipt": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/output/releases/0.27.0/a11e758aee65/evidence/independent-bbs-a11e758a-py311/independent-bbs-receipt.json",
+      "reviewer": "Codex independent BBS contract reviewer /root/bbs_contract_review",
+      "scope": "Neutral site-packages install of exact wheel: all342 package files match Git source;43 copied WP07/WP08 tests pass without checkout conftest/PYTHONPATH. Existing R1-R5 owners unchanged and all451 installed consumer tests pass from both archives.",
+      "source_head": "a11e758aee6580a0ff2489fa740517a231d9f352"
     },
     "pdf_visual_review": {
       "cases": [
@@ -985,18 +988,19 @@
         }
       ],
       "pages_inspected": 19,
-      "scope": "Representative changed canonical/design-only/serviceability-failure/detailing-failure PDF reports, all19 rendered pages individually inspected; prior member render profiles also pass their declared checks.",
+      "reused_from_build": "5c79c3b07dcbdb5ac32a519ae50cacfde5054cac",
+      "scope": "Prior19-page visual acceptance reused: the sole packaged change is BBS splice admission; report/render source and valid-case output structure are unchanged. New report/pdf/export qualification profiles PASS; no claim of a new19-page visual inspection.",
       "status": "PASS"
     },
     "performance_comparison": {
       "batch100": {
         "limit": 3.0,
-        "median_ratio": 1.0389959529222137,
+        "median_ratio": 1.053290533131242,
         "passed": true
       },
       "beam": {
         "limit": 3.0,
-        "median_ratio": 0.9928083172186934,
+        "median_ratio": 0.9832749783365569,
         "passed": true
       }
     },
@@ -1042,7 +1046,7 @@
       "beam-column-sdist"
     ],
     "runtime_scope": "Selected installed wheel/sdist workflows and declared non-native profiles; expected FAIL/HOLD and source identities preserved",
-    "source_receipt_sha256": "ab36302718772b3c085b29c730ce04f1db0b7d9d3d7a3def37cace2d5f1e6026",
+    "source_receipt_sha256": "b2fcc47fa8e75a6c840fec4805018524c03044ea2fd330589bea8408168aa928",
     "status": "PASS",
     "t_member_expected_verdicts": {
       "FAIL": 8,
@@ -1080,6 +1084,8 @@
       "Python/tests/performance/test_benchmarks.py": "727ae26d69b7423fe682a8d48b3cd2ad6f790a882afc073df02cff85c85e0b75",
       "Python/tests/test_calculation_report.py": "2bc9ca5fa6b37dcf850d89a42331181564d1e6c4af14916e79db05cbcc883475",
       "Python/tests/test_public_examples.py": "0a7fd92dcfca8397277b50f36b2f5a9cb7ff241874cdb90e217cedbae16cd003",
+      "Python/tests/unit/test_structural_engineering_wp07.py": "883aad7c7eb1ed7ed53fa7242c79ba7abd4b844fbc9ee6e8415cc5ec5eacebec",
+      "Python/tests/unit/test_structural_engineering_wp08.py": "f9ccc41863e4fb275b62e0f6abd35c7ba1be889171d05bba8ea9933b0dbca95d",
       "contracts/structural-engineering/conformance/wp01-per-bar-vectors.json": "fe86d0a0025af230bd3983eaf90c194d7d6c7cbe8b33683d5dd3e0fe42a15143",
       "docs/developers/platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
       "docs/getting-started/beginners-guide.md": "916f57f893fd84da259a68d74fad8906953dc623031cd9d20738c182065f250e",
@@ -1107,7 +1113,7 @@
       "docs/verification/library-027-torsion-station.json": "6b514ec7284e381be0752ea7786645ced7f3be0570412212471237071ec1a1f0",
       "docs/verification/replay_library_027_members.py": "328ea667c4a242f843dbb88415aecad2ad665bcf66a74fb8a31ec50370b397cd",
       "docs/verification/replay_library_027_t_member.py": "0bf8a5dcb43718663482877b77a437e30283bf6728f95403fd2d5a804f97eb2a",
-      "scripts/_lib/release_beam_column.py": "3315cb4962dd4e71a2087831ee04c2cd166bc74bcbcd7e9fb702754086dea453",
+      "scripts/_lib/release_beam_column.py": "37997a70674cd5b8544216803295f6ee84605a8ebf2e0383b2ace486005e40e1",
       "scripts/_lib/release_qualification.py": "da19086d7e51bb85098b65794f2fd060d12e3dc894bbc26ef957dd1be1d4af98",
       "scripts/_lib/release_qualification_probe.py": "deacac609b13c2082487367676274bb09751c92a7217870f2359e30ec5fe0e50",
       "scripts/dxf_render.py": "89b7807b38870cd7f96f47e42e2606081ecc79e5852cb4bf532686ebbcc961cb",
@@ -1186,7 +1192,7 @@
         "hashes": [
           {
             "alg": "SHA-256",
-            "content": "75debc1e9fdf0b3b7d1d903f1725829624b9032cf3eae8cc785964e381dfda39"
+            "content": "205acfde8500909aaf766e9cf263fc13bf76bfa680376527e29048b954cd2ea6"
           }
         ],
         "name": "structural-lib-is456",
@@ -1225,22 +1231,22 @@
     "source_head": "423097e8d4f54e5072bfe57b98869f55f1ccdf08"
   },
   "release_readiness": {
-    "as_of": "2026-11-07",
-    "final_readiness_gate": "This archive evidence plus the passing final GitHub PR/Weekly checks, independent review and matching reviewed integration; GitHub owns those final gate facts.",
-    "implementation_state": "R1_R5_CLOSED_BY_INSTALLED_REPLAYS",
-    "publication_authorized": false,
+    "as_of": "2026-11-08",
+    "final_readiness_gate": "Required final milestone PR/Weekly checks, independent exact-head review and matching integration; then allowlisted target authorization metadata. No repeat owner permission is needed.",
+    "implementation_state": "R1_R5_AND_L01_CLOSED_BY_INSTALLED_REPLAYS",
+    "publication_owner_instruction": "Owner requested exact-qualified 0.27.0 PyPI/GitHub publication and public hash/clean external-install verification, with BBS validation repair first. This authorizes the bounded repair/requalification and same-byte publication after software gates.",
     "remaining_software_blockers_in_selected_scope": [],
-    "repair_goal_id": "LIB027-REPAIR-QUALIFY",
-    "status": "EXACT_REPLACEMENT_ARCHIVES_QUALIFIED"
+    "status": "EXACT_BBS_REPLACEMENT_ARCHIVES_QUALIFIED",
+    "task_id": "LIB027-PUBLISH-BBS"
   },
   "remaining_publication_steps": [
-    "Observe final required GitHub PR/Weekly acceptance and reviewed integration; bind exact reviewed/merged tree and retained pair",
-    "Obtain version/target-specific owner authorization; this goal authorizes no upload/tag/release",
-    "Verify the qualified pair on TestPyPI before an authorized tag",
-    "Deliver these same qualified files to PyPI/GitHub Release and verify public hashes/fresh installation"
+    "Observe final required PR/Weekly PASS and independent exact-head ACCEPT",
+    "Materialize the owner-authorized dated metadata and exact-review/target-authorization receipt; preserve reviewed ancestry and package tree",
+    "Verify the selected retained pair on TestPyPI",
+    "Tag the exact publication head and publish these same bytes to PyPI/GitHub; verify public downloaded hashes and a clean external-user install"
   ],
   "s5_merge_sha": null,
-  "s5_reviewed_head": "5c79c3b07dcbdb5ac32a519ae50cacfde5054cac",
+  "s5_reviewed_head": "a11e758aee6580a0ff2489fa740517a231d9f352",
   "schema_version": "qualified-release-artifacts/v1",
   "source_build_inputs_sha256": {
     "Python/LICENSE": "0c91bb1e93e3b9691835e161bbb54c647d43c75cc6d3f5c6b0cf0a472c844208",
@@ -1249,10 +1255,10 @@
     "Python/pyproject.toml": "7d6ef70a7781ed77e5c3993dfc0bbaa638d56fd700c71a093ebcdb1de399176f"
   },
   "source_validation": {
-    "earlier_preflight_head": "423097e8d4f54e5072bfe57b98869f55f1ccdf08",
-    "earlier_preflight_result": "CANDIDATE_TECHNICALLY_READY,0warnings;9007Python/629FastAPIpasses; later report aggregation correction required a new pair",
-    "final_affected_validation": "Final30 added consumer regressions are included in408tests per archive; all18 profiles exercise the selected bytes; full mypy341sourcefiles passes. Required full final source/cross-platform evidence is owned by GitHub.",
-    "final_source_full_suite_owner": "Required final GitHub Weekly Verification on the frozen candidate"
+    "candidate_preflight_head": "a11e758aee6580a0ff2489fa740517a231d9f352",
+    "candidate_preflight_result": "CANDIDATE_TECHNICALLY_READY,0warnings;9015Pythonpassed/4skipped/6deselected;629FastAPIpassed/6deselected;ReactbuildPASS;exactwheelUAT/publicexamplesPASS",
+    "final_source_full_suite_owner": "Required PR and full/cross-platform Weekly verification on the frozen milestone candidate",
+    "focused_validation": "43 WP07/WP08 tests PASS; affected Black/Ruff/mypy and API classification PASS"
   },
   "superseded_baseline": {
     "artifacts": [
@@ -1274,6 +1280,27 @@
     "reason": "Confirmed original R1-R5 counterexamples; initial passing assertions do not clear them.",
     "record_commit": "fd0619adbf60dbf55fbf9aeca2ea5a0d4204d9fb",
     "record_sha256": "9891039cd601c8fc4ac84587e2830993cc1efad73381fb325863aefc924b4915"
+  },
+  "superseded_repair_candidate": {
+    "artifacts": [
+      {
+        "filename": "structural_lib_is456-0.27.0-py3-none-any.whl",
+        "sha256": "75debc1e9fdf0b3b7d1d903f1725829624b9032cf3eae8cc785964e381dfda39",
+        "size_bytes": 1232535
+      },
+      {
+        "filename": "structural_lib_is456-0.27.0.tar.gz",
+        "sha256": "52e5dff065d54aeb373933bdef9c97f804a13344f7f6f662f02f27bf9f87ca59",
+        "size_bytes": 1051151
+      }
+    ],
+    "binary_pair_retained": true,
+    "directory": "output/releases/0.27.0/5c79c3b07dcb/dist",
+    "disposition": "REJECTED_FOR_PUBLICATION_L01",
+    "python_tree_sha": "7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf",
+    "reason": "Later direct replay admitted fractional couplers as PASS then failed typed BBS projection. Prior R1-R5/all18 evidence remains historical; these bytes must not publish.",
+    "record_commit": "edca74024c6bee4827f63a12623358ccf829d592",
+    "record_sha256": "02604fc7386bc69fc692232c7bb283cf57ac2f751e71a624dabf70b769eeea99"
   },
   "version": "0.27.0"
 }

@@ -338,6 +338,8 @@ def create_bbs(request: BbsRequest) -> OperationResult:
             or not isinstance(item.kind, SpliceKind)
             or not math.isfinite(item.station_x_mm)
             or not _text(item.qualification_reference)
+            or not isinstance(item.coupler_count, int)
+            or isinstance(item.coupler_count, bool)
             or (item.kind is SpliceKind.LAP and item.coupler_count != 0)
             or (item.kind is SpliceKind.COUPLER and item.coupler_count <= 0)
             for item in request.splice_records
