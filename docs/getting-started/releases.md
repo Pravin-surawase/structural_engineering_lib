@@ -1652,3 +1652,24 @@ bind the released artifacts to publication commit
 The verified file identities agree across the release assets and PyPI. The
 published engineering scope remains case-qualified and the package maturity
 remains Beta.
+
+
+## v0.27.0 — Prepared candidate (unreleased; on hold)
+
+The owner selected Goal 5 preparation and qualification after merged Goals
+1–4 and closure Packets A–E. Source metadata is 0.27.0; the current public
+release remains [0.26.0](#v0260-published-and-verified). No tag, registry upload,
+GitHub Release or publication authorization is granted by this entry.
+
+Freeze one exact wheel/sdist pair and qualify both archives through the
+maintained release owner. The 0.27 inventory adds copied beam/column consumer
+drivers, frozen references, complete member exports and FAIL/HOLD controls
+to the inherited base/extra/transport/export checks. Verification-tool extras
+are recorded separately from base-only use. Required hosted checks and an
+independent exact-candidate review must pass before readiness is claimed.
+The qualified-artifact record binds the retained bytes and source tree;
+publication subsequently follows the retained-artifact procedure and separate
+version-specific owner authorization. No rebuild substitutes for that pair.
+
+Scope remains selected IS 456 workflows, pre-1.0/Beta, with professional
+approval unreviewed and unsupported engineering/native cases explicit.

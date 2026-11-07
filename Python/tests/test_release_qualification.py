@@ -88,6 +88,19 @@ def test_checkout_import_cannot_count_as_installed_artifact(tmp_path):
         )
 
 
+def test_new_archive_journeys_cannot_install_the_same_distribution(tmp_path):
+    wheel, sdist = tmp_path / "candidate.whl", tmp_path / "candidate.tar.gz"
+    assert qualification.distribution_target("beam-column-wheel", wheel, sdist) == str(
+        wheel
+    )
+    assert qualification.distribution_target("beam-column-sdist", wheel, sdist) == str(
+        sdist
+    )
+    assert set(qualification.required_profiles("0.27.0", ())) - set(
+        qualification.required_profiles("0.26.0", ())
+    ) == {"beam-column-wheel", "beam-column-sdist"}
+
+
 @pytest.mark.parametrize(
     "overrides",
     [

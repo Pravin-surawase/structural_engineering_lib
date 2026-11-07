@@ -300,6 +300,10 @@ def run_probe(config: dict[str, Any]) -> dict[str, Any]:
     result: dict[str, Any] = {"identity_before": before, "profile_scope": profile}
     if profile == "examples":
         result["examples"] = _examples(config)
+    if profile in ("beam-column-wheel", "beam-column-sdist"):
+        from scripts._lib.release_beam_column import qualify
+
+        result["beam_column_closure"] = qualify(config)
     if profile in ("base", "sdist"):
         from structural_lib.release_uat import run
 
@@ -556,6 +560,7 @@ def _examples(config: dict[str, Any]) -> dict[str, Any]:
     sources += list((repo / "Python/examples").glob("*.json"))
     sources += [
         repo / "Python/tests/test_public_examples.py",
+        repo / "docs/reference/api.md",
         repo / "scripts/external_cli_test.py",
         repo / "contracts/structural-engineering/conformance/wp10-vectors.json",
         repo / "contracts/structural-engineering/conformance/beam-readiness-v1.gz",
