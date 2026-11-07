@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: Continue Packet D2 member evidence after the D1 torsion corner-geometry correction. Resolve support/load-path, tension anchorage, physical outputs and torsional SLS before admission.
-- Completed: Goals 1–4 and closure Packets A–C merged. Packet D1 corrects the station transverse demand to use longitudinal corner-bar centres, with independent Python/C# controls. Full Packet D remains open.
+- Focus: Verify the D3 serviceability basis after D2 physical/ULS closure. Keep full torsion-member admission HOLD; Packet E and Goal 5 remain pending.
+- Completed: Goals 1–4 and closure Packets A–C merged. D1 corrects corner geometry; D2 adds signed support/crosshead transfer, actual cage/path hooks, full tension anchorage, continuity, durability and draft outputs. Full Packet D remains open through D3.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
@@ -41,8 +41,12 @@ bent-up shear reinforcement and sagging flexure within the flange and in
 the web. Packet C adds the physical four-corner column, independent x/y
 benchmarks and matching JSON/HTML with overload, inadequate-tie and
 missing-tie controls. Packet D1 corrects the torsion station basis. Continue
-D2 and D3 for physical load path, both-face tension anchorage, serviceability
-and complete output evidence. Full torsion member admission remains HOLD.
+the [D2 worked profile](../cookbook/python/physical-torsion-member.md) for
+physical load path, both-face direct tension anchorage, cage/hooks and draft
+outputs. Its receiver boundary is section flexure/shear; bearing/contact,
+receiver connections and foundations remain with the supporting-system owner.
+D3 serviceability remains HOLD until its basis is independently verified.
+Full torsion member admission remains HOLD.
 Complete D and E before
 [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) prepares
 the versioned candidate.

@@ -52,6 +52,7 @@ class AnchorageDirection(StrEnum):
 class AnchorageLocation(StrEnum):
     SIMPLE_SUPPORT = "simple_support"
     CONTINUOUS_SUPPORT = "continuous_support"
+    DIRECT_SUPPORT = "direct_support"
     DISCONTINUITY = "discontinuity"
 
 
@@ -653,6 +654,7 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
         at_support = path.location in (
             AnchorageLocation.SIMPLE_SUPPORT,
             AnchorageLocation.CONTINUOUS_SUPPORT,
+            AnchorageLocation.DIRECT_SUPPORT,
         )
         support_near_face = path.support_near_face_x_mm
         support_centre = path.support_centre_x_mm

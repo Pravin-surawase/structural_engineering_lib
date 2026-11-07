@@ -188,7 +188,7 @@ supply 0.804247719 and fail despite satisfying the 146 mm pitch limit.
 | Stage | Work and exit evidence | Current boundary |
 |---|---|---|
 | D1 | Freeze the source-correct station inputs, fix corner dimensions, expose method/basis, replay adequate and inadequate provision in Python and C#, and preserve the zero-torsion route. | Implemented source correction with an executable station replay. |
-| D2 | Freeze a physically coherent member and a requirement-to-owner matrix. Keep same-row station M3/V2/T, support-face distance and critical sections, torsion equilibrium and support torque transfer, all required perimeter steel, hook fit, tension anchorage on both faces, continuity and durability explicit. Add every obligation to the expected member leaf set before running it. | Full-member admission HOLD until these named inputs and independent checks qualify. |
+| D2 | The [physical worked profile](../cookbook/python/physical-torsion-member.md) binds concurrent source rows, support faces and critical sections, actual closed cage/paths, hooks, full-stress direct tension anchors at all eight ends, both-face continuity, mild durability and signed torque transfer through checked receiver sections. | D2 physical/ULS evidence is separate from full-member admission, which remains HOLD for D3. |
 | D3 | Resolve torsional serviceability using an authoritative method and explicit acceptance criteria for the selected service load case. Then reconcile the complete member, paths, BBS, quantities, JSON and HTML, replay zero torsion, inadequate and missing evidence, and qualify an installed example. | Torsional SLS remains HOLD. The existing flexural crack and span/depth checks cannot satisfy this obligation. |
 
 The source review distinguishes collapse-limit torsion in Cl. 41 from the
@@ -256,6 +256,44 @@ hook, support-transfer and durability evidence owners; resolve the common
 physical paths, both-face tension anchorage and continuity; then compose all
 expected leaves and reconcile outputs. The profile remains HOLD while any
 essential evidence, including D3 torsional SLS, is missing.
+
+#### Packet D2 worked profile and closeout
+
+The [standalone example](../../Python/examples/physical_torsion_member.py)
+uses a 300 × 400 mm M25/Fe415 beam, four continuous Ø20 bars and actual
+Ø8/100 links. Its support centres are 5000 mm apart, clear faces 4000 mm
+apart, and all main bars extend 950 mm past the near support faces.
+The independent [D2 reference](../verification/library-027-torsion-physical.json)
+retains the supplied 5000 mm analysis span separately from the Cl. 22.2
+effective-span geometry of 4350 mm; no action target was changed to the
+shorter span. Exact signed row targets, source identities, Ld, hook and
+physical-length targets are independently replayable.
+
+For the eccentric 12 N/mm load, each end transfers 30 kN and an external
+-1.5 kNm torque through named reaction lines into a transverse receiver
+crosshead. Both support couples have the same global sign. The receiver
+loads, geometry, topology, case and real section flexure/shear results
+are bound together; its end reactions define the supporting-system
+boundary. This packet does not design bearing/contact stresses, receiver
+end connections, other supporting members or foundations.
+
+All eight tension anchors use `direct_support`: the full unrounded
+805.915178571 mm development requirement is compared against 950 mm,
+without a flexural M/V reduction. The actual path/cage binding, ordinary
+90° tangent tails, hook-plane separation, constant pitch and supplied
+mild-exposure mix/cover are checked. The ordinary 135°/180° source limits
+are preserved without importing seismic tail floors.
+
+The profile declares 29 leaves before execution: 26 D2 qualifications and
+three held serviceability leaves. Draft JSON, BBS and HTML keep D2 results,
+the 54 physical paths and the D3 HOLD distinct. Inadequate or missing D2
+evidence cannot remove an obligation or turn the member into an accepted
+result. Existing ordinary/multilayer profiles retain their 19/27 checks.
+
+Next: establish and independently verify the D3 serviceability basis.
+Packet D remains open through D3, Packet E remains pending, and Goal 5
+continues to wait for full D and E. The owner's absence of project-specific
+criteria is not a reason to invent limits or reduce the 0.27 scope.
 
 ### Goal 5 qualify and release 0.27.0
 

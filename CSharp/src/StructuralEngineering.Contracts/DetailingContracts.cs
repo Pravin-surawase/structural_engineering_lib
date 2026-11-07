@@ -3,7 +3,7 @@ namespace StructuralEngineering.Contracts;
 public enum BarSurface { Plain, Deformed, FusionBondedEpoxyDeformed }
 public enum StressState { Tension, Compression }
 public enum AnchorageDirection { IncreasingX, DecreasingX }
-public enum AnchorageLocation { SimpleSupport, ContinuousSupport, Discontinuity }
+public enum AnchorageLocation { SimpleSupport, ContinuousSupport, Discontinuity, DirectSupport }
 public enum SpliceKind { Lap, QualifiedCoupler }
 public enum ReinforcementRole { TopLongitudinal, BottomLongitudinal, SideLeft, SideRight, Corner }
 public enum BeamEnd { Left, Right }

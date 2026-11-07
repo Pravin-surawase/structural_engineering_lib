@@ -56,6 +56,22 @@ public class Wp05Tests
     }
 
     [Theory]
+    [InlineData(950, EngineeringState.Pass)]
+    [InlineData(500, EngineeringState.Fail)]
+    public void DirectSupportRequiresFullTensionDevelopment(double extension, EngineeringState expected)
+    {
+        var result = Detailing.CheckAnchorage(new("LIB-027-D2", "B1", "r1",
+            [new("TL", "left-face", AnchorageLocation.DirectSupport,
+                AnchorageDirection.DecreasingX, 500 - extension, 5450, 500, "A", 500, 0,
+                [], null, Development() with { ConcreteGradeNPerMm2 = 25 })]));
+        Assert.Equal(expected, result.Engineering);
+        var check = Assert.Single(result.Outputs!.Checks);
+        Assert.Equal(805.9151785714286, check.RequiredDevelopmentLengthMm, 9);
+        Assert.Equal(extension, check.AvailableForCriterionMm, 9);
+        Assert.Equal("direct_development", check.Criterion);
+    }
+
+    [Theory]
     [InlineData(true, 5, false)]
     [InlineData(false, 5, false)]
     [InlineData(true, 313.4114583333333, true)]
