@@ -165,7 +165,9 @@ def plain(value: Any) -> Any:
     if hasattr(value, "__dataclass_fields__"):
         if isinstance(value, type):
             raise TypeError("asdict() should be called on dataclass instances")
-        return {field.name: plain(getattr(value, field.name)) for field in fields(value)}
+        return {
+            field.name: plain(getattr(value, field.name)) for field in fields(value)
+        }
     if isinstance(value, float):
         if not math.isfinite(value):
             raise ValueError("Canonical engineering values must be finite")
