@@ -11,7 +11,7 @@ import hashlib
 import json
 import math
 from collections.abc import Iterable, Mapping
-from dataclasses import asdict, dataclass, is_dataclass
+from dataclasses import dataclass, fields, is_dataclass
 from enum import StrEnum
 from typing import Any, TypeVar
 
@@ -102,7 +102,7 @@ class OperationResult:
     result_id: str
 
     def to_dict(self) -> dict[str, Any]:
-        return {str(key): plain(value) for key, value in asdict(self).items()}
+        return {field.name: plain(getattr(self, field.name)) for field in fields(self)}
 
     def output_as(self, key: str, output_type: type[_OutputT]) -> _OutputT:
         """Restore an output record for the next typed operation.
@@ -163,7 +163,9 @@ def plain(value: Any) -> Any:
     if isinstance(value, (tuple, list)):
         return [plain(item) for item in value]
     if hasattr(value, "__dataclass_fields__"):
-        return plain(asdict(value))
+        if isinstance(value, type):
+            raise TypeError("asdict() should be called on dataclass instances")
+        return {field.name: plain(getattr(value, field.name)) for field in fields(value)}
     if isinstance(value, float):
         if not math.isfinite(value):
             raise ValueError("Canonical engineering values must be finite")
