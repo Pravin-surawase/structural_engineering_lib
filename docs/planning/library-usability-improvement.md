@@ -196,8 +196,29 @@ flexural deflection and crack provisions in Cl. 42–43 and Annex F.
 A supplementary uncracked elastic stress screen would need its own declared
 assumptions and does not supply torsional crack-width or twist acceptance.
 The resolver is an adopted and independently verified torsional SLS method
-with project acceptance criteria and traceable service actions. The next
+with applicable acceptance criteria and traceable service actions. The next
 admitted profile must identify that basis before member acceptance.
+
+**Owner clarification — 7 November 2026.** No project-specific torsional
+serviceability assessment or twist/crack criteria are available. Selecting
+and qualifying the demonstration's method is library work; the owner is not
+required to invent numerical limits. Continue D2 strength, detailing and
+output preparation while D3 remains HOLD.
+
+D3 must first establish the applicable requirements for the named profile,
+using the controlled source and amendment set. IS 456 Cl. 35.3.2 provides
+general crack-control guidance, while Cl. 43.1 and Annex F address flexural
+cracking. A crack-width limit alone does not supply a torsional response
+model, and this review has not established a universal numerical twist limit.
+Research must distinguish applicable code requirements from criteria needed
+for a particular use. Published methods from other codes or research are
+candidates to assess, not automatically adopted IS 456 rules. Declare any
+demonstration assumptions and independently verify the selected method;
+project acceptance cannot be inferred from those assumptions. Missing
+essential evidence retains HOLD, and the agreed 0.27 scope stays unchanged.
+[Primary text reviewed](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf)
+(public 2007 reprint including Amendments 1–2; later controlled amendments
+remain part of method qualification).
 
 Use full design-stress anchorage unless a source-consistent calculation
 establishes each actual torsion-face bar stress. The ordinary zero-torsion
