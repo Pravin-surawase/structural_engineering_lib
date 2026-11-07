@@ -14,7 +14,7 @@
 | Release | Current state |
 |---|---|
 | **Current** | 0.26.0 is published and verified in the [release ledger](../getting-started/releases.md#v0260-published-and-verified). |
-| **Next** | 0.27.0 includes the merged section work and Packet C. Complete the rectangular torsion and sagging T-beam member packets, then qualify the versioned candidate. |
+| **Next** | 0.27.0 includes the section, column and selected torsion-member work. Complete Packet E, the sagging T-beam member, then qualify the exact versioned candidate. |
 
 
 Goal 1 froze and replayed the
