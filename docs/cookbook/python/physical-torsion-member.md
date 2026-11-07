@@ -6,8 +6,8 @@
 **Importance:** Medium
 **Created:** 2026-11-07
 **Last Updated:** 2026-11-07
-**Related Tasks:** LIB-027-CLOSURE-D2
-**Abstract:** D2 physical and strength workflow with signed support transfer and explicit D3 HOLD.
+**Related Tasks:** LIB-027-CLOSURE-D2, LIB-027-CLOSURE-D3
+**Abstract:** Physical torsion member with a separate, verified transient service basis and explicit unsupported-case HOLD.
 
 ---
 
@@ -25,8 +25,8 @@ python -I Python/examples/physical_torsion_member.py --output-dir torsion-d2
 
 From an installed wheel outside the checkout, copy only
 [physical_torsion_member.py](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/Python/examples/physical_torsion_member.py)
-and run it with the installed interpreter. The example needs the build
-containing D2; the published 0.26.0 package predates these operations.
+and run it with the installed interpreter. The example needs the current
+development build; the published 0.26.0 package predates these operations.
 No optional report dependency is needed.
 
 ## Physical inputs and independent targets
@@ -165,3 +165,120 @@ evidence, changed/stale receiver bindings, colliding support bars, both
 torsion signs and zero torsion. D3 HOLD is
 retained throughout. Its torsional serviceability method and applicable
 criteria must be independently verified before full member acceptance.
+
+## Complete the selected D3 service case
+
+```bash
+python -I Python/examples/physical_torsion_member.py --with-serviceability --output-dir torsion-d3
+```
+
+The expected result is **D2 PASS, D3 PASS, all 31 obligations qualified,
+54 physical paths, issue_ready outputs, engineering approval unreviewed**.
+The original command without the flag remains the D2 HOLD control.
+`issue_ready` records completeness of this declared model and criteria;
+engineering approval remains a separate result dimension.
+
+The independently frozen [D3 reference](../../verification/library-027-torsion-serviceability.json)
+and [standard-library replay](../../verification/check_library_027_torsion_serviceability_reference.py)
+define the following demonstration assumptions. They are not project facts.
+
+| Component | Unfactored UDL | Transverse eccentricity | Time basis |
+|---|---:|---:|---|
+| Permanent G | 5 N/mm: 3 self-weight plus 2 superimposed | 0 mm | Applied at concrete age 28 days |
+| Imposed Q | 3 N/mm | 400/3 mm, inside the 150 mm half-width | Immediate response at application, age 3650 days |
+| Finishes | — | — | Installed at age 56 days |
+
+Total service load is 8 N/mm at resultant eccentricity 50 mm. Equal 1.5
+factors give the original D2 12 N/mm at 50 mm, including every concurrent
+V/M/T row. Sustained torque is zero; the full service end torque of 1 kNm
+is retained as transient torque. The API requires application and assessment
+ages explicitly. A transient flag alone cannot discharge the time basis.
+Any finite imposed-load duration or permanent torque remains HOLD until
+its torsional time-dependent response is qualified.
+
+The receiving beams use the explicit identical, pinned-ended,
+zero-settlement boundary from the demonstration analysis. Their actual
+section, orientation, nodal restraints and loads are bound and compared.
+Equal modeled receiver rotations cancel when deflection is measured
+relative to the chord joining the **same physical edge** at the supports.
+The calculation does not assume absolute primary-support rotations are
+zero and does not qualify real column/foundation movements. Missing or
+asymmetric boundary evidence retains HOLD.
+
+## Service methods and criteria
+
+Flexural response uses actual transformed compression and tension bars,
+removing displaced concrete and neglecting tensile concrete. The fully
+cracked inertia is a conservative lower bound within Annex C's inertia
+bounds; no tension-stiffening benefit is used. The permanent section is
+re-solved at `Ec/(1+1.6)` under Cl. 6.2.5.1/C-4, with the permanent
+concrete stress checked against `fck/3`. The ultimate creep coefficient
+is used as an upper bound at the selected assessment age.
+
+Shrinkage uses the Cl. 6.2.4.1 strain 0.0003 and a conservative Annex C-3
+single-face equivalent, ignoring beneficial compression steel **for this
+shrinkage estimate only**. It does not extrapolate the source's
+`pt-pc >= 0.25%` equation to zero difference. All creep and shrinkage are
+counted after finishes, giving an upper bound rather than assuming a
+measured finish-stage deformation.
+
+The separately adopted torsional stiffness is the cracked secant model in
+[Bruun, Kuan and Bentz (2020), Eq. 3](https://www.bar-lab.org/_files/ugd/a76105_c2e5f0130fd34dd48658126af2184844.pdf),
+DOI [10.14359/51728290](https://doi.org/10.14359/51728290), PDF pages 4–6
+and 12. This is supplementary research mechanics, not an IS 456 formula.
+`GKcr = 4 Es A2³ / [p2² (1/rho_l + 1/rho_t)]`, where `A2` is the
+area enclosed by corner longitudinal-bar centres. The cubic area power
+is dimensionally required and reproduces the paper's rounded
+104.1 × 10³ kNm² worked example. The selected beam gives
+576.216741104 kNm². Integrating the actual service torque gives twist;
+its vertical edge displacement is added conservatively to flexural
+deformation at the same edge.
+
+IS 456 Cl. 23.2 supplies the displacement criteria. Deformations retain
+the actual 5000 mm analysis span; the shorter 4350 mm code effective
+span supplies the conservative limits. No universal twist-angle limit
+is invented.
+
+Torsional crack control is a separate **indirect Annex-B B-5/B-6
+service stress/detail compliance check**. It retains both-face equivalent
+moments and closed-link demands, applies the M25/Fe415 Tables 21/22/24
+limits, and rechecks the actual physical hooks/cage. Compression-steel
+and concrete-shear benefits are conservatively ignored in this WSM
+screen. This does not calculate or guarantee a torsional crack width.
+The Annex-F result is explicitly flexural, using the elastic **surface**
+strain with no tension-stiffening reduction; steel-bar strain is not
+substituted for surface strain.
+
+| Frozen service result | Value | Criterion |
+|---|---:|---:|
+| Final total edge deflection bound | 8.532890067 mm | 17.4 mm |
+| After-finishes edge deflection bound | 4.653362991 mm | 12.428571429 mm |
+| Flexural crack-width upper bound | 0.162898079 mm | 0.3 mm, mild/non-harmful |
+| Relative midspan twist | 0.002169322602 rad | Assessed through edge displacement |
+| Torsional edge displacement magnitude | 0.325398390 mm | Included in both displacement checks |
+
+## API, controls and outputs
+
+`beam.TorsionalServiceabilityRequest` binds the current D2 support/path
+and actual hook requests, distinct normalized total/permanent snapshots,
+the explicit `TorsionServiceHistory`, and a physical edge offset.
+`beam.check_torsional_serviceability` returns its source/method revisions,
+service-state values, indirect WSM rows, and bound `deflection` and
+`flexural_crack` OperationResults for the existing member leaves.
+Use `TypeAdapter(TorsionalServiceabilityRequest).json_schema()` for the
+complete machine-readable contract and strict JSON round trips.
+
+`run_workflow(include_serviceability=True, load_n_per_mm=21)` is an
+important negative control: D2 strength still passes, but Annex-B service
+compression exceeds 8.5 MPa, so D3 and the member fail and outputs remain
+draft. `omit_service_history=True`, missing service evidence, nonzero
+permanent eccentricity, stale/conflicting rows, missing peak stations,
+unqualified duration and unknown/asymmetric receiver boundaries retain HOLD.
+Zero and reversed torsion preserve their real signs and complete the
+same supported service workflow.
+
+The JSON, HTML and BBS retain the same 31 obligations, actual paths,
+steel lengths/mass, primary-prism quantity policy and input/result
+identities. Unsupported service conditions cannot produce issue-ready
+outputs. Receiver connections, bearing/contact, foundations and
+professional approval retain their existing boundaries.

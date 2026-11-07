@@ -19,6 +19,12 @@ python3 -m structural_lib install-preflight
 
 ## Typed workflows from the current source
 
+`physical_torsion_member.py --with-serviceability` completes the selected
+31-check D3 transient-torsion service case and writes bound JSON/BBS/HTML.
+Without the flag it retains the D2 serviceability-HOLD control.
+See the [physical torsion guide](../../docs/cookbook/python/physical-torsion-member.md#complete-the-selected-d3-service-case)
+for the explicit load history, research stiffness model and supported boundary.
+
 `complete_member_workflow.py` includes the frozen LIB-MEMBER-WORKFLOW-001 acceptance
 case: a 300 × 500 mm ordinary beam with separate ULS/SLS loads, actual bars,
 19 required leaf checks, physical BBS, quantities and an HTML calculation report.
