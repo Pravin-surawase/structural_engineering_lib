@@ -49,6 +49,10 @@ VERSION_FILES = {
     "react_app/package.json": [
         (r'"version": "[^"]+"', '"version": "{version}"'),
     ],
+    "react_app/package-lock.json": [
+        (r'^(  "version": )"[^"]+"', r'\g<1>"{version}"'),
+        (r'("": \{\s*"name": "[^"]+",\s*"version": ")[^"]+"', r'\g<1>{version}"'),
+    ],
     # Academic citation
     "CITATION.cff": [
         (r"^version: [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "version: {version}"),

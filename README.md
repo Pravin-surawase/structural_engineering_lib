@@ -26,7 +26,7 @@ workflows under IS 456:2000.
 
 > [!IMPORTANT]
 > Target release classification (publication state is separate):
-> **v0.26.0 is a normal software release of the audited supported scope.**
+> **v0.27.0 is a normal software release of the audited supported scope.**
 > This describes the version format and scope. Publication state and verified
 > artifact identities are recorded in the [release ledger](docs/getting-started/releases.md)
 > and matching registry/release assets. Support is case-qualified; complete IS 456 coverage
@@ -94,16 +94,21 @@ reconciliation, or professional approval.
 
 ### Install the Python package
 
-Install the published 0.26.0 package:
+This checkout prepares **0.27.0**, which is not yet published. The current
+public package is [0.26.0](https://pypi.org/project/structural-lib-is456/0.26.0/).
+For the candidate, install its retained local wheel with
+`python3 -m pip install /path/to/structural_lib_is456-0.27.0-py3-none-any.whl`.
+The registry command below applies after verified publication:
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.26.0"
+python3 -m pip install "structural-lib-is456==0.27.0"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.26.0` is a final PEP 440 version eligible for ordinary package resolution.
+`0.27.0` uses the final PEP 440 version format; that format alone does not
+establish registry availability.
 The project's development-maturity classifier remains **Beta**. Pin the exact
 version for reproducible work. See the
 [release status and policy](docs/getting-started/release-status.md) before

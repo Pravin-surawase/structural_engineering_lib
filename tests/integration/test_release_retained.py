@@ -21,6 +21,7 @@ from _lib import release_retained as retained  # noqa: E402
 from _lib.release_qualification import (  # noqa: E402
     REQUIRED_RESOURCES,
     inspect_distribution_pair,
+    required_profiles,
 )
 
 
@@ -62,7 +63,12 @@ def candidate(tmp_path, monkeypatch):
         "artifacts": [
             {"filename": p.name, "sha256": retained.digest(p)} for p in (wheel, sdist)
         ],
-        "qualification": {"profiles": {str(i): "PASS" for i in range(16)}},
+        "qualification": {
+            "profiles": {
+                profile: "PASS"
+                for profile in required_profiles("0.26.0", pair["declared_extras"])
+            }
+        },
         "installed_wheel_uat": {
             "status": "PASS",
             "package_version": "0.26.0",
@@ -127,7 +133,7 @@ def test_drift_or_incomplete_qualification_cannot_reach_upload(candidate, change
     elif change == "build-input":
         (repo / "Python/pyproject.toml").write_text('version="0.27.0"')
     elif change == "profile":
-        record["qualification"]["profiles"].pop("0")
+        record["qualification"]["profiles"].pop("base")
     else:
         record["installed_wheel_uat"]["cases"].pop()
     path.write_bytes(retained.encoded(record))

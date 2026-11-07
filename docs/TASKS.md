@@ -26,7 +26,7 @@
 | LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Done: [PR #1040 integrated](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
-| LIB-027 | Deliver the selected beam and column release | P1 | Goals 1–4 and selected closure Packets A–E delivered. Goal 5: qualify both exact versioned archives before publication | [Closure plan](planning/library-usability-improvement.md#beam-and-column-closure-before-goal-5) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
+| LIB-027 | Deliver the selected beam and column release | P1 | Goals 1–4 and selected closure Packets A–E delivered. Goal 5: exact archives qualified (18 profiles); release authorization/publication pending | [Closure plan](planning/library-usability-improvement.md#beam-and-column-closure-before-goal-5) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
@@ -190,7 +190,7 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | Packets A–E delivered for their selected profiles. E verifies two complete T members (30/30 obligations, 46 beam paths each), local flange provision and 13 installed PASS/FAIL/HOLD journeys. [Evidence and next steps](planning/library-usability-improvement.md#packet-e-implementation-plan--ordinary-sagging-t-beam-member). Goal 5 versioned wheel/sdist qualification and publication remain pending; unsupported profiles retain HOLD. |
+| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | Packets A–E delivered for their selected profiles. E verifies two complete T members (30/30 obligations, 46 beam paths each), local flange provision and 13 installed PASS/FAIL/HOLD journeys. [Evidence and next steps](planning/library-usability-improvement.md#packet-e-implementation-plan--ordinary-sagging-t-beam-member). Goal 5 now qualifies both exact 0.27.0 archives: 18 profiles, 378 beam/column/consumer tests per archive and all FAIL/HOLD controls. [Retained evidence](verification/library-0270-release-artifacts.json). Release authorization/publication remain pending; unsupported profiles retain HOLD. |
 
 The [current handoff](planning/next-session-brief.md) identifies the selected
 preparation scope. The dated notes below retain earlier lanes and installed-host

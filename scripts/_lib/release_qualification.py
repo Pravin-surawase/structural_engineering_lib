@@ -46,6 +46,27 @@ PERFORMANCE_BUDGETS = {
 }
 
 
+def required_profiles(version: str, extras: Any) -> list[str]:
+    """Keep retained qualification and its executor on one versioned inventory."""
+    profiles = [
+        "base",
+        "sdist",
+        *extras,
+        "exports",
+        "transport",
+        "examples",
+        "baseline",
+    ]
+    if tuple(map(int, version.partition("a")[0].split("."))) >= (0, 27, 0):
+        profiles.extend(("beam-column-wheel", "beam-column-sdist"))
+    return profiles
+
+
+def distribution_target(profile: str, wheel: Path, sdist: Path) -> str:
+    """The source-archive journey must install the retained sdist, not the wheel."""
+    return str(sdist if profile in ("sdist", "beam-column-sdist") else wheel)
+
+
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -178,15 +199,7 @@ def qualify_artifacts(
     extras = project["optional-dependencies"]
     if set(pair["declared_extras"]) != set(extras):
         raise ValueError("Wheel extra inventory differs from source metadata")
-    required = [
-        "base",
-        "sdist",
-        *extras,
-        "exports",
-        "transport",
-        "examples",
-        "baseline",
-    ]
+    required = required_profiles(version, extras)
     selected = required if profiles is None else profiles
     if (
         not selected
@@ -256,6 +269,18 @@ def qualify_artifacts(
             "pmm remains experimental; source/native/professional HOLDs remain explicit",
         ],
     }
+    if "beam-column-wheel" in required:
+        from .release_beam_column import input_paths
+
+        evidence["verification_inputs_sha256"].update(
+            {
+                str(path.relative_to(repo)): sha256(path)
+                for path in (
+                    Path(__file__).with_name("release_beam_column.py"),
+                    *input_paths(repo),
+                )
+            }
+        )
 
     def save() -> None:
         passed = {name for name, value in records.items() if value["status"] == "PASS"}
@@ -279,12 +304,14 @@ def qualify_artifacts(
                 python = venv / (
                     "Scripts/python.exe" if os.name == "nt" else "bin/python"
                 )
-                target = str(sdist) if profile == "sdist" else str(wheel)
+                target = distribution_target(profile, wheel, sdist)
                 if profile in extras:
                     target += f"[{profile}]"
                 if profile == "exports":
                     target += "[dxf,render,report,pdf,validation]"
                 if profile == "examples":
+                    target += "[dev,dxf,report]"
+                if profile in ("beam-column-wheel", "beam-column-sdist"):
                     target += "[dev,dxf,report]"
                 if profile == "baseline":
                     target = "structural-lib-is456==0.25.0"

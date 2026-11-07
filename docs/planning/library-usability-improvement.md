@@ -628,6 +628,32 @@ D3 controls, before the separate version-specific release authorization.
 
 ### Goal 5 qualify and release 0.27.0
 
+**Candidate qualification — 7 November 2026:** the exact 0.27.0 wheel and
+sdist are built and retained. All **18 installed profiles passed**, including
+separate wheel and sdist beam/column profiles with **378 tests each**, zero
+failures/errors/skips and 16 independent-checker/public-driver commands each.
+The [qualified artifact record](../verification/library-0270-release-artifacts.json)
+binds filenames, sizes, SHA-256, package payload, build inputs and Python tree.
+GitHub owns the final immutable-head PR/Weekly checks, independent review and
+integration facts. Qualification does not authorize publication.
+
+| Evidence | Observation |
+|---|---|
+| Both base archive installs | Site-packages identity and all 341 package files match source; 29 UAT cases, 13 inherited family journeys and 106 numerical comparisons each pass. |
+| Beam/column corpus in each archive | Three beam comparisons, all four layered-column cases, supplied shear/flange branches and force gap, four-corner x/y/tie controls, D1/D2/D3, ordinary single/multilayer workflows, T members and PR #1045 consumer regressions pass their existing acceptance assertions. |
+| T-member external replay | 13 journeys per archive: two PASS, eight FAIL, three HOLD; strict APIs/schemas and JSON/BBS/HTML reconcile. |
+| Reports and consumers | Required/provided steel and absent detailing survive JSON/HTML/Markdown. Seventeen inherited standalone examples and 12 public example/guide checks pass. Eight PDF outputs (16 pages) rendered and visually inspected; physical DXF, BBS and report identities agree. |
+| Dependencies and performance | All declared extras, exports and transport profiles pass their stated scope; baseline performance ratios remain below the frozen 3× limit. CAD/ETABS native acceptance stays HOLD and PMM stays experimental. |
+| Source preflight and repair | Initial broad run: 8972 Python passes and three source-gate failures, 626 FastAPI passes and React build PASS. Stale API/Indian-code manifests and an unrecognized explicit `angle_degrees` unit suffix were repaired at their owners. Ten focused repair checks and all 12 essential checks pass; package/build bytes are unchanged. Final full hosted evidence belongs to GitHub. |
+
+The retained pair must be reused for delivery. Remaining work is the
+publication packet: bind the observed final merge/check/review identities,
+obtain version/target-specific owner authorization, verify the pair on
+TestPyPI, then tag and publish the same files and read back their public
+identities. None of those external publication actions was performed here.
+The current public release remains 0.26.0. The original ordered acceptance
+procedure below is retained for the publication handoff.
+
 1. Prepare one versioned 0.27.0 candidate from the merged Goals 1–4 and
    the completed beam and column closure packets. Use
    maintained version tooling, record the commit and Python tree, and
@@ -667,8 +693,8 @@ D3 controls, before the separate version-specific release authorization.
 | Before Goal 5 | [Packets A–E delivered for their selected profiles](#beam-and-column-closure-before-goal-5), including the full T member and its installed replay. Unsupported profiles retain HOLD. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | After closure. [Prepare and verify the exact candidate, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Continue with [Goal 5](#goal-5-qualify-and-release-0270): freeze and qualify
-the exact versioned 0.27.0 wheel and sdist, including Packet E's 13 journeys.
+Goal 5's exact archive qualification is complete as recorded above. Continue
+with its separately authorized retained-artifact publication steps.
 Packet D is qualified only for its documented physical and service profile;
 unsupported torsional histories retain HOLD.
 There is no standalone 0.26.1 release. Candidate preparation uses the
