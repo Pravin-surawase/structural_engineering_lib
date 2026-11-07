@@ -361,6 +361,243 @@ versioned0.27.0 wheel and sdist. Goal5 must replay this D3 service case
 and its FAIL/HOLD controls from both exact archives. No release follows
 from D3 implementation alone.
 
+#### Packet E implementation plan — ordinary sagging T-beam member
+
+**Planning status:** detailed plan only. This update authorizes no calculation
+changes and supplies no new numerical engineering acceptance. Packet E is
+the next implementation packet after merged D3; Goal 5 still waits for E.
+The five units below belong to one Packet E delivery and one 0.27 release,
+not five releases or an expansion into the 0.28 slab programme.
+
+**Objective:** qualify one ordinary, monolithic, symmetric sagging T-beam
+member with supplied reinforcement, zero torsion and separate ULS/SLS
+actions, from actual geometry through strength, serviceability, detailing,
+bar paths, BBS, quantities and calculation JSON/HTML. Include a width-limited
+variant of that same profile and genuine FAIL/HOLD controls. Completion is
+the whole member and its installed consumer journey, not another section
+capacity example.
+
+**Initial candidate to freeze in E1:** M25/Fe415, 300 mm web, 550 mm overall
+depth, 150 mm flange thickness, 1000 mm physical flange width and nominal
+6000 mm analysis span; four Ø20 bottom bars and two Ø16 top bars, all beam
+longitudinal bars inside the web cage. These are proposed starting inputs,
+not a verified design. Cover, exact bar centres, ordinary web links/hooks,
+support faces and lengths, development, exposure, G/Q components, self-weight
+and loading/finish history must be resolved together before numerical
+targets freeze. Recompute every target for the actual six-bar arrangement;
+do not copy Packet B's different five-bar section values or D3's rectangular
+service values. Adjust the candidate with disclosed reasons before freeze
+if any required physical or service provision is infeasible.
+
+**Scope and ownership:** first support a supplied, prismatic, simply supported
+T member under concurrent static vertical actions and sagging bending.
+Retain separate obligations for stability/lateral restraint, flange
+participation, actual cage fit, anchorage, continuity, durability and SLS
+where applicable. Freeze the applicability evidence in E1. Nonzero torsion,
+hogging flange participation, L sections, seismic design, axial/biaxial
+interaction, arbitrary openings/layout search, splices/cutoffs, non-monolithic
+interfaces and whole-slab design are separate profiles. Such inputs receive
+an explicit unsupported/HOLD disposition; they cannot be silently projected
+onto the selected T case. Required local flange/interface reinforcement or
+load-transfer evidence must be supplied and checked, or implemented within
+this packet if necessary for the admitted case. Do not waive an essential
+T-member obligation by calling it future slab work.
+
+##### E1 — freeze the engineering profile, inputs and independent references
+
+Read the controlled IS 456 source and amendment set for effective flange
+width/participation, Annex G flexure, web shear, reinforcement and ordinary
+hooks/development, durability, effective span, lateral restraint and
+serviceability. Record source hashes, clauses/table rows, modeling assumptions,
+units, shared lineage, independent expected values and justified absolute
+tolerances before production changes. The existing
+[Packet B fixture](../verification/library-027-beam-section-closure.json)
+and its independent replay are regression evidence, not the new member's
+numerical answer. Pinned rcdesign comparisons may corroborate the shared
+section domain; acceptance also needs independent statics, geometry and
+service references.
+
+Freeze these distinctions in the public input/schema design:
+
+| Input/basis | Required meaning and binding |
+|---|---|
+| Physical concrete | `bw`, overall `D`, `Df`, actual left/right flange overhangs, actual T outline and section revision; monolithic participation evidence |
+| Effective compression width | Derived `bf_effective` and governing limit, separately from `bf_physical`; record the correct zero-moment distance `l0`/code basis, rather than copying an arbitrary span |
+| Spans/supports | Actual analysis span, code effective span, `l0` where different, both support centres/faces/widths and real available anchorage; no unexplained substitution |
+| Positioned steel | Actual IDs, diameters, faces/layers, global coordinates, web-cage association, starts/ends, grades and the reinforcement revision; distinguish beam bars from separately owned slab/flange steel |
+| Links/hooks | Web-only cage dimensions, active legs, pitch/zones, bend radii, ordinary hook angles/tangent tails and actual fabricated paths |
+| Actions | Distinct current ULS, total-service and sustained/permanent snapshots, concurrent row IDs/axes/units, load decomposition/factors, governing stations and load-history reference |
+| Service criteria | Exposure/harmful-cracking basis, actual T service-section stiffness/NA/steel and surface strains, time/history and applicable deflection conditions; missing basis stays HOLD |
+| Ownership | Member/profile/input identities, flange/slab concrete and reinforcement ownership, support-interface deduction policy and formwork measurement policy |
+
+Choose the service method before strength implementation starts: either a
+source-qualified T-specific span/depth screening basis with all applicable
+factors or a calculated T-section response with source-qualified creep and
+shrinkage. Freeze the chosen complete route and the flexural crack-control
+basis for the actual supplied bars. A supplied deflection/strain number or
+an unverified modification factor is not its own calculation evidence.
+Do not copy D3's rectangular `Icr`, neutral axis, shrinkage shortcut, timing
+or method revision into a T result.
+
+**E1 exit:** an explicit admitted-domain and requirement-to-owner matrix,
+the entire expected leaf/scoping set, independently frozen main and
+width-limited cases, and invalid/FAIL/HOLD targets. Derive the expected count
+from these obligations; do not copy 19, 27 or 31 from older examples. Resolve
+every essential source/model gap before treating this profile as admissible.
+
+##### E2 — bind actual T geometry, web cage and fabricated steel
+
+The current physical geometry, enclosure and path owners use rectangular
+bounds. Add a bounded T-outline/containment owner or verified composition
+that distinguishes the flange from the web. Use one global physical frame:
+x from the **left edge of the actual flange**, y from the **top of the flange**,
+and longitudinal station from the declared member origin. Store the web's
+offset explicitly. Translate to web-local coordinates only in a named,
+identity-bound projection consumed by an existing rectangular web-cage
+helper; preserve IDs and prove the projection's round trip. Flexure's current
+bar validation does not establish x containment, so a strength PASS cannot
+discharge this geometry leaf.
+
+Physical containment, cover and collision checks must use the actual T
+boundary, including flange soffits/shoulders. Web links stay around the web
+steel; never widen them to the effective/physical flange width merely to
+obtain an enclosure PASS. The first beam cage keeps its longitudinal bars
+in the web; this is not a claim that a six-bar cage constitutes all slab
+reinforcement. Account separately for any flange steel needed by the frozen
+participation basis. A bounding-box-only path result cannot qualify steel
+passing through the empty area beside the web below the flange.
+
+| Reuse owner | Reuse and confirmed addition/qualification |
+|---|---|
+| `beam.flexure.FlexuralCapacityRequest`, `flexural_capacity`, `check_flexure` | Existing sagging T compression branches; supply independently derived effective width and actual y coordinates. Add the physical x/material-containment evidence outside the strength result. |
+| `codes.is456.beam.flexure.calculate_effective_flange_width` and the existing flanged service facade | Reuse the width calculation/source basis without assuming the facade proves physical detailing or installed member admission. |
+| `beam.reinforcement.effective_depth` / `evaluate_geometry` | Reuse area/depth/spacing owners through the explicit web projection where valid; add full-T material/cover binding. |
+| `ReinforcementArrangementCheckRequest`, `LinkCage`, `check_reinforcement_arrangement` | Reuse rounded web-cage enclosure, spacing and collision checks; keep the actual T boundary separate. Do not require slab-owned bars to be enclosed by a fictitious flange-wide web link. |
+| `ClosedLinkDetailRequest`, `check_closed_link_detail`, `ordinary_link_anchorage_limits` | Reuse source hook limits and actual path mechanics. The current physical hook binding expects four longitudinal bars; qualify a shared all-required-bars binding for the proposed six-bar cage without weakening the D2 four-corner regression. |
+| `BarPathRequest`, `BarPathSeed`, `PathPoint`, `resolve_bar_paths` | Reuse 3D straight/bend/tail resolution and lengths; add T-material containment and web/global datum binding. A rectangular envelope alone is not a T fit check. |
+
+**E2 exit:** all steel has actual paths, correct cover/fit and one set of
+coordinates shared by section checks, cage, anchorage and outputs. Freeze
+controls for a bar/path in the empty shoulder region, a flange-width web
+cage, short hook/insufficient clearance and a mismatched geometry revision.
+These controls must fail or HOLD at the responsible owner, not disappear
+from the expected check set.
+
+##### E3 — compose the complete strength, service and detailing checks
+
+Bind the same section, topology and reinforcement revision to each source
+row/critical station. Reuse `check_flexure` for sagging T strength and
+`check_shear`/`ShearCapacityRequest` for the actual web width, effective depth
+and eligible continuing tension steel. Retain Packet B's within-flange,
+reduced/full-flange web branches and `FLEXURE.FLANGE_FORCE_GAP` unsupported
+control. They remain section regression evidence unless a variant also
+passes the whole physical/service profile; do not advertise full-member
+coverage for a section-only branch.
+
+Reuse `check_anchorage` with `AnchoragePath`/`DevelopmentLengthRequest` at
+the real support faces and actual path ends. Bottom sagging bars need the
+qualified tension-development criterion. Top bars need their actual
+supported stress/continuity basis or an explicitly conservative full-tension
+development check; no borrowed compression label or M/V relaxation without
+evidence. Reuse `check_laps_and_curtailment` for the selected continuous runs
+and station steel demands, with no splice/cutoff search added.
+
+Supply the independently qualified T service-state provider to the existing
+`check_deflection`, `check_crack_width` and limit owners. Its effective
+flange width, centroid, gross/cracked inertia, neutral axis, compression
+steel displacement and surface/bar strains must describe the same section
+and service loads. Verify the case with the neutral axis on either side
+of the flange boundary if those states are admitted; unsupported states
+retain HOLD. Distinguish instantaneous, sustained, creep, shrinkage and
+after-finishes effects according to the selected route. A rectangular SLS
+PASS or zero-torsion result cannot substitute for the T-specific evidence.
+
+Compose the full `BeamDesignProfile`, `DesignCheckRule`, scoped
+`MemberLeafEvidence`, depth iteration and `MemberDesignRequest`. All required
+leaves must be present before member qualification; applicable geometry,
+flange participation, stability, durability and SLS evidence cannot be
+removed to obtain a smaller green profile. Preserve ordinary non-seismic
+non-applicability explicitly. Freeze public typed inputs/outputs, semantic
+method revisions, source references and strict JSON schemas at their
+maintained owners; a new HTTP/native interface is not implied by this packet.
+
+**E3 exit:** complete main and width-limited member results, plus a
+strength/service/detail failure and a missing-evidence HOLD. Each result
+has an independently inspectable reason and the actual required/provided
+reinforcement. No generic 'section safe = member complete' shortcut.
+
+##### E4 — reconcile construction outputs and the consumer example
+
+Reuse `create_bbs`, `calculate_construction_quantities` and
+`create_calculation_package` with their current result/payload identities.
+Show the actual T outline and positioned web cage in the guide/report's
+section view; distinguish physical width, effective width and web width.
+Reconcile every bar/mark/count, developed straight/bend/hook length, scheduled
+steel mass and physical path ID across BBS, JSON and HTML.
+
+Concrete uses a non-overlapping physical T union, such as flange plus web
+below the flange. **Effective compression width is not a quantity width.**
+Give the flange/slab and support interfaces one ownership/deduction policy;
+do not count the flange twice as beam and slab. Formwork distinguishes web
+soffit/sides and flange soffits/edges under a named policy; internal web/flange
+interfaces are not exposed formwork. Any separately owned slab steel must
+remain labeled and excluded from beam quantities unless supplied in the
+admitted ownership scope.
+
+Deliver a standalone public-API example and a beginner guide with complete
+inputs, units, schemas, assumptions, supported/unsupported cases and copied
+commands that work in a base installation. JSON/HTML must expose all required
+leaves, governing values, method/source identities and limitations. All
+adequate leaves may produce `issue_ready` with approval still unreviewed;
+FAIL/HOLD cases retain their actual inputs/paths and draft construction
+outputs. Unsupported geometry must not gain apparently valid quantities or
+an issue-ready report from its rectangular bounding box.
+
+**E4 exit:** one deterministic verifier proves the complete output agreement
+for both positive variants and the negative/held cases; rendering transports
+the decision and does not grant engineering approval.
+
+##### E5 — qualify the final candidate and hand Goal 5 a closed packet
+
+Planned artifacts (names to confirm during E1, not files created by this plan):
+
+- Independent fixture and standard-library replay:
+  `docs/verification/library-027-t-beam-member.json` and a matching checker.
+- Public example/guide: `Python/examples/t_beam_member.py` and
+  `docs/cookbook/python/t-beam-member.md`.
+- Focused behavior/artifact tests, for example
+  `Python/tests/integration/test_t_beam_member.py`, plus affected owner tests.
+- Maintained public schemas/registries where the new contracts require them,
+  and the canonical plan/handoff with exact completion evidence.
+
+| Verification case | Required observation |
+|---|---|
+| Adequate main member | Every required leaf qualifies; actual paths/BBS/quantities/JSON/HTML agree; approval remains separate |
+| Effective-width-limited variant | Compression uses the independently derived effective width while containment, self-weight, outline and quantities retain actual physical width |
+| Web shear trap | A case that would pass if `bf` replaced `bw` fails correctly with the web width |
+| Physical/anchorage failure | Material containment, cage/hooks or actual available development fails without losing the offending bars/inputs |
+| Insufficient strength or SLS | The responsible check fails and the full member cannot issue; choose a service-only failure as well if the admitted route allows one |
+| Missing/stale/conflicting basis | Missing flange/support/service evidence, depth conflict or stale geometry/action/detail identity cannot qualify the member |
+| Unsupported profile | Nonzero torsion, hogging/L/non-monolithic or otherwise unadmitted input gets a precise unsupported/HOLD result |
+| Existing regressions | Packet B section branches and force gap, ordinary 19/27-leaf workflows, D2-only HOLD and D3's documented 31-leaf PASS/FAIL/HOLD behavior remain intact |
+| Installed external use | A fresh neutral base-only wheel install runs the copied example/guide, API/schema/strict-JSON round trips and positive/negative artifact verifier from site-packages |
+
+Use one implementation writer, sequential cohesive units and bounded
+independent source/output review. Run only a necessary narrow reproducer
+while developing. After content freezes, batch the affected formatter/linter,
+type/architecture/import checks, independent references and the union of
+affected tests; use the essential changed-area checks and one final required
+hosted PR cycle. Broad suites need a concrete impact/release reason, not
+one run for each unit. Do not bypass required checks.
+
+Packet E closes only after its source/reference and full-member evidence,
+installed replay, output review, required checks and exact candidate/merge
+tree identity are observed and the plan/tracker handoff is read back. Keep
+the development-wheel identity and its limited version metadata distinct
+from a published 0.27 artifact. Goal 5 then freezes and qualifies **both**
+the exact versioned wheel and sdist, including E's journeys and the accepted
+D3 controls, before the separate version-specific release authorization.
+
 ### Goal 5 qualify and release 0.27.0
 
 1. Prepare one versioned 0.27.0 candidate from the merged Goals 1–4 and

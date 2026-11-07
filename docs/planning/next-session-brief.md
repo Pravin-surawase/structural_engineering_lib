@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: Packet E ordinary sagging T-beam physical member. Goal 5 still waits for E and exact versioned-archive qualification.
+- Focus: Packet E is planned in five implementation units; start E1 by freezing the physical T profile, service basis and independent references. Planning only so far; Goal 5 waits for implemented and qualified E.
 - Completed: Goals 1–4 and closure Packets A–C; D1/D2 physical torsion plus the selected D3 transient service case. All 31 obligations qualify for that documented model; missing/unsupported service histories remain HOLD and engineering approval remains separate.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
@@ -56,6 +56,15 @@ Complete E before
 [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) prepares
 the versioned candidate.
 [Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)
+
+The [detailed Packet E plan](library-usability-improvement.md#packet-e-implementation-plan--ordinary-sagging-t-beam-member)
+orders E1 profile/references, E2 actual T containment and web cage, E3 full
+member/SLS/detail checks, E4 matching outputs and E5 installed qualification.
+Keep physical/effective flange widths and web width distinct. The current
+physical geometry/path envelopes are rectangular and the ordinary hook
+binding expects four longitudinal bars; the proposed six-bar T cage requires
+explicit qualification. No Packet E calculation code or frozen numerical
+member reference has been delivered by the planning update.
 
 ## Historical S6 handoff — 29 October 2026
 
