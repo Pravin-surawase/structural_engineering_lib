@@ -1,0 +1,305 @@
+{
+  "schema_version": "library-027-t-beam-member-reference/v1",
+  "frozen_before_production_changes": true,
+  "frozen_base_commit": "dfb40c8e14c1f4f5e7f2ee4c4a517b1fa670f721",
+  "source_basis": {
+    "is456_a5_sha256": "964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+    "is456_a6_sha256": "4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881",
+    "reviewed_pdf_pages_one_based": [
+      36,
+      37,
+      38,
+      39,
+      40,
+      47,
+      48,
+      68,
+      89,
+      90,
+      96,
+      97,
+      119
+    ],
+    "clauses": [
+      "22.2",
+      "22.6",
+      "23.1.1",
+      "23.1.2",
+      "23.2.1",
+      "23.3",
+      "26.2",
+      "26.3.3",
+      "26.4",
+      "26.5.1",
+      "26.5.2.1",
+      "35.3.2",
+      "38.1",
+      "40",
+      "Annex F",
+      "Annex G"
+    ],
+    "amendment_6": "No change to selected 23.1/23.2/23.3/F/G/26.5 provisions; uncoated deformed bars declared, so epoxy bond reduction is inapplicable. Mild OPC mix checked independently.",
+    "service_route": "IS456 23.2.1 complete flanged span/depth screen plus actual-T fully cracked elastic Annex F soffit crack envelope; not calculated Annex C deflection.",
+    "figure_4_lower_bound": {
+      "factor": 1.0,
+      "maximum_service_steel_stress_nmm2": 145.0,
+      "maximum_tension_percentage_on_effective_flange": 0.4,
+      "source": "PDF39/printed38 Fig4; no enhancement credit, normalized conservative envelope below the plotted curves"
+    },
+    "figure_5_lower_bound": {
+      "factor": 1.0,
+      "source": "PDF40/printed39 Fig5; no compression enhancement credit"
+    },
+    "figure_6": {
+      "factor": 0.8,
+      "web_to_effective_flange_width_ratio_range": [
+        0.0,
+        0.3
+      ],
+      "source": "PDF40/printed39 Fig6 horizontal branch, independently visually reviewed",
+      "graphical_read_tolerance": 0.005
+    },
+    "independence": "Stdlib-only statics, exact piecewise T integrals and force bisection; shared normalized IS constitutive equations and Table19 data disclosed. Service values independently cross-checked by a second reader using numerical quadrature. No structural_lib import.",
+    "flange_provision": "Monolithic cast, slab main bars perpendicular to beam; conditional Fig3 parallel-main provision not applicable. Separately owned actual two-span transverse strip has its own two-face strength, minima/spacing, paths, anchorage and load-lineage proof; it is not silently assumed or included in web BBS."
+  },
+  "inputs": {
+    "web_width_mm": 300,
+    "overall_depth_mm": 550,
+    "flange_depth_mm": 150,
+    "analysis_span_mm": 6000,
+    "code_effective_span_mm": 5500,
+    "zero_moment_distance_mm": 6000,
+    "support_centres_mm": [
+      0,
+      6000
+    ],
+    "support_faces_mm": [
+      [
+        -500,
+        500
+      ],
+      [
+        5500,
+        6500
+      ]
+    ],
+    "beam_bar_ends_mm": [
+      -450,
+      6450
+    ],
+    "physical_member_limits_mm": [
+      -500,
+      6500
+    ],
+    "concrete_grade_nmm2": 25,
+    "steel_grade_nmm2": 415,
+    "steel_surface": "uncoated_deformed",
+    "concrete_modulus_nmm2": 25000,
+    "steel_modulus_nmm2": 200000,
+    "bottom_bars": {
+      "count": 4,
+      "diameter_mm": 20,
+      "web_local_x_mm": [
+        50,
+        116.66666666666667,
+        183.33333333333334,
+        250
+      ],
+      "y_from_flange_top_mm": 500
+    },
+    "top_bars": {
+      "count": 2,
+      "diameter_mm": 16,
+      "web_local_x_mm": [
+        50,
+        250
+      ],
+      "y_from_flange_top_mm": 50
+    },
+    "nominal_cover_mm": 25,
+    "maximum_aggregate_mm": 20,
+    "link_diameter_mm": 8,
+    "link_pitch_mm": 150,
+    "link_count": 40,
+    "link_stations_mm": [
+      75,
+      5925
+    ],
+    "web_link_centres_mm": [
+      29,
+      271,
+      29,
+      521
+    ],
+    "internal_link_radius_mm": 16,
+    "actual_hook_tail_mm": 80,
+    "hook_plane_offset_mm": 10,
+    "self_weight_kn_per_m3": 25,
+    "superimposed_permanent_load_n_per_mm": 2,
+    "imposed_load_n_per_mm": 3,
+    "uls_factors": {
+      "G": 1.5,
+      "Q": 1.5
+    },
+    "exposure": "mild",
+    "cracking_harmful": false,
+    "cement_type": "ordinary_portland",
+    "cement_kg_per_m3": 320,
+    "water_cement_ratio": 0.5,
+    "lateral_restraint_stations_mm": [
+      0,
+      6000
+    ],
+    "slab_main_direction": "perpendicular_to_beam",
+    "monolithic_cast": true,
+    "flange_strip": {
+      "ownership": "separately_owned_slab_strip_excluded_from_beam_steel_BBS",
+      "slab_thickness_mm": 150,
+      "strip_width_mm": 600,
+      "transverse_main_diameter_mm": 10,
+      "transverse_main_spacing_mm": 150,
+      "transverse_main_depths_mm": [
+        35,
+        115
+      ],
+      "distribution_diameter_mm": 8,
+      "distribution_spacing_mm": 200,
+      "two_face_moment_envelope": "1.5*(slab_self_weight+superimposed_area_load+imposed_area_load)*adjacent_beam_centre_spacing^2/8; verify against two-span continuous analysis",
+      "span_basis": "two actual transverse spans between three parallel webs; main strip bars continue across the central web into both panels with full tension development"
+    },
+    "quantity_policy": "T member owns full 7000mm flange-plus-web-below union; supporting-system assembly must exclude that owned union. Slab steel is separately owned. Only clear-span web/flange soffits and web sides are exposed formwork; slab continuation and bearing interfaces are excluded."
+  },
+  "expected_member_rules": [
+    "geometry",
+    "depth",
+    "flexure",
+    "shear",
+    "torsion",
+    "deflection",
+    "crack",
+    "continuity",
+    "arrangement",
+    "paths",
+    "hooks",
+    "durability",
+    "t_geometry",
+    "flange_participation",
+    "stability",
+    "action_basis",
+    "t_serviceability",
+    "seismic"
+  ],
+  "expected_bar_end_ids": [
+    "B1-left",
+    "B1-right",
+    "B2-left",
+    "B2-right",
+    "B3-left",
+    "B3-right",
+    "B4-left",
+    "B4-right",
+    "T1-left",
+    "T1-right",
+    "T2-left",
+    "T2-right"
+  ],
+  "expected_member_obligation_count": 30,
+  "expected_beam_path_count": 46,
+  "cases": {
+    "main": {
+      "adjacent_clear_distances_mm": [
+        700,
+        700
+      ],
+      "expected": {
+        "physical_width_mm": 1000,
+        "effective_width_mm": 1000,
+        "physical_area_mm2": 270000.0,
+        "self_weight_n_per_mm": 6.75,
+        "permanent_load_n_per_mm": 8.75,
+        "service_load_n_per_mm": 11.75,
+        "ultimate_load_n_per_mm": 17.625,
+        "service_moment_knm": 52.875,
+        "ultimate_moment_knm": 79.3125,
+        "ultimate_shear_kn": 52.875,
+        "service_neutral_axis_mm": 89.60236233267642,
+        "cracked_inertia_mm4": 1937413084.3208368,
+        "service_bottom_steel_stress_nmm2": 89.603090914467,
+        "elastic_bottom_surface_strain": 0.0005025985483151291,
+        "maximum_crack_width_mm": 0.08398342066721658,
+        "ultimate_neutral_axis_mm": 50.24365547067326,
+        "flexural_capacity_knm": 217.13425028129026,
+        "tension_area_mm2": 1256.6370614359173,
+        "compression_face_area_mm2": 402.1238596594935,
+        "tension_percentage_effective_flange": 0.25132741228718347,
+        "compression_percentage_effective_flange": 0.0804247719318987,
+        "table19_tau_c_nmm2": 0.5945722514680378,
+        "provided_shear_capacity_kn": 210.17485399525577,
+        "development_20_mm": 805.9151785714287,
+        "development_16_mm": 644.7321428571429,
+        "link_path_length_mm": 1625.2861561259072,
+        "beam_scheduled_steel_mass_kg": 115.49926422061823,
+        "owned_concrete_volume_m3": 1.89,
+        "exposed_formwork_area_m2": 9.0,
+        "actual_span_depth_ratio": 11.0,
+        "conservative_allowable_span_depth_ratio": 16.0
+      }
+    },
+    "width_limited": {
+      "adjacent_clear_distances_mm": [
+        2200,
+        2200
+      ],
+      "expected": {
+        "physical_width_mm": 2500,
+        "effective_width_mm": 2200.0,
+        "physical_area_mm2": 495000.0,
+        "self_weight_n_per_mm": 12.375,
+        "permanent_load_n_per_mm": 14.375,
+        "service_load_n_per_mm": 17.375,
+        "ultimate_load_n_per_mm": 26.0625,
+        "service_moment_knm": 78.1875,
+        "ultimate_moment_knm": 117.28125,
+        "ultimate_shear_kn": 78.1875,
+        "service_neutral_axis_mm": 62.938638865001536,
+        "cracked_inertia_mm4": 2103672726.4421828,
+        "service_bottom_steel_stress_nmm2": 129.95456848095196,
+        "elastic_bottom_surface_strain": 0.0007241071236047008,
+        "maximum_crack_width_mm": 0.1215463851448371,
+        "ultimate_neutral_axis_mm": 29.830122600674322,
+        "flexural_capacity_knm": 226.1988749143541,
+        "tension_area_mm2": 1256.6370614359173,
+        "compression_face_area_mm2": 402.1238596594935,
+        "tension_percentage_effective_flange": 0.11423973285781067,
+        "compression_percentage_effective_flange": 0.03655671451449941,
+        "table19_tau_c_nmm2": 0.5945722514680378,
+        "provided_shear_capacity_kn": 210.17485399525577,
+        "development_20_mm": 805.9151785714287,
+        "development_16_mm": 644.7321428571429,
+        "link_path_length_mm": 1625.2861561259072,
+        "beam_scheduled_steel_mass_kg": 115.49926422061823,
+        "owned_concrete_volume_m3": 3.465,
+        "exposed_formwork_area_m2": 16.5,
+        "actual_span_depth_ratio": 11.0,
+        "conservative_allowable_span_depth_ratio": 16.0
+      }
+    }
+  },
+  "absolute_tolerances": {
+    "length_mm": 1e-08,
+    "capacity_kn_or_knm": 1e-08,
+    "inertia_mm4": 0.001,
+    "strain": 1e-12,
+    "mass_kg": 1e-08,
+    "area_or_volume": 1e-08
+  },
+  "controls": {
+    "insufficient_strength": "FAIL/draft",
+    "physical_shoulder_or_cage_or_hook_or_anchorage": "FAIL/draft",
+    "web_shear_width_trap": "FAIL/draft",
+    "missing_or_stale_support_flange_service_action_identity": "HOLD/draft",
+    "conflicting_depth": "FAIL/draft",
+    "nonzero_torsion_hogging_L_nonmonolithic": "unsupported/HOLD/draft"
+  },
+  "boundary": "Selected ordinary supplied symmetric sagging monolithic T member only. Engineering approval remains separate; no whole-floor, arbitrary-layout, sustained-torsion or 0.27 publication claim."
+}
