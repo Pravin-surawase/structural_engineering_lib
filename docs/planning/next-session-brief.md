@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: Verify the D3 serviceability basis after D2 physical/ULS closure. Keep full torsion-member admission HOLD; Packet E and Goal 5 remain pending.
-- Completed: Goals 1–4 and closure Packets A–C merged. D1 corrects corner geometry; D2 adds signed support/crosshead transfer, actual cage/path hooks, full tension anchorage, continuity, durability and draft outputs. Full Packet D remains open through D3.
+- Focus: Packet E ordinary sagging T-beam physical member. Goal 5 still waits for E and exact versioned-archive qualification.
+- Completed: Goals 1–4 and closure Packets A–C; D1/D2 physical torsion plus the selected D3 transient service case. All 31 obligations qualify for that documented model; missing/unsupported service histories remain HOLD and engineering approval remains separate.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
@@ -45,9 +45,14 @@ missing-tie controls. Packet D1 corrects the torsion station basis. The
 physical load path, both-face direct tension anchorage, cage/hooks and draft
 outputs. Its receiver boundary is section flexure/shear; bearing/contact,
 receiver connections and foundations remain with the supporting-system owner.
-D3 serviceability remains HOLD until its basis is independently verified.
-Full torsion member admission remains HOLD.
-Complete D and E before
+D3 now adds its independently frozen transient service basis: permanent
+G5 concentric, imposed Q3 at400/3mm, immediate after-finishes assessment,
+supplementary cracked torsional stiffness, code edge-deflection limits and
+indirect service stress/detail crack control. The full31-leaf case produces
+issue_ready outputs; the original D2-only command remains HOLD. Nonzero
+permanent torque, finite imposed duration and missing/asymmetric boundary
+evidence remain HOLD. Follow the guide's actual source and model boundaries.
+Complete E before
 [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) prepares
 the versioned candidate.
 [Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)

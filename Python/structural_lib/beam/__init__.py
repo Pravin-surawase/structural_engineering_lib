@@ -166,6 +166,12 @@ from .shear_torsion import (
     check_torsion,
     shear_capacity,
 )
+from .torsional_serviceability import (
+    TORSIONAL_SERVICEABILITY_REVISION,
+    TorsionalServiceabilityRequest,
+    TorsionServiceHistory,
+    check_torsional_serviceability,
+)
 
 __all__ = [
     "BearingReactionLine",
@@ -282,6 +288,9 @@ __all__ = [
     "StressState",
     "StructuralUnitBasis",
     "TorsionCheckRequest",
+    "TorsionalServiceabilityRequest",
+    "TorsionServiceHistory",
+    "TORSIONAL_SERVICEABILITY_REVISION",
     "TransverseLink",
     "SupportCondition",
     "Vector3",
@@ -295,6 +304,7 @@ __all__ = [
     "check_seismic_detailing",
     "check_shear",
     "check_torsion",
+    "check_torsional_serviceability",
     "create_beam_project",
     "design_member",
     "effective_depth",

@@ -1,7 +1,8 @@
-"""Run the frozen D2 physical torsion member; D3 serviceability stays HOLD.
+"""Run the frozen physical torsion member, optionally including D3 serviceability.
 
 Standalone base-install example. Run with --output-dir to write bound draft
-JSON, BBS CSV and HTML. Receiver checks stop at crosshead section strength.
+JSON, BBS CSV and HTML. --with-serviceability selects the verified transient
+service history. Receiver checks stop at crosshead section strength.
 """
 
 from __future__ import annotations
@@ -10,7 +11,7 @@ import argparse
 import csv
 import html
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from structural_lib import beam as b
@@ -110,6 +111,19 @@ class Workflow:
     package_request: r.CalculationPackageRequest
     d2_status: str
 
+    @property
+    def d3_status(self) -> str:
+        member = self.results["member"].output_as("member_design", b.MemberDesignOutput)
+        checks = [
+            q for q in member.leaf_qualifications if q.expectation.rule_id in SLS_NAMES
+        ]
+        if any(
+            q.evidence and q.evidence.engineering is b.EngineeringState.FAIL
+            for q in checks
+        ):
+            return "FAIL"
+        return "PASS" if all(q.qualified for q in checks) else "HOLD"
+
 
 def run_workflow(
     *,
@@ -121,9 +135,25 @@ def run_workflow(
     omit_checks: tuple[str, ...] = (),
     reverse_right_couple: bool = False,
     receiver_bar_diameter_mm: float = 20,
+    include_serviceability: bool = False,
+    omit_service_history: bool = False,
+    permanent_eccentricity_mm: float = 0,
 ) -> Workflow:
     """Frozen demonstration plus explicit failure controls; not a general solver."""
     results: dict[str, b.OperationResult] = {}
+    rules = tuple(
+        (
+            name,
+            op,
+            (
+                b.TORSIONAL_SERVICEABILITY_REVISION
+                if include_serviceability and name == "torsional_sls"
+                else rev
+            ),
+            scope,
+        )
+        for name, op, rev, scope in RULES
+    )
     axes = b.LocalAxes(
         "B1-axes", b.Vector3(1, 0, 0), b.Vector3(0, 1, 0), b.Vector3(0, 0, 1)
     )
@@ -390,11 +420,19 @@ def run_workflow(
     )
     project_result = b.create_beam_project(
         b.BeamProjectRequest(
-            b.BeamProjectDefinition(PROFILE, "D2 physical torsion beam", "r1"),
+            b.BeamProjectDefinition(
+                PROFILE,
+                (
+                    "Physical torsion beam with D3 service basis"
+                    if include_serviceability
+                    else "D2 physical torsion beam"
+                ),
+                "r1",
+            ),
             b.StructuralUnitBasis("mm", "N", "Nmm", "N/mm2"),
             tuple(
                 b.RevisionBinding(name, revision, SOURCE)
-                for name, _, revision, _ in RULES
+                for name, _, revision, _ in rules
                 if revision
             ),
             b.BeamDesignProfile(
@@ -415,7 +453,7 @@ def run_workflow(
                         SOURCE,
                         name if rev else None,
                     )
-                    for name, op, rev, scope in RULES
+                    for name, op, rev, scope in rules
                 ),
                 (b.DesignCriterion("cover", 25, "mm", SOURCE),),
             ),
@@ -501,11 +539,10 @@ def run_workflow(
     results["paths"] = b.resolve_bar_paths(path_request)
     if "reinforcement_schedule" not in results["paths"].outputs:
         raise ValueError(results["paths"].diagnostics)
-    results["hooks"] = b.check_closed_link_detail(
-        b.ClosedLinkDetailRequest(
-            path_request, cage, link, arrangement_request, 0, 5000
-        )
+    hook_request = b.ClosedLinkDetailRequest(
+        path_request, cage, link, arrangement_request, 0, 5000
     )
+    results["hooks"] = b.check_closed_link_detail(hook_request)
     supports = []
     reaction = load_n_per_mm * 2500 / 1000
     torque = load_n_per_mm * torsion_eccentricity_mm * 2500 / 1e6
@@ -581,24 +618,107 @@ def run_workflow(
                 load_path_reference="Two named vertical bearing lines into a transverse RC crosshead; receiver end supports are the supporting-system boundary.",
             )
         )
-    results["support_transfer"] = b.check_torsion_support_transfer(
-        b.TorsionSupportTransferRequest(
-            profile_id=PROFILE,
-            member_id=MEMBER,
-            reinforcement_revision_id=DETAIL,
-            action_snapshot=results["actions"],
-            primary_topology=topology,
-            primary_section=section,
-            primary_paths=path_request,
-            applied_vertical_load_kn=load_n_per_mm * 5,
-            applied_torque_knm=2 * torque,
-            supports=tuple(supports),
-        )
+    transfer_request = b.TorsionSupportTransferRequest(
+        profile_id=PROFILE,
+        member_id=MEMBER,
+        reinforcement_revision_id=DETAIL,
+        action_snapshot=results["actions"],
+        primary_topology=topology,
+        primary_section=section,
+        primary_paths=path_request,
+        applied_vertical_load_kn=load_n_per_mm * 5,
+        applied_torque_knm=2 * torque,
+        supports=tuple(supports),
     )
+    results["support_transfer"] = b.check_torsion_support_transfer(transfer_request)
+    if include_serviceability:
+        # Explicit demonstration components, not an inferred service factor:
+        # G=3 self-weight+2 superimposed concentric; Q=3 transient at400/3.
+        # The overload control scales both declared components consistently.
+        scale = load_n_per_mm / 12
+        history = b.TorsionServiceHistory(
+            5 * scale,
+            permanent_eccentricity_mm,
+            3 * scale,
+            torsion_eccentricity_mm * 8 / 3,
+            1.5,
+            28,
+            56,
+            3650,
+            3650,
+            3650,
+            50,
+            True,
+            True,
+            False,
+            "identical_pinned_receivers_zero_settlement",
+            "LIB-027-D3 frozen demonstration: G at28d, Q transient after finishes; identical receiving beam models with pinned zero-settlement ends; same physical edge support chord; not project facts.",
+        )
+        for case, w, qt in (
+            (
+                "SLS",
+                8 * scale,
+                3 * scale * history.imposed_eccentricity_mm
+                + 5 * scale * permanent_eccentricity_mm,
+            ),
+            ("PERMANENT", 5 * scale, 5 * scale * permanent_eccentricity_mm),
+        ):
+            service_analysis = replace(
+                analysis,
+                model_id=f"B1-{case}",
+                load_case_id=case,
+                elements=(replace(analysis.elements[0], uniform_load_n_per_mm=-w),),
+            )
+            solved_service = b.solve_beam_line(service_analysis)
+            results[f"analysis-{case}"] = solved_service
+            results[f"actions-{case}"] = b.normalize_action_snapshot(
+                b.RawActionSnapshot(
+                    f"D3-{case}-declared-components",
+                    service_analysis.model_id,
+                    solved_service.calculation_id,
+                    solved_service.result_id,
+                    b.ForceUnit.N,
+                    b.MomentUnit.N_MM,
+                    b.LengthUnit.MM,
+                    (axes,),
+                    tuple(
+                        replace(
+                            row,
+                            source_row_id=f"{case}-{row.object_station}",
+                            load_case_id=case,
+                            v2=w * (2500 - row.object_station),
+                            m3=w * row.object_station * (5000 - row.object_station) / 2,
+                            t=qt * (2500 - row.object_station),
+                        )
+                        for row in raw
+                    ),
+                )
+            )
+        results["torsional_sls"] = b.check_torsional_serviceability(
+            b.TorsionalServiceabilityRequest(
+                PROFILE,
+                MEMBER,
+                DETAIL,
+                transfer_request,
+                hook_request,
+                results["actions-SLS"],
+                results["actions-PERMANENT"],
+                None if omit_service_history else history,
+                150,
+            )
+        )
+        for leaf, payload in (
+            ("deflection", "deflection"),
+            ("crack", "flexural_crack"),
+        ):
+            if payload in results["torsional_sls"].outputs:
+                results[leaf] = results["torsional_sls"].output_as(
+                    payload, b.OperationResult
+                )
     leaf_map = {
         f"{name}@{MEMBER}": name
-        for name, _, _, scope in RULES
-        if scope is b.CheckScope.MEMBER and name not in SLS_NAMES
+        for name, _, _, scope in rules
+        if scope is b.CheckScope.MEMBER and name in results
     }
     leaf_map.update({f"torsion@S-{x}": f"torsion-{x}" for x in STATIONS})
     leaf_map.update(
@@ -713,14 +833,23 @@ def run_workflow(
     )
     notes = (
         SOURCE,
-        "D2 physical/ULS checks only. D3 serviceability remains HOLD; all artifacts are draft.",
+        (
+            "D3 selected transient-torsion service basis; full member qualification depends on every required leaf. Engineering approval remains separate."
+            if include_serviceability
+            else "D2 physical/ULS checks only. D3 serviceability remains HOLD; all artifacts are draft."
+        ),
         "Receiver section flexure/shear checked from actual bearing forces; receiver support/contact/foundation design is outside this beam packet.",
         "Primary concrete prism quantity only; support union/overlap measurement and receiver steel are excluded.",
+        "D3 defaults: G5 concentric plus Q3 at400/3mm reconstruct ULS12 at50mm. Actual controlled load values, time and boundary assumptions remain inspectable inputs.",
     )
     package_request = r.CalculationPackageRequest(
         r.CalculationPackageMetadata(
             PROFILE,
-            "D2 physical torsion beam",
+            (
+                "Physical torsion beam with D3 service basis"
+                if include_serviceability
+                else "D2 physical torsion beam"
+            ),
             "r1",
             MEMBER,
             "r1",
@@ -731,7 +860,7 @@ def run_workflow(
         r.CalculationPackageProfile(
             PROFILE,
             "r1",
-            "d2-with-d3-hold",
+            "d3-transient-service" if include_serviceability else "d2-with-d3-hold",
             tuple(q.expectation.leaf_id for q in member.leaf_qualifications),
             (
                 "inputs",
@@ -805,7 +934,7 @@ def write_artifacts(workflow: Workflow, directory: Path) -> None:
     package = workflow.results["package"].outputs["calculation_package"]
     payload = {
         "d2_status": workflow.d2_status,
-        "d3_status": "HOLD",
+        "d3_status": workflow.d3_status,
         "results": {
             name: result.to_dict() for name, result in workflow.results.items()
         },
@@ -840,6 +969,11 @@ def write_artifacts(workflow: Workflow, directory: Path) -> None:
                 )
             )
     member = workflow.results["member"].output_as("member_design", b.MemberDesignOutput)
+    member_status = (
+        "PASS"
+        if member.qualified
+        else "FAIL" if workflow.results["member"].engineering == "fail" else "HOLD"
+    )
     checks = "".join(
         f"<tr><td>{html.escape(q.expectation.leaf_id)}</td><td>{'QUALIFIED' if q.qualified else ' / '.join(q.reason_codes)}</td></tr>"
         for q in member.leaf_qualifications
@@ -853,15 +987,38 @@ def write_artifacts(workflow: Workflow, directory: Path) -> None:
         f"<tr><td>{html.escape(check['support_id'])}</td><td>{check['force_kn']:.6f}</td><td>{check['external_torque_knm']:.6f}</td><td>{check['receiver_moment_knm']:.6f}</td><td>{check['receiver_shear_kn']:.6f}</td></tr>"
         for check in transfer
     )
+    service = workflow.results.get("torsional_sls")
+    quantities = workflow.results["quantities"].outputs["quantities"]
+    service_summary = ""
+    if service and "deflection" in service.outputs:
+        deflection = service.outputs["deflection"]["outputs"]
+        crack = service.outputs["flexural_crack"]["outputs"]
+        history = service.effective_inputs["request"]["value"]["history"]
+        wsm = service.outputs["wsm_rows"]
+        service_summary = f"""<h2>Selected D3 service basis</h2>
+<p>Declared demonstration: permanent G={history['permanent_load_n_per_mm']:.9g} N/mm at {history['permanent_eccentricity_mm']:.9g} mm, imposed Q={history['imposed_load_n_per_mm']:.9g} N/mm at {history['imposed_eccentricity_mm']:.9g} mm.
+Q application and immediate assessment age: {history['imposed_application_age_days']:.9g} days; finishes: {history['finish_installation_age_days']:.9g} days. Sustained torque is zero.
+Deformation is relative to the same physical edge support chord; receiving beam ends are modeled pinned with zero settlement.</p>
+<table><thead><tr><th>Service result</th><th>Value</th><th>Limit</th></tr></thead><tbody>
+<tr><td>Final total edge deflection (mm)</td><td>{deflection['total_final_deflection_mm']:.9f}</td><td>{deflection['total_limit_mm']:.9f}</td></tr>
+<tr><td>After-finishes edge deflection bound (mm)</td><td>{deflection['after_finishes_deflection_mm']:.9f}</td><td>{deflection['after_finishes_limit_mm']:.9f}</td></tr>
+<tr><td>Flexural crack-width upper bound (mm)</td><td>{crack.get('calculated_crack_width_mm', 'outside profile')}</td><td>{crack.get('limit_mm', '')}</td></tr>
+<tr><td>Relative midspan twist (rad)</td><td>{service.outputs['midspan_relative_twist_rad']:.12f}</td><td>Assessed through physical edge displacement</td></tr></tbody></table>
+<p>Maximum Annex-B concrete compression: {max(row['compression_stress_nmm2'] for row in wsm):.9f} N/mm², limit 8.5 N/mm².
+Maximum primary steel stress: {max(row['primary_tension_stress_nmm2'] for row in wsm):.9f} N/mm², limit 230 N/mm².</p>
+<p>Torsional cracking: indirect Annex-B service stress/detail compliance; no torsional crack width is calculated.
+Cracked torsional stiffness uses the separately identified Bruun/Lampert research model. Sustained torsion and unknown/asymmetric support boundaries require further evidence.</p>"""
     document = f"""<!doctype html><html lang="en"><meta charset="utf-8"><title>D2 physical torsion beam</title>
 <style>body{{font:16px system-ui;max-width:1100px;margin:32px auto}}td,th{{padding:6px;border-bottom:1px solid #ddd}}pre{{white-space:pre-wrap;overflow-wrap:anywhere}}</style>
-<h1>D2 {workflow.d2_status} — {html.escape(package['issue_state'].upper())}</h1><p>D3 serviceability: HOLD. Full-member acceptance: HOLD.</p>
+<h1>D2 {workflow.d2_status} — {html.escape(package['issue_state'].upper())}</h1><p>D3 serviceability: {workflow.d3_status}. Full-member qualification: {member_status}; engineering approval remains separate.</p>
 <p>300 × 400 mm; 5000 mm support centres, 4000 mm clear; four Ø20 continuous bars and Ø8/100 closed links.
 Two-sided full-stress tension anchorage is checked at both support faces. Actual actions and transfer checks appear below.</p>
 <table><thead><tr><th>Required check</th><th>Qualification</th></tr></thead><tbody>{checks}</tbody></table>
+{service_summary}
 <h2>Support transfer</h2><table><thead><tr><th>Support</th><th>Vertical reaction (kN)</th><th>External torque (kNm)</th><th>Receiver moment (kNm)</th><th>Receiver shear (kN)</th></tr></thead><tbody>{support_rows}</tbody></table>
 <h2>Checked physical paths</h2><table><thead><tr><th>Bar</th><th>Diameter (mm)</th><th>Centreline length (mm)</th></tr></thead><tbody>{physical_rows}</tbody></table>
 <p>Physical paths: {len(schedule.paths)}. Receiver section strength is included; support/contact/foundation design remains with its supporting-system owner.</p>
+<p>Scheduled primary steel: {quantities['steel_scheduled_mass_kg']:.9f} kg; primary concrete prism: {quantities['concrete_volume_m3']:.6f} m³; formwork under the named measurement policy: {quantities['formwork_area_m2']:.6f} m². Receiver steel and support overlap measurement are excluded.</p>
 <p><a href="calculation.json">Calculations and inputs</a> · <a href="bbs.csv">Physical BBS</a></p>
 <pre>Package: {html.escape(package['calculation_package_id'])}\nPaths: {workflow.results['paths'].result_id}\nBBS: {workflow.results['bbs'].result_id}</pre>
 <details><summary>Bound calculation package</summary><pre>{html.escape(json.dumps(package,indent=2))}</pre></details></html>"""
@@ -871,15 +1028,20 @@ Two-sided full-stress tension anchorage is checked at both support faces. Actual
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument(
+        "--with-serviceability",
+        action="store_true",
+        help="Run the frozen D3 transient-torsion service basis",
+    )
     args = parser.parse_args()
-    workflow = run_workflow()
+    workflow = run_workflow(include_serviceability=args.with_serviceability)
     if args.output_dir:
         write_artifacts(workflow, args.output_dir)
     print(
         json.dumps(
             {
                 "d2_status": workflow.d2_status,
-                "d3_status": "HOLD",
+                "d3_status": workflow.d3_status,
                 "member": workflow.results["member"].engineering,
                 "issue_state": workflow.results["package"].outputs[
                     "calculation_package"

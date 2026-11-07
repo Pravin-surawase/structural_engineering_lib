@@ -188,16 +188,17 @@ supply 0.804247719 and fail despite satisfying the 146 mm pitch limit.
 | Stage | Work and exit evidence | Current boundary |
 |---|---|---|
 | D1 | Freeze the source-correct station inputs, fix corner dimensions, expose method/basis, replay adequate and inadequate provision in Python and C#, and preserve the zero-torsion route. | Implemented source correction with an executable station replay. |
-| D2 | The [physical worked profile](../cookbook/python/physical-torsion-member.md) binds concurrent source rows, support faces and critical sections, actual closed cage/paths, hooks, full-stress direct tension anchors at all eight ends, both-face continuity, mild durability and signed torque transfer through checked receiver sections. | D2 physical/ULS evidence is separate from full-member admission, which remains HOLD for D3. |
-| D3 | Resolve torsional serviceability using an authoritative method and explicit acceptance criteria for the selected service load case. Then reconcile the complete member, paths, BBS, quantities, JSON and HTML, replay zero torsion, inadequate and missing evidence, and qualify an installed example. | Torsional SLS remains HOLD. The existing flexural crack and span/depth checks cannot satisfy this obligation. |
+| D2 | The [physical worked profile](../cookbook/python/physical-torsion-member.md) binds concurrent source rows, support faces and critical sections, actual closed cage/paths, hooks, full-stress direct tension anchors at all eight ends, both-face continuity, mild durability and signed torque transfer through checked receiver sections. | Physical/ULS evidence is complete for this profile; the D2-only replay deliberately retains its three serviceability HOLDs. |
+| D3 | The [selected transient service case](../cookbook/python/physical-torsion-member.md#complete-the-selected-d3-service-case) adds distinct service/permanent actions, actual-bar cracked flexural response, time-dependent permanent deflection, supplementary cracked torsional stiffness, edge-displacement criteria and indirect Annex-B service stress/detail crack control. | All 31 obligations qualify for the declared demonstration. Missing or unsupported service histories and boundary evidence retain HOLD; torsional crack width and universal twist limits are not claimed. |
 
 The source review distinguishes collapse-limit torsion in Cl. 41 from the
 flexural deflection and crack provisions in Cl. 42–43 and Annex F.
 A supplementary uncracked elastic stress screen would need its own declared
 assumptions and does not supply torsional crack-width or twist acceptance.
-The resolver is an adopted and independently verified torsional SLS method
-with applicable acceptance criteria and traceable service actions. The next
-admitted profile must identify that basis before member acceptance.
+The D3 closeout below adopts a separately identified cracked torsional
+stiffness method, applicable displacement and indirect crack-control
+criteria, and traceable service actions. An uncracked screen is not used
+to discharge the torsional serviceability obligation.
 
 **Owner clarification — 7 November 2026.** No project-specific torsional
 serviceability assessment or twist/crack criteria are available. Selecting
@@ -225,9 +226,9 @@ establishes each actual torsion-face bar stress. The ordinary zero-torsion
 worked beam's top compression anchorage cannot establish tension anchorage
 for a torsion-induced opposite-face demand.
 
-D1 station PASS leaves the full member on HOLD. D2 physical/ULS evidence
-is now implemented below; Packet D stays open through D3, and Goal 5
-still waits for completed D and E. The runnable
+D1 station PASS alone leaves the full member on HOLD. D2 and the selected
+D3 service profile are implemented below; Goal 5 still waits for Packet E
+and its own exact-archive qualification. The runnable
 station example makes this boundary explicit.
 [Station example](../../Python/examples/torsion_station_reference.py)
 
@@ -298,10 +299,67 @@ the 54 physical paths and the D3 HOLD distinct. Inadequate or missing D2
 evidence cannot remove an obligation or turn the member into an accepted
 result. Existing ordinary/multilayer profiles retain their 19/27 checks.
 
-Next: establish and independently verify the D3 serviceability basis.
-Packet D remains open through D3, Packet E remains pending, and Goal 5
-continues to wait for full D and E. The owner's absence of project-specific
-criteria is not a reason to invent limits or reduce the 0.27 scope.
+The D2-only replay preserves this historical serviceability boundary.
+The optional D3 replay below resolves the three obligations for a declared
+service case without inventing project facts or universal numerical limits.
+
+#### Packet D3 selected service profile and closeout
+
+The [D3 reference](../verification/library-027-torsion-serviceability.json)
+was frozen independently before production calculations. The existing
+physical example now accepts `--with-serviceability`; its original D2-only
+command remains a HOLD regression control.
+
+Declared demonstration components are permanent G=5 N/mm at zero
+eccentricity (3 self-weight plus 2 superimposed), and imposed Q=3 N/mm at
+400/3 mm eccentricity. G starts at age28days; finishes at56days; Q is
+assessed immediately at application at3650days. Total service is 8 N/mm
+at50mm eccentricity. Equal1.5 factors reproduce every frozen D2 ULS row
+at12 N/mm and50mm eccentricity; no torque is discarded. Permanent torque
+is zero. This is an explicit selected model, not a declaration about a
+user's project. Finite-duration or permanent torsion needs further evidence.
+
+Actual compression/tension bars determine fully cracked flexural stiffness.
+Permanent deflection is re-solved at Ec/(1+1.6), with a conservative in-range
+AnnexC3 shrinkage estimate that ignores beneficial compression steel.
+After-finishes deformation conservatively includes all creep and shrinkage.
+AnnexF uses elastic tension-surface strain, retaining no tension-stiffening
+benefit. Its result is flexural cracking only.
+
+Torsional rotation uses the supplementary Bruun/Kuan/Bentz2020 cracked
+secant stiffness model, Eq3, independently checked against its published
+worked example. The source requires the **cube** of corner-bar enclosed
+area; dimensional analysis and the worked value reject a squared-area
+misreading. This is research mechanics, not an IS456 torsional formula.
+Actual receiver model symmetry and explicit pinned, zero-settlement
+receiver end conditions establish the same-edge support-chord datum;
+absolute supporting-system movement is outside this profile. Torsion-induced
+edge displacement is added to flexural deflection under Cl23.2. Separate
+AnnexB5/B6 service stress/detail compliance provides indirect torsional
+crack control, with no claimed numerical torsional crack width.
+
+| Qualified service quantity | Independent value | Criterion |
+|---|---:|---:|
+| Final total edge deflection bound | 8.532890067 mm | 17.4 mm |
+| After-finishes edge deflection bound | 4.653362991 mm | 12.428571429 mm |
+| Flexural crack-width upper bound | 0.162898079 mm | 0.3 mm |
+| Relative midspan twist | 0.002169322602 rad | Included as physical edge displacement |
+
+The actual5000mm action/deformation span remains distinct from the4350mm
+code span used for the conservative limits. The full31-leaf member and
+54 paths reach issue_ready with engineering approval unreviewed. At
+21 N/mm ULS, D2 still passes but the AnnexB service compression limit
+fails, correctly keeping the member and outputs failed/draft. Missing
+history, nonzero permanent torque, finite imposed duration, stale or
+conflicting actions, missing peaks and unknown/asymmetric receiver models
+retain HOLD. Zero and reversed torsion retain their real signs.
+
+Next: Packet E, the ordinary sagging T-beam physical member. Its passing,
+failed and missing-evidence journeys must reconcile actual flange/web bars,
+anchorage, paths, BBS, quantities, JSON and HTML before Goal5 freezes the
+versioned0.27.0 wheel and sdist. Goal5 must replay this D3 service case
+and its FAIL/HOLD controls from both exact archives. No release follows
+from D3 implementation alone.
 
 ### Goal 5 qualify and release 0.27.0
 
@@ -344,9 +402,10 @@ criteria is not a reason to invent limits or reduce the 0.27 scope.
 | Before Goal 5 | [Close the selected beam and column gaps](#beam-and-column-closure-before-goal-5), starting with the two layered column section cases. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | After closure. [Prepare and verify the exact candidate, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Continue by verifying the D3 serviceability basis in the
+Continue with Packet E in the
 [beam and column closure plan](#beam-and-column-closure-before-goal-5).
-D3 and full torsion-member admission remain HOLD.
+Packet D is qualified only for its documented physical and service profile;
+unsupported torsional histories retain HOLD.
 There is no standalone 0.26.1 release. Candidate preparation uses the
 maintained version tooling after scoped implementation and documentation
 freeze. A Jira fix version is a

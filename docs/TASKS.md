@@ -190,7 +190,7 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | Packets A–C covered. D1 corrects torsion station corner geometry. D2 supplies the physical/ULS worked member and support-transfer evidence. D3 serviceability and full member admission remain HOLD in the [closure plan](planning/library-usability-improvement.md#beam-and-column-closure-before-goal-5). |
+| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | Packets A–C and the selected D1–D3 physical/transient-service torsion profile covered. Its 31 obligations and 54 paths reconcile; unsupported histories remain HOLD. Packet E and Goal 5 remain pending in the [closure plan](planning/library-usability-improvement.md#beam-and-column-closure-before-goal-5). |
 
 The [current handoff](planning/next-session-brief.md) identifies the selected
 preparation scope. The dated notes below retain earlier lanes and installed-host
