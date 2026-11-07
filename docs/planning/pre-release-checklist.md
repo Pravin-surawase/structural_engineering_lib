@@ -24,8 +24,8 @@ Current source metadata: 0.27.0 (prepared candidate; unpublished/on hold)
 Current public release: v0.26.0
 
 - Base: Packet E PR #1061 merged at `4eebc897f084e71165061c9d17ce89a867dadafa`.
-- Qualify one retained wheel and sdist, including all selected A–E and PR #1045
-  consumer regressions from neutral installations.
+- Qualified one retained wheel and sdist: all 18 profiles, 378 beam/column/consumer tests per archive, selected A–E and PR #1045 regressions pass.
+  [Retained artifact record](../verification/library-0270-release-artifacts.json).
 - Preserve failed/held member outputs as draft and engineering approval unreviewed.
 - Independent exact-candidate review and required PR/Weekly checks precede readiness.
 - Target-specific owner authorization, TestPyPI, tag, PyPI and GitHub Release remain pending.

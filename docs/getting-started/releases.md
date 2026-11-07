@@ -1673,3 +1673,12 @@ version-specific owner authorization. No rebuild substitutes for that pair.
 
 Scope remains selected IS 456 workflows, pre-1.0/Beta, with professional
 approval unreviewed and unsupported engineering/native cases explicit.
+
+The exact pair is now qualified in all18 installed profiles, including378
+beam/column/consumer tests per archive and preserved FAIL/HOLD controls.
+See the [qualified artifact record](../verification/library-0270-release-artifacts.json).
+The original preflight's three source-gate failures were repaired without
+changing packaged bytes; final PR/Weekly and merge facts are recorded in
+GitHub. Eight exported PDFs (16pages) were rendered and reviewed. The pair
+is retained for the later publication packet, which must bind the observed
+final merge and owner authorization before any external release action.
