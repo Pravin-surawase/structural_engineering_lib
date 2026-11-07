@@ -94,6 +94,8 @@ except InputContractError as error:
     print([issue.to_dict() for issue in error.issues])
 ```
 
+For four equal physical corner bars and actual closed ties, use the [four-corner member guide](column-four-corner-member-check.md).
+
 ## Python API
 
 Typed request groups are exported from `structural_lib.design.is456.column` alongside the
@@ -112,6 +114,9 @@ and group imports require its matching build rather than an older published whee
         - load_json
         - design
         - check
+        - load_four_corner_member
+        - check_four_corner_member
+        - render_four_corner_member_html
 
 ## Compatibility and evidence
 

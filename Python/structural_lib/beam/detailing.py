@@ -6,6 +6,8 @@ import math
 from dataclasses import dataclass
 from enum import StrEnum
 
+from structural_lib.core.geometry import circle_inside_rounded_rectangle
+
 from .semantics import (
     ApplicabilityState,
     CompletenessState,
@@ -1872,21 +1874,16 @@ def _bar_fits_link(bar: LongitudinalBarPath, link: LinkCage) -> bool:
     right = link.right_centre_x_mm - link_radius
     top = link.top_centre_y_mm + link_radius
     bottom = link.bottom_centre_y_mm - link_radius
-    x, y = bar.x_from_left_mm, bar.y_from_top_mm
-    if (
-        x - radius < left - 1e-9
-        or x + radius > right + 1e-9
-        or y - radius < top - 1e-9
-        or y + radius > bottom + 1e-9
-    ):
-        return False
-
-    bend_radius = link.internal_bend_radius_mm
-    corner_dx = max(left + bend_radius - x, x - (right - bend_radius), 0.0)
-    corner_dy = max(top + bend_radius - y, y - (bottom - bend_radius), 0.0)
-    if corner_dx > 0 and corner_dy > 0:
-        return math.hypot(corner_dx, corner_dy) + radius <= bend_radius + 1e-9
-    return True
+    return circle_inside_rounded_rectangle(
+        bar.x_from_left_mm,
+        bar.y_from_top_mm,
+        radius,
+        left,
+        right,
+        top,
+        bottom,
+        link.internal_bend_radius_mm,
+    )
 
 
 def check_reinforcement_arrangement(

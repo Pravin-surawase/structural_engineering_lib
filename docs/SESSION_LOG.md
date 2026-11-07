@@ -5,6 +5,48 @@
 
 ---
 
+## 2026-11-07 — Session: physical four-corner column packet
+
+**Task:** LIB-027-CLOSURE-C
+**Agent:** DEV
+**Branch:** `codex/lib-027-four-corner-column`
+**Focus:** Complete Packet C and refresh the 0.27 plan, guide and handoff.
+
+### Completed
+
+- Added a strict physical four-corner request, principal-axis member checks
+  and matching JSON/HTML. Independent continuous references cover x and y.
+- Verified passing, overloaded, inadequate-tie and missing-tie cases from
+  an isolated development wheel. Required integration evidence belongs to
+  [PR #1055](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1055).
+- Updated the column cookbook and canonical document route. Preserved dated
+  handoffs in the [archive](_archive/2026-11/library-handoffs-through-20261029.md)
+  and selected Packet D as the next implementation packet.
+
+### Issues encountered
+
+A minimum hook-tail check alone admitted continuations too long for the cage.
+The dated handoff refresh also requires the live release rows and a matching
+session date under the maintained documentation validator.
+
+### Root causes and resolutions
+
+Check the supplied continuation against the supported shorter straight tie leg
+as well as the IS minimum. Preserve the live release table and record this
+dated scope decision alongside the archived historical instructions.
+
+### Rework and recurrence
+
+- None encountered.
+
+### What next
+
+Finish Packet D, the ordinary rectangular beam with concurrent torsion, then
+Packet E, the sagging T-beam member. Goal 5 qualifies the versioned archives
+after those profiles have accepted evidence.
+
+---
+
 ## 2026-11-06 — Session: 0.27 release preparation
 
 **Task:** LIB-027-RELEASE-PREPARATION-20261106

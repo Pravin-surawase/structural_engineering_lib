@@ -8,7 +8,37 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from math import hypot
 from typing import Literal
+
+
+def circle_inside_rounded_rectangle(
+    x_mm: float,
+    y_mm: float,
+    radius_mm: float,
+    left_mm: float,
+    right_mm: float,
+    top_mm: float,
+    bottom_mm: float,
+    corner_radius_mm: float,
+) -> bool:
+    """Contain a circle within a rounded rectangle, including tangency."""
+    if (
+        x_mm - radius_mm < left_mm - 1e-9
+        or x_mm + radius_mm > right_mm + 1e-9
+        or y_mm - radius_mm < top_mm - 1e-9
+        or y_mm + radius_mm > bottom_mm + 1e-9
+    ):
+        return False
+    dx = max(
+        left_mm + corner_radius_mm - x_mm, x_mm - (right_mm - corner_radius_mm), 0.0
+    )
+    dy = max(
+        top_mm + corner_radius_mm - y_mm, y_mm - (bottom_mm - corner_radius_mm), 0.0
+    )
+    if dx > 0 and dy > 0:
+        return hypot(dx, dy) + radius_mm <= corner_radius_mm + 1e-9
+    return True
 
 
 def compute_effective_depth(

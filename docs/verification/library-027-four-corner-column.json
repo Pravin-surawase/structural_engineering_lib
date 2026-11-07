@@ -1,0 +1,102 @@
+{
+  "schema_version": "library-027-four-corner-column-reference/v1",
+  "source_basis": [
+    "IS 456:2000 Cl. 25.1.2, 25.2 Table 28 and 25.4",
+    "IS 456:2000 Cl. 26.2.2.4(b), 26.3.2, 26.4.2.1 and 26.5.3",
+    "IS 456:2000 Cl. 38.1, 39.1 and 39.5 with integrated Fig. 21 and representative Fig. 23",
+    "Controlled source through Amendment 5 SHA-256 964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+    "Project requires 40 mm nominal cover and 16 mm internal tie radius; 16 mm is a declared project input"
+  ],
+  "inputs": {
+    "b_mm": 300,
+    "D_mm": 400,
+    "unsupported_length_mm": 3000,
+    "end_condition": "FIXED_FIXED",
+    "braced": true,
+    "pu_kn": 500,
+    "moment_knm": 50,
+    "fck_nmm2": 25,
+    "fy_nmm2": 415,
+    "longitudinal_bar_diameter_mm": 20,
+    "nominal_cover_mm": 40,
+    "corner_inset_mm": 2,
+    "aggregate_size_mm": 20,
+    "project_required_cover_mm": 40,
+    "tie_diameter_mm": 8,
+    "tie_spacing_mm": 300,
+    "tie_internal_bend_radius_mm": 16,
+    "project_required_bend_radius_mm": 16,
+    "tie_closed": true,
+    "tie_hook_angle_deg": 135,
+    "tie_hook_tail_mm": 48,
+    "detailing_basis_reference": "LIB-027-C-001 project cover, aggregate and bend schedule"
+  },
+  "axes": {
+    "x": {
+      "expected": {
+        "supplied_steel_area_mm2": 1256.6370614359173,
+        "steel_ratio": 0.010471975511965978,
+        "bar_centroid_offset_mm": 60.0,
+        "tie_corner_clearance_mm": 0.3431457505076203,
+        "effective_length_mm": 1950.0,
+        "slenderness": 4.875,
+        "minimum_eccentricity_mm": 20,
+        "design_moment_knm": 50,
+        "maximum_tie_spacing_mm": 300,
+        "minimum_tie_diameter_mm": 6,
+        "xu_mm": 303.08345700561074,
+        "continuous_pu_capacity_kn": 982.6776063608371,
+        "continuous_mu_capacity_knm": 98.26776063608376,
+        "continuous_utilization": 0.5088138742182765
+      }
+    },
+    "y": {
+      "expected": {
+        "supplied_steel_area_mm2": 1256.6370614359173,
+        "steel_ratio": 0.010471975511965978,
+        "bar_centroid_offset_mm": 60.0,
+        "tie_corner_clearance_mm": 0.3431457505076203,
+        "effective_length_mm": 1950.0,
+        "slenderness": 6.5,
+        "minimum_eccentricity_mm": 20,
+        "design_moment_knm": 50,
+        "maximum_tie_spacing_mm": 300,
+        "minimum_tie_diameter_mm": 6,
+        "xu_mm": 189.96328324877373,
+        "continuous_pu_capacity_kn": 778.9671526770582,
+        "continuous_mu_capacity_knm": 77.89671526770583,
+        "continuous_utilization": 0.6418755890818525
+      }
+    }
+  },
+  "reference_abs_tolerances": {
+    "supplied_steel_area_mm2": 1e-08,
+    "steel_ratio": 1e-08,
+    "bar_centroid_offset_mm": 1e-08,
+    "tie_corner_clearance_mm": 1e-08,
+    "effective_length_mm": 1e-08,
+    "slenderness": 1e-08,
+    "minimum_eccentricity_mm": 1e-08,
+    "design_moment_knm": 1e-08,
+    "maximum_tie_spacing_mm": 1e-08,
+    "minimum_tie_diameter_mm": 1e-08,
+    "xu_mm": 1e-08,
+    "continuous_pu_capacity_kn": 1e-08,
+    "continuous_mu_capacity_knm": 1e-08,
+    "continuous_utilization": 1e-08
+  },
+  "owner_comparison_tolerances": {
+    "utilization_ratio": 0.001,
+    "Pu_cap_kN": 2,
+    "Mu_cap_kNm": 0.2
+  },
+  "comparison_basis": "Independent continuous strain-plane/ray solution. The retained member owner samples the curve at 201 points and rounds its reported capacities and utilization.",
+  "controls": {
+    "overload_multiplier": 3,
+    "insufficient_tie_diameter_mm": 4,
+    "excessive_tie_spacing_mm": 350,
+    "missing_tie": null,
+    "corner_inset_mm": 0,
+    "excessive_hook_tail_mm": 173
+  }
+}

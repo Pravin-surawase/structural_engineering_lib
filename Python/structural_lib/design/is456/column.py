@@ -20,6 +20,19 @@ from structural_lib.services.canonical_family import (
     translate_owner_input_error,
 )
 from structural_lib.services.column_api import ColumnDesignResult, design_column_is456
+from structural_lib.services.column_member import (
+    check_four_corner_member as _check_four_corner_member,
+)
+from structural_lib.services.column_member import (
+    render_four_corner_member_html as _render_four_corner_member_html,
+)
+from structural_lib.services.contracts.column_member import (
+    ColumnClosedTieV1,
+    FourCornerColumnActionsV1,
+    FourCornerColumnGeometryV1,
+    FourCornerColumnInputV1,
+    FourCornerColumnReinforcementV1,
+)
 from structural_lib.services.contracts.column_section import (
     ColumnSectionInputV1,
     ColumnSectionLayerResponseV1,
@@ -51,16 +64,134 @@ __all__ = [
     "ColumnSectionLayerResponseV1",
     "ColumnSectionLayerV1",
     "ColumnSectionResponseV1",
+    "ColumnClosedTieV1",
+    "FourCornerColumnActionsV1",
+    "FourCornerColumnGeometryV1",
+    "FourCornerColumnInputV1",
+    "FourCornerColumnReinforcementV1",
     "InputContractError",
     "InputIssueV1",
     "check",
+    "check_four_corner_member",
     "design",
     "input",
     "layered_section_response",
     "load",
     "load_json",
     "load_layered_section",
+    "load_four_corner_member",
+    "render_four_corner_member_html",
 ]
+
+
+def load_four_corner_member(
+    value: Mapping[str, object] | str | bytes | FourCornerColumnInputV1,
+) -> FourCornerColumnInputV1:
+    """Load one physical four-corner column request from Python or JSON.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or FourCornerColumnInputV1
+        Explicit geometry, one principal-axis action, four equal bars and actual ties.
+
+    Returns
+    -------
+    FourCornerColumnInputV1
+        An immutable request with a versioned JSON schema.
+
+    Raises
+    ------
+    InputContractError
+        Malformed JSON, duplicate fields, invalid values or unsupported topology.
+
+    Examples
+    --------
+    Run Python/examples/four_corner_column_member.py with the current source build.
+
+    Limitations
+    -----------
+    The profile admits a braced rectangle with one selected principal bending axis.
+
+    Provenance
+    ----------
+    The shared strict decoder and FourCornerColumnInputV1 own input validation.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(FourCornerColumnInputV1, value)
+    return model_validate_or_error(FourCornerColumnInputV1, value)
+
+
+def check_four_corner_member(
+    request: FourCornerColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check a short braced column with four equal physical corner bars.
+
+    Parameters
+    ----------
+    request : FourCornerColumnInputV1
+        Validated geometry, principal-axis actions and supplied cage in explicit units.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Bound inputs, physical bars, actual tie checks, principal-axis strength and status.
+
+    Raises
+    ------
+    InputContractError
+        An invalid or unsupported request object is supplied.
+
+    Examples
+    --------
+    Use check_four_corner_member(load_four_corner_member(payload)).
+    See docs/cookbook/python/column-supplied-steel-check.md for the complete recipe.
+
+    Limitations
+    -----------
+    PASS covers the selected strength and cage checks. The result records the
+    remaining joint, splice, serviceability, fire and seismic evidence boundaries.
+
+    Provenance
+    ----------
+    Reuses the ordinary column P–M owner with two pairs at derived physical centres
+    and the four-corner cage owner. Every result carries its source references.
+    """
+    return _check_four_corner_member(request)
+
+
+def render_four_corner_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render a report directly from one physical four-corner member result.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_four_corner_member, including the original request.
+
+    Returns
+    -------
+    str
+        HTML containing the same inputs, bars, ties, checks, status and input hash.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    Save render_four_corner_member_html(result) to a UTF-8 report.html file.
+
+    Limitations
+    -----------
+    The report carries the calculation scope and qualified-review state.
+
+    Provenance
+    ----------
+    All engineering values are read from the checked result and its request.
+    """
+    return _render_four_corner_member_html(result)
 
 
 def input(  # noqa: A001
