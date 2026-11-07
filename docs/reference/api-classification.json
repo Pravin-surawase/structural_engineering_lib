@@ -7,7 +7,7 @@
     "new_or_changed_deviations": "FAIL_UNLESS_EXPLICITLY_REVIEWED"
   },
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
-  "generated": "2026-11-06",
+  "generated": "2026-11-07",
   "package_version": "0.26.0",
   "release_channel": "normal",
   "classifications": {
@@ -13214,6 +13214,7 @@
   "advanced_capability_exports": [
     "check_beam_is456",
     "check_bearing_pressure",
+    "check_four_corner_member",
     "check_isolated_footing_load_transfer",
     "design_braced_wall_is456",
     "design_column_is456",
@@ -15148,8 +15149,8 @@
     {
       "module": "structural_lib.design.is456.column",
       "export_classification": "preview",
-      "declared_export_count": 21,
-      "classified_symbol_count": 31,
+      "declared_export_count": 29,
+      "classified_symbol_count": 39,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -15177,6 +15178,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ColumnClosedTieV1",
+          "qualified_name": "structural_lib.design.is456.column.ColumnClosedTieV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -15397,6 +15417,82 @@
           }
         },
         {
+          "name": "FourCornerColumnActionsV1",
+          "qualified_name": "structural_lib.design.is456.column.FourCornerColumnActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FourCornerColumnGeometryV1",
+          "qualified_name": "structural_lib.design.is456.column.FourCornerColumnGeometryV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FourCornerColumnInputV1",
+          "qualified_name": "structural_lib.design.is456.column.FourCornerColumnInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "FourCornerColumnReinforcementV1",
+          "qualified_name": "structural_lib.design.is456.column.FourCornerColumnReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "InputContractError",
           "qualified_name": "structural_lib.design.is456.column.InputContractError",
           "kind": "class",
@@ -15502,6 +15598,35 @@
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
             "signature": "(request: 'ColumnDesignInputV1') -> 'CanonicalFamilyResultV1[ColumnDesignResult]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_four_corner_member",
+          "qualified_name": "structural_lib.design.is456.column.check_four_corner_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'FourCornerColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -15652,6 +15777,35 @@
           }
         },
         {
+          "name": "load_four_corner_member",
+          "qualified_name": "structural_lib.design.is456.column.load_four_corner_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | FourCornerColumnInputV1') -> 'FourCornerColumnInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_json",
           "qualified_name": "structural_lib.design.is456.column.load_json",
           "kind": "function",
@@ -15756,6 +15910,35 @@
             "obligations": [],
             "signature": "(*, b_mm: 'float', D_mm: 'float', xu_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', layer_depths_and_areas: 'tuple[tuple[float, float], ...]') -> 'SectionResult'",
             "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_four_corner_member_html",
+          "qualified_name": "structural_lib.design.is456.column.render_four_corner_member_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
             "missing_docstring_sections": [],
             "example_ids": []
           }

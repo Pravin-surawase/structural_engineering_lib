@@ -148,14 +148,18 @@
       ]
     },
     "column-design": {
-      "canonical": "docs/planning/library-expansion-blueprint-v5.md",
-      "description": "Column design implementation (IS 456 Cl 25, 39) \u2014 classify, axial, uniaxial, P-M curve, biaxial, effective length, slenderness",
+      "canonical": "docs/cookbook/python/column-supplied-steel-check.md",
+      "description": "Current supplied-steel and physical four-corner column APIs, inputs, principal-axis and tie scope, examples and reports",
       "aliases": [
         "column",
         "columns",
         "axial capacity",
         "P-M interaction",
         "biaxial bending"
+      ],
+      "also_see": [
+        "docs/cookbook/python/layered-column-section.md",
+        "docs/planning/library-usability-improvement.md"
       ]
     },
     "quality-pipeline": {

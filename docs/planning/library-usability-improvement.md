@@ -120,7 +120,7 @@ interaction surfaces, moment–curvature and other layouts and code bases.
 |---|---|---|
 | A | Finish the layered rectangular column section API | The existing request now accepts partial compression and mixed diameters as separate groups at one depth. Both new cases, signed steel stress, displacement, continuity at `xu = D`, strict JSON, invalid geometry, and the original 450 mm and 900 mm cases are covered. [Guide](../cookbook/python/layered-column-section.md) |
 | B | Close the remaining beam section comparison gaps | The supplied section API covers vertical and 45° stirrups plus single or repeated bent-up bars, with independent component, limit and combined checks. Sagging flexure is verified within the flange and in both web branches, including the Annex G cutoff and rounded force gap. [Guide and evidence](../cookbook/python/beam-section-closure.md) |
-| C | Finish an ordinary physical four-corner column member | Start with one short braced rectangular profile, four equal corner bars, declared cover and an actual closed tie. Derive physical bar centres and verify their equivalence to the existing two-face calculation basis for each admitted principal direction. Check bar fit, tie geometry, diameter and spacing. Run an independent passing case and separate inadequate and missing-evidence cases. Bind member checks and the report to the same bar and tie arrangement. Depends on a qualified section basis from A. |
+| C | Finish an ordinary physical four-corner column member | The physical short braced profile resolves four equal bars from cover, tie diameter and corner inset. Both principal directions match independent section references. Actual cage checks, missing/insufficient tie and overload controls, bound JSON and HTML, and the runnable example are covered. [Guide and scope](../cookbook/python/column-supplied-steel-check.md#physical-four-corner-member-workflow) |
 | D | Compose rectangular beam flexure, shear and torsion through detailing | Reuse the [torsion evidence plan](https://pravinsurawase.atlassian.net/browse/LIB-3) and [member implementation plan](https://pravinsurawase.atlassian.net/browse/LIB-4). Qualify one ordinary non-seismic supplied rectangular member with concurrent actions, actual closed links, and longitudinal steel on both relevant faces. Resolve torsional load path, support, serviceability, anchorage and fit before admission. Replay nonzero torsion, zero-torsion compatibility, missing evidence and insufficient provision. Match paths, BBS and report to the checked layout. |
 | E | Complete the ordinary sagging T-beam member workflow | Reuse the supported monolithic T-beam calculation and qualify one actual supplied layout with zero torsion. Prove flange geometry and bar fit, web shear width, anchorage, and agreement between member checks, detailing, paths, BBS and report. Verify a failed or held case alongside the passing case. |
 
@@ -139,6 +139,34 @@ affected outputs, and keep PASS, FAIL, HOLD and rejected inputs distinct.
 Goal 5 starts once all five packets have accepted evidence. If a packet
 cannot qualify, record the unresolved case and bring the release scope
 decision back to the owner.
+
+### Packet C implementation and acceptance
+
+Packet C admits one short braced solid rectangle with four equal
+corner bars, ordinary closed deformed ties and one selected principal
+bending direction. The caller supplies the factored axial force and moment,
+end restraint, material strengths, nominal cover, aggregate size, actual
+tie dimensions and an explicit corner inset. The physical bar centres
+determine the steel area and equivalent two-face depth.
+
+1. Freeze independent geometry, detailing limits and section/member targets
+   before changing calculation owners. Verify x and y directions by rotating
+   the section and retaining the same four physical bars.
+2. Add a strict versioned request and public loader/check operation. Preserve
+   structured rejection of malformed inputs and separate FAIL and HOLD for
+   inadequate provision and missing tie evidence.
+3. Reuse column classification, effective length, minimum eccentricity,
+   steel-law, P–M and tie-spacing owners. Check every physical face and the
+   rounded inside tie corner. Reuse the beam containment geometry through
+   its code-independent owner.
+4. Bind the result and HTML report to the same input identity, physical
+   arrangement, supplied tie, named checks, units and source references.
+5. Deliver one runnable example with passing x/y, insufficient strength,
+   inadequate ties and missing-tie controls. Add a guide and verify a fresh
+   development-wheel installation, the affected regressions and required
+   hosted checks.
+6. Close the packet with its merge evidence. Update the handoff for Packet D
+   and archive superseded dated handoffs with their links and provenance.
 
 ### Goal 5 qualify and release 0.27.0
 
@@ -181,7 +209,7 @@ decision back to the owner.
 | Before Goal 5 | [Close the selected beam and column gaps](#beam-and-column-closure-before-goal-5), starting with the two layered column section cases. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | After closure. [Prepare and verify the exact candidate, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Continue with packet B in the [beam and column closure plan](#beam-and-column-closure-before-goal-5).
+Continue with packet D in the [beam and column closure plan](#beam-and-column-closure-before-goal-5).
 There is no standalone 0.26.1 release. Candidate preparation uses the
 maintained version tooling after scoped implementation and documentation
 freeze. A Jira fix version is a

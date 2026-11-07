@@ -127,17 +127,23 @@ _CAPABILITIES = (
     ),
     IS456Capability(
         element="column",
-        public_workflows=("design_column_is456", "design_long_column_is456"),
+        public_workflows=(
+            "design_column_is456",
+            "design_long_column_is456",
+            "check_four_corner_member",
+        ),
         supported_case=(
             "Solid rectangular tied columns under factored compression with "
             "uniaxial or biaxial bending, using one total longitudinal-steel area "
             "split equally between two opposite faces at one centroidal depth; "
             "short and slender member routes are selected by the declared IS 456 "
-            "effective-length inputs."
+            "effective-length inputs. The four-corner facade also resolves four "
+            "equal physical bars inside a supplied ordinary closed rectangular "
+            "tie for one short braced principal-axis strength and cage check."
         ),
         held_cases=(
             "Circular-section column design is excluded; the separate supplied-helix check does not constitute a circular-column design workflow.",
-            "Asymmetric, perimeter-resolved, and arbitrary multilayer reinforcement layouts are excluded because the stable routes accept only Asc_mm2 and one d_prime_mm.",
+            "Asymmetric and arbitrary multilayer reinforcement layouts are excluded. Physical corner resolution is limited to four equal bars in the named short braced profile.",
             "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
             "Load-envelope generation, frame analysis, effective-length derivation beyond the declared end-condition model, and automatic reinforcement sizing are excluded.",
         ),
