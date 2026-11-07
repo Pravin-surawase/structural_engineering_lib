@@ -800,6 +800,14 @@ The base developer journey now executes. Optional output and replacement
 archive replays, final candidate checks and release-readiness acceptance
 remain pending. No replacement artifacts have been qualified at this checkpoint.
 
+The first replacement at `423097e8` passed all 18 initial expanded profiles
+and local preflight (9007 Python / 629 FastAPI passes), but a further R2
+negative control exposed conflicting legacy aggregate/strength envelopes.
+It is retained as intermediate evidence and is not selected for publication.
+The repair now preserves the original calculation envelope separately,
+reports the aggregate FAIL and detailing reason, and keeps its unminted
+aggregate identity unavailable. Requalification must include this control.
+
 The reviewed baseline is merged PR #1062,
 `1c35d9485fa3499e69f1926657e91e84fe0d7bb8`. The retained wheel SHA-256 is
 `cfbbc47b5ada59011ef0c4c9049781e8e30cbc9c341ef8eb8a813244139f3a79`.

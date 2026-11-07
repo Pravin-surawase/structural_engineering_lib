@@ -101,6 +101,7 @@ def qualify_consumer_journeys(
     import contextlib
     import re
     import shutil
+    from dataclasses import replace
 
     from structural_lib import api
     from structural_lib.reports import generator
@@ -143,6 +144,39 @@ def qualify_consumer_journeys(
         vu_kn=100,
     )
     controls = {}
+    combined = api.design_and_detail_beam_is456(
+        **common, beam_id="B-FAIL", story="L1", span_mm=6000, cover_mm=40
+    )
+    invalid_detail = replace(
+        combined.detailing,
+        is_valid=False,
+        remarks="Controlled source detailing failure",
+    )
+    invalid_report = api.generate_calculation_report(
+        replace(combined, detailing=invalid_detail, is_ok=False)
+    )
+    invalid_data = invalid_report.to_dict()
+    if (
+        invalid_data["result_envelope"]["engineering_status"] != "FAIL"
+        or "detailing_invalid"
+        not in invalid_data["results"]["summary"]["failed_checks"]
+    ):
+        raise AssertionError(
+            "Invalid detailing exported a contradictory aggregate envelope"
+        )
+    invalid_report.export_json(target / "detailing-failure.json")
+    invalid_report.export_html(target / "detailing-failure.html")
+    invalid_report.export_markdown(target / "detailing-failure.markdown")
+    if pdf:
+        from weasyprint import HTML
+
+        HTML(filename=str(target / "detailing-failure.html")).write_pdf(
+            target / "detailing-failure.pdf"
+        )
+    controls["detailing-failure"] = {
+        "engineering_status": "FAIL",
+        "failed_checks": invalid_report.results.summary["failed_checks"],
+    }
     for name, params, expected in (
         ("design-only", {}, "PASS"),
         (

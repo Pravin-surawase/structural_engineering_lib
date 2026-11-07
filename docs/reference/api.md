@@ -1059,6 +1059,12 @@ named results with a complete base fallback or optional Jinja2 templates.
 PDF rendering uses the `[pdf]` extra and the resulting HTML. Raw canonical
 `api.compute_report(..., format="json")` retains its existing result schema;
 its separate HTML admission remains unchanged.
+For legacy combined results, `source.calculation_envelope` preserves the
+original strength-check envelope and identity. The report's `result_envelope`
+represents the aggregate outcome, including explicit invalid detailing.
+Its aggregate identity is unavailable because the legacy producer did not
+mint one; the source calculation identity remains available separately.
+Invalid detailing is listed as `detailing_invalid` with its retained reason.
 Required tension steel is separate from selected bars. A combined report
 shows the provided areas by face and zone, while a design-only report
 identifies the bar layout as unavailable.

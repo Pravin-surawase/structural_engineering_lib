@@ -158,6 +158,7 @@ def project_beam_report(result: Any) -> dict[str, Any]:
             "status": "unavailable",
             "reason": "no_bar_rows",
             "is_valid": detail.is_valid,
+            "remarks": detail.remarks,
         }
 
     serviceability = {
@@ -169,9 +170,39 @@ def project_beam_report(result: Any) -> dict[str, Any]:
     engineering = envelope.get("engineering_status")
     if engineering not in {"PASS", "FAIL", "HOLD", "NOT_EVALUATED"}:
         engineering = "PASS" if result.is_ok else "FAIL"
+    detail_failed = detail is not None and detail.is_valid is False
     # Legacy combined results can fail detailing after a successful design.
-    if isinstance(result, DesignAndDetailResult) and not result.is_ok:
+    if isinstance(result, DesignAndDetailResult) and (
+        not result.is_ok or detail_failed
+    ):
         engineering = "FAIL"
+    failed_checks = list(getattr(calculation, "failed_checks", ()))
+    if detail_failed and "detailing_invalid" not in failed_checks:
+        failed_checks.append("detailing_invalid")
+    if isinstance(result, DesignAndDetailResult):
+        # A legacy combined result has only a bool aggregate. Preserve its
+        # calculation envelope verbatim and label the report aggregate separately.
+        source["calculation_envelope"] = _plain(envelope)
+        source["envelope_scope"] = "legacy_combined_report"
+        if envelope:
+            envelope = {
+                **envelope,
+                "engineering_status": engineering,
+                "overall_status": engineering,
+                # The original identity binds strength, not this combined result.
+                "result_identity": None,
+            }
+            if detail_failed and detail is not None:
+                envelope["issues"] = [
+                    *envelope.get("issues", []),
+                    {
+                        "code": "DETAILING_INVALID",
+                        "path": "results.detailing.is_valid",
+                        "message": detail.remarks
+                        or "The source detailing result is invalid.",
+                    },
+                ]
+            source["envelope"] = envelope
     is_ok = True if engineering == "PASS" else False if engineering == "FAIL" else None
     serialized = (
         calculation.to_dict() if isinstance(calculation, ComplianceCaseResult) else {}
@@ -179,14 +210,20 @@ def project_beam_report(result: Any) -> dict[str, Any]:
     summary = {
         "is_ok": is_ok,
         "engineering_status": engineering,
-        "failed_checks": list(getattr(calculation, "failed_checks", ())),
+        "failed_checks": failed_checks,
         "remarks": getattr(calculation, "remarks", ""),
         "utilizations": serialized.get("utilizations", {}),
         "unavailable_utilizations": serialized.get("unavailable_utilizations", {}),
         "clause_refs": getattr(calculation, "clause_refs", {}),
     }
     if isinstance(result, DesignAndDetailResult):
-        summary["summary"] = result.summary()
+        summary["summary"] = (
+            result.summary()
+            if result.is_ok == is_ok
+            else "Source detailing is invalid; aggregate report is FAIL."
+        )
+    if detail is not None:
+        summary["detailing_remarks"] = detail.remarks
     loads = [
         {
             "case_id": identity.get("case_id"),
@@ -276,6 +313,7 @@ def report_evidence_rows(projection: dict[str, Any]) -> list[tuple[str, str]]:
                 "engineering_status",
                 "failed_checks",
                 "remarks",
+                "detailing_remarks",
                 "utilizations",
             )
         },
@@ -298,6 +336,11 @@ def report_evidence_rows(projection: dict[str, Any]) -> list[tuple[str, str]]:
             if key in source
         },
     }
+    if "calculation_envelope" in source:
+        values["Source calculation identity"] = source["calculation_envelope"].get(
+            "result_identity"
+        )
+        values["Envelope scope"] = source["envelope_scope"]
     return [
         (
             name,

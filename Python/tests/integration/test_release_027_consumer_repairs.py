@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 import json
 import re
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -270,6 +271,32 @@ def test_report_adapter_rejects_unrecognized_result_without_shape_guess():
         api.generate_calculation_report(SimpleNamespace(design=object()))
     with pytest.raises(TypeError, match="typed canonical beam result"):
         generator.generate_html_report(beam.design(canonical_request()).to_dict())
+
+
+@pytest.mark.parametrize("legacy_flag", [False, True])
+def test_invalid_legacy_detailing_cannot_export_a_pass_envelope(legacy_flag):
+    source = api.design_and_detail_beam_is456(
+        **BEAM, beam_id="B12", story="L2", span_mm=6000, cover_mm=40
+    )
+    invalid = replace(
+        source.detailing, is_valid=False, remarks="Recorded spacing failure"
+    )
+    result = replace(source, detailing=invalid, is_ok=legacy_flag)
+    report = api.generate_calculation_report(result)
+    data = json.loads(report.to_json())
+    assert data["source"]["calculation_envelope"] == source.design.result_envelope
+    assert data["result_envelope"]["engineering_status"] == "FAIL"
+    assert data["result_envelope"]["overall_status"] == "FAIL"
+    assert data["result_envelope"]["result_identity"] is None
+    assert data["result_envelope"]["review_status"] == "QUALIFIED_REVIEW_REQUIRED"
+    assert data["result_envelope"]["issues"][-1]["code"] == "DETAILING_INVALID"
+    assert "detailing_invalid" in data["results"]["summary"]["failed_checks"]
+    assert data["results"]["detailing"]["remarks"] == "Recorded spacing failure"
+    document = generator.generate_html_report(result)
+    badge = re.search(
+        r'<span class="(?:status-badge [^"]+|status)">\s*([^<]+)', document
+    )
+    assert badge and badge[1].strip() == "FAIL"
 
 
 def test_exact_developer_quickstart_base_journey(tmp_path, monkeypatch):

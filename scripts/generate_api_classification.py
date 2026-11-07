@@ -182,6 +182,7 @@ _INTENTIONAL_COMPATIBILITY_CALLS = {
     "scripts/_lib/release_beam_column.py": frozenset(
         {
             "structural_lib.api.design_beam_is456",
+            "structural_lib.api.design_and_detail_beam_is456",
             "structural_lib.api.generate_calculation_report",
         }
     ),
