@@ -34,6 +34,54 @@ AXIS_REFERENCE = json.loads(
 )["consumers"]["long_column_axes"]
 
 
+@pytest.mark.parametrize("axis", ["x", "y"])
+def test_unified_slender_column_rejects_discarded_applied_moment(axis):
+    response = client.post(
+        UNIFIED_ENDPOINT,
+        json={
+            **BASE_REQUEST,
+            "Pu_kN": 500,
+            "Mux_kNm": 0,
+            "Muy_kNm": 0,
+            f"Mu{axis}_kNm": 400,
+            "l_mm": 6000,
+            "end_condition": "HINGED_HINGED",
+            "M1x_kNm": 0,
+            "M2x_kNm": 0,
+            "M1y_kNm": 0,
+            "M2y_kNm": 0,
+        },
+    )
+    assert response.status_code == 422
+    problem = response.json()["error"]
+    assert problem["code"] == "INPUT_CONTRACT_INVALID"
+    issue = problem["details"]["issues"][0]
+    assert issue["code"] == "COLUMN_ACTION_CONFLICT"
+    assert issue["path"] == f"Mu{axis}_kNm"
+    assert issue["received"]["applied_kNm"] == 400
+
+
+def test_unified_slender_column_consistent_demand_retains_fail():
+    response = client.post(
+        UNIFIED_ENDPOINT,
+        json={
+            **BASE_REQUEST,
+            "Pu_kN": 500,
+            "Mux_kNm": 400,
+            "Muy_kNm": 0,
+            "l_mm": 6000,
+            "end_condition": "HINGED_HINGED",
+            "M1x_kNm": 400,
+            "M2x_kNm": 400,
+            "M1y_kNm": 0,
+            "M2y_kNm": 0,
+        },
+    )
+    assert response.status_code == 200
+    result = unwrap(response)
+    assert result["Mux_design_kNm"] == 420 and not result["is_safe"]
+
+
 def test_short_axial_capacity_route_remains_available():
     response = client.post(
         "/api/v1/design/column/axial",

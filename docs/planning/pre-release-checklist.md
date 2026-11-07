@@ -23,8 +23,23 @@ The S5 checklist below preserves the 29 October prepublication snapshot.
 Current source metadata: 0.27.0 (prepared candidate; unpublished/on hold)
 Current public release: v0.26.0
 
+**Current archive verdict: PASS for the selected replacement pair.**
+The [repair results](library-usability-improvement.md#repair-qualification-results--7-november-2026)
+and artifact record bind clean source `5c79c3b0`, the new hashes and rejected
+history. [PR #1063](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1063)
+owns final required check/review/merge acceptance. Publication remains
+unauthorized and depends on those observed gates plus owner authorization.
+
+- [x] R1: structured rejection closes the 400 kNm → 20 kNm/PASS counterexample.
+- [x] R2–R4: canonical/legacy input, steel, failure/review evidence and the corrected legacy aggregate envelope pass installed replays across supported formats.
+- [x] R5: exact complete developer quickstart passes base and declared-extra replays.
+- [x] Expanded wheel and sdist corpora pass 408 tests each; A–E FAIL/HOLD controls remain intact.
+- [x] Replacement pair in `5c79c3b07dcb/dist/` passes all 18 profiles; independent installed review and 19 changed PDF pages pass.
+- Final immutable-head hosted/integration status: inspect PR #1063; those receipts are maintained in GitHub.
+- [ ] Separate target-specific authorization, TestPyPI, tagging and public delivery/readback (outside this goal).
+
 - Base: Packet E PR #1061 merged at `4eebc897f084e71165061c9d17ce89a867dadafa`.
-- Qualified one retained wheel and sdist: all 18 profiles, 378 beam/column/consumer tests per archive, selected A–E and PR #1045 regressions pass.
+- Initial retained wheel/sdist: all 18 profiles, 378 beam/column/consumer tests per archive, selected A–E and PR #1045 assertions passed; subsequent R1–R5 reproductions reject this pair for publication.
   [Retained artifact record](../verification/library-0270-release-artifacts.json).
 - Preserve failed/held member outputs as draft and engineering approval unreviewed.
 - Independent exact-candidate review and required PR/Weekly checks precede readiness.

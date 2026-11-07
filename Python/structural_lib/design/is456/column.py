@@ -513,6 +513,21 @@ def design(request: ColumnDesignInputV1) -> CanonicalFamilyResultV1[ColumnDesign
             M1y_kNm=actions.m1y_signed_knm,
             M2y_kNm=actions.m2y_signed_knm,
         )
+    except InputContractError as error:
+        from dataclasses import replace
+
+        paths = {
+            "Mux_kNm": "actions.mux_knm",
+            "Muy_kNm": "actions.muy_knm",
+            "M2x_kNm": "actions.m2x_signed_knm",
+            "M2y_kNm": "actions.m2y_signed_knm",
+        }
+        raise InputContractError(
+            tuple(
+                replace(issue, path=paths.get(issue.path, issue.path))
+                for issue in error.issues
+            )
+        ) from error
     except (ValidationError, TypeError, ValueError) as error:
         translate_owner_input_error(error)
     return canonical_family_result(

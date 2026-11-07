@@ -1048,8 +1048,23 @@ def generate_calculation_report(
 ) -> CalculationReport
 ```
 
-The calculation report accepts a combined `DesignAndDetailResult` or a
-design-only `ComplianceCaseResult` and exports HTML, JSON or Markdown.
+The calculation report accepts canonical `BeamDesignResultV1` and
+`BeamDesignAndDetailResultV1`, legacy `DesignAndDetailResult`, and design-only
+`ComplianceCaseResult`, and exports HTML, JSON or Markdown. The shared adapter
+retains known geometry/materials/actions, the original request/envelope and
+review requirement, evaluated serviceability checks and failure reasons.
+Actual provided bars remain distinct from required steel; missing detailing
+is explicitly unavailable. `reports.generate_html_report` accepts the same
+named results with a complete base fallback or optional Jinja2 templates.
+PDF rendering uses the `[pdf]` extra and the resulting HTML. Raw canonical
+`api.compute_report(..., format="json")` retains its existing result schema;
+its separate HTML admission remains unchanged.
+For legacy combined results, `source.calculation_envelope` preserves the
+original strength-check envelope and identity. The report's `result_envelope`
+represents the aggregate outcome, including explicit invalid detailing.
+Its aggregate identity is unavailable because the legacy producer did not
+mint one; the source calculation identity remains available separately.
+Invalid detailing is listed as `detailing_invalid` with its retained reason.
 Required tension steel is separate from selected bars. A combined report
 shows the provided areas by face and zone, while a design-only report
 identifies the bar layout as unavailable.
@@ -4158,7 +4173,7 @@ print(f"Compliant: {result['is_compliant']}")
 
 ---
 
-### `design_column_is456(Pu_kN, Mux_kNm=0.0, Muy_kNm=0.0, b_mm=0.0, D_mm=0.0, l_mm=0.0, end_condition='FIXED_FIXED', fck=25.0, fy=415.0, Asc_mm2=0.0, d_prime_mm=50.0, l_unsupported_mm=None, braced=True, M1x_kNm=None, M2x_kNm=None, M1y_kNm=None, M2y_kNm=None) → dict`
+### `design_column_is456(Pu_kN, Mux_kNm=0.0, Muy_kNm=0.0, b_mm=0.0, D_mm=0.0, l_mm=0.0, end_condition='FIXED_FIXED', fck_nmm2=None, fy_nmm2=None, Asc_mm2=None, d_prime_mm=50.0, l_unsupported_mm=None, braced=True, M1x_kNm=None, M2x_kNm=None, M1y_kNm=None, M2y_kNm=None, *, fck=None, fy=None) → ColumnDesignResult`
 
 Master entry point for column design per IS 456:2000. Automatically routes to the appropriate design checks based on column classification:
 1. Effective length from end conditions (Cl 25.2, Table 28)
@@ -4176,6 +4191,17 @@ supplied-helix check is not a circular-column design workflow. The experimental
 rectangular P-M-M fiber module remains an internal calculation experiment and
 is not a stable design-decision API.
 
+**Slender action contract:** signed end moments describe curvature, with
+`abs(M1) <= abs(M2)` in each direction. The larger absolute end moment must
+cover the independently declared applied magnitude (`Mux`/`Muy`), with an
+absolute tolerance of 1e-9 kNm. A larger explicit end moment governs even
+when the applied magnitude is smaller. An applied peak outside that end
+envelope is rejected with `COLUMN_ACTION_CONFLICT`; the workflow does not
+infer its location or second-order history. Each omitted legacy end value
+retains its existing default `max(applied magnitude, minimum-eccentricity
+moment)`. Explicit zero remains different from omission. Short-column
+checks use the applied magnitudes; their signed-end fields are unused.
+
 | Param | Type | Description |
 |-------|------|-------------|
 | `Pu_kN` | `float` | Factored axial load (kN). Must be ≥ 0 |
@@ -4185,16 +4211,16 @@ is not a stable design-decision API.
 | `D_mm` | `float` | Column depth (mm). Typical: 100–2000 |
 | `l_mm` | `float` | Unsupported length (mm) |
 | `end_condition` | `str` | End restraint: `'FIXED_FIXED'`, `'FIXED_HINGED'`, etc. |
-| `fck` | `float` | Concrete strength (N/mm²). Default: 25.0 |
-| `fy` | `float` | Steel yield strength (N/mm²). Default: 415.0 |
+| `fck_nmm2` | `float` | Required concrete strength (N/mm²); deprecated `fck` alias remains |
+| `fy_nmm2` | `float` | Required steel yield strength (N/mm²); deprecated `fy` alias remains |
 | `Asc_mm2` | `float` | Total longitudinal steel area (mm²) |
 | `d_prime_mm` | `float` | Cover to centroid of reinforcement (mm). Default: 50.0 |
 | `l_unsupported_mm` | `float \| None` | Unsupported length for min eccentricity. If None, uses l_mm |
 | `braced` | `bool` | If True, braced frame. Default: True |
-| `M1x_kNm` | `float \| None` | End moment 1 x-axis (slender columns). If None, uses Mux |
-| `M2x_kNm` | `float \| None` | End moment 2 x-axis (slender columns). If None, uses Mux |
-| `M1y_kNm` | `float \| None` | End moment 1 y-axis (slender columns). If None, uses Muy |
-| `M2y_kNm` | `float \| None` | End moment 2 y-axis (slender columns). If None, uses Muy |
+| `M1x_kNm` | `float \| None` | End moment 1 x-axis (slender columns). If None, uses max(Mux, minimum x moment) |
+| `M2x_kNm` | `float \| None` | End moment 2 x-axis (slender columns). If None, uses max(Mux, minimum x moment) |
+| `M1y_kNm` | `float \| None` | End moment 1 y-axis (slender columns). If None, uses max(Muy, minimum y moment) |
+| `M2y_kNm` | `float \| None` | End moment 2 y-axis (slender columns). If None, uses max(Muy, minimum y moment) |
 
 **Returns:** `dict` with keys: `is_safe`, `classification`, `le_x_mm`, `le_y_mm`, `slenderness_x`, `slenderness_y`, `emin_x_mm`, `emin_y_mm`, `Mux_design_kNm`, `Muy_design_kNm`, `governing_check`, `checks`, `clause_refs`, `warnings`
 

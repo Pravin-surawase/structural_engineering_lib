@@ -628,12 +628,24 @@ D3 controls, before the separate version-specific release authorization.
 
 ### Goal 5 qualify and release 0.27.0
 
-**Candidate qualification — 7 November 2026:** the exact 0.27.0 wheel and
+**Replacement qualification — 7 November 2026:** R1–R5 repairs are implemented
+and independently replayed from the clean replacement wheel. Both exact
+archives pass **all 18 profiles**, including **408 beam/column/consumer tests
+each**, with zero failures/errors/skips. The [repair results](#repair-qualification-results--7-november-2026)
+and [artifact record](../verification/library-0270-release-artifacts.json)
+identify the selected files and preserve rejected-candidate history. GitHub
+[PR #1063](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1063)
+owns the final immutable-head checks, full/cross-platform verification and
+reviewed integration gate. Publication remains unauthorized; it requires
+those final gates plus a separate version/target-specific owner decision.
+
+**Initial candidate qualification — 7 November 2026:** the exact 0.27.0 wheel and
 sdist are built and retained. All **18 installed profiles passed**, including
 separate wheel and sdist beam/column profiles with **378 tests each**, zero
 failures/errors/skips and 16 independent-checker/public-driver commands each.
-The [qualified artifact record](../verification/library-0270-release-artifacts.json)
-binds filenames, sizes, SHA-256, package payload, build inputs and Python tree.
+The [artifact record](../verification/library-0270-release-artifacts.json)
+preserves this initial pair under superseded_baseline and binds the replacement
+filenames, sizes, SHA-256, payload, build inputs and Python tree.
 GitHub owns the final immutable-head PR/Weekly checks, independent review and
 integration facts. Qualification does not authorize publication.
 
@@ -646,13 +658,13 @@ integration facts. Qualification does not authorize publication.
 | Dependencies and performance | All declared extras, exports and transport profiles pass their stated scope; baseline performance ratios remain below the frozen 3× limit. CAD/ETABS native acceptance stays HOLD and PMM stays experimental. |
 | Source preflight and repair | Initial broad run: 8972 Python passes and three source-gate failures, 626 FastAPI passes and React build PASS. Stale API/Indian-code manifests and an unrecognized explicit `angle_degrees` unit suffix were repaired at their owners. Ten focused repair checks and all 12 essential checks pass; package/build bytes are unchanged. Final full hosted evidence belongs to GitHub. |
 
-The retained pair must be reused for delivery. Remaining work is the
-publication packet: bind the observed final merge/check/review identities,
-obtain version/target-specific owner authorization, verify the pair on
-TestPyPI, then tag and publish the same files and read back their public
-identities. None of those external publication actions was performed here.
-The current public release remains 0.26.0. The original ordered acceptance
-procedure below is retained for the publication handoff.
+The initially retained pair must **not** be published: the confirmed defects
+occur in those bytes. Preserve its hashes, receipts and passing assertions
+as the baseline. After the repairs, build one replacement pair from the
+frozen candidate and qualify both archives. Only that replacement can enter
+the separately authorized publication packet. No upload, tag or GitHub
+Release was performed. The current public release remains 0.26.0. The
+original acceptance procedure below applies to the replacement candidate.
 
 1. Prepare one versioned 0.27.0 candidate from the merged Goals 1–4 and
    the completed beam and column closure packets. Use
@@ -693,8 +705,9 @@ procedure below is retained for the publication handoff.
 | Before Goal 5 | [Packets A–E delivered for their selected profiles](#beam-and-column-closure-before-goal-5), including the full T member and its installed replay. Unsupported profiles retain HOLD. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | After closure. [Prepare and verify the exact candidate, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Goal 5's exact archive qualification is complete as recorded above. Continue
-with its separately authorized retained-artifact publication steps.
+Goal 5's initial archive qualification is superseded by the completed repair
+and replacement-archive qualification below. Final required GitHub acceptance
+and reviewed integration precede separately authorized publication.
 Packet D is qualified only for its documented physical and service profile;
 unsupported torsional histories retain HOLD.
 There is no standalone 0.26.1 release. Candidate preparation uses the
@@ -703,6 +716,297 @@ freeze. A Jira fix version is a
 planning record. Keep the public installation instructions tied to the latest
 verified publication. Follow the [release process](../getting-started/releases.md#current-release-process-29-october-2026)
 for version-specific authorization, tags and registry delivery.
+
+### 0.27 pre-release repair plan
+
+**Decision and scope — 7 November 2026.** Repair the confirmed supported-route
+defects before 0.27.0 publication. This is a continuation of Goal 5, with
+five sequential steps and one implementation writer. The owner started
+`LIB027-REPAIR-QUALIFY` on 7 November 2026 and authorized all five steps,
+including replacement-archive qualification, with no publication. Checkboxes
+remain open until their complete evidence is observed. The owner retains the
+separate release decision. Professional approval, unsupported engineering
+profiles and installed-native acceptance remain separate.
+
+#### Repair goal — acceptance history
+
+**Goal ID:** `LIB027-REPAIR-QUALIFY`
+
+**Status:** Started by the owner on 7 November 2026. R1–R5 source/installed
+repair evidence and replacement-archive qualification are complete; the final
+required hosted/integration gate is owned by PR #1063. Publication is excluded.
+
+> Repair all five confirmed pre-release defects R1–R5 within StructLib's
+> agreed beam and column scope, verify the complete supported caller journeys,
+> and build and qualify one exact replacement 0.27.0 wheel and sdist. Preserve
+> valid existing behavior, independent engineering references and FAIL/HOLD
+> controls. Finish with an evidence-bound release-ready or HOLD report and
+> a reproducible handoff. Stop before TestPyPI, tagging, package upload or
+> GitHub Release; publication requires separate owner authorization.
+
+**Completed implementation and qualification sequence:** the five steps below
+retain the accepted plan. R1–R5 and archive qualification are complete; only
+the final hosted/integration gate remains until PR #1063 records acceptance.
+
+1. Fix and verify the column action contract (R1).
+2. Fix shared canonical/legacy report adaptation and retained evidence (R2–R4).
+3. Replace and execute the complete developer quickstart (R5).
+4. Qualify the actual installed caller journeys and preserve existing controls.
+5. Freeze, build and qualify replacement archives, complete required hosted
+   checks and reviewed integration, then issue the readiness report.
+
+At handoff, inspect [PR #1063](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1063)
+for the final required PR/full/cross-platform checks and reviewed merge. Match
+its package/build/verifier inputs to the selected 5c79c3b07dcb archives before
+reporting readiness; do not restart completed repairs or rebuild passing bytes.
+Draft research PR #1064 remains after this predecessor and must rebind its
+shared-plan changes before any later integration. Publication is separate.
+
+**Completion requires all of the following:**
+
+- Every R1–R5 reproduction is closed by observed behavior. The conflicting
+  400 kNm/zero-end request cannot return PASS; supported canonical report
+  handoffs do not crash or change the source outcome; exported reports retain
+  known inputs, actual versus required steel, failure reasons and review state.
+- The exact documented quickstart runs from an isolated installation with
+  dependencies declared at their actual boundaries. All original selected
+  A–E controls retain their expected engineering and draft/issue states.
+- Both replacement archives independently pass all 18 required profiles and
+  the expanded beam/column, report and guide inventory. Verify site-packages
+  origin, package payload, sizes/SHA-256, source/build/verifier identities,
+  independent references and supported visible exports. Keep the old pair
+  unchanged as rejected baseline evidence; its passes do not qualify new bytes.
+- Required checks pass on the final immutable candidate; independent review,
+  merged/source-tree identity and retained-artifact verification agree. Update
+  the plan, handoff and artifact record with the actual result and limitations.
+- Deliver a concise readiness decision, completed-finding list, verification
+  evidence and any remaining blockers. An unresolved defect or required gate
+  failure keeps release HOLD. Software readiness does not confer professional
+  approval, installed-native acceptance or general beam/column completeness.
+
+**Decision boundary:** prefer structured rejection of contradictory column
+actions under the current profile. If preserving a valid caller requires a
+different engineering normalization, freeze its source basis and independent
+expected outcomes before implementation; seek an owner decision only when
+the evidence leaves a material scope choice unresolved. Do not manufacture
+missing inputs or promote unsupported profiles to PASS to finish the goal.
+
+**Excluded:** new reinforcement arrangements or stable actual-bar P–M–M,
+broader beam member profiles, new serviceability/detailing combinations,
+slab/footing implementation, licensing reconsideration and publication.
+The detailed repair steps and exclusions below remain the acceptance owner.
+
+**Execution evidence:** see the [completed repair and archive results](#repair-qualification-results--7-november-2026).
+The detailed checklists below retain the acceptance specification; final
+hosted check/review/merge facts are maintained in GitHub rather than copied
+into a second task ledger.
+
+The reviewed baseline is merged PR #1062,
+`1c35d9485fa3499e69f1926657e91e84fe0d7bb8`. The retained wheel SHA-256 is
+`cfbbc47b5ada59011ef0c4c9049781e8e30cbc9c341ef8eb8a813244139f3a79`.
+An independent replay verified all 341 installed package files against that
+wheel. The same package payload is present in the retained sdist; that
+identity does not substitute for executing each replacement archive.
+The [artifact record](../verification/library-0270-release-artifacts.json)
+retains the initial evidence and records the publication hold.
+
+#### Confirmed defects to close
+
+| ID | Priority and observed main-process failure | Owning boundary and required correction |
+|---|---|---|
+| R1 | P1: slender rectangular column accepts `Mux=400 kNm` and zero signed end moments, checks `Mux_design=20 kNm`, and returns PASS. Equal 400 kNm ends or omitted legacy ends instead check 420 kNm and FAIL. The canonical facade also accepts the conflicting case. | `services/column_api.py`, `services/contracts/family_f1.py`, `design/is456/column.py`, and affected HTTP contracts. Define and enforce one action contract before dispatch to `codes/is456/column/long_column.py`; no admitted governing demand may disappear. |
+| R2 | P2: canonical beam design/detail returns PASS with nine BBS rows, but `reports.generate_html_report` renders FAIL with both fallback and Jinja2. `api.generate_calculation_report` raises a missing `geometry` attribute error. | `reports/generator.py` and `services/calculation_report.py` use legacy shape guesses. Add explicit canonical-result adaptation shared by the report surfaces; preserve existing supported legacy routes. |
+| R3 | P2: accepted design-only reports lose retained geometry, materials and actions; combined reports still lose actions. JSON inputs are incomplete and HTML/Markdown show unavailable known values. | The calculation-report input projection and renderers must retain the calculation basis, explicit units and provenance, rather than inventing defaults for absent inputs. |
+| R4 | P2: an evaluated deflection failure survives only as an overall FAIL. `failed_checks`, serviceability results, governing values/limits and review status disappear from report projection/rendering. | The same explicit adapter must retain evaluated check evidence and reasons. Preserve unevaluated checks as unevaluated and engineering review as required. |
+| R5 | P2: the actively linked developer quickstart fails immediately on `beam_id`; its later attributes, BBS, DXF and report recipes also target retired contracts. | Replace the complete journey in `docs/developers/platform-guide.md` using maintained canonical operations and verify the actual documented block from an installed archive. |
+
+Raw isolated-review evidence remains in the review worktrees under ignored
+`output/independent-review/` and `output/extended-review/`; the durable trigger,
+owners and required outcomes are recorded here. Passing existing tests do
+not close these counterexamples. No new repository tests were added during
+the reviews.
+
+#### Step 1 — reconcile column actions (R1)
+
+- [ ] Specify per-axis semantics for applied first-order moment magnitudes
+  and signed end moments, their sign/order rules, omission/default behavior,
+  and the role of minimum eccentricity. Distinguish an end-moment-only profile
+  from an independent interior peak or an already amplified action.
+- [ ] Prefer structured rejection of contradictory/unsupported combinations
+  for this repair. If a normalization is selected instead, freeze its
+  engineering basis and independent expected outcomes before changing the
+  calculation. Merely taking a maximum or changing the printed result is
+  insufficient evidence of a correct second-order check.
+- [ ] Enforce the rule at the shared service boundary, with matching canonical
+  validation and HTTP field/error contracts. Keep low-level signed-curvature
+  calculation ownership and explicit units intact. Record rejected field
+  paths and preserve accepted action provenance.
+- [ ] Verify the exact 300 × 450 mm, M25/Fe415, 2400 mm² supplied-steel,
+  50 mm centroid-depth case: Pu=500 kN, braced hinged ends, 6000 mm unsupported
+  length, Mux=400 kNm, Muy=0 and all explicit ends zero must never produce
+  PASS. Omitted legacy ends and equal 400 kNm x ends must retain the verified
+  420 kNm/FAIL outcome under the existing model.
+- [ ] Add x/y and axis-swapped checks, same/opposite curvature, sign reversal,
+  ordering, explicit zero versus omitted fields, partial legacy end inputs,
+  short/slender boundary and minimum-eccentricity controls. Replay affected
+  direct service, canonical load/check/schema, and HTTP routes. Reuse the
+  existing long-column reference and contract tests; add regressions for
+  the confirmed demand-loss path, not duplicate formula implementations.
+
+**Exit:** accepted actions, design moments and status agree in every selected
+route; conflicting actions produce the documented structured intake outcome.
+Any change to numerical conventions requires its own independent reference.
+
+#### Step 2 — one explicit report projection (R2, R3, R4)
+
+- [ ] Inventory the documented report producers/consumers. Handle canonical
+  `BeamDesignAndDetailResultV1`, legacy combined results and design-only
+  compliance results by explicit type/schema adapters; reject unsupported
+  objects with a clear error. Reuse one normalized projection across HTML,
+  fallback HTML and calculation-report JSON/HTML/Markdown/PDF surfaces.
+  Keep existing raw canonical JSON exports and their versioned envelope.
+- [ ] Preserve member/story/case identity, geometry, materials, Mu/Vu/Tu,
+  effective-depth basis and supplied detailing. Known retained values must
+  survive; missing cover/span/detailing remain explicitly unavailable.
+  Preserve required versus actually provided steel and actual bars/BBS
+  without deriving provided steel from a requirement or filling defaults.
+- [ ] Preserve intake/calculation/engineering/review states, issues,
+  `failed_checks`, evaluated deflection/cracking/torsion evidence, governing
+  values, limits, sources and unevaluated/HOLD reasons. Show the responsible
+  check beside an overall failure. Do not recalculate engineering status
+  from absent legacy `is_ok` keys.
+- [ ] Verify the canonical PASS plus nine-row BBS reproduction, design-only
+  success with absent detailing, a real detailing failure, strength FAIL,
+  serviceability-only FAIL, and the existing missing-evidence HOLD cases.
+  Use the accepted legacy compliance route for the evaluated serviceability
+  reproduction. Canonical automatic detailing after explicit serviceability
+  currently retains `SERVICEABILITY_DETAILING_SCOPE_HOLD`; this packet does
+  not add a combined serviceability/detailing engineering workflow.
+  The frozen deflection control uses 300 × 500 mm, d=444 mm, M25/Fe500,
+  Mu=150 kNm, Vu=100 kN, span=10000 mm and tension-steel modification factor
+  0.5: retain `failed_checks=['deflection']`, L/d=22.5225225 and allowable=10.
+- [ ] Check content agreement across JSON, HTML, Markdown and supported PDF;
+  exercise base-only fallback and the `[report]` renderer separately. Render
+  and visually inspect representative PDF pages. Preserve qualified-review
+  requirements and draft/issue readiness independently of a calculation PASS.
+
+**Exit:** supported producers reach their advertised report surfaces without
+crashes or invented status, and a reviewer can identify the inputs, actual
+reinforcement and reason for every evaluated FAIL/HOLD.
+
+#### Step 3 — repair the complete active quickstart (R5)
+
+- [ ] Replace its design-through-export blocks using
+  `design.is456.beam.load`/`design_and_detail`/`bbs`, reusing the maintained
+  `Python/examples/canonical_workflows.py` input and detailing conventions.
+  Update the whole stale journey, including later result attributes,
+  compliance, BBS, DXF and report instructions.
+- [ ] Keep base installation sufficient for the canonical calculation, BBS
+  and supported JSON exports. Label and verify DXF/report/PDF dependency
+  extras at their actual boundaries. Show canonical HTML only after Step 2
+  supplies the supported adapter; distinguish it from raw JSON export.
+- [ ] Execute the exact guide blocks in a fresh neutral directory and verify
+  input/result identities, engineering/review state, nonempty BBS and matching
+  exported quantities. Confirm README/docs/developer index links still lead
+  to the corrected route and installation instructions use verified versions.
+
+**Exit:** a new user can copy the documented main journey end to end without
+source-checkout imports, retired arguments or undocumented result conversions.
+
+#### Step 4 — qualify the repaired caller journeys
+
+- [ ] Add the confirmed reproductions and exact guide recipe to the maintained
+  release driver inventory in `scripts/_lib/release_beam_column.py` and its
+  required transitive inputs. Copy only drivers/fixtures, never package source
+  or repository `conftest.py`, into isolated installed verification.
+- [ ] Exercise the affected API/schema/HTTP error paths and report formats;
+  compare accepted requests, calculation/check states, BBS and exports by
+  values and identity rather than snapshot text or a lack of exceptions.
+- [ ] Obtain bounded independent read-only review of action semantics and the
+  producer-to-report handoff. Preserve all original A–E numerical references,
+  ordinary/multilayer member journeys, D2-only HOLD, D3 scope controls and
+  T-member PASS/FAIL/HOLD outcomes. Unsupported profiles retain their limits.
+- [ ] After all scoped content freezes, run the union of focused tests,
+  affected formatting/lint/type/architecture checks and essential changed-area
+  validation once. Repair only outcome-changing defects and rerun their
+  affected evidence. Integrate the units in one milestone PR; no separate
+  release or broad verification cycle per internal unit.
+
+**Exit:** every R1–R5 reproduction is closed by observed behavior, required
+consumer journeys pass, and no selected engineering control loses its status.
+
+#### Step 5 — replace artifacts and repeat the release decision
+
+- [ ] Freeze the repaired versioned source/build inputs and expanded verifier
+  inventory. Because 0.27.0 is unpublished, retain that version while building
+  a new wheel and sdist. Record new sizes, SHA-256, Python tree, verifier/input
+  hashes and environments; preserve the old pair as rejected baseline evidence.
+- [ ] Run all 18 required profiles against the new exact pair, including the
+  expanded beam/column corpus from both wheel and sdist, independent references,
+  copied guides and report controls. Run base-only and optional-extra paths in
+  their declared environments. Previous profile passes cannot be carried over
+  as passes for changed bytes.
+- [ ] Use required hosted PR checks and the final full/cross-platform release
+  verification on the immutable candidate. The concrete broad-check reason is
+  the changed shared column intake and report projections across existing
+  callers; do not duplicate the full suite after each repair unit.
+- [ ] Bind independent review, final checks, merge/tree identity and retained
+  artifact check. Update this plan, handoff and artifact record with an observed
+  readiness verdict. An unresolved R1–R5 defect or required gate failure keeps
+  publication HOLD; do not describe planned checks as completed evidence.
+- [ ] Only after readiness and separate version/target-specific owner
+  authorization: TestPyPI verification, exact tag, same-byte PyPI/GitHub Release
+  delivery and public hash/installation readback under the maintained procedure.
+
+**Exit:** an exact replacement pair has observed release evidence and an honest
+readiness decision. Publication remains a distinct authorized action.
+
+#### Repair qualification results — 7 November 2026
+
+The selected replacement was built from clean commit
+`5c79c3b07dcbdb5ac32a519ae50cacfde5054cac`, frozen Python tree
+`7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf`, into a previously nonexistent
+guarded directory. Retain and use only
+`output/releases/0.27.0/5c79c3b07dcb/dist/` for a later authorized delivery.
+
+| Step | Observed implementation and archive evidence |
+|---|---|
+| 1 — column actions | Direct/canonical/HTTP conflicts reject with structured paths; x/y 400 kNm with zero signed ends cannot PASS. Equal 400 kNm ends retain 420 kNm/FAIL; ordered signed curvature, sign reversal and original omitted/minimum-eccentricity defaults pass. Independent installed review accepted the final wheel and all 342 packaged payload files. |
+| 2 — reports | Canonical PASS plus nine BBS rows reaches both report APIs with actual overall PASS badges in all three Jinja templates and real base fallback. Legacy input/action basis and serviceability-only FAIL/reasons survive JSON/HTML/Markdown/PDF. Invalid detailing, including a stale legacy true flag, produces aggregate FAIL, DETAILING_INVALID and detailing_invalid. The original calculation envelope/identity is retained separately; an unminted aggregate identity remains unavailable. |
+| 3 — quickstart | The exact complete guide runs from neutral base installs and declared extras, with load/design/detail/BBS, JSON/CSV/report exports, drawing and PDF. Source status, nine BBS rows, actions and exported identities agree. |
+| 4 — caller verification | Both copied-driver corpora pass 408 tests, 16 checker/public-driver commands and all 13 T-member journeys (two PASS/eight FAIL/three HOLD), preserving A–E and unsupported/service-detailing boundaries. Base installs pass 29 UAT cases, 13 family journeys and 106 numerical metrics each. Independent installed R1/report review accepted; all 19 pages of four changed PDF cases were individually inspected without clipping or lost content. Full mypy passes 341 source files. |
+| 5 — exact archives and final gate | All 18 required profiles PASS for the selected pair; strict site-packages/payload checks and independent references pass. Final required PR/Weekly checks and reviewed merge/tree identity are owned by [PR #1063](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1063). Readiness requires their observed acceptance; publication is not part of this goal. |
+
+The artifact record supplies exact SHA-256 values and receipt/verifier hashes.
+Performance ratios versus the frozen baseline are 0.99281 (single beam) and
+1.03900 (batch100), both below the 3× limit. CAD/ETABS profiles retain their
+dependency-only/native acceptance boundary; P–M–M remains experimental and
+professional approval remains false.
+
+The original rejected pair in `9a78d2be9314/dist/` is preserved with unchanged
+hashes. A first replacement at `423097e8` passed its then-current assertions,
+but the additional negative legacy-envelope control rejected it. A parent
+build-bookkeeping error then reused that intermediate directory after a
+failed commit check; its original binary pair is no longer retained. Its
+qualification/review receipts remain historical evidence only, and current
+files there are unqualified dirty-build snapshots. The final selected pair
+was rebuilt from a verified clean new commit into a new guarded directory;
+all 18 profiles were rerun against its own hashes. Do not use intermediate
+files or their passing receipts for delivery.
+
+No tag, TestPyPI/PyPI upload or GitHub Release was performed. Keep the final
+required hosted/integration receipts in GitHub, then obtain separate owner
+authorization before the publication procedure.
+
+#### Features outside this repair packet
+
+The comparison review's proposed eight-bar then oriented six-bar physical
+columns, qualified actual-bar P–M–M, broader L/hogging/continuous beam member
+profiles, splices/cutoffs and circular columns remain unselected extensions.
+Do not promote helper existence into complete-member support or general
+beam/column completion. The supported 0.27 result is a bounded IS 456 beta
+with its documented profile limits. This plan does not move the approved
+0.28 slab/footing theme or reopen permission for normalized IS code data.
 
 ### Later release themes
 

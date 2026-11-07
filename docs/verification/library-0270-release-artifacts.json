@@ -2,16 +2,23 @@
   "artifacts": [
     {
       "filename": "structural_lib_is456-0.27.0-py3-none-any.whl",
-      "sha256": "cfbbc47b5ada59011ef0c4c9049781e8e30cbc9c341ef8eb8a813244139f3a79",
-      "size_bytes": 1226545
+      "sha256": "75debc1e9fdf0b3b7d1d903f1725829624b9032cf3eae8cc785964e381dfda39",
+      "size_bytes": 1232535
     },
     {
       "filename": "structural_lib_is456-0.27.0.tar.gz",
-      "sha256": "93c0ca8dc23611d6762fad45f887be1a4b4fe6c655725936dabc68b121e5fe97",
-      "size_bytes": 1045737
+      "sha256": "52e5dff065d54aeb373933bdef9c97f804a13344f7f6f662f02f27bf9f87ca59",
+      "size_bytes": 1051151
     }
   ],
-  "build_head": "9a78d2be9314cd19c0d71548b2f6605ee50e5693",
+  "build_head": "5c79c3b07dcbdb5ac32a519ae50cacfde5054cac",
+  "closed_findings": {
+    "R1": "Structured x/y COLUMN_ACTION_CONFLICT rejection before slender dispatch; ordered signed ends and original minimum defaults retained; canonical/HTTP paths verified.",
+    "R2": "Canonical typed reports preserve the actual overall badge; legacy aggregate FAIL has its own envelope,DETAILING_INVALID reason,and unminted aggregate identity explicitly unavailable; original calculation envelope/identity retained.",
+    "R3": "Known input geometry/materials/actions and calculation basis survive JSON/HTML/Markdown/PDF; missing data remains unavailable.",
+    "R4": "Evaluated deflection-onlyFAIL22.5225225/10 and failed_checks/review requirement survive all supported formats; unevaluated/HOLD remains distinct.",
+    "R5": "Exact complete developer quickstart runs from base installs and declared drawing/report/PDF extras, with9BBSrows and matched outputs."
+  },
   "installed_wheel_uat": {
     "advertised_entry_points": {
       "cli_entry_count": 15,
@@ -622,10 +629,10 @@
         "status": "PASS"
       }
     ],
-    "library_content_identity": "c6ac5f7cf416fdf4d299fa70787193fc935d9636bb0b10e766c2fa216a777bd4",
+    "library_content_identity": "956d50aca61dfca0518b743f455e3769c75d1d30dd797f55e3418401a29ef24f",
     "matrix_schema_version": "release-negative-uat/v1",
     "matrix_sha256": "dd52015061a443e16f93bb5828016b5e96a580e3e0ebe4516e31a29db88c7757",
-    "package_origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_base_7_ua55pk/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+    "package_origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_base_p0knfyz4/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
     "package_version": "0.27.0",
     "professional_approval": false,
     "public_examples": {
@@ -636,54 +643,360 @@
     "schema_version": "exact-wheel-uat-receipt/v1",
     "status": "PASS"
   },
-  "integration_evidence_owner": "GitHub PR for codex/lib-027-goal-5-qualification; bind its observed merge in the publication packet",
-  "package_file_count": 341,
-  "package_payload_sha256": "fa1d3ecc93614d78c669844848d21d675a191189e5933fe4e873eb3e24197f63",
-  "preflight": {
-    "essential_checks": "12/12 PASS",
-    "fastapi_passed": 626,
-    "final_source_gate_owner": "Required PR and Weekly workflows on final immutable head; see GitHub",
-    "focused_repairs": "10 PASS",
-    "initial_verdict": "NOT_READY",
-    "python": {
-      "deselected": 6,
-      "failed": 3,
-      "passed": 8972,
-      "skipped": 4
-    },
-    "react_build": "PASS",
-    "repairs": "Maintained generators and unit-name recognition; packaged Python/build inputs unchanged",
-    "root_causes": [
-      "Stale versioned API compatibility ledger",
-      "Stale generated Indian-code capability manifest",
-      "Function-quality checker did not recognize the explicit angle_degrees suffix"
-    ]
-  },
+  "integration_evidence_owner": "GitHub PR #1063 owns final immutable-head required checks, full/cross-platform verification and reviewed merge/tree identity. Bind the observed merge in any later publication packet.",
+  "package_file_count": 342,
+  "package_payload_sha256": "e9e3c51e3dab949f4691223512fa3e787fbc15dcce645ef237e26160f5531b87",
   "professional_approval": false,
   "publication_state": "UNPUBLISHED_NOT_AUTHORIZED",
-  "python_tree_sha": "7c39b777349500fc86c5c792650e74f0336d176a",
+  "python_tree_sha": "7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf",
   "qualification": {
     "beam_column_failures_errors_skips_each": 0,
-    "beam_column_tests_each_archive": 378,
+    "beam_column_tests_each_archive": 408,
+    "consumer_journeys": {
+      "base": {
+        "bbs_rows": 9,
+        "controls": {
+          "deflection-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "deflection"
+            ]
+          },
+          "design-only": {
+            "engineering_status": "PASS",
+            "failed_checks": []
+          },
+          "detailing-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "detailing_invalid"
+            ]
+          }
+        },
+        "drawing": false,
+        "files": {
+          "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
+          "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
+          "beam_B1_outputs/beam_B1.calculation.json": "d68fc18435d0a0d33668c92608150b9ed53df38b002f0f99bf463acfa4f7fab1",
+          "beam_B1_outputs/beam_B1.html": "217c53522244240c0e1e984d5ca374fde77974324b8641de6985174dd5d7b6b2",
+          "beam_B1_outputs/beam_B1.md": "3be5a2d32f2111ee76352625581dad47033ebf0b915699ae6a3c1d188308e2b6",
+          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.template.html": "784f28440b70c295e9f2f6da75caf7942b76cc9c8a0d82509b800ece6e5ad54f",
+          "deflection-failure.html": "26d44b9ba12fe8a31098b8a7b2ee3c12fbb238ba48d4ea7f62f5e49453ce4a9a",
+          "deflection-failure.json": "f65c76cca65aa0c473f49ad7cdf2c57bf462f505b4f9dee07be2c16ecd94b08c",
+          "deflection-failure.markdown": "597b81ceb99951ff0bd94b42d3465b9e178966dddcb1767e975e9b14df1f7895",
+          "deflection-failure.template.html": "64c5a083b611e3fe566c3bdb16667f90b8990e6819c77693eba2d8d047e95c7b",
+          "design-only.html": "3ed7e6a4ef8e023b1a24b917fe06a02eda99752863e29fa63bc9f8315cd48640",
+          "design-only.json": "bc553112c10494b0ba2d40c821a7a39318859b816ac3fc68438de19db1ac90c3",
+          "design-only.markdown": "114b084f209c31c8d4a642f93d1d1e6391ef79e7ce13f811e84f3b4522e281e3",
+          "design-only.template.html": "48f7894cd797e4cf01f329a103fbdb4ffbe84563bdb9181e91e402e8441c65c1",
+          "detailing-failure.html": "f9fc1eadf9091f397519f3c2385b41ac878048ab857ab3f21504e019f2042c93",
+          "detailing-failure.json": "564a6c3475a32d4dc3f5cf2cf8b617d44c7cb6770ec5981f55265683f4ce5256",
+          "detailing-failure.markdown": "56d53064acd6b3ebe9a060896e2c2c5ed6eb5ddae108c18a1535cd28e7512794",
+          "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
+        },
+        "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
+        "jinja2_available": false,
+        "pdf": false,
+        "review_status": "QUALIFIED_REVIEW_REQUIRED",
+        "source_status": "PASS",
+        "status": "PASS"
+      },
+      "dxf": {
+        "bbs_rows": 9,
+        "controls": {
+          "deflection-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "deflection"
+            ]
+          },
+          "design-only": {
+            "engineering_status": "PASS",
+            "failed_checks": []
+          },
+          "detailing-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "detailing_invalid"
+            ]
+          }
+        },
+        "drawing": true,
+        "files": {
+          "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
+          "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
+          "beam_B1_outputs/beam_B1.calculation.json": "7a4e5c65e949299f63a4b9741c307b11ac8a67727a16d588b78caae199fb6833",
+          "beam_B1_outputs/beam_B1.dxf": "96448ed179a77f52976b65dd91468b9211f7167b904f9da47ac678bdb165b544",
+          "beam_B1_outputs/beam_B1.html": "c1d6458f326aa9e7c36279ab5a3806f969fb7c7b147ce3135598f11ec975b74e",
+          "beam_B1_outputs/beam_B1.md": "8bfd7b0876b57c7d1304b94e9f188a3fb311f684e94bc82ae51b0937b9729868",
+          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.template.html": "784f28440b70c295e9f2f6da75caf7942b76cc9c8a0d82509b800ece6e5ad54f",
+          "deflection-failure.html": "5cb6313b83684f0d52a669e7f051852a4236547abbbc3f62ad5c40842492629a",
+          "deflection-failure.json": "7a23da091325875ca050ae81e40bddc5dbd18d9416b2c65829ce024b82cc42a1",
+          "deflection-failure.markdown": "75a1674aa8382185f018a6079d7b8b1f0ce29445fd97359925a072f3521c708e",
+          "deflection-failure.template.html": "64c5a083b611e3fe566c3bdb16667f90b8990e6819c77693eba2d8d047e95c7b",
+          "design-only.html": "346c3c9bf4ee863674baeb1377413de50bb885b97fd4f0551a84bd154a0b813c",
+          "design-only.json": "7eba76569a3dafe069fe233e1f67ecbcaf5d6138e162d8646b24fc7d1f3a67ab",
+          "design-only.markdown": "285102fba7954cb95b04cf3002e3a0a58da5f61d3c09e3798348e0eaa93c4079",
+          "design-only.template.html": "48f7894cd797e4cf01f329a103fbdb4ffbe84563bdb9181e91e402e8441c65c1",
+          "detailing-failure.html": "301010467a6e81b4ff1c8c1ddac403a811bcff22ab49427c2ace50d52dc500ed",
+          "detailing-failure.json": "c6f26462c652a80873f699a9c4fc0edfb042cb3237702b6f038bc397a67e8b85",
+          "detailing-failure.markdown": "5c1b28dc3a6e583bfe16ae8684965467ae0d3537760af27f164c4de068410db2",
+          "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
+        },
+        "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
+        "jinja2_available": false,
+        "pdf": false,
+        "review_status": "QUALIFIED_REVIEW_REQUIRED",
+        "source_status": "PASS",
+        "status": "PASS"
+      },
+      "exports": {
+        "bbs_rows": 9,
+        "controls": {
+          "deflection-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "deflection"
+            ]
+          },
+          "design-only": {
+            "engineering_status": "PASS",
+            "failed_checks": []
+          },
+          "detailing-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "detailing_invalid"
+            ]
+          }
+        },
+        "drawing": true,
+        "files": {
+          "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
+          "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
+          "beam_B1_outputs/beam_B1.calculation.json": "248d21996a8588f1cdb6315d0808a95ea0710168066ad18436c8fae63425fbca",
+          "beam_B1_outputs/beam_B1.dxf": "36cc3fe3fc5491f15f94cf67f3dedeb6427e5f92ec67ddd147723d80e9a8f1c3",
+          "beam_B1_outputs/beam_B1.html": "bebd53815c95fe4e663bc14bced08cf710d16749bb663fc6c7d2b1ac24952bf0",
+          "beam_B1_outputs/beam_B1.md": "e4e70f6d2d6e011339604c5b692097e129a74fd453a2c705664855b102a2cc18",
+          "beam_B1_outputs/beam_B1.pdf": "985c9107645d69c1242873ef505162b8912306572268659e5a61cff542c72a0a",
+          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.template.html": "8da1a29bb2fde2892e0ef72a3d69e2cb25fecb8cc36e3063b5fab837a7328b60",
+          "deflection-failure.html": "53b0d914b3e98a1fa1d9540b1b1fa0b27de3e2356e3f78a62488b12a11c1c626",
+          "deflection-failure.json": "7663054b7c534cbfd6217e18b47176a2d1d832da5681e09cd4af6aef8211b5ef",
+          "deflection-failure.markdown": "c2e5723d08eefc3d524fbcc82281f3c4b386bc57ab06151122c76a64f85cc2a4",
+          "deflection-failure.pdf": "8ab7a640bb48e4c6cfd401a3b39a79e63af0fd9bd5f93045616655eabf6693aa",
+          "deflection-failure.template.html": "c59f787e3b5cc5cb1876861cead8c08809ba38a6a607d095bc5796e1d6ab7d29",
+          "design-only.html": "afcd4b5ae2824de7a5f70b426c067e74d721b8f3ced16a182bdc4cbb1a7b44d0",
+          "design-only.json": "4d9061c165aa0cb7dbbb21821843f7ecfec47ceda341b502346604f3160688cf",
+          "design-only.markdown": "3597bc6b7588709a5fe4d1897ff5d1cb923272015a9afa7976d2785b80b13acc",
+          "design-only.pdf": "504c4f01cb356c8670dac99fb5010a91fc627bee2d0b7d04a8662491283b0c09",
+          "design-only.template.html": "0a5d0f7862f79f9d303d602efe901830d65c4581e7865861ece6b6a75eeb3899",
+          "detailing-failure.html": "e8aff88c5a63811d46f4d0f411294d560197113c20ffed82ec28728d64518fc2",
+          "detailing-failure.json": "645427cfca7b0f83f7710127ceaefa664e404e96fe56e5125f870f8c61620474",
+          "detailing-failure.markdown": "aa96c99c82cfea80fa000ffed6e0b8d633064cb7949715a31550fc443e1c5298",
+          "detailing-failure.pdf": "caa6559987c552af651ac611893ca4d9d18639ada6aa08fb25a526ac5cd6c364",
+          "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
+        },
+        "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
+        "jinja2_available": true,
+        "pdf": true,
+        "review_status": "QUALIFIED_REVIEW_REQUIRED",
+        "source_status": "PASS",
+        "status": "PASS"
+      },
+      "pdf": {
+        "bbs_rows": 9,
+        "controls": {
+          "deflection-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "deflection"
+            ]
+          },
+          "design-only": {
+            "engineering_status": "PASS",
+            "failed_checks": []
+          },
+          "detailing-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "detailing_invalid"
+            ]
+          }
+        },
+        "drawing": false,
+        "files": {
+          "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
+          "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
+          "beam_B1_outputs/beam_B1.calculation.json": "eba9396ba6c34455d3c7b877a1ff84f848a43472a326fb6ca6c03c62db649ddf",
+          "beam_B1_outputs/beam_B1.html": "ee9dbbef626111a29c3c8ed4d357b1c92ec1ca19d43375381b05cc5f5a5e0927",
+          "beam_B1_outputs/beam_B1.md": "f906048ad8c1bc86c229b5b325e9bc6e0d2f866e9b247eba8a335529f0238543",
+          "beam_B1_outputs/beam_B1.pdf": "92e73f62242ec09a59a4fd9ccab253d286864397183ad7a3fb73fbe812b929ab",
+          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.template.html": "784f28440b70c295e9f2f6da75caf7942b76cc9c8a0d82509b800ece6e5ad54f",
+          "deflection-failure.html": "06bbc12162d766590045a70e85275455cc49c31cfbba30a368ab7d80efaa2753",
+          "deflection-failure.json": "511166bea1af93f64325d5a839d74e3567de6f6e96d5fcfa5e29b69b79f676bf",
+          "deflection-failure.markdown": "a64116cab908d9e2e4ad16d2b818121c4bea0476fa8090d6f0e1126d0aab5e19",
+          "deflection-failure.pdf": "fddd32fb32a929b9780d31cdcf23a4699b4b9d04c5db0eab2ecaaa600a1c7fa6",
+          "deflection-failure.template.html": "64c5a083b611e3fe566c3bdb16667f90b8990e6819c77693eba2d8d047e95c7b",
+          "design-only.html": "52ad86c2b9a56b2703b4db851bc1e2d5c94d5948b79ef36b11eaf1732a881a04",
+          "design-only.json": "129de5e18389207d3c288621273d1ae3b7dca42ee60e297d9daefaf917237190",
+          "design-only.markdown": "4b1edc27cab859483517317eaa08c1788d26be767e22640a8d533c8007e5ac1e",
+          "design-only.pdf": "085d0cbbdf1d09e5721d51a31097e2d6ce053b3b0ffc80c5a67ff2b7bd914100",
+          "design-only.template.html": "48f7894cd797e4cf01f329a103fbdb4ffbe84563bdb9181e91e402e8441c65c1",
+          "detailing-failure.html": "17b21191b3926f1e30fc3758af7c192f0b972475062979c75b706cfb610b364b",
+          "detailing-failure.json": "c793d65b50f4f18ddd36102ff7c5745b1602525c61c3238a55c0198392eca9e6",
+          "detailing-failure.markdown": "5c8a58f9fadf0c3698d6d56115951925c17b175f5a88d6ac713bacfad55136cf",
+          "detailing-failure.pdf": "3964704755a1a668bfb6403e769c6608589676c78608320d3686f7afbe63776d",
+          "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
+        },
+        "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
+        "jinja2_available": false,
+        "pdf": true,
+        "review_status": "QUALIFIED_REVIEW_REQUIRED",
+        "source_status": "PASS",
+        "status": "PASS"
+      },
+      "report": {
+        "bbs_rows": 9,
+        "controls": {
+          "deflection-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "deflection"
+            ]
+          },
+          "design-only": {
+            "engineering_status": "PASS",
+            "failed_checks": []
+          },
+          "detailing-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "detailing_invalid"
+            ]
+          }
+        },
+        "drawing": false,
+        "files": {
+          "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
+          "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
+          "beam_B1_outputs/beam_B1.calculation.json": "84d398aac044f4c07eae2facbc67e9b8bd33b5a6c54e05cbe9fe039dddc5eaa1",
+          "beam_B1_outputs/beam_B1.html": "f8a3324c61fe6d73f6211c524566eb655172ed99eb6ea34ce3910e96bb3a2b6a",
+          "beam_B1_outputs/beam_B1.md": "0cb2eee9282b7e8c57c3f039dbb9a50201a579693455a3b1f8b320e1f1d2bf73",
+          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.template.html": "8da1a29bb2fde2892e0ef72a3d69e2cb25fecb8cc36e3063b5fab837a7328b60",
+          "deflection-failure.html": "37d918c6da15aea7f9434eb9d5203dbc925b5dbd3ac170a4d921721953f022da",
+          "deflection-failure.json": "a3edaf0a0c5cd0b61571ea8a536823b3fb092912aad02906b979c8b959819fc0",
+          "deflection-failure.markdown": "9ef4607f5bd6ae4c7e1c49af1587ad1afca38ce3878181f7f99d6a72cabfefce",
+          "deflection-failure.template.html": "c59f787e3b5cc5cb1876861cead8c08809ba38a6a607d095bc5796e1d6ab7d29",
+          "design-only.html": "38bf6e2f4b67fdbbf14236dd60ecdabfb4fe3fe65d58136c3a1169d50cb7c099",
+          "design-only.json": "cc63f9e88ae7bfd51636072017b5dbda0b5318b84400a8bdeb9c91b4a0d79c06",
+          "design-only.markdown": "c62b29710014a03bc9a777c3ffb54a85994e8c206b5c27b60f8d15956cb61a08",
+          "design-only.template.html": "0a5d0f7862f79f9d303d602efe901830d65c4581e7865861ece6b6a75eeb3899",
+          "detailing-failure.html": "caf5d9ce2504322986682af3433b7898d695c2ba861aab8d7073009cb63d5925",
+          "detailing-failure.json": "f6d9a821e89f664de9a008e88a444efbefbbfde65e964a4b0652a1ea29e1fcd5",
+          "detailing-failure.markdown": "10dacd932822369d16a11ad0f591a16e824ea24d1966de101d1e9a9eb60bb7d0",
+          "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
+        },
+        "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
+        "jinja2_available": true,
+        "pdf": false,
+        "review_status": "QUALIFIED_REVIEW_REQUIRED",
+        "source_status": "PASS",
+        "status": "PASS"
+      },
+      "sdist": {
+        "bbs_rows": 9,
+        "controls": {
+          "deflection-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "deflection"
+            ]
+          },
+          "design-only": {
+            "engineering_status": "PASS",
+            "failed_checks": []
+          },
+          "detailing-failure": {
+            "engineering_status": "FAIL",
+            "failed_checks": [
+              "detailing_invalid"
+            ]
+          }
+        },
+        "drawing": false,
+        "files": {
+          "beam_B1_outputs/beam_B1.bbs.csv": "2dfb192d028144bfa203e2f8dc1579315d4db71006bd96f98f7de6d0b3282f1d",
+          "beam_B1_outputs/beam_B1.bbs.json": "44b47218a70ef3609034402f9de3dc1dfb8c26983f847db6e71f9c8f482f0dce",
+          "beam_B1_outputs/beam_B1.calculation.json": "9a46f898f47ee609b69fe8dfe0f525fad932dafac94a9a0295d5f2843e4dc62e",
+          "beam_B1_outputs/beam_B1.html": "460460856b67461349745a5da911942c13be5b4c6fe04a32523308fee57f86a9",
+          "beam_B1_outputs/beam_B1.md": "1469dba0620bbb035b09bab1cc59049b9ce6871b8d2ca632db392d1a597db6e3",
+          "beam_B1_outputs/beam_B1.result.json": "452ab5d9b7192cda7c22f191bb3375e8bc147d1b4b5ac50cb8a35ec2ec07e638",
+          "beam_B1_outputs/beam_B1.template.html": "784f28440b70c295e9f2f6da75caf7942b76cc9c8a0d82509b800ece6e5ad54f",
+          "deflection-failure.html": "0217028b40b7f397285c1849f479a8f3b96e0e03e33244f29180a17acd0e71b5",
+          "deflection-failure.json": "2959e42185fc57fe43cb3bc688e5df2cb6f80ede6e68c4c6a2574bad393db17b",
+          "deflection-failure.markdown": "3a8c97b5cd9257c8a22c3a201011fbb3967b40c7f474f47e2375131e8f4dca65",
+          "deflection-failure.template.html": "64c5a083b611e3fe566c3bdb16667f90b8990e6819c77693eba2d8d047e95c7b",
+          "design-only.html": "c565a0506746194ea0051ae3810677d3dbfb32a73ccf9b35943550da0cccdd5c",
+          "design-only.json": "adb2f17d818c56e86dcaf5d982c26cbd4435c3e884fce8578f52873e9d872bbc",
+          "design-only.markdown": "a99d2e1851737ebd6334c5d767654676cba6210a5137d56a9a1eb69ec8cd1ef7",
+          "design-only.template.html": "48f7894cd797e4cf01f329a103fbdb4ffbe84563bdb9181e91e402e8441c65c1",
+          "detailing-failure.html": "a3c355ae6a110dc3a118b0b69de26fd1547eb99edb546570021e9c9669064894",
+          "detailing-failure.json": "7f6d687fe9d27c3a24d76bff3cbb3c90133634467e4725a4f87b2ccb949633e7",
+          "detailing-failure.markdown": "974ec93d8ecec2551f07f56b5af8ed32ce4a7dd68a17bce888bc0e8a202aa5ec",
+          "platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81"
+        },
+        "guide_sha256": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
+        "jinja2_available": false,
+        "pdf": false,
+        "review_status": "QUALIFIED_REVIEW_REQUIRED",
+        "source_status": "PASS",
+        "status": "PASS"
+      }
+    },
     "family_journeys_each": 13,
     "independent_metrics_each": 106,
     "independent_software_review": {
       "decision": "ACCEPT",
-      "reviewer_role": "separate read-only release-boundary agent",
-      "scope": "qualifier implementation, selected archive proof and source-gate repairs; final hosted evidence owned by GitHub"
+      "scope": "Separate read-only installed R1 and R2-R5 reviews; own site-packages imports, exact wheel/hash and342payload files; visible overall badges, input/steel/failure/review preservation and legacy aggregate-negative controls.",
+      "source_head": "5c79c3b07dcbdb5ac32a519ae50cacfde5054cac"
     },
-    "pdf_count": 8,
-    "pdf_page_count": 16,
-    "pdf_visual_review": "PASS; all16 pages rendered and individually inspected across PDF/render/exports profiles",
+    "pdf_visual_review": {
+      "cases": [
+        {
+          "case": "canonical",
+          "pages": 6
+        },
+        {
+          "case": "design-only",
+          "pages": 4
+        },
+        {
+          "case": "serviceability-fail",
+          "pages": 4
+        },
+        {
+          "case": "detailing-fail",
+          "pages": 5
+        }
+      ],
+      "pages_inspected": 19,
+      "scope": "Representative changed canonical/design-only/serviceability-failure/detailing-failure PDF reports, all19 rendered pages individually inspected; prior member render profiles also pass their declared checks.",
+      "status": "PASS"
+    },
     "performance_comparison": {
       "batch100": {
         "limit": 3.0,
-        "median_ratio": 1.093218814467178,
+        "median_ratio": 1.0389959529222137,
         "passed": true
       },
       "beam": {
         "limit": 3.0,
-        "median_ratio": 0.9995294886426347,
+        "median_ratio": 0.9928083172186934,
         "passed": true
       }
     },
@@ -708,8 +1021,6 @@
       "transport": "PASS",
       "validation": "PASS"
     },
-    "public_example_guide_tests": 12,
-    "real_dev_benchmark_tests": 1,
     "required_profiles": [
       "base",
       "sdist",
@@ -730,16 +1041,81 @@
       "beam-column-wheel",
       "beam-column-sdist"
     ],
-    "runtime_scope": "Selected installed wheel/sdist workflows and declared non-native profiles; expected FAIL/HOLD preserved",
-    "source_receipt_sha256": "5fb9d371243b79a8e51cb7960e3c7dc980e1b085bbfcd9ab11d0ff54b5f794b8",
-    "standalone_examples": 17,
+    "runtime_scope": "Selected installed wheel/sdist workflows and declared non-native profiles; expected FAIL/HOLD and source identities preserved",
+    "source_receipt_sha256": "ab36302718772b3c085b29c730ce04f1db0b7d9d3d7a3def37cace2d5f1e6026",
     "status": "PASS",
     "t_member_expected_verdicts": {
       "FAIL": 8,
       "HOLD": 3,
       "PASS": 2
     },
-    "t_member_journeys_each": 13
+    "t_member_journeys_each": 13,
+    "verification_inputs_sha256": {
+      "Python/examples/beam_comparator_reference.py": "cab79c39822940083361a55507236837f1b677eddb76bb5f4150306b23e15ceb",
+      "Python/examples/beam_section_closure.py": "962f804b10440baf870760193928d0b42e14e458c3e8a1db910f60240c07cb87",
+      "Python/examples/canonical_workflows.py": "70303af2d06463bbd91dcd638455a6e3b783a482a4bb25b5428bbcf240a03ade",
+      "Python/examples/complete_member_workflow.py": "b9ea8ff810914763137a028b0c5b4bf45f3c46c0180911dd786523e9e16c690a",
+      "Python/examples/four_corner_column_member.py": "7a5ac455f0d4a23fa432a794cf2d7ea9bac7c26c964347e162faa482f84ce32c",
+      "Python/examples/full_pipeline_synthetic.py": "7fbee57ed0bbc1ac26ea271ae2a6f0c2d2fd57c5e2599179af51276bf08e73a8",
+      "Python/examples/layered_column_section.py": "60bd0e17a90c4ca64feffc9cd5aa6922d9014c08c9c39c93bd7a453f94e8bea1",
+      "Python/examples/physical_torsion_member.py": "0824d7a1cf5176d579e778067213335d5d9a5c3a8ad80e9ab7ec1c99ea43d977",
+      "Python/examples/sample_beam_design.csv": "e6e019df018ea37f2b0a3c37feb2c2604db1961b6fbf117f1b01dca115a2e993",
+      "Python/examples/t_beam_member.py": "574aea236a256b57305e654f3ecfb141408d489e5973c7159b662585c80ff74a",
+      "Python/examples/torsion_station_reference.py": "1582651c9423764be660dcc86096109789a2d322467af36222d89b499d38ce5f",
+      "Python/tests/data/benchmark_vectors/family_review_inputs.json": "3e7d55400cdfbc940a10a3202c13ce53a3aafe192480283029d4631076f59661",
+      "Python/tests/data/benchmark_vectors/family_review_reference.json": "0e02c42ac3f237deb5a0dde53738081cbd9d47e4dac583a9a6854efbae8d5645",
+      "Python/tests/data/benchmark_vectors/flanged_branch_reference.json": "627fe3714b942a4891ca6031c16c7b9fa3d1e94e9d67baf9aaa508197a6045ae",
+      "Python/tests/integration/test_beam_comparator_example.py": "c75041e3fdc73059b8d3b1ef5c6f04f94c883d3ed6112759c049f74063b2e0af",
+      "Python/tests/integration/test_beam_primary_route_torsion.py": "c067e320ee91067e500295c0bc7a3e6b3b993675d090c04778b07eff504ff43f",
+      "Python/tests/integration/test_beam_section_closure.py": "0bf9e4278a918f34852f5ab1b8b6b306c5d2dfd573728ba06146e863bcf93230",
+      "Python/tests/integration/test_complete_member_workflow.py": "7d583f05b38d409f49c832536dcf5dbd984f4c4652f51382c5abc273cfb00f4b",
+      "Python/tests/integration/test_flanged_branch_equilibrium.py": "4505ee6a26568e021f81418d5ccb4aa976ea8792113897eaa45d6a1e36955c25",
+      "Python/tests/integration/test_four_corner_column_member.py": "64c43a5d228675a550bea35a5d419248cc0eea18c2fad8a27a721df4f313083c",
+      "Python/tests/integration/test_layered_column_section.py": "e6a924f068f8724d1cf5bdf08b191cb90bd2f1ffe296a296b15e4716531e1d65",
+      "Python/tests/integration/test_physical_torsion_member.py": "d8170ba6b13256db3aa24a8f12df6fdbc4de3dc05d3fb489a33a1f66826f73a7",
+      "Python/tests/integration/test_release_027_consumer_repairs.py": "4afa9a05bf36c68c95f9a84e958a6008d03c96fde7b34d4da4efcfd3020bd792",
+      "Python/tests/integration/test_t_beam_member.py": "8bd44be5182c40c9bb8aac40e874c2f39156d858a7bcf9f689075dd488dc4888",
+      "Python/tests/integration/test_torsion_corner_geometry.py": "fe91d0067e538764df69b6895e90f3a55341ec80c9b86fb1c809b1c5b3cda564",
+      "Python/tests/integration/test_torsional_serviceability.py": "fce1ab5a95855c15ba3174934aa7fd85b13e223c6f1a253620e1e2dea109e603",
+      "Python/tests/performance/test_benchmarks.py": "727ae26d69b7423fe682a8d48b3cd2ad6f790a882afc073df02cff85c85e0b75",
+      "Python/tests/test_calculation_report.py": "2bc9ca5fa6b37dcf850d89a42331181564d1e6c4af14916e79db05cbcc883475",
+      "Python/tests/test_public_examples.py": "0a7fd92dcfca8397277b50f36b2f5a9cb7ff241874cdb90e217cedbae16cd003",
+      "contracts/structural-engineering/conformance/wp01-per-bar-vectors.json": "fe86d0a0025af230bd3983eaf90c194d7d6c7cbe8b33683d5dd3e0fe42a15143",
+      "docs/developers/platform-guide.md": "b6812bf21d490f9003c271d43687733f516f7f16377af4441182164ca5b3ef81",
+      "docs/getting-started/beginners-guide.md": "916f57f893fd84da259a68d74fad8906953dc623031cd9d20738c182065f250e",
+      "docs/getting-started/colab-workflow.md": "9be48100530c651c48a19546537e4bdad737965a03a67385aaa0a9bac7620c1a",
+      "docs/getting-started/python-quickstart.md": "93f8da516498cb0ae7eb240dcb564f6c2f8fd3cf92fb18f0130bba598b2df0d5",
+      "docs/reference/api.md": "982bab8d90f4f91f31aadee29e29d90d0a7148cab03a0fb28da65817b6932e27",
+      "docs/verification/check_library_027_beam_section_reference.py": "2d09815e8823d10dffd1d74a600f489276effda33408a6c50e43ede153fee1b5",
+      "docs/verification/check_library_027_four_corner_reference.py": "6213569f9ab1ccb4972ac1803885e44269850058e6db21af555a207e1d35048d",
+      "docs/verification/check_library_027_references.py": "6a624e73c0d4a0f19bec7fb812bac3e57f3bad4fd2ee486086f83da9a61f6470",
+      "docs/verification/check_library_027_t_beam_reference.py": "42147f0b9e270830cf0a67fcf22382afc48e6453fecdef03073d61e90baa4f9c",
+      "docs/verification/check_library_027_torsion_physical_reference.py": "0a2c2f85384a61fef29bc2b8dee3ef16d357298d704b034d9cdb04f8d7b8647a",
+      "docs/verification/check_library_027_torsion_reference.py": "fd94269a61df8b85c7341a4834a6b1e816016ae6ec9921a5856a5548cfa2f49a",
+      "docs/verification/check_library_027_torsion_serviceability_reference.py": "1b8aced4c2a314d283ef2a45c56f558705c8c7f6d39fd532ce15fae1043ad23c",
+      "docs/verification/library-027-beam-section-closure.json": "109ca89db76bf164248cc1982e71a16720d8adbf20d5a10205ddd84ca6295f7e",
+      "docs/verification/library-027-column-section-boundary.json": "29dcd2b5dcccd2db48c90acae7a4feb9a97fbc3789d991dc68db3431e3f3c456",
+      "docs/verification/library-027-column-section-extension.json": "473bf4264f34b1bf6b71511026529eaf9cbfcfd21e4060964bedec5a6b3037b2",
+      "docs/verification/library-027-comparator-baseline.json": "dbdb7eeabf1dfd508a051860d3b491dd135fb82f9f58e47cb8919eff85c5614f",
+      "docs/verification/library-027-comparator-reference.json": "b80c97de9328dc3e98bcbaa53887be499d8424e483dbb7c990a5dec0b2cee088",
+      "docs/verification/library-027-four-corner-column.json": "d67bec6cc8fc77d0a9365ee8ce01ed4d5f1555b841647b04533d2ee0389e81a2",
+      "docs/verification/library-027-member-replay.json": "589c4d5a43cc56c02251e9a827f5ee3b51d3123129d9310eaa383ba8ac6bf6b6",
+      "docs/verification/library-027-t-beam-member.json": "754eee3e3262a95a113df2ce54cb391994577da4d4c95ea0c8b58e3f0209bbfb",
+      "docs/verification/library-027-t-beam-qualification.json": "e0f9a70f21f3f09d41ab4ea2cba2aa307cf9ac0765bb5a30e43078d796378129",
+      "docs/verification/library-027-torsion-physical.json": "c168fab43e567834dbda6c65bb266854015ffe32237753e7039e49f516a879c3",
+      "docs/verification/library-027-torsion-serviceability.json": "bed83a0b97a9d9d3f4b22a9df2b67242c144a75cff0c3d83c54b2e7313a88837",
+      "docs/verification/library-027-torsion-station.json": "6b514ec7284e381be0752ea7786645ced7f3be0570412212471237071ec1a1f0",
+      "docs/verification/replay_library_027_members.py": "328ea667c4a242f843dbb88415aecad2ad665bcf66a74fb8a31ec50370b397cd",
+      "docs/verification/replay_library_027_t_member.py": "0bf8a5dcb43718663482877b77a437e30283bf6728f95403fd2d5a804f97eb2a",
+      "scripts/_lib/release_beam_column.py": "3315cb4962dd4e71a2087831ee04c2cd166bc74bcbcd7e9fb702754086dea453",
+      "scripts/_lib/release_qualification.py": "da19086d7e51bb85098b65794f2fd060d12e3dc894bbc26ef957dd1be1d4af98",
+      "scripts/_lib/release_qualification_probe.py": "deacac609b13c2082487367676274bb09751c92a7217870f2359e30ec5fe0e50",
+      "scripts/dxf_render.py": "89b7807b38870cd7f96f47e42e2606081ecc79e5852cb4bf532686ebbcc961cb",
+      "scripts/external_cli_test.py": "4ce5b5fbd203458801a5317e1cf81c3e71fa5eb2de217907daab363fd9a50e85",
+      "scripts/verify_canonical_transport_artifact.py": "9de713e97a2b73c7981e2ccb6f56a120f5478d9ae793bdfaf9fef1b2bfad4196",
+      "scripts/verify_lib_pro_012_s0_artifact.py": "e4cb644b417bea59e02c8b96c232ea646e7c58e34b9f5a81b808d5db2b451a88",
+      "scripts/verify_lib_pro_013_f0_family_artifact.py": "c425bd27fd8b16c62f901990bb941359e7f1fdd2e30491feef458dd91462cf64"
+    }
   },
   "qualified_base_sbom": {
     "bomFormat": "CycloneDX",
@@ -807,6 +1183,12 @@
     ],
     "metadata": {
       "component": {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "75debc1e9fdf0b3b7d1d903f1725829624b9032cf3eae8cc785964e381dfda39"
+          }
+        ],
         "name": "structural-lib-is456",
         "purl": "pkg:pypi/structural-lib-is456@0.27.0",
         "type": "library",
@@ -822,20 +1204,76 @@
     "specVersion": "1.6",
     "version": 1
   },
+  "rejected_intermediate": {
+    "directory": "output/releases/0.27.0/423097e8d4f5",
+    "disposition": "INVALIDATED_NOT_FOR_DELIVERY",
+    "initial_binary_pair_retained": false,
+    "initial_qualification_receipts_retained": true,
+    "initial_qualified_artifacts": [
+      {
+        "filename": "structural_lib_is456-0.27.0-py3-none-any.whl",
+        "sha256": "bac57e8c17611d05c1dbdd0f925c73e398ee35c768e90c6b6843fa5735f05372",
+        "size_bytes": 1232064
+      },
+      {
+        "filename": "structural_lib_is456-0.27.0.tar.gz",
+        "sha256": "4f967ab3190487a51b522bf6eed044e65b28e419324acd1977af95f971e4ba93",
+        "size_bytes": 1050665
+      }
+    ],
+    "reason": "R2 aggregate-negative counterexample, followed by parent build-bookkeeping error that reused the directory after a failed commit check. Current files there are unqualified dirty-build snapshots; final selected pair was built from clean5c79c3b0 in a new guarded directory. Original9a78d2be9314 baseline remained unchanged.",
+    "source_head": "423097e8d4f54e5072bfe57b98869f55f1ccdf08"
+  },
+  "release_readiness": {
+    "as_of": "2026-11-07",
+    "final_readiness_gate": "This archive evidence plus the passing final GitHub PR/Weekly checks, independent review and matching reviewed integration; GitHub owns those final gate facts.",
+    "implementation_state": "R1_R5_CLOSED_BY_INSTALLED_REPLAYS",
+    "publication_authorized": false,
+    "remaining_software_blockers_in_selected_scope": [],
+    "repair_goal_id": "LIB027-REPAIR-QUALIFY",
+    "status": "EXACT_REPLACEMENT_ARCHIVES_QUALIFIED"
+  },
   "remaining_publication_steps": [
-    "Bind final GitHub review/check/merge receipts and obtain exact-target owner authorization",
-    "Verify the retained pair on TestPyPI before tagging",
-    "Create the exact authorized tag and deliver the same qualified bytes to PyPI/GitHub Release",
-    "Read back registry/release hashes and fresh public identity installation"
+    "Observe final required GitHub PR/Weekly acceptance and reviewed integration; bind exact reviewed/merged tree and retained pair",
+    "Obtain version/target-specific owner authorization; this goal authorizes no upload/tag/release",
+    "Verify the qualified pair on TestPyPI before an authorized tag",
+    "Deliver these same qualified files to PyPI/GitHub Release and verify public hashes/fresh installation"
   ],
   "s5_merge_sha": null,
-  "s5_reviewed_head": "e1e2ab2e8da7c16d98d41e817b22b273ba40e11a",
+  "s5_reviewed_head": "5c79c3b07dcbdb5ac32a519ae50cacfde5054cac",
   "schema_version": "qualified-release-artifacts/v1",
   "source_build_inputs_sha256": {
     "Python/LICENSE": "0c91bb1e93e3b9691835e161bbb54c647d43c75cc6d3f5c6b0cf0a472c844208",
     "Python/MANIFEST.in": "b703d2df94d48815b9660e1eae7473d32c051dd5bb57bc623775a0890f3773c3",
     "Python/README.md": "9aff3e41954fcc0061c8b5e5d363502c6fd619e791706b631ef910ad25c823ca",
     "Python/pyproject.toml": "7d6ef70a7781ed77e5c3993dfc0bbaa638d56fd700c71a093ebcdb1de399176f"
+  },
+  "source_validation": {
+    "earlier_preflight_head": "423097e8d4f54e5072bfe57b98869f55f1ccdf08",
+    "earlier_preflight_result": "CANDIDATE_TECHNICALLY_READY,0warnings;9007Python/629FastAPIpasses; later report aggregation correction required a new pair",
+    "final_affected_validation": "Final30 added consumer regressions are included in408tests per archive; all18 profiles exercise the selected bytes; full mypy341sourcefiles passes. Required full final source/cross-platform evidence is owned by GitHub.",
+    "final_source_full_suite_owner": "Required final GitHub Weekly Verification on the frozen candidate"
+  },
+  "superseded_baseline": {
+    "artifacts": [
+      {
+        "filename": "structural_lib_is456-0.27.0-py3-none-any.whl",
+        "sha256": "cfbbc47b5ada59011ef0c4c9049781e8e30cbc9c341ef8eb8a813244139f3a79",
+        "size_bytes": 1226545
+      },
+      {
+        "filename": "structural_lib_is456-0.27.0.tar.gz",
+        "sha256": "93c0ca8dc23611d6762fad45f887be1a4b4fe6c655725936dabc68b121e5fe97",
+        "size_bytes": 1045737
+      }
+    ],
+    "binary_pair_retained": true,
+    "directory": "output/releases/0.27.0/9a78d2be9314/dist",
+    "disposition": "REJECTED_FOR_PUBLICATION",
+    "python_tree_sha": "7c39b777349500fc86c5c792650e74f0336d176a",
+    "reason": "Confirmed original R1-R5 counterexamples; initial passing assertions do not clear them.",
+    "record_commit": "fd0619adbf60dbf55fbf9aeca2ea5a0d4204d9fb",
+    "record_sha256": "9891039cd601c8fc4ac84587e2830993cc1efad73381fb325863aefc924b4915"
   },
   "version": "0.27.0"
 }
