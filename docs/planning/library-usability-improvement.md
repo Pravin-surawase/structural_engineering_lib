@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-06
+last_updated: 2026-11-07
 doc_type: spec
 ---
 
@@ -354,20 +354,47 @@ history, nonzero permanent torque, finite imposed duration, stale or
 conflicting actions, missing peaks and unknown/asymmetric receiver models
 retain HOLD. Zero and reversed torsion retain their real signs.
 
-Next: Packet E, the ordinary sagging T-beam physical member. Its passing,
-failed and missing-evidence journeys must reconcile actual flange/web bars,
-anchorage, paths, BBS, quantities, JSON and HTML before Goal5 freezes the
-versioned0.27.0 wheel and sdist. Goal5 must replay this D3 service case
+Packet E now supplies the ordinary sagging T-beam physical member below.
+Goal 5 must replay this D3 service case
 and its FAIL/HOLD controls from both exact archives. No release follows
 from D3 implementation alone.
 
 #### Packet E implementation plan — ordinary sagging T-beam member
 
-**Planning status:** detailed plan only. This update authorizes no calculation
-changes and supplies no new numerical engineering acceptance. Packet E is
-the next implementation packet after merged D3; Goal 5 still waits for E.
-The five units below belong to one Packet E delivery and one 0.27 release,
-not five releases or an expansion into the 0.28 slab programme.
+**Delivery status (7 November 2026):** E1–E5 are implemented and qualified
+for the bounded profile below. The original five-unit plan is retained to
+show the acceptance obligations. The [guide](../cookbook/python/t-beam-member.md),
+[independent reference](../verification/library-027-t-beam-member.json) and
+[installed qualification receipt](../verification/library-027-t-beam-qualification.json)
+record the delivered behavior. GitHub owns the final candidate's required
+hosted checks, review and merge facts. Goal 5 is next; no 0.27 package has
+been published by Packet E.
+
+| Unit | Delivered evidence |
+|---|---|
+| E1 | Original six-web-bar targets frozen before production changes; supplemental independently established local strip/parallel-steel audits disclosed separately. Controlled source hashes, numerical tolerances and standard-library checker retained. |
+| E2 | Actual T-union cover and path containment, including shoulders and concrete end cover; explicit global/web projection; all-six-bar cage/hook binding; 46 actual beam paths. |
+| E3 | 30 fixed obligations: 18 member rules and 12 actual bar-end anchorages. Main and width-limited members qualify 30/30. Separate flange participation, action provenance, lateral restraint and actual-T service evidence remain required. |
+| E4 | Runnable base-install example, strict request/schema exports, matching JSON/BBS/HTML and actual T drawing. Physical concrete/steel ownership is explicit; separately owned slab steel is excluded from beam BBS and receives no beam strength credit. |
+| E5 | Fresh neutral wheel install from site-packages: two adequate members, eight FAIL controls and three HOLD controls; strict public API round trips and deterministic artifact reconciliation. 34 new tests and 291 affected existing tests passed, with focused repair replay; type checks passed for 340 source files. |
+
+The main member uses 1000 mm physical/effective flange width. The variant
+uses 2500 mm physical width and 2200 mm compression width. Both retain the
+300 mm web, actual self-weight and independently checked local transverse
+strip. The web-shear trap fails when evaluated with `bw`, as required.
+The service route is the complete flanged span/depth **screen**, with an
+actual T cracked-section Annex F soffit envelope and both eligible-slab-steel
+and no-slab-credit states. It does not calculate a deflection in millimetres.
+Nonzero torsion remains HOLD: the new Python-only zero-torsion operation
+proves zero demand across ULS, total-service and permanent snapshots; it
+does not calculate T torsion resistance. Native changes are append-only
+flange path-role metadata and matching WP06/WP07 schemas, not a native
+T-member API. Existing rectangular torsion behavior remains unchanged.
+
+The qualified development wheel retains **0.26.0 metadata** and is bound by
+SHA-256 and packaged-source parity in the receipt. This is development
+qualification, not evidence of a published 0.27 release or professional
+approval. Goal 5 must rebuild and replay both exact versioned archives.
 
 **Objective:** qualify one ordinary, monolithic, symmetric sagging T-beam
 member with supplied reinforcement, zero torsion and separate ULS/SLS
@@ -559,13 +586,14 @@ the decision and does not grant engineering approval.
 
 ##### E5 — qualify the final candidate and hand Goal 5 a closed packet
 
-Planned artifacts (names to confirm during E1, not files created by this plan):
+Delivered artifacts (the original E1–E5 acceptance sequence remains above):
 
 - Independent fixture and standard-library replay:
-  `docs/verification/library-027-t-beam-member.json` and a matching checker.
+  `docs/verification/library-027-t-beam-member.json` and
+  `docs/verification/check_library_027_t_beam_reference.py`.
 - Public example/guide: `Python/examples/t_beam_member.py` and
   `docs/cookbook/python/t-beam-member.md`.
-- Focused behavior/artifact tests, for example
+- Focused behavior/artifact tests:
   `Python/tests/integration/test_t_beam_member.py`, plus affected owner tests.
 - Maintained public schemas/registries where the new contracts require them,
   and the canonical plan/handoff with exact completion evidence.
@@ -636,11 +664,11 @@ D3 controls, before the separate version-specific release authorization.
 | 2. [LIB-10](https://pravinsurawase.atlassian.net/browse/LIB-10) Promote beam comparisons | [Runnable example and guide](../cookbook/python/beam-comparator-reference.md) delivered. All seven values for each of the three sections and both method identifiers verified from the 0.26.0 wheel. The separate doubly reinforced member diagnostic retains HOLD. |
 | 3. [LIB-11](https://pravinsurawase.atlassian.net/browse/LIB-11) Add column section response | [Public API and both benchmarks](#goal-3-layered-column-section-response) delivered, with a runnable example and separate member status. |
 | 4. [LIB-12](https://pravinsurawase.atlassian.net/browse/LIB-12) Promote ordinary beam member | [Both member workflows and controls verified](#goal-4-ordinary-beam-member-workflows) with a public guide and repeatable artifact reconciliation. |
-| Before Goal 5 | [Close the selected beam and column gaps](#beam-and-column-closure-before-goal-5), starting with the two layered column section cases. |
+| Before Goal 5 | [Packets A–E delivered for their selected profiles](#beam-and-column-closure-before-goal-5), including the full T member and its installed replay. Unsupported profiles retain HOLD. |
 | 5. [LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) Qualify and release 0.27.0 | After closure. [Prepare and verify the exact candidate, then publish and verify the retained files](#goal-5-qualify-and-release-0270). |
 
-Continue with Packet E in the
-[beam and column closure plan](#beam-and-column-closure-before-goal-5).
+Continue with [Goal 5](#goal-5-qualify-and-release-0270): freeze and qualify
+the exact versioned 0.27.0 wheel and sdist, including Packet E's 13 journeys.
 Packet D is qualified only for its documented physical and service profile;
 unsupported torsional histories retain HOLD.
 There is no standalone 0.26.1 release. Candidate preparation uses the

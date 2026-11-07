@@ -24,7 +24,9 @@ public enum BarPathRole
     SideLeft,
     SideRight,
     TorsionCorner,
-    TransverseLink
+    TransverseLink,
+    FlangeTransverse,
+    FlangeDistribution
 }
 
 public enum BendKind

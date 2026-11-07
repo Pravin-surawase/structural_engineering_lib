@@ -4,8 +4,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-11-07
-- Focus: Packet E is planned in five implementation units; start E1 by freezing the physical T profile, service basis and independent references. Planning only so far; Goal 5 waits for implemented and qualified E.
-- Completed: Goals 1–4 and closure Packets A–C; D1/D2 physical torsion plus the selected D3 transient service case. All 31 obligations qualify for that documented model; missing/unsupported service histories remain HOLD and engineering approval remains separate.
+- Focus: Goal 5 — prepare and qualify the exact versioned 0.27.0 wheel and sdist. Packet E's bounded T member and installed development-wheel replay are delivered; publication remains separate.
+- Completed: Goals 1–4 and closure Packets A–E for their documented profiles. D3 qualifies 31 obligations; both E members qualify 30, with 46 beam paths and explicit local flange provision. FAIL/HOLD and engineering approval remain separate.
 - Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
 <!-- HANDOFF:END -->
 
@@ -14,7 +14,7 @@
 | Release | Current state |
 |---|---|
 | **Current** | 0.26.0 is published and verified in the [release ledger](../getting-started/releases.md#v0260-published-and-verified). |
-| **Next** | 0.27.0 includes the section, column and selected torsion-member work. Complete Packet E, the sagging T-beam member, then qualify the exact versioned candidate. |
+| **Next** | 0.27.0 includes the selected section, column, torsion-member and sagging T-member work. Goal 5 must qualify both exact versioned archives before release authorization and publication. |
 
 
 Goal 1 froze and replayed the
@@ -52,19 +52,28 @@ indirect service stress/detail crack control. The full31-leaf case produces
 issue_ready outputs; the original D2-only command remains HOLD. Nonzero
 permanent torque, finite imposed duration and missing/asymmetric boundary
 evidence remain HOLD. Follow the guide's actual source and model boundaries.
-Complete E before
-[LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) prepares
-the versioned candidate.
+[LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) now prepares
+the versioned candidate after Packet E integration.
 [Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)
 
-The [detailed Packet E plan](library-usability-improvement.md#packet-e-implementation-plan--ordinary-sagging-t-beam-member)
-orders E1 profile/references, E2 actual T containment and web cage, E3 full
-member/SLS/detail checks, E4 matching outputs and E5 installed qualification.
-Keep physical/effective flange widths and web width distinct. The current
-physical geometry/path envelopes are rectangular and the ordinary hook
-binding expects four longitudinal bars; the proposed six-bar T cage requires
-explicit qualification. No Packet E calculation code or frozen numerical
-member reference has been delivered by the planning update.
+The [Packet E delivery record](library-usability-improvement.md#packet-e-implementation-plan--ordinary-sagging-t-beam-member)
+and [guide](../cookbook/python/t-beam-member.md) now include actual T material,
+all-six-bar cage/hooks, full-stress anchorage at both ends, separately owned
+local flange provision, web shear, lateral restraint and actual-T service
+evidence. Physical/effective flange widths remain distinct (1000/1000 mm
+and 2500/2200 mm), with a 300 mm web. The complete flanged span/depth screen
+does not calculate millimetre deflection. The Python zero-torsion admission
+operation proves zero demand, not T torsion resistance. Native changes only
+preserve the two new generic path-role metadata values.
+
+The [qualification receipt](../verification/library-027-t-beam-qualification.json)
+binds the source-matching development wheel (0.26.0 metadata), 13 installed
+journeys, strict schema/API replay and artifact agreement. Both adequate
+members retain issue_ready with engineering approval unreviewed; eight
+failure and three missing-evidence controls remain draft. Goal 5 must replay
+these and D3 controls from **both** exact 0.27.0 archives. No tag, registry
+publication or GitHub Release was performed by Packet E. Required hosted
+checks and exact integration identities are recorded in GitHub.
 
 ## Historical S6 handoff — 29 October 2026
 

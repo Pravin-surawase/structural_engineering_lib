@@ -138,6 +138,13 @@ paths need at least two nodes. Closed paths, including links, need at least
 three. Every direction change requires a positive centreline bend radius and
 a bend kind: standard bend, hook, or transition.
 
+The shared role enums and WP06/WP07 schemas also preserve
+`flange_transverse` and `flange_distribution` metadata for separately owned
+slab-strip paths. The generic path resolver remains rectangular; a role name
+does not establish T-material containment or member qualification. The
+[physical T-member guide](../../cookbook/python/t-beam-member.md) describes
+its separate Python profile checks, web projection and slab ownership.
+
 The resolver replaces each sharp vertex with exact incoming and outgoing
 tangent points and a circular centreline arc. It reports segment ids, endpoints,
 bend centre, radius, angle, member-local plane normal, and positive sweep about

@@ -27,6 +27,8 @@ class BarPathRole(StrEnum):
     SIDE_RIGHT = "side_right"
     TORSION_CORNER = "torsion_corner"
     TRANSVERSE_LINK = "transverse_link"
+    FLANGE_TRANSVERSE = "flange_transverse"
+    FLANGE_DISTRIBUTION = "flange_distribution"
 
 
 class BendKind(StrEnum):

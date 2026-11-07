@@ -61,7 +61,7 @@
       "properties": {
         "bar_id": {"$ref": "#/$defs/identity"},
         "bar_mark": {"$ref": "#/$defs/identity"},
-        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link"]},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link", "flange_transverse", "flange_distribution"]},
         "layer": {"type": "integer", "minimum": 1},
         "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
         "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
@@ -81,7 +81,7 @@
       "required": ["bar_mark", "role", "diameter_mm", "steel_grade_n_per_mm2", "bundle_size", "closed", "bar_ids", "count", "developed_centreline_length_mm", "compatible_stock_length_mm"],
       "properties": {
         "bar_mark": {"$ref": "#/$defs/identity"},
-        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link"]},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link", "flange_transverse", "flange_distribution"]},
         "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
         "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
         "bundle_size": {"type": "integer", "minimum": 1, "maximum": 4},
@@ -177,7 +177,7 @@
       "required": ["bar_mark", "role", "diameter_mm", "steel_grade_n_per_mm2", "bundle_size", "placement_count", "scheduled_bar_count", "shape_code", "dimensions", "centreline_developed_length_each_mm", "fabrication_cut_length_each_mm", "scheduled_cut_length_mm", "theoretical_mass_kg", "source_path_ids", "splice_ids"],
       "properties": {
         "bar_mark": {"$ref": "#/$defs/identity"},
-        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link"]},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link", "flange_transverse", "flange_distribution"]},
         "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
         "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
         "bundle_size": {"type": "integer", "minimum": 1, "maximum": 4},

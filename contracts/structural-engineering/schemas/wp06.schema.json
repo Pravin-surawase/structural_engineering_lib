@@ -197,7 +197,7 @@
       "properties": {
         "bar_id": {"type": "string", "minLength": 1},
         "bar_mark": {"type": "string", "minLength": 1},
-        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link"]},
+        "role": {"enum": ["top_longitudinal", "bottom_longitudinal", "side_left", "side_right", "torsion_corner", "transverse_link", "flange_transverse", "flange_distribution"]},
         "layer": {"type": "integer", "minimum": 1},
         "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
         "steel_grade_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},

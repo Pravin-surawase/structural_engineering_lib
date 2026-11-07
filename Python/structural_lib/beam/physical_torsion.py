@@ -152,7 +152,11 @@ def _diag(operation: str, code: str, field: str, message: str) -> Diagnostic:
 def _provenance(operation: str) -> Provenance:
     return Provenance(
         CODE_REVISION,
-        operation.replace("/v1", "-d2-v1"),
+        (
+            "is456-closed-link-all-longitudinal-paths-e-v2"
+            if operation == LINK_DETAIL_OPERATION
+            else operation.replace("/v1", "-d2-v1")
+        ),
         (
             "IS 456:2000 through Amendment 6; Cl. 26.2.2.4(b), 26.4.1-26.4.2, 41; Tables 5 and 16",
             "Right-handed force and torque equilibrium; receiving section flexure/shear",
@@ -363,7 +367,9 @@ def check_closed_link_detail(request: ClosedLinkDetailRequest) -> OperationResul
         and arrangement.section_width_mm == request.paths.section_width_mm
         and arrangement.section_depth_mm == request.paths.section_depth_mm
         and arrangement.links == (cage,)
-        and len(main_seeds) == len(arrangement.bars) == 4
+        and bool(arrangement.bars)
+        and set(main_seeds) == {bar.bar_id for bar in arrangement.bars}
+        and len(main_seeds) == len(arrangement.bars)
         and _passed(check_reinforcement_arrangement(arrangement))
     )
     for bar in arrangement.bars:
@@ -393,7 +399,7 @@ def check_closed_link_detail(request: ClosedLinkDetailRequest) -> OperationResul
                 op,
                 "LINK.LONGITUDINAL_PATH_BINDING",
                 "paths,arrangement",
-                "Four actual continuous bar paths must match the checked cage arrangement and revision.",
+                "Every actual continuous longitudinal bar path must match the checked cage arrangement and revision, with no omitted or additional bar IDs.",
             )
         )
     expected = (
