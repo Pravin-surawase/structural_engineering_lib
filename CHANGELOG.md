@@ -33,6 +33,9 @@ from this entry. Beta maturity and professional-review boundaries remain.
 
 ### Fixed
 
+- BBS splice admission requires integer, non-boolean hardware counts before
+  reporting PASS, keeping accepted output compatible with typed quantity/cost
+  handoffs. Qualified coupler one and lap zero remain supported.
 - Slender-column orchestration rejects signed end moments that omit a declared
   applied demand, with structured field errors preserved through Python and
   HTTP. Ordered signed curvature and existing minimum-eccentricity defaults

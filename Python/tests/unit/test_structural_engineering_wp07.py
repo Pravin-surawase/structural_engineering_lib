@@ -433,7 +433,7 @@ def test_lap_and_coupler_are_explicit_without_added_cut_length() -> None:
         _bbs_request(
             _schedule(path),
             splice_records=(
-                SpliceRecord("S-LAP", SpliceKind.LAP, 2500, "lap-check-1"),
+                SpliceRecord("S-LAP", SpliceKind.LAP, 2500, "lap-check-1", 0),
                 SpliceRecord(
                     "S-COUPLER", SpliceKind.COUPLER, 5000, "coupler-cert-1", 1
                 ),
@@ -445,6 +445,35 @@ def test_lap_and_coupler_are_explicit_without_added_cut_length() -> None:
     assert output["scheduled_cut_length_mm"] == 6000
     assert output["couplers"][0]["count"] == 1
     assert output["rows"][0]["splice_ids"] == ["S-COUPLER", "S-LAP"]
+    typed = result.output_as("bbs", BbsOutput)
+    assert typed.couplers[0].count == 1
+    assert typed.scheduled_cut_length_mm == 6000
+
+
+@pytest.mark.parametrize(
+    "kind,count",
+    [
+        (SpliceKind.COUPLER, 1.5),
+        (SpliceKind.COUPLER, 1.0),
+        (SpliceKind.COUPLER, True),
+        (SpliceKind.COUPLER, "2"),
+        (SpliceKind.LAP, 0.0),
+        (SpliceKind.LAP, False),
+    ],
+)
+def test_bbs_rejects_non_integer_splice_counts(kind, count) -> None:
+    path = _straight_path("B1", "M1", 6000, splice_ids=("S1",))
+    result = create_bbs(
+        _bbs_request(
+            _schedule(path),
+            splice_records=(SpliceRecord("S1", kind, 2500, "splice-check-1", count),),
+        )
+    )
+
+    assert result.execution is ExecutionState.REJECTED_INPUT
+    assert result.engineering is EngineeringState.NOT_EVALUATED
+    assert result.outputs == {}
+    assert result.diagnostics[0].code == "BBS.SPLICE"
 
 
 def _quantity_output() -> ConstructionQuantityOutput:
