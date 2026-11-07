@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Improved
+
+- Canonical result serialization visits dataclass fields once while retaining
+  canonical bytes, result identities, statuses and independent exported copies.
+  Fresh paired local measurements reduce ordinary/T-member workflow median time
+  by 28.2%/13.5% and export time by 44.2%/29.1% for the selected examples.
+  See the [qualification record](docs/verification/library-serializer-optimization.json)
+  for exact builds, equivalence checks, raw timings and measurement limits.
+
 ## [0.27.0] — 2026-11-08
 
 Owner-authorized normal software release for the selected beam and column

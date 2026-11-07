@@ -46,9 +46,10 @@ separate from a complete software result.
 
 For an exact public install, use the version confirmed in the
 [release ledger](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/releases.md).
-This source prepares an unpublished 0.27.0 candidate; the registry recipes
-below apply only after verified publication. During qualification install the
-retained wheel file directly, or use `pip install -e ./Python` from the source.
+Version 0.27.0 is published and its public hashes and clean installation are
+verified. Pin the public release below for reproducibility. A development
+checkout can contain later unreleased changes; use `pip install -e ./Python`
+only when intentionally testing that checkout.
 
 ```bash
 pip install structural-lib-is456==0.27.0         # exact normal release

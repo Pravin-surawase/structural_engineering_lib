@@ -9,10 +9,10 @@ doc_type: spec
 
 **Current programme.** [0.27 beam and column release preparation](#027-beam-and-column-release-preparation)
 owns the next feature scope. The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
-records the published 0.26.0 artifacts. The consumer fixes originally planned
-for 0.26.1 are merged in
-[PR #1045](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1045)
-and will ship with 0.27.0. Their installed regressions are part of Goal 5.
+retains historical 0.26.0 artifacts; [0.27.0 is now published and verified](../getting-started/releases.md#v0270-published-and-verified).
+The consumer fixes originally planned for 0.26.1 ship in 0.27.0 with the
+R1–R5 and L01 repairs. Current development selects the bounded
+[serializer qualification](#post-release-serializer-optimization), without a new release.
 
 The [professional standards programme](#professional-standards-programme-8-october-2026-revision-2)
 and [assessment record](../verification/library-professional-standards-20261008.json)
@@ -1033,7 +1033,7 @@ binds the exact new hashes, 342-file payload, receipts and rejected baselines.
   the bounded dated metadata/review/authorization packet. Preserve reviewed
   ancestry and Python/build/verifier inputs; use the same files through
   TestPyPI, exact tag, PyPI/GitHub and public hash/clean-install readback.
-  The milestone PR and release assets own actual gate/delivery results.
+  The milestone PR and release assets own actual gate/delivery results. [Publication is now observed complete](../getting-started/releases.md#v0270-published-and-verified).
 
 The old 9a78 and 5c79 pairs are preserved and rejected for publication; the
 423 intermediate remains invalid. The serializer optimization stays separate:
@@ -1051,6 +1051,91 @@ Do not promote helper existence into complete-member support or general
 beam/column completion. The supported 0.27 result is a bounded IS 456 beta
 with its documented profile limits. This plan does not move the approved
 0.28 slab/footing theme or reopen permission for normalized IS code data.
+
+### Post-release serializer optimization
+
+**8 November 2026 — LIB027-DOCS-LAB-OPTIMIZATION.** The owner requested
+release-document/session maintenance followed by the optimization update, using
+the latest coding-lab records. Published 0.27.0/tag `a78dcc6a` and its exact
+archives remain immutable. This task selects a source improvement and current-base
+verification; it does not authorize another package version or publication.
+
+The latest lab transfer owner is `docs/pending-single-pass-integration.md` in
+`structlib-coding-lab`. Its LIB-LAB-003 patch SHA-256 is
+`385b7346dc0368098685b85ec150ccee21d88c1c1a020aa24999e0badaa2c89e`.
+It removes repeated `asdict()` plus normalization traversal in `beam/semantics.py`
+by visiting declared dataclass fields directly. Preserve class rejection,
+normalization/finite/signed-zero/safe-integral rules, nested copy independence,
+canonical bytes/hashes, domain/result IDs, statuses and strict typed bindings.
+
+The lab's 16 workflows, 633 records, 230 exports, 525 canonical outcomes and
+95 checks per wheel belong to base `4eebc897...`. Historical local ordinary/T
+workflow reductions of 28.56%/13.46% are leads, not current-source measurements.
+Freeze a documentation-updated current base; prepare separate baseline/candidate
+wheels; verify fresh same-base equality and current consumer checks; measure
+three rounds of ten alternating ordinary/T pairs with separate workflow/export
+timers and equality outside both. Keep an inconclusive or failing candidate
+unadopted; do not relax a golden or tolerance.
+
+The serializer is shared by all `OperationResult` consumers, so selected member
+examples alone do not establish regression coverage across result families. After
+the paired measurements finish, run the broad Python suite once for that concrete
+risk, plus affected formatting/type/API checks and the required hosted PR gates.
+Keep heavy validation outside the timing run. No release preflight or publication
+is selected for this source-only update.
+
+Latest-review reconciliation:
+
+- BBS R01-A2/L01 is fixed and published in 0.27.0, with 43 focused checks and
+  all 18/451 archive qualification evidence. Do not reapply its old lab patch.
+- R01-A1/A2/A3 source inspection is complete only for its frozen declared scope;
+  the lab's cumulative inventory is nine files/3737 lines/138 indexed items.
+  Some high-level lab indexes still stop at A1 or describe the BBS update as deferred.
+- R01-A3 is a separate current public-API contract gap: a real S1-only shear
+  result can be manually labelled S2 and aggregate as qualified. Current published
+  wheel replay confirms it; a genuine S1/S2 batch remains valid. This is not a
+  demonstrated ordinary qualified-member journey failure. `LIB-MEMBER-EVIDENCE-001`
+  must define producer-bound coverage, callers and compatibility before a separate
+  fix; no lab scope-gate prototype is integrated in this optimization.
+
+Current-base qualification is accepted locally. The shared baseline is
+`498d5c32`; measured candidate `0a3e57d9` changes only the serializer. Separate
+installed wheels preserve 16 workflows, 633 canonical operation records, 230
+exported files and 525 canonical outcomes (515 accepted/10 matching rejections).
+All 494 selected tests pass per wheel, including the release consumer repairs.
+The broader shared-result regression passes 9018 tests, with four skips and six
+deselections. Type checking passes all 341 source files; API/import checks pass.
+
+Three rounds of ten alternating pairs retain all outliers and show improvement
+in every round. Median times in milliseconds:
+
+| Workload | Baseline | Candidate | Reduction |
+|---|---:|---:|---:|
+| Ordinary workflow | 135.85 | 97.50 | 28.23% |
+| Ordinary export | 109.18 | 60.97 | 44.16% |
+| T-member workflow | 1977.46 | 1709.89 | 13.53% |
+| T-member export | 232.79 | 165.10 | 29.08% |
+
+These are sequential, local, unreserved-host measurements for the selected
+ordinary/T paths. They do not establish universal throughput, tail latency or
+memory gains. Equality reconciliation is outside the timers and passes every
+sample. Independent read-only review recomputed the evidence and accepted the
+source, harness, counts and measurements.
+
+Pinned Black required one comprehension line wrap after measurement. The
+formatted successor `969a4904` has identical whole-module AST and recursive code
+objects after excluding source locations, and all 43 WP01/WP06 checks pass on
+that final source. The exact measured wheels remain identified as `0a3e57d9`
+evidence; no byte-identical successor-wheel claim or repeated timing is made.
+The preparation also preserves the original failed lab-lock install and records
+the verification-only Ruff alignment to the current package's declared pin.
+
+The [portable qualification record](../verification/library-serializer-optimization.json)
+and [all 30 timing pairs](../verification/library-serializer-optimization-samples.csv)
+retain identities, digests, tests, round medians and limits. Bulk driver/run logs
+remain in `output/LIB027-DOCS-LAB-OPTIMIZATION/serializer-current/`.
+The milestone PR owns required hosted checks and exact reviewed/merged heads.
+This improvement remains unreleased; the public 0.27.0 archives are unchanged.
 
 ### Later release themes
 

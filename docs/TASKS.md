@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-11-07 — Owner selected beam and column closure before 0.27.0 qualification.
+**Updated:** 2026-11-08 — 0.27.0 published; current-base serializer qualification accepted locally, with final integration owned by its milestone PR.
 
 ---
 
@@ -26,7 +26,7 @@
 | LIB-S5-20261029 | Qualify exact 0.26.0 wheel/sdist, isolated installs/extras and installed engineering/exports | P1 | Done: [PR #1040 integrated](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1040) | [S5 evidence](verification/library-s5-20261029.json);16 profiles,17 examples,106 metrics, final preflight; publication remains S6 |
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
-| LIB-027 | Deliver the selected beam and column release | P1 | Owner-authorized publication after L01 repair: 18 profiles, 451 tests per archive, independent installed review and current-candidate preflight PASS. Final milestone PR/Weekly, authorization metadata and public readback are owned by their actual receipts. | [BBS repair and publication](planning/library-usability-improvement.md#bbs-repair-and-publication) and [LIB-7](https://pravinsurawase.atlassian.net/browse/LIB-7) |
+| LIB-027 | Deliver the selected beam and column release | P1 | Done: 0.27.0 published and verified; all 18 profiles/451 tests per archive, public hashes and clean PyPI install pass. | [Publication receipt](getting-started/releases.md#v0270-published-and-verified) |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current
@@ -190,7 +190,7 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-027 | Deliver the selected 0.27 release scope | MAIN / Mac | R1–R5 integrated in PR #1063. Later L01 BBS fraction/boolean admission is repaired; independent installed review, all 18 new profiles and 451 tests per archive PASS. [BBS repair results](planning/library-usability-improvement.md#bbs-repair-and-publication) and [retained evidence](verification/library-0270-release-artifacts.json) select a11e758a and preserve rejected history. Owner authorized same-byte TestPyPI/PyPI/GitHub delivery and public hash/clean-install readback after final PR/Weekly/review gates. Resume from actual publication receipts. Optimization/research and professional/native/unsupported boundaries remain separate. |
+| LIB-SEMANTICS-OPT-001 | Integrate the qualified single-pass serializer | MAIN / Mac | Local qualification accepted: 16 workflows/633 records/230 exports/525 outcomes match, 494 checks pass per installed wheel, and 9018 broader tests pass. Fresh ordinary/T workflow reductions are 28.23%/13.53%. [Evidence](verification/library-serializer-optimization.json); milestone PR owns required hosted checks and integration. Unreleased; no new publication is selected. |
 
 The [current handoff](planning/next-session-brief.md) identifies the selected
 preparation scope. The dated notes below retain earlier lanes and installed-host
@@ -567,6 +567,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| LIB-MEMBER-EVIDENCE-001 | Define producer-bound station coverage and caller compatibility before a separate member-evidence repair | MAIN / Mac | bounded design packet | P1 | Separate follow-up, not active implementation: lab R01-A3/published-wheel replay reproduces deliberately relabelled S1-only evidence qualifying as S2. Preserve valid two-station batches; no normal member-workflow failure or repair is claimed. |
 | ETABS-EXCEL-BEAM-W2-BASELINE | Freeze and implement the complete read-only beam/model topology, result-provenance, and independent-frame-analysis feasibility contract before any optimization or write-back | Main Agent | one local contract packet plus separate Windows acceptance | P1 | ✅ COMPLETE — PR #898 merged exact reviewed candidate `57f53d48...` as `f1873e7b...`, tree `bb20ba0c...`. Direct/REST/all seven Excel tables and 3,626,096 canonical bytes reconcile baseline `d4c28586...` with 3,502 stations while model identity/lock/units/selection remain exact. `HELD_NOT_SUPPORTED`, no-analysis/no-model-mutation, and professional-review holds remain. |
 | ETABS-W3-MASTER-PLAN-AUDIT | Freeze the dependency-ordered W3 data, audit, surrogate, optimization, ETABS-reanalysis, Excel and professional-evidence programme plus the guarded next-machine handoff | Main Agent | one planning/audit packet | P1 | ✅ ACCEPTED — PR #900 merged as `69399777b3ccdf9eb678ec567ab8a5c616959132`, tree `cc1f6528abce3c3a4532d8ad3c1a7b3dc852c71a`; owner authorized the bounded W3 campaign |
 | ETABS-EXCEL-BEAM-W3A-DEMAND-CONTRACT | Freeze versioned availability, load-pattern/case/combination, analysis-status/result-selection, same-row beam-action, scenario, envelope, governing-reference, paging and canonical-hash contracts before design expansion | Main Agent | one read-only contract packet; installed getter evidence separate | P1 | ✅ ACCEPTED — PR #901 merged unchanged as `b7351bb5...`, tree `b895008b...`; 34 focused W3A/W2 tests plus local and hosted gates passed; no ETABS/Excel/COM/design/solver/optimizer activity |

@@ -648,7 +648,21 @@
   "package_file_count": 342,
   "package_payload_sha256": "1ebb6f685200697c79cb612be54de8185a2f76acd7c102628c130e945c5a050f",
   "professional_approval": false,
-  "publication_state": "UNPUBLISHED_OWNER_AUTHORIZED_PENDING_FINAL_GATES",
+  "publication_evidence": {
+    "evidence_scope": "Immutable published0.27 artifacts; later source development is not qualified by this record.",
+    "fresh_pypi_install": "PASS",
+    "github_release_id": 437782065,
+    "production_run": 42405073660,
+    "public_download_count": 4,
+    "public_download_hashes_match": true,
+    "public_receipt_sha256": "abb751247fa78648d89c0272a695458be91b15f564d5135179a997f9aea92e08",
+    "public_receipt_url": "https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.27.0/public-install-verification.json",
+    "publication_sha": "a78dcc6a8aa1db79b78c0210bfc8c06c54ca9c26",
+    "reviewed_head": "8e827381ad4181046306403ccbc63a8b34d33722",
+    "tag": "v0.27.0",
+    "testpypi_run": 42404877417
+  },
+  "publication_state": "PUBLISHED_AND_PUBLICLY_VERIFIED",
   "python_tree_sha": "c40b13515a01d54dc94559e3519e7c760a39e3ab",
   "qualification": {
     "beam_column_failures_errors_skips_each": 0,
@@ -1232,20 +1246,15 @@
   },
   "release_readiness": {
     "as_of": "2026-11-08",
-    "final_readiness_gate": "Required final milestone PR/Weekly checks, independent exact-head review and matching integration; then allowlisted target authorization metadata. No repeat owner permission is needed.",
+    "final_readiness_gate": "Completed in PR1065 and the exact-C8 PR/Weekly checks; exact target authorization, TestPyPI/PyPI/GitHub publication and public-byte/installation readback are observed PASS.",
     "implementation_state": "R1_R5_AND_L01_CLOSED_BY_INSTALLED_REPLAYS",
     "publication_owner_instruction": "Owner requested exact-qualified 0.27.0 PyPI/GitHub publication and public hash/clean external-install verification, with BBS validation repair first. This authorizes the bounded repair/requalification and same-byte publication after software gates.",
     "remaining_software_blockers_in_selected_scope": [],
-    "status": "EXACT_BBS_REPLACEMENT_ARCHIVES_QUALIFIED",
+    "status": "RELEASED_AND_PUBLICLY_VERIFIED",
     "task_id": "LIB027-PUBLISH-BBS"
   },
-  "remaining_publication_steps": [
-    "Observe final required PR/Weekly PASS and independent exact-head ACCEPT",
-    "Materialize the owner-authorized dated metadata and exact-review/target-authorization receipt; preserve reviewed ancestry and package tree",
-    "Verify the selected retained pair on TestPyPI",
-    "Tag the exact publication head and publish these same bytes to PyPI/GitHub; verify public downloaded hashes and a clean external-user install"
-  ],
-  "s5_merge_sha": null,
+  "remaining_publication_steps": [],
+  "s5_merge_sha": "a78dcc6a8aa1db79b78c0210bfc8c06c54ca9c26",
   "s5_reviewed_head": "a11e758aee6580a0ff2489fa740517a231d9f352",
   "schema_version": "qualified-release-artifacts/v1",
   "source_build_inputs_sha256": {

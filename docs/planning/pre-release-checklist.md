@@ -5,43 +5,30 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-07
+**Last Updated:** 2026-11-08
 
 ## Current State
 
-The [release status](../getting-started/release-status.md) and
-[release ledger](../getting-started/releases.md#v0260-published-and-verified)
-own current public package facts. The [0.27 preparation plan](library-usability-improvement.md#027-beam-and-column-release-preparation)
-lists the five goals. The
-[beam and column closure packets](library-usability-improvement.md#beam-and-column-closure-before-goal-5)
-must qualify before Goal 5 freezes the 0.27.0 candidate. Goal 5 also
-replays the consumer fixes merged in PR #1045.
-The S5 checklist below preserves the 29 October prepublication snapshot.
+**0.27.0 is published and verified.** The [release status](../getting-started/release-status.md)
+and [append-only publication receipt](../getting-started/releases.md#v0270-published-and-verified)
+record exact tag/source, public archive hashes and the clean PyPI installation.
+The preparation records below remain historical evidence for their named stages.
 
-## Goal 5 candidate qualification
+## Completed 0.27.0 qualification and publication
 
-Current source metadata: 0.27.0 (prepared candidate; unpublished/on hold)
-Current public release: v0.26.0
+- [x] R1–R5 and L01 BBS repairs are included in the exact a11e758a replacement pair.
+- [x] All 18 profiles PASS; both archives pass 451 tests with zero failures/errors/skips.
+- [x] Independent installed review and exact-source/release-contract review ACCEPT.
+- [x] Current-candidate preflight, required PR and full cross-platform Weekly checks PASS.
+- [x] Dated exact-review/target-authorization metadata, preserved reviewed ancestry and retained-byte gate PASS.
+- [x] Same-byte TestPyPI then exact tag/PyPI/GitHub release PASS.
+- [x] All four anonymous public archive downloads match; fresh no-cache PyPI install imports 0.27.0 from its temporary environment.
 
-**Current archive verdict: PASS for the BBS-repaired replacement pair.**
-The [BBS repair results](library-usability-improvement.md#bbs-repair-and-publication)
-and [artifact record](../verification/library-0270-release-artifacts.json)
-select clean `a11e758a` and its exact wheel/sdist hashes. The owner authorized
-PyPI/GitHub delivery with public hash/clean-install readback after repair and
-software gates. The milestone PR, exact-review/authorization receipt and release
-assets own final immutable-head, integration and public-delivery facts.
-
-- [x] R1–R5 repairs remain covered by installed caller replays.
-- [x] L01: fractional/noninteger/boolean coupler counts reject with BBS.SPLICE; valid coupler one/lap zero reach typed BBS and quantity/cost consumers.
-- [x] Both archive corpora pass 451 tests with no failures/errors/skips; A–E FAIL/HOLD controls remain intact.
-- [x] All 18 profiles and independent installed review pass; previous report visual acceptance is explicitly reused because report sources are unchanged.
-- [x] Current-candidate preflight: 9015 Python, 629 FastAPI and React build PASS; zero preflight warnings.
-- Remaining sequence: exact-head PR/Weekly acceptance and independent review, bounded authorization metadata, same-byte TestPyPI, exact tag, PyPI/GitHub and public hash/external-install readback. Resume from actual receipts, not these frozen preparation checkboxes.
-
-Preserve the original 9a78 pair and superseded 5c79 pair as rejected evidence;
-never publish them. The invalidated 423 intermediate is not deliverable.
-The serializer optimization and broader research proposal remain deferred.
-Professional/native approval and unsupported profiles remain separately bounded.
+[PR #1065](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1065)
+and public release assets own final workflow/readback facts. No repeat upload or
+new release is selected. Later source optimization is unreleased and must get
+its own current-base equivalence/performance evidence. Preserve rejected archives
+and keep native/engineering approval separate from software publication.
 
 ## Historical S5 prepublication snapshot — 29 October 2026
 
