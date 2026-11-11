@@ -1150,6 +1150,101 @@ are ready. Installed native-host work retains its own evidence and sequencing.
 The [October Jira plan](https://pravinsurawase.atlassian.net/browse/LIB-1)
 retains its original readiness and conditional torsion history.
 
+### StructLib 0.28.0 candidate preparation
+
+**Authority.** The owner approved S0–S5, including implementation and candidate
+qualification, and directed work to stop before release. The starting source is
+`b6d7fb7815341364e056cec5c9169ed698981c75`, verified against hosted `main`.
+Public 0.27.0 (`v0.27.0`, `a78dcc6a`) is the comparison release.
+
+The release scope follows the [slab and footing roadmap](#later-release-themes).
+Promote one simply supported, uniformly loaded solid one-way slab and one
+square, uniform-depth, concentric isolated footing with known loads and approved
+external soil assumptions. Carry forward the four merged performance changes
+recorded in the [changelog](../../CHANGELOG.md). Keep existing API signatures,
+wire fields, canonical IDs and previous supported profiles compatible.
+
+#### Stages and completion evidence
+
+| Stage | Work | Evidence to proceed |
+|---|---|---|
+| **S0 — Plan and recheck** | Confirm release/tag, source head, sibling work and the exact owner of each calculation, consumer and qualification profile. Define the independent reference, controls, boundaries and candidate stop point before implementation. | Read-only plan review reconciled with both existing workflows and the current release executor. Record changes from review here. |
+| **S1 — Compare two frozen cases** | Reuse the declared INDIA-1D slab and INDIA-1C footing inputs. Record hand-derived reference expressions, source locators, units, rounded-value tolerances and exclusions. Execute the same cases from the published wheel and current source build in neutral environments. | Compare each reference independently against both installations. Label any library-only characterization separately. Trace a discrepancy to its owning method before changing arithmetic. |
+| **S2 — Complete the caller journeys** | Add an executable worked example per case using the maintained public Python route and serializable results. Expose required/provided reinforcement, demand and check status, assumptions, source basis and the outstanding review boundaries. Confirm maintained HTTP routes return matching check outcomes and structured errors. Fix confirmed main-process defects through their owners. | A reader can run each example from an installed package, check its expected output, and see how insufficient capacity or missing evidence changes the result. Python and HTTP agree on the selected cases and controls. |
+| **S3 — Consumer guidance and compatibility** | Link the examples from the package/example guidance and document install, entry points, outcome interpretation and scope. Add the new slab/footing copied-driver profiles to the maintained qualification path for both archives. Retain the prior beam/column profiles and the continuous one-way, two-way, combined and strap regressions. | Copied examples, independent checks and selected positive/negative regressions run outside the checkout against each installed archive. Contract and generated checks pass where affected. |
+| **S4 — Freeze version and compare performance** | Prepare 0.28.0 candidate metadata with the maintained version tooling. Freeze and commit the complete intended source. Build one wheel and sdist from that exact source. Against the verified public 0.27 wheel, compare equivalent ordinary and T-member flows under matched dependencies with paired, alternating measurements. | Record source commit and Python tree, package versions, sizes and SHA-256. Verify canonical outcomes and IDs outside timing. Record raw measurements, median ratios and sample conditions, with conclusions bounded to these workflows. |
+| **S5 — Qualify retained artifacts** | Run preflight, all installed qualification profiles, and independent exact-source/artifact review. Run required PR and full cross-platform Weekly checks for the unchanged candidate head. Preserve the verified archive pair and receipt, including installed examples, evidence digests, checks and remaining holds. | Clean wheel and sdist installs, all profiles passing, exact reviewed head and artifact hashes recorded, hosted checks passing, and hosted tag/release and PyPI still at the verified prior release. |
+
+#### Case and interface acceptance
+
+| Case | Reference coverage | Controls and boundaries | Owned paths |
+|---|---|---|---|
+| One-way slab | Use `SLAB-B01` / INDIA-1D (3,000 mm short effective span, 150 mm thickness, 125 mm effective depth, 10 kN/m² factored UDL, M20/Fe415). Check strip actions, flexural steel, supplied main and distribution bars, concrete shear and the stated reviewed span/depth ratio. | Capacity failure and incomplete serviceability review remain visible. Direct deflection, crack width, automatic shear reinforcement and generated load envelopes retain HOLD or their existing unsupported dispositions. | `design_complete_one_way_slab_is456`, `codes/is456/slab`, `fastapi_app/routers/library_core.py`, `test_slab_boundary_closure.py` and `test_library_core.py`. |
+| Isolated footing | Use `FOOT-INDIA-1C-SQ-001` (400 mm square column, 800 kN service and 1,200 kN factored concentric axial load, 200 kPa externally approved soil pressure, 500 mm thickness and 400 mm analysis depth). Check plan size, critical actions in both directions, steel, one-way and punching shear, and bearing/dowel transfer. | Retain supplied/approved input and check provenance. Unapproved or missing evidence cannot become aggregate PASS. Verify a real capacity failure; retain holds on eccentric/moment transfer, settlement, unverified applicability and detailing outside the supported geometry. | `design_concentric_isolated_footing_is456`, `codes/is456/footing`, `services/footing_api.py`, `fastapi_app/routers/footing.py`, `test_footing_composed_publication.py` and `test_footing.py`. |
+| Retained callers | Prior installed beam/column corpus and supported slab and footing siblings. | Keep existing FAIL/HOLD propagation. Full amendment, professional/construction and native-host approvals remain separate. | `scripts/_lib/release_qualification.py`, the existing copied-driver/probe owners and focused family regression tests. |
+
+The slab evidence starts from [B01 and its scope](../verification/is456-slab-evidence.md#accepted-benchmark-ledger)
+and the [INDIA-1D boundary](../verification/india-1d-slab-boundary-evidence.md#boundary-benchmark).
+The footing evidence starts from the [INDIA-1C fixture](../verification/india-1c-isolated-footing-workflow-evidence.md#accepted-public-benchmark)
+and the [current source dispositions](../verification/is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up--1-october-2026).
+Resolved software checks retain those source boundaries. The repository's
+normalized data distribution permission already covers the approved scope.
+
+#### S0 plan recheck
+
+Independent slab and footing reviews completed on 11 November 2026. Both
+confirmed the case and scope boundary. The footing review identified three
+tooling gaps. The following implementation changes resolve them before S4/S5:
+
+- Preserve the public 0.27.0 registry pins and tagged sample URLs during
+  candidate preparation. Separate public-install and candidate-version values
+  in the maintained version checks and verify that an untagged candidate has
+  no implied registry availability. Candidate instructions use local artifacts.
+- Add explicit `slab-footing-wheel` and `slab-footing-sdist` profiles to the
+  required inventory, archive selection and copied-driver dispatch. Replay
+  the same independent targets and controls from both, with the verification
+  inputs hash-bound. The current 0.27 profiles stay required.
+- Keep the historical S5 performance guard against 0.25.0. Use a separate
+  0.28 comparison with the hash-verified public 0.27.0 wheel. Match installed
+  dependencies, alternate sample order, and keep result equality outside the
+  timers. Compare identical example driver bytes with both archives.
+
+For S1, freeze numerical values and tolerances with the derivations. The slab
+targets include 11.25 kNm/m demand, 43.1136 kNm/m limiting moment,
+13.0743541549 mm neutral axis, 260.726630425 mm²/m required steel and
+0.12 N/mm² nominal shear. The span/depth check is arithmetic on the reviewed
+input carrier. The footing targets include 4 m² plan area, 200/300 kPa service
+and ultimate pressures, 192 kNm flexure in each direction, 0.30 N/mm² nominal
+one-way shear, 0.63 punching utilization and 1,256.637061 mm² provided dowel
+area. Label table-based capacities as independent only where the required
+source cells were checked directly. Retain the footing maximum-shear
+applicability HOLD. Missing required slab serviceability inputs remain an
+input rejection, with direct deflection and cracking held on completed results.
+
+#### Validation and stop point
+
+- Run the affected Python case and regression tests, the four existing slab and
+  footing FastAPI modules, affected format/lint/doc checks, and the footing
+  inclusion gate. If a reviewed footing-owned file changes, re-review the exact
+  change before refreshing its inclusion hash.
+- Run `./run.sh release run 0.28.0 --no-open` for version preparation on a clean
+  candidate branch. Inspect the version diff before building. Keep public install
+  guidance pinned to public availability and label checkout-only instructions.
+- Run `./run.sh release preflight --wheel <wheel>` and `./run.sh release verify
+  --version 0.28.0 --source wheel --wheel-dir <dir> --qualification --sdist
+  <sdist> --receipt <receipt>`. Preserve hashes for the fixtures, examples, test
+  drivers, dependency resolutions and outputs used for acceptance.
+- Use one milestone PR and one exact-head Weekly run. Retain the candidate
+  branch, PR, archive pair, manifest and evidence for review. S5 ends at this
+  handoff. Tags, TestPyPI, PyPI, GitHub Releases and docs deployment are release
+  actions outside this task.
+
+Out of scope are new flat-slab, raft, pile-cap, beam or column profiles,
+foundation report/BBS/CAD expansion, general floor/foundation design, solver
+work and Excel/XLL. Treat the beam station-evidence contract as its separate
+compatibility workstream unless a selected normal workflow reproduces a release
+regression.
+
 ## Work and completion evidence
 
 | Area | Required outcome | Evidence |
