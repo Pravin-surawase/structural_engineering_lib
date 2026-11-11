@@ -1186,7 +1186,7 @@ wire fields, canonical IDs and previous supported profiles compatible.
 The slab evidence starts from [B01 and its scope](../verification/is456-slab-evidence.md#accepted-benchmark-ledger)
 and the [INDIA-1D boundary](../verification/india-1d-slab-boundary-evidence.md#boundary-benchmark).
 The footing evidence starts from the [INDIA-1C fixture](../verification/india-1c-isolated-footing-workflow-evidence.md#accepted-public-benchmark)
-and the [current source dispositions](../verification/is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up--1-october-2026).
+and the [current source dispositions](../verification/is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up-1-october-2026).
 Resolved software checks retain those source boundaries. The repository's
 normalized data distribution permission already covers the approved scope.
 
@@ -1268,6 +1268,14 @@ error for an unacknowledged review basis.
   branch, PR, archive pair, manifest and evidence for review. S5 ends at this
   handoff. Tags, TestPyPI, PyPI, GitHub Releases and docs deployment are release
   actions outside this task.
+
+The first S5 candidate, `9ca25750`, exposed two release-preparation issues.
+The version-bump test fixtures lacked the public-release record required by
+the new pin policy. The generated family guides and API registries still
+described 0.27. The repair updates those fixtures and regenerates the guides
+with explicit local-build instructions. The repair changes tests and guides
+outside the distribution payload. Retain evidence for the first run and
+verify the repaired head before accepting the candidate.
 
 Out of scope are new flat-slab, raft, pile-cap, beam or column profiles,
 foundation report/BBS/CAD expansion, general floor/foundation design, solver
