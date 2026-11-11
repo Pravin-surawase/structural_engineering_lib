@@ -1270,8 +1270,9 @@ error for an unacknowledged review basis.
   actions outside this task.
 
 The first S5 candidate, `9ca25750`, exposed two release-preparation issues.
-The version-bump test fixtures lacked the public-release record required by
-the new pin policy. The generated family guides and API registries still
+The version-bump and preflight fixtures needed the public-release identity
+and the distinct quickstart candidate version required by the new pin policy.
+The generated family guides and API registries still
 described 0.27. The repair updates those fixtures and regenerates the guides
 with explicit local-build instructions. The repair changes tests and guides
 outside the distribution payload. Retain evidence for the first run and
