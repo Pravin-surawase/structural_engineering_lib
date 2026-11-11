@@ -13,7 +13,7 @@ tags: [python, cli, beam, external-user]
 **Audience:** Users
 **Status:** Active
 **Importance:** High
-**Version:** 0.27.0
+**Version:** 0.28.0
 **Last Updated:** 2026-08-28
 
 This guide takes a new user from a clean installation to design results, a bar

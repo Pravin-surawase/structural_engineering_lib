@@ -5,9 +5,13 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-08
+**Last Updated:** 2026-11-11
 
 ## Current State
+
+Current source metadata: 0.28.0 (prepared candidate; publication on hold).
+The [S0–S5 plan](library-usability-improvement.md#structlib-0280-candidate-preparation)
+defines its exact archive, check and independent-review evidence.
 
 **0.27.0 is published and verified.** The [release status](../getting-started/release-status.md)
 and [append-only publication receipt](../getting-started/releases.md#v0270-published-and-verified)

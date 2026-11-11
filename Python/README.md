@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.27.0 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.28.0 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,7 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.27.0
+## New in v0.28.0
 
 - Runnable reference scripts cover one simply supported one-way slab and one
   square concentric isolated footing. They use public calculation routes and

@@ -13,7 +13,7 @@ tags: []
 **Audience:** Users
 **Status:** Beta Maturity / Normal Software Release
 **Importance:** High
-**Version:** 0.27.0
+**Version:** 0.28.0
 **Created:** 2025-12-15
 **Last Updated:** 2026-10-29
 
