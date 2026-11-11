@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Improved
 
+- T-beam flange clearance checks avoid allocating a generator for every bar
+  pair while preserving distances, diagnostics, and exports exactly. The main
+  example's median workflow time fell 25.3% in 30 local paired measurements.
+  See the [comparison record](docs/verification/library-t-beam-distance-optimization.json).
+
 - Canonical result serialization visits dataclass fields once while retaining
   canonical bytes, result identities, statuses and independent exported copies.
   Fresh paired local measurements reduce ordinary/T-member workflow median time
