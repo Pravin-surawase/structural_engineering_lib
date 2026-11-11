@@ -18,7 +18,12 @@ from structural_lib.beam import (
     flexural_capacity,
     mass_per_length,
 )
-from structural_lib.beam.semantics import canonical_json_bytes, plain
+from structural_lib.beam.semantics import (
+    Provenance,
+    canonical_json_bytes,
+    completed_result,
+    plain,
+)
 
 
 def _bars() -> tuple[BarPosition, ...]:
@@ -92,6 +97,23 @@ def test_operation_result_export_cannot_mutate_its_source() -> None:
     exported["outputs"]["area_mm2"] = -1
     assert canonical_json_bytes(result) == before
     assert result.outputs["area_mm2"] > 0
+
+
+def test_operation_result_keeps_independent_input_and_output_snapshots() -> None:
+    samples = [16.0, -0.0, Face.BOTTOM]
+    payload = {"samples": samples}
+    result = completed_result(
+        "structural.test.snapshot/v1",
+        payload,
+        payload,
+        provenance=Provenance("test-source", "test-method", ()),
+    )
+    before = canonical_json_bytes(result)
+    samples.append(42)
+    assert canonical_json_bytes(result) == before
+    assert result.effective_inputs["samples"] == [16, 0, "bottom"]
+    assert result.outputs["samples"] == [16, 0, "bottom"]
+    assert result.effective_inputs["samples"] is not result.outputs["samples"]
 
 
 def test_plain_rejects_dataclass_classes_with_the_existing_error() -> None:

@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Improved
 
+- Result construction reuses normalized inputs and outputs when calculating
+  their IDs. Calculation packages normalize each dependency once per hash
+  check. The ordinary beam example's local median fell 15.1% across 30 paired
+  measurements. [Comparison record](docs/verification/library-ordinary-beam-normalization.json)
+
 - The T-beam workflow reuses its flange check for serviceability. The main
   example's median workflow time fell 34.5% in 30 local paired measurements
   after the distance optimization. Standalone serviceability checks its own
