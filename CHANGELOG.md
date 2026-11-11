@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Improved
 
+- The T-beam workflow reuses its flange check for serviceability. The main
+  example's median workflow time fell 34.5% in 30 local paired measurements
+  after the distance optimization. Standalone serviceability checks its own
+  request. [Comparison record](docs/verification/library-t-beam-flange-reuse.json)
+
 - T-beam flange clearance checks avoid allocating a generator for every bar
   pair while preserving distances, diagnostics, and exports exactly. The main
   example's median workflow time fell 25.3% in 30 local paired measurements.

@@ -54,6 +54,20 @@ def check_t_serviceability(request: TServiceabilityRequest) -> OperationResult:
     strength credit. The larger of its actual crack result and the web-only
     result governs; loss of the source screening envelope retains HOLD.
     """
+    return _check_t_serviceability(request, flange=None)
+
+
+def _check_t_flange_and_serviceability(
+    request: TServiceabilityRequest,
+) -> tuple[OperationResult, OperationResult]:
+    """Compute both results using the flange evidence from this request."""
+    flange = check_t_flange_participation(request.flange)
+    return flange, _check_t_serviceability(request, flange=flange)
+
+
+def _check_t_serviceability(
+    request: TServiceabilityRequest, *, flange: OperationResult | None
+) -> OperationResult:
     op, inputs = T_SERVICEABILITY_OPERATION, effective_inputs(request=request)
     provenance = Provenance(
         T_SERVICEABILITY_REVISION,
@@ -95,7 +109,8 @@ def check_t_serviceability(request: TServiceabilityRequest) -> OperationResult:
             "T_SLS.CRACK_BASIS",
             "Exposure, harmful-cracking applicability and the selected crack limit are required.",
         )
-    flange = check_t_flange_participation(request.flange)
+    if flange is None:
+        flange = check_t_flange_participation(request.flange)
     action = check_t_action_basis(request.flange.action_basis)
     if not _passed(flange) or not _passed(action):
         return hold(
