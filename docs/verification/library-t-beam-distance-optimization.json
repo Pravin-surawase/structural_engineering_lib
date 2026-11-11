@@ -1,0 +1,176 @@
+{
+  "task": "LIB-T-DISTANCE-OPT-001",
+  "date": "2026-11-11",
+  "baseline_commit": "79e65fbb834ad9fff70017da9794413413bca5a2",
+  "module": "Python/structural_lib/beam/t_flange.py",
+  "baseline_module_sha256": "97aa617580af78082fc60ba7e64c678022db1ac13af931ae28aa99a553a6a35d",
+  "candidate_module_sha256": "78d0a5bc790ada9a27c8c3b0d370da264e5a1e314c41e7ffb895c1bb0798a072",
+  "method": "Same process, same source-bound workflow and dependencies, switching only the old and new distance functions. Warmed and alternated order. Canonical comparison outside every timer. No exports or profiling inside timers.",
+  "runtime": {
+    "python": "3.11.15",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "pydantic": "2.13.4"
+  },
+  "exact": {
+    "workflows": 13,
+    "operation_records": 543,
+    "exports": 221,
+    "main_clearance_mm": 2,
+    "collision_fail_canonical_sha256": "4444aeb392b8e79f0e41d12c94be6a3d20383e1d5675128c0544e75a899858c9",
+    "journeys": [
+      {
+        "case": "main",
+        "probe": "adequate",
+        "status": "PASS"
+      },
+      {
+        "case": "width-limited",
+        "probe": "adequate",
+        "status": "PASS"
+      },
+      {
+        "case": "main",
+        "probe": "overload",
+        "status": "FAIL"
+      },
+      {
+        "case": "main",
+        "probe": "insufficient-bars",
+        "status": "FAIL"
+      },
+      {
+        "case": "main",
+        "probe": "service-fail",
+        "status": "FAIL"
+      },
+      {
+        "case": "main",
+        "probe": "short-anchor",
+        "status": "FAIL"
+      },
+      {
+        "case": "main",
+        "probe": "short-hook",
+        "status": "FAIL"
+      },
+      {
+        "case": "main",
+        "probe": "missing-support",
+        "status": "HOLD"
+      },
+      {
+        "case": "main",
+        "probe": "missing-flange",
+        "status": "HOLD"
+      },
+      {
+        "case": "main",
+        "probe": "missing-service",
+        "status": "HOLD"
+      },
+      {
+        "case": "main",
+        "probe": "depth-conflict",
+        "status": "FAIL"
+      },
+      {
+        "case": "main",
+        "probe": "shoulder-bar",
+        "status": "FAIL"
+      },
+      {
+        "case": "main",
+        "probe": "end-cover",
+        "status": "FAIL"
+      }
+    ],
+    "kernel_checks": [
+      {
+        "python": "3.11.15",
+        "binary64_pairs": 20017,
+        "mixed_magnitude_hex": "0x1.7d78400000000p+26"
+      },
+      {
+        "python": "3.14.6",
+        "binary64_pairs": 20017,
+        "mixed_magnitude_hex": "0x1.7d78400000001p+26"
+      }
+    ],
+    "kernel_cases_include": "Touching, contained, separated axes, mixed magnitude, tiny gaps, adjacent threshold floats, and 20,000 seeded box pairs. Equality is baseline/candidate within each runtime."
+  },
+  "rounds": 3,
+  "pairs_per_round": 10,
+  "warmups_per_variant_per_round": 2,
+  "summary": {
+    "all": {
+      "baseline_median_ms": 1681.0235830000001,
+      "candidate_median_ms": 1256.436979,
+      "reduction_percent": 25.257623289393205,
+      "candidate_faster_pairs": 30
+    },
+    "round_1": {
+      "baseline_median_ms": 1684.9378125,
+      "candidate_median_ms": 1250.154667,
+      "reduction_percent": 25.804106375587676,
+      "candidate_faster_pairs": 10
+    },
+    "round_2": {
+      "baseline_median_ms": 1676.092042,
+      "candidate_median_ms": 1258.9461875000002,
+      "reduction_percent": 24.88800400258686,
+      "candidate_faster_pairs": 10
+    },
+    "round_3": {
+      "baseline_median_ms": 1700.059021,
+      "candidate_median_ms": 1258.303979,
+      "reduction_percent": 25.984688563350765,
+      "candidate_faster_pairs": 10
+    }
+  },
+  "boundary": "Local warmed main T-beam workflow, no tail, throughput, universal speedup, new profile, or release claim.",
+  "retained_local_evidence": {
+    "output/LIB-T-DISTANCE-OPT-001/comparison.json": "e15785e1b1aa9abeb704db81cceee0a72545534b15d28bc82bb79c472e952b39",
+    "output/LIB-T-DISTANCE-OPT-001/compare.py": "afdff4cb465bd47693126be33a3e4642917d5a75a33c2bb0335ec7bb9e6ad978",
+    "output/LIB-T-DISTANCE-OPT-001/kernel-parity.py": "5ca7f4e80d0b6096c128db6c40f620e1bdaa61f36fb10bc70042e3a643357fc0",
+    "output/LIB-T-DISTANCE-OPT-001/exact-receipts.json": "d0fec89e48e51f34dc6548fce6138e16fe7b625c0afa0da93640ea2c0a2a8477"
+  },
+  "sample_columns": [
+    "round",
+    "pair",
+    "first_variant",
+    "baseline_ms",
+    "candidate_ms"
+  ],
+  "samples": [
+    [1, 1, "baseline", 1690.080333, 1233.316667],
+    [1, 2, "candidate", 1657.603084, 1231.465375],
+    [1, 3, "baseline", 1677.82725, 1262.119917],
+    [1, 4, "candidate", 1677.555084, 1246.349833],
+    [1, 5, "baseline", 1707.102792, 1253.584292],
+    [1, 6, "candidate", 1679.795292, 1246.725042],
+    [1, 7, "baseline", 1708.334375, 1269.097292],
+    [1, 8, "candidate", 1757.205541, 1264.804667],
+    [1, 9, "baseline", 1725.2235, 1246.427833],
+    [1, 10, "candidate", 1672.4275, 1256.129208],
+    [2, 1, "candidate", 1669.785834, 1260.7045],
+    [2, 2, "baseline", 1679.780542, 1246.997],
+    [2, 3, "candidate", 1671.776416, 1266.518209],
+    [2, 4, "baseline", 1671.483958, 1257.187875],
+    [2, 5, "candidate", 1667.633459, 1268.340209],
+    [2, 6, "baseline", 1680.69975, 1247.132375],
+    [2, 7, "candidate", 1730.74575, 1271.01825],
+    [2, 8, "baseline", 1672.403542, 1256.74475],
+    [2, 9, "candidate", 1679.883833, 1262.281709],
+    [2, 10, "baseline", 1684.553208, 1246.001],
+    [3, 1, "baseline", 1714.426041, 1261.422208],
+    [3, 2, "candidate", 1696.248917, 1273.7735],
+    [3, 3, "baseline", 1720.115958, 1285.508292],
+    [3, 4, "candidate", 1729.488958, 1277.892417],
+    [3, 5, "baseline", 1702.978708, 1253.006833],
+    [3, 6, "candidate", 1679.508, 1250.413083],
+    [3, 7, "baseline", 1700.59625, 1252.902125],
+    [3, 8, "candidate", 1679.2425, 1299.506708],
+    [3, 9, "baseline", 1699.521792, 1252.607667],
+    [3, 10, "candidate", 1681.347416, 1255.18575]
+  ]
+}
