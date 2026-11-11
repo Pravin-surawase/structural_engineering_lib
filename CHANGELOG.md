@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.28.0] — Prepared candidate (unreleased; on hold)
+
+### Added
+
+- Runnable simply supported solid one-way slab and square concentric isolated
+  footing examples with independent references and capacity, review and assumption
+  controls. Both retained archives use the same copied examples in qualification.
+
+### Fixed
+
+- The complete one-way slab HTTP response retains the Python result's
+  `load_envelope_status`, including on a completed flexural failure.
+- Version preparation keeps registry installs and tagged examples tied to the
+  verified public package. Candidate examples use a local archive or checkout.
+
 ### Improved
 
 - Result construction reuses normalized inputs and outputs when calculating

@@ -27,6 +27,7 @@
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
 | LIB-027 | Deliver the selected beam and column release | P1 | Done: 0.27.0 published and verified; all 18 profiles/451 tests per archive, public hashes and clean PyPI install pass. | [Publication receipt](getting-started/releases.md#v0270-published-and-verified) |
+| LIB-028 | Prepare the slab and footing candidate through S5 | P1 | Candidate work only on `codex/lib028-s0-s5` | [S0–S5 plan](planning/library-usability-improvement.md#structlib-0280-candidate-preparation), retained wheel and sdist, exact-head PR/Weekly checks, independent review |
 
 The dated qualification and installed-host records below retain their own
 evidence and HOLDs. Their expired overnight instruction does not select current

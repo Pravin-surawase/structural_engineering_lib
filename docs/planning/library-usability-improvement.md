@@ -7,12 +7,12 @@ doc_type: spec
 
 # Library usability and implementation quality
 
-**Current programme.** [0.27 beam and column release preparation](#027-beam-and-column-release-preparation)
+**Current programme.** [0.28 slab and footing candidate preparation](#structlib-0280-candidate-preparation)
 owns the next feature scope. The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
-retains historical 0.26.0 artifacts; [0.27.0 is now published and verified](../getting-started/releases.md#v0270-published-and-verified).
+retains historical 0.26.0 artifacts; [0.27.0 is published and verified](../getting-started/releases.md#v0270-published-and-verified).
 The consumer fixes originally planned for 0.26.1 ship in 0.27.0 with the
-R1–R5 and L01 repairs. Current development selects the bounded
-[serializer qualification](#post-release-serializer-optimization), without a new release.
+R1–R5 and L01 repairs. The merged [serializer qualification](#post-release-serializer-optimization)
+and later measured beam improvements enter the 0.28 candidate.
 
 The [professional standards programme](#professional-standards-programme-8-october-2026-revision-2)
 and [assessment record](../verification/library-professional-standards-20261008.json)
@@ -1220,6 +1220,36 @@ area. Label table-based capacities as independent only where the required
 source cells were checked directly. Retain the footing maximum-shear
 applicability HOLD. Missing required slab serviceability inputs remain an
 input rejection, with direct deflection and cracking held on completed results.
+
+#### S1 reference comparison and S2 transport correction
+
+The published wheel (`205acfde8500909aaf766e9cf263fc13bf76bfa680376527e29048b954cd2ea6`)
+and isolated `b6d7fb78` wheel (`a94ad20437a9809724d90f364bde74fbe0a7a0f1ca7242c19f97ba502f70acea`)
+matched the frozen arithmetic and returned the same decisions in both cases.
+The final copied-driver replay also matched every slab result byte. The footing
+result differed only in the package-content and dependent replay-receipt hashes,
+which bind results to the two distinct installed builds. Arithmetic and
+assumption identities were preserved. The working receipts are retained with
+the candidate intake evidence.
+
+Table 19 and 20 values were checked visually on printed page 73 (PDF page 74)
+of the hash-controlled [IS 456 source](../verification/is456-official-source-inventory.json).
+For the slab, interpolate M20 at 0.25 and 0.50% (0.36 and 0.48 N/mm²) to
+0.3606371579 N/mm² at the supplied steel percentage. The 150 mm depth factor
+gives 0.4688283053 N/mm². The checked half-Table-20 M20 cap is 1.4 N/mm².
+For the footing, interpolate M25 at 0.15 and 0.25% (0.29 and 0.36 N/mm²) to
+0.3136482192 N/mm² using 13Ø12 across 2,000 mm in each direction, with
+one-way utilization 0.9564855838. That verifies the selected Table 19
+arithmetic. The documented maximum-shear classification and physical
+continuation prerequisites remain on HOLD. The [installed verifier](../../scripts/_lib/release_slab_footing.py)
+records the exact expressions, units in field names, and absolute tolerances.
+
+The complete slab Python result already carried `load_envelope_status`. The
+HTTP response model omitted the field and FastAPI filtered it from the success
+response, including when flexural capacity failed. Adding it to the response
+model preserves the single caller-supplied action boundary. The HTTP parity
+tests replay the same three cases per family and verify the slab admission
+error for an unacknowledged review basis.
 
 #### Validation and stop point
 

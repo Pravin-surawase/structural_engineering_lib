@@ -31,7 +31,7 @@ DOC_INSTALL_VERSION_PATTERN = (
     r"structural_engineering_lib/v)"
     r"[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?"
 )
-DOC_INSTALL_VERSION_REPLACEMENT = r"\g<prefix>{version}"
+DOC_INSTALL_VERSION_REPLACEMENT = r"\g<prefix>{published_version}"
 
 # Files that need version updates (relative to repo root)
 # MINIMAL SET: Only files that MUST have hardcoded versions
@@ -95,11 +95,8 @@ VERSION_FILES = {
     ],
 }
 
-# Documentation references that should track the prepared source version.
-# Historical release claims, badges and ledger entries are excluded. Active
-# recipe pins (including extras and tagged sample URLs) track the prepared
-# source version together. Synchronizing them does not publish the candidate
-# or establish registry/tag availability; release evidence remains separate.
+# Candidate labels track source metadata. Registry pins and tagged sample URLs
+# track the verified public version recorded in the current-release guide.
 DOC_VERSION_FILES = {
     "README.md": [
         (
@@ -151,7 +148,7 @@ DOC_VERSION_FILES = {
         (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
         (
             r"structural_lib: [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "structural_lib: {version}",
+            "structural_lib: {published_version}",
         ),
     ],
     "Python/examples/README.md": [
@@ -177,11 +174,11 @@ DOC_VERSION_FILES = {
         (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
         (
             r"StructLib [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)? requires",
-            "StructLib {version} requires",
+            "StructLib {published_version} requires",
         ),
         (
             r"The preflight must report version `[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?`",
-            "The preflight must report version `{version}`",
+            "The preflight must report version `{published_version}`",
         ),
         (
             r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
@@ -196,8 +193,8 @@ DOC_VERSION_FILES = {
     ],
     "docs/cookbook/python/beam.md": [
         (
-            r"Prepared recipe version: `structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?`",
-            "Prepared recipe version: `structural-lib-is456=={version}`",
+            r"Published recipe version: `structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?`",
+            "Published recipe version: `structural-lib-is456=={published_version}`",
         ),
     ],
     "docs/planning/pre-release-checklist.md": [
@@ -275,6 +272,19 @@ def read_current_version() -> str:
     raise ValueError("Could not find version in pyproject.toml")
 
 
+def read_published_version() -> str:
+    """Read the version whose public delivery has been recorded."""
+    status = REPO_ROOT / "docs/getting-started/release-status.md"
+    match = re.search(
+        r"^The current published package is \*\*StructLib (\d+\.\d+\.\d+(?:a\d+)?)\*\*\.",
+        status.read_text(encoding="utf-8"),
+        re.MULTILINE,
+    )
+    if not match:
+        raise ValueError("Published version is missing from release-status.md")
+    return match.group(1)
+
+
 def version_key(version: str) -> tuple[int, int, int, int, int]:
     """Order supported Alpha identifiers and normal final releases."""
     alpha_match = ALPHA_VERSION_RE.fullmatch(version)
@@ -290,7 +300,9 @@ def version_key(version: str) -> tuple[int, int, int, int, int]:
     raise ValueError(f"Unsupported version format: {version}")
 
 
-def release_format_kwargs(version: str, today: str) -> dict[str, str]:
+def release_format_kwargs(
+    version: str, today: str, *, published_version: str | None = None
+) -> dict[str, str]:
     """Return maturity-aware replacements for one supported version."""
     is_alpha = bool(ALPHA_VERSION_RE.fullmatch(version))
     is_final = bool(LEGACY_STABLE_VERSION_RE.fullmatch(version))
@@ -298,6 +310,7 @@ def release_format_kwargs(version: str, today: str) -> dict[str, str]:
         raise ValueError(f"Unsupported version format: {version}")
     return {
         "version": version,
+        "published_version": published_version or version,
         "date": today,
         "candidate_label": "Alpha" if is_alpha else "normal software release",
         "development_status": (
@@ -417,7 +430,14 @@ def main():
         return 0
 
     today = date.today().isoformat()
-    current_format_kwargs = release_format_kwargs(current, today)
+    try:
+        published_version = read_published_version()
+    except (OSError, ValueError) as exc:
+        print(f"ERROR: {exc}")
+        return 1
+    current_format_kwargs = release_format_kwargs(
+        current, today, published_version=published_version
+    )
 
     if args.check_docs:
         print("Checking doc version references against current version...")
@@ -490,7 +510,9 @@ def main():
         print("Expected PEP 440 Alpha X.Y.ZaN or normal final X.Y.Z format")
         return 1
 
-    format_kwargs = release_format_kwargs(new_version, today)
+    format_kwargs = release_format_kwargs(
+        new_version, today, published_version=published_version
+    )
 
     # Validate version is higher than current
     if not args.force:

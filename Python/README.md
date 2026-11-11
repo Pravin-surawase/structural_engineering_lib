@@ -14,19 +14,24 @@ IS 456 reinforced-concrete design library (Python package).
 
 ## New in v0.27.0
 
-- Three reproducible beam section comparisons; prescribed layered column
-  response including partial compression, mixed diameters and `xu = D`.
-- Supplied inclined/bent-up beam shear and sagging flange compression branches.
-- Physical four-corner column and ordinary rectangular torsion member examples,
-  with actual ties/hooks/anchorage and a bounded transient torsion service case.
-- Two ordinary monolithic sagging T members with physical containment, local
-  flange provision, web cage/shear, service screening and consistent exports.
-- Corrected calculation reports preserve required/provided steel and explain
-  missing detailing across JSON, HTML and Markdown.
+- Runnable reference scripts cover one simply supported one-way slab and one
+  square concentric isolated footing. They use public calculation routes and
+  preserve the request, calculations and check statuses in JSON.
+- The slab fixture exposes supplied reinforcement, shear, the reviewed
+  span/depth screen, and its capacity/review-limit controls. It does not claim
+  direct deflection, crack-width verification, automatic shear reinforcement,
+  or load-envelope generation.
+- The footing fixture exposes service and factored actions, approved-basis input
+  provenance, flexure, one-way/punching shear, bearing/dowel transfer, and
+  supplied detailing. Its 4Ø10 transfer control fails; an assumed soil basis
+  holds an otherwise passing result.
 
-These are case-qualified workflows. Other torsion histories, nonzero T-member
-torsion and unsupported layouts retain HOLD. Engineering approval remains
-separate from a complete software result.
+The cases require independent verification and qualified structural-engineering
+review. The [0.28 candidate plan](../docs/planning/library-usability-improvement.md#structlib-0280-candidate-preparation),
+[INDIA-1D slab evidence](../docs/verification/india-1d-slab-boundary-evidence.md),
+and [INDIA-1C footing evidence](../docs/verification/india-1c-isolated-footing-workflow-evidence.md)
+define their inputs and boundaries. Retained v0.27.0 beam, column, torsion, and
+T-member coverage remains supported within its documented profiles.
 
 ### Retained capabilities from v0.24.0
 
@@ -55,6 +60,23 @@ only when intentionally testing that checkout.
 pip install structural-lib-is456==0.27.0         # exact normal release
 pip install "structural-lib-is456[dxf]==0.27.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
+```
+
+The reference scripts are copied from the current branch and are not packaged.
+After installing the public pin above in a clone, run:
+
+```bash
+python -I Python/examples/slab_one_way_reference.py --case baseline
+python -I Python/examples/isolated_footing_reference.py --case baseline
+```
+
+Use `capacity-fail` or `review-limit-fail` for slab controls and
+`transfer-fail` or `assumption-hold` for footing controls. Install a retained
+candidate from its local wheel in a clean environment.
+
+```bash
+python -m pip install /path/to/structural_lib_is456-0.28.0-py3-none-any.whl
+python -I Python/examples/isolated_footing_reference.py --case transfer-fail
 ```
 
 Final PEP 440 releases are eligible for ordinary package resolution. The package

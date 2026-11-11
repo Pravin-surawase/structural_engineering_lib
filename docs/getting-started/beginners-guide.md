@@ -45,9 +45,7 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 ```
 
 ### Step 3: Install the library
-Pins track the version prepared on this source branch. The registry commands
-require verified publication in the [release record](releases.md); a source
-version bump alone does not make a candidate available to install.
+The registry commands install the [verified public version](release-status.md).
 
 ```bash
 python3 -m pip install --upgrade pip

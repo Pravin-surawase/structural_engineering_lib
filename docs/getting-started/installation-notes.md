@@ -11,9 +11,8 @@ tags: [installation, react, fastapi, python]
 
 ## Install the current public release
 
-The pin follows prepared source metadata. Confirm that exact version is published
-before registry installation; otherwise use the source-install route in the
-[installation guide](installation-notes.md#run-the-current-repository-workbench). Updating this pin does not publish a release.
+The pin follows the [verified public version](release-status.md).
+For a development checkout, use the [source-install route](#run-the-current-repository-workbench).
 
 ```bash
 python3 -m venv .venv

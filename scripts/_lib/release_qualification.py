@@ -44,6 +44,7 @@ PERFORMANCE_BUDGETS = {
     "family_p95_ms": 1000.0,
     "median_regression_factor": 3.0,
 }
+SLAB_FOOTING_PROFILES = ("slab-footing-wheel", "slab-footing-sdist")
 
 
 def required_profiles(version: str, extras: Any) -> list[str]:
@@ -57,14 +58,21 @@ def required_profiles(version: str, extras: Any) -> list[str]:
         "examples",
         "baseline",
     ]
-    if tuple(map(int, version.partition("a")[0].split("."))) >= (0, 27, 0):
+    release_version = tuple(map(int, version.partition("a")[0].split(".")))
+    if release_version >= (0, 27, 0):
         profiles.extend(("beam-column-wheel", "beam-column-sdist"))
+    if release_version >= (0, 28, 0):
+        profiles.extend(SLAB_FOOTING_PROFILES)
     return profiles
 
 
 def distribution_target(profile: str, wheel: Path, sdist: Path) -> str:
     """The source-archive journey must install the retained sdist, not the wheel."""
-    return str(sdist if profile in ("sdist", "beam-column-sdist") else wheel)
+    return str(
+        sdist
+        if profile in ("sdist", "beam-column-sdist", "slab-footing-sdist")
+        else wheel
+    )
 
 
 def sha256(path: Path) -> str:
@@ -280,6 +288,13 @@ def qualify_artifacts(
                     *input_paths(repo),
                 )
             }
+        )
+
+    if "slab-footing-wheel" in required:
+        from .release_slab_footing import input_paths
+
+        evidence["verification_inputs_sha256"].update(
+            {str(path.relative_to(repo)): sha256(path) for path in input_paths(repo)}
         )
 
     def save() -> None:
