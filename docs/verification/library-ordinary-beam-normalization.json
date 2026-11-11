@@ -1,0 +1,267 @@
+{
+  "task": "LIB-ORDINARY-NORMALIZE-001",
+  "baseline_commit": "189fb2ac6738efd07301075cf54475251e2a786b",
+  "source_hashes": {
+    "baseline": {
+      "Python/structural_lib/beam/semantics.py": "484ad70f0ca7252bda583e3da2534b49b404c378a229c7ef7ea9d710a24a384a",
+      "Python/structural_lib/reporting/calculation_package.py": "5b56721be73884cb95b0d13533ef0f293c71fefeaf08945f3060a639c91da40c"
+    },
+    "candidate": {
+      "Python/structural_lib/beam/semantics.py": "f6c6e6675897e23fb07dc5e35daf5dfcfe02e68fe4077f5576795f072ee5af4c",
+      "Python/structural_lib/reporting/calculation_package.py": "b519a888534709d87dfd0bc983c0e4fc462e59ceae742c68a50b0c9b32ac7a60"
+    }
+  },
+  "method": "Two isolated source snapshots on the same runtime and dependencies. Only semantics and calculation package differ. Sequential, balanced alternating pairs after warmups. Equality outside each timer.",
+  "runtime": {
+    "python": "3.11.15",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "pydantic": "2.13.4"
+  },
+  "exact": {
+    "ordinary_workflows": 8,
+    "t_workflows": 13,
+    "operation_records": 815,
+    "exports": 245,
+    "canonical_outcomes": 525,
+    "matching_rejections": 10,
+    "corpus_sha256": "5655a17f1cc86970eefe7143bfad091539652c074dd9a91567e3f9db84a5a7b4",
+    "journeys": [
+      {
+        "case": "single-layer-adequate",
+        "status": "PASS",
+        "result_records": 30,
+        "canonical_sha256": "4075de08a9e9183e5a5e6aa34ea1c2226de83526430554c5db832f9fb0d12274",
+        "exports": 3
+      },
+      {
+        "case": "single-layer-overload",
+        "status": "FAIL",
+        "result_records": 30,
+        "canonical_sha256": "221f91709329f659e7e07604e26c21968b479705b62e79ed718ef29e4a1b519f",
+        "exports": 3
+      },
+      {
+        "case": "single-layer-short-anchor",
+        "status": "FAIL",
+        "result_records": 30,
+        "canonical_sha256": "f8494fc6cb855a1a1ac57852134ca5e92a23ee36894d71d815de8b94a07da852",
+        "exports": 3
+      },
+      {
+        "case": "single-layer-missing-deflection",
+        "status": "HOLD",
+        "result_records": 30,
+        "canonical_sha256": "48a9c4cfad990de7cb9e3ebffcc98ebd1eeae0b4311ea431227d111eccd0107b",
+        "exports": 3
+      },
+      {
+        "case": "multilayer-adequate",
+        "status": "PASS",
+        "result_records": 38,
+        "canonical_sha256": "7720743f370b80e9c4f4b3e5ec8245700f4d03e345d54691093d0e67dafa0254",
+        "exports": 3
+      },
+      {
+        "case": "multilayer-overload",
+        "status": "FAIL",
+        "result_records": 38,
+        "canonical_sha256": "c3e33a772fa0368e51288a375bee57b582cf6fdfe07d97fbbd0277e8810ff4b0",
+        "exports": 3
+      },
+      {
+        "case": "multilayer-short-anchor",
+        "status": "FAIL",
+        "result_records": 38,
+        "canonical_sha256": "5f07bef81960902b2a85420b048ffd6036fdab71d8d5b714fea5282af8b8879a",
+        "exports": 3
+      },
+      {
+        "case": "multilayer-missing-deflection",
+        "status": "HOLD",
+        "result_records": 38,
+        "canonical_sha256": "0a61c159737e6e75e9bc47e2fcb84a185949de3332a504efe559b1016c21866f",
+        "exports": 3
+      },
+      {
+        "case": "t-main-adequate",
+        "status": "PASS",
+        "result_records": 43,
+        "canonical_sha256": "947f13c7bf0492d0ea6803671bb48ba6b5adc59f9a549c30a986d19496194e9b",
+        "exports": 17
+      },
+      {
+        "case": "t-width-limited-adequate",
+        "status": "PASS",
+        "result_records": 43,
+        "canonical_sha256": "c93804a3367258a210bd054b4bf101ecf7e1210f19f5b5fe62082152bbb2ed58",
+        "exports": 17
+      },
+      {
+        "case": "t-main-overload",
+        "status": "FAIL",
+        "result_records": 41,
+        "canonical_sha256": "0633cd4364991e60f412f40f4934e057c43ea07d00463f537da443b53421eabc",
+        "exports": 17
+      },
+      {
+        "case": "t-main-insufficient-bars",
+        "status": "FAIL",
+        "result_records": 41,
+        "canonical_sha256": "d1ba6742179ad2dbddf1f697636f0b4f9d009e09941f86af2cfc635e789a36f1",
+        "exports": 17
+      },
+      {
+        "case": "t-main-service-fail",
+        "status": "FAIL",
+        "result_records": 43,
+        "canonical_sha256": "e349009accd27332f5ae309c5c5f95f0265ca1164c1eb8fd51a61ccd9cda4d4b",
+        "exports": 17
+      },
+      {
+        "case": "t-main-short-anchor",
+        "status": "FAIL",
+        "result_records": 43,
+        "canonical_sha256": "c69c2dc0ab71e867521989303b3afae7e00169cec192695efa0ff88c41702b99",
+        "exports": 17
+      },
+      {
+        "case": "t-main-short-hook",
+        "status": "FAIL",
+        "result_records": 43,
+        "canonical_sha256": "4a51da57000cdd8d0df3650ad30db01917f4aa7d4401bd33489f8e85c4afea80",
+        "exports": 17
+      },
+      {
+        "case": "t-main-missing-support",
+        "status": "HOLD",
+        "result_records": 41,
+        "canonical_sha256": "c1b7ee9f8780d0035358a3176655ad96a307775eda446dc893a670e5dd2745e3",
+        "exports": 17
+      },
+      {
+        "case": "t-main-missing-flange",
+        "status": "HOLD",
+        "result_records": 41,
+        "canonical_sha256": "a169ffb3bea1bd29b227df9a6c9f54285e2540a7a44d598ab89a97bef506acea",
+        "exports": 17
+      },
+      {
+        "case": "t-main-missing-service",
+        "status": "HOLD",
+        "result_records": 41,
+        "canonical_sha256": "2e1a5793b9319620f01cb440ee0e5cd7d2394681889516ba6baaa587732336f7",
+        "exports": 17
+      },
+      {
+        "case": "t-main-depth-conflict",
+        "status": "FAIL",
+        "result_records": 41,
+        "canonical_sha256": "795f16717dea13d9a09b1208129659f54d0849f6a8753a279bf09a2e0112d869",
+        "exports": 17
+      },
+      {
+        "case": "t-main-shoulder-bar",
+        "status": "FAIL",
+        "result_records": 41,
+        "canonical_sha256": "faedd50aabd0f9a80b6cdda1fbc6dcd86d66053cf1bd8f69a4aa7c8fc2a06007",
+        "exports": 17
+      },
+      {
+        "case": "t-main-end-cover",
+        "status": "FAIL",
+        "result_records": 41,
+        "canonical_sha256": "6978f5af33e5b51e598522b89d85467697007653797bacd1325a0552a6ccfb34",
+        "exports": 17
+      }
+    ]
+  },
+  "rounds": 3,
+  "pairs_per_round": 10,
+  "warmups_per_variant_per_round": 2,
+  "sample_columns": [
+    "round",
+    "pair",
+    "first_variant",
+    "baseline_ms",
+    "candidate_ms"
+  ],
+  "summary": {
+    "all": {
+      "baseline_median_ms": 105.6112705,
+      "candidate_median_ms": 89.620417,
+      "reduction_percent": 15.141237695838527,
+      "candidate_faster_pairs": 28
+    },
+    "round_1": {
+      "baseline_median_ms": 109.874646,
+      "candidate_median_ms": 89.620417,
+      "reduction_percent": 18.4339424401877,
+      "candidate_faster_pairs": 10
+    },
+    "round_2": {
+      "baseline_median_ms": 102.9362295,
+      "candidate_median_ms": 84.828354,
+      "reduction_percent": 17.59135300365746,
+      "candidate_faster_pairs": 9
+    },
+    "round_3": {
+      "baseline_median_ms": 104.2009995,
+      "candidate_median_ms": 93.58143799999999,
+      "reduction_percent": 10.191419996887841,
+      "candidate_faster_pairs": 9
+    }
+  },
+  "boundary": "Local warmed single-layer ordinary beam workflow. Startup, exports and profiling are outside the timings.",
+  "date": "2026-11-11",
+  "profile_counts": {
+    "method": "One separately profiled main workflow in each source snapshot after warmup.",
+    "baseline": {
+      "plain_calls": 212537,
+      "sha256_calls": 250,
+      "canonical_sha256": "4075de08a9e9183e5a5e6aa34ea1c2226de83526430554c5db832f9fb0d12274"
+    },
+    "candidate": {
+      "plain_calls": 148584,
+      "sha256_calls": 250,
+      "canonical_sha256": "4075de08a9e9183e5a5e6aa34ea1c2226de83526430554c5db832f9fb0d12274"
+    }
+  },
+  "retained_local_evidence": {
+    "output/LIB-ORDINARY-NORMALIZE-001/comparison.json": "5ed120cc99fe50d1042e09a919ad17a3058d9c22f6a11ef85bf09cade71720f9",
+    "output/LIB-ORDINARY-NORMALIZE-001/compare.py": "ac4c484a6fec384e199c77d38cd5910a4d17c73695cf35e83d57766c33ba0170",
+    "output/LIB-ORDINARY-NORMALIZE-001/legacy_corpus.py": "8b40bf4f97de84b5eedd130262ab7457932320aa18fdb28a4b610e28f43569f6",
+    "output/LIB-ORDINARY-NORMALIZE-001/profile-counts.json": "4c768882b4d0e395338309d7f3afc3b3bbbadffff5153a8924a9e02a2c3f8cb7"
+  },
+  "samples": [
+    [1, 1, "baseline", 99.033916, 85.918291],
+    [1, 2, "candidate", 111.589, 95.552125],
+    [1, 3, "baseline", 97.354417, 94.550292],
+    [1, 4, "candidate", 97.634084, 80.944375],
+    [1, 5, "baseline", 109.532584, 92.998],
+    [1, 6, "candidate", 115.649, 80.023917],
+    [1, 7, "baseline", 136.230583, 84.878959],
+    [1, 8, "candidate", 105.9315, 101.528625],
+    [1, 9, "baseline", 110.216708, 93.8415],
+    [1, 10, "candidate", 115.557875, 86.242834],
+    [2, 1, "candidate", 101.44725, 84.275958],
+    [2, 2, "baseline", 99.648833, 95.438125],
+    [2, 3, "candidate", 114.766208, 85.38075],
+    [2, 4, "baseline", 99.207042, 96.721167],
+    [2, 5, "candidate", 115.175083, 84.164166],
+    [2, 6, "baseline", 101.224875, 98.470208],
+    [2, 7, "candidate", 104.425209, 120.770125],
+    [2, 8, "baseline", 117.941291, 80.036166],
+    [2, 9, "candidate", 96.1065, 77.978333],
+    [2, 10, "baseline", 119.597834, 81.778125],
+    [3, 1, "baseline", 136.722917, 102.64525],
+    [3, 2, "candidate", 105.291041, 103.794208],
+    [3, 3, "baseline", 115.458959, 97.451875],
+    [3, 4, "candidate", 103.110958, 84.449958],
+    [3, 5, "baseline", 101.64, 118.150166],
+    [3, 6, "candidate", 127.12925, 79.658041],
+    [3, 7, "baseline", 96.633042, 79.156333],
+    [3, 8, "candidate", 120.3755, 93.959709],
+    [3, 9, "baseline", 99.216625, 79.914708],
+    [3, 10, "candidate", 96.010667, 93.203167]
+  ]
+}

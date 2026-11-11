@@ -20,7 +20,6 @@ from structural_lib.beam.semantics import (
     completed_result,
     effective_inputs,
     partial_result,
-    plain,
     rejected_result,
     semantic_hash,
 )
@@ -391,7 +390,7 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
         request.quantities,
     ] + ([request.cost] if request.cost is not None else [])
     if any(
-        binding.output_payload_id != semantic_hash("output_payload_id", plain(payload))
+        binding.output_payload_id != semantic_hash("output_payload_id", payload)
         for binding, payload in zip(bindings, payloads, strict=True)
     ):
         return _reject(
