@@ -84,6 +84,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col06_reference.py",
     "docs/verification/check_library_029_col07_reference.py",
     "docs/verification/check_library_029_col07_splice_reference.py",
+    "docs/verification/check_library_029_col07_corner_reference.py",
 )
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
@@ -91,6 +92,7 @@ COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
 COL06_REFERENCE = "docs/verification/library-029-col06-column-catalogue.json"
 COL07_REFERENCE = "docs/verification/library-029-col07-column-member.json"
 COL07_SPLICE_REFERENCE = "docs/verification/library-029-col07-contact-splice.json"
+COL07_CORNER_REFERENCE = "docs/verification/library-029-col07-corner-splice.json"
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -107,6 +109,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / COL06_REFERENCE,
                 repo / COL07_REFERENCE,
                 repo / COL07_SPLICE_REFERENCE,
+                repo / COL07_CORNER_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -496,6 +499,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     for prefix, reference in (
         ("column-member-detailing", COL07_REFERENCE),
         ("column-contact-splice", COL07_SPLICE_REFERENCE),
+        ("column-corner-splice", COL07_CORNER_REFERENCE),
     ):
         col07_cases = json.loads((clone / reference).read_text())["cases"]
         for case, entry in col07_cases.items():

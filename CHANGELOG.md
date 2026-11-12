@@ -37,6 +37,10 @@ All notable changes to this project will be documented in this file.
   midpoint bars. Checks both partner layouts, link anchorage and spacing,
   physical congestion and cut lengths. The spliced drawing and BBS share
   the same checked piece marks and tie levels.
+- Straight contact compression laps at C1 and C2, with supplemental
+  corner restraint and mirrored upper links that clear the top midpoint
+  bar. The member checks use the shifted section and conservative shear
+  depth. The drawing and BBS include the checked corner-link marks.
 
 ### Fixed
 

@@ -143,9 +143,15 @@ def render_column_member_detailing_svg(result: Result) -> str:
     cage = data["cage"]
     splice = data.get("contact_splice")
     if splice is not None:
-        for piece in splice["pieces"]:
+        corner_splice = splice.get("y_plane_setback_mm") is not None
+        pieces = splice["pieces"]
+        if corner_splice:
+            # Paint the bars on the back face first in the front projection.
+            pieces = sorted(pieces, key=lambda piece: piece["y_mm"], reverse=True)
+        for piece in pieces:
             mark = escape(piece["bar_id"], quote=True)
-            x = left + (right - left) * piece["y_mm"] / depth
+            fraction = piece["x_mm"] / width if corner_splice else piece["y_mm"] / depth
+            x = left + (right - left) * fraction
             lo, hi = piece["start_mm"], piece["end_mm"]
             color = "#bd6421" if piece["bar_id"].endswith("-U") else "#2a3d5c"
             projection.append(
@@ -190,6 +196,11 @@ def render_column_member_detailing_svg(result: Result) -> str:
             f' · {len(splice["lap_stations_mm"])} overlap links</text>'
             '<text x="310" y="372" font-size="11" fill="#bd6421">Orange bars are upper splice pieces</text>'
         )
+        if corner_splice:
+            splice_note += (
+                '<text x="40" y="500" font-size="10">Front elevation · x across width</text>'
+                '<text x="310" y="391" font-size="11">The section cuts show the partner offset along the side faces.</text>'
+            )
         view_width = 840
     else:
         section_markup = (
@@ -231,11 +242,11 @@ def render_column_member_detailing_html(result: Result) -> str:
         section_hash = section["input_hash"] if section else ""
         shear = row["shear"]
         if shear is None:
-            shear_text = "<td colspan='4'>Unavailable</td>"
+            shear_text = "<td colspan='5'>Unavailable</td>"
         else:
             shear_text = (
                 f'<td>{shear["status"]} · {shear["direction"]}</td><td>{shear["pitch_mm"]:g}</td>'
-                f'<td>{shear["vc_kn"]:.2f} / {shear["vus_kn"]:.2f}</td><td>{shear["utilization"]:.4f}</td>'
+                f'<td>{shear["d_mm"]:g}</td><td>{shear["vc_kn"]:.2f} / {shear["vus_kn"]:.2f}</td><td>{shear["utilization"]:.4f}</td>'
             )
         action_rows.append(
             f'<tr><td>{escape(row["combination_id"])}</td><td>{row["station_mm"]:g}</td>'
@@ -287,6 +298,11 @@ def render_column_member_detailing_html(result: Result) -> str:
             f'Minimum link-to-bar clearance {splice["minimum_link_clear_mm"]:.2f} mm. '
             f'End support distances {distances or "unresolved"} mm.</p>'
         )
+        if splice.get("corner_level_clear_mm") is not None:
+            splice_details += (
+                f'<p>Supplemental corner link level clearance {splice["corner_level_clear_mm"]:.2f} mm. '
+                f'End face cover after adding corner links {splice["corner_end_cover_mm"]:.2f} mm.</p>'
+            )
     governing = data["governing_shear"]
     governing_text = (
         f'<p>Governing supplied shear: {escape(governing["combination_id"])} at '
@@ -306,10 +322,10 @@ def render_column_member_detailing_html(result: Result) -> str:
         f'<p>Straight end development required {data["end_required_mm"]:.2f} mm. '
         f"Provided {request.end_detail.start_straight_mm:g} mm at the start and "
         f"{request.end_detail.end_straight_mm:g} mm at the end. "
-        f'Compression lap length required {data["lap_required_mm"]:.2f} mm.</p>'
+        f'Base compression lap requirement {data["lap_required_mm"]:.2f} mm.</p>'
         f"{governing_text}<h2>Supplied concurrent actions</h2><table><thead><tr>"
         "<th>Combination</th><th>Station (mm)</th><th>Pu / Mx / My (kN / kNm / kNm)</th><th>Vx / Vy (kN)</th>"
-        "<th>Section</th><th>Zone</th><th>Shear</th><th>Pitch (mm)</th><th>Vc / Vus (kN)</th><th>Utilization</th>"
+        "<th>Section</th><th>Zone</th><th>Shear</th><th>Pitch (mm)</th><th>d (mm)</th><th>Vc / Vus (kN)</th><th>Utilization</th>"
         f'</tr></thead><tbody>{"".join(action_rows)}</tbody></table>'
         f"{lap_table}{splice_details}<h2>Bar bending schedule</h2>{schedule}<h2>Checks</h2>"
         f"<table><thead><tr><th>Code</th><th>Input</th><th>Status</th><th>Basis</th></tr></thead><tbody>{checks}</tbody></table>"

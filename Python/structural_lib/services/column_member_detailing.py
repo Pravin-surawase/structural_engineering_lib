@@ -388,9 +388,13 @@ def _check_actions(
             width, depth, demand = geometry.D_mm, geometry.b_mm, action.vx_kn
         else:
             width, depth, demand = geometry.b_mm, geometry.D_mm, action.vy_kn
+        setback = steel.bar_center_offset_mm
+        if direction == "y" and splice is not None and station >= splice.start_mm:
+            if splice.y_plane_setback_mm is not None:
+                setback = max(setback, splice.y_plane_setback_mm)
         shear = ordinary_column_shear(
             width_mm=width,
-            d_mm=depth - steel.bar_center_offset_mm,
+            d_mm=depth - setback,
             gross_area_mm2=geometry.b_mm * geometry.D_mm,
             pu_kn=action.pu_kn,
             vu_kn=demand,
@@ -719,7 +723,7 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
         limitations=(
             "Checks only the supplied stations and combinations for an ordinary short tied eight-bar rectangle.",
             "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
-            "Straight end projections require separately checked adjoining concrete. The physical contact splice supports one opposing side-midpoint group with straight bars.",
+            "Straight end projections require separately checked adjoining concrete. The physical contact splice supports one side-midpoint or C1/C2 group with straight bars.",
             "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",
         ),
         assumptions=(

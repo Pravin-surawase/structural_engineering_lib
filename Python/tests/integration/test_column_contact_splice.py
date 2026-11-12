@@ -17,11 +17,27 @@ _FIXTURE = (
     / "docs/verification/library-029-col07-contact-splice.json"
 )
 _CASES = json.loads(_FIXTURE.read_text())["cases"]
+_CORNER_CASES = json.loads(
+    _FIXTURE.with_name("library-029-col07-corner-splice.json").read_text()
+)["cases"]
 
 
-@pytest.mark.parametrize("name", tuple(_CASES))
-def test_contact_splice_reference(name):
-    case = _CASES[name]
+def _centres(bars, suffix):
+    return {
+        bar["bar_id"].removesuffix(suffix): [
+            bar["x_from_left_mm"],
+            bar["y_from_top_mm"],
+        ]
+        for bar in bars
+    }
+
+
+@pytest.mark.parametrize(
+    "case",
+    [pytest.param(case, id=name) for name, case in _CASES.items()]
+    + [pytest.param(case, id=f"corner-{name}") for name, case in _CORNER_CASES.items()],
+)
+def test_contact_splice_reference(case):
     expected = case["expected"]
     result = column.check_column_member_detailing(
         column.load_column_member_detailing(json.dumps(case["request"]))
@@ -46,26 +62,31 @@ def test_contact_splice_reference(name):
     splice = calc["contact_splice"]
     assert splice["lap_stations_mm"] == expected["lap_stations_mm"]
     assert splice["end_support_distances_mm"] == expected["end_support_distances_mm"]
-    for key in (
-        "minimum_unrelated_bar_clear_mm",
-        "minimum_link_clear_mm",
-        "steel_ratio",
-    ):
+    for key in ("minimum_unrelated_bar_clear_mm", "minimum_link_clear_mm"):
         assert splice[key] == pytest.approx(expected[key])
-    assert splice["required_lap_mm"] == pytest.approx(
-        expected["contact_lap_required_mm"]
-    )
+    is_corner = "upper_centres_mm" in expected
+    required = expected["required_lap_mm" if is_corner else "contact_lap_required_mm"]
+    assert splice["required_lap_mm"] == pytest.approx(required)
     assert splice["end_mm"] - splice["start_mm"] == expected["overlap_mm"]
     assert calc["laps"][0]["required_mm"] == splice["required_lap_mm"]
-    for name, suffix in (("lower", "-L"), ("upper", "-U")):
-        actual_centres = {
-            bar["bar_id"].removesuffix(suffix): [
-                bar["x_from_left_mm"],
-                bar["y_from_top_mm"],
-            ]
-            for bar in splice["sections"][name]["bars"]
-        }
-        assert actual_centres == expected[f"{name}_bar_centres_mm"]
+    if is_corner:
+        assert splice["corner_level_clear_mm"] == expected["minimum_level_clear_mm"]
+        assert splice["corner_end_cover_mm"] == expected["minimum_end_cover_mm"]
+        assert [row["shear"]["d_mm"] for row in calc["actions"]] == expected[
+            "shear_depths_mm"
+        ]
+        assert "Supplemental corner link level clearance 4.00 mm" in report
+        assert (
+            _centres(splice["sections"]["upper"]["bars"], "-U")
+            == expected["upper_centres_mm"]
+        )
+    else:
+        assert splice["steel_ratio"] == pytest.approx(expected["steel_ratio"])
+        for label, suffix in (("lower", "-L"), ("upper", "-U")):
+            assert (
+                _centres(splice["sections"][label]["bars"], suffix)
+                == expected[f"{label}_bar_centres_mm"]
+            )
 
     for row, ref in zip(calc["actions"], expected["section_rows"], strict=True):
         assert row["station_mm"] == ref["station_mm"]
@@ -94,7 +115,19 @@ def test_contact_splice_reference(name):
     assert len(elevations) == 10
     overlap = root.find(".//svg:g[@data-section='overlap']", ns)
     assert len(overlap.findall("svg:circle", ns)) == 10
-    assert overlap.find("svg:g[@data-link-mark='LX']", ns) is not None
+    mark = "CL" if is_corner else "LX"
+    assert overlap.find(f"svg:g[@data-link-mark='{mark}']", ns) is not None
+    if is_corner:
+        # Above the lap the spine mirrors to y=96, away from M_TOP.
+        cx = root.find(
+            ".//svg:g[@data-section='upper']/svg:g[@data-link-mark='CX']/svg:path", ns
+        )
+        assert cx is not None and cx.get("d") == "M 60 96 L 240 96"
+        left = root.find(".//svg:line[@data-piece-id='C1-L']", ns)
+        right = root.find(".//svg:line[@data-piece-id='C2-L']", ns)
+        assert (
+            left is not None and right is not None and left.get("x1") != right.get("x1")
+        )
     for mark, (quantity, cut, diameter) in expected["cuts"].items():
         row = rows[mark]
         assert row["input_hash"] == identity

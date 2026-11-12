@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import asdict, dataclass, replace
-from itertools import combinations
+from itertools import combinations, pairwise
 from math import dist, isclose, pi
 from typing import Any
 
@@ -18,6 +18,7 @@ from structural_lib.services.contracts.column_member_detailing import (
 
 _SOURCE = "IS 456:2000 Cl. 26.1.1, 26.2.1.2, 26.2.2.4(b), 26.2.5 and 26.5.3"
 _PAIR = ("M_LEFT", "M_RIGHT")
+_CORNERS = ("C1", "C2")
 _ORTHOGONAL = ("M_TOP", "M_BOTTOM")
 _PASS = EngineeringStatus.PASS
 _FAIL = EngineeringStatus.FAIL
@@ -43,6 +44,9 @@ class ContactSplice:
     hoop_centreline_radius_mm: float
     steel_ratio: float
     fabrication_reference: str
+    y_plane_setback_mm: float | None
+    corner_level_clear_mm: float | None
+    corner_end_cover_mm: float | None
 
     def to_dict(self) -> dict[str, Any]:
         """Project the physical data, with the section strengths checked separately."""
@@ -106,6 +110,8 @@ def check_contact_splice(
     hoop = steel.tie
     dia = steel.longitudinal_bar_diameter_mm
     path = f"laps.{lap.lap_id}.contact_assembly"
+    corner = set(lap.bar_ids) == set(_CORNERS)
+    pair = _CORNERS if corner else _PAIR
 
     def report(code: str, condition: bool, message: str, **values: Any) -> None:
         record(
@@ -119,7 +125,7 @@ def check_contact_splice(
 
     if (
         steel.layout != "eight_bar"
-        or set(lap.bar_ids) != set(_PAIR)
+        or set(lap.bar_ids) != set(pair)
         or lap.stress_basis != "compression"
         or dia > 25
         or cage is None
@@ -131,14 +137,33 @@ def check_contact_splice(
             "COLUMN.LAP_ASSEMBLY_REQUIRED",
             _HOLD,
             path,
-            "This assembly requires one equal-bar compression group up to Ø25 on the opposing left and right midpoint lines, with a resolved hoop and two links.",
+            "This assembly requires one equal-bar compression group up to Ø25 at the opposing side midpoints or C1/C2 corners, with a resolved hoop and two midpoint links.",
             _SOURCE,
         )
         return None
 
+    corner_mark, corner_offset = assembly.corner_link_id, assembly.corner_link_offset_mm
+    if corner and (corner_mark is None or corner_offset is None):
+        record(
+            "COLUMN.LAP_CORNER_LINK_REQUIRED",
+            _HOLD,
+            path,
+            "C1 and C2 need a supplemental corner return-link mark and station offset.",
+            _SOURCE,
+        )
+        return None
+    if not corner and (corner_mark is not None or corner_offset is not None):
+        record(
+            "COLUMN.LAP_CORNER_LINK_SCOPE",
+            _HOLD,
+            path,
+            "Supplemental corner links are supported only for the C1/C2 group.",
+            _SOURCE,
+        )
+        return None
     start, end = lap.start_mm, lap.end_mm
     ordinary = {bar.bar_id: bar for bar in cage.bars}
-    near, far = ordinary[_PAIR[0]].y_from_top_mm, assembly.partner_y_mm
+    near, far = ordinary[pair[0]].y_from_top_mm, assembly.partner_y_mm
     if not isclose(far - near, dia, rel_tol=0, abs_tol=_EPS):
         report(
             "LAP_CONTACT_GEOMETRY",
@@ -164,13 +189,13 @@ def check_contact_splice(
         required_mm=required,
     )
 
-    mates = {mark: replace(ordinary[mark], y_from_top_mm=far) for mark in _PAIR}
+    mates = {mark: replace(ordinary[mark], y_from_top_mm=far) for mark in pair}
     upper = replace(cage, bars=tuple(mates.get(bar.bar_id, bar) for bar in cage.bars))
     overlap = (
         *cage.bars,
-        *(replace(mates[mark], bar_id=f"{mark}-U") for mark in _PAIR),
+        *(replace(mates[mark], bar_id=f"{mark}-U") for mark in pair),
     )
-    pairs = {frozenset((mark, f"{mark}-U")) for mark in _PAIR}
+    pairs = {frozenset((mark, f"{mark}-U")) for mark in pair}
     clear = min(
         dist(_point(first), _point(second)) - dia
         for first, second in combinations(overlap, 2)
@@ -213,7 +238,12 @@ def check_contact_splice(
     )
     offset = cage.bar_centroid_offset_mm
     face_span = max(g.b_mm, g.D_mm) - 2 * offset
-    spacing_ok = max(far - offset, g.D_mm - offset - near) <= 300
+    if corner:
+        spacing_ok = (
+            far < g.D_mm / 2 and max(g.D_mm / 2 - offset, g.b_mm / 2 - offset) <= 300
+        )
+    else:
+        spacing_ok = max(far - offset, g.D_mm - offset - near) <= 300
     report(
         "LAP_RESTRAINT_SPAN",
         face_span <= 48 * hoop.diameter_mm and spacing_ok,
@@ -226,7 +256,54 @@ def check_contact_splice(
     x_mark = transverse_by_pair[frozenset(_PAIR)].tie_id
     y_mark = transverse_by_pair[frozenset(_ORTHOGONAL)].tie_id
     by_mark = {item["bar_id"]: item for item in transverse}
+    dt = hoop.diameter_mm
+    corner_gap = None
+    corner_cover = None
     x_levels = by_mark[x_mark]["stations_mm"]
+    support_mark = x_mark
+    if corner:
+        assert corner_mark is not None and corner_offset is not None
+        support_mark = corner_mark
+        hoop_levels = transverse[0]["stations_mm"]
+        x_levels = [station + corner_offset for station in hoop_levels]
+        all_levels = sorted(
+            [
+                *x_levels,
+                *(
+                    station
+                    for series in transverse
+                    for station in series["stations_mm"]
+                ),
+            ]
+        )
+        corner_gap = min(right - left for left, right in pairwise(all_levels)) - dt
+        report(
+            "LAP_CORNER_LINK_LEVELS",
+            corner_gap >= -_EPS
+            and all(a + corner_offset < b for a, b in pairwise(hoop_levels)),
+            "Check supplemental links against every hoop, midpoint link and adjacent grid interval.",
+            minimum_clear_mm=corner_gap,
+            offset_mm=corner_offset,
+        )
+        corner_cover = (
+            min(all_levels[0], g.unsupported_length_mm - all_levels[-1]) - dt / 2
+        )
+        report(
+            "LAP_CORNER_END_COVER",
+            corner_cover >= request.end_detail.end_face_clearance_mm,
+            "Check cover at both ends after placing all supplemental corner links.",
+            minimum_cover_mm=corner_cover,
+            required_mm=request.end_detail.end_face_clearance_mm,
+        )
+    if assembly.lap_link_id in by_mark or (
+        corner and corner_mark in {*by_mark, assembly.lap_link_id}
+    ):
+        report(
+            "LAP_LINK_MARK",
+            False,
+            "The supplemental and overlap links need unique fabrication marks.",
+        )
+        return None
     before = [s for s in x_levels if s < start]
     within = [s for s in x_levels if start < s < end]
     after = [s for s in x_levels if s > end]
@@ -235,7 +312,6 @@ def check_contact_splice(
         if before and within and after
         else []
     )
-    dt = hoop.diameter_mm
     report(
         "LAP_END_RESTRAINT",
         len(within) >= 2
@@ -259,7 +335,7 @@ def check_contact_splice(
         ("upper", far, far, upper.bars),
     ):
         links = {
-            assembly.lap_link_id if label == "overlap" else x_mark: return_link(
+            assembly.lap_link_id if label == "overlap" else support_mark: return_link(
                 axis="x",
                 left_mm=offset,
                 right_mm=g.b_mm - offset,
@@ -267,6 +343,7 @@ def check_contact_splice(
                 far_mm=high,
                 radius_mm=r,
                 tail_mm=tail,
+                mirror=corner and label == "upper",
             ),
             y_mark: return_link(
                 axis="y",
@@ -278,6 +355,16 @@ def check_contact_splice(
                 tail_mm=tail,
             ),
         }
+        if corner:
+            links[x_mark] = return_link(
+                axis="x",
+                left_mm=offset,
+                right_mm=g.b_mm - offset,
+                near_mm=g.D_mm / 2,
+                far_mm=g.D_mm / 2,
+                radius_mm=r,
+                tail_mm=tail,
+            )
         for link in links.values():
             link_fits, link_clearance = _link_fit(
                 link, bars, g.b_mm, g.D_mm, steel.nominal_cover_mm, dt
@@ -290,7 +377,7 @@ def check_contact_splice(
                     **asdict(bar),
                     "bar_id": (
                         f"{bar.bar_id}-{'U' if label == 'upper' else 'L'}"
-                        if bar.bar_id in _PAIR
+                        if bar.bar_id in pair
                         else bar.bar_id
                     ),
                 }
@@ -308,12 +395,6 @@ def check_contact_splice(
         minimum_link_clear_mm=minimum_link,
         minimum_tail_mm=8 * dt,
     )
-
-    if assembly.lap_link_id in by_mark:
-        report(
-            "LAP_LINK_MARK", False, "The overlap link needs a unique fabrication mark."
-        )
-        return None
 
     # Compression remains a declared interval basis. The supplied in-lap
     # rows must also stay strictly inside the gross-section elastic kern.
@@ -360,11 +441,14 @@ def check_contact_splice(
             for mark, piece, low, high in segments
         )
     resolved = [transverse[0]]
-    for mark, label, levels in (
-        (x_mark, "lower", [*before, *after]),
+    placements = [
+        (support_mark, "lower", [*before, *after]),
         (y_mark, "lower", by_mark[y_mark]["stations_mm"]),
         (assembly.lap_link_id, "overlap", within),
-    ):
+    ]
+    if corner:
+        placements.append((x_mark, "lower", by_mark[x_mark]["stations_mm"]))
+    for mark, label, levels in placements:
         resolved.append(
             {
                 "bar_id": mark,
@@ -390,4 +474,7 @@ def check_contact_splice(
         r,
         lap_ratio,
         assembly.fabrication_reference,
+        far if corner else None,
+        corner_gap,
+        corner_cover,
     )

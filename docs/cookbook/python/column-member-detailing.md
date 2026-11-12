@@ -152,5 +152,55 @@ The report and elevation identify the individual pieces. Section cuts
 show the bars and link paths below, within and above the lap. Provide the
 fabrication reference for the bend schedule and the interval compression
 basis as part of the request. A lap with only station limits and bar IDs
-remains HOLD. Corner, cranked and other lap assemblies require their
-own verification. [Independent replay](../../verification/check_library_029_col07_splice_reference.py)
+remains HOLD. Cranked and other lap assemblies require their own verification. The C1/C2 corner case follows below. [Independent replay](../../verification/check_library_029_col07_splice_reference.py)
+
+## Resolve the original C1/C2 corner lap
+
+The [corner splice fixture](../../verification/library-029-col07-corner-splice.json)
+starts from the numeric-only C1/C2 case and supplies a physical assembly.
+It uses the same 300 × 400 mm section and Ø20 bars. The lower C1 and C2
+centres are (60, 60) and (240, 60) mm from the left and top faces.
+Their straight upper partners run at (60, 80) and (240, 80) mm. Each
+pair touches over the overlap. The assembly adds `corner_link_id` and
+`corner_link_offset_mm` to the contact splice input.
+
+```bash
+python column_member_detailing.py --reference library-029-col07-corner-splice.json \
+  --case corner_splice --output-dir col07-corners
+python column_member_detailing.py --reference library-029-col07-corner-splice.json \
+  --case link_level_clash --output-dir col07-corner-clash
+python column_member_detailing.py --reference library-029-col07-corner-splice.json \
+  --case original_numeric_only --output-dir col07-original-hold
+```
+
+1. The original 700 mm overlap satisfied the base numerical check.
+   The contact-pair allowance raises the required length to **709.21 mm**.
+   The detailed case uses **740 mm** and supplies the verified compression
+   basis for the lap interval. The in-lap action row is inside the gross
+   section kern.
+2. The two midpoint link series stay in place. The supplemental `CX`
+   series restrains the lower and upper corner bars outside the overlap.
+   Nine `CL` links enclose both corner partners inside it. Above the
+   lap, `CX` mirrors about the shifted corner centres so its straight leg
+   passes clear of the top midpoint bar. All links use checked quarter
+   bends and 8-diameter tails.
+3. The supplemental links sit 36 mm above each hoop. The smallest gap
+   between transverse steel surfaces is **4 mm** and the end face cover
+   after adding them is **30 mm**. The nearest corner links lie **29 and
+   54 mm** from the first lap end and **22 and 61 mm** from the second.
+4. The section check uses the actual upper corners above the lap and
+   checks both eight-bar layouts inside it. The conservative effective
+   depth for the Vy plane is **320 mm** from the start of the lap, compared
+   with 340 mm below. The Vx plane retains 240 mm.
+5. The checked BBS contains **142 pieces**, **123.445 m** of bar and
+   **129.666 kg** of theoretical steel mass. Its corner link marks are
+   24 × `CX` at 408.53 mm and 9 × `CL` at 448.53 mm. The front elevation
+   separates C1 and C2 across the width. Three section cuts show the
+   individual partners, their offset and the mirrored upper restraint.
+
+The numeric-only case stays HOLD with no BBS. Corner links at an existing
+link level fail the clash check. The profile covers one C1/C2 compression
+group of straight equal bars up to Ø25. The fabrication and compression
+references must apply to the supplied assembly. The
+[independent replay](../../verification/check_library_029_col07_corner_reference.py)
+derives the restraint stations, section capacities and schedule quantities.

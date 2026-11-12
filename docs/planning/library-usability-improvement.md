@@ -2242,8 +2242,11 @@ placement. The continuous-bar schedule, report and section/elevation
 share the checked member identity. The [contact splice continuation](../verification/library-029-col07-contact-splice.json)
 checks straight partners on the opposing side-midpoint bars, shaped
 restraint links, end support, cover and congestion. The checked layout
-controls section strength and the issued BBS. Other splice layouts and
-the slender, mixed and circular member extensions retain separate cases.
+controls section strength and the issued BBS. The [C1/C2 corner case](../verification/library-029-col07-corner-splice.json)
+adds straight corner partners, supplemental restraint above and below
+the lap, and mirrored upper returns that clear the top midpoint bar.
+It checks the shifted section and reduced shear depth. Other splice
+layouts and the slender, mixed and circular extensions retain separate cases.
 
 ## Work and completion evidence
 

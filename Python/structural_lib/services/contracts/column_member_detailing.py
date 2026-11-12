@@ -91,6 +91,8 @@ class ColumnContactAssemblyV1(StrictPublicModel):
     hook_tail_mm: float = Field(gt=0, le=500)
     fabrication_reference: _Reference
     compression_reference: _Reference | None
+    corner_link_id: _Id | None = None
+    corner_link_offset_mm: float | None = Field(default=None, gt=0, le=500)
 
 
 class ColumnCompressionLapV1(StrictPublicModel):

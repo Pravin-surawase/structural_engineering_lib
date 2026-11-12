@@ -69,11 +69,14 @@ def return_link(
     far_mm: float,
     radius_mm: float,
     tail_mm: float,
+    mirror: bool = False,
 ) -> ReturnLink:
     """Form each return with two 90° bends and an optional tangent between them."""
     r = radius_mm
 
     def xy(u: float, v: float) -> Point:
+        if mirror:
+            v = near_mm + far_mm - v
         return (u, v) if axis == "x" else (v, u)
 
     spine = LinkSegment(xy(left_mm, near_mm - r), xy(right_mm, near_mm - r))
