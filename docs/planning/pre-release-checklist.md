@@ -5,18 +5,22 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-11
+**Last Updated:** 2026-11-12
 
 ## Current State
 
-Current source metadata: 0.28.0 (prepared candidate; publication on hold).
-The [S0–S5 plan](library-usability-improvement.md#structlib-0280-candidate-preparation)
-defines its exact archive, check and independent-review evidence.
+Current source metadata: 0.28.0.
 
-**0.27.0 is published and verified.** The [release status](../getting-started/release-status.md)
-and [append-only publication receipt](../getting-started/releases.md#v0270-published-and-verified)
-record exact tag/source, public archive hashes and the clean PyPI installation.
-The preparation records below remain historical evidence for their named stages.
+**0.28.0 is published and verified.** The [release status](../getting-started/release-status.md)
+and [publication receipt](../getting-started/releases.md#v0280-published-and-verified)
+record the exact tag, retained archives and clean public installation.
+
+- [x] Exact retained wheel and source archive qualified on all 20 installed profiles.
+- [x] Independent software review and required PR/Weekly checks passed.
+- [x] TestPyPI and public release used the same bytes; both registries and GitHub readbacks passed.
+- [x] Fresh no-cache PyPI installation imports 0.28.0 from its isolated environment.
+
+The following records are historical receipts for their named versions.
 
 ## Completed 0.27.0 qualification and publication
 

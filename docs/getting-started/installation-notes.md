@@ -18,7 +18,7 @@ For a development checkout, use the [source-install route](#run-the-current-repo
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456==0.27.0"
+python3 -m pip install "structural-lib-is456==0.28.0"
 python3 -m structural_lib install-preflight
 ```
 
@@ -52,9 +52,9 @@ restore or follow `streamlit_app` commands from historical release records.
 ## Optional package capabilities
 
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]==0.27.0"
-python3 -m pip install "structural-lib-is456[report,pdf]==0.27.0"
-python3 -m pip install "structural-lib-is456[render]==0.27.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.28.0"
+python3 -m pip install "structural-lib-is456[report,pdf]==0.28.0"
+python3 -m pip install "structural-lib-is456[render]==0.28.0"
 ```
 
 Optional extras should be selected only for their stated purpose. An installed

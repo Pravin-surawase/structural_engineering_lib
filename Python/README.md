@@ -51,14 +51,14 @@ T-member coverage remains supported within its documented profiles.
 
 For an exact public install, use the version confirmed in the
 [release ledger](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/releases.md).
-Version 0.27.0 is published and its public hashes and clean installation are
+Version 0.28.0 is published and its public hashes and clean installation are
 verified. Pin the public release below for reproducibility. A development
 checkout can contain later unreleased changes; use `pip install -e ./Python`
 only when intentionally testing that checkout.
 
 ```bash
-pip install structural-lib-is456==0.27.0         # exact normal release
-pip install "structural-lib-is456[dxf]==0.27.0"  # release with DXF export
+pip install structural-lib-is456==0.28.0         # exact normal release
+pip install "structural-lib-is456[dxf]==0.28.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
