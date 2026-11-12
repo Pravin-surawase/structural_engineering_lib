@@ -1,0 +1,62 @@
+{
+  "schema_version": "exact-candidate-review-receipt/v1",
+  "decision": "ACCEPT",
+  "reviewed_candidate": {
+    "head_sha": "eefc9414f4650bb6ce30989e331950212e541d11",
+    "tree_sha": "59081382aab14fec97dd253d8b9d0e6e88b98cd4",
+    "python_tree_sha": "482c4860efe5aa2690a9e767ddda7202522b7dfd",
+    "version": "0.28.0",
+    "tag": "v0.28.0",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ]
+  },
+  "reviewer": {
+    "identity": "Codex independent release-contract reviewer /root/release_gate_028",
+    "independent": true,
+    "reviewed_at_utc": "2026-11-12T08:17:52Z"
+  },
+  "hosted_checks": {
+    "required_pr_checks": {
+      "status": "PASS",
+      "head_sha": "eefc9414f4650bb6ce30989e331950212e541d11",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43178258739"
+    },
+    "weekly_verification": {
+      "status": "PASS",
+      "head_sha": "eefc9414f4650bb6ce30989e331950212e541d11",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43178262292"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-11-12T08:17:52Z",
+  "review_scope": "Exact metadata-only candidate, retained archives built from merged main 7ee5d65d including #1071. Independent review accepted the versioned artifact record and unchanged package tree. The integrator verified the exact PR and Weekly check receipts.",
+  "local_verification": {
+    "preflight": "PASS from merged main. 9067 Python and 636 FastAPI tests passed, and the React build passed.",
+    "installed_profiles": 20,
+    "installed_wheel_uat_cases": 29,
+    "beam_column_tests_per_archive": 454,
+    "slab_footing_cases_per_archive": 6,
+    "artifact_record": "docs/verification/library-0280-release-artifacts.json",
+    "artifact_record_sha256": "4d7a388a67d46ff03bde9bc0730a39fbc38f963e1aaaad8c8b7346cde3d499e7",
+    "qualification_receipt_sha256": "f004d979376888a37618512ad8861acc29eb0a52cb8368c3a1cf0fb63772ab58",
+    "build_head": "7ee5d65dbe2053fca9c1ab9e8ee0beeeddada15c",
+    "python_files_changed_after_build": false
+  },
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.28.0-py3-none-any.whl",
+      "sha256": "2830ac52acc95a370ebc3cd67c895801321f1662549b5db99d6864d52472e9c5",
+      "size_bytes": 1233250
+    },
+    {
+      "filename": "structural_lib_is456-0.28.0.tar.gz",
+      "sha256": "28793fe7160f3be00560c657fec56c64067a21fb23a5229ec11324fa41501bcb",
+      "size_bytes": 1045221
+    }
+  ],
+  "integration_requirement": "Merge PR #1072 preserving the reviewed head as an ancestor and its Python tree unchanged. The final metadata head must pass required PR checks.",
+  "qualified_structural_engineering_review": false,
+  "professional_approval": false
+}
