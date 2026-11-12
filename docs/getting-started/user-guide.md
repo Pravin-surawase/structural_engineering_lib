@@ -13,7 +13,7 @@ tags: [python, cli, beam, external-user]
 **Audience:** Users
 **Status:** Active
 **Importance:** High
-**Version:** 0.27.0
+**Version:** 0.28.0
 **Last Updated:** 2026-08-28
 
 This guide takes a new user from a clean installation to design results, a bar
@@ -25,9 +25,8 @@ without files.
 
 StructLib 0.27.0 requires Python 3.11 or newer.
 
-The pin follows prepared source metadata. Confirm that exact version is published
-before registry installation; otherwise use the source-install route in the
-[installation guide](installation-notes.md#run-the-current-repository-workbench). Updating this pin does not publish a release.
+The pin follows the [verified public version](release-status.md).
+For a development checkout, use the [source-install route](installation-notes.md#run-the-current-repository-workbench).
 
 ```bash
 python3 -m venv .venv

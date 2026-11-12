@@ -12705,6 +12705,10 @@
             "title": "Complete Engineering Design Approved",
             "type": "boolean"
           },
+          "load_envelope_status": {
+            "title": "Load Envelope Status",
+            "type": "string"
+          },
           "punching_shear_disposition": {
             "title": "Punching Shear Disposition",
             "type": "string"
@@ -12744,7 +12748,8 @@
           "shear",
           "serviceability",
           "punching_shear_disposition",
-          "complete_engineering_design_approved"
+          "complete_engineering_design_approved",
+          "load_envelope_status"
         ],
         "title": "CompleteOneWaySlabDesignResponse",
         "type": "object"
@@ -32282,7 +32287,7 @@
       "url": "https://opensource.org/licenses/MIT"
     },
     "title": "Structural Engineering API",
-    "version": "0.27.0"
+    "version": "0.28.0"
   },
   "openapi": "3.1.0",
   "paths": {

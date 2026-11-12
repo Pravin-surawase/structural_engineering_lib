@@ -218,6 +218,26 @@ class TestBumpVersionSyncDocs:
             readme, patterns, replacements, dry_run=True
         )
 
+    def test_candidate_version_keeps_public_registry_and_tag_pins(self, tmp_path):
+        guide = tmp_path / "quickstart.md"
+        sample = (
+            "https://raw.githubusercontent.com/Pravin-surawase/"
+            "structural_engineering_lib/v0.27.0/Python/examples/sample_job_is456.json"
+        )
+        instructions = f"pip install structural-lib-is456[dxf]==0.27.0\n{sample}\n"
+        guide.write_text(f"**Version:** 0.27.0\n{instructions}", encoding="utf-8")
+        patterns = bump_version.DOC_VERSION_FILES[
+            "docs/getting-started/python-quickstart.md"
+        ]
+        replacements = bump_version.release_format_kwargs(
+            "0.28.0", "2026-11-11", published_version="0.27.0"
+        )
+
+        assert bump_version.update_file(guide, patterns, replacements, dry_run=False)
+        assert (
+            guide.read_text(encoding="utf-8") == f"**Version:** 0.28.0\n{instructions}"
+        )
+
 
 class TestBumpVersionPatternMatch:
     """Tests for pattern matching edge cases."""

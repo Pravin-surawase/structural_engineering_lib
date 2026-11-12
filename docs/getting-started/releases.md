@@ -1742,3 +1742,16 @@ optimization was not part of this release. Development work after the tag is
 unreleased until separately qualified and authorized; the tag/public archives
 remain immutable. Beta, supported-profile and professional/native boundaries
 remain explicit.
+
+## v0.28.0 — Prepared candidate (unreleased; on hold)
+
+The owner approved [S0–S5 candidate preparation](../planning/library-usability-improvement.md#structlib-0280-candidate-preparation).
+The selected scope covers one simply supported solid one-way slab, one square
+concentric isolated footing, the one-way slab HTTP scope correction and the
+four merged performance improvements. The software remains Beta and every
+engineering result requires independent qualified review.
+
+0.28.0 is not tagged or published. The published registry install stays at
+[0.27.0](release-status.md). S5 retains the exact wheel, sdist, and evidence for
+review. TestPyPI, tag creation, production PyPI, and a GitHub Release require a
+future publication decision.

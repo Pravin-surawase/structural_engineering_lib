@@ -365,6 +365,7 @@ class CompleteOneWaySlabDesignResponse(BaseModel):
     serviceability: dict[str, Any] | None
     punching_shear_disposition: str
     complete_engineering_design_approved: bool
+    load_envelope_status: str
 
 
 class ContinuousOneWaySlabDesignResponse(BaseModel):

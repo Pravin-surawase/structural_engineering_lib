@@ -26,7 +26,7 @@ workflows under IS 456:2000.
 
 > [!IMPORTANT]
 > Target release classification (publication state is separate):
-> **v0.27.0 is a normal software release of the audited supported scope.**
+> **v0.28.0 is a normal software release of the audited supported scope.**
 > This describes the version format and scope. Publication state and verified
 > artifact identities are recorded in the [release ledger](docs/getting-started/releases.md)
 > and matching registry/release assets. Support is case-qualified; complete IS 456 coverage

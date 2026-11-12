@@ -13,16 +13,13 @@ tags: [colab, python, cli, beam]
 **Audience:** Users
 **Status:** Active
 **Importance:** Medium
-**Version:** 0.27.0
+**Version:** 0.28.0
 **Last Updated:** 2026-10-29
 
 This guide runs the selected package version in a clean Google Colab runtime.
 It does not require ETABS or a repository clone.
 
-Pins track the version prepared on this source branch. Registry installation
-requires that exact version to be published; a source version bump does not
-establish availability. Confirm publication in the [release record](releases.md)
-before using a new candidate pin.
+The registry command installs the [verified public version](release-status.md).
 
 ## 1. Install the selected version
 

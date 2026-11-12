@@ -88,17 +88,25 @@ def test_checkout_import_cannot_count_as_installed_artifact(tmp_path):
         )
 
 
-def test_new_archive_journeys_cannot_install_the_same_distribution(tmp_path):
+@pytest.mark.parametrize(
+    ("family", "current", "previous"),
+    [("beam-column", "0.27.0", "0.26.0"), ("slab-footing", "0.28.0", "0.27.0")],
+)
+def test_new_archive_journeys_cannot_install_the_same_distribution(
+    tmp_path, family, current, previous
+):
     wheel, sdist = tmp_path / "candidate.whl", tmp_path / "candidate.tar.gz"
-    assert qualification.distribution_target("beam-column-wheel", wheel, sdist) == str(
+    assert qualification.distribution_target(f"{family}-wheel", wheel, sdist) == str(
         wheel
     )
-    assert qualification.distribution_target("beam-column-sdist", wheel, sdist) == str(
+    assert qualification.distribution_target(f"{family}-sdist", wheel, sdist) == str(
         sdist
     )
-    assert set(qualification.required_profiles("0.27.0", ())) - set(
-        qualification.required_profiles("0.26.0", ())
-    ) == {"beam-column-wheel", "beam-column-sdist"}
+    previous_profiles = set(qualification.required_profiles(previous, ()))
+    assert set(qualification.required_profiles(current, ())) == previous_profiles | {
+        f"{family}-wheel",
+        f"{family}-sdist",
+    }
 
 
 @pytest.mark.parametrize(

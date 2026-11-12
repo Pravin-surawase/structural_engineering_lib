@@ -134,7 +134,6 @@ and group imports require its matching build rather than an older published whee
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-This recipe is verified against the current source build (package version
-`0.27.0`), not the older published wheel with that version, and remains
-subject to qualified review. It is not professional approval, engineering-use
-approval, construction-use approval, or Windows application acceptance.
+Replay this recipe with a local build of source package version `0.28.0`.
+Use the [release guide](../../getting-started/release-status.md) for the public
+package. Results require qualified review.

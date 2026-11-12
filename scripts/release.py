@@ -34,6 +34,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
+from bump_version import read_published_version
 from node_runtime import (
     node_bin_candidates as _shared_node_bin_candidates,
     node_runtime_env as _shared_node_runtime_env,
@@ -928,11 +929,16 @@ def _source_surface_version_errors(
             ),
             "docs/getting-started/python-quickstart.md": _version_from_doc(
                 PYTHON_QUICKSTART,
-                r"structural-lib-is456={2,3}(\d+\.\d+\.\d+(?:a\d+)?)",
+                r"^\*\*Version:\*\* (\d+\.\d+\.\d+(?:a\d+)?)",
             ),
             "CHANGELOG.md": _latest_documented_version(CHANGELOG),
             "docs/getting-started/releases.md": _latest_documented_version(RELEASES),
         }
+        published_version = read_published_version()
+        quickstart_install_version = _version_from_doc(
+            PYTHON_QUICKSTART,
+            r"structural-lib-is456={2,3}(\d+\.\d+\.\d+(?:a\d+)?)",
+        )
     except (KeyError, OSError, ValueError, tomllib.TOMLDecodeError) as exc:
         return [f"could not read release surface: {exc}"]
 
@@ -941,6 +947,11 @@ def _source_surface_version_errors(
         for path, actual in surfaces.items()
         if actual != expected
     ]
+    if quickstart_install_version != published_version:
+        errors.append(
+            "Python quickstart registry pin "
+            f"{quickstart_install_version}, expected published {published_version}"
+        )
 
     citation_text = CITATION.read_text(encoding="utf-8")
     changelog_text = CHANGELOG.read_text(encoding="utf-8")

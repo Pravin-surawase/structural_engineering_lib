@@ -13,9 +13,9 @@
 | Release | Current state |
 |---|---|
 | **Current** | [0.27.0 is published and verified](../getting-started/releases.md#v0270-published-and-verified); tag a78dcc6a, exact repaired archives, 18 profiles/451 tests per archive and public install/hash receipts. |
-| **Next** | Qualified serializer source update on codex/lib027-docs-serializer; its milestone PR owns final hosted checks and integration. Development source is unreleased; no version bump or publication is selected. |
+| **Next** | [0.28.0 S0–S5 candidate](library-usability-improvement.md#structlib-0280-candidate-preparation) on `codex/lib028-s0-s5`. The milestone PR and retained artifacts own exact qualification evidence. The owner directed work to stop at the candidate handoff. |
 
-## Selected work — qualified serializer integration
+## Merged development work — qualified serializer integration
 
 The owner selected this update after publication. The lab handoff is
 `structlib-coding-lab/docs/pending-single-pass-integration.md`; its historical
@@ -34,9 +34,9 @@ checks. Measured wheels remain identified as C2, separate from that successor.
 The [qualification record](../verification/library-serializer-optimization.json)
 includes exact identities, test/measurement boundaries and all 30 timing pairs.
 
-Finish one normal milestone PR with required checks on its final head, then
-integrate. GitHub owns exact check/merge facts. Do not tag or publish; a later
-release requires its own selected version and gates.
+[PR #1066](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1066)
+merged the source update. The change remains unreleased and enters the 0.28.0
+candidate with the later performance work listed in the changelog.
 
 ## Separate correctness follow-up
 
@@ -58,8 +58,8 @@ rejected baselines; the invalidated 423 intermediate is not deliverable.
 
 Draft [research PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
 still needs rebind/reconciliation of its shared plan after this task. Its future
-capabilities and release calendar are not adopted here. The 0.28 slab/footing
-programme, solver and native-host tracks remain separately owned.
+capabilities and release calendar are not adopted here. Solver and native-host
+tracks retain their own plans.
 
 ## Required Reading
 

@@ -1,12 +1,11 @@
 # Python Examples
 
-Runnable examples for `structural-lib-is456` 0.27.0. These files live in the
-source repository and are intentionally excluded from the wheel. Install the
-published package, then run the examples from a clone:
+Runnable examples for `structural-lib-is456` 0.28.0. Get the example files from
+the source checkout that contains them and install the package in a virtual
+environment.
 
-Pins track the prepared source version. Verify that exact version is published
-before using the registry install; use the source installation below for an
-unpublished candidate. Version synchronization does not publish a package.
+These commands install the verified public release. The next section shows how
+to install a retained candidate wheel.
 
 ```bash
 git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
@@ -16,6 +15,47 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 python3 -m pip install "structural-lib-is456==0.27.0"
 python3 -m structural_lib install-preflight
 ```
+
+## Bounded slab and footing reference cases
+
+`slab_one_way_reference.py` and `isolated_footing_reference.py` are copied
+scripts for the current branch. They call the installed public package and emit
+one JSON object containing `case`, the flat request, and the full result.
+
+```bash
+python3 -I Python/examples/slab_one_way_reference.py --case baseline
+python3 -I Python/examples/slab_one_way_reference.py --case capacity-fail
+python3 -I Python/examples/slab_one_way_reference.py --case review-limit-fail
+python3 -I Python/examples/isolated_footing_reference.py --case baseline
+python3 -I Python/examples/isolated_footing_reference.py --case transfer-fail
+python3 -I Python/examples/isolated_footing_reference.py --case assumption-hold
+```
+
+The slab fixture is the simply supported INDIA-1D strip; its controls retain a
+capacity failure and reviewed span/depth limit failure. The footing fixture is
+the square, uniform-depth, concentric INDIA-1C case; `transfer-fail` uses 4Ø10
+dowels and `assumption-hold` changes only the soil-pressure origin. Read the
+reported `status`, `calculation_status`, `detailing_status`, `failed_checks`,
+`hold_reasons`, and `provenance` rather than treating a successful process exit
+as an engineering decision.
+
+To replay the scripts against a retained candidate wheel, install that wheel
+in a clean virtual environment.
+
+```bash
+python3 -m pip install /path/to/structural_lib_is456-0.28.0-py3-none-any.whl
+python3 -m structural_lib install-preflight
+python3 -I Python/examples/slab_one_way_reference.py --case baseline
+python3 -I Python/examples/isolated_footing_reference.py --case baseline
+```
+
+The [0.28 candidate plan](../../docs/planning/library-usability-improvement.md#structlib-0280-candidate-preparation),
+[INDIA-1D slab boundary evidence](../../docs/verification/india-1d-slab-boundary-evidence.md),
+and [INDIA-1C footing evidence](../../docs/verification/india-1c-isolated-footing-workflow-evidence.md)
+define the bounded inputs, outcomes, exclusions, and qualified-review boundary.
+Direct deflection, cracking, automatic slab-shear design, settlement,
+soil-structure interaction, eccentric/moment-transfer footing cases, and
+engineering approval remain outside these examples.
 
 ## Typed workflows from the current source
 
