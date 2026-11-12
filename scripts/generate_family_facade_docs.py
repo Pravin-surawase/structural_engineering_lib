@@ -77,11 +77,16 @@ def _page(workflow: Any, recipe: Any) -> str:
                 "load_four_corner_member",
                 "check_four_corner_member",
                 "render_four_corner_member_html",
+                "load_tied_rectangular_member",
+                "check_tied_rectangular_member",
+                "render_tied_rectangular_member_html",
             )
         )
         related_workflow = (
             "For four equal physical corner bars and actual closed ties, use the "
             "[four-corner member guide](column-four-corner-member-check.md).\n\n"
+            "For eight equal bars or either orientation of a six-bar cage, use the "
+            "[tied rectangular column guide](column-four-corner-member-check.md#six-and-eight-bar-tied-rectangles).\n\n"
         )
     api_members = "\n".join(f"        - {name}" for name in members)
     engineering_failure = ""

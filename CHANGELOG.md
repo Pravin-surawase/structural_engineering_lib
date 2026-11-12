@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ## [0.29.0] — Prepared candidate (unreleased; on hold)
 
+### Added
+
+- Short tied rectangular column checks for eight equal bars and both six-bar
+  orientations. The fixed-compression capacities use actual bar positions,
+  with signed biaxial actions, explicit midpoint restraint and JSON/HTML
+  output tied to the checked section.
+
 ### Fixed
 
 - Continuous one-way and two-way solid slab HTTP responses retain the supplied

@@ -96,6 +96,8 @@ except InputContractError as error:
 
 For four equal physical corner bars and actual closed ties, use the [four-corner member guide](column-four-corner-member-check.md).
 
+For eight equal bars or either orientation of a six-bar cage, use the [tied rectangular column guide](column-four-corner-member-check.md#six-and-eight-bar-tied-rectangles).
+
 ## Python API
 
 Typed request groups are exported from `structural_lib.design.is456.column` alongside the
@@ -117,6 +119,9 @@ and group imports require its matching build rather than an older published whee
         - load_four_corner_member
         - check_four_corner_member
         - render_four_corner_member_html
+        - load_tied_rectangular_member
+        - check_tied_rectangular_member
+        - render_tied_rectangular_member_html
 
 ## Compatibility and evidence
 

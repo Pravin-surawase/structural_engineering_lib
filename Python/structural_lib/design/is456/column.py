@@ -26,12 +26,22 @@ from structural_lib.services.column_member import (
 from structural_lib.services.column_member import (
     render_four_corner_member_html as _render_four_corner_member_html,
 )
+from structural_lib.services.column_tied_member import (
+    check_tied_rectangular_member as _check_tied_rectangular_member,
+)
+from structural_lib.services.column_tied_member import (
+    render_tied_rectangular_member_html as _render_tied_rectangular_member_html,
+)
 from structural_lib.services.contracts.column_member import (
     ColumnClosedTieV1,
+    ColumnMidpointCrossTieV1,
     FourCornerColumnActionsV1,
     FourCornerColumnGeometryV1,
     FourCornerColumnInputV1,
     FourCornerColumnReinforcementV1,
+    RectangularColumnActionsV1,
+    RectangularColumnCageV1,
+    TiedRectangularColumnInputV1,
 )
 from structural_lib.services.contracts.column_section import (
     ColumnSectionInputV1,
@@ -65,14 +75,19 @@ __all__ = [
     "ColumnSectionLayerV1",
     "ColumnSectionResponseV1",
     "ColumnClosedTieV1",
+    "ColumnMidpointCrossTieV1",
     "FourCornerColumnActionsV1",
     "FourCornerColumnGeometryV1",
     "FourCornerColumnInputV1",
     "FourCornerColumnReinforcementV1",
+    "RectangularColumnActionsV1",
+    "RectangularColumnCageV1",
+    "TiedRectangularColumnInputV1",
     "InputContractError",
     "InputIssueV1",
     "check",
     "check_four_corner_member",
+    "check_tied_rectangular_member",
     "design",
     "input",
     "layered_section_response",
@@ -81,7 +96,116 @@ __all__ = [
     "load_layered_section",
     "load_four_corner_member",
     "render_four_corner_member_html",
+    "load_tied_rectangular_member",
+    "render_tied_rectangular_member_html",
 ]
+
+
+def load_tied_rectangular_member(
+    value: Mapping[str, object] | str | bytes | TiedRectangularColumnInputV1,
+) -> TiedRectangularColumnInputV1:
+    """Load the eight-bar or either oriented six-bar tied member request.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or TiedRectangularColumnInputV1
+        Section, checked station, signed factored actions and tie schedule.
+
+    Returns
+    -------
+    TiedRectangularColumnInputV1
+        An immutable versioned request.
+
+    Raises
+    ------
+    InputContractError
+        Invalid JSON, unsupported layout or inadmissible request fields.
+
+    Examples
+    --------
+    Run Python/examples/tied_rectangular_column_member.py with a layout flag.
+
+    Limitations
+    -----------
+    The three symmetric equal-bar layouts use one supplied action pair.
+
+    Provenance
+    ----------
+    TiedRectangularColumnInputV1 owns the strict input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(TiedRectangularColumnInputV1, value)
+    return model_validate_or_error(TiedRectangularColumnInputV1, value)
+
+
+def check_tied_rectangular_member(
+    request: TiedRectangularColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check a supplied factored action pair and its actual short-member cage.
+
+    Parameters
+    ----------
+    request : TiedRectangularColumnInputV1
+        A validated geometry, cage and simultaneous axial and moment demand.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Check dispositions, positioned bars, fixed-load capacities and restraint.
+
+    Raises
+    ------
+    InputContractError
+        The operation requires a typed tied rectangular request.
+
+    Examples
+    --------
+    Pass the result of load_tied_rectangular_member to this check.
+
+    Limitations
+    -----------
+    The strength profile admits a short braced member in partial compression.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 25.4, Cl. 26.5.3.2, Cl. 39.5 and Cl. 39.6.
+    """
+    return _check_tied_rectangular_member(request)
+
+
+def render_tied_rectangular_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the checked section, restraint paths, inputs and verdict.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        The tied rectangular check result.
+
+    Returns
+    -------
+    str
+        HTML with the result's identities and checked section schematic.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to a different workflow.
+
+    Examples
+    --------
+    Run the tied rectangular member example with --output-dir.
+
+    Limitations
+    -----------
+    The schematic covers the checked section and local restraint paths.
+
+    Provenance
+    ----------
+    The renderer consumes the original canonical result without recalculation.
+    """
+    return _render_tied_rectangular_member_html(result)
 
 
 def load_four_corner_member(

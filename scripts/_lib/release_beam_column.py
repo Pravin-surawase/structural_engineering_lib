@@ -22,6 +22,7 @@ TESTS = tuple(
         "test_layered_column_section",
         "test_beam_section_closure",
         "test_four_corner_column_member",
+        "test_tied_rectangular_column_member",
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
@@ -44,6 +45,7 @@ EXAMPLES = tuple(
         "layered_column_section",
         "beam_section_closure",
         "four_corner_column_member",
+        "tied_rectangular_column_member",
         "torsion_station_reference",
         "physical_torsion_member",
         "t_beam_member",
@@ -63,7 +65,7 @@ CHECKERS = tuple(
         "torsion_serviceability_reference",
         "t_beam_reference",
     )
-)
+) + ("docs/verification/check_library_029_col02_reference.py",)
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -73,6 +75,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
             {
                 *(repo / name for name in (*TESTS, *EXAMPLES, *CHECKERS)),
                 *(repo / "docs/verification").glob("library-027-*.json"),
+                repo / "docs/verification/library-029-col02-rectangular-column.json",
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",

@@ -105,3 +105,52 @@ comparison tolerances. [Independent fixture](../../verification/library-027-four
 ```bash
 python docs/verification/check_library_027_four_corner_reference.py
 ```
+
+
+## Six- and eight-bar tied rectangles
+
+The 0.29 source supports eight equal longitudinal bars, six bars with the
+left/right face midpoints omitted, and six bars with the top/bottom face
+midpoints omitted. Use the separate `column.load_tied_rectangular_member` and
+`column.check_tied_rectangular_member` entry points. Inspect the complete
+request schema through `column.TiedRectangularColumnInputV1.model_json_schema()`.
+
+Run the [example](../../../Python/examples/tied_rectangular_column_member.py)
+against the 0.29 checkout or a local 0.29 installation.
+
+```bash
+python Python/examples/tied_rectangular_column_member.py --layout eight_bar --mx 50 --my 35 --output-dir column-output
+python Python/examples/tied_rectangular_column_member.py --layout six_bar_omit_x_face_midpoints --mx -50 --my 35
+python Python/examples/tied_rectangular_column_member.py --layout six_bar_omit_y_face_midpoints --mx 0 --my 50
+```
+
+Supply one factored compressive action and its simultaneous signed moments at
+the checked station. Positive Mx compresses the top and positive My compresses
+the left, using the same top-left coordinates as the cage. The strength result
+reports each actual bar's contribution and the fixed-axial-load residual. It
+checks the supplied pair using IS 456 Cl. 39.6 and compares the Cl. 25.4
+minimum eccentricity independently on each principal axis.
+
+The closed perimeter tie's schedule specifies diameter, pitch, bend radius,
+and both end hooks for the open midpoint links. Identify each link by its
+two opposite midpoint bars and axial offset within the pitch. The perimeter
+tie and links occupy separate levels. The supported corner inset past the
+inside tie face and bar radius is 0–2 mm. The checks cover bar fit, restraint
+span, hook fit and clear spacing. Missing tie evidence produces HOLD and an
+inadequate supplied detail produces FAIL. The scoped strength check is also
+held if either axis is outside partial compression.
+
+The JSON and HTML share the request hash, bar IDs and restraint paths. The
+section schematic shows the checked cross section. Member-wide scheduling,
+fabrication lengths, laps and joints require separate evidence.
+
+| Cage | Mx capacity at 500 kN | My capacity at 500 kN |
+|---|---:|---:|
+| Eight bars | 152.541 kN·m | 102.738 kN·m |
+| Six bars, left/right midpoints omitted | 152.469 kN·m | 84.176 kN·m |
+| Six bars, top/bottom midpoints omitted | 122.595 kN·m | 102.711 kN·m |
+
+The [independent case record](../../verification/library-029-col02-rectangular-column.json)
+defines the exact dimensions, material laws, tie schedule, expected values
+and negative controls. The earlier four-corner request and report remain
+available through their existing entry points.

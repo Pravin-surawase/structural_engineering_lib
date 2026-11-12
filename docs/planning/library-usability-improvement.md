@@ -1961,6 +1961,13 @@ actions, Cl. 39.6 interaction, separate Cl. 25.4 minimum eccentricity checks,
 and one or two explicit open cross-ties at different levels within the
 perimeter tie pitch. The original 45 mm trial is a physical FAIL control.
 
+The source implementation exposes the three checked cages through
+`column.check_tied_rectangular_member`. Its JSON and HTML schematic share the
+checked bar and restraint IDs. The admitted strength model uses fixed-load
+principal capacities and the code interaction contour. General P–M–M,
+member-wide fabrication, joints and laps retain their separate acceptance
+cases. The installed beam/column profiles carry the COL02 replay forward.
+
 
 ## Work and completion evidence
 
