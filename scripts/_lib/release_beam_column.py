@@ -321,6 +321,27 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         "--output-dir",
         str(output / "four-corner"),
     )
+    for layout in (
+        "eight_bar",
+        "six_bar_omit_x_face_midpoints",
+        "six_bar_omit_y_face_midpoints",
+    ):
+        label = f"tied-rectangular-{layout}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/tied_rectangular_column_member.py",
+            "--layout",
+            layout,
+            "--output-dir",
+            str(directory),
+        )
+        member = json.loads(stdout)
+        assert member == json.loads((directory / "result.json").read_text())
+        assert member["envelope"]["engineering_status"] == "PASS"
+        assert member["calculation"]["layout"] == layout
+        input_hash = member["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):
         run(
             name,
