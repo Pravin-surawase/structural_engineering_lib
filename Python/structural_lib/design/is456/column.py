@@ -245,7 +245,7 @@ def check_column_member_detailing(
 
     Limitations
     -----------
-    Ordinary short tied eight-bar rectangles. A physical lap assembly needs separate verification.
+    Ordinary short tied eight-bar rectangles. Physical laps admit one opposing side-midpoint contact group.
 
     Provenance
     ----------
@@ -315,7 +315,7 @@ def render_column_member_detailing_svg(
 
     Limitations
     -----------
-    A schematic projection. Splice and closure bend shapes require their own fabrication detail.
+    The section cuts show the checked contact links. The closed hoop uses a supplied fabrication basis.
 
     Provenance
     ----------
@@ -327,7 +327,7 @@ def render_column_member_detailing_svg(
 def render_column_member_bbs_csv(
     result: CanonicalFamilyResultV1[dict[str, object]],
 ) -> str | None:
-    """Export the continuous member bar bending schedule.
+    """Export the checked member bar bending schedule.
 
     Parameters
     ----------
@@ -350,7 +350,7 @@ def render_column_member_bbs_csv(
 
     Limitations
     -----------
-    Transverse cuts use the supplied approved register for this detailing revision.
+    The supplied register supplies the hoop cut. Checked contact links use their centreline lengths.
 
     Provenance
     ----------

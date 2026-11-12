@@ -5,6 +5,8 @@ from __future__ import annotations
 import csv
 from html import escape
 from io import StringIO
+from math import dist
+from typing import Any
 
 from structural_lib.services.column_member_detailing import WORKFLOW, Result
 from structural_lib.services.column_tied_member import rectangular_section_markup
@@ -65,6 +67,57 @@ def render_column_member_bbs_csv(result: Result) -> str | None:
     return out.getvalue()
 
 
+def _splice_sections(
+    splice: dict[str, Any], cage: dict[str, Any], width: float, depth: float
+) -> str:
+    """Draw the three checked transverse layouts with their real bend paths."""
+    scale = 152 / max(width, depth)
+    sections = []
+    for label, caption, left in (
+        ("lower", "Below lap", 300),
+        ("overlap", "Within lap", 475),
+        ("upper", "Above lap", 650),
+    ):
+        section = splice["sections"][label]
+        hoop_width = cage["tie_centreline_width_mm"]
+        hoop_depth = cage["tie_centreline_depth_mm"]
+        geometry = [
+            f'<rect width="{width}" height="{depth}" fill="#f3f6f8" stroke="#172b4d"/>',
+            f'<rect x="{(width-hoop_width)/2}" y="{(depth-hoop_depth)/2}" width="{hoop_width}" height="{hoop_depth}"'
+            f' rx="{splice["hoop_centreline_radius_mm"]}" fill="none" stroke="#17706d"/>',
+        ]
+        for mark, link in section["links"].items():
+            paths = []
+            for segment in link["segments"]:
+                x, y = segment["start_mm"]
+                ex, ey = segment["end_mm"]
+                centre = segment["centre_mm"]
+                if centre is None:
+                    command = f"L {ex:g} {ey:g}"
+                else:
+                    cx, cy = centre
+                    radius = dist((x, y), centre)
+                    sweep = int((x - cx) * (ey - cy) > (y - cy) * (ex - cx))
+                    command = f"A {radius:g} {radius:g} 0 0 {sweep} {ex:g} {ey:g}"
+                paths.append(f'<path d="M {x:g} {y:g} {command}"/>')
+            geometry.append(
+                f'<g data-link-mark="{escape(mark, quote=True)}" fill="none" stroke="#17706d" stroke-width="2.3">'
+                f'<title>{escape(mark)} return link</title>{"".join(paths)}</g>'
+            )
+        for bar in section["bars"]:
+            mark = escape(bar["bar_id"], quote=True)
+            color = "#bd6421" if bar["bar_id"].endswith("-U") else "#172b4d"
+            geometry.append(
+                f'<circle cx="{bar["x_from_left_mm"]:g}" cy="{bar["y_from_top_mm"]:g}" r="{bar["diameter_mm"]/2:g}"'
+                f' fill="{color}" data-piece-mark="{mark}"><title>{mark}</title></circle>'
+            )
+        sections.append(
+            f'<text x="{left}" y="85" font-size="11">{caption}</text>'
+            f'<g data-section="{label}" transform="translate({left} 100) scale({scale})">{"".join(geometry)}</g>'
+        )
+    return "".join(sections)
+
+
 def render_column_member_detailing_svg(result: Result) -> str:
     """Draw the checked section and the supplied full-length reinforcement schedule."""
     request, input_hash = _metadata(result)
@@ -88,7 +141,19 @@ def render_column_member_detailing_svg(result: Result) -> str:
         f'<rect x="{left}" y="{body_top}" width="{right-left}" height="{body_bottom-body_top}" fill="#f3f6f8" stroke="#172b4d"/>'
     ]
     cage = data["cage"]
-    if cage is not None:
+    splice = data.get("contact_splice")
+    if splice is not None:
+        for piece in splice["pieces"]:
+            mark = escape(piece["bar_id"], quote=True)
+            x = left + (right - left) * piece["y_mm"] / depth
+            lo, hi = piece["start_mm"], piece["end_mm"]
+            color = "#bd6421" if piece["bar_id"].endswith("-U") else "#2a3d5c"
+            projection.append(
+                f'<line x1="{x}" x2="{x}" y1="{y(lo)}" y2="{y(hi)}" stroke="{color}" '
+                f'data-piece-id="{mark}" data-start-mm="{lo:g}" data-end-mm="{hi:g}">'
+                f"<title>{mark} · {lo:g} to {hi:g} mm</title></line>"
+            )
+    elif cage is not None:
         dashed = ' stroke-dasharray="3 2"' if data["laps"] else ""
         for bar in cage["bars"]:
             x = left + (right - left) * bar["x_from_left_mm"] / width
@@ -115,28 +180,41 @@ def render_column_member_detailing_svg(result: Result) -> str:
         start, end = lap["start_mm"], lap["end_mm"]
         projection.append(
             f'<rect x="{left-11}" y="{y(end)}" width="6" height="{y(start)-y(end)}" fill="#be640d">'
-            f'<title>Proposed lap {escape(lap["lap_id"])} · {start:g} to {end:g} mm</title></rect>'
+            f'<title>{"Contact lap" if splice else "Proposed lap"} {escape(lap["lap_id"])} · {start:g} to {end:g} mm</title></rect>'
         )
     scale = 170 / max(width, depth)
-    return (
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 520" role="img" aria-labelledby="member-title">'
-        f'<title id="member-title">{escape(title)}</title>'
-        f"<desc>Input {input_hash}. {escape(revisions)}. Projections of the supplied schedule.</desc>"
-        f'<text x="25" y="25" font-size="16" font-family="sans-serif">{escape(title)}</text>'
-        f'<text x="25" y="44" font-size="11" font-family="sans-serif">{escape(revisions)}</text>'
-        f'<text x="310" y="85" font-size="11" font-family="sans-serif">{width:g} × {depth:g} mm section</text>'
-        f'<g transform="translate(310 100) scale({scale})">'
-        f'<rect width="{width}" height="{depth}" fill="#f3f6f8" stroke="#172b4d"/>{"".join(section)}</g>'
-        f'<g font-family="sans-serif">{"".join(projection)}</g>'
-        f'<text x="310" y="296" font-size="11">Clear member length {length:g} mm</text>'
-        f'<text x="310" y="315" font-size="11">Straight projections {ends.start_straight_mm:g} / {ends.end_straight_mm:g} mm</text>'
-        f'<text x="310" y="334" font-size="11">{len(data["hoop_stations_mm"])} hoop levels</text>'
-        + (
+    if splice is not None:
+        section_markup = _splice_sections(splice, cage, width, depth)
+        splice_note = (
+            f'<text x="310" y="353" font-size="11">{splice["end_mm"] - splice["start_mm"]:g} mm contact lap'
+            f' · {len(splice["lap_stations_mm"])} overlap links</text>'
+            '<text x="310" y="372" font-size="11" fill="#bd6421">Orange bars are upper splice pieces</text>'
+        )
+        view_width = 840
+    else:
+        section_markup = (
+            f'<text x="310" y="85" font-size="11">{width:g} × {depth:g} mm section</text>'
+            f'<g transform="translate(310 100) scale({scale})">'
+            f'<rect width="{width}" height="{depth}" fill="#f3f6f8" stroke="#172b4d"/>{"".join(section)}</g>'
+        )
+        splice_note = (
             '<text x="310" y="353" font-size="11">Dashed axes show proposed splice scope</text>'
             if data["laps"]
             else ""
         )
-        + "</svg>"
+        view_width = 560
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {view_width} 520" role="img" aria-labelledby="member-title">'
+        f'<title id="member-title">{escape(title)}</title>'
+        f"<desc>Input {input_hash}. {escape(revisions)}. Projections of the supplied schedule.</desc>"
+        f'<text x="25" y="25" font-size="16" font-family="sans-serif">{escape(title)}</text>'
+        f'<text x="25" y="44" font-size="11" font-family="sans-serif">{escape(revisions)}</text>'
+        f'<g font-family="sans-serif">{section_markup}</g>'
+        f'<g font-family="sans-serif">{"".join(projection)}</g>'
+        f'<text x="310" y="296" font-size="11">Clear member length {length:g} mm</text>'
+        f'<text x="310" y="315" font-size="11">Straight projections {ends.start_straight_mm:g} / {ends.end_straight_mm:g} mm</text>'
+        f'<text x="310" y="334" font-size="11">{len(data["hoop_stations_mm"])} hoop levels</text>'
+        f"{splice_note}</svg>"
     )
 
 
@@ -198,6 +276,17 @@ def render_column_member_detailing_html(result: Result) -> str:
             "<th>Stations (mm)</th><th>Overlap (mm)</th><th>Required (mm)</th></tr></thead>"
             f"<tbody>{lap_rows}</tbody></table>"
         )
+    splice = data.get("contact_splice")
+    splice_details = ""
+    if splice is not None:
+        distances = ", ".join(
+            f"{value:g}" for value in splice["end_support_distances_mm"]
+        )
+        splice_details = (
+            f'<p>Unrelated longitudinal clearance {splice["minimum_unrelated_bar_clear_mm"]:.2f} mm. '
+            f'Minimum link-to-bar clearance {splice["minimum_link_clear_mm"]:.2f} mm. '
+            f'End support distances {distances or "unresolved"} mm.</p>'
+        )
     governing = data["governing_shear"]
     governing_text = (
         f'<p>Governing supplied shear: {escape(governing["combination_id"])} at '
@@ -222,7 +311,7 @@ def render_column_member_detailing_html(result: Result) -> str:
         "<th>Combination</th><th>Station (mm)</th><th>Pu / Mx / My (kN / kNm / kNm)</th><th>Vx / Vy (kN)</th>"
         "<th>Section</th><th>Zone</th><th>Shear</th><th>Pitch (mm)</th><th>Vc / Vus (kN)</th><th>Utilization</th>"
         f'</tr></thead><tbody>{"".join(action_rows)}</tbody></table>'
-        f"{lap_table}<h2>Bar bending schedule</h2>{schedule}<h2>Checks</h2>"
+        f"{lap_table}{splice_details}<h2>Bar bending schedule</h2>{schedule}<h2>Checks</h2>"
         f"<table><thead><tr><th>Code</th><th>Input</th><th>Status</th><th>Basis</th></tr></thead><tbody>{checks}</tbody></table>"
         f"<h2>Scope</h2><ul>{limits}</ul></html>"
     )

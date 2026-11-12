@@ -12,12 +12,17 @@ from structural_lib.codes.is456.column.member_detailing import (
     ordinary_column_shear,
     straight_column_bond_lengths,
 )
+from structural_lib.codes.is456.column.positioned import positioned_member_strength
 from structural_lib.core.result_contract import EngineeringStatus, StructuralIssueV1
 from structural_lib.services.bbs import calculate_bar_weight
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
     canonical_family_result,
     require_request_type,
+)
+from structural_lib.services.column_contact_splice import (
+    ContactSplice,
+    check_contact_splice,
 )
 from structural_lib.services.column_tied_member import (
     check_tied_rectangular_member,
@@ -246,13 +251,6 @@ def _check_laps(
             simultaneous_bars=max_count,
             total_bars=len(bar_ids),
         )
-    record(
-        "COLUMN.LAP_ASSEMBLY_REQUIRED",
-        _HOLD,
-        "laps",
-        "Check splice partner paths, transition geometry, local restraint and congestion before issuing a spliced member schedule.",
-        _BOND,
-    )
     return details
 
 
@@ -262,6 +260,7 @@ def _check_actions(
     grid: list[float],
     valid_zones: set[str],
     record: _Record,
+    splice: ContactSplice | None = None,
 ) -> list[dict[str, Any]]:
     geometry, steel, materials = (
         request.geometry,
@@ -312,7 +311,50 @@ def _check_actions(
             "input_hash": identity.input_hash,
             "utilization": strength["governing_ratio"] if strength else None,
         }
-        if local.engineering_status is not _PASS:
+        if splice is not None and strength is not None:
+            layouts = {}
+            if station <= splice.end_mm:
+                layouts["lower"] = strength
+            if station >= splice.start_mm:
+                layouts["upper"] = asdict(
+                    positioned_member_strength(
+                        b_mm=geometry.b_mm,
+                        D_mm=geometry.D_mm,
+                        unsupported_length_mm=geometry.unsupported_length_mm,
+                        pu_kn=action.pu_kn,
+                        mx_knm=action.mx_knm,
+                        my_knm=action.my_knm,
+                        fck_nmm2=materials.fck_nmm2,
+                        fy_nmm2=materials.fy_nmm2,
+                        cage=splice.upper,
+                    )
+                )
+            ratios = [layout["governing_ratio"] for layout in layouts.values()]
+            utilization = max(
+                (ratio for ratio in ratios if ratio is not None), default=None
+            )
+            if action.pu_kn >= strength["puz_kn"] or (
+                utilization is not None and utilization > 1
+            ):
+                status = _FAIL
+            elif any(ratio is None for ratio in ratios):
+                status = _HOLD
+            else:
+                status = _PASS
+            summary["section"] = {
+                "status": status.value,
+                "input_hash": None,
+                "utilization": utilization,
+                "splice_layouts": layouts,
+            }
+            record(
+                "COLUMN.LAP_SECTION_STRENGTH",
+                status,
+                path,
+                "Check the applicable eight-bar transfer layouts without crediting both partners.",
+                "IS 456:2000 Cl. 39.6 and checked contact assembly",
+            )
+        elif local.engineering_status is not _PASS:
             for issue in local.issues:
                 record(
                     issue.code,
@@ -394,13 +436,17 @@ def _bar_schedule(
     bars: list[dict[str, Any]],
     transverse: list[dict[str, Any]],
     record: _Record,
+    splice: ContactSplice | None = None,
 ) -> dict[str, Any] | None:
     cut = request.transverse_cut_schedule
     marks = {item["bar_id"] for item in transverse}
+    supplied_marks = {
+        item["bar_id"] for item in transverse if "derived_cut_mm" not in item
+    }
     if (
         cut is None
         or cut.detailing_revision != request.basis.detailing_revision
-        or set(cut.cut_lengths_mm) != marks
+        or set(cut.cut_lengths_mm) != supplied_marks
     ):
         record(
             "COLUMN.TRANSVERSE_CUT_BASIS",
@@ -410,7 +456,12 @@ def _bar_schedule(
             "Supplied cut register",
         )
         return None
-    if marks & {bar["bar_id"] for bar in bars} or len(marks) != len(transverse):
+    piece_marks = [bar["bar_id"] for bar in (splice.pieces if splice else bars)]
+    if (
+        marks & set(piece_marks)
+        or len(marks) != len(transverse)
+        or len(set(piece_marks)) != len(piece_marks)
+    ):
         record(
             "COLUMN.BAR_MARK_CONFLICT",
             _FAIL,
@@ -422,6 +473,7 @@ def _bar_schedule(
     if any(
         cut.cut_lengths_mm[item["bar_id"]] < item["minimum_path_mm"]
         for item in transverse
+        if item["bar_id"] in supplied_marks
     ):
         record(
             "COLUMN.TRANSVERSE_CUT_LENGTH",
@@ -442,10 +494,10 @@ def _bar_schedule(
             "role": "longitudinal",
             "diameter_mm": bar["diameter_mm"],
             "quantity": 1,
-            "cut_length_mm": length,
-            "source": "Straight bar from supplied end projections",
+            "cut_length_mm": bar.get("cut_length_mm", length),
+            "source": "Checked straight bar path and supplied end projections",
         }
-        for bar in bars
+        for bar in (splice.pieces if splice else bars)
     ]
     rows.extend(
         {
@@ -453,8 +505,12 @@ def _bar_schedule(
             "role": item["role"],
             "diameter_mm": item["diameter_mm"],
             "quantity": len(item["stations_mm"]),
-            "cut_length_mm": cut.cut_lengths_mm[item["bar_id"]],
-            "source": cut.reference,
+            "cut_length_mm": (
+                item["derived_cut_mm"]
+                if "derived_cut_mm" in item
+                else cut.cut_lengths_mm[item["bar_id"]]
+            ),
+            "source": item.get("cut_source", cut.reference),
         }
         for item in transverse
     )
@@ -620,9 +676,13 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
     laps = _check_laps(
         request, zones, {bar["bar_id"] for bar in bars}, lap_required, record
     )
-    actions = _check_actions(request, zones, grid, valid_zones, record)
+    splice = check_contact_splice(request, cage, transverse, end_required, record)
+    if splice is not None:
+        transverse = splice.transverse
+        laps[0]["required_mm"] = splice.required_lap_mm
+    actions = _check_actions(request, zones, grid, valid_zones, record, splice)
     if grid and cage is not None:
-        schedule = _bar_schedule(request, bars, transverse, record)
+        schedule = _bar_schedule(request, bars, transverse, record, splice)
     else:
         schedule = None
     statuses = {item["status"] for item in checks}
@@ -646,6 +706,7 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
             "end_required_mm": end_required,
             "lap_required_mm": lap_required,
             "laps": laps,
+            "contact_splice": splice.to_dict() if splice else None,
             "hoop_stations_mm": grid,
             "tie_zones": [zone.model_dump() for zone in zones],
             "cage": asdict(cage) if cage is not None else None,
@@ -658,8 +719,8 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
         limitations=(
             "Checks only the supplied stations and combinations for an ordinary short tied eight-bar rectangle.",
             "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
-            "Straight end projections require separately checked adjoining concrete. Compression lap checks do not resolve the physical splice assembly.",
-            "The continuous-bar schedule uses the supplied approved transverse cut lengths.",
+            "Straight end projections require separately checked adjoining concrete. The physical contact splice supports one opposing side-midpoint group with straight bars.",
+            "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",
         ),
         assumptions=(
             "Positive Mx compresses the top face; positive My compresses the left face. Vy uses D and Vx uses b as overall depth.",

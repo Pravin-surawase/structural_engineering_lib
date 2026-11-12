@@ -83,6 +83,16 @@ class ColumnLapZoneV1(StrictPublicModel):
         return self
 
 
+class ColumnContactAssemblyV1(StrictPublicModel):
+    """Straight contact partners and the fabricated double-return link."""
+
+    partner_y_mm: float = Field(gt=0, le=2000)
+    lap_link_id: _Id
+    hook_tail_mm: float = Field(gt=0, le=500)
+    fabrication_reference: _Reference
+    compression_reference: _Reference | None
+
+
 class ColumnCompressionLapV1(StrictPublicModel):
     """A proposed straight equal-diameter compression lap group."""
 
@@ -91,6 +101,7 @@ class ColumnCompressionLapV1(StrictPublicModel):
     start_mm: _Station
     end_mm: _Station
     stress_basis: Literal["compression", "unverified"]
+    contact_assembly: ColumnContactAssemblyV1 | None = None
 
     @field_validator("bar_ids", mode="before")
     @classmethod

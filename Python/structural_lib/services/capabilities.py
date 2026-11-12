@@ -228,7 +228,7 @@ _CAPABILITIES = (
                 "load_column_member_detailing",
                 "check_column_member_detailing",
                 "column-member-detailing-input/v1",
-                "Short braced eight-bar tied rectangles with supplied principal-plane shear, physical tie zones, straight end development and compression lap checks. The continuous-bar BBS requires matching transverse cut data; unresolved splice assemblies remain HOLD.",
+                "Short braced eight-bar tied rectangles with principal-plane shear, tie zones and straight end development. A supported straight contact splice of the two opposing side-midpoint bars includes physical restraint, congestion, report, drawing and BBS checks.",
                 "docs/cookbook/python/column-member-detailing.md",
                 "Python/examples/column_member_detailing.py",
             ),

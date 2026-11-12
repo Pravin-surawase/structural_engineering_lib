@@ -33,6 +33,10 @@ All notable changes to this project will be documented in this file.
   lengths and locations. The worked continuous member has an elevation,
   calculation report and bar bending schedule. Physical lap assemblies
   remain on HOLD pending their own verification.
+- Straight contact compression splices for one pair of opposing side
+  midpoint bars. Checks both partner layouts, link anchorage and spacing,
+  physical congestion and cut lengths. The spliced drawing and BBS share
+  the same checked piece marks and tie levels.
 
 ### Fixed
 

@@ -2239,9 +2239,11 @@ and [worked example](../cookbook/python/column-member-detailing.md) check one
 short tied eight-bar rectangle for supplied principal-plane shear, a
 continuous tie grid, straight development, and compression lap length and
 placement. The continuous-bar schedule, report and section/elevation
-share the checked member identity. A spliced member stays HOLD until
-its physical assembly is checked. Slender, mixed and circular cage
-extensions and the full COL07 acceptance row remain open.
+share the checked member identity. The [contact splice continuation](../verification/library-029-col07-contact-splice.json)
+checks straight partners on the opposing side-midpoint bars, shaped
+restraint links, end support, cover and congestion. The checked layout
+controls section strength and the issued BBS. Other splice layouts and
+the slender, mixed and circular member extensions retain separate cases.
 
 ## Work and completion evidence
 

@@ -12,8 +12,9 @@ Use `column.load_column_member_detailing` and
 rectangular member with eight equal bars. The workflow checks section
 strength and principal-plane shear at the supplied factored stations,
 resolves the tie and cross-tie levels, and checks straight end development.
-It also evaluates proposed compression laps. The BBS is available for
-passing continuous-bar members with an approved transverse cut register.
+It evaluates proposed compression laps and checks one physical contact
+splice layout. Passing continuous and supported spliced members can
+produce a BBS with the required transverse cut data.
 
 ## Run the worked example
 
@@ -101,6 +102,55 @@ checks the cases without the library.
 
 This profile covers the supplied stations and combinations of one short
 tied eight-bar column. Coverage across the actual load envelope,
-two-plane shear interaction, local splice assembly, adjoining joint or
+two-plane shear interaction, other splice assemblies, adjoining joint or
 support checks, slender and circular members, and seismic detailing
 need separate verification.
+
+## Run a physical contact splice
+
+Use the same example script with the
+[contact splice fixture](../../verification/library-029-col07-contact-splice.json).
+The first physical profile splices the two opposing side-midpoint bars of
+the eight-bar cage. Supply a single compression lap group up to Ø25 and
+its `contact_assembly`. This profile uses straight partners along the
+same two side faces. The upper bar centres are one diameter towards the
+bottom face. The lower and upper section checks use the appropriate
+physical bar locations, and both eight-bar layouts are checked through
+the overlap.
+
+```bash
+python column_member_detailing.py --reference library-029-col07-contact-splice.json \
+  --case contact_splice --output-dir col07-contact
+python column_member_detailing.py --reference library-029-col07-contact-splice.json \
+  --case congested_longitudinal --output-dir col07-contact-fail
+python column_member_detailing.py --reference library-029-col07-contact-splice.json \
+  --case compression_basis --output-dir col07-contact-hold
+```
+
+1. The Ø20 partners contact at y = 200 and 220 mm. The **740 mm overlap**
+   exceeds the **709.21 mm** minimum including the contact-pair allowance.
+   The fixture includes a compression reference for the overlap. Each
+   supplied in-lap row must also remain inside the gross-section elastic
+   kern as an admission check.
+2. The horizontal link surrounds both bars at each end of its run in the
+   lap. Two quarter bends and a straight tangent form each return. The
+   final bend is followed by an 8-diameter tail. The nine overlap links
+   replace the ordinary horizontal links at those levels. The nearest
+   links to the two lap ends lie 58 and 26 mm from the first end and 42
+   and 42 mm from the second end, inside the profile's 80 mm limit.
+3. The smallest gap between unrelated longitudinal bars is **70 mm**.
+   The smallest link-to-bar clearance is **2 mm**. The checker tests the
+   actual quarter arcs and tails and the clearances between transverse
+   levels. The reported steel ratio at the lap includes all ten bars.
+4. Each lower spliced piece is **2740 mm** and each upper piece is
+   **2700 mm**. The **448.53 mm** overlap link uses its checked
+   centreline, including arcs and tails. The supplied cut register
+   contains the closed hoop. The checked links supply their own cuts.
+   The spliced BBS contains **109 pieces**, **109.963 m** and **124.346 kg**.
+
+The report and elevation identify the individual pieces. Section cuts
+show the bars and link paths below, within and above the lap. Provide the
+fabrication reference for the bend schedule and the interval compression
+basis as part of the request. A lap with only station limits and bar IDs
+remains HOLD. Corner, cranked and other lap assemblies require their
+own verification. [Independent replay](../../verification/check_library_029_col07_splice_reference.py)
