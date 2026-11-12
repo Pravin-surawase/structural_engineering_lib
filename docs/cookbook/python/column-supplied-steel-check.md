@@ -102,6 +102,8 @@ For larger or asymmetric mixed-diameter cages with aligned links, see the [posit
 
 For axis-specific restraint and slenderness using those actual cages, see the [slender rectangular column guide](column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars).
 
+For short circular cages with closed rings or spirals, see the [circular column guide](circular-column-member-check.md).
+
 ## Python API
 
 Typed request groups are exported from `structural_lib.design.is456.column` alongside the
@@ -133,6 +135,10 @@ and group imports require its matching build rather than an older published whee
         - check_slender_rectangular_member
         - render_slender_rectangular_member_html
         - render_slender_rectangular_member_svg
+        - load_circular_member
+        - check_circular_member
+        - render_circular_member_html
+        - render_circular_member_svg
 
 ## Compatibility and evidence
 

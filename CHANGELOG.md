@@ -19,6 +19,10 @@ All notable changes to this project will be documented in this file.
   cages, with independent effective lengths on both axes, signed member
   actions, and a result-bound HTML report and SVG section drawing. The
   capability catalogue now identifies each physical column Python profile.
+- Short circular tied and spiral column checks with an actual ring of
+  longitudinal bars, signed biaxial section strength and scoped spiral
+  enhancement on the short axial branch. Includes a worked example,
+  checked HTML report and SVG section drawing.
 
 ### Fixed
 

@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from math import cos, degrees, hypot, pi, sin
+from typing import Protocol
 
 from structural_lib.codes.is456.section_materials import section_steel_stress
 
@@ -60,6 +62,41 @@ class PositionedBiaxialStrength:
     direct_ratio: float
     minimum_eccentricity_ratios: dict[str, float]
     governing_ratio: float
+
+
+class SectionEquilibrium(Protocol):
+    """A section with signed moments at a fixed axial force and plane angle."""
+
+    @property
+    def width(self) -> float: ...
+
+    @property
+    def depth(self) -> float: ...
+
+    def equilibrate(self, angle: float, pu_kn: float) -> _AngularPoint | None: ...
+
+
+def equilibrate_section(
+    angle: float,
+    span: float,
+    pu_kn: float,
+    resultants: Callable[[float], tuple[float, float, float]],
+) -> _AngularPoint | None:
+    """Bracket and solve one strain plane at the supplied compression."""
+    low, high = 1e-6 * span, 256 * span
+    if not resultants(low)[0] < pu_kn < resultants(high)[0]:
+        return None
+    for _ in range(42):
+        middle = (low + high) / 2
+        if resultants(middle)[0] < pu_kn:
+            low = middle
+        else:
+            high = middle
+    xu = (low + high) / 2
+    p, mx, my = resultants(xu)
+    if abs(p - pu_kn) > 0.01:
+        return None
+    return angle, xu, p, mx, my
 
 
 def _clip_depth(
@@ -186,24 +223,11 @@ class _Section:
             self.fck,
             self.fy,
         )
-        low, high = 1e-6 * span, 256 * span
-        if not projected.resultants(low)[0] < pu_kn < projected.resultants(high)[0]:
-            return None
-        for _ in range(42):
-            middle = (low + high) / 2
-            if projected.resultants(middle)[0] < pu_kn:
-                low = middle
-            else:
-                high = middle
-        xu = (low + high) / 2
-        p, mx, my = projected.resultants(xu)
-        if abs(p - pu_kn) > 0.01:
-            return None
-        return angle, xu, p, mx, my
+        return equilibrate_section(angle, span, pu_kn, projected.resultants)
 
 
 def _signed_rays(
-    section: _Section,
+    section: SectionEquilibrium,
     samples: tuple[_AngularPoint, ...],
     pu_kn: float,
     dx: float,
@@ -265,7 +289,7 @@ def _signed_rays(
 class PositionedCapacitySlice:
     """Reuse one equilibrated section at fixed compression for concurrent actions."""
 
-    section: _Section
+    section: SectionEquilibrium
     pu_kn: float
     steel_area_mm2: float
     puz_kn: float
@@ -341,10 +365,18 @@ def prepare_positioned_capacity(
     """Equilibrate the angular samples and the four signed pure-axis capacities."""
     steel = sum(bar.area_mm2 for bar in bars)
     puz = _calculate_puz(b_mm, D_mm, fck_nmm2, fy_nmm2, steel)
+    return prepare_section_capacity(
+        _Section(b_mm, D_mm, fck_nmm2, fy_nmm2, bars), pu_kn, steel, puz
+    )
+
+
+def prepare_section_capacity(
+    section: SectionEquilibrium, pu_kn: float, steel: float, puz: float
+) -> PositionedCapacitySlice | None:
+    """Build the shared fixed-load signed-capacity slice from section equilibrium."""
     if pu_kn >= puz:
         return None
     alpha = _calculate_alpha_n(pu_kn, puz)
-    section = _Section(b_mm, D_mm, fck_nmm2, fy_nmm2, bars)
     samples = []
     for index in range(_ANGULAR_INTERVALS + 1):
         point = section.equilibrate(2 * pi * index / _ANGULAR_INTERVALS, pu_kn)

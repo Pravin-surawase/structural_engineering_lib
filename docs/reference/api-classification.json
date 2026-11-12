@@ -15151,8 +15151,8 @@
     {
       "module": "structural_lib.design.is456.column",
       "export_classification": "preview",
-      "declared_export_count": 45,
-      "classified_symbol_count": 55,
+      "declared_export_count": 50,
+      "classified_symbol_count": 60,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -15161,6 +15161,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.canonical_family",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "CircularColumnInputV1",
+          "qualified_name": "structural_lib.design.is456.column.CircularColumnInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_circular",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -15727,6 +15746,35 @@
           }
         },
         {
+          "name": "check_circular_member",
+          "qualified_name": "structural_lib.design.is456.column.check_circular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'CircularColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "check_four_corner_member",
           "qualified_name": "structural_lib.design.is456.column.check_four_corner_member",
           "kind": "function",
@@ -15980,6 +16028,35 @@
           }
         },
         {
+          "name": "load_circular_member",
+          "qualified_name": "structural_lib.design.is456.column.load_circular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | CircularColumnInputV1') -> 'CircularColumnInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_four_corner_member",
           "qualified_name": "structural_lib.design.is456.column.load_four_corner_member",
           "kind": "function",
@@ -16200,6 +16277,64 @@
             "obligations": [],
             "signature": "(*, b_mm: 'float', D_mm: 'float', xu_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', layer_depths_and_areas: 'tuple[tuple[float, float], ...]') -> 'SectionResult'",
             "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_circular_member_html",
+          "qualified_name": "structural_lib.design.is456.column.render_circular_member_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_circular_member_svg",
+          "qualified_name": "structural_lib.design.is456.column.render_circular_member_svg",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
             "missing_docstring_sections": [],
             "example_ids": []
           }

@@ -149,10 +149,11 @@ _CAPABILITIES = (
             "split equally between two opposite faces at one centroidal depth; "
             "short and slender member routes are selected by the declared IS 456 "
             "effective-length inputs. Separate Python family-facade profiles check "
-            "physical four-, six-, eight- and mixed-bar cages and scoped slender members."
+            "physical four-, six-, eight- and mixed-bar cages, scoped slender rectangles, "
+            "and short circular cages with closed rings or spirals."
         ),
         held_cases=(
-            "Circular-section column design is excluded; the separate supplied-helix check does not constitute a circular-column design workflow.",
+            "Circular-section column design outside the short braced regular-bar-ring check remains held, including slender members and automatic cage selection.",
             "General arbitrary multilayer cages outside the named positioned-bar and restraint profiles remain held.",
             "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
             "Load-envelope generation, frame analysis, effective-length derivation beyond the declared end-condition model, and automatic reinforcement sizing are excluded.",
@@ -199,6 +200,16 @@ _CAPABILITIES = (
                 "Actual tied or positioned rectangular cage with axis-specific slenderness. One compression combination using braced first-order ends with unreduced additions or supplied deflection-aware critical stations.",
                 "docs/cookbook/python/column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars",
                 "Python/examples/slender_rectangular_column_member.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.circular-member-check/v1",
+                "structural_lib.design.is456.column",
+                "load_circular_member",
+                "check_circular_member",
+                "column-circular-member-input/v1",
+                "Short braced circular column with 6–32 equal bars in one ring, a closed ring or spiral, and one concurrent compressive action pair. Spiral enhancement is scoped to eligible short axial checks.",
+                "docs/cookbook/python/circular-column-member-check.md",
+                "Python/examples/circular_column_member.py",
             ),
         ),
     ),

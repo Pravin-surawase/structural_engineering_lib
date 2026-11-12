@@ -20,6 +20,15 @@ from structural_lib.services.canonical_family import (
     translate_owner_input_error,
 )
 from structural_lib.services.column_api import ColumnDesignResult, design_column_is456
+from structural_lib.services.column_circular_member import (
+    check_circular_member as _check_circular_member,
+)
+from structural_lib.services.column_circular_member import (
+    render_circular_member_html as _render_circular_member_html,
+)
+from structural_lib.services.column_circular_member import (
+    render_circular_member_svg as _render_circular_member_svg,
+)
 from structural_lib.services.column_member import (
     check_four_corner_member as _check_four_corner_member,
 )
@@ -47,6 +56,7 @@ from structural_lib.services.column_tied_member import (
 from structural_lib.services.column_tied_member import (
     render_tied_rectangular_member_html as _render_tied_rectangular_member_html,
 )
+from structural_lib.services.contracts.column_circular import CircularColumnInputV1
 from structural_lib.services.contracts.column_member import (
     ColumnClosedTieV1,
     ColumnMidpointCrossTieV1,
@@ -82,6 +92,7 @@ from structural_lib.services.contracts.family_f1 import (
 
 __all__ = [
     "ColumnDesignResult",
+    "CircularColumnInputV1",
     "FamilyIdentityV1",
     "CanonicalFamilyResultV1",
     "ColumnActionsV1",
@@ -108,6 +119,7 @@ __all__ = [
     "InputIssueV1",
     "check",
     "check_four_corner_member",
+    "check_circular_member",
     "check_tied_rectangular_member",
     "check_positioned_rectangular_member",
     "design",
@@ -117,6 +129,9 @@ __all__ = [
     "load_json",
     "load_layered_section",
     "load_four_corner_member",
+    "load_circular_member",
+    "render_circular_member_html",
+    "render_circular_member_svg",
     "render_four_corner_member_html",
     "load_tied_rectangular_member",
     "load_positioned_rectangular_member",
@@ -127,6 +142,149 @@ __all__ = [
     "render_slender_rectangular_member_html",
     "render_slender_rectangular_member_svg",
 ]
+
+
+def load_circular_member(
+    value: Mapping[str, object] | str | bytes | CircularColumnInputV1,
+) -> CircularColumnInputV1:
+    """Load a circular bar cage and its concurrent station actions.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or CircularColumnInputV1
+        Diameter, uniform bar ring, transverse reinforcement and signed actions.
+
+    Returns
+    -------
+    CircularColumnInputV1
+        Validated immutable request.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, circular geometry or a station outside the member.
+
+    Examples
+    --------
+    Run Python/examples/circular_column_member.py.
+
+    Limitations
+    -----------
+    One concurrent compression combination at a short braced circular station.
+
+    Provenance
+    ----------
+    CircularColumnInputV1 owns the versioned input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(CircularColumnInputV1, value)
+    return model_validate_or_error(CircularColumnInputV1, value)
+
+
+def check_circular_member(
+    request: CircularColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check circular section strength and the actual local restraint.
+
+    Parameters
+    ----------
+    request : CircularColumnInputV1
+        Validated circular cage and simultaneous compression and signed moments.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Separate restraint and strength results with checked circular geometry.
+
+    Raises
+    ------
+    InputContractError
+        The check requires a typed circular member request.
+
+    Examples
+    --------
+    Pass the result of load_circular_member.
+
+    Limitations
+    -----------
+    The spiral factor applies to the admitted short axial method.
+    Slender and seismic checks require separate profiles.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 25.1–25.4, 26.5.3.2, 38.1 and 39.1–39.7.
+    """
+    return _check_circular_member(request)
+
+
+def render_circular_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the circular-member result and checked cage.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_circular_member.
+
+    Returns
+    -------
+    str
+        HTML report with the same input hash as the checked result.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    See Python/examples/circular_column_member.py.
+
+    Limitations
+    -----------
+    The drawing describes the checked local section.
+
+    Provenance
+    ----------
+    All displayed engineering values come from the supplied result.
+    """
+    return _render_circular_member_html(result)
+
+
+def render_circular_member_svg(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Draw the checked local column section as standalone SVG.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_circular_member.
+
+    Returns
+    -------
+    str
+        SVG with bar and transverse identities and the result's input hash.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    See Python/examples/circular_column_member.py.
+
+    Limitations
+    -----------
+    Local cross section and projected transverse reinforcement.
+
+    Provenance
+    ----------
+    The drawing uses the supplied checked cage without recomputing it.
+    """
+    return _render_circular_member_svg(result)
 
 
 def load_slender_rectangular_member(

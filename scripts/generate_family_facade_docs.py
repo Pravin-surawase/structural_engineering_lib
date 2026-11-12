@@ -87,6 +87,10 @@ def _page(workflow: Any, recipe: Any) -> str:
                 "check_slender_rectangular_member",
                 "render_slender_rectangular_member_html",
                 "render_slender_rectangular_member_svg",
+                "load_circular_member",
+                "check_circular_member",
+                "render_circular_member_html",
+                "render_circular_member_svg",
             )
         )
         related_workflow = (
@@ -98,6 +102,8 @@ def _page(workflow: Any, recipe: Any) -> str:
             "[positioned rectangular column guide](column-four-corner-member-check.md#positioned-mixed-bar-rectangles).\n\n"
             "For axis-specific restraint and slenderness using those actual cages, see the "
             "[slender rectangular column guide](column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars).\n\n"
+            "For short circular cages with closed rings or spirals, see the "
+            "[circular column guide](circular-column-member-check.md).\n\n"
         )
     api_members = "\n".join(f"        - {name}" for name in members)
     engineering_failure = ""

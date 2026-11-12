@@ -172,6 +172,11 @@ def check_min_bar_diameter(bar_dia_mm: float) -> bool:
     return bar_dia_mm >= _MIN_BAR_DIA_MM
 
 
+def minimum_tie_diameter(max_long_bar_dia_mm: float) -> float:
+    """Return the unrounded Cl. 26.5.3.2 minimum transverse diameter."""
+    return max(max_long_bar_dia_mm / _TIE_DIA_FRACTION, _MIN_TIE_DIA_MM)
+
+
 def calculate_tie_diameter(max_long_bar_dia_mm: float) -> float:
     """Calculate required lateral tie diameter per IS 456 Cl 26.5.3.2(a).
 
@@ -196,7 +201,7 @@ def calculate_tie_diameter(max_long_bar_dia_mm: float) -> float:
         )
 
     # IS 456 Cl 26.5.3.2(a): tie_dia >= max(bar_dia / 4, 6mm)
-    min_tie_dia = max(max_long_bar_dia_mm / _TIE_DIA_FRACTION, _MIN_TIE_DIA_MM)
+    min_tie_dia = minimum_tie_diameter(max_long_bar_dia_mm)
 
     # Round up to nearest standard tie diameter
     for std_dia in _STANDARD_TIE_DIAMETERS:

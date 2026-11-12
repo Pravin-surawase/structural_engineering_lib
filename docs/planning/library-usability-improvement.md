@@ -2211,6 +2211,12 @@ transverse steel grade at 415 N/mm² in the required-ratio calculation.
 Confinement credit applies to the admitted short axial branch. The signed
 biaxial comparison retains the ordinary tied section basis.
 
+The COL05 [worked example](../cookbook/python/circular-column-member-check.md)
+uses the checked actual ring, signed strength and supplied transverse detail
+to produce JSON, an HTML report and an SVG section projection. Both installed
+beam/column profiles replay the scoped tied and spiral cases. Circular
+slenderness, member-wide fabrication and COL06 selection retain separate cases.
+
 ## Work and completion evidence
 
 | Area | Required outcome | Evidence |

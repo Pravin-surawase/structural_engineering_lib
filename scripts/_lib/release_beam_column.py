@@ -25,6 +25,7 @@ TESTS = tuple(
         "test_tied_rectangular_column_member",
         "test_positioned_rectangular_column_member",
         "test_slender_rectangular_column_member",
+        "test_circular_column_member",
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
@@ -50,6 +51,7 @@ EXAMPLES = tuple(
         "tied_rectangular_column_member",
         "positioned_rectangular_column_member",
         "slender_rectangular_column_member",
+        "circular_column_member",
         "torsion_station_reference",
         "physical_torsion_member",
         "t_beam_member",
@@ -73,9 +75,11 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col02_reference.py",
     "docs/verification/check_library_029_col03_reference.py",
     "docs/verification/check_library_029_col04_reference.py",
+    "docs/verification/check_library_029_col05_reference.py",
 )
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
+COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -88,6 +92,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / "docs/verification/library-029-col02-rectangular-column.json",
                 repo / COL03_REFERENCE,
                 repo / COL04_REFERENCE,
+                repo / COL05_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -406,6 +411,38 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             input_hash = member["envelope"]["result_identity"]["input_hash"]
             assert input_hash in (directory / "report.html").read_text()
             assert input_hash in (directory / "section.svg").read_text()
+    col05_cases = json.loads((clone / COL05_REFERENCE).read_text())["cases"]
+    for case in (
+        "tied",
+        "spiral",
+        "spiral_wide",
+        "spiral_ordinary_wide",
+        "axial_tied",
+        "axial_spiral",
+        "spiral_missing_anchor",
+        "overload",
+    ):
+        label = f"circular-column-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/circular_column_member.py",
+            "--reference",
+            str(clone / COL05_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        member = json.loads(stdout)
+        assert member == json.loads((directory / "result.json").read_text())
+        assert (
+            member["envelope"]["engineering_status"]
+            == col05_cases[case]["expected"]["member_status"]
+        )
+        input_hash = member["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
+        assert input_hash in (directory / "section.svg").read_text()
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):
         run(
             name,
