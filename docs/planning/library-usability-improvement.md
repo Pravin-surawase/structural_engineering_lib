@@ -2018,7 +2018,7 @@ the greater of 1% or 0.01 mm, with exact limit dispositions.
 | COL02 · C01/C02/C05 | 300×400, M25/Fe415, Ø20 on a 60 mm centre setback with 40 mm cover and Ø8 ties. Four corners plus midpoint of each face. Six-bar variants omit both x-face midpoints or both y-face midpoints. `Pu=500`, signed `(Mx, My)=(50,0),(0,50),(50,35),(-50,35)`. | Independently compute interaction and governing directions. Compare rotated geometry with rotated actions. Check positioned bar IDs in ties, section, drawing and report. |
 | COL03 · C03/C04/C10 | [Frozen 450×550 M30/Fe500 mixed-bar cases](../verification/library-029-col03-mixed-column.json). The original 50 mm coordinates are retained as a section diagnostic and detailing FAIL. The physical companion retains 12 positioned Ø20/Ø16 bars and uses three explicit open links. Both start at `Pu=800, Mx=75, My=-45`. | Signed zero-cross-moment capacities, free-angle strength and restraint checks. Reflect the companion and reverse both moments. Overload all three actions by 5 for a strength FAIL and reject coincident bars. Preserve bar/link IDs and section quantities. |
 | COL04 · C06 | [Next implementation packet](#next-implementation-packet-col04) fixes the COL02/COL03 cages, effective-length cases, signed end actions, equivalent representations and conflict controls. | Independently verify axis classification, minimum eccentricity, signed additional moments, actual-cage resistance and the analysis-basis controls. |
-| COL05 · C07/C08 | Ø450 M30/Fe500, eight Ø20 centres on radius 165 at 45° increments. `Pu=650, Mx=70, My=40`. Test Ø10 circular ties at 150 and Ø10 spiral at 60, then replace spiral pitch with 120. | Separate tied and spiral section/member references. Freeze confinement applicability, tie/spiral fit and pitch dispositions. Inadmissible spiral receives no confinement credit. |
+| COL05 · C07/C08 | [Frozen Ø450 circular cases](../verification/library-029-col05-circular-column.json) start with M30/Fe500, eight Ø20 centres on radius 165, `Pu=650, Mx=70, My=40`. Compare Ø10 rings at 150 and Ø10 spiral at 60, with pitch 120 controls for the requested enhancement and ordinary restraint profiles. | Independent circular-chord resultants, signed capacities, cover/fit, spacing and anchorage. Check the 1.05 factor on the eligible short axial branch and retain the tied basis for signed bending. |
 | COL06 · C09 | COL02 inputs, enumerate rectangular 300×400, 350×450, 400×500 and symmetric 8Ø16/20/25; fix material, axis and actions, rank by gross area then steel area then geometry and diameter. | Independently exhaust the finite catalogue and compare eligible/rejected alternatives, fit, sorted IDs and selected checked design. An infeasible catalogue yields no selected design. |
 | BEAM01 · B01 | Two 4 m spans, 300×550 M25/Fe415, 3Ø20 each at x=50/150/250 and y=50/500. Stations 0/2000/4000/6000/8000 with signed moments 0/+90/−120/+90/0 and signed shears +70/0/−70/0/−70 in the baseline row, both faces in the same geometry revision. | Independently verify span/support flexure and controlling bar face/station. Require anchorage at the support, shear from each supplied concurrent row, and reject duplicate conflicting station IDs. |
 | BEAM02 · B02 | 2 m cantilever, 300×500 M25/Fe415, 3Ø20 top and 2Ø16 bottom at 50 mm face offset, uniform ULS 20 kN/m. | Fixed-end hogging 40 and shear 40; free-end zero. Independent fit, anchorage and section checks; flipped top/bottom steel changes the result. |
@@ -2200,6 +2200,16 @@ reference study. The source workflow exposes checked JSON, HTML and a local
 SVG through the [worked example](../cookbook/python/column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars).
 This is the column slice of PROJECT02. The full imported frame and edge-beam
 checks retain their own acceptance cases.
+
+**COL05 reference freeze.** The [independent replay](../verification/check_library_029_col05_reference.py)
+uses exact circular chord primitives and 32-to-64 angle refinement. The
+frozen controls cover rotation, reflection, axial and bending overload,
+minimum eccentricity, missing restraint and the difference between ordinary
+and enhancement-eligible spiral pitch. The spiral core area uses the outside
+diameter. The volume uses the physical centreline per turn and caps the
+transverse steel grade at 415 N/mm² in the required-ratio calculation.
+Confinement credit applies to the admitted short axial branch. The signed
+biaxial comparison retains the ordinary tied section basis.
 
 ## Work and completion evidence
 
