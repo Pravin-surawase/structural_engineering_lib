@@ -1901,7 +1901,7 @@ the greater of 1% or 0.01 mm, with exact limit dispositions.
 | SEC02 · S02/S03/S05 | COL02 8-bar rectangle and COL05 Ø450 section, fixed `Pu=500`; signed axes and angles 0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°. Duplicate angular density twice. | Independently integrate P–M–M slices, zero axial/tension sign, symmetry and gross/transformed/cracked properties. Use gross rectangle `I=bh³/12`, circle `I=πD⁴/64`. Retain section versus physical-member status. |
 | SEC03 · S07/S08 | COL03 asymmetric cage with service `P=300, Mx=-40, My=25`; reverse both moments in a centre-reflected cage. | Matched-law stress/strain plane, force resultants and oriented plots. Point IDs, orientation, material and calculated state must survive export. |
 | COL01 · existing regression | [LIB-027 four-corner 300×400](../verification/library-027-four-corner-column.json), M25/Fe415, four Ø20, `Pu=500, M=50` on each axis independently. | Frozen member, ties and detailing results, including failed cage/detailing controls. |
-| COL02 · C01/C02/C05 | 300×400, M25/Fe415, Ø20 on a 45 mm centre setback. Four corners plus midpoint of each face. Six-bar variants omit both x-face midpoints or both y-face midpoints. `Pu=500`, signed `(Mx, My)=(50,0),(0,50),(50,35),(-50,35)`. | Independently compute interaction and governing directions. Compare rotated geometry with rotated actions. Check positioned bar IDs in ties, section, drawing and report. |
+| COL02 · C01/C02/C05 | 300×400, M25/Fe415, Ø20 on a 60 mm centre setback with 40 mm cover and Ø8 ties. Four corners plus midpoint of each face. Six-bar variants omit both x-face midpoints or both y-face midpoints. `Pu=500`, signed `(Mx, My)=(50,0),(0,50),(50,35),(-50,35)`. | Independently compute interaction and governing directions. Compare rotated geometry with rotated actions. Check positioned bar IDs in ties, section, drawing and report. |
 | COL03 · C03/C04/C10 | 450×550, M30/Fe500, Ø20 corners at 50 mm setback. Add Ø16 bars at `(150,50),(300,50),(150,500),(300,500),(50,200),(400,350),(150,125),(300,425)`. `Pu=800, Mx=75, My=-45`. Repeat with demand ×5 and with two bar centres coincident. | Independent actual-cage signed strength and spacing. Overload FAIL; coincident cage rejected. Preserve distinct bars and tie layout/quantities. |
 | COL04 · C06 | COL02 8-bar rectangle, braced pinned lengths 3000 and 6000, `Pu=500`, signed x end moments -60/-30 and y end moments 25/-25. Supply matching action representations, then conflicting all-zero end moments. | Independent slenderness, eccentricity and signed second-order magnification on both axes. Reject the conflict before any PASS. |
 | COL05 · C07/C08 | Ø450 M30/Fe500, eight Ø20 centres on radius 165 at 45° increments. `Pu=650, Mx=70, My=40`. Test Ø10 circular ties at 150 and Ø10 spiral at 60, then replace spiral pitch with 120. | Separate tied and spiral section/member references. Freeze confinement applicability, tie/spiral fit and pitch dispositions. Inadmissible spiral receives no confinement credit. |
@@ -1952,6 +1952,15 @@ The first unit was implemented and exercised on the former draft with
 targeted to 0.29 and will be replayed again on the final 0.29 archives. The
 first new member capability starts with the COL02 rectangular actual-bar
 contract and independent reference freeze.
+
+**COL02 reference freeze.** The [independent 0.29 case record](../verification/library-029-col02-rectangular-column.json)
+binds all three layouts, the exact section dimensions, bar IDs and both
+principal capacities at 500 kN. The [replay](../verification/check_library_029_col02_reference.py)
+uses independent numerical integration. The member cases use signed supplied
+actions, Cl. 39.6 interaction, separate Cl. 25.4 minimum eccentricity checks,
+and one or two explicit open cross-ties at different levels within the
+perimeter tie pitch. The original 45 mm trial is a physical FAIL control.
+
 
 ## Work and completion evidence
 
