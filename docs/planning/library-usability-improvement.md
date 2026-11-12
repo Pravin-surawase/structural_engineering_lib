@@ -2019,7 +2019,7 @@ the greater of 1% or 0.01 mm, with exact limit dispositions.
 | COL03 · C03/C04/C10 | [Frozen 450×550 M30/Fe500 mixed-bar cases](../verification/library-029-col03-mixed-column.json). The original 50 mm coordinates are retained as a section diagnostic and detailing FAIL. The physical companion retains 12 positioned Ø20/Ø16 bars and uses three explicit open links. Both start at `Pu=800, Mx=75, My=-45`. | Signed zero-cross-moment capacities, free-angle strength and restraint checks. Reflect the companion and reverse both moments. Overload all three actions by 5 for a strength FAIL and reject coincident bars. Preserve bar/link IDs and section quantities. |
 | COL04 · C06 | [Next implementation packet](#next-implementation-packet-col04) fixes the COL02/COL03 cages, effective-length cases, signed end actions, equivalent representations and conflict controls. | Independently verify axis classification, minimum eccentricity, signed additional moments, actual-cage resistance and the analysis-basis controls. |
 | COL05 · C07/C08 | [Frozen Ø450 circular cases](../verification/library-029-col05-circular-column.json) start with M30/Fe500, eight Ø20 centres on radius 165, `Pu=650, Mx=70, My=40`. Compare Ø10 rings at 150 and Ø10 spiral at 60, with pitch 120 controls for the requested enhancement and ordinary restraint profiles. | Independent circular-chord resultants, signed capacities, cover/fit, spacing and anchorage. Check the 1.05 factor on the eligible short axial branch and retain the tied basis for signed bending. |
-| COL06 · C09 | COL02 inputs, enumerate rectangular 300×400, 350×450, 400×500 and symmetric 8Ø16/20/25; fix material, axis and actions, rank by gross area then steel area then geometry and diameter. | Independently exhaust the finite catalogue and compare eligible/rejected alternatives, fit, sorted IDs and selected checked design. An infeasible catalogue yields no selected design. |
+| COL06 · C09 | [Frozen COL06 catalogue](../verification/library-029-col06-column-catalogue.json) enumerates 300×400, 350×450 and 400×500 rectangles, symmetric 8Ø16/20/25, and three supplied hoop/link schedules. | Independently check the 27 candidates and rank by gross area, longitudinal steel area, dimensions, bar diameter, tie diameter, larger pitch and IDs. Include signed combinations, unresolved restraint, budget, infeasibility and analysis revision controls. |
 | BEAM01 · B01 | Two 4 m spans, 300×550 M25/Fe415, 3Ø20 each at x=50/150/250 and y=50/500. Stations 0/2000/4000/6000/8000 with signed moments 0/+90/−120/+90/0 and signed shears +70/0/−70/0/−70 in the baseline row, both faces in the same geometry revision. | Independently verify span/support flexure and controlling bar face/station. Require anchorage at the support, shear from each supplied concurrent row, and reject duplicate conflicting station IDs. |
 | BEAM02 · B02 | 2 m cantilever, 300×500 M25/Fe415, 3Ø20 top and 2Ø16 bottom at 50 mm face offset, uniform ULS 20 kN/m. | Fixed-end hogging 40 and shear 40; free-end zero. Independent fit, anchorage and section checks; flipped top/bottom steel changes the result. |
 | BEAM03 · B03/B04 | T member from the [frozen T beam](../verification/library-027-t-beam-member.json) and L variant with same web/depth, 120 mm slab and 600 mm effective flange on one side. Use the frozen sagging actions plus hogging `Mu=-150, Vu=100`; add control using T flange identity on L geometry. | Compare independent compression width/resultant, web shear and signed tension face; hogging control excludes flange from concrete compression unless independently applicable. Reject mismatched flange geometry. |
@@ -2216,6 +2216,15 @@ uses the checked actual ring, signed strength and supplied transverse detail
 to produce JSON, an HTML report and an SVG section projection. Both installed
 beam/column profiles replay the scoped tied and spiral cases. Circular
 slenderness, member-wide fabrication and COL06 selection retain separate cases.
+
+**COL06 reference freeze.** The [independent exhaustive replay](../verification/check_library_029_col06_reference.py)
+combines the three approved sizes, three longitudinal diameters and three
+local tie schedules. It resolves the actual bar setback and tie fit, then
+uses independent COL02 strip integration on each supplied action pair. The
+baseline selects 300×400 with 8Ø16 and Ø8 ties at 150 mm. Adding the signed U2
+row selects 8Ø20 and Ø8 ties at 300 mm. Incomplete or unresolved searches
+yield no selection. A locally feasible change in the analysis section or
+stiffness basis still requires refreshed analysis.
 
 ## Work and completion evidence
 
