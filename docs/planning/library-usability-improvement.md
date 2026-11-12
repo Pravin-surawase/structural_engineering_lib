@@ -1,18 +1,18 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-07
+last_updated: 2026-11-08
 doc_type: spec
 ---
 
 # Library usability and implementation quality
 
-**Current programme.** [0.27 beam and column release preparation](#027-beam-and-column-release-preparation)
+**Current programme.** [0.28 slab and footing candidate preparation](#structlib-0280-candidate-preparation)
 owns the next feature scope. The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
-records the published 0.26.0 artifacts. The consumer fixes originally planned
-for 0.26.1 are merged in
-[PR #1045](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1045)
-and will ship with 0.27.0. Their installed regressions are part of Goal 5.
+retains historical 0.26.0 artifacts; [0.27.0 is published and verified](../getting-started/releases.md#v0270-published-and-verified).
+The consumer fixes originally planned for 0.26.1 ship in 0.27.0 with the
+R1–R5 and L01 repairs. The merged [serializer qualification](#post-release-serializer-optimization)
+and later measured beam improvements enter the 0.28 candidate.
 
 [Beam and column library parity research](#beam-and-column-library-parity-research)
 defines the proposed additions after the current release scope, with comparable
@@ -967,11 +967,11 @@ readiness decision. Publication remains a distinct authorized action.
 
 #### Repair qualification results — 7 November 2026
 
-The selected replacement was built from clean commit
+The historical R1–R5 replacement below was built from clean commit
 `5c79c3b07dcbdb5ac32a519ae50cacfde5054cac`, frozen Python tree
-`7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf`, into a previously nonexistent
-guarded directory. Retain and use only
-`output/releases/0.27.0/5c79c3b07dcb/dist/` for a later authorized delivery.
+`7ab186f5af4349dc72edfe42c2ee3dee7b7d8fcf`. A later L01 coupler-count replay
+rejected its publication. Preserve it as historical evidence only; the
+[BBS repair below](#bbs-repair-and-publication) selects the current deliverable pair.
 
 | Step | Observed implementation and archive evidence |
 |---|---|
@@ -1002,6 +1002,50 @@ No tag, TestPyPI/PyPI upload or GitHub Release was performed. Keep the final
 required hosted/integration receipts in GitHub, then obtain separate owner
 authorization before the publication procedure.
 
+#### BBS repair and publication
+
+**8 November 2026 — LIB027-PUBLISH-BBS.** The owner authorized release of
+0.27.0 to PyPI/GitHub with public hash and clean external-install readback,
+and requested the newly reproduced BBS validation repair first. This bounded
+instruction authorizes the necessary replacement qualification and subsequent
+same-byte delivery after the software gates; no repeated owner permission is needed.
+
+L01 was independently reproduced in merged source and retained 5c79 wheel:
+`coupler_count=1.5` returned completed/PASS/complete-for-scope, then strict
+`output_as("bbs", BbsOutput)` failed. The declared integer field had only a
+positivity check. The owner now checks integer type and excludes booleans
+before lap/coupler comparisons, returning `BBS.SPLICE` with no accepted output.
+Valid coupler one and lap zero retain PASS and typed quantity/cost handoffs.
+Nonfinite values retain the existing earlier canonical finite-value rejection.
+
+The replacement pair was built once from clean
+`a11e758aee6580a0ff2489fa740517a231d9f352`, Python tree
+`c40b13515a01d54dc94559e3519e7c760a39e3ab`, and retained in
+`output/releases/0.27.0/a11e758aee65/dist/`. Only the packaged BBS admission
+module differs from 5c79. The [artifact record](../verification/library-0270-release-artifacts.json)
+binds the exact new hashes, 342-file payload, receipts and rejected baselines.
+
+- All 18 expanded profiles PASS; each archive runs 451 copied-driver tests
+  with zero failures/errors/skips, preserving A–E and R1–R5 controls.
+- Independent neutral site-packages review verifies all 342 package files and
+  43 copied WP07/WP08 BBS/quantity/cost/candidate checks. Source focused checks,
+  affected Black/Ruff/mypy and API classification pass.
+- Current-candidate preflight passes 9015 Python tests (four skips, six
+  deselections), 629 FastAPI tests (six deselections), React build and exact-wheel
+  UAT/public examples, with zero preflight warnings.
+- Final required PR/full cross-platform Weekly and exact-head review precede
+  the bounded dated metadata/review/authorization packet. Preserve reviewed
+  ancestry and Python/build/verifier inputs; use the same files through
+  TestPyPI, exact tag, PyPI/GitHub and public hash/clean-install readback.
+  The milestone PR and release assets own actual gate/delivery results. [Publication is now observed complete](../getting-started/releases.md#v0270-published-and-verified).
+
+The old 9a78 and 5c79 pairs are preserved and rejected for publication; the
+423 intermediate remains invalid. The serializer optimization stays separate:
+its older-base timing/equivalence evidence does not qualify a current-base
+rewrite. Draft research PR #1064 must rebind its shared plan after this
+milestone; its proposed capabilities and calendar are not adopted here.
+Professional approval remains false and native/unsupported HOLDs remain.
+
 #### Features outside this repair packet
 
 The comparison review's proposed eight-bar then oriented six-bar physical
@@ -1011,6 +1055,91 @@ Do not promote helper existence into complete-member support or general
 beam/column completion. The supported 0.27 result is a bounded IS 456 beta
 with its documented profile limits. This plan does not move the approved
 0.28 slab/footing theme or reopen permission for normalized IS code data.
+
+### Post-release serializer optimization
+
+**8 November 2026 — LIB027-DOCS-LAB-OPTIMIZATION.** The owner requested
+release-document/session maintenance followed by the optimization update, using
+the latest coding-lab records. Published 0.27.0/tag `a78dcc6a` and its exact
+archives remain immutable. This task selects a source improvement and current-base
+verification; it does not authorize another package version or publication.
+
+The latest lab transfer owner is `docs/pending-single-pass-integration.md` in
+`structlib-coding-lab`. Its LIB-LAB-003 patch SHA-256 is
+`385b7346dc0368098685b85ec150ccee21d88c1c1a020aa24999e0badaa2c89e`.
+It removes repeated `asdict()` plus normalization traversal in `beam/semantics.py`
+by visiting declared dataclass fields directly. Preserve class rejection,
+normalization/finite/signed-zero/safe-integral rules, nested copy independence,
+canonical bytes/hashes, domain/result IDs, statuses and strict typed bindings.
+
+The lab's 16 workflows, 633 records, 230 exports, 525 canonical outcomes and
+95 checks per wheel belong to base `4eebc897...`. Historical local ordinary/T
+workflow reductions of 28.56%/13.46% are leads, not current-source measurements.
+Freeze a documentation-updated current base; prepare separate baseline/candidate
+wheels; verify fresh same-base equality and current consumer checks; measure
+three rounds of ten alternating ordinary/T pairs with separate workflow/export
+timers and equality outside both. Keep an inconclusive or failing candidate
+unadopted; do not relax a golden or tolerance.
+
+The serializer is shared by all `OperationResult` consumers, so selected member
+examples alone do not establish regression coverage across result families. After
+the paired measurements finish, run the broad Python suite once for that concrete
+risk, plus affected formatting/type/API checks and the required hosted PR gates.
+Keep heavy validation outside the timing run. No release preflight or publication
+is selected for this source-only update.
+
+Latest-review reconciliation:
+
+- BBS R01-A2/L01 is fixed and published in 0.27.0, with 43 focused checks and
+  all 18/451 archive qualification evidence. Do not reapply its old lab patch.
+- R01-A1/A2/A3 source inspection is complete only for its frozen declared scope;
+  the lab's cumulative inventory is nine files/3737 lines/138 indexed items.
+  Some high-level lab indexes still stop at A1 or describe the BBS update as deferred.
+- R01-A3 is a separate current public-API contract gap: a real S1-only shear
+  result can be manually labelled S2 and aggregate as qualified. Current published
+  wheel replay confirms it; a genuine S1/S2 batch remains valid. This is not a
+  demonstrated ordinary qualified-member journey failure. `LIB-MEMBER-EVIDENCE-001`
+  must define producer-bound coverage, callers and compatibility before a separate
+  fix; no lab scope-gate prototype is integrated in this optimization.
+
+Current-base qualification is accepted locally. The shared baseline is
+`498d5c32`; measured candidate `0a3e57d9` changes only the serializer. Separate
+installed wheels preserve 16 workflows, 633 canonical operation records, 230
+exported files and 525 canonical outcomes (515 accepted/10 matching rejections).
+All 494 selected tests pass per wheel, including the release consumer repairs.
+The broader shared-result regression passes 9018 tests, with four skips and six
+deselections. Type checking passes all 341 source files; API/import checks pass.
+
+Three rounds of ten alternating pairs retain all outliers and show improvement
+in every round. Median times in milliseconds:
+
+| Workload | Baseline | Candidate | Reduction |
+|---|---:|---:|---:|
+| Ordinary workflow | 135.85 | 97.50 | 28.23% |
+| Ordinary export | 109.18 | 60.97 | 44.16% |
+| T-member workflow | 1977.46 | 1709.89 | 13.53% |
+| T-member export | 232.79 | 165.10 | 29.08% |
+
+These are sequential, local, unreserved-host measurements for the selected
+ordinary/T paths. They do not establish universal throughput, tail latency or
+memory gains. Equality reconciliation is outside the timers and passes every
+sample. Independent read-only review recomputed the evidence and accepted the
+source, harness, counts and measurements.
+
+Pinned Black required one comprehension line wrap after measurement. The
+formatted successor `969a4904` has identical whole-module AST and recursive code
+objects after excluding source locations, and all 43 WP01/WP06 checks pass on
+that final source. The exact measured wheels remain identified as `0a3e57d9`
+evidence; no byte-identical successor-wheel claim or repeated timing is made.
+The preparation also preserves the original failed lab-lock install and records
+the verification-only Ruff alignment to the current package's declared pin.
+
+The [portable qualification record](../verification/library-serializer-optimization.json)
+and [all 30 timing pairs](../verification/library-serializer-optimization-samples.csv)
+retain identities, digests, tests, round medians and limits. Bulk driver/run logs
+remain in `output/LIB027-DOCS-LAB-OPTIMIZATION/serializer-current/`.
+The milestone PR owns required hosted checks and exact reviewed/merged heads.
+This improvement remains unreleased; the public 0.27.0 archives are unchanged.
 
 ### Later release themes
 
@@ -1025,14 +1154,149 @@ are ready. Installed native-host work retains its own evidence and sequencing.
 The [October Jira plan](https://pravinsurawase.atlassian.net/browse/LIB-1)
 retains its original readiness and conditional torsion history.
 
+### StructLib 0.28.0 candidate preparation
+
+**Authority.** The owner approved S0–S5, including implementation and candidate
+qualification, and directed work to stop before release. The starting source is
+`b6d7fb7815341364e056cec5c9169ed698981c75`, verified against hosted `main`.
+Public 0.27.0 (`v0.27.0`, `a78dcc6a`) is the comparison release.
+
+The release scope follows the [slab and footing roadmap](#later-release-themes).
+Promote one simply supported, uniformly loaded solid one-way slab and one
+square, uniform-depth, concentric isolated footing with known loads and approved
+external soil assumptions. Carry forward the four merged performance changes
+recorded in the [changelog](../../CHANGELOG.md). Keep existing API signatures,
+wire fields, canonical IDs and previous supported profiles compatible.
+
+#### Stages and completion evidence
+
+| Stage | Work | Evidence to proceed |
+|---|---|---|
+| **S0 — Plan and recheck** | Confirm release/tag, source head, sibling work and the exact owner of each calculation, consumer and qualification profile. Define the independent reference, controls, boundaries and candidate stop point before implementation. | Read-only plan review reconciled with both existing workflows and the current release executor. Record changes from review here. |
+| **S1 — Compare two frozen cases** | Reuse the declared INDIA-1D slab and INDIA-1C footing inputs. Record hand-derived reference expressions, source locators, units, rounded-value tolerances and exclusions. Execute the same cases from the published wheel and current source build in neutral environments. | Compare each reference independently against both installations. Label any library-only characterization separately. Trace a discrepancy to its owning method before changing arithmetic. |
+| **S2 — Complete the caller journeys** | Add an executable worked example per case using the maintained public Python route and serializable results. Expose required/provided reinforcement, demand and check status, assumptions, source basis and the outstanding review boundaries. Confirm maintained HTTP routes return matching check outcomes and structured errors. Fix confirmed main-process defects through their owners. | A reader can run each example from an installed package, check its expected output, and see how insufficient capacity or missing evidence changes the result. Python and HTTP agree on the selected cases and controls. |
+| **S3 — Consumer guidance and compatibility** | Link the examples from the package/example guidance and document install, entry points, outcome interpretation and scope. Add the new slab/footing copied-driver profiles to the maintained qualification path for both archives. Retain the prior beam/column profiles and the continuous one-way, two-way, combined and strap regressions. | Copied examples, independent checks and selected positive/negative regressions run outside the checkout against each installed archive. Contract and generated checks pass where affected. |
+| **S4 — Freeze version and compare performance** | Prepare 0.28.0 candidate metadata with the maintained version tooling. Freeze and commit the complete intended source. Build one wheel and sdist from that exact source. Against the verified public 0.27 wheel, compare equivalent ordinary and T-member flows under matched dependencies with paired, alternating measurements. | Record source commit and Python tree, package versions, sizes and SHA-256. Verify canonical outcomes and IDs outside timing. Record raw measurements, median ratios and sample conditions, with conclusions bounded to these workflows. |
+| **S5 — Qualify retained artifacts** | Run preflight, all installed qualification profiles, and independent exact-source/artifact review. Run required PR and full cross-platform Weekly checks for the unchanged candidate head. Preserve the verified archive pair and receipt, including installed examples, evidence digests, checks and remaining holds. | Clean wheel and sdist installs, all profiles passing, exact reviewed head and artifact hashes recorded, hosted checks passing, and hosted tag/release and PyPI still at the verified prior release. |
+
+#### Case and interface acceptance
+
+| Case | Reference coverage | Controls and boundaries | Owned paths |
+|---|---|---|---|
+| One-way slab | Use `SLAB-B01` / INDIA-1D (3,000 mm short effective span, 150 mm thickness, 125 mm effective depth, 10 kN/m² factored UDL, M20/Fe415). Check strip actions, flexural steel, supplied main and distribution bars, concrete shear and the stated reviewed span/depth ratio. | Capacity failure and incomplete serviceability review remain visible. Direct deflection, crack width, automatic shear reinforcement and generated load envelopes retain HOLD or their existing unsupported dispositions. | `design_complete_one_way_slab_is456`, `codes/is456/slab`, `fastapi_app/routers/library_core.py`, `test_slab_boundary_closure.py` and `test_library_core.py`. |
+| Isolated footing | Use `FOOT-INDIA-1C-SQ-001` (400 mm square column, 800 kN service and 1,200 kN factored concentric axial load, 200 kPa externally approved soil pressure, 500 mm thickness and 400 mm analysis depth). Check plan size, critical actions in both directions, steel, one-way and punching shear, and bearing/dowel transfer. | Retain supplied/approved input and check provenance. Unapproved or missing evidence cannot become aggregate PASS. Verify a real capacity failure; retain holds on eccentric/moment transfer, settlement, unverified applicability and detailing outside the supported geometry. | `design_concentric_isolated_footing_is456`, `codes/is456/footing`, `services/footing_api.py`, `fastapi_app/routers/footing.py`, `test_footing_composed_publication.py` and `test_footing.py`. |
+| Retained callers | Prior installed beam/column corpus and supported slab and footing siblings. | Keep existing FAIL/HOLD propagation. Full amendment, professional/construction and native-host approvals remain separate. | `scripts/_lib/release_qualification.py`, the existing copied-driver/probe owners and focused family regression tests. |
+
+The slab evidence starts from [B01 and its scope](../verification/is456-slab-evidence.md#accepted-benchmark-ledger)
+and the [INDIA-1D boundary](../verification/india-1d-slab-boundary-evidence.md#boundary-benchmark).
+The footing evidence starts from the [INDIA-1C fixture](../verification/india-1c-isolated-footing-workflow-evidence.md#accepted-public-benchmark)
+and the [current source dispositions](../verification/is456-amendment-impact.md#current-isolated-footing-one-way-shear-follow-up-1-october-2026).
+Resolved software checks retain those source boundaries. The repository's
+normalized data distribution permission already covers the approved scope.
+
+#### S0 plan recheck
+
+Independent slab and footing reviews completed on 11 November 2026. Both
+confirmed the case and scope boundary. The footing review identified three
+tooling gaps. The following implementation changes resolve them before S4/S5:
+
+- Preserve the public 0.27.0 registry pins and tagged sample URLs during
+  candidate preparation. Separate public-install and candidate-version values
+  in the maintained version checks and verify that an untagged candidate has
+  no implied registry availability. Candidate instructions use local artifacts.
+- Add explicit `slab-footing-wheel` and `slab-footing-sdist` profiles to the
+  required inventory, archive selection and copied-driver dispatch. Replay
+  the same independent targets and controls from both, with the verification
+  inputs hash-bound. The current 0.27 profiles stay required.
+- Keep the historical S5 performance guard against 0.25.0. Use a separate
+  0.28 comparison with the hash-verified public 0.27.0 wheel. Match installed
+  dependencies, alternate sample order, and keep result equality outside the
+  timers. Compare identical example driver bytes with both archives.
+
+For S1, freeze numerical values and tolerances with the derivations. The slab
+targets include 11.25 kNm/m demand, 43.1136 kNm/m limiting moment,
+13.0743541549 mm neutral axis, 260.726630425 mm²/m required steel and
+0.12 N/mm² nominal shear. The span/depth check is arithmetic on the reviewed
+input carrier. The footing targets include 4 m² plan area, 200/300 kPa service
+and ultimate pressures, 192 kNm flexure in each direction, 0.30 N/mm² nominal
+one-way shear, 0.63 punching utilization and 1,256.637061 mm² provided dowel
+area. Label table-based capacities as independent only where the required
+source cells were checked directly. Retain the footing maximum-shear
+applicability HOLD. Missing required slab serviceability inputs remain an
+input rejection, with direct deflection and cracking held on completed results.
+
+#### S1 reference comparison and S2 transport correction
+
+The published wheel (`205acfde8500909aaf766e9cf263fc13bf76bfa680376527e29048b954cd2ea6`)
+and isolated `b6d7fb78` wheel (`a94ad20437a9809724d90f364bde74fbe0a7a0f1ca7242c19f97ba502f70acea`)
+matched the frozen arithmetic and returned the same decisions in both cases.
+The final copied-driver replay also matched every slab result byte. The footing
+result differed only in the package-content and dependent replay-receipt hashes,
+which bind results to the two distinct installed builds. Arithmetic and
+assumption identities were preserved. The working receipts are retained with
+the candidate intake evidence.
+
+Table 19 and 20 values were checked visually on printed page 73 (PDF page 74)
+of the hash-controlled [IS 456 source](../verification/is456-official-source-inventory.json).
+For the slab, interpolate M20 at 0.25 and 0.50% (0.36 and 0.48 N/mm²) to
+0.3606371579 N/mm² at the supplied steel percentage. The 150 mm depth factor
+gives 0.4688283053 N/mm². The checked half-Table-20 M20 cap is 1.4 N/mm².
+For the footing, interpolate M25 at 0.15 and 0.25% (0.29 and 0.36 N/mm²) to
+0.3136482192 N/mm² using 13Ø12 across 2,000 mm in each direction, with
+one-way utilization 0.9564855838. That verifies the selected Table 19
+arithmetic. The documented maximum-shear classification and physical
+continuation prerequisites remain on HOLD. The [installed verifier](../../scripts/_lib/release_slab_footing.py)
+records the exact expressions, units in field names, and absolute tolerances.
+
+The complete slab Python result already carried `load_envelope_status`. The
+HTTP response model omitted the field and FastAPI filtered it from the success
+response, including when flexural capacity failed. Adding it to the response
+model preserves the single caller-supplied action boundary. The HTTP parity
+tests replay the same three cases per family and verify the slab admission
+error for an unacknowledged review basis.
+
+#### Validation and stop point
+
+- Run the affected Python case and regression tests, the four existing slab and
+  footing FastAPI modules, affected format/lint/doc checks, and the footing
+  inclusion gate. If a reviewed footing-owned file changes, re-review the exact
+  change before refreshing its inclusion hash.
+- Run `./run.sh release run 0.28.0 --no-open` for version preparation on a clean
+  candidate branch. Inspect the version diff before building. Keep public install
+  guidance pinned to public availability and label checkout-only instructions.
+- Run `./run.sh release preflight --wheel <wheel>` and `./run.sh release verify
+  --version 0.28.0 --source wheel --wheel-dir <dir> --qualification --sdist
+  <sdist> --receipt <receipt>`. Preserve hashes for the fixtures, examples, test
+  drivers, dependency resolutions and outputs used for acceptance.
+- Use one milestone PR and one exact-head Weekly run. Retain the candidate
+  branch, PR, archive pair, manifest and evidence for review. S5 ends at this
+  handoff. Tags, TestPyPI, PyPI, GitHub Releases and docs deployment are release
+  actions outside this task.
+
+The first S5 candidate, `9ca25750`, exposed two release-preparation issues.
+The version-bump and preflight fixtures needed the public-release identity
+and the distinct quickstart candidate version required by the new pin policy.
+The generated family guides and API registries still
+described 0.27. The repair updates those fixtures and regenerates the guides
+with explicit local-build instructions. The repair changes tests and guides
+outside the distribution payload. Retain evidence for the first run and
+verify the repaired head before accepting the candidate.
+
+Out of scope are new flat-slab, raft, pile-cap, beam or column profiles,
+foundation report/BBS/CAD expansion, general floor/foundation design, solver
+work and Excel/XLL. Treat the beam station-evidence contract as its separate
+compatibility workstream unless a selected normal workflow reproduces a release
+regression.
+
 ## Beam and column library parity research
 
 **Research date:** 7 November 2026
 
-**Status:** Proposed capability programme; implementation packets and release
-versions remain to be selected.
+**Status:** Historical research and backlog. The current 0.28 delivery scope
+is in the [S0–S5 parity plan](#028-beam-column-and-slab-parity-plan).
 
-**Baseline:** merged 0.27 candidate `1c35d9485fa3499e69f1926657e91e84fe0d7bb8`.
+**Research baseline:** merged 0.27 candidate `1c35d9485fa3499e69f1926657e91e84fe0d7bb8`.
+The S0 plan binds the new work to the current main.
 
 The next useful improvement is a dependable IS 456 beam and column workflow
 with more actual reinforcement layouts. Broader section analysis is a second
@@ -1253,9 +1517,8 @@ records their corrected candidate behavior.
 replacement candidate from [PR #1063](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1063),
 head `a5405fb7d081c6f5ab0765d6dab067c4d38ed9f7`. The subsequent integration
 check confirms it merged as `edca74024c6bee4827f63a12623358ccf829d592`, with
-the same qualified Python tree. This research is rebound to that accepted
-`main`. Publication remains a separate decision, and the later BBS finding
-below is still open.
+the same qualified Python tree. That was the baseline for the following historical observations. The later
+BBS finding was open at the time of this check.
 
 | Finding | Independently observed repaired behavior | State at the checked head |
 |---|---|---|
@@ -1331,11 +1594,11 @@ presentation in UI/IO. Reuse the maintained owners in the capability table.
 #### BC00 Repair the current release journeys
 
 The recent-repair verification closes R1–R5 in accepted `main` and its
-replacement wheel. The later L01 BBS input defect remains open and should be
-repaired before publication. Acceptance retains installed-wheel/sdist replay,
+replacement wheel. The L01 BBS input defect was fixed by `a11e758a` and verified in public
+0.27.0. The serializer optimization was adopted and checked in the retained
+0.28 candidate. Acceptance retains installed-wheel/sdist replay,
 affected regressions and required hosted checks. Any further package-source
-repair needs a newly qualified archive pair. Keep the serializer optimization
-separate until its actual adoption base is qualified.
+repair needs a newly qualified archive pair. Use the exact-head archive qualification in the S0 plan for current evidence.
 
 #### BC01 Establish shared section and action contracts
 
@@ -1545,13 +1808,9 @@ are separate later extensions. They are not prerequisites for useful ordinary
 IS 456 beam/column parity, and a comparator's example does not qualify their
 engineering assumptions here.
 
-The next delivery step should resolve L01's BBS admission defect before
-publication. The next capability packet should freeze BC01/BC03 for the
-symmetric eight-bar rectangular column needed
-by BC04, with independent strength/layout/output targets. This delivers common
-column usefulness while the broader BC08/BC09 section research proceeds under
-its separate acceptance boundary. Rebind this baseline and check the current
-release/repair candidate before starting either packet.
+The [S0–S5 parity plan](#028-beam-column-and-slab-parity-plan) selects the
+current capability packets and supersedes the November 7 release recommendations.
+
 
 ## Work and completion evidence
 

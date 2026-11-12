@@ -3,156 +3,63 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-11-07
-- Focus: 0.27.0 publication authorization handoff — use only the qualified replacement pair in 5c79c3b07dcb/dist. Final required check/review/merge facts are owned by PR #1063; publication remains unauthorized.
-- Completed: R1–R5 source and installed repairs; all 18 replacement profiles PASS, with 408 tests per archive and preserved FAIL/HOLD controls. Independent final wheel reviews accepted; all 19 changed report PDF pages visually passed. Retained record binds the clean source, new hashes and rejected-candidate history. GitHub owns the final required hosted/integration gate.
-- Recurrence controls: None encountered in S5. Historical RR-004 x36 remains unchanged.
+- Date: 2026-11-08
+- Focus: Reconcile the published 0.27 release/session records and qualify the lab's single-pass serializer on a fresh current base.
+- Completed: Verified prior publication receipts and refreshed current install/status, append-only release ledger, artifact record, task board and handoff.; Inspected the latest lab handoff and R01-A1/A2/A3 evidence. BBS L01 is already released; historical serializer timing was superseded by fresh current-base evidence.; Replayed R01-A3 on the published wheel and recorded the deliberately relabelled S1-only/S2 evidence contract gap as a separate compatibility/design follow-up. No normal qualified-member journey failure or scope-contract repair is claimed.
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
 | Release | Current state |
 |---|---|
-| **Current** | 0.26.0 is published and verified in the [release ledger](../getting-started/releases.md#v0260-published-and-verified). |
-| **Next** | R1–R5 repairs and exact replacement archive qualification pass. Final required GitHub acceptance and separate publication authorization precede delivery. |
+| **Current** | [0.27.0 is published and verified](../getting-started/releases.md#v0270-published-and-verified); tag a78dcc6a, exact repaired archives, 18 profiles/451 tests per archive and public install/hash receipts. |
+| **Next** | [0.28.0 S0–S5 candidate](library-usability-improvement.md#structlib-0280-candidate-preparation) on `codex/lib028-s0-s5`. The milestone PR and retained artifacts own exact qualification evidence. The owner directed work to stop at the candidate handoff. |
 
-## Next work — final acceptance and publication handoff
+## Merged development work — qualified serializer integration
 
-**Selected goal:** `LIB027-REPAIR-QUALIFY`, started by the owner on
-7 November 2026. The
-[acceptance specification](library-usability-improvement.md#repair-goal--acceptance-history)
-retains the agreed scope and authority. Source repairs, independent
-installed review and replacement archive qualification pass. Final required
-hosted/integration facts belong to PR #1063. Publication is not authorized.
+The owner selected this update after publication. The lab handoff is
+`structlib-coding-lab/docs/pending-single-pass-integration.md`; its historical
+LIB-LAB-003 base is `4eebc897f084e71165061c9d17ce89a867dadafa`. Its patch
+changes only `beam/semantics.py` to traverse declared dataclass fields once.
+The old measurements are historical. Fresh C1 `498d5c32` / C2 `0a3e57d9`
+installed-wheel evidence matches 16 workflows, 633 result records, 230 exports
+and 525 canonical outcomes. All 494 selected tests pass per wheel; the broader
+Python suite passes 9018 tests (four skipped/six deselected). Three rounds of ten
+alternating pairs reduce median ordinary/T workflow time by 28.23%/13.53% and
+export time by 44.16%/29.08%, for these local selected paths only.
 
-1. Read PR #1063's immutable-head required PR and Weekly/cross-platform
-   checks, independent review and merge facts. Complete any remaining gate.
-2. Bind the accepted merge and unchanged Python/build/verifier inputs to the
-   selected 5c79c3b07dcb archive pair; rerun retained-check on the accepted tree.
-3. Report readiness and leave publication for separate owner authorization.
+Pinned formatting successor `969a4904` changes one line wrap only. Whole-module
+AST and executable-code equivalence pass, as do all 43 final-source WP01/WP06
+checks. Measured wheels remain identified as C2, separate from that successor.
+The [qualification record](../verification/library-serializer-optimization.json)
+includes exact identities, test/measurement boundaries and all 30 timing pairs.
 
-The five repair steps in the [detailed plan](library-usability-improvement.md#027-pre-release-repair-plan)
-are completed implementation/qualification history, not instructions to
-restart R1–R5 or rebuild a passing archive pair.
+[PR #1066](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1066)
+merged the source update. The change remains unreleased and enters the 0.28.0
+candidate with the later performance work listed in the changelog.
 
-**Merge order:** this repair precedes draft
-[research PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064),
-whose head is `97743f405ed8987a047c43dc6929ff5225b184d9` on base
-`1c35d9485fa3499e69f1926657e91e84fe0d7bb8`. That proposal overlaps the shared
-plan and must rebind to the accepted repair/current main before later
-integration. Its existing draft already records this order. It does not
-expand this repair or authorize its proposed implementation.
+## Separate correctness follow-up
 
-The [repair results](library-usability-improvement.md#repair-qualification-results--7-november-2026)
-bind the new pair in `output/releases/0.27.0/5c79c3b07dcb/dist/`. Preserve the
-original 9a78d2be9314 archives. The 423097e8 intermediate directory is invalid
-for delivery; only its historical receipts remain valid evidence. New column layouts, arbitrary P–M–M
-and broader beam member cases are outside this repair packet; 0.28 retains
-the slab/footing theme. Keep professional and installed-native HOLDs visible.
+`LIB-MEMBER-EVIDENCE-001`: current published-wheel replay confirms a real S1-only
+shear result can be manually relabelled as S2 through public evidence construction,
+then aggregate as qualified. A genuine S1/S2 batch remains a valid single-result
+shape. Define producer-bound coverage, callers and compatibility before a separate
+repair. This does not establish a normal qualified-member journey failure, and
+no member-contract repair is included in the serializer optimization.
 
+## Evidence and sequencing
 
-Goal 1 froze and replayed the
-[four section references](../verification/library-027-comparator-reference.md).
-Goal 2 delivered the [beam comparison guide and example](../cookbook/python/beam-comparator-reference.md).
-All 21 numerical outputs and both method identifiers passed using the
-installed 0.26.0 wheel. The separate doubly reinforced member check returned HOLD.
+The [release ledger](../getting-started/releases.md#v0270-published-and-verified),
+[public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.27.0/public-install-verification.json),
+[artifact record](../verification/library-0270-release-artifacts.json), and
+[plan](library-usability-improvement.md#post-release-serializer-optimization)
+retain the source/artifact and scope boundaries. The 9a78/5c79 pairs remain
+rejected baselines; the invalidated 423 intermediate is not deliverable.
 
-Goal 3 delivered the layered rectangular section API and verified the
-900 mm case and `xu = D` boundary. The example runs both depths and the
-result keeps member and detailing acceptance unevaluated.
-[Layered column guide](../cookbook/python/layered-column-section.md)
-
-Goal 4 reconciled the single-layer and multilayer member examples across
-JSON, BBS, and HTML. The supplied-beam controls recorded missing support
-as HOLD and depth mismatch and insufficient steel as FAIL. Both full
-member overload replays produced draft artifacts.
-[Member guide and replay](../cookbook/python/ordinary-beam-member.md)
-
-The owner selected beam and column closure for 0.27 and slabs and footings
-for 0.28. Packet A qualified layered column sections with partial
-compression and mixed diameters. Packet B qualified supplied inclined and
-bent-up shear reinforcement and sagging flexure within the flange and in
-the web. Packet C adds the physical four-corner column, independent x/y
-benchmarks and matching JSON/HTML with overload, inadequate-tie and
-missing-tie controls. Packet D1 corrects the torsion station basis. The
-[D2 worked profile](../cookbook/python/physical-torsion-member.md) now supplies
-physical load path, both-face direct tension anchorage, cage/hooks and draft
-outputs. Its receiver boundary is section flexure/shear; bearing/contact,
-receiver connections and foundations remain with the supporting-system owner.
-D3 now adds its independently frozen transient service basis: permanent
-G5 concentric, imposed Q3 at400/3mm, immediate after-finishes assessment,
-supplementary cracked torsional stiffness, code edge-deflection limits and
-indirect service stress/detail crack control. The full31-leaf case produces
-issue_ready outputs; the original D2-only command remains HOLD. Nonzero
-permanent torque, finite imposed duration and missing/asymmetric boundary
-evidence remain HOLD. Follow the guide's actual source and model boundaries.
-[LIB-13](https://pravinsurawase.atlassian.net/browse/LIB-13) owns Goal 5;
-the local repair plan now precedes its publication handoff. This planning
-task does not assert that external Jira/Confluence status was synchronized.
-[Closure plan](library-usability-improvement.md#beam-and-column-closure-before-goal-5)
-
-The [Packet E delivery record](library-usability-improvement.md#packet-e-implementation-plan--ordinary-sagging-t-beam-member)
-and [guide](../cookbook/python/t-beam-member.md) now include actual T material,
-all-six-bar cage/hooks, full-stress anchorage at both ends, separately owned
-local flange provision, web shear, lateral restraint and actual-T service
-evidence. Physical/effective flange widths remain distinct (1000/1000 mm
-and 2500/2200 mm), with a 300 mm web. The complete flanged span/depth screen
-does not calculate millimetre deflection. The Python zero-torsion admission
-operation proves zero demand, not T torsion resistance. Native changes only
-preserve the two new generic path-role metadata values.
-
-The [qualification receipt](../verification/library-027-t-beam-qualification.json)
-binds the source-matching development wheel (0.26.0 metadata), 13 installed
-journeys, strict schema/API replay and artifact agreement. Both adequate
-members retain issue_ready with engineering approval unreviewed; eight
-failure and three missing-evidence controls remain draft. Goal 5 must replay
-these and D3 controls from **both** exact 0.27.0 archives. No tag, registry
-publication or GitHub Release was performed by Packet E. Required hosted
-checks and exact integration identities are recorded in GitHub.
-
-Goal 5 initially qualified the exact **0.27.0** wheel and sdist, superseding the
-development-wheel evidence for release preparation. See the
-[retained artifact record](../verification/library-0270-release-artifacts.json).
-All 18 profiles pass; each archive's copied beam/column corpus passes 378
-tests with no failures/errors/skips, plus independent and public-driver
-replays. Both base installs pass 29 UAT cases and 106 inherited numerical
-comparisons. Initial broad source-gate failures were repaired in generated
-manifests and explicit-unit recognition, with focused evidence; packaged
-bytes and frozen Python tree remained unchanged during initial qualification.
-Later isolated reviews reproduced R1–R5 in that retained candidate. Preserve
-the files in `output/releases/0.27.0/9a78d2be9314/dist/` as baseline evidence;
-do not upload them. Bind the replacement pair and final required PR/Weekly
-checks only after the repair plan passes. The user
-authorized qualification/readiness reporting, not publication. Professional,
-unsupported engineering and installed-native boundaries remain explicit.
-
-## Historical S6 handoff — 29 October 2026
-
-Preserved in the [dated handoff archive](../_archive/2026-11/library-handoffs-through-20261029.md).
-
-## Historical handoff boundary — 1 October 2026
-
-Preserved in the [dated handoff archive](../_archive/2026-11/library-handoffs-through-20261029.md).
-
-## Parent-selected isolated-footing shear continuation — 1 October 2026
-
-Preserved in the [dated handoff archive](../_archive/2026-11/library-handoffs-through-20261029.md).
-
-## Separate isolated-footing provided-bar role trace — 1 October 2026
-
-Preserved in the [dated handoff archive](../_archive/2026-11/library-handoffs-through-20261029.md).
-
-## Selected qualification packet and next justified work on the Mac
-
-Preserved in the [dated handoff archive](../_archive/2026-11/library-handoffs-through-20261029.md).
-
-## Separate solver and installed-host boundaries
-
-Preserved in the [dated handoff archive](../_archive/2026-11/library-handoffs-through-20261029.md).
-
-## Native library and Excel implementation order
-
-Preserved in the [dated handoff archive](../_archive/2026-11/library-handoffs-through-20261029.md).
+Draft [research PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
+still needs rebind/reconciliation of its shared plan after this task. Its future
+capabilities and release calendar are not adopted here. Solver and native-host
+tracks retain their own plans.
 
 ## Required Reading
 

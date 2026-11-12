@@ -93,12 +93,11 @@ def _diag(code: str, field: str, message: str) -> Diagnostic:
 
 
 def _box_distance(a: tuple[float, ...], b: tuple[float, ...]) -> float:
-    return math.sqrt(
-        sum(
-            max(a[2 * i] - b[2 * i + 1], b[2 * i] - a[2 * i + 1], 0) ** 2
-            for i in range(3)
-        )
-    )
+    x = max(a[0] - b[1], b[0] - a[1], 0)
+    y = max(a[2] - b[3], b[2] - a[3], 0)
+    z = max(a[4] - b[5], b[4] - a[5], 0)
+    # Keep each Python version's sum rounding while avoiding a generator per pair.
+    return math.sqrt(sum((x**2, y**2, z**2)))
 
 
 def check_t_flange_participation(

@@ -304,6 +304,10 @@ def run_probe(config: dict[str, Any]) -> dict[str, Any]:
         from scripts._lib.release_beam_column import qualify
 
         result["beam_column_closure"] = qualify(config)
+    if profile in ("slab-footing-wheel", "slab-footing-sdist"):
+        from scripts._lib.release_slab_footing import qualify
+
+        result["slab_footing_closure"] = qualify(config)
     if profile in ("base", "sdist", "report", "pdf", "exports", "dxf"):
         from scripts._lib.release_beam_column import qualify_consumer_journeys
 

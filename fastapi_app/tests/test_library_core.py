@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import json
+import runpy
+from pathlib import Path
+
 import pytest
 
 
@@ -185,6 +189,46 @@ def test_complete_one_way_slab_endpoint_serializes_composed_workflow_truth(clien
     assert not any("pending" in item.lower() for item in serialized_limitations)
     assert data["shear"]["status"] == "concrete_capacity_satisfied"
     assert data["serviceability"]["status"] == "satisfied_with_reviewed_limit"
+
+
+@pytest.mark.parametrize(
+    ("example", "route", "case"),
+    [
+        ("slab_one_way_reference", "slab/one-way/complete", "baseline"),
+        ("slab_one_way_reference", "slab/one-way/complete", "capacity-fail"),
+        ("slab_one_way_reference", "slab/one-way/complete", "review-limit-fail"),
+        ("isolated_footing_reference", "footing/isolated/concentric", "baseline"),
+        ("isolated_footing_reference", "footing/isolated/concentric", "transfer-fail"),
+        (
+            "isolated_footing_reference",
+            "footing/isolated/concentric",
+            "assumption-hold",
+        ),
+    ],
+)
+def test_release_worked_cases_preserve_python_results_over_http(
+    client, example, route, case
+):
+    examples = Path(__file__).resolve().parents[2] / "Python" / "examples"
+    payload = runpy.run_path(str(examples / f"{example}.py"))["run_case"](case)
+    response = client.post(f"/api/v1/design/{route}", json=payload["request"])
+    assert response.status_code == 200, response.json()
+    assert _unwrap(response) == json.loads(
+        json.dumps(payload["result"], allow_nan=False)
+    )
+
+
+def test_complete_one_way_slab_rejects_unacknowledged_review_basis(client):
+    examples = Path(__file__).resolve().parents[2] / "Python" / "examples"
+    request = runpy.run_path(str(examples / "slab_one_way_reference.py"))[
+        "request_for"
+    ]("baseline")
+    request["qualified_serviceability_acceptance_acknowledged"] = False
+    response = client.post("/api/v1/design/slab/one-way/complete", json=request)
+    assert response.status_code == 422
+    body = response.json()
+    assert body["success"] is False
+    assert body["error"]["code"] == "REQUEST_VALIDATION_ERROR"
 
 
 def _continuous_slab_payload(**overrides):

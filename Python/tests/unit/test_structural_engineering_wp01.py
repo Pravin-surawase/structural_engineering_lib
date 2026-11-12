@@ -1,5 +1,6 @@
 import hashlib
 import math
+from dataclasses import dataclass
 
 import pytest
 
@@ -17,7 +18,12 @@ from structural_lib.beam import (
     flexural_capacity,
     mass_per_length,
 )
-from structural_lib.beam.semantics import canonical_json_bytes
+from structural_lib.beam.semantics import (
+    Provenance,
+    canonical_json_bytes,
+    completed_result,
+    plain,
+)
 
 
 def _bars() -> tuple[BarPosition, ...]:
@@ -64,6 +70,61 @@ def test_canonical_bytes_are_sorted_finite_and_stable() -> None:
     assert hashlib.sha256(expected).hexdigest() == (
         "4c31e47356c8c9c60fc679f4e07ab31094749fbd68e66d20a7d2b4604a0337ae"
     )
+
+
+def test_plain_dataclass_preserves_canonical_values_and_independent_copies() -> None:
+    @dataclass
+    class Record:
+        stations: tuple[str, ...]
+        payload: dict[str, list[object]]
+
+    source = Record(("S1", "S2"), {"samples": [-0.0, 16.0, Face.BOTTOM]})
+    converted = plain(source)
+    assert canonical_json_bytes(source) == (
+        b'{"payload":{"samples":[0,16,"bottom"]},"stations":["S1","S2"]}'
+    )
+    converted["payload"]["samples"].append("export-only")
+    assert source.payload["samples"] == [-0.0, 16.0, Face.BOTTOM]
+    source.payload["samples"].append("source-only")
+    assert "source-only" not in converted["payload"]["samples"]
+
+
+def test_operation_result_export_cannot_mutate_its_source() -> None:
+    result = bar_area(16)
+    before = canonical_json_bytes(result)
+    exported = result.to_dict()
+    exported["effective_inputs"]["diameter_mm"]["value"] = -1
+    exported["outputs"]["area_mm2"] = -1
+    assert canonical_json_bytes(result) == before
+    assert result.outputs["area_mm2"] > 0
+
+
+def test_operation_result_keeps_independent_input_and_output_snapshots() -> None:
+    samples = [16.0, -0.0, Face.BOTTOM]
+    payload = {"samples": samples}
+    result = completed_result(
+        "structural.test.snapshot/v1",
+        payload,
+        payload,
+        provenance=Provenance("test-source", "test-method", ()),
+    )
+    before = canonical_json_bytes(result)
+    samples.append(42)
+    assert canonical_json_bytes(result) == before
+    assert result.effective_inputs["samples"] == [16, 0, "bottom"]
+    assert result.outputs["samples"] == [16, 0, "bottom"]
+    assert result.effective_inputs["samples"] is not result.outputs["samples"]
+
+
+def test_plain_rejects_dataclass_classes_with_the_existing_error() -> None:
+    @dataclass
+    class Record:
+        value: int
+
+    with pytest.raises(
+        TypeError, match=r"^asdict\(\) should be called on dataclass instances$"
+    ):
+        plain(Record)
 
 
 def test_foundation_values_retain_effective_inputs_units_and_identity() -> None:

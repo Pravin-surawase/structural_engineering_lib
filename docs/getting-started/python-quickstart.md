@@ -13,7 +13,7 @@ tags: []
 **Audience:** Users
 **Status:** Beta Maturity / Normal Software Release
 **Importance:** High
-**Version:** 0.27.0
+**Version:** 0.28.0
 **Created:** 2025-12-15
 **Last Updated:** 2026-10-29
 
@@ -27,15 +27,14 @@ This guide shows how to install, run, and verify the Python library with simple,
 
 This is the easiest path for beginners.
 
-Pins track the version prepared on this source branch. Registry installation
-requires verified publication of that version in the [release record](releases.md).
-For an unpublished candidate, use the source-install route in the
-[examples guide](../../Python/examples/README.md) until publication is verified.
+The commands below install the [verified public package](release-status.md).
+For an unpublished candidate, follow the retained-wheel or source instructions
+in the [examples guide](../../Python/examples/README.md).
 
 ```bash
 python3 -m pip install --upgrade pip
 
-# Install the selected version after verifying publication
+# Install the verified public version
 python3 -m pip install "structural-lib-is456==0.27.0"
 
 # Optional DXF support

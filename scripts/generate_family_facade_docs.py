@@ -185,10 +185,9 @@ and group imports require its matching build rather than an older published whee
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-This recipe is verified against the current source build (package version
-`{PROJECT_VERSION}`), not the older published wheel with that version, and remains
-subject to qualified review. It is not professional approval, engineering-use
-approval, construction-use approval, or Windows application acceptance.
+Replay this recipe with a local build of source package version `{PROJECT_VERSION}`.
+Use the [release guide](../../getting-started/release-status.md) for the public
+package. Results require qualified review.
 '''
 
 
@@ -229,10 +228,9 @@ status guidance. Replay all pages against an exact wheel with:
 ./scripts/python_runtime.sh scripts/verify_lib_pro_012_r0_external_preview.py --wheel dist/structural_lib_is456-*.whl
 ```
 
-These recipes are verified against `structural-lib-is456=={PROJECT_VERSION}` and
-remain subject to qualified review. Publication is a software-distribution fact,
-not professional approval, engineering-use approval, construction-use approval,
-or Windows application acceptance.
+The source package version is `{PROJECT_VERSION}`. Use the
+[release guide](../../getting-started/release-status.md) for the public package.
+Results require qualified review.
 """
 
 
@@ -502,8 +500,8 @@ dictionary and preserve `correlation_id`. See the
 [V1 migration](../../migration/beam-supplied-check-v2.md) and
 [beam facade reference](../../reference/beam-facade.md).
 
-These examples execute from `structural-lib-is456=={PROJECT_VERSION}`. Software
-status is not professional, engineering-use, or construction-use approval.
+Replay these examples with a local build of source package version
+`{PROJECT_VERSION}`. Results require qualified review.
 '''
 
 
@@ -551,7 +549,7 @@ Recommended import: `from structural_lib.design.is456 import beam`<br>
 Classification: pre-1.0 canonical workflow facade<br>
 Introduced contract family: `beam-design-input/v1`; supplied check added as
 `beam-supplied-check/v2`<br>
-Exact-wheel version: `structural-lib-is456=={PROJECT_VERSION}`
+Source package version: `{PROJECT_VERSION}`
 
 ## Operations
 

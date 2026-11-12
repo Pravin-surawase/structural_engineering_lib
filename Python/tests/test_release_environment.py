@@ -188,7 +188,12 @@ def test_launcher_delegates_to_shared_node_runtime():
     assert '"$REPO_ROOT/scripts/node_runtime.py" --bin-dir' in launcher
 
 
-def _write_release_surfaces(tmp_path: Path, version: str = "0.23.0") -> dict[str, Path]:
+def _write_release_surfaces(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> dict[str, Path]:
+    version = "0.23.0"
+    published_version = "0.22.0"
+    monkeypatch.setattr(release, "read_published_version", lambda: published_version)
     pyproject = tmp_path / "Python" / "pyproject.toml"
     pyproject.parent.mkdir()
     pyproject.write_text(f'[project]\nversion = "{version}"\n', encoding="utf-8")
@@ -222,7 +227,8 @@ def _write_release_surfaces(tmp_path: Path, version: str = "0.23.0") -> dict[str
     api_stability.write_text(f"**Version:** {version}\n", encoding="utf-8")
     quickstart = tmp_path / "python-quickstart.md"
     quickstart.write_text(
-        f'python -m pip install "structural-lib-is456=={version}"\n',
+        f"**Version:** {version}\n"
+        f'python -m pip install "structural-lib-is456=={published_version}"\n',
         encoding="utf-8",
     )
     return {
@@ -242,7 +248,7 @@ def _write_release_surfaces(tmp_path: Path, version: str = "0.23.0") -> dict[str
 def test_source_surface_versions_match_prepared_candidate(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
-    for name, path in _write_release_surfaces(tmp_path).items():
+    for name, path in _write_release_surfaces(tmp_path, monkeypatch).items():
         monkeypatch.setattr(release, name, path)
 
     assert release._source_surface_version_errors("0.23.0") == []
@@ -251,7 +257,7 @@ def test_source_surface_versions_match_prepared_candidate(
 def test_source_surface_versions_match_owner_authorized_release(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
-    paths = _write_release_surfaces(tmp_path)
+    paths = _write_release_surfaces(tmp_path, monkeypatch)
     paths["CITATION"].write_text(
         "version: 0.23.0\ndate-released: 2026-08-10\n"
         "message: Alpha development preview\n",
@@ -280,7 +286,7 @@ def test_source_surface_versions_match_owner_authorized_release(
 def test_release_ready_metadata_requires_recorded_owner_authorization(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
-    paths = _write_release_surfaces(tmp_path)
+    paths = _write_release_surfaces(tmp_path, monkeypatch)
     paths["CITATION"].write_text(
         "version: 0.23.0\ndate-released: 2026-08-10\n",
         encoding="utf-8",
@@ -305,15 +311,18 @@ def test_release_ready_metadata_requires_recorded_owner_authorization(
 def test_source_surface_versions_fail_on_deliberate_mismatch(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
-    paths = _write_release_surfaces(tmp_path)
+    paths = _write_release_surfaces(tmp_path, monkeypatch)
     paths["REACT_PACKAGE"].write_text('{"version": "0.23.1"}\n', encoding="utf-8")
+    paths["PYTHON_QUICKSTART"].write_text(
+        '**Version:** 0.23.0\npython -m pip install "structural-lib-is456==0.23.0"\n',
+        encoding="utf-8",
+    )
     for name, path in paths.items():
         monkeypatch.setattr(release, name, path)
 
-    assert (
-        "react_app/package.json=0.23.1, expected 0.23.0"
-        in release._source_surface_version_errors("0.23.0")
-    )
+    errors = release._source_surface_version_errors("0.23.0")
+    assert "react_app/package.json=0.23.1, expected 0.23.0" in errors
+    assert "Python quickstart registry pin 0.23.0, expected published 0.22.0" in errors
 
 
 def test_wheel_versions_fail_on_deliberate_metadata_mismatch(tmp_path: Path):

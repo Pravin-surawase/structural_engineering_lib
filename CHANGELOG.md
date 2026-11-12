@@ -4,12 +4,52 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.27.0] — Prepared candidate (unreleased; on hold)
+## [0.28.0] — Prepared candidate (unreleased; on hold)
 
-This candidate closes the selected beam and column profiles. Exact wheel and
-source-distribution qualification, independent software review and required
-hosted checks precede release authorization. No tag or publication follows
-from this entry. Beta maturity and professional-review boundaries remain.
+### Added
+
+- Runnable simply supported solid one-way slab and square concentric isolated
+  footing examples with independent references and capacity, review and assumption
+  controls. Both retained archives use the same copied examples in qualification.
+
+### Fixed
+
+- The complete one-way slab HTTP response retains the Python result's
+  `load_envelope_status`, including on a completed flexural failure.
+- Version preparation keeps registry installs and tagged examples tied to the
+  verified public package. Candidate examples use a local archive or checkout.
+
+### Improved
+
+- Result construction reuses normalized inputs and outputs when calculating
+  their IDs. Calculation packages normalize each dependency once per hash
+  check. The ordinary beam example's local median fell 15.1% across 30 paired
+  measurements. [Comparison record](docs/verification/library-ordinary-beam-normalization.json)
+
+- The T-beam workflow reuses its flange check for serviceability. The main
+  example's median workflow time fell 34.5% in 30 local paired measurements
+  after the distance optimization. Standalone serviceability checks its own
+  request. [Comparison record](docs/verification/library-t-beam-flange-reuse.json)
+
+- T-beam flange clearance checks avoid allocating a generator for every bar
+  pair while preserving distances, diagnostics, and exports exactly. The main
+  example's median workflow time fell 25.3% in 30 local paired measurements.
+  See the [comparison record](docs/verification/library-t-beam-distance-optimization.json).
+
+- Canonical result serialization visits dataclass fields once while retaining
+  canonical bytes, result identities, statuses and independent exported copies.
+  Fresh paired local measurements reduce ordinary/T-member workflow median time
+  by 28.2%/13.5% and export time by 44.2%/29.1% for the selected examples.
+  See the [qualification record](docs/verification/library-serializer-optimization.json)
+  for exact builds, equivalence checks, raw timings and measurement limits.
+
+## [0.27.0] — 2026-11-08
+
+Owner-authorized normal software release for the selected beam and column
+profiles, including the final BBS admission repair. The exact wheel/sdist pass
+all 18 profiles and 451 consumer tests per archive; independent software review
+and required PR/full cross-platform Weekly checks pass. Delivery uses these
+retained bytes without rebuilding. Beta and professional-review boundaries remain.
 
 ### Added
 
@@ -33,6 +73,9 @@ from this entry. Beta maturity and professional-review boundaries remain.
 
 ### Fixed
 
+- BBS splice admission requires integer, non-boolean hardware counts before
+  reporting PASS, keeping accepted output compatible with typed quantity/cost
+  handoffs. Qualified coupler one and lap zero remain supported.
 - Slender-column orchestration rejects signed end moments that omit a declared
   applied demand, with structured field errors preserved through Python and
   HTTP. Ordered signed curvature and existing minimum-eccentricity defaults

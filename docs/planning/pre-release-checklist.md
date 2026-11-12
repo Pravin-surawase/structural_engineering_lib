@@ -5,45 +5,34 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-07
+**Last Updated:** 2026-11-11
 
 ## Current State
 
-The [release status](../getting-started/release-status.md) and
-[release ledger](../getting-started/releases.md#v0260-published-and-verified)
-own current public package facts. The [0.27 preparation plan](library-usability-improvement.md#027-beam-and-column-release-preparation)
-lists the five goals. The
-[beam and column closure packets](library-usability-improvement.md#beam-and-column-closure-before-goal-5)
-must qualify before Goal 5 freezes the 0.27.0 candidate. Goal 5 also
-replays the consumer fixes merged in PR #1045.
-The S5 checklist below preserves the 29 October prepublication snapshot.
+Current source metadata: 0.28.0 (prepared candidate; publication on hold).
+The [S0–S5 plan](library-usability-improvement.md#structlib-0280-candidate-preparation)
+defines its exact archive, check and independent-review evidence.
 
-## Goal 5 candidate qualification
+**0.27.0 is published and verified.** The [release status](../getting-started/release-status.md)
+and [append-only publication receipt](../getting-started/releases.md#v0270-published-and-verified)
+record exact tag/source, public archive hashes and the clean PyPI installation.
+The preparation records below remain historical evidence for their named stages.
 
-Current source metadata: 0.27.0 (prepared candidate; unpublished/on hold)
-Current public release: v0.26.0
+## Completed 0.27.0 qualification and publication
 
-**Current archive verdict: PASS for the selected replacement pair.**
-The [repair results](library-usability-improvement.md#repair-qualification-results--7-november-2026)
-and artifact record bind clean source `5c79c3b0`, the new hashes and rejected
-history. [PR #1063](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1063)
-owns final required check/review/merge acceptance. Publication remains
-unauthorized and depends on those observed gates plus owner authorization.
+- [x] R1–R5 and L01 BBS repairs are included in the exact a11e758a replacement pair.
+- [x] All 18 profiles PASS; both archives pass 451 tests with zero failures/errors/skips.
+- [x] Independent installed review and exact-source/release-contract review ACCEPT.
+- [x] Current-candidate preflight, required PR and full cross-platform Weekly checks PASS.
+- [x] Dated exact-review/target-authorization metadata, preserved reviewed ancestry and retained-byte gate PASS.
+- [x] Same-byte TestPyPI then exact tag/PyPI/GitHub release PASS.
+- [x] All four anonymous public archive downloads match; fresh no-cache PyPI install imports 0.27.0 from its temporary environment.
 
-- [x] R1: structured rejection closes the 400 kNm → 20 kNm/PASS counterexample.
-- [x] R2–R4: canonical/legacy input, steel, failure/review evidence and the corrected legacy aggregate envelope pass installed replays across supported formats.
-- [x] R5: exact complete developer quickstart passes base and declared-extra replays.
-- [x] Expanded wheel and sdist corpora pass 408 tests each; A–E FAIL/HOLD controls remain intact.
-- [x] Replacement pair in `5c79c3b07dcb/dist/` passes all 18 profiles; independent installed review and 19 changed PDF pages pass.
-- Final immutable-head hosted/integration status: inspect PR #1063; those receipts are maintained in GitHub.
-- [ ] Separate target-specific authorization, TestPyPI, tagging and public delivery/readback (outside this goal).
-
-- Base: Packet E PR #1061 merged at `4eebc897f084e71165061c9d17ce89a867dadafa`.
-- Initial retained wheel/sdist: all 18 profiles, 378 beam/column/consumer tests per archive, selected A–E and PR #1045 assertions passed; subsequent R1–R5 reproductions reject this pair for publication.
-  [Retained artifact record](../verification/library-0270-release-artifacts.json).
-- Preserve failed/held member outputs as draft and engineering approval unreviewed.
-- Independent exact-candidate review and required PR/Weekly checks precede readiness.
-- Target-specific owner authorization, TestPyPI, tag, PyPI and GitHub Release remain pending.
+[PR #1065](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1065)
+and public release assets own final workflow/readback facts. No repeat upload or
+new release is selected. Later source optimization is unreleased and must get
+its own current-base equivalence/performance evidence. Preserve rejected archives
+and keep native/engineering approval separate from software publication.
 
 ## Historical S5 prepublication snapshot — 29 October 2026
 

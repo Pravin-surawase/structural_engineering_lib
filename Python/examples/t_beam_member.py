@@ -20,6 +20,7 @@ from typing import Any
 from structural_lib import beam as b
 from structural_lib import construction as c
 from structural_lib import reporting as r
+from structural_lib.beam import t_serviceability
 from structural_lib.codes.is456.beam.flanged_serviceability import gross_t_section
 from structural_lib.codes.is456.beam.flexure import calculate_effective_flange_width
 
@@ -589,7 +590,30 @@ def run_workflow(
             else _slab_strip(profile, project, section, loads)
         ),
     )
-    results["flange_participation"] = b.check_t_flange_participation(flange_request)
+    criterion = b.CrackWidthLimitRequest(
+        profile,
+        b.ExposureClass.MILD,
+        False,
+        selected_source=(
+            b.LimitSource.PROJECT if probe == "service-fail" else b.LimitSource.CODE
+        ),
+        project_limit_mm=0.05 if probe == "service-fail" else None,
+    )
+    service_request = b.TServiceabilityRequest(
+        flange_request,
+        25,
+        415,
+        200000,
+        None if probe == "missing-service" else criterion,
+    )
+    # The published 0.27.0 package provides the standalone checks.
+    check_pair = getattr(t_serviceability, "_check_t_flange_and_serviceability", None)
+    if check_pair is None:
+        flange_result = b.check_t_flange_participation(flange_request)
+        service_result = b.check_t_serviceability(service_request)
+    else:
+        flange_result, service_result = check_pair(service_request)
+    results["flange_participation"] = flange_result
     ultimate_rows = results["actions-ULS"].outputs["rows"]
     moment_row = max(ultimate_rows, key=lambda row: row["m3_nmm"])
     results["flexure"] = b.check_flexure(
@@ -756,23 +780,7 @@ def run_workflow(
                     ),
                 )
             )
-    criterion = b.CrackWidthLimitRequest(
-        profile,
-        b.ExposureClass.MILD,
-        False,
-        selected_source=(
-            b.LimitSource.PROJECT if probe == "service-fail" else b.LimitSource.CODE
-        ),
-        project_limit_mm=0.05 if probe == "service-fail" else None,
-    )
-    service_request = b.TServiceabilityRequest(
-        flange_request,
-        25,
-        415,
-        200000,
-        None if probe == "missing-service" else criterion,
-    )
-    results["t_serviceability"] = b.check_t_serviceability(service_request)
+    results["t_serviceability"] = service_result
     for name in ("deflection", "crack"):
         if name in results["t_serviceability"].outputs:
             results[name] = results["t_serviceability"].output_as(

@@ -5,6 +5,111 @@
 
 ---
 
+## 2026-11-08 — Session: post-release documentation and serializer update
+
+**Task:** LIB027-DOCS-LAB-OPTIMIZATION
+**Agent:** DEV
+**Branch:** `codex/lib027-docs-serializer`
+**Focus:** Reconcile the published 0.27 release/session records and qualify the lab's single-pass serializer on a fresh current base.
+
+### Completed
+
+- Verified prior publication receipts and refreshed current install/status,
+  append-only release ledger, artifact record, task board and handoff.
+- Inspected the latest lab handoff and R01-A1/A2/A3 evidence. BBS L01 is already
+  released; historical serializer timing was superseded by fresh current-base evidence.
+- Replayed R01-A3 on the published wheel and recorded the deliberately relabelled
+  S1-only/S2 evidence contract gap as a separate compatibility/design follow-up.
+  No normal qualified-member journey failure or scope-contract repair is claimed.
+- Qualified the single-pass serializer on a shared fresh baseline: exact equality
+  across 16 workflows, 633 records, 230 exports and 525 canonical outcomes;
+  all 494 installed checks pass per wheel. Broader Python regression: 9018
+  passed, four skipped and six deselected; mypy/API/import checks pass.
+- Measured 30 alternating pairs in three rounds. Ordinary/T workflow median
+  time reductions are 28.23%/13.53%; export reductions are 44.16%/29.08%.
+  Independent read-only review accepted the source and recomputed evidence.
+- Applied one pinned Black line wrap, proved identical AST/executable code
+  excluding source locations, and passed all 43 final-source WP01/WP06 checks.
+  Recorded exact measured/successor identities and all raw timing pairs in the
+  [qualification record](verification/library-serializer-optimization.json).
+
+### Issues encountered
+
+Maintained docs still selected pending 0.27 publication/0.26 public installs.
+The lab has completed A2/A3 records beyond some older index summaries.
+Its old Ruff constraint conflicted with the current package's declared dev pin;
+the initial preparation failed before tests. Pinned Black also required one
+layout-only wrap after measurement.
+
+### Root causes and resolutions
+
+Publication and newer lab receipts had not yet propagated to their maintained
+status owners. Refresh those records from actual immutable evidence, freeze a
+shared baseline and qualify only the serializer transfer. Preserve the release
+and scope boundaries and defer the separate member-evidence contract integration.
+Preserve the failed installation log and original lock, align only the owned
+verification constraint to the current declared Ruff pin, and resume without
+rebuilding the frozen wheels. Keep measured-wheel identities distinct from the
+proven formatting-only successor; no mathematical or outcome change occurred.
+
+### Rework and recurrence
+
+- None encountered.
+
+### What next
+
+Complete one milestone PR and its required hosted checks on the final head,
+then integrate the qualified source update. Preserve immutable public 0.27.0;
+no release, lab-source mutation or member-contract expansion is selected.
+Rebind draft research PR #1064 after this shared-plan update. The separate
+member-evidence coverage/caller contract remains a design follow-up.
+
+---
+
+## 2026-11-08 — Session: BBS repair and 0.27 publication
+
+**Task:** LIB027-PUBLISH-BBS
+**Agent:** DEV
+**Branch:** `codex/lib027-bbs-and-publication`
+**Focus:** Repair L01 and publish only the newly qualified 0.27.0 wheel/sdist under the owner's current authorization.
+
+### Completed
+
+- Rejected noninteger and boolean splice hardware counts before accepted BBS
+  output; valid coupler one/lap zero retain typed quantity/cost handoffs.
+- Qualified the clean a11e758a pair through all 18 profiles and 451 tests per
+  archive. Independent installed review verifies 342 package files and 43
+  focused checks. Current-candidate preflight passes with zero warnings.
+- Updated the retained artifact record and handoff; preserved rejected archives
+  and deferred the separate serializer optimization. [PR #1065](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1065)
+  owns final checks, metadata, integration and publication readback.
+
+### Issues encountered
+
+The 8 November handoff initially had no matching dated session entry. Hosted
+Documentation Validation rejected that mismatch before publication.
+
+### Root causes and resolutions
+
+The handoff date changed without the coupled newest daily log entry. Add this
+bounded release-transition record and run the maintained session reader before
+freezing the corrected head. The package/build/verifier inputs and qualified
+archive hashes are unchanged; no rebuild or repeat archive qualification.
+
+### Rework and recurrence
+
+- RR-004: occurrences=37; minutes=unknown. One confirmed handoff/session-date mismatch; correction time was not separately measured.
+
+### What next
+
+Observe corrected-head required PR/Weekly acceptance and independent review,
+then add only the allowed exact-review/authorization and dated release metadata.
+Preserve reviewed ancestry, rehearse TestPyPI, tag the exact accepted tree,
+publish the same bytes to PyPI/GitHub and verify public hashes/clean install.
+Use actual workflow/release receipts to resume; do not repeat completed uploads.
+
+---
+
 ## 2026-11-07 — Session: physical four-corner column packet
 
 **Task:** LIB-027-CLOSURE-C

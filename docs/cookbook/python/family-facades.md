@@ -41,7 +41,6 @@ status guidance. Replay all pages against an exact wheel with:
 ./scripts/python_runtime.sh scripts/verify_lib_pro_012_r0_external_preview.py --wheel dist/structural_lib_is456-*.whl
 ```
 
-These recipes are verified against `structural-lib-is456==0.27.0` and
-remain subject to qualified review. Publication is a software-distribution fact,
-not professional approval, engineering-use approval, construction-use approval,
-or Windows application acceptance.
+The source package version is `0.28.0`. Use the
+[release guide](../../getting-started/release-status.md) for the public package.
+Results require qualified review.

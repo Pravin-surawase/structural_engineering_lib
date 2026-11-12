@@ -1,21 +1,34 @@
 {
   "schema_version": "release-publication-authorization/v1",
   "decision": "AUTHORIZED",
-  "version": "0.26.0",
-  "tag": "v0.26.0",
+  "version": "0.27.0",
+  "tag": "v0.27.0",
   "authorized_targets": [
     "testpypi",
     "pypi",
     "github-release"
   ],
   "authorized_by": "Pravin Surawase (repository owner)",
-  "authorized_at_utc": "2026-10-29T17:52:43Z",
-  "owner_instruction": "thanks, now do s6.\ndo it efficienlty, las few release were lot of rework, so plan study and replan then start",
-  "authorization_basis": "The owner selected the established S6 v0.26.0 release packet after S5 integration. That named packet includes TestPyPI rehearsal, exact tag, PyPI and GitHub Release. The instruction is conditional on studying/replanning and completing the release gates. Independent exact-head software review, required PR checks and Weekly verification now pass; authorized_at_utc records when this conditional authorization became effective, not a new owner message. The selected S6 plan and exact targets were recorded before implementation.",
-  "exact_candidate_review_receipt": "docs/verification/library-0260-exact-candidate-review.json",
-  "exact_candidate_review_receipt_sha256": "a792c4561865a2a9c0855f1a853b34d701c8bc5bcaf9bd3a49f203030c3c97f1",
+  "authorized_at_utc": "2026-11-07T19:03:26Z",
+  "owner_instruction": "okay good, lets release 0.27.0 now using the exact qualified wheel and sdist. publish to PyPI and GitHub, then verify the public hashes and a clean external-user install.",
+  "authorization_basis": "The same owner request asked for the confirmed BBS validation repair before publication. That bounded repair and fresh exact-archive qualification are complete. This record materializes the standing owner authorization after independent exact-C8 review and required PR/Weekly gates; its timestamp records when those conditions became effective, not a new owner message. It covers the necessary TestPyPI rehearsal, exact tag and same-byte PyPI/GitHub delivery. The old5c pair is rejected; only the repaired a11 pair identified below is authorized.",
+  "exact_candidate_review_receipt": "docs/verification/library-0270-exact-candidate-review.json",
+  "exact_candidate_review_receipt_sha256": "8eae01e590543740c7f9ae7b0767a4321f038c1e0ba546b251b7f9ba4a05e1aa",
   "independent_review_waiver": null,
   "qualified_structural_engineering_review": false,
   "professional_approval": false,
-  "note": "Normal software v0.26.0 retains pre-1.0/Beta maturity and bounded supported cases. Pravin Surawase is the engineering owner; no external engineering-reviewer dependency is imposed. This software-distribution authorization does not close full-amendment, native-host, fabrication or project-specific professional acceptance HOLDs. Publication requires the exact retained S5 pair, TestPyPI then PyPI then GitHub readback; no rebuild or repeated covered installed UAT is authorized by this packet."
+  "qualified_artifact_record": "docs/verification/library-0270-release-artifacts.json",
+  "qualified_artifacts": [
+    {
+      "filename": "structural_lib_is456-0.27.0-py3-none-any.whl",
+      "sha256": "205acfde8500909aaf766e9cf263fc13bf76bfa680376527e29048b954cd2ea6",
+      "size_bytes": 1232554
+    },
+    {
+      "filename": "structural_lib_is456-0.27.0.tar.gz",
+      "sha256": "942326fba6ee8c39ec81ac2bb341ee9d2926ebb1ae461d252804720e91953e6d",
+      "size_bytes": 1051152
+    }
+  ],
+  "note": "Normal pre-1.0/Beta software with bounded supported profiles. This authorization does not close native-host, unsupported-profile or professional acceptance HOLDs. No serializer optimization is included. Publish only these retained files; no rebuild or duplicate already-covered full installed UAT."
 }

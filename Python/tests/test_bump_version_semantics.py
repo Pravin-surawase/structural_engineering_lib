@@ -13,6 +13,15 @@ if str(REPO_ROOT) not in sys.path:
 bump_version = importlib.import_module("scripts.bump_version")
 
 
+def _record_public_release(root: Path, version: str) -> None:
+    status = root / "docs/getting-started/release-status.md"
+    status.parent.mkdir(parents=True, exist_ok=True)
+    status.write_text(
+        f"The current published package is **StructLib {version}**.\n",
+        encoding="utf-8",
+    )
+
+
 def _write_candidate_bump_fixture(root: Path) -> tuple[Path, Path, Path]:
     pyproject = root / "Python" / "pyproject.toml"
     pyproject.parent.mkdir()
@@ -20,6 +29,7 @@ def _write_candidate_bump_fixture(root: Path) -> tuple[Path, Path, Path]:
 
     tasks = root / "docs" / "TASKS.md"
     tasks.parent.mkdir()
+    _record_public_release(root, "0.23.0")
     tasks.write_text(
         "| **Current** | v0.23.0 | ✅ ALPHA RELEASED — public artifact evidence |\n",
         encoding="utf-8",
@@ -45,6 +55,7 @@ def _write_public_candidate_fixture(root: Path) -> tuple[Path, Path]:
     pyproject = root / "Python" / "pyproject.toml"
     pyproject.parent.mkdir()
     pyproject.write_text('[project]\nversion = "0.24.0a1"\n', encoding="utf-8")
+    _record_public_release(root, "0.23.1a2")
 
     readme = root / "README.md"
     readme.write_text(
@@ -83,8 +94,8 @@ def test_candidate_bump_preserves_published_release_evidence(
     readme_content = readme.read_text(encoding="utf-8")
     assert "**Version:** 0.23.1a1" in readme_content
     assert "## New in v0.23.1a1" in readme_content
-    assert "structural-lib-is456==0.23.1a1" in readme_content
-    assert "structural-lib-is456[dxf]==0.23.1a1" in readme_content
+    assert "pip install structural-lib-is456==0.23.0\n" in readme_content
+    assert 'pip install "structural-lib-is456[dxf]==0.23.0"\n' in readme_content
 
     monkeypatch.setattr(sys, "argv", ["bump_version.py", "--check-docs"])
     assert bump_version.main() == 0
@@ -96,6 +107,7 @@ def test_candidate_bump_resets_published_citation_state(
     pyproject = tmp_path / "Python" / "pyproject.toml"
     pyproject.parent.mkdir()
     pyproject.write_text('[project]\nversion = "0.24.0a1"\n', encoding="utf-8")
+    _record_public_release(tmp_path, "0.24.0a1")
     citation = tmp_path / "CITATION.cff"
     citation.write_text(
         "cff-version: 1.2.0\n"
@@ -121,6 +133,7 @@ def test_alpha_candidate_can_promote_to_normal_software_release(
 ) -> None:
     pyproject = tmp_path / "Python" / "pyproject.toml"
     pyproject.parent.mkdir()
+    _record_public_release(tmp_path, "0.24.0a1")
     pyproject.write_text(
         '[project]\nversion = "0.24.0a1"\nclassifiers = [\n'
         '  "Development Status :: 3 - Alpha",\n]\n',
@@ -173,6 +186,7 @@ def test_doc_sync_preserves_public_release_identity(tmp_path: Path, monkeypatch)
     readme_content = readme.read_text(encoding="utf-8")
     assert "releases/tag/v0.23.1a2" in readme_content
     assert "v0.24.0a1 is an Alpha development preview" in readme_content
+    assert "structural-lib-is456==0.23.1a2" in readme_content
     assert "current public Alpha" in readme_content
     assert "0.23.1a2" in readme_content
     assert "Current source metadata: 0.24.0a1" in checklist.read_text(encoding="utf-8")
@@ -201,6 +215,7 @@ def test_active_recipe_check_and_sync_cover_extras_and_tagged_inputs(
     pyproject = tmp_path / "Python/pyproject.toml"
     pyproject.parent.mkdir()
     pyproject.write_text('[project]\nversion = "0.25.0"\n', encoding="utf-8")
+    _record_public_release(tmp_path, "0.24.1")
     path = tmp_path / guide
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -219,9 +234,9 @@ def test_active_recipe_check_and_sync_cover_extras_and_tagged_inputs(
     monkeypatch.setattr(sys, "argv", ["bump_version.py", "--sync-docs"])
     assert bump_version.main() == 0
     updated = path.read_text(encoding="utf-8")
-    assert "structural-lib-is456==0.25.0" in updated
-    assert "structural-lib-is456[dxf,render]==0.25.0" in updated
-    assert "/v0.25.0/Python/examples/sample_beam_design.csv" in updated
+    assert "structural-lib-is456==0.24.1" in updated
+    assert "structural-lib-is456[dxf,render]==0.24.1" in updated
+    assert "/v0.24.1/Python/examples/sample_beam_design.csv" in updated
     assert "Historical publication: v0.24.0 on the original date." in updated
     monkeypatch.setattr(sys, "argv", ["bump_version.py", "--check-docs"])
     assert bump_version.main() == 0

@@ -11,6 +11,7 @@ import pytest
 from pydantic import TypeAdapter
 
 from structural_lib import beam as b
+from structural_lib.beam import t_serviceability
 from structural_lib.codes.is456.beam.flanged_serviceability import cracked_t_section
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -26,6 +27,34 @@ REFERENCE = json.loads(
 @pytest.fixture(scope="module")
 def main_workflow():
     return EXAMPLE["run_workflow"]()
+
+
+def test_workflow_reuses_flange_and_standalone_checks_current_request(monkeypatch):
+    checked_requests = []
+    check_flange = t_serviceability.check_t_flange_participation
+
+    def record_flange_check(request):
+        checked_requests.append(request)
+        return check_flange(request)
+
+    monkeypatch.setattr(
+        t_serviceability, "check_t_flange_participation", record_flange_check
+    )
+    monkeypatch.setattr(b, "check_t_flange_participation", record_flange_check)
+    workflow = EXAMPLE["run_workflow"]()
+    assert checked_requests == [workflow.flange_request]
+
+    standalone = b.check_t_serviceability(workflow.service_request)
+    assert standalone == workflow.results["t_serviceability"]
+    assert checked_requests == [workflow.flange_request, workflow.flange_request]
+
+    missing_flange = replace(workflow.flange_request, strip=None)
+    held = b.check_t_serviceability(
+        replace(workflow.service_request, flange=missing_flange)
+    )
+    assert checked_requests[-1] is missing_flange
+    assert held.engineering is b.EngineeringState.NOT_EVALUATED
+    assert [item.code for item in held.diagnostics] == ["T_SLS.CURRENT_BASIS"]
 
 
 @pytest.mark.parametrize("case", ("main", "width-limited"))

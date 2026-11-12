@@ -11,7 +11,7 @@ import hashlib
 import json
 import math
 from collections.abc import Iterable, Mapping
-from dataclasses import asdict, dataclass, is_dataclass
+from dataclasses import dataclass, fields, is_dataclass
 from enum import StrEnum
 from typing import Any, TypeVar
 
@@ -102,7 +102,7 @@ class OperationResult:
     result_id: str
 
     def to_dict(self) -> dict[str, Any]:
-        return {str(key): plain(value) for key, value in asdict(self).items()}
+        return {field.name: plain(getattr(self, field.name)) for field in fields(self)}
 
     def output_as(self, key: str, output_type: type[_OutputT]) -> _OutputT:
         """Restore an output record for the next typed operation.
@@ -163,7 +163,11 @@ def plain(value: Any) -> Any:
     if isinstance(value, (tuple, list)):
         return [plain(item) for item in value]
     if hasattr(value, "__dataclass_fields__"):
-        return plain(asdict(value))
+        if isinstance(value, type):
+            raise TypeError("asdict() should be called on dataclass instances")
+        return {
+            field.name: plain(getattr(value, field.name)) for field in fields(value)
+        }
     if isinstance(value, float):
         if not math.isfinite(value):
             raise ValueError("Canonical engineering values must be finite")
@@ -174,11 +178,10 @@ def plain(value: Any) -> Any:
     return value
 
 
-def canonical_json_bytes(value: Any) -> bytes:
-    """Return PF4 canonical UTF-8 JSON for already normalized units."""
-
+def _encode_normalized_json(value: Any) -> bytes:
+    """Encode the JSON-shaped data produced by plain()."""
     return json.dumps(
-        plain(value),
+        value,
         ensure_ascii=False,
         allow_nan=False,
         sort_keys=True,
@@ -186,9 +189,18 @@ def canonical_json_bytes(value: Any) -> bytes:
     ).encode("utf-8")
 
 
-def semantic_hash(kind: str, value: Any) -> str:
-    digest = hashlib.sha256(canonical_json_bytes(value)).hexdigest()
+def canonical_json_bytes(value: Any) -> bytes:
+    """Return PF4 canonical UTF-8 JSON for already normalized units."""
+    return _encode_normalized_json(plain(value))
+
+
+def _hash_normalized(kind: str, value: Any) -> str:
+    digest = hashlib.sha256(_encode_normalized_json(value)).hexdigest()
     return f"{kind}:{CANONICALIZATION_VERSION}:{digest}"
+
+
+def semantic_hash(kind: str, value: Any) -> str:
+    return _hash_normalized(kind, plain(value))
 
 
 def effective_inputs(**values: Any) -> dict[str, dict[str, Any]]:
@@ -217,7 +229,8 @@ def _result(
     engine_build: str,
 ) -> OperationResult:
     diagnostic_items = tuple(diagnostics)
-    normalized_id = semantic_hash("normalized_input_id", inputs)
+    normalized_inputs = plain(inputs)
+    normalized_id = _hash_normalized("normalized_input_id", normalized_inputs)
     calculation_id = ""
     if execution is ExecutionState.COMPLETED:
         calculation_id = semantic_hash(
@@ -229,16 +242,19 @@ def _result(
                 "operation_semantic_id": operation_semantic_id,
             },
         )
-    semantic_outcome = {
-        "applicability": applicability,
-        "calculation_id": calculation_id,
-        "completeness": completeness,
-        "diagnostics": diagnostic_items,
-        "engineering": engineering,
-        "execution": execution,
-        "freshness": freshness,
-        "outputs": outputs,
-    }
+    normalized_outputs = plain(outputs)
+    semantic_outcome = plain(
+        {
+            "applicability": applicability,
+            "calculation_id": calculation_id,
+            "completeness": completeness,
+            "diagnostics": diagnostic_items,
+            "engineering": engineering,
+            "execution": execution,
+            "freshness": freshness,
+        }
+    )
+    semantic_outcome["outputs"] = normalized_outputs
     return OperationResult(
         schema_version=RESULT_SCHEMA_VERSION,
         operation_semantic_id=operation_semantic_id,
@@ -248,13 +264,13 @@ def _result(
         completeness=completeness,
         freshness=freshness,
         approval=ApprovalState.UNREVIEWED,
-        effective_inputs=plain(inputs),
-        outputs=plain(outputs),
+        effective_inputs=normalized_inputs,
+        outputs=normalized_outputs,
         diagnostics=diagnostic_items,
         provenance=provenance,
         normalized_input_id=normalized_id,
         calculation_id=calculation_id,
-        result_id=semantic_hash("result_id", semantic_outcome),
+        result_id=_hash_normalized("result_id", semantic_outcome),
     )
 
 

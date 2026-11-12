@@ -34,6 +34,8 @@ TESTS = tuple(
 ) + (
     "Python/tests/test_calculation_report.py",
     "Python/tests/test_public_examples.py",
+    "Python/tests/unit/test_structural_engineering_wp07.py",
+    "Python/tests/unit/test_structural_engineering_wp08.py",
 )
 EXAMPLES = tuple(
     f"Python/examples/{name}.py"
