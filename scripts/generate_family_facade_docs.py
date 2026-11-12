@@ -91,6 +91,10 @@ def _page(workflow: Any, recipe: Any) -> str:
                 "check_circular_member",
                 "render_circular_member_html",
                 "render_circular_member_svg",
+                "load_column_catalogue",
+                "select_column_from_catalogue",
+                "render_column_catalogue_html",
+                "render_column_catalogue_svg",
             )
         )
         related_workflow = (
@@ -104,6 +108,8 @@ def _page(workflow: Any, recipe: Any) -> str:
             "[slender rectangular column guide](column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars).\n\n"
             "For short circular cages with closed rings or spirals, see the "
             "[circular column guide](circular-column-member-check.md).\n\n"
+            "To select a short eight-bar rectangle from approved sizes, bars and ties, see the "
+            "[column catalogue guide](column-catalogue-selection.md).\n\n"
         )
     api_members = "\n".join(f"        - {name}" for name in members)
     engineering_failure = ""

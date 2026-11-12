@@ -26,6 +26,7 @@ TESTS = tuple(
         "test_positioned_rectangular_column_member",
         "test_slender_rectangular_column_member",
         "test_circular_column_member",
+        "test_column_candidate_search",
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
@@ -52,6 +53,7 @@ EXAMPLES = tuple(
         "positioned_rectangular_column_member",
         "slender_rectangular_column_member",
         "circular_column_member",
+        "column_catalogue_selection",
         "torsion_station_reference",
         "physical_torsion_member",
         "t_beam_member",
@@ -76,10 +78,12 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col03_reference.py",
     "docs/verification/check_library_029_col04_reference.py",
     "docs/verification/check_library_029_col05_reference.py",
+    "docs/verification/check_library_029_col06_reference.py",
 )
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
+COL06_REFERENCE = "docs/verification/library-029-col06-column-catalogue.json"
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -93,6 +97,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / COL03_REFERENCE,
                 repo / COL04_REFERENCE,
                 repo / COL05_REFERENCE,
+                repo / COL06_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -443,6 +448,42 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         input_hash = member["envelope"]["result_identity"]["input_hash"]
         assert input_hash in (directory / "report.html").read_text()
         assert input_hash in (directory / "section.svg").read_text()
+    col06_cases = json.loads((clone / COL06_REFERENCE).read_text())["cases"]
+    for case, entry in col06_cases.items():
+        label = f"column-catalogue-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/column_catalogue_selection.py",
+            "--reference",
+            str(clone / COL06_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        assert result == json.loads((directory / "result.json").read_text())
+        expected = entry["expected"]
+        calculation = result["calculation"]
+        assert (
+            result["envelope"]["engineering_status"] == expected["engineering_status"]
+        )
+        assert calculation["terminal_state"] == expected["terminal_state"]
+        assert calculation["selected_id"] == expected["selected_id"]
+        input_hash = result["envelope"]["result_identity"]["input_hash"]
+        report = (directory / "report.html").read_text()
+        drawing = directory / "section.svg"
+        assert input_hash in report
+        if expected["selected_id"] is None:
+            assert not drawing.exists()
+        else:
+            child = calculation["selected"]["checked_member"]
+            child_hash = child["envelope"]["result_identity"]["input_hash"]
+            assert child_hash in report
+            svg = drawing.read_text()
+            assert input_hash in svg and child_hash in svg
+            ElementTree.fromstring(svg)
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):
         run(
             name,

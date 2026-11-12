@@ -104,6 +104,8 @@ For axis-specific restraint and slenderness using those actual cages, see the [s
 
 For short circular cages with closed rings or spirals, see the [circular column guide](circular-column-member-check.md).
 
+To select a short eight-bar rectangle from approved sizes, bars and ties, see the [column catalogue guide](column-catalogue-selection.md).
+
 ## Python API
 
 Typed request groups are exported from `structural_lib.design.is456.column` alongside the
@@ -139,6 +141,10 @@ and group imports require its matching build rather than an older published whee
         - check_circular_member
         - render_circular_member_html
         - render_circular_member_svg
+        - load_column_catalogue
+        - select_column_from_catalogue
+        - render_column_catalogue_html
+        - render_column_catalogue_svg
 
 ## Compatibility and evidence
 

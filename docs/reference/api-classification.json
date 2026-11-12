@@ -15151,8 +15151,8 @@
     {
       "module": "structural_lib.design.is456.column",
       "export_classification": "preview",
-      "declared_export_count": 50,
-      "classified_symbol_count": 60,
+      "declared_export_count": 55,
+      "classified_symbol_count": 65,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -15199,6 +15199,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ColumnCatalogueInputV1",
+          "qualified_name": "structural_lib.design.is456.column.ColumnCatalogueInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_catalogue",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -16057,6 +16076,35 @@
           }
         },
         {
+          "name": "load_column_catalogue",
+          "qualified_name": "structural_lib.design.is456.column.load_column_catalogue",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | ColumnCatalogueInputV1') -> 'ColumnCatalogueInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_four_corner_member",
           "qualified_name": "structural_lib.design.is456.column.load_four_corner_member",
           "kind": "function",
@@ -16340,6 +16388,64 @@
           }
         },
         {
+          "name": "render_column_catalogue_html",
+          "qualified_name": "structural_lib.design.is456.column.render_column_catalogue_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_catalogue_svg",
+          "qualified_name": "structural_lib.design.is456.column.render_column_catalogue_svg",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str | None'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "render_four_corner_member_html",
           "qualified_name": "structural_lib.design.is456.column.render_four_corner_member_html",
           "kind": "function",
@@ -16497,6 +16603,35 @@
             "obligations": [],
             "signature": "(request: 'object', expected: 'type[StrictPublicModel]') -> 'None'",
             "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "select_column_from_catalogue",
+          "qualified_name": "structural_lib.design.is456.column.select_column_from_catalogue",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'ColumnCatalogueInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
             "missing_docstring_sections": [],
             "example_ids": []
           }

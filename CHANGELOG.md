@@ -23,6 +23,11 @@ All notable changes to this project will be documented in this file.
   longitudinal bars, signed biaxial section strength and scoped spiral
   enhancement on the short axial branch. Includes a worked example,
   checked HTML report and SVG section drawing.
+- Finite catalogue selection for short braced eight-bar rectangular
+  columns. Ranks approved sizes, bars and tie schedules against supplied
+  signed combinations, reports unresolved searches, and holds locally
+  feasible candidates that need refreshed analysis. Includes a worked
+  example, checked report and local section drawing.
 
 ### Fixed
 

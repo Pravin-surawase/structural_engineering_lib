@@ -1,4 +1,4 @@
-"""Supplied-steel column member checks and prescribed section response."""
+"""Physical column checks, finite catalogue selection and section response."""
 
 from __future__ import annotations
 
@@ -20,6 +20,15 @@ from structural_lib.services.canonical_family import (
     translate_owner_input_error,
 )
 from structural_lib.services.column_api import ColumnDesignResult, design_column_is456
+from structural_lib.services.column_candidate_search import (
+    render_column_catalogue_html as _render_column_catalogue_html,
+)
+from structural_lib.services.column_candidate_search import (
+    render_column_catalogue_svg as _render_column_catalogue_svg,
+)
+from structural_lib.services.column_candidate_search import (
+    select_column_from_catalogue as _select_column_from_catalogue,
+)
 from structural_lib.services.column_circular_member import (
     check_circular_member as _check_circular_member,
 )
@@ -56,6 +65,7 @@ from structural_lib.services.column_tied_member import (
 from structural_lib.services.column_tied_member import (
     render_tied_rectangular_member_html as _render_tied_rectangular_member_html,
 )
+from structural_lib.services.contracts.column_catalogue import ColumnCatalogueInputV1
 from structural_lib.services.contracts.column_circular import CircularColumnInputV1
 from structural_lib.services.contracts.column_member import (
     ColumnClosedTieV1,
@@ -93,6 +103,7 @@ from structural_lib.services.contracts.family_f1 import (
 __all__ = [
     "ColumnDesignResult",
     "CircularColumnInputV1",
+    "ColumnCatalogueInputV1",
     "FamilyIdentityV1",
     "CanonicalFamilyResultV1",
     "ColumnActionsV1",
@@ -130,6 +141,10 @@ __all__ = [
     "load_layered_section",
     "load_four_corner_member",
     "load_circular_member",
+    "load_column_catalogue",
+    "select_column_from_catalogue",
+    "render_column_catalogue_html",
+    "render_column_catalogue_svg",
     "render_circular_member_html",
     "render_circular_member_svg",
     "render_four_corner_member_html",
@@ -142,6 +157,152 @@ __all__ = [
     "render_slender_rectangular_member_html",
     "render_slender_rectangular_member_svg",
 ]
+
+
+def load_column_catalogue(
+    value: Mapping[str, object] | str | bytes | ColumnCatalogueInputV1,
+) -> ColumnCatalogueInputV1:
+    """Load the candidate catalogue, analysis basis and concurrent actions.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or ColumnCatalogueInputV1
+        Approved oriented sizes, bar diameters and tie options with signed rows.
+
+    Returns
+    -------
+    ColumnCatalogueInputV1
+        Validated immutable request.
+
+    Raises
+    ------
+    InputContractError
+        Invalid inputs, duplicate identifiers or a catalogue outside the bounds.
+
+    Examples
+    --------
+    See Python/examples/column_catalogue_selection.py for a complete input.
+
+    Limitations
+    -----------
+    At most 128 candidates and eight supplied action rows. Uses mm, MPa, kN and kNm.
+
+    Provenance
+    ----------
+    COL06 finite catalogue contract and the physical tied rectangular profile.
+    """
+    if isinstance(value, ColumnCatalogueInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(ColumnCatalogueInputV1, value)
+    return model_validate_or_error(ColumnCatalogueInputV1, value)
+
+
+def select_column_from_catalogue(
+    request: ColumnCatalogueInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Rank the supplied options and check each required action row.
+
+    Parameters
+    ----------
+    request : ColumnCatalogueInputV1
+        Validated catalogue from load_column_catalogue.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Evaluated candidates, terminal search state, and selection if resolved.
+
+    Raises
+    ------
+    InputContractError
+        A validated typed request is required.
+
+    Examples
+    --------
+    Pass the result of load_column_catalogue to select_column_from_catalogue.
+
+    Limitations
+    -----------
+    Short braced eight-bar rectangles only. An incompatible or stale analysis
+    basis leaves a locally feasible candidate on HOLD.
+
+    Provenance
+    ----------
+    COL06 catalogue rank and the existing IS 456 tied rectangular member checks.
+    """
+    return _select_column_from_catalogue(request)
+
+
+def render_column_catalogue_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Show the outcome, all evaluated candidates and the governing section.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of select_column_from_catalogue.
+
+    Returns
+    -------
+    str
+        HTML with actions, per-row checks and the selected section when available.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the catalogue workflow.
+
+    Examples
+    --------
+    See Python/examples/column_catalogue_selection.py.
+
+    Limitations
+    -----------
+    The report covers the supplied catalogue, combinations and local cage only.
+
+    Provenance
+    ----------
+    Uses the existing result and the checked governing cage without recalculation.
+    """
+    return _render_column_catalogue_html(result)
+
+
+def render_column_catalogue_svg(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str | None:
+    """Draw the selected local section from its governing check.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of select_column_from_catalogue.
+
+    Returns
+    -------
+    str or None
+        SVG with the result status, or None when no candidate is selected.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the catalogue workflow.
+
+    Examples
+    --------
+    See Python/examples/column_catalogue_selection.py.
+
+    Limitations
+    -----------
+    The cross-section shows restraints at their local projected positions.
+    A HOLD drawing is provisional; member-wide detailing is outside this scope.
+
+    Provenance
+    ----------
+    Projects the checked local bar and link coordinates without recalculation.
+    """
+    return _render_column_catalogue_svg(result)
 
 
 def load_circular_member(

@@ -150,13 +150,14 @@ _CAPABILITIES = (
             "short and slender member routes are selected by the declared IS 456 "
             "effective-length inputs. Separate Python family-facade profiles check "
             "physical four-, six-, eight- and mixed-bar cages, scoped slender rectangles, "
-            "and short circular cages with closed rings or spirals."
+            "short circular cages with closed rings or spirals, and finite catalogue "
+            "selection for short eight-bar rectangles."
         ),
         held_cases=(
             "Circular-section column design outside the short braced regular-bar-ring check remains held, including slender members and automatic cage selection.",
             "General arbitrary multilayer cages outside the named positioned-bar and restraint profiles remain held.",
             "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
-            "Load-envelope generation, frame analysis, effective-length derivation beyond the declared end-condition model, and automatic reinforcement sizing are excluded.",
+            "Load-envelope generation, frame analysis, and effective-length derivation beyond the declared end-condition model are excluded. Automatic sizing outside the finite eight-bar rectangular profile remains held.",
             "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway and member-wide detailing remain outside this profile.",
         ),
         qualified_review_required=True,
@@ -210,6 +211,16 @@ _CAPABILITIES = (
                 "Short braced circular column with 6–32 equal bars in one ring, a closed ring or spiral, and one concurrent compressive action pair. Spiral enhancement is scoped to eligible short axial checks.",
                 "docs/cookbook/python/circular-column-member-check.md",
                 "Python/examples/circular_column_member.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.catalogue-selection/v1",
+                "structural_lib.design.is456.column",
+                "load_column_catalogue",
+                "select_column_from_catalogue",
+                "column-catalogue-selection-input/v1",
+                "Finite selection of short braced rectangular sizes, eight equal longitudinal bars and explicit hoop/link options. Checks supplied signed combinations and holds a candidate that needs refreshed analysis.",
+                "docs/cookbook/python/column-catalogue-selection.md",
+                "Python/examples/column_catalogue_selection.py",
             ),
         ),
     ),

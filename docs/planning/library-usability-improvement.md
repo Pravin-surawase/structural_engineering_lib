@@ -2226,6 +2226,14 @@ row selects 8Ø20 and Ø8 ties at 300 mm. Incomplete or unresolved searches
 yield no selection. A locally feasible change in the analysis section or
 stiffness basis still requires refreshed analysis.
 
+The [COL06 worked example](../cookbook/python/column-catalogue-selection.md)
+uses the existing tied rectangular checker for every supplied candidate and
+combination. Its report lists all evaluated rows and carries the same checked
+governing cage as the SVG. A provisional selection stays on HOLD when its
+analysis is stale or incompatible. Column shear, member-wide fabrication and
+seismic checks remain separate.
+
+
 ## Work and completion evidence
 
 | Area | Required outcome | Evidence |
