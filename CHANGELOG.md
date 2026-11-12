@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.28.0] — Prepared candidate (unreleased; on hold)
+## [0.28.0] — 2026-11-12
+
+Owner-authorized Beta software release for the qualified slab and footing
+workflows, including the beam shear-reporting repair from #1071. The retained
+wheel and source archive pass all 20 installed profiles. The expanded beam,
+column and slab parity programme is planned for 0.29.
 
 ### Added
 

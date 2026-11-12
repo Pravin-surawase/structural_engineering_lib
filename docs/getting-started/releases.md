@@ -1755,3 +1755,23 @@ engineering result requires independent qualified review.
 [0.27.0](release-status.md). S5 retains the exact wheel, sdist, and evidence for
 review. TestPyPI, tag creation, production PyPI, and a GitHub Release require a
 future publication decision.
+
+
+## v0.28.0 — Release authorized (2026-11-12)
+
+The owner authorized the exact retained 0.28.0 pair after the final software
+gates. The archives were built from merged main at
+`7ee5d65dbe2053fca9c1ab9e8ee0beeeddada15c`, which includes #1071. The release
+metadata preserves the Python tree `482c4860efe5aa2690a9e767ddda7202522b7dfd`.
+
+- [Qualified artifact record](../verification/library-0280-release-artifacts.json)
+  binds the wheel and source archive, 20 installed profiles, 29 installed-wheel
+  UAT cases and 454 beam/column consumer tests per archive.
+- [Independent review receipt](../verification/library-0280-exact-candidate-review.json)
+  and [owner authorization](../verification/release-publication-authorization.json)
+  bind the final software gates to the retained pair. [PR #1072](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1072)
+  owns the publication metadata.
+
+TestPyPI, production PyPI and the GitHub Release use those bytes. The public
+delivery receipt follows registry and release readback. This release preserves
+the supported engineering scope and requires qualified professional review.

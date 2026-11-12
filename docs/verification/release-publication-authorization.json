@@ -1,34 +1,34 @@
 {
   "schema_version": "release-publication-authorization/v1",
   "decision": "AUTHORIZED",
-  "version": "0.27.0",
-  "tag": "v0.27.0",
+  "version": "0.28.0",
+  "tag": "v0.28.0",
   "authorized_targets": [
     "testpypi",
     "pypi",
     "github-release"
   ],
   "authorized_by": "Pravin Surawase (repository owner)",
-  "authorized_at_utc": "2026-11-07T19:03:26Z",
-  "owner_instruction": "okay good, lets release 0.27.0 now using the exact qualified wheel and sdist. publish to PyPI and GitHub, then verify the public hashes and a clean external-user install.",
-  "authorization_basis": "The same owner request asked for the confirmed BBS validation repair before publication. That bounded repair and fresh exact-archive qualification are complete. This record materializes the standing owner authorization after independent exact-C8 review and required PR/Weekly gates; its timestamp records when those conditions became effective, not a new owner message. It covers the necessary TestPyPI rehearsal, exact tag and same-byte PyPI/GitHub delivery. The old5c pair is rejected; only the repaired a11 pair identified below is authorized.",
-  "exact_candidate_review_receipt": "docs/verification/library-0270-exact-candidate-review.json",
-  "exact_candidate_review_receipt_sha256": "8eae01e590543740c7f9ae7b0767a4321f038c1e0ba546b251b7f9ba4a05e1aa",
+  "authorized_at_utc": "2026-11-12T08:17:52Z",
+  "owner_instruction": "yes lets recheck the final gates, tag and publish the existing qualified 0.28.0 from main, then rebind draft PR #1064 and move the S0–S5 parity plan and implementation to 0.29",
+  "authorization_basis": "The owner selected the existing exact retained 0.28.0 pair. The final software and independent review conditions are satisfied. TestPyPI is the maintained prerequisite for same-byte PyPI and GitHub delivery. The effective timestamp records satisfaction of the gates.",
+  "exact_candidate_review_receipt": "docs/verification/library-0280-exact-candidate-review.json",
+  "exact_candidate_review_receipt_sha256": "ee245e8c426e56861d92da235da4b78beb7d32e1417cb5fd1dc28643b18aec2f",
   "independent_review_waiver": null,
   "qualified_structural_engineering_review": false,
   "professional_approval": false,
-  "qualified_artifact_record": "docs/verification/library-0270-release-artifacts.json",
+  "qualified_artifact_record": "docs/verification/library-0280-release-artifacts.json",
   "qualified_artifacts": [
     {
-      "filename": "structural_lib_is456-0.27.0-py3-none-any.whl",
-      "sha256": "205acfde8500909aaf766e9cf263fc13bf76bfa680376527e29048b954cd2ea6",
-      "size_bytes": 1232554
+      "filename": "structural_lib_is456-0.28.0-py3-none-any.whl",
+      "sha256": "2830ac52acc95a370ebc3cd67c895801321f1662549b5db99d6864d52472e9c5",
+      "size_bytes": 1233250
     },
     {
-      "filename": "structural_lib_is456-0.27.0.tar.gz",
-      "sha256": "942326fba6ee8c39ec81ac2bb341ee9d2926ebb1ae461d252804720e91953e6d",
-      "size_bytes": 1051152
+      "filename": "structural_lib_is456-0.28.0.tar.gz",
+      "sha256": "28793fe7160f3be00560c657fec56c64067a21fb23a5229ec11324fa41501bcb",
+      "size_bytes": 1045221
     }
   ],
-  "note": "Normal pre-1.0/Beta software with bounded supported profiles. This authorization does not close native-host, unsupported-profile or professional acceptance HOLDs. No serializer optimization is included. Publish only these retained files; no rebuild or duplicate already-covered full installed UAT."
+  "note": "Use the retained wheel and sdist only. The parity programme in draft PR #1064 is outside this release."
 }
