@@ -13019,6 +13019,7 @@
         "type": "object"
       },
       "ComponentCapabilityModel": {
+        "description": "Component capability embedded in the application workflow catalogue.",
         "properties": {
           "element": {
             "title": "Element",
@@ -13036,6 +13037,13 @@
               "type": "string"
             },
             "title": "Public Workflows",
+            "type": "array"
+          },
+          "python_profiles": {
+            "items": {
+              "$ref": "#/components/schemas/IS456PythonProfileModel"
+            },
+            "title": "Python Profiles",
             "type": "array"
           },
           "qualified_review_required": {
@@ -23090,7 +23098,7 @@
         "type": "object"
       },
       "IS456CapabilityModel": {
-        "description": "One supported capability plus its held boundary.",
+        "description": "Capability entry with the public discovery identifier.",
         "properties": {
           "capability_id": {
             "title": "Capability Id",
@@ -23131,12 +23139,12 @@
           }
         },
         "required": [
-          "capability_id",
           "element",
           "public_workflows",
           "supported_case",
           "held_cases",
-          "qualified_review_required"
+          "qualified_review_required",
+          "capability_id"
         ],
         "title": "IS456CapabilityModel",
         "type": "object"

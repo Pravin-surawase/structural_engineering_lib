@@ -71,16 +71,21 @@ class IS456PythonProfileModel(BaseModel):
     example: str
 
 
-class IS456CapabilityModel(BaseModel):
-    """One supported capability plus its held boundary."""
+class IS456ComponentCapabilityModel(BaseModel):
+    """One supported component and its held boundary across discovery surfaces."""
 
-    capability_id: str
     element: str
     public_workflows: list[str]
     supported_case: str
     held_cases: list[str]
     qualified_review_required: bool
     python_profiles: list[IS456PythonProfileModel] = Field(default_factory=list)
+
+
+class IS456CapabilityModel(IS456ComponentCapabilityModel):
+    """Capability entry with the public discovery identifier."""
+
+    capability_id: str
 
 
 class IS456CapabilityDocumentModel(BaseModel):
