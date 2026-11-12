@@ -23114,6 +23114,13 @@
             "title": "Public Workflows",
             "type": "array"
           },
+          "python_profiles": {
+            "items": {
+              "$ref": "#/components/schemas/IS456PythonProfileModel"
+            },
+            "title": "Python Profiles",
+            "type": "array"
+          },
           "qualified_review_required": {
             "title": "Qualified Review Required",
             "type": "boolean"
@@ -23235,6 +23242,55 @@
           "fy_nmm2"
         ],
         "title": "IS456MaterialsV1",
+        "type": "object"
+      },
+      "IS456PythonProfileModel": {
+        "description": "Discoverable Python family-facade profile.",
+        "properties": {
+          "example": {
+            "title": "Example",
+            "type": "string"
+          },
+          "guide": {
+            "title": "Guide",
+            "type": "string"
+          },
+          "loader": {
+            "title": "Loader",
+            "type": "string"
+          },
+          "module": {
+            "title": "Module",
+            "type": "string"
+          },
+          "operation": {
+            "title": "Operation",
+            "type": "string"
+          },
+          "request_schema": {
+            "title": "Request Schema",
+            "type": "string"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          },
+          "workflow_id": {
+            "title": "Workflow Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "workflow_id",
+          "module",
+          "loader",
+          "operation",
+          "request_schema",
+          "supported_case",
+          "guide",
+          "example"
+        ],
+        "title": "IS456PythonProfileModel",
         "type": "object"
       },
       "IS456ReinforcementMaterialsV1": {

@@ -195,3 +195,59 @@ The admitted 450 × 550 mm cage has four Ø20 and eight Ø16 bars. At
 for positive and negative My. The original 50 mm layout fails local
 restraint. The [independent case record](../../verification/library-029-col03-mixed-column.json)
 includes the geometry, centre-reflected cage and fivefold action case.
+
+## Slender rectangular columns with actual bars
+
+Use this workflow for one factored compression combination on a prismatic,
+braced rectangular column. It accepts the existing six- or eight-bar tied
+cage and the positioned cage with aligned links. Use
+`column.load_slender_rectangular_member` to load the request,
+`column.check_slender_rectangular_member` to check it, and the HTML and SVG
+renderers to view the same result. The field schema is available through
+`column.SlenderRectangularColumnInputV1.model_json_schema()`.
+
+Verify the version and origin of the package with
+`python -m structural_lib install-preflight --json`. The candidate
+workflow appears in `python -m structural_lib capabilities --json` under
+the column Python profiles. With the matching candidate installed, copy the
+[example](../../../Python/examples/slender_rectangular_column_member.py)
+and [frozen JSON](../../verification/library-029-col04-slender-column.json)
+into a working directory and run:
+
+```bash
+python slender_rectangular_column_member.py --reference library-029-col04-slender-column.json --case minor_slender --output-dir column-output
+```
+
+Open `column-output/report.html` and `section.svg`. The report, drawing
+and `result.json` share the input hash. The section identifies bars and ties.
+The HTML also lists the action basis, analysis revision, checked moment pairs,
+axis restraints and governing result.
+
+### Worked first-order case
+
+The 300 × 400 mm section has eight Ø20 bars and 500 kN axial compression.
+The effective lengths are 3900 mm on x and 6000 mm on y, giving
+slenderness ratios 9.75 and 20.0. Only y receives an additional moment.
+The unsupported length used for minimum eccentricity is 6000 mm on both
+axes, giving eccentricities 25.333 mm and 22.000 mm.
+
+The signed end pairs at A and B are (−60, +25) and (−30, −25) kN·m.
+The y moments reverse sign. The braced initial moment magnitude is
+10 kN·m and the unreduced y addition is 30 kN·m, giving a 40 kN·m
+equivalent component. The report keeps the two physical end pairs and
+checks the equivalent (−60, −40) and (−60, +40) pairs without station
+locations. The governing utilization is **0.73794**, with separate
+minimum-eccentricity and local restraint results. The [independent replay](../../verification/check_library_029_col04_reference.py)
+checks the signed capacities and action calculations against the frozen record.
+
+Repeat with `--case overload` for strength FAIL, `--case stale_revision`
+for HOLD, and `--case conflicting_summary` for a structured input error.
+Use `--case supplied_second_order` to see the interior station govern using
+the supplied deflection-aware actions with zero further addition. For a
+custom check, save one complete request and pass it with `--input`.
+
+First-order inputs need an explicit declaration of no transverse member
+load. Supplied second-order inputs need a local-deflection basis, the current
+analysis revision and the required critical stations. This profile uses
+unreduced additional moments. Global sway, member shear, joint anchorage,
+splices and member-wide fabrication have separate scope.

@@ -194,6 +194,30 @@ class PositionedColumnCageV1(StrictPublicModel):
     def accept_json_arrays(cls, value: object) -> object:
         return tuple(value) if isinstance(value, list) else value
 
+    def validate_positions(self, b_mm: float, D_mm: float) -> None:
+        """Reject overlapping bars or circles outside the concrete section."""
+        bars = self.bars
+        if len({bar.bar_id for bar in bars}) != len(bars):
+            raise ValueError("Longitudinal bar IDs must be unique")
+        for bar in bars:
+            radius = bar.diameter_mm / 2
+            if not (
+                radius <= bar.x_from_left_mm <= b_mm - radius
+                and radius <= bar.y_from_top_mm <= D_mm - radius
+            ):
+                raise ValueError(f"Bar {bar.bar_id} extends beyond the concrete faces")
+        for first, second in combinations(bars, 2):
+            if (
+                hypot(
+                    first.x_from_left_mm - second.x_from_left_mm,
+                    first.y_from_top_mm - second.y_from_top_mm,
+                )
+                < (first.diameter_mm + second.diameter_mm) / 2
+            ):
+                raise ValueError(
+                    f"Bars {first.bar_id} and {second.bar_id} are coincident or overlap"
+                )
+
 
 class PositionedRectangularColumnInputV1(StrictPublicModel):
     """One short braced member with actual mixed bar geometry and signed demand."""
@@ -211,27 +235,7 @@ class PositionedRectangularColumnInputV1(StrictPublicModel):
     def check_section(self) -> Self:
         if self.actions.check_station_mm > self.geometry.unsupported_length_mm:
             raise ValueError("check_station_mm must lie within the unsupported length")
-        bars = self.reinforcement.bars
-        if len({bar.bar_id for bar in bars}) != len(bars):
-            raise ValueError("Longitudinal bar IDs must be unique")
-        for bar in bars:
-            radius = bar.diameter_mm / 2
-            if not (
-                radius <= bar.x_from_left_mm <= self.geometry.b_mm - radius
-                and radius <= bar.y_from_top_mm <= self.geometry.D_mm - radius
-            ):
-                raise ValueError(f"Bar {bar.bar_id} extends beyond the concrete faces")
-        for first, second in combinations(bars, 2):
-            if (
-                hypot(
-                    first.x_from_left_mm - second.x_from_left_mm,
-                    first.y_from_top_mm - second.y_from_top_mm,
-                )
-                < (first.diameter_mm + second.diameter_mm) / 2
-            ):
-                raise ValueError(
-                    f"Bars {first.bar_id} and {second.bar_id} are coincident or overlap"
-                )
+        self.reinforcement.validate_positions(self.geometry.b_mm, self.geometry.D_mm)
         return self
 
 

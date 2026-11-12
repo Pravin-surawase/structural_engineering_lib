@@ -32,6 +32,15 @@ from structural_lib.services.column_positioned_member import (
 from structural_lib.services.column_positioned_member import (
     render_positioned_rectangular_member_html as _render_positioned_rectangular_member_html,
 )
+from structural_lib.services.column_slender_member import (
+    check_slender_rectangular_member as _check_slender_rectangular_member,
+)
+from structural_lib.services.column_slender_member import (
+    render_slender_rectangular_member_html as _render_slender_rectangular_member_html,
+)
+from structural_lib.services.column_slender_member import (
+    render_slender_rectangular_member_svg as _render_slender_rectangular_member_svg,
+)
 from structural_lib.services.column_tied_member import (
     check_tied_rectangular_member as _check_tied_rectangular_member,
 )
@@ -55,6 +64,9 @@ from structural_lib.services.contracts.column_section import (
     ColumnSectionLayerResponseV1,
     ColumnSectionLayerV1,
     ColumnSectionResponseV1,
+)
+from structural_lib.services.contracts.column_slender import (
+    SlenderRectangularColumnInputV1,
 )
 from structural_lib.services.contracts.common import (
     model_validate_json_or_error,
@@ -88,6 +100,7 @@ __all__ = [
     "FourCornerColumnInputV1",
     "FourCornerColumnReinforcementV1",
     "PositionedRectangularColumnInputV1",
+    "SlenderRectangularColumnInputV1",
     "RectangularColumnActionsV1",
     "RectangularColumnCageV1",
     "TiedRectangularColumnInputV1",
@@ -109,7 +122,154 @@ __all__ = [
     "load_positioned_rectangular_member",
     "render_tied_rectangular_member_html",
     "render_positioned_rectangular_member_html",
+    "load_slender_rectangular_member",
+    "check_slender_rectangular_member",
+    "render_slender_rectangular_member_html",
+    "render_slender_rectangular_member_svg",
 ]
+
+
+def load_slender_rectangular_member(
+    value: Mapping[str, object] | str | bytes | SlenderRectangularColumnInputV1,
+) -> SlenderRectangularColumnInputV1:
+    """Load an actual rectangular cage and its slender-member actions.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or SlenderRectangularColumnInputV1
+        Physical geometry, axis-specific restraint, signed actions and analysis revision.
+
+    Returns
+    -------
+    SlenderRectangularColumnInputV1
+        Validated immutable request.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, cage geometry or conflicting action representations.
+
+    Examples
+    --------
+    Run Python/examples/slender_rectangular_column_member.py.
+
+    Limitations
+    -----------
+    One concurrent compressive combination on a prismatic braced column.
+
+    Provenance
+    ----------
+    SlenderRectangularColumnInputV1 owns the versioned input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(SlenderRectangularColumnInputV1, value)
+    return model_validate_or_error(SlenderRectangularColumnInputV1, value)
+
+
+def check_slender_rectangular_member(
+    request: SlenderRectangularColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check the signed member actions and local reinforcement restraint.
+
+    Parameters
+    ----------
+    request : SlenderRectangularColumnInputV1
+        Validated end actions or supplied deflection-aware station actions.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Axis classifications, signed checked actions, restraint and governing strength.
+
+    Raises
+    ------
+    InputContractError
+        The check requires a typed slender rectangular request.
+
+    Examples
+    --------
+    Pass the result of load_slender_rectangular_member.
+
+    Limitations
+    -----------
+    First-order additions are unreduced and require no transverse member load.
+    Global stability and member-wide fabrication are outside this profile.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 25.1–25.4, 26.5.3.2, 38.1 and 39.1–39.7.
+    """
+    return _check_slender_rectangular_member(request)
+
+
+def render_slender_rectangular_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the slender-member result, governing actions and checked cage.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_slender_rectangular_member.
+
+    Returns
+    -------
+    str
+        HTML report with the same input hash as the checked result.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    See Python/examples/slender_rectangular_column_member.py.
+
+    Limitations
+    -----------
+    The drawing describes the checked local section.
+
+    Provenance
+    ----------
+    All displayed engineering values come from the supplied result.
+    """
+    return _render_slender_rectangular_member_html(result)
+
+
+def render_slender_rectangular_member_svg(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Draw the checked local column section as standalone SVG.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_slender_rectangular_member.
+
+    Returns
+    -------
+    str
+        SVG with checked bar and link identities and the result's input hash.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    See Python/examples/slender_rectangular_column_member.py.
+
+    Limitations
+    -----------
+    Local cross section and projected links.
+
+    Provenance
+    ----------
+    The drawing uses the supplied checked cage without recomputing it.
+    """
+    return _render_slender_rectangular_member_svg(result)
 
 
 def load_positioned_rectangular_member(

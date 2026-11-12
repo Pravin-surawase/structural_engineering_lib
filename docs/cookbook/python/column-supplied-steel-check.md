@@ -100,6 +100,8 @@ For eight equal bars or either orientation of a six-bar cage, use the [tied rect
 
 For larger or asymmetric mixed-diameter cages with aligned links, see the [positioned rectangular column guide](column-four-corner-member-check.md#positioned-mixed-bar-rectangles).
 
+For axis-specific restraint and slenderness using those actual cages, see the [slender rectangular column guide](column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars).
+
 ## Python API
 
 Typed request groups are exported from `structural_lib.design.is456.column` alongside the
@@ -127,6 +129,10 @@ and group imports require its matching build rather than an older published whee
         - load_positioned_rectangular_member
         - check_positioned_rectangular_member
         - render_positioned_rectangular_member_html
+        - load_slender_rectangular_member
+        - check_slender_rectangular_member
+        - render_slender_rectangular_member_html
+        - render_slender_rectangular_member_svg
 
 ## Compatibility and evidence
 

@@ -1273,6 +1273,10 @@ def cmd_capabilities(args: argparse.Namespace) -> int:
             else "no final review flag"
         )
         print(f"- {capability['capability_id']}: {capability['supported_case']}")
+        for profile in capability["python_profiles"]:
+            print(
+                f"  Python {profile['module']}.{profile['operation']}: {profile['supported_case']}"
+            )
         for held_case in capability["held_cases"]:
             print(f"  held: {held_case}")
         print(f"  boundary: {review}")

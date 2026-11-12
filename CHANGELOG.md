@@ -15,6 +15,10 @@ All notable changes to this project will be documented in this file.
 - Short rectangular column checks for explicitly positioned mixed-diameter
   cages with 9–32 longitudinal bars. Includes signed fixed-load strengths,
   independently reported local restraint and checked open-link geometry.
+- Slender braced rectangular column checks for actual tied or positioned
+  cages, with independent effective lengths on both axes, signed member
+  actions, and a result-bound HTML report and SVG section drawing. The
+  capability catalogue now identifies each physical column Python profile.
 
 ### Fixed
 

@@ -261,19 +261,84 @@ def _signed_rays(
     return hits[True], hits[False]
 
 
-def positioned_biaxial_strength(
+@dataclass(frozen=True)
+class PositionedCapacitySlice:
+    """Reuse one equilibrated section at fixed compression for concurrent actions."""
+
+    section: _Section
+    pu_kn: float
+    steel_area_mm2: float
+    puz_kn: float
+    alpha_n: float
+    scan: tuple[_AngularPoint, ...]
+    axes: dict[str, CapacityRay]
+
+    def check(
+        self,
+        mx_knm: float,
+        my_knm: float,
+        unsupported_x_mm: float,
+        unsupported_y_mm: float,
+    ) -> PositionedBiaxialStrength | None:
+        """Compare one signed pair and the two separate minimum eccentricities."""
+        cap_x = self.axes["x_negative" if mx_knm < 0 else "x_positive"].capacity_knm
+        cap_y = self.axes["y_negative" if my_knm < 0 else "y_positive"].capacity_knm
+        contour = (abs(mx_knm) / cap_x) ** self.alpha_n + (
+            abs(my_knm) / cap_y
+        ) ** self.alpha_n
+
+        demand = None
+        direct = 0.0
+        magnitude = hypot(mx_knm, my_knm)
+        if magnitude:
+            rays = _signed_rays(
+                self.section,
+                self.scan,
+                self.pu_kn,
+                mx_knm / magnitude,
+                my_knm / magnitude,
+            )
+            if rays is None:
+                return None
+            demand = rays[0]
+            direct = magnitude / demand.capacity_knm
+
+        minimum = {
+            axis: self.pu_kn
+            * min_eccentricity(length, depth)
+            / 1000
+            / min(
+                self.axes[f"{axis}_{sign}"].capacity_knm
+                for sign in ("positive", "negative")
+            )
+            for axis, depth, length in (
+                ("x", self.section.depth, unsupported_x_mm),
+                ("y", self.section.width, unsupported_y_mm),
+            )
+        }
+        return PositionedBiaxialStrength(
+            self.steel_area_mm2,
+            self.puz_kn,
+            self.alpha_n,
+            self.axes.copy(),
+            demand,
+            contour,
+            direct,
+            minimum,
+            max(contour, direct, *minimum.values()),
+        )
+
+
+def prepare_positioned_capacity(
     *,
     b_mm: float,
     D_mm: float,
-    unsupported_length_mm: float,
     pu_kn: float,
-    mx_knm: float,
-    my_knm: float,
     fck_nmm2: float,
     fy_nmm2: float,
     bars: tuple[PositionedColumnBar, ...],
-) -> PositionedBiaxialStrength | None:
-    """Check Cl. 39.6 and a fixed-compression equilibrium ray for actual bars."""
+) -> PositionedCapacitySlice | None:
+    """Equilibrate the angular samples and the four signed pure-axis capacities."""
     steel = sum(bar.area_mm2 for bar in bars)
     puz = _calculate_puz(b_mm, D_mm, fck_nmm2, fy_nmm2, steel)
     if pu_kn >= puz:
@@ -298,37 +363,30 @@ def positioned_biaxial_strength(
             strict=True,
         )
     )
-    cap_x = x_rays[mx_knm < 0].capacity_knm
-    cap_y = y_rays[my_knm < 0].capacity_knm
-    contour = (abs(mx_knm) / cap_x) ** alpha + (abs(my_knm) / cap_y) ** alpha
+    return PositionedCapacitySlice(section, pu_kn, steel, puz, alpha, scan, axes)
 
-    demand = None
-    direct = 0.0
-    magnitude = hypot(mx_knm, my_knm)
-    if magnitude:
-        rays = _signed_rays(
-            section, scan, pu_kn, mx_knm / magnitude, my_knm / magnitude
-        )
-        if rays is None:
-            return None
-        demand = rays[0]
-        direct = magnitude / demand.capacity_knm
 
-    minimum = {
-        axis: pu_kn
-        * min_eccentricity(unsupported_length_mm, depth)
-        / 1000
-        / min(ray.capacity_knm for ray in rays)
-        for axis, depth, rays in (("x", D_mm, x_rays), ("y", b_mm, y_rays))
-    }
-    return PositionedBiaxialStrength(
-        steel,
-        puz,
-        alpha,
-        axes,
-        demand,
-        contour,
-        direct,
-        minimum,
-        max(contour, direct, *minimum.values()),
+def positioned_biaxial_strength(
+    *,
+    b_mm: float,
+    D_mm: float,
+    unsupported_length_mm: float,
+    pu_kn: float,
+    mx_knm: float,
+    my_knm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    bars: tuple[PositionedColumnBar, ...],
+) -> PositionedBiaxialStrength | None:
+    """Check Cl. 39.6 and a fixed-compression equilibrium ray for actual bars."""
+    prepared = prepare_positioned_capacity(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        pu_kn=pu_kn,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        bars=bars,
     )
+    if prepared is None:
+        return None
+    return prepared.check(mx_knm, my_knm, unsupported_length_mm, unsupported_length_mm)

@@ -24,6 +24,7 @@ TESTS = tuple(
         "test_four_corner_column_member",
         "test_tied_rectangular_column_member",
         "test_positioned_rectangular_column_member",
+        "test_slender_rectangular_column_member",
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
@@ -48,6 +49,7 @@ EXAMPLES = tuple(
         "four_corner_column_member",
         "tied_rectangular_column_member",
         "positioned_rectangular_column_member",
+        "slender_rectangular_column_member",
         "torsion_station_reference",
         "physical_torsion_member",
         "t_beam_member",
@@ -70,8 +72,10 @@ CHECKERS = tuple(
 ) + (
     "docs/verification/check_library_029_col02_reference.py",
     "docs/verification/check_library_029_col03_reference.py",
+    "docs/verification/check_library_029_col04_reference.py",
 )
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
+COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -83,6 +87,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 *(repo / "docs/verification").glob("library-027-*.json"),
                 repo / "docs/verification/library-029-col02-rectangular-column.json",
                 repo / COL03_REFERENCE,
+                repo / COL04_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -270,7 +275,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     output.mkdir(parents=True, exist_ok=True)
     commands = []
 
-    def run(label: str, script: str, *args: str) -> str:
+    def run(label: str, script: str, *args: str, expected_code: int = 0) -> str:
         command = [sys.executable, "-I"]
         if script in CHECKERS:
             # -I deliberately excludes the script directory. These arithmetic
@@ -294,7 +299,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         )
         (output / f"{label}.stdout.log").write_text(completed.stdout)
         (output / f"{label}.stderr.log").write_text(completed.stderr)
-        if completed.returncode:
+        if completed.returncode != expected_code:
             raise AssertionError(
                 f"Installed {label} failed: {completed.returncode}\n"
                 f"{completed.stderr[-4000:]}\n{completed.stdout[-4000:]}"
@@ -366,6 +371,41 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         assert member["envelope"]["engineering_status"] == expected["member_status"]
         input_hash = member["envelope"]["result_identity"]["input_hash"]
         assert input_hash in (directory / "report.html").read_text()
+    col04_cases = json.loads((clone / COL04_REFERENCE).read_text())["cases"]
+    for case in (
+        "minor_slender",
+        "both_slender",
+        "mixed",
+        "supplied_second_order",
+        "overload",
+        "stale_revision",
+        "conflicting_summary",
+    ):
+        label = f"slender-rectangular-{case}"
+        directory = output / label
+        expected = col04_cases[case]["expected"]
+        reject = expected["member_status"] == "REJECT"
+        stdout = run(
+            label,
+            "Python/examples/slender_rectangular_column_member.py",
+            "--reference",
+            str(clone / COL04_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+            expected_code=2 if reject else 0,
+        )
+        member = json.loads(stdout)
+        if reject:
+            assert member["details"]["issues"][0]["code"] == expected["issue"]
+            assert not directory.exists()
+        else:
+            assert member == json.loads((directory / "result.json").read_text())
+            assert member["envelope"]["engineering_status"] == expected["member_status"]
+            input_hash = member["envelope"]["result_identity"]["input_hash"]
+            assert input_hash in (directory / "report.html").read_text()
+            assert input_hash in (directory / "section.svg").read_text()
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):
         run(
             name,

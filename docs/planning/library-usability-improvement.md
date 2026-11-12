@@ -2192,6 +2192,15 @@ existing tolerances when reusing frozen section capacities.
    from both installed beam/column archive profiles. Update PROJECT02's
    column slice with the observed evidence. Keep the delivery in draft #1064.
 
+**COL04 checkpoint.** The [frozen case record](../verification/library-029-col04-slender-column.json)
+and [independent replay](../verification/check_library_029_col04_reference.py)
+cover the unreduced braced method, signed actual-cage resistance, and
+supplied deflection-aware critical stations. The optional reduction is a
+reference study. The source workflow exposes checked JSON, HTML and a local
+SVG through the [worked example](../cookbook/python/column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars).
+This is the column slice of PROJECT02. The full imported frame and edge-beam
+checks retain their own acceptance cases.
+
 ## Work and completion evidence
 
 | Area | Required outcome | Evidence |

@@ -412,7 +412,7 @@
     {
       "name": "IS456Capability",
       "kind": "class",
-      "signature": "(element: 'str', public_workflows: 'tuple[str, ...]', supported_case: 'str', held_cases: 'tuple[str, ...]', qualified_review_required: 'bool') -> None"
+      "signature": "(element: 'str', public_workflows: 'tuple[str, ...]', supported_case: 'str', held_cases: 'tuple[str, ...]', qualified_review_required: 'bool', python_profiles: 'tuple[IS456PythonProfile, ...]' = ()) -> None"
     },
     {
       "name": "InputSection",
