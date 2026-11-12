@@ -14015,6 +14015,10 @@
             "title": "Flexure",
             "type": "object"
           },
+          "load_envelope_status": {
+            "title": "Load Envelope Status",
+            "type": "string"
+          },
           "negative_reinforcement": {
             "additionalProperties": true,
             "title": "Negative Reinforcement",
@@ -14048,7 +14052,8 @@
           "shear",
           "serviceability",
           "punching_shear_disposition",
-          "complete_engineering_design_approved"
+          "complete_engineering_design_approved",
+          "load_envelope_status"
         ],
         "title": "ContinuousOneWaySlabDesignResponse",
         "type": "object"
@@ -31354,6 +31359,10 @@
             "title": "Complete Engineering Design Approved",
             "type": "boolean"
           },
+          "load_envelope_status": {
+            "title": "Load Envelope Status",
+            "type": "string"
+          },
           "panel": {
             "additionalProperties": true,
             "title": "Panel",
@@ -31375,7 +31384,8 @@
         "required": [
           "panel",
           "serviceability",
-          "complete_engineering_design_approved"
+          "complete_engineering_design_approved",
+          "load_envelope_status"
         ],
         "title": "TwoWaySlabPanelDesignResponse",
         "type": "object"

@@ -231,6 +231,11 @@ def test_complete_one_way_slab_rejects_unacknowledged_review_basis(client):
     assert body["error"]["code"] == "REQUEST_VALIDATION_ERROR"
 
 
+_SINGLE_SUPPLIED_SLAB_ACTION = (
+    "not_generated_single_caller_supplied_factored_udl_or_coefficient_basis"
+)
+
+
 def _continuous_slab_payload(**overrides):
     payload = {
         "short_effective_span_mm": 3000,
@@ -323,6 +328,7 @@ def test_continuous_one_way_slab_endpoint_returns_b02_actions(client):
     )
     assert response.status_code == 200, response.json()
     data = _unwrap(response)
+    assert data["load_envelope_status"] == _SINGLE_SUPPLIED_SLAB_ACTION
     assert data["flexure"]["positive_midspan"][
         "factored_moment_knm_per_m"
     ] == pytest.approx(10.6875)
@@ -348,6 +354,7 @@ def test_two_way_slab_panel_endpoint_returns_b04_topology_and_torsion(client):
     )
     assert response.status_code == 200, response.json()
     data = _unwrap(response)
+    assert data["load_envelope_status"] == _SINGLE_SUPPLIED_SLAB_ACTION
     assert data["panel"]["x_negative"]["factored_moment_knm_per_m"] == pytest.approx(
         18.6
     )
@@ -367,6 +374,7 @@ def test_two_way_slab_capacity_miss_serializes_engineering_fail(client):
 
     assert response.status_code == 200, response.json()
     data = _unwrap(response)
+    assert data["load_envelope_status"] == _SINGLE_SUPPLIED_SLAB_ACTION
     assert data["panel"]["status"] == "FAIL"
     assert data["panel"]["governing_region"] == "x_negative_continuous_edge"
     assert data["panel"]["result_envelope"]["engineering_status"] == "FAIL"
@@ -408,6 +416,7 @@ def test_builtin_continuous_endpoint_resolves_tables_12_and_13(client):
     )
     assert response.status_code == 200, response.json()
     data = _unwrap(response)
+    assert data["load_envelope_status"] == _SINGLE_SUPPLIED_SLAB_ACTION
     assert data["flexure"]["input"]["coefficients"]["table_id"] == "IS456_TABLE_12_13"
     assert data["flexure"]["coefficient_correctness_verified_by_library"] is True
 
@@ -429,6 +438,7 @@ def test_builtin_two_way_endpoint_resolves_table_26_case_4(client):
     response = client.post("/api/v1/design/slab/two-way/panel/builtin", json=payload)
     assert response.status_code == 200, response.json()
     data = _unwrap(response)
+    assert data["load_envelope_status"] == _SINGLE_SUPPLIED_SLAB_ACTION
     coefficients = data["panel"]["input"]["coefficients"]
     assert coefficients["case_id"] == "table_26_case_4"
     assert coefficients["method"] == "built_in_exact"

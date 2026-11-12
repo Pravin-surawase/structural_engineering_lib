@@ -377,9 +377,11 @@ class ContinuousOneWaySlabDesignResponse(BaseModel):
     serviceability: dict[str, Any]
     punching_shear_disposition: str
     complete_engineering_design_approved: bool
+    load_envelope_status: str
 
 
 class TwoWaySlabPanelDesignResponse(BaseModel):
     panel: dict[str, Any]
     serviceability: dict[str, Any] | None
     complete_engineering_design_approved: bool
+    load_envelope_status: str
