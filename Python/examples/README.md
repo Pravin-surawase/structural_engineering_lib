@@ -1,6 +1,6 @@
 # Python Examples
 
-Runnable examples for `structural-lib-is456` 0.28.0. Get the example files from
+Runnable examples for `structural-lib-is456` 0.29.0. Get the example files from
 the source checkout that contains them and install the package in a virtual
 environment.
 
@@ -12,7 +12,7 @@ git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-python3 -m pip install "structural-lib-is456==0.27.0"
+python3 -m pip install "structural-lib-is456==0.28.0"
 python3 -m structural_lib install-preflight
 ```
 
@@ -43,7 +43,7 @@ To replay the scripts against a retained candidate wheel, install that wheel
 in a clean virtual environment.
 
 ```bash
-python3 -m pip install /path/to/structural_lib_is456-0.28.0-py3-none-any.whl
+python3 -m pip install /path/to/structural_lib_is456-0.29.0-py3-none-any.whl
 python3 -m structural_lib install-preflight
 python3 -I Python/examples/slab_one_way_reference.py --case baseline
 python3 -I Python/examples/isolated_footing_reference.py --case baseline
@@ -207,7 +207,7 @@ python3 examples/full_pipeline_synthetic.py \
   --output-dir ./output/demo_50
 ```
 
-Install `structural-lib-is456[dxf]==0.27.0` and omit `--skip-dxf` to generate
+Install `structural-lib-is456[dxf]==0.28.0` and omit `--skip-dxf` to generate
 drawings. `sample_beam_design.csv` is strict CLI input;
 `sample_building_beams.csv` is an educational fixture for
 `complete_beam_design.py` and includes output-like columns that the strict CLI

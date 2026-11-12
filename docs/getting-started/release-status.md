@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-08
+last_updated: 2026-11-12
 doc_type: guide
 complexity: beginner
 tags: [release, installation, external-user]
@@ -9,9 +9,10 @@ tags: [release, installation, external-user]
 
 # Current Release
 
-The current published package is **StructLib 0.27.0**. The column-action,
-canonical/legacy report, quickstart and BBS input-contract repairs are included.
-The [publication receipt](releases.md#v0270-published-and-verified) records
+The current published package is **StructLib 0.28.0**. It includes the
+qualified one-way slab and square concentric footing workflows, the beam shear
+reporting repair, and the measured performance updates.
+The [publication receipt](releases.md#v0280-published-and-verified) records
 same-byte TestPyPI/PyPI/GitHub delivery, public hashes and a clean external install.
 Later development commits are unreleased and do not replace those public bytes.
 
@@ -22,23 +23,23 @@ Later development commits are unreleased and do not replace those public bytes.
 
 ## Install the exact release
 
-StructLib 0.27.0 requires Python 3.11 or newer.
+StructLib 0.28.0 requires Python 3.11 or newer.
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.27.0"
+python3 -m pip install "structural-lib-is456==0.28.0"
 python3 -m structural_lib install-preflight
 ```
 
 The preflight should show:
 
-- `structural_lib: 0.27.0`
+- `structural_lib: 0.28.0`
 - the interpreter you intended to use
 - a package origin inside that environment's `site-packages`
 - the installed/not-installed state of optional extras.
 
 ## What “normal release” means
 
-`0.27.0` is a final PEP 440 version. An ordinary
+`0.28.0` is a final PEP 440 version. An ordinary
 `pip install structural-lib-is456` can select it on a supported Python version.
 The package retains Beta maturity: APIs may change before v1.0 and the supported
 engineering scope is case-qualified.

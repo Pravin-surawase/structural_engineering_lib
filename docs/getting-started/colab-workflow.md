@@ -13,7 +13,7 @@ tags: [colab, python, cli, beam]
 **Audience:** Users
 **Status:** Active
 **Importance:** Medium
-**Version:** 0.28.0
+**Version:** 0.29.0
 **Last Updated:** 2026-10-29
 
 This guide runs the selected package version in a clean Google Colab runtime.
@@ -26,7 +26,7 @@ The registry command installs the [verified public version](release-status.md).
 Run this in the first cell:
 
 ```python
-%pip install -q "structural-lib-is456[dxf]==0.27.0"
+%pip install -q "structural-lib-is456[dxf]==0.28.0"
 ```
 
 Choose **Runtime → Restart session**, then verify the environment:
@@ -35,7 +35,7 @@ Choose **Runtime → Restart session**, then verify the environment:
 !python -m structural_lib install-preflight
 ```
 
-The output must show `structural_lib: 0.27.0` and a package origin under
+The output must show `structural_lib: 0.28.0` and a package origin under
 `site-packages`.
 
 ## 2. Run a canonical beam calculation

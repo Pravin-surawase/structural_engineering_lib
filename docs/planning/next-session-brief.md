@@ -12,8 +12,8 @@
 
 | Release | Current state |
 |---|---|
-| **Current** | [0.27.0 is published and verified](../getting-started/releases.md#v0270-published-and-verified); tag a78dcc6a, exact repaired archives, 18 profiles/451 tests per archive and public install/hash receipts. |
-| **Next** | [0.28.0 S0–S5 candidate](library-usability-improvement.md#structlib-0280-candidate-preparation) on `codex/lib028-s0-s5`. The milestone PR and retained artifacts own exact qualification evidence. The owner directed work to stop at the candidate handoff. |
+| **Current** | [0.28.0 is published and verified](../getting-started/releases.md#v0280-published-and-verified). All 20 installed profiles, public archive hashes, and clean PyPI installation passed. |
+| **Next** | [0.29 S0–S5 beam, column and slab parity](library-usability-improvement.md#029-beam-column-and-slab-parity-plan) in [draft PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064). |
 
 ## Merged development work — qualified serializer integration
 
@@ -35,8 +35,8 @@ The [qualification record](../verification/library-serializer-optimization.json)
 includes exact identities, test/measurement boundaries and all 30 timing pairs.
 
 [PR #1066](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1066)
-merged the source update. The change remains unreleased and enters the 0.28.0
-candidate with the later performance work listed in the changelog.
+merged the source update. The 0.28.0 release includes it with the later
+performance work listed in the changelog.
 
 ## Separate correctness follow-up
 
@@ -56,10 +56,9 @@ The [release ledger](../getting-started/releases.md#v0270-published-and-verified
 retain the source/artifact and scope boundaries. The 9a78/5c79 pairs remain
 rejected baselines; the invalidated 423 intermediate is not deliverable.
 
-Draft [research PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
-still needs rebind/reconciliation of its shared plan after this task. Its future
-capabilities and release calendar are not adopted here. Solver and native-host
-tracks retain their own plans.
+Draft [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
+owns the 0.29 parity plan, slab replay implementation and its staged engineering
+acceptance. Solver and native-host tracks retain their own plans.
 
 ## Required Reading
 

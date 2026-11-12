@@ -11,7 +11,7 @@ tags: [beam, canonical-api, lib-pro-013-b0]
 
 Workflow ID: `is456.beam.design/v1` (design, design-and-detail, and BBS modes)
 
-Published recipe version: `structural-lib-is456==0.27.0`.
+Published recipe version: `structural-lib-is456==0.28.0`.
 
 Minimum historical artifact: `structural-lib-is456==0.24.0`, which contains
 `structural_lib.design.is456.beam`. Confirm the installed version and package

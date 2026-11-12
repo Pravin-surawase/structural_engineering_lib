@@ -7,16 +7,12 @@ doc_type: spec
 
 # Library usability and implementation quality
 
-**Current programme.** [0.28 slab and footing candidate preparation](#structlib-0280-candidate-preparation)
-owns the next feature scope. The [release ledger](../getting-started/releases.md#v0260-published-and-verified)
-retains historical 0.26.0 artifacts; [0.27.0 is published and verified](../getting-started/releases.md#v0270-published-and-verified).
-The consumer fixes originally planned for 0.26.1 ship in 0.27.0 with the
-R1–R5 and L01 repairs. The merged [serializer qualification](#post-release-serializer-optimization)
-and later measured beam improvements enter the 0.28 candidate.
-
-[Beam and column library parity research](#beam-and-column-library-parity-research)
-defines the proposed additions after the current release scope, with comparable
-libraries, reusable implementation owners and acceptance criteria.
+**Current programme.** The [0.29 beam, column and slab parity plan](#029-beam-column-and-slab-parity-plan)
+defines the next scope in draft [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064).
+[0.28.0 is published and verified](../getting-started/releases.md#v0280-published-and-verified) and includes the qualified
+slab and footing workflows, serializer and measured beam improvements.
+[0.27.0 remains the historical reference](../getting-started/releases.md#v0270-published-and-verified)
+for the original beam and column repairs and comparator fixtures.
 
 The [professional standards programme](#professional-standards-programme-8-october-2026-revision-2)
 and [assessment record](../verification/library-professional-standards-20261008.json)
@@ -1148,15 +1144,17 @@ footing. Preserve the continuous one-way, two-way, combined and strap cases as
 regressions. Compare selected checks on matching model and source assumptions.
 Keep raft and pile-cap source and benchmark HOLDs visible.
 
-For 0.29, choose one bounded next family, such as a straight-flight stair or
-braced axial wall, once its independent benchmark and installed user journey
-are ready. Installed native-host work retains its own evidence and sequencing.
+0.29 follows the [beam, column and slab parity plan](#029-beam-column-and-slab-parity-plan).
+Future stair or wall profiles need their own benchmarks and installed journeys.
+Installed native-host work retains its own evidence and sequencing.
 The [October Jira plan](https://pravinsurawase.atlassian.net/browse/LIB-1)
 retains its original readiness and conditional torsion history.
 
 ### StructLib 0.28.0 candidate preparation
 
-This is the starting increment. The [expanded 0.28 S0–S5 plan](#028-beam-column-and-slab-parity-plan) records the subsequent scope decision.
+This is the historical starting increment. [0.28.0 was published](../getting-started/releases.md#v0280-published-and-verified)
+from the retained qualified pair. The [0.29 S0–S5 parity plan](#029-beam-column-and-slab-parity-plan)
+covers the later development work.
 
 **Authority.** The owner approved S0–S5, including implementation and candidate
 qualification, and directed work to stop before release. The starting source is
@@ -1294,8 +1292,8 @@ regression.
 
 **Research date:** 7 November 2026
 
-**Status:** Historical research and backlog. The current 0.28 delivery scope
-is in the [S0–S5 parity plan](#028-beam-column-and-slab-parity-plan).
+**Status:** Historical research and backlog. The current 0.29 delivery scope
+is in the [S0–S5 parity plan](#029-beam-column-and-slab-parity-plan).
 
 **Research baseline:** merged 0.27 candidate `1c35d9485fa3499e69f1926657e91e84fe0d7bb8`.
 The S0 plan binds the new work to the current main.
@@ -1810,24 +1808,28 @@ are separate later extensions. They are not prerequisites for useful ordinary
 IS 456 beam/column parity, and a comparator's example does not qualify their
 engineering assumptions here.
 
-The [S0–S5 parity plan](#028-beam-column-and-slab-parity-plan) selects the
+The [S0–S5 parity plan](#029-beam-column-and-slab-parity-plan) selects the
 current capability packets and supersedes the November 7 release recommendations.
 
 
-## 0.28 beam, column and slab parity plan
+## 0.29 beam, column and slab parity plan
 
-**S0 decision — 12 November 2026.** Extend the unreleased 0.28 programme to
-common IS 456 beams, columns and solid slabs. The previous slab/footing scope
-above is the qualified starting increment. The comparison release is public
-`v0.27.0` at `a78dcc6a`. The new source base is hosted `main`
-`7ee5d65dbe2053fca9c1ab9e8ee0beeeddada15c`, including #1071. Its retained
-qualified wheel/sdist pair and 20 installed profiles remain the baseline.
-The expanded head will need its own qualification. L01 is already fixed in
-0.27.0, and the serializer work is included in the retained 0.28 baseline.
+**S0 decision — 2026-11-12.** Deliver common IS 456 beam, column and solid-slab
+parity work in 0.29. Draft #1064 carries the S0–S5 acceptance plan and the
+first implementation unit forward from the earlier 0.28 proposal.
+[0.28.0](../getting-started/releases.md#v0280-published-and-verified) at `d6ca9d2c646cf1b892c391e916427a2171eb89f6`
+is the public regression baseline. Its retained archives were built from
+`7ee5d65dbe2053fca9c1ab9e8ee0beeeddada15c`, including #1071, and passed
+all 20 installed profiles. Draft #1064 is rebound to current main at
+`875138b0d55e337c3ba7eef19b5114d1541faa4b`. The expanded head will need its own qualification.
+
+The original 0.27.0 beam and column references remain fixed where named.
+L01 is fixed in public 0.27.0, and public 0.28.0 includes the serializer work.
+Existing regression profiles remain required for 0.29.
 
 ### Comparator targets and claim criteria
 
-| Comparator | Evidence and target for 0.28 | Claim earned only on passing cases |
+| Comparator | Evidence and target for 0.29 | Claim earned only on passing cases |
 |---|---|---|
 | [rcdesign 0.4.18](https://github.com/satish-annigeri/rcdesign/releases/tag/v0.4.18) | Same-code section comparisons using the [frozen reference](../verification/library-027-comparator-reference.md). Retain separate expected values where Fig. 21 integration, Annex G, displaced concrete or shear interpolation conventions differ. | Comparable IS 456 section results for the matched cases. Establish an advantage in breadth if the added physical member and solid-slab journeys pass and the comparator inventory still lacks those workflows. |
 | [concreteproperties](https://concrete-properties.readthedocs.io/en/stable/user_guide/analysis.html) and [StructuralCodes](https://fib-international.github.io/structuralcodes/quickstart/index.html) | Match bar centres, material stress–strain laws, sign convention, units and reference axes. Compare equilibrium, section properties and signed interaction for the admitted reinforced-concrete sections. | Matched-law parity for the qualified section population. General geometry, arbitrary laws and moment–curvature remain capabilities of the broader tools. |
@@ -1853,7 +1855,7 @@ engineering approval.
 | S4 — Serviceability and usable outputs | IS 456 serviceability and application owners deliver BC07/BC10/BC11 and solid slab extensions. Reuse existing report and schedule projections, and check the same bar revision. | SERV01–SERV03, SL04–SL07, FLOW02–FLOW03. Expose source, stations and signed bar face. Unmet reference or method applicability stays HOLD. |
 | S5 — Exact expanded candidate | Qualification owner reruns the frozen plan on merged exact source, in clean wheel and sdist environments. Retain existing footings, flat-slab and all previously qualified beam/column profiles. | Both archive builds, source/artifact hashes, independent case results and negative controls, generated contracts, required hosted checks and exact-head candidate receipt. Replay each newly advertised profile from each archive. Run release preflight and retain the comparison matrix and scope in the candidate handoff. Stop before release operations. |
 
-Close a backlog row only against its whole definition. The 0.28 target covers
+Close a backlog row only against its whole definition. The 0.29 target covers
 B01–B06, C01–C10, S01/S04/S05/S07/S08, V01–V04 and W01–W04 in the admitted
 member workflows. S02/S03 advance through circular and rectangular solid
 sections, including gross, transformed and cracked properties. Arbitrary
@@ -1930,8 +1932,8 @@ currently omit `load_envelope_status` on both external-coefficient and built-in
 routes. Preserve the exact service field on all four routes, including the
 SL03 capacity FAIL. Keep the existing 422 controls, serviceability HOLD
 fields and approval flag. Regenerate the OpenAPI and contract baselines.
-Extend the copied worked-case driver with both SL02 and both SL03 public
-Python service variants. Verify the same benchmark values for built-in and
+The [copied worked-case driver](../../Python/examples/slab_coefficient_references.py)
+exercises both SL02 and both SL03 public Python service variants. Verify the same benchmark values for built-in and
 external coefficients, and verify the built-in Tables 12/13 and Table 26 case
 4 provenance. Retain the external redistribution and topology rejection
 controls and the two-way overload FAIL. Replay from both archive installations.
@@ -1945,8 +1947,11 @@ SL06 as a new wrapper contract, fixed the SL01 evidence link, separated the
 SL05 mixed-load arithmetic and made the physical member and serviceability
 fixture freezes explicit. First-unit acceptance uses the existing frozen B02
 and B04 ledgers and the documented built-in exact table cases.
-S1 does not close a new calculation profile. The first new member capability
-starts with the COL02 rectangular actual-bar contract and reference freeze.
+The first unit was implemented and exercised on the former draft with
+126 focused tests and both slab/footing archive replays. This carried work is
+targeted to 0.29 and will be replayed again on the final 0.29 archives. The
+first new member capability starts with the COL02 rectangular actual-bar
+contract and independent reference freeze.
 
 ## Work and completion evidence
 

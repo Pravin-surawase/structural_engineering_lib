@@ -4,7 +4,25 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.28.0] — Prepared candidate (unreleased; on hold)
+## [0.29.0] — Prepared candidate (unreleased; on hold)
+
+### Fixed
+
+- Continuous one-way and two-way solid slab HTTP responses retain the supplied
+  load-basis status, including built-in coefficient routes and two-way flexural
+  failures.
+
+### Verification
+
+- Added installed B02/B04 reference replay with both coefficient sources and
+  explicit rejection and capacity-failure controls.
+
+## [0.28.0] — 2026-11-12
+
+Owner-authorized Beta software release for the qualified slab and footing
+workflows, including the beam shear-reporting repair from #1071. The retained
+wheel and source archive pass all 20 installed profiles. The expanded beam,
+column and slab parity programme is planned for 0.29.
 
 ### Added
 

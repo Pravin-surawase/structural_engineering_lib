@@ -1755,3 +1755,62 @@ engineering result requires independent qualified review.
 [0.27.0](release-status.md). S5 retains the exact wheel, sdist, and evidence for
 review. TestPyPI, tag creation, production PyPI, and a GitHub Release require a
 future publication decision.
+
+
+## v0.28.0 — Release authorized (2026-11-12)
+
+The owner authorized the exact retained 0.28.0 pair after the final software
+gates. The archives were built from merged main at
+`7ee5d65dbe2053fca9c1ab9e8ee0beeeddada15c`, which includes #1071. The release
+metadata preserves the Python tree `482c4860efe5aa2690a9e767ddda7202522b7dfd`.
+
+- [Qualified artifact record](../verification/library-0280-release-artifacts.json)
+  binds the wheel and source archive, 20 installed profiles, 29 installed-wheel
+  UAT cases and 454 beam/column consumer tests per archive.
+- [Independent review receipt](../verification/library-0280-exact-candidate-review.json)
+  and [owner authorization](../verification/release-publication-authorization.json)
+  bind the final software gates to the retained pair. [PR #1072](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1072)
+  owns the publication metadata.
+
+TestPyPI, production PyPI and the GitHub Release use those bytes. The public
+delivery receipt follows registry and release readback. This release preserves
+the supported engineering scope and requires qualified professional review.
+
+
+## v0.28.0 published and verified
+
+**2026-11-12 (Asia/Kolkata).** [PyPI 0.28.0](https://pypi.org/project/structural-lib-is456/0.28.0/)
+and [GitHub v0.28.0](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.28.0) are public. The annotated tag
+targets `d6ca9d2c646cf1b892c391e916427a2171eb89f6`. The retained files were built from merged main
+`7ee5d65dbe2053fca9c1ab9e8ee0beeeddada15c` with the same Python tree `482c4860efe5aa2690a9e767ddda7202522b7dfd`.
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.28.0-py3-none-any.whl` | `2830ac52acc95a370ebc3cd67c895801321f1662549b5db99d6864d52472e9c5` | 1233250 |
+| `structural_lib_is456-0.28.0.tar.gz` | `28793fe7160f3be00560c657fec56c64067a21fb23a5229ec11324fa41501bcb` | 1045221 |
+
+All 20 installed profiles, 29 exact-wheel UAT cases, 454 beam/column tests per
+archive, and six slab/footing cases per archive passed. Required PR, Weekly
+and exact retained-byte gates passed. [TestPyPI](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43182250909)
+and [production](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43182467823) used the qualified
+archives.
+
+Four anonymous public archive downloads match the qualified bytes. A fresh
+no-cache PyPI install imports 0.28.0 from its isolated environment. The
+[public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.28.0/public-install-verification.json)
+has SHA-256 `00ddb6533c5be25a0282bdbfba4cb15f014a98dbefb8d3384235f22fd6b11fc9`. The
+[artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.28.0/artifact-manifest.json)
+records the release and qualification identities.
+
+The beam, column and slab parity work continues in draft
+[PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064) for 0.29. Project-specific engineering and
+professional approval remain outside software publication.
+
+
+## v0.29.0 — Prepared candidate (unreleased; on hold)
+
+Draft [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064) carries the
+[S0–S5 beam, column and slab parity programme](../planning/library-usability-improvement.md#029-beam-column-and-slab-parity-plan)
+and the first slab contract and replay unit. 0.29.0 is not tagged or published.
+The [verified public install](release-status.md) remains 0.28.0. Expanded
+acceptance and exact wheel and source archive qualification are pending.
