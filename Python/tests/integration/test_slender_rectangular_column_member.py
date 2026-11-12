@@ -128,6 +128,7 @@ def test_physical_column_profiles_are_discoverable_and_resolve():
         "check_slender_rectangular_member",
         "check_circular_member",
         "select_column_from_catalogue",
+        "check_column_member_detailing",
     }
     for profile in profiles.values():
         module = importlib.import_module(profile["module"])

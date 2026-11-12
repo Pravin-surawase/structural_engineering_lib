@@ -44,6 +44,18 @@ from structural_lib.services.column_member import (
 from structural_lib.services.column_member import (
     render_four_corner_member_html as _render_four_corner_member_html,
 )
+from structural_lib.services.column_member_detailing import (
+    check_column_member_detailing as _check_column_member_detailing,
+)
+from structural_lib.services.column_member_outputs import (
+    render_column_member_bbs_csv as _render_column_member_bbs_csv,
+)
+from structural_lib.services.column_member_outputs import (
+    render_column_member_detailing_html as _render_column_member_detailing_html,
+)
+from structural_lib.services.column_member_outputs import (
+    render_column_member_detailing_svg as _render_column_member_detailing_svg,
+)
 from structural_lib.services.column_positioned_member import (
     check_positioned_rectangular_member as _check_positioned_rectangular_member,
 )
@@ -79,6 +91,9 @@ from structural_lib.services.contracts.column_member import (
     RectangularColumnCageV1,
     TiedRectangularColumnInputV1,
 )
+from structural_lib.services.contracts.column_member_detailing import (
+    ColumnMemberDetailingInputV1,
+)
 from structural_lib.services.contracts.column_section import (
     ColumnSectionInputV1,
     ColumnSectionLayerResponseV1,
@@ -104,6 +119,7 @@ __all__ = [
     "ColumnDesignResult",
     "CircularColumnInputV1",
     "ColumnCatalogueInputV1",
+    "ColumnMemberDetailingInputV1",
     "FamilyIdentityV1",
     "CanonicalFamilyResultV1",
     "ColumnActionsV1",
@@ -142,6 +158,11 @@ __all__ = [
     "load_four_corner_member",
     "load_circular_member",
     "load_column_catalogue",
+    "load_column_member_detailing",
+    "check_column_member_detailing",
+    "render_column_member_detailing_html",
+    "render_column_member_detailing_svg",
+    "render_column_member_bbs_csv",
     "select_column_from_catalogue",
     "render_column_catalogue_html",
     "render_column_catalogue_svg",
@@ -157,6 +178,185 @@ __all__ = [
     "render_slender_rectangular_member_html",
     "render_slender_rectangular_member_svg",
 ]
+
+
+def load_column_member_detailing(
+    value: Mapping[str, object] | str | bytes | ColumnMemberDetailingInputV1,
+) -> ColumnMemberDetailingInputV1:
+    """Load the physical member, tie grid and supplied actions.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or ColumnMemberDetailingInputV1
+        Member request or its JSON representation.
+
+    Returns
+    -------
+    ColumnMemberDetailingInputV1
+        Validated immutable member request.
+
+    Raises
+    ------
+    InputContractError
+        The request violates the input contract.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    Uses mm, kN, kNm and N/mm². Member actions and project detail evidence are supplied.
+
+    Provenance
+    ----------
+    Versioned COL07 member input contract.
+    """
+    if isinstance(value, ColumnMemberDetailingInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(ColumnMemberDetailingInputV1, value)
+    return model_validate_or_error(ColumnMemberDetailingInputV1, value)
+
+
+def check_column_member_detailing(
+    request: ColumnMemberDetailingInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check the member's supplied actions and physical detailing.
+
+    Parameters
+    ----------
+    request : ColumnMemberDetailingInputV1
+        Validated request from load_column_member_detailing.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Station strength and shear, tie zones, end development, splice checks and BBS disposition.
+
+    Raises
+    ------
+    InputContractError
+        A validated typed request is required.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    Ordinary short tied eight-bar rectangles. A physical lap assembly needs separate verification.
+
+    Provenance
+    ----------
+    IS 456 Cl. 26.2, 26.5.3.2 and Cl. 40, Tables 19 and 20.
+    """
+    return _check_column_member_detailing(request)
+
+
+def render_column_member_detailing_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the member report and checked reinforcement schedule.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of check_column_member_detailing.
+
+    Returns
+    -------
+    str
+        HTML report including section, signed actions, checks and available BBS.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the column member detailing workflow.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    The report covers only the supplied action and detailing basis.
+
+    Provenance
+    ----------
+    Projects the checked result without recalculation.
+    """
+    return _render_column_member_detailing_html(result)
+
+
+def render_column_member_detailing_svg(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Draw the section and member elevation with checked tie levels.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of check_column_member_detailing.
+
+    Returns
+    -------
+    str
+        SVG showing the input identity, revisions and engineering status.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the column member detailing workflow.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    A schematic projection. Splice and closure bend shapes require their own fabrication detail.
+
+    Provenance
+    ----------
+    Projects checked bar coordinates and transverse stations.
+    """
+    return _render_column_member_detailing_svg(result)
+
+
+def render_column_member_bbs_csv(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str | None:
+    """Export the continuous member bar bending schedule.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of check_column_member_detailing.
+
+    Returns
+    -------
+    str | None
+        CSV tied to the checked member or None when mandatory checks are held or failed.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the column member detailing workflow.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    Transverse cuts use the supplied approved register for this detailing revision.
+
+    Provenance
+    ----------
+    Checked station quantities and declared cut lengths; steel mass uses the shared BBS calculation.
+    """
+    return _render_column_member_bbs_csv(result)
 
 
 def load_column_catalogue(

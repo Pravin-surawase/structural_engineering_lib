@@ -28,6 +28,11 @@ All notable changes to this project will be documented in this file.
   signed combinations, reports unresolved searches, and holds locally
   feasible candidates that need refreshed analysis. Includes a worked
   example, checked report and local section drawing.
+- Short tied eight-bar column member checks for supplied principal-plane
+  shear, explicit tie zones, straight end development and compression lap
+  lengths and locations. The worked continuous member has an elevation,
+  calculation report and bar bending schedule. Physical lap assemblies
+  remain on HOLD pending their own verification.
 
 ### Fixed
 

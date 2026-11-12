@@ -2234,6 +2234,15 @@ analysis is stale or incompatible. Column shear, member-wide fabrication and
 seismic checks remain separate.
 
 
+**COL07 first member packet.** The [frozen independent cases](../verification/library-029-col07-column-member.json)
+and [worked example](../cookbook/python/column-member-detailing.md) check one
+short tied eight-bar rectangle for supplied principal-plane shear, a
+continuous tie grid, straight development, and compression lap length and
+placement. The continuous-bar schedule, report and section/elevation
+share the checked member identity. A spliced member stays HOLD until
+its physical assembly is checked. Slender, mixed and circular cage
+extensions and the full COL07 acceptance row remain open.
+
 ## Work and completion evidence
 
 | Area | Required outcome | Evidence |

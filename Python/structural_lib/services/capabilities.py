@@ -151,14 +151,14 @@ _CAPABILITIES = (
             "effective-length inputs. Separate Python family-facade profiles check "
             "physical four-, six-, eight- and mixed-bar cages, scoped slender rectangles, "
             "short circular cages with closed rings or spirals, and finite catalogue "
-            "selection for short eight-bar rectangles."
+            "selection and member detailing for short eight-bar rectangles."
         ),
         held_cases=(
             "Circular-section column design outside the short braced regular-bar-ring check remains held, including slender members and automatic cage selection.",
             "General arbitrary multilayer cages outside the named positioned-bar and restraint profiles remain held.",
             "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
             "Load-envelope generation, frame analysis, and effective-length derivation beyond the declared end-condition model are excluded. Automatic sizing outside the finite eight-bar rectangular profile remains held.",
-            "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway and member-wide detailing remain outside this profile.",
+            "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway and member-wide detailing of slender cages remain outside this profile.",
         ),
         qualified_review_required=True,
         python_profiles=(
@@ -221,6 +221,16 @@ _CAPABILITIES = (
                 "Finite selection of short braced rectangular sizes, eight equal longitudinal bars and explicit hoop/link options. Checks supplied signed combinations and holds a candidate that needs refreshed analysis.",
                 "docs/cookbook/python/column-catalogue-selection.md",
                 "Python/examples/column_catalogue_selection.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.member-detailing/v1",
+                "structural_lib.design.is456.column",
+                "load_column_member_detailing",
+                "check_column_member_detailing",
+                "column-member-detailing-input/v1",
+                "Short braced eight-bar tied rectangles with supplied principal-plane shear, physical tie zones, straight end development and compression lap checks. The continuous-bar BBS requires matching transverse cut data; unresolved splice assemblies remain HOLD.",
+                "docs/cookbook/python/column-member-detailing.md",
+                "Python/examples/column_member_detailing.py",
             ),
         ),
     ),

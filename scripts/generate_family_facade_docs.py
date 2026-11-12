@@ -95,6 +95,11 @@ def _page(workflow: Any, recipe: Any) -> str:
                 "select_column_from_catalogue",
                 "render_column_catalogue_html",
                 "render_column_catalogue_svg",
+                "load_column_member_detailing",
+                "check_column_member_detailing",
+                "render_column_member_detailing_html",
+                "render_column_member_detailing_svg",
+                "render_column_member_bbs_csv",
             )
         )
         related_workflow = (
@@ -110,6 +115,8 @@ def _page(workflow: Any, recipe: Any) -> str:
             "[circular column guide](circular-column-member-check.md).\n\n"
             "To select a short eight-bar rectangle from approved sizes, bars and ties, see the "
             "[column catalogue guide](column-catalogue-selection.md).\n\n"
+            "For supplied column shear, tie zones, end development and schedules, see the "
+            "[column member detailing guide](column-member-detailing.md).\n\n"
         )
     api_members = "\n".join(f"        - {name}" for name in members)
     engineering_failure = ""

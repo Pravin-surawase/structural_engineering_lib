@@ -27,6 +27,7 @@ TESTS = tuple(
         "test_slender_rectangular_column_member",
         "test_circular_column_member",
         "test_column_candidate_search",
+        "test_column_member_detailing",
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
@@ -54,6 +55,7 @@ EXAMPLES = tuple(
         "slender_rectangular_column_member",
         "circular_column_member",
         "column_catalogue_selection",
+        "column_member_detailing",
         "torsion_station_reference",
         "physical_torsion_member",
         "t_beam_member",
@@ -79,11 +81,13 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col04_reference.py",
     "docs/verification/check_library_029_col05_reference.py",
     "docs/verification/check_library_029_col06_reference.py",
+    "docs/verification/check_library_029_col07_reference.py",
 )
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
 COL06_REFERENCE = "docs/verification/library-029-col06-column-catalogue.json"
+COL07_REFERENCE = "docs/verification/library-029-col07-column-member.json"
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -98,6 +102,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / COL04_REFERENCE,
                 repo / COL05_REFERENCE,
                 repo / COL06_REFERENCE,
+                repo / COL07_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -484,6 +489,32 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             svg = drawing.read_text()
             assert input_hash in svg and child_hash in svg
             ElementTree.fromstring(svg)
+    col07_cases = json.loads((clone / COL07_REFERENCE).read_text())["cases"]
+    for case, entry in col07_cases.items():
+        label = f"column-member-detailing-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/column_member_detailing.py",
+            "--reference",
+            str(clone / COL07_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        member = json.loads(stdout)
+        assert member == json.loads((directory / "result.json").read_text())
+        assert member["envelope"]["engineering_status"] == entry["expected"]["status"]
+        input_hash = member["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
+        drawing = (directory / "member.svg").read_text()
+        assert input_hash in drawing
+        ElementTree.fromstring(drawing)
+        bbs = directory / "bbs.csv"
+        assert bbs.is_file() == entry["expected"]["bbs_available"]
+        if bbs.is_file():
+            assert input_hash in bbs.read_text()
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):
         run(
             name,

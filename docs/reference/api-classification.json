@@ -15151,8 +15151,8 @@
     {
       "module": "structural_lib.design.is456.column",
       "export_classification": "preview",
-      "declared_export_count": 55,
-      "classified_symbol_count": 65,
+      "declared_export_count": 61,
+      "classified_symbol_count": 71,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -15313,6 +15313,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ColumnMemberDetailingInputV1",
+          "qualified_name": "structural_lib.design.is456.column.ColumnMemberDetailingInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member_detailing",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -15794,6 +15813,35 @@
           }
         },
         {
+          "name": "check_column_member_detailing",
+          "qualified_name": "structural_lib.design.is456.column.check_column_member_detailing",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'ColumnMemberDetailingInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "check_four_corner_member",
           "qualified_name": "structural_lib.design.is456.column.check_four_corner_member",
           "kind": "function",
@@ -16092,6 +16140,35 @@
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
             "signature": "(value: 'Mapping[str, object] | str | bytes | ColumnCatalogueInputV1') -> 'ColumnCatalogueInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_column_member_detailing",
+          "qualified_name": "structural_lib.design.is456.column.load_column_member_detailing",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | ColumnMemberDetailingInputV1') -> 'ColumnMemberDetailingInputV1'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -16433,6 +16510,93 @@
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
             "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str | None'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_member_bbs_csv",
+          "qualified_name": "structural_lib.design.is456.column.render_column_member_bbs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str | None'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_member_detailing_html",
+          "qualified_name": "structural_lib.design.is456.column.render_column_member_detailing_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_member_detailing_svg",
+          "qualified_name": "structural_lib.design.is456.column.render_column_member_detailing_svg",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
             "docstring_sections": [
               "examples",
               "limitations",
