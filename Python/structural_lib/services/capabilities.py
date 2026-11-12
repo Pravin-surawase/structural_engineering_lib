@@ -128,10 +128,13 @@ _CAPABILITIES = (
             "N/mm2, plus maintained Level-A deflection and crack-width checks when "
             "their explicit inputs are supplied; and monolithic sagging T-beam "
             "flexure with effective-flange-width calculation, web shear, and the "
-            "same explicit serviceability boundary."
+            "same explicit serviceability boundary. The separate continuous-beam "
+            "Python profile checks signed sagging and hogging, shear, and straight "
+            "anchorage against declared concurrent rows for two rectangular spans."
         ),
         held_cases=(
-            "L-beam, hogging/flange-in-tension, flanged torsion, hollow/box, deep, prestressed, or axially loaded cases are excluded.",
+            "L-beam, flanged hogging, flanged torsion, hollow/box, deep, prestressed, or axially loaded cases are excluded.",
+            "The two-span Python profile requires supplied concurrent actions and holds stale or missing rows and anchorage. Serviceability, source-model completeness and fabrication are separate checks.",
             "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
             "Load-envelope generation and completeness validation are excluded; the flanged route accepts only declared supplied factored actions.",
             "Composed flanged detailing remains excluded.",
@@ -139,6 +142,18 @@ _CAPABILITIES = (
             "Serviceability is held unless span, support condition, crack geometry, and service strain or stress are explicitly supplied.",
         ),
         qualified_review_required=True,
+        python_profiles=(
+            IS456PythonProfile(
+                "is456.beam.continuous-check/v1",
+                "structural_lib.design.is456.beam",
+                "load_continuous",
+                "check_continuous",
+                "is456-continuous-beam-check/v1",
+                "Two-span prismatic rectangular beam with actual single-layer face bars, supplied concurrent signed actions and straight support anchorage. Service rows are retained for separate review.",
+                "docs/cookbook/python/continuous-beam-check.md",
+                "Python/examples/continuous_beam_check.py",
+            ),
+        ),
     ),
     IS456Capability(
         element="column",

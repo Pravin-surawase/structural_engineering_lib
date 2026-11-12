@@ -552,6 +552,9 @@ def _beam_reference() -> str:
         "bbs",
         "load_supplied_check",
         "check_supplied",
+        "load_continuous",
+        "check_continuous",
+        "render_continuous_html",
     )
     rows: list[str] = []
     sections: list[str] = []
@@ -597,6 +600,7 @@ Source package version: `{PROJECT_VERSION}`
 | Journey | Request | Result | Intake/calculation errors |
 |---|---|---|---|
 | Required design/detailing | `BeamDesignInputV1` | `BeamDesignResultV1`, `BeamDetailingResultV1`, `BeamDesignAndDetailResultV1`, `BeamBBSResultV1` | `InputContractError` / `input-issue/v1`; calculation errors remain distinct |
+| Two-span supplied actions | `BeamContinuousCheckRequestV1` | `BeamContinuousCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
 | Supplied reinforcement | `BeamSuppliedCheckRequestV2` | `BeamSuppliedCheckResultV2` with `PASS`/`FAIL`/`HOLD` | Same Python issue boundary; REST 422 problem; WebSocket terminal `ERROR` |
 
 The typed request schemas own field type, unit-suffixed name, domain,
@@ -610,6 +614,7 @@ are also in `/openapi.json`; WebSocket uses the checked-in
 
 - [Design valid, invalid, and engineering `FAIL`](../cookbook/python/beam-design.md)
 - [Supplied check valid, invalid, `FAIL`, and `HOLD`](../cookbook/python/beam-supplied-check.md)
+- [Two-span continuous beam, concurrent rows and review report](../cookbook/python/continuous-beam-check.md)
 - [Flat V1 supplied-check migration](../migration/beam-supplied-check-v2.md)
 - REST: `POST /api/v2/design/beam` and retained path
   `POST /api/v1/design/beam/check`

@@ -41,6 +41,9 @@ All notable changes to this project will be documented in this file.
   corner restraint and mirrored upper links that clear the top midpoint
   bar. The member checks use the shifted section and conservative shear
   depth. The drawing and BBS include the checked corner-link marks.
+- A two-span rectangular beam check for actual face bars, signed sagging
+  and hogging, shear, concurrent combinations and straight anchorage.
+  The Python example and HTML report retain governing stations and revisions.
 
 ### Fixed
 

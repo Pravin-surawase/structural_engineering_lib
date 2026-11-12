@@ -19,6 +19,7 @@ TESTS = tuple(
     f"Python/tests/integration/{name}.py"
     for name in (
         "test_beam_comparator_example",
+        "test_continuous_beam_check",
         "test_layered_column_section",
         "test_beam_section_closure",
         "test_four_corner_column_member",
@@ -48,6 +49,7 @@ EXAMPLES = tuple(
     f"Python/examples/{name}.py"
     for name in (
         "beam_comparator_reference",
+        "continuous_beam_check",
         "layered_column_section",
         "beam_section_closure",
         "four_corner_column_member",
@@ -77,6 +79,7 @@ CHECKERS = tuple(
         "t_beam_reference",
     )
 ) + (
+    "docs/verification/check_library_029_beam01_reference.py",
     "docs/verification/check_library_029_col02_reference.py",
     "docs/verification/check_library_029_col03_reference.py",
     "docs/verification/check_library_029_col04_reference.py",
@@ -86,6 +89,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col07_splice_reference.py",
     "docs/verification/check_library_029_col07_corner_reference.py",
 )
+BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
@@ -103,6 +107,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 *(repo / name for name in (*TESTS, *EXAMPLES, *CHECKERS)),
                 *(repo / "docs/verification").glob("library-027-*.json"),
                 repo / "docs/verification/library-029-col02-rectangular-column.json",
+                repo / BEAM01_REFERENCE,
                 repo / COL03_REFERENCE,
                 repo / COL04_REFERENCE,
                 repo / COL05_REFERENCE,
@@ -331,6 +336,30 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     for checker in CHECKERS:
         run(Path(checker).stem, checker)
+    continuous_cases = json.loads((clone / BEAM01_REFERENCE).read_text())["cases"]
+    for case, entry in continuous_cases.items():
+        directory = output / f"continuous-beam-{case}"
+        expected = entry["ultimate_status"]
+        stdout = run(
+            f"continuous-beam-{case}",
+            "Python/examples/continuous_beam_check.py",
+            "--reference",
+            str(clone / BEAM01_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+            expected_code=2 if expected == "BLOCKED" else 0,
+        )
+        result = json.loads(stdout)
+        if expected == "BLOCKED":
+            assert result["details"]["issues"]
+            assert not directory.exists()
+            continue
+        assert result["ultimate_status"] == expected
+        assert result == json.loads((directory / "result.json").read_text())
+        identity = result["result_envelope"]["result_identity"]["input_hash"]
+        assert identity in (directory / "report.html").read_text()
     for name in (
         "beam_comparator_reference",
         "layered_column_section",

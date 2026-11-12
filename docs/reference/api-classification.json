@@ -13471,13 +13471,16 @@
     "exact_wheel_beam_operations": [
       "bbs",
       "check",
+      "check_continuous",
       "check_supplied",
       "design",
       "design_and_detail",
       "detail",
       "input",
       "load",
-      "load_supplied_check"
+      "load_continuous",
+      "load_supplied_check",
+      "render_continuous_html"
     ],
     "example_inventory": [
       {
@@ -13490,6 +13493,13 @@
       {
         "example_id": "is456.beam.facade.check.docstring",
         "operation": "check",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
+        "example_id": "is456.beam.facade.check_continuous.docstring",
+        "operation": "check_continuous",
         "kind": "DOCSTRING",
         "expected": "EXECUTES_FROM_EXACT_WHEEL",
         "path": "docs/reference/beam-facade.md"
@@ -13537,8 +13547,22 @@
         "path": "docs/reference/beam-facade.md"
       },
       {
+        "example_id": "is456.beam.facade.load_continuous.docstring",
+        "operation": "load_continuous",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
         "example_id": "is456.beam.facade.load_supplied_check.docstring",
         "operation": "load_supplied_check",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
+        "example_id": "is456.beam.facade.render_continuous_html.docstring",
+        "operation": "render_continuous_html",
         "kind": "DOCSTRING",
         "expected": "EXECUTES_FROM_EXACT_WHEEL",
         "path": "docs/reference/beam-facade.md"
@@ -13598,8 +13622,8 @@
     {
       "module": "structural_lib.design.is456.beam",
       "export_classification": "preview",
-      "declared_export_count": 45,
-      "classified_symbol_count": 50,
+      "declared_export_count": 56,
+      "classified_symbol_count": 63,
       "symbols": [
         {
           "name": "BEAM_FIELD_CONTRACTS",
@@ -13741,6 +13765,158 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousActionV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousActionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousBarV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousBarV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousCheckRequestV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousCheckRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousCheckResultV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousCheckResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousCombinationV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousCombinationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousStationV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousStationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousStraightBarsV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousStraightBarsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousSupportV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousSupportV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -14327,6 +14503,54 @@
           }
         },
         {
+          "name": "check_continuous",
+          "qualified_name": "structural_lib.design.is456.beam.check_continuous",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.check_continuous.docstring"
+            ]
+          }
+        },
+        {
+          "name": "check_continuous_beam",
+          "qualified_name": "structural_lib.design.is456.beam.check_continuous_beam",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(request: 'BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "check_supplied",
           "qualified_name": "structural_lib.design.is456.beam.check_supplied",
           "kind": "function",
@@ -14553,6 +14777,37 @@
           }
         },
         {
+          "name": "load_continuous",
+          "qualified_name": "structural_lib.design.is456.beam.load_continuous",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckRequestV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.load_continuous.docstring"
+            ]
+          }
+        },
+        {
           "name": "load_json",
           "qualified_name": "structural_lib.design.is456.beam.load_json",
           "kind": "function",
@@ -14674,6 +14929,54 @@
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
+          }
+        },
+        {
+          "name": "render_continuous_beam_html",
+          "qualified_name": "structural_lib.design.is456.beam.render_continuous_beam_html",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(result: 'BeamContinuousCheckResultV1') -> 'str'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_continuous_html",
+          "qualified_name": "structural_lib.design.is456.beam.render_continuous_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'BeamContinuousCheckResultV1') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.render_continuous_html.docstring"
+            ]
           }
         }
       ]
