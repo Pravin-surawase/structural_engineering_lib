@@ -70,6 +70,7 @@ def test_shear_check_handles_both_axes_and_station_signs() -> None:
             (_capacity(ShearAxis.V2), _capacity(ShearAxis.V3)),
             (
                 ShearDemand("S1", ShearAxis.V2, -100),
+                ShearDemand("S2", ShearAxis.V2, 50),
                 ShearDemand("S1", ShearAxis.V3, 80),
             ),
         )
@@ -77,6 +78,134 @@ def test_shear_check_handles_both_axes_and_station_signs() -> None:
     assert result.engineering == "pass"
     assert {check["axis"] for check in result.outputs["checks"]} == {"v2", "v3"}
     assert result.outputs["governing_utilization"] > 0
+    checks = result.outputs["checks"]
+    assert checks[0]["capacity_result_id"] == checks[1]["capacity_result_id"]
+    assert checks[0]["capacity_result_id"] != checks[2]["capacity_result_id"]
+    assert [check["signed_demand_kn"] for check in checks] == [-100, 50, 80]
+
+
+def _unsupported_capacity(axis: ShearAxis, kind: str) -> ShearCapacityRequest:
+    if kind == "concrete":
+        return replace(_capacity(axis), concrete_strength_n_per_mm2=45)
+    return replace(
+        _capacity(axis),
+        link=replace(_link(), steel_yield_strength_n_per_mm2=550),
+    )
+
+
+@pytest.mark.parametrize("axis", tuple(ShearAxis))
+@pytest.mark.parametrize("kind", ("concrete", "link_grade"))
+def test_unsupported_shear_batch_preserves_capacity_scope_state(axis, kind) -> None:
+    capacity = _unsupported_capacity(axis, kind)
+    producer = shear_capacity(capacity)
+    batch = check_shear(ShearCheckRequest((capacity,), (ShearDemand("S1", axis, 50),)))
+    for result in (producer, batch):
+        assert result.execution == "completed"
+        assert result.applicability == "not_applicable"
+        assert result.engineering == "not_evaluated"
+        assert result.completeness == "complete_for_scope"
+        assert result.freshness == "current"
+        assert result.outputs == {}
+        assert result.diagnostics[0].code == "PROFILE.UNSUPPORTED"
+    assert batch.diagnostics == producer.diagnostics
+
+
+@pytest.mark.parametrize("unsupported_axis", tuple(ShearAxis))
+@pytest.mark.parametrize("kind", ("concrete", "link_grade"))
+@pytest.mark.parametrize("companion", ("pass", "fail", "missing_link", "rejected"))
+@pytest.mark.parametrize("reverse", (False, True))
+def test_mixed_shear_capacity_precedence(
+    unsupported_axis, kind, companion, reverse
+) -> None:
+    unsupported = _unsupported_capacity(unsupported_axis, kind)
+    other_axis = ShearAxis.V3 if unsupported_axis is ShearAxis.V2 else ShearAxis.V2
+    other = _capacity(other_axis)
+    if companion == "fail":
+        other = replace(other, link=_link(spacing_mm=400))
+    elif companion == "missing_link":
+        other = replace(other, link=None)
+    elif companion == "rejected":
+        other = replace(other, resisting_width_mm=-1)
+    producer = shear_capacity(other)
+    assert (
+        producer.engineering
+        == {
+            "pass": "pass",
+            "fail": "fail",
+            "missing_link": "not_evaluated",
+            "rejected": "not_evaluated",
+        }[companion]
+    )
+    capacities = (other, unsupported) if reverse else (unsupported, other)
+    result = check_shear(
+        ShearCheckRequest(
+            capacities,
+            (ShearDemand("S1", ShearAxis.V2, 50), ShearDemand("S1", ShearAxis.V3, 50)),
+        )
+    )
+    rejected = companion == "rejected"
+    assert result.execution == ("rejected_input" if rejected else "completed")
+    assert result.applicability == ("unknown" if rejected else "not_applicable")
+    assert result.completeness == ("partial" if rejected else "complete_for_scope")
+    assert result.engineering == "not_evaluated"
+    assert result.outputs == {}
+    assert result.diagnostics == (
+        producer.diagnostics if rejected else shear_capacity(unsupported).diagnostics
+    )
+
+
+@pytest.mark.parametrize("kind", ("concrete", "link_grade"))
+def test_invalid_shear_demand_precedes_unsupported_scope(kind) -> None:
+    result = check_shear(
+        ShearCheckRequest(
+            (_unsupported_capacity(ShearAxis.V2, kind),),
+            (ShearDemand("", ShearAxis.V2, 50),),
+        )
+    )
+    assert result.execution == "rejected_input"
+    assert result.applicability == "unknown"
+    assert result.engineering == "not_evaluated"
+    assert result.completeness == "partial"
+    assert result.diagnostics[0].code == "INPUT.RANGE"
+
+
+@pytest.mark.parametrize("unsupported", (False, True))
+@pytest.mark.parametrize("missing", ("link", "axis"))
+def test_shear_missing_evidence_holds_unless_scope_is_known_unsupported(
+    unsupported, missing
+) -> None:
+    capacity = _capacity()
+    if unsupported:
+        capacity = _unsupported_capacity(ShearAxis.V2, "concrete")
+    if missing == "link":
+        capacity = replace(capacity, link=None)
+    axis = ShearAxis.V3 if missing == "axis" else ShearAxis.V2
+    result = check_shear(ShearCheckRequest((capacity,), (ShearDemand("S1", axis, 50),)))
+    assert result.execution == "completed"
+    assert result.applicability == ("not_applicable" if unsupported else "unknown")
+    assert result.completeness == ("complete_for_scope" if unsupported else "partial")
+    assert result.engineering == "not_evaluated"
+    assert result.outputs == {}
+    expected_code = (
+        "PROFILE.UNSUPPORTED"
+        if unsupported
+        else (
+            "REINFORCEMENT.REQUIRED" if missing == "link" else "SHEAR.CAPACITY_MISSING"
+        )
+    )
+    assert result.diagnostics[0].code == expected_code
+
+
+def test_evaluated_shear_failure_remains_complete_fail() -> None:
+    result = check_shear(
+        ShearCheckRequest((_capacity(),), (ShearDemand("S1", ShearAxis.V2, 1000),))
+    )
+    assert result.execution == "completed"
+    assert result.applicability == "applicable"
+    assert result.engineering == "fail"
+    assert result.completeness == "complete_for_scope"
+    assert result.outputs["checks"][0]["engineering"] == "fail"
+    assert result.diagnostics[0].code == "SHEAR.FAIL"
 
 
 def test_missing_actual_link_is_not_evaluated() -> None:

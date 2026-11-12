@@ -77,6 +77,40 @@ def test_frozen_primary_actions_and_signed_receiver_transfer(workflow):
             assert check[owner]["engineering"] == "pass"
 
 
+@pytest.mark.parametrize("kind", ("concrete", "link_grade"))
+def test_receiver_retains_unsupported_shear_and_cannot_pass(workflow, kind):
+    request = request_for(workflow, "support_transfer", b.TorsionSupportTransferRequest)
+    supports = tuple(
+        replace(
+            support,
+            **(
+                {
+                    "receiver_section": replace(
+                        support.receiver_section, concrete_strength_n_per_mm2=45
+                    )
+                }
+                if kind == "concrete"
+                else {
+                    "receiver_links": replace(
+                        support.receiver_links, steel_yield_strength_n_per_mm2=550
+                    )
+                }
+            ),
+        )
+        for support in request.supports
+    )
+    result = b.check_torsion_support_transfer(replace(request, supports=supports))
+    assert result.engineering == "fail"
+    assert "SUPPORT.RECEIVER_STRENGTH" in {d.code for d in result.diagnostics}
+    for check in result.outputs["checks"]:
+        shear = check["receiver_shear"]
+        assert shear["execution"] == "completed"
+        assert shear["applicability"] == "not_applicable"
+        assert shear["engineering"] == "not_evaluated"
+        assert shear["completeness"] == "complete_for_scope"
+        assert shear["diagnostics"][0]["code"] == "PROFILE.UNSUPPORTED"
+
+
 def test_every_face_end_has_full_stress_direct_tension_anchorage(workflow):
     target = REFERENCE["expected"]
     anchors = [r for k, r in workflow.results.items() if k.startswith("anchorage-")]
