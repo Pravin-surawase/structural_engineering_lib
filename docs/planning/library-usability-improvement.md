@@ -1,11 +1,16 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-08
+last_updated: 2026-11-12
 doc_type: spec
 ---
 
 # Library usability and implementation quality
+
+**Delivery and usability.** The [beam–column programme guide](beam-column-programme-delivery.md)
+organizes M0–M8 milestones, dependencies, code/API contracts and executable
+documentation for engineers and AI. It preserves the engineering case authority
+below and the repository’s feature/minor versus bug-fix/patch versioning rule.
 
 **Current programme.** The [0.29 beam, column and slab parity plan](#029-beam-column-and-slab-parity-plan)
 defines the next scope in draft [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064).
@@ -1804,7 +1809,8 @@ Other existing family modules do not need reinvention for parity. Continue the
 selected slab/isolated-footing comparisons in 0.28 and retain the current family
 regressions. ACI/EC2 design, composite/prestressed sections, cyclic/confined
 models, fire/residual strength, global frames and general seismic joint design
-are separate later extensions. They are not prerequisites for useful ordinary
+are separate later extensions. The November 12 closure decision below adds only
+the explicitly bounded DUCT01/02 frame-joint workflow, not general seismic design. They are not prerequisites for useful ordinary
 IS 456 beam/column parity, and a comparator's example does not qualify their
 engineering assumptions here.
 
@@ -1827,12 +1833,120 @@ The original 0.27.0 beam and column references remain fixed where named.
 L01 is fixed in public 0.27.0, and public 0.28.0 includes the serializer work.
 Existing regression profiles remain required for 0.29.
 
+### Beam–column closure decision — 2026-11-12
+
+The owner requested this plan be checked and updated to close routine Indian
+reinforced-concrete frame beam and column workflows before shifting the main
+effort to the next element or US codes. This section extends the existing
+S0–S5 plan; it does not mark any added capability implemented, approve a
+release, or discard the original 39 backlog rows and 28 acceptance cases.
+The target is reusable admitted profiles, not “any building” or a promise
+that no future engineering case will require development.
+
+The finish line is **analysis results → checked or selected actual reinforcement
+→ calculation report, drawing and BBS from the same checked revision**. Ordinary
+changes of dimensions, bar layouts and concurrent combinations within each
+published applicability envelope must be inputs, not case-specific code forks.
+A section-strength PASS is not member-detailing acceptance. Report, drawing and
+schedule completeness are distinct from numerical evaluation and design PASS.
+
+At the planning checkpoint, draft #1064 head `38249b6f` contains the slab HTTP
+contract preservation and COL02/COL03 rectangular-cage work. Its reported source
+and two installed beam/column profile checks are partial qualification, not
+completion of this expanded plan. Public 0.28.0 remains the released baseline.
+All targets below remain planned unless their exact acceptance evidence closes
+them. Do not change active implementation or release operations merely because
+this documentation is updated.
+
+#### Ordered completion packets
+
+| Order | Work | Completion boundary |
+|---|---|---|
+| 1 | COL04: slender rectangular columns with actual cages | Signed end moments, separate effective lengths and restraint assumptions on both axes, minimum eccentricity and an explicit first-/second-order action basis. Distinguish member slenderness from global sway/P–Delta. Reject inconsistent bases and prevent double counting second-order effects. |
+| 2 | COL05 and COL06: circular tied/spiral columns and finite-catalogue selection | Independently qualify each confinement model and physical cage. Select sizes, longitudinal bars and transverse reinforcement only from an explicit finite approved catalogue. A size/stiffness change requires refreshed analysis before final member acceptance; a locally feasible section is only a candidate until then. |
+| 3 | Member-wide column and beam completion | Column shear, confinement/tie zones, lap/anchorage locations and member schedules. Simply supported, continuous and cantilever rectangular/T/L beams, both bending signs, multilayer bars, concurrent M/V/T, equilibrium-torsion edge beams, development/curtailment/laps, cracking and short-/long-term deflection. Preserve the BEAM/SERV cases below and add the closure cases below. |
+| 4 | Imported project and outputs | Qualify the FLOW04 member-row adapter in S3 against one pinned ETABS or STAAD export for both elements. Use that adapter here for batch/storey execution and revision replay. Retain storey/member/station, units, axes, end orientation, concurrent combination IDs and analysis revision through all outputs. |
+| 5 | Bounded IS 13920 frame/joint workflow | Interior and exterior beam–column joints with capacity shear, confinement, strong-column/weak-beam, joint shear and anchorage under explicitly supplied compatible analysis evidence. This is a new ductile-detailing scope, not merely another IS 456 check. |
+| 6 | Three reference projects and exact archives | Complete the gravity, slender/torsion and ductile project cases below from both wheel and sdist installations, retaining all prior qualified regression profiles and the existing slab commitments. |
+
+Packets follow the [M0–M8 delivery guide](beam-column-programme-delivery.md).
+The earlier 0.29.x feature-release suggestion is superseded: patches are for
+bug fixes under the repository policy, and feature releases use minor versions.
+The expanded S0–S5 candidate remains the 0.29 target. If the owner selects a
+narrower candidate, identify and qualify its exact admitted cases before
+publication. A gravity beam–column closure claim requires PROJECT01 and
+PROJECT02 to pass. Ductile closure also requires PROJECT03. Slab commitments
+remain in S0–S5. Foundation and stair extensions have their own scope.
+
+#### Added closure acceptance cases
+
+These extend, rather than replace, the exact cases below. They are specification
+rows, not frozen numerical fixtures. Before implementation, freeze dimensions,
+materials, bars, joints/supports, actions, reference source/version, independent
+expected numbers, applicability and tolerances under S1. Missing independent
+values holds the affected engineering acceptance case. An unavailable licensed
+comparison holds that comparator claim. FLOW04 and the imported project cases
+require a real source export and independent acceptance evidence.
+
+| Case | Required fixture and negative controls | Acceptance evidence |
+|---|---|---|
+| COL07 — member shear and fabrication | Admitted COL02–COL05 cages with full member length, end-zone geometry, column shear actions, tie/spiral zones, splice locations, anchorage and bar continuity. Controls: inadequate shear reinforcement, bad lap zone, insufficient anchorage, congested/unsupported restraint. | Independent shear and detailing checks; schedule, drawing and report use the same bars, ties, zones and revision. Local section acceptance cannot bypass a failed or held member check. |
+| BEAM07 — equilibrium torsion | A regular edge beam with signed concurrent M/V/T rows and a declared equilibrium-torsion load path; include governing torsion, inadequate links/longitudinal steel, and missing torsion-basis controls. Retain BEAM06 regression. | Independent combined flexure/shear/torsion and anchorage checks. Do not discard equilibrium torsion as compatibility torsion or combine independent maxima into a nonexistent action row. Admit flanged torsion only with its own verified method; otherwise retain an explicit limitation. |
+| FLOW04 — analysis import and revision | Pin one ETABS or STAAD release/export schema, a beam and column example, station/face conventions, units, axis transformation, combination types and source model fingerprint. Controls: missing combination, flipped axes/end orientation, unsupported schema, duplicate/conflicting station, stale analysis after section change. | Reconcile source rows and counts to imported rows; independently verify signs/transforms and governing IDs. Size, stiffness or connectivity changes invalidate acceptance until new compatible analysis is supplied. Reinforcement-only changes still require recheck and invalidate analysis where its stiffness basis depends on that reinforcement. No silent row loss. |
+| DUCT01 — interior joint | Freeze a regular interior frame joint with beam/column capacities, concurrent factored axial loads, geometry, bars and analysis basis; both shaking directions in each applicable principal plane. | Independently verify beam/column capacity shear, confinement, SCWB, joint shear and anchorage with code edition/amendment provenance. Joint PASS requires every applicable check, not the existing SCWB result alone. |
+| DUCT02 — exterior joint | Freeze a regular exterior joint with explicit terminated-bar anchorage and joint boundary conditions. Controls independently fail SCWB, joint shear, anchorage and confinement; include missing orthogonal-direction evidence. | No whole-joint PASS when a required check/direction is missing. Schedules and drawings reflect confinement zones, bends and anchorage actually checked. |
+| PROJECT01 — gravity frame | A regular reference frame with continuous/cantilever beams, rectangular/T/L profiles and realistic columns; run the same imported action set through checking and selection. | Independently frozen values and governing combinations, deliberate design failures and complete reports/drawings/BBS from both installed archives. All admitted members accounted for. |
+| PROJECT02 — slender/torsion frame | Reference frame with different effective lengths on column axes, signed end moments and an equilibrium-torsion edge beam. Include stale-analysis and double-counting controls. | Reconcile second-order basis with external analysis and verify independent member targets, output identities and expected FAIL/HOLD dispositions. |
+| PROJECT03 — ductile frame | Reference frame with admitted interior/exterior joints, traceable seismic design actions and the DUCT01/02 directions and controls. | Full bounded joint/member check inventory and consistent outputs from both installed archives. Supplied seismic actions do not establish global seismic-system compliance. |
+
+#### Station import and project controls
+
+Freeze these controls in the named cases before their implementation. The
+beam controls exercise supplied actions and independent equilibrium. They
+leave load generation and any additional resistance profile to its own case.
+
+| Case | Additional control | Expected observation |
+|---|---|---|
+| BEAM01/02 — critical stations | For the continuous member, add a supplied pattern loading one span and keep the internal support's two faces and centreline distinct. For the 2 m BEAM02 cantilever, add a 10 kN factored point load at 1000 mm to the original uniform load. Include the two sides of the load station. | Independently verify the governing face/station and the 10 kN shear jump. Retain both sides at one coordinate without merging them or interpolating across the jump. Hold full-member coverage if a required station or side is absent. |
+| FLOW04 — unit and action fidelity | Map equivalent beam and column rows in kN/kN·m/mm and N/N·mm/m. Include conflicting declared units between the source metadata and the adapter configuration. Repeat with nonzero beam axial force or minor-axis actions outside the admitted profile, and with an uplift row on a compression-only column. | Equivalent units normalize within the frozen tolerances. Inconsistent metadata is rejected. Keep each supplied component and its sign traceable. Report unqualified actions explicitly and withhold member acceptance. |
+| FLOW04 / PROJECT01 — combination inventory | Declare `U1,U2,S1,S2` required for one member, then provide only `U1,S1,S2`. Exercise the same input with an extra unclassified row. | Available rows can be evaluated. The member and project remain HOLD for missing `U2`. Report the missing and unclassified IDs. Withhold an accepted project output and retain clearly marked diagnostics. |
+| PROJECT01 — mixed batch | Submit four independent member records with stable IDs. Use one admitted PASS, one conclusive strength FAIL, one missing-evidence HOLD and one malformed member. | Account for all four IDs with exact per-member dispositions and counts, including an intake error for the malformed record. Keep engineering and intake statuses distinct. The project receives no accepted label or accepted project schedule. |
+
+The existing IS 13920 modules are starting components: beam ductility, column
+geometry/confinement and a bounded SCWB check. The current joint API explicitly
+checks one principal plane and shaking direction; it is not a complete joint
+assessment. S1 must inventory which capacity-shear, joint-shear and anchorage
+checks are missing and freeze the governing IS 13920 edition/amendments and
+applicability before building DUCT01/02. Keep seismic action generation, global
+lateral stability/drift, system qualification and irregular/special systems
+outside this packet unless separately admitted. No PE seal or whole-building
+approval is implied.
+
+#### Completion and transition gate
+
+For all three projects, freeze independent values before observing candidate
+results. Require every promised check and member to have an explicit outcome;
+nominal admitted designs must satisfy their targets and deliberate failures must
+fail for the intended reason. A high percentage or a large test count cannot
+hide an essential missing check. Verify governing combinations, selected steel,
+bar geometry, lengths/quantities and source revisions across every advertised
+Python/API/UI/CLI/report/drawing/BBS surface; label unqualified surfaces rather
+than implying parity. Capture manual interventions and remaining exclusions.
+
+Use exact installed wheel and sdist hashes with site-packages origin, no checkout
+imports, and the final S5 receipt. Retain independent engineering review of
+representative calculation and buildable detailing evidence before engineering-
+use claims. Freeze the supported-case matrix and residual backlog when closure
+passes; later US work can reuse geometry, actions and reporting, but must have
+separate code-specific laws, factors, detailing and independent references.
+
 ### Comparator targets and claim criteria
 
 | Comparator | Evidence and target for 0.29 | Claim earned only on passing cases |
 |---|---|---|
 | [rcdesign 0.4.18](https://github.com/satish-annigeri/rcdesign/releases/tag/v0.4.18) | Same-code section comparisons using the [frozen reference](../verification/library-027-comparator-reference.md). Retain separate expected values where Fig. 21 integration, Annex G, displaced concrete or shear interpolation conventions differ. | Comparable IS 456 section results for the matched cases. Establish an advantage in breadth if the added physical member and solid-slab journeys pass and the comparator inventory still lacks those workflows. |
 | [concreteproperties](https://concrete-properties.readthedocs.io/en/stable/user_guide/analysis.html) and [StructuralCodes](https://fib-international.github.io/structuralcodes/quickstart/index.html) | Match bar centres, material stress–strain laws, sign convention, units and reference axes. Compare equilibrium, section properties and signed interaction for the admitted reinforced-concrete sections. | Matched-law parity for the qualified section population. General geometry, arbitrary laws and moment–curvature remain capabilities of the broader tools. |
+| [ETABS](https://docs.csiamerica.com/help-files/etabs/Getting_Started/Concrete_Frame_Design_Procedure.htm), [STAAD](https://docs.bentley.com/LiveContent/web/STAAD.Pro%20Help-v2024/en/topics/Design_Codes/Indian_Codes/c-stpst_IS456_Beam_Design.html) and [RCDC](https://www.bentley.com/wp-content/uploads/PDS-STAAD-Advanced-Concrete-Design-LTR-EN-LR.pdf) | Pin licensed product/version, code settings and identical source actions for workflow comparisons; compare checked geometry, bar marks, lengths and schedules for detailing. Align all numerical assumptions before numerical comparison. | Named project workflow/output parity only on witnessed matched cases. Marketing pages are scope references, not independent calculation evidence or proof of equality. Unavailable product runs stay HOLD for that comparison. |
 | [Mento](https://github.com/mento-calc/mento) | Compare public beam workflow steps for supplied actions, provided/required steel, governing checks, alternatives and reports. Its native codes differ and its README lists columns on the roadmap. | Comparable workflow steps for the admitted beam cases. Judge engineering numbers against IS 456 references. |
 | [ACI slab collection](https://github.com/arisa-chan/rc-design-collection-web) and [OpenSees ShellMITC4](https://opensees.berkeley.edu/OpenSees/manuals/usermanual/640.htm) | Compare beta slab workflow and shell-analysis capability separately. Use the [solid-slab evidence](../verification/is456-slab-evidence.md) and independent controlled-source sheets for IS 456 topology, coefficients, shear, serviceability and detailing. | Reproducible IS 456 strip/panel design on the admitted slab cases. General shell analysis and cross-code design remain outside this comparison. |
 
@@ -1850,10 +1964,10 @@ engineering approval.
 |---|---|---|
 | S0 — Rebind and recheck | Planning owner reconciles #1064 with current main. Review scope, comparable methods, source rights, case coverage, order and archive qualification before implementation. | Current main is an ancestor, original roadmap and 39 rows retained, independent review findings resolved. |
 | S1 — Freeze evidence and preserve slab contracts | Slab services, HTTP models and release replay owners start with SL01–SL03. Independently derive each later packet's reference before editing its kernel. | Preserve four slab HTTP route dispositions and replay B02/B04. For each later case freeze input/fixture hash, code or worksheet locator, material laws, expected numerical values and controls before implementation of that case. |
-| S2 — Actual bars, sections and columns | Core and IS 456 owners reuse bar/geometry records, strain compatibility and column services. Sequence BC01–BC03, rectangular BC04, then round sections BC05, and extend stable P–M/PMM only after bounded convergence. | COL01–COL06 and SEC01–SEC03. Close each physical profile only with checks, geometry and stable outputs as applicable. |
-| S3 — Beam members and supplied action sets | Beam and action owners compose BC02/BC06 atop S2's identities and section basis. Preserve existing single-row signatures. | BEAM01–BEAM06 plus FLOW01. Real concurrent rows govern; unsupported topology and missing service basis keep their dispositions. |
-| S4 — Serviceability and usable outputs | IS 456 serviceability and application owners deliver BC07/BC10/BC11 and solid slab extensions. Reuse existing report and schedule projections, and check the same bar revision. | SERV01–SERV03, SL04–SL07, FLOW02–FLOW03. Expose source, stations and signed bar face. Unmet reference or method applicability stays HOLD. |
-| S5 — Exact expanded candidate | Qualification owner reruns the frozen plan on merged exact source, in clean wheel and sdist environments. Retain existing footings, flat-slab and all previously qualified beam/column profiles. | Both archive builds, source/artifact hashes, independent case results and negative controls, generated contracts, required hosted checks and exact-head candidate receipt. Replay each newly advertised profile from each archive. Run release preflight and retain the comparison matrix and scope in the candidate handoff. Stop before release operations. |
+| S2 — Actual bars, sections and columns | Core and IS 456 owners reuse bar/geometry records, strain compatibility and column services. Sequence BC01–BC03, rectangular BC04, then round sections BC05, and extend stable P–M/PMM only after bounded convergence. | COL01–COL07 and SEC01–SEC03; COL04 is the next packet after the implemented COL02/03 checkpoint. Close each physical profile only with checks, geometry and stable outputs as applicable. |
+| S3 — Beam members and supplied action sets | Beam and action owners compose BC02/BC06 atop S2's identities and section basis. Preserve existing single-row signatures. | BEAM01–BEAM07 plus FLOW01/FLOW04; preserve concurrent imported actions and revision validity. Real concurrent rows govern; unsupported topology and missing service basis keep their dispositions. |
+| S4 — Serviceability and usable outputs | IS 456 serviceability and application owners deliver BC07/BC10/BC11 and solid slab extensions. Reuse existing report and schedule projections, and check the same bar revision. | SERV01–SERV03, SL04–SL07, FLOW02–FLOW03; qualify DUCT01/02 after their S1 freeze, before claiming ductile-frame closure. Expose source, stations and signed bar face. Unmet reference or method applicability stays HOLD. |
+| S5 — Exact expanded candidate | Qualification owner reruns the frozen plan on merged exact source, in clean wheel and sdist environments. Retain existing footings, flat-slab and all previously qualified beam/column profiles. | PROJECT01–PROJECT03 and every admitted closure case from both archive builds, source/artifact hashes, independent case results and negative controls, generated contracts, required hosted checks and exact-head candidate receipt. Replay each newly advertised profile from each archive. Run release preflight and retain the comparison matrix and scope in the candidate handoff. Stop before release operations. |
 
 Close a backlog row only against its whole definition. The 0.29 target covers
 B01–B06, C01–C10, S01/S04/S05/S07/S08, V01–V04 and W01–W04 in the admitted
@@ -1863,8 +1977,8 @@ voids/polygons, broad torsion histories B07, S06/S09/S10, W05/W06 and O01/O02
 stay open. Regular circular tied and spiral columns are target cases and keep
 HOLD if their confinement or detailing evidence is missing. Existing admitted
 rectangular torsion and regular-interior flat-slab workflows are regression
-profiles. General flat slabs, concentrated loads/openings and FEM are outside
-this increment.
+profiles. General flat slabs, slabs with concentrated loads or openings, and
+general FEM are outside this increment.
 
 ### Exact acceptance cases
 
@@ -1903,7 +2017,7 @@ the greater of 1% or 0.01 mm, with exact limit dispositions.
 | COL01 · existing regression | [LIB-027 four-corner 300×400](../verification/library-027-four-corner-column.json), M25/Fe415, four Ø20, `Pu=500, M=50` on each axis independently. | Frozen member, ties and detailing results, including failed cage/detailing controls. |
 | COL02 · C01/C02/C05 | 300×400, M25/Fe415, Ø20 on a 60 mm centre setback with 40 mm cover and Ø8 ties. Four corners plus midpoint of each face. Six-bar variants omit both x-face midpoints or both y-face midpoints. `Pu=500`, signed `(Mx, My)=(50,0),(0,50),(50,35),(-50,35)`. | Independently compute interaction and governing directions. Compare rotated geometry with rotated actions. Check positioned bar IDs in ties, section, drawing and report. |
 | COL03 · C03/C04/C10 | [Frozen 450×550 M30/Fe500 mixed-bar cases](../verification/library-029-col03-mixed-column.json). The original 50 mm coordinates are retained as a section diagnostic and detailing FAIL. The physical companion retains 12 positioned Ø20/Ø16 bars and uses three explicit open links. Both start at `Pu=800, Mx=75, My=-45`. | Signed zero-cross-moment capacities, free-angle strength and restraint checks. Reflect the companion and reverse both moments. Overload all three actions by 5 for a strength FAIL and reject coincident bars. Preserve bar/link IDs and section quantities. |
-| COL04 · C06 | COL02 8-bar rectangle, braced pinned lengths 3000 and 6000, `Pu=500`, signed x end moments -60/-30 and y end moments 25/-25. Supply matching action representations, then conflicting all-zero end moments. | Independent slenderness, eccentricity and signed second-order magnification on both axes. Reject the conflict before any PASS. |
+| COL04 · C06 | [Next implementation packet](#next-implementation-packet-col04) fixes the COL02/COL03 cages, effective-length cases, signed end actions, equivalent representations and conflict controls. | Independently verify axis classification, minimum eccentricity, signed additional moments, actual-cage resistance and the analysis-basis controls. |
 | COL05 · C07/C08 | Ø450 M30/Fe500, eight Ø20 centres on radius 165 at 45° increments. `Pu=650, Mx=70, My=40`. Test Ø10 circular ties at 150 and Ø10 spiral at 60, then replace spiral pitch with 120. | Separate tied and spiral section/member references. Freeze confinement applicability, tie/spiral fit and pitch dispositions. Inadmissible spiral receives no confinement credit. |
 | COL06 · C09 | COL02 inputs, enumerate rectangular 300×400, 350×450, 400×500 and symmetric 8Ø16/20/25; fix material, axis and actions, rank by gross area then steel area then geometry and diameter. | Independently exhaust the finite catalogue and compare eligible/rejected alternatives, fit, sorted IDs and selected checked design. An infeasible catalogue yields no selected design. |
 | BEAM01 · B01 | Two 4 m spans, 300×550 M25/Fe415, 3Ø20 each at x=50/150/250 and y=50/500. Stations 0/2000/4000/6000/8000 with signed moments 0/+90/−120/+90/0 and signed shears +70/0/−70/0/−70 in the baseline row, both faces in the same geometry revision. | Independently verify span/support flexure and controlling bar face/station. Require anchorage at the support, shear from each supplied concurrent row, and reject duplicate conflicting station IDs. |
@@ -1985,6 +2099,98 @@ statuses. Its local outputs include bar counts by diameter and the checked
 open-link centreline paths and lengths. The beam/column archive profiles
 replay all four frozen cases. Member-wide fabrication, joint and lap evidence
 retains its separate acceptance cases.
+
+### Next implementation packet COL04
+
+Extend the existing Python column workflow to check actual rectangular cages
+under supplied actions and slenderness about either or both axes. The first
+slice covers prismatic, braced columns under compression with no transverse
+member load in the first-order method. Use the [COL02 eight-bar cage](../verification/library-029-col02-rectangular-column.json)
+and the [COL03 admitted mixed-bar cage](../verification/library-029-col03-mixed-column.json)
+with their frozen material, cover, bar and tie data. Use the checked local
+section outputs. COL07 owns member shear, end zones, splices, anchorage and
+member-wide fabrication. PROJECT02 starts with these column cases while its
+import, beam and full-project checks are pending.
+
+#### Input and method to freeze
+
+- Keep the physical member length, the unsupported length in each plane and
+  each effective length explicit. Use the physical length as the unsupported
+  length unless the fixture specifies intermediate restraint. Record the
+  restraint and effective length basis per plane. Use declared effective lengths
+  for a braced model with declared restraint. They do not assume moment
+  transfer through ideal pins.
+- Use mm, kN and kN·m. Label the physical ends A and B and the stations from
+  A. Positive compression, Mx compressing the top and My compressing the left
+  follow COL02/03. Convert external end-force signs to the same section sign
+  convention at both ends. Keep member ID, combination ID, station/end IDs,
+  bar identity and the analysis revision with every check. First-order inputs
+  are paired end rows from one combination. Optional declared magnitude
+  summaries must match their end envelopes.
+- Admit either first-order braced end actions for the Cl. 39.7.1 additional
+  moment method or signed critical-section actions from analysis that already
+  includes the relevant member deflections. Freeze which effects and stations
+  the supplied analysis covers. A project-level P–Delta flag alone leaves
+  the local member basis unresolved. Hold missing evidence and reject
+  contradictory bases. Apply local additional moments once on eligible axes.
+- Freeze independent Cl. 25.1–25.4 classifications, eccentricity and separate
+  one-axis minimum-eccentricity checks, plus Cl. 39.7 initial moments, end
+  floors and additions. Define how tied end magnitudes and changes of
+  curvature select signed checks for asymmetric steel. Retain actual end
+  pairs and label any prescribed equivalent design pair with its method and
+  parent combination. Freeze the rule for the paired design actions before
+  using them in Cl. 39.6. Preserve every supplied concurrent pair across
+  checks and reports.
+- Start with the unreduced Cl. 39.7.1 additions. For the optional reduction
+  under Cl. 39.7.1.1, independently integrate the prescribed balanced-load
+  state for the active plane and compression side using each actual bar.
+  Freeze at least one active reduction and the cap at unity before promoting
+  that option. The [legacy axis qualification](../verification/slender-column-axis-qualification.md)
+  remains a regression for its equivalent two-face idealization. Use the
+  controlled IS 456:2000 source through Amendment 5 and cross-check the
+  [IIT Kharagpur slender-column derivation](https://archive.nptel.ac.in/content/storage2/courses/105105104/pdf/m10l27.pdf).
+
+#### Acceptance cases for the reference freeze
+
+The table specifies input cases. Freeze the independent numeric targets and
+their exact dispositions in a separate COL04 record and replay before editing
+production. Compare against the S1 tolerances above and retain the tighter
+existing tolerances when reusing frozen section capacities.
+
+| Case | Inputs and controls | What the independent replay must demonstrate |
+|---|---|---|
+| Symmetric classification and signed demand | COL02 eight-bar cage, `Pu=500`, A `(Mx,My)=(-60,+25)`, B `(-30,-25)`. Run `L=3000, lex=ley=3000`, then `L=6000, lex=3900, ley=6000`, then `L=6000, lex=ley=6000` (lengths in mm). | Both short, y slender only, then both slender. Preserve x single curvature and y double curvature, including the equal-magnitude opposite signs. Check the end floors and minimum eccentricity separately. |
+| Boundaries and axis mapping | On the 6000 mm COL02 member, take `lex=3900` and `ley=3599, 3600, 3601`. Swap A/B with corresponding station IDs. Rotate a companion by 90° and transform the cage, restraints and action vectors together. | The y ratio crosses 12 at 3600 mm. End-order invariance and rotated capacity/governing checks follow the transformed physical inputs. |
+| Minimum eccentricity governs | COL02 cage with zero end moments and no magnitude summary. On the 6000 mm member, supply unsupported lengths 4000 mm on x and 6000 mm on y, with declared effective lengths 2600 mm and 3000 mm respectively. | Each plane uses its own unsupported length for the eccentricity check. Both axes remain short. Verify the separate minimum-eccentricity demands and governing utilization. |
+| Equivalent, conflicting and overloaded actions | Use the 6000 mm, y-slender-only case. Supply identical ends with and without the magnitude summary `(60,25)`. Replace all four end values with zeros while retaining that summary. In a separate case multiply all four original end values by four and keep `Pu=500`. | Equivalent forms produce the same normalized action and check outcomes. Conflicting data returns `COLUMN_ACTION_CONFLICT`. Overload fails strength while the same local cage remains acceptable. |
+| Asymmetric signs and reduction | COL03 admitted cage, `L=7200, lex=6800, ley=6000`, `Pu=800`, A `(+75,-45)`, B `(+35,+25)`. Reflect the cage through its centre and negate the moments. Replay at `Pu=2800` for the optional reduction check, confirming the prescribed active side and valid axial range independently. | Actual signed capacities and reflected results. Verify the first-order moments, per-plane additions and governing check. Compare signed `Pb`, `Puz` and `k` for the reduction option before enabling it. |
+| Supplied second-order actions | Freeze signed end and interior critical-section rows from a reproducible deflection-aware analysis on the 6000 mm COL02 cage. Include its station list and model revision. Repeat with the local-deflection basis omitted, a stale revision, and a request combining the supplied result with further local magnification. | Use supplied actions at their stations with zero further local addition. Missing or stale evidence gives HOLD. An explicit request to apply both methods is rejected. Keep local tie checks visible independently. |
+
+#### Implementation and usable output
+
+1. Check in the independent input and expected-output record with a replay
+   that imports no production column solver. Freeze axial and moment
+   residuals, signed design actions and capacities, branch and governing IDs,
+   tolerances and exact PASS/FAIL/HOLD/error dispositions. Bind the fixture
+   to the COL02/COL03 cage records and the source revision.
+2. Reuse the existing axis and eccentricity math in
+   [long-column calculations](../../Python/structural_lib/codes/is456/column/long_column.py)
+   and the COL02/03 cage and signed strength owners. The legacy magnitude
+   check uses equivalent two-face steel. Use positioned-bar equilibrium for
+   the new signed capacities. Preserve existing public short-column requests
+   and old slender results and tests.
+3. Deliver the typed Python intake, structured outcomes, result provenance,
+   checked section drawing and HTML report together. Expose supplied and
+   evaluated moments, axis basis, governing station or named design pair,
+   and separate local strength and restraint statuses. Reuse checked local
+   bar/tie quantities.
+   Any later fabrication schedule depends on COL07. Reconcile the column
+   capability entry with the COL02/03 and COL04 profiles. Provide a runnable
+   quickstart and worked example covering the case matrix's dispositions.
+4. Replay the independent record and focused COL02/03, legacy slender and
+   COL04 controls. Replay the new example and its result/report identities
+   from both installed beam/column archive profiles. Update PROJECT02's
+   column slice with the observed evidence. Keep the delivery in draft #1064.
 
 ## Work and completion evidence
 
