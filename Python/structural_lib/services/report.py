@@ -269,6 +269,17 @@ h2 {
 """
 
 
+@dataclass(frozen=True)
+class ReportSteelZone:
+    """Required and provided steel from one serialized detailing zone."""
+
+    name: str
+    tension_required_mm2: float | None
+    tension_provided_mm2: float | None
+    compression_required_mm2: float | None
+    compression_provided_mm2: float | None
+
+
 @dataclass
 class ReportData:
     """Container for report input data.
@@ -288,6 +299,8 @@ class ReportData:
     governing_case_id: str = ""
     governing_utilization: float | None = 0.0
     evidence: dict[str, Any] | None = None
+    steel_zones: tuple[ReportSteelZone, ...] = ()
+    result_envelope: dict[str, Any] | None = None
 
 
 @dataclass
@@ -1237,6 +1250,57 @@ def _wrap_html(title: str, body_html: str) -> str:
 """
 
 
+def _report_number(value: Any) -> str:
+    number = _safe_float(value)
+    return (
+        f"{number:,.2f}"
+        if number is not None and math.isfinite(number)
+        else "Unavailable"
+    )
+
+
+def _render_cli_beam_evidence(data: ReportData) -> str:
+    if data.result_envelope is None:
+        return ""
+    envelope = data.result_envelope
+    status = html.escape(str(envelope.get("engineering_status") or "Unavailable"))
+    review = html.escape(
+        str(envelope.get("review_status") or "Unavailable").replace("_", " ")
+    )
+    loads = "".join(
+        f"<tr><td>{html.escape(str(case.get('case_id', '')))}</td>"
+        f"<td>{_report_number(case.get('mu_knm'))}</td>"
+        f"<td>{_report_number(case.get('vu_kn'))}</td></tr>"
+        for case in data.cases
+    )
+    steel = "".join(
+        f"<tr><th scope='row'>{zone.name}</th>"
+        f"<td>{_report_number(zone.tension_required_mm2)}</td>"
+        f"<td>{_report_number(zone.tension_provided_mm2)}</td>"
+        f"<td>{_report_number(zone.compression_required_mm2)}</td>"
+        f"<td>{_report_number(zone.compression_provided_mm2)}</td></tr>"
+        for zone in data.steel_zones
+    )
+    return f"""
+<div class="section">
+    <h2>Factored Actions and Review</h2>
+    <p><strong>Engineering status:</strong> {status}</p>
+    <p><strong>Review status:</strong> {review}</p>
+    <table class="sanity-table">
+        <thead><tr><th>Case</th><th>Moment (kN·m)</th><th>Shear (kN)</th></tr></thead>
+        <tbody>{loads}</tbody>
+    </table>
+</div>
+<div class="section">
+    <h2>Required and Provided Steel by Zone</h2>
+    <table class="sanity-table">
+        <thead><tr><th>Zone</th><th>Tension required (mm²)</th><th>Tension provided (mm²)</th>
+            <th>Compression required (mm²)</th><th>Compression provided (mm²)</th></tr></thead>
+        <tbody>{steel}</tbody>
+    </table>
+</div>"""
+
+
 def _render_report_sections(data: ReportData) -> str:
     status = "✓ PASS" if data.is_ok else "✗ FAIL"
     status_class = "status-pass" if data.is_ok else "status-fail"
@@ -1281,7 +1345,7 @@ def _render_report_sections(data: ReportData) -> str:
     <p><strong>Code:</strong> {code}</p>
     <p><strong>Status:</strong> <span class="{status_class}">{status}</span></p>
     <p><strong>Governing Utilization:</strong> {utilization}</p>{limit_note}
-</div>
+</div>{_render_cli_beam_evidence(data)}
 <div class="section">
     <h2>Cross-Section SVG</h2>
     <div class="svg-wrap">{svg}</div>
@@ -1388,6 +1452,24 @@ def _build_beam_index(beams: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return indexed
 
 
+def _provided_steel_mm2(bars: Any, zone: int) -> float | None:
+    if not isinstance(bars, list) or zone >= len(bars):
+        return None
+    bar = _safe_dict(bars[zone])
+    count = _safe_float(bar.get("count"))
+    diameter = _safe_float(bar.get("diameter"))
+    if (
+        count is None
+        or diameter is None
+        or not math.isfinite(diameter)
+        or not count.is_integer()
+        or count <= 0
+        or diameter <= 0
+    ):
+        return None
+    return count * math.pi * diameter**2 / 4
+
+
 def _beam_report_data_from_design(
     beam: dict[str, Any], *, code: str, units: str
 ) -> ReportData:
@@ -1435,12 +1517,27 @@ def _beam_report_data_from_design(
         if source_path in source_unavailable:
             case_unavailable[f"utilizations.{name}"] = source_unavailable[source_path]
 
+    detailing = _safe_dict(beam.get("detailing"))
     ast_required = _safe_float(flexure.get("ast_required_mm2"))
+    asc_required = _safe_float(flexure.get("asc_required_mm2"))
+    steel_zones = tuple(
+        ReportSteelZone(
+            name,
+            ast_required,
+            _provided_steel_mm2(detailing.get("bottom_bars"), index),
+            asc_required,
+            _provided_steel_mm2(detailing.get("top_bars"), index),
+        )
+        for index, name in enumerate(("Start", "Midspan", "End"))
+    )
     b_mm = _safe_float(geometry.get("b_mm"))
     d_mm = _safe_float(geometry.get("d_mm"))
-    pt_est = None
-    if ast_required is not None and b_mm and d_mm:
-        pt_est = 100.0 * ast_required / (b_mm * d_mm)
+    ast_provided = steel_zones[1].tension_provided_mm2
+    pt_provided = (
+        100.0 * ast_provided / (b_mm * d_mm)
+        if ast_provided is not None and b_mm and d_mm
+        else None
+    )
 
     case_id = str(loads.get("case_id", "") or beam_id or "CASE_1")
     governing_util = (
@@ -1462,7 +1559,7 @@ def _beam_report_data_from_design(
         "utilizations": utilizations,
         "flexure": {
             "section_type": flexure.get("section_type"),
-            "pt_provided": pt_est,
+            "pt_provided": pt_provided,
         },
         "shear": {"is_safe": shear.get("is_safe")},
     }
@@ -1491,6 +1588,8 @@ def _beam_report_data_from_design(
         is_ok=bool(beam.get("is_ok", False)),
         governing_case_id=case_id,
         governing_utilization=governing_util,
+        steel_zones=steel_zones,
+        result_envelope=_safe_dict(beam.get("result_envelope")),
     )
 
 

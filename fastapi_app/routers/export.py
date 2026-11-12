@@ -10,13 +10,18 @@ import io
 import json
 import math
 import re
-from typing import Optional
+from typing import Annotated, Optional
 
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from fastapi_app.models.beam import BeamCrackWidthParams
+from fastapi_app.workbench_beam import (
+    WorkbenchBeamExportRequest,
+    checked_layout_or,
+    replay_checked_workbench,
+)
 
 
 def sanitize_filename(name: str) -> str:
@@ -213,7 +218,12 @@ def _run_detailing(req: ExportBeamRequest):
     description="Generate BBS from beam parameters and return as CSV download.",
     response_class=StreamingResponse,
 )
-async def export_bbs(request: ExportBeamRequest):
+async def export_bbs(
+    request: Annotated[
+        ExportBeamRequest | WorkbenchBeamExportRequest,
+        checked_layout_or(ExportBeamRequest),
+    ],
+):
     """Generate and download a Bar Bending Schedule as CSV."""
     try:
         from structural_lib.services.bbs import (
@@ -226,7 +236,12 @@ async def export_bbs(request: ExportBeamRequest):
             detail="BBS module not available",
         )
 
-    detailing = _run_detailing(request)
+    if isinstance(request, WorkbenchBeamExportRequest):
+        detailing = replay_checked_workbench(request).detailing.detailing
+        evidence_headers = {"X-Checked-Layout-Id": request.checked_layout_id}
+    else:
+        detailing = _run_detailing(request)
+        evidence_headers = {}
     items = generate_bbs_from_detailing(detailing)
 
     # Build CSV in memory
@@ -251,7 +266,8 @@ async def export_bbs(request: ExportBeamRequest):
         buf,
         media_type="text/csv",
         headers={
-            "Content-Disposition": f'attachment; filename="BBS_{sanitize_filename(request.beam_id)}.csv"'
+            **evidence_headers,
+            "Content-Disposition": f'attachment; filename="BBS_{sanitize_filename(request.beam_id)}.csv"',
         },
     )
 
@@ -267,7 +283,12 @@ async def export_bbs(request: ExportBeamRequest):
     description="Generate beam DXF drawing and return as download.",
     response_class=StreamingResponse,
 )
-async def export_dxf(request: ExportBeamRequest):
+async def export_dxf(
+    request: Annotated[
+        ExportBeamRequest | WorkbenchBeamExportRequest,
+        checked_layout_or(ExportBeamRequest),
+    ],
+):
     """Generate and download a DXF drawing of the beam."""
     try:
         from structural_lib.services.dxf_export import quick_dxf_bytes
@@ -277,7 +298,12 @@ async def export_dxf(request: ExportBeamRequest):
             detail="DXF export module not available",
         )
 
-    detailing = _run_detailing(request)
+    if isinstance(request, WorkbenchBeamExportRequest):
+        detailing = replay_checked_workbench(request).detailing.detailing
+        evidence_headers = {"X-Checked-Layout-Id": request.checked_layout_id}
+    else:
+        detailing = _run_detailing(request)
+        evidence_headers = {}
     dxf_bytes = quick_dxf_bytes(
         detailing,
         include_title_block=True,
@@ -288,7 +314,8 @@ async def export_dxf(request: ExportBeamRequest):
         io.BytesIO(dxf_bytes),
         media_type="application/octet-stream",
         headers={
-            "Content-Disposition": f'attachment; filename="{sanitize_filename(request.beam_id)}.dxf"'
+            **evidence_headers,
+            "Content-Disposition": f'attachment; filename="{sanitize_filename(request.beam_id)}.dxf"',
         },
     )
 
@@ -304,8 +331,37 @@ async def export_dxf(request: ExportBeamRequest):
     description="Generate a design report in HTML or JSON format.",
     response_class=StreamingResponse,
 )
-async def export_report(request: ExportReportRequest):
+async def export_report(
+    request: Annotated[
+        ExportReportRequest | WorkbenchBeamExportRequest,
+        checked_layout_or(ExportReportRequest),
+    ],
+):
     """Generate and download a design report."""
+    if isinstance(request, WorkbenchBeamExportRequest):
+        from structural_lib.services.calculation_report import (
+            generate_calculation_report,
+        )
+
+        result = replay_checked_workbench(request)
+        report = generate_calculation_report(
+            result,
+            beam_id=request.beam_id,
+            story=result.identity.story,
+            project_info={
+                "project_name": "Imported beam workbench",
+                "revision": request.checked_layout_id,
+            },
+        )
+        as_json = request.format == "json"
+        return StreamingResponse(
+            io.StringIO(report.to_json() if as_json else report.to_html()),
+            media_type="application/json" if as_json else "text/html",
+            headers={
+                "X-Checked-Layout-Id": request.checked_layout_id,
+                "Content-Disposition": f'attachment; filename="Report_{sanitize_filename(request.beam_id)}.{request.format}"',
+            },
+        )
     try:
         from structural_lib.services.api import design_beam_is456
         from structural_lib.services.evidence import build_beam_evidence_envelope

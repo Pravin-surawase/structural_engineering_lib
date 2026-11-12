@@ -1,4 +1,4 @@
-import type { BatchResult } from '../hooks/useBatchDesign';
+import type { BatchResult, CheckedWorkbenchLayout } from '../hooks/useBatchDesign';
 import { batchGoverningUtilization } from '../api/client';
 import type { BeamCSVRow } from '../types/csv';
 import { memberIdentity, recordCanExport } from './identity';
@@ -195,35 +195,43 @@ export function currentBatchResult(
   return data as unknown as BatchResult;
 }
 
-function deriveBarLayout(astRequired: number): { count: number; dia: number } {
-  const diameters = [12, 16, 20, 25, 32];
-  for (const dia of diameters) {
-    const area = Math.PI * dia * dia / 4;
-    const count = Math.max(2, Math.ceil(astRequired / area));
-    if (count <= 8) return { count, dia };
+export function currentWorkbenchLayout(
+  snapshot: WorkspaceSnapshotV1 | null,
+  memberId: string,
+): CheckedWorkbenchLayout | null {
+  const member = snapshot?.members.find((item) => item.memberId === memberId);
+  if (!snapshot || !member || !recordCanExport(member.result, memberIdentity(snapshot, member))) {
+    return null;
   }
-  return { count: Math.max(2, Math.ceil(astRequired / (Math.PI * 16 * 16))), dia: 32 };
+  const layout = currentBatchResult(snapshot, memberId)?.workbench;
+  return layout?.status === 'PASS'
+    && layout.checked_request?.identity?.member_id === memberId
+    && /^[a-f0-9]{64}$/.test(layout.checked_layout_id)
+    ? layout
+    : null;
 }
 
 export function applyBatchResultToBeam(
   beam: BeamCSVRow,
   result: BatchResult,
 ): BeamCSVRow {
-  const astRequired = result.flexure?.ast_required ?? 0;
-  const layout = deriveBarLayout(astRequired);
+  const checked = result.workbench?.status === 'PASS' ? result.workbench : undefined;
+  const mid = checked?.zones.find((zone) => zone.zone === 'mid');
   const designPassed = result.design_succeeded && result.is_safe && result.status === 'PASS';
+  const held = result.workbench?.status === 'HOLD';
   return {
     ...beam,
-    ast_required: astRequired,
-    asc_required: result.flexure?.asc_required ?? 0,
-    stirrup_spacing: result.shear?.stirrup_spacing,
-    stirrup_diameter: beam.stirrup_diameter ?? 8,
-    bar_count: layout.count,
-    bar_diameter: layout.dia,
-    ast_provided: layout.count * Math.PI * (layout.dia / 2) ** 2,
-    utilization: batchGoverningUtilization(result) ?? undefined,
-    is_valid: designPassed,
-    status: designPassed ? 'pass' : 'fail',
-    remarks: result.error ? [result.error] : result.failed_checks,
+    ast_required: checked?.ast_required_mm2 ?? result.flexure?.ast_required ?? 0,
+    asc_required: checked?.asc_required_mm2 ?? result.flexure?.asc_required ?? 0,
+    stirrup_spacing: mid?.stirrup.spacing_mm,
+    stirrup_diameter: mid?.stirrup.diameter_mm,
+    bar_count: mid?.tension.count,
+    bar_diameter: mid?.tension.diameter_mm,
+    ast_provided: mid?.tension.area_mm2,
+    utilization: checked?.utilization ?? batchGoverningUtilization(result) ?? undefined,
+    is_valid: designPassed && !held,
+    status: held ? 'warning' : designPassed ? 'pass' : 'fail',
+    remarks: result.workbench?.status === 'HOLD' ? [result.workbench.reason]
+      : result.error ? [result.error] : result.failed_checks,
   };
 }

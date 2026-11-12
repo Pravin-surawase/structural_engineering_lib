@@ -31653,6 +31653,35 @@
         "title": "WallReinforcementResponse",
         "type": "object"
       },
+      "WorkbenchBeamExportRequest": {
+        "additionalProperties": false,
+        "description": "Exact calculation request and checked-layout identity from the workbench.",
+        "properties": {
+          "checked_layout_id": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Checked Layout Id",
+            "type": "string"
+          },
+          "checked_request": {
+            "$ref": "#/components/schemas/BeamDesignInputV1"
+          },
+          "format": {
+            "default": "html",
+            "enum": [
+              "html",
+              "json"
+            ],
+            "title": "Format",
+            "type": "string"
+          }
+        },
+        "required": [
+          "checked_request",
+          "checked_layout_id"
+        ],
+        "title": "WorkbenchBeamExportRequest",
+        "type": "object"
+      },
       "WorkflowAuditModel": {
         "properties": {
           "review_stop": {
@@ -39053,7 +39082,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExportBeamRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ExportBeamRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },
@@ -39283,7 +39320,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExportBeamRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ExportBeamRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },
@@ -39398,7 +39443,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExportReportRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ExportReportRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },
@@ -39635,7 +39688,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BeamGeometryRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/BeamGeometryRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },

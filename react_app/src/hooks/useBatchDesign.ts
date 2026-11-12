@@ -9,6 +9,7 @@ import { toast } from '../components/ui/Toast';
 import { API_BASE_URL } from '../config';
 import { useImportedBeamsStore } from '../store/importedBeamsStore';
 import type { BeamCSVRow } from '../types/csv';
+import type { WorkbenchExportParams } from './useExport';
 import {
   applyBatchResultToBeam,
   completedBatchRecord,
@@ -23,6 +24,21 @@ export interface BatchProgress {
   failed: number;
   percent: number;
 }
+
+export type CheckedWorkbenchLayout = WorkbenchExportParams & {
+  status: 'PASS';
+  effective_depth_mm: number;
+  utilization: number;
+  ast_required_mm2: number;
+  asc_required_mm2: number;
+  shear_spacing_limit_mm: number;
+  zones: Array<{
+    zone: 'start' | 'mid' | 'end';
+    tension: { count: number; diameter_mm: number; area_mm2: number; layers: number };
+    compression: { count: number; diameter_mm: number; area_mm2: number; layers: number };
+    stirrup: { diameter_mm: number; spacing_mm: number; legs: number; count: number };
+  }>;
+};
 
 export interface BatchResult {
   beam_id: string;
@@ -53,6 +69,7 @@ export interface BatchResult {
   remarks?: string;
   error?: string;
   evidence?: EvidenceEnvelope;
+  workbench?: CheckedWorkbenchLayout | { status: 'HOLD'; reason: string };
 }
 
 export type BatchOverallStatus =
@@ -205,6 +222,7 @@ export interface ProjectBeamRequestContext {
   projectId?: string;
   projectRevision?: number;
   inputRevision?: number;
+  includeWorkbench?: boolean;
 }
 
 /** Map one imported beam to the strict project-beam transport without calculations. */
@@ -242,6 +260,16 @@ export function buildProjectBeamBatchRequest(
       project_revision: context.projectRevision,
       input_revision: context.inputRevision,
       span_mm: beam.span,
+      ...(context.includeWorkbench ? {
+        workbench_detailing: {
+          clear_cover_mm: beam.cover ?? 40,
+          stirrup_diameter_mm: beam.stirrup_diameter_mm ?? 8,
+          tension_bar_diameter_mm: beam.tension_bar_diameter_mm,
+          tension_bar_count: beam.requested_bar_count,
+          stirrup_spacing_mm: beam.requested_stirrup_spacing_mm,
+          story: beam.story || 'Imported',
+        },
+      } : {}),
     },
   };
 }
@@ -323,6 +351,7 @@ function normalizedResult(data: ServerBatchResult): BatchResult | null {
     remarks: data.remarks,
     error: data.error ?? data.issues?.[0]?.message,
     evidence: data.evidence,
+    workbench: data.workbench,
   };
 }
 
@@ -397,6 +426,7 @@ export function useBatchDesign() {
         projectId: snapshot?.projectId,
         projectRevision: snapshot?.projectRevision,
         inputRevision: member?.inputRevision,
+        includeWorkbench: true,
       });
     });
 

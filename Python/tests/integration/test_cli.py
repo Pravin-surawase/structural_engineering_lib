@@ -776,6 +776,60 @@ def test_design_complete_depth_basis_derives_effective_depth(tmp_path):
     assert payload["beams"][0]["geometry"]["d_mm"] == 444.0
 
 
+def test_cli_retains_derived_bar_diameter_and_report_evidence(tmp_path, capsys):
+    source = tmp_path / "derived-20.csv"
+    design = tmp_path / "design.json"
+    detail = tmp_path / "detail.json"
+    bbs = tmp_path / "bbs.csv"
+    report = tmp_path / "report.html"
+    headers = [header for header in _STRICT_CLI_HEADERS if header != "eff_d"] + [
+        "tension_bar_diameter_mm"
+    ]
+    _write_cli_csv(
+        source,
+        [["B1", "S1", 300, 550, 6000, 40, 25, 500, 160, 90, 8, 150, 20]],
+        headers,
+    )
+    assert cli_main.main(["design", str(source), "-o", str(design)]) == 0
+    payload = json.loads(design.read_text())
+    beam = payload["beams"][0]
+    assert beam["geometry"]["d_mm"] == 492
+    assert {bar["diameter"] for bar in beam["detailing"]["bottom_bars"]} == {20}
+    assert cli_main.main(["detail", str(design), "-o", str(detail)]) == 0
+    detailed = json.loads(detail.read_text())["beams"][0]
+    assert {bar["diameter_mm"] for bar in detailed["bottom_bars"]} == {20}
+    assert cli_main.main(["bbs", str(design), "-o", str(bbs)]) == 0
+    schedule = list(csv.DictReader(bbs.read_text().splitlines()))
+    assert len([row for row in schedule if "-B-" in row["bar_mark"]]) == 3
+    assert all(
+        float(row["diameter_mm"]) == 20 for row in schedule if "-B-" in row["bar_mark"]
+    )
+    assert (
+        cli_main.main(["report", str(design), "--format", "html", "-o", str(report)])
+        == 0
+    )
+    contents = report.read_text()
+    assert "QUALIFIED REVIEW REQUIRED" in contents
+    assert "<td>S1_B1</td><td>160.00</td><td>90.00</td>" in contents
+    assert "Required and Provided Steel by Zone" in contents
+    for name, bar in zip(
+        ("Start", "Midspan", "End"), detailed["bottom_bars"], strict=True
+    ):
+        required = beam["flexure"]["ast_required_mm2"]
+        provided = bar["count"] * math.pi * bar["diameter_mm"] ** 2 / 4
+        assert (
+            f"<th scope='row'>{name}</th><td>{required:,.2f}</td><td>{provided:,.2f}</td>"
+            in contents
+        )
+
+    beam["effective_depth_resolution"]["effective_depth_basis"][
+        "tension_bar_diameter_mm"
+    ] = 16
+    design.write_text(json.dumps(payload))
+    assert cli_main.main(["detail", str(design), "-o", str(detail)]) != 0
+    assert "DETAILING_EFFECTIVE_DEPTH_MISMATCH" in capsys.readouterr().err
+
+
 def test_design_depth_boundary_keeps_canonical_engineering_failure(tmp_path):
     input_path = tmp_path / "depth-boundary.json"
     output_path = tmp_path / "result.json"

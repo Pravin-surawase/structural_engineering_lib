@@ -62,6 +62,7 @@ TextEntityAlignment = _TextEntityAlignment
 from structural_lib.codes.is456.beam.detailing import (
     BarArrangement,
     BeamDetailingResult,
+    BeamDetailingWithStirrupStations,
     StirrupArrangement,
     create_beam_detailing,
 )
@@ -638,6 +639,8 @@ def draw_beam_elevation(
     bottom_bars: list[BarArrangement],
     stirrups: list[StirrupArrangement],
     origin: tuple[float, float] = (0, 0),
+    *,
+    stirrup_stations_mm: tuple[float, ...] | None = None,
 ) -> None:
     """
     Draw beam elevation view (longitudinal section).
@@ -698,6 +701,16 @@ def draw_beam_elevation(
     # 4. Draw stirrups at intervals
     # Handle varying number of stirrup zones
     if not stirrups:
+        return
+
+    if stirrup_stations_mm is not None:
+        for station in stirrup_stations_mm:
+            x = x0 + station
+            msp.add_line(
+                (x, y0 + cover),
+                (x, y0 + D - cover),
+                dxfattribs={"layer": "REBAR_STIRRUP"},
+            )
         return
 
     n_zones = len(stirrups)
@@ -1226,6 +1239,15 @@ def generate_beam_dxf(
         bottom_bars=detailing.bottom_bars,
         stirrups=detailing.stirrups,
         origin=(origin_x, origin_y),
+        stirrup_stations_mm=(
+            tuple(
+                station
+                for zone in detailing.stirrup_stations_by_zone_mm
+                for station in zone
+            )
+            if isinstance(detailing, BeamDetailingWithStirrupStations)
+            else None
+        ),
     )
 
     # Add dimensions

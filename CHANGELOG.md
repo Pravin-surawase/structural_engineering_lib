@@ -47,6 +47,12 @@ All notable changes to this project will be documented in this file.
 - Continuous one-way and two-way solid slab HTTP responses retain the supplied
   load-basis status, including built-in coefficient routes and two-way flexural
   failures.
+- Imported beam workbench geometry, BBS, DXF and reports now use the same
+  checked reinforcement layout. Input edits invalidate existing downloads.
+- CLI beam detailing and schedules retain the bar diameter used to derive
+  effective depth. HTML reports display factored actions, zone steel and the
+  qualified-review status.
+- The developer installation guide points to the published 0.28.0 package.
 
 ### Verification
 

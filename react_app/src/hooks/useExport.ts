@@ -13,6 +13,18 @@ import { API_BASE_URL } from '../config';
 // Types
 // =============================================================================
 
+export interface WorkbenchExportParams {
+  checked_request: { identity: { member_id: string } } & Record<string, unknown>;
+  checked_layout_id: string;
+  format?: "html" | "json";
+}
+
+function exportMemberId(params: ExportBeamParams | ExportReportParams | WorkbenchExportParams): string {
+  return "checked_request" in params
+    ? params.checked_request.identity.member_id
+    : params.beam_id || "BEAM-1";
+}
+
 export interface ExportBeamParams {
   beam_id?: string;
   width: number;
@@ -72,7 +84,7 @@ function downloadBlob(blob: Blob, filename: string) {
 
 async function fetchExport(
   endpoint: string,
-  body: ExportBeamParams | ExportReportParams | BuildingExportParams,
+  body: ExportBeamParams | ExportReportParams | BuildingExportParams | WorkbenchExportParams,
   filename: string
 ): Promise<string> {
   const response = await fetch(`${API_BASE_URL}/api/v1/export/${endpoint}`, {
@@ -104,8 +116,8 @@ async function fetchExport(
  */
 export function useExportBBS() {
   return useMutation({
-    mutationFn: (params: ExportBeamParams) =>
-      fetchExport("bbs", params, `BBS_${params.beam_id || "BEAM-1"}.csv`),
+    mutationFn: (params: ExportBeamParams | WorkbenchExportParams) =>
+      fetchExport("bbs", params, `BBS_${exportMemberId(params)}.csv`),
     mutationKey: ["export-bbs"],
     onSuccess: (filename) => {
       toast.success("Export Complete", `${filename} downloaded successfully`);
@@ -125,8 +137,8 @@ export function useExportBBS() {
  */
 export function useExportDXF() {
   return useMutation({
-    mutationFn: (params: ExportBeamParams) =>
-      fetchExport("dxf", params, `${params.beam_id || "BEAM-1"}.dxf`),
+    mutationFn: (params: ExportBeamParams | WorkbenchExportParams) =>
+      fetchExport("dxf", params, `${exportMemberId(params)}.dxf`),
     mutationKey: ["export-dxf"],
   });
 }
@@ -140,10 +152,10 @@ export function useExportDXF() {
  */
 export function useExportReport() {
   return useMutation({
-    mutationFn: (params: ExportReportParams) => {
+    mutationFn: (params: ExportReportParams | WorkbenchExportParams) => {
       const fmt = params.format || "html";
       const ext = fmt === "pdf" ? "pdf" : fmt === "html" ? "html" : "json";
-      return fetchExport("report", params, `Report_${params.beam_id || "BEAM-1"}.${ext}`);
+      return fetchExport("report", params, `Report_${exportMemberId(params)}.${ext}`);
     },
     mutationKey: ["export-report"],
   });

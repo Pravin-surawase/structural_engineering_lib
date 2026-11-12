@@ -17,6 +17,7 @@ not implementation, release authorization or a claim of completed engineering.
 
 - **What and why:** this concise delivery guide.
 - **Exact engineering scope and evidence:** [0.29 S0–S5 plan](library-usability-improvement.md#029-beam-column-and-slab-parity-plan), including BEAM, COL, SERV, SL, FLOW, DUCT and PROJECT case IDs.
+- **Progress and next work:** [0.29 progress and output repairs](library-usability-improvement.md#029-progress-and-workbench-repair--2026-11-13).
 - **Caller/API rules:** [beam facade](../reference/beam-facade.md), [API levels](../reference/api-levels.md), [API stability](../reference/api-stability.md), and the existing LIB-PRO-015 quality obligations in the parent plan.
 - **Available now:** the installed package's capability contract and its exact release documentation, not this future plan.
 
@@ -40,7 +41,7 @@ authorization is separate.
 | M0 — baseline and shared contracts | Preserve the current COL02/03 and slab-contract evidence. Freeze shared units, signs, coordinates, action rows, analysis revision, bar identity and status/error semantics. Reconcile discovery for the qualified profiles. | S0/S1 before each dependent slice. Add the pinned source schema when the first FLOW04 adapter is selected. Start public APIs, runnable examples and guides with each slice. |
 | M1 — routine beam actions and sections | Simply supported, continuous and cantilever rectangular/T/L members; signed span/support actions and multilayer steel. | BEAM01–BEAM04 and FLOW01. Validate effective-flange assumptions, end orientation, support-face stations and admitted load patterns. Reuse existing qualified paths. |
 | M2 — combined beam response and serviceability | Concurrent flexure/shear/torsion, including bounded equilibrium torsion; cracking and short-/long-term deflection. | BEAM06/07 and SERV01/02; distinguish ULS from SLS actions and retain creep/shrinkage/loading-history limits. Missing required sustained-load information holds the applicable service check. |
-| M3 — slender rectangular columns | Actual cages, signed end moments, unequal effective lengths, minimum eccentricity and declared second-order basis. | [COL04 on COL02/03](library-usability-improvement.md#next-implementation-packet-col04). Start with the normalized member-action contract and direct Python intake. This is the next engineering packet. |
+| M3 — slender rectangular columns | Actual cages, signed end moments, unequal effective lengths, minimum eccentricity and declared second-order basis. | [COL04 on COL02/03](library-usability-improvement.md#next-implementation-packet-col04). Start with the normalized member-action contract and direct Python intake. |
 | M4 — circular columns and selection | Tied/spiral cages and explicit finite-catalogue sizing, bars and ties. | COL05/06; catalogue feasibility is not global optimum or engineering acceptance after a stiffness change. Independent references before implementation. |
 | M5 — complete member detailing | Beam/column shear and transverse zones, anchorage, curtailment, laps, congestion, drawings and BBS tied to the checked bars. | BEAM05 and COL07. Earlier slices ship their local physical checks. M5 closes member-wide continuity and fabrication, with ductile joints in M7. |
 | M6 — complete imported-project workflow | Batch/storey summaries and governing-combination provenance across both elements; replay revised models. | Builds on FLOW04's pinned member-row adapter and revision checks. Reconcile every supplied row and preserve axes, case identity and freshness. |
@@ -171,10 +172,9 @@ imports but do not present them as the preferred new workflow.
    and rerun after changing the input. Confirm a change invalidates the old
    outputs where required.
 
-The COL02/03 candidate has public tied and positioned column checks, while
-the column capability entry still describes the older two-face and four-corner
-paths. Reconcile that entry and its limitations in the COL04 slice. Preserve
-the legacy operation's narrower scope. In the family index, give readers a
+The candidate capability catalogue now includes the tied, positioned and
+slender rectangular profiles. Preserve the legacy operation's narrower scope.
+In the family index, give readers a
 short profile chooser with the recommended Python operation, compatibility
 names and actual availability of CLI or HTTP routes. Generate or validate
 that view against the existing capability and recipe owners using the same

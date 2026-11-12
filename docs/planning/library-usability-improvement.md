@@ -1964,7 +1964,7 @@ engineering approval.
 |---|---|---|
 | S0 — Rebind and recheck | Planning owner reconciles #1064 with current main. Review scope, comparable methods, source rights, case coverage, order and archive qualification before implementation. | Current main is an ancestor, original roadmap and 39 rows retained, independent review findings resolved. |
 | S1 — Freeze evidence and preserve slab contracts | Slab services, HTTP models and release replay owners start with SL01–SL03. Independently derive each later packet's reference before editing its kernel. | Preserve four slab HTTP route dispositions and replay B02/B04. For each later case freeze input/fixture hash, code or worksheet locator, material laws, expected numerical values and controls before implementation of that case. |
-| S2 — Actual bars, sections and columns | Core and IS 456 owners reuse bar/geometry records, strain compatibility and column services. Sequence BC01–BC03, rectangular BC04, then round sections BC05, and extend stable P–M/PMM only after bounded convergence. | COL01–COL07 and SEC01–SEC03; COL04 is the next packet after the implemented COL02/03 checkpoint. Close each physical profile only with checks, geometry and stable outputs as applicable. |
+| S2 — Actual bars, sections and columns | Core and IS 456 owners reuse bar/geometry records, strain compatibility and column services. Sequence BC01–BC03, rectangular BC04, then round sections BC05, and extend stable P–M/PMM only after bounded convergence. | COL01–COL07 and SEC01–SEC03; The [progress record](#029-progress-and-workbench-repair--2026-11-13) tracks the implemented profiles. Close each physical profile only with checks, geometry and stable outputs as applicable. |
 | S3 — Beam members and supplied action sets | Beam and action owners compose BC02/BC06 atop S2's identities and section basis. Preserve existing single-row signatures. | BEAM01–BEAM07 plus FLOW01/FLOW04; preserve concurrent imported actions and revision validity. Real concurrent rows govern; unsupported topology and missing service basis keep their dispositions. |
 | S4 — Serviceability and usable outputs | IS 456 serviceability and application owners deliver BC07/BC10/BC11 and solid slab extensions. Reuse existing report and schedule projections, and check the same bar revision. | SERV01–SERV03, SL04–SL07, FLOW02–FLOW03; qualify DUCT01/02 after their S1 freeze, before claiming ductile-frame closure. Expose source, stations and signed bar face. Unmet reference or method applicability stays HOLD. |
 | S5 — Exact expanded candidate | Qualification owner reruns the frozen plan on merged exact source, in clean wheel and sdist environments. Retain existing footings, flat-slab and all previously qualified beam/column profiles. | PROJECT01–PROJECT03 and every admitted closure case from both archive builds, source/artifact hashes, independent case results and negative controls, generated contracts, required hosted checks and exact-head candidate receipt. Replay each newly advertised profile from each archive. Run release preflight and retain the comparison matrix and scope in the candidate handoff. Stop before release operations. |
@@ -2247,6 +2247,68 @@ adds straight corner partners, supplemental restraint above and below
 the lap, and mirrored upper returns that clear the top midpoint bar.
 It checks the shifted section and reduced shear depth. Other splice
 layouts and the slender, mixed and circular extensions retain separate cases.
+
+### 0.29 progress and workbench repair — 2026-11-13
+
+The [0.28.0 release](../getting-started/release-status.md) is public.
+[PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
+holds the 0.29 work in draft. The preceding column candidate at `e5ffdeba`
+passed 631 focused tests and hosted PR validation. Its wheel and source archive
+each passed 593 beam and column tests across two of the 20 installed profiles.
+The expanded S5 release gate remains open.
+
+| Area | Implemented in the draft | Remaining for the expanded plan |
+|---|---|---|
+| Section and column strength | COL02 eight-bar and both six-bar rectangles, COL03 mixed and asymmetric positioned rectangles, COL04 braced slender rectangular columns, COL05 short tied and spiral circles, and COL06 finite-catalogue selection. Each admitted profile has frozen references and a worked Python path. | SEC02 signed interaction slices and section properties, SEC03 oriented service stresses and strain evidence, and the broader combinations and analysis integration defined under FLOW04. |
+| Column member detailing | COL07 short eight-bar rectangle with shear, tie zones, straight anchorage and compression lap checks. Physical side-midpoint and C1/C2 corner contact splices have checked reports, elevations and BBS. The original numeric-only lap still returns HOLD. | Qualify other restraint and splice geometries and the six-bar, mixed, slender and circular member profiles. |
+| Beams | Preserve the released ordinary, T-member and rectangular torsion baselines. The workbench and CLI repairs below address output consistency for the admitted cases. | BEAM01–05 continuous and cantilever actions, signed rectangular/T/L sections, multilayer bars and member detailing. Retain BEAM06 and qualify BEAM07 equilibrium torsion, SERV01–02 and FLOW01–03 combination, selection and edit workflows. |
+| Slabs | SL02/03 HTTP responses preserve the load-basis status. The draft adds installed B02/B04 replay for supplied and built-in coefficients. | SL04–06 support topology, continuous-load boundary and supplied action sets, SERV03 direct serviceability, and the SL07 flat-slab regression. |
+| Projects and release | S0–S5 acceptance cases and the M0–M8 delivery sequence are recorded. | FLOW04 real ETABS or STAAD import and revision replay, DUCT01/02 joint checks, PROJECT01–03 and all applicable installed wheel and source-archive profiles on the exact release candidate. The comparator and parity claims follow the evidence from those cases. |
+
+#### Imported beam and CLI output repairs
+
+The check against `main` at `875138b0` exposed two physical layouts for one
+workbench beam. The browser estimated 8Ø12 and Ø8 ties at 300 mm. The BBS and
+DXF independently detailed 5Ø16, 4Ø16 and 5Ø16 with ties at 100, 150 and
+100 mm. The imported detail panel also lacked an eligible report request.
+
+The workbench now checks an imported rectangular member using the
+[canonical beam facade](../reference/beam-facade.md) and stores the returned
+layout with the current workspace result. The panel, 3D view, BBS, DXF and
+report use that layout and its identity. Editing member or reinforcement
+inputs invalidates the workspace result. The export endpoints replay the
+checked request and reject a mismatched identity with HTTP 409. An incompatible
+depth, cover or requested arrangement holds downloads and displays the reason.
+
+The supported workbench path checks one supplied factored moment and shear
+pair on a rectangular section with single-layer face bars and one two-leg
+stirrup pitch. Omitted workbench cover and stirrup settings use the existing
+40 mm and Ø8 defaults. The checked layout must agree with the physical
+effective depth. The drawing and BBS use common tie stations and remain
+review outputs. Combination completeness, slab-flange participation, ductile
+detailing and member-wide fabrication belong to the wider plan.
+
+The [HTTP regression](../../fastapi_app/tests/test_export_bbs_dxf.py) checks a
+300 × 550 mm, 6 m representative beam at `d = 492 mm`, `M = 160 kN·m` and
+`V = 90 kN`. It checks 3Ø20 bottom and 2Ø20 top in each zone, Ø8 ties at
+300 mm, and five, ten and five links in the start, midspan and end zones.
+It verifies the same layout in the schedule, drawing, 3D response and report,
+plus rejection after a revision and HOLD for an incompatible depth.
+
+The CLI preserves the tension-bar diameter from the derived depth basis during
+both initial design and serialized detailing. The
+[CLI regression](../../Python/tests/integration/test_cli.py) checks an explicit
+Ø20 request through design, detail, BBS and HTML report. The report displays the
+factored actions, engineering and qualified-review status, and required and
+provided steel by zone. A genuine generated-depth mismatch still blocks the
+schedule. The Python calculation-report path already worked in the released
+0.28.0 package.
+
+The [developer guide](../developers/platform-guide.md) and the candidate
+[package README](../../Python/README.md) direct readers to the public 0.28.0
+install and the [release ledger](../getting-started/release-status.md).
+The published 0.28.0 package description retains its historical 0.27.0 pin.
+The updated README is the source for the next package description.
 
 ## Work and completion evidence
 

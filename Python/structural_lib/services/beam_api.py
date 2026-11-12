@@ -497,6 +497,13 @@ def compute_detailing(
         if spacing_end is None:
             spacing_end = min(150.0, basis[1]) if basis else 150.0
 
+        depth_resolution = beam.get("effective_depth_resolution") or {}
+        bar_basis = depth_resolution.get("effective_depth_basis") or {}
+        tension_dia = (
+            bar_basis.get("tension_bar_diameter_mm")
+            if basis is not None and depth_resolution.get("source") == "DERIVED"
+            else None
+        )
         detailing_result = detailing.create_beam_detailing(
             beam_id=params["beam_id"],
             story=params["story"],
@@ -513,6 +520,8 @@ def compute_detailing(
             asc_mid=params["asc"],
             asc_end=params["asc"],
             stirrup_dia=float(stirrup_dia),
+            preferred_tension_bar_dia=tension_dia,
+            preferred_compression_bar_dia=tension_dia if params["asc"] > 0 else None,
             stirrup_spacing_start=float(spacing_start),
             stirrup_spacing_mid=float(spacing_mid),
             stirrup_spacing_end=float(spacing_end),

@@ -272,7 +272,7 @@ class CalculationReport:
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
 
-        html_content = self._generate_html()
+        html_content = self.to_html()
         with open(path, "w", encoding="utf-8") as f:
             f.write(html_content)
 
@@ -297,6 +297,10 @@ class CalculationReport:
 
         _logger.info(f"Markdown report exported to {path}")
         return path
+
+    def to_html(self) -> str:
+        """Render the checked calculation report without writing a file."""
+        return self._generate_html()
 
     def _generate_html(self) -> str:
         """Generate HTML report content."""

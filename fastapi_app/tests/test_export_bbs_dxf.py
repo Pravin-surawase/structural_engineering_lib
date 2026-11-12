@@ -7,12 +7,18 @@ Covers:
 - POST /api/v1/export/building-summary (building-level summary)
 """
 
+import csv
+import io
+import json
+from copy import deepcopy
+
 import pytest
 
-pytest.importorskip("ezdxf")
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+
+ezdxf = pytest.importorskip("ezdxf")
 
 
 @pytest.fixture(scope="module")
@@ -245,3 +251,120 @@ class TestBuildingSummaryExport:
         }
         resp = client.post("/api/v1/export/building-summary", json=payload)
         assert resp.status_code == 400
+
+
+def test_imported_workbench_downloads_replay_one_checked_layout(client):
+    imported = {
+        "schema_version": "project-beam-design/v1",
+        "member_id": "B1",
+        "b_mm": 300,
+        "D_mm": 550,
+        "d_mm": 492,
+        "mu_knm": 160,
+        "vu_kn": 90,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "source_metadata": {
+            "span_mm": 6000,
+            "workbench_detailing": {
+                "clear_cover_mm": 40,
+                "stirrup_diameter_mm": 8,
+                "tension_bar_diameter_mm": 20,
+            },
+        },
+    }
+
+    def check():
+        response = client.post("/stream/batch-design", json=[imported])
+        assert response.status_code == 200
+        return next(
+            event["workbench"]
+            for line in response.text.splitlines()
+            if line.startswith("data: ")
+            and "workbench" in (event := json.loads(line[6:]))
+        )
+
+    layout = check()
+    assert layout["status"] == "PASS"
+    assert [zone["zone"] for zone in layout["zones"]] == ["start", "mid", "end"]
+    request = {key: layout[key] for key in ("checked_request", "checked_layout_id")}
+    geometry_response = client.post("/api/v1/geometry/beam/full", json=request)
+    assert geometry_response.status_code == 200
+    geometry = geometry_response.json()["data"]["geometry"]
+    assert geometry["beamId"] == "B1"
+    assert sorted((bar["barType"], bar["diameter"]) for bar in geometry["rebars"]) == [
+        ("bottom", 20),
+        ("bottom", 20),
+        ("bottom", 20),
+        ("top", 20),
+        ("top", 20),
+    ]
+    assert {tie["diameter"] for tie in geometry["stirrups"]} == {8}
+    assert [tie["positionX"] for tie in geometry["stirrups"]] == list(
+        range(150, 6000, 300)
+    )
+
+    responses = {
+        kind: client.post(f"/api/v1/export/{kind}", json=request)
+        for kind in ("bbs", "dxf", "report")
+    }
+    for response in responses.values():
+        assert response.status_code == 200
+        assert response.headers["X-Checked-Layout-Id"] == layout["checked_layout_id"]
+    report = responses["report"].text
+    assert layout["checked_layout_id"] in report
+    assert "B1" in report
+    assert "&quot;mu_knm&quot;: 160.0" in report
+    assert "&quot;vu_kn&quot;: 90.0" in report
+
+    schedule = list(csv.DictReader(io.StringIO(responses["bbs"].text.split("\n\n")[0])))
+    assert len(schedule) == 9
+    drawing = ezdxf.read(io.StringIO(responses["dxf"].text)).modelspace()
+    labels = [entity.dxf.text for entity in drawing.query("TEXT")]
+    tie_lines = [
+        entity
+        for entity in drawing.query("LINE")
+        if entity.dxf.layer == "REBAR_STIRRUP"
+        and entity.dxf.start.x == entity.dxf.end.x
+        and entity.dxf.end.y - entity.dxf.start.y == 470
+    ]
+    tie_x = sorted(entity.dxf.start.x for entity in tie_lines)
+    assert len(tie_x) == 20
+    assert [x - tie_x[0] for x in tie_x] == list(range(0, 6000, 300))
+
+    for zone, count in zip(layout["zones"], (5, 10, 5), strict=True):
+        name = zone["zone"].capitalize()
+        letter = name[0]
+        assert zone["tension"]["count"] == 3
+        assert zone["compression"]["count"] == 2
+        assert zone["stirrup"] == {
+            "diameter_mm": 8,
+            "spacing_mm": 300,
+            "legs": 2,
+            "count": count,
+        }
+        for face, prefix, diameter, quantity, label in (
+            ("Bottom", "B", 20, 3, "3-20φ"),
+            ("Top", "T", 20, 2, "2-20φ"),
+            ("Stirrup", "S", 8, count, "2L-8φ@300"),
+        ):
+            row = next(
+                row
+                for row in schedule
+                if row["bar_mark"].startswith(f"B1-{prefix}-{letter}-")
+            )
+            assert int(row["no_of_bars"]) == quantity
+            assert float(row["diameter_mm"]) == diameter
+            assert f"{face} {name}: {row['bar_mark']} {label}" in labels
+
+    imported["source_metadata"]["project_revision"] = 2
+    revised = check()
+    stale = deepcopy(request)
+    stale["checked_request"] = revised["checked_request"]
+    assert revised["checked_layout_id"] != layout["checked_layout_id"]
+    for kind in ("bbs", "dxf", "report"):
+        assert client.post(f"/api/v1/export/{kind}", json=stale).status_code == 409
+    assert client.post("/api/v1/geometry/beam/full", json=stale).status_code == 409
+
+    imported["d_mm"] = 490
+    assert check()["status"] == "HOLD"

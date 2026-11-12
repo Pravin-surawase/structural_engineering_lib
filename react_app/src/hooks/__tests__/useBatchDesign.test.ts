@@ -11,7 +11,7 @@ import {
 } from '../../hooks/useBatchDesign';
 import type { BeamCSVRow } from '../../types/csv';
 import { useImportedBeamsStore } from '../../store/importedBeamsStore';
-import { projectExportReadiness } from '../../workspace/resultRecords';
+import { currentWorkbenchLayout, projectExportReadiness } from '../../workspace/resultRecords';
 import { useWorkspaceStore } from '../../workspace/workspaceStore';
 
 // ── EventSource Mock ────────────────────────────────────────────────
@@ -503,6 +503,48 @@ describe('useBatchDesign', () => {
       ast_required: 850,
       status: 'pass',
     });
+  });
+
+  it('retains the checked workbench arrangement and invalidates it on reinforcement edits', () => {
+    const beam = { ...mockBeam('B1'), source_id: 'ETABS-101' };
+    useImportedBeamsStore.getState().setBeams([beam]);
+    const { result } = renderHook(() => useBatchDesign());
+    act(() => result.current.startBatchDesign([beam]));
+    const checkedLayout = {
+      status: 'PASS',
+      checked_layout_id: 'a'.repeat(64),
+      checked_request: { identity: { member_id: 'ETABS-101' } },
+      utilization: 0.72,
+      ast_required_mm2: 850,
+      asc_required_mm2: 0,
+      zones: ['start', 'mid', 'end'].map((zone) => ({
+        zone,
+        tension: { count: 3, diameter_mm: 20, area_mm2: 942, layers: 1 },
+        compression: { count: 2, diameter_mm: 20, area_mm2: 628, layers: 1 },
+        stirrup: { diameter_mm: 8, spacing_mm: 250, legs: 2, count: 5 },
+      })),
+    };
+    act(() => {
+      MockEventSource.instances[0].emit('design_result', {
+        beam_id: 'ETABS-101',
+        design_succeeded: true,
+        is_safe: true,
+        status: 'PASS',
+        utilization_ratio: 0.78,
+        evidence,
+        result_envelope: canonicalEnvelope,
+        workbench: checkedLayout,
+      });
+    });
+    expect(currentWorkbenchLayout(useWorkspaceStore.getState().snapshot, 'ETABS-101')).toEqual(checkedLayout);
+    expect(useImportedBeamsStore.getState().beams[0]).toMatchObject({
+      bar_count: 3, bar_diameter: 20, stirrup_diameter: 8, stirrup_spacing: 250,
+    });
+    act(() => {
+      useImportedBeamsStore.getState().setBeams([{ ...beam, requested_stirrup_spacing_mm: 200 }]);
+    });
+    expect(currentWorkbenchLayout(useWorkspaceStore.getState().snapshot, 'ETABS-101')).toBeNull();
+    expect(useWorkspaceStore.getState().snapshot!.members[0].result?.lifecycle).toBe('stale');
   });
 
   it('holds a result when its envelope and evidence identities disagree', () => {

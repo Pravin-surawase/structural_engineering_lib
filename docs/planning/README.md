@@ -21,6 +21,7 @@ Internal planning documents and research notes.
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
 | [0.27 Beam and Column Release Preparation](library-usability-improvement.md#027-beam-and-column-release-preparation) | Measured comparison, ordered work, and candidate gates |
 | [0.29 Beam, Column and Slab Parity Plan](library-usability-improvement.md#029-beam-column-and-slab-parity-plan) | S0–S5 scope, comparator claims and exact acceptance cases |
+| [0.29 Progress and Output Repairs](library-usability-improvement.md#029-progress-and-workbench-repair--2026-11-13) | Implemented profiles, remaining acceptance cases and workbench and CLI repair evidence |
 | [Beam and Column Library Parity Research](library-usability-improvement.md#beam-and-column-library-parity-research) | Comparator evidence, existing capabilities, proposed additions, dependencies and acceptance criteria |
 | [Future Beam and Column Case Checklist](library-usability-improvement.md#future-case-checklist) | 39 tracked cases with maturity/packet mapping and a dated recheck of the five repaired consumer issues |
 | [Pre-release Lab Change Check](library-usability-improvement.md#deferred-lab-changes-checked-before-release) | Historical serializer and BBS checks before the 0.27 release |

@@ -909,6 +909,17 @@ def design_single_beam(
                 asc_mid=case_result.flexure.Asc_required,
                 asc_end=case_result.flexure.Asc_required,
                 stirrup_dia=stirrup_dia_mm,
+                preferred_tension_bar_dia=(
+                    effective_depth_basis.tension_bar_diameter_mm
+                    if isinstance(effective_depth_basis, EffectiveDepthBasisV1)
+                    else None
+                ),
+                preferred_compression_bar_dia=(
+                    effective_depth_basis.tension_bar_diameter_mm
+                    if isinstance(effective_depth_basis, EffectiveDepthBasisV1)
+                    and case_result.flexure.Asc_required > 0
+                    else None
+                ),
                 stirrup_spacing_start=stirrup_spacing_start_mm,
                 stirrup_spacing_mid=stirrup_spacing_mid_mm,
                 stirrup_spacing_end=stirrup_spacing_end_mm,

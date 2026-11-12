@@ -8,6 +8,7 @@
  */
 import { useQuery } from "@tanstack/react-query";
 import { unwrapResponse } from '../api/client';
+import type { WorkbenchExportParams } from "./useExport";
 
 import { API_BASE_URL } from '../config';
 
@@ -107,7 +108,7 @@ export interface BeamGeometryIdentity {
  * accurate bar positions based on IS 456 detailing rules.
  */
 async function fetchBeamGeometry(
-  params: BeamGeometryRequest,
+  params: BeamGeometryRequest | WorkbenchExportParams,
   signal?: AbortSignal,
 ): Promise<Beam3DGeometry> {
   const response = await fetch(`${API_BASE_URL}/api/v1/geometry/beam/full`, {
@@ -130,9 +131,12 @@ async function fetchBeamGeometry(
   if (data.geometry.version !== BEAM_GEOMETRY_SCHEMA_VERSION) {
     throw new Error(`Unsupported beam geometry schema: ${data.geometry.version}`);
   }
-  if (params.beam_id && data.geometry.beamId !== params.beam_id) {
+  const memberId = "checked_request" in params
+    ? params.checked_request.identity.member_id
+    : params.beam_id;
+  if (memberId && data.geometry.beamId !== memberId) {
     throw new Error(
-      `Geometry identity mismatch: requested ${params.beam_id}, received ${data.geometry.beamId}`,
+      `Geometry identity mismatch: requested ${memberId}, received ${data.geometry.beamId}`,
     );
   }
 
@@ -164,7 +168,7 @@ async function fetchBeamGeometry(
  * ```
  */
 export function useBeamGeometry(
-  params: BeamGeometryRequest | null,
+  params: BeamGeometryRequest | WorkbenchExportParams | null,
   options?: { enabled?: boolean; identity?: BeamGeometryIdentity }
 ) {
   return useQuery({

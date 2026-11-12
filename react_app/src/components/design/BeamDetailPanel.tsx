@@ -5,209 +5,91 @@
  * for a selected beam from the AG Grid or 3D building view.
  *
  * Features:
- *   - "Redesign" button — runs single-beam design via /api/v1/design/beam
- *   - "Edit Rebar" mode — inline inputs with live IS 456 validation
- *   - Stirrup limit annotation — shows whether 0.75d or 300mm governs
+ *   - Rechecks one imported member through the revision-bound batch route.
+ *   - Uses the checked physical layout for the view and every download.
  */
 import { Suspense, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { X, Download, FileText, Ruler, RefreshCw, Pencil, Check, AlertCircle } from "lucide-react";
+import { X, Download, FileText, Ruler, RefreshCw, Pencil } from "lucide-react";
 import type { BeamCSVRow } from "../../types/csv";
 import { useBeamGeometry } from "../../hooks/useBeamGeometry";
-import { useRebarValidation } from "../../hooks";
 import { useExportBBS, useExportDXF, useExportReport } from "../../hooks";
 import { CrossSectionView } from "./CrossSectionView";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
-import { designBeam, unwrapResponse } from "../../api/client";
-import type { BeamDesignResponse } from "../../api/client";
-import { formatPercent, formatRatio, getTrustPresentation } from "../../utils/trustPresentation";
+import { formatPercent, formatRatio } from "../../utils/trustPresentation";
 
-import { API_BASE_URL } from '../../config';
+import { useBatchDesign } from "../../hooks/useBatchDesign";
+import { currentWorkbenchLayout } from "../../workspace/resultRecords";
+import { useWorkspaceStore } from "../../workspace/workspaceStore";
+import type { WorkbenchExportParams } from "../../hooks/useExport";
 
 interface BeamDetailPanelProps {
   beam: BeamCSVRow;
   onClose: () => void;
 }
 
-// ── Single-beam design hook ──────────────────────────────────────────────────
-
-async function designSingleBeam(beam: BeamCSVRow): Promise<BeamDesignResponse> {
-  const mu = Math.max(
-    Math.abs(beam.Mu_start ?? 0), Math.abs(beam.Mu_mid ?? 0),
-    Math.abs(beam.Mu_end ?? 0), Math.abs(beam.mu_envelope ?? 0)
-  );
-  const vu = Math.max(
-    Math.abs(beam.Vu_start ?? 0), Math.abs(beam.Vu_end ?? 0),
-    Math.abs(beam.vu_envelope ?? 0)
-  );
-  return designBeam({
-    width: beam.b,
-    depth: beam.D,
-    moment: mu,
-    shear: vu,
-    fck: beam.fck ?? 25,
-    fy: beam.fy ?? 500,
-    clear_cover: beam.cover ?? 40,
-    stirrup_dia_mm: 8,
-    main_bar_dia_mm: 20,
-  });
-}
-
-// ── Bar layout helper (mirrors deriveBarLayout in BuildingEditorPage) ─────────
-// NOTE: This function does basic geometry (area = π × r²) to estimate bar count.
-// It's pragmatic bar selection, NOT IS 456 code logic. A future `/rebar/suggest-layout`
-// API endpoint would eliminate this client-side estimation entirely.
-
-function deriveBarLayout(astRequired: number): { count: number; dia: number } {
-  for (const dia of [12, 16, 20, 25, 32]) {
-    const count = Math.ceil(astRequired / (Math.PI * (dia / 2) ** 2));
-    if (count >= 2 && count <= 8) return { count, dia };
-  }
-  return { count: Math.max(2, Math.ceil(astRequired / (Math.PI * 12.5 ** 2))), dia: 25 };
-}
-
-// ── Component ────────────────────────────────────────────────────────────────
-
 export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
-  const { setBeams } = useImportedBeamsStore();
-  const status = deriveBeamStatus(beam);
-  const utilPct = beam.utilization != null ? beam.utilization * 100 : null;
-  const exportHeld = beam.is_valid !== true;
-  // Imported/batch rows do not retain the canonical primary evidence identity.
-  const reportIdentityAvailable = false;
+  const memberId = beam.source_id ?? beam.id;
+  const snapshot = useWorkspaceStore((state) => state.snapshot);
+  const layout = currentWorkbenchLayout(snapshot, memberId);
+  const mid = layout?.zones.find((zone) => zone.zone === "mid");
+  const rawStatus = deriveBeamStatus(beam);
+  const status = !layout && rawStatus === "pass" ? "warning" : rawStatus;
+  const utilPct = layout ? layout.utilization * 100 : null;
+  const { startBatchDesign, status: batchStatus } = useBatchDesign();
+  const redesigning = batchStatus === "running";
+  const redesign = () => startBatchDesign([beam]);
 
-  // Track backend-computed sv_max from design response
-  const [designSvMax, setDesignSvMax] = useState<number | null>(null);
-
-  // ── Redesign ────────────────────────────────────────────────────────────
-  const { mutate: redesign, isPending: redesigning } = useMutation({
-    mutationFn: () => designSingleBeam(beam),
-    onSuccess: async (data) => {
-      const trust = getTrustPresentation(data);
-      const astReq = data.flexure?.ast_required ?? data.ast_total;
-      const ascReq = data.flexure?.asc_required ?? data.asc_total;
-      const layout = deriveBarLayout(astReq);
-
-      // Get ast_provided from backend instead of calculating locally
-      let astProvided = 0;
-      try {
-        const rebarRes = await fetch(`${API_BASE_URL}/api/v1/rebar/apply`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            beam: { width: beam.b, depth: beam.D, cover: beam.cover ?? 40 },
-            config: { bar_count: layout.count, bar_dia: layout.dia },
-          }),
-        });
-        if (rebarRes.ok) {
-          const rebarData = await rebarRes.json().then(
-            unwrapResponse<{ ast_provided_mm2: number | null }>
-          );
-          astProvided = rebarData.ast_provided_mm2 ?? 0;
-        }
-      } catch {
-        // Fallback: use 0 if API fails
-      }
-
-      // Store sv_max from design response for display
-      if (data.shear?.sv_max) setDesignSvMax(data.shear.sv_max);
-
-      const currentBeams = useImportedBeamsStore.getState().beams;
-      setBeams(currentBeams.map((b) =>
-        b.id !== beam.id ? b : {
-          ...b,
-          ast_required: astReq,
-          asc_required: ascReq,
-          ast_provided: astProvided,
-          bar_count: layout.count,
-          bar_diameter: layout.dia,
-          stirrup_spacing: data.shear?.stirrup_spacing ?? b.stirrup_spacing,
-          utilization: trust.exactUtilization ?? undefined,
-          is_valid: trust.status === "PASS",
-          status: trust.status === "PASS" ? "pass" : trust.status === "HOLD" ? "warning" : "fail",
-        }
-      ));
-    },
-  });
-
-  // ── Edit rebar mode ──────────────────────────────────────────────────────
   const [editMode, setEditMode] = useState(false);
-  const [editBarCount, setEditBarCount] = useState(beam.bar_count ?? 2);
-  const [editBarDia, setEditBarDia] = useState(beam.bar_diameter ?? 16);
-  const [editStrDia, setEditStrDia] = useState(beam.stirrup_diameter ?? 8);
-  const [editStrSp, setEditStrSp] = useState(beam.stirrup_spacing ?? 150);
-
-  const { mutate: validate, data: validationResult, isPending: validating } = useRebarValidation();
-
+  const [editBarCount, setEditBarCount] = useState(mid?.tension.count ?? 2);
+  const [editBarDia, setEditBarDia] = useState(mid?.tension.diameter_mm ?? 16);
+  const [editStrDia, setEditStrDia] = useState(mid?.stirrup.diameter_mm ?? 8);
+  const [editStrSp, setEditStrSp] = useState(mid?.stirrup.spacing_mm ?? 150);
   const handleEditOpen = () => {
-    setEditBarCount(beam.bar_count ?? 2);
-    setEditBarDia(beam.bar_diameter ?? 16);
-    setEditStrDia(beam.stirrup_diameter ?? 8);
-    setEditStrSp(beam.stirrup_spacing ?? 150);
+    setEditBarCount(beam.requested_bar_count ?? mid?.tension.count ?? 2);
+    setEditBarDia(beam.tension_bar_diameter_mm ?? mid?.tension.diameter_mm ?? 16);
+    setEditStrDia(beam.stirrup_diameter_mm ?? mid?.stirrup.diameter_mm ?? 8);
+    setEditStrSp(beam.requested_stirrup_spacing_mm ?? mid?.stirrup.spacing_mm ?? 150);
     setEditMode(true);
-    // Validate current config immediately
-    validate({ beam: { width: beam.b, depth: beam.D, cover: beam.cover ?? 40 }, config: { bar_count: beam.bar_count ?? 2, bar_dia: beam.bar_diameter ?? 16, stirrup_dia: beam.stirrup_diameter ?? 8 } });
   };
-
-  const handleValidate = () => {
-    validate({
-      beam: { width: beam.b, depth: beam.D, cover: beam.cover ?? 40 },
-      config: { bar_count: editBarCount, bar_dia: editBarDia, stirrup_dia: editStrDia },
-    });
-  };
-
   const handleApplyRebar = () => {
-    // Get ast_provided from backend validation result instead of local calculation
-    const astProv = validationResult?.validation?.details?.ast_provided_mm2 ?? 0;
-    const currentBeams = useImportedBeamsStore.getState().beams;
-    setBeams(currentBeams.map((b) =>
-      b.id !== beam.id ? b : {
-        ...b,
-        bar_count: editBarCount,
-        bar_diameter: editBarDia,
-        stirrup_diameter: editStrDia,
-        stirrup_spacing: editStrSp,
-        ast_provided: astProv,
-      }
-    ));
+    const store = useImportedBeamsStore.getState();
+    const current = store.beams.find((item) => (item.source_id ?? item.id) === memberId);
+    if (!current) return;
+    const edited: BeamCSVRow = {
+      ...current,
+      tension_bar_diameter_mm: editBarDia,
+      stirrup_diameter_mm: editStrDia,
+      requested_bar_count: editBarCount,
+      requested_stirrup_spacing_mm: editStrSp,
+      status: "pending",
+      is_valid: false,
+    };
+    store.setBeams(store.beams.map((item) => item === current ? edited : item));
+    if (useImportedBeamsStore.getState().error) return;
     setEditMode(false);
+    startBatchDesign([edited]);
   };
 
-  // ── Geometry for 3D view ──────────────────────────────────────────────────
-  const geoParams =
-    beam.ast_required != null
-      ? {
-          beam_id: beam.id,
-          width: beam.b, depth: beam.D, span: beam.span || 5000,
-          fck: beam.fck ?? 25, fy: beam.fy ?? 500,
-          ast_start: beam.ast_required, ast_mid: beam.ast_required, ast_end: beam.ast_required,
-          stirrup_dia: beam.stirrup_diameter ?? 8,
-          stirrup_spacing_start: beam.stirrup_spacing ?? 150,
-          stirrup_spacing_mid: beam.stirrup_spacing ?? 150,
-          stirrup_spacing_end: beam.stirrup_spacing ?? 150,
-          cover: beam.cover ?? 40,
-        }
-      : null;
-
-  const { data: geometry } = useBeamGeometry(geoParams);
-
-  // ── Export ────────────────────────────────────────────────────────────────
-  const exportParams = {
-    beam_id: beam.id, width: beam.b, depth: beam.D,
-    span_length: beam.span, clear_cover: beam.cover ?? 40,
-    fck: beam.fck ?? 25, fy: beam.fy ?? 500,
-    ast_required: beam.ast_required ?? 0, asc_required: beam.asc_required ?? 0,
-    moment: Math.max(Math.abs(beam.Mu_start ?? 0), Math.abs(beam.Mu_mid ?? 0), Math.abs(beam.Mu_end ?? 0), Math.abs(beam.mu_envelope ?? 0)),
-    shear: Math.max(Math.abs(beam.Vu_start ?? 0), Math.abs(beam.Vu_end ?? 0), Math.abs(beam.vu_envelope ?? 0)),
-  };
+  const exportParams = (current: typeof layout): WorkbenchExportParams | null => current ? {
+    checked_request: current.checked_request,
+    checked_layout_id: current.checked_layout_id,
+  } : null;
+  const { data: geometry, isPending: geometryPending } = useBeamGeometry(exportParams(layout));
   const { mutate: exportBBS, isPending: bbsPending } = useExportBBS();
   const { mutate: exportDXF, isPending: dxfPending } = useExportDXF();
   const { mutate: exportReport, isPending: reportPending } = useExportReport();
+  const exportHeld = !layout || editMode || redesigning;
+  const downloadChecked = (download: (params: WorkbenchExportParams) => void) => {
+    if (editMode || redesigning) return;
+    const current = currentWorkbenchLayout(useWorkspaceStore.getState().snapshot, memberId);
+    const params = exportParams(current);
+    if (params) download(params);
+  };
 
   const statusConfig = {
-    pass:      { label: "✓ SAFE",    cls: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30" },
+    pass:      { label: "✓ PASS",    cls: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30" },
     fail:      { label: "✕ FAIL",    cls: "text-rose-400 bg-rose-500/10 border-rose-500/30" },
     warning:   { label: "⚠ CHECK",   cls: "text-amber-400 bg-amber-500/10 border-amber-500/30" },
     pending:   { label: "PENDING",   cls: "text-zinc-400 bg-white/5 border-white/10" },
@@ -221,11 +103,8 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
     utilPct > 75         ? "bg-amber-400/70"  :
                            "bg-emerald-400";
 
-  // Stirrup limit info — use backend-computed sv_max when available
-  const svMax = designSvMax ?? (beam.D ? Math.min(Math.round(0.75 * (beam.D - (beam.cover ?? 40) - 25)), 300) : 300);
-  const svGoverning = designSvMax != null
-    ? `${designSvMax} mm (IS 456 Cl. 40)`
-    : `≈ ${svMax} mm (estimate)`;
+  const svMax = layout?.shear_spacing_limit_mm;
+  const svGoverning = svMax == null ? "—" : `${svMax} mm (IS 456 Cl. 40)`;
 
   return (
     <div className="flex flex-col h-full bg-zinc-950 border-l border-white/5 overflow-y-auto">
@@ -239,7 +118,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           <p className="text-[10px] text-zinc-500 mt-0.5">M{beam.fck ?? 25} &middot; Fe{beam.fy ?? 500} &middot; {beam.cover ?? 40}mm cover</p>
         </div>
         <div className="flex items-center gap-1.5 mt-0.5 shrink-0">
-          {beam.ast_required != null && (
+          {(beam.ast_required != null || !layout) && (
             <button
               onClick={() => { if (!redesigning) redesign(); }}
               disabled={redesigning}
@@ -282,13 +161,13 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           </Suspense>
         ) : (
           <div className="flex flex-col items-center justify-center h-full gap-1.5">
-            {beam.ast_required != null
-              ? <p className="text-xs text-zinc-500 animate-pulse">Loading 3D rebar…</p>
+            {layout && geometryPending
+              ? <p className="text-xs text-zinc-500 animate-pulse">Loading checked reinforcement…</p>
               : <>
                   <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center mb-1">
                     <Ruler className="w-4 h-4 text-white/20" aria-hidden="true" />
                   </div>
-                  <p className="text-xs text-zinc-500">Design beam to see reinforcement</p>
+                  <p className="text-xs text-zinc-500">Check this beam to see its reinforcement</p>
                 </>
             }
           </div>
@@ -310,36 +189,11 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
             <EditField label="Stirrup Ø" value={editStrDia} onChange={setEditStrDia} options={[6,8,10,12]} />
             <EditField label="Sv (mm)" value={editStrSp} onChange={setEditStrSp} options={[75,100,125,150,175,200,225,250,275,300]} />
           </div>
-          {/* Validation result */}
-          {validationResult && (
-            <div className={`flex items-start gap-2 text-[10px] p-2 rounded-lg ${
-              validationResult.validation.ok ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"
-            }`}>
-              {validationResult.validation.ok
-                ? <Check className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                : <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-              }
-              <div>
-                <span className="font-medium">{validationResult.validation.ok ? "Valid" : "Issues"}</span>
-                {validationResult.validation.errors.length > 0 && (
-                  <p className="mt-0.5 opacity-80">{validationResult.validation.errors[0]}</p>
-                )}
-                {validationResult.validation.details.ast_provided_mm2 != null && (
-                  <p className="mt-0.5 opacity-60">
-                    Ast prov = {Math.round(validationResult.validation.details.ast_provided_mm2)} mm²
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
+          <p className="text-xs text-zinc-400">Saving these inputs checks a new layout and invalidates the old downloads.</p>
           <div className="flex gap-2">
-            <button onClick={handleValidate} disabled={validating}
-              className="flex-1 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-white/60 hover:bg-white/10 transition-all disabled:opacity-40">
-              {validating ? "Checking…" : "Validate IS 456"}
-            </button>
-            <button onClick={handleApplyRebar}
+            <button onClick={handleApplyRebar} disabled={redesigning}
               className="flex-1 py-1.5 rounded-lg bg-amber-500/20 border border-amber-500/40 text-xs text-amber-300 hover:bg-amber-500/30 transition-all font-medium">
-              Apply
+              Save and check
             </button>
           </div>
         </div>
@@ -353,7 +207,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           </span>
           {utilPct != null && (
             <span className="text-xs text-zinc-400 tabular-nums">
-              {formatPercent(beam.utilization ?? 0)} · ratio {formatRatio(beam.utilization ?? 0)}
+              {formatPercent(layout?.utilization ?? 0)} · ratio {formatRatio(layout?.utilization ?? 0)}
             </span>
           )}
         </div>
@@ -364,24 +218,37 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
         )}
         <div className="grid grid-cols-3 gap-2">
           <Metric label="Ast req" value={beam.ast_required != null ? `${Math.round(beam.ast_required)}` : "—"} unit={beam.ast_required != null ? "mm²" : ""} />
-          <Metric label="Bars" value={beam.bar_count && beam.bar_diameter ? `${beam.bar_count}-T${beam.bar_diameter}` : "—"} />
-          <Metric label="Stirrups" value={beam.stirrup_spacing ? `${beam.stirrup_diameter ?? 8}ø@${beam.stirrup_spacing}` : "—"} />
+          <Metric label="Midspan bars" value={mid ? `${mid.tension.count}Ø${mid.tension.diameter_mm}` : "—"} />
+          <Metric label="Midspan stirrups" value={mid ? `Ø${mid.stirrup.diameter_mm} @ ${mid.stirrup.spacing_mm}` : "—"} />
         </div>
       </div>
 
       {/* ── Cross-Section ── */}
-      {beam.ast_required != null && (
+      {layout && mid && (
         <div className="px-4 py-3 border-b border-white/5 shrink-0">
-          <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-3">Cross-Section</p>
+          <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-3">Checked reinforcement by zone</p>
+          <table className="w-full text-left text-xs text-zinc-300">
+            <thead><tr><th>Zone</th><th>Bottom</th><th>Top</th><th>Stirrups</th></tr></thead>
+            <tbody>{layout.zones.map((zone) => (
+              <tr key={zone.zone}>
+                <th scope="row">{zone.zone}</th>
+                <td>{zone.tension.count}Ø{zone.tension.diameter_mm}</td>
+                <td>{zone.compression.count}Ø{zone.compression.diameter_mm}</td>
+                <td>Ø{zone.stirrup.diameter_mm} @ {zone.stirrup.spacing_mm} mm ({zone.stirrup.count})</td>
+              </tr>
+            ))}</tbody>
+          </table>
+          <p className="text-[10px] text-zinc-500 uppercase tracking-widest mt-3">Midspan cross-section</p>
           <CrossSectionView
             width={beam.b} depth={beam.D}
             cover={beam.cover ?? 40}
-            astRequired={beam.ast_required}
-            ascRequired={beam.asc_required}
-            stirrupDia={beam.stirrup_diameter ?? 8}
-            barDia={beam.bar_diameter}
-            barCount={beam.bar_count}
-            utilization={beam.utilization}
+            astRequired={layout.ast_required_mm2}
+            stirrupDia={mid.stirrup.diameter_mm}
+            barDia={mid.tension.diameter_mm}
+            barCount={mid.tension.count}
+            topBarDia={mid.compression.diameter_mm}
+            topBarCount={mid.compression.count}
+            utilization={layout.utilization}
             className="scale-[0.72] origin-top-left"
           />
         </div>
@@ -392,31 +259,23 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
         <p className="text-[10px] text-zinc-500 uppercase tracking-widest">IS 456 Checks</p>
         <CheckRow
           label="Flexure" clause="Cl. 38.1"
-          status={status === "fail" ? "fail" : beam.ast_required != null ? "pass" : "pending"}
+          status={status === "fail" ? "fail" : layout ? "pass" : "pending"}
           detail={beam.ast_required ? `Ast = ${Math.round(beam.ast_required)} mm²` : "Not designed"}
         />
         <CheckRow
           label="Shear" clause="Cl. 40"
-          status={beam.stirrup_spacing ? (status === "fail" ? "fail" : "pass") : "pending"}
+          status={layout ? "pass" : status === "fail" ? "fail" : "pending"}
           detail={
-            beam.stirrup_spacing
-              ? `Sv = ${beam.stirrup_spacing} mm (max: ${svGoverning})`
+            mid
+              ? `Sv = ${mid.stirrup.spacing_mm} mm (max: ${svGoverning})`
               : "Not designed"
           }
-          warn={beam.stirrup_spacing != null && beam.stirrup_spacing > svMax
-            ? `Sv ${beam.stirrup_spacing} > max ${svMax} mm`
-            : undefined}
         />
-        <CheckRow
-          label="Min Steel" clause="Cl. 26.5.1.1"
-          status={beam.ast_required != null ? "pass" : "pending"}
-          detail={`≥ 0.${(beam.fy ?? 500) === 415 ? "085" : "12"}% of Ag`}
-        />
-        <CheckRow
-          label="L/d Ratio" clause="Cl. 23.2"
-          status={beam.span && beam.D ? (beam.span / beam.D < 20 ? "pass" : "warning") : "pending"}
-          detail={beam.span && beam.D ? `L/d = ${(beam.span / beam.D).toFixed(1)} ${beam.span / beam.D < 20 ? "✓" : "⚠ > 20"}` : "—"}
-        />
+        {layout && (
+          <p className="text-[10px] text-zinc-400">
+            Qualified review required. This check covers the supplied factored moment and shear.
+          </p>
+        )}
       </div>
 
       {/* ── Export ── */}
@@ -424,19 +283,14 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
         <div className="px-4 py-3 shrink-0">
           <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2.5">Export</p>
           <div className="flex gap-2">
-            <ExportBtn label="BBS" icon={<Download className="w-3.5 h-3.5" />} loading={bbsPending} disabled={exportHeld} onClick={() => exportBBS(exportParams)} />
-            <ExportBtn label="DXF" icon={<Ruler className="w-3.5 h-3.5" />} loading={dxfPending} disabled={exportHeld} onClick={() => exportDXF(exportParams)} />
-            <ExportBtn label="Report" icon={<FileText className="w-3.5 h-3.5" />} loading={reportPending} disabled={exportHeld || !reportIdentityAvailable}
-              onClick={() => exportReport({ ...exportParams, ast_provided: beam.ast_provided, utilization: beam.utilization, is_safe: beam.is_valid })} />
+            <ExportBtn label="BBS" icon={<Download className="w-3.5 h-3.5" />} loading={bbsPending} disabled={exportHeld} onClick={() => downloadChecked(exportBBS)} />
+            <ExportBtn label="DXF" icon={<Ruler className="w-3.5 h-3.5" />} loading={dxfPending} disabled={exportHeld} onClick={() => downloadChecked(exportDXF)} />
+            <ExportBtn label="Report" icon={<FileText className="w-3.5 h-3.5" />} loading={reportPending} disabled={exportHeld}
+              onClick={() => downloadChecked(exportReport)} />
           </div>
           {exportHeld && (
             <p className="mt-2 text-[10px] text-amber-400/80" role="status">
-              Exports held until this beam has a PASS result.
-            </p>
-          )}
-          {!exportHeld && !reportIdentityAvailable && (
-            <p className="mt-2 text-[10px] text-amber-400/80" role="status">
-              Report held: this imported row does not retain an exact primary-response evidence identity.
+              {beam.remarks?.[0] || "Exports require a current checked reinforcement layout."}
             </p>
           )}
         </div>
