@@ -1902,7 +1902,7 @@ the greater of 1% or 0.01 mm, with exact limit dispositions.
 | SEC03 · S07/S08 | COL03 asymmetric cage with service `P=300, Mx=-40, My=25`; reverse both moments in a centre-reflected cage. | Matched-law stress/strain plane, force resultants and oriented plots. Point IDs, orientation, material and calculated state must survive export. |
 | COL01 · existing regression | [LIB-027 four-corner 300×400](../verification/library-027-four-corner-column.json), M25/Fe415, four Ø20, `Pu=500, M=50` on each axis independently. | Frozen member, ties and detailing results, including failed cage/detailing controls. |
 | COL02 · C01/C02/C05 | 300×400, M25/Fe415, Ø20 on a 60 mm centre setback with 40 mm cover and Ø8 ties. Four corners plus midpoint of each face. Six-bar variants omit both x-face midpoints or both y-face midpoints. `Pu=500`, signed `(Mx, My)=(50,0),(0,50),(50,35),(-50,35)`. | Independently compute interaction and governing directions. Compare rotated geometry with rotated actions. Check positioned bar IDs in ties, section, drawing and report. |
-| COL03 · C03/C04/C10 | 450×550, M30/Fe500, Ø20 corners at 50 mm setback. Add Ø16 bars at `(150,50),(300,50),(150,500),(300,500),(50,200),(400,350),(150,125),(300,425)`. `Pu=800, Mx=75, My=-45`. Repeat with demand ×5 and with two bar centres coincident. | Independent actual-cage signed strength and spacing. Overload FAIL; coincident cage rejected. Preserve distinct bars and tie layout/quantities. |
+| COL03 · C03/C04/C10 | [Frozen 450×550 M30/Fe500 mixed-bar cases](../verification/library-029-col03-mixed-column.json). The original 50 mm coordinates are retained as a section diagnostic and detailing FAIL. The physical companion retains 12 positioned Ø20/Ø16 bars and uses three explicit open links. Both start at `Pu=800, Mx=75, My=-45`. | Signed zero-cross-moment capacities, free-angle strength and restraint checks. Reflect the companion and reverse both moments. Overload all three actions by 5 for a strength FAIL and reject coincident bars. Preserve bar/link IDs and section quantities. |
 | COL04 · C06 | COL02 8-bar rectangle, braced pinned lengths 3000 and 6000, `Pu=500`, signed x end moments -60/-30 and y end moments 25/-25. Supply matching action representations, then conflicting all-zero end moments. | Independent slenderness, eccentricity and signed second-order magnification on both axes. Reject the conflict before any PASS. |
 | COL05 · C07/C08 | Ø450 M30/Fe500, eight Ø20 centres on radius 165 at 45° increments. `Pu=650, Mx=70, My=40`. Test Ø10 circular ties at 150 and Ø10 spiral at 60, then replace spiral pitch with 120. | Separate tied and spiral section/member references. Freeze confinement applicability, tie/spiral fit and pitch dispositions. Inadmissible spiral receives no confinement credit. |
 | COL06 · C09 | COL02 inputs, enumerate rectangular 300×400, 350×450, 400×500 and symmetric 8Ø16/20/25; fix material, axis and actions, rank by gross area then steel area then geometry and diameter. | Independently exhaust the finite catalogue and compare eligible/rejected alternatives, fit, sorted IDs and selected checked design. An infeasible catalogue yields no selected design. |
@@ -1968,6 +1968,16 @@ principal capacities and the code interaction contour. General P–M–M,
 member-wide fabrication, joints and laps retain their separate acceptance
 cases. The installed beam/column profiles carry the COL02 replay forward.
 
+
+**COL03 reference freeze.** The case record binds the original geometry, an
+admitted companion with explicit cover and open links, its centre reflection,
+and the full-triplet overload. The [independent reference replay](../verification/check_library_029_col03_reference.py)
+integrates horizontal strips split at the stress transitions. At fixed
+compression it solves signed pure-axis capacities with zero orthogonal
+moment, then the supplied biaxial ray with a free normal orientation.
+The code interaction and separate minimum eccentricity use these signed
+capacities. Inner-row restraint uses the scoped IS 456 Cl. 26.5.3.2(b)(3)
+basis after verifying outer-row restraint and clearance from all faces.
 
 ## Work and completion evidence
 
