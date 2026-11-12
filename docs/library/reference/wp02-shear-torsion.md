@@ -17,6 +17,25 @@ Shear checks retain the signed station demand while comparing its magnitude to
 the capacity for the same axis. V2 and V3 may use different resisting widths,
 effective depths, and active link legs.
 
+The shear batch requires every supplied capacity and demanded axis to qualify
+before returning station checks. Across both axes, rejected input takes
+precedence over unsupported scope, which takes precedence over missing
+evidence. This priority is independent of capacity order. M45 concrete or
+550 N/mm² link steel is outside the WP02 domain: both the capacity and batch
+return `not_applicable`, `not_evaluated`, and `complete_for_scope`, retaining
+`PROFILE.UNSUPPORTED`. The completeness describes the scope decision; it does
+not qualify the design. A supported axis, including an assessed failure,
+cannot turn a mixed unsupported batch into an evaluated PASS or FAIL.
+
+Without an unsupported capacity, missing links or a missing demanded-axis
+capacity return `unknown`, `not_evaluated`, and `partial` (HOLD). Unsupported
+shear is also unevaluated (HOLD), and cannot satisfy the receiving-member
+passing gate. The support-transfer caller retains that shear envelope and
+reports its receiver-strength qualification as FAIL. Once every required
+axis can be evaluated, the shear batch returns engineering PASS or FAIL
+and retains each station's capacity result ID; stations sharing one capacity
+continue to share that ID.
+
 Torsion accepts one identified `static_concurrent` or `staged_step` action row.
 A component envelope is rejected because its shear, torsion, and bending values
 may come from different source rows. The WP02 profile evaluates the major-axis

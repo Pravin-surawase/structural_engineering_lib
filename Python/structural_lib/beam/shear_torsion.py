@@ -363,22 +363,6 @@ def check_shear(request: ShearCheckRequest) -> OperationResult:
                 capacity_result.diagnostics,
                 provenance=provenance,
             )
-        if capacity_result.engineering is EngineeringState.NOT_EVALUATED:
-            diagnostic = capacity_result.diagnostics[0]
-            return not_evaluated_result(
-                SHEAR_CHECK_OPERATION, inputs, diagnostic, provenance=provenance
-            )
-        if capacity_result.applicability is ApplicabilityState.NOT_APPLICABLE:
-            return not_applicable_result(
-                SHEAR_CHECK_OPERATION,
-                inputs,
-                capacity_result.diagnostics[0],
-                provenance=provenance,
-            )
-    checks: list[dict[str, object]] = []
-    utilizations: list[float] = []
-    diagnostics: list[Diagnostic] = []
-    all_pass = True
     for demand in request.demands:
         if not demand.station_id.strip() or not math.isfinite(demand.shear_kn):
             return rejected_result(
@@ -395,6 +379,27 @@ def check_shear(request: ShearCheckRequest) -> OperationResult:
                 ),
                 provenance=provenance,
             )
+    # Resolve each state across all axes before considering the next priority.
+    # Unsupported scope is known even though its engineering is not evaluated.
+    for capacity_result in capacity_by_axis.values():
+        if capacity_result.applicability is ApplicabilityState.NOT_APPLICABLE:
+            return not_applicable_result(
+                SHEAR_CHECK_OPERATION,
+                inputs,
+                capacity_result.diagnostics[0],
+                provenance=provenance,
+            )
+    for capacity_result in capacity_by_axis.values():
+        if capacity_result.engineering is EngineeringState.NOT_EVALUATED:
+            diagnostic = capacity_result.diagnostics[0]
+            return not_evaluated_result(
+                SHEAR_CHECK_OPERATION, inputs, diagnostic, provenance=provenance
+            )
+    checks: list[dict[str, object]] = []
+    utilizations: list[float] = []
+    diagnostics: list[Diagnostic] = []
+    all_pass = True
+    for demand in request.demands:
         capacity = capacity_by_axis.get(demand.axis)
         if capacity is None:
             return not_evaluated_result(
