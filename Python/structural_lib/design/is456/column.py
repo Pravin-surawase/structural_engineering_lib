@@ -26,6 +26,12 @@ from structural_lib.services.column_member import (
 from structural_lib.services.column_member import (
     render_four_corner_member_html as _render_four_corner_member_html,
 )
+from structural_lib.services.column_positioned_member import (
+    check_positioned_rectangular_member as _check_positioned_rectangular_member,
+)
+from structural_lib.services.column_positioned_member import (
+    render_positioned_rectangular_member_html as _render_positioned_rectangular_member_html,
+)
 from structural_lib.services.column_tied_member import (
     check_tied_rectangular_member as _check_tied_rectangular_member,
 )
@@ -39,6 +45,7 @@ from structural_lib.services.contracts.column_member import (
     FourCornerColumnGeometryV1,
     FourCornerColumnInputV1,
     FourCornerColumnReinforcementV1,
+    PositionedRectangularColumnInputV1,
     RectangularColumnActionsV1,
     RectangularColumnCageV1,
     TiedRectangularColumnInputV1,
@@ -80,6 +87,7 @@ __all__ = [
     "FourCornerColumnGeometryV1",
     "FourCornerColumnInputV1",
     "FourCornerColumnReinforcementV1",
+    "PositionedRectangularColumnInputV1",
     "RectangularColumnActionsV1",
     "RectangularColumnCageV1",
     "TiedRectangularColumnInputV1",
@@ -88,6 +96,7 @@ __all__ = [
     "check",
     "check_four_corner_member",
     "check_tied_rectangular_member",
+    "check_positioned_rectangular_member",
     "design",
     "input",
     "layered_section_response",
@@ -97,8 +106,117 @@ __all__ = [
     "load_four_corner_member",
     "render_four_corner_member_html",
     "load_tied_rectangular_member",
+    "load_positioned_rectangular_member",
     "render_tied_rectangular_member_html",
+    "render_positioned_rectangular_member_html",
 ]
+
+
+def load_positioned_rectangular_member(
+    value: Mapping[str, object] | str | bytes | PositionedRectangularColumnInputV1,
+) -> PositionedRectangularColumnInputV1:
+    """Load one explicit mixed-bar cage and signed member demand.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or PositionedRectangularColumnInputV1
+        Section, individual bars, supplied tie paths and factored station actions.
+
+    Returns
+    -------
+    PositionedRectangularColumnInputV1
+        An immutable versioned request.
+
+    Raises
+    ------
+    InputContractError
+        The request is malformed or contains overlapping bar geometry.
+
+    Examples
+    --------
+    Run Python/examples/positioned_rectangular_column_member.py.
+
+    Limitations
+    -----------
+    The profile admits 9–32 positioned bars and aligned open links.
+
+    Provenance
+    ----------
+    PositionedRectangularColumnInputV1 owns the strict input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(PositionedRectangularColumnInputV1, value)
+    return model_validate_or_error(PositionedRectangularColumnInputV1, value)
+
+
+def check_positioned_rectangular_member(
+    request: PositionedRectangularColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check strength and restraint for the actual positioned column cage.
+
+    Parameters
+    ----------
+    request : PositionedRectangularColumnInputV1
+        One rectangular cage and its concurrent factored action pair.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Separate strength and restraint dispositions with checked bar and link data.
+
+    Raises
+    ------
+    InputContractError
+        The operation requires a typed positioned rectangular request.
+
+    Examples
+    --------
+    Check the result of load_positioned_rectangular_member.
+
+    Limitations
+    -----------
+    A single short braced station with supported tie geometry is checked.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 25.4, 26.5.3.2, 38.1, 39.1, 39.5 and 39.6.
+    """
+    return _check_positioned_rectangular_member(request)
+
+
+def render_positioned_rectangular_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the checked positioned cage and its section results.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        The positioned rectangular member result.
+
+    Returns
+    -------
+    str
+        HTML with the original identities, cage, local restraint and strength.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to a different workflow.
+
+    Examples
+    --------
+    Run the positioned rectangular member example with --output-dir.
+
+    Limitations
+    -----------
+    The drawing covers the checked cross section.
+
+    Provenance
+    ----------
+    The original canonical result supplies all rendered values.
+    """
+    return _render_positioned_rectangular_member_html(result)
 
 
 def load_tied_rectangular_member(

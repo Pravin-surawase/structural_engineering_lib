@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file.
   orientations. The fixed-compression capacities use actual bar positions,
   with signed biaxial actions, explicit midpoint restraint and JSON/HTML
   output tied to the checked section.
+- Short rectangular column checks for explicitly positioned mixed-diameter
+  cages with 9–32 longitudinal bars. Includes signed fixed-load strengths,
+  independently reported local restraint and checked open-link geometry.
 
 ### Fixed
 

@@ -98,6 +98,8 @@ For four equal physical corner bars and actual closed ties, use the [four-corner
 
 For eight equal bars or either orientation of a six-bar cage, use the [tied rectangular column guide](column-four-corner-member-check.md#six-and-eight-bar-tied-rectangles).
 
+For larger or asymmetric mixed-diameter cages with aligned links, see the [positioned rectangular column guide](column-four-corner-member-check.md#positioned-mixed-bar-rectangles).
+
 ## Python API
 
 Typed request groups are exported from `structural_lib.design.is456.column` alongside the
@@ -122,6 +124,9 @@ and group imports require its matching build rather than an older published whee
         - load_tied_rectangular_member
         - check_tied_rectangular_member
         - render_tied_rectangular_member_html
+        - load_positioned_rectangular_member
+        - check_positioned_rectangular_member
+        - render_positioned_rectangular_member_html
 
 ## Compatibility and evidence
 

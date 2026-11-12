@@ -80,6 +80,9 @@ def _page(workflow: Any, recipe: Any) -> str:
                 "load_tied_rectangular_member",
                 "check_tied_rectangular_member",
                 "render_tied_rectangular_member_html",
+                "load_positioned_rectangular_member",
+                "check_positioned_rectangular_member",
+                "render_positioned_rectangular_member_html",
             )
         )
         related_workflow = (
@@ -87,6 +90,8 @@ def _page(workflow: Any, recipe: Any) -> str:
             "[four-corner member guide](column-four-corner-member-check.md).\n\n"
             "For eight equal bars or either orientation of a six-bar cage, use the "
             "[tied rectangular column guide](column-four-corner-member-check.md#six-and-eight-bar-tied-rectangles).\n\n"
+            "For larger or asymmetric mixed-diameter cages with aligned links, see the "
+            "[positioned rectangular column guide](column-four-corner-member-check.md#positioned-mixed-bar-rectangles).\n\n"
         )
     api_members = "\n".join(f"        - {name}" for name in members)
     engineering_failure = ""

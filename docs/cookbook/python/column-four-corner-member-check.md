@@ -154,3 +154,44 @@ The [independent case record](../../verification/library-029-col02-rectangular-c
 defines the exact dimensions, material laws, tie schedule, expected values
 and negative controls. The earlier four-corner request and report remain
 available through their existing entry points.
+
+## Positioned mixed-bar rectangles
+
+Use `column.load_positioned_rectangular_member` and
+`column.check_positioned_rectangular_member` for a short braced rectangular
+column with 9–32 explicitly positioned bars. Supply each bar's ID, diameter,
+centre measured from the top and left, and outer or inner row. The bars use
+one common longitudinal steel grade. The complete request schema is available
+from `column.PositionedRectangularColumnInputV1.model_json_schema()`.
+
+Supply the simultaneous factored compression and signed moments at one
+station. Positive Mx compresses the top and positive My compresses the left.
+At the supplied axial force, the solver finds each signed principal capacity
+at zero orthogonal moment. The strength verdict uses the Cl. 39.6 interaction,
+the capacity along the demand direction, and adverse signed minimum-eccentricity
+checks. A failed local restraint check still leaves the section strength
+available for diagnosis.
+
+Supply a closed hoop and explicit open links between aligned bars on opposite
+faces. Each outer intermediate bar needs a checked link. The hoop and links
+lie at separate transverse levels within the pitch. Inner-row restraint uses
+the checked outer row and the concrete-face clearance required by
+IS 456 Cl. 26.5.3.2(b)(3). The result includes local counts by diameter, open-link
+centreline lengths, and an HTML section schematic via
+`column.render_positioned_rectangular_member_html`. Joint anchorage, laps and
+member-wide fabrication quantities require separate checks.
+
+Run the [example](../../../Python/examples/positioned_rectangular_column_member.py)
+from the 0.29 checkout, or use it with a local 0.29 installation.
+
+```bash
+python Python/examples/positioned_rectangular_column_member.py --case admitted_12_bar --output-dir column-output
+python Python/examples/positioned_rectangular_column_member.py --case original_50_mm
+```
+
+The admitted 450 × 550 mm cage has four Ø20 and eight Ø16 bars. At
+`Pu = 800 kN`, the signed axis capacity magnitudes are 377.728 and
+405.477 kN·m for positive and negative Mx, and 284.091 and 283.752 kN·m
+for positive and negative My. The original 50 mm layout fails local
+restraint. The [independent case record](../../verification/library-029-col03-mixed-column.json)
+includes the geometry, centre-reflected cage and fivefold action case.

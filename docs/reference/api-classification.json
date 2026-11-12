@@ -15151,8 +15151,8 @@
     {
       "module": "structural_lib.design.is456.column",
       "export_classification": "preview",
-      "declared_export_count": 36,
-      "classified_symbol_count": 46,
+      "declared_export_count": 40,
+      "classified_symbol_count": 50,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -15569,6 +15569,25 @@
           }
         },
         {
+          "name": "PositionedRectangularColumnInputV1",
+          "qualified_name": "structural_lib.design.is456.column.PositionedRectangularColumnInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "RectangularColumnActionsV1",
           "qualified_name": "structural_lib.design.is456.column.RectangularColumnActionsV1",
           "kind": "class",
@@ -15705,6 +15724,35 @@
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
             "signature": "(request: 'FourCornerColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_positioned_rectangular_member",
+          "qualified_name": "structural_lib.design.is456.column.check_positioned_rectangular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'PositionedRectangularColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -15971,6 +16019,35 @@
           }
         },
         {
+          "name": "load_positioned_rectangular_member",
+          "qualified_name": "structural_lib.design.is456.column.load_positioned_rectangular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | PositionedRectangularColumnInputV1') -> 'PositionedRectangularColumnInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_tied_rectangular_member",
           "qualified_name": "structural_lib.design.is456.column.load_tied_rectangular_member",
           "kind": "function",
@@ -16053,6 +16130,35 @@
         {
           "name": "render_four_corner_member_html",
           "qualified_name": "structural_lib.design.is456.column.render_four_corner_member_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_positioned_rectangular_member_html",
+          "qualified_name": "structural_lib.design.is456.column.render_positioned_rectangular_member_html",
           "kind": "function",
           "classification": "preview",
           "declared_export": true,

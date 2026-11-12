@@ -23,6 +23,7 @@ TESTS = tuple(
         "test_beam_section_closure",
         "test_four_corner_column_member",
         "test_tied_rectangular_column_member",
+        "test_positioned_rectangular_column_member",
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
@@ -46,6 +47,7 @@ EXAMPLES = tuple(
         "beam_section_closure",
         "four_corner_column_member",
         "tied_rectangular_column_member",
+        "positioned_rectangular_column_member",
         "torsion_station_reference",
         "physical_torsion_member",
         "t_beam_member",
@@ -65,7 +67,11 @@ CHECKERS = tuple(
         "torsion_serviceability_reference",
         "t_beam_reference",
     )
-) + ("docs/verification/check_library_029_col02_reference.py",)
+) + (
+    "docs/verification/check_library_029_col02_reference.py",
+    "docs/verification/check_library_029_col03_reference.py",
+)
+COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -76,6 +82,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 *(repo / name for name in (*TESTS, *EXAMPLES, *CHECKERS)),
                 *(repo / "docs/verification").glob("library-027-*.json"),
                 repo / "docs/verification/library-029-col02-rectangular-column.json",
+                repo / COL03_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -340,6 +347,23 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         assert member == json.loads((directory / "result.json").read_text())
         assert member["envelope"]["engineering_status"] == "PASS"
         assert member["calculation"]["layout"] == layout
+        input_hash = member["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
+    col03_cases = json.loads((clone / COL03_REFERENCE).read_text())["cases"]
+    for case, expected in col03_cases.items():
+        label = f"positioned-rectangular-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/positioned_rectangular_column_member.py",
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        member = json.loads(stdout)
+        assert member == json.loads((directory / "result.json").read_text())
+        assert member["envelope"]["engineering_status"] == expected["member_status"]
         input_hash = member["envelope"]["result_identity"]["input_hash"]
         assert input_hash in (directory / "report.html").read_text()
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):

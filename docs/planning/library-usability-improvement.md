@@ -1979,6 +1979,13 @@ The code interaction and separate minimum eccentricity use these signed
 capacities. Inner-row restraint uses the scoped IS 456 Cl. 26.5.3.2(b)(3)
 basis after verifying outer-row restraint and clearance from all faces.
 
+The source workflow `column.check_positioned_rectangular_member` checks the
+supplied cage and reports separate section strength and local restraint
+statuses. Its local outputs include bar counts by diameter and the checked
+open-link centreline paths and lengths. The beam/column archive profiles
+replay all four frozen cases. Member-wide fabrication, joint and lap evidence
+retains its separate acceptance cases.
+
 ## Work and completion evidence
 
 | Area | Required outcome | Evidence |

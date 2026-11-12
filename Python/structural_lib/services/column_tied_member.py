@@ -23,7 +23,11 @@ from structural_lib.services.canonical_family import (
     canonical_family_result,
     require_request_type,
 )
-from structural_lib.services.contracts.column_member import TiedRectangularColumnInputV1
+from structural_lib.services.contracts.column_member import (
+    FourCornerColumnGeometryV1,
+    RectangularColumnActionsV1,
+    TiedRectangularColumnInputV1,
+)
 
 _WORKFLOW = "is456.column.tied-rectangular-member-check/v1"
 _STRENGTH_SOURCE = "IS 456:2000 Cl. 25.4, 38.1, 39.1, 39.5 and 39.6"
@@ -275,9 +279,22 @@ def render_tied_rectangular_member_html(
     ):
         raise TypeError("A tied rectangular column member result is required")
 
+    return _render_rectangular_section(
+        result, result.request.geometry, result.request.actions
+    )
+
+
+def _render_rectangular_section(
+    result: CanonicalFamilyResultV1[dict[str, Any]],
+    geometry: FourCornerColumnGeometryV1,
+    actions: RectangularColumnActionsV1,
+    *,
+    capacity_keys: tuple[str, str] = ("x", "y"),
+) -> str:
+    """Render either checked local section without recalculating the result."""
     payload = result.to_dict()
     calculation = payload["calculation"]
-    width, depth = result.request.geometry.b_mm, result.request.geometry.D_mm
+    width, depth = geometry.b_mm, geometry.D_mm
     status = result.engineering_status.value
     input_hash = payload["envelope"]["result_identity"]["input_hash"]
     cage = calculation["cage"]
@@ -287,9 +304,11 @@ def render_tied_rectangular_member_html(
         tie_width = cage["tie_centreline_width_mm"]
         tie_depth = cage["tie_centreline_depth_mm"]
         if min(tie_width, tie_depth) > 0:
+            bend = cage.get("tie_centreline_bend_radius_mm")
+            radius = f' rx="{bend}"' if bend is not None else ""
             section.append(
                 f'<rect x="{(width - tie_width) / 2}" y="{(depth - tie_depth) / 2}" '
-                f'width="{tie_width}" height="{tie_depth}" fill="none" stroke="#17616b"/>'
+                f'width="{tie_width}" height="{tie_depth}"{radius} fill="none" stroke="#17616b"/>'
             )
         for path in calculation["cross_ties"]:
             x1, y1 = path["start_mm"]
@@ -298,6 +317,17 @@ def render_tied_rectangular_member_html(
                 f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="#17616b">'
                 f"<title>{escape(path['tie_id'])}</title></line>"
             )
+            for hook in path.get("hooks", ()):
+                cx, cy = hook["centre_mm"]
+                sx, sy = hook["tangent_mm"]
+                ex, ey = hook["bend_end_mm"]
+                tx, ty = hook["tail_end_mm"]
+                radius = hook["radius_mm"]
+                sweep = int((sx - cx) * (ey - cy) > (sy - cy) * (ex - cx))
+                section.append(
+                    f'<path d="M {sx} {sy} A {radius} {radius} 0 0 {sweep} '
+                    f'{ex} {ey} L {tx} {ty}" fill="none" stroke="#17616b"/>'
+                )
         for bar in cage["bars"]:
             x, y = bar["x_from_left_mm"], bar["y_from_top_mm"]
             bar_id = escape(bar["bar_id"])
@@ -323,20 +353,28 @@ def render_tied_rectangular_member_html(
     strength_html = "<p>Strength check unavailable.</p>"
     if strength is not None and strength["governing_ratio"] is not None:
         strength_html = (
-            f"<p>Mx capacity {strength['axes']['x']['capacity_knm']:.3f} kNm · "
-            f"My capacity {strength['axes']['y']['capacity_knm']:.3f} kNm · "
+            f"<p>Mx capacity {strength['axes'][capacity_keys[0]]['capacity_knm']:.3f} kNm · "
+            f"My capacity {strength['axes'][capacity_keys[1]]['capacity_knm']:.3f} kNm · "
             f"Governing ratio {strength['governing_ratio']:.5f}</p>"
         )
-    actions = result.request.actions
+    title = "Tied rectangular column member check"
+    page_title = "Tied rectangular column check"
+    check_status = ""
+    if "restraint_status" in calculation:
+        title = page_title = "Positioned rectangular column member check"
+        check_status = (
+            f"<p>Section strength {calculation['strength_status']} · "
+            f"Local restraint {calculation['restraint_status']}</p>\n"
+        )
     return f"""<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Tied rectangular column check</title>
+<html lang="en"><head><meta charset="utf-8"><title>{page_title}</title>
 <style>body{{font:16px system-ui,sans-serif;margin:2rem;color:#162238}}
 table{{border-collapse:collapse}}td,th{{border:1px solid #c4ceda;padding:.45rem}}
 svg{{max-width:100%;height:auto}}code{{overflow-wrap:anywhere}}</style></head>
-<body><h1>Tied rectangular column member check</h1>
+<body><h1>{title}</h1>
 <p>Case {escape(result.identity.case_id)} · Station {actions.check_station_mm:g} mm</p>
 <p><strong>Engineering status {status}</strong> · {result.envelope.review_status.value}</p>
-<p>Input SHA-256 <code>{input_hash}</code></p>
+{check_status}<p>Input SHA-256 <code>{input_hash}</code></p>
 <p>Pu {actions.pu_kn:g} kN · Mx {actions.mx_knm:g} kNm · My {actions.my_knm:g} kNm</p>
 <h2>Section and restraint schematic</h2>
 <svg viewBox="0 0 {width} {depth}" width="300" role="img" aria-label="Column section and restraint paths">
