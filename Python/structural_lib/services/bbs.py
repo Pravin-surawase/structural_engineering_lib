@@ -19,7 +19,8 @@ import csv
 import json
 import math
 import re
-from dataclasses import dataclass, field
+from collections import Counter
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from structural_lib.codes.is456.beam.detailing import (
@@ -341,6 +342,28 @@ def _normalize_member_id(member_id: str) -> str:
     return result if result else "UNKNOWN"
 
 
+def qualify_combined_detailing_ids(
+    detailings: list[BeamDetailingResult],
+) -> list[BeamDetailingResult]:
+    """Give colliding project marks distinct story-qualified member identities."""
+    ids = [_normalize_member_id(item.beam_id) for item in detailings]
+    counts = Counter(ids)
+    qualified = []
+    used: set[str] = set()
+    for item, mark_id in zip(detailings, ids, strict=True):
+        story_id = _normalize_member_id(item.story)
+        if counts[mark_id] > 1 and not mark_id.startswith(f"{story_id}-"):
+            item = replace(item, beam_id=f"{item.story}_{item.beam_id}")
+            mark_id = _normalize_member_id(item.beam_id)
+        if mark_id in used:
+            raise ValueError(
+                f"Project member IDs still share the bar-mark identity '{mark_id}'. Supply distinct story/member IDs."
+            )
+        used.add(mark_id)
+        qualified.append(item)
+    return qualified
+
+
 def _bar_mark_loc_code(location: str) -> str:
     return {
         "bottom": "B",
@@ -542,12 +565,19 @@ def extract_bar_marks_from_items(
 
 
 def extract_bar_marks_from_bbs_csv(path: str | Path) -> dict[str, set[str]]:
-    """Load bar marks from a BBS CSV file, grouped by beam."""
+    """Load bar marks from a BBS CSV file, grouped by beam.
+
+    A mark is a fabrication identity, not a display label.  Replaying the
+    same row is harmless for this mark-presence comparison, but two cut
+    lengths (or member IDs) under one mark make the schedule ambiguous and
+    must be rejected instead of being collapsed into a set.
+    """
     p = Path(path)
     if not p.exists():
         raise FileNotFoundError(f"BBS file not found: {p}")
 
     marks_by_beam: dict[str, set[str]] = {}
+    definitions_by_mark: dict[str, tuple[str, float | None, str]] = {}
     with p.open("r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         if not reader.fieldnames or "bar_mark" not in reader.fieldnames:
@@ -560,6 +590,29 @@ def extract_bar_marks_from_bbs_csv(path: str | Path) -> dict[str, set[str]]:
             parsed = parse_bar_mark(mark_raw)
             if not parsed:
                 raise ValueError(f"Invalid bar_mark in BBS CSV: '{mark_raw}'")
+            member_id = (row.get("member_id") or "").strip().upper()
+            cut_length_raw = (row.get("cut_length_mm") or "").strip()
+            try:
+                cut_length = float(cut_length_raw) if cut_length_raw else None
+            except ValueError as exc:
+                raise ValueError(
+                    f"Invalid cut_length_mm for bar mark '{parsed['mark']}': "
+                    f"'{cut_length_raw}'"
+                ) from exc
+            if cut_length is not None and (
+                not math.isfinite(cut_length) or cut_length <= 0
+            ):
+                raise ValueError(
+                    f"Invalid cut_length_mm for bar mark '{parsed['mark']}'."
+                )
+            shape = (row.get("shape_code") or row.get("shape") or "").strip().upper()
+            definition = (member_id, cut_length, shape)
+            previous = definitions_by_mark.setdefault(parsed["mark"], definition)
+            if previous != definition:
+                raise ValueError(
+                    "Conflicting BBS rows reuse bar mark "
+                    f"'{parsed['mark']}' with a different member_id, cut_length_mm or shape."
+                )
             beam_id = parsed["beam_id"]
             marks_by_beam.setdefault(beam_id, set()).add(parsed["mark"])
 
@@ -829,7 +882,9 @@ def generate_bbs_document(
     """
     if not isinstance(detailing_list, list) or not detailing_list:
         raise ValueError("detailing_list must be a non-empty list.")
-    validated = [_validate_detailing_for_bbs(item) for item in detailing_list]
+    validated = qualify_combined_detailing_ids(
+        [_validate_detailing_for_bbs(item) for item in detailing_list]
+    )
     all_items = []
     member_ids = []
 

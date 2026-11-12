@@ -5,6 +5,7 @@ Endpoints return binary downloads (CSV, DXF, HTML, JSON, PDF)
 using StreamingResponse for efficient delivery.
 """
 
+import csv
 import html as html_lib
 import io
 import json
@@ -658,6 +659,53 @@ class BatchExportRequest(BaseModel):
     beams: list[BatchBeamRow]
     format: str = Field(default="html", pattern="^(html|pdf|csv)$")
 
+    @model_validator(mode="before")
+    @classmethod
+    def reject_checked_payload(cls, value: object) -> object:
+        if isinstance(value, dict) and "checked_beams" in value:
+            raise ValueError("Checked project exports must use only checked_beams.")
+        return value
+
+
+class WorkbenchBatchExportRequest(BaseModel):
+    """Project report bound to the exact layouts retained by the workbench."""
+
+    model_config = ConfigDict(strict=True, extra="forbid")
+    project_name: str = Field(default="Building Project", max_length=200)
+    checked_beams: list[WorkbenchBeamExportRequest] = Field(min_length=1)
+    format: str = Field(default="html", pattern="^(html|pdf|csv)$")
+
+
+def _checked_summary_row(checked: WorkbenchBeamExportRequest) -> BatchBeamRow:
+    result = replay_checked_workbench(checked)
+    layout = result.detailing.detailing
+    request = result.request
+    calculation = result.design.calculation
+    mid = layout.bottom_bars[1]
+    ties = layout.stirrups[1]
+    # The checked request already validated member identity and physical fields.
+    return BatchBeamRow.model_construct(
+        beam_id=request.identity.member_id,
+        story=request.identity.story,
+        width=layout.b,
+        depth=layout.D,
+        span_length=layout.span,
+        fck=request.materials.fck_nmm2,
+        fy=request.materials.fy_nmm2,
+        moment=abs(request.actions.mu_knm),
+        shear=abs(request.actions.vu_kn),
+        ast_required=calculation.flexure.Ast_required,
+        ast_provided=mid.area_provided,
+        asc_required=calculation.flexure.Asc_required,
+        bar_count=mid.count,
+        bar_diameter=mid.diameter,
+        stirrup_diameter=ties.diameter,
+        stirrup_spacing=ties.spacing,
+        utilization=calculation.governing_utilization,
+        is_safe=True,
+        status="PASS",
+    )
+
 
 @router.post(
     "/building-summary",
@@ -665,10 +713,23 @@ class BatchExportRequest(BaseModel):
     description="Generate a summary report for all beams in a building (HTML, PDF, or CSV).",
     response_class=StreamingResponse,
 )
-async def export_building_summary(request: BatchExportRequest):
+async def export_building_summary(
+    request: WorkbenchBatchExportRequest | BatchExportRequest,
+):
     """Generate and download a building-level summary report."""
 
-    beams = request.beams
+    checked_ids: dict[str, str] = {}
+    if isinstance(request, WorkbenchBatchExportRequest):
+        checked_ids = {
+            item.beam_id: item.checked_layout_id for item in request.checked_beams
+        }
+        if len(checked_ids) != len(request.checked_beams):
+            raise HTTPException(
+                422, detail="Checked project members require distinct identities."
+            )
+        beams = [_checked_summary_row(item) for item in request.checked_beams]
+    else:
+        beams = request.beams
     if not beams:
         raise HTTPException(400, detail="No beams provided")
 
@@ -714,8 +775,14 @@ async def export_building_summary(request: BatchExportRequest):
 
     if request.format == "csv":
         buf = io.StringIO()
-        buf.write("beam_id,story,b_mm,D_mm,span_mm,Mu_kNm,Vu_kN,")
-        buf.write("fck,fy,ast_required,ast_provided,bars,stirrup,utilization,status\n")
+        writer = csv.writer(buf, lineterminator="\n")
+        header = "beam_id,story,b_mm,D_mm,span_mm,Mu_kNm,Vu_kN,fck,fy,ast_required,ast_provided,bars,stirrup,utilization,status"
+        columns = (
+            ["strength_status", "layout_status", "checked_layout_id"]
+            if checked_ids
+            else []
+        )
+        writer.writerow([*header.split(","), *columns])
         for b in beams:
             bars = (
                 f"{b.bar_count}-T{b.bar_diameter}"
@@ -732,11 +799,26 @@ async def export_building_summary(request: BatchExportRequest):
                 if b.is_safe and b.ast_required > 0
                 else ("Fail" if b.ast_required > 0 else "Pending")
             )
-            buf.write(
-                f"{b.beam_id},{b.story},{b.width:.0f},{b.depth:.0f},"
-                f"{b.span_length:.0f},{b.moment:.1f},{b.shear:.1f},"
-                f"{b.fck:.0f},{b.fy:.0f},{b.ast_required:.0f},{b.ast_provided:.0f},"
-                f"{bars},{stirrup},{b.utilization:.2f},{sts}\n"
+            evidence = ["PASS", "PASS", checked_ids[b.beam_id]] if checked_ids else []
+            writer.writerow(
+                [
+                    b.beam_id,
+                    b.story,
+                    f"{b.width:.0f}",
+                    f"{b.depth:.0f}",
+                    f"{b.span_length:.0f}",
+                    f"{b.moment:.1f}",
+                    f"{b.shear:.1f}",
+                    f"{b.fck:.0f}",
+                    f"{b.fy:.0f}",
+                    f"{b.ast_required:.0f}",
+                    f"{b.ast_provided:.0f}",
+                    bars,
+                    stirrup,
+                    f"{b.utilization:.2f}",
+                    sts,
+                    *evidence,
+                ]
             )
         buf.write("\nSummary\n")
         buf.write(f"Total Beams,{len(beams)}\n")
@@ -768,6 +850,11 @@ async def export_building_summary(request: BatchExportRequest):
             f"<td>{sd['max_util']:.0%}</td></tr>\n"
         )
 
+    checked_header = (
+        "<th>Ast provided (mm²)</th><th>Strength</th><th>Layout</th><th>Checked layout ID</th>"
+        if checked_ids
+        else ""
+    )
     beam_rows = ""
     for b in beams:
         bars = (
@@ -793,6 +880,12 @@ async def export_building_summary(request: BatchExportRequest):
         util_cls = (
             "fail" if b.utilization > 1 else ("warn" if b.utilization > 0.9 else "pass")
         )
+        evidence = (
+            f"<td>{b.ast_provided:.0f}</td><td>PASS</td><td>PASS</td>"
+            f"<td class='mono'>{checked_ids[b.beam_id]}</td>"
+            if checked_ids
+            else ""
+        )
         beam_rows += (
             f"<tr><td class='mono'>{esc(b.beam_id)}</td><td>{esc(b.story)}</td>"
             f"<td class='num'>{b.width:.0f}</td><td class='num'>{b.depth:.0f}</td>"
@@ -801,7 +894,7 @@ async def export_building_summary(request: BatchExportRequest):
             f"<td class='num'>{b.ast_required:.0f}</td><td class='mono'>{bars}</td>"
             f"<td class='mono'>{stirrup}</td>"
             f"<td class='num {util_cls}'>{b.utilization:.0%}</td>"
-            f"<td class='{sts_cls}'>{sts_txt}</td></tr>\n"
+            f"<td class='{sts_cls}'>{sts_txt}</td>{evidence}</tr>\n"
         )
 
     html_content = f"""<!DOCTYPE html>
@@ -859,7 +952,7 @@ footer {{ margin-top: 24px; font-size: 11px; color: #a0aec0; border-top: 1px sol
 
 <h2>All Beams</h2>
 <table>
-<tr><th>ID</th><th>Story</th><th>b (mm)</th><th>D (mm)</th><th>Span (mm)</th><th>Mu (kN\u00b7m)</th><th>Vu (kN)</th><th>Ast Req</th><th>Bars</th><th>Stirrup</th><th>Util.</th><th>Status</th></tr>
+<tr><th>ID</th><th>Story</th><th>b (mm)</th><th>D (mm)</th><th>Span (mm)</th><th>Mu (kN\u00b7m)</th><th>Vu (kN)</th><th>Ast Req</th><th>Bars</th><th>Stirrup</th><th>Util.</th><th>Status</th>{checked_header}</tr>
 {beam_rows}
 </table>
 

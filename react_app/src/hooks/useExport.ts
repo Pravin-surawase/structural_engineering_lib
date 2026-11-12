@@ -188,11 +188,10 @@ export interface BatchBeamRow {
   status?: string;
 }
 
-export interface BuildingExportParams {
+export type BuildingExportParams = {
   project_name?: string;
-  beams: BatchBeamRow[];
   format?: "html" | "pdf" | "csv";
-}
+} & ({ beams: BatchBeamRow[] } | { checked_beams: WorkbenchExportParams[] });
 
 /**
  * Download a building-level summary report (HTML, PDF, or CSV).
@@ -209,5 +208,6 @@ export function useExportBuildingSummary() {
       );
     },
     mutationKey: ["export-building-summary"],
+    onError: (error: Error) => toast.error("Export Failed", error.message),
   });
 }

@@ -1207,6 +1207,63 @@ def test_dxf_generation(sample_design_results_file, tmp_path):
     assert output_file.stat().st_size > 0
 
 
+def test_combined_cli_artifacts_qualify_repeated_member_ids(tmp_path):
+    """Combined BBS/DXF artifacts keep stories distinct for repeated labels."""
+    from structural_lib.services import dxf_export
+
+    if not dxf_export.EZDXF_AVAILABLE:
+        pytest.skip("ezdxf not installed")
+
+    source = tmp_path / "repeated.csv"
+    design = tmp_path / "design.json"
+    schedule = tmp_path / "schedule.csv"
+    drawing = tmp_path / "drawing.dxf"
+    diff = tmp_path / "mark-diff.json"
+    _write_cli_csv(
+        source,
+        [
+            ["B1", "S1", 300, 550, 6000, 40, 25, 500, 160, 90, 8, 150, 20],
+            ["B1", "S2", 300, 550, 4500, 40, 25, 500, 160, 90, 8, 150, 20],
+        ],
+        headers=[header for header in _STRICT_CLI_HEADERS if header != "eff_d"]
+        + ["tension_bar_diameter_mm"],
+    )
+
+    assert cli_main.main(["design", str(source), "-o", str(design)]) == 0
+    assert cli_main.main(["bbs", str(design), "-o", str(schedule)]) == 0
+    rows = list(csv.DictReader(schedule.read_text(encoding="utf-8").splitlines()))
+    data_rows = [row for row in rows if row["member_id"]]
+    marks = {row["bar_mark"] for row in data_rows}
+    assert {row["member_id"] for row in data_rows} == {"S1_B1", "S2_B1"}
+    assert len(marks) == 18
+    assert all(mark.startswith(("S1-B1-", "S2-B1-")) for mark in marks)
+
+    assert cli_main.main(["dxf", str(design), "-o", str(drawing)]) == 0
+    assert (
+        cli_main.main(
+            [
+                "mark-diff",
+                "--bbs",
+                str(schedule),
+                "--dxf",
+                str(drawing),
+                "--format",
+                "json",
+                "-o",
+                str(diff),
+            ]
+        )
+        == 0
+    )
+    assert json.loads(diff.read_text(encoding="utf-8"))["summary"] == {
+        "beams_checked": 2,
+        "bbs_marks": 18,
+        "dxf_marks": 18,
+        "missing_in_dxf": 0,
+        "extra_in_dxf": 0,
+    }
+
+
 def test_dxf_title_block(sample_design_results_file, tmp_path):
     """Title block option should create BORDER layer and title text."""
     from structural_lib.services import dxf_export

@@ -32,12 +32,18 @@ class DashboardSummary:
     total_concrete_m3: float = 0.0
     critical_beams: list[str] = field(default_factory=list)
     by_story: dict[str, dict[str, int]] = field(default_factory=dict)
+    held: int = 0
+    strength_passed: int = 0
+    strength_failed: int = 0
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "total_beams": self.total_beams,
             "passed": self.passed,
             "failed": self.failed,
+            "held": self.held,
+            "strength_passed": self.strength_passed,
+            "strength_failed": self.strength_failed,
             "warnings_count": self.warnings_count,
             "pass_rate": round(self.passed / max(self.total_beams, 1) * 100, 1),
             "avg_utilization": (
@@ -173,10 +179,27 @@ def generate_dashboard(
         )
         story = _safe_get(result, ["story", "floor", "level"], "Unknown")
 
-        if is_valid:
-            summary.passed += 1
+        strength = result.get("strength_status")
+        layout = result.get("layout_status")
+        checked_basis = strength is not None or layout is not None
+        if checked_basis:
+            summary.strength_passed += strength == "PASS"
+            summary.strength_failed += strength == "FAIL"
+            decision = (
+                "failed"
+                if strength == "FAIL" or layout == "FAIL"
+                else "passed" if strength == layout == "PASS" else "held"
+            )
         else:
+            decision = "passed" if is_valid else "failed"
+            summary.strength_passed += bool(is_valid)
+            summary.strength_failed += not is_valid
+        if decision == "passed":
+            summary.passed += 1
+        elif decision == "failed":
             summary.failed += 1
+        else:
+            summary.held += 1
 
         # Track utilization
         if (
@@ -188,7 +211,7 @@ def generate_dashboard(
             utilizations.append(float(utilization))
 
         # Critical beams (utilization > 0.95 or failed)
-        if not is_valid or (
+        if decision == "failed" or (
             isinstance(utilization, (int, float))
             and utilization > _CRITICAL_UTILIZATION_THRESHOLD
         ):
@@ -199,13 +222,18 @@ def generate_dashboard(
         if isinstance(warnings, list):
             summary.warnings_count += len(warnings)
 
-        # Steel quantity (approximate from Ast)
-        ast_mm2 = _safe_get(result, ["ast_provided", "ast_provided_mm2", "ast"], 0.0)
         span_mm = _safe_get(result, ["span_mm", "span"], 5000.0)
-        if ast_mm2 and span_mm:
-            # Approximate: Ast * span * density (7850 kg/m³)
-            steel_kg = float(ast_mm2) * float(span_mm) / 1e6 * 7.85
-            summary.total_steel_kg += steel_kg
+        if checked_basis:
+            weight = result.get("checked_steel_weight_kg")
+            if decision == "passed" and weight is not None:
+                summary.total_steel_kg += float(weight)
+        else:
+            ast_mm2 = _safe_get(
+                result, ["ast_provided", "ast_provided_mm2", "ast"], 0.0
+            )
+            if ast_mm2 and span_mm:
+                # Legacy tension-area estimate.
+                summary.total_steel_kg += float(ast_mm2) * float(span_mm) / 1e6 * 7.85
 
         # Concrete volume
         b_mm = _safe_get(result, ["b_mm", "width_mm", "width"], 300.0)
@@ -219,10 +247,8 @@ def generate_dashboard(
         if story_str not in summary.by_story:
             summary.by_story[story_str] = {"total": 0, "passed": 0, "failed": 0}
         summary.by_story[story_str]["total"] += 1
-        if is_valid:
-            summary.by_story[story_str]["passed"] += 1
-        else:
-            summary.by_story[story_str]["failed"] += 1
+        counts = summary.by_story[story_str]
+        counts[decision] = counts.get(decision, 0) + 1
 
     # Calculate averages
     if utilizations:

@@ -319,6 +319,9 @@ def test_imported_workbench_downloads_replay_one_checked_layout(client):
 
     schedule = list(csv.DictReader(io.StringIO(responses["bbs"].text.split("\n\n")[0])))
     assert len(schedule) == 9
+    assert layout["schedule_steel_weight_kg"] == pytest.approx(
+        sum(float(row["total_weight_kg"]) for row in schedule)
+    )
     drawing = ezdxf.read(io.StringIO(responses["dxf"].text)).modelspace()
     labels = [entity.dxf.text for entity in drawing.query("TEXT")]
     tie_lines = [
@@ -368,3 +371,131 @@ def test_imported_workbench_downloads_replay_one_checked_layout(client):
 
     imported["d_mm"] = 490
     assert check()["status"] == "HOLD"
+
+
+def test_project_summary_and_quantities_use_checked_layout(client):
+    member = {
+        "schema_version": "project-beam-design/v1",
+        "member_id": "B1",
+        "b_mm": 300,
+        "D_mm": 550,
+        "d_mm": 492,
+        "mu_knm": 160,
+        "vu_kn": 90,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "source_metadata": {
+            "span_mm": 6000,
+            "workbench_detailing": {
+                "clear_cover_mm": 40,
+                "stirrup_diameter_mm": 8,
+                "tension_bar_diameter_mm": 20,
+                "stirrup_spacing_mm": 150,
+            },
+        },
+    }
+
+    def check():
+        response = client.post("/stream/batch-design", json=[member])
+        assert response.status_code == 200
+        return next(
+            event["workbench"]
+            for line in response.text.splitlines()
+            if line.startswith("data: ")
+            and "workbench" in (event := json.loads(line[6:]))
+        )
+
+    layout = check()
+    assert layout["status"] == "PASS"
+    checked = {key: layout[key] for key in ("checked_request", "checked_layout_id")}
+    schedule_response = client.post("/api/v1/export/bbs", json=checked)
+    rows = list(csv.DictReader(io.StringIO(schedule_response.text.split("\n\n")[0])))
+    weight = sum(float(row["total_weight_kg"]) for row in rows)
+    assert layout["schedule_steel_weight_kg"] == pytest.approx(weight)
+    summary_response = client.post(
+        "/api/v1/export/building-summary",
+        json={
+            "format": "csv",
+            "checked_beams": [checked],
+        },
+    )
+    assert summary_response.status_code == 200
+    row = next(csv.DictReader(io.StringIO(summary_response.text.split("\n\n")[0])))
+    assert row["stirrup"] == "8.0@150.0"
+    assert row["ast_provided"] == "942"
+    assert row["strength_status"] == row["layout_status"] == "PASS"
+    assert row["checked_layout_id"] == checked["checked_layout_id"]
+    html_report = client.post(
+        "/api/v1/export/building-summary",
+        json={
+            "format": "html",
+            "checked_beams": [checked],
+        },
+    )
+    assert html_report.status_code == 200
+    assert "8Ø@150" in html_report.text
+    assert checked["checked_layout_id"] in html_report.text
+    stale = {**checked, "checked_layout_id": "0" * 64}
+    assert (
+        client.post(
+            "/api/v1/export/building-summary",
+            json={
+                "format": "csv",
+                "checked_beams": [stale],
+            },
+        ).status_code
+        == 409
+    )
+    assert (
+        client.post(
+            "/api/v1/export/building-summary",
+            json={
+                "format": "csv",
+                "checked_beams": [stale],
+                "beams": [],
+            },
+        ).status_code
+        == 422
+    )
+
+    stats = {
+        "beam_id": "B1",
+        "story": "Default",
+        "strength_status": "PASS",
+        "layout_status": "PASS",
+        "checked_steel_weight_kg": weight,
+        "ast_provided": 942,
+        "span_mm": 6000,
+    }
+    dashboard = client.post("/api/v1/insights/dashboard", json={"results": [stats]})
+    assert dashboard.status_code == 200
+    assert dashboard.json()["data"]["total_steel_kg"] == pytest.approx(round(weight, 1))
+    boq = client.post(
+        "/api/v1/insights/project-boq",
+        json={
+            "beams": [
+                {
+                    "beam_id": "B1",
+                    "story": "Default",
+                    "b_mm": 300,
+                    "D_mm": 550,
+                    "span_mm": 6000,
+                    "fck": 25,
+                    "steel_weight_kg": layout["schedule_steel_weight_kg"],
+                }
+            ]
+        },
+    )
+    assert boq.status_code == 200
+    assert boq.json()["data"]["grand_total_steel_kg"] == pytest.approx(weight)
+    member["source_metadata"]["workbench_detailing"]["tension_bar_count"] = 2
+    assert check()["status"] == "HOLD"
+    held = client.post(
+        "/api/v1/insights/dashboard",
+        json={
+            "results": [{**stats, "layout_status": "HOLD"}],
+        },
+    ).json()["data"]
+    assert held["strength_passed"] == 1
+    assert held["held"] == 1
+    assert held["passed"] == held["failed"] == held["total_steel_kg"] == 0

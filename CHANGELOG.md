@@ -56,6 +56,14 @@ All notable changes to this project will be documented in this file.
   effective depth. HTML reports display factored actions, zone steel and the
   qualified-review status.
 - The developer installation guide points to the published 0.28.0 package.
+- Advanced workbench reinforcement inputs now invalidate the checked layout.
+  Project exports replay the current layouts, and dashboard and BOQ steel
+  quantities use their BBS weights. Strength and layout outcomes remain visible.
+- Combined beam schedules and drawings distinguish repeated member labels by
+  storey. Bar-mark comparison rejects conflicting cut definitions.
+- CLI JSON and HTML reports carry the same review and steel evidence. Rejected
+  or unverified layouts withhold provided steel, and legacy results retain
+  absent evidence.
 
 ### Verification
 

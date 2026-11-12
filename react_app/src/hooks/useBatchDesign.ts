@@ -32,6 +32,7 @@ export type CheckedWorkbenchLayout = WorkbenchExportParams & {
   ast_required_mm2: number;
   asc_required_mm2: number;
   shear_spacing_limit_mm: number;
+  schedule_steel_weight_kg?: number;
   zones: Array<{
     zone: 'start' | 'mid' | 'end';
     tension: { count: number; diameter_mm: number; area_mm2: number; layers: number };

@@ -12,6 +12,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from structural_lib.codes.is456.beam.detailing import BeamDetailingWithStirrupStations
 from structural_lib.core.errors import InputContractError, StructuralLibError
+from structural_lib.services.bbs import generate_bbs_from_detailing
 from structural_lib.services.canonical_beam import (
     BeamDesignAndDetailResultV1,
     design,
@@ -214,6 +215,12 @@ def workbench_projection(project: ProjectBeamDesignInputV1) -> dict[str, Any] | 
         "ast_required_mm2": calculation.flexure.Ast_required,
         "asc_required_mm2": calculation.flexure.Asc_required,
         "shear_spacing_limit_mm": calculation.shear.spacing,
+        "schedule_steel_weight_kg": round(
+            math.fsum(
+                item.total_weight_kg for item in generate_bbs_from_detailing(layout)
+            ),
+            2,
+        ),
         "zones": [
             {
                 "zone": zone,

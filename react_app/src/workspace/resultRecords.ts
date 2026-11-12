@@ -1,7 +1,8 @@
+import type { WorkbenchExportParams } from '../hooks/useExport';
 import type { BatchResult, CheckedWorkbenchLayout } from '../hooks/useBatchDesign';
 import { batchGoverningUtilization } from '../api/client';
 import type { BeamCSVRow } from '../types/csv';
-import { memberIdentity, recordCanExport } from './identity';
+import { memberIdentity, recordCanExport, recordIsCurrent } from './identity';
 import type {
   EvidenceRecord,
   JsonValue,
@@ -163,7 +164,7 @@ export function projectExportReadiness(
     ? snapshot.members.filter((member) => includedIds.has(member.memberId))
     : snapshot.members;
   const heldMemberIds = members
-    .filter((member) => !recordCanExport(member.result, memberIdentity(snapshot, member)))
+    .filter((member) => !currentWorkbenchLayout(snapshot, member.memberId))
     .map((member) => member.memberId);
   return {
     eligible: members.length > 0 && heldMemberIds.length === 0,
@@ -177,15 +178,15 @@ export function currentBatchResult(
   memberId: string,
 ): BatchResult | null {
   const member = snapshot.members.find((candidate) => candidate.memberId === memberId);
-  if (!member || member.result?.lifecycle !== 'current' || member.result.data === null) {
+  if (!member || !recordIsCurrent(member.result, memberIdentity(snapshot, member))) {
     return null;
   }
-  const data = member.result.data;
+  const data = member.result?.data;
   if (
     data === null
     || typeof data !== 'object'
     || Array.isArray(data)
-    || typeof data.beam_id !== 'string'
+    || data.beam_id !== memberId
     || typeof data.design_succeeded !== 'boolean'
     || typeof data.is_safe !== 'boolean'
     || (data.status !== 'PASS' && data.status !== 'FAIL')
@@ -206,9 +207,25 @@ export function currentWorkbenchLayout(
   const layout = currentBatchResult(snapshot, memberId)?.workbench;
   return layout?.status === 'PASS'
     && layout.checked_request?.identity?.member_id === memberId
+    && Array.isArray(layout.zones)
+    && layout.zones.some((zone) => zone?.zone === 'mid')
     && /^[a-f0-9]{64}$/.test(layout.checked_layout_id)
     ? layout
     : null;
+}
+
+export function checkedProjectMembers(snapshot: WorkspaceSnapshotV1): WorkbenchExportParams[] | null {
+  if (snapshot.members.length === 0) return null;
+  const members: WorkbenchExportParams[] = [];
+  for (const member of snapshot.members) {
+    const layout = currentWorkbenchLayout(snapshot, member.memberId);
+    if (!layout) return null;
+    members.push({
+      checked_request: layout.checked_request,
+      checked_layout_id: layout.checked_layout_id,
+    });
+  }
+  return members;
 }
 
 export function applyBatchResultToBeam(
@@ -218,7 +235,7 @@ export function applyBatchResultToBeam(
   const checked = result.workbench?.status === 'PASS' ? result.workbench : undefined;
   const mid = checked?.zones.find((zone) => zone.zone === 'mid');
   const designPassed = result.design_succeeded && result.is_safe && result.status === 'PASS';
-  const held = result.workbench?.status === 'HOLD';
+  const held = designPassed && !checked;
   return {
     ...beam,
     ast_required: checked?.ast_required_mm2 ?? result.flexure?.ast_required ?? 0,
@@ -232,6 +249,7 @@ export function applyBatchResultToBeam(
     is_valid: designPassed && !held,
     status: held ? 'warning' : designPassed ? 'pass' : 'fail',
     remarks: result.workbench?.status === 'HOLD' ? [result.workbench.reason]
-      : result.error ? [result.error] : result.failed_checks,
+      : held ? ['Check the reinforcement layout before exporting.']
+        : result.error ? [result.error] : result.failed_checks,
   };
 }
