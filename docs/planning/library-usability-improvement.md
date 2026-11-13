@@ -1836,7 +1836,7 @@ regression, real FLOW04 import-to-design and project integration,
 DUCT01–02 and PROJECT01–03. The existing case IDs, independent references
 and completion criteria still apply.
 
-**S0 decision — 2026-11-12.** Deliver common IS 456 beam, column and solid-slab
+**Original S0 decision — 2026-11-12.** Deliver common IS 456 beam, column and solid-slab
 parity work in 0.29. Draft #1064 carries the S0–S5 acceptance plan and the
 first implementation unit forward from the earlier 0.28 proposal.
 [0.28.0](../getting-started/releases.md#v0280-published-and-verified) at `d6ca9d2c646cf1b892c391e916427a2171eb89f6`

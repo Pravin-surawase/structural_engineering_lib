@@ -102,7 +102,11 @@ class TestBiaxialCheckUnsafe:
         assert resp.status_code == 200
         data = unwrap(resp)
         assert data["is_safe"] is False
-        assert data["interaction_ratio"] > 1.0
+        assert data["interaction_ratio"] is None
+        assert data["unavailable_values"]["interaction_ratio"] == {
+            "code": "UTILIZATION_NOT_EVALUATED",
+            "reason": "Applied axial load reaches or exceeds axial crush capacity.",
+        }
 
 
 class TestBiaxialCheckEdgeCases:

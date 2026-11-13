@@ -345,7 +345,9 @@ class ColumnUniaxialResponse(BaseModel):
     eccentricity_mm: float | None = Field(
         description="Actual eccentricity e = M/P (mm), or null for pure bending.",
     )
-    unavailable_values: dict[str, dict[str, str]] | None = None
+    unavailable_values: dict[str, dict[str, str]] | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     e_min_mm: float | None = Field(
         None,
         description="Minimum eccentricity per IS 456 Cl 25.4 (mm), if l_unsupported_mm was provided",
@@ -580,7 +582,9 @@ class BiaxialCheckResponse(BaseModel):
         description="Bresler interaction ratio (Mux/Mux1)^an + (Muy/Muy1)^an. "
         "Null when insufficient capacity prevents evaluation."
     )
-    unavailable_values: dict[str, dict[str, str]] | None = None
+    unavailable_values: dict[str, dict[str, str]] | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     is_safe: bool = Field(description="True if interaction_ratio <= 1.0")
     classification: int = Field(
         description="Column classification: 1 = SHORT, 2 = SLENDER"
@@ -822,7 +826,9 @@ class LongColumnResponse(BaseModel):
     Max_reduced_kNm: float
     May_reduced_kNm: float
     interaction_ratio: float | None
-    unavailable_values: dict[str, dict[str, str]] | None = None
+    unavailable_values: dict[str, dict[str, str]] | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     governing_check: str
     Puz_kN: float
     Pb_kN: float = Field(description="Legacy x-plane alias of Pb_x_kN (kN)")

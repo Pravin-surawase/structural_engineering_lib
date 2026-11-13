@@ -245,6 +245,8 @@ def test_long_column_http_preserves_independent_safety_reversals(
     )
     assert response.status_code == 200
     data = unwrap(response)
+    assert data["classification_x"] == "SLENDER"
+    assert data["classification_y"] == "SHORT"
     assert data["Pb_kN"] == 708.61
     assert data["k"] == 0.8201
     assert data["Mux_design_kNm"] == expected_design

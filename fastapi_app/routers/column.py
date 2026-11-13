@@ -563,10 +563,7 @@ async def design_long_column(request: LongColumnRequest):
             braced=request.braced,
             l_unsupported_mm=request.l_unsupported_mm,
         )
-        projection = result.to_dict()
-        projection["classification_x"] = str(result.classification_x)
-        projection["classification_y"] = str(result.classification_y)
-        return success_response(LongColumnResponse(**projection))
+        return success_response(LongColumnResponse(**result.to_dict()))
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for long column design")
