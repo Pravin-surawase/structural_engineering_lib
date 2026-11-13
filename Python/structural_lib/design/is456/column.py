@@ -38,6 +38,10 @@ from structural_lib.services.column_circular_member import (
 from structural_lib.services.column_circular_member import (
     render_circular_member_svg as _render_circular_member_svg,
 )
+from structural_lib.services.column_interaction import (
+    check_interaction_slice,
+    render_interaction_slice_html,
+)
 from structural_lib.services.column_member import (
     check_four_corner_member as _check_four_corner_member,
 )
@@ -95,6 +99,7 @@ from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
 )
 from structural_lib.services.contracts.column_section import (
+    ColumnInteractionInputV1,
     ColumnSectionInputV1,
     ColumnSectionLayerResponseV1,
     ColumnSectionLayerV1,
@@ -116,6 +121,10 @@ from structural_lib.services.contracts.family_f1 import (
 )
 
 __all__ = [
+    "ColumnInteractionInputV1",
+    "load_interaction_slice",
+    "check_interaction_slice",
+    "render_interaction_slice_html",
     "ColumnDesignResult",
     "CircularColumnInputV1",
     "ColumnCatalogueInputV1",
@@ -1508,3 +1517,43 @@ def check(request: ColumnDesignInputV1) -> CanonicalFamilyResultV1[ColumnDesignR
     """
 
     return design(request)
+
+
+def load_interaction_slice(
+    value: Mapping[str, object] | str | bytes | ColumnInteractionInputV1,
+) -> ColumnInteractionInputV1:
+    """Parse actual bars, a compression level and a diagram resolution.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or ColumnInteractionInputV1
+        A solid section and its physical bar centres.
+
+    Returns
+    -------
+    ColumnInteractionInputV1
+        The validated request for the fixed-compression section slice.
+
+    Raises
+    ------
+    InputContractError
+        Section dimensions, bars or analysis inputs violate the contract.
+
+    Examples
+    --------
+    >>> callable(load_interaction_slice)
+    True
+
+    Limitations
+    -----------
+    Nonnegative axial compression on a solid rectangle or circle.
+
+    Provenance
+    ----------
+    Uses the strict interaction input contract and canonical intake issues.
+    """
+    if isinstance(value, ColumnInteractionInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(ColumnInteractionInputV1, value)
+    return model_validate_or_error(ColumnInteractionInputV1, value)

@@ -297,6 +297,16 @@ class PositionedCapacitySlice:
     scan: tuple[_AngularPoint, ...]
     axes: dict[str, CapacityRay]
 
+    def ray(self, mx_knm: float, my_knm: float) -> CapacityRay | None:
+        """Return the capacity along a signed moment vector."""
+        magnitude = hypot(mx_knm, my_knm)
+        if not magnitude:
+            return None
+        rays = _signed_rays(
+            self.section, self.scan, self.pu_kn, mx_knm / magnitude, my_knm / magnitude
+        )
+        return rays[0] if rays else None
+
     def check(
         self,
         mx_knm: float,
@@ -315,16 +325,9 @@ class PositionedCapacitySlice:
         direct = 0.0
         magnitude = hypot(mx_knm, my_knm)
         if magnitude:
-            rays = _signed_rays(
-                self.section,
-                self.scan,
-                self.pu_kn,
-                mx_knm / magnitude,
-                my_knm / magnitude,
-            )
-            if rays is None:
+            demand = self.ray(mx_knm, my_knm)
+            if demand is None:
                 return None
-            demand = rays[0]
             direct = magnitude / demand.capacity_knm
 
         minimum = {

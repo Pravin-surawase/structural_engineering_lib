@@ -49,6 +49,8 @@ All notable changes to this project will be documented in this file.
 - A signed section check for rectangular, monolithic T and L beams with
   explicit longitudinal bar layers and web shear. The report preserves the
   physical flange side and actual bar coordinates.
+- Signed fixed-compression interaction slices for actual rectangular and
+  circular column sections, with gross and elastic transformed properties.
 
 ### Fixed
 

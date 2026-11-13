@@ -201,6 +201,16 @@ _CAPABILITIES = (
         qualified_review_required=True,
         python_profiles=(
             IS456PythonProfile(
+                "is456.column.interaction-slice/v1",
+                "structural_lib.design.is456.column",
+                "load_interaction_slice",
+                "check_interaction_slice",
+                "column-interaction-input/v1",
+                "Fixed-compression signed moment capacity points for actual rectangular and circular bars, with gross and elastic transformed properties.",
+                "docs/cookbook/python/column-interaction-slice.md",
+                "Python/examples/column_interaction_slice.py",
+            ),
+            IS456PythonProfile(
                 "is456.column.four-corner-member-check/v1",
                 "structural_lib.design.is456.column",
                 "load_four_corner_member",

@@ -124,6 +124,7 @@ nav:
     - Check a Two-Span Rectangular Beam: cookbook/python/continuous-beam-check.md
     - Check a Rectangular Cantilever: cookbook/python/cantilever-beam-check.md
     - Check a Signed Beam Section: cookbook/python/signed-beam-section-check.md
+    - Column Interaction Slice: cookbook/python/column-interaction-slice.md
     - Verify the Physical T-Beam Member: cookbook/python/t-beam-member.md
     - Cost Optimization: getting-started/cost-optimization-guide.md
     - Design Suggestions: getting-started/design-suggestions-guide.md
