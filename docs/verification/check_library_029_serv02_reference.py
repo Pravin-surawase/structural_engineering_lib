@@ -96,6 +96,77 @@ def reference(request):
     }
 
 
+def continuous_reference(request):
+    member, history = request["member"], request["history"]
+    span, depth = request["span_mm"], member["depth_mm"]
+    total = request["service_load"]["uniform_load_kn_per_m"]
+    sustained = history["sustained_load"]["uniform_load_kn_per_m"]
+    ec = 5000 * math.sqrt(member["fck_nmm2"])
+    fraction = (1 + math.sqrt(33)) / 16
+    coefficient = fraction / 48 - fraction**3 / 16 + fraction**4 / 24
+    instant = section(member, 1, 0)
+    ei = ec * instant["cracked_inertia_mm4"]
+    first_total = coefficient * total * span**4 / ei
+    first_sustained = coefficient * sustained * span**4 / ei
+    stages = {}
+    for key in ("at_finishes", "at_assessment"):
+        age = history[key]
+        effective = ec / (1 + age["creep_coefficient"])
+        state = section(member, 1, 0, effective)
+        sustained_deflection = (
+            coefficient
+            * sustained
+            * span**4
+            / (effective * state["cracked_inertia_mm4"])
+        )
+        stages[key] = {
+            "concrete_modulus_nmm2": effective,
+            "neutral_axis_mm": state["neutral_axis_mm"],
+            "cracked_inertia_mm4": state["cracked_inertia_mm4"],
+            "sustained_deflection_mm": sustained_deflection,
+            "shrinkage_deflection_mm": 0,
+            "total_deflection_mm": sustained_deflection
+            + (first_total - first_sustained if key == "at_assessment" else 0),
+        }
+    final = stages["at_assessment"]
+    span_ei = final["concrete_modulus_nmm2"] * final["cracked_inertia_mm4"]
+    cracks = {}
+    for face, multiplier in (("bottom", 9 / 128), ("top", 1 / 8)):
+        sustained_k = sustained * multiplier * span**2 / span_ei
+        transient_k = (total - sustained) * multiplier * span**2 / ei
+        axis = (
+            sustained_k * final["neutral_axis_mm"]
+            + transient_k * instant["neutral_axis_mm"]
+        ) / (sustained_k + transient_k)
+        tension = [bar for bar in member["bars"] if bar["face"] == face]
+        surface = depth if face == "bottom" else 0
+        cover = min(
+            abs(surface - bar["y_from_top_mm"]) - bar["diameter_mm"] / 2
+            for bar in tension
+        )
+        acr = min(
+            math.hypot(bar["x_from_left_mm"], surface - bar["y_from_top_mm"])
+            - bar["diameter_mm"] / 2
+            for bar in tension
+        )
+        strain = (sustained_k + transient_k) * (depth - axis)
+        width = 3 * acr * strain / (1 + 2 * (acr - cover) / (depth - axis))
+        cracks[face] = {
+            "neutral_axis_mm": axis,
+            "surface_strain": strain,
+            "width_mm": width,
+        }
+    return {
+        "initial_total_mm": first_total,
+        "initial_sustained_mm": first_sustained,
+        "deflection_station_mm": fraction * span,
+        **stages,
+        "after_finishes_mm": final["total_deflection_mm"]
+        - stages["at_finishes"]["total_deflection_mm"],
+        "cracks": cracks,
+    }
+
+
 def fixture():
     instant = json.loads((ROOT / "library-029-serv01-beam-service.json").read_text())
     request = deepcopy(instant["cases"]["multilayer"]["request"])
@@ -147,6 +218,24 @@ def fixture():
         control["identity"]["case_id"] = f"SERV02-{name}"
         control["history"].update(changes)
         cases[name] = {"request": control, "expected": None, "status": "HOLD"}
+    continuous = deepcopy(instant["cases"]["two_span"]["request"])
+    continuous["identity"]["case_id"] = "SERV02-continuous"
+    continuous["service_load"].update(midpoint_load_kn=0, uniform_load_kn_per_m=32)
+    continuous["history"] = deepcopy(request["history"])
+    continuous["history"]["sustained_load"] = {
+        **continuous["service_load"],
+        "combination_id": "SERV02-CONTINUOUS-G",
+        "uniform_load_kn_per_m": 20,
+    }
+    cases["continuous_history"] = {
+        "request": continuous,
+        "expected": continuous_reference(continuous),
+        "status": "PASS",
+    }
+    stale = deepcopy(continuous)
+    stale["identity"]["case_id"] = "SERV02-continuous-stale"
+    stale["history"]["sustained_load"]["reinforcement_revision"] = "old-reinforcement"
+    cases["continuous_stale"] = {"request": stale, "expected": None, "status": "HOLD"}
     return {
         "fixture_version": "library-029-serv02-beam-history-reference/v1",
         "sources": [
