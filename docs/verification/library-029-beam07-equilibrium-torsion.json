@@ -1,0 +1,554 @@
+{
+  "fixture_version": "library-029-beam07-equilibrium-torsion-reference/v1",
+  "sources": [
+    "Qualified D2 edge beam geometry and receiving crossheads; eccentric UDL free body.",
+    "IS 456 Cl. 41.3 and 41.4 and Table 19, evaluated for each same-station row."
+  ],
+  "cases": {
+    "equilibrium": {
+      "status": "PASS",
+      "uniform_load_n_per_mm": 12,
+      "eccentricity_mm": 50,
+      "link_spacing_mm": 100,
+      "rows": [
+        {
+          "station_mm": 0,
+          "v2_kn": 30.0,
+          "m3_knm": 0.0,
+          "torsion_knm": 1.5,
+          "equivalent_shear_kn": 38.0,
+          "primary_moment_knm": 2.0588235294117645,
+          "opposite_moment_knm": 2.0588235294117645,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 500,
+          "v2_kn": 24.0,
+          "m3_knm": 13.5,
+          "torsion_knm": 1.2,
+          "equivalent_shear_kn": 30.4,
+          "primary_moment_knm": 15.147058823529411,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 850,
+          "v2_kn": 19.8,
+          "m3_knm": 21.165,
+          "torsion_knm": 0.99,
+          "equivalent_shear_kn": 25.080000000000002,
+          "primary_moment_knm": 22.523823529411764,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2431.372549019608,
+          "v2_kn": 0.8235294117647045,
+          "m3_knm": 37.4717416378316,
+          "torsion_knm": 0.041176470588235224,
+          "equivalent_shear_kn": 1.043137254901959,
+          "primary_moment_knm": 37.528258362168394,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2500,
+          "v2_kn": 0.0,
+          "m3_knm": 37.5,
+          "torsion_knm": 0.0,
+          "equivalent_shear_kn": 0.0,
+          "primary_moment_knm": 37.5,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2568.627450980392,
+          "v2_kn": -0.8235294117647045,
+          "m3_knm": 37.471741637831606,
+          "torsion_knm": -0.041176470588235224,
+          "equivalent_shear_kn": 1.043137254901959,
+          "primary_moment_knm": 37.5282583621684,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 4150,
+          "v2_kn": -19.8,
+          "m3_knm": 21.165,
+          "torsion_knm": -0.99,
+          "equivalent_shear_kn": 25.080000000000002,
+          "primary_moment_knm": 22.523823529411764,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 4500,
+          "v2_kn": -24.0,
+          "m3_knm": 13.5,
+          "torsion_knm": -1.2,
+          "equivalent_shear_kn": 30.4,
+          "primary_moment_knm": 15.147058823529411,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 5000,
+          "v2_kn": -30.0,
+          "m3_knm": 0.0,
+          "torsion_knm": -1.5,
+          "equivalent_shear_kn": 38.0,
+          "primary_moment_knm": 2.0588235294117645,
+          "opposite_moment_knm": 2.0588235294117645,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        }
+      ],
+      "support_reaction_kn": 30.0,
+      "support_external_torque_knm": -1.5
+    },
+    "reversed_torque": {
+      "status": "PASS",
+      "uniform_load_n_per_mm": 12,
+      "eccentricity_mm": -50,
+      "link_spacing_mm": 100,
+      "rows": [
+        {
+          "station_mm": 0,
+          "v2_kn": 30.0,
+          "m3_knm": 0.0,
+          "torsion_knm": -1.5,
+          "equivalent_shear_kn": 38.0,
+          "primary_moment_knm": 2.0588235294117645,
+          "opposite_moment_knm": 2.0588235294117645,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 500,
+          "v2_kn": 24.0,
+          "m3_knm": 13.5,
+          "torsion_knm": -1.2,
+          "equivalent_shear_kn": 30.4,
+          "primary_moment_knm": 15.147058823529411,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 850,
+          "v2_kn": 19.8,
+          "m3_knm": 21.165,
+          "torsion_knm": -0.99,
+          "equivalent_shear_kn": 25.080000000000002,
+          "primary_moment_knm": 22.523823529411764,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2431.372549019608,
+          "v2_kn": 0.8235294117647045,
+          "m3_knm": 37.4717416378316,
+          "torsion_knm": -0.041176470588235224,
+          "equivalent_shear_kn": 1.043137254901959,
+          "primary_moment_knm": 37.528258362168394,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2500,
+          "v2_kn": 0.0,
+          "m3_knm": 37.5,
+          "torsion_knm": -0.0,
+          "equivalent_shear_kn": 0.0,
+          "primary_moment_knm": 37.5,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2568.627450980392,
+          "v2_kn": -0.8235294117647045,
+          "m3_knm": 37.471741637831606,
+          "torsion_knm": 0.041176470588235224,
+          "equivalent_shear_kn": 1.043137254901959,
+          "primary_moment_knm": 37.5282583621684,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 4150,
+          "v2_kn": -19.8,
+          "m3_knm": 21.165,
+          "torsion_knm": 0.99,
+          "equivalent_shear_kn": 25.080000000000002,
+          "primary_moment_knm": 22.523823529411764,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 4500,
+          "v2_kn": -24.0,
+          "m3_knm": 13.5,
+          "torsion_knm": 1.2,
+          "equivalent_shear_kn": 30.4,
+          "primary_moment_knm": 15.147058823529411,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 5000,
+          "v2_kn": -30.0,
+          "m3_knm": 0.0,
+          "torsion_knm": 1.5,
+          "equivalent_shear_kn": 38.0,
+          "primary_moment_knm": 2.0588235294117645,
+          "opposite_moment_knm": 2.0588235294117645,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        }
+      ],
+      "support_reaction_kn": 30.0,
+      "support_external_torque_knm": 1.5
+    },
+    "inadequate_links": {
+      "status": "FAIL",
+      "uniform_load_n_per_mm": 12,
+      "eccentricity_mm": 50,
+      "link_spacing_mm": 175,
+      "rows": [
+        {
+          "station_mm": 0,
+          "v2_kn": 30.0,
+          "m3_knm": 0.0,
+          "torsion_knm": 1.5,
+          "equivalent_shear_kn": 38.0,
+          "primary_moment_knm": 2.0588235294117645,
+          "opposite_moment_knm": 2.0588235294117645,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        },
+        {
+          "station_mm": 500,
+          "v2_kn": 24.0,
+          "m3_knm": 13.5,
+          "torsion_knm": 1.2,
+          "equivalent_shear_kn": 30.4,
+          "primary_moment_knm": 15.147058823529411,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        },
+        {
+          "station_mm": 850,
+          "v2_kn": 19.8,
+          "m3_knm": 21.165,
+          "torsion_knm": 0.99,
+          "equivalent_shear_kn": 25.080000000000002,
+          "primary_moment_knm": 22.523823529411764,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        },
+        {
+          "station_mm": 2431.372549019608,
+          "v2_kn": 0.8235294117647045,
+          "m3_knm": 37.4717416378316,
+          "torsion_knm": 0.041176470588235224,
+          "equivalent_shear_kn": 1.043137254901959,
+          "primary_moment_knm": 37.528258362168394,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        },
+        {
+          "station_mm": 2500,
+          "v2_kn": 0.0,
+          "m3_knm": 37.5,
+          "torsion_knm": 0.0,
+          "equivalent_shear_kn": 0.0,
+          "primary_moment_knm": 37.5,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        },
+        {
+          "station_mm": 2568.627450980392,
+          "v2_kn": -0.8235294117647045,
+          "m3_knm": 37.471741637831606,
+          "torsion_knm": -0.041176470588235224,
+          "equivalent_shear_kn": 1.043137254901959,
+          "primary_moment_knm": 37.5282583621684,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        },
+        {
+          "station_mm": 4150,
+          "v2_kn": -19.8,
+          "m3_knm": 21.165,
+          "torsion_knm": -0.99,
+          "equivalent_shear_kn": 25.080000000000002,
+          "primary_moment_knm": 22.523823529411764,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        },
+        {
+          "station_mm": 4500,
+          "v2_kn": -24.0,
+          "m3_knm": 13.5,
+          "torsion_knm": -1.2,
+          "equivalent_shear_kn": 30.4,
+          "primary_moment_knm": 15.147058823529411,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        },
+        {
+          "station_mm": 5000,
+          "v2_kn": -30.0,
+          "m3_knm": 0.0,
+          "torsion_knm": -1.5,
+          "equivalent_shear_kn": 38.0,
+          "primary_moment_knm": 2.0588235294117645,
+          "opposite_moment_knm": 2.0588235294117645,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 0.5744626566564193
+        }
+      ],
+      "support_reaction_kn": 30.0,
+      "support_external_torque_knm": -1.5
+    },
+    "missing_transfer": {
+      "status": "HOLD",
+      "uniform_load_n_per_mm": 12,
+      "eccentricity_mm": 50,
+      "link_spacing_mm": 100,
+      "rows": [
+        {
+          "station_mm": 0,
+          "v2_kn": 30.0,
+          "m3_knm": 0.0,
+          "torsion_knm": 1.5,
+          "equivalent_shear_kn": 38.0,
+          "primary_moment_knm": 2.0588235294117645,
+          "opposite_moment_knm": 2.0588235294117645,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 500,
+          "v2_kn": 24.0,
+          "m3_knm": 13.5,
+          "torsion_knm": 1.2,
+          "equivalent_shear_kn": 30.4,
+          "primary_moment_knm": 15.147058823529411,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 850,
+          "v2_kn": 19.8,
+          "m3_knm": 21.165,
+          "torsion_knm": 0.99,
+          "equivalent_shear_kn": 25.080000000000002,
+          "primary_moment_knm": 22.523823529411764,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2431.372549019608,
+          "v2_kn": 0.8235294117647045,
+          "m3_knm": 37.4717416378316,
+          "torsion_knm": 0.041176470588235224,
+          "equivalent_shear_kn": 1.043137254901959,
+          "primary_moment_knm": 37.528258362168394,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2500,
+          "v2_kn": 0.0,
+          "m3_knm": 37.5,
+          "torsion_knm": 0.0,
+          "equivalent_shear_kn": 0.0,
+          "primary_moment_knm": 37.5,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2568.627450980392,
+          "v2_kn": -0.8235294117647045,
+          "m3_knm": 37.471741637831606,
+          "torsion_knm": -0.041176470588235224,
+          "equivalent_shear_kn": 1.043137254901959,
+          "primary_moment_knm": 37.5282583621684,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 4150,
+          "v2_kn": -19.8,
+          "m3_knm": 21.165,
+          "torsion_knm": -0.99,
+          "equivalent_shear_kn": 25.080000000000002,
+          "primary_moment_knm": 22.523823529411764,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 4500,
+          "v2_kn": -24.0,
+          "m3_knm": 13.5,
+          "torsion_knm": -1.2,
+          "equivalent_shear_kn": 30.4,
+          "primary_moment_knm": 15.147058823529411,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 5000,
+          "v2_kn": -30.0,
+          "m3_knm": 0.0,
+          "torsion_knm": -1.5,
+          "equivalent_shear_kn": 38.0,
+          "primary_moment_knm": 2.0588235294117645,
+          "opposite_moment_knm": 2.0588235294117645,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        }
+      ],
+      "support_reaction_kn": 30.0,
+      "support_external_torque_knm": -1.5
+    },
+    "inadequate_longitudinal": {
+      "status": "FAIL",
+      "uniform_load_n_per_mm": 22,
+      "eccentricity_mm": 50,
+      "link_spacing_mm": 100,
+      "rows": [
+        {
+          "station_mm": 0,
+          "v2_kn": 55.0,
+          "m3_knm": 0.0,
+          "torsion_knm": 2.75,
+          "equivalent_shear_kn": 69.66666666666667,
+          "primary_moment_knm": 3.7745098039215685,
+          "opposite_moment_knm": 3.7745098039215685,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 500,
+          "v2_kn": 44.0,
+          "m3_knm": 24.75,
+          "torsion_knm": 2.2,
+          "equivalent_shear_kn": 55.733333333333334,
+          "primary_moment_knm": 27.769607843137255,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 850,
+          "v2_kn": 36.3,
+          "m3_knm": 38.8025,
+          "torsion_knm": 1.8149999999999997,
+          "equivalent_shear_kn": 45.98,
+          "primary_moment_knm": 41.29367647058824,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2431.372549019608,
+          "v2_kn": 1.509803921568625,
+          "m3_knm": 68.69819300269127,
+          "torsion_knm": 0.07549019607843126,
+          "equivalent_shear_kn": 1.9124183006535918,
+          "primary_moment_knm": 68.80180699730873,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2500,
+          "v2_kn": 0.0,
+          "m3_knm": 68.75,
+          "torsion_knm": 0.0,
+          "equivalent_shear_kn": 0.0,
+          "primary_moment_knm": 68.75,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 2568.627450980392,
+          "v2_kn": -1.509803921568625,
+          "m3_knm": 68.69819300269127,
+          "torsion_knm": -0.07549019607843126,
+          "equivalent_shear_kn": 1.9124183006535918,
+          "primary_moment_knm": 68.80180699730873,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 4150,
+          "v2_kn": -36.3,
+          "m3_knm": 38.8025,
+          "torsion_knm": -1.8149999999999997,
+          "equivalent_shear_kn": 45.98,
+          "primary_moment_knm": 41.29367647058824,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 4500,
+          "v2_kn": -44.0,
+          "m3_knm": 24.75,
+          "torsion_knm": -2.2,
+          "equivalent_shear_kn": 55.733333333333334,
+          "primary_moment_knm": 27.769607843137255,
+          "opposite_moment_knm": 0,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        },
+        {
+          "station_mm": 5000,
+          "v2_kn": -55.0,
+          "m3_knm": 0.0,
+          "torsion_knm": -2.75,
+          "equivalent_shear_kn": 69.66666666666667,
+          "primary_moment_knm": 3.7745098039215685,
+          "opposite_moment_knm": 3.7745098039215685,
+          "required_link_area_per_spacing_mm": 0.3323639385126714,
+          "provided_link_area_per_spacing_mm": 1.0053096491487339
+        }
+      ],
+      "support_reaction_kn": 55.0,
+      "support_external_torque_knm": -2.75
+    }
+  }
+}
