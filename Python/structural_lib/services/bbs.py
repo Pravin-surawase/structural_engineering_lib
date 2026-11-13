@@ -914,16 +914,16 @@ def optimize_cutting_stock(
     kerf: float = 3.0,
 ) -> CuttingPlan:
     """
-    First-fit-decreasing bin packing for rebar cutting optimization.
+    First-fit-decreasing bin packing for rebar cuts of the same diameter.
 
     This function minimizes steel waste by optimally assigning bar cuts
     to stock lengths. Uses first-fit-decreasing heuristic which typically
     achieves near-optimal results for 1D bin packing problems.
 
     Algorithm:
-    1. Expand line items: repeat each (mark, cut_length) by quantity
+    1. Expand line items by quantity, retaining their mark, cut length and diameter.
     2. Sort by cut_length descending (first-fit-decreasing)
-    3. For each cut, try to fit in existing open stock bar
+    3. For each cut, try to fit in an existing stock bar of the same diameter
     4. If no fit, open new stock bar (prefer smallest that fits)
     5. Track assignments and waste
 
@@ -955,11 +955,11 @@ def optimize_cutting_stock(
     # Sort stock lengths ascending for efficient selection
     stock_lengths_sorted: list[float] = sorted(stock_lengths)
 
-    # Step 1: Expand line items into individual cuts
-    cuts = []  # List of (mark, cut_length) tuples
-    for item in line_items:
-        for _ in range(item.no_of_bars):
-            cuts.append((item.bar_mark, item.cut_length_mm))
+    cuts = [
+        (item.bar_mark, item.cut_length_mm, item.diameter_mm)
+        for item in line_items
+        for _ in range(item.no_of_bars)
+    ]
 
     # Early return for empty cuts
     if not cuts:
@@ -972,7 +972,7 @@ def optimize_cutting_stock(
 
     # Validate all cuts can fit in available stock
     max_stock = max(stock_lengths_sorted)
-    for mark, cut_len in cuts:
+    for mark, cut_len, _ in cuts:
         if cut_len > max_stock:
             raise ValueError(
                 f"Cut length {cut_len:.0f}mm for bar {mark} exceeds "
@@ -984,12 +984,14 @@ def optimize_cutting_stock(
 
     # Step 3-4: Bin packing with first-fit-decreasing heuristic
     assignments: list[CuttingAssignment] = []
+    stock_by_diameter: dict[float, list[CuttingAssignment]] = {}
 
-    for mark, cut_len in cuts:
+    for mark, cut_len, diameter in cuts:
+        compatible_stock = stock_by_diameter.setdefault(diameter, [])
         placed = False
 
         # Try to fit in an existing open stock bar
-        for assignment in assignments:
+        for assignment in compatible_stock:
             # Calculate remaining space accounting for kerf
             used_length = sum(c[1] for c in assignment.cuts)
             num_cuts = len(assignment.cuts)
@@ -1030,6 +1032,7 @@ def optimize_cutting_stock(
                 cuts=[(mark, cut_len)],
                 waste=selected_stock - cut_len - kerf,
             )
+            compatible_stock.append(new_assignment)
             assignments.append(new_assignment)
 
     # Calculate statistics

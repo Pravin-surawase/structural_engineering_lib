@@ -160,6 +160,26 @@ class TestRectangularSection:
         rect = RectangularSection(b=300, D=600, d=540)
         assert rect.d == 540
 
+    @pytest.mark.parametrize(
+        "options",
+        [
+            {"cover": -40},
+            {"cover": float("nan")},
+            {"d": 600},
+            {"d": 500},
+            {"d": 0},
+            {"d": float("inf")},
+            {"d": 450, "cover": -40},
+        ],
+    )
+    def test_effective_depth_rejects_invalid_geometry(self, options):
+        with pytest.raises(ValueError):
+            RectangularSection(b=300, D=500, **options)
+
+    def test_zero_cover_remains_valid(self):
+        assert RectangularSection(b=300, D=500, cover=0).d == 482
+        assert RectangularSection(b=300, D=500, cover=0, d=482).d == 482
+
 
 class TestTSection:
     """Tests for T-beam geometry."""

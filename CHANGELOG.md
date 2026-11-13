@@ -57,6 +57,15 @@ All notable changes to this project will be documented in this file.
 - Continuous one-way and two-way solid slab HTTP responses retain the supplied
   load-basis status, including built-in coefficient routes and two-way flexural
   failures.
+- Apply the same support aliases in single and batch beam deflection checks.
+  Report when an unknown support uses the existing simply supported default.
+- Reject reversed signed end-moment pairs in direct slender-column checks.
+  Check actual face intervals for four-corner rectangular column detailing.
+- Hold Excel workbook rows that supply unsupported torsion under a
+  unit-labelled header.
+- Reject invalid effective depths in rectangular sections and keep different
+  bar diameters on separate stock bars in the BBS cutting plan.
+
 ### Verification
 
 - Replay the new beam and column profiles and the slab coefficient cases
