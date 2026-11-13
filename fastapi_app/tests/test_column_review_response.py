@@ -302,3 +302,22 @@ def test_http_long_and_additional_moment_use_independent_plane_factors(expected)
         expected["interaction_ratio"], abs=0.00005
     )
     assert data["is_safe"] == expected["is_safe"]
+
+
+def test_long_column_http_rejects_reversed_end_moment_pair():
+    response = client.post(
+        "/api/v1/design/column/long-column",
+        json={
+            **BASE_REQUEST,
+            "M1x_kNm": 125,
+            "M2x_kNm": 20,
+            "M1y_kNm": 0,
+            "M2y_kNm": 0,
+            "lex_mm": 5200,
+            "ley_mm": 5200,
+            "l_unsupported_mm": 5200,
+        },
+    )
+    assert response.status_code == 422
+    assert "COLUMN_END_MOMENT_ORDER" in response.text
+    assert "M2x_kNm" in response.text

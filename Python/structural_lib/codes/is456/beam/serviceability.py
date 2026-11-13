@@ -217,6 +217,9 @@ def check_deflection_span_depth(
         else f"NOT OK: L/d={ld_ratio:.3f} > allowable={allowable_ld:.3f}"
     )
 
+    if support_note:
+        remarks = f"{remarks}. {support_note}"
+
     computed: dict[str, Any] = {
         "ld_ratio": ld_ratio,
         "allowable_ld": allowable_ld,

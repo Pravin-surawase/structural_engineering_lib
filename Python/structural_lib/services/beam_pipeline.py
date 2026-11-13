@@ -692,18 +692,10 @@ def _auto_construct_deflection_params(
     if span_mm <= 0 or d_mm is None or d_mm <= 0:
         return None
 
-    # Normalize support_condition to a valid string for DeflectionParams
-    from structural_lib.core.data_types import SupportCondition
-
-    try:
-        sc = SupportCondition[support_condition.upper()]
-    except (KeyError, AttributeError):
-        sc = SupportCondition.SIMPLY_SUPPORTED
-
     return DeflectionParams(
         span_mm=span_mm,
         d_mm=d_mm,
-        support_condition=sc.name,
+        support_condition=support_condition,
     )
 
 

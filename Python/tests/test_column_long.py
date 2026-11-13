@@ -22,9 +22,10 @@ from __future__ import annotations
 
 import pytest
 
+from structural_lib import api
 from structural_lib.codes.is456.column.long_column import design_long_column
 from structural_lib.core.data_types import ColumnClassification, LongColumnResult
-from structural_lib.core.errors import DimensionError
+from structural_lib.core.errors import DimensionError, InputContractError
 
 # ============================================================================
 # Common parameters for reuse
@@ -659,3 +660,50 @@ class TestBenchmarkBracedSlender:
 
         # Biaxial check since both axes have moments
         assert result.governing_check == "biaxial"
+
+
+@pytest.mark.parametrize(("axis", "m2"), [("x", 20), ("x", -20), ("y", 20)])
+def test_rejects_reversed_signed_end_moment_pair(axis, m2):
+    demand = dict(Pu_kN=500, M1x_kNm=0, M2x_kNm=0, M1y_kNm=0, M2y_kNm=0)
+    demand.update({f"M1{axis}_kNm": 125, f"M2{axis}_kNm": m2})
+    dimensions = dict(
+        b_mm=300,
+        D_mm=400,
+        lex_mm=5200,
+        ley_mm=5200,
+        Asc_mm2=1600,
+        d_prime_mm=50,
+        l_unsupported_mm=5200,
+    )
+    for design, strengths in (
+        (design_long_column, dict(fck=25, fy=415)),
+        (api.design_long_column_is456, dict(fck_nmm2=25, fy_nmm2=415)),
+    ):
+        with pytest.raises(InputContractError) as exc:
+            design(**demand, **dimensions, **strengths)
+        (issue,) = exc.value.issues
+        assert issue.code == "COLUMN_END_MOMENT_ORDER"
+        assert issue.path == f"M2{axis}_kNm"
+
+
+def test_ordered_replay_preserves_unsafe_moment():
+    demand = dict(
+        Pu_kN=500,
+        M1y_kNm=0,
+        M2y_kNm=0,
+        b_mm=300,
+        D_mm=400,
+        lex_mm=5200,
+        ley_mm=5200,
+        Asc_mm2=1600,
+        d_prime_mm=50,
+        l_unsupported_mm=5200,
+        fck_nmm2=25,
+        fy_nmm2=415,
+    )
+    for sign in (1, -1):
+        result = api.design_long_column_is456(
+            M1x_kNm=sign * 20, M2x_kNm=sign * 125, **demand
+        )
+        assert result.Mux_design_kNm == 125
+        assert not result.is_safe

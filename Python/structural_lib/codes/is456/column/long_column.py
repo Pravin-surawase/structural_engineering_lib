@@ -43,7 +43,12 @@ from structural_lib.codes.is456.column.uniaxial import design_short_column_uniax
 from structural_lib.codes.is456.common.constants import MAX_SLENDERNESS_RATIO
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import ColumnClassification, LongColumnResult
-from structural_lib.core.errors import DimensionError, MaterialError
+from structural_lib.core.errors import (
+    DimensionError,
+    InputContractError,
+    InputIssueV1,
+    MaterialError,
+)
 
 __all__ = [
     "design_long_column",
@@ -51,6 +56,20 @@ __all__ = [
 
 # Tolerance for near-zero values
 _TOL: float = 1e-6
+
+
+def _end_moment_order_issue(
+    axis: str, m1_knm: float, m2_knm: float
+) -> InputIssueV1 | None:
+    if abs(m1_knm) > abs(m2_knm) + 1e-9:
+        return InputIssueV1(
+            "COLUMN_END_MOMENT_ORDER",
+            f"M2{axis}_kNm",
+            "The second signed end moment must have the larger absolute magnitude.",
+            received={"M1_kNm": m1_knm, "M2_kNm": m2_knm},
+            constraint="abs(M1) <= abs(M2), tolerance 1e-9 kNm",
+        )
+    return None
 
 
 def _initial_moment(m1_knm: float, m2_knm: float, braced: bool) -> float:
@@ -129,6 +148,7 @@ def design_long_column(
     Raises:
         DimensionError: If geometric dimensions are invalid or le/D > 60.
         MaterialError: If material properties are out of range.
+        InputContractError: If either signed end-moment pair is out of order.
 
     References:
         IS 456:2000, Cl. 39.7, 39.7.1, 39.7.1.1
@@ -136,6 +156,13 @@ def design_long_column(
     # ===========================================================
     # 1. Input validation
     # ===========================================================
+    order_issues = [
+        issue
+        for axis, m1, m2 in (("x", M1x_kNm, M2x_kNm), ("y", M1y_kNm, M2y_kNm))
+        if (issue := _end_moment_order_issue(axis, m1, m2)) is not None
+    ]
+    if order_issues:
+        raise InputContractError(order_issues)
     if Pu_kN < 0:
         raise DimensionError(
             f"Pu_kN must be >= 0 (compression), got {Pu_kN}",

@@ -870,9 +870,9 @@ def design_long_column_is456(
         Pu_kN: Factored axial load (kN). Must be >= 0.
         M1x_kNm: End moment 1 about x-axis (kNm). For equal end moments,
             M1x = M2x. Sign convention: +ve causes tension on same face.
-        M2x_kNm: End moment 2 about x-axis (kNm).
-        M1y_kNm: End moment 1 about y-axis (kNm).
-        M2y_kNm: End moment 2 about y-axis (kNm).
+        M2x_kNm: Larger absolute end moment about x (kN·m).
+        M1y_kNm: End moment 1 about y-axis (kN·m).
+        M2y_kNm: Larger absolute end moment about y (kN·m).
         b_mm: Column width perpendicular to x-axis (mm). Typical: 100-2000.
         D_mm: Column depth in x-direction (mm). Typical: 100-2000.
         lex_mm: Effective length about x-axis (mm). Must be > 0.
@@ -899,6 +899,7 @@ def design_long_column_is456(
 
     Raises:
         DimensionError: If geometric dimensions are invalid.
+        InputContractError: If either signed end-moment pair is out of order.
         MaterialError: If material properties are out of range.
         CalculationError: If numerical issues are encountered.
         ValueError: If plausibility checks fail.
@@ -923,9 +924,10 @@ def design_long_column_is456(
         ...     fy_nmm2=415.0,
         ...     Asc_mm2=2700.0,
         ...     d_prime_mm=50.0,
+        ...     l_unsupported_mm=5400.0,
         ... )
-        >>> print(f"Safe: {result['is_safe']}")
-        >>> print(f"Design Moment X: {result['Mx_design_kNm']:.2f} kN·m")
+        >>> assert isinstance(result.is_safe, bool)
+        >>> assert result.Mux_design_kNm >= 80.0
 
     See Also:
         - calculate_additional_moment_is456: Calculate Ma per Cl 39.7.1
@@ -1423,21 +1425,18 @@ def design_column_is456(
         # Signed ends describe curvature; they cannot discard an independently
         # declared applied demand. Keep the existing minimum-eccentricity
         # defaults, then reject inputs outside this end-moment-only profile.
+        from structural_lib.codes.is456.column.long_column import (
+            _end_moment_order_issue,
+        )
+
         issues = []
         for axis, applied, m1, m2 in (
             ("x", Mux_kNm, M1x, M2x),
             ("y", Muy_kNm, M1y, M2y),
         ):
-            if abs(m1) > abs(m2) + 1e-9:
-                issues.append(
-                    InputIssueV1(
-                        "COLUMN_END_MOMENT_ORDER",
-                        f"M2{axis}_kNm",
-                        "The second signed end moment must have the larger absolute magnitude.",
-                        received={"M1_kNm": m1, "M2_kNm": m2},
-                        constraint="abs(M1) <= abs(M2), tolerance 1e-9 kNm",
-                    )
-                )
+            order_issue = _end_moment_order_issue(axis, m1, m2)
+            if order_issue is not None:
+                issues.append(order_issue)
             elif applied > abs(m2) + 1e-9:
                 issues.append(
                     InputIssueV1(

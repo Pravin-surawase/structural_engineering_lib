@@ -72,7 +72,7 @@ _TIE_SPACING_BAR_FACTOR: float = 16.0  # 16 × smallest longitudinal bar dia
 _CROSS_TIE_THRESHOLD_MM: float = 150.0
 
 # ---------------------------------------------------------------------------
-# IS 456 Cl 26.5.3.1(c): Maximum clear spacing between bars
+# IS 456 Cl 26.5.3.1(g): Maximum spacing along the column perimeter
 # ---------------------------------------------------------------------------
 _MAX_BAR_SPACING_MM: float = 300.0
 
@@ -271,10 +271,10 @@ def check_bar_spacing(
     num_bars: int,
     is_circular: bool = False,
 ) -> tuple[float, bool, tuple[str, ...]]:
-    """Check clear spacing between longitudinal bars per IS 456 Cl 26.5.3.1(c).
+    """Check longitudinal bar spacing per IS 456 Cl 26.5.3.1(g).
 
-    For rectangular sections, distributes bars evenly around the perimeter.
-    Maximum face-to-face spacing must not exceed 300mm.
+    For four corner bars, uses the actual short and long face intervals.
+    For other bar counts, estimates spacing from the perimeter.
 
     Args:
         b_mm: Column width (mm). Must be > 0.
@@ -324,12 +324,12 @@ def check_bar_spacing(
         if effective_dia <= 0:
             return (0.0, False, ("Insufficient section size for bars and cover",))
 
-        # IS 456 Cl 26.5.3.1(c): arc spacing between bars
+        # Arc spacing between bars
         circumference = math.pi * effective_dia
         # Clear spacing = (circumference - num_bars * bar_dia) / num_bars
         clear_spacing = (circumference - num_bars * bar_dia_mm) / num_bars
     else:
-        # Rectangular column: distribute bars around perimeter
+        # Approximate clear spacing for a count-only perimeter layout.
         # Available perimeter = 2 * (b - 2*cover - bar_dia) + 2 * (D - 2*cover - bar_dia)
         avail_b = b_mm - 2.0 * cover_mm - bar_dia_mm
         avail_d = D_mm - 2.0 * cover_mm - bar_dia_mm
@@ -341,35 +341,24 @@ def check_bar_spacing(
         # Clear spacing between bars along the perimeter
         clear_spacing = (perimeter - num_bars * bar_dia_mm) / num_bars
 
-    # NaN/Inf guard
-    if math.isnan(clear_spacing) or math.isinf(clear_spacing):
+    max_spacing = clear_spacing
+    if not is_circular and num_bars == 4:
+        # The gap used for fit is clear, while the maximum periphery
+        # spacing is measured between bar centres.
+        clear_spacing = min(avail_b, avail_d) - bar_dia_mm
+        max_spacing = max(avail_b, avail_d)
+
+    if not math.isfinite(clear_spacing) or not math.isfinite(max_spacing):
         return (0.0, False, ("Numerical issue in bar spacing calculation",))
 
     min_clear_spacing = max(clear_spacing, 0.0)
-
-    # IS 456 Cl 26.5.3.1(c): maximum face-to-face spacing <= 300mm
-    # For rectangular, check each face: max face spacing ≈ (avail face - corner bars) / gaps
     is_ok = True
-    if not is_circular:
-        # Check the widest face
-        max_face = max(avail_b, avail_d)
-        # Conservative: if max face > 300mm, bars on that face must be spaced ≤ 300mm
-        if max_face > _MAX_BAR_SPACING_MM:
-            # With only corner bars on that face, the clear gap = max_face
-            # More bars needed on that face to keep spacing ≤ 300mm
-            if clear_spacing > _MAX_BAR_SPACING_MM:
-                is_ok = False
-                warnings.append(
-                    f"Bar spacing {clear_spacing:.1f}mm exceeds maximum "
-                    f"{_MAX_BAR_SPACING_MM:.0f}mm per Cl 26.5.3.1(c)"
-                )
-    else:
-        if clear_spacing > _MAX_BAR_SPACING_MM:
-            is_ok = False
-            warnings.append(
-                f"Bar spacing {clear_spacing:.1f}mm exceeds maximum "
-                f"{_MAX_BAR_SPACING_MM:.0f}mm per Cl 26.5.3.1(c)"
-            )
+    if max_spacing > _MAX_BAR_SPACING_MM:
+        is_ok = False
+        warnings.append(
+            f"Bar spacing {max_spacing:.1f}mm exceeds maximum "
+            f"{_MAX_BAR_SPACING_MM:.0f}mm per Cl 26.5.3.1(g)"
+        )
 
     if clear_spacing < bar_dia_mm:
         is_ok = False
@@ -556,7 +545,7 @@ def create_column_detailing(
         )
 
     # ===========================================================
-    # 6. Bar spacing (Cl 26.5.3.1c)
+    # 6. Bar spacing (Cl 26.5.3.1g)
     # ===========================================================
     bar_spacing_mm, bar_spacing_ok, spacing_warnings = check_bar_spacing(
         b_mm, D_mm, cover_mm, bar_dia_mm, num_bars, is_circular
