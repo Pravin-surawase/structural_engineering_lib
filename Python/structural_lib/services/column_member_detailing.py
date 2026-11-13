@@ -48,6 +48,7 @@ from structural_lib.services.contracts.column_member import (
     TiedRectangularColumnInputV1,
 )
 from structural_lib.services.contracts.column_member_detailing import (
+    ColumnDetailingActionV1,
     ColumnMemberDetailingInputV1,
     ColumnTieZoneV1,
     PositionedColumnMemberDetailingInputV1,
@@ -409,97 +410,123 @@ def _check_actions(
                     issue.message,
                     "Physical tied rectangular member check",
                 )
-        if tie is None or any(item.zone_id not in valid_zones for item in matching):
-            continue
-        if action.vx_kn and action.vy_kn:
-            record(
-                "COLUMN.COMBINED_SHEAR",
-                _HOLD,
-                path,
-                "Simultaneous nonzero shears need a verified two-plane interaction basis.",
-                _SHEAR,
+        if tie is not None and all(item.zone_id in valid_zones for item in matching):
+            summary["shear"] = _check_rectangular_shear(
+                request, action, zone, path, record, splice
             )
-            continue
-        if materials.fck_nmm2 not in (20, 25, 30, 35, 40):
-            record(
-                "COLUMN.SHEAR_MATERIAL",
-                _HOLD,
-                path,
-                "The shear profile uses the M20–M40 tabulated grade columns.",
-                _SHEAR,
-            )
-            continue
-        direction = "x" if action.vx_kn else "y"
-        if direction == "x":
-            width, depth, demand = geometry.D_mm, geometry.b_mm, action.vx_kn
-        else:
-            width, depth, demand = geometry.b_mm, geometry.D_mm, action.vy_kn
-        if isinstance(steel, PositionedColumnCageV1):
-            coords = [
-                bar.x_from_left_mm if direction == "x" else bar.y_from_top_mm
-                for bar in steel.bars
-                if bar.row == "outer"
-            ]
-            if not coords:
-                record(
-                    "COLUMN.SHEAR_SETBACK_HELD",
-                    _HOLD,
-                    path,
-                    "Outer bars are required for the effective shear depth.",
-                    _SHEAR,
-                )
-                continue
-            setback = max(min(coords), depth - max(coords))
-        else:
-            setback = steel.bar_center_offset_mm
-        if direction == "y" and splice is not None and station >= splice.start_mm:
-            if splice.y_plane_setback_mm is not None:
-                setback = max(setback, splice.y_plane_setback_mm)
-        shear = ordinary_column_shear(
-            width_mm=width,
-            d_mm=depth - setback,
-            gross_area_mm2=geometry.b_mm * geometry.D_mm,
-            pu_kn=action.pu_kn,
-            vu_kn=demand,
-            fck_nmm2=materials.fck_nmm2,
-            hoop_diameter_mm=tie.diameter_mm,
-            hoop_fy_nmm2=request.tie_fy_nmm2,
-            pitch_mm=zone.pitch_mm,
-        )
-        spacing_ok = zone.pitch_mm <= 0.75 * shear.d_mm
-        if not spacing_ok:
-            record(
-                "COLUMN.SHEAR_LINK_SPACING",
-                _FAIL,
-                path,
-                "The spacing exceeds the 0.75d limit of the admitted vertical shear transfer model.",
-                _SHEAR,
-            )
-        if abs(demand) > shear.crushing_kn:
-            code = "COLUMN.SHEAR_CRUSHING"
-        else:
-            code = "COLUMN.SHEAR_CAPACITY"
-        status = _PASS if shear.utilization <= 1 else _FAIL
+    return rows
+
+
+def _check_rectangular_shear(
+    request: DetailingRequest,
+    action: ColumnDetailingActionV1,
+    zone: ColumnTieZoneV1,
+    path: str,
+    record: _Record,
+    splice: ContactSplice | None = None,
+) -> dict[str, Any] | None:
+    geometry, steel, materials = (
+        request.geometry,
+        request.reinforcement,
+        request.materials,
+    )
+    tie = steel.tie
+    assert tie is not None
+    if action.vx_kn and action.vy_kn:
         record(
-            code,
-            status,
+            "COLUMN.COMBINED_SHEAR",
+            _HOLD,
             path,
-            "Check signed shear magnitude against the two closed hoop legs and concrete.",
+            "Simultaneous nonzero shears need a verified two-plane interaction basis.",
             _SHEAR,
         )
-        summary["shear"] = {
-            "direction": direction,
-            "demand_kn": demand,
-            "status": (status if spacing_ok else _FAIL).value,
-            "credited_hoop_id": tie.tie_id,
-            "credited_legs": 2,
-            **asdict(shear),
-        }
-    return rows
+        return None
+    if materials.fck_nmm2 not in (20, 25, 30, 35, 40):
+        record(
+            "COLUMN.SHEAR_MATERIAL",
+            _HOLD,
+            path,
+            "The shear profile uses the M20–M40 tabulated grade columns.",
+            _SHEAR,
+        )
+        return None
+    direction = "x" if action.vx_kn else "y"
+    if direction == "x":
+        width, depth, demand = geometry.D_mm, geometry.b_mm, action.vx_kn
+    else:
+        width, depth, demand = geometry.b_mm, geometry.D_mm, action.vy_kn
+    if isinstance(steel, PositionedColumnCageV1):
+        coords = [
+            bar.x_from_left_mm if direction == "x" else bar.y_from_top_mm
+            for bar in steel.bars
+            if bar.row == "outer"
+        ]
+        if not coords:
+            record(
+                "COLUMN.SHEAR_SETBACK_HELD",
+                _HOLD,
+                path,
+                "Outer bars are required for the effective shear depth.",
+                _SHEAR,
+            )
+            return None
+        setback = max(min(coords), depth - max(coords))
+    else:
+        setback = steel.bar_center_offset_mm
+    if (
+        direction == "y"
+        and splice is not None
+        and action.check_station_mm >= splice.start_mm
+    ):
+        if splice.y_plane_setback_mm is not None:
+            setback = max(setback, splice.y_plane_setback_mm)
+    shear = ordinary_column_shear(
+        width_mm=width,
+        d_mm=depth - setback,
+        gross_area_mm2=geometry.b_mm * geometry.D_mm,
+        pu_kn=action.pu_kn,
+        vu_kn=demand,
+        fck_nmm2=materials.fck_nmm2,
+        hoop_diameter_mm=tie.diameter_mm,
+        hoop_fy_nmm2=request.tie_fy_nmm2,
+        pitch_mm=zone.pitch_mm,
+    )
+    spacing_ok = zone.pitch_mm <= 0.75 * shear.d_mm
+    if not spacing_ok:
+        record(
+            "COLUMN.SHEAR_LINK_SPACING",
+            _FAIL,
+            path,
+            "The spacing exceeds the 0.75d limit of the admitted vertical shear transfer model.",
+            _SHEAR,
+        )
+    if abs(demand) > shear.crushing_kn:
+        code = "COLUMN.SHEAR_CRUSHING"
+    else:
+        code = "COLUMN.SHEAR_CAPACITY"
+    status = _PASS if shear.utilization <= 1 else _FAIL
+    record(
+        code,
+        status,
+        path,
+        "Check signed shear magnitude against the two closed hoop legs and concrete.",
+        _SHEAR,
+    )
+    return {
+        "direction": direction,
+        "demand_kn": demand,
+        "status": (status if spacing_ok else _FAIL).value,
+        "credited_hoop_id": tie.tie_id,
+        "credited_legs": 2,
+        **asdict(shear),
+    }
 
 
 def _slender_detailing_actions(
     request: SlenderColumnMemberDetailingInputV1,
+    zones: list[ColumnTieZoneV1],
+    grid: list[float],
+    valid_zones: set[str],
     record: _Record,
 ) -> tuple[list[dict[str, Any]], dict[str, Any] | None]:
     second_order = request.second_order
@@ -517,12 +544,12 @@ def _slender_detailing_actions(
         (row.combination_id, row.check_station_mm, row.pu_kn, row.mx_knm, row.my_knm)
         for row in request.actions
     }
-    if supplied != required or any(row.vx_kn or row.vy_kn for row in request.actions):
+    if supplied != required:
         record(
             "COLUMN.SLENDER_DETAIL_ACTIONS_HELD",
             _HOLD,
             "actions",
-            "The physical check rows must match the supplied second-order rows and have zero supplied shear.",
+            "The physical check rows must match the supplied second-order axial force and moments.",
             "Declared COL04 action basis",
         )
         return [], None
@@ -550,24 +577,47 @@ def _slender_detailing_actions(
     section_identity = result.envelope.result_identity
     assert section_identity is not None
     ids = {row.station_mm: row.station_id for row in second_order.stations}
-    return [
-        {
+    rows = []
+    for index, action in enumerate(request.actions):
+        station = action.check_station_mm
+        path = f"actions.{index}"
+        summary = {
             "combination_id": action.combination_id,
-            "station_mm": action.check_station_mm,
+            "station_mm": station,
             "action": action.model_dump(),
             "section": {
                 "status": result.engineering_status.value,
                 "input_hash": section_identity.input_hash,
                 "utilization": (
-                    section["evaluated"][ids[action.check_station_mm]]["ratio"]
-                    if section
-                    else None
+                    section["evaluated"][ids[station]]["ratio"] if section else None
                 ),
             },
             "shear": None,
         }
-        for action in request.actions
-    ], result.to_dict()
+        rows.append(summary)
+        if (
+            not action.vx_kn and not action.vy_kn
+        ) or result.envelope.freshness_status is FreshnessStatus.STALE:
+            continue
+        matching = [zone for zone in zones if zone.start_mm <= station <= zone.end_mm]
+        if not grid or not matching:
+            record(
+                "COLUMN.SHEAR_ZONE_REQUIRED",
+                _HOLD,
+                path,
+                "A nonzero shear row needs a resolved tie interval within the grid.",
+                _TIE,
+            )
+            continue
+        zone = max(matching, key=lambda item: item.pitch_mm)
+        summary["zone_id"] = zone.zone_id
+        if request.reinforcement.tie is not None and all(
+            item.zone_id in valid_zones for item in matching
+        ):
+            summary["shear"] = _check_rectangular_shear(
+                request, action, zone, path, record
+            )
+    return rows, result.to_dict()
 
 
 def _bar_schedule(
@@ -880,7 +930,9 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             laps[0]["required_mm"] = splice.required_lap_mm
     slender = None
     if isinstance(request, SlenderColumnMemberDetailingInputV1):
-        actions, slender = _slender_detailing_actions(request, record)
+        actions, slender = _slender_detailing_actions(
+            request, zones, grid, valid_zones, record
+        )
     else:
         actions = _check_actions(request, zones, grid, valid_zones, record, splice)
     if grid and cage is not None:
@@ -925,7 +977,7 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
         engineering_status=status,
         limitations=(
             "Checks supplied stations and combinations on the declared tied rectangular member.",
-            "The slender detailing route requires supplied second-order actions and zero supplied member shear.",
+            "Slender detailing uses supplied second-order actions with one principal shear plane per checked row.",
             "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
             "Straight end projections require separately checked adjoining concrete. An eight-bar physical contact splice supports one side-midpoint or C1/C2 group with straight bars.",
             "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",

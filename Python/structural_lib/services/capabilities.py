@@ -237,7 +237,7 @@ _CAPABILITIES = (
             "General arbitrary multilayer cages outside the named positioned-bar and restraint profiles remain held.",
             "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
             "Load-envelope generation, frame analysis, and effective-length derivation beyond the declared end-condition model are excluded. Automatic sizing outside the finite eight-bar rectangular profile remains held.",
-            "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway remains outside this profile. A separate detailing profile admits continuous braced rectangles with supplied second-order actions and zero shear.",
+            "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway remains outside this profile. A separate detailing profile admits continuous braced rectangles with supplied second-order actions and principal-plane shear.",
         ),
         qualified_review_required=True,
         python_profiles=(
@@ -347,7 +347,7 @@ _CAPABILITIES = (
                 "load_slender_column_member_detailing",
                 "check_column_member_detailing",
                 "column-slender-member-detailing-input/v1",
-                "Braced slender tied rectangle with matching supplied second-order actions, zero supplied shear, continuous bars and checked quantities.",
+                "Braced slender tied rectangle with matching supplied second-order actions, principal-plane shear, continuous bars and checked quantities.",
                 "docs/cookbook/python/column-member-detailing.md#replay-a-braced-slender-member",
                 "Python/examples/column_member_detailing.py",
             ),

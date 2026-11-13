@@ -1737,7 +1737,7 @@ def load_slender_column_member_detailing(
 
     Limitations
     -----------
-    Ordinary tied rectangular cages, continuous bars and zero supplied shear.
+    Ordinary tied rectangular cages with continuous bars and one principal shear plane per row.
 
     Provenance
     ----------

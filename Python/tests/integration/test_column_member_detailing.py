@@ -185,6 +185,19 @@ def test_slender_member_action_binding_and_schedule(name):
         assert wire["envelope"]["freshness_status"] == "STALE"
     if name == "unmatched_second_order":
         assert calculation["slender_member"] is None
+    if "shear" in expected:
+        actual = calculation["actions"][1]["shear"]
+        if expected["shear"] is None:
+            assert actual is None
+            assert "COLUMN.COMBINED_SHEAR" in {issue.code for issue in result.issues}
+        else:
+            assert actual is not None
+            assert actual["credited_hoop_id"] == "HOOP"
+            for key, value in expected["shear"].items():
+                assert actual[key] == (
+                    pytest.approx(value) if isinstance(value, (int, float)) else value
+                )
+            assert "Governing supplied shear: U1 at 3000 mm" in report
     if expected["status"] != "PASS":
         assert schedule is None
         return

@@ -163,8 +163,12 @@ quantities. A stale analysis, disagreement between station rows or short
 straight projection withholds the BBS.
 
 The admitted slender profile has continuous bars, one supplied
-second-order combination and zero shear. First-order member detailing,
-slender member shear and physical splices require their own checks.
+second-order combination. One nonzero principal shear component can be
+checked at a station inside the tied zone. The field pitch of 120 mm gives
+114.353 kN of resistance for local X and 147.211 kN for local Y. The worked
+rows at 3000 mm use −75 and +95 kN in separate cases. A −150 kN X row
+fails, and simultaneous nonzero components remain HOLD. First-order member
+detailing and physical splices need their own checks.
 
 ## Run a physical contact splice
 
