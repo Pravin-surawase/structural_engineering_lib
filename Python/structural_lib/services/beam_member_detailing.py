@@ -23,20 +23,30 @@ from structural_lib.beam.bar_paths import (
     resolve_bar_paths,
 )
 from structural_lib.beam.detailing import (
+    AnchorageCheckRequest,
+    AnchorageDirection,
+    AnchorageLocation,
+    AnchoragePath,
+    BarSurface,
+    DevelopmentLengthRequest,
     LinkCage,
     LongitudinalBarPath,
     ReinforcementArrangementCheckRequest,
     ReinforcementRole,
+    StressState,
+    check_anchorage,
     check_reinforcement_arrangement,
 )
 from structural_lib.beam.physical_torsion import (
     ClosedLinkDetailRequest,
     check_closed_link_detail,
 )
+from structural_lib.beam.reinforcement import BarPosition, Face
 from structural_lib.beam.semantics import (
     EngineeringState,
     ExecutionState,
     OperationResult,
+    semantic_hash,
 )
 from structural_lib.beam.shear_torsion import TransverseLink
 from structural_lib.construction import (
@@ -48,7 +58,14 @@ from structural_lib.construction import (
 )
 from structural_lib.core.result_contract import EngineeringStatus, StructuralIssueV1
 from structural_lib.reporting.calculation_package import result_binding
-from structural_lib.services.beam_continuous import check_continuous_beam
+from structural_lib.services.beam_continuous import (
+    BeamContinuousCheckResultV1,
+    _check_row,
+    _row_issues,
+    _sections,
+    _support_faces,
+    check_continuous_beam,
+)
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
     FamilyIdentityV1,
@@ -57,6 +74,7 @@ from structural_lib.services.canonical_family import (
 )
 from structural_lib.services.contracts.beam_continuous import (
     BeamContinuousCheckRequestV1,
+    Identifier,
     Reference,
 )
 from structural_lib.services.contracts.common import StrictPublicModel
@@ -75,6 +93,14 @@ class BeamOrdinaryLinkDetailV1(StrictPublicModel):
     source_reference: Reference
 
 
+class BeamBottomCutoffV1(StrictPublicModel):
+    """One straight bottom bar terminating in the first clear span."""
+
+    bar_id: Identifier
+    theoretical_station_id: Identifier
+    termination_station_id: Identifier
+
+
 class BeamContinuousDetailingInputV1(StrictPublicModel):
     """Two-span action and reinforcement check with a current ordinary link detail."""
 
@@ -85,6 +111,7 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
     member: BeamContinuousCheckRequestV1
     link_detail: BeamOrdinaryLinkDetailV1 | None = None
     stock_length_mm: float = Field(gt=0, le=18000)
+    cutoff: BeamBottomCutoffV1 | None = None
 
     @model_validator(mode="after")
     def validate_identity(self) -> Self:
@@ -96,6 +123,7 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
 def _physical_paths(
     request: BeamContinuousDetailingInputV1,
     source_hash: str,
+    cutoff_end_mm: float | None,
 ) -> tuple[BarPathRequest, ClosedLinkDetailRequest] | None:
     member, detail = request.member, request.link_detail
     extent = member.straight_bars
@@ -128,14 +156,25 @@ def _physical_paths(
     bars = tuple(
         LongitudinalBarPath(
             bar.bar_id,
-            f"{member.member_id}-{bar.face}-D{bar.diameter_mm:g}",
+            f"{member.member_id}-{bar.face}-D{bar.diameter_mm:g}"
+            + (
+                "-cutoff"
+                if request.cutoff and bar.bar_id == request.cutoff.bar_id
+                else ""
+            ),
             ReinforcementRole(f"{bar.face}_longitudinal"),
             bar.diameter_mm,
             1,
             bar.x_from_left_mm,
             bar.y_from_top_mm,
             extent.start_mm,
-            extent.end_mm,
+            (
+                cutoff_end_mm
+                if cutoff_end_mm is not None
+                and request.cutoff
+                and bar.bar_id == request.cutoff.bar_id
+                else extent.end_mm
+            ),
             0.87 * member.fy_nmm2,
         )
         for bar in member.bars
@@ -178,7 +217,7 @@ def _physical_paths(
     used_ids = {bar.bar_id for bar in bars}
     for index in range(round(intervals) + 1):
         station = detail.first_station_mm + index * spacing
-        bar_id = f"{mark}-{index+1}"
+        bar_id = f"{mark}-{index + 1}"
         while bar_id in used_ids:
             bar_id += "-link"
         used_ids.add(bar_id)
@@ -289,6 +328,213 @@ def _schedule(
     )
 
 
+def _check_bottom_cutoff(
+    request: BeamContinuousDetailingInputV1,
+    checked: BeamContinuousCheckResultV1,
+) -> tuple[float | None, dict[str, Any], list[StructuralIssueV1], EngineeringStatus]:
+    member, cutoff = request.member, request.cutoff
+    assert cutoff is not None
+    stations = {station.station_id: station for station in member.stations}
+    theoretical = stations.get(cutoff.theoretical_station_id)
+    end = stations.get(cutoff.termination_station_id)
+    bar = next((bar for bar in member.bars if bar.bar_id == cutoff.bar_id), None)
+    extent = member.straight_bars
+    left, middle, _ = member.supports
+    if not (
+        extent
+        and theoretical
+        and end
+        and bar
+        and bar.face == "bottom"
+        and theoretical.side == end.side == "CONTINUOUS"
+        and left.right_face_mm < theoretical.x_mm < end.x_mm < middle.left_face_mm
+    ):
+        issue = StructuralIssueV1(
+            "BEAM.CUTOFF_BASIS_HELD",
+            "cutoff",
+            "Identify a bottom bar and two ordered continuous stations in the first clear span.",
+        )
+        return None, {}, [issue], EngineeringStatus.HOLD
+
+    expected = {
+        (combo.combination_id, station.station_id)
+        for combo in member.combinations
+        if combo.kind == "ULS"
+        for station in (theoretical, end)
+    }
+    actual = {
+        (row.action.combination_id, row.station.station_id) for row in checked.rows
+    }
+    missing = sorted(expected - actual)
+    if missing:
+        issue = StructuralIssueV1(
+            "BEAM.CUTOFF_ACTIONS_HELD",
+            "cutoff",
+            "Supply each declared ULS combination at both cutoff stations.",
+        )
+        return None, {"missing_cutoff_rows": missing}, [issue], EngineeringStatus.HOLD
+
+    bars = tuple(
+        BarPosition(
+            item.bar_id,
+            item.diameter_mm,
+            item.x_from_left_mm,
+            item.y_from_top_mm,
+            Face(item.face),
+            1,
+        )
+        for item in member.bars
+        if item.bar_id != bar.bar_id
+    )
+    if sum(item.face == Face.BOTTOM for item in bars) < 2:
+        issue = StructuralIssueV1(
+            "BEAM.CUTOFF_BASIS_HELD",
+            "cutoff",
+            "Keep at least two bottom bars continuous through both spans.",
+        )
+        return None, {}, [issue], EngineeringStatus.HOLD
+
+    geometry, flexure, shear = _sections(member, bars)
+    section_states = {
+        result.engineering for result in (geometry, *flexure.values(), *shear.values())
+    }
+    if section_states != {EngineeringState.PASS}:
+        issue = StructuralIssueV1(
+            "BEAM.CUTOFF_SECTION_UNAVAILABLE",
+            "cutoff",
+            "A passing reduced section check is required for the remaining bars and links.",
+        )
+        status = (
+            EngineeringStatus.FAIL
+            if EngineeringState.FAIL in section_states
+            else EngineeringStatus.HOLD
+        )
+        return None, {}, [issue], status
+
+    faces = _support_faces(member)
+    reduced_rows = tuple(
+        _check_row(
+            member,
+            bars,
+            row.action,
+            row.station,
+            row.kind,
+            row.diagnostic_only,
+            faces.get(row.station.x_mm),
+            flexure,
+            shear,
+        )
+        for row in checked.rows
+        if row.kind == "ULS" and row.station.x_mm >= theoretical.x_mm
+    )
+    failed, held = _row_issues(reduced_rows, faces)
+    bottom = flexure[Face.BOTTOM].outputs
+    d = float(bottom["effective_depth_mm"])
+    capacity_kn = float(shear[Face.BOTTOM].outputs["provided_capacity_kn"])
+    # Use the weaker of both reduced shear faces at each physical termination.
+    termination_limit = (
+        2
+        / 3
+        * min(
+            float(result.outputs["provided_capacity_kn"]) for result in shear.values()
+        )
+    )
+    cutoff_rows = [
+        row for row in reduced_rows if row.station.station_id == end.station_id
+    ]
+    shear_rows = [
+        {
+            "row_id": row.action.row_id,
+            "shear_kn": row.action.vu_kn,
+            "passes_two_thirds": abs(row.action.vu_kn) <= termination_limit + 1e-9,
+        }
+        for row in cutoff_rows
+    ]
+    if any(not row["passes_two_thirds"] for row in shear_rows):
+        failed.append(
+            StructuralIssueV1(
+                "BEAM.CUTOFF_SHEAR_FAIL",
+                "cutoff",
+                "The termination shear exceeds two-thirds of the permitted reduced-section resistance.",
+            )
+        )
+    extension = end.x_mm - theoretical.x_mm
+    required_extension = max(d, 12 * bar.diameter_mm)
+    anchor = check_anchorage(
+        AnchorageCheckRequest(
+            WORKFLOW,
+            member.member_id,
+            member.reinforcement_revision,
+            (
+                AnchoragePath(
+                    bar.bar_id,
+                    theoretical.station_id,
+                    AnchorageLocation.DISCONTINUITY,
+                    AnchorageDirection.INCREASING_X,
+                    extent.start_mm,
+                    end.x_mm,
+                    theoretical.x_mm,
+                    None,
+                    None,
+                    None,
+                    (),
+                    None,
+                    DevelopmentLengthRequest(
+                        WORKFLOW,
+                        bar.diameter_mm,
+                        0.87 * member.fy_nmm2,
+                        member.fy_nmm2,
+                        member.fck_nmm2,
+                        BarSurface.DEFORMED,
+                        StressState.TENSION,
+                    ),
+                ),
+            ),
+        )
+    )
+    if (
+        extension + 1e-9 < required_extension
+        or anchor.engineering is EngineeringState.FAIL
+    ):
+        failed.append(
+            StructuralIssueV1(
+                "BEAM.CUTOFF_EXTENSION_FAIL",
+                "cutoff",
+                "The actual straight extension fails the cutoff length or development check.",
+            )
+        )
+    elif anchor.engineering is not EngineeringState.PASS:
+        held.append(
+            StructuralIssueV1(
+                "BEAM.CUTOFF_ANCHORAGE_HELD",
+                "cutoff",
+                "The cutoff needs a current straight development check.",
+            )
+        )
+    return (
+        end.x_mm,
+        {
+            "bar_id": bar.bar_id,
+            "theoretical_station_mm": theoretical.x_mm,
+            "termination_station_mm": end.x_mm,
+            "actual_extension_mm": extension,
+            "required_extension_mm": required_extension,
+            "continuing_bottom_mm2": bottom["tension_steel_area_mm2"],
+            "continuing_shear_capacity_kn": capacity_kn,
+            "termination_shear_limit_kn": termination_limit,
+            "termination_rows": shear_rows,
+            "reduced_section_rows": [row.to_dict() for row in reduced_rows],
+            "anchorage": anchor.to_dict(),
+        },
+        failed + held,
+        (
+            EngineeringStatus.FAIL
+            if failed
+            else EngineeringStatus.HOLD if held else EngineeringStatus.PASS
+        ),
+    )
+
+
 def check_continuous_detailing(
     request: BeamContinuousDetailingInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
@@ -316,7 +562,8 @@ def check_continuous_detailing(
 
     Limitations
     -----------
-    Continuous straight longitudinal bars and a single ordinary link mark.
+    Straight longitudinal bars, one optional first-span bottom cutoff,
+    and a single ordinary link mark.
 
     Provenance
     ----------
@@ -329,8 +576,28 @@ def check_continuous_detailing(
     data: dict[str, Any] = {"strength": checked.to_dict(), "paths": None, "bbs": None}
     issues = []
     status = EngineeringStatus(checked.ultimate_status)
+    cutoff_end = None
+    source_hash = identity.input_hash
+    if status is EngineeringStatus.PASS and request.cutoff is not None:
+        cutoff_end, cutoff, cutoff_issues, status = _check_bottom_cutoff(
+            request, checked
+        )
+        data["cutoff"] = cutoff
+        issues.extend(cutoff_issues)
+        source_hash = semantic_hash(
+            "beam_detailing_source",
+            {
+                "strength": identity.input_hash,
+                "cutoff": request.cutoff.model_dump(mode="json"),
+                "link": (
+                    request.link_detail.model_dump(mode="json")
+                    if request.link_detail
+                    else None
+                ),
+            },
+        )
     if status is EngineeringStatus.PASS:
-        inputs = _physical_paths(request, identity.input_hash)
+        inputs = _physical_paths(request, source_hash, cutoff_end)
         if inputs is None:
             status = EngineeringStatus.HOLD
             issues.append(
@@ -379,7 +646,7 @@ def check_continuous_detailing(
                         )
                         for item in schedule.diagnostics
                     )
-    else:
+    elif checked.ultimate_status != "PASS":
         issues.extend(checked.result_envelope.issues)
     result = canonical_family_result(
         request,
@@ -387,9 +654,9 @@ def check_continuous_detailing(
         workflow_id=WORKFLOW,
         engineering_status=status,
         limitations=(
-            "Only the supplied strength and anchorage rows and the declared continuous physical layout are checked.",
-            "Ordinary straight longitudinal bars and one uniform, two-hook transverse link mark.",
-            "Curtailment, splice partners, member serviceability, support connections and fabrication approval require separate evidence.",
+            "Only the supplied strength and anchorage rows and the declared physical layout are checked.",
+            "Ordinary straight bars, one optional bottom-bar cutoff, and one uniform two-hook link mark.",
+            "Unreported demand between stations, splices, member serviceability, support connections and fabrication approval require separate evidence.",
         ),
         provenance=(
             "IS 456 ordinary anchorage and reinforcement geometry with actual resolved cut paths.",
@@ -477,11 +744,11 @@ def render_continuous_detailing_svg(
             f'<line data-bar-id="{path_id}" x1="{x1:g}" y1="{y1:g}" x2="{x2:g}" y2="{y2:g}" stroke="{color}" stroke-width="8"/>'
         )
     identity = result.envelope.result_identity
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="{start-40:g} -40 {end-start+80:g} {depth+180:g}" role="img">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="{start - 40:g} -40 {end - start + 80:g} {depth + 180:g}" role="img">
 <title>{html.escape(member.member_id)} checked continuous beam elevation</title>
-<desc>Input {identity.input_hash if identity else ''}. Path {data['paths']['result_id']}. Review drawing.</desc>
-<rect x="{start:g}" width="{end-start:g}" height="{depth:g}" fill="#f1f5f9" stroke="#0f172a"/>
-{support_lines}{''.join(bars)}</svg>"""
+<desc>Input {identity.input_hash if identity else ""}. Path {data["paths"]["result_id"]}. Review drawing.</desc>
+<rect x="{start:g}" width="{end - start:g}" height="{depth:g}" fill="#f1f5f9" stroke="#0f172a"/>
+{support_lines}{"".join(bars)}</svg>"""
 
 
 def render_continuous_detailing_bbs_csv(
@@ -601,13 +868,29 @@ def render_continuous_detailing_html(
     report_bbs = (
         f"<pre>{html.escape(bbs)}</pre>" if bbs is not None else "<p>BBS held.</p>"
     )
+    cutoff = result.calculation.get("cutoff", {})
+    cutoff_html = ""
+    if "bar_id" in cutoff:
+        rows = "".join(
+            f"<li>{html.escape(row['row_id'])} · {row['shear_kn']:g} kN · "
+            f"{'PASS' if row['passes_two_thirds'] else 'FAIL'}</li>"
+            for row in cutoff["termination_rows"]
+        )
+        cutoff_html = (
+            f"<h2>Bottom bar cutoff</h2><p>{html.escape(cutoff['bar_id'])} ends at "
+            f"{cutoff['termination_station_mm']:g} mm. Straight extension "
+            f"{cutoff['actual_extension_mm']:g} mm. Continuing bottom steel "
+            f"{cutoff['continuing_bottom_mm2']:.3f} mm².</p>"
+            f"<p>Termination shear limit {cutoff['termination_shear_limit_kn']:.3f} kN.</p>"
+            f"<ul>{rows}</ul>"
+        )
     issues = "".join(f"<li>{html.escape(item.message)}</li>" for item in result.issues)
     limits = "".join(f"<li>{html.escape(item)}</li>" for item in result.limitations)
     return f"""<!doctype html>
 <html lang="en"><meta charset="utf-8"><title>Continuous beam detailing</title>
-<h1>Continuous beam detailing · {html.escape(result.identity.member_id or '')}</h1>
+<h1>Continuous beam detailing · {html.escape(result.identity.member_id or "")}</h1>
 <p>{result.engineering_status.value} · Qualified review required</p>
-<p>Input identity <code>{identity.input_hash if identity else ''}</code></p>
-<p>Supplied strength {strength['ultimate_status']} · Serviceability {strength['serviceability_status']}</p>
-<h2>Governing supplied action rows</h2><ul>{governance}</ul>
-{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+<p>Input identity <code>{identity.input_hash if identity else ""}</code></p>
+<p>Supplied strength {strength["ultimate_status"]} · Serviceability {strength["serviceability_status"]}</p>
+<h2>Governing baseline action rows</h2><ul>{governance}</ul>
+{cutoff_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""

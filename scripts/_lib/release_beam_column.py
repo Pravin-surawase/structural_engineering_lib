@@ -104,6 +104,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_beam02_reference.py",
     "docs/verification/check_library_029_beam_sections_reference.py",
     "docs/verification/check_library_029_beam05_reference.py",
+    "docs/verification/check_library_029_beam05_cutoff_reference.py",
     "docs/verification/check_library_029_beam07_reference.py",
     "docs/verification/check_library_029_flow02_reference.py",
     "docs/verification/check_library_029_flow04_reference.py",
@@ -127,6 +128,7 @@ BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
 BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.json"
 BEAM05_REFERENCE = "docs/verification/library-029-beam05-member-detailing.json"
+BEAM05_CUTOFF_REFERENCE = "docs/verification/library-029-beam05-cutoff.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
 FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
@@ -158,6 +160,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM02_REFERENCE,
                 repo / BEAM_SECTION_REFERENCE,
                 repo / BEAM05_REFERENCE,
+                repo / BEAM05_CUTOFF_REFERENCE,
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
                 repo / FLOW04_REFERENCE,
@@ -529,32 +532,31 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             result["envelope"]["result_identity"]["input_hash"]
             in (directory / "report.html").read_text()
         )
-    for case, entry in json.loads((clone / BEAM05_REFERENCE).read_text())[
-        "cases"
-    ].items():
-        label = f"beam-continuous-detailing-{case}"
-        directory = output / label
-        stdout = run(
-            label,
-            "Python/examples/beam_continuous_detailing.py",
-            "--reference",
-            str(clone / BEAM05_REFERENCE),
-            "--case",
-            case,
-            "--output-dir",
-            str(directory),
-        )
-        result = json.loads(stdout)
-        status = entry["expected"]["status"]
-        assert result["envelope"]["engineering_status"] == status
-        assert result == json.loads((directory / "result.json").read_text())
-        input_hash = result["envelope"]["result_identity"]["input_hash"]
-        assert input_hash in (directory / "report.html").read_text()
-        assert (directory / "member.svg").is_file() == (status == "PASS")
-        assert (directory / "bbs.csv").is_file() == (status == "PASS")
-        if status == "PASS":
-            assert input_hash in (directory / "member.svg").read_text()
-            assert input_hash in (directory / "bbs.csv").read_text()
+    for reference in (BEAM05_REFERENCE, BEAM05_CUTOFF_REFERENCE):
+        for case, entry in json.loads((clone / reference).read_text())["cases"].items():
+            label = f"beam-continuous-detailing-{case}"
+            directory = output / label
+            stdout = run(
+                label,
+                "Python/examples/beam_continuous_detailing.py",
+                "--reference",
+                str(clone / reference),
+                "--case",
+                case,
+                "--output-dir",
+                str(directory),
+            )
+            result = json.loads(stdout)
+            status = entry["expected"]["status"]
+            assert result["envelope"]["engineering_status"] == status
+            assert result == json.loads((directory / "result.json").read_text())
+            input_hash = result["envelope"]["result_identity"]["input_hash"]
+            assert input_hash in (directory / "report.html").read_text()
+            assert (directory / "member.svg").is_file() == (status == "PASS")
+            assert (directory / "bbs.csv").is_file() == (status == "PASS")
+            if status == "PASS":
+                assert input_hash in (directory / "member.svg").read_text()
+                assert input_hash in (directory / "bbs.csv").read_text()
     for option, expected in (
         ((), "COMPLETE_FOR_DECLARED_ROWS"),
         (("--alternate-units",), "COMPLETE_FOR_DECLARED_ROWS"),

@@ -173,7 +173,7 @@ _CAPABILITIES = (
                 "load_continuous_detailing",
                 "check_continuous_detailing",
                 "is456-beam-continuous-detailing-input/v1",
-                "Two-span rectangular member with continuous straight bars and one uniform ordinary link mark, with checked elevation and schedule.",
+                "Two-span rectangular member with straight bars, one optional first-span bottom cutoff and one uniform ordinary link mark, with checked elevation and schedule.",
                 "docs/cookbook/python/beam-continuous-detailing.md",
                 "Python/examples/beam_continuous_detailing.py",
             ),
