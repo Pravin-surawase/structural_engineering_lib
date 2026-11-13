@@ -1,0 +1,829 @@
+{
+  "fixture_version": "library-029-col07-slender-member-reference/v1",
+  "sources": [
+    "COL04 independent secant beam-column second-order actions and signed strength targets.",
+    "COL07 independent straight tension development, tie placement and cut registers.",
+    "The admitted detailing case has zero supplied member shear and continuous bars."
+  ],
+  "cases": {
+    "slender": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -52.95065568694984,
+            "my_knm": 33.27212758548642,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Analytic constant-EI eccentric-load beam-column, COL04 secant worksheet",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -52.95065568694984,
+              "my_knm": 33.27212758548642
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "governing_id": "MID",
+        "governing_ratio": 0.6265660756363525,
+        "hoop_stations_mm": [
+          60,
+          160,
+          260,
+          360,
+          460,
+          560,
+          660,
+          780,
+          900,
+          1020,
+          1140,
+          1260,
+          1380,
+          1500,
+          1620,
+          1740,
+          1860,
+          1980,
+          2100,
+          2220,
+          2340,
+          2460,
+          2580,
+          2700,
+          2820,
+          2940,
+          3060,
+          3180,
+          3300,
+          3420,
+          3540,
+          3660,
+          3780,
+          3900,
+          4020,
+          4140,
+          4260,
+          4380,
+          4500,
+          4620,
+          4740,
+          4860,
+          4980,
+          5100,
+          5220,
+          5340,
+          5440,
+          5540,
+          5640,
+          5740,
+          5840,
+          5940
+        ],
+        "quantity": 164,
+        "total_length_mm": 168200,
+        "mass_kg": 193.97751273219563
+      }
+    },
+    "stale_analysis": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-stale_analysis",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "earlier",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -52.95065568694984,
+            "my_knm": 33.27212758548642,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Analytic constant-EI eccentric-load beam-column, COL04 secant worksheet",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -52.95065568694984,
+              "my_knm": 33.27212758548642
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "HOLD"
+      }
+    },
+    "unmatched_second_order": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-unmatched_second_order",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -51.95065568694984,
+            "my_knm": 33.27212758548642,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Analytic constant-EI eccentric-load beam-column, COL04 secant worksheet",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -52.95065568694984,
+              "my_knm": 33.27212758548642
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "HOLD"
+      }
+    },
+    "short_anchor": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-short_anchor",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 750,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -52.95065568694984,
+            "my_knm": 33.27212758548642,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Analytic constant-EI eccentric-load beam-column, COL04 secant worksheet",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -52.95065568694984,
+              "my_knm": 33.27212758548642
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "FAIL"
+      }
+    }
+  }
+}
