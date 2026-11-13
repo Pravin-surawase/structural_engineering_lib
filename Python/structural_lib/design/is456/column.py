@@ -66,6 +66,10 @@ from structural_lib.services.column_positioned_member import (
 from structural_lib.services.column_positioned_member import (
     render_positioned_rectangular_member_html as _render_positioned_rectangular_member_html,
 )
+from structural_lib.services.column_service_section import (
+    check_service_section,
+    render_service_section_html,
+)
 from structural_lib.services.column_slender_member import (
     check_slender_rectangular_member as _check_slender_rectangular_member,
 )
@@ -97,10 +101,6 @@ from structural_lib.services.contracts.column_member import (
 )
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
-)
-from structural_lib.services.column_service_section import (
-    check_service_section,
-    render_service_section_html,
 )
 from structural_lib.services.contracts.column_section import (
     ColumnInteractionInputV1,

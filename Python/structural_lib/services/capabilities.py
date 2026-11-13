@@ -147,6 +147,16 @@ _CAPABILITIES = (
         qualified_review_required=True,
         python_profiles=(
             IS456PythonProfile(
+                "is456.beam.instantaneous-service/v1",
+                "structural_lib.design.is456.beam",
+                "load_instantaneous_service",
+                "check_instantaneous_service",
+                "is456-beam-instantaneous-service-input/v1",
+                "Instantaneous fully cracked deflection and flexural crack widths for rectangular simply supported and equal two-span cases with actual bars.",
+                "docs/cookbook/python/beam-instantaneous-service.md",
+                "Python/examples/beam_instantaneous_service.py",
+            ),
+            IS456PythonProfile(
                 "is456.beam.continuous-check/v1",
                 "structural_lib.design.is456.beam",
                 "load_continuous",

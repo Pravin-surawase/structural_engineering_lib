@@ -16,6 +16,11 @@ from structural_lib.services.beam_continuous import (
     render_continuous_beam_html,
     render_station_beam_html,
 )
+from structural_lib.services.beam_instantaneous_service import (
+    BeamInstantaneousServiceInputV1,
+    check_instantaneous_service,
+    render_instantaneous_service_html,
+)
 from structural_lib.services.canonical_beam import (
     BeamBBSResultV1,
     BeamDesignAndDetailResultV1,
@@ -84,6 +89,10 @@ from structural_lib.services.supplied_beam_check import (
 
 __all__ = [
     "BeamActionsV1",
+    "BeamInstantaneousServiceInputV1",
+    "load_instantaneous_service",
+    "check_instantaneous_service",
+    "render_instantaneous_service_html",
     "BEAM_FIELD_CONTRACTS",
     "BeamBBSResultV1",
     "BeamCalculationBasisV1",
@@ -898,3 +907,43 @@ def render_section_html(result: BeamSectionCheckResultV1) -> str:
     if not isinstance(result, BeamSectionCheckResultV1):
         raise TypeError("result must be BeamSectionCheckResultV1")
     return render_station_beam_html(result)
+
+
+def load_instantaneous_service(
+    value: Mapping[str, object] | str | bytes | BeamInstantaneousServiceInputV1,
+) -> BeamInstantaneousServiceInputV1:
+    """Validate the supplied member, load case and instantaneous limits.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamInstantaneousServiceInputV1
+        The actual physical member and one symmetric service load case.
+
+    Returns
+    -------
+    BeamInstantaneousServiceInputV1
+        The validated service request.
+
+    Raises
+    ------
+    InputContractError
+        The supplied input violates the physical or wire contract.
+
+    Examples
+    --------
+    >>> callable(load_instantaneous_service)
+    True
+
+    Limitations
+    -----------
+    Solid rectangular simply supported or bounded two-span members.
+
+    Provenance
+    ----------
+    Uses the existing beam section and continuous-member input contracts.
+    """
+    if isinstance(value, BeamInstantaneousServiceInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamInstantaneousServiceInputV1, value)
+    return model_validate_or_error(BeamInstantaneousServiceInputV1, value)

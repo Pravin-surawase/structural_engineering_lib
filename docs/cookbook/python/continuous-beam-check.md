@@ -95,7 +95,9 @@ scope. Duplicate station IDs or combination-station rows raise a structured
 `InputContractError`.
 
 `ultimate_status` covers the supplied ultimate and anchorage checks.
-`serviceability_status` stays HOLD for supplied service combinations. The
+`serviceability_status` stays HOLD in this supplied-action workflow. The
+[instantaneous service check](beam-instantaneous-service.md) uses a separately
+declared symmetric service load case on the same physical member. The
 `missing_sustained` case preserves the ULS outcome and identifies the missing
 S2 row. A revision mismatch keeps the rows visible and withholds the calculations.
 
