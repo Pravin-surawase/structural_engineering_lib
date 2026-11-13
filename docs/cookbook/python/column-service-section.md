@@ -7,10 +7,10 @@ complexity: advanced
 tags: [column, section, serviceability, is456]
 ---
 
-# Resolve stresses in a rectangular column section
+# Resolve service stresses in a column section
 
 Use `column.load_service_section` and `column.check_service_section` for one
-supplied service action row on a solid rectangular section. Enter actual bar
+supplied service action row on a solid rectangular or circular section. Enter actual bar
 centres and diameters, concrete and steel elastic moduli, and the declared
 concrete stress limit for the linear model.
 
@@ -56,7 +56,12 @@ included at that position. The example gives peak concrete compression
 of 4.7399 N/mm². Rotating all bars through 180° and reversing both moments
 preserves that stress and rotates the compression region. The
 [independent replay](../../verification/check_library_029_sec03_reference.py)
-computes the same equilibrium by integrating vertical strips.
+computes the same equilibrium by integrating vertical strips. The
+`rectangle_cracked` and `circle_cracked` cases use the same physical
+cages as the fixed-compression interaction slices, with their own signed
+service moments. The circular calculation integrates the compressed
+part of the circle using chords. Its drawing approximates the circular
+edge with straight segments. Properties use the integrated chords.
 
 JSON and the HTML drawing carry the same input identity. Read the
 equilibrium table to compare applied actions with the resolved total.

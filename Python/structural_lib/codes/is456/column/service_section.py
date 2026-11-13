@@ -1,11 +1,12 @@
-"""Equilibrium of a solid rectangular section under signed elastic service actions."""
+"""Equilibrium of solid rectangular and circular sections under signed elastic service actions."""
 
 from __future__ import annotations
 
 from collections.abc import Iterator
 from dataclasses import dataclass
-from math import atan2, degrees, fsum, hypot
+from math import acos, atan2, cos, degrees, fsum, hypot, pi, sin, sqrt
 
+from .circular import _GAUSS
 from .positioned_biaxial import Point, PositionedColumnBar, _clip_depth
 from .section_properties import ColumnSectionProperties
 
@@ -53,6 +54,53 @@ def _concrete_points(
         weight = abs((bx - ax) * (cy - ay) - (by - ay) * (cx - ax)) / 6
         for x, y in ((ax, ay), (bx, by), (cx, cy)):
             yield (ax + bx + cx + 3 * x) / 6, (ay + by + cy + 3 * y) / 6, weight
+
+
+@dataclass(frozen=True)
+class _CircularCompression:
+    radius: float
+    nx: float
+    ny: float
+    limit: float
+
+    @classmethod
+    def from_plane(cls, radius: float, plane: Vector) -> _CircularCompression:
+        magnitude = hypot(plane[1], plane[2])
+        if magnitude == 0:
+            return cls(radius, 1, 0, pi if plane[0] >= 0 else 0)
+        return cls(
+            radius,
+            -plane[2] / magnitude,
+            -plane[1] / magnitude,
+            acos(max(-1.0, min(1.0, -2 * plane[0] / magnitude))),
+        )
+
+    def point(self, u: float, v: float) -> Point:
+        return (
+            self.radius + self.nx * u - self.ny * v,
+            self.radius + self.ny * u + self.nx * v,
+        )
+
+    def samples(self) -> Iterator[tuple[float, float, float]]:
+        """Integrate projected circular chords in smooth polar coordinates."""
+        half = self.limit / 2
+        if half == 0:
+            return
+        for node, weight in _GAUSS:
+            for t in (half * (1 - node), half * (1 + node)):
+                u = self.radius * cos(t)
+                half_chord = self.radius * sin(t)
+                for v in (-half_chord / sqrt(3), half_chord / sqrt(3)):
+                    x, y = self.point(u, v)
+                    yield x, y, half_chord**2 * half * weight
+
+    def boundary(self) -> tuple[Point, ...]:
+        if self.limit == 0:
+            return ()
+        angles = (self.limit * (index / 32 - 1) for index in range(65))
+        return tuple(
+            self.point(self.radius * cos(t), self.radius * sin(t)) for t in angles
+        )
 
 
 @dataclass(frozen=True)
@@ -117,13 +165,18 @@ def equilibrate_service_section(
     p_kn: float,
     mx_knm: float,
     my_knm: float,
+    circular: bool = False,
 ) -> ServiceSectionResponse | None:
-    """Resolve compression-only concrete and discrete elastic bars at equilibrium."""
+    """Resolve compression-only concrete and discrete elastic bars at equilibrium.
+
+    A circular section uses its diameter for both width and depth.
+    """
     corners: tuple[Point, ...] = ((0, 0), (width, 0), (width, depth), (0, depth))
 
     def basis(x: float, y: float) -> Vector:
         return 1, 0.5 - y / depth, 0.5 - x / width
 
+    radius = width / 2
     corner_basis = tuple(basis(x, y) for x, y in corners)
     bar_basis = tuple(basis(bar.x_from_left_mm, bar.y_from_top_mm) for bar in bars)
     target: Vector = (
@@ -142,8 +195,13 @@ def equilibrate_service_section(
         list[tuple[Vector, float]],
     ]:
         strains = tuple(_dot(row, plane) for row in corner_basis)
-        polygon = _clip_depth(corners, strains, 0, keep_shallow=False)
-        concrete = [(basis(x, y), area) for x, y, area in _concrete_points(polygon)]
+        if circular:
+            polygon: tuple[Point, ...] = ()
+            points = _CircularCompression.from_plane(radius, plane).samples()
+        else:
+            polygon = _clip_depth(corners, strains, 0, keep_shallow=False)
+            points = _concrete_points(polygon)
+        concrete = [(basis(x, y), area) for x, y, area in points]
         additions = [
             (row, bar.area_mm2 * (es / ec - (_dot(row, plane) >= 0)))
             for bar, row in zip(bars, bar_basis, strict=True)
@@ -190,8 +248,15 @@ def equilibrate_service_section(
     gx, gy = -plane[2] / width, -plane[1] / depth
     axis_angle = None
     axis: tuple[Point, ...] = ()
-    if min(strains) < 0 < max(strains):
-        axis_angle = degrees(atan2(gx, -gy)) % 180
+    peak = max(strains)
+    if circular:
+        compression = _CircularCompression.from_plane(radius, plane)
+        polygon = compression.boundary()
+        peak = plane[0] + hypot(plane[1], plane[2]) / 2
+        strains = ()
+        if 0 < compression.limit < pi:
+            axis = polygon[0], polygon[-1]
+    elif min(strains) < 0 < peak:
         tolerance = 1e-12 * max(map(abs, strains))
         axis = tuple(
             dict.fromkeys(
@@ -200,6 +265,8 @@ def equilibrate_service_section(
                 if abs(_dot(basis(*point), plane)) <= tolerance
             )
         )
+    if axis:
+        axis_angle = degrees(atan2(gx, -gy)) % 180
     responses = []
     for bar, row in zip(bars, bar_basis, strict=True):
         strain = _dot(row, plane)
@@ -213,10 +280,10 @@ def equilibrate_service_section(
         plane[0],
         gx,
         gy,
-        ec * max(0, *strains),
+        ec * max(0, peak),
         axis_angle,
         axis,
-        polygon,
+        polygon if peak > 0 else (),
         strains,
         stiffness.properties(width, depth),
         tuple(responses),

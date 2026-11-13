@@ -206,7 +206,7 @@ _CAPABILITIES = (
                 "load_service_section",
                 "check_service_section",
                 "column-service-section-input/v1",
-                "One signed service action row on a solid rectangle with positioned bars, compression-only concrete and declared elastic moduli.",
+                "One signed service action row on a solid rectangle or circle with positioned bars, compression-only concrete and declared elastic moduli.",
                 "docs/cookbook/python/column-service-section.md",
                 "Python/examples/column_service_section.py",
             ),

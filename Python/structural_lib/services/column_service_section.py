@@ -1,4 +1,4 @@
-"""Result-bound calculation and drawing for a rectangular column service section."""
+"""Result-bound calculation and drawing for a column service section."""
 
 from __future__ import annotations
 
@@ -16,7 +16,10 @@ from structural_lib.services.canonical_family import (
     canonical_family_result,
     require_request_type,
 )
-from structural_lib.services.contracts.column_section import ColumnServiceSectionInputV1
+from structural_lib.services.contracts.column_section import (
+    CircularInteractionGeometryV1,
+    ColumnServiceSectionInputV1,
+)
 
 WORKFLOW = "is456.column.service-section/v1"
 
@@ -29,7 +32,7 @@ def check_service_section(
     Parameters
     ----------
     request : ColumnServiceSectionInputV1
-        Rectangular geometry, positioned bars, elastic moduli and actions.
+        Rectangular or circular geometry, bars, elastic moduli and actions.
 
     Returns
     -------
@@ -57,9 +60,14 @@ def check_service_section(
     """
     require_request_type(request, ColumnServiceSectionInputV1)
     geometry, moduli = request.geometry, request.moduli
+    if isinstance(geometry, CircularInteractionGeometryV1):
+        width = depth = geometry.diameter_mm
+    else:
+        width, depth = geometry.b_mm, geometry.D_mm
     state = equilibrate_service_section(
-        width=geometry.b_mm,
-        depth=geometry.D_mm,
+        width=width,
+        depth=depth,
+        circular=geometry.shape == "circular",
         bars=tuple(PositionedColumnBar(**bar.model_dump()) for bar in request.bars),
         ec=moduli.ec_nmm2,
         es=moduli.es_nmm2,
@@ -122,7 +130,7 @@ def check_service_section(
             "Results beyond the elastic model range are diagnostic.",
         ),
         provenance=(
-            "Affine strain compatibility with exact rectangular compression polygon integration.",
+            "Affine strain compatibility with exact rectangular polygon or circular chord integration.",
             "IS 456:2000 Cl. 6.2.3.1 and Cl. 5.6.3 provide nominal material moduli when applicable.",
         ),
     )
@@ -196,7 +204,15 @@ Steel Es {request.moduli.es_nmm2:.3f} N/mm², fy {request.materials.fy_nmm2:.3f}
 
 
 def _render_state(request: ColumnServiceSectionInputV1, state: dict[str, Any]) -> str:
-    b, depth = request.geometry.b_mm, request.geometry.D_mm
+    geometry = request.geometry
+    if isinstance(geometry, CircularInteractionGeometryV1):
+        b = depth = geometry.diameter_mm
+        outline = f'<circle cx="{b/2:g}" cy="{depth/2:g}" r="{b/2:g}" fill="#f8fafc" stroke="#111827"/>'
+    else:
+        b, depth = geometry.b_mm, geometry.D_mm
+        outline = (
+            f'<rect width="{b:g}" height="{depth:g}" fill="#f8fafc" stroke="#111827"/>'
+        )
     compression = " ".join(
         f"{x:.5f},{y:.5f}" for x, y in state["compression_polygon_from_top_left_mm"]
     )
@@ -237,7 +253,7 @@ def _render_state(request: ColumnServiceSectionInputV1, state: dict[str, Any]) -
     return f"""<h2>Section orientation and strain</h2>
 <svg width="360" viewBox="-5 -5 {b+10:g} {depth+10:g}" role="img"
 aria-label="Column section, concrete in compression, neutral axis and positioned bars">
-<rect width="{b:g}" height="{depth:g}" fill="#f8fafc" stroke="#111827"/>
+{outline}
 <polygon points="{compression}" fill="#bfdbfe"/>
 <polyline points="{neutral_axis}" fill="none" stroke="#1e40af" stroke-width="2"/>
 {''.join(marks)}</svg>

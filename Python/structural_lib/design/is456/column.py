@@ -1576,12 +1576,12 @@ def load_service_section(
     Parameters
     ----------
     value : Mapping, JSON str or bytes, or ColumnServiceSectionInputV1
-        A solid rectangle, actual bars, actions and elastic material data.
+        A solid rectangle or circle, actual bars, actions and elastic material data.
 
     Returns
     -------
     ColumnServiceSectionInputV1
-        The validated rectangular section service request.
+        The validated column section service request.
 
     Raises
     ------
@@ -1595,7 +1595,7 @@ def load_service_section(
 
     Limitations
     -----------
-    Solid rectangles and one supplied action row, with compression positive.
+    Solid rectangles and circles with one supplied action row, compression positive.
 
     Provenance
     ----------

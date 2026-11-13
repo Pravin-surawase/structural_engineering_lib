@@ -208,12 +208,11 @@ class ColumnServiceModuliV1(StrictPublicModel):
 
 
 class ColumnServiceSectionInputV1(_PositionedColumnSection):
-    """One solid rectangular section under concurrent elastic service actions."""
+    """One solid rectangular or circular section under elastic service actions."""
 
     schema_version: Literal["column-service-section-input/v1"] = (
         "column-service-section-input/v1"
     )
-    geometry: RectangularInteractionGeometryV1
     actions: ColumnServiceActionsV1
     moduli: ColumnServiceModuliV1
     concrete_linear_limit_nmm2: float = Field(gt=0)
