@@ -20,7 +20,7 @@ def test_contract_matrix_has_no_unowned_or_unresolved_components():
         "projections": 1323,
         "operations": 92,
         "paths": 91,
-        "components": 488,
+        "components": 490,
         "family_fields": 564,
     }
     assert all(item["operations"] and item["name"] for item in matrix["components"])
