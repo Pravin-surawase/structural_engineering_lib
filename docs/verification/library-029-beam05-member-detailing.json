@@ -408,7 +408,7 @@
         "link_detail": {
           "first_station_mm": 0,
           "last_station_mm": 8100,
-          "internal_bend_radius_mm": 16,
+          "internal_bend_radius_mm": 10,
           "hook_vertex_leg_mm": 100,
           "hook_plane_offset_mm": 10,
           "source_reference": "BEAM05 ordinary two-hook closed-cage specimen detail"
@@ -418,10 +418,10 @@
       "expected": {
         "status": "PASS",
         "link_count": 28,
-        "link_cut_mm": 1569.2988255621217,
+        "link_cut_mm": 1582.1749357582748,
         "longitudinal_count": 6,
         "longitudinal_cut_mm": 8436,
-        "mass_kg": 142.16482765354104
+        "mass_kg": 142.30708746482344
       }
     },
     "short_anchor": {
@@ -827,7 +827,7 @@
         "link_detail": {
           "first_station_mm": 0,
           "last_station_mm": 8100,
-          "internal_bend_radius_mm": 16,
+          "internal_bend_radius_mm": 10,
           "hook_vertex_leg_mm": 100,
           "hook_plane_offset_mm": 10,
           "source_reference": "BEAM05 ordinary two-hook closed-cage specimen detail"

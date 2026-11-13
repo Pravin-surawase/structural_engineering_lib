@@ -20,7 +20,7 @@ def fixture():
         "link_detail": {
             "first_station_mm": 0,
             "last_station_mm": 8100,
-            "internal_bend_radius_mm": 16,
+            "internal_bend_radius_mm": 10,
             "hook_vertex_leg_mm": 100,
             "hook_plane_offset_mm": 10,
             "source_reference": "BEAM05 ordinary two-hook closed-cage specimen detail",
@@ -30,7 +30,7 @@ def fixture():
     # Five tangent bends, three planar right angles and two slightly oblique
     # corners adjacent to the longitudinal hook-plane offset.
     inner_width, inner_depth = 228, 478
-    offset, leg, radius = 10, 100, 20
+    offset, leg, radius = 10, 100, 14
     oblique = math.hypot(inner_width, offset)
     angles = (math.pi / 2,) * 5
     link_cut = 2 * leg + inner_width + 2 * inner_depth + oblique
