@@ -12,8 +12,8 @@
 
 | Release | Current state |
 |---|---|
-| **Current** | [0.28.2 is published and verified](../getting-started/releases.md#v0282-published-and-verified). All 20 installed profiles, public archive hashes, and clean PyPI installation passed. |
-| **Next** | Qualify the implemented 0.29.0 beam, column and slab workflows from [draft PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064). |
+| **Current** | [0.29.0 is published and verified](../getting-started/releases.md#v0290-published-and-verified). All 20 installed profiles, public archive hashes, and clean PyPI installation passed. |
+| **Next** | Continue the remaining 0.30.0 cases in the [beam and column delivery plan](beam-column-programme-delivery.md). |
 
 ## Merged development work — qualified serializer integration
 
@@ -56,9 +56,9 @@ The [release ledger](../getting-started/releases.md#v0270-published-and-verified
 retain the source/artifact and scope boundaries. The 9a78/5c79 pairs remain
 rejected baselines; the invalidated 423 intermediate is not deliverable.
 
-Draft [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
-owns the 0.29 parity plan, slab replay implementation and its staged engineering
-acceptance. Solver and native-host tracks retain their own plans.
+[PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
+merged the bounded 0.29.0 cases. The [0.30.0 plan](beam-column-programme-delivery.md)
+tracks the remaining cases. Solver and native-host tracks retain their own plans.
 
 ## Required Reading
 

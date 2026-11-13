@@ -1919,3 +1919,33 @@ passed. The merged tree matches the build candidate `6f07966043148ac0c05e209b8a2
 TestPyPI verifies the retained archives before the production tag and upload.
 The [delivery plan](../planning/beam-column-programme-delivery.md) schedules
 the remaining feature and reference-project work for 0.30.0.
+
+
+## v0.29.0 published and verified
+
+**2026-11-14 (Asia/Kolkata).** [PyPI 0.29.0](https://pypi.org/project/structural-lib-is456/0.29.0/)
+and [GitHub v0.29.0](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.29.0) are public. The annotated
+tag targets `6c567be27321e2bcce195604a5d02ccbf9763e56`. The retained archives were built at
+`6f07966043148ac0c05e209b8a2b8eb33e51d6a2` and preserve Python tree
+`adef6baf7ec43036fc010c2104c2e05f5ef8dbbd`.
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.29.0-py3-none-any.whl` | `6a5f0671ab85bfd8b22b5fed87cbf5418ac8332806705cc46923c85c0ccb3142` | 1400151 |
+| `structural_lib_is456-0.29.0.tar.gz` | `9c9c1f11511f0e779b2c8aa52b5b99a4fb8b89c0e8b78179ce6885bb8433591f` | 1189823 |
+
+All 20 installed profiles and 29 exact-wheel acceptance cases passed.
+Each archive passed 762 beam and column tests, 217 reference and example
+commands, and 13 slab and footing cases. [Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43489456392)
+passed on the source candidate. [TestPyPI](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43510454486)
+and [production publication](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43510777554) used the
+same qualified archives.
+
+The six downloads from TestPyPI, PyPI and GitHub match the retained
+hashes. A fresh public installation imports 0.29.0 from its isolated
+environment. The [public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.29.0/public-install-verification.json)
+has SHA-256 `c9157c5706b4a72d4fce8651610e30cdd21f446a89950d087ccddda6f6ec9d4e`. The [artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.29.0/artifact-manifest.json)
+records the source and qualification identities.
+
+This release includes the implemented cases from [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064).
+The remaining features and reference projects are scheduled for 0.30.0.

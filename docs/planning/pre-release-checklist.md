@@ -11,15 +11,15 @@
 
 Current source metadata: 0.29.0.
 
-**0.28.2 is published and verified.** The [release status](../getting-started/release-status.md)
-and [publication receipt](../getting-started/releases.md#v0282-published-and-verified)
+**0.29.0 is published and verified.** The [release status](../getting-started/release-status.md)
+and [publication receipt](../getting-started/releases.md#v0290-published-and-verified)
 record the exact tag, retained archives and clean public installation.
-The release includes the fixes prepared for 0.28.1.
+The release includes the bounded beam, column, slab and gravity scope from #1064.
 
 - [x] Exact retained wheel and source archive qualified on all 20 installed profiles.
 - [x] Independent software review and required PR and Weekly checks passed.
 - [x] TestPyPI, PyPI and GitHub archive identities match the qualified hashes.
-- [x] Fresh no-cache PyPI installation imports 0.28.2 from its isolated environment.
+- [x] Fresh no-cache PyPI installation imports 0.29.0 from its isolated environment.
 
 The following records are historical receipts for their named versions.
 

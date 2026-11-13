@@ -94,19 +94,19 @@ reconciliation, or professional approval.
 
 ### Install the Python package
 
-**0.28.2 is published and verified** on
-[PyPI](https://pypi.org/project/structural-lib-is456/0.28.2/) and
-[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.28.2).
+**0.29.0 is published and verified** on
+[PyPI](https://pypi.org/project/structural-lib-is456/0.29.0/) and
+[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.29.0).
 Install the exact public version:
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.28.2"
+python3 -m pip install "structural-lib-is456==0.29.0"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.28.2` uses the final PEP 440 version format; that format alone does not
+`0.29.0` uses the final PEP 440 version format; that format alone does not
 establish registry availability.
 The project's development-maturity classifier remains **Beta**. Pin the exact
 version for reproducible work. See the
