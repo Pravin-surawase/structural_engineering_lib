@@ -101,10 +101,24 @@ The [independent replay](../../verification/check_library_029_col07_reference.py
 checks the cases without the library.
 
 This profile covers the supplied stations and combinations of one short
-tied eight-bar column. Coverage across the actual load envelope,
+tied six- or eight-bar column. Coverage across the actual load envelope,
 two-plane shear interaction, other splice assemblies, adjoining joint or
 support checks, slender and circular members, and seismic detailing
 need separate verification.
+
+## Replay six-bar layouts and a tie revision
+
+Use `--case six_bar_omit_x_face_midpoints` or
+`--case six_bar_omit_y_face_midpoints` with the same example and reference.
+Each cage has four corner bars, two face-midpoint bars, a closed hoop
+and one cross-tie. The continuous cages schedule six straight 4,700 mm
+longitudinal bars and 25 pieces of each transverse mark.
+
+`six_bar_revised_pitch` reduces the field pitch from 140 to 120 mm under
+detail revision D2. It produces 27 hoop and cross-tie levels.
+`six_bar_stale_cut` uses that same edit with the D1 cut register and
+withholds the schedule. `six_bar_unresolved_lap` retains the numeric
+lap check and holds the physical splice and BBS.
 
 ## Run a physical contact splice
 

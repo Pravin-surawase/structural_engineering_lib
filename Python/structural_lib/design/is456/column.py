@@ -263,7 +263,7 @@ def check_column_member_detailing(
 
     Limitations
     -----------
-    Ordinary short tied eight-bar rectangles. Physical laps admit one opposing side-midpoint or C1/C2 contact group.
+    Ordinary short tied six- and eight-bar rectangles. Eight-bar physical laps admit one opposing side-midpoint or C1/C2 contact group.
 
     Provenance
     ----------

@@ -587,14 +587,6 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
         request.reinforcement,
         request.materials,
     )
-    if steel.layout != "eight_bar":
-        record(
-            "COLUMN.MEMBER_CAGE_SCOPE",
-            _HOLD,
-            "reinforcement.layout",
-            "The member workflow is qualified for the symmetric eight-bar cage.",
-            _TIE,
-        )
     if request.identity.member_id is None:
         record(
             "COLUMN.MEMBER_ID_REQUIRED",
@@ -721,9 +713,9 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
         workflow_id=WORKFLOW,
         engineering_status=status,
         limitations=(
-            "Checks only the supplied stations and combinations for an ordinary short tied eight-bar rectangle.",
+            "Checks only the supplied stations and combinations for ordinary short tied six- and eight-bar rectangles.",
             "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
-            "Straight end projections require separately checked adjoining concrete. The physical contact splice supports one side-midpoint or C1/C2 group with straight bars.",
+            "Straight end projections require separately checked adjoining concrete. An eight-bar physical contact splice supports one side-midpoint or C1/C2 group with straight bars.",
             "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",
         ),
         assumptions=(

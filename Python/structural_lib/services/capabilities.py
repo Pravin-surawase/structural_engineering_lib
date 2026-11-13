@@ -219,7 +219,7 @@ _CAPABILITIES = (
             "effective-length inputs. Separate Python family-facade profiles check "
             "physical four-, six-, eight- and mixed-bar cages, scoped slender rectangles, "
             "short circular cages with closed rings or spirals, and finite catalogue "
-            "selection and member detailing for short eight-bar rectangles."
+            "selection for eight-bar rectangles and member detailing for short six- and eight-bar rectangles."
         ),
         held_cases=(
             "Circular-section column design outside the short braced regular-bar-ring check remains held, including slender members and automatic cage selection.",
@@ -316,7 +316,7 @@ _CAPABILITIES = (
                 "load_column_member_detailing",
                 "check_column_member_detailing",
                 "column-member-detailing-input/v1",
-                "Short braced eight-bar tied rectangles with principal-plane shear, tie zones and straight end development. Supported straight contact splices of opposing side midpoints or the C1/C2 corner pair include physical restraint, congestion, report, drawing and BBS checks.",
+                "Short braced six- and eight-bar tied rectangles with principal-plane shear, tie zones and straight end development. Supported eight-bar contact splices of opposing side midpoints or the C1/C2 corner pair include physical restraint, congestion, report, drawing and BBS checks.",
                 "docs/cookbook/python/column-member-detailing.md",
                 "Python/examples/column_member_detailing.py",
             ),
