@@ -230,6 +230,32 @@ class TestDesignSingleBeam:
         assert "flexure" in result_dict
         assert "detailing" in result_dict
 
+    def test_rejected_layout_keeps_its_validity_in_serialized_design(self):
+        """A failed generated cage must not appear as accepted downstream."""
+        result = beam_pipeline.design_single_beam(
+            units="IS456",
+            beam_id="B1",
+            story="S1",
+            b_mm=230.0,
+            D_mm=450.0,
+            d_mm=392.0,
+            span_mm=4500.0,
+            cover_mm=40.0,
+            fck_nmm2=25.0,
+            fy_nmm2=500.0,
+            mu_knm=600.0,
+            vu_kn=90.0,
+            stirrup_spacing_start_mm=100.0,
+            stirrup_spacing_mid_mm=100.0,
+            stirrup_spacing_end_mm=100.0,
+        )
+
+        assert result.detailing is not None
+        assert result.detailing.is_valid is False
+        serialized = result.to_dict()["detailing"]
+        assert serialized["is_valid"] is False
+        assert "spacing violations" in serialized["remarks"]
+
 
 class TestDesignMultipleBeams:
     """Tests for multi-beam design pipeline."""

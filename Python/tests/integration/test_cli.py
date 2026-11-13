@@ -776,6 +776,70 @@ def test_design_complete_depth_basis_derives_effective_depth(tmp_path):
     assert payload["beams"][0]["geometry"]["d_mm"] == 444.0
 
 
+def test_cli_retains_derived_bar_diameter_and_report_evidence(tmp_path, capsys):
+    source = tmp_path / "derived-20.csv"
+    design = tmp_path / "design.json"
+    detail = tmp_path / "detail.json"
+    bbs = tmp_path / "bbs.csv"
+    report = tmp_path / "report.html"
+    headers = [header for header in _STRICT_CLI_HEADERS if header != "eff_d"] + [
+        "tension_bar_diameter_mm"
+    ]
+    _write_cli_csv(
+        source,
+        [["B1", "S1", 300, 550, 6000, 40, 25, 500, 160, 90, 8, 150, 20]],
+        headers,
+    )
+    assert cli_main.main(["design", str(source), "-o", str(design)]) == 0
+    payload = json.loads(design.read_text())
+    beam = payload["beams"][0]
+    assert beam["geometry"]["d_mm"] == 492
+    assert {bar["diameter"] for bar in beam["detailing"]["bottom_bars"]} == {20}
+    assert cli_main.main(["detail", str(design), "-o", str(detail)]) == 0
+    detailed = json.loads(detail.read_text())["beams"][0]
+    assert {bar["diameter_mm"] for bar in detailed["bottom_bars"]} == {20}
+    assert cli_main.main(["bbs", str(design), "-o", str(bbs)]) == 0
+    schedule = list(csv.DictReader(bbs.read_text().splitlines()))
+    assert len([row for row in schedule if "-B-" in row["bar_mark"]]) == 3
+    assert all(
+        float(row["diameter_mm"]) == 20 for row in schedule if "-B-" in row["bar_mark"]
+    )
+    assert (
+        cli_main.main(["report", str(design), "--format", "html", "-o", str(report)])
+        == 0
+    )
+    contents = report.read_text()
+    assert "QUALIFIED REVIEW REQUIRED" in contents
+    assert "Engineering status:</strong> PASS" in contents
+    assert "Detailing status:</strong> ACCEPTED" in contents
+    assert "<td>S1_B1</td><td>160.00</td><td>90.00</td>" in contents
+    assert "Required and Provided Steel by Zone" in contents
+    report_json = tmp_path / "report.json"
+    assert cli_main.main(["report", str(design), "-o", str(report_json)]) == 0
+    report_beam = json.loads(report_json.read_text(encoding="utf-8"))["beams"][0]
+    assert report_beam["result_envelope"] == beam["result_envelope"]
+    assert report_beam["detailing_status"] == "ACCEPTED"
+    for name, bar in zip(
+        ("Start", "Midspan", "End"), detailed["bottom_bars"], strict=True
+    ):
+        required = beam["flexure"]["ast_required_mm2"]
+        provided = bar["count"] * math.pi * bar["diameter_mm"] ** 2 / 4
+        zone = next(zone for zone in report_beam["steel_zones"] if zone["zone"] == name)
+        assert zone["tension_required_mm2"] == required
+        assert zone["tension_provided_mm2"] == pytest.approx(provided)
+        assert (
+            f"<th scope='row'>{name}</th><td>{required:,.2f}</td><td>{provided:,.2f}</td>"
+            in contents
+        )
+
+    beam["effective_depth_resolution"]["effective_depth_basis"][
+        "tension_bar_diameter_mm"
+    ] = 16
+    design.write_text(json.dumps(payload))
+    assert cli_main.main(["detail", str(design), "-o", str(detail)]) != 0
+    assert "DETAILING_EFFECTIVE_DEPTH_MISMATCH" in capsys.readouterr().err
+
+
 def test_design_depth_boundary_keeps_canonical_engineering_failure(tmp_path):
     input_path = tmp_path / "depth-boundary.json"
     output_path = tmp_path / "result.json"
@@ -1151,6 +1215,63 @@ def test_dxf_generation(sample_design_results_file, tmp_path):
     assert rc == 0
     assert output_file.exists()
     assert output_file.stat().st_size > 0
+
+
+def test_combined_cli_artifacts_qualify_repeated_member_ids(tmp_path):
+    """Combined BBS/DXF artifacts keep stories distinct for repeated labels."""
+    from structural_lib.services import dxf_export
+
+    if not dxf_export.EZDXF_AVAILABLE:
+        pytest.skip("ezdxf not installed")
+
+    source = tmp_path / "repeated.csv"
+    design = tmp_path / "design.json"
+    schedule = tmp_path / "schedule.csv"
+    drawing = tmp_path / "drawing.dxf"
+    diff = tmp_path / "mark-diff.json"
+    _write_cli_csv(
+        source,
+        [
+            ["B1", "S1", 300, 550, 6000, 40, 25, 500, 160, 90, 8, 150, 20],
+            ["B1", "S2", 300, 550, 4500, 40, 25, 500, 160, 90, 8, 150, 20],
+        ],
+        headers=[header for header in _STRICT_CLI_HEADERS if header != "eff_d"]
+        + ["tension_bar_diameter_mm"],
+    )
+
+    assert cli_main.main(["design", str(source), "-o", str(design)]) == 0
+    assert cli_main.main(["bbs", str(design), "-o", str(schedule)]) == 0
+    rows = list(csv.DictReader(schedule.read_text(encoding="utf-8").splitlines()))
+    data_rows = [row for row in rows if row["member_id"]]
+    marks = {row["bar_mark"] for row in data_rows}
+    assert {row["member_id"] for row in data_rows} == {"S1_B1", "S2_B1"}
+    assert len(marks) == 18
+    assert all(mark.startswith(("S1-B1-", "S2-B1-")) for mark in marks)
+
+    assert cli_main.main(["dxf", str(design), "-o", str(drawing)]) == 0
+    assert (
+        cli_main.main(
+            [
+                "mark-diff",
+                "--bbs",
+                str(schedule),
+                "--dxf",
+                str(drawing),
+                "--format",
+                "json",
+                "-o",
+                str(diff),
+            ]
+        )
+        == 0
+    )
+    assert json.loads(diff.read_text(encoding="utf-8"))["summary"] == {
+        "beams_checked": 2,
+        "bbs_marks": 18,
+        "dxf_marks": 18,
+        "missing_in_dxf": 0,
+        "extra_in_dxf": 0,
+    }
 
 
 def test_dxf_title_block(sample_design_results_file, tmp_path):

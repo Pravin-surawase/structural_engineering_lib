@@ -1805,3 +1805,16 @@ records the release and qualification identities.
 The beam, column and slab parity work continues in draft
 [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064) for 0.29. Project-specific engineering and
 professional approval remain outside software publication.
+
+## v0.28.1 — Prepared candidate (unreleased; on hold)
+
+This maintenance candidate carries the Coding Lab axial-load, beam input and
+material-admission repairs (A13, A9 and A15). It also carries the independent
+CLI diameter, report and combined BBS/DXF fixes identified in
+[draft PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064).
+The checked-layout workbench and project-export changes remain in that draft
+with the 0.29 features.
+
+The candidate is not tagged or published. The verified public installation
+remains [0.28.0](#v0280-published-and-verified). The [release checklist](../planning/pre-release-checklist.md)
+owns qualification of the exact candidate archives.

@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.28.1] — Prepared candidate (unreleased; on hold)
+
+### Fixed
+
+- Reject nonfinite axial loads in the direct and public biaxial column checks.
+- Preserve explicit beam end stirrup spacing and single-case IDs in
+  `design_from_input()`, including its detailing and compliance outputs.
+- Reject invalid material strengths and unknown grade-only requests before
+  calculating material properties or selecting a steel strength.
+- Carry the requested diameter through CLI design, detailing and BBS when it
+  determines effective depth. Genuine depth mismatches still block exports.
+- Show factored actions, steel by zone and qualified-review status in CLI
+  reports. Rejected or unverified layouts leave provided steel unknown.
+- Distinguish repeated beam labels across storeys in combined BBS and DXF
+  exports. Reject conflicting cuts under one bar mark in `mark-diff`.
+- Point package installation guidance to the verified public release ledger.
+
 ## [0.28.0] — 2026-11-12
 
 Owner-authorized Beta software release for the qualified slab and footing

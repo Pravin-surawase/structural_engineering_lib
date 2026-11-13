@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.28.0 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.28.1 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,16 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.28.0
+## New in v0.28.1
+
+- Biaxial column checks reject nonfinite axial loads. Material constructors
+  and factories reject invalid strengths at the input boundary.
+- Beam input preserves explicit end stirrup spacing and case identity.
+  CLI detailing keeps the bar diameter used to derive effective depth.
+- CLI reports retain review and reinforcement evidence. Combined BBS and
+  DXF exports distinguish repeated beam labels across storeys.
+
+### Introduced in v0.28.0
 
 - Runnable reference scripts cover one simply supported one-way slab and one
   square concentric isolated footing. They use public calculation routes and
@@ -49,16 +58,14 @@ T-member coverage remains supported within its documented profiles.
 
 ## Install
 
-For an exact public install, use the version confirmed in the
-[release ledger](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/releases.md).
-Version 0.28.0 is published and its public hashes and clean installation are
-verified. Pin the public release below for reproducibility. A development
-checkout can contain later unreleased changes; use `pip install -e ./Python`
-only when intentionally testing that checkout.
+Use the [release ledger](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/releases.md)
+to find the verified public version. Replace `VERSION` with that number to
+reproduce an exact install. Use `pip install -e ./Python` when testing a
+development checkout.
 
 ```bash
-pip install structural-lib-is456==0.28.0         # exact normal release
-pip install "structural-lib-is456[dxf]==0.28.0"  # release with DXF export
+pip install "structural-lib-is456==VERSION"
+pip install "structural-lib-is456[dxf]==VERSION"  # with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
@@ -75,7 +82,7 @@ Use `capacity-fail` or `review-limit-fail` for slab controls and
 candidate from its local wheel in a clean environment.
 
 ```bash
-python -m pip install /path/to/structural_lib_is456-0.28.0-py3-none-any.whl
+python -m pip install /path/to/structural_lib_is456-VERSION-py3-none-any.whl
 python -I Python/examples/isolated_footing_reference.py --case transfer-fail
 ```
 

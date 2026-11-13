@@ -314,4 +314,4 @@ transport projection uses `structural-problem/v1`.
 
 No calculation or review status is professional approval, engineering-use
 approval, construction-use approval, or Windows application acceptance. The
-`v0.28.0` software-release status is tracked separately in the release ledger.
+`v0.28.1` software-release status is tracked separately in the release ledger.

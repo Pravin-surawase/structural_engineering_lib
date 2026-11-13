@@ -9,13 +9,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from .validation import require_positive_real
+
 
 @dataclass
 class Concrete:
     """Concrete material properties.
 
     Attributes:
-        fck: Characteristic compressive strength (N/mm²)
+        fck: Positive finite characteristic compressive strength (N/mm²).
         Ec: Elastic modulus (N/mm²), auto-calculated if not provided
         density: Unit weight (kN/m³), default 25
         aggregate_size: Maximum aggregate size (mm), default 20
@@ -27,6 +29,7 @@ class Concrete:
     aggregate_size: float = 20.0
 
     def __post_init__(self) -> None:
+        require_positive_real(self.fck, "fck")
         if self.Ec is None:
             # IS 456 formula, can be overridden by code-specific factory
             self.Ec = 5000 * (self.fck**0.5)
@@ -105,6 +108,7 @@ class MaterialFactory:
         density: float = 25.0,
     ) -> Concrete:
         """Create concrete with code-specific modulus calculation."""
+        require_positive_real(fck, "fck")
         # Calculate Ec based on code
         if self.code_id == "IS456":
             ec_modulus = 5000 * (fck**0.5)
@@ -132,27 +136,28 @@ class MaterialFactory:
         """Create steel from fy or grade name.
 
         Args:
-            fy: Yield strength (N/mm²), overrides grade
-            grade: Steel grade name (e.g., "Fe500")
-            es_modulus: Elastic modulus (N/mm²)
-        """
-        steel_grade: str = ""
-        if fy is None and grade is None:
-            # Default to most common grade for code
-            if self.code_id == "IS456":
-                fy, steel_grade = 500.0, "Fe500"
-            elif self.code_id == "ACI318":
-                fy, steel_grade = 420.0, "Grade60"
-            elif self.code_id == "EC2":
-                fy, steel_grade = 500.0, "B500B"
-            else:
-                fy, steel_grade = 500.0, "Fe500"
-        elif fy is None and grade is not None:
-            # Look up grade
-            grades = self.STEEL_GRADES.get(self.code_id, {})
-            fy = grades.get(grade, 500.0)
-            steel_grade = grade
-        else:
-            steel_grade = grade or f"fy{int(fy or 500)}"
+            fy: Positive finite yield strength (N/mm²), overrides grade.
+            grade: Steel grade name (e.g., "Fe500"). Used for lookup if fy is omitted.
+            es_modulus: Elastic modulus (N/mm²).
 
-        return Steel(fy=fy or 500.0, Es=es_modulus, steel_type=steel_grade)
+        Raises:
+            ValueError: If fy is invalid or a grade-only request is unsupported.
+        """
+        if fy is not None:
+            require_positive_real(fy, "fy")
+            steel_grade = grade or f"fy{int(fy)}"
+        elif grade is not None:
+            grades = self.STEEL_GRADES.get(self.code_id, {})
+            if grade not in grades:
+                raise ValueError(
+                    f"Unsupported steel grade {grade!r} for {self.code_id}."
+                )
+            fy, steel_grade = grades[grade], grade
+        elif self.code_id == "ACI318":
+            fy, steel_grade = 420.0, "Grade60"
+        elif self.code_id == "EC2":
+            fy, steel_grade = 500.0, "B500B"
+        else:
+            fy, steel_grade = 500.0, "Fe500"
+
+        return Steel(fy=fy, Es=es_modulus, steel_type=steel_grade)

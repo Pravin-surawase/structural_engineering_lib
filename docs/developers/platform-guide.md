@@ -72,20 +72,15 @@ A **Python library for structural engineering calculations** following IS 456:20
 
 **Goal:** Design a beam in < 15 minutes
 
-### Step 1: Install the selected candidate
+### Step 1: Install the current release
 
-This journey includes the 0.27.0 report repairs. Until 0.27.0 is published,
-install the exact replacement wheel selected by the
-[artifact record](../verification/library-0270-release-artifacts.json), rather
-than the rejected initial pair. The
-[current release page](../getting-started/release-status.md) owns registry
-availability. Do not assume that the public 0.26.0 package contains these fixes.
+Use the exact version listed on the
+[current release page](../getting-started/release-status.md).
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-# Substitute the absolute path of the selected, qualified replacement wheel.
-python -m pip install /absolute/path/to/structural_lib_is456-0.27.0-py3-none-any.whl
+python -m pip install "structural-lib-is456==0.28.0"
 python -m structural_lib install-preflight
 ```
 
@@ -93,6 +88,10 @@ For source development, clone the repository and run
 `python -m pip install -e ./Python` from its root. Python 3.11+ and the base
 dependencies declared in the package metadata are required. DXF, Jinja2 and
 PDF rendering use their separately declared extras.
+
+To test an unpublished candidate, install its retained wheel by absolute path
+in a fresh environment and confirm its version and origin with
+`python -m structural_lib install-preflight`.
 
 ### Step 2: Design, detail, schedule and report one beam
 

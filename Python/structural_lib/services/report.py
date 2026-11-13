@@ -35,6 +35,7 @@ import io
 import json
 import math
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 from dataclasses import field as _field
 from pathlib import Path
@@ -269,6 +270,27 @@ h2 {
 """
 
 
+@dataclass(frozen=True)
+class ReportSteelZone:
+    """Required and provided steel from one serialized detailing zone."""
+
+    name: str
+    tension_required_mm2: float | None
+    tension_provided_mm2: float | None
+    compression_required_mm2: float | None
+    compression_provided_mm2: float | None
+
+    def to_dict(self) -> dict[str, float | None | str]:
+        """Return the reviewable report representation for one zone."""
+        return {
+            "zone": self.name,
+            "tension_required_mm2": self.tension_required_mm2,
+            "tension_provided_mm2": self.tension_provided_mm2,
+            "compression_required_mm2": self.compression_required_mm2,
+            "compression_provided_mm2": self.compression_provided_mm2,
+        }
+
+
 @dataclass
 class ReportData:
     """Container for report input data.
@@ -288,6 +310,10 @@ class ReportData:
     governing_case_id: str = ""
     governing_utilization: float | None = 0.0
     evidence: dict[str, Any] | None = None
+    steel_zones: tuple[ReportSteelZone, ...] = ()
+    result_envelope: dict[str, Any] | None = None
+    detailing_status: str | None = None
+    detailing_remarks: str = ""
 
 
 @dataclass
@@ -1109,6 +1135,13 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
     }
     if data.evidence is not None:
         output["evidence"] = data.evidence
+    if data.result_envelope is not None:
+        output["result_envelope"] = data.result_envelope
+    if data.steel_zones:
+        output["steel_zones"] = [zone.to_dict() for zone in data.steel_zones]
+        output["detailing_status"] = data.detailing_status
+        if data.detailing_remarks:
+            output["detailing_remarks"] = data.detailing_remarks
     if data.results.get("unavailable_utilizations"):
         output["unavailable_utilizations"] = data.results["unavailable_utilizations"]
     return json.dumps(output, indent=indent, sort_keys=True, ensure_ascii=False)
@@ -1237,6 +1270,72 @@ def _wrap_html(title: str, body_html: str) -> str:
 """
 
 
+def _report_number(value: Any) -> str:
+    number = _safe_float(value)
+    return (
+        f"{number:,.2f}"
+        if number is not None and math.isfinite(number)
+        else "Unavailable"
+    )
+
+
+def _render_cli_beam_evidence(data: ReportData) -> str:
+    if data.result_envelope is None and not data.steel_zones:
+        return ""
+    envelope = data.result_envelope or {}
+    status = html.escape(str(envelope.get("engineering_status") or "Unavailable"))
+    review = html.escape(
+        str(envelope.get("review_status") or "Unavailable").replace("_", " ")
+    )
+    detailing = ""
+    if data.detailing_status is not None:
+        layout_status = html.escape(data.detailing_status.replace("_", " "))
+        remarks = html.escape(data.detailing_remarks)
+        details = f" <em>{remarks}</em>" if remarks else ""
+        detailing = (
+            f"\n    <p><strong>Detailing status:</strong> {layout_status}.{details}</p>"
+        )
+    loads = "".join(
+        f"<tr><td>{html.escape(str(case.get('case_id', '')))}</td>"
+        f"<td>{_report_number(case.get('mu_knm'))}</td>"
+        f"<td>{_report_number(case.get('vu_kn'))}</td></tr>"
+        for case in data.cases
+    )
+    steel = "".join(
+        f"<tr><th scope='row'>{zone.name}</th>"
+        f"<td>{_report_number(zone.tension_required_mm2)}</td>"
+        f"<td>{_report_number(zone.tension_provided_mm2)}</td>"
+        f"<td>{_report_number(zone.compression_required_mm2)}</td>"
+        f"<td>{_report_number(zone.compression_provided_mm2)}</td></tr>"
+        for zone in data.steel_zones
+    )
+    review_heading = "Factored Actions and Review" if envelope else "Factored Actions"
+    review_evidence = (
+        f"<p><strong>Engineering status:</strong> {status}</p>"
+        f"<p><strong>Review status:</strong> {review}</p>"
+        if envelope
+        else ""
+    )
+    return f"""
+<div class="section">
+    <h2>{review_heading}</h2>
+    {review_evidence}
+    <table class="sanity-table">
+        <thead><tr><th>Case</th><th>Moment (kN·m)</th><th>Shear (kN)</th></tr></thead>
+        <tbody>{loads}</tbody>
+    </table>
+</div>
+<div class="section">
+    <h2>Required and Provided Steel by Zone</h2>
+    {detailing}
+    <table class="sanity-table">
+        <thead><tr><th>Zone</th><th>Tension required (mm²)</th><th>Tension provided (mm²)</th>
+            <th>Compression required (mm²)</th><th>Compression provided (mm²)</th></tr></thead>
+        <tbody>{steel}</tbody>
+    </table>
+</div>"""
+
+
 def _render_report_sections(data: ReportData) -> str:
     status = "✓ PASS" if data.is_ok else "✗ FAIL"
     status_class = "status-pass" if data.is_ok else "status-fail"
@@ -1281,7 +1380,7 @@ def _render_report_sections(data: ReportData) -> str:
     <p><strong>Code:</strong> {code}</p>
     <p><strong>Status:</strong> <span class="{status_class}">{status}</span></p>
     <p><strong>Governing Utilization:</strong> {utilization}</p>{limit_note}
-</div>
+</div>{_render_cli_beam_evidence(data)}
 <div class="section">
     <h2>Cross-Section SVG</h2>
     <div class="svg-wrap">{svg}</div>
@@ -1388,6 +1487,24 @@ def _build_beam_index(beams: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return indexed
 
 
+def _provided_steel_mm2(bars: Any, zone: int) -> float | None:
+    if not isinstance(bars, list) or zone >= len(bars):
+        return None
+    bar = _safe_dict(bars[zone])
+    count = _safe_float(bar.get("count"))
+    diameter = _safe_float(bar.get("diameter"))
+    if (
+        count is None
+        or diameter is None
+        or not math.isfinite(diameter)
+        or not count.is_integer()
+        or count <= 0
+        or diameter <= 0
+    ):
+        return None
+    return count * math.pi * diameter**2 / 4
+
+
 def _beam_report_data_from_design(
     beam: dict[str, Any], *, code: str, units: str
 ) -> ReportData:
@@ -1435,12 +1552,64 @@ def _beam_report_data_from_design(
         if source_path in source_unavailable:
             case_unavailable[f"utilizations.{name}"] = source_unavailable[source_path]
 
+    raw_envelope = beam.get("result_envelope")
+    envelope = (
+        dict(raw_envelope)
+        if isinstance(raw_envelope, Mapping) and raw_envelope
+        else None
+    )
+    detailing_value = beam.get("detailing")
+    detailing = _safe_dict(detailing_value)
+    detailing_status: str | None = None
+    detailing_remarks = ""
+    if isinstance(detailing_value, Mapping):
+        validity = detailing.get("is_valid")
+        if validity is False or beam.get("is_ok") is False:
+            detailing_status = "REJECTED"
+        elif (
+            validity is True
+            and beam.get("is_ok") is True
+            and envelope
+            and envelope.get("engineering_status") == "PASS"
+            and envelope.get("freshness_status") == "CURRENT"
+            and envelope.get("overall_status") == "PASS"
+        ):
+            detailing_status = "ACCEPTED"
+        else:
+            detailing_status = "UNVERIFIED"
+        detailing_remarks = str(detailing.get("remarks") or "")
     ast_required = _safe_float(flexure.get("ast_required_mm2"))
+    asc_required = _safe_float(flexure.get("asc_required_mm2"))
+    steel_zones = (
+        tuple(
+            ReportSteelZone(
+                name,
+                ast_required,
+                (
+                    _provided_steel_mm2(detailing.get("bottom_bars"), index)
+                    if detailing_status == "ACCEPTED"
+                    else None
+                ),
+                asc_required,
+                (
+                    _provided_steel_mm2(detailing.get("top_bars"), index)
+                    if detailing_status == "ACCEPTED"
+                    else None
+                ),
+            )
+            for index, name in enumerate(("Start", "Midspan", "End"))
+        )
+        if detailing_status is not None or envelope is not None
+        else ()
+    )
     b_mm = _safe_float(geometry.get("b_mm"))
     d_mm = _safe_float(geometry.get("d_mm"))
-    pt_est = None
-    if ast_required is not None and b_mm and d_mm:
-        pt_est = 100.0 * ast_required / (b_mm * d_mm)
+    ast_provided = steel_zones[1].tension_provided_mm2 if len(steel_zones) > 1 else None
+    pt_provided = (
+        100.0 * ast_provided / (b_mm * d_mm)
+        if ast_provided is not None and b_mm and d_mm
+        else None
+    )
 
     case_id = str(loads.get("case_id", "") or beam_id or "CASE_1")
     governing_util = (
@@ -1462,7 +1631,7 @@ def _beam_report_data_from_design(
         "utilizations": utilizations,
         "flexure": {
             "section_type": flexure.get("section_type"),
-            "pt_provided": pt_est,
+            "pt_provided": pt_provided,
         },
         "shear": {"is_safe": shear.get("is_safe")},
     }
@@ -1491,6 +1660,10 @@ def _beam_report_data_from_design(
         is_ok=bool(beam.get("is_ok", False)),
         governing_case_id=case_id,
         governing_utilization=governing_util,
+        steel_zones=steel_zones,
+        result_envelope=envelope,
+        detailing_status=detailing_status,
+        detailing_remarks=detailing_remarks,
     )
 
 
