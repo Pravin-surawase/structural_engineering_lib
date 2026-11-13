@@ -30,10 +30,9 @@ historical sections of the parent plan do not override this current programme.
 Use stable **M0–M8 planning IDs**. The repository's
 [versioning policy](../guidelines/api-evolution-standard.md#2-semantic-versioning-semver)
 assigns bug fixes to patches and new features to minor releases, including 0.x.
-The owner selected a bounded 0.29.0 candidate for the implemented cases in
-draft #1064. The remaining S0–S5 feature and project work moves to 0.30.0.
-M0–M8 still identify the delivery units. The 0.29.0 wheel and source archive
-each require qualification of their admitted workflows and prior regressions.
+[StructLib 0.29.0](../getting-started/releases.md#v0290-published-and-verified)
+published the qualified cases from #1064. The remaining S0–S5 feature and
+project work is scheduled for 0.30.0. M0–M8 identify the delivery units.
 
 | ID | Deliverable | Dependency and closure rule |
 |---|---|---|
