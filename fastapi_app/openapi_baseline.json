@@ -13063,6 +13063,7 @@
         "type": "object"
       },
       "ComponentCapabilityModel": {
+        "description": "Component capability embedded in the application workflow catalogue.",
         "properties": {
           "element": {
             "title": "Element",
@@ -13080,6 +13081,13 @@
               "type": "string"
             },
             "title": "Public Workflows",
+            "type": "array"
+          },
+          "python_profiles": {
+            "items": {
+              "$ref": "#/components/schemas/IS456PythonProfileModel"
+            },
+            "title": "Python Profiles",
             "type": "array"
           },
           "qualified_review_required": {
@@ -14059,6 +14067,10 @@
             "title": "Flexure",
             "type": "object"
           },
+          "load_envelope_status": {
+            "title": "Load Envelope Status",
+            "type": "string"
+          },
           "negative_reinforcement": {
             "additionalProperties": true,
             "title": "Negative Reinforcement",
@@ -14092,7 +14104,8 @@
           "shear",
           "serviceability",
           "punching_shear_disposition",
-          "complete_engineering_design_approved"
+          "complete_engineering_design_approved",
+          "load_envelope_status"
         ],
         "title": "ContinuousOneWaySlabDesignResponse",
         "type": "object"
@@ -23147,7 +23160,7 @@
         "type": "object"
       },
       "IS456CapabilityModel": {
-        "description": "One supported capability plus its held boundary.",
+        "description": "Capability entry with the public discovery identifier.",
         "properties": {
           "capability_id": {
             "title": "Capability Id",
@@ -23171,6 +23184,13 @@
             "title": "Public Workflows",
             "type": "array"
           },
+          "python_profiles": {
+            "items": {
+              "$ref": "#/components/schemas/IS456PythonProfileModel"
+            },
+            "title": "Python Profiles",
+            "type": "array"
+          },
           "qualified_review_required": {
             "title": "Qualified Review Required",
             "type": "boolean"
@@ -23181,12 +23201,12 @@
           }
         },
         "required": [
-          "capability_id",
           "element",
           "public_workflows",
           "supported_case",
           "held_cases",
-          "qualified_review_required"
+          "qualified_review_required",
+          "capability_id"
         ],
         "title": "IS456CapabilityModel",
         "type": "object"
@@ -23292,6 +23312,55 @@
           "fy_nmm2"
         ],
         "title": "IS456MaterialsV1",
+        "type": "object"
+      },
+      "IS456PythonProfileModel": {
+        "description": "Discoverable Python family-facade profile.",
+        "properties": {
+          "example": {
+            "title": "Example",
+            "type": "string"
+          },
+          "guide": {
+            "title": "Guide",
+            "type": "string"
+          },
+          "loader": {
+            "title": "Loader",
+            "type": "string"
+          },
+          "module": {
+            "title": "Module",
+            "type": "string"
+          },
+          "operation": {
+            "title": "Operation",
+            "type": "string"
+          },
+          "request_schema": {
+            "title": "Request Schema",
+            "type": "string"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          },
+          "workflow_id": {
+            "title": "Workflow Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "workflow_id",
+          "module",
+          "loader",
+          "operation",
+          "request_schema",
+          "supported_case",
+          "guide",
+          "example"
+        ],
+        "title": "IS456PythonProfileModel",
         "type": "object"
       },
       "IS456ReinforcementMaterialsV1": {
@@ -31422,6 +31491,10 @@
             "title": "Complete Engineering Design Approved",
             "type": "boolean"
           },
+          "load_envelope_status": {
+            "title": "Load Envelope Status",
+            "type": "string"
+          },
           "panel": {
             "additionalProperties": true,
             "title": "Panel",
@@ -31443,7 +31516,8 @@
         "required": [
           "panel",
           "serviceability",
-          "complete_engineering_design_approved"
+          "complete_engineering_design_approved",
+          "load_envelope_status"
         ],
         "title": "TwoWaySlabPanelDesignResponse",
         "type": "object"
@@ -32415,7 +32489,7 @@
       "url": "https://opensource.org/licenses/MIT"
     },
     "title": "Structural Engineering API",
-    "version": "0.28.2"
+    "version": "0.29.0"
   },
   "openapi": "3.1.0",
   "paths": {

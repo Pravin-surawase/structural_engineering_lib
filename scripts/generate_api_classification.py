@@ -219,12 +219,15 @@ _DOCUMENTED_BEAM_OPERATIONS = frozenset(
         "bbs",
         "check",
         "check_supplied",
+        "check_continuous",
         "design",
         "design_and_detail",
         "detail",
         "input",
         "load",
         "load_supplied_check",
+        "load_continuous",
+        "render_continuous_html",
     }
 )
 _TEMPORARY_DOCUMENTATION_DEBT_BASELINE = frozenset(

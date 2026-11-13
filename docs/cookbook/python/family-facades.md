@@ -41,6 +41,6 @@ status guidance. Replay all pages against an exact wheel with:
 ./scripts/python_runtime.sh scripts/verify_lib_pro_012_r0_external_preview.py --wheel dist/structural_lib_is456-*.whl
 ```
 
-The source package version is `0.28.2`. Use the
+The source package version is `0.29.0`. Use the
 [release guide](../../getting-started/release-status.md) for the public package.
 Results require qualified review.

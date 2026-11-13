@@ -1,0 +1,375 @@
+{
+  "schema_version": "library-029-col02-rectangular-column-reference/v1",
+  "frozen_before_implementation": true,
+  "frozen_base_commit": "61c5f85f8250a284203f7bec96c5101d2f9a6561",
+  "source_basis": [
+    "IS 456:2000 Cl. 25.1.2, 25.2 Table 28, 25.4, 26.2.2.4(b), 26.3.2, 26.4 and 26.5.3.2(b)(2) Fig. 9",
+    "IS 456:2000 Cl. 38.1 Fig. 21 and Fig. 23A, Cl. 39.1, 39.5 and 39.6. Fig. 23 steel design strength fy/1.15",
+    "Controlled source through Amendment 5 SHA-256 964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+    "IIT Kharagpur/NPTEL Lessons 23 and 26, https://archive.nptel.ac.in/content/storage2/courses/105105104/pdf/m10l26.pdf"
+  ],
+  "method": {
+    "oracle": "Separate adaptive concrete quadrature and Brent fixed-Pu root. Replay with independently split piecewise Simpson integration and bisection.",
+    "axes": "Bar coordinates from left and top in mm. Positive Mx compresses the top face. Positive My compresses the left face. Mirrored capacities agree for these symmetric cages.",
+    "axial": "Compression positive. Concrete displaced by each bar is deducted at its centre strain. Use net concrete area in Puz.",
+    "interaction": "Cl. 39.6 uses the signed supplied pair's magnitudes and actual fixed-Pu principal capacities. Check Cl. 25.4 minimum eccentricity about each axis separately with linear uniaxial demand/capacity. The maximum governs.",
+    "integration_refinement": "Independent 800-to-1600 midpoint fibers changed all six moment targets by less than 2.4e-7 relative."
+  },
+  "inputs": {
+    "b_mm": 300,
+    "D_mm": 400,
+    "unsupported_length_mm": 3000,
+    "end_condition": "FIXED_FIXED",
+    "braced": true,
+    "check_station_mm": 1500,
+    "fck_nmm2": 25,
+    "fy_nmm2": 415,
+    "pu_kn": 500,
+    "longitudinal_bar_diameter_mm": 20,
+    "bar_center_offset_mm": 60,
+    "nominal_cover_mm": 40,
+    "project_required_cover_mm": 40,
+    "aggregate_size_mm": 20,
+    "project_required_bend_radius_mm": 12,
+    "tie_diameter_mm": 8,
+    "tie_spacing_mm": 150,
+    "tie_internal_bend_radius_mm": 12,
+    "tie_hook_angle_deg": 135,
+    "tie_hook_tail_mm": 60,
+    "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule"
+  },
+  "common_expected": {
+    "effective_length_mm": 1950,
+    "slenderness_x": 4.875,
+    "slenderness_y": 6.5,
+    "minimum_eccentricity_x_mm": 20,
+    "minimum_eccentricity_y_mm": 20,
+    "minimum_moment_x_knm": 10,
+    "minimum_moment_y_knm": 10,
+    "tie_centerline_width_mm": 212,
+    "tie_centerline_depth_mm": 312,
+    "minimum_tie_diameter_mm": 6,
+    "maximum_tie_spacing_mm": 300,
+    "maximum_restraint_span_mm": 384,
+    "longitudinal_bar_cover_mm": 50
+  },
+  "actions_knm": {
+    "x": [
+      50,
+      0
+    ],
+    "y": [
+      0,
+      50
+    ],
+    "biaxial": [
+      50,
+      35
+    ],
+    "mirrored": [
+      -50,
+      35
+    ],
+    "minimum": [
+      0,
+      0
+    ],
+    "overload": [
+      125,
+      80
+    ]
+  },
+  "controls": {
+    "missing_perimeter_tie": "HOLD",
+    "missing_midpoint_cross_tie": "HOLD",
+    "wrong_midpoint_cross_tie": "FAIL",
+    "duplicate_cross_tie_station": "FAIL",
+    "short_hook_tail": "FAIL",
+    "wide_pitch": "FAIL",
+    "45_mm_centre_offset": "FAIL",
+    "slender": "HOLD",
+    "outside_partial_compression": "HOLD",
+    "axial_at_or_above_puz": "FAIL",
+    "station_outside_member": "REJECT"
+  },
+  "reference_absolute_tolerance": 1e-06,
+  "production_tolerances": {
+    "capacity_knm": 0.01,
+    "xu_mm": 0.01,
+    "axial_residual_kn": 0.01,
+    "interaction_ratio": 0.0001
+  },
+  "layouts": {
+    "eight_bar": {
+      "bars_from_left_top_mm": {
+        "C1": [
+          60,
+          60
+        ],
+        "C2": [
+          240,
+          60
+        ],
+        "C3": [
+          240,
+          340
+        ],
+        "C4": [
+          60,
+          340
+        ],
+        "M_LEFT": [
+          60,
+          200
+        ],
+        "M_RIGHT": [
+          240,
+          200
+        ],
+        "M_TOP": [
+          150,
+          60
+        ],
+        "M_BOTTOM": [
+          150,
+          340
+        ]
+      },
+      "cross_ties": [
+        {
+          "tie_id": "XT",
+          "station_offset_mm": 12,
+          "restrained_bar_ids": [
+            "M_LEFT",
+            "M_RIGHT"
+          ]
+        },
+        {
+          "tie_id": "YT",
+          "station_offset_mm": 24,
+          "restrained_bar_ids": [
+            "M_TOP",
+            "M_BOTTOM"
+          ]
+        }
+      ],
+      "axes": {
+        "x": {
+          "xu_mm": 194.56270178698256,
+          "capacity_knm": 152.54080194281184,
+          "axial_residual_kn": 0
+        },
+        "y": {
+          "xu_mm": 146.15564350882082,
+          "capacity_knm": 102.73794604190624,
+          "axial_residual_kn": 0
+        }
+      },
+      "steel_area_mm2": 2513.2741228718346,
+      "puz_kn": 2103.98223686155,
+      "alpha_n": 1.0627409864652941,
+      "actions": {
+        "x": {
+          "interaction_ratio": 0.30562666334206834,
+          "governing_ratio": 0.30562666334206834,
+          "strength_status": "PASS"
+        },
+        "y": {
+          "interaction_ratio": 0.46517482140511246,
+          "governing_ratio": 0.46517482140511246,
+          "strength_status": "PASS"
+        },
+        "biaxial": {
+          "interaction_ratio": 0.6240431438991172,
+          "governing_ratio": 0.6240431438991172,
+          "strength_status": "PASS"
+        },
+        "mirrored": {
+          "interaction_ratio": 0.6240431438991172,
+          "governing_ratio": 0.6240431438991172,
+          "strength_status": "PASS"
+        },
+        "minimum": {
+          "interaction_ratio": 0.0,
+          "governing_ratio": 0.0973350196812486,
+          "strength_status": "PASS"
+        },
+        "overload": {
+          "interaction_ratio": 1.5758334422525548,
+          "governing_ratio": 1.5758334422525548,
+          "strength_status": "FAIL"
+        }
+      }
+    },
+    "six_bar_omit_x_face_midpoints": {
+      "bars_from_left_top_mm": {
+        "C1": [
+          60,
+          60
+        ],
+        "C2": [
+          240,
+          60
+        ],
+        "C3": [
+          240,
+          340
+        ],
+        "C4": [
+          60,
+          340
+        ],
+        "M_TOP": [
+          150,
+          60
+        ],
+        "M_BOTTOM": [
+          150,
+          340
+        ]
+      },
+      "cross_ties": [
+        {
+          "tie_id": "YT",
+          "station_offset_mm": 12,
+          "restrained_bar_ids": [
+            "M_TOP",
+            "M_BOTTOM"
+          ]
+        }
+      ],
+      "axes": {
+        "x": {
+          "xu_mm": 191.21915535407607,
+          "capacity_knm": 152.46880576794382,
+          "axial_residual_kn": 0
+        },
+        "y": {
+          "xu_mm": 145.43861938005492,
+          "capacity_knm": 84.17598207838935,
+          "axial_residual_kn": 0
+        }
+      },
+      "steel_area_mm2": 1884.9555921538758,
+      "puz_kn": 1915.486677646163,
+      "alpha_n": 1.1017171126229763,
+      "actions": {
+        "x": {
+          "interaction_ratio": 0.29277666634475075,
+          "governing_ratio": 0.29277666634475075,
+          "strength_status": "PASS"
+        },
+        "y": {
+          "interaction_ratio": 0.5633412478910858,
+          "governing_ratio": 0.5633412478910858,
+          "strength_status": "PASS"
+        },
+        "biaxial": {
+          "interaction_ratio": 0.673065358043575,
+          "governing_ratio": 0.673065358043575,
+          "strength_status": "PASS"
+        },
+        "mirrored": {
+          "interaction_ratio": 0.673065358043575,
+          "governing_ratio": 0.673065358043575,
+          "strength_status": "PASS"
+        },
+        "minimum": {
+          "interaction_ratio": 0.0,
+          "governing_ratio": 0.11879873276307538,
+          "strength_status": "PASS"
+        },
+        "overload": {
+          "interaction_ratio": 1.748924272562085,
+          "governing_ratio": 1.748924272562085,
+          "strength_status": "FAIL"
+        }
+      }
+    },
+    "six_bar_omit_y_face_midpoints": {
+      "bars_from_left_top_mm": {
+        "C1": [
+          60,
+          60
+        ],
+        "C2": [
+          240,
+          60
+        ],
+        "C3": [
+          240,
+          340
+        ],
+        "C4": [
+          60,
+          340
+        ],
+        "M_LEFT": [
+          60,
+          200
+        ],
+        "M_RIGHT": [
+          240,
+          200
+        ]
+      },
+      "cross_ties": [
+        {
+          "tie_id": "XT",
+          "station_offset_mm": 12,
+          "restrained_bar_ids": [
+            "M_LEFT",
+            "M_RIGHT"
+          ]
+        }
+      ],
+      "axes": {
+        "x": {
+          "xu_mm": 193.65853319491006,
+          "capacity_knm": 122.59509355301834,
+          "axial_residual_kn": 0
+        },
+        "y": {
+          "xu_mm": 143.99190326127538,
+          "capacity_knm": 102.71086899209392,
+          "axial_residual_kn": 0
+        }
+      },
+      "steel_area_mm2": 1884.9555921538758,
+      "puz_kn": 1915.486677646163,
+      "alpha_n": 1.1017171126229763,
+      "actions": {
+        "x": {
+          "interaction_ratio": 0.37228692675386876,
+          "governing_ratio": 0.37228692675386876,
+          "strength_status": "PASS"
+        },
+        "y": {
+          "interaction_ratio": 0.4524307469937624,
+          "governing_ratio": 0.4524307469937624,
+          "strength_status": "PASS"
+        },
+        "biaxial": {
+          "interaction_ratio": 0.6777044645299133,
+          "governing_ratio": 0.6777044645299133,
+          "strength_status": "PASS"
+        },
+        "mirrored": {
+          "interaction_ratio": 0.6777044645299133,
+          "governing_ratio": 0.6777044645299133,
+          "strength_status": "PASS"
+        },
+        "minimum": {
+          "interaction_ratio": 0.0,
+          "governing_ratio": 0.09736067952817867,
+          "strength_status": "PASS"
+        },
+        "overload": {
+          "interaction_ratio": 1.780970495987547,
+          "governing_ratio": 1.780970495987547,
+          "strength_status": "FAIL"
+        }
+      }
+    }
+  }
+}

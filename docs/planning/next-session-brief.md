@@ -13,7 +13,7 @@
 | Release | Current state |
 |---|---|
 | **Current** | [0.28.2 is published and verified](../getting-started/releases.md#v0282-published-and-verified). All 20 installed profiles, public archive hashes, and clean PyPI installation passed. |
-| **Next** | 0.29 beam, column and slab parity in [draft PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064). |
+| **Next** | Qualify the implemented 0.29.0 beam, column and slab workflows from [draft PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064). |
 
 ## Merged development work — qualified serializer integration
 

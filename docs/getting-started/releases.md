@@ -1886,3 +1886,15 @@ records the source and qualification identities.
 
 The 0.28.1 maintenance fixes are included in 0.28.2. Draft
 [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064) continues to own the 0.29 beam, column and slab work.
+
+## v0.29.0 — Prepared candidate (unreleased; on hold)
+
+The selected scope is the implemented two-span beam check (BEAM01/FLOW01),
+column checks and detailing (COL02–COL07), and the slab response-contract fix
+from [draft PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064).
+The [programme progress record](../planning/library-usability-improvement.md#029-progress-and-workbench-repair--2026-11-13)
+lists the remaining beam, column, slab and project cases. Earlier installed
+profiles are development evidence. Qualification requires a new exact wheel
+and source archive from the integrated candidate.
+
+The [verified public install](release-status.md) remains 0.28.2.

@@ -29,6 +29,20 @@ IS456_CODE_EDITION = "IS 456:2000"
 
 
 @dataclass(frozen=True)
+class IS456PythonProfile:
+    """An admitted family-facade operation and its distinct applicability."""
+
+    workflow_id: str
+    module: str
+    loader: str
+    operation: str
+    request_schema: str
+    supported_case: str
+    guide: str
+    example: str
+
+
+@dataclass(frozen=True)
 class IS456Capability:
     """One intentionally supported public workflow and its held boundary."""
 
@@ -37,6 +51,7 @@ class IS456Capability:
     supported_case: str
     held_cases: tuple[str, ...]
     qualified_review_required: bool
+    python_profiles: tuple[IS456PythonProfile, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -113,10 +128,13 @@ _CAPABILITIES = (
             "N/mm2, plus maintained Level-A deflection and crack-width checks when "
             "their explicit inputs are supplied; and monolithic sagging T-beam "
             "flexure with effective-flange-width calculation, web shear, and the "
-            "same explicit serviceability boundary."
+            "same explicit serviceability boundary. The separate continuous-beam "
+            "Python profile checks signed sagging and hogging, shear, and straight "
+            "anchorage against declared concurrent rows for two rectangular spans."
         ),
         held_cases=(
-            "L-beam, hogging/flange-in-tension, flanged torsion, hollow/box, deep, prestressed, or axially loaded cases are excluded.",
+            "L-beam, flanged hogging, flanged torsion, hollow/box, deep, prestressed, or axially loaded cases are excluded.",
+            "The two-span Python profile requires supplied concurrent actions and holds stale or missing rows and anchorage. Serviceability, source-model completeness and fabrication are separate checks.",
             "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
             "Load-envelope generation and completeness validation are excluded; the flanged route accepts only declared supplied factored actions.",
             "Composed flanged detailing remains excluded.",
@@ -124,6 +142,18 @@ _CAPABILITIES = (
             "Serviceability is held unless span, support condition, crack geometry, and service strain or stress are explicitly supplied.",
         ),
         qualified_review_required=True,
+        python_profiles=(
+            IS456PythonProfile(
+                "is456.beam.continuous-check/v1",
+                "structural_lib.design.is456.beam",
+                "load_continuous",
+                "check_continuous",
+                "is456-continuous-beam-check/v1",
+                "Two-span prismatic rectangular beam with actual single-layer face bars, supplied concurrent signed actions and straight support anchorage. Service rows are retained for separate review.",
+                "docs/cookbook/python/continuous-beam-check.md",
+                "Python/examples/continuous_beam_check.py",
+            ),
+        ),
     ),
     IS456Capability(
         element="column",
@@ -133,17 +163,91 @@ _CAPABILITIES = (
             "uniaxial or biaxial bending, using one total longitudinal-steel area "
             "split equally between two opposite faces at one centroidal depth; "
             "short and slender member routes are selected by the declared IS 456 "
-            "effective-length inputs. The four-corner facade also resolves four "
-            "equal physical bars inside a supplied ordinary closed rectangular "
-            "tie for one short braced principal-axis strength and cage check."
+            "effective-length inputs. Separate Python family-facade profiles check "
+            "physical four-, six-, eight- and mixed-bar cages, scoped slender rectangles, "
+            "short circular cages with closed rings or spirals, and finite catalogue "
+            "selection and member detailing for short eight-bar rectangles."
         ),
         held_cases=(
-            "Circular-section column design is excluded; the separate supplied-helix check does not constitute a circular-column design workflow.",
-            "Asymmetric and arbitrary multilayer reinforcement layouts are excluded. Physical corner resolution is limited to four equal bars in the named short braced profile.",
+            "Circular-section column design outside the short braced regular-bar-ring check remains held, including slender members and automatic cage selection.",
+            "General arbitrary multilayer cages outside the named positioned-bar and restraint profiles remain held.",
             "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
-            "Load-envelope generation, frame analysis, effective-length derivation beyond the declared end-condition model, and automatic reinforcement sizing are excluded.",
+            "Load-envelope generation, frame analysis, and effective-length derivation beyond the declared end-condition model are excluded. Automatic sizing outside the finite eight-bar rectangular profile remains held.",
+            "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway and member-wide detailing of slender cages remain outside this profile.",
         ),
         qualified_review_required=True,
+        python_profiles=(
+            IS456PythonProfile(
+                "is456.column.four-corner-member-check/v1",
+                "structural_lib.design.is456.column",
+                "load_four_corner_member",
+                "check_four_corner_member",
+                "column-four-corner-member-input/v1",
+                "Four equal corner bars, ordinary closed tie and one principal-axis short braced check.",
+                "docs/cookbook/python/column-four-corner-member-check.md",
+                "Python/examples/four_corner_column_member.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.tied-rectangular-member-check/v1",
+                "structural_lib.design.is456.column",
+                "load_tied_rectangular_member",
+                "check_tied_rectangular_member",
+                "column-tied-rectangular-member-input/v1",
+                "Six or eight equal bars, explicit midpoint links and one signed concurrent short-member station.",
+                "docs/cookbook/python/column-four-corner-member-check.md#six-and-eight-bar-tied-rectangles",
+                "Python/examples/tied_rectangular_column_member.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.positioned-rectangular-member-check/v1",
+                "structural_lib.design.is456.column",
+                "load_positioned_rectangular_member",
+                "check_positioned_rectangular_member",
+                "column-positioned-rectangular-member-input/v1",
+                "Nine to 32 explicitly positioned bars, mixed diameters, aligned open links and one short braced station.",
+                "docs/cookbook/python/column-four-corner-member-check.md#positioned-mixed-bar-rectangles",
+                "Python/examples/positioned_rectangular_column_member.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.slender-rectangular-member-check/v1",
+                "structural_lib.design.is456.column",
+                "load_slender_rectangular_member",
+                "check_slender_rectangular_member",
+                "column-slender-rectangular-member-input/v1",
+                "Actual tied or positioned rectangular cage with axis-specific slenderness. One compression combination using braced first-order ends with unreduced additions or supplied deflection-aware critical stations.",
+                "docs/cookbook/python/column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars",
+                "Python/examples/slender_rectangular_column_member.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.circular-member-check/v1",
+                "structural_lib.design.is456.column",
+                "load_circular_member",
+                "check_circular_member",
+                "column-circular-member-input/v1",
+                "Short braced circular column with 6–32 equal bars in one ring, a closed ring or spiral, and one concurrent compressive action pair. Spiral enhancement is scoped to eligible short axial checks.",
+                "docs/cookbook/python/circular-column-member-check.md",
+                "Python/examples/circular_column_member.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.catalogue-selection/v1",
+                "structural_lib.design.is456.column",
+                "load_column_catalogue",
+                "select_column_from_catalogue",
+                "column-catalogue-selection-input/v1",
+                "Finite selection of short braced rectangular sizes, eight equal longitudinal bars and explicit hoop/link options. Checks supplied signed combinations and holds a candidate that needs refreshed analysis.",
+                "docs/cookbook/python/column-catalogue-selection.md",
+                "Python/examples/column_catalogue_selection.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.member-detailing/v1",
+                "structural_lib.design.is456.column",
+                "load_column_member_detailing",
+                "check_column_member_detailing",
+                "column-member-detailing-input/v1",
+                "Short braced eight-bar tied rectangles with principal-plane shear, tie zones and straight end development. Supported straight contact splices of opposing side midpoints or the C1/C2 corner pair include physical restraint, congestion, report, drawing and BBS checks.",
+                "docs/cookbook/python/column-member-detailing.md",
+                "Python/examples/column_member_detailing.py",
+            ),
+        ),
     ),
     IS456Capability(
         element="isolated_footing",

@@ -17,10 +17,10 @@ def test_contract_matrix_has_no_unowned_or_unresolved_components():
     matrix = audit.build_matrix()
     assert matrix["counts"] == {
         "surfaces": 14,
-        "projections": 1323,
+        "projections": 1368,
         "operations": 92,
         "paths": 91,
-        "components": 490,
+        "components": 491,
         "family_fields": 564,
     }
     assert all(item["operations"] and item["name"] for item in matrix["components"])

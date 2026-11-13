@@ -1,4 +1,4 @@
-"""Supplied-steel column member checks and prescribed section response."""
+"""Physical column checks, finite catalogue selection and section response."""
 
 from __future__ import annotations
 
@@ -20,24 +20,88 @@ from structural_lib.services.canonical_family import (
     translate_owner_input_error,
 )
 from structural_lib.services.column_api import ColumnDesignResult, design_column_is456
+from structural_lib.services.column_candidate_search import (
+    render_column_catalogue_html as _render_column_catalogue_html,
+)
+from structural_lib.services.column_candidate_search import (
+    render_column_catalogue_svg as _render_column_catalogue_svg,
+)
+from structural_lib.services.column_candidate_search import (
+    select_column_from_catalogue as _select_column_from_catalogue,
+)
+from structural_lib.services.column_circular_member import (
+    check_circular_member as _check_circular_member,
+)
+from structural_lib.services.column_circular_member import (
+    render_circular_member_html as _render_circular_member_html,
+)
+from structural_lib.services.column_circular_member import (
+    render_circular_member_svg as _render_circular_member_svg,
+)
 from structural_lib.services.column_member import (
     check_four_corner_member as _check_four_corner_member,
 )
 from structural_lib.services.column_member import (
     render_four_corner_member_html as _render_four_corner_member_html,
 )
+from structural_lib.services.column_member_detailing import (
+    check_column_member_detailing as _check_column_member_detailing,
+)
+from structural_lib.services.column_member_outputs import (
+    render_column_member_bbs_csv as _render_column_member_bbs_csv,
+)
+from structural_lib.services.column_member_outputs import (
+    render_column_member_detailing_html as _render_column_member_detailing_html,
+)
+from structural_lib.services.column_member_outputs import (
+    render_column_member_detailing_svg as _render_column_member_detailing_svg,
+)
+from structural_lib.services.column_positioned_member import (
+    check_positioned_rectangular_member as _check_positioned_rectangular_member,
+)
+from structural_lib.services.column_positioned_member import (
+    render_positioned_rectangular_member_html as _render_positioned_rectangular_member_html,
+)
+from structural_lib.services.column_slender_member import (
+    check_slender_rectangular_member as _check_slender_rectangular_member,
+)
+from structural_lib.services.column_slender_member import (
+    render_slender_rectangular_member_html as _render_slender_rectangular_member_html,
+)
+from structural_lib.services.column_slender_member import (
+    render_slender_rectangular_member_svg as _render_slender_rectangular_member_svg,
+)
+from structural_lib.services.column_tied_member import (
+    check_tied_rectangular_member as _check_tied_rectangular_member,
+)
+from structural_lib.services.column_tied_member import (
+    render_tied_rectangular_member_html as _render_tied_rectangular_member_html,
+)
+from structural_lib.services.contracts.column_catalogue import ColumnCatalogueInputV1
+from structural_lib.services.contracts.column_circular import CircularColumnInputV1
 from structural_lib.services.contracts.column_member import (
     ColumnClosedTieV1,
+    ColumnMidpointCrossTieV1,
     FourCornerColumnActionsV1,
     FourCornerColumnGeometryV1,
     FourCornerColumnInputV1,
     FourCornerColumnReinforcementV1,
+    PositionedRectangularColumnInputV1,
+    RectangularColumnActionsV1,
+    RectangularColumnCageV1,
+    TiedRectangularColumnInputV1,
+)
+from structural_lib.services.contracts.column_member_detailing import (
+    ColumnMemberDetailingInputV1,
 )
 from structural_lib.services.contracts.column_section import (
     ColumnSectionInputV1,
     ColumnSectionLayerResponseV1,
     ColumnSectionLayerV1,
     ColumnSectionResponseV1,
+)
+from structural_lib.services.contracts.column_slender import (
+    SlenderRectangularColumnInputV1,
 )
 from structural_lib.services.contracts.common import (
     model_validate_json_or_error,
@@ -53,6 +117,9 @@ from structural_lib.services.contracts.family_f1 import (
 
 __all__ = [
     "ColumnDesignResult",
+    "CircularColumnInputV1",
+    "ColumnCatalogueInputV1",
+    "ColumnMemberDetailingInputV1",
     "FamilyIdentityV1",
     "CanonicalFamilyResultV1",
     "ColumnActionsV1",
@@ -65,14 +132,23 @@ __all__ = [
     "ColumnSectionLayerV1",
     "ColumnSectionResponseV1",
     "ColumnClosedTieV1",
+    "ColumnMidpointCrossTieV1",
     "FourCornerColumnActionsV1",
     "FourCornerColumnGeometryV1",
     "FourCornerColumnInputV1",
     "FourCornerColumnReinforcementV1",
+    "PositionedRectangularColumnInputV1",
+    "SlenderRectangularColumnInputV1",
+    "RectangularColumnActionsV1",
+    "RectangularColumnCageV1",
+    "TiedRectangularColumnInputV1",
     "InputContractError",
     "InputIssueV1",
     "check",
     "check_four_corner_member",
+    "check_circular_member",
+    "check_tied_rectangular_member",
+    "check_positioned_rectangular_member",
     "design",
     "input",
     "layered_section_response",
@@ -80,8 +156,853 @@ __all__ = [
     "load_json",
     "load_layered_section",
     "load_four_corner_member",
+    "load_circular_member",
+    "load_column_catalogue",
+    "load_column_member_detailing",
+    "check_column_member_detailing",
+    "render_column_member_detailing_html",
+    "render_column_member_detailing_svg",
+    "render_column_member_bbs_csv",
+    "select_column_from_catalogue",
+    "render_column_catalogue_html",
+    "render_column_catalogue_svg",
+    "render_circular_member_html",
+    "render_circular_member_svg",
     "render_four_corner_member_html",
+    "load_tied_rectangular_member",
+    "load_positioned_rectangular_member",
+    "render_tied_rectangular_member_html",
+    "render_positioned_rectangular_member_html",
+    "load_slender_rectangular_member",
+    "check_slender_rectangular_member",
+    "render_slender_rectangular_member_html",
+    "render_slender_rectangular_member_svg",
 ]
+
+
+def load_column_member_detailing(
+    value: Mapping[str, object] | str | bytes | ColumnMemberDetailingInputV1,
+) -> ColumnMemberDetailingInputV1:
+    """Load the physical member, tie grid and supplied actions.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or ColumnMemberDetailingInputV1
+        Member request or its JSON representation.
+
+    Returns
+    -------
+    ColumnMemberDetailingInputV1
+        Validated immutable member request.
+
+    Raises
+    ------
+    InputContractError
+        The request violates the input contract.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    Uses mm, kN, kNm and N/mm². Member actions and project detail evidence are supplied.
+
+    Provenance
+    ----------
+    Versioned COL07 member input contract.
+    """
+    if isinstance(value, ColumnMemberDetailingInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(ColumnMemberDetailingInputV1, value)
+    return model_validate_or_error(ColumnMemberDetailingInputV1, value)
+
+
+def check_column_member_detailing(
+    request: ColumnMemberDetailingInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check the member's supplied actions and physical detailing.
+
+    Parameters
+    ----------
+    request : ColumnMemberDetailingInputV1
+        Validated request from load_column_member_detailing.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Station strength and shear, tie zones, end development, splice checks and BBS disposition.
+
+    Raises
+    ------
+    InputContractError
+        A validated typed request is required.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    Ordinary short tied eight-bar rectangles. Physical laps admit one opposing side-midpoint or C1/C2 contact group.
+
+    Provenance
+    ----------
+    IS 456 Cl. 26.2, 26.5.3.2 and Cl. 40, Tables 19 and 20.
+    """
+    return _check_column_member_detailing(request)
+
+
+def render_column_member_detailing_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the member report and checked reinforcement schedule.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of check_column_member_detailing.
+
+    Returns
+    -------
+    str
+        HTML report including section, signed actions, checks and available BBS.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the column member detailing workflow.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    The report covers only the supplied action and detailing basis.
+
+    Provenance
+    ----------
+    Projects the checked result without recalculation.
+    """
+    return _render_column_member_detailing_html(result)
+
+
+def render_column_member_detailing_svg(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Draw the section and member elevation with checked tie levels.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of check_column_member_detailing.
+
+    Returns
+    -------
+    str
+        SVG showing the input identity, revisions and engineering status.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the column member detailing workflow.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    The section cuts show the checked contact links. The closed hoop uses a supplied fabrication basis.
+
+    Provenance
+    ----------
+    Projects checked bar coordinates and transverse stations.
+    """
+    return _render_column_member_detailing_svg(result)
+
+
+def render_column_member_bbs_csv(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str | None:
+    """Export the checked member bar bending schedule.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of check_column_member_detailing.
+
+    Returns
+    -------
+    str | None
+        CSV tied to the checked member or None when mandatory checks are held or failed.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the column member detailing workflow.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    The supplied register supplies the hoop cut. Checked contact links use their centreline lengths.
+
+    Provenance
+    ----------
+    Checked station quantities and declared cut lengths; steel mass uses the shared BBS calculation.
+    """
+    return _render_column_member_bbs_csv(result)
+
+
+def load_column_catalogue(
+    value: Mapping[str, object] | str | bytes | ColumnCatalogueInputV1,
+) -> ColumnCatalogueInputV1:
+    """Load the candidate catalogue, analysis basis and concurrent actions.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or ColumnCatalogueInputV1
+        Approved oriented sizes, bar diameters and tie options with signed rows.
+
+    Returns
+    -------
+    ColumnCatalogueInputV1
+        Validated immutable request.
+
+    Raises
+    ------
+    InputContractError
+        Invalid inputs, duplicate identifiers or a catalogue outside the bounds.
+
+    Examples
+    --------
+    See Python/examples/column_catalogue_selection.py for a complete input.
+
+    Limitations
+    -----------
+    At most 128 candidates and eight supplied action rows. Uses mm, MPa, kN and kNm.
+
+    Provenance
+    ----------
+    COL06 finite catalogue contract and the physical tied rectangular profile.
+    """
+    if isinstance(value, ColumnCatalogueInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(ColumnCatalogueInputV1, value)
+    return model_validate_or_error(ColumnCatalogueInputV1, value)
+
+
+def select_column_from_catalogue(
+    request: ColumnCatalogueInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Rank the supplied options and check each required action row.
+
+    Parameters
+    ----------
+    request : ColumnCatalogueInputV1
+        Validated catalogue from load_column_catalogue.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Evaluated candidates, terminal search state, and selection if resolved.
+
+    Raises
+    ------
+    InputContractError
+        A validated typed request is required.
+
+    Examples
+    --------
+    Pass the result of load_column_catalogue to select_column_from_catalogue.
+
+    Limitations
+    -----------
+    Short braced eight-bar rectangles only. An incompatible or stale analysis
+    basis leaves a locally feasible candidate on HOLD.
+
+    Provenance
+    ----------
+    COL06 catalogue rank and the existing IS 456 tied rectangular member checks.
+    """
+    return _select_column_from_catalogue(request)
+
+
+def render_column_catalogue_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Show the outcome, all evaluated candidates and the governing section.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of select_column_from_catalogue.
+
+    Returns
+    -------
+    str
+        HTML with actions, per-row checks and the selected section when available.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the catalogue workflow.
+
+    Examples
+    --------
+    See Python/examples/column_catalogue_selection.py.
+
+    Limitations
+    -----------
+    The report covers the supplied catalogue, combinations and local cage only.
+
+    Provenance
+    ----------
+    Uses the existing result and the checked governing cage without recalculation.
+    """
+    return _render_column_catalogue_html(result)
+
+
+def render_column_catalogue_svg(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str | None:
+    """Draw the selected local section from its governing check.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result of select_column_from_catalogue.
+
+    Returns
+    -------
+    str or None
+        SVG with the result status, or None when no candidate is selected.
+
+    Raises
+    ------
+    TypeError
+        The result must come from the catalogue workflow.
+
+    Examples
+    --------
+    See Python/examples/column_catalogue_selection.py.
+
+    Limitations
+    -----------
+    The cross-section shows restraints at their local projected positions.
+    A HOLD drawing is provisional; member-wide detailing is outside this scope.
+
+    Provenance
+    ----------
+    Projects the checked local bar and link coordinates without recalculation.
+    """
+    return _render_column_catalogue_svg(result)
+
+
+def load_circular_member(
+    value: Mapping[str, object] | str | bytes | CircularColumnInputV1,
+) -> CircularColumnInputV1:
+    """Load a circular bar cage and its concurrent station actions.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or CircularColumnInputV1
+        Diameter, uniform bar ring, transverse reinforcement and signed actions.
+
+    Returns
+    -------
+    CircularColumnInputV1
+        Validated immutable request.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, circular geometry or a station outside the member.
+
+    Examples
+    --------
+    Run Python/examples/circular_column_member.py.
+
+    Limitations
+    -----------
+    One concurrent compression combination at a short braced circular station.
+
+    Provenance
+    ----------
+    CircularColumnInputV1 owns the versioned input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(CircularColumnInputV1, value)
+    return model_validate_or_error(CircularColumnInputV1, value)
+
+
+def check_circular_member(
+    request: CircularColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check circular section strength and the actual local restraint.
+
+    Parameters
+    ----------
+    request : CircularColumnInputV1
+        Validated circular cage and simultaneous compression and signed moments.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Separate restraint and strength results with checked circular geometry.
+
+    Raises
+    ------
+    InputContractError
+        The check requires a typed circular member request.
+
+    Examples
+    --------
+    Pass the result of load_circular_member.
+
+    Limitations
+    -----------
+    The spiral factor applies to the admitted short axial method.
+    Slender and seismic checks require separate profiles.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 25.1–25.4, 26.5.3.2, 38.1 and 39.1–39.7.
+    """
+    return _check_circular_member(request)
+
+
+def render_circular_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the circular-member result and checked cage.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_circular_member.
+
+    Returns
+    -------
+    str
+        HTML report with the same input hash as the checked result.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    See Python/examples/circular_column_member.py.
+
+    Limitations
+    -----------
+    The drawing describes the checked local section.
+
+    Provenance
+    ----------
+    All displayed engineering values come from the supplied result.
+    """
+    return _render_circular_member_html(result)
+
+
+def render_circular_member_svg(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Draw the checked local column section as standalone SVG.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_circular_member.
+
+    Returns
+    -------
+    str
+        SVG with bar and transverse identities and the result's input hash.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    See Python/examples/circular_column_member.py.
+
+    Limitations
+    -----------
+    Local cross section and projected transverse reinforcement.
+
+    Provenance
+    ----------
+    The drawing uses the supplied checked cage without recomputing it.
+    """
+    return _render_circular_member_svg(result)
+
+
+def load_slender_rectangular_member(
+    value: Mapping[str, object] | str | bytes | SlenderRectangularColumnInputV1,
+) -> SlenderRectangularColumnInputV1:
+    """Load an actual rectangular cage and its slender-member actions.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or SlenderRectangularColumnInputV1
+        Physical geometry, axis-specific restraint, signed actions and analysis revision.
+
+    Returns
+    -------
+    SlenderRectangularColumnInputV1
+        Validated immutable request.
+
+    Raises
+    ------
+    InputContractError
+        Invalid fields, cage geometry or conflicting action representations.
+
+    Examples
+    --------
+    Run Python/examples/slender_rectangular_column_member.py.
+
+    Limitations
+    -----------
+    One concurrent compressive combination on a prismatic braced column.
+
+    Provenance
+    ----------
+    SlenderRectangularColumnInputV1 owns the versioned input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(SlenderRectangularColumnInputV1, value)
+    return model_validate_or_error(SlenderRectangularColumnInputV1, value)
+
+
+def check_slender_rectangular_member(
+    request: SlenderRectangularColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check the signed member actions and local reinforcement restraint.
+
+    Parameters
+    ----------
+    request : SlenderRectangularColumnInputV1
+        Validated end actions or supplied deflection-aware station actions.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Axis classifications, signed checked actions, restraint and governing strength.
+
+    Raises
+    ------
+    InputContractError
+        The check requires a typed slender rectangular request.
+
+    Examples
+    --------
+    Pass the result of load_slender_rectangular_member.
+
+    Limitations
+    -----------
+    First-order additions are unreduced and require no transverse member load.
+    Global stability and member-wide fabrication are outside this profile.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 25.1–25.4, 26.5.3.2, 38.1 and 39.1–39.7.
+    """
+    return _check_slender_rectangular_member(request)
+
+
+def render_slender_rectangular_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the slender-member result, governing actions and checked cage.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_slender_rectangular_member.
+
+    Returns
+    -------
+    str
+        HTML report with the same input hash as the checked result.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    See Python/examples/slender_rectangular_column_member.py.
+
+    Limitations
+    -----------
+    The drawing describes the checked local section.
+
+    Provenance
+    ----------
+    All displayed engineering values come from the supplied result.
+    """
+    return _render_slender_rectangular_member_html(result)
+
+
+def render_slender_rectangular_member_svg(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Draw the checked local column section as standalone SVG.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        Result from check_slender_rectangular_member.
+
+    Returns
+    -------
+    str
+        SVG with checked bar and link identities and the result's input hash.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to another workflow.
+
+    Examples
+    --------
+    See Python/examples/slender_rectangular_column_member.py.
+
+    Limitations
+    -----------
+    Local cross section and projected links.
+
+    Provenance
+    ----------
+    The drawing uses the supplied checked cage without recomputing it.
+    """
+    return _render_slender_rectangular_member_svg(result)
+
+
+def load_positioned_rectangular_member(
+    value: Mapping[str, object] | str | bytes | PositionedRectangularColumnInputV1,
+) -> PositionedRectangularColumnInputV1:
+    """Load one explicit mixed-bar cage and signed member demand.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or PositionedRectangularColumnInputV1
+        Section, individual bars, supplied tie paths and factored station actions.
+
+    Returns
+    -------
+    PositionedRectangularColumnInputV1
+        An immutable versioned request.
+
+    Raises
+    ------
+    InputContractError
+        The request is malformed or contains overlapping bar geometry.
+
+    Examples
+    --------
+    Run Python/examples/positioned_rectangular_column_member.py.
+
+    Limitations
+    -----------
+    The profile admits 9–32 positioned bars and aligned open links.
+
+    Provenance
+    ----------
+    PositionedRectangularColumnInputV1 owns the strict input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(PositionedRectangularColumnInputV1, value)
+    return model_validate_or_error(PositionedRectangularColumnInputV1, value)
+
+
+def check_positioned_rectangular_member(
+    request: PositionedRectangularColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check strength and restraint for the actual positioned column cage.
+
+    Parameters
+    ----------
+    request : PositionedRectangularColumnInputV1
+        One rectangular cage and its concurrent factored action pair.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Separate strength and restraint dispositions with checked bar and link data.
+
+    Raises
+    ------
+    InputContractError
+        The operation requires a typed positioned rectangular request.
+
+    Examples
+    --------
+    Check the result of load_positioned_rectangular_member.
+
+    Limitations
+    -----------
+    A single short braced station with supported tie geometry is checked.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 25.4, 26.5.3.2, 38.1, 39.1, 39.5 and 39.6.
+    """
+    return _check_positioned_rectangular_member(request)
+
+
+def render_positioned_rectangular_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the checked positioned cage and its section results.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        The positioned rectangular member result.
+
+    Returns
+    -------
+    str
+        HTML with the original identities, cage, local restraint and strength.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to a different workflow.
+
+    Examples
+    --------
+    Run the positioned rectangular member example with --output-dir.
+
+    Limitations
+    -----------
+    The drawing covers the checked cross section.
+
+    Provenance
+    ----------
+    The original canonical result supplies all rendered values.
+    """
+    return _render_positioned_rectangular_member_html(result)
+
+
+def load_tied_rectangular_member(
+    value: Mapping[str, object] | str | bytes | TiedRectangularColumnInputV1,
+) -> TiedRectangularColumnInputV1:
+    """Load the eight-bar or either oriented six-bar tied member request.
+
+    Parameters
+    ----------
+    value : Mapping[str, object] or str or bytes or TiedRectangularColumnInputV1
+        Section, checked station, signed factored actions and tie schedule.
+
+    Returns
+    -------
+    TiedRectangularColumnInputV1
+        An immutable versioned request.
+
+    Raises
+    ------
+    InputContractError
+        Invalid JSON, unsupported layout or inadmissible request fields.
+
+    Examples
+    --------
+    Run Python/examples/tied_rectangular_column_member.py with a layout flag.
+
+    Limitations
+    -----------
+    The three symmetric equal-bar layouts use one supplied action pair.
+
+    Provenance
+    ----------
+    TiedRectangularColumnInputV1 owns the strict input contract.
+    """
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(TiedRectangularColumnInputV1, value)
+    return model_validate_or_error(TiedRectangularColumnInputV1, value)
+
+
+def check_tied_rectangular_member(
+    request: TiedRectangularColumnInputV1,
+) -> CanonicalFamilyResultV1[dict[str, object]]:
+    """Check a supplied factored action pair and its actual short-member cage.
+
+    Parameters
+    ----------
+    request : TiedRectangularColumnInputV1
+        A validated geometry, cage and simultaneous axial and moment demand.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Check dispositions, positioned bars, fixed-load capacities and restraint.
+
+    Raises
+    ------
+    InputContractError
+        The operation requires a typed tied rectangular request.
+
+    Examples
+    --------
+    Pass the result of load_tied_rectangular_member to this check.
+
+    Limitations
+    -----------
+    The strength profile admits a short braced member in partial compression.
+
+    Provenance
+    ----------
+    IS 456:2000 Cl. 25.4, Cl. 26.5.3.2, Cl. 39.5 and Cl. 39.6.
+    """
+    return _check_tied_rectangular_member(request)
+
+
+def render_tied_rectangular_member_html(
+    result: CanonicalFamilyResultV1[dict[str, object]],
+) -> str:
+    """Render the checked section, restraint paths, inputs and verdict.
+
+    Parameters
+    ----------
+    result : CanonicalFamilyResultV1
+        The tied rectangular check result.
+
+    Returns
+    -------
+    str
+        HTML with the result's identities and checked section schematic.
+
+    Raises
+    ------
+    TypeError
+        The result belongs to a different workflow.
+
+    Examples
+    --------
+    Run the tied rectangular member example with --output-dir.
+
+    Limitations
+    -----------
+    The schematic covers the checked section and local restraint paths.
+
+    Provenance
+    ----------
+    The renderer consumes the original canonical result without recalculation.
+    """
+    return _render_tied_rectangular_member_html(result)
 
 
 def load_four_corner_member(

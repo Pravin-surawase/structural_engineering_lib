@@ -105,3 +105,149 @@ comparison tolerances. [Independent fixture](../../verification/library-027-four
 ```bash
 python docs/verification/check_library_027_four_corner_reference.py
 ```
+
+
+## Six- and eight-bar tied rectangles
+
+The 0.29 source supports eight equal longitudinal bars, six bars with the
+left/right face midpoints omitted, and six bars with the top/bottom face
+midpoints omitted. Use the separate `column.load_tied_rectangular_member` and
+`column.check_tied_rectangular_member` entry points. Inspect the complete
+request schema through `column.TiedRectangularColumnInputV1.model_json_schema()`.
+
+Run the [example](../../../Python/examples/tied_rectangular_column_member.py)
+against the 0.29 checkout or a local 0.29 installation.
+
+```bash
+python Python/examples/tied_rectangular_column_member.py --layout eight_bar --mx 50 --my 35 --output-dir column-output
+python Python/examples/tied_rectangular_column_member.py --layout six_bar_omit_x_face_midpoints --mx -50 --my 35
+python Python/examples/tied_rectangular_column_member.py --layout six_bar_omit_y_face_midpoints --mx 0 --my 50
+```
+
+Supply one factored compressive action and its simultaneous signed moments at
+the checked station. Positive Mx compresses the top and positive My compresses
+the left, using the same top-left coordinates as the cage. The strength result
+reports each actual bar's contribution and the fixed-axial-load residual. It
+checks the supplied pair using IS 456 Cl. 39.6 and compares the Cl. 25.4
+minimum eccentricity independently on each principal axis.
+
+The closed perimeter tie's schedule specifies diameter, pitch, bend radius,
+and both end hooks for the open midpoint links. Identify each link by its
+two opposite midpoint bars and axial offset within the pitch. The perimeter
+tie and links occupy separate levels. The supported corner inset past the
+inside tie face and bar radius is 0–2 mm. The checks cover bar fit, restraint
+span, hook fit and clear spacing. Missing tie evidence produces HOLD and an
+inadequate supplied detail produces FAIL. The scoped strength check is also
+held if either axis is outside partial compression.
+
+The JSON and HTML share the request hash, bar IDs and restraint paths. The
+section schematic shows the checked cross section. Member-wide scheduling,
+fabrication lengths, laps and joints require separate evidence.
+
+| Cage | Mx capacity at 500 kN | My capacity at 500 kN |
+|---|---:|---:|
+| Eight bars | 152.541 kN·m | 102.738 kN·m |
+| Six bars, left/right midpoints omitted | 152.469 kN·m | 84.176 kN·m |
+| Six bars, top/bottom midpoints omitted | 122.595 kN·m | 102.711 kN·m |
+
+The [independent case record](../../verification/library-029-col02-rectangular-column.json)
+defines the exact dimensions, material laws, tie schedule, expected values
+and negative controls. The earlier four-corner request and report remain
+available through their existing entry points.
+
+## Positioned mixed-bar rectangles
+
+Use `column.load_positioned_rectangular_member` and
+`column.check_positioned_rectangular_member` for a short braced rectangular
+column with 9–32 explicitly positioned bars. Supply each bar's ID, diameter,
+centre measured from the top and left, and outer or inner row. The bars use
+one common longitudinal steel grade. The complete request schema is available
+from `column.PositionedRectangularColumnInputV1.model_json_schema()`.
+
+Supply the simultaneous factored compression and signed moments at one
+station. Positive Mx compresses the top and positive My compresses the left.
+At the supplied axial force, the solver finds each signed principal capacity
+at zero orthogonal moment. The strength verdict uses the Cl. 39.6 interaction,
+the capacity along the demand direction, and adverse signed minimum-eccentricity
+checks. A failed local restraint check still leaves the section strength
+available for diagnosis.
+
+Supply a closed hoop and explicit open links between aligned bars on opposite
+faces. Each outer intermediate bar needs a checked link. The hoop and links
+lie at separate transverse levels within the pitch. Inner-row restraint uses
+the checked outer row and the concrete-face clearance required by
+IS 456 Cl. 26.5.3.2(b)(3). The result includes local counts by diameter, open-link
+centreline lengths, and an HTML section schematic via
+`column.render_positioned_rectangular_member_html`. Joint anchorage, laps and
+member-wide fabrication quantities require separate checks.
+
+Run the [example](../../../Python/examples/positioned_rectangular_column_member.py)
+from the 0.29 checkout, or use it with a local 0.29 installation.
+
+```bash
+python Python/examples/positioned_rectangular_column_member.py --case admitted_12_bar --output-dir column-output
+python Python/examples/positioned_rectangular_column_member.py --case original_50_mm
+```
+
+The admitted 450 × 550 mm cage has four Ø20 and eight Ø16 bars. At
+`Pu = 800 kN`, the signed axis capacity magnitudes are 377.728 and
+405.477 kN·m for positive and negative Mx, and 284.091 and 283.752 kN·m
+for positive and negative My. The original 50 mm layout fails local
+restraint. The [independent case record](../../verification/library-029-col03-mixed-column.json)
+includes the geometry, centre-reflected cage and fivefold action case.
+
+## Slender rectangular columns with actual bars
+
+Use this workflow for one factored compression combination on a prismatic,
+braced rectangular column. It accepts the existing six- or eight-bar tied
+cage and the positioned cage with aligned links. Use
+`column.load_slender_rectangular_member` to load the request,
+`column.check_slender_rectangular_member` to check it, and the HTML and SVG
+renderers to view the same result. The field schema is available through
+`column.SlenderRectangularColumnInputV1.model_json_schema()`.
+
+Verify the version and origin of the package with
+`python -m structural_lib install-preflight --json`. The candidate
+workflow appears in `python -m structural_lib capabilities --json` under
+the column Python profiles. With the matching candidate installed, copy the
+[example](../../../Python/examples/slender_rectangular_column_member.py)
+and [frozen JSON](../../verification/library-029-col04-slender-column.json)
+into a working directory and run:
+
+```bash
+python slender_rectangular_column_member.py --reference library-029-col04-slender-column.json --case minor_slender --output-dir column-output
+```
+
+Open `column-output/report.html` and `section.svg`. The report, drawing
+and `result.json` share the input hash. The section identifies bars and ties.
+The HTML also lists the action basis, analysis revision, checked moment pairs,
+axis restraints and governing result.
+
+### Worked first-order case
+
+The 300 × 400 mm section has eight Ø20 bars and 500 kN axial compression.
+The effective lengths are 3900 mm on x and 6000 mm on y, giving
+slenderness ratios 9.75 and 20.0. Only y receives an additional moment.
+The unsupported length used for minimum eccentricity is 6000 mm on both
+axes, giving eccentricities 25.333 mm and 22.000 mm.
+
+The signed end pairs at A and B are (−60, +25) and (−30, −25) kN·m.
+The y moments reverse sign. The braced initial moment magnitude is
+10 kN·m and the unreduced y addition is 30 kN·m, giving a 40 kN·m
+equivalent component. The report keeps the two physical end pairs and
+checks the equivalent (−60, −40) and (−60, +40) pairs without station
+locations. The governing utilization is **0.73794**, with separate
+minimum-eccentricity and local restraint results. The [independent replay](../../verification/check_library_029_col04_reference.py)
+checks the signed capacities and action calculations against the frozen record.
+
+Repeat with `--case overload` for strength FAIL, `--case stale_revision`
+for HOLD, and `--case conflicting_summary` for a structured input error.
+Use `--case supplied_second_order` to see the interior station govern using
+the supplied deflection-aware actions with zero further addition. For a
+custom check, save one complete request and pass it with `--input`.
+
+First-order inputs need an explicit declaration of no transverse member
+load. Supplied second-order inputs need a local-deflection basis, the current
+analysis revision and the required critical stations. This profile uses
+unreduced additional moments. Global sway, member shear, joint anchorage,
+splices and member-wide fabrication have separate scope.

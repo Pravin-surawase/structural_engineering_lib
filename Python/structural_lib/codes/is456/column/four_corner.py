@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import pi
+from typing import Literal
 
 from structural_lib.codes.is456.beam.detailing import check_min_spacing
 from structural_lib.core.geometry import circle_inside_rounded_rectangle
@@ -62,23 +63,39 @@ def evaluate_four_corner_cage(
     tie_closed: bool,
     tie_hook_angle_deg: float,
     tie_hook_tail_mm: float,
+    midpoint_axes: tuple[Literal["x", "y"], ...] = (),
 ) -> FourCornerCage:
-    """Resolve four corner centres and check the actual supplied cage."""
+    """Resolve the perimeter tie's corners and any selected face-midpoint pairs.
+
+    This checks enclosure and spacing. A separate check must establish
+    restraint for the midpoint bars.
+    """
     area = pi * bar_diameter_mm**2 / 4
-    steel = 4 * area
-    ratio, minimum_ok, maximum_ok, _ = check_longitudinal_limits(b_mm * D_mm, steel)
     offset = nominal_cover_mm + tie_diameter_mm + bar_diameter_mm / 2 + corner_inset_mm
-    bar_coordinates = (
-        (offset, offset),
-        (b_mm - offset, offset),
-        (b_mm - offset, D_mm - offset),
-        (offset, D_mm - offset),
-    )
+    bar_coordinates = [
+        ("C1", offset, offset),
+        ("C2", b_mm - offset, offset),
+        ("C3", b_mm - offset, D_mm - offset),
+        ("C4", offset, D_mm - offset),
+    ]
+    if "x" in midpoint_axes:
+        bar_coordinates.extend(
+            (("M_LEFT", offset, D_mm / 2), ("M_RIGHT", b_mm - offset, D_mm / 2))
+        )
+    if "y" in midpoint_axes:
+        bar_coordinates.extend(
+            (("M_TOP", b_mm / 2, offset), ("M_BOTTOM", b_mm / 2, D_mm - offset))
+        )
     bars = tuple(
-        FourCornerBar(f"C{i}", bar_diameter_mm, area, x, y)
-        for i, (x, y) in enumerate(bar_coordinates, 1)
+        FourCornerBar(bar_id, bar_diameter_mm, area, x, y)
+        for bar_id, x, y in bar_coordinates
     )
-    centre_gaps = (b_mm - 2 * offset, D_mm - 2 * offset)
+    steel = len(bars) * area
+    ratio, minimum_ok, maximum_ok, _ = check_longitudinal_limits(b_mm * D_mm, steel)
+    centre_gaps = (
+        (b_mm - 2 * offset) / (2 if "y" in midpoint_axes else 1),
+        (D_mm - 2 * offset) / (2 if "x" in midpoint_axes else 1),
+    )
     required_cover = max(40.0, bar_diameter_mm, project_required_cover_mm)
     minimum_clear = max(bar_diameter_mm, aggregate_size_mm + 5, 25.0)
     min_spacing_ok = all(

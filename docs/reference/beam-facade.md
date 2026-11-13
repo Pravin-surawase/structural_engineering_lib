@@ -13,7 +13,7 @@ Recommended import: `from structural_lib.design.is456 import beam`<br>
 Classification: pre-1.0 canonical workflow facade<br>
 Introduced contract family: `beam-design-input/v1`; supplied check added as
 `beam-supplied-check/v2`<br>
-Source package version: `0.28.2`
+Source package version: `0.29.0`
 
 ## Operations
 
@@ -28,12 +28,16 @@ Source package version: `0.28.2`
 | `bbs` | `structural_lib.design.is456.beam.bbs(result: 'BeamDesignAndDetailResultV1 \| BeamDetailingResultV1 \| list[BeamDetailingResultV1]') -> 'BeamBBSResultV1'` | Generate a canonical BBS from exact accepted detailing results. |
 | `load_supplied_check` | `structural_lib.design.is456.beam.load_supplied_check(value: 'Mapping[str, object] \| BeamSuppliedCheckRequestV2') -> 'BeamSuppliedCheckRequestV2'` | Parse the exact supplied-reinforcement V2 request. |
 | `check_supplied` | `structural_lib.design.is456.beam.check_supplied(request: 'BeamSuppliedCheckRequestV2') -> 'BeamSuppliedCheckResultV2'` | Evaluate exact supplied longitudinal bars and stirrups for one case. |
+| `load_continuous` | `structural_lib.design.is456.beam.load_continuous(value: 'Mapping[str, object] \| str \| bytes \| BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckRequestV1'` | Parse a strict supplied two-span beam request. |
+| `check_continuous` | `structural_lib.design.is456.beam.check_continuous(request: 'BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'` | Check signed flexure, shear and straight anchorage on a two-span beam. |
+| `render_continuous_html` | `structural_lib.design.is456.beam.render_continuous_html(result: 'BeamContinuousCheckResultV1') -> 'str'` | Render the checked rows, governing cases and limits in a review report. |
 
 ## Request, result, and error contracts
 
 | Journey | Request | Result | Intake/calculation errors |
 |---|---|---|---|
 | Required design/detailing | `BeamDesignInputV1` | `BeamDesignResultV1`, `BeamDetailingResultV1`, `BeamDesignAndDetailResultV1`, `BeamBBSResultV1` | `InputContractError` / `input-issue/v1`; calculation errors remain distinct |
+| Two-span supplied actions | `BeamContinuousCheckRequestV1` | `BeamContinuousCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
 | Supplied reinforcement | `BeamSuppliedCheckRequestV2` | `BeamSuppliedCheckResultV2` with `PASS`/`FAIL`/`HOLD` | Same Python issue boundary; REST 422 problem; WebSocket terminal `ERROR` |
 
 The typed request schemas own field type, unit-suffixed name, domain,
@@ -47,6 +51,7 @@ are also in `/openapi.json`; WebSocket uses the checked-in
 
 - [Design valid, invalid, and engineering `FAIL`](../cookbook/python/beam-design.md)
 - [Supplied check valid, invalid, `FAIL`, and `HOLD`](../cookbook/python/beam-supplied-check.md)
+- [Two-span continuous beam, concurrent rows and review report](../cookbook/python/continuous-beam-check.md)
 - [Flat V1 supplied-check migration](../migration/beam-supplied-check-v2.md)
 - REST: `POST /api/v2/design/beam` and retained path
   `POST /api/v1/design/beam/check`
@@ -473,3 +478,114 @@ Provenance
 Delegates without formula duplication to ``check_supplied_beam_v2``; the
 complete valid, invalid, ``FAIL``, and ``HOLD`` vectors are executable in
 the supplied-check cookbook.
+### `load_continuous`
+
+```python
+load_continuous(value: 'Mapping[str, object] | str | bytes | BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckRequestV1'
+```
+
+Parse a strict supplied two-span beam request.
+
+Parameters
+----------
+value : Mapping, JSON str or bytes, or BeamContinuousCheckRequestV1
+    Physical supports, bar positions and revision-bound station actions.
+
+Returns
+-------
+BeamContinuousCheckRequestV1
+    The immutable request to pass to :func:`check_continuous`.
+
+Raises
+------
+InputContractError
+    Duplicate rows, inconsistent topology or other invalid intake.
+
+Examples
+--------
+>>> callable(load_continuous)
+True
+
+Limitations
+-----------
+Accepts already normalized mm, kN and kN·m. The worked example shows
+the complete request and how to run PASS, FAIL and HOLD cases.
+
+Provenance
+----------
+Uses the strict IS 456 continuous-beam request model and canonical issues.
+### `check_continuous`
+
+```python
+check_continuous(request: 'BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'
+```
+
+Check signed flexure, shear and straight anchorage on a two-span beam.
+
+Parameters
+----------
+request : BeamContinuousCheckRequestV1
+    Two spans of a prismatic rectangular beam, both physical bar faces,
+    three supports and concurrent actions at the declared stations.
+
+Returns
+-------
+BeamContinuousCheckResultV1
+    Supplied ultimate disposition, exact source rows, governing checks
+    and separately held service evidence.
+
+Raises
+------
+TypeError
+    The input is not a validated continuous-beam request.
+
+Examples
+--------
+>>> callable(check_continuous)
+True
+
+Limitations
+-----------
+The check consumes already supplied actions. It holds stale, incomplete
+or unsupported evidence. Fabrication, lateral stability and service
+deflection or cracking require separate checks.
+
+Provenance
+----------
+Composes the maintained IS 456 physical flexure, shear, geometry and
+anchorage checks. The result records their identities and the input hash.
+### `render_continuous_html`
+
+```python
+render_continuous_html(result: 'BeamContinuousCheckResultV1') -> 'str'
+```
+
+Render the checked rows, governing cases and limits in a review report.
+
+Parameters
+----------
+result : BeamContinuousCheckResultV1
+    A result from :func:`check_continuous`.
+
+Returns
+-------
+str
+    Self-contained UTF-8 HTML.
+
+Raises
+------
+TypeError
+    The input is not a continuous-beam result.
+
+Examples
+--------
+>>> callable(render_continuous_html)
+True
+
+Limitations
+-----------
+The report preserves the bounded disposition and qualified-review status.
+
+Provenance
+----------
+Reads the exact result and input identity without recalculating any row.

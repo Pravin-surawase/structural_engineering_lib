@@ -6,6 +6,11 @@ from collections.abc import Mapping
 from typing import Literal
 
 from structural_lib.core.errors import InputContractError, InputIssueV1
+from structural_lib.services.beam_continuous import (
+    BeamContinuousCheckResultV1,
+    check_continuous_beam,
+    render_continuous_beam_html,
+)
 from structural_lib.services.canonical_beam import (
     BeamBBSResultV1,
     BeamDesignAndDetailResultV1,
@@ -31,6 +36,15 @@ from structural_lib.services.contracts.beam import (
     IS456ReinforcementMaterialsV1,
     MemberIdentityV1,
     RectangularBeamSectionV1,
+)
+from structural_lib.services.contracts.beam_continuous import (
+    BeamContinuousActionV1,
+    BeamContinuousBarV1,
+    BeamContinuousCheckRequestV1,
+    BeamContinuousCombinationV1,
+    BeamContinuousStationV1,
+    BeamContinuousStraightBarsV1,
+    BeamContinuousSupportV1,
 )
 from structural_lib.services.contracts.beam_serviceability import (
     BeamAnnexFCrackCheckV1,
@@ -64,6 +78,14 @@ __all__ = [
     "BEAM_FIELD_CONTRACTS",
     "BeamBBSResultV1",
     "BeamCalculationBasisV1",
+    "BeamContinuousActionV1",
+    "BeamContinuousBarV1",
+    "BeamContinuousCheckRequestV1",
+    "BeamContinuousCheckResultV1",
+    "BeamContinuousCombinationV1",
+    "BeamContinuousStationV1",
+    "BeamContinuousStraightBarsV1",
+    "BeamContinuousSupportV1",
     "BeamDesignAndDetailResultV1",
     "BeamDesignInputV1",
     "BeamDesignResultV1",
@@ -96,6 +118,7 @@ __all__ = [
     "RectangularBeamSectionV1",
     "bbs",
     "check",
+    "check_continuous",
     "check_supplied",
     "design",
     "design_and_detail",
@@ -103,6 +126,8 @@ __all__ = [
     "input",
     "load",
     "load_json",
+    "load_continuous",
+    "render_continuous_html",
     "load_supplied_check",
     "load_supplied_check_json",
 ]
@@ -464,6 +489,124 @@ def check_supplied(
             )
         )
     return check_supplied_beam_v2(request)
+
+
+def load_continuous(
+    value: Mapping[str, object] | str | bytes | BeamContinuousCheckRequestV1,
+) -> BeamContinuousCheckRequestV1:
+    """Parse a strict supplied two-span beam request.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamContinuousCheckRequestV1
+        Physical supports, bar positions and revision-bound station actions.
+
+    Returns
+    -------
+    BeamContinuousCheckRequestV1
+        The immutable request to pass to :func:`check_continuous`.
+
+    Raises
+    ------
+    InputContractError
+        Duplicate rows, inconsistent topology or other invalid intake.
+
+    Examples
+    --------
+    >>> callable(load_continuous)
+    True
+
+    Limitations
+    -----------
+    Accepts already normalized mm, kN and kN·m. The worked example shows
+    the complete request and how to run PASS, FAIL and HOLD cases.
+
+    Provenance
+    ----------
+    Uses the strict IS 456 continuous-beam request model and canonical issues.
+    """
+    if isinstance(value, BeamContinuousCheckRequestV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamContinuousCheckRequestV1, value)
+    return model_validate_or_error(BeamContinuousCheckRequestV1, value)
+
+
+def check_continuous(
+    request: BeamContinuousCheckRequestV1,
+) -> BeamContinuousCheckResultV1:
+    """Check signed flexure, shear and straight anchorage on a two-span beam.
+
+    Parameters
+    ----------
+    request : BeamContinuousCheckRequestV1
+        Two spans of a prismatic rectangular beam, both physical bar faces,
+        three supports and concurrent actions at the declared stations.
+
+    Returns
+    -------
+    BeamContinuousCheckResultV1
+        Supplied ultimate disposition, exact source rows, governing checks
+        and separately held service evidence.
+
+    Raises
+    ------
+    TypeError
+        The input is not a validated continuous-beam request.
+
+    Examples
+    --------
+    >>> callable(check_continuous)
+    True
+
+    Limitations
+    -----------
+    The check consumes already supplied actions. It holds stale, incomplete
+    or unsupported evidence. Fabrication, lateral stability and service
+    deflection or cracking require separate checks.
+
+    Provenance
+    ----------
+    Composes the maintained IS 456 physical flexure, shear, geometry and
+    anchorage checks. The result records their identities and the input hash.
+    """
+    return check_continuous_beam(request)
+
+
+def render_continuous_html(result: BeamContinuousCheckResultV1) -> str:
+    """Render the checked rows, governing cases and limits in a review report.
+
+    Parameters
+    ----------
+    result : BeamContinuousCheckResultV1
+        A result from :func:`check_continuous`.
+
+    Returns
+    -------
+    str
+        Self-contained UTF-8 HTML.
+
+    Raises
+    ------
+    TypeError
+        The input is not a continuous-beam result.
+
+    Examples
+    --------
+    >>> callable(render_continuous_html)
+    True
+
+    Limitations
+    -----------
+    The report preserves the bounded disposition and qualified-review status.
+
+    Provenance
+    ----------
+    Reads the exact result and input identity without recalculating any row.
+    """
+    if not isinstance(result, BeamContinuousCheckResultV1):
+        raise TypeError("result must be BeamContinuousCheckResultV1")
+    return render_continuous_beam_html(result)
 
 
 def bbs(

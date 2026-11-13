@@ -1,0 +1,2572 @@
+{
+  "schema_version": "library-029-col05-circular-column-reference/v1",
+  "frozen_before_implementation": true,
+  "frozen_production_base": "e043589c2b1ee33297bbb973653e3d69efb1ecf0",
+  "sources": [
+    "IS 456:2000 through Amendment 5, Cl. 25, 26.2.2.4(b), 26.3, 26.4, 26.5.3, 38.1, 39.1, 39.3\u201339.6. https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf",
+    "IIT Kharagpur NPTEL Lesson 22 compression members https://archive.nptel.ac.in/content/storage2/courses/105105104/pdf/m10l22.pdf"
+  ],
+  "method": {
+    "section": "Exact primitives of the circular chord times the Fig. 21 plateau/parabola; discrete steel with displaced concrete. Root at fixed compression then solve signed axes and demand direction with angular refinement 32 to 64.",
+    "axes": "Top-left coordinates, first bar at the specified clockwise angle from the right. Mx positive compresses top; My positive compresses left.",
+    "helix": "Core area to outside diameter; physical centreline length per pitch; transverse fy capped at 415; check anchorage at both ends. 1.05 only for the admitted Cl. 39.3 short axial branch. Ordinary spiral without enhancement uses ordinary pitch limit.",
+    "axial": "For zero supplied moments and admissible minimum eccentricity use Cl. 39.3 capacity. Otherwise check net-area Puz, Cl. 39.6, direct ray and separate minimum eccentricities."
+  },
+  "tolerances": {
+    "moment_knm": 0.01,
+    "xu_mm": 0.01,
+    "residual_kn_or_knm": 0.01,
+    "ratio": 0.0001,
+    "normal_deg": 0.01
+  },
+  "cases": {
+    "tied": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "tied",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "PASS"
+      }
+    },
+    "spiral": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "spiral",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.013788212642457045,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1132.5637864514215
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": true,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "PASS"
+      }
+    },
+    "spiral_wide": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 120,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "spiral_wide",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "FAIL",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.006923068758520037,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1137.3217356496714
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "FAIL"
+      }
+    },
+    "spiral_ordinary_wide": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 120,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": false
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "spiral_ordinary_wide",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.006923068758520037,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1137.3217356496714
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "PASS"
+      }
+    },
+    "spiral_weak_ratio": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 167,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 8,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "spiral_weak_ratio",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "FAIL",
+        "detail": {
+          "clear_spacing_mm": 107.81626640993998,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 48.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 362,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.00887334363444641,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 25,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1138.8381970834812
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.70459094657087,
+              "mx_knm": 186.32795890788157,
+              "my_knm": 4.284083843231201e-14,
+              "capacity_knm": 186.32795890788157,
+              "axial_residual_kn": 4.597609404299874e-09,
+              "transverse_residual_knm": 4.284083843231201e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.70459094657087,
+              "mx_knm": -186.32795890788154,
+              "my_knm": -1.4901161193847656e-14,
+              "capacity_knm": 186.32795890788154,
+              "axial_residual_kn": 4.5977230911375955e-09,
+              "transverse_residual_knm": 1.4901161193847656e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.70459094657087,
+              "mx_knm": -1.3038516044616699e-14,
+              "my_knm": 186.32795890788157,
+              "capacity_knm": 186.32795890788157,
+              "axial_residual_kn": 4.5977230911375955e-09,
+              "transverse_residual_knm": 1.3038516044616699e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.70459094657087,
+              "mx_knm": -5.587935447692871e-15,
+              "my_knm": -186.32795890788154,
+              "capacity_knm": 186.32795890788154,
+              "axial_residual_kn": 4.597495717462152e-09,
+              "transverse_residual_knm": -5.587935447692871e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5757481720962777,
+          "direct_ratio": 0.4359895326664458,
+          "minimum_eccentricity_ratios": {
+            "x": 0.0732579269370326,
+            "y": 0.0732579269370326
+          },
+          "governing_ratio": 0.5757481720962777,
+          "demand": {
+            "normal_deg": 240.52688689908624,
+            "xu_mm": 209.97035089783776,
+            "mx_knm": 160.5543132466703,
+            "my_knm": 91.74532185525112,
+            "capacity_knm": 184.91860799939403,
+            "axial_residual_kn": 6.057007340132259e-09,
+            "transverse_residual_knm": 9.50706180447014e-12
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "FAIL"
+      }
+    },
+    "spiral_missing_anchor": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": null,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "spiral_missing_anchor",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "HOLD",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.013788212642457045,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1132.5637864514215
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "HOLD"
+      }
+    },
+    "spiral_short_anchor": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "spiral_short_anchor",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "FAIL",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.013788212642457045,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1132.5637864514215
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "FAIL"
+      }
+    },
+    "tied_open_ring": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": false,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "tied_open_ring",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "FAIL",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "FAIL"
+      }
+    },
+    "tied_missing_closure": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": null
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "tied_missing_closure",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "HOLD",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "HOLD"
+      }
+    },
+    "missing_transverse": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": null
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "missing_transverse",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "HOLD",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "HOLD"
+      }
+    },
+    "short_cover": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 170,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 35,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "short_cover",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "FAIL",
+        "detail": {
+          "clear_spacing_mm": 110.11236700413053,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 45.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 380,
+          "transverse_centreline_diameter_mm": 370,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1162.3892818282234
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.29795583012964,
+              "mx_knm": 188.78825894500667,
+              "my_knm": 3.9115548133850095e-14,
+              "capacity_knm": 188.78825894500667,
+              "axial_residual_kn": -6.0713318816851825e-09,
+              "transverse_residual_knm": 3.9115548133850095e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.29795583012964,
+              "mx_knm": -188.7882589450067,
+              "my_knm": -1.4901161193847656e-14,
+              "capacity_knm": 188.7882589450067,
+              "axial_residual_kn": -6.071445568522904e-09,
+              "transverse_residual_knm": 1.4901161193847656e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.29795583012964,
+              "mx_knm": -1.6763806343078614e-14,
+              "my_knm": 188.7882589450067,
+              "capacity_knm": 188.7882589450067,
+              "axial_residual_kn": -6.071218194847461e-09,
+              "transverse_residual_knm": 1.6763806343078614e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.29795583012964,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -188.7882589450067,
+              "capacity_knm": 188.7882589450067,
+              "axial_residual_kn": -6.071445568522904e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5680869572318082,
+          "direct_ratio": 0.4303397138635631,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07230322519143627,
+            "y": 0.07230322519143625
+          },
+          "governing_ratio": 0.5680869572318082,
+          "demand": {
+            "normal_deg": 240.55888923042346,
+            "xu_mm": 209.92285551393496,
+            "mx_knm": 162.66218930050172,
+            "my_knm": 92.94982245743677,
+            "capacity_knm": 187.3463565776001,
+            "axial_residual_kn": -6.298250809777528e-10,
+            "transverse_residual_knm": 6.266986929404084e-12
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "FAIL"
+      }
+    },
+    "off_contact": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 160,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "off_contact",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "FAIL",
+        "detail": {
+          "clear_spacing_mm": 102.45869835682873,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 55.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 5.0,
+          "spiral_ratio_provided": 0.013788212642457045,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1132.5637864514215
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 209.43837554291645,
+              "mx_knm": 180.42902899632688,
+              "my_knm": 2.980232238769531e-14,
+              "capacity_knm": 180.42902899632688,
+              "axial_residual_kn": 2.580691216280684e-09,
+              "transverse_residual_knm": 2.980232238769531e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 209.43837554291645,
+              "mx_knm": -180.42902899632682,
+              "my_knm": -7.450580596923828e-15,
+              "capacity_knm": 180.42902899632682,
+              "axial_residual_kn": 2.580918589956127e-09,
+              "transverse_residual_knm": 7.450580596923828e-15
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 209.43837554291645,
+              "mx_knm": -2.6077032089233398e-14,
+              "my_knm": 180.42902899632688,
+              "capacity_knm": 180.42902899632688,
+              "axial_residual_kn": 2.5808049031184055e-09,
+              "transverse_residual_knm": 2.6077032089233398e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 209.43837554291645,
+              "mx_knm": 3.725290298461914e-15,
+              "my_knm": -180.42902899632682,
+              "capacity_knm": 180.42902899632682,
+              "axial_residual_kn": 2.580691216280684e-09,
+              "transverse_residual_knm": 3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.594977343218167,
+          "direct_ratio": 0.44950851632796013,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07565301479440921,
+            "y": 0.07565301479440921
+          },
+          "governing_ratio": 0.594977343218167,
+          "demand": {
+            "normal_deg": 240.45183512904208,
+            "xu_mm": 210.08051263731005,
+            "mx_knm": 155.72563690635388,
+            "my_knm": 88.98607823219305,
+            "capacity_knm": 179.35717467956377,
+            "axial_residual_kn": 3.1513991416431963e-10,
+            "transverse_residual_knm": -7.958078640513122e-12
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "FAIL"
+      }
+    },
+    "too_few_bars": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 5,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "too_few_bars",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "FAIL",
+        "detail": {
+          "clear_spacing_mm": 173.96913325651613,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 282.7433388230814,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 1570.7963267948967,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 2714.9251013241287,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 269.6137027205492,
+              "xu_mm": 205.73350117862014,
+              "mx_knm": 148.22385927610492,
+              "my_knm": 2.8051435947418212e-12,
+              "capacity_knm": 148.22385927610492,
+              "axial_residual_kn": -4.83510120830033e-09,
+              "transverse_residual_knm": 2.8051435947418212e-12
+            },
+            "x_negative": {
+              "normal_deg": 90.3862972794508,
+              "xu_mm": 205.73350117862014,
+              "mx_knm": -148.2238592761049,
+              "my_knm": 2.8219074010849e-12,
+              "capacity_knm": 148.2238592761049,
+              "axial_residual_kn": -4.83510120830033e-09,
+              "transverse_residual_knm": -2.8219074010849e-12
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 204.48065183730876,
+              "mx_knm": -1.8626451492309572e-14,
+              "my_knm": 148.9091017219869,
+              "capacity_knm": 148.9091017219869,
+              "axial_residual_kn": -4.161393007962033e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 205.6330174816602,
+              "mx_knm": -5.587935447692871e-15,
+              "my_knm": -146.9896467703568,
+              "capacity_knm": 146.9896467703568,
+              "axial_residual_kn": 2.9056081984890625e-09,
+              "transverse_residual_knm": -5.587935447692871e-15
+            }
+          },
+          "alpha_n": 1.0656954770028957,
+          "contour_ratio": 0.6959440980440933,
+          "direct_ratio": 0.5417404963898068,
+          "minimum_eccentricity_ratios": {
+            "x": 0.09209043717161203,
+            "y": 0.09286368325876387
+          },
+          "governing_ratio": 0.6959440980440933,
+          "demand": {
+            "normal_deg": 240.63469082519478,
+            "xu_mm": 205.4790843949766,
+            "mx_knm": 129.21315734467882,
+            "my_knm": 73.83608991124278,
+            "capacity_knm": 148.82139699774982,
+            "axial_residual_kn": 5.650804268952925e-09,
+            "transverse_residual_knm": -1.9610979506978765e-12
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "FAIL"
+      }
+    },
+    "reflected": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": -70,
+          "my_knm": -40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "reflected",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.5811791846231245,
+          "direct_ratio": 0.4398037933910376,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 0.5811791846231245,
+          "demand": {
+            "normal_deg": 60.50548956300019,
+            "xu_mm": 210.001920192341,
+            "mx_knm": -159.1618832122243,
+            "my_knm": -90.94964754985534,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1183942660863977e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "PASS"
+      }
+    },
+    "rotated": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 79.97890457039367,
+          "my_knm": 10.167341034895188,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 22.5,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "rotated",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 209.95906259527777,
+              "mx_knm": 182.9843500434505,
+              "my_knm": 2.6077032089233398e-14,
+              "capacity_knm": 182.9843500434505,
+              "axial_residual_kn": 5.88897819397971e-09,
+              "transverse_residual_knm": 2.6077032089233398e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 209.95906259527777,
+              "mx_knm": -182.98435004345046,
+              "my_knm": -3.725290298461914e-15,
+              "capacity_knm": 182.98435004345046,
+              "axial_residual_kn": 5.888864507141989e-09,
+              "transverse_residual_knm": 3.725290298461914e-15
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 209.95906259527777,
+              "mx_knm": -2.2351741790771485e-14,
+              "my_knm": 182.9843500434505,
+              "capacity_knm": 182.9843500434505,
+              "axial_residual_kn": 5.88897819397971e-09,
+              "transverse_residual_knm": 2.2351741790771485e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 209.95906259527777,
+              "mx_knm": 8.381903171539307e-15,
+              "my_knm": -182.9843500434505,
+              "capacity_knm": 182.9843500434505,
+              "axial_residual_kn": 5.888864507141989e-09,
+              "transverse_residual_knm": 8.381903171539307e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.48173840800647827,
+          "direct_ratio": 0.4398037933910378,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07459654334788055,
+            "y": 0.07459654334788053
+          },
+          "governing_ratio": 0.48173840800647827,
+          "demand": {
+            "normal_deg": 263.00548956300014,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 181.85132955249958,
+            "my_knm": 23.11790209108127,
+            "capacity_knm": 183.31487516594123,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1365131058482802e-11
+          }
+        },
+        "strength_status": "PASS",
+        "member_status": "PASS"
+      }
+    },
+    "overload": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 350,
+          "my_knm": 200,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "overload",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 3.0067726255771143,
+          "direct_ratio": 2.199018966955188,
+          "minimum_eccentricity_ratios": {
+            "x": 0.07393455221478334,
+            "y": 0.07393455221478334
+          },
+          "governing_ratio": 3.0067726255771143,
+          "demand": {
+            "normal_deg": 240.5054895630001,
+            "xu_mm": 210.001920192341,
+            "mx_knm": 159.16188321222415,
+            "my_knm": 90.94964754985557,
+            "capacity_knm": 183.3148751659413,
+            "axial_residual_kn": 1.958028406079393e-09,
+            "transverse_residual_knm": 1.1453948900452815e-11
+          }
+        },
+        "strength_status": "FAIL",
+        "member_status": "FAIL"
+      }
+    },
+    "axial_limit": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 3100,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "axial_limit",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength_status": "FAIL",
+        "member_status": "FAIL"
+      }
+    },
+    "axial_tied": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 2800,
+          "mx_knm": 0,
+          "my_knm": 0,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "axial_tied",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "short_axial",
+          "tied_axial_capacity_kn": 2720.3050787434017,
+          "axial_capacity_kn": 2720.3050787434017,
+          "enhancement_factor": 1,
+          "governing_ratio": 1.0292963174900265
+        },
+        "strength_status": "FAIL",
+        "member_status": "FAIL"
+      }
+    },
+    "axial_spiral": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 2800,
+          "mx_knm": 0,
+          "my_knm": 0,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "axial_spiral",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.013788212642457045,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1132.5637864514215
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": true,
+        "strength": {
+          "method": "short_axial",
+          "tied_axial_capacity_kn": 2720.3050787434017,
+          "axial_capacity_kn": 2856.320332680572,
+          "enhancement_factor": 1.05,
+          "governing_ratio": 0.9802822071333586
+        },
+        "strength_status": "PASS",
+        "member_status": "PASS"
+      }
+    },
+    "axial_spiral_wide": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 2800,
+          "mx_knm": 0,
+          "my_knm": 0,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 120,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "axial_spiral_wide",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "FAIL",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.006923068758520037,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1137.3217356496714
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 21.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength": {
+          "method": "short_axial",
+          "tied_axial_capacity_kn": 2720.3050787434017,
+          "axial_capacity_kn": 2720.3050787434017,
+          "enhancement_factor": 1,
+          "governing_ratio": 1.0292963174900265
+        },
+        "strength_status": "FAIL",
+        "member_status": "FAIL"
+      }
+    },
+    "axial_min_eccentricity": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 4500,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 0,
+          "my_knm": 0,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "axial_min_eccentricity",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "spiral_ratio_provided": 0.013788212642457045,
+          "spiral_ratio_required": 0.012470275550705375,
+          "spiral_fy_used_nmm2": 415,
+          "enhanced_min_pitch_mm": 30,
+          "enhanced_max_pitch_mm": 61.666666666666664,
+          "centreline_length_per_pitch_mm": 1132.5637864514215
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 24.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": true,
+        "strength": {
+          "method": "fixed_compression",
+          "enhancement_factor": 1,
+          "axes": {
+            "x_positive": {
+              "normal_deg": 270.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": 184.62274526727515,
+              "my_knm": 3.5390257835388186e-14,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.973376129171811e-09,
+              "transverse_residual_knm": 3.5390257835388186e-14
+            },
+            "x_negative": {
+              "normal_deg": 90.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -184.62274526727518,
+              "my_knm": -1.8626451492309572e-14,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 1.8626451492309572e-14
+            },
+            "y_positive": {
+              "normal_deg": 180.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -2.0489096641540527e-14,
+              "my_knm": 184.62274526727515,
+              "capacity_knm": 184.62274526727515,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": 2.0489096641540527e-14
+            },
+            "y_negative": {
+              "normal_deg": 0.0,
+              "xu_mm": 208.9147842383016,
+              "mx_knm": -3.725290298461914e-15,
+              "my_knm": -184.62274526727518,
+              "capacity_knm": 184.62274526727518,
+              "axial_residual_kn": 1.9734898160095327e-09,
+              "transverse_residual_knm": -3.725290298461914e-15
+            }
+          },
+          "alpha_n": 1.0212033877291795,
+          "contour_ratio": 0.0,
+          "direct_ratio": 0,
+          "minimum_eccentricity_ratios": {
+            "x": 0.08449663110260953,
+            "y": 0.08449663110260953
+          },
+          "governing_ratio": 0.08449663110260953
+        },
+        "strength_status": "PASS",
+        "member_status": "PASS"
+      }
+    },
+    "slender_hold": {
+      "request": {
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "actions": {
+          "pu_kn": 650,
+          "mx_knm": 70,
+          "my_knm": 40,
+          "check_station_mm": 1500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "case_id": "slender_hold",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        }
+      },
+      "expected": {
+        "restraint_status": "PASS",
+        "detail": {
+          "clear_spacing_mm": 106.28553268047963,
+          "minimum_clear_spacing_mm": 25,
+          "periphery_spacing_mm": 176.71458676442586,
+          "required_cover_mm": 40,
+          "longitudinal_cover_mm": 50.0,
+          "ordinary_pitch_limit_mm": 300,
+          "minimum_transverse_diameter_mm": 6,
+          "core_outside_mm": 370,
+          "transverse_centreline_diameter_mm": 360,
+          "radial_gap_mm": 0.0,
+          "centreline_length_per_pitch_mm": 1130.9733552923256
+        },
+        "gross_area_mm2": 159043.12808798326,
+        "steel_area_mm2": 2513.2741228718346,
+        "gross_inertia_mm4": 2012889589.8635383,
+        "minimum_eccentricity_mm": 27.0,
+        "puz_kn": 3055.630824605942,
+        "spiral_enhancement_eligible": false,
+        "strength_status": "HOLD",
+        "member_status": "HOLD"
+      }
+    }
+  }
+}

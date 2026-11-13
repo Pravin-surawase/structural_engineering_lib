@@ -4,6 +4,57 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.29.0] — Prepared candidate (unreleased; on hold)
+
+### Added
+
+- Short tied rectangular column checks for eight equal bars and both six-bar
+  orientations. The fixed-compression capacities use actual bar positions,
+  with signed biaxial actions, explicit midpoint restraint and JSON/HTML
+  output tied to the checked section.
+- Short rectangular column checks for explicitly positioned mixed-diameter
+  cages with 9–32 longitudinal bars. Includes signed fixed-load strengths,
+  independently reported local restraint and checked open-link geometry.
+- Slender braced rectangular column checks for actual tied or positioned
+  cages, with independent effective lengths on both axes, signed member
+  actions, and a result-bound HTML report and SVG section drawing. The
+  capability catalogue now identifies each physical column Python profile.
+- Short circular tied and spiral column checks with an actual ring of
+  longitudinal bars, signed biaxial section strength and scoped spiral
+  enhancement on the short axial branch. Includes a worked example,
+  checked HTML report and SVG section drawing.
+- Finite catalogue selection for short braced eight-bar rectangular
+  columns. Ranks approved sizes, bars and tie schedules against supplied
+  signed combinations, reports unresolved searches, and holds locally
+  feasible candidates that need refreshed analysis. Includes a worked
+  example, checked report and local section drawing.
+- Short tied eight-bar column member checks for supplied principal-plane
+  shear, explicit tie zones, straight end development and compression lap
+  lengths and locations. The worked continuous member has an elevation,
+  calculation report and bar bending schedule. Unspecified lap assemblies
+  remain on HOLD.
+- Straight contact compression splices for one pair of opposing side
+  midpoint bars. Checks both partner layouts, link anchorage and spacing,
+  physical congestion and cut lengths. The spliced drawing and BBS share
+  the same checked piece marks and tie levels.
+- Straight contact compression laps at C1 and C2, with supplemental
+  corner restraint and mirrored upper links that clear the top midpoint
+  bar. The member checks use the shifted section and conservative shear
+  depth. The drawing and BBS include the checked corner-link marks.
+- A two-span rectangular beam check for actual face bars, signed sagging
+  and hogging, shear, concurrent combinations and straight anchorage.
+  The Python example and HTML report retain governing stations and revisions.
+
+### Fixed
+
+- Continuous one-way and two-way solid slab HTTP responses retain the supplied
+  load-basis status, including built-in coefficient routes and two-way flexural
+  failures.
+### Verification
+
+- Replay the new beam and column profiles and the slab coefficient cases
+  against both release archives.
+
 ## [0.28.2] — 2026-11-13
 
 Includes the maintenance fixes listed under the 0.28.1 candidate.

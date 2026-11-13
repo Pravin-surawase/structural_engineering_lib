@@ -48,6 +48,23 @@ _MAX_PITCH_MM: float = 75.0  # Maximum pitch ceiling (mm)
 _MAX_PITCH_CORE_FACTOR: float = 6.0  # Maximum pitch = D_core / 6
 
 
+def enhancement_pitch_limits(
+    core_outside_mm: float, bar_diameter_mm: float
+) -> tuple[float, float]:
+    """Return the minimum and maximum pitch for an enhancement-eligible spiral."""
+    return (
+        max(_MIN_PITCH_MM, _MIN_PITCH_BAR_FACTOR * bar_diameter_mm),
+        min(_MAX_PITCH_MM, core_outside_mm / _MAX_PITCH_CORE_FACTOR),
+    )
+
+
+def minimum_helical_ratio(
+    gross_area_mm2: float, core_area_mm2: float, fck: float, fy: float
+) -> float:
+    """Return the Cl. 39.4.1 volume ratio for the supplied ratio-basis grade."""
+    return _HELICAL_RATIO_COEFF * (gross_area_mm2 / core_area_mm2 - 1.0) * fck / fy
+
+
 @clause("39.4")
 def check_helical_reinforcement(
     D_mm: float,
@@ -154,10 +171,7 @@ def check_helical_reinforcement(
     # ===========================================================
     # 3. Pitch limits (IS 456 Cl 26.5.3.2)
     # ===========================================================
-    # IS 456 Cl 26.5.3.2: min pitch = max(25mm, 3 × d_helix)
-    min_pitch_mm = max(_MIN_PITCH_MM, _MIN_PITCH_BAR_FACTOR * d_helix_mm)
-    # IS 456 Cl 26.5.3.2: max pitch = min(75mm, D_core/6)
-    max_pitch_mm = min(_MAX_PITCH_MM, D_core_mm / _MAX_PITCH_CORE_FACTOR)
+    min_pitch_mm, max_pitch_mm = enhancement_pitch_limits(D_core_mm, d_helix_mm)
 
     pitch_ok = min_pitch_mm <= pitch_mm <= max_pitch_mm
 
@@ -191,8 +205,7 @@ def check_helical_reinforcement(
     helical_ratio_provided = V_helix_per_mm / V_core_per_mm
 
     # IS 456 Cl 39.4: required ratio = 0.36 × (Ag/Ac - 1) × fck/fy
-    Ag_Ac_minus_1 = (Ag_mm2 / Ac_mm2) - 1.0
-    helical_ratio_required = _HELICAL_RATIO_COEFF * Ag_Ac_minus_1 * fck / fy
+    helical_ratio_required = minimum_helical_ratio(Ag_mm2, Ac_mm2, fck, fy)
 
     ratio_ok = helical_ratio_provided >= helical_ratio_required
 

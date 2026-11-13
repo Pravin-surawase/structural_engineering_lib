@@ -8,7 +8,7 @@
   },
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
   "generated": "2026-11-13",
-  "package_version": "0.28.2",
+  "package_version": "0.29.0",
   "release_channel": "normal",
   "classifications": {
     "stable": "Reserved for a separately approved stable compatibility promise.",
@@ -13471,13 +13471,16 @@
     "exact_wheel_beam_operations": [
       "bbs",
       "check",
+      "check_continuous",
       "check_supplied",
       "design",
       "design_and_detail",
       "detail",
       "input",
       "load",
-      "load_supplied_check"
+      "load_continuous",
+      "load_supplied_check",
+      "render_continuous_html"
     ],
     "example_inventory": [
       {
@@ -13490,6 +13493,13 @@
       {
         "example_id": "is456.beam.facade.check.docstring",
         "operation": "check",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
+        "example_id": "is456.beam.facade.check_continuous.docstring",
+        "operation": "check_continuous",
         "kind": "DOCSTRING",
         "expected": "EXECUTES_FROM_EXACT_WHEEL",
         "path": "docs/reference/beam-facade.md"
@@ -13537,8 +13547,22 @@
         "path": "docs/reference/beam-facade.md"
       },
       {
+        "example_id": "is456.beam.facade.load_continuous.docstring",
+        "operation": "load_continuous",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
         "example_id": "is456.beam.facade.load_supplied_check.docstring",
         "operation": "load_supplied_check",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
+        "example_id": "is456.beam.facade.render_continuous_html.docstring",
+        "operation": "render_continuous_html",
         "kind": "DOCSTRING",
         "expected": "EXECUTES_FROM_EXACT_WHEEL",
         "path": "docs/reference/beam-facade.md"
@@ -13598,8 +13622,8 @@
     {
       "module": "structural_lib.design.is456.beam",
       "export_classification": "preview",
-      "declared_export_count": 45,
-      "classified_symbol_count": 50,
+      "declared_export_count": 56,
+      "classified_symbol_count": 63,
       "symbols": [
         {
           "name": "BEAM_FIELD_CONTRACTS",
@@ -13741,6 +13765,158 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousActionV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousActionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousBarV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousBarV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousCheckRequestV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousCheckRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousCheckResultV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousCheckResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousCombinationV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousCombinationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousStationV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousStationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousStraightBarsV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousStraightBarsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamContinuousSupportV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamContinuousSupportV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -14327,6 +14503,54 @@
           }
         },
         {
+          "name": "check_continuous",
+          "qualified_name": "structural_lib.design.is456.beam.check_continuous",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.check_continuous.docstring"
+            ]
+          }
+        },
+        {
+          "name": "check_continuous_beam",
+          "qualified_name": "structural_lib.design.is456.beam.check_continuous_beam",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(request: 'BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "check_supplied",
           "qualified_name": "structural_lib.design.is456.beam.check_supplied",
           "kind": "function",
@@ -14553,6 +14777,37 @@
           }
         },
         {
+          "name": "load_continuous",
+          "qualified_name": "structural_lib.design.is456.beam.load_continuous",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckRequestV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.load_continuous.docstring"
+            ]
+          }
+        },
+        {
           "name": "load_json",
           "qualified_name": "structural_lib.design.is456.beam.load_json",
           "kind": "function",
@@ -14674,6 +14929,54 @@
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
+          }
+        },
+        {
+          "name": "render_continuous_beam_html",
+          "qualified_name": "structural_lib.design.is456.beam.render_continuous_beam_html",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(result: 'BeamContinuousCheckResultV1') -> 'str'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_continuous_html",
+          "qualified_name": "structural_lib.design.is456.beam.render_continuous_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'BeamContinuousCheckResultV1') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.render_continuous_html.docstring"
+            ]
           }
         }
       ]
@@ -15151,8 +15454,8 @@
     {
       "module": "structural_lib.design.is456.column",
       "export_classification": "preview",
-      "declared_export_count": 29,
-      "classified_symbol_count": 39,
+      "declared_export_count": 61,
+      "classified_symbol_count": 71,
       "symbols": [
         {
           "name": "CanonicalFamilyResultV1",
@@ -15174,12 +15477,50 @@
           }
         },
         {
+          "name": "CircularColumnInputV1",
+          "qualified_name": "structural_lib.design.is456.column.CircularColumnInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_circular",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ColumnActionsV1",
           "qualified_name": "structural_lib.design.is456.column.ColumnActionsV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ColumnCatalogueInputV1",
+          "qualified_name": "structural_lib.design.is456.column.ColumnCatalogueInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_catalogue",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -15275,6 +15616,44 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.family_f1",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ColumnMemberDetailingInputV1",
+          "qualified_name": "structural_lib.design.is456.column.ColumnMemberDetailingInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member_detailing",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ColumnMidpointCrossTieV1",
+          "qualified_name": "structural_lib.design.is456.column.ColumnMidpointCrossTieV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -15550,6 +15929,101 @@
           }
         },
         {
+          "name": "PositionedRectangularColumnInputV1",
+          "qualified_name": "structural_lib.design.is456.column.PositionedRectangularColumnInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "RectangularColumnActionsV1",
+          "qualified_name": "structural_lib.design.is456.column.RectangularColumnActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "RectangularColumnCageV1",
+          "qualified_name": "structural_lib.design.is456.column.RectangularColumnCageV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "SlenderRectangularColumnInputV1",
+          "qualified_name": "structural_lib.design.is456.column.SlenderRectangularColumnInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_slender",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "TiedRectangularColumnInputV1",
+          "qualified_name": "structural_lib.design.is456.column.TiedRectangularColumnInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.column_member",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ValidationError",
           "qualified_name": "structural_lib.design.is456.column.ValidationError",
           "kind": "class",
@@ -15613,6 +16087,64 @@
           }
         },
         {
+          "name": "check_circular_member",
+          "qualified_name": "structural_lib.design.is456.column.check_circular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'CircularColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_column_member_detailing",
+          "qualified_name": "structural_lib.design.is456.column.check_column_member_detailing",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'ColumnMemberDetailingInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "check_four_corner_member",
           "qualified_name": "structural_lib.design.is456.column.check_four_corner_member",
           "kind": "function",
@@ -15629,6 +16161,93 @@
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
             "signature": "(request: 'FourCornerColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_positioned_rectangular_member",
+          "qualified_name": "structural_lib.design.is456.column.check_positioned_rectangular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'PositionedRectangularColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_slender_rectangular_member",
+          "qualified_name": "structural_lib.design.is456.column.check_slender_rectangular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'SlenderRectangularColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_tied_rectangular_member",
+          "qualified_name": "structural_lib.design.is456.column.check_tied_rectangular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'TiedRectangularColumnInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -15779,6 +16398,93 @@
           }
         },
         {
+          "name": "load_circular_member",
+          "qualified_name": "structural_lib.design.is456.column.load_circular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | CircularColumnInputV1') -> 'CircularColumnInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_column_catalogue",
+          "qualified_name": "structural_lib.design.is456.column.load_column_catalogue",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | ColumnCatalogueInputV1') -> 'ColumnCatalogueInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_column_member_detailing",
+          "qualified_name": "structural_lib.design.is456.column.load_column_member_detailing",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | ColumnMemberDetailingInputV1') -> 'ColumnMemberDetailingInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_four_corner_member",
           "qualified_name": "structural_lib.design.is456.column.load_four_corner_member",
           "kind": "function",
@@ -15866,6 +16572,93 @@
           }
         },
         {
+          "name": "load_positioned_rectangular_member",
+          "qualified_name": "structural_lib.design.is456.column.load_positioned_rectangular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | PositionedRectangularColumnInputV1') -> 'PositionedRectangularColumnInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_slender_rectangular_member",
+          "qualified_name": "structural_lib.design.is456.column.load_slender_rectangular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | SlenderRectangularColumnInputV1') -> 'SlenderRectangularColumnInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_tied_rectangular_member",
+          "qualified_name": "structural_lib.design.is456.column.load_tied_rectangular_member",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | TiedRectangularColumnInputV1') -> 'TiedRectangularColumnInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "model_validate_json_or_error",
           "qualified_name": "structural_lib.design.is456.column.model_validate_json_or_error",
           "kind": "function",
@@ -15917,8 +16710,327 @@
           }
         },
         {
+          "name": "render_circular_member_html",
+          "qualified_name": "structural_lib.design.is456.column.render_circular_member_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_circular_member_svg",
+          "qualified_name": "structural_lib.design.is456.column.render_circular_member_svg",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_catalogue_html",
+          "qualified_name": "structural_lib.design.is456.column.render_column_catalogue_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_catalogue_svg",
+          "qualified_name": "structural_lib.design.is456.column.render_column_catalogue_svg",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str | None'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_member_bbs_csv",
+          "qualified_name": "structural_lib.design.is456.column.render_column_member_bbs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str | None'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_member_detailing_html",
+          "qualified_name": "structural_lib.design.is456.column.render_column_member_detailing_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_column_member_detailing_svg",
+          "qualified_name": "structural_lib.design.is456.column.render_column_member_detailing_svg",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "render_four_corner_member_html",
           "qualified_name": "structural_lib.design.is456.column.render_four_corner_member_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_positioned_rectangular_member_html",
+          "qualified_name": "structural_lib.design.is456.column.render_positioned_rectangular_member_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_slender_rectangular_member_html",
+          "qualified_name": "structural_lib.design.is456.column.render_slender_rectangular_member_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_slender_rectangular_member_svg",
+          "qualified_name": "structural_lib.design.is456.column.render_slender_rectangular_member_svg",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_tied_rectangular_member_html",
+          "qualified_name": "structural_lib.design.is456.column.render_tied_rectangular_member_html",
           "kind": "function",
           "classification": "preview",
           "declared_export": true,
@@ -15958,6 +17070,35 @@
             "obligations": [],
             "signature": "(request: 'object', expected: 'type[StrictPublicModel]') -> 'None'",
             "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "select_column_from_catalogue",
+          "qualified_name": "structural_lib.design.is456.column.select_column_from_catalogue",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.column",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'ColumnCatalogueInputV1') -> 'CanonicalFamilyResultV1[dict[str, object]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
             "missing_docstring_sections": [],
             "example_ids": []
           }
