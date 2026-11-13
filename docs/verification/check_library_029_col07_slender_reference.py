@@ -106,12 +106,44 @@ def fixture():
         else:
             control["end_detail"]["end_straight_mm"] = 750
         cases[name] = {"request": control, "expected": {"status": status}}
+    for name, vx, vy, status in (
+        ("slender_shear_x", -75, 0, "PASS"),
+        ("slender_shear_y", 0, 95, "PASS"),
+        ("slender_shear_excess", -150, 0, "FAIL"),
+        ("slender_shear_combined", -75, 20, "HOLD"),
+    ):
+        control = deepcopy(request)
+        control["identity"]["case_id"] = f"COL07-{name}"
+        control["actions"][1].update(vx_kn=vx, vy_kn=vy)
+        width, depth = (400, 240) if vx else (300, 340)
+        vc = 0.29 * 1.5 * width * depth / 1000
+        vs = 0.87 * 415 * (2 * math.pi * 8**2 / 4) * depth / 120 / 1000
+        cases[name] = {
+            "request": control,
+            "expected": {
+                **expected,
+                "status": status,
+                "shear": (
+                    {
+                        "direction": "x" if vx else "y",
+                        "demand_kn": vx or vy,
+                        "pitch_mm": 120,
+                        "d_mm": depth,
+                        "vc_kn": vc,
+                        "vus_kn": vs,
+                        "utilization": abs(vx or vy) / (vc + vs),
+                    }
+                    if not (vx and vy)
+                    else None
+                ),
+            },
+        }
     return {
         "fixture_version": "library-029-col07-slender-member-reference/v1",
         "sources": [
             "COL04 independent secant beam-column second-order actions and signed strength targets.",
             "COL07 independent straight tension development, tie placement and cut registers.",
-            "The admitted detailing case has zero supplied member shear and continuous bars.",
+            "The independently supplied principal shear uses COL07 two-leg hoop resistance and the COL04 concurrent axial force.",
         ],
         "cases": cases,
     }
