@@ -107,6 +107,27 @@ class TestMaterials:
         expected = 22000 * ((fcm / 10) ** 0.3)
         assert conc.Ec == pytest.approx(expected, rel=0.01)
 
+    @pytest.mark.parametrize("fck", [-4, 0, float("nan"), float("inf")])
+    def test_invalid_concrete_strength_is_rejected_before_modulus(self, fck):
+        with pytest.raises(ValueError, match="fck"):
+            Concrete(fck=fck, Ec=30_000)
+        with pytest.raises(ValueError, match="fck"):
+            MaterialFactory("IS456").concrete(fck=fck)
+
+    @pytest.mark.parametrize("fy", [0, -1, float("nan"), float("inf")])
+    def test_invalid_explicit_steel_strength_is_rejected(self, fy):
+        with pytest.raises(ValueError, match="fy"):
+            MaterialFactory("IS456").steel(fy=fy, grade="Fe415")
+
+    def test_steel_grade_lookup_and_explicit_override(self):
+        factory = MaterialFactory("IS456")
+        with pytest.raises(ValueError, match="Unsupported steel grade 'Fe250'"):
+            factory.steel(grade="Fe250")
+
+        assert factory.steel().fy == 500
+        assert factory.steel(grade="Fe415").fy == 415
+        assert factory.steel(fy=250, grade="Fe250") == Steel(fy=250, steel_type="Fe250")
+
 
 class TestRectangularSection:
     """Tests for RectangularSection geometry."""
