@@ -11,10 +11,10 @@ ROOT = Path(__file__).resolve().parent
 FIXTURE = ROOT / "library-029-serv01-beam-service.json"
 
 
-def section(member, moment, surface_x):
+def section(member, moment, surface_x, modulus=None):
     b, depth = member["width_mm"], member["depth_mm"]
     bars = member["bars"]
-    ec = 5000 * math.sqrt(member["fck_nmm2"])
+    ec = modulus or 5000 * math.sqrt(member["fck_nmm2"])
     ratio = 200000 / ec
     face = "bottom" if moment >= 0 else "top"
     positions = [
