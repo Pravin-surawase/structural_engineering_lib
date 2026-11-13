@@ -31,7 +31,11 @@ def solve(matrix, vector):
 
 
 def reference(request):
-    b, h = (request["geometry"][key] for key in ("b_mm", "D_mm"))
+    geometry = request["geometry"]
+    circle = geometry["shape"] == "circular"
+    b = h = geometry["diameter_mm"] if circle else 0
+    if not circle:
+        b, h = geometry["b_mm"], geometry["D_mm"]
     ec, es = (request["moduli"][key] for key in ("ec_nmm2", "es_nmm2"))
     actions = request["actions"]
     target = [
@@ -44,7 +48,7 @@ def reference(request):
     def ordinate(plane, x, y):
         return plane[0] + plane[1] * (0.5 - y / h) + plane[2] * (0.5 - x / b)
 
-    def samples(plane):
+    def rectangle_samples(plane):
         # Split at intersections with the top and bottom edges. The active
         # vertical strip bounds are then affine on each integration interval.
         cuts = [0, b]
@@ -70,6 +74,43 @@ def reference(request):
                 for v in GAUSS:
                     y = (high + low) / 2 + v * dy
                     yield x, y, dx * dy, ordinate(plane, x, y)
+
+    def circle_samples(plane, panels):
+        # Work in the original x/y axes rather than the solver's rotated
+        # chord coordinates. Split the x integral at the two intersections.
+        radius = b / 2
+        gx, gy = -plane[2] / b, -plane[1] / h
+        gradient = math.hypot(gx, gy)
+        cuts = [0, math.pi]
+        if gradient and abs(plane[0]) < radius * gradient:
+            distance = -plane[0] / gradient
+            transverse = math.sqrt(radius**2 - distance**2)
+            for sign in (-1, 1):
+                x_offset = (distance * gx + sign * transverse * gy) / gradient
+                cuts.append(math.acos(max(-1, min(1, x_offset / radius))))
+        cuts.sort()
+        for left, right in zip(cuts[:-1], cuts[1:], strict=True):
+            step = (right - left) / panels
+            for index in range(panels):
+                for u in GAUSS:
+                    theta = left + (index + (1 + u) / 2) * step
+                    x = radius * (1 + math.cos(theta))
+                    half_chord = radius * math.sin(theta)
+                    low, high = radius - half_chord, radius + half_chord
+                    bottom, top = ordinate(plane, x, high), ordinate(plane, x, low)
+                    if max(top, bottom) <= 0:
+                        continue
+                    if top < 0:
+                        low += 2 * half_chord * top / (top - bottom)
+                    elif bottom < 0:
+                        high = low + 2 * half_chord * top / (top - bottom)
+                    dy = (high - low) / 2
+                    for v in GAUSS:
+                        y = (high + low) / 2 + v * dy
+                        yield x, y, half_chord * step / 2 * dy, ordinate(plane, x, y)
+
+    def samples(plane, panels=48):
+        yield from circle_samples(plane, panels) if circle else rectangle_samples(plane)
         for bar in bars:
             x, y = bar["x_from_left_mm"], bar["y_from_top_mm"]
             strain = ordinate(plane, x, y)
@@ -111,11 +152,22 @@ def reference(request):
     cx = math.fsum(a * x for x, _, a, _ in points) / area
     cy = math.fsum(a * y for _, y, a, _ in points) / area
     corners = [ordinate(plane, x, y) for x, y in ((0, 0), (b, 0), (b, h), (0, h))]
+    peak = plane[0] + math.hypot(plane[1], plane[2]) / 2 if circle else max(corners)
+    if circle:
+        dense = list(samples(plane, 96))
+        for power_x, power_y in ((0, 0), (1, 0), (0, 1), (2, 0), (0, 2), (1, 1)):
+            sparse_moment = math.fsum(
+                a * x**power_x * y**power_y for x, y, a, _ in points
+            )
+            dense_moment = math.fsum(
+                a * x**power_x * y**power_y for x, y, a, _ in dense
+            )
+            assert math.isclose(sparse_moment, dense_moment, rel_tol=1e-7)
     return {
         "strain_at_centroid": plane[0],
         "strain_gradient_x_per_mm": -plane[2] / b,
         "strain_gradient_y_per_mm": -plane[1] / h,
-        "max_concrete_compression_nmm2": ec * max(0, *corners),
+        "max_concrete_compression_nmm2": ec * max(0, peak),
         "neutral_axis_angle_deg": math.degrees(math.atan2(-plane[2] / b, plane[1] / h))
         % 180,
         "bar_strains": {
@@ -175,11 +227,40 @@ def fixture():
             "expected": reference(payload),
             "status": status,
         }
+    sec02 = json.loads((ROOT / "library-029-sec02-column-interaction.json").read_text())
+    for name, mx, my in (("rectangle", -36, 23), ("circle", -58, 38)):
+        basis = sec02["cases"][name]["request"]
+        payload = deepcopy(request)
+        payload["identity"]["case_id"] = f"SEC02-{name}-cracked"
+        payload["identity"][
+            "source_reference"
+        ] = "SEC02 physical cage and independent active section properties"
+        payload["identity"]["member_id"] = None
+        for key in ("geometry", "bars", "materials"):
+            payload[key] = basis[key]
+        payload["moduli"]["ec_nmm2"] = 5000 * math.sqrt(basis["materials"]["fck_nmm2"])
+        payload["concrete_linear_limit_nmm2"] = 13
+
+        payload["actions"] = {"p_kn": basis["pu_kn"], "mx_knm": mx, "my_knm": my}
+        cases[f"{name}_cracked"] = {
+            "request": payload,
+            "expected": reference(payload),
+            "status": "PASS",
+        }
+        if name == "circle":
+            payload = deepcopy(payload)
+            payload["identity"]["case_id"] = "SEC02-circle-compressed"
+            payload["actions"].update(mx_knm=0, my_knm=0)
+            cases["circle_compressed"] = {
+                "request": payload,
+                "expected": reference(payload),
+                "status": "PASS",
+            }
     return {
         "fixture_version": "library-029-sec03-column-service-reference/v1",
         "sources": [
-            "COL03 admitted twelve-bar rectangular cage and the SEC03 S07/S08 plan.",
-            "Independent vertical-strip Gaussian integration and finite-difference equilibrium.",
+            "COL03 admitted twelve-bar rectangular cage, SEC03 S07/S08 and the two SEC02 physical cages.",
+            "Independent vertical-strip Gaussian integration and finite-difference equilibrium. Circular strips are repeated at twice the integration density.",
             "Compression-positive linear concrete with zero tensile stress, centroidal steel point areas, and declared elastic range.",
             "IS 456:2000 Cl. 6.2.3.1 nominal Ec; Cl. 5.6.3 nominal Es. The concrete model limit is supplied for this study.",
         ],
