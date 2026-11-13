@@ -1365,7 +1365,7 @@
           "bottom": {
             "neutral_axis_mm": 148.42844739660558,
             "surface_strain": 0.0004837249924160373,
-            "width_mm": 0.07986399490542752
+            "width_mm": 0
           },
           "top": {
             "neutral_axis_mm": 148.4284473966056,

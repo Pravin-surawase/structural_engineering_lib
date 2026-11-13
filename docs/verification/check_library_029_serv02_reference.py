@@ -150,7 +150,11 @@ def continuous_reference(request):
             for bar in tension
         )
         strain = (sustained_k + transient_k) * (depth - axis)
-        width = 3 * acr * strain / (1 + 2 * (acr - cover) / (depth - axis))
+        width = (
+            3 * acr * strain / (1 + 2 * (acr - cover) / (depth - axis))
+            if total * multiplier * span**2 / 1e6 > instant["cracking_moment_knm"]
+            else 0
+        )
         cracks[face] = {
             "neutral_axis_mm": axis,
             "surface_strain": strain,
