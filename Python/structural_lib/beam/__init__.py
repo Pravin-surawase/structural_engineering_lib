@@ -74,6 +74,7 @@ from .detailing import (
     check_seismic_detailing,
     development_length,
 )
+from .edge_torsion import EdgeBeamTorsionRequest, check_edge_beam_torsion
 from .flexure import (
     FlexuralCapacityRequest,
     FlexureCheckRequest,
@@ -217,6 +218,8 @@ __all__ = [
     "TorsionSupportTransferRequest",
     "check_closed_link_detail",
     "check_mild_durability",
+    "EdgeBeamTorsionRequest",
+    "check_edge_beam_torsion",
     "check_torsion_support_transfer",
     "ActionBasis",
     "ActionConcurrency",

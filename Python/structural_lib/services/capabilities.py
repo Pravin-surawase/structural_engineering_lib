@@ -132,7 +132,8 @@ _CAPABILITIES = (
             "Python profile checks signed sagging and hogging, shear, and straight "
             "anchorage against declared concurrent rows for two rectangular spans. "
             "The cantilever Python profile checks physical stations and straight fixed-face anchorage. "
-            "The section Python profile checks signed rectangular, monolithic T and L sections with actual bar layers."
+            "The section Python profile checks signed rectangular, monolithic T and L sections with actual bar layers. "
+            "The structural_lib.beam.check_edge_beam_torsion operation combines same-station resistance and signed support transfer for the declared ordinary rectangular edge-beam profile."
         ),
         held_cases=(
             "L-beam and flanged hogging checks are available at one supplied Python section. Composed flanged detailing and flanged torsion are outside that profile. Hollow/box, deep, prestressed and axially loaded beam cases are excluded.",

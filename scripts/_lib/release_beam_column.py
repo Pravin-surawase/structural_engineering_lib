@@ -41,6 +41,7 @@ TESTS = tuple(
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
+        "test_beam_edge_torsion",
         "test_torsional_serviceability",
         "test_t_beam_member",
         "test_complete_member_workflow",
@@ -99,6 +100,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_beam02_reference.py",
     "docs/verification/check_library_029_beam_sections_reference.py",
     "docs/verification/check_library_029_beam05_reference.py",
+    "docs/verification/check_library_029_beam07_reference.py",
     "docs/verification/check_library_029_flow02_reference.py",
     "docs/verification/check_library_029_sec02_reference.py",
     "docs/verification/check_library_029_sec03_reference.py",
@@ -117,6 +119,7 @@ BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
 BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.json"
 BEAM05_REFERENCE = "docs/verification/library-029-beam05-member-detailing.json"
+BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
@@ -143,6 +146,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM02_REFERENCE,
                 repo / BEAM_SECTION_REFERENCE,
                 repo / BEAM05_REFERENCE,
+                repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
