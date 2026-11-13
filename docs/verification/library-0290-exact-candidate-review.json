@@ -1,0 +1,67 @@
+{
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.29.0-py3-none-any.whl",
+      "sha256": "6a5f0671ab85bfd8b22b5fed87cbf5418ac8332806705cc46923c85c0ccb3142",
+      "size_bytes": 1400151
+    },
+    {
+      "filename": "structural_lib_is456-0.29.0.tar.gz",
+      "sha256": "9c9c1f11511f0e779b2c8aa52b5b99a4fb8b89c0e8b78179ce6885bb8433591f",
+      "size_bytes": 1189823
+    }
+  ],
+  "decision": "ACCEPT",
+  "hosted_checks": {
+    "required_pr_checks": {
+      "head_sha": "78d2c8c9dc0e9e803c4597eedee88233a4628b16",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43504142168/job/132158421638"
+    },
+    "weekly_verification": {
+      "head_sha": "78d2c8c9dc0e9e803c4597eedee88233a4628b16",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43504133815/attempts/1"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-11-13T21:19:50Z",
+  "integration_requirement": "Preserve the reviewed candidate ancestry and Python tree. Only release evidence may change before tagging.",
+  "local_verification": {
+    "artifact_record": "docs/verification/library-0290-release-artifacts.json",
+    "artifact_record_sha256": "edde790e75547e24de9f505260a3c7d7b29e05c2e432a01acf677a278d53065a",
+    "beam_column_tests_per_archive": {
+      "sdist": 762,
+      "wheel": 762
+    },
+    "build_head": "6f07966043148ac0c05e209b8a2b8eb33e51d6a2",
+    "distribution_inputs_changed_after_build": false,
+    "installed_profiles": 20,
+    "installed_wheel_uat_cases": 29,
+    "qualification_receipt_sha256": "5fa7ed147fbfb5f035a789174bb93660213863730619282734d24253904ccc61",
+    "slab_footing_cases_per_archive": {
+      "sdist": 13,
+      "wheel": 13
+    }
+  },
+  "professional_approval": false,
+  "qualified_structural_engineering_review": false,
+  "review_scope": "The reviewer checked the retained archive record against the exact qualified build, the merged source and the local preflight. The publication evidence commit preserves the qualified Python tree and adds the artifact record and a load-test harness correction that preserves the request count and latency limit. Hosted PR and Weekly checks passed on the reviewed evidence commit.",
+  "reviewed_candidate": {
+    "head_sha": "78d2c8c9dc0e9e803c4597eedee88233a4628b16",
+    "python_tree_sha": "adef6baf7ec43036fc010c2104c2e05f5ef8dbbd",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ],
+    "tag": "v0.29.0",
+    "tree_sha": "4bc930ca385b542b0dd3a1e98dc981e9427b70a5",
+    "version": "0.29.0"
+  },
+  "reviewer": {
+    "identity": "Codex independent release-contract reviewer /root/publish29_audit",
+    "independent": true,
+    "reviewed_at_utc": "2026-11-13T20:43:34Z"
+  },
+  "schema_version": "exact-candidate-review-receipt/v1"
+}

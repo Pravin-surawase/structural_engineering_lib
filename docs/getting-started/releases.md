@@ -1898,3 +1898,24 @@ profiles are development evidence. Qualification requires a new exact wheel
 and source archive from the integrated candidate.
 
 The [verified public install](release-status.md) remains 0.28.2.
+
+
+## v0.29.0 — Release authorized (2026-11-14)
+
+The owner authorized publication of the qualified 0.29.0 wheel and source
+archive. [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064)
+merged the qualified source after its required checks and
+[Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43489456392)
+passed. The merged tree matches the build candidate `6f07966043148ac0c05e209b8a2b8eb33e51d6a2`.
+
+- The [qualified artifact record](../verification/library-0290-release-artifacts.json)
+  records the archive hashes and installed evidence from all 20 profiles.
+- The [independent review](../verification/library-0290-exact-candidate-review.json),
+  [publication evidence Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43504133815/attempts/1)
+  and [owner authorization](../verification/release-publication-authorization.json)
+  bind those archives to the publication candidate in
+  [PR #1078](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1078).
+
+TestPyPI verifies the retained archives before the production tag and upload.
+The [delivery plan](../planning/beam-column-programme-delivery.md) schedules
+the remaining feature and reference-project work for 0.30.0.
