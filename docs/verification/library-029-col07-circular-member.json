@@ -1,0 +1,554 @@
+{
+  "fixture_version": "library-029-col07-circular-member-reference/v1",
+  "sources": [
+    "COL05 actual tied/spiral member, separately checked axial and signed bending at supplied stations.",
+    "Physical ring grid and declared cut register. Helix length per turn is hypot(pi*centreline diameter, pitch), summed over body and the two end segments.",
+    "No circular shear strength or splice model is assumed."
+  ],
+  "cases": {
+    "tied": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-tied",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        },
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "actions": [
+          {
+            "pu_kn": 650,
+            "mx_knm": 70,
+            "my_knm": 40,
+            "check_station_mm": 1500,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "pu_kn": 650,
+            "mx_knm": -70,
+            "my_knm": -40,
+            "check_station_mm": 900,
+            "combination_id": "U2",
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "placement": {
+          "first_station_mm": 75,
+          "last_station_mm": 2925,
+          "end_clearance_mm": 30,
+          "start_anchor_pitch_mm": 0,
+          "end_anchor_pitch_mm": 0,
+          "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
+        },
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "Approved closed ring cut and closure geometry",
+          "cut_lengths_mm": {
+            "R1": 1180
+          }
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "transverse_count": 20,
+        "cut_mm": 1180,
+        "longitudinal_count": 8,
+        "longitudinal_cut_mm": 5000,
+        "mass_kg": 113.19629569782062
+      }
+    },
+    "spiral": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-spiral",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        },
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "actions": [
+          {
+            "pu_kn": 650,
+            "mx_knm": 70,
+            "my_knm": 40,
+            "check_station_mm": 1500,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "pu_kn": 650,
+            "mx_knm": -70,
+            "my_knm": -40,
+            "check_station_mm": 900,
+            "combination_id": "U2",
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "placement": {
+          "first_station_mm": 90,
+          "last_station_mm": 2910,
+          "end_clearance_mm": 30,
+          "start_anchor_pitch_mm": 15,
+          "end_anchor_pitch_mm": 15,
+          "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
+        },
+        "transverse_cut_schedule": null
+      },
+      "expected": {
+        "status": "PASS",
+        "transverse_count": 1,
+        "cut_mm": 56623.71643149006,
+        "longitudinal_count": 8,
+        "longitudinal_cut_mm": 5000,
+        "mass_kg": 133.55665719139319
+      }
+    },
+    "stale_ring_register": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-stale_ring_register",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        },
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "actions": [
+          {
+            "pu_kn": 650,
+            "mx_knm": 70,
+            "my_knm": 40,
+            "check_station_mm": 1500,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "pu_kn": 650,
+            "mx_knm": -70,
+            "my_knm": -40,
+            "check_station_mm": 900,
+            "combination_id": "U2",
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "placement": {
+          "first_station_mm": 75,
+          "last_station_mm": 2925,
+          "end_clearance_mm": 30,
+          "start_anchor_pitch_mm": 0,
+          "end_anchor_pitch_mm": 0,
+          "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
+        },
+        "transverse_cut_schedule": {
+          "detailing_revision": "D0",
+          "reference": "Approved closed ring cut and closure geometry",
+          "cut_lengths_mm": {
+            "R1": 1180
+          }
+        }
+      },
+      "expected": {
+        "status": "HOLD"
+      }
+    },
+    "missing_anchor_pitch": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-missing_anchor_pitch",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        },
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "actions": [
+          {
+            "pu_kn": 650,
+            "mx_knm": 70,
+            "my_knm": 40,
+            "check_station_mm": 1500,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "pu_kn": 650,
+            "mx_knm": -70,
+            "my_knm": -40,
+            "check_station_mm": 900,
+            "combination_id": "U2",
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "placement": {
+          "first_station_mm": 90,
+          "last_station_mm": 2910,
+          "end_clearance_mm": 30,
+          "start_anchor_pitch_mm": null,
+          "end_anchor_pitch_mm": 15,
+          "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
+        },
+        "transverse_cut_schedule": null
+      },
+      "expected": {
+        "status": "HOLD"
+      }
+    },
+    "crowded_anchor_pitch": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-crowded_anchor_pitch",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        },
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "spiral",
+            "tie_id": "S1",
+            "diameter_mm": 10,
+            "pitch_mm": 60,
+            "fy_nmm2": 500,
+            "start_extra_turns": 1.5,
+            "end_extra_turns": 1.5,
+            "axial_enhancement": true
+          }
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "actions": [
+          {
+            "pu_kn": 650,
+            "mx_knm": 70,
+            "my_knm": 40,
+            "check_station_mm": 1500,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "pu_kn": 650,
+            "mx_knm": -70,
+            "my_knm": -40,
+            "check_station_mm": 900,
+            "combination_id": "U2",
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "placement": {
+          "first_station_mm": 90,
+          "last_station_mm": 2910,
+          "end_clearance_mm": 30,
+          "start_anchor_pitch_mm": 8,
+          "end_anchor_pitch_mm": 15,
+          "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
+        },
+        "transverse_cut_schedule": null
+      },
+      "expected": {
+        "status": "FAIL"
+      }
+    },
+    "nonzero_shear": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-nonzero_shear",
+          "member_id": "COL05-C",
+          "source_reference": "COL05 independent circular reference"
+        },
+        "geometry": {
+          "diameter_mm": 450,
+          "unsupported_length_mm": 3000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bar_count": 8,
+          "bar_diameter_mm": 20,
+          "ring_radius_mm": 165,
+          "first_bar_angle_deg": 0,
+          "aggregate_size_mm": 20,
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "transverse": {
+            "kind": "tied",
+            "tie_id": "R1",
+            "diameter_mm": 10,
+            "pitch_mm": 150,
+            "closed": true,
+            "closure_reference": "COL05 assumed full-strength closed ring closure, externally detailed"
+          }
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "actions": [
+          {
+            "pu_kn": 650,
+            "mx_knm": 70,
+            "my_knm": 40,
+            "check_station_mm": 1500,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 40
+          },
+          {
+            "pu_kn": 650,
+            "mx_knm": -70,
+            "my_knm": -40,
+            "check_station_mm": 900,
+            "combination_id": "U2",
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "placement": {
+          "first_station_mm": 75,
+          "last_station_mm": 2925,
+          "end_clearance_mm": 30,
+          "start_anchor_pitch_mm": 0,
+          "end_anchor_pitch_mm": 0,
+          "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
+        },
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "Approved closed ring cut and closure geometry",
+          "cut_lengths_mm": {
+            "R1": 1180
+          }
+        }
+      },
+      "expected": {
+        "status": "HOLD"
+      }
+    }
+  }
+}
