@@ -143,7 +143,8 @@ def _rank(pair: tuple[BeamLayerOptionV1, BeamLayerOptionV1]) -> tuple[float, int
         for option in pair
         for _ in option.x_from_left_mm
     ]
-    return sum(areas), len(areas), f"{pair[0].option_id}/{pair[1].option_id}"
+    # Equal steel must tie even when layers list the same bars in different orders.
+    return math.fsum(areas), len(areas), f"{pair[0].option_id}/{pair[1].option_id}"
 
 
 def select_section_catalogue(

@@ -89,7 +89,7 @@ def fixture():
             row_scores.append((max(m, v), action["row_id"]))
             if state["over_reinforced"] or m > 1 or v > 1:
                 status = "FAIL"
-        area = sum(
+        area = math.fsum(
             math.pi * bar["diameter_mm"] ** 2 / 4
             for bar in candidate["bars"]
             if bar["face"] == "bottom"

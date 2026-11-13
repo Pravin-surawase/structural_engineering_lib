@@ -25,6 +25,11 @@ def test_catalogue_matches_all_independent_candidates():
     assert data["enumeration_complete"]
     assert data["selected_id"] == expected["selected_id"]
     assert data["eligible_ids"] == expected["eligible_ids"]
+    # Swapping identical groups between the two layers leaves total area equal.
+    # Both feasible choices must follow the option-ID tie-break.
+    first, second = "2x16/3x20", "3x20/2x16"
+    assert data["evaluated"][first]["rank"][:2] == data["evaluated"][second]["rank"][:2]
+    assert data["eligible_ids"].index(first) < data["eligible_ids"].index(second)
     assert data["catalogue_count"] == len(expected["evaluated"]) == 81
     for key, reference in expected["evaluated"].items():
         actual = data["evaluated"][key]

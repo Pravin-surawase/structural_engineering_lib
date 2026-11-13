@@ -84,6 +84,9 @@ See the [case coverage and 0.30.0 follow-ons](docs/planning/library-usability-im
   eccentricity or unavailable interaction ratio, and retain the reason and
   design outcome. Direct axial JSON uses the numeric classification value.
 
+- Rank beam catalogue layouts with equal steel area by bar count and option
+  ID consistently across Python versions.
+
 ### Verification
 
 - Replay the new beam and column profiles and the slab coefficient cases
