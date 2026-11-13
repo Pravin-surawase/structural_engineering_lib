@@ -37,9 +37,32 @@ from structural_lib.services.bbs import (  # Constants; Weight calculations; Cut
     export_bbs_to_csv,
     export_bbs_to_json,
     export_bom_summary_csv,
+    extract_bar_marks_from_bbs_csv,
     generate_bbs_from_detailing,
     optimize_cutting_stock,
 )
+
+
+def test_bbs_mark_extraction_allows_replay_but_rejects_conflicting_cut(tmp_path):
+    """Mark-diff ingestion must not collapse two physical cuts under one mark."""
+    schedule = tmp_path / "schedule.csv"
+    schedule.write_text(
+        "bar_mark,member_id,cut_length_mm\n"
+        "S1-B1-B-S-D20-01,S1_B1,4070\n"
+        "S1-B1-B-S-D20-01,S1_B1,4070\n",
+        encoding="utf-8",
+    )
+    assert extract_bar_marks_from_bbs_csv(schedule) == {"S1-B1": {"S1-B1-B-S-D20-01"}}
+
+    schedule.write_text(
+        "bar_mark,member_id,cut_length_mm\n"
+        "B1-B-S-D20-01,B1,4070\n"
+        "B1-B-S-D20-01,B1,3320\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="Conflicting BBS rows reuse bar mark"):
+        extract_bar_marks_from_bbs_csv(schedule)
+
 
 # =============================================================================
 # Weight Calculation Tests

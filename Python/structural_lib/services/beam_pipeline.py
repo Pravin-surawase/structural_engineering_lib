@@ -197,6 +197,8 @@ class DetailingOutput:
     bottom_bars: list[BarDict] = field(default_factory=list)
     top_bars: list[BarDict] = field(default_factory=list)
     stirrups: list[StirrupDict] = field(default_factory=list)
+    is_valid: bool | None = None
+    remarks: str = ""
 
 
 @dataclass
@@ -343,6 +345,12 @@ class BeamDesignOutput:
             raise ValueError(
                 "Pipeline result field 'detailing' must be an object or null."
             )
+        if detailing_payload is not None:
+            # Older schema-v1 records did not state arrangement validity.  Do
+            # not promote their bar rows to an accepted layout on restore.
+            detailing_payload = dict(detailing_payload)
+            detailing_payload.setdefault("is_valid", None)
+            detailing_payload.setdefault("remarks", "")
 
         return cls(
             schema_version=SCHEMA_VERSION,
@@ -909,6 +917,17 @@ def design_single_beam(
                 asc_mid=case_result.flexure.Asc_required,
                 asc_end=case_result.flexure.Asc_required,
                 stirrup_dia=stirrup_dia_mm,
+                preferred_tension_bar_dia=(
+                    effective_depth_basis.tension_bar_diameter_mm
+                    if isinstance(effective_depth_basis, EffectiveDepthBasisV1)
+                    else None
+                ),
+                preferred_compression_bar_dia=(
+                    effective_depth_basis.tension_bar_diameter_mm
+                    if isinstance(effective_depth_basis, EffectiveDepthBasisV1)
+                    and case_result.flexure.Asc_required > 0
+                    else None
+                ),
                 stirrup_spacing_start=stirrup_spacing_start_mm,
                 stirrup_spacing_mid=stirrup_spacing_mid_mm,
                 stirrup_spacing_end=stirrup_spacing_end_mm,
@@ -941,6 +960,8 @@ def design_single_beam(
                     }
                     for stir in detailing_result.stirrups
                 ],
+                is_valid=detailing_result.is_valid,
+                remarks=detailing_result.remarks,
             )
         except Exception:  # nosec B110
             # Detailing is optional; don't fail the whole design

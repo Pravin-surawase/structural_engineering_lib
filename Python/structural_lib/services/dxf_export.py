@@ -1459,6 +1459,8 @@ def generate_multi_beam_dxf(
     if columns < 1:
         raise ValueError("columns must be >= 1")
 
+    detailings = bbs.qualify_combined_detailing_ids(detailings)
+
     # Group similar beams if requested (industry standard)
     if group_similar_beams_opt:
         groups = group_similar_beams(detailings)

@@ -17,7 +17,7 @@
         {
           "case_id": "G_B1",
           "flexure": {
-            "pt_provided": 0.8695652173913043,
+            "pt_provided": null,
             "section_type": "UNDER_REINFORCED"
           },
           "governing_utilization": 0.6,
@@ -108,14 +108,14 @@
         {
           "check": "min_ductility",
           "json_path": "cases[0].flexure.pt_provided",
-          "message": "min ductility OK",
-          "status": "OK"
+          "message": "missing pt_provided/fck/fy",
+          "status": "INFO"
         },
         {
           "check": "max_ductility",
           "json_path": "cases[0].flexure.pt_provided",
-          "message": "max ductility OK",
-          "status": "OK"
+          "message": "missing pt_provided/fck/fy",
+          "status": "INFO"
         },
         {
           "check": "shear_margin",

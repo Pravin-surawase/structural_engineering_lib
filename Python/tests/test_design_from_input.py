@@ -8,6 +8,8 @@ This tests the integration between the inputs module and the API.
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 import pytest
 
 from structural_lib import api
@@ -21,6 +23,7 @@ from structural_lib.core.inputs import (
     MaterialsInput,
 )
 from structural_lib.services.api_results import DesignAndDetailResult
+from structural_lib.services.bbs import generate_bbs_from_detailing
 
 
 class TestDesignFromInput:
@@ -42,6 +45,63 @@ class TestDesignFromInput:
         assert result.beam_id == "B1"
         assert result.story == "GF"
         assert result.is_ok  # Should pass for these inputs
+        assert result.design.case_id == "B1@GF"
+
+    def test_single_case_id_reaches_design_and_compliance_report(self) -> None:
+        beam = BeamInput(
+            beam_id="B1",
+            story="GF",
+            geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, bar_dia_mm=16),
+            materials=MaterialsInput.m25_fe500(),
+            loads=LoadsInput(mu_knm=100, vu_kn=60, case_id="ULS-A9-EXPLICIT"),
+        )
+        beam = BeamInput.from_json(beam.to_json())
+
+        detailed = api.design_from_input(beam)
+        report = api.design_from_input(beam, include_detailing=False)
+
+        assert isinstance(detailed, DesignAndDetailResult)
+        assert detailed.design.case_id == "ULS-A9-EXPLICIT"
+        assert isinstance(report, ComplianceReport)
+        assert report.to_dict()["governing_case_id"] == "ULS-A9-EXPLICIT"
+        assert [case.case_id for case in report.cases] == ["ULS-A9-EXPLICIT"]
+
+    @pytest.mark.parametrize("multiple_cases", [False, True])
+    def test_explicit_end_spacing_reaches_the_schedule(
+        self, multiple_cases: bool
+    ) -> None:
+        beam = BeamInput(
+            beam_id="B1",
+            story="GF",
+            geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, bar_dia_mm=16),
+            materials=MaterialsInput.m25_fe500(),
+            loads=None if multiple_cases else LoadsInput(mu_knm=100, vu_kn=60),
+            load_cases=(
+                [
+                    LoadCaseInput("DL+LL", mu_knm=80, vu_kn=50),
+                    LoadCaseInput("DL+EQ", mu_knm=100, vu_kn=60),
+                ]
+                if multiple_cases
+                else []
+            ),
+        )
+        configured = replace(
+            beam,
+            detailing_config=replace(beam.detailing_config, stirrup_spacing_end_mm=125),
+        )
+        default = api.design_from_input(beam)
+        detailed = api.design_from_input(BeamInput.from_json(configured.to_json()))
+
+        assert isinstance(default, DesignAndDetailResult)
+        assert isinstance(detailed, DesignAndDetailResult)
+        assert [zone.spacing for zone in default.detailing.stirrups] == [150, 200, 150]
+        assert [zone.spacing for zone in detailed.detailing.stirrups] == [150, 200, 125]
+        counts = {
+            item.zone: item.no_of_bars
+            for item in generate_bbs_from_detailing(detailed.detailing)
+            if item.location == "stirrup"
+        }
+        assert counts == {"start": 9, "mid": 13, "end": 11}
 
     def test_design_with_detailing(self) -> None:
         """Test that detailing is included by default."""

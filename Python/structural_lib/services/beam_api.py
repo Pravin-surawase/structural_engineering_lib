@@ -27,7 +27,7 @@ from structural_lib.core.data_types import (
     CrackWidthParams,
     DeflectionParams,
 )
-from structural_lib.core.inputs import BeamInput
+from structural_lib.core.inputs import BeamInput, LoadsInput
 from structural_lib.core.validation import (
     require_nonblank_string,
     require_nonnegative_real,
@@ -497,6 +497,13 @@ def compute_detailing(
         if spacing_end is None:
             spacing_end = min(150.0, basis[1]) if basis else 150.0
 
+        depth_resolution = beam.get("effective_depth_resolution") or {}
+        bar_basis = depth_resolution.get("effective_depth_basis") or {}
+        tension_dia = (
+            bar_basis.get("tension_bar_diameter_mm")
+            if basis is not None and depth_resolution.get("source") == "DERIVED"
+            else None
+        )
         detailing_result = detailing.create_beam_detailing(
             beam_id=params["beam_id"],
             story=params["story"],
@@ -513,6 +520,8 @@ def compute_detailing(
             asc_mid=params["asc"],
             asc_end=params["asc"],
             stirrup_dia=float(stirrup_dia),
+            preferred_tension_bar_dia=tension_dia,
+            preferred_compression_bar_dia=tension_dia if params["asc"] > 0 else None,
             stirrup_spacing_start=float(spacing_start),
             stirrup_spacing_mid=float(spacing_mid),
             stirrup_spacing_end=float(spacing_end),
@@ -2338,6 +2347,8 @@ def _design_and_detail_beam_is456_calculation(
     stirrup_spacing_mid_mm: float = 200.0,
     is_seismic: bool = False,
     primary_tension_face: Literal["TOP", "BOTTOM"] = "BOTTOM",
+    stirrup_spacing_end_mm: float | None = None,
+    case_id: str | None = None,
 ) -> DesignAndDetailResult:
     """Design AND detail a beam in one call (IS 456:2000).
 
@@ -2373,6 +2384,8 @@ def _design_and_detail_beam_is456_calculation(
         stirrup_spacing_mid_mm: Stirrup spacing at midspan (mm). Default: 200.
         is_seismic: Apply IS 13920 detailing if True. Default: False.
         primary_tension_face: Physical face carrying the primary Ast demand.
+        stirrup_spacing_end_mm: End support spacing (mm). Defaults to the start.
+        case_id: Load case label. Defaults to the beam and story label.
 
     Returns:
         DesignAndDetailResult with:
@@ -2407,6 +2420,11 @@ def _design_and_detail_beam_is456_calculation(
         - detail_beam_is456(): Detailing-only (requires Ast as input)
     """
     _require_is456_units(units)
+    end_spacing = (
+        stirrup_spacing_support_mm
+        if stirrup_spacing_end_mm is None
+        else stirrup_spacing_end_mm
+    )
 
     _validate_detailing_boundary(
         beam_id=beam_id,
@@ -2420,7 +2438,7 @@ def _design_and_detail_beam_is456_calculation(
         stirrup_dia_mm=stirrup_dia_mm,
         stirrup_spacing_start_mm=stirrup_spacing_support_mm,
         stirrup_spacing_mid_mm=stirrup_spacing_mid_mm,
-        stirrup_spacing_end_mm=stirrup_spacing_support_mm,
+        stirrup_spacing_end_mm=end_spacing,
         is_seismic=is_seismic,
     )
     require_positive_real(d_dash_mm, "d_dash_mm")
@@ -2433,7 +2451,7 @@ def _design_and_detail_beam_is456_calculation(
     # Step 1: Design the beam
     design_result = design_beam_is456(
         units=units,
-        case_id=f"{beam_id}@{story}",
+        case_id=case_id if case_id is not None else f"{beam_id}@{story}",
         mu_knm=mu_knm,
         vu_kn=vu_kn,
         b_mm=b_mm,
@@ -2470,7 +2488,7 @@ def _design_and_detail_beam_is456_calculation(
         stirrup_dia_mm=stirrup_dia_mm,
         stirrup_spacing_start_mm=stirrup_spacing_support_mm,
         stirrup_spacing_mid_mm=stirrup_spacing_mid_mm,
-        stirrup_spacing_end_mm=stirrup_spacing_support_mm,
+        stirrup_spacing_end_mm=end_spacing,
         is_seismic=is_seismic,
         primary_tension_face=primary_tension_face,
     )
@@ -3033,6 +3051,8 @@ def design_from_input(
         - MaterialsInput: Material grades with factory methods
         - design_and_detail_beam_is456: Low-level parameter-based API
     """
+    from structural_lib.services.canonical_beam import design_and_detail_compatibility
+
     geom = beam.geometry
     mat = beam.materials
     config = beam.detailing_config
@@ -3076,7 +3096,7 @@ def design_from_input(
         if governing_case is None:
             raise ValueError("No valid load cases in report")
 
-        return design_and_detail_beam_is456(
+        return design_and_detail_compatibility(
             units=beam.units,
             beam_id=beam.beam_id,
             story=beam.story,
@@ -3094,6 +3114,7 @@ def design_from_input(
             stirrup_dia_mm=config.stirrup_dia_mm,
             stirrup_spacing_support_mm=config.stirrup_spacing_start_mm,
             stirrup_spacing_mid_mm=config.stirrup_spacing_mid_mm,
+            stirrup_spacing_end_mm=config.stirrup_spacing_end,
             is_seismic=config.is_seismic,
         )
 
@@ -3101,12 +3122,16 @@ def design_from_input(
     if beam.loads is None:
         raise ValueError("BeamInput requires either 'loads' or 'load_cases'")
 
+    case_id = beam.loads.case_id
+    if case_id == LoadsInput.case_id:
+        case_id = f"{beam.beam_id}@{beam.story}"
+
     if not include_detailing:
         return check_beam_is456(
             units=beam.units,
             cases=[
                 {
-                    "case_id": f"{beam.beam_id}@{beam.story}",
+                    "case_id": case_id,
                     "mu_knm": beam.loads.mu_knm,
                     "vu_kn": beam.loads.vu_kn,
                 }
@@ -3120,7 +3145,7 @@ def design_from_input(
             asv_mm2=config.asv_mm2,
         )
 
-    return design_and_detail_beam_is456(
+    return design_and_detail_compatibility(
         units=beam.units,
         beam_id=beam.beam_id,
         story=beam.story,
@@ -3138,5 +3163,7 @@ def design_from_input(
         stirrup_dia_mm=config.stirrup_dia_mm,
         stirrup_spacing_support_mm=config.stirrup_spacing_start_mm,
         stirrup_spacing_mid_mm=config.stirrup_spacing_mid_mm,
+        stirrup_spacing_end_mm=config.stirrup_spacing_end,
         is_seismic=config.is_seismic,
+        case_id=case_id,
     )
