@@ -167,6 +167,16 @@ _CAPABILITIES = (
                 "Python/examples/beam_instantaneous_service.py",
             ),
             IS456PythonProfile(
+                "is456.beam.continuous-detailing/v1",
+                "structural_lib.design.is456.beam",
+                "load_continuous_detailing",
+                "check_continuous_detailing",
+                "is456-beam-continuous-detailing-input/v1",
+                "Two-span rectangular member with continuous straight bars and one uniform ordinary link mark, with checked elevation and schedule.",
+                "docs/cookbook/python/beam-continuous-detailing.md",
+                "Python/examples/beam_continuous_detailing.py",
+            ),
+            IS456PythonProfile(
                 "is456.beam.continuous-check/v1",
                 "structural_lib.design.is456.beam",
                 "load_continuous",

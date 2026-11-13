@@ -26,6 +26,13 @@ from structural_lib.services.beam_instantaneous_service import (
     check_instantaneous_service,
     render_instantaneous_service_html,
 )
+from structural_lib.services.beam_member_detailing import (
+    BeamContinuousDetailingInputV1,
+    check_continuous_detailing,
+    render_continuous_detailing_bbs_csv,
+    render_continuous_detailing_html,
+    render_continuous_detailing_svg,
+)
 from structural_lib.services.beam_service_history import (
     BeamServiceHistoryInputV1,
     check_finite_service_history,
@@ -99,6 +106,12 @@ from structural_lib.services.supplied_beam_check import (
 
 __all__ = [
     "BeamActionsV1",
+    "BeamContinuousDetailingInputV1",
+    "load_continuous_detailing",
+    "check_continuous_detailing",
+    "render_continuous_detailing_bbs_csv",
+    "render_continuous_detailing_html",
+    "render_continuous_detailing_svg",
     "BeamSectionCatalogueInputV1",
     "load_section_catalogue",
     "select_section_catalogue",
@@ -1045,3 +1058,43 @@ def load_section_catalogue(
     if isinstance(value, (str, bytes)):
         return model_validate_json_or_error(BeamSectionCatalogueInputV1, value)
     return model_validate_or_error(BeamSectionCatalogueInputV1, value)
+
+
+def load_continuous_detailing(
+    value: Mapping[str, object] | str | bytes | BeamContinuousDetailingInputV1,
+) -> BeamContinuousDetailingInputV1:
+    """Load a two-span rectangular member and its ordinary link detail.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamContinuousDetailingInputV1
+        The physical member, supplied actions, link placement and stock length.
+
+    Returns
+    -------
+    BeamContinuousDetailingInputV1
+        The validated continuous detailing request.
+
+    Raises
+    ------
+    InputContractError
+        The member, action or link inputs violate the contract.
+
+    Examples
+    --------
+    >>> callable(load_continuous_detailing)
+    True
+
+    Limitations
+    -----------
+    Continuous straight longitudinal bars and one uniform ordinary link mark.
+
+    Provenance
+    ----------
+    Uses the signed continuous beam contract and actual bar path input.
+    """
+    if isinstance(value, BeamContinuousDetailingInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamContinuousDetailingInputV1, value)
+    return model_validate_or_error(BeamContinuousDetailingInputV1, value)
