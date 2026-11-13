@@ -1,0 +1,469 @@
+{
+  "fixture_version": "library-029-sec02-column-interaction-reference/v1",
+  "sources": [
+    "COL02 actual rectangle and COL05 actual circular ring",
+    "Independent rectangular strip and analytic circular chord integration.",
+    "Gross elastic geometry and explicit transformed-section parallel-axis arithmetic."
+  ],
+  "tolerances": {
+    "moment_knm": 0.02,
+    "axial_kn": 0.01,
+    "angle_deg": 0.02,
+    "axis_mm": 0.02
+  },
+  "cases": {
+    "rectangle": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC02-R",
+          "source_reference": "SEC02 independent signed rays"
+        },
+        "geometry": {
+          "shape": "rectangular",
+          "b_mm": 300,
+          "D_mm": 400
+        },
+        "bars": [
+          {
+            "bar_id": "C1",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C2",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C3",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C4",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_LEFT",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 200,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_RIGHT",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 200,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_TOP",
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_BOTTOM",
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "pu_kn": 500,
+        "modular_ratio": 8,
+        "point_count": 8
+      },
+      "properties": {
+        "gross": {
+          "area_mm2": 120000,
+          "cx_mm": 150.0,
+          "cy_mm": 200.0,
+          "ix_mm4": 1600000000.0,
+          "iy_mm4": 900000000.0,
+          "ixy_mm4": 0.0
+        },
+        "transformed": {
+          "area_mm2": 137592.91886010283,
+          "cx_mm": 150.00000000000003,
+          "cy_mm": 200.0,
+          "ix_mm4": 1859055730.2150142,
+          "iy_mm4": 1007316805.0466273,
+          "ixy_mm4": 0.0
+        }
+      },
+      "rays": [
+        {
+          "angle_deg": 0,
+          "normal_deg": 270.0,
+          "xu_mm": 194.56270178435477,
+          "p_kn": 499.9999999843726,
+          "mx_knm": 152.54080194277478,
+          "my_knm": 9.778887033462524e-15,
+          "capacity_knm": 152.54080194277478,
+          "axial_residual_kn": -1.562739271321334e-08,
+          "transverse_residual_knm": 9.778887033462524e-15
+        },
+        {
+          "angle_deg": 45,
+          "normal_deg": 207.27380027782144,
+          "xu_mm": 229.77398283440107,
+          "p_kn": 500.0000000040192,
+          "mx_knm": 71.25365713431907,
+          "my_knm": 71.25365713433075,
+          "capacity_knm": 100.76788828804473,
+          "axial_residual_kn": 4.019227617391152e-09,
+          "transverse_residual_knm": 8.270717444247566e-12
+        },
+        {
+          "angle_deg": 90,
+          "normal_deg": 180.0,
+          "xu_mm": 146.15564350765993,
+          "p_kn": 499.99999999023737,
+          "mx_knm": -2.537854015827179e-14,
+          "my_knm": 102.73794604189386,
+          "capacity_knm": 102.73794604189386,
+          "axial_residual_kn": -9.762629815668333e-09,
+          "transverse_residual_knm": 3.166942499683073e-14
+        },
+        {
+          "angle_deg": 135,
+          "normal_deg": 152.72619972217856,
+          "xu_mm": 229.77398283440107,
+          "p_kn": 500.00000000401894,
+          "mx_knm": -71.25365713431911,
+          "my_knm": 71.25365713433075,
+          "capacity_knm": 100.76788828804476,
+          "axial_residual_kn": 4.018943400296848e-09,
+          "transverse_residual_knm": -8.220979452744359e-12
+        },
+        {
+          "angle_deg": 180,
+          "normal_deg": 90.0,
+          "xu_mm": 194.56270178435472,
+          "p_kn": 499.9999999843728,
+          "mx_knm": -152.54080194277478,
+          "my_knm": 0.0,
+          "capacity_knm": 152.54080194277478,
+          "axial_residual_kn": -1.5627222182956757e-08,
+          "transverse_residual_knm": 1.868086048385895e-14
+        },
+        {
+          "angle_deg": 225,
+          "normal_deg": 27.273800277821465,
+          "xu_mm": 229.77398283440107,
+          "p_kn": 500.0000000040189,
+          "mx_knm": -71.25365713431916,
+          "my_knm": -71.25365713433072,
+          "capacity_knm": 100.76788828804479,
+          "axial_residual_kn": 4.0188865568779875e-09,
+          "transverse_residual_knm": 8.192557743313955e-12
+        },
+        {
+          "angle_deg": 270,
+          "normal_deg": 0.0,
+          "xu_mm": 146.15564350765987,
+          "p_kn": 499.99999999023737,
+          "mx_knm": 0.0,
+          "my_knm": -102.73794604189388,
+          "capacity_knm": 102.73794604189388,
+          "axial_residual_kn": -9.762629815668333e-09,
+          "transverse_residual_knm": 1.8872654515676822e-14
+        },
+        {
+          "angle_deg": 315,
+          "normal_deg": 332.72619972217865,
+          "xu_mm": 229.7739828344009,
+          "p_kn": 500.00000000401906,
+          "mx_knm": 71.25365713431891,
+          "my_knm": -71.25365713433087,
+          "capacity_knm": 100.7678882880447,
+          "axial_residual_kn": 4.01905708713457e-09,
+          "transverse_residual_knm": -8.427036846114788e-12
+        }
+      ]
+    },
+    "circle": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC02-C",
+          "source_reference": "SEC02 independent signed rays"
+        },
+        "geometry": {
+          "shape": "circular",
+          "diameter_mm": 450
+        },
+        "bars": [
+          {
+            "bar_id": "B01",
+            "diameter_mm": 20,
+            "row": "ring",
+            "x_from_left_mm": 390.0,
+            "y_from_top_mm": 225.0
+          },
+          {
+            "bar_id": "B02",
+            "diameter_mm": 20,
+            "row": "ring",
+            "x_from_left_mm": 341.6726188957804,
+            "y_from_top_mm": 341.6726188957803
+          },
+          {
+            "bar_id": "B03",
+            "diameter_mm": 20,
+            "row": "ring",
+            "x_from_left_mm": 225.0,
+            "y_from_top_mm": 390.0
+          },
+          {
+            "bar_id": "B04",
+            "diameter_mm": 20,
+            "row": "ring",
+            "x_from_left_mm": 108.32738110421967,
+            "y_from_top_mm": 341.6726188957804
+          },
+          {
+            "bar_id": "B05",
+            "diameter_mm": 20,
+            "row": "ring",
+            "x_from_left_mm": 60.0,
+            "y_from_top_mm": 225.00000000000003
+          },
+          {
+            "bar_id": "B06",
+            "diameter_mm": 20,
+            "row": "ring",
+            "x_from_left_mm": 108.32738110421963,
+            "y_from_top_mm": 108.32738110421967
+          },
+          {
+            "bar_id": "B07",
+            "diameter_mm": 20,
+            "row": "ring",
+            "x_from_left_mm": 224.99999999999997,
+            "y_from_top_mm": 60.0
+          },
+          {
+            "bar_id": "B08",
+            "diameter_mm": 20,
+            "row": "ring",
+            "x_from_left_mm": 341.6726188957803,
+            "y_from_top_mm": 108.32738110421963
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "pu_kn": 500,
+        "modular_ratio": 8,
+        "point_count": 8
+      },
+      "properties": {
+        "gross": {
+          "area_mm2": 159043.12808798326,
+          "cx_mm": 225.0,
+          "cy_mm": 225.0,
+          "ix_mm4": 2012889589.8635383,
+          "iy_mm4": 2012889589.8635383,
+          "ixy_mm4": 0.0
+        },
+        "transformed": {
+          "area_mm2": 176636.0469480861,
+          "cx_mm": 225.0,
+          "cy_mm": 225.0,
+          "ix_mm4": 2252813020.8181906,
+          "iy_mm4": 2252813020.8181906,
+          "ixy_mm4": 0.0
+        }
+      },
+      "rays": [
+        {
+          "angle_deg": 0,
+          "p_kn": 500,
+          "normal_deg": 270.0,
+          "xu_mm": 192.87135719038935,
+          "mx_knm": 179.9184724598614,
+          "my_knm": 3.7252902984619144e-14,
+          "capacity_knm": 179.9184724598614,
+          "axial_residual_kn": -5.729418717237422e-09,
+          "transverse_residual_knm": 3.7252902984619144e-14
+        },
+        {
+          "angle_deg": 45,
+          "p_kn": 500,
+          "normal_deg": 224.99999999999997,
+          "xu_mm": 192.87135719038935,
+          "mx_knm": 127.221571937093,
+          "my_knm": 127.22157193709317,
+          "capacity_knm": 179.9184724598614,
+          "axial_residual_kn": -5.72924818698084e-09,
+          "transverse_residual_knm": 1.4210854715202004e-13
+        },
+        {
+          "angle_deg": 90,
+          "p_kn": 500,
+          "normal_deg": 180.0,
+          "xu_mm": 192.87135719038935,
+          "mx_knm": -2.7939677238464356e-14,
+          "my_knm": 179.91847245986136,
+          "capacity_knm": 179.91847245986136,
+          "axial_residual_kn": -5.729475560656283e-09,
+          "transverse_residual_knm": 3.8956506308736874e-14
+        },
+        {
+          "angle_deg": 135,
+          "p_kn": 500,
+          "normal_deg": 135.0,
+          "xu_mm": 192.87135719038935,
+          "mx_knm": -127.22157193709309,
+          "my_knm": 127.22157193709305,
+          "capacity_knm": 179.91847245986136,
+          "axial_residual_kn": -5.729532404075144e-09,
+          "transverse_residual_knm": 5.684341886080802e-14
+        },
+        {
+          "angle_deg": 180,
+          "p_kn": 500,
+          "normal_deg": 90.0,
+          "xu_mm": 192.87135719038935,
+          "mx_knm": -179.9184724598614,
+          "my_knm": -7.450580596923828e-15,
+          "capacity_knm": 179.9184724598614,
+          "axial_residual_kn": -5.7293618738185614e-09,
+          "transverse_residual_knm": 2.9484238737468875e-14
+        },
+        {
+          "angle_deg": 225,
+          "p_kn": 500,
+          "normal_deg": 45.0,
+          "xu_mm": 192.87135719038935,
+          "mx_knm": -127.22157193709307,
+          "my_knm": -127.22157193709309,
+          "capacity_knm": 179.9184724598614,
+          "axial_residual_kn": -5.729589247494005e-09,
+          "transverse_residual_knm": 4.263256414560601e-14
+        },
+        {
+          "angle_deg": 270,
+          "p_kn": 500,
+          "normal_deg": 0.0,
+          "xu_mm": 192.87135719038935,
+          "mx_knm": -5.587935447692871e-15,
+          "my_knm": -179.91847245986136,
+          "capacity_knm": 179.91847245986136,
+          "axial_residual_kn": -5.729475560656283e-09,
+          "transverse_residual_knm": 2.7462551763124692e-14
+        },
+        {
+          "angle_deg": 315,
+          "p_kn": 500,
+          "normal_deg": 315.0,
+          "xu_mm": 192.87135719038935,
+          "mx_knm": 127.2215719370931,
+          "my_knm": -127.22157193709305,
+          "capacity_knm": 179.91847245986136,
+          "axial_residual_kn": -5.729418717237422e-09,
+          "transverse_residual_knm": 8.526512829121202e-14
+        }
+      ]
+    },
+    "above_compression_domain": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC02-R",
+          "source_reference": "SEC02 independent signed rays"
+        },
+        "geometry": {
+          "shape": "rectangular",
+          "b_mm": 300,
+          "D_mm": 400
+        },
+        "bars": [
+          {
+            "bar_id": "C1",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C2",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C3",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C4",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_LEFT",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 200,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_RIGHT",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 200,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_TOP",
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_BOTTOM",
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "pu_kn": 3500,
+        "modular_ratio": 8,
+        "point_count": 8
+      },
+      "status": "HOLD"
+    }
+  }
+}
