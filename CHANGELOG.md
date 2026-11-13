@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.29.0] — Bounded candidate (unreleased)
+## [0.29.0] — 2026-11-14
 
 See the [case coverage and 0.30.0 follow-ons](docs/planning/library-usability-improvement.md#029-progress-and-workbench-repair--2026-11-13).
 
