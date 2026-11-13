@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from structural_lib import api
+from structural_lib.__main__ import main
 from structural_lib.services import job_runner
 
 
@@ -180,3 +181,97 @@ def test_job_runner_rejects_cases_not_list(tmp_path: Path):
 
     with pytest.raises(ValueError, match="cases must be an array"):
         job_runner.run_job(job_path=job_path, out_dir=tmp_path / "out")
+
+
+@pytest.fixture
+def serviceability_job():
+    return {
+        "schema_version": 1,
+        "job_id": "serviceability-defaults",
+        "code": "IS456",
+        "units": "IS456",
+        "beam": {
+            "b_mm": 300,
+            "D_mm": 500,
+            "d_mm": 450,
+            "fck_nmm2": 25,
+            "fy_nmm2": 415,
+        },
+        "cases": [{"case_id": "C1", "mu_knm": 80, "vu_kn": 60}],
+    }
+
+
+@pytest.mark.parametrize("field", ["deflection_defaults", "crack_width_defaults"])
+@pytest.mark.parametrize("value", [[], 5, "default"])
+def test_invalid_serviceability_default_rejects_before_writing(
+    serviceability_job, field, value, tmp_path, capsys
+):
+    serviceability_job["beam"][field] = value
+    path = tmp_path / "job.json"
+    _write_job(path, serviceability_job)
+    out = tmp_path / "out"
+    with pytest.raises(ValueError, match=rf"beam\.{field} must be an object or null"):
+        job_runner.run_job_is456(job=serviceability_job, out_dir=out)
+    assert not out.exists()
+    assert not api.validate_job_spec(path).ok
+    assert main(["job", str(path), "-o", str(out)]) == 1
+    assert f"beam.{field} must be an object or null" in capsys.readouterr().err
+    assert not out.exists()
+
+
+@pytest.mark.parametrize(
+    ("check", "default"),
+    [
+        (
+            "deflection",
+            {"span_mm": 5000, "d_mm": 450, "support_condition": "CANTILEVER"},
+        ),
+        (
+            "crack_width",
+            {
+                "acr_mm": 50,
+                "cmin_mm": 25,
+                "h_mm": 500,
+                "x_mm": 150,
+                "epsilon_m": 0.003,
+                "limit_mm": 0.3,
+            },
+        ),
+    ],
+)
+def test_job_preserves_valid_null_and_case_serviceability_settings(
+    serviceability_job, check, default, tmp_path
+):
+    field = f"{check}_defaults"
+    beam = serviceability_job["beam"]
+    case = serviceability_job["cases"][0]
+    overrides = (
+        {"support_condition": "SIMPLY_SUPPORTED"}
+        if check == "deflection"
+        else {"limit_mm": 0.5}
+    )
+    for name, expected_ok in (
+        ("omitted", True),
+        ("null", True),
+        ("valid", False),
+        ("override", True),
+        ("invalid_case", False),
+    ):
+        if name == "null":
+            beam[field] = None
+        elif name == "valid":
+            beam[field] = default
+        elif name == "override":
+            case[f"{check}_params"] = {**default, **overrides}
+        elif name == "invalid_case":
+            case[f"{check}_params"] = [default]
+
+        out = tmp_path / name
+        summary = job_runner.run_job_is456(job=serviceability_job, out_dir=out)
+        (row,) = json.loads((out / "design/design_results.json").read_text())["cases"]
+        assert summary["is_ok"] == expected_ok
+        assert row["failed_checks"] == ([] if expected_ok else [check])
+        if name in ("omitted", "null"):
+            assert row[check] is None
+        else:
+            assert row[check]["is_ok"] == expected_ok

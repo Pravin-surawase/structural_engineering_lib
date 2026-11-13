@@ -78,8 +78,8 @@ def check_helical_reinforcement(
     """Check helical reinforcement for circular column per IS 456 Cl 39.4.
 
     IS 456 Cl 39.4 permits a 1.05 enhancement factor on the short column
-    axial capacity (Cl 39.3) when helical reinforcement meets the minimum
-    ratio requirement:
+    axial capacity (Cl 39.3) when helical reinforcement meets the pitch limits
+    and minimum ratio requirement:
 
         V_helix / V_core >= 0.36 × (Ag/Ac - 1) × fck/fy
 
@@ -95,7 +95,8 @@ def check_helical_reinforcement(
         Pu_axial_kN: Short column axial capacity from Cl 39.3 (kN). Must be > 0.
 
     Returns:
-        HelicalReinforcementResult with adequacy check and enhanced capacity.
+        HelicalReinforcementResult with adequacy and the supplied axial capacity,
+        increased by 5% when eligible.
 
     Raises:
         DimensionError: If geometric dimensions are invalid.
@@ -218,10 +219,6 @@ def check_helical_reinforcement(
     # ===========================================================
     # 5. Enhanced capacity
     # ===========================================================
-    # IS 456 Cl 39.4: 1.05 enhancement on axial capacity
-    Pu_enhanced_kN = _HELICAL_ENHANCEMENT_FACTOR * Pu_axial_kN
-
-    # IS 456 Cl 39.4: enhancement applies only when ratio is adequate
     is_adequate = ratio_ok and pitch_ok
 
     # NaN/Inf guard
@@ -234,10 +231,12 @@ def check_helical_reinforcement(
         is_adequate = False
         warnings.append("Numerical issue in helical ratio calculation")
 
+    factor = _HELICAL_ENHANCEMENT_FACTOR if is_adequate else 1.0
+    capacity_kN = round(factor * Pu_axial_kN, 2) if is_adequate else Pu_axial_kN
     return HelicalReinforcementResult(
         is_adequate=is_adequate,
-        enhancement_factor=_HELICAL_ENHANCEMENT_FACTOR,
-        Pu_enhanced_kN=round(Pu_enhanced_kN, 2),
+        enhancement_factor=factor,
+        Pu_enhanced_kN=capacity_kN,
         helical_ratio_provided=round(helical_ratio_provided, 6),
         helical_ratio_required=round(helical_ratio_required, 6),
         pitch_mm=pitch_mm,

@@ -411,6 +411,49 @@ def test_link_zone_boundary_has_one_owner_and_matches_physical_paths() -> None:
     assert missing.diagnostics[0].code == "BBS.LINK_ZONE_REQUIRED"
 
 
+@pytest.mark.parametrize(
+    ("endpoint", "accepted"),
+    [
+        (199.89, False),
+        (199.95, True),
+        (200, True),
+        (200.05, True),
+        (200.11, False),
+        (205, False),
+    ],
+)
+def test_link_zone_endpoint_agrees_with_grid_in_mm(endpoint, accepted) -> None:
+    paths = tuple(
+        _straight_path(
+            f"L-{station}",
+            "L1",
+            200,
+            station_x_mm=station,
+            diameter_mm=8,
+            role=BarPathRole.TRANSVERSE_LINK,
+        )
+        for station in (0, 100, 200)
+    )
+    request = _bbs_request(
+        _schedule(*paths),
+        link_zones=(LinkPlacementZone("Z1", "L1", 0, endpoint, 100, True, True),),
+        station_tolerance_mm=0.1,
+    )
+    result = create_bbs(request)
+    if accepted:
+        assert result.engineering is EngineeringState.PASS
+        (zone,) = result.outputs["bbs"]["link_zones"]
+        assert zone["stations_x_mm"] == [0, 100, 200]
+        (row,) = result.outputs["bbs"]["rows"]
+        assert row["scheduled_bar_count"] == 3
+    else:
+        assert result.diagnostics[0].code == "BBS.LINK_ZONE"
+        assert (
+            result.diagnostics[0].field_or_location == "link_zones[Z1].end_station_x_mm"
+        )
+        assert "bbs" not in result.outputs
+
+
 def test_bbs_rejects_detached_payload_and_inconsistent_mark_summary() -> None:
     schedule = _schedule(
         _straight_path("B1", "M1", 6000),

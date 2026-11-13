@@ -1798,12 +1798,12 @@ class HelicalReinforcementResult(DictCompatMixin):
 
     For circular columns with helical reinforcement, IS 456 permits a
     1.05 enhancement factor on the short column axial capacity, provided
-    the helical ratio requirement is met.
+    the helical ratio and pitch requirements are met.
 
     Attributes:
         is_adequate: True if helical reinforcement meets IS 456 requirements
-        enhancement_factor: 1.05 per Cl 39.4
-        Pu_enhanced_kN: 1.05 × Pu_short_axial (kN)
+        enhancement_factor: 1.05 when adequate, otherwise 1.0
+        Pu_enhanced_kN: Supplied short-column axial capacity times the factor (kN)
         helical_ratio_provided: V_helix / V_core (provided ratio)
         helical_ratio_required: 0.36 × (Ag/Ac - 1) × fck/fy (required ratio)
         pitch_mm: Provided helix pitch (mm)
@@ -1835,13 +1835,14 @@ class HelicalReinforcementResult(DictCompatMixin):
     def summary(self) -> str:
         """Return one-line human-readable summary."""
         status = "ADEQUATE" if self.is_adequate else "INADEQUATE"
+        capacity_label = "Pu_enh" if self.is_adequate else "Pu_base"
         return (
             f"Helical Reinforcement ({status}): "
             f"ratio={self.helical_ratio_provided:.4f} "
             f"(req={self.helical_ratio_required:.4f}), "
             f"pitch={self.pitch_mm:.0f}mm "
             f"[{self.min_pitch_mm:.0f}-{self.max_pitch_mm:.0f}mm], "
-            f"Pu_enh={self.Pu_enhanced_kN:.1f}kN"
+            f"{capacity_label}={self.Pu_enhanced_kN:.1f}kN"
         )
 
 

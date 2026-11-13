@@ -1030,7 +1030,8 @@ def check_helical_reinforcement_is456(
     Returns:
         ``HelicalReinforcementResult`` with:
             - is_adequate: whether ratio and pitch conditions are met
-            - Pu_enhanced_kN: 1.05 times the supplied short-column capacity
+            - enhancement_factor: 1.05 when adequate, otherwise 1.0
+            - Pu_enhanced_kN: Supplied short-column capacity times the factor
             - helical_ratio_provided / helical_ratio_required
             - pitch_ok (bool): True if pitch meets Cl 26.5.3.2(c)
             - clause_ref (str): "Cl. 39.4"

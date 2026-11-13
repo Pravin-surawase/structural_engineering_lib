@@ -66,6 +66,12 @@ All notable changes to this project will be documented in this file.
 - Reject invalid effective depths in rectangular sections and keep different
   bar diameters on separate stock bars in the BBS cutting plan.
 
+- Reject malformed job-level serviceability defaults before writing outputs.
+- Apply the axial capacity increase only to helical reinforcement that
+  passes both the ratio and pitch checks.
+- Compare link-zone endpoints with the placement grid in millimetres
+  before producing a bar bending schedule.
+
 ### Verification
 
 - Replay the new beam and column profiles and the slab coefficient cases

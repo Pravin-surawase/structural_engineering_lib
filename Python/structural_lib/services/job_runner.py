@@ -39,6 +39,13 @@ def load_job_json(path: str | Path) -> JobSpec:
     return data  # type: ignore[return-value]
 
 
+def _validate_serviceability_defaults(beam: Mapping[str, Any]) -> None:
+    for field in ("deflection_defaults", "crack_width_defaults"):
+        value = beam.get(field)
+        if value is not None and not isinstance(value, dict):
+            raise ValueError(f"beam.{field} must be an object or null.")
+
+
 def load_job_spec(path: str | Path) -> JobSpec:
     """Load and validate a job spec file, returning the beam geometry and metadata.
 
@@ -97,6 +104,7 @@ def load_job_spec(path: str | Path) -> JobSpec:
     beam = job.get("beam")
     if not isinstance(beam, dict):
         raise ValueError("beam must be an object")
+    _validate_serviceability_defaults(beam)
 
     # Validate cases
     cases = job.get("cases")
@@ -199,6 +207,7 @@ def run_job_is456(
     beam = job.get("beam")
     if not isinstance(beam, dict):
         raise ValueError("beam must be an object")
+    _validate_serviceability_defaults(beam)
 
     cases = job.get("cases")
     if not isinstance(cases, list):
@@ -234,16 +243,8 @@ def run_job_is456(
         d_dash_mm=float(beam.get("d_dash_mm", 50.0)),
         asv_mm2=float(beam.get("asv_mm2", 100.0)),
         pt_percent=(float(pt) if (pt := beam.get("pt_percent")) is not None else None),
-        deflection_defaults=(
-            beam.get("deflection_defaults")
-            if isinstance(beam.get("deflection_defaults"), dict)
-            else None
-        ),
-        crack_width_defaults=(
-            beam.get("crack_width_defaults")
-            if isinstance(beam.get("crack_width_defaults"), dict)
-            else None
-        ),
+        deflection_defaults=beam.get("deflection_defaults"),
+        crack_width_defaults=beam.get("crack_width_defaults"),
     )
 
     # Canonical machine output
