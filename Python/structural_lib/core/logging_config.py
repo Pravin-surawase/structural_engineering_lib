@@ -36,6 +36,8 @@ def _configure_root_logger() -> None:
 
     level_name = os.environ.get("STRUCTURAL_LIB_LOG_LEVEL", _DEFAULT_LEVEL).upper()
     level = getattr(logging, level_name, logging.WARNING)
+    if not isinstance(level, int):
+        level = logging.WARNING
 
     root_logger = logging.getLogger("structural_lib")
     root_logger.setLevel(level)

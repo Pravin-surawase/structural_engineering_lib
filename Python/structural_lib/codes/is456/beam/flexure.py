@@ -144,7 +144,7 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     return mu_lim_nmm / 1000000.0  # Convert back to kN-m
 
 
-@clause("23.1.2", "36.4.2")
+@clause("23.1.2")
 def calculate_effective_flange_width(
     *,
     bw_mm: float,

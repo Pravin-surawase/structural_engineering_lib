@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fall back to WARNING when an unsupported logging level would prevent
+  Python import or CLI startup.
+- Correct IS 456 clause lookup for effective flange width and material
+  strength safety factors. Link the flange-width helper to clause 23.1.2.
+
 ## [0.28.1] — Prepared candidate (unreleased; on hold)
 
 ### Fixed
