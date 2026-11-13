@@ -1836,3 +1836,24 @@ under 36.4.2.
 
 The candidate is not tagged or published. The verified public installation
 remains [0.28.0](#v0280-published-and-verified).
+
+## v0.28.2 — Release authorized (2026-11-13)
+
+The owner authorized the qualified 0.28.2 wheel and source archive after
+[maintenance PR #1075](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1075)
+passed its required checks and Weekly Verification. The retained archives were
+built at `a44f9c7493e7d104f8702980731aed05c488ecfd`. The OpenAPI schema audit
+test correction was excluded from both archives, and all 20 installed profiles
+passed again on the final maintenance candidate.
+
+- [Qualified artifact record](../verification/library-0282-release-artifacts.json)
+  records both SHA-256 hashes, 29 exact-wheel acceptance cases, and the installed
+  beam, column, slab and footing verification.
+- [Independent review receipt](../verification/library-0282-exact-candidate-review.json)
+  and [owner authorization](../verification/release-publication-authorization.json)
+  bind the qualified archives to the publication candidate in
+  [PR #1076](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1076).
+
+The retained archives go through TestPyPI before the production tag and upload.
+Engineering use requires independent verification and qualified professional
+review.

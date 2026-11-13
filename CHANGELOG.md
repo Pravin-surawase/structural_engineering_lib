@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.28.2] — Prepared candidate (unreleased; on hold)
+## [0.28.2] — 2026-11-13
 
 Includes the maintenance fixes listed under the 0.28.1 candidate.
 
