@@ -33,6 +33,26 @@ def test_finite_service_history_matches_independent_calculation(name):
     for stage in ("at_finishes", "at_assessment"):
         for quantity, value in expected[stage].items():
             assert state[stage][quantity] == pytest.approx(value, rel=1e-9)
+    if "cracks" in expected:
+        assert state["deflection_station_mm"] == pytest.approx(
+            expected["deflection_station_mm"]
+        )
+        for quantity in ("initial_total_mm", "initial_sustained_mm"):
+            assert state[quantity] == pytest.approx(expected[quantity])
+        assert state["deflection"]["outputs"][
+            "after_finishes_deflection_mm"
+        ] == pytest.approx(expected["after_finishes_mm"])
+        for section in state["crack_sections"]:
+            fixture = expected["cracks"][section["tension_face"]]
+            assert section["neutral_axis_mm"] == pytest.approx(
+                fixture["neutral_axis_mm"]
+            )
+            assert section["surface_strain"] == pytest.approx(fixture["surface_strain"])
+            crack = section["crack"]
+            width = crack["outputs"]["calculated_crack_width_mm"] if crack else 0
+            assert width == pytest.approx(fixture["width_mm"])
+        assert "top ·" in report and "0.14198 mm" in report
+        return
     for quantity in (
         "initial_total_mm",
         "initial_sustained_mm",

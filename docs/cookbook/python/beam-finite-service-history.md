@@ -47,5 +47,25 @@ planes, with zero tension-stiffening credit.
 
 The history treats shrinkage through the Annex C deflection component.
 The crack width covers flexural strain. The profile holds reverse bending,
-added finish loads, continuous spans and histories outside the declared
-basis. It requires separate checks for torsional and shear cracking.
+added finish loads and histories outside the declared basis. It requires separate checks for torsional and shear cracking.
+
+## Replay an equal two-span history
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_finite_service_history.py \
+  --reference docs/verification/library-029-serv02-beam-history.json \
+  --case continuous_history --output-dir output/continuous-history
+```
+
+Both 4 m spans have the same UDL and mirrored top and bottom bars. The
+sustained and assessment loads are 20 and 32 kN/m per span. Uniform
+shrinkage has zero flexural curvature on this symmetric section. The
+finish and assessment deflections are 0.92172 and 1.48461 mm, with the
+maximum at 1686.14 mm from the outer support. The increase after finishes
+is 0.56289 mm. The support hogging crack is 0.14198 mm. The sagging station
+is below the cracking threshold. The report retains each face and its
+station. A stale sustained reinforcement revision holds the history.
+
+Unequal spans, asymmetric loading or reinforcement, axial restraint
+effects from shrinkage, and a time-varying load sequence need their own
+reference cases.

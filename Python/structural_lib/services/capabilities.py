@@ -153,7 +153,7 @@ _CAPABILITIES = (
                 "load_finite_service_history",
                 "check_finite_service_history",
                 "is456-beam-finite-service-history-input/v1",
-                "Simply supported rectangular UDL history with explicit finite-age creep and shrinkage, actual multilayer bars and final deflection and flexural crack checks.",
+                "Simply supported multilayer and equal continuous rectangular UDL histories with prescribed finite-age creep and shrinkage, final deflection and signed flexural crack checks.",
                 "docs/cookbook/python/beam-finite-service-history.md",
                 "Python/examples/beam_finite_service_history.py",
             ),

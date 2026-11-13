@@ -46,6 +46,7 @@ from structural_lib.services.canonical_family import (
     require_request_type,
 )
 from structural_lib.services.contracts.beam_continuous import (
+    BeamContinuousCheckRequestV1,
     BeamSectionCheckRequestV1,
     Reference,
 )
@@ -107,8 +108,10 @@ def _history_issue(request: BeamServiceHistoryInputV1) -> StructuralIssueV1 | No
             "Service cases must use the current analysis and reinforcement revisions.",
         )
     if (
-        not isinstance(request.member, BeamSectionCheckRequestV1)
-        or request.member.flange is not None
+        (
+            isinstance(request.member, BeamSectionCheckRequestV1)
+            and request.member.flange is not None
+        )
         or history.bending_basis != "downward_gravity"
         or history.finish_added_load_kn_per_m != 0
         or total.midpoint_load_kn
@@ -119,7 +122,7 @@ def _history_issue(request: BeamServiceHistoryInputV1) -> StructuralIssueV1 | No
         return StructuralIssueV1(
             "BEAM.HISTORY_PROFILE_HELD",
             "history",
-            "The history requires a simply supported rectangle and separate downward UDL cases with zero finish added load.",
+            "The history requires a supported rectangular beam and separate downward UDL cases with zero finish added load.",
         )
     finish, final = history.at_finishes, history.at_assessment
     if not (
@@ -146,6 +149,7 @@ def _resolve_history(
     )
     sustained = history.sustained_load
     member, span = request.member, request.span_mm
+    continuous = isinstance(member, BeamContinuousCheckRequestV1)
     b, depth = member.width_mm, member.depth_mm
     ec, es = 5000 * math.sqrt(member.fck_nmm2), 200000.0
     bars = _service_bars(request)
@@ -172,8 +176,13 @@ def _resolve_history(
     )
     initial = instantaneous["sections"][0]
     axis, inertia = initial["neutral_axis_mm"], initial["cracked_inertia_mm4"]
-    immediate_sustained = uniform_flexural_deflection(
-        sustained.uniform_load_kn_per_m, span, ec, inertia
+    immediate_sustained = (
+        instantaneous["deflection_mm"]
+        * (sustained.uniform_load_kn_per_m / total.uniform_load_kn_per_m)
+        if continuous
+        else uniform_flexural_deflection(
+            sustained.uniform_load_kn_per_m, span, ec, inertia
+        )
     )
     immediate_total = instantaneous["deflection_mm"]
     stages = {}
@@ -185,18 +194,26 @@ def _resolve_history(
         effective_axis, effective_inertia = cracked_service_section(
             b, depth, layers, effective, es
         )
-        sustained_displacement = uniform_flexural_deflection(
-            sustained.uniform_load_kn_per_m, span, effective, effective_inertia
+        sustained_displacement = (
+            immediate_sustained * ec * inertia / (effective * effective_inertia)
+            if continuous
+            else uniform_flexural_deflection(
+                sustained.uniform_load_kn_per_m, span, effective, effective_inertia
+            )
         )
         try:
-            shrinkage_curvature = calculate_shrinkage_curvature(
-                eps_cs=stage.shrinkage_strain,
-                d_mm=d,
-                ast_mm2=ast,
-                asc_mm2=asc,
-                b_mm=b,
-                D_mm=depth,
-                fck_nmm2=member.fck_nmm2,
+            shrinkage_curvature = (
+                0.0
+                if continuous
+                else calculate_shrinkage_curvature(
+                    eps_cs=stage.shrinkage_strain,
+                    d_mm=d,
+                    ast_mm2=ast,
+                    asc_mm2=asc,
+                    b_mm=b,
+                    D_mm=depth,
+                    fck_nmm2=member.fck_nmm2,
+                )
             )
         except ValueError as exc:
             return None, StructuralIssueV1(
@@ -221,44 +238,81 @@ def _resolve_history(
             ),
         }
     finish, final = stages["at_finishes"], stages["at_assessment"]
-    g_curvature = (
-        sustained.uniform_load_kn_per_m
-        * span**2
-        / 8
-        / (final["concrete_modulus_nmm2"] * final["cracked_inertia_mm4"])
-    )
-    q_curvature = (
-        (total.uniform_load_kn_per_m - sustained.uniform_load_kn_per_m)
-        * span**2
-        / 8
-        / (ec * inertia)
-    )
-    curvature = g_curvature + q_curvature
-    final_axis = (
-        g_curvature * final["neutral_axis_mm"] + q_curvature * axis
-    ) / curvature
-    strain = curvature * (depth - final_axis)
-    crack = (
-        _face_crack(
-            request,
-            bars,
-            initial["station_id"],
-            Face.BOTTOM,
-            final_axis,
-            es * curvature * (d - final_axis),
-            strain,
+    crack_states = []
+    sustained_share = sustained.uniform_load_kn_per_m / total.uniform_load_kn_per_m
+    for section in instantaneous["sections"]:
+        face = Face(section["tension_face"])
+        moment = abs(section["moment_knm"]) * 1e6
+        g_curvature = (
+            moment
+            * sustained_share
+            / (final["concrete_modulus_nmm2"] * final["cracked_inertia_mm4"])
         )
-        if initial["cracked"]
-        else None
-    )
+        q_curvature = moment * (1 - sustained_share) / (ec * inertia)
+        curvature = g_curvature + q_curvature
+        final_axis = (
+            (g_curvature * final["neutral_axis_mm"] + q_curvature * axis) / curvature
+            if curvature
+            else axis
+        )
+        strain = curvature * (depth - final_axis)
+        face_depth = (
+            d
+            if face is Face.BOTTOM
+            else depth
+            - math.fsum(
+                y * area
+                for bar, (y, area) in zip(bars, layers, strict=True)
+                if bar.face is Face.TOP
+            )
+            / asc
+        )
+        crack = (
+            _face_crack(
+                request,
+                bars,
+                section["station_id"],
+                face,
+                final_axis,
+                es * curvature * (face_depth - final_axis),
+                strain,
+            )
+            if section["cracked"]
+            else None
+        )
+        crack_states.append(
+            {
+                "station_id": section["station_id"],
+                "tension_face": face.value,
+                "neutral_axis_mm": final_axis,
+                "surface_strain": strain,
+                "bars": [
+                    {
+                        "bar_id": bar.bar_id,
+                        "steel_stress_nmm2": es
+                        * curvature
+                        * (final_axis - (y if face is Face.BOTTOM else depth - y)),
+                    }
+                    for bar, (y, _) in zip(bars, layers, strict=True)
+                ],
+                "crack": crack.to_dict() if crack is not None else None,
+            }
+        )
+    sagging = crack_states[0]
     deflection = check_deflection(
         DeflectionCheckRequest(
             WORKFLOW,
             DeflectionMethod.CALCULATED_COMPONENTS,
             calculated=CalculatedDeflectionBasis(
                 input_hash,
-                (f"{total.combination_id}/{initial['station_id']}",),
-                (f"{sustained.combination_id}/{initial['station_id']}",),
+                tuple(
+                    f"{total.combination_id}/{section['station_id']}"
+                    for section in instantaneous["sections"]
+                ),
+                tuple(
+                    f"{sustained.combination_id}/{section['station_id']}"
+                    for section in instantaneous["sections"]
+                ),
                 instantaneous["analysis"]["result_id"],
                 member.reinforcement_revision,
                 span,
@@ -290,17 +344,13 @@ def _resolve_history(
         "initial_total_mm": immediate_total,
         "initial_sustained_mm": immediate_sustained,
         **stages,
-        "flexural_neutral_axis_mm": final_axis,
-        "flexural_surface_strain": strain,
-        "flexural_bars": [
-            {
-                "bar_id": bar.bar_id,
-                "steel_stress_nmm2": es * curvature * (final_axis - y),
-            }
-            for bar, (y, _) in zip(bars, layers, strict=True)
-        ],
+        "deflection_station_mm": instantaneous["deflection_x_mm"],
+        "flexural_neutral_axis_mm": sagging["neutral_axis_mm"],
+        "flexural_surface_strain": sagging["surface_strain"],
+        "flexural_bars": sagging["bars"],
         "deflection": deflection.to_dict(),
-        "crack": crack.to_dict() if crack is not None else None,
+        "crack": sagging["crack"],
+        "crack_sections": crack_states,
     }, None
 
 
@@ -331,7 +381,8 @@ def check_finite_service_history(
 
     Limitations
     -----------
-    One simply supported gravity beam and supplied finite-age material inputs.
+    One simply supported gravity beam or two identical continuous spans with
+    mirrored reinforcement, and supplied finite-age material inputs.
 
     Provenance
     ----------
@@ -349,7 +400,12 @@ def check_finite_service_history(
         state, issue = _resolve_history(request, instantaneous, identity.input_hash)
     if state is not None:
         checks = [
-            item for item in (state["deflection"], state["crack"]) if item is not None
+            state["deflection"],
+            *(
+                item["crack"]
+                for item in state["crack_sections"]
+                if item["crack"] is not None
+            ),
         ]
         if initial.engineering_status is EngineeringStatus.FAIL or any(
             item["engineering"] == "fail" for item in checks
@@ -383,7 +439,8 @@ def check_finite_service_history(
             "Prescribed finite-age creep and shrinkage inputs. Humidity and size are recorded context.",
             "Sustained UDL acts from loading age and transient UDL acts at assessment only.",
             "Crack width covers flexural strain with no tension-stiffening credit; shrinkage is included in deflection.",
-            "Member design acceptance, finish loads, reverse bending and continuous history require separate evidence.",
+            "Equal continuous spans require mirrored steel and symmetric UDL. Uniform shrinkage has zero flexural curvature on that symmetric section.",
+            "Member design acceptance, finish loads and reverse bending require separate evidence.",
         ),
         provenance=(
             "IS 456:2000 Cl. 23.2, Annex C-3, C-4 and Annex F; current physical reinforcement and supplied history.",
@@ -454,9 +511,15 @@ def render_finite_service_history_html(
         deflection = state["deflection"]["outputs"]
         after = deflection.get("after_finishes_deflection_mm")
         after_text = f"{after:.5f} mm" if after is not None else "HOLD"
-        crack = state["crack"]
-        width = crack["outputs"].get("calculated_crack_width_mm") if crack else 0
-        width_text = f"{width:.5f} mm" if width is not None else "HOLD"
+        crack_lines = []
+        for section in state["crack_sections"]:
+            crack = section["crack"]
+            width = crack["outputs"].get("calculated_crack_width_mm") if crack else 0
+            width_text = f"{width:.5f} mm" if width is not None else "HOLD"
+            crack_lines.append(
+                f"<li>{html.escape(section['tension_face'])} · "
+                f"{html.escape(section['station_id'])} · {width_text}</li>"
+            )
         request = result.request
         assert isinstance(request, BeamServiceHistoryInputV1)
         history, total = request.history, request.service_load
@@ -474,7 +537,7 @@ def render_finite_service_history_html(
             f"<p>Day {finish['age_days']:g} deflection {finish['total_deflection_mm']:.5f} mm.</p>"
             f"<p>Day {final['age_days']:g} deflection {final['total_deflection_mm']:.5f} mm.</p>"
             f"<p>After-finishes deflection {after_text}.</p>"
-            f"<p>Assessment flexural crack width {width_text}.</p>"
+            f"<h2>Assessment flexural crack width</h2><ul>{''.join(crack_lines)}</ul>"
         )
     issues = "".join(
         f"<li>{html.escape(issue.message)}</li>" for issue in result.issues
