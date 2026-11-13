@@ -23,7 +23,10 @@ from collections import Counter
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
-from structural_lib.codes.is456.beam.detailing import BeamDetailingResult
+from structural_lib.codes.is456.beam.detailing import (
+    BeamDetailingResult,
+    BeamDetailingWithStirrupStations,
+)
 from structural_lib.core.data_types import CuttingAssignment, CuttingPlan
 from structural_lib.core.validation import (
     require_nonblank_string,
@@ -772,10 +775,13 @@ def generate_bbs_from_detailing(
         )
 
     # Process stirrups
-    for _i, (stirrup, zone) in enumerate(zip(detailing.stirrups, zones, strict=False)):
+    for i, (stirrup, zone) in enumerate(zip(detailing.stirrups, zones, strict=False)):
         if stirrup.spacing > 0 and stirrup.zone_length > 0:
-            # Number of stirrups in zone
-            no_of_stirrups = int(stirrup.zone_length / stirrup.spacing) + 1
+            no_of_stirrups = (
+                len(detailing.stirrup_stations_by_zone_mm[i])
+                if isinstance(detailing, BeamDetailingWithStirrupStations)
+                else int(stirrup.zone_length / stirrup.spacing) + 1
+            )
 
             cut_length = calculate_stirrup_cut_length(
                 b_mm=detailing.b,

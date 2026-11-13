@@ -7,9 +7,16 @@ Uses structural_lib.visualization.geometry_3d for accurate calculations.
 
 import logging
 
+from typing import Annotated
+
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
+from fastapi_app.workbench_beam import (
+    WorkbenchBeamExportRequest,
+    checked_layout_or,
+    replay_checked_workbench,
+)
 from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.response import APIResponse, error_response, success_response
 from fastapi_app.models.geometry import (
@@ -262,7 +269,10 @@ Ideal for React Three Fiber rendering with cylinder/tube primitives.
 """,
 )
 async def generate_full_beam_geometry(
-    request: BeamGeometryRequest,
+    request: Annotated[
+        BeamGeometryRequest | WorkbenchBeamExportRequest,
+        checked_layout_or(BeamGeometryRequest),
+    ],
 ):
     """
     Generate complete 3D geometry for beam visualization.
@@ -283,31 +293,35 @@ async def generate_full_beam_geometry(
     try:
         from structural_lib.services.api import detail_beam_is456, beam_to_3d_geometry
 
-        # Create detailing result from design parameters
-        detailing_result = detail_beam_is456(
-            units="IS456",
-            beam_id=request.beam_id,
-            story=request.story,
-            b_mm=request.width,
-            D_mm=request.depth,
-            span_mm=request.span,
-            cover_mm=request.cover,
-            fck_nmm2=request.fck,
-            fy_nmm2=request.fy,
-            ast_start_mm2=request.ast_start,
-            ast_mid_mm2=request.ast_mid,
-            ast_end_mm2=request.ast_end,
-            stirrup_dia_mm=request.stirrup_dia,
-            stirrup_spacing_start_mm=request.stirrup_spacing_start,
-            stirrup_spacing_mid_mm=request.stirrup_spacing_mid,
-            stirrup_spacing_end_mm=request.stirrup_spacing_end,
-            is_seismic=request.is_seismic,
-        )
+        if isinstance(request, WorkbenchBeamExportRequest):
+            detailing_result = replay_checked_workbench(request).detailing.detailing
+            is_seismic = False
+        else:
+            is_seismic = request.is_seismic
+            # Create detailing result from design parameters
+            detailing_result = detail_beam_is456(
+                units="IS456",
+                beam_id=request.beam_id,
+                story=request.story,
+                b_mm=request.width,
+                D_mm=request.depth,
+                span_mm=request.span,
+                cover_mm=request.cover,
+                fck_nmm2=request.fck,
+                fy_nmm2=request.fy,
+                ast_start_mm2=request.ast_start,
+                ast_mid_mm2=request.ast_mid,
+                ast_end_mm2=request.ast_end,
+                stirrup_dia_mm=request.stirrup_dia,
+                stirrup_spacing_start_mm=request.stirrup_spacing_start,
+                stirrup_spacing_mid_mm=request.stirrup_spacing_mid,
+                stirrup_spacing_end_mm=request.stirrup_spacing_end,
+                is_seismic=request.is_seismic,
+            )
 
-        # Generate 3D geometry from detailing
         geometry = beam_to_3d_geometry(
             detailing=detailing_result,
-            is_seismic=request.is_seismic,
+            is_seismic=is_seismic,
         )
 
         # Convert library dataclass to Pydantic model

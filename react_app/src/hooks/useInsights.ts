@@ -22,6 +22,9 @@ export interface BeamResult {
   is_valid: boolean;
   utilization: number | null;
   ast_provided: number;
+  strength_status?: 'PASS' | 'FAIL' | 'HOLD';
+  layout_status?: 'PASS' | 'FAIL' | 'HOLD';
+  checked_steel_weight_kg?: number;
   b_mm: number;
   D_mm: number;
   span_mm: number;
@@ -32,6 +35,7 @@ export interface StoryStats {
   total: number;
   passed: number;
   failed: number;
+  held: number;
 }
 
 export interface DashboardData {
@@ -40,6 +44,9 @@ export interface DashboardData {
   total_beams: number;
   passed: number;
   failed: number;
+  held: number;
+  strength_passed: number;
+  strength_failed: number;
   pass_rate: number;
   warnings_count: number;
   avg_utilization: number | null;
@@ -305,6 +312,7 @@ interface ProjectBOQBeam {
 }
 
 interface ProjectBOQRequest {
+  project_name?: string;
   beams: ProjectBOQBeam[];
   dataset?: {
     dataset_id: string;

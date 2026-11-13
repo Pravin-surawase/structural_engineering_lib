@@ -14,6 +14,8 @@ interface CrossSectionViewProps {
   barDia?: number;
   /** Override calculated bar count — use actual design value when available */
   barCount?: number;
+  topBarCount?: number;
+  topBarDia?: number;
   /** Required compression steel mm² — used to compute top bar count matching 3D geometry */
   ascRequired?: number;
   /** Utilization ratio (0–1+) — colors bars: ≤0.85 emerald, ≤1.0 amber, >1.0 rose */
@@ -29,6 +31,8 @@ export function CrossSectionView({
   stirrupDia = 8,
   barDia: barDiaProp,
   barCount: barCountProp,
+  topBarCount,
+  topBarDia = barDiaProp,
   ascRequired,
   utilization,
   className = "",
@@ -69,19 +73,21 @@ export function CrossSectionView({
     : "#34d399";
 
   // Position bars along bottom (tension) and possibly top (compression)
-  const tensionBars = Math.min(numBars, 6);
+  const tensionBars = barCountProp ?? Math.min(numBars, 6);
   // Top bar count: use ascRequired (matches 3D geometry API formula) or fall back to 30% of tension
-  const compressionBars = ascRequired != null && ascRequired > 0
+  const compressionBars = topBarCount ?? (ascRequired != null && ascRequired > 0
     ? Math.min(Math.max(2, Math.ceil(ascRequired / barArea)), 6)
-    : Math.min(2, Math.ceil(numBars * 0.3));
+    : Math.min(2, Math.ceil(numBars * 0.3)));
+  const topDia = topBarDia ?? barDia;
+  const topRadius = topBarCount === undefined ? barR * 0.85 : topDia / 2 * scale;
 
   const barY_bottom = bY + bH - coverScaled - stirrupR - barR;
-  const barY_top = bY + coverScaled + stirrupR + barR;
+  const barY_top = bY + coverScaled + stirrupR + (topBarCount === undefined ? barR : topRadius);
 
-  const getBarPositions = (count: number, y: number) => {
+  const getBarPositions = (count: number, y: number, radius = barR) => {
     if (count <= 1) return [{ x: bX + bW / 2, y }];
-    const startX = bX + coverScaled + stirrupR + barR;
-    const endX = bX + bW - coverScaled - stirrupR - barR;
+    const startX = bX + coverScaled + stirrupR + radius;
+    const endX = bX + bW - coverScaled - stirrupR - radius;
     const spacing = (endX - startX) / (count - 1);
     return Array.from({ length: count }, (_, i) => ({
       x: startX + i * spacing,
@@ -90,7 +96,7 @@ export function CrossSectionView({
   };
 
   const bottomBars = getBarPositions(tensionBars, barY_bottom);
-  const topBars = getBarPositions(compressionBars, barY_top);
+  const topBars = getBarPositions(compressionBars, barY_top, topBarCount === undefined ? barR : topRadius);
 
   return (
     <div className={`flex flex-col items-center ${className}`}>
@@ -129,7 +135,7 @@ export function CrossSectionView({
         {topBars.map((bar, i) => (
           <circle
             key={`top-${i}`}
-            cx={bar.x} cy={bar.y} r={barR * 0.85}
+            cx={bar.x} cy={bar.y} r={topRadius}
             fill="#c87533" stroke="#e0a060" strokeWidth={1}
           />
         ))}
@@ -159,7 +165,7 @@ export function CrossSectionView({
         </text>
         {compressionBars > 0 && (
           <text x={bX + bW + 8} y={barY_top + 4} fill="#c87533" fontSize={10}>
-            {compressionBars}-T{barDia}
+            {compressionBars}-T{topDia}
           </text>
         )}
 
@@ -184,7 +190,7 @@ export function CrossSectionView({
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-full bg-[#c87533]" />
-          <span>T{barDia} compression</span>
+          <span>T{topDia} compression</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-1 bg-[#a06020]" />

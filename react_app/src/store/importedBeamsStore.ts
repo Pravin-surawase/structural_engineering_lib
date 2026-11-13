@@ -40,7 +40,26 @@ export const useImportedBeamsStore = create<ImportedBeamsState>((set, get) => ({
   setBeams: (beams) => {
     try {
       synchronizeImportedBeams(beams);
-      set({ beams, error: null });
+      const staleIds = new Set(useWorkspaceStore.getState().snapshot?.members
+        .filter((member) => member.result?.lifecycle === 'stale')
+        .map((member) => member.memberId));
+      set({
+        beams: beams.map((beam) => staleIds.has(beam.source_id ?? beam.id) ? {
+          ...beam,
+          status: 'pending',
+          is_valid: false,
+          utilization: undefined,
+          ast_required: undefined,
+          ast_provided: undefined,
+          asc_required: undefined,
+          bar_count: undefined,
+          bar_diameter: undefined,
+          stirrup_spacing: undefined,
+          stirrup_diameter: undefined,
+          remarks: undefined,
+        } : beam),
+        error: null,
+      });
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Imported project synchronization failed.',

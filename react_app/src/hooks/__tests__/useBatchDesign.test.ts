@@ -11,7 +11,7 @@ import {
 } from '../../hooks/useBatchDesign';
 import type { BeamCSVRow } from '../../types/csv';
 import { useImportedBeamsStore } from '../../store/importedBeamsStore';
-import { projectExportReadiness } from '../../workspace/resultRecords';
+import { checkedProjectMembers, currentBatchResult, currentWorkbenchLayout, projectExportReadiness } from '../../workspace/resultRecords';
 import { useWorkspaceStore } from '../../workspace/workspaceStore';
 
 // ── EventSource Mock ────────────────────────────────────────────────
@@ -497,12 +497,93 @@ describe('useBatchDesign', () => {
       decision: 'PASS',
       supportStatus: 'SUPPORTED',
     });
-    expect(projectExportReadiness(snapshot).eligible).toBe(true);
+    expect(projectExportReadiness(snapshot).eligible).toBe(false);
     expect(useImportedBeamsStore.getState().beams[0]).toMatchObject({
       source_id: 'ETABS-101',
       ast_required: 850,
-      status: 'pass',
+      status: 'warning',
     });
+  });
+
+  it('retains the checked workbench arrangement and invalidates it on reinforcement edits', () => {
+    const beam = { ...mockBeam('B1'), source_id: 'ETABS-101' };
+    useImportedBeamsStore.getState().setBeams([beam]);
+    const { result } = renderHook(() => useBatchDesign());
+    act(() => result.current.startBatchDesign([beam]));
+    const checkedLayout = {
+      status: 'PASS',
+      checked_layout_id: 'a'.repeat(64),
+      checked_request: { identity: { member_id: 'ETABS-101' } },
+      utilization: 0.72,
+      schedule_steel_weight_kg: 180.59,
+      ast_required_mm2: 850,
+      asc_required_mm2: 0,
+      zones: ['start', 'mid', 'end'].map((zone) => ({
+        zone,
+        tension: { count: 3, diameter_mm: 20, area_mm2: 942, layers: 1 },
+        compression: { count: 2, diameter_mm: 20, area_mm2: 628, layers: 1 },
+        stirrup: { diameter_mm: 8, spacing_mm: 150, legs: 2, count: 5 },
+      })),
+    };
+    act(() => {
+      MockEventSource.instances[0].emit('design_result', {
+        beam_id: 'ETABS-101',
+        design_succeeded: true,
+        is_safe: true,
+        status: 'PASS',
+        utilization_ratio: 0.78,
+        evidence,
+        result_envelope: canonicalEnvelope,
+        workbench: checkedLayout,
+      });
+    });
+    const checkedSnapshot = useWorkspaceStore.getState().snapshot!;
+    expect(currentWorkbenchLayout(checkedSnapshot, 'ETABS-101')).toEqual(checkedLayout);
+    expect(projectExportReadiness(checkedSnapshot).eligible).toBe(true);
+    expect(checkedProjectMembers(checkedSnapshot)).toEqual([{
+      checked_request: checkedLayout.checked_request,
+      checked_layout_id: checkedLayout.checked_layout_id,
+    }]);
+    expect(useImportedBeamsStore.getState().beams[0]).toMatchObject({
+      bar_count: 3, bar_diameter: 20, stirrup_diameter: 8, stirrup_spacing: 150,
+    });
+    act(() => {
+      const store = useImportedBeamsStore.getState();
+      store.setBeams([{ ...store.beams[0], requested_stirrup_spacing_mm: 250 }]);
+    });
+    const revised = useWorkspaceStore.getState().snapshot!;
+    expect(revised.projectRevision).toBeGreaterThan(checkedSnapshot.projectRevision);
+    expect(currentWorkbenchLayout(revised, 'ETABS-101')).toBeNull();
+    expect(checkedProjectMembers(revised)).toBeNull();
+    expect(revised.members[0].result?.lifecycle).toBe('stale');
+    expect(useImportedBeamsStore.getState().beams[0].stirrup_spacing).toBeUndefined();
+    act(() => result.current.startBatchDesign(useImportedBeamsStore.getState().beams));
+    const url = new URL(MockEventSource.instances.at(-1)!.url, 'http://localhost');
+    expect(JSON.parse(url.searchParams.get('beams')!)[0].source_metadata.workbench_detailing.stirrup_spacing_mm).toBe(250);
+  });
+
+  it('keeps a strength PASS and a layout HOLD distinct and blocks project export', () => {
+    const beam = { ...mockBeam('B1'), requested_bar_count: 2 };
+    useImportedBeamsStore.getState().setBeams([beam]);
+    const { result } = renderHook(() => useBatchDesign());
+    act(() => result.current.startBatchDesign([beam]));
+    act(() => {
+      MockEventSource.instances[0].emit('design_result', {
+        beam_id: 'B1',
+        design_succeeded: true,
+        is_safe: true,
+        status: 'PASS',
+        evidence,
+        result_envelope: canonicalEnvelope,
+        workbench: { status: 'HOLD', reason: 'The requested count is inadequate.' },
+      });
+    });
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    expect(currentBatchResult(snapshot, 'B1')).toMatchObject({
+      status: 'PASS', workbench: { status: 'HOLD' },
+    });
+    expect(projectExportReadiness(snapshot)).toMatchObject({ eligible: false, heldMemberIds: ['B1'] });
+    expect(checkedProjectMembers(snapshot)).toBeNull();
   });
 
   it('holds a result when its envelope and evidence identities disagree', () => {

@@ -4,7 +4,7 @@
  * Layout: BentoGrid with export buttons in the header.
  * Cards: Pass rate · Utilization · Pass/Fail bar · Critical beams · Materials · By story
  */
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart3, CheckCircle, AlertCircle, ArrowLeft,
@@ -15,68 +15,72 @@ import { useDashboardInsights, useProjectBOQ } from "../../hooks/useInsights";
 import { useExportBuildingSummary } from "../../hooks/useExport";
 import { BentoGrid, BentoCard, BentoCardHeader } from "../ui/BentoGrid";
 import { ProjectBOQPanel } from "../design/ProjectBOQPanel";
-import type { DashboardData, StoryStats } from "../../hooks/useInsights";
+import type { BeamResult, DashboardData, StoryStats } from "../../hooks/useInsights";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
-import { calculateSteelWeightKg } from "../../utils/quantities";
 import {
+  checkedProjectMembers,
   currentBatchResult,
+  currentWorkbenchLayout,
   projectExportReadiness,
 } from "../../workspace/resultRecords";
 import type { WorkspaceSnapshotV1 } from "../../workspace/types";
+import type { BeamCSVRow } from "../../types/csv";
 import { useWorkspaceStore } from "../../workspace/workspaceStore";
 import { projectStagePath } from "../../app/navigation";
 import { batchGoverningUtilization } from "../../api/client";
 import { formatPercent, formatRatio } from "../../utils/trustPresentation";
 
-function getEnvelopeMu(beam: ReturnType<typeof useImportedBeamsStore.getState>['beams'][number]): number {
-  return Math.max(
-    Math.abs(beam.Mu_start ?? 0),
-    Math.abs(beam.Mu_mid ?? 0),
-    Math.abs(beam.Mu_end ?? 0),
-    Math.abs(beam.mu_envelope ?? 0),
-  );
-}
-
-function getEnvelopeVu(beam: ReturnType<typeof useImportedBeamsStore.getState>['beams'][number]): number {
-  return Math.max(
-    Math.abs(beam.Vu_start ?? 0),
-    Math.abs(beam.Vu_end ?? 0),
-    Math.abs(beam.vu_envelope ?? 0),
-  );
-}
-
-function projectExportRows(
-  snapshot: WorkspaceSnapshotV1,
-  beams: ReturnType<typeof useImportedBeamsStore.getState>['beams'],
-) {
-  return snapshot.members.flatMap((member) => {
-    const beam = beams.find((candidate) => (candidate.source_id ?? candidate.id) === member.memberId);
+function dashboardInputs(snapshot: WorkspaceSnapshotV1, beams: BeamCSVRow[]) {
+  const byMemberId = new Map(beams.map((beam) => [beam.source_id ?? beam.id, beam]));
+  const results: BeamResult[] = snapshot.members.map((member) => {
+    const beam = byMemberId.get(member.memberId);
     const result = currentBatchResult(snapshot, member.memberId);
-    if (!beam || !result) return [];
-    const utilization = batchGoverningUtilization(result);
-    if (utilization === null) return [];
+    const layout = currentWorkbenchLayout(snapshot, member.memberId);
+    const mid = layout?.zones.find((zone) => zone.zone === 'mid');
+    const strengthStatus = result?.status === 'FAIL' ? 'FAIL'
+      : result?.status === 'PASS' && result.is_safe ? 'PASS' : 'HOLD';
+    const warnings = result?.workbench?.status === 'HOLD'
+      ? [result.workbench.reason]
+      : member.result?.error ? [member.result.error.message] : [];
+    return {
+      beam_id: member.memberId,
+      story: member.story ?? "Unknown",
+      is_valid: strengthStatus === 'PASS' && Boolean(layout),
+      strength_status: strengthStatus,
+      layout_status: layout ? 'PASS' : 'HOLD',
+      utilization: layout?.utilization ?? (result ? batchGoverningUtilization(result) : null),
+      ast_provided: mid?.tension.area_mm2 ?? 0,
+      checked_steel_weight_kg: layout?.schedule_steel_weight_kg,
+      b_mm: beam?.b ?? 0,
+      D_mm: beam?.D ?? 0,
+      span_mm: beam?.span ?? 0,
+      warnings,
+    };
+  });
+  const boqBeams = results.flatMap((result) => {
+    const beam = byMemberId.get(result.beam_id);
+    if (!beam || result.checked_steel_weight_kg === undefined) return [];
     return [{
-      beam_id: member.sourceId,
-      story: beam.story ?? '',
-      width: beam.b,
-      depth: beam.D,
-      span_length: beam.span,
+      beam_id: result.beam_id,
+      story: result.story,
+      b_mm: result.b_mm,
+      D_mm: result.D_mm,
+      span_mm: result.span_mm,
       fck: beam.fck ?? 25,
-      fy: beam.fy ?? 500,
-      moment: getEnvelopeMu(beam),
-      shear: getEnvelopeVu(beam),
-      ast_required: result.flexure?.ast_required ?? 0,
-      ast_provided: beam.ast_provided ?? 0,
-      asc_required: result.flexure?.asc_required ?? 0,
-      bar_count: beam.bar_count,
-      bar_diameter: beam.bar_diameter,
-      stirrup_diameter: beam.stirrup_diameter ?? 8,
-      stirrup_spacing: result.shear?.stirrup_spacing,
-      utilization,
-      is_safe: result.status === 'PASS' && result.is_safe,
-      status: result.status,
+      steel_weight_kg: result.checked_steel_weight_kg,
     }];
   });
+  const first = beams[0];
+  const dataset = first?.dataset_id && first.dataset_version && first.dataset_sha256
+    ? { dataset_id: first.dataset_id, dataset_version: first.dataset_version, dataset_sha256: first.dataset_sha256 }
+    : undefined;
+  return {
+    dashboard: { results },
+    boq: boqBeams.length === results.length && results.length > 0
+      ? { beams: boqBeams, dataset, project_name: snapshot.projectName }
+      : null,
+    scheduleCount: boqBeams.length,
+  };
 }
 
 export function DashboardPage() {
@@ -99,59 +103,28 @@ export function DashboardPage() {
     }
   }, [beams.length, restoreFromWorkspace, workspaceSnapshot]);
 
-  // Auto-fetch dashboard when beams are available
+  const inputs = useMemo(
+    () => beams.length && workspaceSnapshot ? dashboardInputs(workspaceSnapshot, beams) : null,
+    [beams, workspaceSnapshot],
+  );
+  const { mutate: refreshDashboard } = dashboard;
+  const { mutate: refreshBOQ } = boq;
   useEffect(() => {
-    if (beams.length === 0 || !workspaceSnapshot) return;
-    const results = workspaceSnapshot.members.map((member) => {
-      const beam = beams.find((candidate) => (candidate.source_id ?? candidate.id) === member.memberId);
-      const result = currentBatchResult(workspaceSnapshot, member.memberId);
-      return {
-        beam_id: member.sourceId,
-        story: member.story ?? "Unknown",
-        is_valid: result?.status === 'PASS' && result.is_safe,
-        utilization: result ? batchGoverningUtilization(result) : null,
-        ast_provided: beam?.ast_provided ?? 0,
-        b_mm: beam?.b ?? 0,
-        D_mm: beam?.D ?? 0,
-        span_mm: beam?.span ?? 0,
-        warnings: member.result?.error ? [member.result.error.message] : [],
-      };
-    });
-    dashboard.mutate({ results });
-
-    // Trigger BOQ calculation
-    const boqBeams = beams.map((b) => ({
-      beam_id: b.id,
-      story: b.story ?? "Unknown",
-      b_mm: b.b,
-      D_mm: b.D,
-      span_mm: b.span,
-      fck: b.fck ?? 25,
-      steel_weight_kg: calculateSteelWeightKg(b.ast_provided ?? 0, b.span),
-    }));
-    const first = beams[0];
-    const dataset = first?.dataset_id && first.dataset_version && first.dataset_sha256
-      ? {
-          dataset_id: first.dataset_id,
-          dataset_version: first.dataset_version,
-          dataset_sha256: first.dataset_sha256,
-        }
-      : undefined;
-    boq.mutate({ beams: boqBeams, dataset });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [beams, workspaceSnapshot]);
+    if (!inputs?.dashboard.results.length) return;
+    refreshDashboard(inputs.dashboard);
+    if (inputs.boq) refreshBOQ(inputs.boq);
+  }, [inputs, refreshDashboard, refreshBOQ]);
+  const currentDashboard = dashboard.variables === inputs?.dashboard ? dashboard : null;
+  const currentBOQ = inputs?.boq && boq.variables === inputs.boq ? boq : null;
 
   const heldBeamCount = exportReadiness.heldMemberIds.length;
   const exportsHeld = !exportReadiness.eligible;
 
   const handleProjectExport = (format: 'html' | 'pdf' | 'csv') => {
     const snapshot = useWorkspaceStore.getState().snapshot;
-    if (!snapshot || !projectExportReadiness(snapshot).eligible) return;
-    exportBuilding({
-      project_name: snapshot.projectName,
-      beams: projectExportRows(snapshot, useImportedBeamsStore.getState().beams),
-      format,
-    });
+    const checkedBeams = snapshot && checkedProjectMembers(snapshot);
+    if (!snapshot || !checkedBeams) return;
+    exportBuilding({ project_name: snapshot.projectName, checked_beams: checkedBeams, format });
   };
 
   if (beams.length === 0) {
@@ -209,18 +182,18 @@ export function DashboardPage() {
           </div>
         </div>
 
-        {dashboard.isPending ? (
+        {(!currentDashboard || currentDashboard.isPending) ? (
           <div className="flex items-center justify-center py-20 gap-3">
             <Loader2 className="w-6 h-6 text-blue-400 animate-spin" />
             <span className="text-zinc-400">Generating dashboard…</span>
           </div>
-        ) : dashboard.error ? (
+        ) : currentDashboard.error ? (
           <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3">
             <AlertCircle className="w-5 h-5 text-red-400" />
             <span className="text-sm text-red-400">Dashboard unavailable — API may be offline</span>
           </div>
-        ) : dashboard.data ? (
-          <DashboardContent data={dashboard.data} />
+        ) : currentDashboard.data ? (
+          <DashboardContent data={currentDashboard.data} scheduleCount={inputs?.scheduleCount ?? 0} />
         ) : null}
 
         {/* Project BOQ Panel */}
@@ -229,13 +202,19 @@ export function DashboardPage() {
             <BentoCardHeader
               title="Project BOQ"
               icon={<Package className="w-4 h-4" />}
-              badge={boq.data ? `${boq.data.total_beams} beams` : undefined}
+              badge={currentBOQ?.data ? `${currentBOQ.data.total_beams} beams` : undefined}
             />
-            <ProjectBOQPanel
-              data={boq.data ?? null}
-              isLoading={boq.isPending}
-              error={boq.error?.message ?? null}
-            />
+            {inputs?.boq ? (
+              <ProjectBOQPanel
+                data={currentBOQ?.data ?? null}
+                isLoading={!currentBOQ || currentBOQ.isPending}
+                error={currentBOQ?.error?.message ?? null}
+              />
+            ) : (
+              <p className="text-xs text-amber-400" role="status">
+                BOQ held until all beams have a current checked schedule weight.
+              </p>
+            )}
           </BentoCard>
         </BentoGrid>
       </div>
@@ -243,7 +222,7 @@ export function DashboardPage() {
   );
 }
 
-function DashboardContent({ data }: { data: DashboardData }) {
+function DashboardContent({ data, scheduleCount }: { data: DashboardData; scheduleCount: number }) {
   const passColor = data.pass_rate >= 90 ? "text-emerald-400" : data.pass_rate >= 70 ? "text-amber-400" : "text-rose-400";
   const utilColor = data.avg_utilization !== null && data.avg_utilization <= 0.85 ? "text-emerald-400" : "text-amber-400";
 
@@ -261,7 +240,10 @@ function DashboardContent({ data }: { data: DashboardData }) {
           {data.pass_rate.toFixed(0)}%
         </p>
         <p className="text-xs text-zinc-400 mt-1">
-          {data.passed} passed &middot; {data.failed} failed &middot; {data.total_beams} total
+          {data.passed} passed &middot; {data.failed} failed &middot; {data.held} held
+        </p>
+        <p className="text-xs text-zinc-400 mt-1">
+          Strength checks: {data.strength_passed} passed &middot; {data.strength_failed} failed
         </p>
       </BentoCard>
 
@@ -284,7 +266,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
 
       {/* Pass / Fail visual bar */}
       <BentoCard colSpan={6} variant="glass">
-        <BentoCardHeader title="Pass / Fail" />
+        <BentoCardHeader title="Member status" />
         <div className="flex h-6 rounded-xl overflow-hidden bg-white/5 mt-2">
           {data.passed > 0 && (
             <div
@@ -293,6 +275,9 @@ function DashboardContent({ data }: { data: DashboardData }) {
             >
               {data.pass_rate >= 20 && `${data.passed}`}
             </div>
+          )}
+          {data.held > 0 && (
+            <div className="bg-amber-500/60" style={{ width: `${(data.held / data.total_beams) * 100}%` }} />
           )}
           {data.failed > 0 && (
             <div
@@ -309,6 +294,9 @@ function DashboardContent({ data }: { data: DashboardData }) {
           </span>
           <span className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-rose-500/60" />{data.failed} failed
+          </span>
+          <span className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-amber-500/60" />{data.held} held
           </span>
         </div>
         {data.warnings_count > 0 && (
@@ -344,11 +332,13 @@ function DashboardContent({ data }: { data: DashboardData }) {
         <BentoCardHeader title="Materials" icon={<BarChart3 className="w-4 h-4" />} />
         <div className="grid grid-cols-2 gap-3 mt-1">
           <div>
-            <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Steel</p>
+            <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Checked schedule steel</p>
             <p className="text-xl font-bold text-blue-400 tabular-nums">
-              {data.total_steel_kg.toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-              <span className="text-xs text-zinc-500 ml-1">kg</span>
+              {scheduleCount
+                ? `${data.total_steel_kg.toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kg`
+                : '—'}
             </p>
+            <p className="text-[10px] text-zinc-400">{scheduleCount} of {data.total_beams} beams</p>
           </div>
           <div>
             <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Concrete</p>

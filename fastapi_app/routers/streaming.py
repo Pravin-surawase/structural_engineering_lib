@@ -235,6 +235,14 @@ def _stream_batch_response(
             result_data["status"] = member.overall_status.value
             if member.calculation is not None:
                 result_data.update(member.calculation)
+                if member.input is not None and result_data["is_safe"]:
+                    from structural_lib.services.workbench_beam import (
+                        workbench_projection,
+                    )
+
+                    workbench = workbench_projection(member.input)
+                    if workbench is not None:
+                        result_data["workbench"] = workbench
             job_manager.update_progress(
                 job_id,
                 design_succeeded=result_data["design_succeeded"],
