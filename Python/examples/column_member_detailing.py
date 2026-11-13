@@ -19,6 +19,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--reference", type=Path, default=_REFERENCE)
     parser.add_argument("--case", default="continuous", help="Case ID in the reference")
+    parser.add_argument(
+        "--positioned",
+        action="store_true",
+        help="Load the positioned mixed member contract",
+    )
     parser.add_argument("--input", type=Path, help="A complete request JSON file")
     parser.add_argument(
         "--output-dir", type=Path, help="Fresh directory for this result"
@@ -36,7 +41,11 @@ def main() -> int:
             parser.error(f"Unknown case {args.case}. Choices: {', '.join(cases)}.")
         payload = cases[args.case]["request"]
     try:
-        request = column.load_column_member_detailing(payload)
+        request = (
+            column.load_positioned_column_member_detailing(payload)
+            if args.positioned
+            else column.load_column_member_detailing(payload)
+        )
     except InputContractError as exc:
         print(json.dumps(exc.to_problem(), indent=2))
         return 2

@@ -101,6 +101,7 @@ from structural_lib.services.contracts.column_member import (
 )
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
+    PositionedColumnMemberDetailingInputV1,
 )
 from structural_lib.services.contracts.column_section import (
     ColumnInteractionInputV1,
@@ -138,6 +139,8 @@ __all__ = [
     "CircularColumnInputV1",
     "ColumnCatalogueInputV1",
     "ColumnMemberDetailingInputV1",
+    "PositionedColumnMemberDetailingInputV1",
+    "load_positioned_column_member_detailing",
     "FamilyIdentityV1",
     "CanonicalFamilyResultV1",
     "ColumnActionsV1",
@@ -238,14 +241,14 @@ def load_column_member_detailing(
 
 
 def check_column_member_detailing(
-    request: ColumnMemberDetailingInputV1,
+    request: ColumnMemberDetailingInputV1 | PositionedColumnMemberDetailingInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, object]]:
     """Check the member's supplied actions and physical detailing.
 
     Parameters
     ----------
-    request : ColumnMemberDetailingInputV1
-        Validated request from load_column_member_detailing.
+    request : ColumnMemberDetailingInputV1 or PositionedColumnMemberDetailingInputV1
+        Validated ordinary tied or positioned mixed member detailing request.
 
     Returns
     -------
@@ -263,7 +266,7 @@ def check_column_member_detailing(
 
     Limitations
     -----------
-    Ordinary short tied six- and eight-bar rectangles. Eight-bar physical laps admit one opposing side-midpoint or C1/C2 contact group.
+    Ordinary short tied rectangles. Mixed cages are continuous. Eight-bar physical laps admit one opposing side-midpoint or C1/C2 contact group.
 
     Provenance
     ----------
@@ -1606,3 +1609,44 @@ def load_service_section(
     if isinstance(value, (str, bytes)):
         return model_validate_json_or_error(ColumnServiceSectionInputV1, value)
     return model_validate_or_error(ColumnServiceSectionInputV1, value)
+
+
+def load_positioned_column_member_detailing(
+    value: Mapping[str, object] | str | bytes | PositionedColumnMemberDetailingInputV1,
+) -> PositionedColumnMemberDetailingInputV1:
+    """Load actual mixed longitudinal bars and the full short member tie grid.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or PositionedColumnMemberDetailingInputV1
+        Physical bar and tie geometry, concurrent station actions and approved hoop cut.
+
+    Returns
+    -------
+    PositionedColumnMemberDetailingInputV1
+        A validated immutable physical member request.
+
+    Raises
+    ------
+    InputContractError
+        The request violates the positioned member detailing contract.
+
+    Examples
+    --------
+    See Python/examples/column_member_detailing.py with the mixed member fixture.
+
+    Limitations
+    -----------
+    Ordinary short braced rectangles with continuous straight mixed bars.
+
+    Provenance
+    ----------
+    Uses the COL03 positioned cage and COL07 member detailing contracts.
+    """
+    if isinstance(value, PositionedColumnMemberDetailingInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(
+            PositionedColumnMemberDetailingInputV1, value
+        )
+    return model_validate_or_error(PositionedColumnMemberDetailingInputV1, value)

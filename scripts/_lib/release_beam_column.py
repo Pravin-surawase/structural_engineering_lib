@@ -112,6 +112,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col05_reference.py",
     "docs/verification/check_library_029_col06_reference.py",
     "docs/verification/check_library_029_col07_reference.py",
+    "docs/verification/check_library_029_col07_mixed_reference.py",
     "docs/verification/check_library_029_col07_splice_reference.py",
     "docs/verification/check_library_029_col07_corner_reference.py",
 )
@@ -130,6 +131,7 @@ COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
 COL06_REFERENCE = "docs/verification/library-029-col06-column-catalogue.json"
 COL07_REFERENCE = "docs/verification/library-029-col07-column-member.json"
+COL07_MIXED_REFERENCE = "docs/verification/library-029-col07-mixed-member.json"
 COL07_SPLICE_REFERENCE = "docs/verification/library-029-col07-contact-splice.json"
 COL07_CORNER_REFERENCE = "docs/verification/library-029-col07-corner-splice.json"
 
@@ -157,6 +159,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / COL05_REFERENCE,
                 repo / COL06_REFERENCE,
                 repo / COL07_REFERENCE,
+                repo / COL07_MIXED_REFERENCE,
                 repo / COL07_SPLICE_REFERENCE,
                 repo / COL07_CORNER_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
@@ -724,6 +727,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             ElementTree.fromstring(svg)
     for prefix, reference in (
         ("column-member-detailing", COL07_REFERENCE),
+        ("column-mixed-detailing", COL07_MIXED_REFERENCE),
         ("column-contact-splice", COL07_SPLICE_REFERENCE),
         ("column-corner-splice", COL07_CORNER_REFERENCE),
     ):
@@ -736,6 +740,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                 "Python/examples/column_member_detailing.py",
                 "--reference",
                 str(clone / reference),
+                *(("--positioned",) if reference == COL07_MIXED_REFERENCE else ()),
                 "--case",
                 case,
                 "--output-dir",
@@ -752,7 +757,9 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             assert input_hash in drawing
             ElementTree.fromstring(drawing)
             bbs = directory / "bbs.csv"
-            assert bbs.is_file() == entry["expected"]["bbs_available"]
+            assert bbs.is_file() == entry["expected"].get(
+                "bbs_available", entry["expected"]["status"] == "PASS"
+            )
             if bbs.is_file():
                 assert input_hash in bbs.read_text()
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):

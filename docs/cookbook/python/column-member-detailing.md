@@ -120,6 +120,31 @@ detail revision D2. It produces 27 hoop and cross-tie levels.
 withholds the schedule. `six_bar_unresolved_lap` retains the numeric
 lap check and holds the physical splice and BBS.
 
+## Replay a mixed positioned member
+
+Use the same [example script](../../../Python/examples/column_member_detailing.py)
+with the [mixed member reference](../../verification/library-029-col07-mixed-member.json).
+
+```bash
+python column_member_detailing.py --positioned --reference library-029-col07-mixed-member.json   --case mixed_continuous --output-dir mixed-member
+```
+
+In Python use `column.load_positioned_column_member_detailing` and
+`column.check_column_member_detailing`. The 450 × 550 mm member has
+four Ø20 corner bars, eight Ø16 bars, three actual cross-ties, and
+23 hoop levels. The hoop cut comes from the current approved register.
+The cross-tie cuts come from their checked straight and hook segments.
+The [independent replay](../../verification/check_library_029_col07_mixed_reference.py)
+gives 906.25 mm required full-tension development for Ø20 and
+163.960 kg scheduled steel for the continuous case.
+
+The supplied station actions are checked against the actual mixed cage.
+Shear credits only two closed hoop legs. The section drawing and schedule
+retain all actual bar identities. Run the `stale_register`, `short_anchor`
+and `unresolved_splice` cases to see how the report withholds the BBS.
+Mixed-cage splice assembly and slender or circular full-member checks
+require their own qualification.
+
 ## Run a physical contact splice
 
 Use the same example script with the

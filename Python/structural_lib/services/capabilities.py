@@ -331,6 +331,16 @@ _CAPABILITIES = (
                 "docs/cookbook/python/column-member-detailing.md",
                 "Python/examples/column_member_detailing.py",
             ),
+            IS456PythonProfile(
+                "is456.column.member-detailing/v1",
+                "structural_lib.design.is456.column",
+                "load_positioned_column_member_detailing",
+                "check_column_member_detailing",
+                "column-positioned-member-detailing-input/v1",
+                "Short continuous rectangular mixed cage with actual cross-tie shapes, member shear, end development and a checked fabrication cut register.",
+                "docs/cookbook/python/column-member-detailing.md#replay-a-mixed-positioned-member",
+                "Python/examples/column_member_detailing.py",
+            ),
         ),
     ),
     IS456Capability(

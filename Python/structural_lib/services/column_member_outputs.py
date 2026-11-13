@@ -8,17 +8,22 @@ from io import StringIO
 from math import dist
 from typing import Any
 
-from structural_lib.services.column_member_detailing import WORKFLOW, Result
+from structural_lib.services.column_member_detailing import (
+    WORKFLOW,
+    DetailingRequest,
+    Result,
+)
 from structural_lib.services.column_tied_member import rectangular_section_markup
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
+    PositionedColumnMemberDetailingInputV1,
 )
 
 
-def _metadata(result: Result) -> tuple[ColumnMemberDetailingInputV1, str]:
+def _metadata(result: Result) -> tuple[DetailingRequest, str]:
     request = result.request
     if result.workflow_id != WORKFLOW or not isinstance(
-        request, ColumnMemberDetailingInputV1
+        request, (ColumnMemberDetailingInputV1, PositionedColumnMemberDetailingInputV1)
     ):
         raise TypeError("A COL07 member detailing result is required")
     identity = result.envelope.result_identity
@@ -276,16 +281,14 @@ def render_column_member_detailing_html(result: Result) -> str:
         )
     lap_table = ""
     if data["laps"]:
-        lap_rows = "".join(
+        lap_rows = ""
+    for lap in data["laps"]:
+        required = lap["required_mm"]
+        required_text = f"{required:.2f}" if required is not None else "HOLD"
+        lap_rows += (
             f'<tr><td>{escape(lap["lap_id"])}</td><td>{escape(", ".join(lap["bar_ids"]))}</td>'
             f'<td>{lap["start_mm"]:g}–{lap["end_mm"]:g}</td><td>{lap["provided_mm"]:g}</td>'
-            f'<td>{lap["required_mm"]:.2f}</td></tr>'
-            for lap in data["laps"]
-        )
-        lap_table = (
-            "<h2>Proposed compression laps</h2><table><thead><tr><th>Lap ID</th><th>Bars</th>"
-            "<th>Stations (mm)</th><th>Overlap (mm)</th><th>Required (mm)</th></tr></thead>"
-            f"<tbody>{lap_rows}</tbody></table>"
+            f"<td>{required_text}</td></tr>"
         )
     splice = data.get("contact_splice")
     splice_details = ""

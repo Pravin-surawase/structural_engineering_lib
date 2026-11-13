@@ -5,15 +5,20 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import asdict, replace
 from itertools import pairwise
-from math import isclose, pi
-from typing import Any
+from math import fsum, isclose, pi
+from typing import Any, TypeVar
 
 from structural_lib.codes.is456.column.member_detailing import (
     ordinary_column_shear,
     straight_column_bond_lengths,
 )
 from structural_lib.codes.is456.column.positioned import positioned_member_strength
-from structural_lib.core.result_contract import EngineeringStatus, StructuralIssueV1
+from structural_lib.codes.is456.column.positioned_biaxial import PositionedColumnBar
+from structural_lib.core.result_contract import (
+    EngineeringStatus,
+    FreshnessStatus,
+    StructuralIssueV1,
+)
 from structural_lib.services.bbs import calculate_bar_weight
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
@@ -24,11 +29,17 @@ from structural_lib.services.column_contact_splice import (
     ContactSplice,
     check_contact_splice,
 )
+from structural_lib.services.column_positioned_member import (
+    check_positioned_rectangular_member,
+    evaluate_positioned_rectangular_cage,
+)
 from structural_lib.services.column_tied_member import (
     check_tied_rectangular_member,
     evaluate_tied_rectangular_cage,
 )
 from structural_lib.services.contracts.column_member import (
+    PositionedColumnCageV1,
+    PositionedRectangularColumnInputV1,
     RectangularColumnActionsV1,
     RectangularColumnCageV1,
     TiedRectangularColumnInputV1,
@@ -36,10 +47,13 @@ from structural_lib.services.contracts.column_member import (
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
     ColumnTieZoneV1,
+    PositionedColumnMemberDetailingInputV1,
 )
 
 WORKFLOW = "is456.column.member-detailing/v1"
 Result = CanonicalFamilyResultV1[dict[str, Any]]
+DetailingRequest = ColumnMemberDetailingInputV1 | PositionedColumnMemberDetailingInputV1
+PositionedBars = tuple[PositionedColumnBar, ...]
 _Record = Callable[..., None]
 _PASS = EngineeringStatus.PASS
 _FAIL = EngineeringStatus.FAIL
@@ -49,10 +63,10 @@ _TIE = "IS 456:2000 Cl. 26.5.3.2 and declared project tie placement"
 _SHEAR = "IS 456:2000 Cl. 40.1–40.4 and Tables 19–20"
 
 
-def _zone_cage(
-    request: ColumnMemberDetailingInputV1, zone: ColumnTieZoneV1
-) -> RectangularColumnCageV1:
-    steel = request.reinforcement
+_Cage = TypeVar("_Cage", RectangularColumnCageV1, PositionedColumnCageV1)
+
+
+def _zone_cage(steel: _Cage, zone: ColumnTieZoneV1) -> _Cage:
     if steel.tie is None:
         return steel
     return steel.model_copy(
@@ -61,7 +75,7 @@ def _zone_cage(
 
 
 def _hoop_grid(
-    request: ColumnMemberDetailingInputV1, zones: list[ColumnTieZoneV1], record: _Record
+    request: DetailingRequest, zones: list[ColumnTieZoneV1], record: _Record
 ) -> list[float]:
     ends = request.end_detail
     length = request.geometry.unsupported_length_mm
@@ -105,7 +119,16 @@ def _hoop_grid(
             (link.station_offset_mm for link in request.reinforcement.cross_ties),
             default=0.0,
         )
-        clearance = offset - link_offset - tie.diameter_mm / 2
+        if isinstance(request, PositionedColumnMemberDetailingInputV1):
+            clearance = offset - max(
+                [tie.diameter_mm / 2]
+                + [
+                    link.station_offset_mm + link.diameter_mm / 2
+                    for link in request.reinforcement.cross_ties
+                ]
+            )
+        else:
+            clearance = offset - link_offset - tie.diameter_mm / 2
         passed = (
             offset <= ends.max_end_hoop_offset_mm
             and clearance >= ends.end_face_clearance_mm
@@ -255,7 +278,7 @@ def _check_laps(
 
 
 def _check_actions(
-    request: ColumnMemberDetailingInputV1,
+    request: DetailingRequest,
     zones: list[ColumnTieZoneV1],
     grid: list[float],
     valid_zones: set[str],
@@ -292,17 +315,29 @@ def _check_actions(
             continue
         zone = max(matching, key=lambda item: item.pitch_mm)
         summary["zone_id"] = zone.zone_id
-        local = check_tied_rectangular_member(
-            TiedRectangularColumnInputV1(
-                identity=request.identity,
-                geometry=geometry,
-                materials=materials,
-                reinforcement=_zone_cage(request, zone),
-                actions=RectangularColumnActionsV1.model_validate(
-                    action.model_dump(exclude={"combination_id", "vx_kn", "vy_kn"})
-                ),
-            )
+        actions = RectangularColumnActionsV1.model_validate(
+            action.model_dump(exclude={"combination_id", "vx_kn", "vy_kn"})
         )
+        if isinstance(request, PositionedColumnMemberDetailingInputV1):
+            local = check_positioned_rectangular_member(
+                PositionedRectangularColumnInputV1(
+                    identity=request.identity,
+                    geometry=request.geometry,
+                    materials=materials,
+                    reinforcement=_zone_cage(request.reinforcement, zone),
+                    actions=actions,
+                )
+            )
+        else:
+            local = check_tied_rectangular_member(
+                TiedRectangularColumnInputV1(
+                    identity=request.identity,
+                    geometry=request.geometry,
+                    materials=materials,
+                    reinforcement=_zone_cage(request.reinforcement, zone),
+                    actions=actions,
+                )
+            )
         identity = local.envelope.result_identity
         assert identity is not None
         strength = local.calculation["strength"]
@@ -388,7 +423,24 @@ def _check_actions(
             width, depth, demand = geometry.D_mm, geometry.b_mm, action.vx_kn
         else:
             width, depth, demand = geometry.b_mm, geometry.D_mm, action.vy_kn
-        setback = steel.bar_center_offset_mm
+        if isinstance(steel, PositionedColumnCageV1):
+            coords = [
+                bar.x_from_left_mm if direction == "x" else bar.y_from_top_mm
+                for bar in steel.bars
+                if bar.row == "outer"
+            ]
+            if not coords:
+                record(
+                    "COLUMN.SHEAR_SETBACK_HELD",
+                    _HOLD,
+                    path,
+                    "Outer bars are required for the effective shear depth.",
+                    _SHEAR,
+                )
+                continue
+            setback = max(min(coords), depth - max(coords))
+        else:
+            setback = steel.bar_center_offset_mm
         if direction == "y" and splice is not None and station >= splice.start_mm:
             if splice.y_plane_setback_mm is not None:
                 setback = max(setback, splice.y_plane_setback_mm)
@@ -436,7 +488,7 @@ def _check_actions(
 
 
 def _bar_schedule(
-    request: ColumnMemberDetailingInputV1,
+    request: DetailingRequest,
     bars: list[dict[str, Any]],
     transverse: list[dict[str, Any]],
     record: _Record,
@@ -531,9 +583,10 @@ def _bar_schedule(
     }
 
 
-def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Result:
+def check_column_member_detailing(request: DetailingRequest) -> Result:
     """Combine the supplied station and physical detailing checks."""
-    require_request_type(request, ColumnMemberDetailingInputV1)
+    if not isinstance(request, PositionedColumnMemberDetailingInputV1):
+        require_request_type(request, ColumnMemberDetailingInputV1)
     checks: list[dict[str, Any]] = []
     issues = []
 
@@ -597,9 +650,16 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
         )
     zones = sorted(request.tie_zones, key=lambda zone: zone.start_mm)
     grid = _hoop_grid(request, zones, record)
-    cage = None
+    cage: dict[str, Any] | None = None
     cross_ties: tuple[dict[str, Any], ...] = ()
+    tied_cage = None
     valid_zones = set()
+    positioned = isinstance(request, PositionedColumnMemberDetailingInputV1)
+    bars_positioned = (
+        tuple(PositionedColumnBar(**bar.model_dump()) for bar in steel.bars)
+        if isinstance(steel, PositionedColumnCageV1)
+        else ()
+    )
     for zone in zones:
         first = len(checks)
 
@@ -617,19 +677,35 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
                 code, status, f"tie_zones.{zone_id}.{path}", message, source, **values
             )
 
-        cage, cross_ties = evaluate_tied_rectangular_cage(
-            b_mm=geometry.b_mm,
-            D_mm=geometry.D_mm,
-            steel=_zone_cage(request, zone),
-            record=record_zone,
-        )
+        if isinstance(steel, PositionedColumnCageV1):
+            cage, positioned_links = evaluate_positioned_rectangular_cage(
+                b_mm=geometry.b_mm,
+                D_mm=geometry.D_mm,
+                steel=_zone_cage(steel, zone),
+                bars=bars_positioned,
+                ratio=fsum(bar.area_mm2 for bar in bars_positioned)
+                / (geometry.b_mm * geometry.D_mm),
+                record=record_zone,
+            )
+            cross_ties = tuple(asdict(link) for link in positioned_links)
+        else:
+            tied_cage, cross_ties = evaluate_tied_rectangular_cage(
+                b_mm=geometry.b_mm,
+                D_mm=geometry.D_mm,
+                steel=_zone_cage(steel, zone),
+                record=record_zone,
+            )
+            cage = asdict(tied_cage) if tied_cage is not None else None
         if all(check["status"] == _PASS.value for check in checks[first:]):
             valid_zones.add(zone.zone_id)
-    bars = [asdict(bar) for bar in cage.bars] if cage is not None else []
+
+    bars = list(cage["bars"]) if cage is not None else []
     transverse = []
     if cage is not None and steel.tie is not None:
         hoop = steel.tie
-        perimeter = 2 * (cage.tie_centreline_width_mm + cage.tie_centreline_depth_mm)
+        perimeter = 2 * (
+            cage["tie_centreline_width_mm"] + cage["tie_centreline_depth_mm"]
+        )
         radius = hoop.internal_bend_radius_mm + hoop.diameter_mm / 2
         transverse = [
             {
@@ -640,11 +716,11 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
                 "minimum_path_mm": perimeter + (2 * pi - 8) * radius,
             }
         ]
-        transverse.extend(
-            {
+        for item in cross_ties:
+            link = {
                 "bar_id": item["tie_id"],
                 "role": "cross_tie",
-                "diameter_mm": hoop.diameter_mm,
+                "diameter_mm": item.get("diameter_mm", hoop.diameter_mm),
                 "stations_mm": [
                     station + item["station_offset_mm"] for station in grid
                 ],
@@ -653,11 +729,26 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
                     for a, b in zip(item["start_mm"], item["end_mm"], strict=True)
                 ),
             }
-            for item in cross_ties
-        )
-    end_required, lap_required = straight_column_bond_lengths(
-        steel.longitudinal_bar_diameter_mm, materials.fck_nmm2, materials.fy_nmm2
+            if positioned:
+                link.update(
+                    derived_cut_mm=item["centreline_length_mm"],
+                    cut_source="Checked positioned cross-tie centreline",
+                )
+            transverse.append(link)
+
+    diameters = (
+        {bar.diameter_mm for bar in bars_positioned}
+        if isinstance(steel, PositionedColumnCageV1)
+        else {steel.longitudinal_bar_diameter_mm}
     )
+    bond = {
+        diameter: straight_column_bond_lengths(
+            diameter, materials.fck_nmm2, materials.fy_nmm2
+        )
+        for diameter in sorted(diameters)
+    }
+    end_required = max(item[0] for item in bond.values())
+    lap_required = max(item[1] for item in bond.values())
     for end in ("start", "end"):
         length = getattr(request.end_detail, f"{end}_straight_mm")
         record(
@@ -668,14 +759,36 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
             _BOND,
             actual_mm=length,
             required_mm=end_required,
+            required_by_diameter_mm={dia: value[0] for dia, value in bond.items()},
         )
-    laps = _check_laps(
-        request, zones, {bar["bar_id"] for bar in bars}, lap_required, record
-    )
-    splice = check_contact_splice(request, cage, transverse, end_required, record)
-    if splice is not None:
-        transverse = splice.transverse
-        laps[0]["required_mm"] = splice.required_lap_mm
+    splice = None
+    if isinstance(request, PositionedColumnMemberDetailingInputV1):
+        laps = [
+            {
+                **lap.model_dump(),
+                "provided_mm": lap.end_mm - lap.start_mm,
+                "required_mm": None,
+            }
+            for lap in request.laps
+        ]
+        if laps:
+            record(
+                "COLUMN.POSITIONED_SPLICE_HELD",
+                _HOLD,
+                "laps",
+                "The positioned mixed-cage schedule requires continuous bars; supply a qualified physical splice profile.",
+                _BOND,
+            )
+    else:
+        laps = _check_laps(
+            request, zones, {bar["bar_id"] for bar in bars}, lap_required, record
+        )
+        splice = check_contact_splice(
+            request, tied_cage, transverse, end_required, record
+        )
+        if splice is not None:
+            transverse = splice.transverse
+            laps[0]["required_mm"] = splice.required_lap_mm
     actions = _check_actions(request, zones, grid, valid_zones, record, splice)
     if grid and cage is not None:
         schedule = _bar_schedule(request, bars, transverse, record, splice)
@@ -705,7 +818,7 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
             "contact_splice": splice.to_dict() if splice else None,
             "hoop_stations_mm": grid,
             "tie_zones": [zone.model_dump() for zone in zones],
-            "cage": asdict(cage) if cage is not None else None,
+            "cage": cage,
             "transverse": transverse,
             "cross_ties": cross_ties,
             "bbs": schedule,
@@ -713,7 +826,7 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
         workflow_id=WORKFLOW,
         engineering_status=status,
         limitations=(
-            "Checks only the supplied stations and combinations for ordinary short tied six- and eight-bar rectangles.",
+            "Checks only the supplied stations and combinations for ordinary short tied six- and eight-bar rectangles and continuous positioned mixed cages.",
             "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
             "Straight end projections require separately checked adjoining concrete. An eight-bar physical contact splice supports one side-midpoint or C1/C2 group with straight bars.",
             "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",
@@ -724,4 +837,15 @@ def check_column_member_detailing(request: ColumnMemberDetailingInputV1) -> Resu
         ),
         provenance=(_SHEAR, _TIE, _BOND),
     )
-    return replace(result, envelope=replace(result.envelope, issues=tuple(issues)))
+    return replace(
+        result,
+        envelope=replace(
+            result.envelope,
+            issues=tuple(issues),
+            freshness_status=(
+                FreshnessStatus.CURRENT
+                if basis.analysis_revision == basis.current_analysis_revision
+                else FreshnessStatus.STALE
+            ),
+        ),
+    )

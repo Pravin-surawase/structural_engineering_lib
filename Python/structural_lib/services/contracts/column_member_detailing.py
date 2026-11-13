@@ -9,6 +9,8 @@ from pydantic import Field, field_validator, model_validator
 from structural_lib.services.canonical_family import FamilyIdentityV1
 from structural_lib.services.contracts.column_member import (
     FourCornerColumnGeometryV1,
+    PositionedColumnCageV1,
+    PositionedRectangularGeometryV1,
     RectangularColumnActionsV1,
     RectangularColumnCageV1,
 )
@@ -127,16 +129,14 @@ class ColumnTransverseCutScheduleV1(StrictPublicModel):
     )
 
 
-class ColumnMemberDetailingInputV1(StrictPublicModel):
-    """Physical column, complete tie grid, supplied actions and fabrication basis."""
+class _ColumnMemberDetailingInput(StrictPublicModel):
+    """Common physical column, tie grid, supplied actions and cut basis."""
 
-    schema_version: Literal["column-member-detailing-input/v1"] = (
-        "column-member-detailing-input/v1"
-    )
+    schema_version: str
     identity: FamilyIdentityV1
     geometry: FourCornerColumnGeometryV1
     materials: ColumnMaterialsV1
-    reinforcement: RectangularColumnCageV1
+    reinforcement: RectangularColumnCageV1 | PositionedColumnCageV1
     basis: ColumnDetailingBasisV1
     end_detail: ColumnStraightEndDetailV1
     tie_fy_nmm2: float = Field(ge=250, le=600)
@@ -172,6 +172,30 @@ class ColumnMemberDetailingInputV1(StrictPublicModel):
             raise ValueError("Tie zone IDs must be unique")
         if len({lap.lap_id for lap in self.laps}) != len(self.laps):
             raise ValueError("Lap IDs must be unique")
+        return self
+
+
+class ColumnMemberDetailingInputV1(_ColumnMemberDetailingInput):
+    """Short, symmetric tied rectangular member detailing request."""
+
+    schema_version: Literal["column-member-detailing-input/v1"] = (
+        "column-member-detailing-input/v1"
+    )
+    reinforcement: RectangularColumnCageV1
+
+
+class PositionedColumnMemberDetailingInputV1(_ColumnMemberDetailingInput):
+    """Short tied rectangular member with a continuous positioned mixed cage."""
+
+    schema_version: Literal["column-positioned-member-detailing-input/v1"] = (
+        "column-positioned-member-detailing-input/v1"
+    )
+    geometry: PositionedRectangularGeometryV1
+    reinforcement: PositionedColumnCageV1
+
+    @model_validator(mode="after")
+    def check_positioned_bars(self) -> Self:
+        self.reinforcement.validate_positions(self.geometry.b_mm, self.geometry.D_mm)
         return self
 
 

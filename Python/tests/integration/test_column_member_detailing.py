@@ -118,3 +118,45 @@ def test_member_detailing_capability_resolves():
         getattr(module, profile["operation"])(request).workflow_id
         == profile["workflow_id"]
     )
+
+
+_MIXED_CASES = json.loads(
+    _REFERENCE.with_name("library-029-col07-mixed-member.json").read_text()
+)["cases"]
+
+
+@pytest.mark.parametrize("name", _MIXED_CASES)
+def test_positioned_mixed_member_quantities_and_outputs(name):
+    fixture = _MIXED_CASES[name]
+    request = column.load_positioned_column_member_detailing(fixture["request"])
+    result = column.check_column_member_detailing(request)
+    expected = fixture["expected"]
+    assert result.engineering_status.value == expected["status"]
+    identity = result.to_dict()["envelope"]["result_identity"]["input_hash"]
+    drawing = column.render_column_member_detailing_svg(result)
+    assert identity in drawing
+    report = column.render_column_member_detailing_html(result)
+    assert drawing in report and identity in report
+    bbs = column.render_column_member_bbs_csv(result)
+    if expected["status"] != "PASS":
+        assert bbs is None
+        return
+    assert bbs is not None and identity in bbs
+    calculation = result.to_dict()["calculation"]
+    assert calculation["hoop_stations_mm"] == expected["hoop_stations_mm"]
+    assert calculation["end_required_mm"] == pytest.approx(expected["end_required_mm"])
+    for row, reference in zip(calculation["actions"], expected["shear"], strict=True):
+        assert row["section"]["status"] == "PASS"
+        for key, value in reference.items():
+            assert row["shear"][key] == pytest.approx(value)
+    rows = list(csv.DictReader(StringIO(bbs)))
+    lengths = {
+        row["bar_id"]: float(row["cut_length_mm"])
+        for row in rows
+        if row["role"] == "cross_tie"
+    }
+    assert lengths == pytest.approx(expected["cross_tie_cut_mm"])
+    for key in ("quantity", "total_length_mm", "total_weight_kg"):
+        assert calculation["bbs"][key] == pytest.approx(expected[key])
+    assert len([row for row in rows if row["role"] == "longitudinal"]) == 12
+    assert len(ElementTree.fromstring(drawing).findall(".//{*}circle")) == 12
