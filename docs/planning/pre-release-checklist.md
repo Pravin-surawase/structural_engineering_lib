@@ -11,28 +11,15 @@
 
 Current source metadata: 0.28.2.
 
-**0.28.2 maintenance candidate.** The current checked layout drives imported
-beam inspection and project exports. This candidate also fixes package startup
-with unsupported logging levels and two IS 456 clause references. Qualify the
-exact archives and replay the workbench and maintenance controls. The
-[0.28.2 ledger entry](../getting-started/releases.md#v0282--prepared-candidate-unreleased-on-hold)
-records the scope.
-
-**0.28.1 maintenance candidate.** The selected fixes cover Coding Lab A13,
-A9 and A15 plus the CLI detailing, report and combined BBS/DXF regressions.
-Qualify the exact wheel and source archive with the maintained installed
-profiles and the patch reproductions. The
-[candidate ledger entry](../getting-started/releases.md#v0281--prepared-candidate-unreleased-on-hold)
-records the scope and publication state.
-
-**0.28.0 is published and verified.** The [release status](../getting-started/release-status.md)
-and [publication receipt](../getting-started/releases.md#v0280-published-and-verified)
+**0.28.2 is published and verified.** The [release status](../getting-started/release-status.md)
+and [publication receipt](../getting-started/releases.md#v0282-published-and-verified)
 record the exact tag, retained archives and clean public installation.
+The release includes the fixes prepared for 0.28.1.
 
 - [x] Exact retained wheel and source archive qualified on all 20 installed profiles.
-- [x] Independent software review and required PR/Weekly checks passed.
-- [x] TestPyPI and public release used the same bytes; both registries and GitHub readbacks passed.
-- [x] Fresh no-cache PyPI installation imports 0.28.0 from its isolated environment.
+- [x] Independent software review and required PR and Weekly checks passed.
+- [x] TestPyPI, PyPI and GitHub archive identities match the qualified hashes.
+- [x] Fresh no-cache PyPI installation imports 0.28.2 from its isolated environment.
 
 The following records are historical receipts for their named versions.
 

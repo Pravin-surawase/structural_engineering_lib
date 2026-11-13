@@ -80,7 +80,7 @@ Use the exact version listed on the
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install "structural-lib-is456==0.28.0"
+python -m pip install "structural-lib-is456==0.28.2"
 python -m structural_lib install-preflight
 ```
 

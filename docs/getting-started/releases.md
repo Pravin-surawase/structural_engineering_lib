@@ -1857,3 +1857,32 @@ passed again on the final maintenance candidate.
 The retained archives go through TestPyPI before the production tag and upload.
 Engineering use requires independent verification and qualified professional
 review.
+
+## v0.28.2 published and verified
+
+**2026-11-13 (Asia/Kolkata).** [PyPI 0.28.2](https://pypi.org/project/structural-lib-is456/0.28.2/)
+and [GitHub v0.28.2](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.28.2) are public. The annotated
+tag targets `03405bd6229cece7b69d27db62fcedb3837cdf79`. The retained archives were built at
+`a44f9c7493e7d104f8702980731aed05c488ecfd` and requalified against the final maintenance Python
+tree `db8aaca06213d4ff2d5001561eee52716b2283bd`.
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.28.2-py3-none-any.whl` | `089c4bda34f553a7909503c4022a453f2b42415ddc25db346da13d6e4cb04297` | 1240524 |
+| `structural_lib_is456-0.28.2.tar.gz` | `f05479f6eb9944588fa6b74862804f13e717a7ae4360c764f482953942d478c9` | 1052067 |
+
+The 20 installed profiles and 29 exact-wheel acceptance cases passed. Both
+archives passed 454 beam and column tests and six slab and footing reference
+cases. The [retained byte check](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43409545509),
+[TestPyPI](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43409709959) and
+[production publication](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43409931448) used those archives.
+
+Four anonymous public downloads from PyPI and GitHub match the qualified
+hashes. A fresh PyPI install imports 0.28.2 from its isolated environment. The
+[public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.28.2/public-install-verification.json)
+has SHA-256 `a7ec2136b8a40e88c22abd4adb69b8bec771546923b9fa220ff7dd5d2a62f503`. The
+[artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.28.2/artifact-manifest.json)
+records the source and qualification identities.
+
+The 0.28.1 maintenance fixes are included in 0.28.2. Draft
+[PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064) continues to own the 0.29 beam, column and slab work.
