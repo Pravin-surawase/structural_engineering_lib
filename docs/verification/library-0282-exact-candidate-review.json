@@ -1,0 +1,61 @@
+{
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.28.2-py3-none-any.whl",
+      "sha256": "089c4bda34f553a7909503c4022a453f2b42415ddc25db346da13d6e4cb04297",
+      "size_bytes": 1240524
+    },
+    {
+      "filename": "structural_lib_is456-0.28.2.tar.gz",
+      "sha256": "f05479f6eb9944588fa6b74862804f13e717a7ae4360c764f482953942d478c9",
+      "size_bytes": 1052067
+    }
+  ],
+  "decision": "ACCEPT",
+  "hosted_checks": {
+    "required_pr_checks": {
+      "head_sha": "36b40966a6b7e4e385b9b4272132e4dda1ba3f24",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43406430921/job/131822361458"
+    },
+    "weekly_verification": {
+      "head_sha": "36b40966a6b7e4e385b9b4272132e4dda1ba3f24",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43406401726"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-11-13T10:27:22Z",
+  "integration_requirement": "Preserve the reviewed candidate ancestry and Python tree through the publication metadata merge. Pass the required PR gate on the publication metadata head.",
+  "local_verification": {
+    "artifact_record": "docs/verification/library-0282-release-artifacts.json",
+    "artifact_record_sha256": "97ed32a4e193e5ba1e459674c879ae0fce41fa7a7fdc4c45a1b9045272f3d5f5",
+    "beam_column_tests_per_archive": 454,
+    "build_head": "a44f9c7493e7d104f8702980731aed05c488ecfd",
+    "distribution_inputs_changed_after_build": false,
+    "installed_profiles": 20,
+    "installed_wheel_uat_cases": 29,
+    "qualification_receipt_sha256": "6245f1ffb0344fed3d982da938d3e7e43299a632fa2d2b0c2b222934aae42351",
+    "slab_footing_cases_per_archive": 6
+  },
+  "professional_approval": false,
+  "qualified_structural_engineering_review": false,
+  "review_scope": "The independent reviewer checked the maintenance candidate, retained archives, and the artifact record on the publication candidate. Hosted checks passed on the reviewed head. The build and reviewed commit have identical distribution inputs and package payloads.",
+  "reviewed_candidate": {
+    "head_sha": "36b40966a6b7e4e385b9b4272132e4dda1ba3f24",
+    "python_tree_sha": "db8aaca06213d4ff2d5001561eee52716b2283bd",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ],
+    "tag": "v0.28.2",
+    "tree_sha": "fb639c4733b7a047428a62f946a5df0976688f53",
+    "version": "0.28.2"
+  },
+  "reviewer": {
+    "identity": "Codex independent release-contract reviewer /root/release282review",
+    "independent": true,
+    "reviewed_at_utc": "2026-11-13T10:27:22Z"
+  },
+  "schema_version": "exact-candidate-review-receipt/v1"
+}
