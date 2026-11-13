@@ -423,6 +423,13 @@ def calculate_lap_length(
 # =============================================================================
 
 
+@dataclass(kw_only=True)
+class BeamDetailingWithStirrupStations(BeamDetailingResult):
+    """A detailing result with explicit stirrup centreline stations by zone."""
+
+    stirrup_stations_by_zone_mm: tuple[tuple[float, ...], ...]
+
+
 @dataclass
 class HookDimensions:
     """Dimensions for a standard hook per IS 456 Cl 26.2.2.

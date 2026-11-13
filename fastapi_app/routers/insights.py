@@ -11,6 +11,7 @@ import hashlib
 import json
 import logging
 from datetime import UTC, datetime
+from typing import Literal
 
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
@@ -52,6 +53,11 @@ class BeamResult(BaseModel):
         description="Uncapped utilization ratio; null means unavailable and is excluded from ratio statistics",
     )
     ast_provided: float = Field(default=0.0, description="Steel area provided (mm²)")
+    strength_status: Literal["PASS", "FAIL", "HOLD"] | None = None
+    layout_status: Literal["PASS", "FAIL", "HOLD"] | None = None
+    checked_steel_weight_kg: float | None = Field(
+        default=None, ge=0, allow_inf_nan=False
+    )
     b_mm: float = Field(default=300.0, description="Beam width (mm)")
     D_mm: float = Field(default=500.0, description="Beam depth (mm)")
     span_mm: float = Field(default=5000.0, description="Beam span (mm)")
@@ -72,6 +78,7 @@ class StoryStats(BaseModel):
     total: int = Field(default=0, description="Total beams in story")
     passed: int = Field(default=0, description="Passed beams")
     failed: int = Field(default=0, description="Failed beams")
+    held: int = Field(default=0, description="Held beams")
 
 
 class DashboardResponse(BaseModel):
@@ -82,6 +89,9 @@ class DashboardResponse(BaseModel):
     total_beams: int = Field(description="Total number of beams")
     passed: int = Field(description="Number of passed beams")
     failed: int = Field(description="Number of failed beams")
+    held: int = Field(description="Number of held beams")
+    strength_passed: int = Field(description="Beams with a passing strength check")
+    strength_failed: int = Field(description="Beams with a failing strength check")
     pass_rate: float = Field(description="Pass rate percentage")
     warnings_count: int = Field(description="Total warning count")
     avg_utilization: float | None = Field(
@@ -239,6 +249,9 @@ async def generate_dashboard(request: DashboardRequest):
                 total_beams=summary.total_beams,
                 passed=summary.passed,
                 failed=summary.failed,
+                held=summary.held,
+                strength_passed=summary.strength_passed,
+                strength_failed=summary.strength_failed,
                 pass_rate=summary_dict.get("pass_rate", 0.0),
                 warnings_count=summary.warnings_count,
                 avg_utilization=summary_dict.get("avg_utilization", 0.0),

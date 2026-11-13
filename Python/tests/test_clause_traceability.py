@@ -96,6 +96,19 @@ class TestClauseDatabaseLoading:
             assert "title" in info, f"Clause {clause_ref} missing 'title'"
             assert "category" in info, f"Clause {clause_ref} missing 'category'"
 
+    def test_flange_width_and_material_factors_have_their_own_clause(self):
+        from structural_lib.codes.is456.beam.flexure import (
+            calculate_effective_flange_width,
+        )
+
+        assert get_clause_info("23.1.2")["title"] == "Effective Flange Width"
+        assert get_clause_info("36.4.2")["title"] == "Material Strength Safety Factors"
+        assert get_clause_refs(calculate_effective_flange_width) == ["23.1.2"]
+        assert "23.1.2" in {row["clause_ref"] for row in search_clauses("flange width")}
+        assert "36.4.2" in {
+            row["clause_ref"] for row in search_clauses("material factors")
+        }
+
 
 # =============================================================================
 # Test: @clause Decorator

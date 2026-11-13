@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.28.1 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.28.2 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,14 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.28.1
+## New in v0.28.2
+
+- Imported-beam inspection, reports, BBS, DXF, and project quantities use
+  the current checked reinforcement layout.
+- Unsupported logging levels fall back to WARNING. Clause lookup identifies
+  effective flange width and material safety factors under their correct IDs.
+
+### Maintenance fixes from the 0.28.1 candidate
 
 - Biaxial column checks reject nonfinite axial loads. Material constructors
   and factories reject invalid strengths at the input boundary.

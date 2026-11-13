@@ -6303,11 +6303,39 @@
             "title": "Beam Id",
             "type": "string"
           },
+          "checked_steel_weight_kg": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checked Steel Weight Kg"
+          },
           "is_valid": {
             "default": true,
             "description": "Whether design passed",
             "title": "Is Valid",
             "type": "boolean"
+          },
+          "layout_status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "PASS",
+                  "FAIL",
+                  "HOLD"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Layout Status"
           },
           "span_mm": {
             "default": 5000.0,
@@ -6321,6 +6349,22 @@
             "maxLength": 200,
             "title": "Story",
             "type": "string"
+          },
+          "strength_status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "PASS",
+                  "FAIL",
+                  "HOLD"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strength Status"
           },
           "utilization": {
             "anyOf": [
@@ -14855,6 +14899,11 @@
             "title": "Failed",
             "type": "integer"
           },
+          "held": {
+            "description": "Number of held beams",
+            "title": "Held",
+            "type": "integer"
+          },
           "max_utilization": {
             "anyOf": [
               {
@@ -14894,6 +14943,16 @@
             "title": "Passed",
             "type": "integer"
           },
+          "strength_failed": {
+            "description": "Beams with a failing strength check",
+            "title": "Strength Failed",
+            "type": "integer"
+          },
+          "strength_passed": {
+            "description": "Beams with a passing strength check",
+            "title": "Strength Passed",
+            "type": "integer"
+          },
           "success": {
             "description": "Whether generation succeeded",
             "title": "Success",
@@ -14926,6 +14985,9 @@
           "total_beams",
           "passed",
           "failed",
+          "held",
+          "strength_passed",
+          "strength_failed",
           "pass_rate",
           "warnings_count",
           "avg_utilization",
@@ -28125,6 +28187,12 @@
             "title": "Failed",
             "type": "integer"
           },
+          "held": {
+            "default": 0,
+            "description": "Held beams",
+            "title": "Held",
+            "type": "integer"
+          },
           "passed": {
             "default": 0,
             "description": "Passed beams",
@@ -31579,6 +31647,66 @@
         "title": "WallReinforcementResponse",
         "type": "object"
       },
+      "WorkbenchBatchExportRequest": {
+        "additionalProperties": false,
+        "description": "Project report bound to the exact layouts retained by the workbench.",
+        "properties": {
+          "checked_beams": {
+            "items": {
+              "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+            },
+            "minItems": 1,
+            "title": "Checked Beams",
+            "type": "array"
+          },
+          "format": {
+            "default": "html",
+            "pattern": "^(html|pdf|csv)$",
+            "title": "Format",
+            "type": "string"
+          },
+          "project_name": {
+            "default": "Building Project",
+            "maxLength": 200,
+            "title": "Project Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "checked_beams"
+        ],
+        "title": "WorkbenchBatchExportRequest",
+        "type": "object"
+      },
+      "WorkbenchBeamExportRequest": {
+        "additionalProperties": false,
+        "description": "Exact calculation request and checked-layout identity from the workbench.",
+        "properties": {
+          "checked_layout_id": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Checked Layout Id",
+            "type": "string"
+          },
+          "checked_request": {
+            "$ref": "#/components/schemas/BeamDesignInputV1"
+          },
+          "format": {
+            "default": "html",
+            "enum": [
+              "html",
+              "json"
+            ],
+            "title": "Format",
+            "type": "string"
+          }
+        },
+        "required": [
+          "checked_request",
+          "checked_layout_id"
+        ],
+        "title": "WorkbenchBeamExportRequest",
+        "type": "object"
+      },
       "WorkflowAuditModel": {
         "properties": {
           "review_stop": {
@@ -32287,7 +32415,7 @@
       "url": "https://opensource.org/licenses/MIT"
     },
     "title": "Structural Engineering API",
-    "version": "0.28.1"
+    "version": "0.28.2"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -38979,7 +39107,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExportBeamRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ExportBeamRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },
@@ -39094,7 +39230,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BatchExportRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBatchExportRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BatchExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },
@@ -39209,7 +39353,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExportBeamRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ExportBeamRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },
@@ -39324,7 +39476,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExportReportRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ExportReportRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },
@@ -39561,7 +39721,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BeamGeometryRequest"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/BeamGeometryRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WorkbenchBeamExportRequest"
+                  }
+                ],
+                "title": "Request"
               }
             }
           },

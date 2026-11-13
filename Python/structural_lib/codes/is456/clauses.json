@@ -138,13 +138,14 @@
       ]
     },
     "23.1.2": {
-      "title": "Effective Span - Continuous",
-      "section": "23 - Structural Members",
-      "category": "analysis",
+      "title": "Effective Flange Width",
+      "section": "23 - Beams",
+      "category": "flexure",
       "keywords": [
-        "continuous",
-        "effective span",
-        "interior span"
+        "flange width",
+        "T-beam",
+        "L-beam",
+        "effective width"
       ]
     },
     "23.2": {
@@ -1284,14 +1285,14 @@
       ]
     },
     "36.4.2": {
-      "title": "Effective Width of Flange",
+      "title": "Material Strength Safety Factors",
       "section": "36 - Limit State Design",
-      "category": "flexure",
+      "category": "materials",
       "keywords": [
-        "flange width",
-        "T-beam",
-        "L-beam",
-        "effective width"
+        "material factors",
+        "partial safety factors",
+        "concrete",
+        "steel"
       ]
     },
     "38.1": {

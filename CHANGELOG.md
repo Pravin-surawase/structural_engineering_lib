@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.28.2] — Prepared candidate (unreleased; on hold)
+
+Includes the maintenance fixes listed under the 0.28.1 candidate.
+
+### Fixed
+
+- Fall back to WARNING when an unsupported logging level would prevent
+  Python import or CLI startup.
+- Correct IS 456 clause lookup for effective flange width and material
+  strength safety factors. Link the flange-width helper to clause 23.1.2.
+- Use the checked reinforcement layout for imported-beam inspection,
+  drawings, schedules, and reports. Grid edits invalidate earlier results
+  and a layout on HOLD blocks exports.
+- Use the current checked layout for project reports and calculate dashboard
+  and BOQ steel weight from the bar bending schedule.
+
 ## [0.28.1] — Prepared candidate (unreleased; on hold)
 
 ### Fixed

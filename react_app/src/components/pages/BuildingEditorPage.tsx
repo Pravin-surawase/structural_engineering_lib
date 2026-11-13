@@ -14,7 +14,7 @@ import { AgGridReact } from "@ag-grid-community/react";
 import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
 import { ModuleRegistry } from "@ag-grid-community/core";
 import type {
-  CellValueChangedEvent,
+  CellEditRequestEvent,
   ColDef,
   RowClickedEvent,
   RowSelectionOptions,
@@ -43,7 +43,7 @@ import { deriveBeamStatus } from "../../utils/beamStatus";
 import { WorkflowHint } from "../ui/WorkflowHint";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 import { useWorkspaceStore } from "../../workspace/workspaceStore";
-import { projectExportReadiness } from "../../workspace/resultRecords";
+import { checkedProjectMembers, projectExportReadiness } from "../../workspace/resultRecords";
 import { projectStagePath } from "../../app/navigation";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
@@ -56,24 +56,14 @@ const EDITOR_ROW_SELECTION: RowSelectionOptions<BeamCSVRow> = {
 
 /* ---- Helpers ---- */
 
-/** Compute envelope moment from start/mid/end */
-function getEnvelopeMu(beam: BeamCSVRow): number {
-  return Math.max(
-    Math.abs(beam.Mu_start ?? 0),
-    Math.abs(beam.Mu_mid ?? 0),
-    Math.abs(beam.Mu_end ?? 0),
-    Math.abs(beam.mu_envelope ?? 0)
-  );
-}
+type NumericBeamInput = "b" | "D" | "mu_envelope" | "vu_envelope"
+  | "requested_bar_count" | "tension_bar_diameter_mm"
+  | "stirrup_diameter_mm" | "requested_stirrup_spacing_mm";
 
-/** Compute envelope shear from start/end */
-function getEnvelopeVu(beam: BeamCSVRow): number {
-  return Math.max(
-    Math.abs(beam.Vu_start ?? 0),
-    Math.abs(beam.Vu_end ?? 0),
-    Math.abs(beam.vu_envelope ?? 0)
-  );
-}
+const GRID_INPUTS: ReadonlySet<string> = new Set<NumericBeamInput>([
+  "b", "D", "mu_envelope", "vu_envelope", "requested_bar_count",
+  "tension_bar_diameter_mm", "stirrup_diameter_mm", "requested_stirrup_spacing_mm",
+]);
 
 /* ---- Main Component ---- */
 
@@ -190,49 +180,29 @@ export function BuildingEditorPage() {
 
   const handleBuildingExport = useCallback(
     (format: "html" | "pdf" | "csv") => {
-      if (!projectExportReadiness(useWorkspaceStore.getState().snapshot).eligible) return;
+      const snapshot = useWorkspaceStore.getState().snapshot;
+      const checkedBeams = snapshot && checkedProjectMembers(snapshot);
+      if (!snapshot || !checkedBeams) return;
       setShowExportMenu(false);
-      const payload = beams.map((b) => ({
-        beam_id: b.id,
-        story: b.story ?? "",
-        width: b.b,
-        depth: b.D,
-        span_length: b.span ?? 0,
-        fck: b.fck ?? globalFck,
-        fy: b.fy ?? globalFy,
-        moment: getEnvelopeMu(b),
-        shear: getEnvelopeVu(b),
-        ast_required: b.ast_required ?? 0,
-        ast_provided: b.ast_provided ?? 0,
-        asc_required: b.asc_required ?? 0,
-        bar_count: b.bar_count,
-        bar_diameter: b.bar_diameter,
-        stirrup_diameter: b.stirrup_diameter ?? 8,
-        stirrup_spacing: b.stirrup_spacing,
-        utilization: b.utilization ?? 0,
-        is_safe: b.is_valid ?? false,
-        status: deriveBeamStatus(b),
-      }));
-      exportBuilding({ project_name: "Building Project", beams: payload, format });
+      exportBuilding({ project_name: snapshot.projectName, checked_beams: checkedBeams, format });
     },
-    [beams, globalFck, globalFy, exportBuilding]
+    [exportBuilding],
   );
 
-  const handleCellValueChanged = useCallback(
-    (event: CellValueChangedEvent<BeamCSVRow>) => {
-      if (event.data) {
-        // Get fresh state inside callback to avoid stale closure issues
-        const currentBeams = useImportedBeamsStore.getState().beams;
-        const updatedBeams = currentBeams.map((b) =>
-          b.id === event.data!.id
-            ? { ...b, ...event.data, status: "pending" as const, is_valid: false }
-            : b
-        );
-        useImportedBeamsStore.getState().setBeams(updatedBeams);
-      }
-    },
-    [] // No dependencies - we get fresh state inside
-  );
+  const handleCellEditRequest = useCallback((event: CellEditRequestEvent<BeamCSVRow>) => {
+    const field = event.colDef.field;
+    if (!event.data || !field || !GRID_INPUTS.has(field)) return;
+    const memberId = event.data.source_id ?? event.data.id;
+    const value = event.newValue === "" || event.newValue == null
+      ? undefined : Number(event.newValue);
+    const mayClear = field === "requested_bar_count" || field === "requested_stirrup_spacing_mm";
+    if (value === undefined ? !mayClear : !Number.isFinite(value)) return;
+    if (value === event.oldValue) return;
+    const store = useImportedBeamsStore.getState();
+    store.setBeams(store.beams.map((beam) => (beam.source_id ?? beam.id) === memberId
+      ? { ...beam, [field]: value, status: "pending", is_valid: false }
+      : beam));
+  }, []);
 
   // Column definitions — envelope-based default, advanced for detail
   const columnDefs = useMemo<ColDef<BeamCSVRow>[]>(
@@ -246,36 +216,26 @@ export function BuildingEditorPage() {
       { headerName: "Span (mm)", field: "span", width: 95, type: "numericColumn", cellClass: "text-right font-mono",
         valueFormatter: (p) => p.value != null ? Number(p.value).toLocaleString() : "-" },
       {
-        headerName: "Mu (kN\u00b7m)",
+        headerName: "Mu (kN·m)",
+        field: "mu_envelope",
         width: 100,
         editable: true,
+        cellDataType: "number",
         type: "numericColumn",
         cellClass: "bg-blue-500/5 text-right font-mono",
-        valueGetter: (p) => p.data ? getEnvelopeMu(p.data) : 0,
-        valueSetter: (p) => {
-          if (p.data) {
-            p.data.mu_envelope = Number(p.newValue);
-            p.data.Mu_mid = Number(p.newValue);
-          }
-          return true;
-        },
-        valueFormatter: (p) => p.value ? Number(p.value).toFixed(1) : "-",
+        valueGetter: ({ data }) => data?.mu_envelope ?? data?.Mu_mid ?? null,
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(1) : "-",
       },
       {
         headerName: "Vu (kN)",
+        field: "vu_envelope",
         width: 90,
         editable: true,
+        cellDataType: "number",
         type: "numericColumn",
         cellClass: "bg-blue-500/5 text-right font-mono",
-        valueGetter: (p) => p.data ? getEnvelopeVu(p.data) : 0,
-        valueSetter: (p) => {
-          if (p.data) {
-            p.data.vu_envelope = Number(p.newValue);
-            p.data.Vu_start = Number(p.newValue);
-          }
-          return true;
-        },
-        valueFormatter: (p) => p.value ? Number(p.value).toFixed(1) : "-",
+        valueGetter: ({ data }) => data?.vu_envelope ?? data?.Vu_start ?? null,
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(1) : "-",
       },
       {
         headerName: "Ast Req (mm\u00b2)",
@@ -319,17 +279,14 @@ export function BuildingEditorPage() {
         valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(0) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
       { headerName: "Asc Req", field: "asc_required", width: 90, type: "numericColumn",
         valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(0) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
-      { headerName: "Bar #", field: "bar_count", width: 65, editable: true, type: "numericColumn",
-        cellClass: "bg-blue-500/5 text-right font-mono", hide: !showAdvanced },
-      { headerName: "Bar \u00d8", field: "bar_diameter", width: 75, editable: true, type: "numericColumn",
-        cellClass: "bg-blue-500/5 text-right font-mono",
-        valueFormatter: (p) => p.value ? `${p.value} mm` : "-", hide: !showAdvanced },
-      { headerName: "Str \u00d8", field: "stirrup_diameter", width: 70, editable: true, type: "numericColumn",
-        cellClass: "bg-blue-500/5 text-right font-mono",
-        valueFormatter: (p) => p.value ? `${p.value}` : "8", hide: !showAdvanced },
-      { headerName: "Str Sp", field: "stirrup_spacing", width: 80, editable: true, type: "numericColumn",
-        cellClass: "bg-blue-500/5 text-right font-mono",
-        valueFormatter: (p) => p.value ? `${p.value}` : "-", hide: !showAdvanced },
+      { headerName: "Requested bars", field: "requested_bar_count", width: 112, editable: true, cellDataType: "number",
+        type: "numericColumn", cellClass: "bg-blue-500/5 text-right font-mono", hide: !showAdvanced },
+      { headerName: "Requested bar Ø", field: "tension_bar_diameter_mm", width: 128, editable: true, cellDataType: "number",
+        type: "numericColumn", cellClass: "bg-blue-500/5 text-right font-mono", hide: !showAdvanced },
+      { headerName: "Requested link Ø", field: "stirrup_diameter_mm", width: 128, editable: true, cellDataType: "number",
+        type: "numericColumn", cellClass: "bg-blue-500/5 text-right font-mono", hide: !showAdvanced },
+      { headerName: "Requested spacing (mm)", field: "requested_stirrup_spacing_mm", width: 178, editable: true, cellDataType: "number",
+        type: "numericColumn", cellClass: "bg-blue-500/5 text-right font-mono", hide: !showAdvanced },
       {
         headerName: "Util.",
         headerTooltip: "Governing IS 456 compliance utilization",
@@ -545,7 +502,8 @@ export function BuildingEditorPage() {
               defaultColDef={defaultColDef}
               rowSelection={EDITOR_ROW_SELECTION}
               onRowClicked={handleRowClicked}
-              onCellValueChanged={handleCellValueChanged}
+              readOnlyEdit
+              onCellEditRequest={handleCellEditRequest}
               animateRows
               suppressCellFocus={false}
               domLayout="normal"

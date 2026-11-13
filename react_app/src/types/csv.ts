@@ -39,6 +39,8 @@ export interface BeamCSVRow {
   d_mm?: number;      // explicit effective depth in mm
   stirrup_diameter_mm?: number;
   tension_bar_diameter_mm?: number;
+  requested_bar_count?: number;
+  requested_stirrup_spacing_mm?: number;
   source_metadata?: Record<string, unknown>;
 
   // Envelope values for design (computed from start/mid/end)

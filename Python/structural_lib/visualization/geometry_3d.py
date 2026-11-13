@@ -52,6 +52,8 @@ from dataclasses import dataclass, field
 from numbers import Real
 from typing import TYPE_CHECKING
 
+from structural_lib.codes.is456.beam.detailing import BeamDetailingWithStirrupStations
+
 if TYPE_CHECKING:
     from structural_lib.codes.is456.beam.detailing import BeamDetailingResult
     from structural_lib.core.models import BeamGeometry
@@ -928,18 +930,28 @@ def beam_to_3d_geometry(
         )
 
     # Generate stirrups
-    stirrup_x_positions = compute_stirrup_positions(
-        span=span,
-        stirrup_spacing_start=detailing.stirrups[0].spacing,
-        stirrup_spacing_mid=detailing.stirrups[1].spacing,
-        stirrup_spacing_end=detailing.stirrups[2].spacing,
-        zone_length=detailing.stirrups[0].zone_length,
-    )
+    if isinstance(detailing, BeamDetailingWithStirrupStations):
+        stirrup_positions = [
+            (position, stirrup)
+            for stirrup, stations in zip(
+                detailing.stirrups, detailing.stirrup_stations_by_zone_mm, strict=True
+            )
+            for position in stations
+        ]
+    else:
+        stirrup_positions = [
+            (position, detailing.stirrups[0])
+            for position in compute_stirrup_positions(
+                span=span,
+                stirrup_spacing_start=detailing.stirrups[0].spacing,
+                stirrup_spacing_mid=detailing.stirrups[1].spacing,
+                stirrup_spacing_end=detailing.stirrups[2].spacing,
+                zone_length=detailing.stirrups[0].zone_length,
+            )
+        ]
 
     stirrups: list[StirrupLoop] = []
-    stirrup_info = detailing.stirrups[0]  # Use start zone info for diameter/legs
-
-    for x_pos in stirrup_x_positions:
+    for x_pos, stirrup_info in stirrup_positions:
         path = compute_stirrup_path(
             beam_width=b,
             beam_depth=D,
