@@ -9,8 +9,8 @@ tags: []
 
 # Verification Examples Pack
 
-**Version:** 0.28.0
-**Last Updated:** 2026-11-12<br>
+**Version:** 0.28.1
+**Last Updated:** 2026-11-13<br>
 **Purpose:** Build trust through traceable, verifiable benchmark calculations.
 
 ---

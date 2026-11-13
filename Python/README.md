@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.28.0 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.28.1 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,16 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.28.0
+## New in v0.28.1
+
+- Biaxial column checks reject nonfinite axial loads. Material constructors
+  and factories reject invalid strengths at the input boundary.
+- Beam input preserves explicit end stirrup spacing and case identity.
+  CLI detailing keeps the bar diameter used to derive effective depth.
+- CLI reports retain review and reinforcement evidence. Combined BBS and
+  DXF exports distinguish repeated beam labels across storeys.
+
+### Introduced in v0.28.0
 
 - Runnable reference scripts cover one simply supported one-way slab and one
   square concentric isolated footing. They use public calculation routes and

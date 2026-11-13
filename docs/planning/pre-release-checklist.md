@@ -5,11 +5,18 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-12
+**Last Updated:** 2026-11-13
 
 ## Current State
 
-Current source metadata: 0.28.0.
+Current source metadata: 0.28.1.
+
+**0.28.1 maintenance candidate.** The selected fixes cover Coding Lab A13,
+A9 and A15 plus the CLI detailing, report and combined BBS/DXF regressions.
+Qualify the exact wheel and source archive with the maintained installed
+profiles and the patch reproductions. The
+[candidate ledger entry](../getting-started/releases.md#v0281--prepared-candidate-unreleased-on-hold)
+records the scope and publication state.
 
 **0.28.0 is published and verified.** The [release status](../getting-started/release-status.md)
 and [publication receipt](../getting-started/releases.md#v0280-published-and-verified)
