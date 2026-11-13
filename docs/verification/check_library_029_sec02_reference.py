@@ -101,23 +101,32 @@ def fixture():
         for index in range(8)
     ]
     cases = {}
-    for name, request in (("rectangle", common), ("circle", circle)):
+    axial_cases = {"rectangle": common, "circle": circle}
+    for shape, request in (("rectangle", common), ("circle", circle)):
+        for suffix, axial in (("zero_axial", 0), ("tension", -100)):
+            case = deepcopy(request)
+            case["identity"]["case_id"] += f"-{suffix}"
+            case["pu_kn"] = axial
+            axial_cases[f"{shape}_{suffix}"] = case
+    for name, request in axial_cases.items():
         geometry = request["geometry"]
         fck, fy = request["materials"].values()
-        if name == "circle":
-            circle_ray = _capacity_model(450, fck, fy, 500, 8, 20, 165, 0, 96)
+        is_circular = geometry["shape"] == "circular"
+        axial = request["pu_kn"]
+        if is_circular:
+            circle_ray = _capacity_model(450, fck, fy, axial, 8, 20, 165, 0, 96)
         rays = []
         for degrees in range(0, 360, 45):
             angle = math.radians(degrees)
             mx, my = math.cos(angle), math.sin(angle)
-            if name == "circle":
-                ray = {"p_kn": 500, **circle_ray(mx, my)}
+            if is_circular:
+                ray = {"p_kn": axial, **circle_ray(mx, my)}
             else:
                 ray = rectangular_reference(
                     {
                         "geometry": {**geometry, "unsupported_length_mm": 3000},
                         "materials": request["materials"],
-                        "actions": {"pu_kn": 500, "mx_knm": mx, "my_knm": my},
+                        "actions": {"pu_kn": axial, "mx_knm": mx, "my_knm": my},
                         "reinforcement": {"bars": request["bars"]},
                     },
                     samples=96,
@@ -131,6 +140,10 @@ def fixture():
     high = deepcopy(common)
     high["pu_kn"] = 3500
     cases["above_compression_domain"] = {"request": high, "status": "HOLD"}
+    tension = deepcopy(circle)
+    tension["identity"]["case_id"] = "SEC02-C-tension-limit"
+    tension["pu_kn"] = -1000
+    cases["beyond_tension_domain"] = {"request": tension, "status": "HOLD"}
     return {
         "fixture_version": "library-029-sec02-column-interaction-reference/v1",
         "sources": [
