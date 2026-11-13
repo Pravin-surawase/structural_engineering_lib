@@ -100,7 +100,7 @@ reconciliation, or professional approval.
 Install the exact public version:
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.28.0"
+python3 -m pip install "structural-lib-is456==0.28.2"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
