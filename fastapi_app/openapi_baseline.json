@@ -20960,6 +20960,29 @@
             "title": "Components",
             "type": "array"
           },
+          "design_basis_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Design Basis Hash"
+          },
+          "design_basis_snapshot": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "object"
+            },
+            "title": "Design Basis Snapshot",
+            "type": "object"
+          },
           "formula_version": {
             "const": "gravity-load-path/v1",
             "default": "gravity-load-path/v1",
@@ -22801,6 +22824,18 @@
             },
             "title": "Components",
             "type": "array"
+          },
+          "design_basis_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Design Basis Hash"
           },
           "formula_version": {
             "const": "gravity-load-path/v1",

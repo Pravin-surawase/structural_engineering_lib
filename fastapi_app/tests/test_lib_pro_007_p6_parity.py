@@ -122,3 +122,8 @@ def test_maintained_gravity_example_has_identical_python_and_rest_identity(
         rest_bundle["calculation_book"]["workflow_result_hash"]
         == rest_workflow["workflow_result_hash"]
     )
+
+    rest_book = rest_bundle["calculation_book"]
+    assert rest_book["design_basis_hash"] == rest_workflow["design_basis_hash"]
+    assert rest_workflow["design_basis_hash"] == python_workflow["design_basis_hash"]
+    assert rest_book["design_basis_snapshot"] == request.design_basis_snapshot()

@@ -94,7 +94,9 @@ The deterministic closed-form path is:
 3. full-span wall/beam line and positioned point actions are applied once to
    their caller-assigned beam destination;
 4. each simply supported line action transfers half to each end, while a point
-   action uses its exact caller-supplied station for unequal reactions;
+   action uses its exact caller-supplied station in millimetres. Stations at
+   either end transfer the entire point load to that physical support.
+   Only interior point loads add to the beam span forces;
 5. each column adds its own self-weight once; and
 6. the column action is handed to its concentric footing destination.
 
@@ -254,6 +256,10 @@ declared one-way direction itself to have an effective aspect ratio greater
 than 2, so slab design remains `HOLD` for that hand example. A 10 m x 4 m
 variant with the complete slab basis reaches the component adapter.
 
+Columns with a sway or free-end restraint remain on `HOLD` with
+`COLUMN_RESTRAINT_OUTSIDE_BRACED_SCOPE`. The reconciled axial action remains
+available and the calculation book retains the supplied restraint basis.
+
 The footing ledger value remains a superstructure handoff. It cannot be
 relabelled as the complete service action: an accepted footing basis must add
 external footing self-weight/overburden and must provide the approved soil and
@@ -328,8 +334,13 @@ tool execution or expand engineering support.
 
 `GravityCalculationBookV1` binds the model and load snapshots, reconciled
 ledger, residual summary, applicability matrix, actions, component results,
-issues, exclusions, limitations, and workflow hash. It is a review dossier,
-not a release authorization or professional approval.
+issues, exclusions, limitations, and workflow hash. JSON and Markdown also
+retain the supplied design bases by component, including source references
+and inputs for components on `HOLD`. The separate `design_basis_hash` must
+match the workflow result. A source-reference edit changes that hash even
+when the calculation identities are identical. Rerun requests whose older
+results lack a design basis hash before building a new book from them.
+The calculation book supports qualified structural-engineering review.
 
 The executable B2 vectors are
 `Python/tests/unit/test_gravity_builder_v1.py`,

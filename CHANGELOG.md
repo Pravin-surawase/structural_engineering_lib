@@ -72,6 +72,10 @@ All notable changes to this project will be documented in this file.
 - Compare link-zone endpoints with the placement grid in millimetres
   before producing a bar bending schedule.
 
+- Hold sway and free-end column restraints in the braced gravity workflow,
+  retain component design bases in calculation books, and transfer point loads
+  at exact beam endpoints to the corresponding supports.
+
 ### Verification
 
 - Replay the new beam and column profiles and the slab coefficient cases
