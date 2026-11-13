@@ -331,10 +331,10 @@
       ],
       "registration_summary": {
         "known_references": 179,
-        "registered_known_references": 104,
-        "metadata_only_references": 75,
+        "registered_known_references": 103,
+        "metadata_only_references": 76,
         "registration_only_references": 0,
-        "registration_pct": 58.1
+        "registration_pct": 57.5
       },
       "references": [
         {
@@ -368,8 +368,8 @@
           "reference_id": "IS456:2000:23.1.2",
           "reference": "23.1.2",
           "reference_type": "clause",
-          "title": "Effective Span - Continuous",
-          "category": "analysis",
+          "title": "Effective Flange Width",
+          "category": "flexure",
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.flexure.calculate_effective_flange_width",
@@ -1567,12 +1567,10 @@
           "reference_id": "IS456:2000:36.4.2",
           "reference": "36.4.2",
           "reference_type": "clause",
-          "title": "Effective Width of Flange",
-          "category": "flexure",
-          "registration_status": "REGISTERED",
-          "functions": [
-            "structural_lib.codes.is456.beam.flexure.calculate_effective_flange_width"
-          ]
+          "title": "Material Strength Safety Factors",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
         },
         {
           "reference_id": "IS456:2000:38.1",
