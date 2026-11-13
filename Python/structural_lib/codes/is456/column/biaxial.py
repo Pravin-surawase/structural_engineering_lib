@@ -34,6 +34,7 @@ from structural_lib.core.data_types import (
 )
 from structural_lib.core.errors import CalculationError, DimensionError, MaterialError
 from structural_lib.core.numerics import clamp, safe_divide
+from structural_lib.core.validation import validate_finite_real
 
 __all__ = [
     "biaxial_bending_check",
@@ -163,7 +164,7 @@ def biaxial_bending_check(
     placed at d_prime_mm from the nearest face.
 
     Args:
-        Pu_kN: Applied factored axial load (kN). Must be >= 0.
+        Pu_kN: Applied factored axial load (kN). Must be finite and >= 0.
         Mux_kNm: Applied factored moment about x-axis (kNm). Must be >= 0.
         Muy_kNm: Applied factored moment about y-axis (kNm). Must be >= 0.
         b_mm: Column width perpendicular to x-axis bending (mm). Must be > 0.
@@ -262,6 +263,13 @@ def biaxial_bending_check(
         )
 
     # --- Loads ---
+    axial_errors = validate_finite_real(Pu_kN, "Pu_kN")
+    if axial_errors:
+        raise DimensionError(
+            axial_errors[0].message,
+            details={"field": "Pu_kN"},
+            clause_ref="Cl. 39.6",
+        )
     if Pu_kN < 0:
         raise DimensionError(
             f"Axial load Pu_kN must be >= 0 for compression member, got {Pu_kN}",

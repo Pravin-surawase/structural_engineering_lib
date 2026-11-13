@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import pytest
 
+from structural_lib import biaxial_bending_check_is456
 from structural_lib.codes.is456.column.axial import classify_column
 from structural_lib.codes.is456.column.biaxial import (
     _calculate_alpha_n,
@@ -627,6 +628,17 @@ class TestBiaxialValidation:
         """Pu_kN < 0 -> DimensionError."""
         with pytest.raises(DimensionError, match="Pu_kN"):
             biaxial_bending_check(**{**self.BASE, "Pu_kN": -100})
+
+    @pytest.mark.parametrize("axial_load", [float("nan"), float("inf"), -float("inf")])
+    def test_nonfinite_axial_load_cannot_pass_pure_axial_check(self, axial_load):
+        inputs = {**self.BASE, "Pu_kN": axial_load, "Mux_kNm": 0, "Muy_kNm": 0}
+        with pytest.raises(DimensionError, match="Pu_kN must be a finite real number"):
+            biaxial_bending_check(**inputs)
+
+        inputs["fck_nmm2"] = inputs.pop("fck")
+        inputs["fy_nmm2"] = inputs.pop("fy")
+        with pytest.raises(ValueError, match="Pu_kN must be a finite real number"):
+            biaxial_bending_check_is456(**inputs)
 
     def test_negative_mux_raises(self):
         """Mux_kNm < 0 -> DimensionError."""

@@ -606,7 +606,7 @@ def biaxial_bending_check_is456(
     placed at d_prime_mm from the nearest face.
 
     Args:
-        Pu_kN: Applied factored axial load (kN). Must be >= 0.
+        Pu_kN: Applied factored axial load (kN). Must be finite and >= 0.
         Mux_kNm: Applied factored moment about x-axis (kNm). Must be >= 0.
         Muy_kNm: Applied factored moment about y-axis (kNm). Must be >= 0.
         b_mm: Column width perpendicular to x-axis bending (mm).
@@ -676,6 +676,7 @@ def biaxial_bending_check_is456(
     """
 
     # Plausibility guards (aligned with existing api.py patterns)
+    _require_finite_column_inputs(Pu_kN=Pu_kN)
     if Pu_kN < 0:
         raise ValueError(f"Axial load Pu_kN must be >= 0, got {Pu_kN}")
     if Mux_kNm < 0:
