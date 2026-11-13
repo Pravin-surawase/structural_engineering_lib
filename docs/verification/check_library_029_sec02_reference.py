@@ -142,7 +142,8 @@ def fixture():
     cases["above_compression_domain"] = {"request": high, "status": "HOLD"}
     tension = deepcopy(circle)
     tension["identity"]["case_id"] = "SEC02-C-tension-limit"
-    tension["pu_kn"] = -1000
+    tension["pu_kn"] = -1200
+    assert -tension["pu_kn"] > 8 * math.pi * 20**2 / 4 * 500 / 1.15 / 1000
     cases["beyond_tension_domain"] = {"request": tension, "status": "HOLD"}
     return {
         "fixture_version": "library-029-sec02-column-interaction-reference/v1",
