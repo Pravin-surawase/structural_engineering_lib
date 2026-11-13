@@ -1820,6 +1820,22 @@ current capability packets and supersedes the November 7 release recommendations
 
 ## 0.29 beam, column and slab parity plan
 
+**Release scope decision — 2026-11-13.** Draft #1064 prepares 0.29.0 for the
+implemented cases in the [coverage matrix](#029-progress-and-workbench-repair--2026-11-13).
+These include the bounded beam and column checks, reports and schedules,
+the slab load-basis and coefficient replay, the gravity workflow repairs,
+and the synthetic paired ETABS intake. The real import-to-design replay
+remains on HOLD. The exact wheel and source archive require all installed
+qualification profiles. The public regression baseline is
+[0.28.2](../getting-started/releases.md#v0282-published-and-verified).
+
+**0.30.0 target.** Carry forward the remaining S0–S5 acceptance cases.
+They include broader beam detailing, service histories and bar edits,
+column splice and shear coverage, SL04–SL06, SERV03 and the SL07
+regression, real FLOW04 import-to-design and project integration,
+DUCT01–02 and PROJECT01–03. The existing case IDs, independent references
+and completion criteria still apply.
+
 **S0 decision — 2026-11-12.** Deliver common IS 456 beam, column and solid-slab
 parity work in 0.29. Draft #1064 carries the S0–S5 acceptance plan and the
 first implementation unit forward from the earlier 0.28 proposal.
@@ -1872,9 +1888,8 @@ this documentation is updated.
 Packets follow the [M0–M8 delivery guide](beam-column-programme-delivery.md).
 The earlier 0.29.x feature-release suggestion is superseded: patches are for
 bug fixes under the repository policy, and feature releases use minor versions.
-The expanded S0–S5 candidate remains the 0.29 target. If the owner selects a
-narrower candidate, identify and qualify its exact admitted cases before
-publication. A gravity beam–column closure claim requires PROJECT01 and
+The expanded S0–S5 target is 0.30.0. The 0.29.0 candidate covers the
+implemented and qualified cases in its release scope. A gravity beam–column closure claim requires PROJECT01 and
 PROJECT02 to pass. Ductile closure also requires PROJECT03. Slab commitments
 remain in S0–S5. Foundation and stair extensions have their own scope.
 
@@ -1942,7 +1957,7 @@ separate code-specific laws, factors, detailing and independent references.
 
 ### Comparator targets and claim criteria
 
-| Comparator | Evidence and target for 0.29 | Claim earned only on passing cases |
+| Comparator | Evidence and target for the expanded programme | Claim earned only on passing cases |
 |---|---|---|
 | [rcdesign 0.4.18](https://github.com/satish-annigeri/rcdesign/releases/tag/v0.4.18) | Same-code section comparisons using the [frozen reference](../verification/library-027-comparator-reference.md). Retain separate expected values where Fig. 21 integration, Annex G, displaced concrete or shear interpolation conventions differ. | Comparable IS 456 section results for the matched cases. Establish an advantage in breadth if the added physical member and solid-slab journeys pass and the comparator inventory still lacks those workflows. |
 | [concreteproperties](https://concrete-properties.readthedocs.io/en/stable/user_guide/analysis.html) and [StructuralCodes](https://fib-international.github.io/structuralcodes/quickstart/index.html) | Match bar centres, material stress–strain laws, sign convention, units and reference axes. Compare equilibrium, section properties and signed interaction for the admitted reinforced-concrete sections. | Matched-law parity for the qualified section population. General geometry, arbitrary laws and moment–curvature remain capabilities of the broader tools. |
@@ -1969,7 +1984,7 @@ engineering approval.
 | S4 — Serviceability and usable outputs | IS 456 serviceability and application owners deliver BC07/BC10/BC11 and solid slab extensions. Reuse existing report and schedule projections, and check the same bar revision. | SERV01–SERV03, SL04–SL07, FLOW02–FLOW03; qualify DUCT01/02 after their S1 freeze, before claiming ductile-frame closure. Expose source, stations and signed bar face. Unmet reference or method applicability stays HOLD. |
 | S5 — Exact expanded candidate | Qualification owner reruns the frozen plan on merged exact source, in clean wheel and sdist environments. Retain existing footings, flat-slab and all previously qualified beam/column profiles. | PROJECT01–PROJECT03 and every admitted closure case from both archive builds, source/artifact hashes, independent case results and negative controls, generated contracts, required hosted checks and exact-head candidate receipt. Replay each newly advertised profile from each archive. Run release preflight and retain the comparison matrix and scope in the candidate handoff. Stop before release operations. |
 
-Close a backlog row only against its whole definition. The 0.29 target covers
+Close a backlog row only against its whole definition. The expanded 0.30.0 target covers
 B01–B06, C01–C10, S01/S04/S05/S07/S08, V01–V04 and W01–W04 in the admitted
 member workflows. S02/S03 advance through circular and rectangular solid
 sections, including gross, transformed and cracked properties. Arbitrary
@@ -2255,15 +2270,15 @@ The [0.28.2 release](../getting-started/release-status.md) is public.
 holds the 0.29 work in draft. The preceding column candidate at `e5ffdeba`
 passed 631 focused tests and hosted PR validation. Its wheel and source archive
 each passed 593 beam and column tests across two of the 20 installed profiles.
-The expanded S5 release gate remains open.
+The remaining expanded cases are scheduled for 0.30.0.
 
-| Area | Implemented in the draft | Remaining for the expanded plan |
+| Area | Implemented in the 0.29.0 draft | Remaining for 0.30.0 |
 |---|---|---|
 | Section and column strength | COL02–COL06 cover the admitted rectangular and circular cages, slender braced rectangles and finite-catalogue selection. [SEC02](../cookbook/python/column-interaction-slice.md) adds signed interaction points at fixed compression, zero axial force and tension and gross and uncracked transformed properties for actual rectangular and circular bars. [SEC03](../cookbook/python/column-service-section.md) resolves signed elastic service stresses, strains and active transformed properties for the COL03 rectangle and the SEC02 rectangle and circle, including reflected, full-compression and tension controls. | Broader combinations and analysis integration defined under FLOW04. [ETABS source review](../verification/library-029-flow04-etabs-source-review.md) records the remaining matched-export evidence. |
 | Column member detailing | COL07 short six- and eight-bar rectangles with shear, tie zones, straight anchorage and compression lap checks. Six-bar tie edits replay the drawing and BBS with a fresh cut register. The continuous COL03 mixed member checks each tie zone, principal-plane shear, straight development and the actual cross-tie cuts. Physical side-midpoint contact splices for the admitted six- and eight-bar layouts and the eight-bar C1/C2 corner splice have checked reports, elevations and BBS. The original numeric-only lap still returns HOLD. [Circular detailing](../cookbook/python/column-circular-member-detailing.md) checks member-wide tied and spiral placement, continuous bar development and quantities for zero supplied shear. The slender profile binds matching second-order rows and principal-plane shear to full-length tied reinforcement and schedules continuous bars. | Qualify other restraint and splice geometries, including mixed, circular and slender cages, and circular or two-plane member shear. |
 | Beams | BEAM01/FLOW01 checks two rectangular spans. [BEAM02](../cookbook/python/cantilever-beam-check.md) checks cantilever stations and fixed-face anchorage. [BEAM03/04](../cookbook/python/signed-beam-section-check.md) checks signed rectangular, T and L sections with actual bar layers. The reports retain the checked actions and physical inputs. [SERV01](../cookbook/python/beam-instantaneous-service.md) adds instantaneous deflection and flexural crack checks for the bounded two-span and simply supported multilayer cases. [SERV02](../cookbook/python/beam-finite-service-history.md) adds prescribed 28/90/365-day UDL histories for a simply supported multilayer beam and an equal two-span member with mirrored steel. [FLOW02](../cookbook/python/beam-section-catalogue.md) enumerates a two-layer rectangular beam section catalogue. [BEAM05](../cookbook/python/beam-continuous-detailing.md) checks continuous paths, link shape and BBS for the two-span rectangle, plus one first-span bottom cutoff with reduced-section and development evidence or a separated bottom lap with actual partner paths. The prismatic two-span web-cage profile adds continuous multilayer rectangular and signed T/L detailing, with a checked cross-section, layer-specific bar marks and a result-bound BBS. FLOW03 rechecks one edited straight-bar diameter and binds artifacts to the current request. [BEAM07](../cookbook/python/physical-torsion-member.md#check-the-equilibrium-torsion-action-case) combines signed station resistance with verified support transfer for a bounded rectangular edge beam. | BEAM05 remaining cutoff and lap geometries, variable sections and link zones, flange slab steel and member-wide drawings and BBS beyond the admitted prismatic two-span cages. Retain BEAM06 and qualify long-term serviceability outside the admitted SERV02 history and FLOW03 edits to the two-layer catalogue member. |
 | Slabs | SL02/03 HTTP responses preserve the load-basis status. The draft adds installed B02/B04 replay for supplied and built-in coefficients. | SL04–06 support topology, continuous-load boundary and supplied action sets, SERV03 direct serviceability, and the SL07 flat-slab regression. |
-| Projects and release | S0–S5 acceptance cases and the M0–M8 delivery sequence are recorded. [FLOW04 paired intake](../cookbook/python/etabs-paired-forces.md) reconciles signed ETABS 22.7.0 force rows and declared combination inventories for unmeshed beams and columns. The synthetic replay covers units, row identity, axes, stale captures and incomplete inventories. | Qualify FLOW04 against a matched real export and carry transformed rows into design checks. DUCT01/02 joint checks, PROJECT01–03 and all applicable installed wheel and source-archive profiles remain open. The comparator and parity claims follow the evidence from those cases. |
+| Projects and release | S0–S5 acceptance cases and the M0–M8 delivery sequence are recorded. [FLOW04 paired intake](../cookbook/python/etabs-paired-forces.md) reconciles signed ETABS 22.7.0 force rows and declared combination inventories for unmeshed beams and columns. The synthetic replay covers units, row identity, axes, stale captures and incomplete inventories. | Qualify FLOW04 against a matched real export and carry transformed rows into design checks. Complete DUCT01/02 joint checks and PROJECT01–03, then qualify the expanded 0.30.0 candidate. The comparator and parity claims follow the evidence from those cases. |
 
 #### Imported beam and CLI output repairs
 

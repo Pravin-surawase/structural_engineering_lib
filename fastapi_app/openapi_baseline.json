@@ -7646,14 +7646,38 @@
             "type": "string"
           },
           "interaction_ratio": {
-            "description": "Bresler interaction ratio (Mux/Mux1)^an + (Muy/Muy1)^an. < 1.0 means safe.",
-            "title": "Interaction Ratio",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Bresler interaction ratio (Mux/Mux1)^an + (Muy/Muy1)^an. Null when insufficient capacity prevents evaluation.",
+            "title": "Interaction Ratio"
           },
           "is_safe": {
             "description": "True if interaction_ratio <= 1.0",
             "title": "Is Safe",
             "type": "boolean"
+          },
+          "unavailable_values": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unavailable Values"
           },
           "warnings": {
             "description": "Code compliance warnings",
@@ -11141,9 +11165,16 @@
             "title": "E Min Mm"
           },
           "eccentricity_mm": {
-            "description": "Actual eccentricity e = M/P (mm)",
-            "title": "Eccentricity Mm",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual eccentricity e = M/P (mm), or null for pure bending.",
+            "title": "Eccentricity Mm"
           },
           "method": {
             "anyOf": [
@@ -11161,6 +11192,23 @@
             "description": "True if (Pu, Mu) is within the P-M interaction capacity envelope",
             "title": "Ok",
             "type": "boolean"
+          },
+          "unavailable_values": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unavailable Values"
           },
           "utilization": {
             "description": "Radial utilization ratio (applied / capacity). < 1.0 means safe.",
@@ -24237,8 +24285,15 @@
             "type": "string"
           },
           "interaction_ratio": {
-            "title": "Interaction Ratio",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interaction Ratio"
           },
           "is_safe": {
             "title": "Is Safe",
@@ -24300,6 +24355,23 @@
             ],
             "description": "Versioned per-plane reduction convention",
             "title": "Reduction Method"
+          },
+          "unavailable_values": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unavailable Values"
           },
           "warnings": {
             "default": [],

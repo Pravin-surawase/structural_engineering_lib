@@ -299,6 +299,8 @@ async def design_column_uniaxial(
             l_unsupported_mm=request.l_unsupported_mm,
         )
 
+        projection = result.to_dict()
+        eccentricity_mm = projection["eccentricity_mm"]
         return success_response(
             ColumnUniaxialResponse(
                 ok=result["is_safe"],
@@ -310,7 +312,10 @@ async def design_column_uniaxial(
                     if hasattr(result["classification"], "name")
                     else str(result["classification"])
                 ),
-                eccentricity_mm=round(sanitize_float(result["eccentricity_mm"]), 2),
+                eccentricity_mm=(
+                    round(eccentricity_mm, 2) if eccentricity_mm is not None else None
+                ),
+                unavailable_values=projection.get("unavailable_values"),
                 e_min_mm=(
                     round(sanitize_float(result["e_min_mm"]), 2)
                     if result.get("e_min_mm") is not None
@@ -440,6 +445,8 @@ async def biaxial_check(
             l_unsupported_mm=request.l_unsupported_mm,
         )
 
+        projection = result.to_dict()
+        interaction_ratio = projection["interaction_ratio"]
         return success_response(
             BiaxialCheckResponse(
                 Pu_kN=result["Pu_kN"],
@@ -449,7 +456,12 @@ async def biaxial_check(
                 Muy1_kNm=round(sanitize_float(result["Muy1_kNm"]), 2),
                 Puz_kN=round(sanitize_float(result["Puz_kN"]), 2),
                 alpha_n=round(sanitize_float(result["alpha_n"]), 4),
-                interaction_ratio=round(sanitize_float(result["interaction_ratio"]), 4),
+                interaction_ratio=(
+                    round(interaction_ratio, 4)
+                    if interaction_ratio is not None
+                    else None
+                ),
+                unavailable_values=projection.get("unavailable_values"),
                 is_safe=result["is_safe"],
                 classification=result["classification"],
                 clause_ref=result.get("clause_ref", "Cl. 39.6"),
@@ -551,10 +563,10 @@ async def design_long_column(request: LongColumnRequest):
             braced=request.braced,
             l_unsupported_mm=request.l_unsupported_mm,
         )
-        # Convert ColumnClassification enum to string
-        result["classification_x"] = str(result.get("classification_x", ""))
-        result["classification_y"] = str(result.get("classification_y", ""))
-        return success_response(LongColumnResponse(**result))
+        projection = result.to_dict()
+        projection["classification_x"] = str(result.classification_x)
+        projection["classification_y"] = str(result.classification_y)
+        return success_response(LongColumnResponse(**projection))
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for long column design")

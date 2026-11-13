@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.29.0] — Prepared candidate (unreleased; on hold)
+## [0.29.0] — Bounded candidate (unreleased)
+
+See the [case coverage and 0.30.0 follow-ons](docs/planning/library-usability-improvement.md#029-progress-and-workbench-repair--2026-11-13).
 
 ### Added
 
@@ -75,6 +77,12 @@ All notable changes to this project will be documented in this file.
 - Hold sway and free-end column restraints in the braced gravity workflow,
   retain component design bases in calculation books, and transfer point loads
   at exact beam endpoints to the corresponding supports.
+
+- Reject nonfinite inputs at the direct rectangular beam flexure and Excel
+  helper boundaries before computing steel demand.
+- Export column pure bending and overload results with null for undefined
+  eccentricity or unavailable interaction ratio, and retain the reason and
+  design outcome. Direct axial JSON uses the numeric classification value.
 
 ### Verification
 

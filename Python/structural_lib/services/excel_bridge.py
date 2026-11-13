@@ -22,6 +22,8 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any
 
+from structural_lib.core.validation import require_finite_real
+
 try:
     xw: Any = import_module("xlwings")
 except ImportError:
@@ -102,6 +104,7 @@ def IS456_AstRequired(
         =IS456_AstRequired(300, 450, 300, 25, 500)  -> Returns "Over-Reinforced"
     """
     try:
+        require_finite_real(mu, "mu")
         # Check if over-reinforced
         mu_lim = flexure.calculate_mu_lim(b, d, fck, fy)
 

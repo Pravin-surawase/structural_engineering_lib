@@ -359,10 +359,15 @@ def design_long_column(
     # ===========================================================
     # 7. Capacity check via biaxial or uniaxial interaction
     # ===========================================================
+    interaction_ratio_unavailable_reason = None
     if Muy_abs < _TOL and Mux_abs < _TOL:
         # Pure axial case — no moment, trivially safe if Pu < Puz
         interaction_ratio = Pu_kN / Puz_kN if Puz_kN > _TOL else float("inf")
         is_safe = interaction_ratio <= 1.0
+        if interaction_ratio == math.inf:
+            interaction_ratio_unavailable_reason = (
+                "The section has no usable axial capacity."
+            )
         governing_check = "axial"
     elif Muy_abs < _TOL:
         # Uniaxial about x only
@@ -414,6 +419,9 @@ def design_long_column(
             _slender_moments_applied=True,
         )
         interaction_ratio = biaxial_result.interaction_ratio
+        interaction_ratio_unavailable_reason = (
+            biaxial_result._interaction_ratio_unavailable_reason
+        )
         is_safe = biaxial_result.is_safe
         governing_check = "biaxial"
         warnings.extend(biaxial_result.warnings)
@@ -439,6 +447,7 @@ def design_long_column(
         Max_reduced_kNm=round(Max_reduced_kNm, 2),
         May_reduced_kNm=round(May_reduced_kNm, 2),
         interaction_ratio=round(interaction_ratio, 4),
+        _interaction_ratio_unavailable_reason=interaction_ratio_unavailable_reason,
         governing_check=governing_check,
         Puz_kN=round(Puz_kN, 2),
         Pb_kN=round(Pb_kN, 2),

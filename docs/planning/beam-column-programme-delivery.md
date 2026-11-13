@@ -16,7 +16,7 @@ and reproduce checked results and physical outputs. This is a planning update,
 not implementation, release authorization or a claim of completed engineering.
 
 - **What and why:** this concise delivery guide.
-- **Exact engineering scope and evidence:** [0.29 S0–S5 plan](library-usability-improvement.md#029-beam-column-and-slab-parity-plan), including BEAM, COL, SERV, SL, FLOW, DUCT and PROJECT case IDs.
+- **Exact engineering scope and evidence:** [S0–S5 parity plan](library-usability-improvement.md#029-beam-column-and-slab-parity-plan), including BEAM, COL, SERV, SL, FLOW, DUCT and PROJECT case IDs.
 - **Progress and next work:** [0.29 progress and output repairs](library-usability-improvement.md#029-progress-and-workbench-repair--2026-11-13).
 - **Caller/API rules:** [beam facade](../reference/beam-facade.md), [API levels](../reference/api-levels.md), [API stability](../reference/api-stability.md), and the existing LIB-PRO-015 quality obligations in the parent plan.
 - **Available now:** the installed package's capability contract and its exact release documentation, not this future plan.
@@ -30,11 +30,10 @@ historical sections of the parent plan do not override this current programme.
 Use stable **M0–M8 planning IDs**. The repository's
 [versioning policy](../guidelines/api-evolution-standard.md#2-semantic-versioning-semver)
 assigns bug fixes to patches and new features to minor releases, including 0.x.
-The expanded S0–S5 plan remains the 0.29 target. Milestones are internal delivery
-units and may share one candidate. Assign versions to any later feature
-candidates when their scope is frozen. A narrower 0.29 candidate requires an
-explicit scope decision and qualification of that exact candidate. Release
-authorization is separate.
+The owner selected a bounded 0.29.0 candidate for the implemented cases in
+draft #1064. The remaining S0–S5 feature and project work moves to 0.30.0.
+M0–M8 still identify the delivery units. The 0.29.0 wheel and source archive
+each require qualification of their admitted workflows and prior regressions.
 
 | ID | Deliverable | Dependency and closure rule |
 |---|---|---|

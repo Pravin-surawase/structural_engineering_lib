@@ -193,3 +193,38 @@ def test_design_flanged_beam_bisection_breaks_on_exact_target():
 
     # The supported depth must satisfy demand, irrespective of root algorithm.
     assert res.xu == pytest.approx(mid)
+
+
+@pytest.mark.parametrize("bad_value", [float("nan"), float("inf"), -float("inf")])
+def test_rectangular_flexure_rejects_nonfinite_input_before_calculation(bad_value):
+    from structural_lib.services.excel_bridge import IS456_AstRequired
+
+    section = {"b": 300, "d": 450, "fck": 25, "fy": 500}
+    for name in section:
+        with pytest.raises(ValueError, match=rf"{name} must be a finite real number"):
+            flexure.calculate_mu_lim(**{**section, name: bad_value})
+    with pytest.raises(ValueError, match="mu_knm must be a finite real number"):
+        flexure.calculate_ast_required(**section, mu_knm=bad_value)
+    assert IS456_AstRequired(300, 450, bad_value, 25, 500).startswith("Error:")
+
+    for field in ("mu_knm", "d_dash"):
+        inputs = {**section, "d_total": 500, "mu_knm": 300, "d_dash": 50}
+        result = flexure.design_doubly_reinforced(**{**inputs, field: bad_value})
+        assert result.is_safe is False
+        assert result.Ast_required == result.Asc_required == 0.0
+        assert [(issue.code, issue.field) for issue in result.errors] == [
+            ("E_INPUT_017", field)
+        ]
+
+
+def test_finite_rectangular_flexure_keeps_signed_moment_symmetry():
+    section = {"b": 300, "d": 450, "fck": 25, "fy": 500}
+    for moment in (-120, 120):
+        assert flexure.calculate_ast_required(
+            **section, mu_knm=moment
+        ) == pytest.approx(683.2176592509271)
+    for moment in (-300, 300):
+        result = flexure.design_doubly_reinforced(
+            **section, d_dash=50, d_total=500, mu_knm=moment
+        )
+        assert result.is_safe and result.Ast_required > 0 and result.Asc_required > 0

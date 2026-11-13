@@ -37,6 +37,8 @@ TESTS = tuple(
         "test_column_candidate_search",
         "test_column_interaction_slice",
         "test_column_service_section",
+        "test_column_result_transport",
+        "test_flexure_edges_additional",
         "test_column_member_detailing",
         "test_column_contact_splice",
         "test_etabs_paired_forces",

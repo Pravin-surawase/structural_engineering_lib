@@ -33,6 +33,7 @@ from structural_lib.core.result_contract import (
 )
 from structural_lib.core.version import get_runtime_version
 from structural_lib.services.contracts.common import StrictPublicModel
+from structural_lib.services.serialization import _column_transport_projection
 
 __all__ = [
     "CanonicalFamilyResultV1",
@@ -67,6 +68,9 @@ def _jsonable(value: Any) -> Any:
         return value.value
     if hasattr(value, "model_dump"):
         return _jsonable(value.model_dump(mode="python"))
+    column_projection = _column_transport_projection(value)
+    if column_projection is not None:
+        return _jsonable(column_projection)
     if is_dataclass(value) and not isinstance(value, type):
         return _jsonable(asdict(value))
     if hasattr(value, "to_dict"):

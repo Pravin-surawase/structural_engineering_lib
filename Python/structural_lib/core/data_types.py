@@ -1267,6 +1267,29 @@ class ColumnReinforcementLayout:
         }
 
 
+def _project_column_value(
+    payload: dict[str, Any],
+    field_name: str,
+    *,
+    code: str,
+    reason: str | None,
+) -> dict[str, Any]:
+    value = payload[field_name]
+    if math.isfinite(value):
+        return payload
+    if value == math.inf and reason is not None:
+        payload[field_name] = None
+        payload["unavailable_values"] = {field_name: {"code": code, "reason": reason}}
+        return payload
+
+    from .errors import CalculationError
+
+    raise CalculationError(
+        "Column result contains an unexplained non-finite value.",
+        details={"field": field_name, "value": str(value)},
+    )
+
+
 @dataclass(frozen=True)
 class ColumnAxialResult(DictCompatMixin):
     """Result of short column axial capacity check per IS 456 Cl 39.3.
@@ -1299,7 +1322,7 @@ class ColumnAxialResult(DictCompatMixin):
 
     def to_dict(self) -> dict[str, Any]:
         """Convert result to a plain dictionary for serialization."""
-        return asdict(self)
+        return {**asdict(self), "classification": self.classification.value}
 
 
 @dataclass(frozen=True)
@@ -1338,7 +1361,7 @@ class ColumnUniaxialResult(DictCompatMixin):
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
-        return {
+        payload = {
             "Pu_kN": self.Pu_kN,
             "Mu_kNm": self.Mu_kNm,
             "Pu_cap_kN": self.Pu_cap_kN,
@@ -1357,6 +1380,17 @@ class ColumnUniaxialResult(DictCompatMixin):
             "warnings": list(self.warnings),
             "method": self.method,
         }
+
+        return _project_column_value(
+            payload,
+            "eccentricity_mm",
+            code="PURE_BENDING_ECCENTRICITY_UNDEFINED",
+            reason=(
+                "Moment divided by axial load is undefined at the pure-bending limit."
+                if abs(self.Pu_kN) < 1e-6
+                else None
+            ),
+        )
 
     def summary(self) -> str:
         """Return one-line human-readable summary."""
@@ -1559,10 +1593,13 @@ class ColumnBiaxialResult(DictCompatMixin):
     classification: ColumnClassification
     clause_ref: str = "Cl. 39.6"
     warnings: tuple[str, ...] = ()
+    _interaction_ratio_unavailable_reason: str | None = field(
+        default=None, kw_only=True, repr=False, compare=False
+    )
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
-        return {
+        payload = {
             "Pu_kN": self.Pu_kN,
             "Mux_kNm": self.Mux_kNm,
             "Muy_kNm": self.Muy_kNm,
@@ -1580,6 +1617,13 @@ class ColumnBiaxialResult(DictCompatMixin):
             "clause_ref": self.clause_ref,
             "warnings": list(self.warnings),
         }
+
+        return _project_column_value(
+            payload,
+            "interaction_ratio",
+            code="UTILIZATION_NOT_EVALUATED",
+            reason=self._interaction_ratio_unavailable_reason,
+        )
 
     def summary(self) -> str:
         """Return one-line human-readable summary."""
@@ -1754,11 +1798,16 @@ class LongColumnResult(DictCompatMixin):
     Pb_x_kN: float | None = None
     Pb_y_kN: float | None = None
     reduction_method: str | None = None
+    _interaction_ratio_unavailable_reason: str | None = field(
+        default=None, kw_only=True, repr=False, compare=False
+    )
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
         result: dict = {}
         for f in fields(self):
+            if f.name == "_interaction_ratio_unavailable_reason":
+                continue
             val = getattr(self, f.name)
             if isinstance(val, ColumnClassification):
                 result[f.name] = val.name
@@ -1766,7 +1815,12 @@ class LongColumnResult(DictCompatMixin):
                 result[f.name] = list(val)
             else:
                 result[f.name] = val
-        return result
+        return _project_column_value(
+            result,
+            "interaction_ratio",
+            code="UTILIZATION_NOT_EVALUATED",
+            reason=self._interaction_ratio_unavailable_reason,
+        )
 
     def summary(self) -> str:
         """Return one-line human-readable summary."""

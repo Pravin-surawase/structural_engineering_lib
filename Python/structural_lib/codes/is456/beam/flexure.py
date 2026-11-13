@@ -47,8 +47,10 @@ from structural_lib.core.errors import (
     MaterialError,
 )
 from structural_lib.core.validation import (
+    require_finite_real,
     validate_dimensions,
     validate_finite_real,
+    validate_finite_reals,
     validate_materials,
 )
 
@@ -91,6 +93,7 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
         Limiting moment capacity (kN·m).
 
     Raises:
+        ValueError: If any input is not a finite real number.
         DimensionError: If b or d <= 0
         MaterialError: If fck or fy <= 0
 
@@ -105,6 +108,9 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
         - Uses short-term xu_max/d ratios (Table J); does not apply
           creep-adjusted neutral axis depth.
     """
+    for field_name, value in (("b", b), ("d", d), ("fck", fck), ("fy", fy)):
+        require_finite_real(value, field_name)
+
     if b <= 0:
         raise DimensionError(
             dimension_too_small("beam width b", b, 0, "Cl. 38.1"),
@@ -292,6 +298,7 @@ def calculate_ast_required(
         Required steel area (mm²). Returns -1.0 if Mu exceeds Mu_lim.
 
     Raises:
+        ValueError: If any input is not a finite real number.
         DimensionError: If b or d <= 0
         MaterialError: If fck or fy <= 0
 
@@ -306,35 +313,7 @@ def calculate_ast_required(
           exceeds singly reinforced capacity—use ``design_doubly_reinforced``
           for over-reinforced cases.
     """
-    if b <= 0:
-        raise DimensionError(
-            dimension_too_small("beam width b", b, 0, "Cl. 38.1"),
-            details={"b": b, "minimum": 0},
-            clause_ref="Cl. 38.1",
-        )
-    if d <= 0:
-        raise DimensionError(
-            dimension_too_small("effective depth d", d, 0, "Cl. 38.1"),
-            details={"d": d, "minimum": 0},
-            clause_ref="Cl. 38.1",
-        )
-    if fck <= 0:
-        raise MaterialError(
-            material_property_out_of_range(
-                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
-            ),
-            details={"fck": fck, "minimum": 0, "maximum": 100},
-            clause_ref="Cl. 6.2",
-        )
-    if fy <= 0:
-        raise MaterialError(
-            material_property_out_of_range(
-                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
-            ),
-            details={"fy": fy, "minimum": 0, "maximum": 600},
-            clause_ref="Cl. 6.2",
-        )
-
+    require_finite_real(mu_knm, "mu_knm")
     mu_lim_knm = calculate_mu_lim(b, d, fck, fy)
 
     if abs(mu_knm) > mu_lim_knm:
@@ -527,6 +506,8 @@ def design_doubly_reinforced(
     """
     # Input validation using validation utilities
     input_errors = validate_dimensions(b, d, d_total)
+
+    input_errors.extend(validate_finite_reals(mu_knm=mu_knm, d_dash=d_dash))
 
     if input_errors:
         return FlexureResult(
