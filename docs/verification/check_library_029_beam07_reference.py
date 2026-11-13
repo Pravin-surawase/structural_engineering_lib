@@ -7,6 +7,8 @@ import json
 import math
 from pathlib import Path
 
+from check_library_029_beam_sections_reference import section
+
 ROOT = Path(__file__).resolve().parent
 FIXTURE = ROOT / "library-029-beam07-equilibrium-torsion.json"
 
@@ -19,6 +21,29 @@ def fixture():
     pt = 100 * bar_area / (300 * d)
     tc = 0.49 + (pt - 0.5) / 0.25 * (0.57 - 0.49)
     fy = 0.87 * 415
+    # Independent section equilibrium for the matching rectangular cage.
+    section_reference = {
+        "width_mm": 300,
+        "depth_mm": 400,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "link_diameter_mm": 8,
+        "link_fy_nmm2": 415,
+        "link_spacing_mm": 100,
+        "bars": [
+            {"bar_id": name, "face": face, "diameter_mm": 20, "y_from_top_mm": y}
+            for name, face, y in (
+                ("TL", "top", 50),
+                ("TR", "top", 50),
+                ("BL", "bottom", 350),
+                ("BR", "bottom", 350),
+            )
+        ],
+    }
+    capacity = section(section_reference, "bottom", None, [(0.5, 0.49), (0.75, 0.57)])[
+        "capacity_knm"
+    ]
+    assert 22 * span**2 / 8 / 1e6 < capacity < 28 * span**2 / 8 / 1e6
     cases = {}
     for name, sign, spacing, status in (
         ("equilibrium", 1, 100, "PASS"),
@@ -28,7 +53,7 @@ def fixture():
         ("inadequate_longitudinal", 1, 100, "FAIL"),
     ):
         rows = []
-        w = 22 if name == "inadequate_longitudinal" else load
+        w = 28 if name == "inadequate_longitudinal" else load
         for station in d2["expected"]["action_rows"]:
             x = station["station_mm"]
             moment = w * x * (span - x) / 2e6
@@ -64,6 +89,7 @@ def fixture():
             "eccentricity_mm": sign * eccentricity,
             "link_spacing_mm": spacing,
             "rows": rows,
+            "flexural_capacity_knm": capacity,
             "support_reaction_kn": w * span / 2000,
             "support_external_torque_knm": -sign * w * eccentricity * span / 2e6,
         }
