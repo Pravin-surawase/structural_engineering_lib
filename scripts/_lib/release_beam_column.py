@@ -39,6 +39,7 @@ TESTS = tuple(
         "test_column_service_section",
         "test_column_member_detailing",
         "test_column_contact_splice",
+        "test_etabs_paired_forces",
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
@@ -78,6 +79,7 @@ EXAMPLES = tuple(
         "column_interaction_slice",
         "column_service_section",
         "column_member_detailing",
+        "etabs_paired_forces",
         "torsion_station_reference",
         "physical_torsion_member",
         "t_beam_member",
@@ -104,6 +106,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_beam05_reference.py",
     "docs/verification/check_library_029_beam07_reference.py",
     "docs/verification/check_library_029_flow02_reference.py",
+    "docs/verification/check_library_029_flow04_reference.py",
     "docs/verification/check_library_029_sec02_reference.py",
     "docs/verification/check_library_029_sec03_reference.py",
     "docs/verification/check_library_029_serv01_reference.py",
@@ -126,6 +129,7 @@ BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.j
 BEAM05_REFERENCE = "docs/verification/library-029-beam05-member-detailing.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
+FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
 SERV01_REFERENCE = "docs/verification/library-029-serv01-beam-service.json"
@@ -156,6 +160,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_REFERENCE,
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
+                repo / FLOW04_REFERENCE,
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
                 repo / SERV01_REFERENCE,
@@ -550,6 +555,22 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         if status == "PASS":
             assert input_hash in (directory / "member.svg").read_text()
             assert input_hash in (directory / "bbs.csv").read_text()
+    for option, expected in (
+        ((), "COMPLETE_FOR_DECLARED_ROWS"),
+        (("--alternate-units",), "COMPLETE_FOR_DECLARED_ROWS"),
+        (("--missing-combination",), "HOLD"),
+    ):
+        suffix = option[0].removeprefix("--") if option else "native-units"
+        stdout = run(
+            f"etabs-paired-forces-{suffix}",
+            "Python/examples/etabs_paired_forces.py",
+            "--reference",
+            str(clone / FLOW04_REFERENCE),
+            *option,
+        )
+        result = json.loads(stdout)
+        assert result["engineering"] == "not_evaluated"
+        assert result["outputs"]["status"] == expected
     directory = output / "beam-section-catalogue"
     stdout = run(
         "beam-section-catalogue",

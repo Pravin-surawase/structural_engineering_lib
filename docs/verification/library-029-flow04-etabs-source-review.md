@@ -14,6 +14,10 @@ contains genuine ETABS results for both element types. The reviewed force
 tables cannot yet be tied to the same model revision with the required
 concurrent case and station definitions.
 
+The [paired intake example](../cookbook/python/etabs-paired-forces.md) replays
+synthetic beam and column rows in the reviewed native table layouts. Its
+complete intake status describes the declared teaching inventory.
+
 ## Public archive
 
 [Balcı, Seismic Performance of Reinforced Concrete Frame Systems for Airfield Structures, V03](https://zenodo.org/records/20662171)
