@@ -17,13 +17,19 @@ from structural_lib.services.column_tied_member import rectangular_section_marku
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
     PositionedColumnMemberDetailingInputV1,
+    SlenderColumnMemberDetailingInputV1,
 )
 
 
 def _metadata(result: Result) -> tuple[DetailingRequest, str]:
     request = result.request
     if result.workflow_id != WORKFLOW or not isinstance(
-        request, (ColumnMemberDetailingInputV1, PositionedColumnMemberDetailingInputV1)
+        request,
+        (
+            ColumnMemberDetailingInputV1,
+            PositionedColumnMemberDetailingInputV1,
+            SlenderColumnMemberDetailingInputV1,
+        ),
     ):
         raise TypeError("A COL07 member detailing result is required")
     identity = result.envelope.result_identity

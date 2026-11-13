@@ -33,6 +33,9 @@ from structural_lib.services.column_positioned_member import (
     check_positioned_rectangular_member,
     evaluate_positioned_rectangular_cage,
 )
+from structural_lib.services.column_slender_member import (
+    check_slender_rectangular_member,
+)
 from structural_lib.services.column_tied_member import (
     check_tied_rectangular_member,
     evaluate_tied_rectangular_cage,
@@ -48,11 +51,19 @@ from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
     ColumnTieZoneV1,
     PositionedColumnMemberDetailingInputV1,
+    SlenderColumnMemberDetailingInputV1,
+)
+from structural_lib.services.contracts.column_slender import (
+    SlenderRectangularColumnInputV1,
 )
 
 WORKFLOW = "is456.column.member-detailing/v1"
 Result = CanonicalFamilyResultV1[dict[str, Any]]
-DetailingRequest = ColumnMemberDetailingInputV1 | PositionedColumnMemberDetailingInputV1
+DetailingRequest = (
+    ColumnMemberDetailingInputV1
+    | PositionedColumnMemberDetailingInputV1
+    | SlenderColumnMemberDetailingInputV1
+)
 PositionedBars = tuple[PositionedColumnBar, ...]
 _Record = Callable[..., None]
 _PASS = EngineeringStatus.PASS
@@ -487,6 +498,78 @@ def _check_actions(
     return rows
 
 
+def _slender_detailing_actions(
+    request: SlenderColumnMemberDetailingInputV1,
+    record: _Record,
+) -> tuple[list[dict[str, Any]], dict[str, Any] | None]:
+    second_order = request.second_order
+    required = {
+        (
+            second_order.combination_id,
+            row.station_mm,
+            second_order.pu_kn,
+            row.mx_knm,
+            row.my_knm,
+        )
+        for row in second_order.stations
+    }
+    supplied = {
+        (row.combination_id, row.check_station_mm, row.pu_kn, row.mx_knm, row.my_knm)
+        for row in request.actions
+    }
+    if supplied != required or any(row.vx_kn or row.vy_kn for row in request.actions):
+        record(
+            "COLUMN.SLENDER_DETAIL_ACTIONS_HELD",
+            _HOLD,
+            "actions",
+            "The physical check rows must match the supplied second-order rows and have zero supplied shear.",
+            "Declared COL04 action basis",
+        )
+        return [], None
+
+    result = check_slender_rectangular_member(
+        SlenderRectangularColumnInputV1(
+            identity=request.identity,
+            geometry=request.restraint,
+            materials=request.materials,
+            reinforcement=request.reinforcement,
+            actions=second_order,
+            analysis_revision=request.basis.analysis_revision,
+            current_analysis_revision=request.basis.current_analysis_revision,
+        )
+    )
+    for issue in result.issues:
+        record(
+            issue.code,
+            result.engineering_status,
+            issue.path,
+            issue.message,
+            "Checked COL04 member",
+        )
+    section = result.calculation["strength"]
+    section_identity = result.envelope.result_identity
+    assert section_identity is not None
+    ids = {row.station_mm: row.station_id for row in second_order.stations}
+    return [
+        {
+            "combination_id": action.combination_id,
+            "station_mm": action.check_station_mm,
+            "action": action.model_dump(),
+            "section": {
+                "status": result.engineering_status.value,
+                "input_hash": section_identity.input_hash,
+                "utilization": (
+                    section["evaluated"][ids[action.check_station_mm]]["ratio"]
+                    if section
+                    else None
+                ),
+            },
+            "shear": None,
+        }
+        for action in request.actions
+    ], result.to_dict()
+
+
 def _bar_schedule(
     request: DetailingRequest,
     bars: list[dict[str, Any]],
@@ -585,7 +668,10 @@ def _bar_schedule(
 
 def check_column_member_detailing(request: DetailingRequest) -> Result:
     """Combine the supplied station and physical detailing checks."""
-    if not isinstance(request, PositionedColumnMemberDetailingInputV1):
+    if not isinstance(
+        request,
+        (PositionedColumnMemberDetailingInputV1, SlenderColumnMemberDetailingInputV1),
+    ):
         require_request_type(request, ColumnMemberDetailingInputV1)
     checks: list[dict[str, Any]] = []
     issues = []
@@ -762,7 +848,10 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             required_by_diameter_mm={dia: value[0] for dia, value in bond.items()},
         )
     splice = None
-    if isinstance(request, PositionedColumnMemberDetailingInputV1):
+    if isinstance(
+        request,
+        (PositionedColumnMemberDetailingInputV1, SlenderColumnMemberDetailingInputV1),
+    ):
         laps = [
             {
                 **lap.model_dump(),
@@ -776,7 +865,7 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
                 "COLUMN.POSITIONED_SPLICE_HELD",
                 _HOLD,
                 "laps",
-                "The positioned mixed-cage schedule requires continuous bars; supply a qualified physical splice profile.",
+                "This member schedule requires continuous bars. Supply a qualified physical splice profile.",
                 _BOND,
             )
     else:
@@ -789,7 +878,11 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
         if splice is not None:
             transverse = splice.transverse
             laps[0]["required_mm"] = splice.required_lap_mm
-    actions = _check_actions(request, zones, grid, valid_zones, record, splice)
+    slender = None
+    if isinstance(request, SlenderColumnMemberDetailingInputV1):
+        actions, slender = _slender_detailing_actions(request, record)
+    else:
+        actions = _check_actions(request, zones, grid, valid_zones, record, splice)
     if grid and cage is not None:
         schedule = _bar_schedule(request, bars, transverse, record, splice)
     else:
@@ -812,6 +905,11 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             "checks": checks,
             "actions": actions,
             "governing_shear": governing,
+            **(
+                {"slender_member": slender}
+                if isinstance(request, SlenderColumnMemberDetailingInputV1)
+                else {}
+            ),
             "end_required_mm": end_required,
             "lap_required_mm": lap_required,
             "laps": laps,
@@ -826,7 +924,8 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
         workflow_id=WORKFLOW,
         engineering_status=status,
         limitations=(
-            "Checks only the supplied stations and combinations for ordinary short tied six- and eight-bar rectangles and continuous positioned mixed cages.",
+            "Checks supplied stations and combinations on the declared tied rectangular member.",
+            "The slender detailing route requires supplied second-order actions and zero supplied member shear.",
             "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
             "Straight end projections require separately checked adjoining concrete. An eight-bar physical contact splice supports one side-midpoint or C1/C2 group with straight bars.",
             "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",

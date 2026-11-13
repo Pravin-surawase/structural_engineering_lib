@@ -116,6 +116,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col07_reference.py",
     "docs/verification/check_library_029_col07_mixed_reference.py",
     "docs/verification/check_library_029_col07_circular_reference.py",
+    "docs/verification/check_library_029_col07_slender_reference.py",
     "docs/verification/check_library_029_col07_splice_reference.py",
     "docs/verification/check_library_029_col07_corner_reference.py",
 )
@@ -136,6 +137,7 @@ COL06_REFERENCE = "docs/verification/library-029-col06-column-catalogue.json"
 COL07_REFERENCE = "docs/verification/library-029-col07-column-member.json"
 COL07_MIXED_REFERENCE = "docs/verification/library-029-col07-mixed-member.json"
 COL07_CIRCULAR_REFERENCE = "docs/verification/library-029-col07-circular-member.json"
+COL07_SLENDER_REFERENCE = "docs/verification/library-029-col07-slender-member.json"
 COL07_SPLICE_REFERENCE = "docs/verification/library-029-col07-contact-splice.json"
 COL07_CORNER_REFERENCE = "docs/verification/library-029-col07-corner-splice.json"
 
@@ -164,6 +166,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / COL06_REFERENCE,
                 repo / COL07_REFERENCE,
                 repo / COL07_MIXED_REFERENCE,
+                repo / COL07_SLENDER_REFERENCE,
                 repo / COL07_CIRCULAR_REFERENCE,
                 repo / COL07_SPLICE_REFERENCE,
                 repo / COL07_CORNER_REFERENCE,
@@ -733,6 +736,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     for prefix, reference in (
         ("column-member-detailing", COL07_REFERENCE),
         ("column-mixed-detailing", COL07_MIXED_REFERENCE),
+        ("column-slender-detailing", COL07_SLENDER_REFERENCE),
         ("column-contact-splice", COL07_SPLICE_REFERENCE),
         ("column-corner-splice", COL07_CORNER_REFERENCE),
     ):
@@ -746,6 +750,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                 "--reference",
                 str(clone / reference),
                 *(("--positioned",) if reference == COL07_MIXED_REFERENCE else ()),
+                *(("--slender",) if reference == COL07_SLENDER_REFERENCE else ()),
                 "--case",
                 case,
                 "--output-dir",

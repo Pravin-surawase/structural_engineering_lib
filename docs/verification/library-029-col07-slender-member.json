@@ -138,9 +138,9 @@
           "detailing_revision": "D1",
           "reference": "COL07 independent specimen cut-length register",
           "cut_lengths_mm": {
-            "H": 1220,
             "XT": 365,
-            "YT": 465
+            "YT": 465,
+            "HOOP": 1220
           }
         },
         "schema_version": "column-slender-member-detailing-input/v1",
@@ -387,9 +387,9 @@
           "detailing_revision": "D1",
           "reference": "COL07 independent specimen cut-length register",
           "cut_lengths_mm": {
-            "H": 1220,
             "XT": 365,
-            "YT": 465
+            "YT": 465,
+            "HOOP": 1220
           }
         },
         "schema_version": "column-slender-member-detailing-input/v1",
@@ -577,9 +577,9 @@
           "detailing_revision": "D1",
           "reference": "COL07 independent specimen cut-length register",
           "cut_lengths_mm": {
-            "H": 1220,
             "XT": 365,
-            "YT": 465
+            "YT": 465,
+            "HOOP": 1220
           }
         },
         "schema_version": "column-slender-member-detailing-input/v1",
@@ -767,9 +767,9 @@
           "detailing_revision": "D1",
           "reference": "COL07 independent specimen cut-length register",
           "cut_lengths_mm": {
-            "H": 1220,
             "XT": 365,
-            "YT": 465
+            "YT": 465,
+            "HOOP": 1220
           }
         },
         "schema_version": "column-slender-member-detailing-input/v1",

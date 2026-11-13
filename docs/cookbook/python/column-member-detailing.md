@@ -142,8 +142,29 @@ The supplied station actions are checked against the actual mixed cage.
 Shear credits only two closed hoop legs. The section drawing and schedule
 retain all actual bar identities. Run the `stale_register`, `short_anchor`
 and `unresolved_splice` cases to see how the report withholds the BBS.
-Mixed-cage splice assembly and slender or circular full-member checks
-require their own qualification.
+Mixed-cage splice assembly requires its own qualification.
+
+## Replay a braced slender member
+
+Use the [slender member fixture](../../verification/library-029-col07-slender-member.json)
+and `column.load_slender_column_member_detailing` for a continuous
+tied rectangle with supplied second-order actions.
+
+```bash
+python column_member_detailing.py --slender --reference library-029-col07-slender-member.json   --case slender --output-dir slender-member
+```
+
+The 6 m case binds the physical station actions to the independent COL04
+second-order rows. MID governs at a utilization of about 0.6266. The checked
+schedule includes eight Ø20 bars of 7,700 mm each and 52 hoop levels.
+The [independent replay](../../verification/check_library_029_col07_slender_reference.py)
+uses the frozen COL04 strength and independently computes the full-length
+quantities. A stale analysis, disagreement between station rows or short
+straight projection withholds the BBS.
+
+The admitted slender profile has continuous bars, one supplied
+second-order combination and zero shear. First-order member detailing,
+slender member shear and physical splices require their own checks.
 
 ## Run a physical contact splice
 

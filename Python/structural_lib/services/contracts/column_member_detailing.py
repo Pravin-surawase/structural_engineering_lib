@@ -14,6 +14,10 @@ from structural_lib.services.contracts.column_member import (
     RectangularColumnActionsV1,
     RectangularColumnCageV1,
 )
+from structural_lib.services.contracts.column_slender import (
+    SlenderRectangularGeometryV1,
+    SuppliedSecondOrderColumnActionsV1,
+)
 from structural_lib.services.contracts.common import (
     StrictPublicModel,
     complete_field_contracts_from_schema,
@@ -196,6 +200,36 @@ class PositionedColumnMemberDetailingInputV1(_ColumnMemberDetailingInput):
     @model_validator(mode="after")
     def check_positioned_bars(self) -> Self:
         self.reinforcement.validate_positions(self.geometry.b_mm, self.geometry.D_mm)
+        return self
+
+
+class SlenderColumnMemberDetailingInputV1(_ColumnMemberDetailingInput):
+    """Prismatic rectangular member and its supplied second-order actions."""
+
+    schema_version: Literal["column-slender-member-detailing-input/v1"] = (
+        "column-slender-member-detailing-input/v1"
+    )
+    reinforcement: RectangularColumnCageV1
+    restraint: SlenderRectangularGeometryV1
+    second_order: SuppliedSecondOrderColumnActionsV1
+
+    @model_validator(mode="after")
+    def match_member_geometry(self) -> Self:
+        geometry, restraint = self.geometry, self.restraint
+        if (geometry.b_mm, geometry.D_mm, geometry.unsupported_length_mm) != (
+            restraint.b_mm,
+            restraint.D_mm,
+            restraint.length_mm,
+        ):
+            raise ValueError(
+                "The physical and second-order analysis dimensions must agree."
+            )
+        if any(
+            row.station_mm > restraint.length_mm for row in self.second_order.stations
+        ):
+            raise ValueError(
+                "The supplied second-order stations must lie within the member."
+            )
         return self
 
 

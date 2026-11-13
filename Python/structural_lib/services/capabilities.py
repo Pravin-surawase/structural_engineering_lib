@@ -237,7 +237,7 @@ _CAPABILITIES = (
             "General arbitrary multilayer cages outside the named positioned-bar and restraint profiles remain held.",
             "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
             "Load-envelope generation, frame analysis, and effective-length derivation beyond the declared end-condition model are excluded. Automatic sizing outside the finite eight-bar rectangular profile remains held.",
-            "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway and member-wide detailing of slender cages remain outside this profile.",
+            "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway remains outside this profile. A separate detailing profile admits continuous braced rectangles with supplied second-order actions and zero shear.",
         ),
         qualified_review_required=True,
         python_profiles=(
@@ -339,6 +339,16 @@ _CAPABILITIES = (
                 "column-member-detailing-input/v1",
                 "Short braced six- and eight-bar tied rectangles with principal-plane shear, tie zones and straight end development. Supported eight-bar contact splices of opposing side midpoints or the C1/C2 corner pair include physical restraint, congestion, report, drawing and BBS checks.",
                 "docs/cookbook/python/column-member-detailing.md",
+                "Python/examples/column_member_detailing.py",
+            ),
+            IS456PythonProfile(
+                "is456.column.member-detailing/v1",
+                "structural_lib.design.is456.column",
+                "load_slender_column_member_detailing",
+                "check_column_member_detailing",
+                "column-slender-member-detailing-input/v1",
+                "Braced slender tied rectangle with matching supplied second-order actions, zero supplied shear, continuous bars and checked quantities.",
+                "docs/cookbook/python/column-member-detailing.md#replay-a-braced-slender-member",
                 "Python/examples/column_member_detailing.py",
             ),
             IS456PythonProfile(

@@ -160,3 +160,43 @@ def test_positioned_mixed_member_quantities_and_outputs(name):
         assert calculation["bbs"][key] == pytest.approx(expected[key])
     assert len([row for row in rows if row["role"] == "longitudinal"]) == 12
     assert len(ElementTree.fromstring(drawing).findall(".//{*}circle")) == 12
+
+
+_SLENDER_CASES = json.loads(
+    _REFERENCE.with_name("library-029-col07-slender-member.json").read_text()
+)["cases"]
+
+
+@pytest.mark.parametrize("name", _SLENDER_CASES)
+def test_slender_member_action_binding_and_schedule(name):
+    case = _SLENDER_CASES[name]
+    expected = case["expected"]
+    request = column.load_slender_column_member_detailing(case["request"])
+    result = column.check_column_member_detailing(request)
+    assert result.engineering_status.value == expected["status"]
+    wire = result.to_dict()
+    calculation = wire["calculation"]
+    identity = wire["envelope"]["result_identity"]["input_hash"]
+    report = column.render_column_member_detailing_html(result)
+    drawing = column.render_column_member_detailing_svg(result)
+    schedule = column.render_column_member_bbs_csv(result)
+    assert identity in report and identity in drawing and drawing in report
+    if name == "stale_analysis":
+        assert wire["envelope"]["freshness_status"] == "STALE"
+    if name == "unmatched_second_order":
+        assert calculation["slender_member"] is None
+    if expected["status"] != "PASS":
+        assert schedule is None
+        return
+    assert schedule is not None and identity in schedule
+    assert calculation["hoop_stations_mm"] == expected["hoop_stations_mm"]
+    strength = calculation["slender_member"]["calculation"]["strength"]
+    assert strength["governing_id"] == expected["governing_id"]
+    assert strength["governing_ratio"] == pytest.approx(
+        expected["governing_ratio"], rel=1e-4
+    )
+    assert calculation["bbs"]["quantity"] == expected["quantity"]
+    assert calculation["bbs"]["total_length_mm"] == pytest.approx(
+        expected["total_length_mm"]
+    )
+    assert calculation["bbs"]["total_weight_kg"] == pytest.approx(expected["mass_kg"])

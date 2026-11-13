@@ -63,6 +63,9 @@ def fixture():
             for row in strength["actions"]["stations"]
         ],
     }
+    hoop_mark = request["reinforcement"]["tie"]["tie_id"]
+    register = request["transverse_cut_schedule"]
+    register["cut_lengths_mm"][hoop_mark] = register["cut_lengths_mm"].pop("H")
     grid = sorted(
         {
             p

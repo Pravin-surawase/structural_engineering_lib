@@ -120,22 +120,28 @@ def test_col04_against_frozen_references(case):
 def test_physical_column_profiles_are_discoverable_and_resolve():
     capabilities = get_supported_is456_capability_document()["capabilities"]
     info = next(item for item in capabilities if item["capability_id"] == "column")
-    profiles = {entry["operation"]: entry for entry in info["python_profiles"]}
+    profiles = {entry["loader"]: entry for entry in info["python_profiles"]}
+    assert len(profiles) == len(info["python_profiles"])
     assert profiles.keys() == {
-        "check_four_corner_member",
-        "check_tied_rectangular_member",
-        "check_positioned_rectangular_member",
-        "check_slender_rectangular_member",
-        "check_circular_member",
-        "select_column_from_catalogue",
-        "check_column_member_detailing",
+        "load_four_corner_member",
+        "load_tied_rectangular_member",
+        "load_positioned_rectangular_member",
+        "load_slender_rectangular_member",
+        "load_circular_member",
+        "load_column_catalogue",
+        "load_column_member_detailing",
+        "load_slender_column_member_detailing",
+        "load_positioned_column_member_detailing",
+        "load_circular_column_detailing",
+        "load_interaction_slice",
+        "load_service_section",
     }
     for profile in profiles.values():
         module = importlib.import_module(profile["module"])
         assert profile["loader"] in module.__all__
         assert callable(getattr(module, profile["operation"]))
         assert (_ROOT / profile["example"]).is_file()
-    profile = profiles["check_slender_rectangular_member"]
+    profile = profiles["load_slender_rectangular_member"]
     module = importlib.import_module(profile["module"])
     request = getattr(module, profile["loader"])(_CASES["minor_slender"]["request"])
     assert request.schema_version == profile["request_schema"]

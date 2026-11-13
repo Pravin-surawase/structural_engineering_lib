@@ -109,6 +109,7 @@ from structural_lib.services.contracts.column_member import (
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
     PositionedColumnMemberDetailingInputV1,
+    SlenderColumnMemberDetailingInputV1,
 )
 from structural_lib.services.contracts.column_section import (
     ColumnInteractionInputV1,
@@ -153,6 +154,8 @@ __all__ = [
     "ColumnCatalogueInputV1",
     "ColumnMemberDetailingInputV1",
     "PositionedColumnMemberDetailingInputV1",
+    "SlenderColumnMemberDetailingInputV1",
+    "load_slender_column_member_detailing",
     "load_positioned_column_member_detailing",
     "FamilyIdentityV1",
     "CanonicalFamilyResultV1",
@@ -254,14 +257,18 @@ def load_column_member_detailing(
 
 
 def check_column_member_detailing(
-    request: ColumnMemberDetailingInputV1 | PositionedColumnMemberDetailingInputV1,
+    request: (
+        ColumnMemberDetailingInputV1
+        | PositionedColumnMemberDetailingInputV1
+        | SlenderColumnMemberDetailingInputV1
+    ),
 ) -> CanonicalFamilyResultV1[dict[str, object]]:
     """Check the member's supplied actions and physical detailing.
 
     Parameters
     ----------
-    request : ColumnMemberDetailingInputV1 or PositionedColumnMemberDetailingInputV1
-        Validated ordinary tied or positioned mixed member detailing request.
+    request : ColumnMemberDetailingInputV1, PositionedColumnMemberDetailingInputV1 or SlenderColumnMemberDetailingInputV1
+        Validated physical member detailing request.
 
     Returns
     -------
@@ -279,7 +286,7 @@ def check_column_member_detailing(
 
     Limitations
     -----------
-    Ordinary short tied rectangles. Mixed cages are continuous. Eight-bar physical laps admit one opposing side-midpoint or C1/C2 contact group.
+    Ordinary tied rectangles. Mixed and braced slender profiles use continuous bars. Eight-bar physical laps admit one opposing side-midpoint or C1/C2 group.
 
     Provenance
     ----------
@@ -1702,3 +1709,42 @@ def load_circular_column_detailing(
     if isinstance(value, (str, bytes)):
         return model_validate_json_or_error(CircularColumnDetailingInputV1, value)
     return model_validate_or_error(CircularColumnDetailingInputV1, value)
+
+
+def load_slender_column_member_detailing(
+    value: Mapping[str, object] | str | bytes | SlenderColumnMemberDetailingInputV1,
+) -> SlenderColumnMemberDetailingInputV1:
+    """Load a braced slender rectangle and its supplied second-order rows.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or SlenderColumnMemberDetailingInputV1
+        Physical member, current second-order actions and cut register.
+
+    Returns
+    -------
+    SlenderColumnMemberDetailingInputV1
+        A validated immutable physical detailing request.
+
+    Raises
+    ------
+    InputContractError
+        The member or action evidence violates the contract.
+
+    Examples
+    --------
+    See the slender detailing replay in Python/examples/column_member_detailing.py.
+
+    Limitations
+    -----------
+    Ordinary tied rectangular cages, continuous bars and zero supplied shear.
+
+    Provenance
+    ----------
+    Binds COL04 supplied second-order checks to COL07 full-length placement.
+    """
+    if isinstance(value, SlenderColumnMemberDetailingInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(SlenderColumnMemberDetailingInputV1, value)
+    return model_validate_or_error(SlenderColumnMemberDetailingInputV1, value)

@@ -17,7 +17,7 @@ def test_contract_matrix_has_no_unowned_or_unresolved_components():
     matrix = audit.build_matrix()
     assert matrix["counts"] == {
         "surfaces": 14,
-        "projections": 1417,
+        "projections": 1419,
         "operations": 92,
         "paths": 91,
         "components": 491,
