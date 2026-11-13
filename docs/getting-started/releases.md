@@ -1818,3 +1818,21 @@ with the 0.29 features.
 The candidate is not tagged or published. The verified public installation
 remains [0.28.0](#v0280-published-and-verified). The [release checklist](../planning/pre-release-checklist.md)
 owns qualification of the exact candidate archives.
+
+## v0.28.2 — Prepared candidate (unreleased; on hold)
+
+This candidate includes the 0.28.1 maintenance changes from
+[PR #1074](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1074)
+and the checked-layout workbench repairs from draft
+[PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064).
+The workbench uses the current layout for inspection, report, BBS and DXF
+exports. Project summaries preserve strength and layout status. Dashboard and
+BOQ quantities use the checked bar bending schedule.
+
+Coding Lab A20 and A22 add two fixes. Unsupported logging levels fall back to
+WARNING during import and CLI startup. Clause lookup and beam traceability
+identify effective flange width under 23.1.2 and material safety factors
+under 36.4.2.
+
+The candidate is not tagged or published. The verified public installation
+remains [0.28.0](#v0280-published-and-verified).

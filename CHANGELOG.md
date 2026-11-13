@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.28.2] — Prepared candidate (unreleased; on hold)
+
+Includes the maintenance fixes listed under the 0.28.1 candidate.
+
 ### Fixed
 
 - Fall back to WARNING when an unsupported logging level would prevent

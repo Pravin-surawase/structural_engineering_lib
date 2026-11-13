@@ -9,7 +9,14 @@
 
 ## Current State
 
-Current source metadata: 0.28.1.
+Current source metadata: 0.28.2.
+
+**0.28.2 maintenance candidate.** The current checked layout drives imported
+beam inspection and project exports. This candidate also fixes package startup
+with unsupported logging levels and two IS 456 clause references. Qualify the
+exact archives and replay the workbench and maintenance controls. The
+[0.28.2 ledger entry](../getting-started/releases.md#v0282--prepared-candidate-unreleased-on-hold)
+records the scope.
 
 **0.28.1 maintenance candidate.** The selected fixes cover Coding Lab A13,
 A9 and A15 plus the CLI detailing, report and combined BBS/DXF regressions.
