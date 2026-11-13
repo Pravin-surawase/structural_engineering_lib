@@ -482,9 +482,9 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
                         "member_kind": kind,
                         "case_type": case_type,
                         "combination_source_type": source_type,
-                        "combination_design_use": definition.design_use
-                        if definition
-                        else None,
+                        "combination_design_use": (
+                            definition.design_use if definition else None
+                        ),
                         "cells": source.cells,
                     }
                 )
@@ -553,9 +553,11 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
             outputs,
             issues,
             provenance=_PROVENANCE,
-            freshness=FreshnessState.STALE
-            if stale or different_capture
-            else FreshnessState.CURRENT,
+            freshness=(
+                FreshnessState.STALE
+                if stale or different_capture
+                else FreshnessState.CURRENT
+            ),
         )
     return completed_result(
         _OPERATION,
