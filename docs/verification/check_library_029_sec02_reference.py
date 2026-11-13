@@ -94,7 +94,7 @@ def fixture():
         {
             "bar_id": f"B{index + 1:02d}",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 225 + 165 * math.cos(math.pi * index / 4),
             "y_from_top_mm": 225 + 165 * math.sin(math.pi * index / 4),
         }

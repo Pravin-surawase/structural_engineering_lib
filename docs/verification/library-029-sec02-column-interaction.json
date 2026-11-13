@@ -214,56 +214,56 @@
           {
             "bar_id": "B01",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 390.0,
             "y_from_top_mm": 225.0
           },
           {
             "bar_id": "B02",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 341.6726188957804,
             "y_from_top_mm": 341.6726188957803
           },
           {
             "bar_id": "B03",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 225.0,
             "y_from_top_mm": 390.0
           },
           {
             "bar_id": "B04",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 108.32738110421967,
             "y_from_top_mm": 341.6726188957804
           },
           {
             "bar_id": "B05",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 60.0,
             "y_from_top_mm": 225.00000000000003
           },
           {
             "bar_id": "B06",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 108.32738110421963,
             "y_from_top_mm": 108.32738110421967
           },
           {
             "bar_id": "B07",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 224.99999999999997,
             "y_from_top_mm": 60.0
           },
           {
             "bar_id": "B08",
             "diameter_mm": 20,
-            "row": "ring",
+            "row": "outer",
             "x_from_left_mm": 341.6726188957803,
             "y_from_top_mm": 108.32738110421963
           }
