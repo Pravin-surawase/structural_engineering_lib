@@ -31,6 +31,7 @@ TESTS = tuple(
         "test_circular_column_member",
         "test_column_candidate_search",
         "test_column_interaction_slice",
+        "test_column_service_section",
         "test_column_member_detailing",
         "test_column_contact_splice",
         "test_torsion_corner_geometry",
@@ -64,6 +65,7 @@ EXAMPLES = tuple(
         "circular_column_member",
         "column_catalogue_selection",
         "column_interaction_slice",
+        "column_service_section",
         "column_member_detailing",
         "torsion_station_reference",
         "physical_torsion_member",
@@ -89,6 +91,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_beam02_reference.py",
     "docs/verification/check_library_029_beam_sections_reference.py",
     "docs/verification/check_library_029_sec02_reference.py",
+    "docs/verification/check_library_029_sec03_reference.py",
     "docs/verification/check_library_029_col02_reference.py",
     "docs/verification/check_library_029_col03_reference.py",
     "docs/verification/check_library_029_col04_reference.py",
@@ -102,6 +105,7 @@ BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
 BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
+SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
@@ -123,6 +127,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM02_REFERENCE,
                 repo / BEAM_SECTION_REFERENCE,
                 repo / SEC02_REFERENCE,
+                repo / SEC03_REFERENCE,
                 repo / COL03_REFERENCE,
                 repo / COL04_REFERENCE,
                 repo / COL05_REFERENCE,
@@ -412,6 +417,28 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             result["envelope"]["result_identity"]["input_hash"]
             in (directory / "report.html").read_text()
         )
+    for case, entry in json.loads((clone / SEC03_REFERENCE).read_text())[
+        "cases"
+    ].items():
+        label = f"column-service-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/column_service_section.py",
+            "--reference",
+            str(clone / SEC03_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        assert result["envelope"]["engineering_status"] == entry["status"]
+        assert result["calculation"]["member_acceptance"] == "NOT_EVALUATED"
+        assert result == json.loads((directory / "result.json").read_text())
+        report = (directory / "report.html").read_text()
+        assert result["envelope"]["result_identity"]["input_hash"] in report
+        assert "<svg" in report
     for name in (
         "beam_comparator_reference",
         "layered_column_section",

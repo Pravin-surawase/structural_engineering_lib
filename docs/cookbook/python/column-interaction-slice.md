@@ -49,5 +49,6 @@ transformed centroid, with x increasing right and y increasing down.
 
 A section PASS means the requested equilibrium points were resolved. A held
 ray stays visible without a substituted capacity. The report and JSON
-identify the same input. Cracked section properties, member stability,
-restraint, and fabrication require their own checks.
+identify the same input. For active transformed properties under a supplied
+rectangular service action row, use the [column service section](column-service-section.md).
+Member stability, restraint, and fabrication require their own checks.

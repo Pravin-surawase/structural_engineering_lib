@@ -201,6 +201,16 @@ _CAPABILITIES = (
         qualified_review_required=True,
         python_profiles=(
             IS456PythonProfile(
+                "is456.column.service-section/v1",
+                "structural_lib.design.is456.column",
+                "load_service_section",
+                "check_service_section",
+                "column-service-section-input/v1",
+                "One signed service action row on a solid rectangle with positioned bars, compression-only concrete and declared elastic moduli.",
+                "docs/cookbook/python/column-service-section.md",
+                "Python/examples/column_service_section.py",
+            ),
+            IS456PythonProfile(
                 "is456.column.interaction-slice/v1",
                 "structural_lib.design.is456.column",
                 "load_interaction_slice",

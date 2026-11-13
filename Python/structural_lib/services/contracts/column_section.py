@@ -128,12 +128,9 @@ class CircularInteractionGeometryV1(StrictPublicModel):
     diameter_mm: float = Field(ge=200, le=2000)
 
 
-class ColumnInteractionInputV1(StrictPublicModel):
-    """A signed fixed-compression section slice with explicit physical bars."""
+class _PositionedColumnSection(StrictPublicModel):
+    """Shared physical geometry and bar admission for column section workflows."""
 
-    schema_version: Literal["column-interaction-input/v1"] = (
-        "column-interaction-input/v1"
-    )
     identity: FamilyIdentityV1
     geometry: Annotated[
         RectangularInteractionGeometryV1 | CircularInteractionGeometryV1,
@@ -141,9 +138,6 @@ class ColumnInteractionInputV1(StrictPublicModel):
     ]
     bars: tuple[PositionedColumnBarV1, ...] = Field(min_length=4, max_length=32)
     materials: ColumnMaterialsV1
-    pu_kn: float = Field(ge=0, le=1e9)
-    modular_ratio: float = Field(ge=1, le=30)
-    point_count: int = Field(ge=8, le=64, multiple_of=4)
 
     @field_validator("bars", mode="before")
     @classmethod
@@ -176,4 +170,56 @@ class ColumnInteractionInputV1(StrictPublicModel):
             for a, b in combinations(self.bars, 2)
         ):
             raise ValueError("Section bars must not overlap.")
+        return self
+
+
+class ColumnInteractionInputV1(_PositionedColumnSection):
+    """A signed fixed-compression section slice with explicit physical bars."""
+
+    schema_version: Literal["column-interaction-input/v1"] = (
+        "column-interaction-input/v1"
+    )
+    pu_kn: float = Field(ge=0, le=1e9)
+    modular_ratio: float = Field(ge=1, le=30)
+    point_count: int = Field(ge=8, le=64, multiple_of=4)
+
+
+class ColumnServiceActionsV1(StrictPublicModel):
+    """Concurrent service actions about the gross section centroid."""
+
+    p_kn: float = Field(ge=-1e6, le=1e6)
+    mx_knm: float = Field(ge=-1e6, le=1e6)
+    my_knm: float = Field(ge=-1e6, le=1e6)
+
+
+class ColumnServiceModuliV1(StrictPublicModel):
+    """Declared elastic moduli, in N/mm², of concrete and reinforcement."""
+
+    ec_nmm2: float = Field(ge=1000, le=100000)
+    es_nmm2: float = Field(ge=100000, le=250000)
+
+    @model_validator(mode="after")
+    def validate_modular_ratio(self) -> Self:
+        if not 1 < self.es_nmm2 / self.ec_nmm2 <= 30:
+            raise ValueError(
+                "The steel-to-concrete modular ratio must exceed 1 and be at most 30."
+            )
+        return self
+
+
+class ColumnServiceSectionInputV1(_PositionedColumnSection):
+    """One solid rectangular section under concurrent elastic service actions."""
+
+    schema_version: Literal["column-service-section-input/v1"] = (
+        "column-service-section-input/v1"
+    )
+    geometry: RectangularInteractionGeometryV1
+    actions: ColumnServiceActionsV1
+    moduli: ColumnServiceModuliV1
+    concrete_linear_limit_nmm2: float = Field(gt=0)
+
+    @model_validator(mode="after")
+    def validate_concrete_limit(self) -> Self:
+        if self.concrete_linear_limit_nmm2 >= self.materials.fck_nmm2:
+            raise ValueError("The declared concrete linear limit must be below fck.")
         return self

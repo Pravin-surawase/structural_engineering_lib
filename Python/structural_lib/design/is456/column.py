@@ -98,12 +98,17 @@ from structural_lib.services.contracts.column_member import (
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
 )
+from structural_lib.services.column_service_section import (
+    check_service_section,
+    render_service_section_html,
+)
 from structural_lib.services.contracts.column_section import (
     ColumnInteractionInputV1,
     ColumnSectionInputV1,
     ColumnSectionLayerResponseV1,
     ColumnSectionLayerV1,
     ColumnSectionResponseV1,
+    ColumnServiceSectionInputV1,
 )
 from structural_lib.services.contracts.column_slender import (
     SlenderRectangularColumnInputV1,
@@ -122,6 +127,10 @@ from structural_lib.services.contracts.family_f1 import (
 
 __all__ = [
     "ColumnInteractionInputV1",
+    "ColumnServiceSectionInputV1",
+    "load_service_section",
+    "check_service_section",
+    "render_service_section_html",
     "load_interaction_slice",
     "check_interaction_slice",
     "render_interaction_slice_html",
@@ -1557,3 +1566,43 @@ def load_interaction_slice(
     if isinstance(value, (str, bytes)):
         return model_validate_json_or_error(ColumnInteractionInputV1, value)
     return model_validate_or_error(ColumnInteractionInputV1, value)
+
+
+def load_service_section(
+    value: Mapping[str, object] | str | bytes | ColumnServiceSectionInputV1,
+) -> ColumnServiceSectionInputV1:
+    """Load one concurrent service action row and its physical section.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or ColumnServiceSectionInputV1
+        A solid rectangle, actual bars, actions and elastic material data.
+
+    Returns
+    -------
+    ColumnServiceSectionInputV1
+        The validated rectangular section service request.
+
+    Raises
+    ------
+    InputContractError
+        The section, actions, material data or bars violate the contract.
+
+    Examples
+    --------
+    >>> callable(load_service_section)
+    True
+
+    Limitations
+    -----------
+    Solid rectangles and one supplied action row, with compression positive.
+
+    Provenance
+    ----------
+    Uses the strict positioned-bar service section contract.
+    """
+    if isinstance(value, ColumnServiceSectionInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(ColumnServiceSectionInputV1, value)
+    return model_validate_or_error(ColumnServiceSectionInputV1, value)
