@@ -104,6 +104,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_beam02_reference.py",
     "docs/verification/check_library_029_beam_sections_reference.py",
     "docs/verification/check_library_029_beam05_reference.py",
+    "docs/verification/check_library_029_beam05_flanged_reference.py",
     "docs/verification/check_library_029_beam05_cutoff_reference.py",
     "docs/verification/check_library_029_beam05_lap_reference.py",
     "docs/verification/check_library_029_beam07_reference.py",
@@ -130,6 +131,7 @@ BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
 BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.json"
 BEAM05_REFERENCE = "docs/verification/library-029-beam05-member-detailing.json"
+BEAM05_FLANGED_REFERENCE = "docs/verification/library-029-beam05-flanged-detailing.json"
 BEAM05_CUTOFF_REFERENCE = "docs/verification/library-029-beam05-cutoff.json"
 BEAM05_LAP_REFERENCE = "docs/verification/library-029-beam05-lap.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
@@ -164,6 +166,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM02_REFERENCE,
                 repo / BEAM_SECTION_REFERENCE,
                 repo / BEAM05_REFERENCE,
+                repo / BEAM05_FLANGED_REFERENCE,
                 repo / BEAM05_CUTOFF_REFERENCE,
                 repo / BEAM05_LAP_REFERENCE,
                 repo / BEAM07_REFERENCE,
@@ -538,9 +541,18 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             result["envelope"]["result_identity"]["input_hash"]
             in (directory / "report.html").read_text()
         )
-    for reference in (BEAM05_REFERENCE, BEAM05_CUTOFF_REFERENCE, BEAM05_LAP_REFERENCE):
+    for reference in (
+        BEAM05_REFERENCE,
+        BEAM05_CUTOFF_REFERENCE,
+        BEAM05_LAP_REFERENCE,
+        BEAM05_FLANGED_REFERENCE,
+    ):
         for case, entry in json.loads((clone / reference).read_text())["cases"].items():
-            label = f"beam-continuous-detailing-{case}"
+            label = (
+                f"beam-flanged-detailing-{case}"
+                if reference == BEAM05_FLANGED_REFERENCE
+                else f"beam-continuous-detailing-{case}"
+            )
             directory = output / label
             stdout = run(
                 label,
@@ -561,8 +573,11 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             assert (directory / "member.svg").is_file() == (status == "PASS")
             assert (directory / "bbs.csv").is_file() == (status == "PASS")
             if status == "PASS":
-                assert input_hash in (directory / "member.svg").read_text()
+                drawing = (directory / "member.svg").read_text()
+                assert input_hash in drawing
                 assert input_hash in (directory / "bbs.csv").read_text()
+                if reference == BEAM05_FLANGED_REFERENCE:
+                    assert 'data-view="section"' in drawing
     flow03 = json.loads((clone / FLOW03_BEAM_REFERENCE).read_text())
     for case, extra in (
         ("edited", ()),

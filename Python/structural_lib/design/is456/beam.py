@@ -1067,7 +1067,7 @@ def load_section_catalogue(
 def load_continuous_detailing(
     value: Mapping[str, object] | str | bytes | BeamContinuousDetailingInputV1,
 ) -> BeamContinuousDetailingInputV1:
-    """Load a two-span rectangular member and its ordinary link detail.
+    """Load a two-span rectangular, T or L web cage and its ordinary link detail.
 
     Parameters
     ----------
@@ -1092,8 +1092,10 @@ def load_continuous_detailing(
 
     Limitations
     -----------
-    Straight longitudinal bars with at most one first-span bottom cutoff or
-    separated lap and one uniform ordinary link mark.
+    The nested member schema is `is456-layered-continuous-beam-check/v1`
+    for monolithic flanges or actual face layers. That profile requires
+    uninterrupted straight bars. The original rectangular schema also
+    admits one first-span bottom cutoff or separated lap.
 
     Provenance
     ----------

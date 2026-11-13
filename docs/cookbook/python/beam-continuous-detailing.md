@@ -10,8 +10,8 @@ tags: [beam, detailing, anchorage, bbs, is456]
 # Schedule continuous bars across two beam spans
 
 Use `beam.load_continuous_detailing` and `beam.check_continuous_detailing`
-with a two-span rectangular member, current supplied actions, continuous
-straight bars and a uniform link placement grid. The link input declares
+with a two-span member, current supplied actions, continuous straight bars
+and a uniform link placement grid. The link input declares
 its ordinary two-hook path and a fabrication source reference.
 
 Run the [worked example](../../../Python/examples/beam_continuous_detailing.py)
@@ -40,10 +40,66 @@ and the schedule identifies its resolved path result. The short-anchor
 case gives FAIL and the missing link detail gives HOLD. Both still produce
 an HTML review report.
 
-This route covers straight bars, one ordinary link mark and a
-rectangular section. Other link shapes and construction approval require
-their own checks. The
-SVG is a review elevation. Serviceability is a separate calculation.
+This example uses the original rectangular schema and its review elevation.
+The route also accepts prismatic web cages with actual layers and optional
+monolithic flanges. Serviceability is a separate calculation.
+
+## Detail an L beam with two bottom layers
+
+Run the same example against the [flanged and multilayer references](../../verification/library-029-beam05-flanged-detailing.json).
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-029-beam05-flanged-detailing.json \
+  --case l_multilayer --output-dir output/beam05-l-multilayer
+```
+
+Keep the outer detailing schema and set `member.schema_version` to
+`is456-layered-continuous-beam-check/v1`. Use `member.width_mm` for the
+web and measure bar centres from the web's left edge and the section top.
+Number each face's layers from the outside inward. Supply the physical
+overhangs, flange thickness and distance between zero-moment points
+through `member.flange`. Omit `flange` for a rectangular multilayer
+member. Declare both spans, both sides of the internal centreline and all
+four support faces in every ULS combination. Supply one concurrent
+`mu_knm`, `vu_kn`, `tu_knm` row for each station and combination.
+
+The example uses a 300 × 600 mm web with a 300 mm right overhang and a
+120 mm flange thickness. Two 4 m spans carry factored uniform loads of
+24 and 32 kN/m in U1 and U2. For U2, three-moment equilibrium gives an
+internal centreline moment of −64.0 kN·m, retained as diagnostic evidence.
+The internal support faces see −52.36 kN·m and shears of −75.2 and
++75.2 kN. The sagging peak is +36.0 kN·m. Sagging resistance is
+361.204 kN·m with a 600 mm effective flange. Hogging resistance is
+156.420 kN·m with web-only compression. Both shear checks use the
+300 mm web.
+
+The two outer support faces provide 960 mm of straight development for
+the Ø20 bars. Full-tension development requires 906.250 mm in M30 with
+Fe500 bars. The checker also applies the positive-bar simple-support
+criterion using web-only resistance and the concurrent support shear.
+Internal support development follows the continuous bar into the
+adjoining span. [IS 456 clauses 23.1.2 and 26.2](https://wriddodoti.gov.np/uploads/blog/20230331071217_IS-456-with-all-ammendments.pdf)
+
+The cross-section shows two Ø20 top bars and two layers of three Ø20
+bottom bars. The schedule assigns a separate mark to each layer. All
+eight straight cuts are 8,920 mm. The 41 Ø8 links at 200 mm have a
+1,698.171 mm cut length each. The schedule totals 203.457 kg. The
+report, elevation, section and BBS share the input and path identities.
+[Independent replay](../../verification/check_library_029_beam05_flanged_reference.py)
+
+Use `--case t_beam`, `l_reflected` or `rect_multilayer` for the other
+passing layouts. `short_anchor` and `congested` give FAIL.
+`missing_combination_face`, `missing_link`, `torsion`, `stale`
+and `cutoff` give HOLD. Each failing or held result still writes
+`result.json` and `report.html`. The example writes `member.svg` and
+`bbs.csv` only when the checked schedule is eligible.
+
+This profile assumes uninterrupted bars, uniform ordinary web links and
+a prismatic section up to 750 mm deep. Supply zero torsion only where
+the source analysis establishes that the scope is appropriate. Flange
+slab steel, joint reinforcement, cutoffs and laps in this cage, varying
+sections, serviceability and fabrication approval need their own checks.
 
 ## Check one bottom bar cutoff
 

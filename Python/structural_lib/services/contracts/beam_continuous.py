@@ -1,4 +1,4 @@
-"""Strict supplied-action contracts for ordinary rectangular beam checks."""
+"""Strict supplied-action contracts for ordinary beam checks."""
 
 from __future__ import annotations
 
@@ -112,6 +112,12 @@ class BeamContinuousActionV1(StrictPublicModel):
     tu_knm: float = Field(default=0, ge=-100000, le=100000)
 
 
+class BeamLayeredContinuousActionV1(BeamContinuousActionV1):
+    """Member-wide row with explicitly supplied torsion."""
+
+    tu_knm: float = Field(ge=-100000, le=100000)
+
+
 class _BeamStationCheckRequest(StrictPublicModel):
     """Shared physical section, revisions and supplied station actions."""
 
@@ -209,12 +215,12 @@ class _BeamStationCheckRequest(StrictPublicModel):
         return ids, keys
 
 
-class BeamContinuousCheckRequestV1(_BeamStationCheckRequest):
-    """Two-span rectangular section, actual bars and revision-bound actions."""
+class _ContinuousBeamCheckRequest(_BeamStationCheckRequest):
+    """Shared support, station and action validation for two-span beams."""
 
-    schema_version: Literal["is456-continuous-beam-check/v1"] = (
-        BEAM_CONTINUOUS_CHECK_SCHEMA_VERSION
-    )
+    def _check_layout(self) -> None:
+        self._check_bar_geometry()
+
     supports: tuple[
         BeamContinuousSupportV1, BeamContinuousSupportV1, BeamContinuousSupportV1
     ]
@@ -236,7 +242,7 @@ class BeamContinuousCheckRequestV1(_BeamStationCheckRequest):
             raise ValueError(
                 "Supports must bound two ordered clear spans of at least 2.5 times the section depth."
             )
-        self._check_bar_geometry()
+        self._check_layout()
         extent = self.straight_bars
         if extent is not None and not (
             supports[0].left_face_mm + self.clear_cover_mm
@@ -291,6 +297,26 @@ class BeamContinuousCheckRequestV1(_BeamStationCheckRequest):
         return self
 
 
+class BeamContinuousCheckRequestV1(_ContinuousBeamCheckRequest):
+    """Two-span rectangular section, actual bars and revision-bound actions."""
+
+    schema_version: Literal["is456-continuous-beam-check/v1"] = (
+        BEAM_CONTINUOUS_CHECK_SCHEMA_VERSION
+    )
+
+
+class BeamLayeredContinuousCheckRequestV1(_ContinuousBeamCheckRequest):
+    """Prismatic two-span web cage with actual face layers and optional flange."""
+
+    schema_version: Literal["is456-layered-continuous-beam-check/v1"]
+    bars: tuple[BeamSectionBarV1, ...] = Field(min_length=4, max_length=40)
+    flange: BeamSectionFlangeV1 | None = None
+    actions: tuple[BeamLayeredContinuousActionV1, ...] = Field(max_length=10000)
+
+    def _check_layout(self) -> None:
+        _check_layered_geometry(self, self.bars, self.flange)
+
+
 class BeamCantileverCheckRequestV1(_BeamStationCheckRequest):
     """Ordinary rectangular cantilever, measured outward from its fixed face."""
 
@@ -338,32 +364,38 @@ class BeamSectionCheckRequestV1(_BeamStationCheckRequest):
 
     @model_validator(mode="after")
     def check_geometry_and_inventory(self) -> Self:
-        self._check_bar_geometry(single_layer=False)
-        if self.flange is not None and self.flange.thickness_mm >= self.depth_mm:
-            raise ValueError(
-                "Flange thickness must be less than the full section depth."
-            )
-        for face in ("top", "bottom"):
-            layers: dict[int, set[float]] = {}
-            for bar in self.bars:
-                if bar.face == face:
-                    depth = (
-                        bar.y_from_top_mm
-                        if face == "top"
-                        else self.depth_mm - bar.y_from_top_mm
-                    )
-                    layers.setdefault(bar.layer, set()).add(depth)
-            if set(layers) != set(range(1, len(layers) + 1)) or any(
-                len(depths) != 1 for depths in layers.values()
-            ):
-                raise ValueError(
-                    "Face layers must be consecutive and share one depth per layer."
-                )
-            depths = [next(iter(layers[key])) for key in sorted(layers)]
-            if any(a >= b for a, b in zip(depths[:-1], depths[1:], strict=True)):
-                raise ValueError("Number each face's layers from the outside inward.")
+        _check_layered_geometry(self, self.bars, self.flange)
         station_ids, _ = self._check_station_inventory()
         if len(self.stations) != 1 or self.stations[0].side != "CONTINUOUS":
             raise ValueError("Supply one physical station for this section check.")
         self._check_action_inventory(station_ids)
         return self
+
+
+def _check_layered_geometry(
+    request: _BeamStationCheckRequest,
+    bars: tuple[BeamSectionBarV1, ...],
+    flange: BeamSectionFlangeV1 | None,
+) -> None:
+    request._check_bar_geometry(single_layer=False)
+    if flange is not None and flange.thickness_mm >= request.depth_mm:
+        raise ValueError("Flange thickness must be less than the full section depth.")
+    for face in ("top", "bottom"):
+        layers: dict[int, set[float]] = {}
+        for bar in bars:
+            if bar.face == face:
+                depth = (
+                    bar.y_from_top_mm
+                    if face == "top"
+                    else request.depth_mm - bar.y_from_top_mm
+                )
+                layers.setdefault(bar.layer, set()).add(depth)
+        if set(layers) != set(range(1, len(layers) + 1)) or any(
+            len(depths) != 1 for depths in layers.values()
+        ):
+            raise ValueError(
+                "Face layers must be consecutive and share one depth per layer."
+            )
+        depths = [next(iter(layers[key])) for key in sorted(layers)]
+        if any(a >= b for a, b in zip(depths[:-1], depths[1:], strict=True)):
+            raise ValueError("Number each face's layers from the outside inward.")

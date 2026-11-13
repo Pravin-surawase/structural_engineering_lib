@@ -2,6 +2,7 @@
 
 import csv
 import json
+from copy import deepcopy
 from io import StringIO
 from pathlib import Path
 from xml.etree import ElementTree
@@ -256,3 +257,150 @@ def test_separated_lap_replays_both_pieces_and_keeps_checked_evidence(case):
         if "bottom-3-partner" in (row["first_bar_id"], row["second_bar_id"])
     ]
     assert min(relevant) == pytest.approx(expected["minimum_pair_clear_mm"])
+
+
+FLANGED_CASES = json.loads(
+    (
+        Path(__file__).resolve().parents[3]
+        / "docs/verification/library-029-beam05-flanged-detailing.json"
+    ).read_text(encoding="utf-8")
+)["cases"]
+
+
+@pytest.mark.parametrize("name", FLANGED_CASES)
+def test_layered_and_flanged_cage_uses_one_checked_schedule(name):
+    case = FLANGED_CASES[name]
+    request = beam.load_continuous_detailing(case["request"])
+    expected = case["expected"]
+    result = beam.check_continuous_detailing(request)
+    assert result.engineering_status == expected["status"]
+    report = beam.render_continuous_detailing_html(result, current=request)
+    drawing = beam.render_continuous_detailing_svg(result, current=request)
+    schedule = beam.render_continuous_detailing_bbs_csv(result, current=request)
+    strength = result.calculation["strength"]
+    if "outer_ld_mm" in expected:
+        for row in strength["rows"]:
+            if row["station"]["station_id"] != "AF":
+                continue
+            checks = row["anchorage"]["outputs"]["checks"]
+            positive = row["positive_support_anchorage"]["outputs"]["checks"]
+            assert {check["bar_id"] for check in positive} == {
+                bar.bar_id for bar in request.member.bars if bar.face == "bottom"
+            }
+            assert all(
+                check["criterion"]
+                == "simple_support_extension_and_moment_shear_plus_lo"
+                for check in positive
+            )
+            assert {check["bar_id"] for check in checks} == expected[
+                "outer_ld_mm"
+            ].keys()
+            for check in checks:
+                assert check["criterion"] == "direct_development"
+                assert check["required_development_length_mm"] == pytest.approx(
+                    expected["outer_ld_mm"][check["bar_id"]]
+                )
+                assert (
+                    check["available_for_criterion_mm"]
+                    == expected["outer_available_mm"]
+                )
+    if expected["status"] != "PASS":
+        assert drawing is schedule is result.calculation["bbs"] is None
+        assert "BBS held" in report
+        return
+
+    assert drawing is not None and schedule is not None
+    assert (
+        drawing in report
+        and "U2:BF1" in report
+        and "Straight support anchorage" in report
+    )
+    paths = result.calculation["paths"]
+    assert paths["result_id"] in drawing
+    assert (
+        strength["flexural_sections"]["bottom"]["effective_inputs"]["flange_width_mm"][
+            "value"
+        ]
+        == expected["effective_flange_width_mm"]
+    )
+    for face in ("top", "bottom"):
+        assert strength["flexural_sections"][face]["outputs"][
+            "capacity_knm"
+        ] == pytest.approx(expected["capacity_knm"][face], rel=2e-5)
+        assert strength["shear_sections"][face]["outputs"][
+            "provided_capacity_kn"
+        ] == pytest.approx(expected["shear_capacity_kn"][face])
+    root = ElementTree.fromstring(drawing)
+    section = root.find("{*}svg[@data-view='section']")
+    assert section is not None
+    assert (
+        float(section.attrib["viewBox"].split()[2]) - 70
+        == expected["physical_width_mm"]
+    )
+    flange = case["request"]["member"].get("flange")
+    if flange:
+        assert section.find("{*}path").attrib["d"].split()[:4] == [
+            f"M{-flange['left_overhang_mm']:g}",
+            "0",
+            f"H{request.member.width_mm + flange['right_overhang_mm']:g}",
+            f"V{flange['thickness_mm']:g}",
+        ]
+    assert len(section.findall("{*}circle")) == len(request.member.bars)
+    for bar in case["request"]["member"]["bars"]:
+        point = section.find(f"{{*}}circle[@data-bar-id='{bar['bar_id']}']")
+        assert point is not None
+        assert int(point.attrib["data-layer"]) == bar["layer"]
+        assert float(point.attrib["cx"]) == pytest.approx(
+            bar["x_from_left_mm"], abs=0.001
+        )
+        assert float(point.attrib["cy"]) == bar["y_from_top_mm"]
+        assert float(point.attrib["r"]) * 2 == bar["diameter_mm"]
+    assert [
+        float(line.attrib["x1"])
+        for line in root.findall(".//{*}line")
+        if line.attrib["stroke"] == "#64748b"
+    ] == list(range(0, 8001, 200))
+    rows = list(csv.DictReader(StringIO(schedule)))
+    longitudinal = [row for row in rows if row["role"] != "transverse_link"]
+    assert {row["bar_mark"]: int(row["quantity"]) for row in longitudinal} == expected[
+        "marks"
+    ]
+    assert all(
+        float(row["cut_mm"]) == expected["longitudinal_cut_mm"] for row in longitudinal
+    )
+    (link,) = (row for row in rows if row["role"] == "transverse_link")
+    assert int(link["quantity"]) == expected["link_count"]
+    assert float(link["cut_mm"]) == pytest.approx(expected["link_cut_mm"], abs=1e-8)
+    assert sum(float(row["mass_kg"]) for row in rows) == pytest.approx(
+        expected["mass_kg"], abs=1e-8
+    )
+    input_hash = result.envelope.result_identity.input_hash
+    assert input_hash in drawing
+    assert all(
+        row["input_hash"] == input_hash and row["path_result_id"] == paths["result_id"]
+        for row in rows
+    )
+
+
+def test_layered_bar_edit_preserves_layer_marks_and_stales_old_artifacts():
+    request = beam.load_continuous_detailing(FLANGED_CASES["l_multilayer"]["request"])
+    previous = beam.check_continuous_detailing(request)
+    edited = beam.recheck_continuous_bar_edit(
+        request,
+        previous,
+        beam.BeamBarEditV1(bar_id="B2-2", diameter_mm=16),
+        analysis_basis="fixed_supplied_actions",
+    )
+    assert edited.engineering_status == "PASS"
+    current = beam.load_continuous_detailing(edited.request.model_dump(mode="json"))
+    assert beam.render_continuous_detailing_svg(previous, current=current) is None
+    assert beam.render_continuous_detailing_bbs_csv(previous, current=current) is None
+    new_bbs = beam.render_continuous_detailing_bbs_csv(edited, current=current)
+    assert new_bbs is not None and "-bottom-L2-D16," in new_bbs
+
+
+def test_flanged_detailing_requires_explicit_torsion_on_concurrent_rows():
+    payload = deepcopy(FLANGED_CASES["l_multilayer"]["request"])
+    del payload["member"]["actions"][0]["tu_knm"]
+    with pytest.raises(beam.InputContractError):
+        beam.load_continuous_detailing(payload)

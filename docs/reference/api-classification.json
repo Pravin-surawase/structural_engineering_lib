@@ -14849,7 +14849,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(request: 'BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'",
+            "signature": "(request: 'BeamContinuousCheckRequestV1 | BeamLayeredContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []

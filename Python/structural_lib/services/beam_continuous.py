@@ -6,7 +6,7 @@ import hashlib
 import html
 import json
 import math
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from typing import Any, Generic, Literal, TypeVar, overload
 
 from structural_lib.beam.detailing import (
@@ -53,9 +53,11 @@ from structural_lib.services.contracts.beam_continuous import (
     BeamContinuousActionV1,
     BeamContinuousCheckRequestV1,
     BeamContinuousStationV1,
+    BeamLayeredContinuousCheckRequestV1,
     BeamSectionBarV1,
     BeamSectionCheckRequestV1,
     _BeamStationCheckRequest,
+    _ContinuousBeamCheckRequest,
 )
 
 _COMMON_LIMITATIONS = (
@@ -96,11 +98,18 @@ class BeamContinuousRowResultV1:
     shear_utilization: float | None = None
     section_status: _Check | None = None
     anchorage: OperationResult | None = None
+    positive_support_anchorage: OperationResult | None = None
 
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-safe row with component and provenance identities."""
+        fields = asdict(self)
+        fields.pop("positive_support_anchorage")
+        if self.positive_support_anchorage is not None:
+            fields["positive_support_anchorage"] = (
+                self.positive_support_anchorage.to_dict()
+            )
         return {
-            **asdict(self),
+            **fields,
             "action": self.action.model_dump(mode="json"),
             "station": self.station.model_dump(mode="json"),
             "anchorage": self.anchorage.to_dict() if self.anchorage else None,
@@ -133,6 +142,13 @@ class _BeamStationCheckResult(Generic[_Request]):
 
     @property
     def _limitations(self) -> tuple[str, ...]:
+        if isinstance(self.request, BeamLayeredContinuousCheckRequestV1):
+            return (
+                "Checks declared actions for a prismatic two-span web cage with actual face layers.",
+                "Monolithic T and L flanges act in sagging compression. Shear uses the web width.",
+                "Support faces govern. Outer ends use full straight tension development on both faces and a web-only positive simple-support check.",
+                _COMMON_LIMITATIONS[1],
+            )
         if self._profile == "section":
             return _SECTION_LIMITATIONS
         return (
@@ -168,9 +184,11 @@ class _BeamStationCheckResult(Generic[_Request]):
 
 @dataclass(frozen=True)
 class BeamContinuousCheckResultV1(
-    _BeamStationCheckResult[BeamContinuousCheckRequestV1]
+    _BeamStationCheckResult[
+        BeamContinuousCheckRequestV1 | BeamLayeredContinuousCheckRequestV1
+    ]
 ):
-    """Revision-bound result for a supplied two-span rectangular beam."""
+    """Revision-bound result for a supplied two-span beam."""
 
 
 @dataclass(frozen=True)
@@ -208,12 +226,14 @@ class _SupportFace:
     location: AnchorageLocation
 
 
-def _support_faces(request: BeamContinuousCheckRequestV1) -> dict[float, _SupportFace]:
+def _support_faces(request: _ContinuousBeamCheckRequest) -> dict[float, _SupportFace]:
     left, middle, right = request.supports
     simple, continuous = (
         AnchorageLocation.SIMPLE_SUPPORT,
         AnchorageLocation.CONTINUOUS_SUPPORT,
     )
+    if isinstance(request, BeamLayeredContinuousCheckRequestV1):
+        simple = AnchorageLocation.DIRECT_SUPPORT
     decreasing, increasing = (
         AnchorageDirection.DECREASING_X,
         AnchorageDirection.INCREASING_X,
@@ -254,6 +274,7 @@ def _input_hash(request: _BeamStationCheckRequest) -> str:
 def _coverage_issues(
     request: (
         BeamContinuousCheckRequestV1
+        | BeamLayeredContinuousCheckRequestV1
         | BeamCantileverCheckRequestV1
         | BeamSectionCheckRequestV1
     ),
@@ -264,9 +285,9 @@ def _coverage_issues(
     received = {
         (action.combination_id, action.station_id): action for action in request.actions
     }
-    continuous = isinstance(request, BeamContinuousCheckRequestV1)
+    continuous = isinstance(request, _ContinuousBeamCheckRequest)
     section = isinstance(request, BeamSectionCheckRequestV1)
-    if isinstance(request, BeamContinuousCheckRequestV1):
+    if isinstance(request, _ContinuousBeamCheckRequest):
         left, middle, right = request.supports
         bounds = (left.centre_mm, right.centre_mm)
         required_positions = {
@@ -309,7 +330,7 @@ def _coverage_issues(
             complete_spans = True
             continue
         keys = {(stations[item].x_mm, stations[item].side) for item in needed}
-        if isinstance(request, BeamContinuousCheckRequestV1):
+        if isinstance(request, _ContinuousBeamCheckRequest):
             left, middle, right = request.supports
             left_span = any(
                 left.right_face_mm < x < middle.left_face_mm for x, _ in keys
@@ -317,7 +338,18 @@ def _coverage_issues(
             right_span = any(
                 middle.right_face_mm < x < right.left_face_mm for x, _ in keys
             )
-            complete_spans |= left_span and right_span and required_positions <= keys
+            full_span = left_span and right_span and required_positions <= keys
+            complete_spans |= full_span
+            if isinstance(request, BeamLayeredContinuousCheckRequestV1) and (
+                not full_span or set(needed) != set(stations)
+            ):
+                ultimate.append(
+                    StructuralIssueV1(
+                        "BEAM_MEMBER_COVERAGE_MISSING",
+                        f"combinations.{cid}",
+                        "Each ULS combination must declare every supplied member station, including both spans and all support faces and centreline sides.",
+                    )
+                )
         else:
             full_span = required_positions <= keys and any(
                 bounds[0] < x < bounds[1] for x, _ in keys
@@ -366,7 +398,7 @@ def _coverage_issues(
 
 
 def _centreline_issues(
-    request: BeamContinuousCheckRequestV1,
+    request: _ContinuousBeamCheckRequest,
     rows: tuple[BeamContinuousRowResultV1, ...],
 ) -> list[StructuralIssueV1]:
     left, middle, right = request.supports
@@ -402,7 +434,13 @@ def _centreline_issues(
 def _sections(
     request: _BeamStationCheckRequest, bars: tuple[BarPosition, ...]
 ) -> tuple[OperationResult, dict[Face, OperationResult], dict[Face, OperationResult]]:
-    flange = request.flange if isinstance(request, BeamSectionCheckRequestV1) else None
+    flange = (
+        request.flange
+        if isinstance(
+            request, (BeamSectionCheckRequestV1, BeamLayeredContinuousCheckRequestV1)
+        )
+        else None
+    )
     flange_width = (
         calculate_effective_flange_width(
             bw_mm=request.width_mm,
@@ -468,12 +506,13 @@ def _sections(
 
 
 def _flexure_provision_ok(result: OperationResult) -> bool:
+    if result.engineering != EngineeringState.PASS:
+        return False
     values = result.outputs
     tension = float(values["tension_steel_area_mm2"])
     compression = float(values["compression_steel_area_mm2"])
     return (
-        result.engineering == EngineeringState.PASS
-        and float(values["minimum_tension_steel_area_mm2"]) - 1e-9
+        float(values["minimum_tension_steel_area_mm2"]) - 1e-9
         <= tension
         <= float(values["maximum_tension_steel_area_mm2"]) + 1e-9
         and compression <= float(values["maximum_compression_steel_area_mm2"]) + 1e-9
@@ -502,6 +541,10 @@ def _anchor(
         if simple
         else None
     )
+    both_faces = (
+        isinstance(request, BeamLayeredContinuousCheckRequestV1)
+        and support_face.location is AnchorageLocation.DIRECT_SUPPORT
+    )
     paths = tuple(
         AnchoragePath(
             bar.bar_id,
@@ -528,7 +571,7 @@ def _anchor(
             evidence,
         )
         for bar in bars
-        if bar.face == face
+        if both_faces or bar.face == face
     )
     return check_anchorage(
         AnchorageCheckRequest(
@@ -550,6 +593,7 @@ def _check_row(
     support_face: _SupportFace | None,
     flexure: dict[Face, OperationResult],
     shear: dict[Face, OperationResult],
+    end_web_capacity_knm: float | None = None,
 ) -> BeamContinuousRowResultV1:
     if kind != "ULS" or not flexure:
         return BeamContinuousRowResultV1(action, station, kind, diagnostic)
@@ -582,6 +626,21 @@ def _check_row(
         if support_face is not None and m_cap > 0
         else None
     )
+    positive_anchor = None
+    if (
+        end_web_capacity_knm is not None
+        and support_face is not None
+        and support_face.location is AnchorageLocation.DIRECT_SUPPORT
+    ):
+        positive_anchor = _anchor(
+            request,
+            bars,
+            action,
+            station,
+            replace(support_face, location=AnchorageLocation.SIMPLE_SUPPORT),
+            Face.BOTTOM,
+            end_web_capacity_knm,
+        )
     return BeamContinuousRowResultV1(
         action,
         station,
@@ -593,11 +652,15 @@ def _check_row(
         v_util,
         "PASS" if passed else "FAIL",
         anchor,
+        positive_anchor,
     )
 
 
 def _row_issues(
-    rows: tuple[BeamContinuousRowResultV1, ...], faces: dict[float, _SupportFace]
+    rows: tuple[BeamContinuousRowResultV1, ...],
+    faces: dict[float, _SupportFace],
+    *,
+    layered: bool = False,
 ) -> tuple[list[StructuralIssueV1], list[StructuralIssueV1]]:
     failed, held = [], []
     for row in rows:
@@ -624,9 +687,16 @@ def _row_issues(
             )
         if row.station.x_mm not in faces:
             continue
-        if row.anchorage is None or row.anchorage.engineering not in (
-            EngineeringState.PASS,
-            EngineeringState.FAIL,
+        checks = [row.anchorage]
+        if (
+            layered
+            and faces[row.station.x_mm].location is AnchorageLocation.DIRECT_SUPPORT
+        ):
+            checks.append(row.positive_support_anchorage)
+        if any(
+            check is None
+            or check.engineering not in (EngineeringState.PASS, EngineeringState.FAIL)
+            for check in checks
         ):
             held.append(
                 StructuralIssueV1(
@@ -635,7 +705,10 @@ def _row_issues(
                     "A checked straight support anchorage path is required.",
                 )
             )
-        elif row.anchorage.engineering == EngineeringState.FAIL:
+        if any(
+            check is not None and check.engineering == EngineeringState.FAIL
+            for check in checks
+        ):
             failed.append(
                 StructuralIssueV1(
                     "BEAM_ANCHORAGE_FAIL",
@@ -673,11 +746,13 @@ def _governing_rows(rows: tuple[BeamContinuousRowResultV1, ...]) -> dict[str, st
 
 
 def check_continuous_beam(
-    request: BeamContinuousCheckRequestV1,
+    request: BeamContinuousCheckRequestV1 | BeamLayeredContinuousCheckRequestV1,
 ) -> BeamContinuousCheckResultV1:
     """Check a validated two-span request with exact supplied rows and physical bars."""
-    if not isinstance(request, BeamContinuousCheckRequestV1):
-        raise TypeError("request must be BeamContinuousCheckRequestV1")
+    if not isinstance(
+        request, (BeamContinuousCheckRequestV1, BeamLayeredContinuousCheckRequestV1)
+    ):
+        raise TypeError("request must be a validated continuous beam request")
     return _check_station_beam(request)
 
 
@@ -699,7 +774,7 @@ def check_section_beam(request: BeamSectionCheckRequestV1) -> BeamSectionCheckRe
 
 @overload
 def _check_station_beam(
-    request: BeamContinuousCheckRequestV1,
+    request: BeamContinuousCheckRequestV1 | BeamLayeredContinuousCheckRequestV1,
 ) -> BeamContinuousCheckResultV1: ...
 
 
@@ -718,6 +793,7 @@ def _check_station_beam(
 def _check_station_beam(
     request: (
         BeamContinuousCheckRequestV1
+        | BeamLayeredContinuousCheckRequestV1
         | BeamCantileverCheckRequestV1
         | BeamSectionCheckRequestV1
     ),
@@ -737,11 +813,28 @@ def _check_station_beam(
         for bar in sorted(request.bars, key=lambda bar: bar.bar_id)
     )
     geometry, flexure, shear = (None, {}, {}) if stale else _sections(request, bars)
+    layered = isinstance(request, BeamLayeredContinuousCheckRequestV1)
+    end_web_capacity = None
+    if layered and not stale:
+        web = flexural_capacity(
+            FlexuralCapacityRequest(
+                request.schema_version,
+                SectionKind.RECTANGULAR,
+                request.width_mm,
+                request.depth_mm,
+                request.fck_nmm2,
+                request.fy_nmm2,
+                bars,
+                Face.BOTTOM,
+            )
+        )
+        if _flexure_provision_ok(web):
+            end_web_capacity = float(web.outputs["capacity_knm"])
     stations = {station.station_id: station for station in request.stations}
     kinds = {item.combination_id: item.kind for item in request.combinations}
     centreline: set[float] = set()
     faces: dict[float, _SupportFace] = {}
-    if isinstance(request, BeamContinuousCheckRequestV1):
+    if isinstance(request, _ContinuousBeamCheckRequest):
         centreline = {support.centre_mm for support in request.supports}
         faces = _support_faces(request)
     elif isinstance(request, BeamCantileverCheckRequestV1):
@@ -764,6 +857,7 @@ def _check_station_beam(
             faces.get(stations[action.station_id].x_mm),
             flexure,
             shear,
+            end_web_capacity,
         )
         for action in sorted(
             request.actions,
@@ -776,7 +870,15 @@ def _check_station_beam(
         )
     )
     held, service = _coverage_issues(request, stations)
-    if isinstance(request, BeamContinuousCheckRequestV1):
+    if layered and request.depth_mm > 750:
+        held.append(
+            StructuralIssueV1(
+                "BEAM.SIDE_FACE_REINFORCEMENT_HELD",
+                "depth_mm",
+                "The face-layer cage has no side-face reinforcement inventory for beams deeper than 750 mm.",
+            )
+        )
+    if isinstance(request, _ContinuousBeamCheckRequest):
         held.extend(_centreline_issues(request, rows))
     elif isinstance(request, BeamCantileverCheckRequestV1):
         for row in rows:
@@ -791,7 +893,9 @@ def _check_station_beam(
                         "The supported free end requires zero moment and shear.",
                     )
                 )
-    failed, row_held = _row_issues(rows, faces) if not stale else ([], [])
+    failed, row_held = (
+        _row_issues(rows, faces, layered=layered) if not stale else ([], [])
+    )
     if stale:
         held.append(
             StructuralIssueV1(
@@ -856,7 +960,9 @@ def _check_station_beam(
         _governing_rows(rows),
         envelope,
     )
-    if isinstance(request, BeamContinuousCheckRequestV1):
+    if isinstance(
+        request, (BeamContinuousCheckRequestV1, BeamLayeredContinuousCheckRequestV1)
+    ):
         return BeamContinuousCheckResultV1(request, *fields)
     if isinstance(request, BeamCantileverCheckRequestV1):
         return BeamCantileverCheckResultV1(request, *fields)

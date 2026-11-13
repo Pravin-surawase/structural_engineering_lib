@@ -133,15 +133,16 @@ _CAPABILITIES = (
             "anchorage against declared concurrent rows for two rectangular spans. "
             "The cantilever Python profile checks physical stations and straight fixed-face anchorage. "
             "The section Python profile checks signed rectangular, monolithic T and L sections with actual bar layers. "
+            "The two-span detailing profile covers prismatic rectangular, monolithic T and L web cages with full-length straight layers and uniform ordinary links. "
             "The structural_lib.beam.check_edge_beam_torsion operation combines same-station resistance and signed support transfer for the declared ordinary rectangular edge-beam profile."
         ),
         held_cases=(
-            "L-beam and flanged hogging checks are available at one supplied Python section. Composed flanged detailing and flanged torsion are outside that profile. Hollow/box, deep, prestressed and axially loaded beam cases are excluded.",
+            "Hollow/box, deep, prestressed and axially loaded beam cases are excluded.",
             "The two-span Python profile requires supplied concurrent actions and holds stale or missing rows and anchorage. Serviceability, source-model completeness and fabrication are separate checks.",
             "The cantilever Python profile requires both sides of declared interior discontinuities and a zero-action free end. Serviceability and fabrication remain separate.",
             "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
             "Load-envelope generation and completeness validation are excluded; the flanged route accepts only declared supplied factored actions.",
-            "Composed flanged detailing remains excluded.",
+            "The layered and flanged detailing profile holds cutoffs, laps and nonzero torsion. Flange slab reinforcement, varying sections and fabrication approval require separate evidence.",
             "Beam check, detailing, batch, import, and other automation surfaces that do not accept Tu and serviceability inputs remain outside the combined route.",
             "Serviceability is held unless span, support condition, crack geometry, and service strain or stress are explicitly supplied.",
         ),
@@ -173,7 +174,7 @@ _CAPABILITIES = (
                 "load_continuous_detailing",
                 "check_continuous_detailing",
                 "is456-beam-continuous-detailing-input/v1",
-                "Two-span rectangular member with straight bars, one optional first-span bottom cutoff or separated lap and one uniform ordinary link mark, with checked elevation and schedule.",
+                "Two-span rectangular, T or L web cage with actual straight layers, uniform ordinary web links, checked elevation, section and BBS. The original single-layer rectangular profile also admits one bottom cutoff or separated lap.",
                 "docs/cookbook/python/beam-continuous-detailing.md",
                 "Python/examples/beam_continuous_detailing.py",
             ),
