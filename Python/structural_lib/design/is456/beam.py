@@ -6,6 +6,40 @@ from collections.abc import Mapping
 from typing import Literal
 
 from structural_lib.core.errors import InputContractError, InputIssueV1
+from structural_lib.services.beam_catalogue import (
+    BeamSectionCatalogueInputV1,
+    render_section_catalogue_html,
+    select_section_catalogue,
+)
+from structural_lib.services.beam_continuous import (
+    BeamCantileverCheckResultV1,
+    BeamContinuousCheckResultV1,
+    BeamSectionCheckResultV1,
+    check_cantilever_beam,
+    check_continuous_beam,
+    check_section_beam,
+    render_continuous_beam_html,
+    render_station_beam_html,
+)
+from structural_lib.services.beam_instantaneous_service import (
+    BeamInstantaneousServiceInputV1,
+    check_instantaneous_service,
+    render_instantaneous_service_html,
+)
+from structural_lib.services.beam_member_detailing import (
+    BeamBarEditV1,
+    BeamContinuousDetailingInputV1,
+    check_continuous_detailing,
+    recheck_continuous_bar_edit,
+    render_continuous_detailing_bbs_csv,
+    render_continuous_detailing_html,
+    render_continuous_detailing_svg,
+)
+from structural_lib.services.beam_service_history import (
+    BeamServiceHistoryInputV1,
+    check_finite_service_history,
+    render_finite_service_history_html,
+)
 from structural_lib.services.canonical_beam import (
     BeamBBSResultV1,
     BeamDesignAndDetailResultV1,
@@ -31,6 +65,19 @@ from structural_lib.services.contracts.beam import (
     IS456ReinforcementMaterialsV1,
     MemberIdentityV1,
     RectangularBeamSectionV1,
+)
+from structural_lib.services.contracts.beam_continuous import (
+    BeamCantileverCheckRequestV1,
+    BeamContinuousActionV1,
+    BeamContinuousBarV1,
+    BeamContinuousCheckRequestV1,
+    BeamContinuousCombinationV1,
+    BeamContinuousStationV1,
+    BeamContinuousStraightBarsV1,
+    BeamContinuousSupportV1,
+    BeamSectionBarV1,
+    BeamSectionCheckRequestV1,
+    BeamSectionFlangeV1,
 )
 from structural_lib.services.contracts.beam_serviceability import (
     BeamAnnexFCrackCheckV1,
@@ -61,10 +108,44 @@ from structural_lib.services.supplied_beam_check import (
 
 __all__ = [
     "BeamActionsV1",
+    "BeamBarEditV1",
+    "BeamContinuousDetailingInputV1",
+    "load_continuous_detailing",
+    "recheck_continuous_bar_edit",
+    "check_continuous_detailing",
+    "render_continuous_detailing_bbs_csv",
+    "render_continuous_detailing_html",
+    "render_continuous_detailing_svg",
+    "BeamSectionCatalogueInputV1",
+    "load_section_catalogue",
+    "select_section_catalogue",
+    "render_section_catalogue_html",
+    "BeamServiceHistoryInputV1",
+    "load_finite_service_history",
+    "check_finite_service_history",
+    "render_finite_service_history_html",
+    "BeamInstantaneousServiceInputV1",
+    "load_instantaneous_service",
+    "check_instantaneous_service",
+    "render_instantaneous_service_html",
     "BEAM_FIELD_CONTRACTS",
     "BeamBBSResultV1",
     "BeamCalculationBasisV1",
+    "BeamCantileverCheckRequestV1",
+    "BeamCantileverCheckResultV1",
+    "BeamContinuousActionV1",
+    "BeamContinuousBarV1",
+    "BeamContinuousCheckRequestV1",
+    "BeamContinuousCheckResultV1",
+    "BeamContinuousCombinationV1",
+    "BeamContinuousStationV1",
+    "BeamContinuousStraightBarsV1",
+    "BeamContinuousSupportV1",
     "BeamDesignAndDetailResultV1",
+    "BeamSectionBarV1",
+    "BeamSectionCheckRequestV1",
+    "BeamSectionCheckResultV1",
+    "BeamSectionFlangeV1",
     "BeamDesignInputV1",
     "BeamDesignResultV1",
     "BeamDetailingOptionsV1",
@@ -96,6 +177,9 @@ __all__ = [
     "RectangularBeamSectionV1",
     "bbs",
     "check",
+    "check_cantilever",
+    "check_continuous",
+    "check_section",
     "check_supplied",
     "design",
     "design_and_detail",
@@ -103,6 +187,12 @@ __all__ = [
     "input",
     "load",
     "load_json",
+    "load_cantilever",
+    "load_continuous",
+    "load_section",
+    "render_cantilever_html",
+    "render_continuous_html",
+    "render_section_html",
     "load_supplied_check",
     "load_supplied_check_json",
 ]
@@ -466,6 +556,124 @@ def check_supplied(
     return check_supplied_beam_v2(request)
 
 
+def load_continuous(
+    value: Mapping[str, object] | str | bytes | BeamContinuousCheckRequestV1,
+) -> BeamContinuousCheckRequestV1:
+    """Parse a strict supplied two-span beam request.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamContinuousCheckRequestV1
+        Physical supports, bar positions and revision-bound station actions.
+
+    Returns
+    -------
+    BeamContinuousCheckRequestV1
+        The immutable request to pass to :func:`check_continuous`.
+
+    Raises
+    ------
+    InputContractError
+        Duplicate rows, inconsistent topology or other invalid intake.
+
+    Examples
+    --------
+    >>> callable(load_continuous)
+    True
+
+    Limitations
+    -----------
+    Accepts already normalized mm, kN and kN·m. The worked example shows
+    the complete request and how to run PASS, FAIL and HOLD cases.
+
+    Provenance
+    ----------
+    Uses the strict IS 456 continuous-beam request model and canonical issues.
+    """
+    if isinstance(value, BeamContinuousCheckRequestV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamContinuousCheckRequestV1, value)
+    return model_validate_or_error(BeamContinuousCheckRequestV1, value)
+
+
+def check_continuous(
+    request: BeamContinuousCheckRequestV1,
+) -> BeamContinuousCheckResultV1:
+    """Check signed flexure, shear and straight anchorage on a two-span beam.
+
+    Parameters
+    ----------
+    request : BeamContinuousCheckRequestV1
+        Two spans of a prismatic rectangular beam, both physical bar faces,
+        three supports and concurrent actions at the declared stations.
+
+    Returns
+    -------
+    BeamContinuousCheckResultV1
+        Supplied ultimate disposition, exact source rows, governing checks
+        and separately held service evidence.
+
+    Raises
+    ------
+    TypeError
+        The input is not a validated continuous-beam request.
+
+    Examples
+    --------
+    >>> callable(check_continuous)
+    True
+
+    Limitations
+    -----------
+    The check consumes already supplied actions. It holds stale, incomplete
+    or unsupported evidence. Fabrication, lateral stability and service
+    deflection or cracking require separate checks.
+
+    Provenance
+    ----------
+    Composes the maintained IS 456 physical flexure, shear, geometry and
+    anchorage checks. The result records their identities and the input hash.
+    """
+    return check_continuous_beam(request)
+
+
+def render_continuous_html(result: BeamContinuousCheckResultV1) -> str:
+    """Render the checked rows, governing cases and limits in a review report.
+
+    Parameters
+    ----------
+    result : BeamContinuousCheckResultV1
+        A result from :func:`check_continuous`.
+
+    Returns
+    -------
+    str
+        Self-contained UTF-8 HTML.
+
+    Raises
+    ------
+    TypeError
+        The input is not a continuous-beam result.
+
+    Examples
+    --------
+    >>> callable(render_continuous_html)
+    True
+
+    Limitations
+    -----------
+    The report preserves the bounded disposition and qualified-review status.
+
+    Provenance
+    ----------
+    Reads the exact result and input identity without recalculating any row.
+    """
+    if not isinstance(result, BeamContinuousCheckResultV1):
+        raise TypeError("result must be BeamContinuousCheckResultV1")
+    return render_continuous_beam_html(result)
+
+
 def bbs(
     result: (
         BeamDesignAndDetailResultV1
@@ -508,3 +716,393 @@ def bbs(
     """
 
     return generate_bbs(result)
+
+
+def load_cantilever(
+    value: Mapping[str, object] | str | bytes | BeamCantileverCheckRequestV1,
+) -> BeamCantileverCheckRequestV1:
+    """Parse a strict supplied-action cantilever request.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamCantileverCheckRequestV1
+        Physical section, fixed-support geometry and revision-bound actions.
+
+    Returns
+    -------
+    BeamCantileverCheckRequestV1
+        A validated request for :func:`check_cantilever`.
+
+    Raises
+    ------
+    InputContractError
+        The payload violates the request contract.
+
+    Examples
+    --------
+    >>> callable(load_cantilever)
+    True
+
+    Limitations
+    -----------
+    Coordinates are in mm from the fixed face toward the free end. Supply
+    actions in kN and kN·m, including both sides of each discontinuity.
+
+    Provenance
+    ----------
+    Uses the strict IS 456 cantilever request model and canonical input issues.
+    """
+    if isinstance(value, BeamCantileverCheckRequestV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamCantileverCheckRequestV1, value)
+    return model_validate_or_error(BeamCantileverCheckRequestV1, value)
+
+
+def check_cantilever(
+    request: BeamCantileverCheckRequestV1,
+) -> BeamCantileverCheckResultV1:
+    """Check signed flexure, shear and straight fixed-face anchorage.
+
+    Parameters
+    ----------
+    request : BeamCantileverCheckRequestV1
+        Validated section, bars and supplied station actions.
+
+    Returns
+    -------
+    BeamCantileverCheckResultV1
+        Checked rows, governing row IDs and revision-bound dispositions.
+
+    Raises
+    ------
+    TypeError
+        The request is not a validated cantilever request.
+
+    Examples
+    --------
+    >>> callable(check_cantilever)
+    True
+
+    Limitations
+    -----------
+    Ordinary prismatic rectangular section, one bar layer per face and a
+    zero-action free end. Serviceability and fabrication need separate checks.
+
+    Provenance
+    ----------
+    Composes the maintained IS 456 section, shear and direct anchorage checks.
+    """
+    return check_cantilever_beam(request)
+
+
+def render_cantilever_html(result: BeamCantileverCheckResultV1) -> str:
+    """Render the checked cantilever result and its input identity.
+
+    Parameters
+    ----------
+    result : BeamCantileverCheckResultV1
+        A result from :func:`check_cantilever`.
+
+    Returns
+    -------
+    str
+        Standalone HTML retaining station sides and result dispositions.
+
+    Raises
+    ------
+    TypeError
+        The result is not a cantilever check result.
+
+    Examples
+    --------
+    >>> callable(render_cantilever_html)
+    True
+
+    Limitations
+    -----------
+    Renders the supplied result without rechecking or creating a schedule.
+
+    Provenance
+    ----------
+    Uses the same result and analysis revision as the JSON projection.
+    """
+    if not isinstance(result, BeamCantileverCheckResultV1):
+        raise TypeError("result must be BeamCantileverCheckResultV1")
+    return render_station_beam_html(result)
+
+
+def load_section(
+    value: Mapping[str, object] | str | bytes | BeamSectionCheckRequestV1,
+) -> BeamSectionCheckRequestV1:
+    """Parse a strict signed beam-section request.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamSectionCheckRequestV1
+        One physical section with actual bar layers and supplied action rows.
+
+    Returns
+    -------
+    BeamSectionCheckRequestV1
+        Validated section geometry and revision-bound actions.
+
+    Raises
+    ------
+    InputContractError
+        Section topology, reinforcement or action inventory is inconsistent.
+
+    Examples
+    --------
+    >>> callable(load_section)
+    True
+
+    Limitations
+    -----------
+    Bars use web-local x and top-down y in mm. The optional monolithic
+    flange has one overhang for an L or two for a T.
+
+    Provenance
+    ----------
+    Uses the strict beam-section request model and canonical input issues.
+    """
+    if isinstance(value, BeamSectionCheckRequestV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamSectionCheckRequestV1, value)
+    return model_validate_or_error(BeamSectionCheckRequestV1, value)
+
+
+def check_section(request: BeamSectionCheckRequestV1) -> BeamSectionCheckResultV1:
+    """Check actual reinforcement at a signed rectangular, T or L section.
+
+    Parameters
+    ----------
+    request : BeamSectionCheckRequestV1
+        Validated section and concurrent actions at one physical station.
+
+    Returns
+    -------
+    BeamSectionCheckResultV1
+        Section resistance, bar strains and governing action rows.
+
+    Raises
+    ------
+    TypeError
+        The request is not a validated section request.
+
+    Examples
+    --------
+    >>> callable(check_section)
+    True
+
+    Limitations
+    -----------
+    Flanges contribute in sagging only. Shear uses the web width.
+    Anchorage, fabrication and serviceability need separate checks.
+
+    Provenance
+    ----------
+    Composes the maintained IS 456 effective width, flexure and shear checks.
+    """
+    return check_section_beam(request)
+
+
+def render_section_html(result: BeamSectionCheckResultV1) -> str:
+    """Render a signed section result without recalculation.
+
+    Parameters
+    ----------
+    result : BeamSectionCheckResultV1
+        A result from :func:`check_section`.
+
+    Returns
+    -------
+    str
+        HTML with the checked actions, bars, layers and input identity.
+
+    Raises
+    ------
+    TypeError
+        The result is not a signed section result.
+
+    Examples
+    --------
+    >>> callable(render_section_html)
+    True
+
+    Limitations
+    -----------
+    The report covers the supplied section. Member outputs are separate.
+
+    Provenance
+    ----------
+    Uses the same result and revisions as the JSON projection.
+    """
+    if not isinstance(result, BeamSectionCheckResultV1):
+        raise TypeError("result must be BeamSectionCheckResultV1")
+    return render_station_beam_html(result)
+
+
+def load_instantaneous_service(
+    value: Mapping[str, object] | str | bytes | BeamInstantaneousServiceInputV1,
+) -> BeamInstantaneousServiceInputV1:
+    """Validate the supplied member, load case and instantaneous limits.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamInstantaneousServiceInputV1
+        The actual physical member and one symmetric service load case.
+
+    Returns
+    -------
+    BeamInstantaneousServiceInputV1
+        The validated service request.
+
+    Raises
+    ------
+    InputContractError
+        The supplied input violates the physical or wire contract.
+
+    Examples
+    --------
+    >>> callable(load_instantaneous_service)
+    True
+
+    Limitations
+    -----------
+    Solid rectangular simply supported or bounded two-span members.
+
+    Provenance
+    ----------
+    Uses the existing beam section and continuous-member input contracts.
+    """
+    if isinstance(value, BeamInstantaneousServiceInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamInstantaneousServiceInputV1, value)
+    return model_validate_or_error(BeamInstantaneousServiceInputV1, value)
+
+
+def load_finite_service_history(
+    value: Mapping[str, object] | str | bytes | BeamServiceHistoryInputV1,
+) -> BeamServiceHistoryInputV1:
+    """Load the physical member and explicit finite-age service history.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamServiceHistoryInputV1
+        The actual member, service cases, age stages and prescribed material data.
+
+    Returns
+    -------
+    BeamServiceHistoryInputV1
+        The validated history request.
+
+    Raises
+    ------
+    InputContractError
+        The request violates the history or physical member wire contract.
+
+    Examples
+    --------
+    >>> callable(load_finite_service_history)
+    True
+
+    Limitations
+    -----------
+    Simply supported rectangular beams with downward UDLs.
+
+    Provenance
+    ----------
+    Uses strict physical beam and finite-age history contracts.
+    """
+    if isinstance(value, BeamServiceHistoryInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamServiceHistoryInputV1, value)
+    return model_validate_or_error(BeamServiceHistoryInputV1, value)
+
+
+def load_section_catalogue(
+    value: Mapping[str, object] | str | bytes | BeamSectionCatalogueInputV1,
+) -> BeamSectionCatalogueInputV1:
+    """Load two finite bottom-bar catalogues for a checked rectangular section.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamSectionCatalogueInputV1
+        The fixed section, signed actions and each layer's explicit options.
+
+    Returns
+    -------
+    BeamSectionCatalogueInputV1
+        The validated section catalogue request.
+
+    Raises
+    ------
+    InputContractError
+        The request violates the finite catalogue or section contract.
+
+    Examples
+    --------
+    >>> callable(load_section_catalogue)
+    True
+
+    Limitations
+    -----------
+    Two bottom layers at fixed depths, with fixed top reinforcement.
+
+    Provenance
+    ----------
+    Uses the existing signed section contract and declared bar coordinates.
+    """
+    if isinstance(value, BeamSectionCatalogueInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamSectionCatalogueInputV1, value)
+    return model_validate_or_error(BeamSectionCatalogueInputV1, value)
+
+
+def load_continuous_detailing(
+    value: Mapping[str, object] | str | bytes | BeamContinuousDetailingInputV1,
+) -> BeamContinuousDetailingInputV1:
+    """Load a two-span rectangular, T or L web cage and its ordinary link detail.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamContinuousDetailingInputV1
+        The physical member, supplied actions, link placement, optional bottom
+        bar cutoff or separated lap and stock length.
+
+    Returns
+    -------
+    BeamContinuousDetailingInputV1
+        The validated continuous detailing request.
+
+    Raises
+    ------
+    InputContractError
+        The member, action or link inputs violate the contract.
+
+    Examples
+    --------
+    >>> callable(load_continuous_detailing)
+    True
+
+    Limitations
+    -----------
+    The nested member schema is `is456-layered-continuous-beam-check/v1`
+    for monolithic flanges or actual face layers. That profile requires
+    uninterrupted straight bars. The original rectangular schema also
+    admits one first-span bottom cutoff or separated lap.
+
+    Provenance
+    ----------
+    Uses the signed continuous beam contract and actual bar path input.
+    """
+    if isinstance(value, BeamContinuousDetailingInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamContinuousDetailingInputV1, value)
+    return model_validate_or_error(BeamContinuousDetailingInputV1, value)

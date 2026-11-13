@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class IS456FieldAliasModel(BaseModel):
@@ -58,15 +58,34 @@ class IS456SemanticContractModel(BaseModel):
     adapters: list[IS456AdapterContractModel]
 
 
-class IS456CapabilityModel(BaseModel):
-    """One supported capability plus its held boundary."""
+class IS456PythonProfileModel(BaseModel):
+    """Discoverable Python family-facade profile."""
 
-    capability_id: str
+    workflow_id: str
+    module: str
+    loader: str
+    operation: str
+    request_schema: str
+    supported_case: str
+    guide: str
+    example: str
+
+
+class IS456ComponentCapabilityModel(BaseModel):
+    """One supported component and its held boundary across discovery surfaces."""
+
     element: str
     public_workflows: list[str]
     supported_case: str
     held_cases: list[str]
     qualified_review_required: bool
+    python_profiles: list[IS456PythonProfileModel] = Field(default_factory=list)
+
+
+class IS456CapabilityModel(IS456ComponentCapabilityModel):
+    """Capability entry with the public discovery identifier."""
+
+    capability_id: str
 
 
 class IS456CapabilityDocumentModel(BaseModel):

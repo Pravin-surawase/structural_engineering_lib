@@ -166,6 +166,34 @@ torsion signs and zero torsion. D3 HOLD is
 retained throughout. Its torsional serviceability method and applicable
 criteria must be independently verified before full member acceptance.
 
+## Check the equilibrium-torsion action case
+
+Use `structural_lib.beam.check_edge_beam_torsion` with an
+`EdgeBeamTorsionRequest`. Supply the current normalized action snapshot,
+every required source row ID, the actual section and bar paths, the
+checked link detail and the receiving supports. The result retains
+each original signed M3, V2 and torque row. The section checks, full
+straight bar development and physical link checks share the same detail.
+The separate transfer calculation verifies the signed support couples
+and receiving crosshead section strength.
+
+```bash
+python -I Python/examples/physical_torsion_member.py --output-dir edge-torsion
+python -I Python/examples/physical_torsion_member.py --eccentricity-mm -50 --output-dir reversed-torque
+python -I Python/examples/physical_torsion_member.py --link-pitch-mm 175 --output-dir inadequate-links
+python -I Python/examples/physical_torsion_member.py --load-n-per-mm 28 --output-dir inadequate-bars
+python -I Python/examples/physical_torsion_member.py --omit-transfer --output-dir transfer-held
+```
+
+The [independent BEAM07 reference](../../verification/library-029-beam07-equilibrium-torsion.json)
+covers both torque signs, inadequate links, inadequate longitudinal steel
+and missing transfer. The original 12 N/mm case has 30 kN vertical reaction
+and 1.5 kN·m torque reaction magnitude per support. The governing equivalent
+primary moment is 37.5283 kN·m. The report records the equilibrium-torsion
+result ID. The scope stops at the receiving crosshead section and the
+supplied station inventory. Serviceability, compatibility torsion, flanged
+sections, receiver bearings and foundations require separate evidence.
+
 ## Complete the selected D3 service case
 
 ```bash

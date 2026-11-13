@@ -1,0 +1,4559 @@
+{
+  "schema_version": "library-029-col06-catalogue-reference/v1",
+  "frozen_before_implementation": true,
+  "frozen_production_base": "7df541042b44ad92c710ca59c14a90bd7fa55634",
+  "sources": [
+    "IS 456:2000 Cl. 25.4, 26.2.2.4(b), 26.3\u201326.5.3, 38.1, 39.1, 39.5 and 39.6.",
+    "IIT Kharagpur Lesson 26 https://archive.nptel.ac.in/content/storage2/courses/105105104/pdf/m10l26.pdf"
+  ],
+  "method": "Enumerate the supplied sizes, bar diameters and tie schedules. Resolve cover, offset, fit and restraint independently. Integrate the COL02 strip reference at fixed compression on both axes and check each supplied combination. Order by gross area, steel area, b, D, bar diameter, tie diameter, larger pitch, then catalogue IDs. Only a fully resolved catalogue can return a selection.",
+  "tolerances": {
+    "utilization": 0.0001,
+    "dimension_mm": 1e-06
+  },
+  "cases": {
+    "nominal": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "nominal",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "COMPLETE_FEASIBLE",
+        "engineering_status": "PASS",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.7471782870709969
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.7471782870709969
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5981694738302167
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5981694738302167
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39400797841483914
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39400797841483914
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.49538630107169956
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.49538630107169956
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.3122131341736373
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.3122131341736373
+          }
+        },
+        "eligible_ids": [
+          "R300x400/16/T08-P150",
+          "R300x400/20/T08-P300",
+          "R300x400/20/T08-P150",
+          "R350x450/16/T08-P150",
+          "R350x450/20/T08-P300",
+          "R350x450/20/T08-P150",
+          "R350x450/25/T10-P200",
+          "R400x500/16/T08-P150",
+          "R400x500/20/T08-P300",
+          "R400x500/20/T08-P150",
+          "R400x500/25/T10-P200"
+        ],
+        "selected_id": "R300x400/16/T08-P150",
+        "analysis_status": "BOUND"
+      }
+    },
+    "reordered": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          25,
+          20,
+          16
+        ],
+        "tie_options": [
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "reordered",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "COMPLETE_FEASIBLE",
+        "engineering_status": "PASS",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.7471782870709969
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.7471782870709969
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5981694738302167
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5981694738302167
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39400797841483914
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39400797841483914
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.49538630107169956
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.49538630107169956
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.3122131341736373
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.3122131341736373
+          }
+        },
+        "eligible_ids": [
+          "R300x400/16/T08-P150",
+          "R300x400/20/T08-P300",
+          "R300x400/20/T08-P150",
+          "R350x450/16/T08-P150",
+          "R350x450/20/T08-P300",
+          "R350x450/20/T08-P150",
+          "R350x450/25/T10-P200",
+          "R400x500/16/T08-P150",
+          "R400x500/20/T08-P300",
+          "R400x500/20/T08-P150",
+          "R400x500/25/T10-P200"
+        ],
+        "selected_id": "R300x400/16/T08-P150",
+        "analysis_status": "BOUND"
+      }
+    },
+    "multiple_combinations": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U2",
+            "pu_kn": 500,
+            "mx_knm": -75,
+            "my_knm": 55,
+            "check_station_mm": 750
+          },
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "multiple_combinations",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "COMPLETE_FEASIBLE",
+        "engineering_status": "PASS",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.7471782870709969
+              },
+              "U2": {
+                "status": "FAIL",
+                "utilization": 1.2090836543548154
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 1.2090836543548154
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.9850133022237682
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.9850133022237682
+          },
+          "R300x400/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.9850133022237682
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.9850133022237682
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5981694738302167
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.9324207941533451
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.9324207941533451
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.7713396317223837
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.7713396317223837
+          },
+          "R350x450/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.7713396317223837
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.7713396317223837
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39400797841483914
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.6049672123238263
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.6049672123238263
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.49538630107169956
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.7599029966039437
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.7599029966039437
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.6119664261317971
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.6119664261317971
+          },
+          "R400x500/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.6119664261317971
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.6119664261317971
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              },
+              "U2": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.3122131341736373
+              },
+              "U2": {
+                "status": "PASS",
+                "utilization": 0.4790668953824163
+              }
+            },
+            "governing_combination_id": "U2",
+            "utilization": 0.4790668953824163
+          }
+        },
+        "eligible_ids": [
+          "R300x400/20/T08-P300",
+          "R300x400/20/T08-P150",
+          "R350x450/16/T08-P150",
+          "R350x450/20/T08-P300",
+          "R350x450/20/T08-P150",
+          "R350x450/25/T10-P200",
+          "R400x500/16/T08-P150",
+          "R400x500/20/T08-P300",
+          "R400x500/20/T08-P150",
+          "R400x500/25/T10-P200"
+        ],
+        "selected_id": "R300x400/20/T08-P300",
+        "analysis_status": "BOUND"
+      }
+    },
+    "changed_size": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 400,
+            "D_mm": 500
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "changed_size",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "COMPLETE_FEASIBLE",
+        "engineering_status": "HOLD",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.7471782870709969
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.7471782870709969
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5981694738302167
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5981694738302167
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39400797841483914
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39400797841483914
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.49538630107169956
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.49538630107169956
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.3122131341736373
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.3122131341736373
+          }
+        },
+        "eligible_ids": [
+          "R300x400/16/T08-P150",
+          "R300x400/20/T08-P300",
+          "R300x400/20/T08-P150",
+          "R350x450/16/T08-P150",
+          "R350x450/20/T08-P300",
+          "R350x450/20/T08-P150",
+          "R350x450/25/T10-P200",
+          "R400x500/16/T08-P150",
+          "R400x500/20/T08-P300",
+          "R400x500/20/T08-P150",
+          "R400x500/25/T10-P200"
+        ],
+        "selected_id": "R300x400/16/T08-P150",
+        "analysis_status": "ANALYSIS_REFRESH_REQUIRED"
+      }
+    },
+    "stale_analysis": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-02",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "stale_analysis",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "COMPLETE_FEASIBLE",
+        "engineering_status": "HOLD",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.7471782870709969
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.7471782870709969
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5981694738302167
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5981694738302167
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39400797841483914
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39400797841483914
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.49538630107169956
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.49538630107169956
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.3122131341736373
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.3122131341736373
+          }
+        },
+        "eligible_ids": [
+          "R300x400/16/T08-P150",
+          "R300x400/20/T08-P300",
+          "R300x400/20/T08-P150",
+          "R350x450/16/T08-P150",
+          "R350x450/20/T08-P300",
+          "R350x450/20/T08-P150",
+          "R350x450/25/T10-P200",
+          "R400x500/16/T08-P150",
+          "R400x500/20/T08-P300",
+          "R400x500/20/T08-P150",
+          "R400x500/25/T10-P200"
+        ],
+        "selected_id": "R300x400/16/T08-P150",
+        "analysis_status": "STALE_ANALYSIS"
+      }
+    },
+    "reinforcement_dependent": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "reinforcement_dependent"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "reinforcement_dependent",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "COMPLETE_FEASIBLE",
+        "engineering_status": "HOLD",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.7471782870709969
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.7471782870709969
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5981694738302167
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5981694738302167
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39400797841483914
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39400797841483914
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.49538630107169956
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.49538630107169956
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.3122131341736373
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.3122131341736373
+          }
+        },
+        "eligible_ids": [
+          "R300x400/16/T08-P150",
+          "R300x400/20/T08-P300",
+          "R300x400/20/T08-P150",
+          "R350x450/16/T08-P150",
+          "R350x450/20/T08-P300",
+          "R350x450/20/T08-P150",
+          "R350x450/25/T10-P200",
+          "R400x500/16/T08-P150",
+          "R400x500/20/T08-P300",
+          "R400x500/20/T08-P150",
+          "R400x500/25/T10-P200"
+        ],
+        "selected_id": "R300x400/16/T08-P150",
+        "analysis_status": "ANALYSIS_REFRESH_REQUIRED"
+      }
+    },
+    "budget_exhausted": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "budget_exhausted",
+          "source_reference": "COL06 independent catalogue worksheet"
+        },
+        "evaluation_limit": 2
+      },
+      "expected": {
+        "terminal_state": "INCOMPLETE_BUDGET",
+        "engineering_status": "HOLD",
+        "catalogue_count": 27,
+        "enumeration_complete": false,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "PASS",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.7471782870709969
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.7471782870709969
+          }
+        },
+        "eligible_ids": [
+          "R300x400/16/T08-P150"
+        ],
+        "selected_id": null,
+        "analysis_status": null
+      }
+    },
+    "no_feasible": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 400,
+            "my_knm": 320,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "no_feasible",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "COMPLETE_INFEASIBLE",
+        "engineering_status": "FAIL",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 8.320228949218361
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 8.320228949218361
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 6.1305994171433
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 6.1305994171433
+          },
+          "R300x400/20/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 6.1305994171433
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 6.1305994171433
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 5.532932350194992
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 5.532932350194992
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 4.301679158697725
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 4.301679158697725
+          },
+          "R350x450/20/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 4.301679158697725
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 4.301679158697725
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 3.375347742543794
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 3.375347742543794
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 4.2322671285159075
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 4.2322671285159075
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 3.4091794567936002
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 3.4091794567936002
+          },
+          "R400x500/20/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 3.4091794567936002
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 3.4091794567936002
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL",
+                "utilization": 2.669660179340465
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 2.669660179340465
+          }
+        },
+        "eligible_ids": [],
+        "selected_id": null,
+        "analysis_status": null
+      }
+    },
+    "missing_restraint": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "missing_restraint",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "BLOCKED_MANDATORY_CHECK",
+        "engineering_status": "HOLD",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "HOLD",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "HOLD"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_REQUIRED"
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T08-P150": {
+            "status": "HOLD",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "HOLD"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_REQUIRED"
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "HOLD",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "HOLD"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_REQUIRED"
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T08-P150": {
+            "status": "HOLD",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "HOLD"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_REQUIRED"
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39400797841483914
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39400797841483914
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "HOLD",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "HOLD"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_REQUIRED"
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T08-P150": {
+            "status": "HOLD",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "HOLD"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_REQUIRED"
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.3122131341736373
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.3122131341736373
+          }
+        },
+        "eligible_ids": [
+          "R300x400/20/T08-P300",
+          "R350x450/20/T08-P300",
+          "R350x450/25/T10-P200",
+          "R400x500/20/T08-P300",
+          "R400x500/25/T10-P200"
+        ],
+        "selected_id": null,
+        "analysis_status": null
+      }
+    },
+    "colliding_links": {
+      "request": {
+        "member": {
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "detailing": {
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "corner_inset_mm": 2,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL06 supplied local bend and link schedule"
+        },
+        "analysis": {
+          "geometry": {
+            "unsupported_length_mm": 3000,
+            "end_condition": "FIXED_FIXED",
+            "braced": true,
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          "fck_nmm2": 25,
+          "analysis_revision": "analysis-01",
+          "current_analysis_revision": "analysis-01",
+          "stiffness_basis": "gross_section"
+        },
+        "sizes": [
+          {
+            "size_id": "R300x400",
+            "b_mm": 300,
+            "D_mm": 400
+          },
+          {
+            "size_id": "R350x450",
+            "b_mm": 350,
+            "D_mm": 450
+          },
+          {
+            "size_id": "R400x500",
+            "b_mm": 400,
+            "D_mm": 500
+          }
+        ],
+        "longitudinal_diameters_mm": [
+          16,
+          20,
+          25
+        ],
+        "tie_options": [
+          {
+            "option_id": "T08-P150",
+            "tie": {
+              "tie_id": "H-T08-P150",
+              "diameter_mm": 8,
+              "spacing_mm": 150,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 12
+              }
+            ]
+          },
+          {
+            "option_id": "T08-P300",
+            "tie": {
+              "tie_id": "H-T08-P300",
+              "diameter_mm": 8,
+              "spacing_mm": 300,
+              "internal_bend_radius_mm": 10,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 48
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 12
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 24
+              }
+            ]
+          },
+          {
+            "option_id": "T10-P200",
+            "tie": {
+              "tie_id": "H-T10-P200",
+              "diameter_mm": 10,
+              "spacing_mm": 200,
+              "internal_bend_radius_mm": 13,
+              "closed": true,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60
+            },
+            "cross_ties": [
+              {
+                "tie_id": "XT",
+                "restrained_bar_ids": [
+                  "M_LEFT",
+                  "M_RIGHT"
+                ],
+                "station_offset_mm": 14
+              },
+              {
+                "tie_id": "YT",
+                "restrained_bar_ids": [
+                  "M_TOP",
+                  "M_BOTTOM"
+                ],
+                "station_offset_mm": 28
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "check_station_mm": 1500
+          }
+        ],
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL06-C",
+          "case_id": "colliding_links",
+          "source_reference": "COL06 independent catalogue worksheet"
+        }
+      },
+      "expected": {
+        "terminal_state": "COMPLETE_FEASIBLE",
+        "engineering_status": "PASS",
+        "catalogue_count": 27,
+        "enumeration_complete": true,
+        "evaluated": {
+          "R300x400/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R300x400/16/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_LEVELS"
+          },
+          "R300x400/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.6240431438991172
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.6240431438991172
+          },
+          "R300x400/20/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_LEVELS"
+          },
+          "R300x400/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R300x400/25/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R350x450/16/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_LEVELS"
+          },
+          "R350x450/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.5024846843037759
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.5024846843037759
+          },
+          "R350x450/20/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_LEVELS"
+          },
+          "R350x450/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R350x450/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39400797841483914
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39400797841483914
+          },
+          "R400x500/16/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.TIE_SPACING"
+          },
+          "R400x500/16/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 58.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_LEVELS"
+          },
+          "R400x500/16/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/20/T08-P300": {
+            "status": "PASS",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.39889271008219707
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.39889271008219707
+          },
+          "R400x500/20/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 60.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_LEVELS"
+          },
+          "R400x500/20/T10-P200": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.0,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P300": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T08-P150": {
+            "status": "FAIL",
+            "bar_center_offset_mm": 62.5,
+            "combinations": {
+              "U1": {
+                "status": "FAIL"
+              }
+            },
+            "issue": "COLUMN.MIDPOINT_TIE_HOOK_FIT"
+          },
+          "R400x500/25/T10-P200": {
+            "status": "PASS",
+            "bar_center_offset_mm": 64.5,
+            "combinations": {
+              "U1": {
+                "status": "PASS",
+                "utilization": 0.3122131341736373
+              }
+            },
+            "governing_combination_id": "U1",
+            "utilization": 0.3122131341736373
+          }
+        },
+        "eligible_ids": [
+          "R300x400/20/T08-P300",
+          "R350x450/20/T08-P300",
+          "R350x450/25/T10-P200",
+          "R400x500/20/T08-P300",
+          "R400x500/25/T10-P200"
+        ],
+        "selected_id": "R300x400/20/T08-P300",
+        "analysis_status": "BOUND"
+      }
+    }
+  }
+}

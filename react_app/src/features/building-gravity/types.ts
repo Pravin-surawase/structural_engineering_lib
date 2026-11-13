@@ -61,6 +61,7 @@ export interface GravityWorkflowResult {
   load_model_hash: string;
   ledger_hash: string;
   workflow_result_hash: string;
+  design_basis_hash?: string | null;
   practical_action_reconciliation: GravityPracticalActionReconciliation[];
   actions: GravityAction[];
   components: GravityComponentResult[];
@@ -71,6 +72,8 @@ export interface GravityWorkflowResult {
 export interface GravityCalculationBook {
   schema_version: 'gravity-calculation-book/v1';
   workflow_result_hash: string;
+  design_basis_hash?: string | null;
+  design_basis_snapshot?: Record<string, Record<string, Record<string, unknown>>>;
   practical_action_reconciliation: GravityPracticalActionReconciliation[];
   reconciliation: {
     all_balanced: boolean;

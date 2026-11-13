@@ -68,6 +68,17 @@ export function parseGravityWorkflowRunBundle(value: unknown): GravityWorkflowRu
   ) {
     throw new Error('Gravity workflow bundle has inconsistent identity, status, or issues.');
   }
+  const basisHash = workflow.design_basis_hash ?? null;
+  if (
+    basisHash !== (book.design_basis_hash ?? null)
+    || (basisHash !== null && (
+      typeof basisHash !== 'string'
+      || !/^[0-9a-f]{64}$/.test(basisHash)
+      || !isRecord(book.design_basis_snapshot)
+    ))
+  ) {
+    throw new Error('Gravity workflow bundle has inconsistent design basis identity.');
+  }
   return value as unknown as GravityWorkflowRunBundle;
 }
 

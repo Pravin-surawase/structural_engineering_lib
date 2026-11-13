@@ -84,6 +84,9 @@ python -m pip install "structural-lib-is456==0.28.2"
 python -m structural_lib install-preflight
 ```
 
+To qualify an unreleased candidate, use a fresh environment and pass the exact
+wheel path from its artifact record to `python -m pip install`.
+
 For source development, clone the repository and run
 `python -m pip install -e ./Python` from its root. Python 3.11+ and the base
 dependencies declared in the package metadata are required. DXF, Jinja2 and

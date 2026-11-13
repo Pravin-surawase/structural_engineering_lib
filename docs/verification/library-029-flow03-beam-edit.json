@@ -1,0 +1,15 @@
+{
+  "bar_id": "bottom-3",
+  "edited_diameter_mm": 16,
+  "edited_cut_mm": 3718.0,
+  "edited_mass_kg": 127.37089790125184,
+  "congested_centre_mm": 175,
+  "congested_clear_gap_mm": 7.0,
+  "required_clear_gap_mm": 25,
+  "states": {
+    "edited": "PASS",
+    "congested": "FAIL",
+    "stale_base": "HOLD",
+    "changed_stiffness": "HOLD"
+  }
+}

@@ -11,6 +11,8 @@ from __future__ import annotations
 import hashlib
 import itertools
 import json
+import math
+from collections.abc import Mapping
 from enum import StrEnum
 from typing import Literal, Protocol
 
@@ -307,6 +309,17 @@ class GravityMemberV1(_FrozenModel):
                 f"{self.kind.value} requires support_idealization={expected.value}"
             )
         return self
+
+
+def _member_length_mm(
+    member: GravityMemberV1, nodes: Mapping[str, GravityNodeV1]
+) -> float:
+    start = nodes[member.start_node_id]
+    end = nodes[member.end_node_id]
+    return math.dist(
+        (start.x_mm, start.y_mm, start.z_mm),
+        (end.x_mm, end.y_mm, end.z_mm),
+    )
 
 
 class GravityFootingDestinationV1(_FrozenModel):

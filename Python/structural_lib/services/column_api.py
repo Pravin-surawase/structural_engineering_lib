@@ -268,9 +268,9 @@ def min_eccentricity_is456(
 
     Examples:
         >>> min_eccentricity_is456(l_unsupported_mm=3000, D_mm=300)
-        26.0
-        >>> min_eccentricity_is456(l_unsupported_mm=2000, D_mm=200)
-        20.67
+        20.0
+        >>> min_eccentricity_is456(l_unsupported_mm=8000, D_mm=450)
+        31.0
     """
     return min_eccentricity(l_unsupported_mm=l_unsupported_mm, D_mm=D_mm)
 
@@ -326,9 +326,9 @@ def design_column_axial_is456(
         ...     Ag_mm2=90000.0,
         ...     Asc_mm2=1800.0
         ... )
-        >>> result['Pu_kN']
-        1380.62
-        >>> result['steel_ratio']
+        >>> result.Pu_kN
+        1382.49
+        >>> result.steel_ratio
         0.02
     """
     fck_nmm2 = _resolve_deprecated_param(
@@ -387,9 +387,9 @@ def design_short_column_uniaxial_is456(
             If None, minimum eccentricity check is skipped.
 
     Returns:
-        Dictionary with:
-            - ok: True if (Pu, Mu) is within capacity envelope
-            - utilization: Radial utilization ratio (applied / capacity)
+        ColumnUniaxialResult with:
+            - is_safe: True if (Pu, Mu) is within capacity envelope
+            - utilization_ratio: Radial utilization (applied / capacity)
             - Pu_cap_kN: Capacity axial load at same Pu/Mu slope
             - Mu_cap_kNm: Capacity moment at same Pu/Mu slope
             - classification: "SHORT" or "SLENDER"
@@ -421,8 +421,10 @@ def design_short_column_uniaxial_is456(
         ...     d_prime_mm=50.0,
         ...     l_unsupported_mm=3000.0,
         ... )
-        >>> print(f"Safe: {result['is_safe']}")
-        >>> print(f"Utilization: {result['utilization']:.1%}")
+        >>> print(f"Safe: {result.is_safe}")
+        Safe: True
+        >>> print(f"Utilization: {result.utilization_ratio:.1%}")
+        Utilization: 88.3%
 
     See Also:
         - classify_column_is456: Check if column is short or slender
@@ -665,8 +667,10 @@ def biaxial_bending_check_is456(
         ...     Asc_mm2=2700.0,
         ...     d_prime_mm=50.0,
         ... )
-        >>> print(f"Safe: {result['is_safe']}")
-        >>> print(f"Interaction Ratio: {result['interaction_ratio']:.3f}")
+        >>> print(f"Safe: {result.is_safe}")
+        Safe: True
+        >>> print(f"Interaction Ratio: {result.interaction_ratio:.3f}")
+        Interaction Ratio: 0.652
 
     See Also:
         - design_short_column_uniaxial_is456: Uniaxial bending check
@@ -790,8 +794,10 @@ def calculate_additional_moment_is456(
         ...     Asc_mm2=2700.0,
         ...     d_prime_mm=50.0,
         ... )
-        >>> print(f"Ma_x: {result['Ma_x_kNm']:.2f} kN·m")
-        >>> print(f"Ma_y: {result['Ma_y_kNm']:.2f} kN·m")
+        >>> print(f"Ma_x: {result.Max_kNm:.2f} kN·m")
+        Ma_x: 38.88 kN·m
+        >>> print(f"Ma_y: {result.May_kNm:.2f} kN·m")
+        Ma_y: 25.92 kN·m
 
     See Also:
         - classify_column_is456: Check if column is short or slender
@@ -870,9 +876,9 @@ def design_long_column_is456(
         Pu_kN: Factored axial load (kN). Must be >= 0.
         M1x_kNm: End moment 1 about x-axis (kNm). For equal end moments,
             M1x = M2x. Sign convention: +ve causes tension on same face.
-        M2x_kNm: End moment 2 about x-axis (kNm).
-        M1y_kNm: End moment 1 about y-axis (kNm).
-        M2y_kNm: End moment 2 about y-axis (kNm).
+        M2x_kNm: Larger absolute end moment about x (kN·m).
+        M1y_kNm: End moment 1 about y-axis (kN·m).
+        M2y_kNm: Larger absolute end moment about y (kN·m).
         b_mm: Column width perpendicular to x-axis (mm). Typical: 100-2000.
         D_mm: Column depth in x-direction (mm). Typical: 100-2000.
         lex_mm: Effective length about x-axis (mm). Must be > 0.
@@ -899,6 +905,7 @@ def design_long_column_is456(
 
     Raises:
         DimensionError: If geometric dimensions are invalid.
+        InputContractError: If either signed end-moment pair is out of order.
         MaterialError: If material properties are out of range.
         CalculationError: If numerical issues are encountered.
         ValueError: If plausibility checks fail.
@@ -923,9 +930,10 @@ def design_long_column_is456(
         ...     fy_nmm2=415.0,
         ...     Asc_mm2=2700.0,
         ...     d_prime_mm=50.0,
+        ...     l_unsupported_mm=5400.0,
         ... )
-        >>> print(f"Safe: {result['is_safe']}")
-        >>> print(f"Design Moment X: {result['Mx_design_kNm']:.2f} kN·m")
+        >>> assert isinstance(result.is_safe, bool)
+        >>> assert result.Mux_design_kNm >= 80.0
 
     See Also:
         - calculate_additional_moment_is456: Calculate Ma per Cl 39.7.1
@@ -1022,7 +1030,8 @@ def check_helical_reinforcement_is456(
     Returns:
         ``HelicalReinforcementResult`` with:
             - is_adequate: whether ratio and pitch conditions are met
-            - Pu_enhanced_kN: 1.05 times the supplied short-column capacity
+            - enhancement_factor: 1.05 when adequate, otherwise 1.0
+            - Pu_enhanced_kN: Supplied short-column capacity times the factor
             - helical_ratio_provided / helical_ratio_required
             - pitch_ok (bool): True if pitch meets Cl 26.5.3.2(c)
             - clause_ref (str): "Cl. 39.4"
@@ -1047,8 +1056,10 @@ def check_helical_reinforcement_is456(
         ...     pitch_mm=50.0,
         ...     Pu_axial_kN=2000.0,
         ... )
-        >>> print(f"Helix adequate: {result['is_adequate']}")
-        >>> print(f"Enhanced capacity: {result['Pu_enhanced_kN']:.2f} kN")
+        >>> print(f"Helix adequate: {result.is_adequate}")
+        Helix adequate: True
+        >>> print(f"Enhanced capacity: {result.Pu_enhanced_kN:.2f} kN")
+        Enhanced capacity: 2100.00 kN
 
     See Also:
         - design_column_axial_is456: Pure axial capacity check
@@ -1207,7 +1218,9 @@ def design_column_is456(
         IS 456:2000, Cl. 39.7 (slender column design)
 
     Examples:
-        >>> # Short column, uniaxial
+        The short-column example supplies bending about x. Minimum
+        eccentricity introduces bending about y, so biaxial checking governs.
+
         >>> result = design_column_is456(
         ...     Pu_kN=800.0,
         ...     Mux_kNm=120.0,
@@ -1219,8 +1232,11 @@ def design_column_is456(
         ...     Asc_mm2=2400.0,
         ... )
         >>> print(f"Safe: {result['is_safe']}")
+        Safe: True
         >>> print(f"Classification: {result['classification']}")
+        Classification: SHORT
         >>> print(f"Governing: {result['governing_check']}")
+        Governing: biaxial
 
         >>> # Slender column, biaxial
         >>> result = design_column_is456(
@@ -1235,8 +1251,10 @@ def design_column_is456(
         ...     fy_nmm2=415.0,
         ...     Asc_mm2=2700.0,
         ... )
-        >>> print(f"Classification: {result['classification']}")  # SLENDER
-        >>> print(f"Additional Moment X: {result.get('Ma_x_kNm', 0):.2f} kN·m")
+        >>> print(f"Classification: {result['classification']}")
+        Classification: SLENDER
+        >>> print(f"Additional Moment X: {result['Ma_x_kNm']:.2f} kN·m")
+        Additional Moment X: 48.00 kN·m
 
     See Also:
         - calculate_effective_length_is456: Effective length per Table 28
@@ -1423,21 +1441,18 @@ def design_column_is456(
         # Signed ends describe curvature; they cannot discard an independently
         # declared applied demand. Keep the existing minimum-eccentricity
         # defaults, then reject inputs outside this end-moment-only profile.
+        from structural_lib.codes.is456.column.long_column import (
+            _end_moment_order_issue,
+        )
+
         issues = []
         for axis, applied, m1, m2 in (
             ("x", Mux_kNm, M1x, M2x),
             ("y", Muy_kNm, M1y, M2y),
         ):
-            if abs(m1) > abs(m2) + 1e-9:
-                issues.append(
-                    InputIssueV1(
-                        "COLUMN_END_MOMENT_ORDER",
-                        f"M2{axis}_kNm",
-                        "The second signed end moment must have the larger absolute magnitude.",
-                        received={"M1_kNm": m1, "M2_kNm": m2},
-                        constraint="abs(M1) <= abs(M2), tolerance 1e-9 kNm",
-                    )
-                )
+            order_issue = _end_moment_order_issue(axis, m1, m2)
+            if order_issue is not None:
+                issues.append(order_issue)
             elif applied > abs(m2) + 1e-9:
                 issues.append(
                     InputIssueV1(

@@ -1,0 +1,1993 @@
+{
+  "fixture_version": "library-029-beam05-cutoff/v1",
+  "cases": {
+    "cutoff": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "BEAM05-cutoff",
+          "member_id": "B01"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "B01",
+          "analysis_revision": "SPECIMEN-A1",
+          "current_analysis_revision": "SPECIMEN-A1",
+          "reinforcement_revision": "SPECIMEN-cutoff",
+          "source_reference": "BEAM01 supplied station actions and independent two-span pattern",
+          "width_mm": 300,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 32,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 300,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 500
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 500
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 50,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 250,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 50,
+              "y_from_top_mm": 500
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 500
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 250,
+              "y_from_top_mm": 500
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -218,
+            "end_mm": 8218,
+            "source_reference": "Specimen schedule, six continuous straight bars through both spans"
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 250,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-MAX",
+              "x_mm": 1666.6666666666667,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-MID",
+              "x_mm": 2000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-MID",
+              "x_mm": 6000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-MAX",
+              "x_mm": 7000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 7750,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 2600.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 3500.0,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "B01",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-MID",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-MID",
+                "C-FACE",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "PATTERN",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-MAX",
+                "L-MID",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-MID",
+                "R-MAX",
+                "C-FACE",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "B-RIGHT-FACE",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "B-RIGHT-FACE",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "S1",
+              "kind": "SLS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            },
+            {
+              "combination_id": "S2",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "B01:A",
+              "combination_id": "B01",
+              "station_id": "A",
+              "mu_knm": 0,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:A-FACE",
+              "combination_id": "B01",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:L-MID",
+              "combination_id": "B01",
+              "station_id": "L-MID",
+              "mu_knm": 90,
+              "vu_kn": 0
+            },
+            {
+              "row_id": "B01:B-LEFT-FACE",
+              "combination_id": "B01",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -109.5,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:B-LEFT",
+              "combination_id": "B01",
+              "station_id": "B-LEFT",
+              "mu_knm": -120,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:B-RIGHT",
+              "combination_id": "B01",
+              "station_id": "B-RIGHT",
+              "mu_knm": -120,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:B-RIGHT-FACE",
+              "combination_id": "B01",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -109.5,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:R-MID",
+              "combination_id": "B01",
+              "station_id": "R-MID",
+              "mu_knm": 90,
+              "vu_kn": 0
+            },
+            {
+              "row_id": "B01:C-FACE",
+              "combination_id": "B01",
+              "station_id": "C-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:C",
+              "combination_id": "B01",
+              "station_id": "C",
+              "mu_knm": 0,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "PATTERN:A",
+              "combination_id": "PATTERN",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 50.0
+            },
+            {
+              "row_id": "PATTERN:A-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "A-FACE",
+              "mu_knm": 11.5625,
+              "vu_kn": 42.5
+            },
+            {
+              "row_id": "PATTERN:L-MAX",
+              "combination_id": "PATTERN",
+              "station_id": "L-MAX",
+              "mu_knm": 41.66666666666667,
+              "vu_kn": 0.0
+            },
+            {
+              "row_id": "PATTERN:L-MID",
+              "combination_id": "PATTERN",
+              "station_id": "L-MID",
+              "mu_knm": 40.0,
+              "vu_kn": -10.0
+            },
+            {
+              "row_id": "PATTERN:B-LEFT-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -29.837500000000034,
+              "vu_kn": -65.5
+            },
+            {
+              "row_id": "PATTERN:B-LEFT",
+              "combination_id": "PATTERN",
+              "station_id": "B-LEFT",
+              "mu_knm": -40.0,
+              "vu_kn": -70.0
+            },
+            {
+              "row_id": "PATTERN:B-RIGHT",
+              "combination_id": "PATTERN",
+              "station_id": "B-RIGHT",
+              "mu_knm": -40.0,
+              "vu_kn": 30.0
+            },
+            {
+              "row_id": "PATTERN:B-RIGHT-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -35.61249999999998,
+              "vu_kn": 28.499999999999996
+            },
+            {
+              "row_id": "PATTERN:R-MID",
+              "combination_id": "PATTERN",
+              "station_id": "R-MID",
+              "mu_knm": 0.0,
+              "vu_kn": 10.0
+            },
+            {
+              "row_id": "PATTERN:R-MAX",
+              "combination_id": "PATTERN",
+              "station_id": "R-MAX",
+              "mu_knm": 5.0,
+              "vu_kn": 0.0
+            },
+            {
+              "row_id": "PATTERN:C-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "C-FACE",
+              "mu_knm": 2.1875,
+              "vu_kn": -7.5
+            },
+            {
+              "row_id": "PATTERN:C",
+              "combination_id": "PATTERN",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -10.0
+            },
+            {
+              "row_id": "U1:B-RIGHT-FACE",
+              "combination_id": "U1",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -120,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "U2:B-RIGHT-FACE",
+              "combination_id": "U2",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -85,
+              "vu_kn": 115
+            },
+            {
+              "row_id": "S1:B-RIGHT-FACE",
+              "combination_id": "S1",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -70,
+              "vu_kn": 40
+            },
+            {
+              "row_id": "S2:B-RIGHT-FACE",
+              "combination_id": "S2",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -42,
+              "vu_kn": 24
+            },
+            {
+              "row_id": "B01:CUT-THEORETICAL",
+              "combination_id": "B01",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 47.99999999999999,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:CUT-END",
+              "combination_id": "B01",
+              "station_id": "CUT-END",
+              "mu_knm": -15.0,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "PATTERN:CUT-THEORETICAL",
+              "combination_id": "PATTERN",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 28.599999999999994,
+              "vu_kn": -28.0
+            },
+            {
+              "row_id": "PATTERN:CUT-END",
+              "combination_id": "PATTERN",
+              "station_id": "CUT-END",
+              "mu_knm": -8.75,
+              "vu_kn": -55.0
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 30,
+              "vu_kn": -52
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -12,
+              "vu_kn": -60
+            },
+            {
+              "row_id": "U2:CUT-THEORETICAL",
+              "combination_id": "U2",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 30,
+              "vu_kn": -52
+            },
+            {
+              "row_id": "U2:CUT-END",
+              "combination_id": "U2",
+              "station_id": "CUT-END",
+              "mu_knm": -12,
+              "vu_kn": -60
+            }
+          ]
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8100,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary two-hook closed-cage specimen detail"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "bottom-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "development_mm": 805.9151785714286,
+        "required_extension_mm": 500.0,
+        "available_extension_mm": 900.0,
+        "continuing_bottom_mm2": 628.3185307179587,
+        "continuing_shear_capacity_kn": 127.66707173485891,
+        "two_thirds_shear_kn": 85.1113811565726,
+        "cut_mm": 3718.0,
+        "mass_kg": 130.67179066520868
+      }
+    },
+    "short_development": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "BEAM05-short_development",
+          "member_id": "B01"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "B01",
+          "analysis_revision": "SPECIMEN-A1",
+          "current_analysis_revision": "SPECIMEN-A1",
+          "reinforcement_revision": "SPECIMEN-short_development",
+          "source_reference": "BEAM01 supplied station actions and independent two-span pattern",
+          "width_mm": 300,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 32,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 300,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 500
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 500
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 50,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 250,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 50,
+              "y_from_top_mm": 500
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 500
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 250,
+              "y_from_top_mm": 500
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -218,
+            "end_mm": 8218,
+            "source_reference": "Specimen schedule, six continuous straight bars through both spans"
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 250,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-MAX",
+              "x_mm": 1666.6666666666667,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-MID",
+              "x_mm": 2000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-MID",
+              "x_mm": 6000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-MAX",
+              "x_mm": 7000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 7750,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 2600.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 3305.9151785714284,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "B01",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-MID",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-MID",
+                "C-FACE",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "PATTERN",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-MAX",
+                "L-MID",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-MID",
+                "R-MAX",
+                "C-FACE",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "B-RIGHT-FACE",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "B-RIGHT-FACE",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "S1",
+              "kind": "SLS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            },
+            {
+              "combination_id": "S2",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "B01:A",
+              "combination_id": "B01",
+              "station_id": "A",
+              "mu_knm": 0,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:A-FACE",
+              "combination_id": "B01",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:L-MID",
+              "combination_id": "B01",
+              "station_id": "L-MID",
+              "mu_knm": 90,
+              "vu_kn": 0
+            },
+            {
+              "row_id": "B01:B-LEFT-FACE",
+              "combination_id": "B01",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -109.5,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:B-LEFT",
+              "combination_id": "B01",
+              "station_id": "B-LEFT",
+              "mu_knm": -120,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:B-RIGHT",
+              "combination_id": "B01",
+              "station_id": "B-RIGHT",
+              "mu_knm": -120,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:B-RIGHT-FACE",
+              "combination_id": "B01",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -109.5,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:R-MID",
+              "combination_id": "B01",
+              "station_id": "R-MID",
+              "mu_knm": 90,
+              "vu_kn": 0
+            },
+            {
+              "row_id": "B01:C-FACE",
+              "combination_id": "B01",
+              "station_id": "C-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:C",
+              "combination_id": "B01",
+              "station_id": "C",
+              "mu_knm": 0,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "PATTERN:A",
+              "combination_id": "PATTERN",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 50.0
+            },
+            {
+              "row_id": "PATTERN:A-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "A-FACE",
+              "mu_knm": 11.5625,
+              "vu_kn": 42.5
+            },
+            {
+              "row_id": "PATTERN:L-MAX",
+              "combination_id": "PATTERN",
+              "station_id": "L-MAX",
+              "mu_knm": 41.66666666666667,
+              "vu_kn": 0.0
+            },
+            {
+              "row_id": "PATTERN:L-MID",
+              "combination_id": "PATTERN",
+              "station_id": "L-MID",
+              "mu_knm": 40.0,
+              "vu_kn": -10.0
+            },
+            {
+              "row_id": "PATTERN:B-LEFT-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -29.837500000000034,
+              "vu_kn": -65.5
+            },
+            {
+              "row_id": "PATTERN:B-LEFT",
+              "combination_id": "PATTERN",
+              "station_id": "B-LEFT",
+              "mu_knm": -40.0,
+              "vu_kn": -70.0
+            },
+            {
+              "row_id": "PATTERN:B-RIGHT",
+              "combination_id": "PATTERN",
+              "station_id": "B-RIGHT",
+              "mu_knm": -40.0,
+              "vu_kn": 30.0
+            },
+            {
+              "row_id": "PATTERN:B-RIGHT-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -35.61249999999998,
+              "vu_kn": 28.499999999999996
+            },
+            {
+              "row_id": "PATTERN:R-MID",
+              "combination_id": "PATTERN",
+              "station_id": "R-MID",
+              "mu_knm": 0.0,
+              "vu_kn": 10.0
+            },
+            {
+              "row_id": "PATTERN:R-MAX",
+              "combination_id": "PATTERN",
+              "station_id": "R-MAX",
+              "mu_knm": 5.0,
+              "vu_kn": 0.0
+            },
+            {
+              "row_id": "PATTERN:C-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "C-FACE",
+              "mu_knm": 2.1875,
+              "vu_kn": -7.5
+            },
+            {
+              "row_id": "PATTERN:C",
+              "combination_id": "PATTERN",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -10.0
+            },
+            {
+              "row_id": "U1:B-RIGHT-FACE",
+              "combination_id": "U1",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -120,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "U2:B-RIGHT-FACE",
+              "combination_id": "U2",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -85,
+              "vu_kn": 115
+            },
+            {
+              "row_id": "S1:B-RIGHT-FACE",
+              "combination_id": "S1",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -70,
+              "vu_kn": 40
+            },
+            {
+              "row_id": "S2:B-RIGHT-FACE",
+              "combination_id": "S2",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -42,
+              "vu_kn": 24
+            },
+            {
+              "row_id": "B01:CUT-THEORETICAL",
+              "combination_id": "B01",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 47.99999999999999,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:CUT-END",
+              "combination_id": "B01",
+              "station_id": "CUT-END",
+              "mu_knm": -1.4140625,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "PATTERN:CUT-THEORETICAL",
+              "combination_id": "PATTERN",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 28.599999999999994,
+              "vu_kn": -28.0
+            },
+            {
+              "row_id": "PATTERN:CUT-END",
+              "combination_id": "PATTERN",
+              "station_id": "CUT-END",
+              "mu_knm": 1.359631409937009,
+              "vu_kn": -49.17745535714286
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 30,
+              "vu_kn": -52
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -12,
+              "vu_kn": -60
+            },
+            {
+              "row_id": "U2:CUT-THEORETICAL",
+              "combination_id": "U2",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 30,
+              "vu_kn": -52
+            },
+            {
+              "row_id": "U2:CUT-END",
+              "combination_id": "U2",
+              "station_id": "CUT-END",
+              "mu_knm": -12,
+              "vu_kn": -60
+            }
+          ]
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8100,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary two-hook closed-cage specimen detail"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "bottom-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "FAIL",
+        "development_mm": 805.9151785714286,
+        "required_extension_mm": 500.0,
+        "available_extension_mm": 705.9151785714284,
+        "continuing_bottom_mm2": 628.3185307179587,
+        "continuing_shear_capacity_kn": 127.66707173485891,
+        "two_thirds_shear_kn": 85.1113811565726,
+        "cut_mm": 3523.9151785714284,
+        "mass_kg": 130.19314833760765
+      }
+    },
+    "missing_cutoff_rows": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "BEAM05-missing_cutoff_rows",
+          "member_id": "B01"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "B01",
+          "analysis_revision": "SPECIMEN-A1",
+          "current_analysis_revision": "SPECIMEN-A1",
+          "reinforcement_revision": "SPECIMEN-missing_cutoff_rows",
+          "source_reference": "BEAM01 supplied station actions and independent two-span pattern",
+          "width_mm": 300,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 32,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 300,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 500
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 500
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 50,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 250,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 50,
+              "y_from_top_mm": 500
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 500
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 250,
+              "y_from_top_mm": 500
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -218,
+            "end_mm": 8218,
+            "source_reference": "Specimen schedule, six continuous straight bars through both spans"
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 250,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-MAX",
+              "x_mm": 1666.6666666666667,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-MID",
+              "x_mm": 2000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-MID",
+              "x_mm": 6000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-MAX",
+              "x_mm": 7000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 7750,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 2600.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 3500.0,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "B01",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-MID",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-MID",
+                "C-FACE",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "PATTERN",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-MAX",
+                "L-MID",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-MID",
+                "R-MAX",
+                "C-FACE",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "B-RIGHT-FACE",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            },
+            {
+              "combination_id": "S1",
+              "kind": "SLS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            },
+            {
+              "combination_id": "S2",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "B01:A",
+              "combination_id": "B01",
+              "station_id": "A",
+              "mu_knm": 0,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:A-FACE",
+              "combination_id": "B01",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:L-MID",
+              "combination_id": "B01",
+              "station_id": "L-MID",
+              "mu_knm": 90,
+              "vu_kn": 0
+            },
+            {
+              "row_id": "B01:B-LEFT-FACE",
+              "combination_id": "B01",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -109.5,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:B-LEFT",
+              "combination_id": "B01",
+              "station_id": "B-LEFT",
+              "mu_knm": -120,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:B-RIGHT",
+              "combination_id": "B01",
+              "station_id": "B-RIGHT",
+              "mu_knm": -120,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:B-RIGHT-FACE",
+              "combination_id": "B01",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -109.5,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:R-MID",
+              "combination_id": "B01",
+              "station_id": "R-MID",
+              "mu_knm": 90,
+              "vu_kn": 0
+            },
+            {
+              "row_id": "B01:C-FACE",
+              "combination_id": "B01",
+              "station_id": "C-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:C",
+              "combination_id": "B01",
+              "station_id": "C",
+              "mu_knm": 0,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "PATTERN:A",
+              "combination_id": "PATTERN",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 50.0
+            },
+            {
+              "row_id": "PATTERN:A-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "A-FACE",
+              "mu_knm": 11.5625,
+              "vu_kn": 42.5
+            },
+            {
+              "row_id": "PATTERN:L-MAX",
+              "combination_id": "PATTERN",
+              "station_id": "L-MAX",
+              "mu_knm": 41.66666666666667,
+              "vu_kn": 0.0
+            },
+            {
+              "row_id": "PATTERN:L-MID",
+              "combination_id": "PATTERN",
+              "station_id": "L-MID",
+              "mu_knm": 40.0,
+              "vu_kn": -10.0
+            },
+            {
+              "row_id": "PATTERN:B-LEFT-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -29.837500000000034,
+              "vu_kn": -65.5
+            },
+            {
+              "row_id": "PATTERN:B-LEFT",
+              "combination_id": "PATTERN",
+              "station_id": "B-LEFT",
+              "mu_knm": -40.0,
+              "vu_kn": -70.0
+            },
+            {
+              "row_id": "PATTERN:B-RIGHT",
+              "combination_id": "PATTERN",
+              "station_id": "B-RIGHT",
+              "mu_knm": -40.0,
+              "vu_kn": 30.0
+            },
+            {
+              "row_id": "PATTERN:B-RIGHT-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -35.61249999999998,
+              "vu_kn": 28.499999999999996
+            },
+            {
+              "row_id": "PATTERN:R-MID",
+              "combination_id": "PATTERN",
+              "station_id": "R-MID",
+              "mu_knm": 0.0,
+              "vu_kn": 10.0
+            },
+            {
+              "row_id": "PATTERN:R-MAX",
+              "combination_id": "PATTERN",
+              "station_id": "R-MAX",
+              "mu_knm": 5.0,
+              "vu_kn": 0.0
+            },
+            {
+              "row_id": "PATTERN:C-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "C-FACE",
+              "mu_knm": 2.1875,
+              "vu_kn": -7.5
+            },
+            {
+              "row_id": "PATTERN:C",
+              "combination_id": "PATTERN",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -10.0
+            },
+            {
+              "row_id": "U1:B-RIGHT-FACE",
+              "combination_id": "U1",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -120,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "U2:B-RIGHT-FACE",
+              "combination_id": "U2",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -85,
+              "vu_kn": 115
+            },
+            {
+              "row_id": "S1:B-RIGHT-FACE",
+              "combination_id": "S1",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -70,
+              "vu_kn": 40
+            },
+            {
+              "row_id": "S2:B-RIGHT-FACE",
+              "combination_id": "S2",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -42,
+              "vu_kn": 24
+            },
+            {
+              "row_id": "B01:CUT-THEORETICAL",
+              "combination_id": "B01",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 47.99999999999999,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:CUT-END",
+              "combination_id": "B01",
+              "station_id": "CUT-END",
+              "mu_knm": -15.0,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "PATTERN:CUT-THEORETICAL",
+              "combination_id": "PATTERN",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 28.599999999999994,
+              "vu_kn": -28.0
+            },
+            {
+              "row_id": "PATTERN:CUT-END",
+              "combination_id": "PATTERN",
+              "station_id": "CUT-END",
+              "mu_knm": -8.75,
+              "vu_kn": -55.0
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 30,
+              "vu_kn": -52
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -12,
+              "vu_kn": -60
+            }
+          ]
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8100,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary two-hook closed-cage specimen detail"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "bottom-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "development_mm": 805.9151785714286,
+        "required_extension_mm": 500.0,
+        "available_extension_mm": 900.0,
+        "continuing_bottom_mm2": 628.3185307179587,
+        "continuing_shear_capacity_kn": 127.66707173485891,
+        "two_thirds_shear_kn": 85.1113811565726,
+        "cut_mm": 3718.0,
+        "mass_kg": 130.67179066520868
+      }
+    },
+    "cutoff_shear_over_two_thirds": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "BEAM05-cutoff_shear_over_two_thirds",
+          "member_id": "B01"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "B01",
+          "analysis_revision": "SPECIMEN-A1",
+          "current_analysis_revision": "SPECIMEN-A1",
+          "reinforcement_revision": "SPECIMEN-cutoff_shear_over_two_thirds",
+          "source_reference": "BEAM01 supplied station actions and independent two-span pattern",
+          "width_mm": 300,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 32,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 300,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 500
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 500
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 50,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 250,
+              "y_from_top_mm": 50
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 50,
+              "y_from_top_mm": 500
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 500
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 250,
+              "y_from_top_mm": 500
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -218,
+            "end_mm": 8218,
+            "source_reference": "Specimen schedule, six continuous straight bars through both spans"
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 250,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-MAX",
+              "x_mm": 1666.6666666666667,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-MID",
+              "x_mm": 2000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-MID",
+              "x_mm": 6000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-MAX",
+              "x_mm": 7000,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 7750,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 2600.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 3500.0,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "B01",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-MID",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-MID",
+                "C-FACE",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "PATTERN",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-MAX",
+                "L-MID",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-MID",
+                "R-MAX",
+                "C-FACE",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "B-RIGHT-FACE",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "B-RIGHT-FACE",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "S1",
+              "kind": "SLS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            },
+            {
+              "combination_id": "S2",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "B-RIGHT-FACE"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "B01:A",
+              "combination_id": "B01",
+              "station_id": "A",
+              "mu_knm": 0,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:A-FACE",
+              "combination_id": "B01",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:L-MID",
+              "combination_id": "B01",
+              "station_id": "L-MID",
+              "mu_knm": 90,
+              "vu_kn": 0
+            },
+            {
+              "row_id": "B01:B-LEFT-FACE",
+              "combination_id": "B01",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -109.5,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:B-LEFT",
+              "combination_id": "B01",
+              "station_id": "B-LEFT",
+              "mu_knm": -120,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:B-RIGHT",
+              "combination_id": "B01",
+              "station_id": "B-RIGHT",
+              "mu_knm": -120,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:B-RIGHT-FACE",
+              "combination_id": "B01",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -109.5,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "B01:R-MID",
+              "combination_id": "B01",
+              "station_id": "R-MID",
+              "mu_knm": 90,
+              "vu_kn": 0
+            },
+            {
+              "row_id": "B01:C-FACE",
+              "combination_id": "B01",
+              "station_id": "C-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:C",
+              "combination_id": "B01",
+              "station_id": "C",
+              "mu_knm": 0,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "PATTERN:A",
+              "combination_id": "PATTERN",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 50.0
+            },
+            {
+              "row_id": "PATTERN:A-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "A-FACE",
+              "mu_knm": 11.5625,
+              "vu_kn": 42.5
+            },
+            {
+              "row_id": "PATTERN:L-MAX",
+              "combination_id": "PATTERN",
+              "station_id": "L-MAX",
+              "mu_knm": 41.66666666666667,
+              "vu_kn": 0.0
+            },
+            {
+              "row_id": "PATTERN:L-MID",
+              "combination_id": "PATTERN",
+              "station_id": "L-MID",
+              "mu_knm": 40.0,
+              "vu_kn": -10.0
+            },
+            {
+              "row_id": "PATTERN:B-LEFT-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -29.837500000000034,
+              "vu_kn": -65.5
+            },
+            {
+              "row_id": "PATTERN:B-LEFT",
+              "combination_id": "PATTERN",
+              "station_id": "B-LEFT",
+              "mu_knm": -40.0,
+              "vu_kn": -70.0
+            },
+            {
+              "row_id": "PATTERN:B-RIGHT",
+              "combination_id": "PATTERN",
+              "station_id": "B-RIGHT",
+              "mu_knm": -40.0,
+              "vu_kn": 30.0
+            },
+            {
+              "row_id": "PATTERN:B-RIGHT-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -35.61249999999998,
+              "vu_kn": 28.499999999999996
+            },
+            {
+              "row_id": "PATTERN:R-MID",
+              "combination_id": "PATTERN",
+              "station_id": "R-MID",
+              "mu_knm": 0.0,
+              "vu_kn": 10.0
+            },
+            {
+              "row_id": "PATTERN:R-MAX",
+              "combination_id": "PATTERN",
+              "station_id": "R-MAX",
+              "mu_knm": 5.0,
+              "vu_kn": 0.0
+            },
+            {
+              "row_id": "PATTERN:C-FACE",
+              "combination_id": "PATTERN",
+              "station_id": "C-FACE",
+              "mu_knm": 2.1875,
+              "vu_kn": -7.5
+            },
+            {
+              "row_id": "PATTERN:C",
+              "combination_id": "PATTERN",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -10.0
+            },
+            {
+              "row_id": "U1:B-RIGHT-FACE",
+              "combination_id": "U1",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -120,
+              "vu_kn": 70
+            },
+            {
+              "row_id": "U2:B-RIGHT-FACE",
+              "combination_id": "U2",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -85,
+              "vu_kn": 115
+            },
+            {
+              "row_id": "S1:B-RIGHT-FACE",
+              "combination_id": "S1",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -70,
+              "vu_kn": 40
+            },
+            {
+              "row_id": "S2:B-RIGHT-FACE",
+              "combination_id": "S2",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -42,
+              "vu_kn": 24
+            },
+            {
+              "row_id": "B01:CUT-THEORETICAL",
+              "combination_id": "B01",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 47.99999999999999,
+              "vu_kn": -70
+            },
+            {
+              "row_id": "B01:CUT-END",
+              "combination_id": "B01",
+              "station_id": "CUT-END",
+              "mu_knm": -15.0,
+              "vu_kn": -90
+            },
+            {
+              "row_id": "PATTERN:CUT-THEORETICAL",
+              "combination_id": "PATTERN",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 28.599999999999994,
+              "vu_kn": -28.0
+            },
+            {
+              "row_id": "PATTERN:CUT-END",
+              "combination_id": "PATTERN",
+              "station_id": "CUT-END",
+              "mu_knm": -8.75,
+              "vu_kn": -55.0
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 30,
+              "vu_kn": -52
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -12,
+              "vu_kn": -60
+            },
+            {
+              "row_id": "U2:CUT-THEORETICAL",
+              "combination_id": "U2",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 30,
+              "vu_kn": -52
+            },
+            {
+              "row_id": "U2:CUT-END",
+              "combination_id": "U2",
+              "station_id": "CUT-END",
+              "mu_knm": -12,
+              "vu_kn": -60
+            }
+          ]
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8100,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary two-hook closed-cage specimen detail"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "bottom-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "FAIL",
+        "development_mm": 805.9151785714286,
+        "required_extension_mm": 500.0,
+        "available_extension_mm": 900.0,
+        "continuing_bottom_mm2": 628.3185307179587,
+        "continuing_shear_capacity_kn": 127.66707173485891,
+        "two_thirds_shear_kn": 85.1113811565726,
+        "cut_mm": 3718.0,
+        "mass_kg": 130.67179066520868
+      }
+    }
+  }
+}

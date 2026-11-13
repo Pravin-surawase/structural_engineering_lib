@@ -22,6 +22,7 @@ import math
 
 import pytest
 
+from structural_lib import api
 from structural_lib.codes.is456.column.helical import check_helical_reinforcement
 from structural_lib.core.data_types import HelicalReinforcementResult
 from structural_lib.core.errors import DimensionError, MaterialError
@@ -353,3 +354,33 @@ class TestResultStructure:
         assert "ADEQUATE" in s or "INADEQUATE" in s
         assert "ratio=" in s
         assert "pitch=" in s
+
+
+@pytest.mark.parametrize(
+    ("diameter", "pitch", "ratio_ok", "pitch_ok", "factor", "capacity"),
+    [
+        (10, 50, True, True, 1.05, 1050),
+        (10, 85, True, False, 1.0, 1000),
+        (6, 50, False, True, 1.0, 1000),
+    ],
+)
+def test_public_capacity_requires_adequate_ratio_and_pitch(
+    diameter, pitch, ratio_ok, pitch_ok, factor, capacity
+):
+    result = api.check_helical_reinforcement_is456(
+        D_mm=500,
+        D_core_mm=440,
+        fck_nmm2=25,
+        fy_nmm2=415,
+        d_helix_mm=diameter,
+        pitch_mm=pitch,
+        Pu_axial_kN=1000,
+    )
+    adequate = ratio_ok and pitch_ok
+    assert result.is_adequate is adequate
+    assert result.pitch_ok is pitch_ok
+    assert (result.helical_ratio_provided >= result.helical_ratio_required) is ratio_ok
+    assert result.enhancement_factor == result.to_dict()["enhancement_factor"] == factor
+    assert result.Pu_enhanced_kN == result.to_dict()["Pu_enhanced_kN"] == capacity
+    label = "Pu_enh" if adequate else "Pu_base"
+    assert f"{label}={capacity:.1f}kN" in result.summary()

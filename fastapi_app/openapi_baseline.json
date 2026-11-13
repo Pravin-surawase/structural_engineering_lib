@@ -7646,14 +7646,38 @@
             "type": "string"
           },
           "interaction_ratio": {
-            "description": "Bresler interaction ratio (Mux/Mux1)^an + (Muy/Muy1)^an. < 1.0 means safe.",
-            "title": "Interaction Ratio",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Bresler interaction ratio (Mux/Mux1)^an + (Muy/Muy1)^an. Null when insufficient capacity prevents evaluation.",
+            "title": "Interaction Ratio"
           },
           "is_safe": {
             "description": "True if interaction_ratio <= 1.0",
             "title": "Is Safe",
             "type": "boolean"
+          },
+          "unavailable_values": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unavailable Values"
           },
           "warnings": {
             "description": "Code compliance warnings",
@@ -11141,9 +11165,16 @@
             "title": "E Min Mm"
           },
           "eccentricity_mm": {
-            "description": "Actual eccentricity e = M/P (mm)",
-            "title": "Eccentricity Mm",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual eccentricity e = M/P (mm), or null for pure bending.",
+            "title": "Eccentricity Mm"
           },
           "method": {
             "anyOf": [
@@ -11161,6 +11192,23 @@
             "description": "True if (Pu, Mu) is within the P-M interaction capacity envelope",
             "title": "Ok",
             "type": "boolean"
+          },
+          "unavailable_values": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unavailable Values"
           },
           "utilization": {
             "description": "Radial utilization ratio (applied / capacity). < 1.0 means safe.",
@@ -13063,6 +13111,7 @@
         "type": "object"
       },
       "ComponentCapabilityModel": {
+        "description": "Component capability embedded in the application workflow catalogue.",
         "properties": {
           "element": {
             "title": "Element",
@@ -13080,6 +13129,13 @@
               "type": "string"
             },
             "title": "Public Workflows",
+            "type": "array"
+          },
+          "python_profiles": {
+            "items": {
+              "$ref": "#/components/schemas/IS456PythonProfileModel"
+            },
+            "title": "Python Profiles",
             "type": "array"
           },
           "qualified_review_required": {
@@ -14059,6 +14115,10 @@
             "title": "Flexure",
             "type": "object"
           },
+          "load_envelope_status": {
+            "title": "Load Envelope Status",
+            "type": "string"
+          },
           "negative_reinforcement": {
             "additionalProperties": true,
             "title": "Negative Reinforcement",
@@ -14092,7 +14152,8 @@
           "shear",
           "serviceability",
           "punching_shear_disposition",
-          "complete_engineering_design_approved"
+          "complete_engineering_design_approved",
+          "load_envelope_status"
         ],
         "title": "ContinuousOneWaySlabDesignResponse",
         "type": "object"
@@ -20947,6 +21008,29 @@
             "title": "Components",
             "type": "array"
           },
+          "design_basis_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Design Basis Hash"
+          },
+          "design_basis_snapshot": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "object"
+            },
+            "title": "Design Basis Snapshot",
+            "type": "object"
+          },
           "formula_version": {
             "const": "gravity-load-path/v1",
             "default": "gravity-load-path/v1",
@@ -22789,6 +22873,18 @@
             "title": "Components",
             "type": "array"
           },
+          "design_basis_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Design Basis Hash"
+          },
           "formula_version": {
             "const": "gravity-load-path/v1",
             "default": "gravity-load-path/v1",
@@ -23147,7 +23243,7 @@
         "type": "object"
       },
       "IS456CapabilityModel": {
-        "description": "One supported capability plus its held boundary.",
+        "description": "Capability entry with the public discovery identifier.",
         "properties": {
           "capability_id": {
             "title": "Capability Id",
@@ -23171,6 +23267,13 @@
             "title": "Public Workflows",
             "type": "array"
           },
+          "python_profiles": {
+            "items": {
+              "$ref": "#/components/schemas/IS456PythonProfileModel"
+            },
+            "title": "Python Profiles",
+            "type": "array"
+          },
           "qualified_review_required": {
             "title": "Qualified Review Required",
             "type": "boolean"
@@ -23181,12 +23284,12 @@
           }
         },
         "required": [
-          "capability_id",
           "element",
           "public_workflows",
           "supported_case",
           "held_cases",
-          "qualified_review_required"
+          "qualified_review_required",
+          "capability_id"
         ],
         "title": "IS456CapabilityModel",
         "type": "object"
@@ -23292,6 +23395,55 @@
           "fy_nmm2"
         ],
         "title": "IS456MaterialsV1",
+        "type": "object"
+      },
+      "IS456PythonProfileModel": {
+        "description": "Discoverable Python family-facade profile.",
+        "properties": {
+          "example": {
+            "title": "Example",
+            "type": "string"
+          },
+          "guide": {
+            "title": "Guide",
+            "type": "string"
+          },
+          "loader": {
+            "title": "Loader",
+            "type": "string"
+          },
+          "module": {
+            "title": "Module",
+            "type": "string"
+          },
+          "operation": {
+            "title": "Operation",
+            "type": "string"
+          },
+          "request_schema": {
+            "title": "Request Schema",
+            "type": "string"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          },
+          "workflow_id": {
+            "title": "Workflow Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "workflow_id",
+          "module",
+          "loader",
+          "operation",
+          "request_schema",
+          "supported_case",
+          "guide",
+          "example"
+        ],
+        "title": "IS456PythonProfileModel",
         "type": "object"
       },
       "IS456ReinforcementMaterialsV1": {
@@ -24133,8 +24285,15 @@
             "type": "string"
           },
           "interaction_ratio": {
-            "title": "Interaction Ratio",
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interaction Ratio"
           },
           "is_safe": {
             "title": "Is Safe",
@@ -24196,6 +24355,23 @@
             ],
             "description": "Versioned per-plane reduction convention",
             "title": "Reduction Method"
+          },
+          "unavailable_values": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unavailable Values"
           },
           "warnings": {
             "default": [],
@@ -31422,6 +31598,10 @@
             "title": "Complete Engineering Design Approved",
             "type": "boolean"
           },
+          "load_envelope_status": {
+            "title": "Load Envelope Status",
+            "type": "string"
+          },
           "panel": {
             "additionalProperties": true,
             "title": "Panel",
@@ -31443,7 +31623,8 @@
         "required": [
           "panel",
           "serviceability",
-          "complete_engineering_design_approved"
+          "complete_engineering_design_approved",
+          "load_envelope_status"
         ],
         "title": "TwoWaySlabPanelDesignResponse",
         "type": "object"
@@ -32415,7 +32596,7 @@
       "url": "https://opensource.org/licenses/MIT"
     },
     "title": "Structural Engineering API",
-    "version": "0.28.2"
+    "version": "0.29.0"
   },
   "openapi": "3.1.0",
   "paths": {

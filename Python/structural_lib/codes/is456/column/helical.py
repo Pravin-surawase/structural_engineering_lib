@@ -48,6 +48,23 @@ _MAX_PITCH_MM: float = 75.0  # Maximum pitch ceiling (mm)
 _MAX_PITCH_CORE_FACTOR: float = 6.0  # Maximum pitch = D_core / 6
 
 
+def enhancement_pitch_limits(
+    core_outside_mm: float, bar_diameter_mm: float
+) -> tuple[float, float]:
+    """Return the minimum and maximum pitch for an enhancement-eligible spiral."""
+    return (
+        max(_MIN_PITCH_MM, _MIN_PITCH_BAR_FACTOR * bar_diameter_mm),
+        min(_MAX_PITCH_MM, core_outside_mm / _MAX_PITCH_CORE_FACTOR),
+    )
+
+
+def minimum_helical_ratio(
+    gross_area_mm2: float, core_area_mm2: float, fck: float, fy: float
+) -> float:
+    """Return the Cl. 39.4.1 volume ratio for the supplied ratio-basis grade."""
+    return _HELICAL_RATIO_COEFF * (gross_area_mm2 / core_area_mm2 - 1.0) * fck / fy
+
+
 @clause("39.4")
 def check_helical_reinforcement(
     D_mm: float,
@@ -61,8 +78,8 @@ def check_helical_reinforcement(
     """Check helical reinforcement for circular column per IS 456 Cl 39.4.
 
     IS 456 Cl 39.4 permits a 1.05 enhancement factor on the short column
-    axial capacity (Cl 39.3) when helical reinforcement meets the minimum
-    ratio requirement:
+    axial capacity (Cl 39.3) when helical reinforcement meets the pitch limits
+    and minimum ratio requirement:
 
         V_helix / V_core >= 0.36 × (Ag/Ac - 1) × fck/fy
 
@@ -78,7 +95,8 @@ def check_helical_reinforcement(
         Pu_axial_kN: Short column axial capacity from Cl 39.3 (kN). Must be > 0.
 
     Returns:
-        HelicalReinforcementResult with adequacy check and enhanced capacity.
+        HelicalReinforcementResult with adequacy and the supplied axial capacity,
+        increased by 5% when eligible.
 
     Raises:
         DimensionError: If geometric dimensions are invalid.
@@ -154,10 +172,7 @@ def check_helical_reinforcement(
     # ===========================================================
     # 3. Pitch limits (IS 456 Cl 26.5.3.2)
     # ===========================================================
-    # IS 456 Cl 26.5.3.2: min pitch = max(25mm, 3 × d_helix)
-    min_pitch_mm = max(_MIN_PITCH_MM, _MIN_PITCH_BAR_FACTOR * d_helix_mm)
-    # IS 456 Cl 26.5.3.2: max pitch = min(75mm, D_core/6)
-    max_pitch_mm = min(_MAX_PITCH_MM, D_core_mm / _MAX_PITCH_CORE_FACTOR)
+    min_pitch_mm, max_pitch_mm = enhancement_pitch_limits(D_core_mm, d_helix_mm)
 
     pitch_ok = min_pitch_mm <= pitch_mm <= max_pitch_mm
 
@@ -191,8 +206,7 @@ def check_helical_reinforcement(
     helical_ratio_provided = V_helix_per_mm / V_core_per_mm
 
     # IS 456 Cl 39.4: required ratio = 0.36 × (Ag/Ac - 1) × fck/fy
-    Ag_Ac_minus_1 = (Ag_mm2 / Ac_mm2) - 1.0
-    helical_ratio_required = _HELICAL_RATIO_COEFF * Ag_Ac_minus_1 * fck / fy
+    helical_ratio_required = minimum_helical_ratio(Ag_mm2, Ac_mm2, fck, fy)
 
     ratio_ok = helical_ratio_provided >= helical_ratio_required
 
@@ -205,10 +219,6 @@ def check_helical_reinforcement(
     # ===========================================================
     # 5. Enhanced capacity
     # ===========================================================
-    # IS 456 Cl 39.4: 1.05 enhancement on axial capacity
-    Pu_enhanced_kN = _HELICAL_ENHANCEMENT_FACTOR * Pu_axial_kN
-
-    # IS 456 Cl 39.4: enhancement applies only when ratio is adequate
     is_adequate = ratio_ok and pitch_ok
 
     # NaN/Inf guard
@@ -221,10 +231,12 @@ def check_helical_reinforcement(
         is_adequate = False
         warnings.append("Numerical issue in helical ratio calculation")
 
+    factor = _HELICAL_ENHANCEMENT_FACTOR if is_adequate else 1.0
+    capacity_kN = round(factor * Pu_axial_kN, 2) if is_adequate else Pu_axial_kN
     return HelicalReinforcementResult(
         is_adequate=is_adequate,
-        enhancement_factor=_HELICAL_ENHANCEMENT_FACTOR,
-        Pu_enhanced_kN=round(Pu_enhanced_kN, 2),
+        enhancement_factor=factor,
+        Pu_enhanced_kN=capacity_kN,
         helical_ratio_provided=round(helical_ratio_provided, 6),
         helical_ratio_required=round(helical_ratio_required, 6),
         pitch_mm=pitch_mm,

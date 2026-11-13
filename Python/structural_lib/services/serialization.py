@@ -38,7 +38,13 @@ from typing import Any, TypeVar
 
 from pydantic import BaseModel
 
-from structural_lib.core.data_types import ComplianceCaseResult, ComplianceReport
+from structural_lib.core.data_types import (
+    ColumnBiaxialResult,
+    ColumnUniaxialResult,
+    ComplianceCaseResult,
+    ComplianceReport,
+    LongColumnResult,
+)
 from structural_lib.core.models import (
     BeamBatchInput,
     BeamBatchResult,
@@ -67,6 +73,24 @@ __all__ = [
 T = TypeVar("T", bound=BaseModel)
 
 
+def _column_transport_projection(
+    value: Any,
+) -> dict[str, Any] | None:
+    """Project exceptional values and keep private reasons out of transport."""
+    if isinstance(value, ColumnUniaxialResult):
+        if not math.isfinite(value.eccentricity_mm):
+            return value.to_dict()
+    elif isinstance(value, (ColumnBiaxialResult, LongColumnResult)):
+        if not math.isfinite(value.interaction_ratio):
+            return value.to_dict()
+        return {
+            field.name: getattr(value, field.name)
+            for field in fields(value)
+            if field.name != "_interaction_ratio_unavailable_reason"
+        }
+    return None
+
+
 def to_transport_value(value: Any) -> Any:
     """Normalize one value to the canonical JSON transport representation."""
 
@@ -76,6 +100,9 @@ def to_transport_value(value: Any) -> Any:
         return to_transport_value(value.model_dump())
     if isinstance(value, (ComplianceCaseResult, ComplianceReport)):
         return to_transport_value(value.to_dict())
+    column_projection = _column_transport_projection(value)
+    if column_projection is not None:
+        return to_transport_value(column_projection)
     if is_dataclass(value) and not isinstance(value, type):
         return {
             field.name: to_transport_value(getattr(value, field.name))

@@ -9,7 +9,7 @@ Functions under test:
     - check_min_bar_diameter (Cl 26.5.3.1b)
     - calculate_tie_diameter (Cl 26.5.3.2a)
     - calculate_tie_spacing (Cl 26.5.3.2b)
-    - check_bar_spacing (Cl 26.5.3.1c)
+    - check_bar_spacing (Cl 26.5.3.1g)
     - needs_cross_ties (Cl 26.5.3.2c)
     - create_column_detailing (Cl 26.5.3)
 
@@ -28,6 +28,7 @@ import math
 
 import pytest
 
+from structural_lib import api
 from structural_lib.codes.is456.column.detailing import (
     calculate_tie_diameter,
     calculate_tie_spacing,
@@ -66,8 +67,10 @@ class TestUnitHappyPath:
         )
         assert result.tie_dia_mm == 6.0
         assert result.max_tie_spacing_mm == pytest.approx(300.0)
-        # Asc = 4×π/4×20² = 1256.6mm², Ag = 150000mm², ratio = 0.838% > 0.8% → valid
-        assert result.is_valid is True
+        # Steel area and ties pass, but the 400 mm long-face interval fails.
+        assert result.min_steel_ok
+        assert not result.bar_spacing_ok
+        assert not result.is_valid
 
     def test_rectangular_large_400x600_8x25(self):
         """400×600mm, 8-T25: tie_dia=8mm (25/4=6.25→8), spacing=min(400,400,300)=300mm.
@@ -657,3 +660,27 @@ class TestHelperFunctions:
         )
         with pytest.raises(AttributeError):
             result.b_mm = 999.0  # type: ignore[misc]
+
+
+@pytest.mark.parametrize(
+    ("b", "depth", "valid"),
+    [
+        (300, 390, True),
+        (300, 400, True),
+        (300, 401, False),
+        (300, 450, False),
+        (450, 300, False),
+    ],
+)
+def test_four_corner_layout_checks_maximum_face_spacing(b, depth, valid):
+    result = api.detail_column_is456(
+        b_mm=b, D_mm=depth, cover_mm=40, num_bars=4, bar_dia_mm=20
+    )
+    assert result.bar_spacing_mm == 180
+    assert result.bar_spacing_ok == result.is_valid == valid
+    assert result.to_dict()["bar_spacing_ok"] == valid
+    if not valid:
+        assert any(
+            f"{max(b, depth) - 100:.1f}mm exceeds maximum 300mm" in warning
+            for warning in result.warnings
+        )

@@ -54,7 +54,7 @@
           "family": "beam",
           "scope_status": "SUPPORTED",
           "implementation_status": "IMPLEMENTED_BOUNDED",
-          "claim": "Ordinary solid rectangular beam primary design for flexure and shear, with optional IS 456 torsion within fck 15-40 N/mm2 and fy <= 500 N/mm2, plus maintained Level-A deflection and crack-width checks when their explicit inputs are supplied; and monolithic sagging T-beam flexure with effective-flange-width calculation, web shear, and the same explicit serviceability boundary.",
+          "claim": "Ordinary solid rectangular beam primary design for flexure and shear, with optional IS 456 torsion within fck 15-40 N/mm2 and fy <= 500 N/mm2, plus maintained Level-A deflection and crack-width checks when their explicit inputs are supplied; and monolithic sagging T-beam flexure with effective-flange-width calculation, web shear, and the same explicit serviceability boundary. The separate continuous-beam Python profile checks signed sagging and hogging, shear, and straight anchorage against declared concurrent rows for two rectangular spans. The cantilever Python profile checks physical stations and straight fixed-face anchorage. The section Python profile checks signed rectangular, monolithic T and L sections with actual bar layers. The two-span detailing profile covers prismatic rectangular, monolithic T and L web cages with full-length straight layers and uniform ordinary links. The structural_lib.beam.check_edge_beam_torsion operation combines same-station resistance and signed support transfer for the declared ordinary rectangular edge-beam profile.",
           "workflows": [
             "design_beam_is456",
             "design_flanged_beam_is456",
@@ -62,10 +62,12 @@
             "detail_beam_is456"
           ],
           "limitations": [
-            "L-beam, hogging/flange-in-tension, flanged torsion, hollow/box, deep, prestressed, or axially loaded cases are excluded.",
+            "Hollow/box, deep, prestressed and axially loaded beam cases are excluded.",
+            "The two-span Python profile requires supplied concurrent actions and holds stale or missing rows and anchorage. Serviceability, source-model completeness and fabrication are separate checks.",
+            "The cantilever Python profile requires both sides of declared interior discontinuities and a zero-action free end. Serviceability and fabrication remain separate.",
             "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
             "Load-envelope generation and completeness validation are excluded; the flanged route accepts only declared supplied factored actions.",
-            "Composed flanged detailing remains excluded.",
+            "The layered and flanged detailing profile holds cutoffs, laps and nonzero torsion. Flange slab reinforcement, varying sections and fabrication approval require separate evidence.",
             "Beam check, detailing, batch, import, and other automation surfaces that do not accept Tu and serviceability inputs remain outside the combined route.",
             "Serviceability is held unless span, support condition, crack geometry, and service strain or stress are explicitly supplied."
           ],
@@ -79,16 +81,17 @@
           "family": "column",
           "scope_status": "SUPPORTED",
           "implementation_status": "IMPLEMENTED_BOUNDED",
-          "claim": "Solid rectangular tied columns under factored compression with uniaxial or biaxial bending, using one total longitudinal-steel area split equally between two opposite faces at one centroidal depth; short and slender member routes are selected by the declared IS 456 effective-length inputs. The four-corner facade also resolves four equal physical bars inside a supplied ordinary closed rectangular tie for one short braced principal-axis strength and cage check.",
+          "claim": "Solid rectangular tied columns under factored compression with uniaxial or biaxial bending, using one total longitudinal-steel area split equally between two opposite faces at one centroidal depth; short and slender member routes are selected by the declared IS 456 effective-length inputs. Separate Python family-facade profiles check physical four-, six-, eight- and mixed-bar cages, scoped slender rectangles, short circular cages with closed rings or spirals, and finite catalogue selection for eight-bar rectangles and member detailing for short six- and eight-bar rectangles.",
           "workflows": [
             "design_column_is456",
             "design_long_column_is456"
           ],
           "limitations": [
-            "Circular-section column design is excluded; the separate supplied-helix check does not constitute a circular-column design workflow.",
-            "Asymmetric and arbitrary multilayer reinforcement layouts are excluded. Physical corner resolution is limited to four equal bars in the named short braced profile.",
+            "Circular-section column design outside the short braced regular-bar-ring check remains held, including slender members and automatic cage selection.",
+            "General arbitrary multilayer cages outside the named positioned-bar and restraint profiles remain held.",
             "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
-            "Load-envelope generation, frame analysis, effective-length derivation beyond the declared end-condition model, and automatic reinforcement sizing are excluded."
+            "Load-envelope generation, frame analysis, and effective-length derivation beyond the declared end-condition model are excluded. Automatic sizing outside the finite eight-bar rectangular profile remains held.",
+            "Actual-cage slender checks are Python-only and require independently declared plane restraints and a compatible action basis. Global sway remains outside this profile. A separate detailing profile admits continuous braced rectangles with supplied second-order actions and principal-plane shear."
           ],
           "evidence": [
             "docs/verification/is456-library-first-evidence.md"

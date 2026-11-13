@@ -22,6 +22,7 @@ from .contracts import (
     BbsRequest,
     BbsRow,
     CouplerItem,
+    LinkPlacementZone,
     PlacedLinkZone,
     ShapeDimension,
     SpliceKind,
@@ -83,21 +84,28 @@ def _reject(
     )
 
 
-def _zone_stations(zone: object, tolerance: float) -> tuple[float, ...]:
-    start = zone.start_station_x_mm  # type: ignore[attr-defined]
-    end = zone.end_station_x_mm  # type: ignore[attr-defined]
-    spacing = zone.spacing_mm  # type: ignore[attr-defined]
-    stations: list[float] = []
-    index = 0
-    while start + index * spacing <= end + tolerance:
-        station = start + index * spacing
-        if station <= end + tolerance:
-            stations.append(min(station, end))
-        index += 1
-    if stations and not zone.include_start and abs(stations[0] - start) <= tolerance:  # type: ignore[attr-defined]
-        stations.pop(0)
-    if stations and not zone.include_end and abs(stations[-1] - end) <= tolerance:  # type: ignore[attr-defined]
-        stations.pop()
+def _zone_stations(
+    zone: LinkPlacementZone, tolerance_mm: float
+) -> tuple[float, ...] | None:
+    start = zone.start_station_x_mm
+    end = zone.end_station_x_mm
+    spacing = zone.spacing_mm
+    span = end - start
+    intervals = span / spacing
+    if not math.isfinite(intervals):
+        return None
+    count = round(intervals)
+    if abs(span - count * spacing) > tolerance_mm:
+        return None
+
+    if count == 0:
+        return (start,) if zone.include_start and zone.include_end else ()
+    stations = [
+        start + index * spacing
+        for index in range(0 if zone.include_start else 1, count)
+    ]
+    if zone.include_end:
+        stations.append(start + count * spacing)
     return tuple(stations)
 
 
@@ -367,11 +375,6 @@ def create_bbs(request: BbsRequest) -> OperationResult:
         )
         or item.start_station_x_mm > item.end_station_x_mm
         or item.spacing_mm <= 0
-        or abs(
-            (item.end_station_x_mm - item.start_station_x_mm) / item.spacing_mm
-            - round((item.end_station_x_mm - item.start_station_x_mm) / item.spacing_mm)
-        )
-        > request.station_tolerance_mm
         for item in request.link_zones
     ):
         return _reject(
@@ -389,6 +392,14 @@ def create_bbs(request: BbsRequest) -> OperationResult:
         key=lambda item: (item.bar_mark, item.start_station_x_mm, item.zone_id),
     ):
         stations = _zone_stations(zone, request.station_tolerance_mm)
+        if stations is None:
+            return _reject(
+                inputs,
+                "BBS.LINK_ZONE",
+                "The link-zone endpoint must agree with the spacing grid within the station tolerance in mm.",
+                f"link_zones[{zone.zone_id}].end_station_x_mm",
+                "Align the zone bounds with the declared link spacing.",
+            )
         for station in stations:
             if any(
                 abs(station - prior) <= request.station_tolerance_mm

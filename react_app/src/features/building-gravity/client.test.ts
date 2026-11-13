@@ -84,6 +84,30 @@ describe('building gravity parity client', () => {
     });
   });
 
+  it('binds the downloaded book to the design basis identity when supplied', () => {
+    const legacy = bundle();
+    const basisHash = 'e'.repeat(64);
+    const bound = {
+      ...legacy,
+      workflow_result: { ...legacy.workflow_result, design_basis_hash: basisHash },
+      calculation_book: {
+        ...legacy.calculation_book,
+        design_basis_hash: basisHash,
+        design_basis_snapshot: { BEAM: { B1: { effective_depth_source_reference: 'Sheet B1' } } },
+      },
+    };
+    expect(parseGravityWorkflowRunBundle(bound)).toEqual(bound);
+
+    expect(() => parseGravityWorkflowRunBundle({
+      ...bound,
+      calculation_book: legacy.calculation_book,
+    })).toThrow(/inconsistent design basis identity/i);
+    expect(() => parseGravityWorkflowRunBundle({
+      ...bound,
+      calculation_book: { ...bound.calculation_book, design_basis_hash: 'f'.repeat(64) },
+    })).toThrow(/inconsistent design basis identity/i);
+  });
+
   it('blocks a mismatched calculation-book identity', () => {
     const payload = bundle();
     payload.calculation_book.workflow_result_hash = 'f'.repeat(64);

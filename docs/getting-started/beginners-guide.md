@@ -13,7 +13,7 @@ tags: []
 **Audience:** Users
 **Status:** Approved
 **Importance:** High
-**Version:** 0.28.2
+**Version:** 0.29.0
 **Created:** 2025-12-15
 **Last Updated:** 2026-10-29
 
@@ -158,4 +158,4 @@ remains a separate gate and is not established by this Python starter replay.
 - API reference: `docs/reference/api.md`
 - Learning path: `docs/learning/README.md`
 
-Document Version: 0.28.2 | Last Updated: 2026-11-13
+Document Version: 0.29.0 | Last Updated: 2026-11-13

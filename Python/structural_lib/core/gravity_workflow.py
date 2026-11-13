@@ -3,9 +3,6 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
-import math
 from enum import StrEnum
 from typing import Any, Literal
 
@@ -18,6 +15,8 @@ from structural_lib.core.building_gravity import (
     GravityPracticalActionKindV1,
     GravityPracticalActionUnitsV1,
     LoadModelV1,
+    _canonical_hash,
+    _member_length_mm,
 )
 
 __all__ = [
@@ -344,12 +343,7 @@ class GravityWorkflowRequestV1(_FrozenModel):
                     f"{action.kind.value} action {action.id} requires a known beam destination"
                 )
             if action.kind is GravityPracticalActionKindV1.BEAM_POINT:
-                start = nodes[beam.start_node_id]
-                end = nodes[beam.end_node_id]
-                span_mm = math.dist(
-                    (start.x_mm, start.y_mm, start.z_mm),
-                    (end.x_mm, end.y_mm, end.z_mm),
-                )
+                span_mm = _member_length_mm(beam, nodes)
                 if (
                     action.point_position_mm is None
                     or action.point_position_mm > span_mm
@@ -359,6 +353,32 @@ class GravityWorkflowRequestV1(_FrozenModel):
                         f"destination span [0, {span_mm}] mm"
                     )
         return self
+
+    def design_basis_snapshot(self) -> dict[str, dict[str, dict[str, Any]]]:
+        """Return supplied design bases grouped by kind and component ID."""
+        return {
+            "SLAB": {
+                item.panel_id: item.model_dump(mode="json")
+                for item in self.slab_design_bases
+            },
+            "BEAM": {
+                item.beam_id: item.model_dump(mode="json")
+                for item in self.beam_design_bases
+            },
+            "COLUMN": {
+                item.column_id: item.model_dump(mode="json")
+                for item in self.column_design_bases
+            },
+            "FOOTING": {
+                item.footing_id: item.model_dump(mode="json")
+                for item in self.footing_design_bases
+            },
+        }
+
+    @property
+    def design_basis_hash(self) -> str:
+        """Bind supplied design inputs and their references independently of actions."""
+        return _canonical_hash({"design_bases": self.design_basis_snapshot()})
 
 
 class GravityComponentApplicabilityV1(_FrozenModel):
@@ -454,6 +474,7 @@ class GravityWorkflowResultV1(_FrozenModel):
     model_hash: str = Field(pattern=_SHA256_PATTERN)
     load_model_hash: str = Field(pattern=_SHA256_PATTERN)
     ledger_hash: str = Field(pattern=_SHA256_PATTERN)
+    design_basis_hash: str | None = Field(default=None, pattern=_SHA256_PATTERN)
     applicability: ComponentApplicabilityMatrixV1
     practical_action_reconciliation: tuple[
         GravityPracticalActionReconciliationV1, ...
@@ -466,12 +487,9 @@ class GravityWorkflowResultV1(_FrozenModel):
     @computed_field  # type: ignore[prop-decorator]
     @property
     def workflow_result_hash(self) -> str:
-        payload = self.model_dump(mode="json", exclude={"workflow_result_hash"})
-        encoded = json.dumps(
-            payload,
-            allow_nan=False,
-            ensure_ascii=True,
-            separators=(",", ":"),
-            sort_keys=True,
-        ).encode("utf-8")
-        return hashlib.sha256(encoded).hexdigest()
+        # The established calculation hash remains independent of basis provenance.
+        return _canonical_hash(
+            self.model_dump(
+                mode="json", exclude={"workflow_result_hash", "design_basis_hash"}
+            )
+        )

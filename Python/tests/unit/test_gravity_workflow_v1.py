@@ -23,6 +23,8 @@ from structural_lib.core.gravity_workflow import (
     GravityWorkflowRequestV1,
 )
 from structural_lib.services.gravity_calculation_book import (
+    GravityCalculationBookV1,
+    build_gravity_calculation_book_v1,
     render_gravity_calculation_book_markdown_v1,
     run_gravity_workflow_with_book_v1,
 )
@@ -332,6 +334,116 @@ def test_practical_actions_flow_through_exact_member_actions_and_result() -> Non
     )
 
 
+@pytest.mark.parametrize(
+    ("span_mm", "station_mm", "reversed_beam", "end_transfer_kn", "ledger_hash"),
+    [
+        (
+            6000,
+            0,
+            False,
+            0.0,
+            "dcfacc1a557b3c4e3eb6ceaab85773a5c0fbe1b05016b98f86429c9aa555515f",
+        ),
+        (
+            6000,
+            6000,
+            False,
+            12.0,
+            "d2302f674dbd7d931bfa97657d936a51512aff66e881270c95f70f1ba4f1f52f",
+        ),
+        (
+            8001,
+            0,
+            False,
+            0.0,
+            "aefc34266031e9a7cb629d3b62567ff1c5411649241286a6e11d08a98684ccb5",
+        ),
+        (
+            8001,
+            8000,
+            False,
+            12 * 8000 / 8001,
+            "3aa2e1c99513222ccce19d1d133c2b0d872a631a89658bdb3723c014439e3bb0",
+        ),
+        (8001, 8001, False, 12.0, None),
+        (8001.25, 8001.25, False, 12.0, None),
+        (8001, 8001, True, 12.0, None),
+    ],
+)
+def test_point_station_uses_exact_span_and_physical_beam_ends(
+    span_mm: float,
+    station_mm: float,
+    reversed_beam: bool,
+    end_transfer_kn: float,
+    ledger_hash: str | None,
+) -> None:
+    building = _building_with_x_span(span_mm)
+    if reversed_beam:
+        payload = building.model_dump(mode="python", exclude={"accepted_model_hash"})
+        beam = next(item for item in payload["members"] if item["id"] == "B1")
+        beam["start_node_id"], beam["end_node_id"] = (
+            beam["end_node_id"],
+            beam["start_node_id"],
+        )
+        building = BuildingModelV1.model_validate(payload)
+
+    point = GravityPracticalActionV1.model_validate(
+        {
+            **_practical_actions()[2].model_dump(),
+            "point_position_mm": station_mm,
+            "assignment_basis": f"Equipment at {station_mm} mm from B1 start.",
+        }
+    )
+    baseline = run_gravity_workflow_with_book_v1(_request(building))
+    bundle = run_gravity_workflow_with_book_v1(
+        _request(building, practical_actions=(point,))
+    )
+    result = bundle.workflow_result
+    book = bundle.calculation_book
+    transfer = result.practical_action_reconciliation[0]
+    assert transfer.reconciled and transfer.residual_kn == 0
+    assert transfer.destination_total_kn == 12
+    assert book.reconciliation["all_balanced"]
+    if ledger_hash is not None:
+        assert result.ledger_hash == ledger_hash
+
+    end_footing = "F1" if reversed_beam else "F2"
+    start_footing = "F2" if reversed_beam else "F1"
+    expected_transfer = {
+        start_footing: 12 - end_transfer_kn,
+        end_footing: end_transfer_kn,
+    }
+    original_dead_loads = {
+        entry["destination_id"]: entry["magnitude_kn"]
+        for entry in baseline.calculation_book.ledger_snapshot["entries"]
+        if entry["stage"] == "FOOTING_ACTION" and entry["case_id"] == "DL"
+    }
+    for entry in book.ledger_snapshot["entries"]:
+        if entry["stage"] == "FOOTING_ACTION" and entry["case_id"] == "DL":
+            footing = entry["destination_id"]
+            assert entry["magnitude_kn"] - original_dead_loads[
+                footing
+            ] == pytest.approx(expected_transfer.get(footing, 0))
+
+    original_actions = {
+        item.action_id: item for item in baseline.workflow_result.actions
+    }
+    if station_mm in (0.0, span_mm):
+        for combination in ("SERVICE_DL_LL", "ULS_1_5_DL_LL"):
+            action_id = f"action:{combination}:B1"
+            beam = next(item for item in result.actions if item.action_id == action_id)
+            assert beam.moment_knm == original_actions[action_id].moment_knm
+            assert beam.shear_kn == original_actions[action_id].shear_kn
+            assert "apply:DL:practical:EQUIPMENT_B1_DL" in beam.source_entry_ids
+
+    for action in result.actions:
+        if action.kind.value == "FOOTING" and action.combination_id == "ULS_1_5_DL_LL":
+            assert action.axial_kn == pytest.approx(
+                original_actions[action.action_id].axial_kn
+                + 1.5 * expected_transfer.get(action.component_id, 0)
+            )
+
+
 def test_practical_action_destination_and_point_station_fail_closed() -> None:
     building = _building()
     point = _practical_actions()[2]
@@ -342,10 +454,10 @@ def test_practical_action_destination_and_point_station_fail_closed() -> None:
         _request(building, practical_actions=(wrong_destination,))
 
     payload = point.model_dump(mode="python")
-    payload["point_position_mm"] = 7000
+    payload["point_position_mm"] = 8002
     outside_span = GravityPracticalActionV1.model_validate(payload)
     with pytest.raises(ValidationError, match="position must lie within"):
-        _request(building, practical_actions=(outside_span,))
+        _request(_building_with_x_span(8001), practical_actions=(outside_span,))
 
 
 def test_missing_prerequisites_preserve_every_component_as_hold() -> None:
@@ -405,6 +517,62 @@ def test_supported_slab_beam_and_column_bases_call_canonical_components() -> Non
         assert by_id[component_id].result is None
         assert by_id[component_id].result_envelope["overall_status"] == "HOLD"
     assert result.result_envelope["overall_status"] == "HOLD"
+
+
+@pytest.mark.parametrize("end_condition", ["FIXED_FIXED_SWAY", "FIXED_FREE"])
+def test_incompatible_column_restraint_holds_before_design(
+    end_condition: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from structural_lib.services import gravity_workflow
+
+    request = _request(with_supported_component_bases=True)
+    baseline = run_gravity_workflow_v1(request)
+    baseline_column = next(
+        item for item in baseline.components if item.component_id == "C1"
+    )
+    assert baseline_column.result_envelope["overall_status"] == "PASS"
+    assert baseline_column.result["le_x_mm"] == 1950
+
+    original_design = gravity_workflow.design_column_is456
+
+    def design_braced_column(**kwargs):
+        assert kwargs["end_condition"] == "FIXED_FIXED"
+        return original_design(**kwargs)
+
+    monkeypatch.setattr(gravity_workflow, "design_column_is456", design_braced_column)
+    first, *siblings = request.column_design_bases
+    incompatible = GravityColumnDesignBasisV1.model_validate(
+        {**first.model_dump(), "end_condition": end_condition}
+    )
+    request = request.model_copy(
+        update={"column_design_bases": (incompatible, *siblings)}
+    )
+    bundle = run_gravity_workflow_with_book_v1(request)
+    result = bundle.workflow_result
+    columns = {
+        item.component_id: item
+        for item in result.components
+        if item.kind.value == "COLUMN"
+    }
+    assert columns["C1"].result is None
+    assert columns["C1"].action_ids == baseline_column.action_ids
+    assert columns["C1"].result_envelope["overall_status"] == "HOLD"
+    assert columns["C1"].result_envelope["issues"][0]["code"] == (
+        "COLUMN_RESTRAINT_OUTSIDE_BRACED_SCOPE"
+    )
+    entry = next(
+        item for item in result.applicability.entries if item.component_id == "C1"
+    )
+    assert entry.disposition.value == "HOLD"
+    assert entry.hold_reasons == ("COLUMN_RESTRAINT_OUTSIDE_BRACED_SCOPE",)
+    assert columns["C2"].result_envelope["overall_status"] == "PASS"
+    assert result.actions == baseline.actions
+    assert result.model_hash == baseline.model_hash
+    assert result.load_model_hash == baseline.load_model_hash
+    assert result.ledger_hash == baseline.ledger_hash
+    assert bundle.calculation_book.design_basis_snapshot["COLUMN"]["C1"] == (
+        incompatible.model_dump(mode="json")
+    )
 
 
 def test_beam_selection_basis_recommends_bars_but_missing_supply_holds() -> None:
@@ -602,10 +770,83 @@ def test_calculation_book_binds_reconciliation_holds_and_review_disposition() ->
     assert "Qualified structural-engineering review remains required" in markdown
 
 
+def test_book_binds_typed_design_inputs_and_retains_references_on_hold() -> None:
+    request = _request(with_supported_component_bases=True)
+    footing = _footing_basis(service_axial_kn=200, factored_axial_kn=300)
+    request = request.model_copy(update={"footing_design_bases": (footing,)})
+    first, *other_beams = request.beam_design_bases
+    revised_beam = first.model_copy(
+        update={"effective_depth_source_reference": "Reviewed B1 drawing revision B"}
+    )
+    revised = request.model_copy(
+        update={"beam_design_bases": (revised_beam, *other_beams)}
+    )
+    original_bundle = run_gravity_workflow_with_book_v1(request)
+    revised_bundle = run_gravity_workflow_with_book_v1(revised)
+    result = original_bundle.workflow_result
+    revised_result = revised_bundle.workflow_result
+    book = revised_bundle.calculation_book
+
+    assert result.model_hash == revised_result.model_hash
+    assert result.load_model_hash == revised_result.load_model_hash
+    assert result.ledger_hash == revised_result.ledger_hash
+    assert result.workflow_result_hash == revised_result.workflow_result_hash
+    assert result.design_basis_hash != revised_result.design_basis_hash
+    assert book.design_basis_hash == revised_result.design_basis_hash
+    assert book.design_basis_snapshot["BEAM"]["B1"] == revised_beam.model_dump(
+        mode="json"
+    )
+    assert book.design_basis_snapshot["SLAB"]["P1"] == revised.slab_design_bases[
+        0
+    ].model_dump(mode="json")
+    assert book.design_basis_snapshot["COLUMN"]["C1"] == revised.column_design_bases[
+        0
+    ].model_dump(mode="json")
+    assert book.design_basis_snapshot["FOOTING"]["F1"] == footing.model_dump(
+        mode="json"
+    )
+    slab = next(item for item in book.components if item.component_id == "P1")
+    assert slab.result_envelope["overall_status"] == "HOLD"
+    round_trip = GravityCalculationBookV1.model_validate_json(book.model_dump_json())
+    markdown = render_gravity_calculation_book_markdown_v1(round_trip)
+    assert round_trip == book
+    assert "Reviewed B1 drawing revision B" in markdown
+    assert "125 mm reviewed effective depth" in markdown
+
+    with pytest.raises(ValueError, match="design basis identity does not match"):
+        build_gravity_calculation_book_v1(revised, result)
+    shallower_beam = first.model_copy(update={"d_mm": 400})
+    different_depth = request.model_copy(
+        update={"beam_design_bases": (shallower_beam, *other_beams)}
+    )
+    assert different_depth.load_model_hash == request.load_model_hash
+    with pytest.raises(ValueError, match="design basis identity does not match"):
+        build_gravity_calculation_book_v1(different_depth, result)
+    with pytest.raises(ValueError, match="no design basis identity; rerun"):
+        build_gravity_calculation_book_v1(
+            request, result.model_copy(update={"design_basis_hash": None})
+        )
+
+
+def test_member_actions_reject_stale_model_or_load_ledger() -> None:
+    request = _request()
+    ledger = build_gravity_load_ledger_v1(request.building, request.loads)
+    for revised in (_request(live_load_kn_m2=6), _request(_building_with_x_span(8001))):
+        with pytest.raises(ValueError, match="ledger model or load-model identity"):
+            build_gravity_member_actions_v1(revised, ledger)
+
+    current = _request(live_load_kn_m2=6)
+    actions = build_gravity_member_actions_v1(
+        current, build_gravity_load_ledger_v1(current.building, current.loads)
+    )
+    beam = next(item for item in actions if item.action_id == "action:ULS_1_5_DL_LL:B1")
+    assert beam.moment_knm == pytest.approx(177.1875)
+
+
 def test_cli_emits_same_versioned_bundle_from_json_request(tmp_path: Path) -> None:
     from structural_lib.__main__ import main
 
-    request = _request()
+    request = _request(with_supported_component_bases=True)
     request_path = tmp_path / "request.json"
     output_path = tmp_path / "calculation-book.json"
     request_path.write_text(
@@ -626,3 +867,26 @@ def test_cli_emits_same_versioned_bundle_from_json_request(tmp_path: Path) -> No
     assert payload["schema_version"] == "gravity-workflow-run-bundle/v1"
     assert payload["workflow_result"]["result_envelope"]["overall_status"] == "HOLD"
     assert payload["calculation_book"]["reconciliation"]["all_balanced"] is True
+    book = payload["calculation_book"]
+    assert book["design_basis_hash"] == payload["workflow_result"]["design_basis_hash"]
+    assert book["design_basis_snapshot"]["BEAM"]["B1"][
+        "effective_depth_source_reference"
+    ] == ("450 mm reviewed effective depth")
+
+    markdown_path = tmp_path / "calculation-book.md"
+    assert (
+        main(
+            [
+                "gravity-v1",
+                str(request_path),
+                "--format",
+                "markdown",
+                "-o",
+                str(markdown_path),
+            ]
+        )
+        == 0
+    )
+    assert "450 mm reviewed effective depth" in markdown_path.read_text(
+        encoding="utf-8"
+    )

@@ -11,6 +11,11 @@ from dataclasses import dataclass
 from math import hypot
 from typing import Literal
 
+from structural_lib.core.validation import (
+    require_nonnegative_real,
+    require_positive_real,
+)
+
 
 def circle_inside_rounded_rectangle(
     x_mm: float,
@@ -59,12 +64,23 @@ def compute_effective_depth(
 
     Returns:
         Effective depth (mm).
+
+    Raises:
+        ValueError: If the input dimensions are invalid or depth is outside the section.
     """
+    require_positive_real(D_mm, "D_mm")
+    require_nonnegative_real(cover_mm, "cover_mm")
+    require_nonnegative_real(stirrup_dia_mm, "stirrup_dia_mm")
+    require_nonnegative_real(bar_dia_mm, "bar_dia_mm")
     d = D_mm - cover_mm - stirrup_dia_mm - bar_dia_mm / 2
     if d <= 0:
         raise ValueError(
             f"Effective depth must be positive: D={D_mm}, cover={cover_mm}, "
             f"stirrup={stirrup_dia_mm}, bar={bar_dia_mm} → d={d}"
+        )
+    if d >= D_mm:
+        raise ValueError(
+            f"Effective depth ({d}mm) must be less than overall depth ({D_mm}mm)"
         )
     return d
 
@@ -110,7 +126,7 @@ class RectangularSection(Section):
     Attributes:
         b: Width (mm)
         D: Overall depth (mm)
-        d: Effective depth (mm), optional - calculated if not provided
+        d: Effective depth (mm), strictly between zero and D. Calculated if omitted.
         cover: Clear cover to reinforcement (mm)
     """
 
@@ -122,6 +138,14 @@ class RectangularSection(Section):
     def __post_init__(self) -> None:
         if self.d is None:
             self.d = compute_effective_depth(self.D, self.cover)
+        else:
+            require_positive_real(self.D, "D")
+            require_nonnegative_real(self.cover, "cover")
+            require_positive_real(self.d, "d")
+            if self.d >= self.D:
+                raise ValueError(
+                    f"Effective depth ({self.d}mm) must be less than overall depth ({self.D}mm)"
+                )
 
     @property
     def area(self) -> float:

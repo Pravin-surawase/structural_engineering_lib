@@ -3,9 +3,10 @@
 
 from __future__ import annotations
 
+import json
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from structural_lib.core.gravity_workflow import (
     ComponentApplicabilityMatrixV1,
@@ -51,6 +52,10 @@ class GravityCalculationBookV1(_FrozenModel):
     load_model_hash: str
     ledger_hash: str
     workflow_result_hash: str
+    design_basis_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    design_basis_snapshot: dict[str, dict[str, dict[str, Any]]] = Field(
+        default_factory=dict
+    )
     model_snapshot: dict[str, Any]
     load_snapshot: dict[str, Any]
     ledger_snapshot: dict[str, Any]
@@ -153,6 +158,19 @@ def build_gravity_calculation_book_v1(
 ) -> GravityCalculationBookV1:
     """Bind accepted inputs, ledger, actions, results, and holds in one dossier."""
 
+    if (
+        request.model_hash != result.model_hash
+        or request.load_model_hash != result.load_model_hash
+    ):
+        raise ValueError(
+            "workflow result model or load-model identity does not match request"
+        )
+    if result.design_basis_hash is None:
+        raise ValueError(
+            "workflow result has no design basis identity; rerun the request"
+        )
+    if request.design_basis_hash != result.design_basis_hash:
+        raise ValueError("workflow result design basis identity does not match request")
     ledger = build_gravity_load_ledger_v1(request.building, request.loads)
     if ledger.ledger_hash != result.ledger_hash:
         raise ValueError("workflow result ledger identity does not match replay")
@@ -168,6 +186,8 @@ def build_gravity_calculation_book_v1(
         load_model_hash=result.load_model_hash,
         ledger_hash=result.ledger_hash,
         workflow_result_hash=result.workflow_result_hash,
+        design_basis_hash=result.design_basis_hash,
+        design_basis_snapshot=request.design_basis_snapshot(),
         model_snapshot=to_transport_value(request.building),
         load_snapshot=to_transport_value(request.loads),
         ledger_snapshot=to_transport_value(ledger),
@@ -258,6 +278,23 @@ def render_gravity_calculation_book_markdown_v1(
         )
         for item in book.components
     )
+    lines.extend(["", "## Supplied design bases", ""])
+    if book.design_basis_hash is None:
+        lines.append("Design basis identity is unavailable in this calculation book.")
+    else:
+        lines.extend([f"- Design basis hash: `{book.design_basis_hash}`", ""])
+        for kind, bases in sorted(book.design_basis_snapshot.items()):
+            for component_id, basis in sorted(bases.items()):
+                lines.extend([f"### {kind.title()} {component_id}", ""])
+                lines.extend(
+                    f"    {line}"
+                    for line in json.dumps(
+                        basis, indent=2, ensure_ascii=False, sort_keys=True
+                    ).splitlines()
+                )
+                lines.append("")
+        if not any(book.design_basis_snapshot.values()):
+            lines.append("No component design bases were supplied.")
     lines.extend(["", "## Explicit limitations", ""])
     lines.extend(f"- {item}" for item in book.limitations)
     lines.extend(["", "## Approved exclusions", ""])

@@ -736,8 +736,9 @@ class TestCuttingStockOptimization:
         expected_pct = expected_waste / total_stock_length * 100
         assert abs(plan.waste_percentage - expected_pct) < 0.1
 
-    def test_first_fit_decreasing_order(self):
-        """Algorithm should process cuts in descending order (largest first)."""
+    @pytest.mark.parametrize("short_diameter", [16, 20])
+    def test_first_fit_decreasing_respects_stock_diameter(self, short_diameter):
+        """Cuts share stock only when their diameters agree."""
 
         items = [
             BBSLineItem(
@@ -746,7 +747,7 @@ class TestCuttingStockOptimization:
                 location="bottom",
                 zone="full",
                 shape_code="A",
-                diameter_mm=16,
+                diameter_mm=short_diameter,
                 no_of_bars=2,
                 cut_length_mm=1000,  # Smaller
                 total_length_mm=2000,
@@ -770,13 +771,15 @@ class TestCuttingStockOptimization:
 
         plan = optimize_cutting_stock(items, stock_lengths=[6000], kerf=3.0)
 
-        # First-fit-decreasing should place 4000mm cuts first
-        # Then try to fit 1000mm cuts in remaining space
-        # 6000mm stock: 4000 + 3 (kerf) + 1000 + 3 (kerf) = 5006, leaving 994
-        # So can fit 1×4000 + 1×1000 per stock
-        # Total: 2×4000 + 2×1000 = need 2 stocks
-
-        assert plan.total_stock_used == 2
+        if short_diameter == 20:
+            expected = [[("B2", 4000), ("B1", 1000)]] * 2
+            waste = 1988
+        else:
+            expected = [[("B2", 4000)], [("B2", 4000)], [("B1", 1000), ("B1", 1000)]]
+            waste = 7988
+        assert [assignment.cuts for assignment in plan.assignments] == expected
+        assert plan.total_stock_used == len(expected)
+        assert plan.total_waste == waste
 
     def test_kerf_handling(self):
         """Kerf (saw cut loss) should be properly accounted for."""

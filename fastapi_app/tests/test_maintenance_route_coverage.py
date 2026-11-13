@@ -75,7 +75,17 @@ def test_long_column_route(client: TestClient):
     assert data["interaction_ratio"] < 1.0
 
 
-def test_helical_check_route(client: TestClient):
+@pytest.mark.parametrize(
+    ("diameter", "pitch", "pitch_ok", "adequate", "factor", "capacity"),
+    [
+        (10, 50, True, True, 1.05, 2100),
+        (10, 85, False, False, 1.0, 2000),
+        (8, 50, True, False, 1.0, 2000),
+    ],
+)
+def test_helical_check_route(
+    client: TestClient, diameter, pitch, pitch_ok, adequate, factor, capacity
+):
     response = client.post(
         "/api/v1/design/column/helical-check",
         json={
@@ -83,16 +93,18 @@ def test_helical_check_route(client: TestClient):
             "D_core_mm": 350.0,
             "fck": 25.0,
             "fy": 415.0,
-            "d_helix_mm": 8.0,
-            "pitch_mm": 50.0,
+            "d_helix_mm": diameter,
+            "pitch_mm": pitch,
             "Pu_axial_kN": 2000.0,
         },
     )
 
     assert response.status_code == 200
     data = unwrap(response)
-    assert data["pitch_ok"] is True
-    assert data["enhancement_factor"] == pytest.approx(1.05)
+    assert data["pitch_ok"] is pitch_ok
+    assert data["is_adequate"] is adequate
+    assert data["enhancement_factor"] == pytest.approx(factor)
+    assert data["Pu_enhanced_kN"] == pytest.approx(capacity)
     assert data["clause_ref"] == "Cl. 39.4"
 
 

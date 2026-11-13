@@ -32,6 +32,7 @@ from structural_lib.core.building_gravity import (
     GravityPracticalActionV1,
     GravitySectionKindV1,
     LoadModelV1,
+    _member_length_mm,
 )
 
 __all__ = [
@@ -195,12 +196,7 @@ class GravityLoadLedgerV1(_FrozenModel):
 def _member_length_m(
     member: GravityMemberV1, nodes: Mapping[str, GravityNodeV1]
 ) -> float:
-    start = nodes[member.start_node_id]
-    end = nodes[member.end_node_id]
-    dx = end.x_mm - start.x_mm
-    dy = end.y_mm - start.y_mm
-    dz = end.z_mm - start.z_mm
-    return math.sqrt(dx * dx + dy * dy + dz * dz) / 1000.0
+    return _member_length_mm(member, nodes) / 1000.0
 
 
 def _balance(
@@ -327,7 +323,7 @@ def build_gravity_load_ledger_v1(
                 "requires a known beam destination"
             )
         if practical_action.kind is GravityPracticalActionKindV1.BEAM_POINT:
-            span_mm = _member_length_m(beam, nodes) * 1000.0
+            span_mm = _member_length_mm(beam, nodes)
             if (
                 practical_action.point_position_mm is None
                 or practical_action.point_position_mm > span_mm
@@ -618,7 +614,7 @@ def build_gravity_load_ledger_v1(
             line_loads = beam_line_entries[(case_id, beam.id)]
             point_loads = beam_point_entries[(case_id, beam.id)]
             applied_loads = [*line_loads, *point_loads]
-            span_mm = _member_length_m(beam, nodes) * 1000.0
+            span_mm = _member_length_mm(beam, nodes)
             line_reaction = math.fsum(item.magnitude_kn / 2.0 for item in line_loads)
             for end_index, end_node_id in enumerate(
                 (beam.start_node_id, beam.end_node_id)

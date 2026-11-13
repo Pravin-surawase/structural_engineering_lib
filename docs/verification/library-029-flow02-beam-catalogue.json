@@ -1,0 +1,1507 @@
+{
+  "fixture_version": "library-029-flow02-beam-catalogue-reference/v1",
+  "sources": [
+    "BEAM04 rectangular section; finite two-layer positions and diameters.",
+    "IS 456 signed independent strain equilibrium and Table 19 interpolation.",
+    "Catalogue rank uses total variable area, number of variable bars and option IDs."
+  ],
+  "request": {
+    "identity": {
+      "family_id": "beam",
+      "case_id": "FLOW02-B05",
+      "member_id": "B05"
+    },
+    "member": {
+      "member_id": "B05",
+      "analysis_revision": "B03-A1",
+      "current_analysis_revision": "B03-A1",
+      "reinforcement_revision": "B05-R-catalogue",
+      "source_reference": "BEAM04 multilayer reference",
+      "width_mm": 300,
+      "depth_mm": 600,
+      "fck_nmm2": 30,
+      "fy_nmm2": 500,
+      "clear_cover_mm": 30,
+      "aggregate_size_mm": 20,
+      "link_diameter_mm": 8,
+      "link_spacing_mm": 200,
+      "link_fy_nmm2": 415,
+      "bars": [
+        {
+          "bar_id": "T1-1",
+          "face": "top",
+          "layer": 1,
+          "diameter_mm": 20,
+          "x_from_left_mm": 55,
+          "y_from_top_mm": 55
+        },
+        {
+          "bar_id": "T1-2",
+          "face": "top",
+          "layer": 1,
+          "diameter_mm": 20,
+          "x_from_left_mm": 245,
+          "y_from_top_mm": 55
+        },
+        {
+          "bar_id": "B1-1",
+          "face": "bottom",
+          "layer": 1,
+          "diameter_mm": 25,
+          "x_from_left_mm": 55,
+          "y_from_top_mm": 520
+        },
+        {
+          "bar_id": "B1-2",
+          "face": "bottom",
+          "layer": 1,
+          "diameter_mm": 25,
+          "x_from_left_mm": 150,
+          "y_from_top_mm": 520
+        },
+        {
+          "bar_id": "B1-3",
+          "face": "bottom",
+          "layer": 1,
+          "diameter_mm": 25,
+          "x_from_left_mm": 245,
+          "y_from_top_mm": 520
+        },
+        {
+          "bar_id": "B2-1",
+          "face": "bottom",
+          "layer": 2,
+          "diameter_mm": 25,
+          "x_from_left_mm": 55,
+          "y_from_top_mm": 450
+        },
+        {
+          "bar_id": "B2-2",
+          "face": "bottom",
+          "layer": 2,
+          "diameter_mm": 25,
+          "x_from_left_mm": 150,
+          "y_from_top_mm": 450
+        },
+        {
+          "bar_id": "B2-3",
+          "face": "bottom",
+          "layer": 2,
+          "diameter_mm": 25,
+          "x_from_left_mm": 245,
+          "y_from_top_mm": 450
+        }
+      ],
+      "stations": [
+        {
+          "station_id": "SECTION",
+          "x_mm": 0,
+          "side": "CONTINUOUS"
+        }
+      ],
+      "combinations": [
+        {
+          "combination_id": "SAG",
+          "kind": "ULS",
+          "required_station_ids": [
+            "SECTION"
+          ]
+        },
+        {
+          "combination_id": "HOG",
+          "kind": "ULS",
+          "required_station_ids": [
+            "SECTION"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "row_id": "SAG:SECTION",
+          "combination_id": "SAG",
+          "station_id": "SECTION",
+          "mu_knm": 200,
+          "vu_kn": 110
+        },
+        {
+          "row_id": "HOG:SECTION",
+          "combination_id": "HOG",
+          "station_id": "SECTION",
+          "mu_knm": -95,
+          "vu_kn": 110
+        }
+      ],
+      "schema_version": "is456-beam-section-check/v1"
+    },
+    "layers": [
+      {
+        "layer": 1,
+        "options": [
+          {
+            "option_id": "2x16",
+            "diameter_mm": 16,
+            "x_from_left_mm": [
+              55.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "2x20",
+            "diameter_mm": 20,
+            "x_from_left_mm": [
+              55.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "2x25",
+            "diameter_mm": 25,
+            "x_from_left_mm": [
+              55.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "3x16",
+            "diameter_mm": 16,
+            "x_from_left_mm": [
+              55.0,
+              150.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "3x20",
+            "diameter_mm": 20,
+            "x_from_left_mm": [
+              55.0,
+              150.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "3x25",
+            "diameter_mm": 25,
+            "x_from_left_mm": [
+              55.0,
+              150.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "4x16",
+            "diameter_mm": 16,
+            "x_from_left_mm": [
+              55.0,
+              118.33333333333334,
+              181.66666666666669,
+              245.0
+            ]
+          },
+          {
+            "option_id": "4x20",
+            "diameter_mm": 20,
+            "x_from_left_mm": [
+              55.0,
+              118.33333333333334,
+              181.66666666666669,
+              245.0
+            ]
+          },
+          {
+            "option_id": "4x25",
+            "diameter_mm": 25,
+            "x_from_left_mm": [
+              55.0,
+              118.33333333333334,
+              181.66666666666669,
+              245.0
+            ]
+          }
+        ]
+      },
+      {
+        "layer": 2,
+        "options": [
+          {
+            "option_id": "2x16",
+            "diameter_mm": 16,
+            "x_from_left_mm": [
+              55.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "2x20",
+            "diameter_mm": 20,
+            "x_from_left_mm": [
+              55.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "2x25",
+            "diameter_mm": 25,
+            "x_from_left_mm": [
+              55.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "3x16",
+            "diameter_mm": 16,
+            "x_from_left_mm": [
+              55.0,
+              150.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "3x20",
+            "diameter_mm": 20,
+            "x_from_left_mm": [
+              55.0,
+              150.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "3x25",
+            "diameter_mm": 25,
+            "x_from_left_mm": [
+              55.0,
+              150.0,
+              245.0
+            ]
+          },
+          {
+            "option_id": "4x16",
+            "diameter_mm": 16,
+            "x_from_left_mm": [
+              55.0,
+              118.33333333333334,
+              181.66666666666669,
+              245.0
+            ]
+          },
+          {
+            "option_id": "4x20",
+            "diameter_mm": 20,
+            "x_from_left_mm": [
+              55.0,
+              118.33333333333334,
+              181.66666666666669,
+              245.0
+            ]
+          },
+          {
+            "option_id": "4x25",
+            "diameter_mm": 25,
+            "x_from_left_mm": [
+              55.0,
+              118.33333333333334,
+              181.66666666666669,
+              245.0
+            ]
+          }
+        ]
+      }
+    ],
+    "evaluation_limit": 81,
+    "analysis_basis": "fixed_supplied_actions"
+  },
+  "expected": {
+    "evaluated": {
+      "2x16/2x16": {
+        "status": "FAIL",
+        "bottom_area_mm2": 804.247719318987,
+        "rank": [
+          804.247719318987,
+          4,
+          "2x16/2x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 148.0079379332139,
+          "bottom": 156.08536551956482
+        }
+      },
+      "2x16/2x20": {
+        "status": "FAIL",
+        "bottom_area_mm2": 1030.4423903774523,
+        "rank": [
+          1030.4423903774523,
+          4,
+          "2x16/2x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 150.1159243417599,
+          "bottom": 194.2956422358183
+        }
+      },
+      "2x16/2x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 1383.871563906304,
+        "rank": [
+          1383.871563906304,
+          4,
+          "2x16/2x25"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 152.14305123244176,
+          "bottom": 251.95819960492264
+        }
+      },
+      "2x16/3x16": {
+        "status": "FAIL",
+        "bottom_area_mm2": 1005.3096491487338,
+        "rank": [
+          1005.3096491487338,
+          5,
+          "2x16/3x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 149.92384760996808,
+          "bottom": 190.0857809354375
+        }
+      },
+      "2x16/3x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1344.6016557364314,
+        "rank": [
+          1344.6016557364314,
+          5,
+          "2x16/3x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 151.96536067498064,
+          "bottom": 245.7790952089801
+        }
+      },
+      "2x16/3x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 1874.745416029709,
+        "rank": [
+          1874.745416029709,
+          5,
+          "2x16/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 153.78584486458297,
+          "bottom": 323.1149453177714
+        }
+      },
+      "2x16/4x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1206.3715789784806,
+        "rank": [
+          1206.3715789784806,
+          6,
+          "2x16/4x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 151.2580008742921,
+          "bottom": 223.44790334913824
+        }
+      },
+      "2x16/4x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1658.7609210954108,
+        "rank": [
+          1658.7609210954108,
+          6,
+          "2x16/4x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 153.17186107175303,
+          "bottom": 293.25522404794737
+        }
+      },
+      "2x16/4x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 2365.6192681531143,
+        "rank": [
+          2365.6192681531143,
+          6,
+          "2x16/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 154.7934042441925,
+          "bottom": 377.7076716032396
+        }
+      },
+      "2x20/2x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1030.4423903774523,
+        "rank": [
+          1030.4423903774523,
+          4,
+          "2x20/2x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 148.99902755717414,
+          "bottom": 201.17982787672813
+        }
+      },
+      "2x20/2x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1256.6370614359173,
+        "rank": [
+          1256.6370614359173,
+          4,
+          "2x20/2x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 151.6272664329535,
+          "bottom": 238.54558446507664
+        }
+      },
+      "2x20/2x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 1610.0662349647691,
+        "rank": [
+          1610.0662349647691,
+          4,
+          "2x20/2x25"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 154.25348109532572,
+          "bottom": 293.0683454597299
+        }
+      },
+      "2x20/3x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1231.5043202071988,
+        "rank": [
+          1231.5043202071988,
+          5,
+          "2x20/3x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 151.38347849706938,
+          "bottom": 234.4458860128078
+        }
+      },
+      "2x20/3x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1570.7963267948967,
+        "rank": [
+          1570.7963267948967,
+          5,
+          "2x20/3x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 154.01933098402898,
+          "bottom": 287.2909559146375
+        }
+      },
+      "2x20/3x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 2100.940087088174,
+        "rank": [
+          2100.940087088174,
+          5,
+          "2x20/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 156.45544918051561,
+          "bottom": 358.7535302108421
+        }
+      },
+      "2x20/4x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1432.5662500369458,
+        "rank": [
+          1432.5662500369458,
+          6,
+          "2x20/4x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 153.09479279276857,
+          "bottom": 266.428086842977
+        }
+      },
+      "2x20/4x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1884.9555921538758,
+        "rank": [
+          1884.9555921538758,
+          6,
+          "2x20/4x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.62450265100193,
+          "bottom": 331.3544526779338
+        }
+      },
+      "2x20/4x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2591.8139392115795,
+        "rank": [
+          2591.8139392115795,
+          6,
+          "2x20/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 157.84054852376252,
+          "bottom": 400.66136238337674
+        }
+      },
+      "2x25/2x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1383.871563906304,
+        "rank": [
+          1383.871563906304,
+          4,
+          "2x25/2x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 149.77912033511907,
+          "bottom": 269.59892530975407
+        }
+      },
+      "2x25/2x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1610.0662349647691,
+        "rank": [
+          1610.0662349647691,
+          4,
+          "2x25/2x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 153.4981584076303,
+          "bottom": 303.8248855236514
+        }
+      },
+      "2x25/2x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 1963.4954084936207,
+        "rank": [
+          1963.4954084936207,
+          4,
+          "2x25/2x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 157.00956852639746,
+          "bottom": 352.3720102458451
+        }
+      },
+      "2x25/3x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1584.9334937360507,
+        "rank": [
+          1584.9334937360507,
+          5,
+          "2x25/3x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 153.18099183154882,
+          "bottom": 300.1350071613107
+        }
+      },
+      "2x25/3x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1924.2255003237483,
+        "rank": [
+          1924.2255003237483,
+          5,
+          "2x25/3x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 156.68935903492618,
+          "bottom": 347.27794920112706
+        }
+      },
+      "2x25/3x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2454.369260617026,
+        "rank": [
+          2454.369260617026,
+          5,
+          "2x25/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 160.09161314135687,
+          "bottom": 403.2890173340554
+        }
+      },
+      "2x25/4x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1785.9954235657974,
+        "rank": [
+          1785.9954235657974,
+          6,
+          "2x25/4x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.43878242613948,
+          "bottom": 328.7685231337733
+        }
+      },
+      "2x25/4x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 2238.3847656827274,
+        "rank": [
+          2238.3847656827274,
+          6,
+          "2x25/4x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 158.91331025158888,
+          "bottom": 384.00401037204796
+        }
+      },
+      "2x25/4x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2945.243112740431,
+        "rank": [
+          2945.243112740431,
+          6,
+          "2x25/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 162.09843244114282,
+          "bottom": 430.32363491455544
+        }
+      },
+      "3x16/2x16": {
+        "status": "FAIL",
+        "bottom_area_mm2": 1005.3096491487338,
+        "rank": [
+          1005.3096491487338,
+          5,
+          "3x16/2x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 148.900409348682,
+          "bottom": 196.20505706069065
+        }
+      },
+      "3x16/2x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1231.5043202071988,
+        "rank": [
+          1231.5043202071988,
+          5,
+          "3x16/2x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 151.47327605324972,
+          "bottom": 233.68097649715108
+        }
+      },
+      "3x16/2x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 1584.9334937360507,
+        "rank": [
+          1584.9334937360507,
+          5,
+          "3x16/2x25"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 154.03390335313202,
+          "bottom": 288.6135575817324
+        }
+      },
+      "3x16/3x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1206.3715789784806,
+        "rank": [
+          1206.3715789784806,
+          6,
+          "3x16/3x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 151.23506410523007,
+          "bottom": 229.5671794743914
+        }
+      },
+      "3x16/3x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1545.6635855661782,
+        "rank": [
+          1545.6635855661782,
+          6,
+          "3x16/3x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 153.80600671773186,
+          "bottom": 282.79380584791363
+        }
+      },
+      "3x16/3x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 2075.807345859456,
+        "rank": [
+          2075.807345859456,
+          6,
+          "3x16/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 156.17320874302538,
+          "bottom": 355.0154673650871
+        }
+      },
+      "3x16/4x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1407.4335088082273,
+        "rank": [
+          1407.4335088082273,
+          7,
+          "3x16/4x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 152.9053879588661,
+          "bottom": 261.7586903790274
+        }
+      },
+      "3x16/4x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1859.8228509251576,
+        "rank": [
+          1859.8228509251576,
+          7,
+          "3x16/4x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.36672792366778,
+          "bottom": 327.2445384404892
+        }
+      },
+      "3x16/4x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2566.681197982861,
+        "rank": [
+          2566.681197982861,
+          7,
+          "3x16/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 157.5153012164646,
+          "bottom": 398.3752228389945
+        }
+      },
+      "3x20/2x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1344.6016557364314,
+        "rank": [
+          1344.6016557364314,
+          5,
+          "3x20/2x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 149.71380126956922,
+          "bottom": 262.224649795598
+        }
+      },
+      "3x20/2x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1570.7963267948967,
+        "rank": [
+          1570.7963267948967,
+          5,
+          "3x20/2x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 153.3141717119131,
+          "bottom": 296.8523248603456
+        }
+      },
+      "3x20/2x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 1924.2255003237483,
+        "rank": [
+          1924.2255003237483,
+          5,
+          "3x20/2x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 156.731014700542,
+          "bottom": 346.0827780829136
+        }
+      },
+      "3x20/3x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1545.6635855661782,
+        "rank": [
+          1545.6635855661782,
+          6,
+          "3x20/3x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 153.00468531059227,
+          "bottom": 293.1200843092783
+        }
+      },
+      "3x20/3x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1884.9555921538758,
+        "rank": [
+          1884.9555921538758,
+          6,
+          "3x20/3x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 156.42014301455586,
+          "bottom": 340.9158216236419
+        }
+      },
+      "3x20/3x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2415.0993524471537,
+        "rank": [
+          2415.0993524471537,
+          6,
+          "3x20/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 159.7159980447474,
+          "bottom": 399.2511364206943
+        }
+      },
+      "3x20/4x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1746.725515395925,
+        "rank": [
+          1746.725515395925,
+          7,
+          "3x20/4x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.2046727730464,
+          "bottom": 322.1517651873422
+        }
+      },
+      "3x20/4x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 2199.1148575128555,
+        "rank": [
+          2199.1148575128555,
+          7,
+          "3x20/4x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 158.57633317303427,
+          "bottom": 378.71965948166684
+        }
+      },
+      "3x20/4x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2905.9732045705587,
+        "rank": [
+          2905.9732045705587,
+          7,
+          "3x20/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 161.65266634347736,
+          "bottom": 427.5351375486625
+        }
+      },
+      "3x25/2x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1874.745416029709,
+        "rank": [
+          1874.745416029709,
+          5,
+          "3x25/2x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 150.237107071175,
+          "bottom": 355.6953100002716
+        }
+      },
+      "3x25/2x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 2100.940087088174,
+        "rank": [
+          2100.940087088174,
+          5,
+          "3x25/2x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.14523006369083,
+          "bottom": 384.5108909793648
+        }
+      },
+      "3x25/2x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2454.369260617026,
+        "rank": [
+          2454.369260617026,
+          5,
+          "3x25/2x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 160.0286305183925,
+          "bottom": 419.32652758653114
+        }
+      },
+      "3x25/3x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 2075.807345859456,
+        "rank": [
+          2075.807345859456,
+          6,
+          "3x25/3x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 154.66414084147888,
+          "bottom": 381.47655592233417
+        }
+      },
+      "3x25/3x20": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2415.0993524471537,
+        "rank": [
+          2415.0993524471537,
+          6,
+          "3x25/3x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 159.5979051570264,
+          "bottom": 416.46305598719596
+        }
+      },
+      "3x25/3x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2945.243112740431,
+        "rank": [
+          2945.243112740431,
+          6,
+          "3x25/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 164.28752006190697,
+          "bottom": 446.64161207597914
+        }
+      },
+      "3x25/4x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 2276.8692756892024,
+        "rank": [
+          2276.8692756892024,
+          7,
+          "3x25/4x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 157.93637339483774,
+          "bottom": 403.7228694515642
+        }
+      },
+      "3x25/4x20": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2729.258617806133,
+        "rank": [
+          2729.258617806133,
+          7,
+          "3x25/4x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 162.63477248343895,
+          "bottom": 436.98827672685167
+        }
+      },
+      "3x25/4x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 3436.116964863836,
+        "rank": [
+          3436.116964863836,
+          7,
+          "3x25/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 167.1748145429389,
+          "bottom": 459.42287509190203
+        }
+      },
+      "4x16/2x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1206.3715789784806,
+        "rank": [
+          1206.3715789784806,
+          6,
+          "4x16/2x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 149.45050048763213,
+          "bottom": 235.6864555996446
+        }
+      },
+      "4x16/2x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1432.5662500369458,
+        "rank": [
+          1432.5662500369458,
+          6,
+          "4x16/2x20"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 152.62215696479296,
+          "bottom": 271.78245345257346
+        }
+      },
+      "4x16/2x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 1785.9954235657974,
+        "rank": [
+          1785.9954235657974,
+          6,
+          "4x16/2x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.6982887551401,
+          "bottom": 323.3663496794482
+        }
+      },
+      "4x16/3x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1407.4335088082273,
+        "rank": [
+          1407.4335088082273,
+          7,
+          "4x16/3x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 152.3406487613829,
+          "bottom": 267.8779665042806
+        }
+      },
+      "4x16/3x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1746.725515395925,
+        "rank": [
+          1746.725515395925,
+          7,
+          "4x16/3x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.4207778086424,
+          "bottom": 317.9447628512306
+        }
+      },
+      "4x16/3x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 2276.8692756892024,
+        "rank": [
+          2276.8692756892024,
+          7,
+          "4x16/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 158.3395985969373,
+          "bottom": 382.20329521180844
+        }
+      },
+      "4x16/4x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1608.495438637974,
+        "rank": [
+          1608.495438637974,
+          8,
+          "4x16/4x16"
+        ],
+        "governing_row_id": "SAG:SECTION",
+        "capacities_knm": {
+          "top": 154.3312551458481,
+          "bottom": 298.19289466156243
+        }
+      },
+      "4x16/4x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 2060.8847807549046,
+        "rank": [
+          2060.8847807549046,
+          8,
+          "4x16/4x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 157.33610050328784,
+          "bottom": 359.2872849676405
+        }
+      },
+      "4x16/4x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2767.743127812608,
+        "rank": [
+          2767.743127812608,
+          8,
+          "4x16/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 160.03099599509852,
+          "bottom": 416.42415834738387
+        }
+      },
+      "4x20/2x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1658.7609210954108,
+        "rank": [
+          1658.7609210954108,
+          6,
+          "4x20/2x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 150.06592411804164,
+          "bottom": 319.2621475802734
+        }
+      },
+      "4x20/2x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 1884.9555921538758,
+        "rank": [
+          1884.9555921538758,
+          6,
+          "4x20/2x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 154.64733840453874,
+          "bottom": 350.47719056934994
+        }
+      },
+      "4x20/2x25": {
+        "status": "PASS",
+        "bottom_area_mm2": 2238.3847656827274,
+        "rank": [
+          2238.3847656827274,
+          6,
+          "4x20/2x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 158.7972098416506,
+          "bottom": 392.76431979331875
+        }
+      },
+      "4x20/3x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 1859.8228509251576,
+        "rank": [
+          1859.8228509251576,
+          7,
+          "4x20/3x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 154.1956055992785,
+          "bottom": 347.13218584756197
+        }
+      },
+      "4x20/3x20": {
+        "status": "PASS",
+        "bottom_area_mm2": 2199.1148575128555,
+        "rank": [
+          2199.1148575128555,
+          7,
+          "4x20/3x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 158.4136254840801,
+          "bottom": 388.61920270824834
+        }
+      },
+      "4x20/3x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2729.258617806133,
+        "rank": [
+          2729.258617806133,
+          7,
+          "4x20/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 162.547835180156,
+          "bottom": 429.6172256887995
+        }
+      },
+      "4x20/4x16": {
+        "status": "PASS",
+        "bottom_area_mm2": 2060.8847807549046,
+        "rank": [
+          2060.8847807549046,
+          8,
+          "4x20/4x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 156.9263974442191,
+          "bottom": 373.0556562494602
+        }
+      },
+      "4x20/4x20": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2513.2741228718346,
+        "rank": [
+          2513.2741228718346,
+          8,
+          "4x20/4x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 161.10130958793192,
+          "bottom": 416.4004777684216
+        }
+      },
+      "4x20/4x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 3220.1324699295383,
+        "rank": [
+          3220.1324699295383,
+          8,
+          "4x20/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 165.04817099755252,
+          "bottom": 448.1153685820968
+        }
+      },
+      "4x25/2x16": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2365.6192681531143,
+        "rank": [
+          2365.6192681531143,
+          6,
+          "4x25/2x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 150.45414221393455,
+          "bottom": 428.66514686089243
+        }
+      },
+      "4x25/2x20": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2591.8139392115795,
+        "rank": [
+          2591.8139392115795,
+          6,
+          "4x25/2x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.90514141267133,
+          "bottom": 445.12749662839485
+        }
+      },
+      "4x25/2x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2945.243112740431,
+        "rank": [
+          2945.243112740431,
+          6,
+          "4x25/2x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 162.38345327043194,
+          "bottom": 463.01918828871004
+        }
+      },
+      "4x25/3x16": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2566.681197982861,
+        "rank": [
+          2566.681197982861,
+          7,
+          "4x25/3x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 155.3374282802682,
+          "bottom": 443.4354653830361
+        }
+      },
+      "4x25/3x20": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2905.9732045705587,
+        "rank": [
+          2905.9732045705587,
+          7,
+          "4x25/3x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 161.85462597384426,
+          "bottom": 461.5225027182808
+        }
+      },
+      "4x25/3x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 3436.116964863836,
+        "rank": [
+          3436.116964863836,
+          7,
+          "4x25/3x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 167.72937413994484,
+          "bottom": 474.9536695527561
+        }
+      },
+      "4x25/4x16": {
+        "status": "FAIL",
+        "bottom_area_mm2": 2767.743127812608,
+        "rank": [
+          2767.743127812608,
+          8,
+          "4x25/4x16"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 159.5126483356541,
+          "bottom": 456.0185508486216
+        }
+      },
+      "4x25/4x20": {
+        "status": "FAIL",
+        "bottom_area_mm2": 3220.1324699295383,
+        "rank": [
+          3220.1324699295383,
+          8,
+          "4x25/4x20"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 165.6293259613053,
+          "bottom": 470.96040265905117
+        }
+      },
+      "4x25/4x25": {
+        "status": "FAIL",
+        "bottom_area_mm2": 3926.9908169872415,
+        "rank": [
+          3926.9908169872415,
+          8,
+          "4x25/4x25"
+        ],
+        "governing_row_id": "HOG:SECTION",
+        "capacities_knm": {
+          "top": 171.47745380478355,
+          "bottom": 481.50214890888395
+        }
+      }
+    },
+    "eligible_ids": [
+      "2x20/2x16",
+      "2x16/4x16",
+      "3x16/3x16",
+      "4x16/2x16",
+      "2x20/3x16",
+      "3x16/2x20",
+      "2x20/2x20",
+      "2x16/3x20",
+      "3x20/2x16",
+      "2x16/2x25",
+      "2x25/2x16",
+      "3x16/4x16",
+      "4x16/3x16",
+      "2x20/4x16",
+      "4x16/2x20",
+      "3x16/3x20",
+      "3x20/3x16",
+      "2x20/3x20",
+      "3x20/2x20",
+      "2x25/3x16",
+      "3x16/2x25",
+      "4x16/4x16",
+      "2x20/2x25",
+      "2x25/2x20",
+      "2x16/4x20",
+      "4x20/2x16",
+      "3x20/4x16",
+      "4x16/3x20",
+      "2x25/4x16",
+      "4x16/2x25",
+      "3x16/4x20",
+      "4x20/3x16",
+      "2x16/3x25",
+      "3x25/2x16",
+      "2x20/4x20",
+      "3x20/3x20",
+      "4x20/2x20",
+      "2x25/3x20",
+      "3x20/2x25",
+      "2x25/2x25",
+      "4x16/4x20",
+      "4x20/4x16",
+      "3x16/3x25",
+      "3x25/3x16",
+      "2x20/3x25",
+      "3x25/2x20",
+      "3x20/4x20",
+      "4x20/3x20",
+      "2x25/4x20",
+      "4x20/2x25",
+      "3x25/4x16",
+      "4x16/3x25",
+      "2x16/4x25"
+    ],
+    "selected_id": "2x20/2x16"
+  }
+}

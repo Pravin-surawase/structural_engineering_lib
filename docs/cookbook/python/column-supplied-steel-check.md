@@ -96,6 +96,18 @@ except InputContractError as error:
 
 For four equal physical corner bars and actual closed ties, use the [four-corner member guide](column-four-corner-member-check.md).
 
+For eight equal bars or either orientation of a six-bar cage, use the [tied rectangular column guide](column-four-corner-member-check.md#six-and-eight-bar-tied-rectangles).
+
+For larger or asymmetric mixed-diameter cages with aligned links, see the [positioned rectangular column guide](column-four-corner-member-check.md#positioned-mixed-bar-rectangles).
+
+For axis-specific restraint and slenderness using those actual cages, see the [slender rectangular column guide](column-four-corner-member-check.md#slender-rectangular-columns-with-actual-bars).
+
+For short circular cages with closed rings or spirals, see the [circular column guide](circular-column-member-check.md).
+
+To select a short eight-bar rectangle from approved sizes, bars and ties, see the [column catalogue guide](column-catalogue-selection.md).
+
+For supplied column shear, tie zones, end development and schedules, see the [column member detailing guide](column-member-detailing.md).
+
 ## Python API
 
 Typed request groups are exported from `structural_lib.design.is456.column` alongside the
@@ -117,6 +129,29 @@ and group imports require its matching build rather than an older published whee
         - load_four_corner_member
         - check_four_corner_member
         - render_four_corner_member_html
+        - load_tied_rectangular_member
+        - check_tied_rectangular_member
+        - render_tied_rectangular_member_html
+        - load_positioned_rectangular_member
+        - check_positioned_rectangular_member
+        - render_positioned_rectangular_member_html
+        - load_slender_rectangular_member
+        - check_slender_rectangular_member
+        - render_slender_rectangular_member_html
+        - render_slender_rectangular_member_svg
+        - load_circular_member
+        - check_circular_member
+        - render_circular_member_html
+        - render_circular_member_svg
+        - load_column_catalogue
+        - select_column_from_catalogue
+        - render_column_catalogue_html
+        - render_column_catalogue_svg
+        - load_column_member_detailing
+        - check_column_member_detailing
+        - render_column_member_detailing_html
+        - render_column_member_detailing_svg
+        - render_column_member_bbs_csv
 
 ## Compatibility and evidence
 
@@ -126,6 +161,6 @@ and group imports require its matching build rather than an older published whee
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-Replay this recipe with a local build of source package version `0.28.2`.
+Replay this recipe with a local build of source package version `0.29.0`.
 Use the [release guide](../../getting-started/release-status.md) for the public
 package. Results require qualified review.

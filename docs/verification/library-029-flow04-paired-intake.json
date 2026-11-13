@@ -1,0 +1,72 @@
+{
+  "reference_basis": "Independent Decimal conversion of synthetic station rows in the reviewed ETABS 22.7.0 Element Forces table layout. No building qualification is claimed.",
+  "combinations": {
+    "U1": "ultimate",
+    "U2": "ultimate",
+    "S1": "service",
+    "S2": "sustained_service"
+  },
+  "members": {
+    "beam": {
+      "story": "L2",
+      "label": "B1",
+      "object_id": "145",
+      "station_mm": 1250,
+      "length_mm": 6000,
+      "components_kn_knm": [
+        0,
+        -32.5,
+        0,
+        -2.25,
+        0,
+        18.75
+      ],
+      "expected_n_nmm": [
+        0,
+        -32500,
+        0,
+        -2250000,
+        0,
+        18750000
+      ]
+    },
+    "column": {
+      "story": "L2",
+      "label": "C1",
+      "object_id": "109",
+      "station_mm": 750,
+      "length_mm": 3000,
+      "components_kn_knm": [
+        -412.5,
+        -14.25,
+        9.75,
+        0,
+        -52.125,
+        31.25
+      ],
+      "expected_n_nmm": [
+        -412500,
+        -14250,
+        9750,
+        0,
+        -52125000,
+        31250000
+      ]
+    }
+  },
+  "controls": {
+    "complete": "COMPLETE_FOR_DECLARED_ROWS",
+    "alternate_units": "COMPLETE_FOR_DECLARED_ROWS",
+    "missing_combination": "HOLD",
+    "unclassified_combination": "HOLD",
+    "envelope_combination": "HOLD",
+    "stale_geometry": "HOLD",
+    "different_capture": "HOLD",
+    "unsupported_actions": "HOLD",
+    "conflicting_units": "REJECTED",
+    "duplicate_station": "REJECTED",
+    "reversed_ij": "REJECTED",
+    "invalid_axes": "REJECTED",
+    "wrong_table": "REJECTED"
+  }
+}

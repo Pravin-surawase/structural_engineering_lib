@@ -1,0 +1,1073 @@
+{
+  "fixture_version": "library-029-sec03-column-service-reference/v1",
+  "sources": [
+    "COL03 admitted twelve-bar rectangular cage, SEC03 S07/S08 and the two SEC02 physical cages.",
+    "Independent vertical-strip Gaussian integration and finite-difference equilibrium. Circular strips are repeated at twice the integration density.",
+    "Compression-positive linear concrete with zero tensile stress, centroidal steel point areas, and declared elastic range.",
+    "IS 456:2000 Cl. 6.2.3.1 nominal Ec; Cl. 5.6.3 nominal Es. The concrete model limit is supplied for this study."
+  ],
+  "cases": {
+    "biaxial": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC03-S07",
+          "member_id": "COL03-C",
+          "source_reference": "SEC03 COL03 positioned cage; independent strip reference"
+        },
+        "geometry": {
+          "shape": "rectangular",
+          "b_mm": 450,
+          "D_mm": 550
+        },
+        "bars": [
+          {
+            "bar_id": "C1",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C2",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C3",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C4",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T1",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T2",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B1",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B2",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "L1",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 200,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "R1",
+            "x_from_left_mm": 390,
+            "y_from_top_mm": 200,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "I1",
+            "x_from_left_mm": 180,
+            "y_from_top_mm": 125,
+            "diameter_mm": 16,
+            "row": "inner"
+          },
+          {
+            "bar_id": "I2",
+            "x_from_left_mm": 270,
+            "y_from_top_mm": 425,
+            "diameter_mm": 16,
+            "row": "inner"
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "moduli": {
+          "ec_nmm2": 27386.127875258306,
+          "es_nmm2": 200000
+        },
+        "concrete_linear_limit_nmm2": 12,
+        "actions": {
+          "p_kn": 300,
+          "mx_knm": -40,
+          "my_knm": 25
+        }
+      },
+      "expected": {
+        "strain_at_centroid": 3.093273641232289e-05,
+        "strain_gradient_x_per_mm": -2.8363421533022484e-07,
+        "strain_gradient_y_per_mm": 2.848230875265031e-07,
+        "max_concrete_compression_nmm2": 4.739902936984096,
+        "neutral_axis_angle_deg": 44.88017172165618,
+        "bar_strains": {
+          "C1": 1.6497795868004375e-05,
+          "C2": -7.596695832964894e-05,
+          "C3": 4.5367676956641406e-05,
+          "C4": 0.00013783243115429473,
+          "T1": -1.0449832332759536e-05,
+          "T2": -5.015862247899102e-05,
+          "B1": 0.00011202409530363679,
+          "B2": 7.23153051574053e-05,
+          "L1": 5.637065037732226e-05,
+          "R1": -3.7228640681651954e-05,
+          "I1": 9.728129732075423e-07,
+          "I2": 6.089265985143823e-05
+        },
+        "properties": {
+          "area_mm2": 189928.13458791567,
+          "cx_mm": 187.43712150322375,
+          "cy_mm": 331.49109359986375,
+          "ix_mm4": 4077492501.6494365,
+          "iy_mm4": 2899259794.279469,
+          "ixy_mm4": 1126801439.9780278
+        }
+      },
+      "status": "PASS"
+    },
+    "reflected": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC03-S08",
+          "member_id": "COL03-C",
+          "source_reference": "SEC03 COL03 positioned cage; independent strip reference"
+        },
+        "geometry": {
+          "shape": "rectangular",
+          "b_mm": 450,
+          "D_mm": 550
+        },
+        "bars": [
+          {
+            "bar_id": "C1",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C2",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C3",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C4",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T1",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T2",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B1",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B2",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "L1",
+            "x_from_left_mm": 390,
+            "y_from_top_mm": 350,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "R1",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 350,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "I1",
+            "x_from_left_mm": 270,
+            "y_from_top_mm": 425,
+            "diameter_mm": 16,
+            "row": "inner"
+          },
+          {
+            "bar_id": "I2",
+            "x_from_left_mm": 180,
+            "y_from_top_mm": 125,
+            "diameter_mm": 16,
+            "row": "inner"
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "moduli": {
+          "ec_nmm2": 27386.127875258306,
+          "es_nmm2": 200000
+        },
+        "concrete_linear_limit_nmm2": 12,
+        "actions": {
+          "p_kn": 300,
+          "mx_knm": 40,
+          "my_knm": -25
+        }
+      },
+      "expected": {
+        "strain_at_centroid": 3.0932736412322914e-05,
+        "strain_gradient_x_per_mm": 2.8363421533022484e-07,
+        "strain_gradient_y_per_mm": -2.848230875265029e-07,
+        "max_concrete_compression_nmm2": 4.7399029369840955,
+        "neutral_axis_angle_deg": 44.880171721656204,
+        "bar_strains": {
+          "C1": 1.649779586800445e-05,
+          "C2": -7.596695832964886e-05,
+          "C3": 4.536767695664138e-05,
+          "C4": 0.00013783243115429467,
+          "T1": -1.0449832332759455e-05,
+          "T2": -5.0158622478990936e-05,
+          "B1": 0.00011202409530363679,
+          "B2": 7.23153051574053e-05,
+          "L1": 5.637065037732231e-05,
+          "R1": -3.7228640681651906e-05,
+          "I1": 9.728129732076033e-07,
+          "I2": 6.089265985143823e-05
+        },
+        "properties": {
+          "area_mm2": 189928.13458791573,
+          "cx_mm": 262.5628784967762,
+          "cy_mm": 218.50890640013634,
+          "ix_mm4": 4077492501.6494374,
+          "iy_mm4": 2899259794.2794695,
+          "ixy_mm4": 1126801439.978028
+        }
+      },
+      "status": "PASS"
+    },
+    "fully_compressed": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC03-fully_compressed",
+          "member_id": "COL03-C",
+          "source_reference": "SEC03 COL03 positioned cage; independent strip reference"
+        },
+        "geometry": {
+          "shape": "rectangular",
+          "b_mm": 450,
+          "D_mm": 550
+        },
+        "bars": [
+          {
+            "bar_id": "C1",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C2",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C3",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C4",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T1",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T2",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B1",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B2",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "L1",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 200,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "R1",
+            "x_from_left_mm": 390,
+            "y_from_top_mm": 200,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "I1",
+            "x_from_left_mm": 180,
+            "y_from_top_mm": 125,
+            "diameter_mm": 16,
+            "row": "inner"
+          },
+          {
+            "bar_id": "I2",
+            "x_from_left_mm": 270,
+            "y_from_top_mm": 425,
+            "diameter_mm": 16,
+            "row": "inner"
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "moduli": {
+          "ec_nmm2": 27386.127875258306,
+          "es_nmm2": 200000
+        },
+        "concrete_linear_limit_nmm2": 12,
+        "actions": {
+          "p_kn": 300,
+          "mx_knm": 2,
+          "my_knm": -1
+        }
+      },
+      "expected": {
+        "strain_at_centroid": 4.1243788085730854e-05,
+        "strain_gradient_x_per_mm": 8.175858524412217e-09,
+        "strain_gradient_y_per_mm": -9.462520889885573e-09,
+        "max_concrete_compression_nmm2": 1.2511503006157794,
+        "neutral_axis_angle_deg": 40.82784923131692,
+        "bar_strains": {
+          "C1": 4.1926640095797294e-05,
+          "C2": 4.4591969974755674e-05,
+          "C3": 4.0560936075664415e-05,
+          "C4": 3.7895606196706034e-05,
+          "T1": 4.2705919980347394e-05,
+          "T2": 4.385054017376511e-05,
+          "B1": 3.86370359976966e-05,
+          "B2": 3.9781656191114315e-05,
+          "L1": 4.060446049594426e-05,
+          "R1": 4.330249380900029e-05,
+          "I1": 4.229525258561514e-05,
+          "I2": 4.019232358584657e-05
+        },
+        "properties": {
+          "area_mm2": 265558.836840348,
+          "cx_mm": 225.0,
+          "cy_mm": 274.2841773912183,
+          "ix_mm4": 6903879729.424988,
+          "iy_mm4": 4485978491.740437,
+          "ixy_mm4": 17108371.743487585
+        }
+      },
+      "status": "PASS"
+    },
+    "all_tension": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC03-all_tension",
+          "member_id": "COL03-C",
+          "source_reference": "SEC03 COL03 positioned cage; independent strip reference"
+        },
+        "geometry": {
+          "shape": "rectangular",
+          "b_mm": 450,
+          "D_mm": 550
+        },
+        "bars": [
+          {
+            "bar_id": "C1",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C2",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C3",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C4",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T1",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T2",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B1",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B2",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "L1",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 200,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "R1",
+            "x_from_left_mm": 390,
+            "y_from_top_mm": 200,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "I1",
+            "x_from_left_mm": 180,
+            "y_from_top_mm": 125,
+            "diameter_mm": 16,
+            "row": "inner"
+          },
+          {
+            "bar_id": "I2",
+            "x_from_left_mm": 270,
+            "y_from_top_mm": 425,
+            "diameter_mm": 16,
+            "row": "inner"
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "moduli": {
+          "ec_nmm2": 27386.127875258306,
+          "es_nmm2": 200000
+        },
+        "concrete_linear_limit_nmm2": 12,
+        "actions": {
+          "p_kn": -100,
+          "mx_knm": 0,
+          "my_knm": 0
+        }
+      },
+      "expected": {
+        "strain_at_centroid": -0.00017503947863768915,
+        "strain_gradient_x_per_mm": 2.770736484765279e-09,
+        "strain_gradient_y_per_mm": -5.011056517470053e-08,
+        "max_concrete_compression_nmm2": 0.0,
+        "neutral_axis_angle_deg": 3.164802091896051,
+        "bar_strains": {
+          "C1": -0.00016481755830249467,
+          "C2": -0.0001639142982084612,
+          "C3": -0.00018526139897288363,
+          "C4": -0.0001861646590669171,
+          "T1": -0.0001644596586790621,
+          "T2": -0.00016407175557119495,
+          "B1": -0.00018600720170418333,
+          "B2": -0.00018561929859631617,
+          "L1": -0.0001717383577695729,
+          "R1": -0.00017082401472960035,
+          "I1": -0.0001676475770032985,
+          "I2": -0.0001824313802720798
+        },
+        "properties": {
+          "area_mm2": 20923.9693404219,
+          "cx_mm": 224.99999999999997,
+          "cy_mm": 264.47368421052624,
+          "ix_mm4": 768133308.1684748,
+          "iy_mm4": 358506518.5454304,
+          "ixy_mm4": 19822707.79618915
+        }
+      },
+      "status": "PASS"
+    },
+    "outside_linear_range": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC03-outside_linear_range",
+          "member_id": "COL03-C",
+          "source_reference": "SEC03 COL03 positioned cage; independent strip reference"
+        },
+        "geometry": {
+          "shape": "rectangular",
+          "b_mm": 450,
+          "D_mm": 550
+        },
+        "bars": [
+          {
+            "bar_id": "C1",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C2",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 62,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C3",
+            "x_from_left_mm": 388,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C4",
+            "x_from_left_mm": 62,
+            "y_from_top_mm": 488,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T1",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "T2",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 60,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B1",
+            "x_from_left_mm": 155,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "B2",
+            "x_from_left_mm": 295,
+            "y_from_top_mm": 490,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "L1",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 200,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "R1",
+            "x_from_left_mm": 390,
+            "y_from_top_mm": 200,
+            "diameter_mm": 16,
+            "row": "outer"
+          },
+          {
+            "bar_id": "I1",
+            "x_from_left_mm": 180,
+            "y_from_top_mm": 125,
+            "diameter_mm": 16,
+            "row": "inner"
+          },
+          {
+            "bar_id": "I2",
+            "x_from_left_mm": 270,
+            "y_from_top_mm": 425,
+            "diameter_mm": 16,
+            "row": "inner"
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "moduli": {
+          "ec_nmm2": 27386.127875258306,
+          "es_nmm2": 200000
+        },
+        "concrete_linear_limit_nmm2": 12,
+        "actions": {
+          "p_kn": 1200,
+          "mx_knm": -160,
+          "my_knm": 100
+        }
+      },
+      "expected": {
+        "strain_at_centroid": 0.0001237309456492915,
+        "strain_gradient_x_per_mm": -1.1345368613208998e-06,
+        "strain_gradient_y_per_mm": 1.1392923501060126e-06,
+        "max_concrete_compression_nmm2": 18.959611747936385,
+        "neutral_axis_angle_deg": 44.88017172165618,
+        "bar_strains": {
+          "C1": 6.599118347201747e-05,
+          "C2": -0.00030386783331859586,
+          "C3": 0.00018147070782656557,
+          "C4": 0.0005513297246171789,
+          "T1": -4.179932933103824e-05,
+          "T2": -0.0002006344899159642,
+          "B1": 0.00044809638121454717,
+          "B2": 0.0002892612206296212,
+          "L1": 0.000225482601509289,
+          "R1": -0.0001489145627266079,
+          "I1": 3.8912518928301015e-06,
+          "I2": 0.00024357063940575293
+        },
+        "properties": {
+          "area_mm2": 189928.13458791567,
+          "cx_mm": 187.43712150322378,
+          "cy_mm": 331.4910935998637,
+          "ix_mm4": 4077492501.6494346,
+          "iy_mm4": 2899259794.279469,
+          "ixy_mm4": 1126801439.9780278
+        }
+      },
+      "status": "HOLD"
+    },
+    "rectangle_cracked": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC02-rectangle-cracked",
+          "member_id": null,
+          "source_reference": "SEC02 physical cage and independent active section properties"
+        },
+        "geometry": {
+          "shape": "rectangular",
+          "b_mm": 300,
+          "D_mm": 400
+        },
+        "bars": [
+          {
+            "bar_id": "C1",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C2",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C3",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "C4",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_LEFT",
+            "x_from_left_mm": 60,
+            "y_from_top_mm": 200,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_RIGHT",
+            "x_from_left_mm": 240,
+            "y_from_top_mm": 200,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_TOP",
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 60,
+            "diameter_mm": 20,
+            "row": "outer"
+          },
+          {
+            "bar_id": "M_BOTTOM",
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 340,
+            "diameter_mm": 20,
+            "row": "outer"
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "moduli": {
+          "ec_nmm2": 25000.0,
+          "es_nmm2": 200000
+        },
+        "concrete_linear_limit_nmm2": 13,
+        "actions": {
+          "p_kn": 500,
+          "mx_knm": -36,
+          "my_knm": 23
+        }
+      },
+      "expected": {
+        "strain_at_centroid": 0.00013516721008419746,
+        "strain_gradient_x_per_mm": -1.057047749542853e-06,
+        "strain_gradient_y_per_mm": 8.829670319993033e-07,
+        "max_concrete_compression_nmm2": 11.757944472887152,
+        "neutral_axis_angle_deg": 50.127512121895194,
+        "bar_strains": {
+          "C1": 0.00010668612306315175,
+          "C2": -8.358247185456177e-05,
+          "C3": 0.00016364829710524315,
+          "C4": 0.0003539168920229567,
+          "M_LEFT": 0.00023030150754305422,
+          "M_RIGHT": 4.0032912625340695e-05,
+          "M_TOP": 1.1551825604294997e-05,
+          "M_BOTTOM": 0.00025878259456409993
+        },
+        "properties": {
+          "area_mm2": 116482.18686589223,
+          "cx_mm": 134.25226207646278,
+          "cy_mm": 222.52264395500495,
+          "ix_mm4": 1412518607.666004,
+          "iy_mm4": 776003269.0574471,
+          "ixy_mm4": 243754590.9029906
+        }
+      },
+      "status": "PASS"
+    },
+    "circle_cracked": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC02-circle-cracked",
+          "member_id": null,
+          "source_reference": "SEC02 physical cage and independent active section properties"
+        },
+        "geometry": {
+          "shape": "circular",
+          "diameter_mm": 450
+        },
+        "bars": [
+          {
+            "bar_id": "B01",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 390.0,
+            "y_from_top_mm": 225.0
+          },
+          {
+            "bar_id": "B02",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 341.6726188957804,
+            "y_from_top_mm": 341.6726188957803
+          },
+          {
+            "bar_id": "B03",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 225.0,
+            "y_from_top_mm": 390.0
+          },
+          {
+            "bar_id": "B04",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 108.32738110421967,
+            "y_from_top_mm": 341.6726188957804
+          },
+          {
+            "bar_id": "B05",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 60.0,
+            "y_from_top_mm": 225.00000000000003
+          },
+          {
+            "bar_id": "B06",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 108.32738110421963,
+            "y_from_top_mm": 108.32738110421967
+          },
+          {
+            "bar_id": "B07",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 224.99999999999997,
+            "y_from_top_mm": 60.0
+          },
+          {
+            "bar_id": "B08",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 341.6726188957803,
+            "y_from_top_mm": 108.32738110421963
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "moduli": {
+          "ec_nmm2": 27386.127875258306,
+          "es_nmm2": 200000
+        },
+        "concrete_linear_limit_nmm2": 13,
+        "actions": {
+          "p_kn": 500,
+          "mx_knm": -58,
+          "my_knm": 38
+        }
+      },
+      "expected": {
+        "strain_at_centroid": 5.131260908580354e-05,
+        "strain_gradient_x_per_mm": -9.511739941863048e-07,
+        "strain_gradient_y_per_mm": 1.453407700869415e-06,
+        "max_concrete_compression_nmm2": 12.108360675157385,
+        "neutral_axis_angle_deg": 33.202501916694644,
+        "bar_strains": {
+          "B01": -0.00010563109995493676,
+          "B02": 0.00010990953094225713,
+          "B03": 0.000291124879729257,
+          "B04": 0.0003318614527968091,
+          "B05": 0.0002082563181265439,
+          "B06": -7.28431277065003e-06,
+          "B07": -0.00018849966155764993,
+          "B08": -0.00022923623462520198
+        },
+        "properties": {
+          "area_mm2": 109874.51092178973,
+          "cx_mm": 188.5999166817086,
+          "cy_mm": 280.2017680356125,
+          "ix_mm4": 973757403.6247946,
+          "iy_mm4": 1250470732.0701814,
+          "ixy_mm4": 320916825.90326226
+        }
+      },
+      "status": "PASS"
+    },
+    "circle_compressed": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "SEC02-circle-compressed",
+          "member_id": null,
+          "source_reference": "SEC02 physical cage and independent active section properties"
+        },
+        "geometry": {
+          "shape": "circular",
+          "diameter_mm": 450
+        },
+        "bars": [
+          {
+            "bar_id": "B01",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 390.0,
+            "y_from_top_mm": 225.0
+          },
+          {
+            "bar_id": "B02",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 341.6726188957804,
+            "y_from_top_mm": 341.6726188957803
+          },
+          {
+            "bar_id": "B03",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 225.0,
+            "y_from_top_mm": 390.0
+          },
+          {
+            "bar_id": "B04",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 108.32738110421967,
+            "y_from_top_mm": 341.6726188957804
+          },
+          {
+            "bar_id": "B05",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 60.0,
+            "y_from_top_mm": 225.00000000000003
+          },
+          {
+            "bar_id": "B06",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 108.32738110421963,
+            "y_from_top_mm": 108.32738110421967
+          },
+          {
+            "bar_id": "B07",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 224.99999999999997,
+            "y_from_top_mm": 60.0
+          },
+          {
+            "bar_id": "B08",
+            "diameter_mm": 20,
+            "row": "outer",
+            "x_from_left_mm": 341.6726188957803,
+            "y_from_top_mm": 108.32738110421963
+          }
+        ],
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "moduli": {
+          "ec_nmm2": 27386.127875258306,
+          "es_nmm2": 200000
+        },
+        "concrete_linear_limit_nmm2": 13,
+        "actions": {
+          "p_kn": 500,
+          "mx_knm": 0,
+          "my_knm": 0
+        }
+      },
+      "expected": {
+        "strain_at_centroid": 0.00010439717952004653,
+        "strain_gradient_x_per_mm": -1.883236486354206e-22,
+        "strain_gradient_y_per_mm": 5.803114352595931e-24,
+        "max_concrete_compression_nmm2": 2.859034508152293,
+        "neutral_axis_angle_deg": 88.23501305245209,
+        "bar_strains": {
+          "B01": 0.0001043971795200465,
+          "B02": 0.0001043971795200465,
+          "B03": 0.00010439717952004653,
+          "B04": 0.00010439717952004656,
+          "B05": 0.00010439717952004656,
+          "B06": 0.00010439717952004656,
+          "B07": 0.00010439717952004653,
+          "B08": 0.0001043971795200465
+        },
+        "properties": {
+          "area_mm2": 174884.21303565698,
+          "cx_mm": 225.0,
+          "cy_mm": 225.0,
+          "ix_mm4": 2228526358.713747,
+          "iy_mm4": 2228526358.7137465,
+          "ixy_mm4": 1.6996636986732483e-08
+        }
+      },
+      "status": "PASS"
+    }
+  }
+}

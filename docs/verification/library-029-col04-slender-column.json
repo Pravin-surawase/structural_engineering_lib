@@ -1,0 +1,4475 @@
+{
+  "schema_version": "library-029-col04-slender-column-reference/v1",
+  "frozen_before_implementation": true,
+  "frozen_production_base": "38249b6f724239fd8434bd811ce1db5620a8fdef",
+  "source_fixtures_sha256": {
+    "library-029-col02-rectangular-column.json": "8e5da107f0a49622a90e69f02d6fe329d285488b5daca5415e31f6c31ab828a9",
+    "library-029-col03-mixed-column.json": "a57a2836cac6c2b45ae49e513f9a1802139eb61a38358c3bb4005a62761a7431"
+  },
+  "sources": [
+    "IS 456:2000 Cl. 25.1\u201325.4, 39.1, 39.5, 39.6 and 39.7 through Amendment 5",
+    "IIT Kharagpur Lesson 27 https://archive.nptel.ac.in/content/storage2/courses/105105104/pdf/m10l27.pdf",
+    "University of Washington elastic secant model https://faculty.washington.edu/nsniadec/ME354/W08/Lecture33_EcceBuck.pdf"
+  ],
+  "method": {
+    "first_order": "Unreduced Cl. 39.7.1 on slender planes. Orient the smaller end relative to the larger end, keep both physical end rows and check the product of signed component bounds. Reverse curvature checks both signs and the equivalent pairs have no physical station.",
+    "strength": "Independent COL03 strip integration with 32 to 64 angular refinement. Check signed zero-cross-moment capacities, the IS 456 contour, the demand ray and adverse minimum-eccentricity cases one axis at a time.",
+    "second_order": "Constant E=25000 MPa, gross Ix/Iy, 6000 mm, 500 kN, signed end moments (-50,+30) kNm. Exact elastic secant solution, both axes peak at mid-height, no other critical section. An action replay, not a project RC stiffness or global stability reference.",
+    "optional_reduction": "Independent signed prescribed strain state for diagnostic study only. Unreduced additions govern this delivery."
+  },
+  "tolerances": {
+    "moment_knm": 0.01,
+    "residual_kn_or_knm": 0.01,
+    "ratio": 0.0001,
+    "xu_mm": 0.01
+  },
+  "cases": {
+    "both_short": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 3000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 3000,
+            "effective_length_mm": 3000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 3000,
+            "effective_length_mm": 3000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -60,
+            "my_knm": 25
+          },
+          "end_b": {
+            "mx_knm": -30,
+            "my_knm": -25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "both_short",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 7.5,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 20,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 10.0,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 20,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "B": {
+            "mx_knm": -30,
+            "my_knm": -25,
+            "contour_ratio": 0.40028130050891364,
+            "direct_ratio": 0.37767686143092793,
+            "ratio": 0.40028130050891364,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -60,
+            "my_knm": -25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359804,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": -45.67300632497207,
+              "capacity_knm": 118.74981644494181,
+              "axial_residual_kn": -1.5355624327639816e-08,
+              "transverse_residual_knm": -6.0111915445304476e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.06555623067820507,
+          "y": 0.0973350196812464
+        },
+        "governing_id": "A",
+        "governing_ratio": 0.5936606380823797
+      }
+    },
+    "minor_slender": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -60,
+            "my_knm": 25
+          },
+          "end_b": {
+            "mx_knm": -30,
+            "my_knm": -25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "minor_slender",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 30.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "B": {
+            "mx_knm": -30,
+            "my_knm": -25,
+            "contour_ratio": 0.40028130050891364,
+            "direct_ratio": 0.37767686143092793,
+            "ratio": 0.40028130050891364,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -60,
+            "my_knm": -40.0,
+            "contour_ratio": 0.7379374802267546,
+            "direct_ratio": 0.6702562553570155,
+            "ratio": 0.7379374802267546,
+            "demand": {
+              "xu_mm": 244.51939455641514,
+              "mx_knm": -89.51800079514314,
+              "my_knm": -59.67866719676539,
+              "capacity_knm": 107.58724731464008,
+              "axial_residual_kn": 2.972188895000727e-08,
+              "transverse_residual_knm": 2.7426949600339867e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -60,
+            "my_knm": 40.0,
+            "contour_ratio": 0.7379374802267546,
+            "direct_ratio": 0.6702562553570158,
+            "ratio": 0.7379374802267546,
+            "demand": {
+              "xu_mm": 244.51939455641508,
+              "mx_knm": -89.51800079514307,
+              "my_knm": 59.67866719676543,
+              "capacity_knm": 107.58724731464004,
+              "axial_residual_kn": 2.9721547889494104e-08,
+              "transverse_residual_knm": -2.8208546609675977e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "EQUIVALENT-NN",
+        "governing_ratio": 0.7379374802267546
+      }
+    },
+    "both_slender": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -60,
+            "my_knm": 25
+          },
+          "end_b": {
+            "mx_knm": -30,
+            "my_knm": -25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "both_slender",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 15.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 22.5
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 30.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "B": {
+            "mx_knm": -30,
+            "my_knm": -25,
+            "contour_ratio": 0.40028130050891364,
+            "direct_ratio": 0.37767686143092793,
+            "ratio": 0.40028130050891364,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -70.5,
+            "my_knm": -40.0,
+            "contour_ratio": 0.8072902604369311,
+            "direct_ratio": 0.7292174595805794,
+            "ratio": 0.8072902604369311,
+            "demand": {
+              "xu_mm": 248.7639638412121,
+              "mx_knm": -96.67897973883947,
+              "my_knm": -54.85332183764322,
+              "capacity_knm": 111.15625056634016,
+              "axial_residual_kn": -5.712081474484876e-09,
+              "transverse_residual_knm": 3.311129148642067e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -70.5,
+            "my_knm": 40.0,
+            "contour_ratio": 0.8072902604369311,
+            "direct_ratio": 0.7292174595805794,
+            "ratio": 0.8072902604369311,
+            "demand": {
+              "xu_mm": 248.76396384121205,
+              "mx_knm": -96.67897973883943,
+              "my_knm": 54.853321837643286,
+              "capacity_knm": 111.15625056634016,
+              "axial_residual_kn": -5.712138317903737e-09,
+              "transverse_residual_knm": -3.389288849575678e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "EQUIVALENT-NN",
+        "governing_ratio": 0.8072902604369311
+      }
+    },
+    "below_12": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3599,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -60,
+            "my_knm": 25
+          },
+          "end_b": {
+            "mx_knm": -30,
+            "my_knm": -25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "below_12",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 11.996666666666666,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "B": {
+            "mx_knm": -30,
+            "my_knm": -25,
+            "contour_ratio": 0.40028130050891364,
+            "direct_ratio": 0.37767686143092793,
+            "ratio": 0.40028130050891364,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -60,
+            "my_knm": -25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359804,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": -45.67300632497207,
+              "capacity_knm": 118.74981644494181,
+              "axial_residual_kn": -1.5355624327639816e-08,
+              "transverse_residual_knm": -6.0111915445304476e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "A",
+        "governing_ratio": 0.5936606380823797
+      }
+    },
+    "at_12": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3600,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -60,
+            "my_knm": 25
+          },
+          "end_b": {
+            "mx_knm": -30,
+            "my_knm": -25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "at_12",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 12.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 10.8
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "B": {
+            "mx_knm": -30,
+            "my_knm": -25,
+            "contour_ratio": 0.40028130050891364,
+            "direct_ratio": 0.37767686143092793,
+            "ratio": 0.40028130050891364,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -60,
+            "my_knm": -25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359804,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": -45.67300632497207,
+              "capacity_knm": 118.74981644494181,
+              "axial_residual_kn": -1.5355624327639816e-08,
+              "transverse_residual_knm": -6.0111915445304476e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "A",
+        "governing_ratio": 0.5936606380823797
+      }
+    },
+    "above_12": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3601,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -60,
+            "my_knm": 25
+          },
+          "end_b": {
+            "mx_knm": -30,
+            "my_knm": -25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "above_12",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 12.003333333333334,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 10.806000833333334
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "B": {
+            "mx_knm": -30,
+            "my_knm": -25,
+            "contour_ratio": 0.40028130050891364,
+            "direct_ratio": 0.37767686143092793,
+            "ratio": 0.40028130050891364,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -60,
+            "my_knm": -25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359804,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": -45.67300632497207,
+              "capacity_knm": 118.74981644494181,
+              "axial_residual_kn": -1.5355624327639816e-08,
+              "transverse_residual_knm": -6.0111915445304476e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "A",
+        "governing_ratio": 0.5936606380823797
+      }
+    },
+    "reversed_ends": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -30,
+            "my_knm": -25
+          },
+          "end_b": {
+            "mx_knm": -60,
+            "my_knm": 25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "reversed_ends",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 30.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -30,
+            "my_knm": -25,
+            "contour_ratio": 0.40028130050891364,
+            "direct_ratio": 0.37767686143092793,
+            "ratio": 0.40028130050891364,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "B": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -60,
+            "my_knm": -40.0,
+            "contour_ratio": 0.7379374802267546,
+            "direct_ratio": 0.6702562553570155,
+            "ratio": 0.7379374802267546,
+            "demand": {
+              "xu_mm": 244.51939455641514,
+              "mx_knm": -89.51800079514314,
+              "my_knm": -59.67866719676539,
+              "capacity_knm": 107.58724731464008,
+              "axial_residual_kn": 2.972188895000727e-08,
+              "transverse_residual_knm": 2.7426949600339867e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -60,
+            "my_knm": 40.0,
+            "contour_ratio": 0.7379374802267546,
+            "direct_ratio": 0.6702562553570158,
+            "ratio": 0.7379374802267546,
+            "demand": {
+              "xu_mm": 244.51939455641508,
+              "mx_knm": -89.51800079514307,
+              "my_knm": 59.67866719676543,
+              "capacity_knm": 107.58724731464004,
+              "axial_residual_kn": 2.9721547889494104e-08,
+              "transverse_residual_knm": -2.8208546609675977e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "EQUIVALENT-NN",
+        "governing_ratio": 0.7379374802267546
+      }
+    },
+    "rotated": {
+      "request": {
+        "geometry": {
+          "b_mm": 400,
+          "D_mm": 300,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": 25,
+            "my_knm": 60
+          },
+          "end_b": {
+            "mx_knm": -25,
+            "my_knm": 30
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "rotated",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 30.0
+          },
+          "y": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": 102.73794604190854,
+            "my_knm": 2.8638169169425966e-14,
+            "capacity_knm": 102.73794604190854,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 2.8638169169425966e-14
+          },
+          "x_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": -102.73794604190856,
+            "my_knm": 0.0,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.8544028534961399e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -8.149072527885436e-15,
+            "my_knm": 152.540801942791,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.7810576587799e-09,
+            "transverse_residual_knm": 8.149072527885436e-15
+          },
+          "y_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 0.0,
+            "my_knm": -152.540801942791,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": 25,
+            "my_knm": 60,
+            "contour_ratio": 0.5936606380823799,
+            "direct_ratio": 0.5473692671359804,
+            "ratio": 0.5936606380823799,
+            "demand": {
+              "xu_mm": 253.7948814774113,
+              "mx_knm": 45.67300632497205,
+              "my_knm": 109.6152151799486,
+              "capacity_knm": 118.74981644494181,
+              "axial_residual_kn": -1.5355624327639816e-08,
+              "transverse_residual_knm": 6.0325078266032506e-12
+            }
+          },
+          "B": {
+            "mx_knm": -25,
+            "my_knm": 30,
+            "contour_ratio": 0.40028130050891375,
+            "direct_ratio": 0.37767686143092827,
+            "ratio": 0.40028130050891375,
+            "demand": {
+              "xu_mm": 236.9244757280916,
+              "mx_knm": -66.194153132082,
+              "my_knm": 79.43298375848237,
+              "capacity_knm": 103.39857260933945,
+              "axial_residual_kn": -2.0212439721944975e-08,
+              "transverse_residual_knm": 1.0253131677018246e-11
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -40.0,
+            "my_knm": 60,
+            "contour_ratio": 0.7379374802267548,
+            "direct_ratio": 0.6702562553570157,
+            "ratio": 0.7379374802267548,
+            "demand": {
+              "xu_mm": 244.51939455641508,
+              "mx_knm": -59.678667196765446,
+              "my_knm": 89.51800079514305,
+              "capacity_knm": 107.58724731464005,
+              "axial_residual_kn": 2.972194579342613e-08,
+              "transverse_residual_knm": 2.8350655156827997e-12
+            }
+          },
+          "EQUIVALENT-PP": {
+            "mx_knm": 40.0,
+            "my_knm": 60,
+            "contour_ratio": 0.7379374802267549,
+            "direct_ratio": 0.6702562553570155,
+            "ratio": 0.7379374802267549,
+            "demand": {
+              "xu_mm": 244.51939455641514,
+              "mx_knm": 59.67866719676537,
+              "my_knm": 89.51800079514315,
+              "capacity_knm": 107.58724731464008,
+              "axial_residual_kn": 2.9721775263169548e-08,
+              "transverse_residual_knm": -2.7142732506035827e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.10706852164937106,
+          "y": 0.0830378921923931
+        },
+        "governing_id": "EQUIVALENT-NP",
+        "governing_ratio": 0.7379374802267549
+      }
+    },
+    "minimum_governs": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 4000,
+            "effective_length_mm": 2600,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": 0,
+            "my_knm": 0
+          },
+          "end_b": {
+            "mx_knm": 0,
+            "my_knm": 0
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "minimum_governs",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 6.5,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 21.333333333333336,
+            "initial_moment_knm": 0.0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 10.0,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 0.0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": 0,
+            "my_knm": 0,
+            "contour_ratio": 0.0,
+            "direct_ratio": 0,
+            "ratio": 0.0
+          },
+          "B": {
+            "mx_knm": 0,
+            "my_knm": 0,
+            "contour_ratio": 0.0,
+            "direct_ratio": 0,
+            "ratio": 0.0
+          },
+          "EQUIVALENT-00": {
+            "mx_knm": 0,
+            "my_knm": 0,
+            "contour_ratio": 0.0,
+            "direct_ratio": 0,
+            "ratio": 0.0
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.06992664605675208,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "MIN-ECC-Y",
+        "governing_ratio": 0.10706852164937104
+      }
+    },
+    "matching_summary": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -60,
+            "my_knm": 25
+          },
+          "end_b": {
+            "mx_knm": -30,
+            "my_knm": -25
+          },
+          "magnitude_summary": {
+            "mx_knm": 60,
+            "my_knm": 25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "matching_summary",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 30.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -60,
+            "my_knm": 25,
+            "contour_ratio": 0.5936606380823797,
+            "direct_ratio": 0.5473692671359806,
+            "ratio": 0.5936606380823797,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "B": {
+            "mx_knm": -30,
+            "my_knm": -25,
+            "contour_ratio": 0.40028130050891364,
+            "direct_ratio": 0.37767686143092793,
+            "ratio": 0.40028130050891364,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -60,
+            "my_knm": -40.0,
+            "contour_ratio": 0.7379374802267546,
+            "direct_ratio": 0.6702562553570155,
+            "ratio": 0.7379374802267546,
+            "demand": {
+              "xu_mm": 244.51939455641514,
+              "mx_knm": -89.51800079514314,
+              "my_knm": -59.67866719676539,
+              "capacity_knm": 107.58724731464008,
+              "axial_residual_kn": 2.972188895000727e-08,
+              "transverse_residual_knm": 2.7426949600339867e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -60,
+            "my_knm": 40.0,
+            "contour_ratio": 0.7379374802267546,
+            "direct_ratio": 0.6702562553570158,
+            "ratio": 0.7379374802267546,
+            "demand": {
+              "xu_mm": 244.51939455641508,
+              "mx_knm": -89.51800079514307,
+              "my_knm": 59.67866719676543,
+              "capacity_knm": 107.58724731464004,
+              "axial_residual_kn": 2.9721547889494104e-08,
+              "transverse_residual_knm": -2.8208546609675977e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "EQUIVALENT-NN",
+        "governing_ratio": 0.7379374802267546
+      }
+    },
+    "conflicting_summary": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": 0,
+            "my_knm": 0
+          },
+          "end_b": {
+            "mx_knm": 0,
+            "my_knm": 0
+          },
+          "magnitude_summary": {
+            "mx_knm": 60,
+            "my_knm": 25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "conflicting_summary",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "REJECT",
+        "issue": "COLUMN_ACTION_CONFLICT"
+      }
+    },
+    "overload": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -240,
+            "my_knm": 100
+          },
+          "end_b": {
+            "mx_knm": -120,
+            "my_knm": -100
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "overload",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "FAIL",
+        "strength_status": "FAIL",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 192.0,
+            "end_floor_knm": 240,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 40.0,
+            "end_floor_knm": 100,
+            "additional_moment_knm": 30.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -240,
+            "my_knm": 100,
+            "contour_ratio": 2.590431327668709,
+            "direct_ratio": 2.189477068543922,
+            "ratio": 2.590431327668709,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          },
+          "B": {
+            "mx_knm": -120,
+            "my_knm": -100,
+            "contour_ratio": 1.7466228248981137,
+            "direct_ratio": 1.5107074457237117,
+            "ratio": 1.7466228248981137,
+            "demand": {
+              "xu_mm": 236.92447572809166,
+              "mx_knm": -79.43298375848254,
+              "my_knm": -66.19415313208191,
+              "capacity_knm": 103.39857260933954,
+              "axial_residual_kn": -2.0212496565363836e-08,
+              "transverse_residual_knm": 1.0082601420435822e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -240,
+            "my_knm": -100,
+            "contour_ratio": 2.590431327668709,
+            "direct_ratio": 2.1894770685439218,
+            "ratio": 2.590431327668709,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": -45.67300632497207,
+              "capacity_knm": 118.74981644494181,
+              "axial_residual_kn": -1.5355624327639816e-08,
+              "transverse_residual_knm": -6.0111915445304476e-12
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -240,
+            "my_knm": 100,
+            "contour_ratio": 2.590431327668709,
+            "direct_ratio": 2.189477068543922,
+            "ratio": 2.590431327668709,
+            "demand": {
+              "xu_mm": 253.79488147741137,
+              "mx_knm": -109.61521517994859,
+              "my_knm": 45.673006324972036,
+              "capacity_knm": 118.7498164449418,
+              "axial_residual_kn": -1.535585170131526e-08,
+              "transverse_residual_knm": 6.0396132539608516e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "A",
+        "governing_ratio": 2.590431327668709
+      }
+    },
+    "mixed": {
+      "request": {
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "length_mm": 7200,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 7200,
+            "effective_length_mm": 6800,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 7200,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 800,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": 75,
+            "my_knm": -45
+          },
+          "end_b": {
+            "mx_knm": 35,
+            "my_knm": 25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "mixed",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 12.363636363636363,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 32.733333333333334,
+            "initial_moment_knm": 59.0,
+            "end_floor_knm": 75,
+            "additional_moment_knm": 33.62909090909091
+          },
+          "y": {
+            "slenderness": 13.333333333333334,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 29.4,
+            "initial_moment_knm": 18.0,
+            "end_floor_knm": 45,
+            "additional_moment_knm": 32.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 198.11693611759569,
+            "mx_knm": 377.7280726494329,
+            "my_knm": 4.325993359088898e-13,
+            "capacity_knm": 377.7280726494329,
+            "axial_residual_kn": 1.8555510905571282e-08,
+            "transverse_residual_knm": 4.325993359088898e-13
+          },
+          "x_negative": {
+            "xu_mm": 226.00306649694886,
+            "mx_knm": -405.477408897984,
+            "my_knm": -1.3173557817935943e-12,
+            "capacity_knm": 405.477408897984,
+            "axial_residual_kn": -4.621824700734578e-09,
+            "transverse_residual_knm": 1.3173557817935943e-12
+          },
+          "y_positive": {
+            "xu_mm": 184.59328036733916,
+            "mx_knm": 3.7215650081634525e-12,
+            "my_knm": 284.09149746029755,
+            "capacity_knm": 284.09149746029755,
+            "axial_residual_kn": -1.6272679204121232e-08,
+            "transverse_residual_knm": -3.7215650081634525e-12
+          },
+          "y_negative": {
+            "xu_mm": 185.9399674274572,
+            "mx_knm": 2.1855696104466914e-11,
+            "my_knm": -283.75204312698395,
+            "capacity_knm": 283.75204312698395,
+            "axial_residual_kn": 1.3843191482010297e-08,
+            "transverse_residual_knm": 2.1855696104466914e-11
+          }
+        },
+        "puz_kn": 4376.995398776712,
+        "alpha_n": 1,
+        "evaluated": {
+          "A": {
+            "mx_knm": 75,
+            "my_knm": -45,
+            "contour_ratio": 0.3571447026499238,
+            "direct_ratio": 0.2995109933602777,
+            "ratio": 0.3571447026499238,
+            "demand": {
+              "xu_mm": 318.32594527566516,
+              "mx_knm": 250.408170860629,
+              "my_knm": -150.2449025163992,
+              "capacity_knm": 292.02359967291727,
+              "axial_residual_kn": -4.080607141077053e-08,
+              "transverse_residual_knm": -1.8701484805205837e-11
+            }
+          },
+          "B": {
+            "mx_knm": 35,
+            "my_knm": 25,
+            "contour_ratio": 0.18065906797040576,
+            "direct_ratio": 0.14546147140142188,
+            "ratio": 0.18065906797040576,
+            "demand": {
+              "xu_mm": 314.9169523319215,
+              "mx_knm": 240.6135429732547,
+              "my_knm": 171.86681640948396,
+              "capacity_knm": 295.69085147307743,
+              "axial_residual_kn": -4.3543195715756156e-09,
+              "transverse_residual_knm": 1.3272938303998671e-11
+            }
+          },
+          "EQUIVALENT-PN": {
+            "mx_knm": 92.6290909090909,
+            "my_knm": -50.0,
+            "contour_ratio": 0.42143710245244814,
+            "direct_ratio": 0.3537701222428841,
+            "ratio": 0.42143710245244814,
+            "demand": {
+              "xu_mm": 319.2499683107544,
+              "mx_knm": 261.83412641472137,
+              "my_knm": -141.33471668832712,
+              "capacity_knm": 297.54430241012847,
+              "axial_residual_kn": -4.191088009974919e-08,
+              "transverse_residual_knm": 2.2879476091475226e-11
+            }
+          },
+          "EQUIVALENT-PP": {
+            "mx_knm": 92.6290909090909,
+            "my_knm": 50.0,
+            "contour_ratio": 0.42122655299429546,
+            "direct_ratio": 0.33990675790053576,
+            "ratio": 0.42122655299429546,
+            "demand": {
+              "xu_mm": 319.15903421242183,
+              "mx_knm": 272.51323710426556,
+              "my_knm": 147.09916422029812,
+              "capacity_knm": 309.6798807015979,
+              "axial_residual_kn": -2.5406393433513585e-08,
+              "transverse_residual_knm": 8.526512829121202e-14
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.06932676854804581,
+          "y": 0.08288927100156383
+        },
+        "governing_id": "EQUIVALENT-PN",
+        "governing_ratio": 0.42143710245244814,
+        "optional_reduction_study": {
+          "x_positive": {
+            "pb_kn": 1670.7614658128623,
+            "k": 1
+          },
+          "x_negative": {
+            "pb_kn": 1539.9933930874827,
+            "k": 1
+          },
+          "y_positive": {
+            "pb_kn": 1571.2978453457781,
+            "k": 1
+          },
+          "y_negative": {
+            "pb_kn": 1571.2978453457786,
+            "k": 1
+          }
+        }
+      }
+    },
+    "reflected": {
+      "request": {
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "length_mm": 7200,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 7200,
+            "effective_length_mm": 6800,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 7200,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 350,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 350,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 800,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": -75,
+            "my_knm": 45
+          },
+          "end_b": {
+            "mx_knm": -35,
+            "my_knm": -25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "reflected",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 12.363636363636363,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 32.733333333333334,
+            "initial_moment_knm": 59.0,
+            "end_floor_knm": 75,
+            "additional_moment_knm": 33.62909090909091
+          },
+          "y": {
+            "slenderness": 13.333333333333334,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 29.4,
+            "initial_moment_knm": 18.0,
+            "end_floor_knm": 45,
+            "additional_moment_knm": 32.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 226.00306649694915,
+            "mx_knm": 405.4774088979837,
+            "my_knm": 1.0919757187366485e-12,
+            "capacity_knm": 405.4774088979837,
+            "axial_residual_kn": -4.622961569111794e-09,
+            "transverse_residual_knm": 1.0919757187366485e-12
+          },
+          "x_negative": {
+            "xu_mm": 198.11693611759563,
+            "mx_knm": -377.72807264943293,
+            "my_knm": -4.819594323635101e-13,
+            "capacity_knm": 377.72807264943293,
+            "axial_residual_kn": 1.8555624592409004e-08,
+            "transverse_residual_knm": 4.819594323635101e-13
+          },
+          "y_positive": {
+            "xu_mm": 185.93996742745702,
+            "mx_knm": -2.1683401428163053e-11,
+            "my_knm": 283.752043126984,
+            "capacity_knm": 283.752043126984,
+            "axial_residual_kn": 1.3843873603036627e-08,
+            "transverse_residual_knm": 2.1683401428163053e-11
+          },
+          "y_negative": {
+            "xu_mm": 184.59328036733905,
+            "mx_knm": -3.861263394355774e-12,
+            "my_knm": -284.09149746029755,
+            "capacity_knm": 284.09149746029755,
+            "axial_residual_kn": -1.6272792890958954e-08,
+            "transverse_residual_knm": -3.861263394355774e-12
+          }
+        },
+        "puz_kn": 4376.995398776712,
+        "alpha_n": 1,
+        "evaluated": {
+          "A": {
+            "mx_knm": -75,
+            "my_knm": 45,
+            "contour_ratio": 0.35714470264992376,
+            "direct_ratio": 0.2995109933602776,
+            "ratio": 0.35714470264992376,
+            "demand": {
+              "xu_mm": 318.3259452756653,
+              "mx_knm": -250.4081708606291,
+              "my_knm": 150.24490251639924,
+              "capacity_knm": 292.0235996729174,
+              "axial_residual_kn": -4.0805048229231033e-08,
+              "transverse_residual_knm": -1.8673063095775433e-11
+            }
+          },
+          "B": {
+            "mx_knm": -35,
+            "my_knm": -25,
+            "contour_ratio": 0.18065906797040576,
+            "direct_ratio": 0.1454614714014219,
+            "ratio": 0.18065906797040576,
+            "demand": {
+              "xu_mm": 314.9169523319215,
+              "mx_knm": -240.6135429732545,
+              "my_knm": -171.8668164094841,
+              "capacity_knm": 295.6908514730774,
+              "axial_residual_kn": -4.353978511062451e-09,
+              "transverse_residual_knm": 1.3500311979441904e-11
+            }
+          },
+          "EQUIVALENT-NN": {
+            "mx_knm": -92.6290909090909,
+            "my_knm": -50.0,
+            "contour_ratio": 0.42122655299429546,
+            "direct_ratio": 0.33990675790053576,
+            "ratio": 0.42122655299429546,
+            "demand": {
+              "xu_mm": 319.15903421242183,
+              "mx_knm": -272.51323710426556,
+              "my_knm": -147.0991642202981,
+              "capacity_knm": 309.6798807015979,
+              "axial_residual_kn": -2.5406507120351307e-08,
+              "transverse_residual_knm": 5.684341886080802e-14
+            }
+          },
+          "EQUIVALENT-NP": {
+            "mx_knm": -92.6290909090909,
+            "my_knm": 50.0,
+            "contour_ratio": 0.4214371024524481,
+            "direct_ratio": 0.35377012224288457,
+            "ratio": 0.4214371024524481,
+            "demand": {
+              "xu_mm": 319.2499683107543,
+              "mx_knm": -261.83412641472063,
+              "my_knm": 141.3347166883276,
+              "capacity_knm": 297.54430241012807,
+              "axial_residual_kn": -4.191213065496413e-08,
+              "transverse_residual_knm": 2.2097879082139116e-11
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0693267685480458,
+          "y": 0.08288927100156382
+        },
+        "governing_id": "EQUIVALENT-NP",
+        "governing_ratio": 0.4214371024524481
+      }
+    },
+    "mixed_high_axial": {
+      "request": {
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "length_mm": 7200,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 7200,
+            "effective_length_mm": 6800,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 7200,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 2800,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": 75,
+            "my_knm": -45
+          },
+          "end_b": {
+            "mx_knm": 35,
+            "my_knm": 25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "mixed_high_axial",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 12.363636363636363,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 32.733333333333334,
+            "initial_moment_knm": 59.0,
+            "end_floor_knm": 75,
+            "additional_moment_knm": 117.70181818181818
+          },
+          "y": {
+            "slenderness": 13.333333333333334,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 29.4,
+            "initial_moment_knm": 18.0,
+            "end_floor_knm": 45,
+            "additional_moment_knm": 112.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 458.2251789853249,
+            "mx_knm": 314.1133596748312,
+            "my_knm": -1.2203759979456664e-11,
+            "capacity_knm": 314.1133596748312,
+            "axial_residual_kn": 1.3098997442284599e-08,
+            "transverse_residual_knm": -1.2203759979456664e-11
+          },
+          "x_negative": {
+            "xu_mm": 469.04625018946945,
+            "mx_knm": -288.43080024127437,
+            "my_knm": 8.72323289513588e-12,
+            "capacity_knm": 288.43080024127437,
+            "axial_residual_kn": 2.1873347577638924e-08,
+            "transverse_residual_knm": -8.72323289513588e-12
+          },
+          "y_positive": {
+            "xu_mm": 379.17067750767956,
+            "mx_knm": -4.954636096954346e-13,
+            "my_knm": 224.1789383753128,
+            "capacity_knm": 224.1789383753128,
+            "axial_residual_kn": -8.121332939481363e-09,
+            "transverse_residual_knm": 4.954636096954346e-13
+          },
+          "y_negative": {
+            "xu_mm": 368.5663858205735,
+            "mx_knm": -2.5801360607147216e-11,
+            "my_knm": -225.93466604123262,
+            "capacity_knm": 225.93466604123262,
+            "axial_residual_kn": 2.258275344502181e-09,
+            "transverse_residual_knm": -2.5801360607147216e-11
+          }
+        },
+        "puz_kn": 4376.995398776712,
+        "alpha_n": 1.732847057893697,
+        "evaluated": {
+          "A": {
+            "mx_knm": 75,
+            "my_knm": -45,
+            "contour_ratio": 0.14463256267759095,
+            "direct_ratio": 0.3537551766194924,
+            "ratio": 0.3537551766194924,
+            "demand": {
+              "xu_mm": 525.0406034391556,
+              "mx_knm": 212.0110318008725,
+              "my_knm": -127.2066190805334,
+              "capacity_knm": 247.24522552148602,
+              "axial_residual_kn": -2.7360329113435e-08,
+              "transverse_residual_knm": -8.498091119690798e-12
+            }
+          },
+          "B": {
+            "mx_knm": 35,
+            "my_knm": 25,
+            "contour_ratio": 0.04465910784411147,
+            "direct_ratio": 0.17477839765111394,
+            "ratio": 0.17477839765111394,
+            "demand": {
+              "xu_mm": 518.9842200631617,
+              "mx_knm": 200.25358093661367,
+              "my_knm": 143.03827209759345,
+              "capacity_knm": 246.0923484438353,
+              "axial_residual_kn": 3.2770458346931264e-08,
+              "transverse_residual_knm": 9.961809155356605e-12
+            }
+          },
+          "EQUIVALENT-PN": {
+            "mx_knm": 176.70181818181817,
+            "my_knm": -130.0,
+            "contour_ratio": 0.7527751639347666,
+            "direct_ratio": 0.918192484125577,
+            "ratio": 0.918192484125577,
+            "demand": {
+              "xu_mm": 516.7286510163635,
+              "mx_knm": 192.4452892359459,
+              "my_knm": -141.58251374035459,
+              "capacity_knm": 238.91587964416382,
+              "axial_residual_kn": -3.9451606426155195e-08,
+              "transverse_residual_knm": 2.5579538487363607e-13
+            }
+          },
+          "EQUIVALENT-PP": {
+            "mx_knm": 176.70181818181817,
+            "my_knm": 130.0,
+            "contour_ratio": 0.7579980971765117,
+            "direct_ratio": 0.8956325091355687,
+            "ratio": 0.8956325091355687,
+            "demand": {
+              "xu_mm": 517.5541904829284,
+              "mx_knm": 197.29276950024666,
+              "my_knm": 145.14881792922017,
+              "capacity_knm": 244.93390178439444,
+              "axial_residual_kn": -2.9620878194691613e-08,
+              "transverse_residual_knm": 1.2889245226688217e-11
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.3177654163725396,
+          "y": 0.36720666355455134
+        },
+        "governing_id": "EQUIVALENT-PN",
+        "governing_ratio": 0.918192484125577,
+        "optional_reduction_study": {
+          "x_positive": {
+            "pb_kn": 1670.7614658128623,
+            "k": 0.5827269326453227
+          },
+          "x_negative": {
+            "pb_kn": 1539.9933930874827,
+            "k": 0.5558668607263083
+          },
+          "y_positive": {
+            "pb_kn": 1571.2978453457781,
+            "k": 0.5620689218081582
+          },
+          "y_negative": {
+            "pb_kn": 1571.2978453457786,
+            "k": 0.5620689218081582
+          }
+        }
+      }
+    },
+    "missing_link": {
+      "request": {
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "length_mm": 7200,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 7200,
+            "effective_length_mm": 6800,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 7200,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 800,
+          "has_transverse_member_load": false,
+          "end_a": {
+            "mx_knm": 75,
+            "my_knm": -45
+          },
+          "end_b": {
+            "mx_knm": 35,
+            "my_knm": 25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "missing_link",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "HOLD",
+        "strength_status": "PASS",
+        "restraint_status": "HOLD",
+        "axes": {
+          "x": {
+            "slenderness": 12.363636363636363,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 32.733333333333334,
+            "initial_moment_knm": 59.0,
+            "end_floor_knm": 75,
+            "additional_moment_knm": 33.62909090909091
+          },
+          "y": {
+            "slenderness": 13.333333333333334,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 29.4,
+            "initial_moment_knm": 18.0,
+            "end_floor_knm": 45,
+            "additional_moment_knm": 32.0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 198.11693611759569,
+            "mx_knm": 377.7280726494329,
+            "my_knm": 4.325993359088898e-13,
+            "capacity_knm": 377.7280726494329,
+            "axial_residual_kn": 1.8555510905571282e-08,
+            "transverse_residual_knm": 4.325993359088898e-13
+          },
+          "x_negative": {
+            "xu_mm": 226.00306649694886,
+            "mx_knm": -405.477408897984,
+            "my_knm": -1.3173557817935943e-12,
+            "capacity_knm": 405.477408897984,
+            "axial_residual_kn": -4.621824700734578e-09,
+            "transverse_residual_knm": 1.3173557817935943e-12
+          },
+          "y_positive": {
+            "xu_mm": 184.59328036733916,
+            "mx_knm": 3.7215650081634525e-12,
+            "my_knm": 284.09149746029755,
+            "capacity_knm": 284.09149746029755,
+            "axial_residual_kn": -1.6272679204121232e-08,
+            "transverse_residual_knm": -3.7215650081634525e-12
+          },
+          "y_negative": {
+            "xu_mm": 185.9399674274572,
+            "mx_knm": 2.1855696104466914e-11,
+            "my_knm": -283.75204312698395,
+            "capacity_knm": 283.75204312698395,
+            "axial_residual_kn": 1.3843191482010297e-08,
+            "transverse_residual_knm": 2.1855696104466914e-11
+          }
+        },
+        "puz_kn": 4376.995398776712,
+        "alpha_n": 1,
+        "evaluated": {
+          "A": {
+            "mx_knm": 75,
+            "my_knm": -45,
+            "contour_ratio": 0.3571447026499238,
+            "direct_ratio": 0.2995109933602777,
+            "ratio": 0.3571447026499238,
+            "demand": {
+              "xu_mm": 318.32594527566516,
+              "mx_knm": 250.408170860629,
+              "my_knm": -150.2449025163992,
+              "capacity_knm": 292.02359967291727,
+              "axial_residual_kn": -4.080607141077053e-08,
+              "transverse_residual_knm": -1.8701484805205837e-11
+            }
+          },
+          "B": {
+            "mx_knm": 35,
+            "my_knm": 25,
+            "contour_ratio": 0.18065906797040576,
+            "direct_ratio": 0.14546147140142188,
+            "ratio": 0.18065906797040576,
+            "demand": {
+              "xu_mm": 314.9169523319215,
+              "mx_knm": 240.6135429732547,
+              "my_knm": 171.86681640948396,
+              "capacity_knm": 295.69085147307743,
+              "axial_residual_kn": -4.3543195715756156e-09,
+              "transverse_residual_knm": 1.3272938303998671e-11
+            }
+          },
+          "EQUIVALENT-PN": {
+            "mx_knm": 92.6290909090909,
+            "my_knm": -50.0,
+            "contour_ratio": 0.42143710245244814,
+            "direct_ratio": 0.3537701222428841,
+            "ratio": 0.42143710245244814,
+            "demand": {
+              "xu_mm": 319.2499683107544,
+              "mx_knm": 261.83412641472137,
+              "my_knm": -141.33471668832712,
+              "capacity_knm": 297.54430241012847,
+              "axial_residual_kn": -4.191088009974919e-08,
+              "transverse_residual_knm": 2.2879476091475226e-11
+            }
+          },
+          "EQUIVALENT-PP": {
+            "mx_knm": 92.6290909090909,
+            "my_knm": 50.0,
+            "contour_ratio": 0.42122655299429546,
+            "direct_ratio": 0.33990675790053576,
+            "ratio": 0.42122655299429546,
+            "demand": {
+              "xu_mm": 319.15903421242183,
+              "mx_knm": 272.51323710426556,
+              "my_knm": 147.09916422029812,
+              "capacity_knm": 309.6798807015979,
+              "axial_residual_kn": -2.5406393433513585e-08,
+              "transverse_residual_knm": 8.526512829121202e-14
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.06932676854804581,
+          "y": 0.08288927100156383
+        },
+        "governing_id": "EQUIVALENT-PN",
+        "governing_ratio": 0.42143710245244814
+      }
+    },
+    "unsupported_transverse_load": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 3900,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "first_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "has_transverse_member_load": true,
+          "end_a": {
+            "mx_knm": -60,
+            "my_knm": 25
+          },
+          "end_b": {
+            "mx_knm": -30,
+            "my_knm": -25
+          }
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "unsupported_transverse_load",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "HOLD",
+        "strength_status": "HOLD",
+        "restraint_status": "PASS",
+        "issue": "COLUMN.FIRST_ORDER_PROFILE",
+        "axes": {
+          "x": {
+            "slenderness": 9.75,
+            "classification": "SHORT",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 48.0,
+            "end_floor_knm": 60,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 10.0,
+            "end_floor_knm": 25,
+            "additional_moment_knm": 30.0
+          }
+        }
+      }
+    },
+    "supplied_second_order": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Analytic constant-EI eccentric-load beam-column, COL04 secant worksheet",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -52.95065568694984,
+              "my_knm": 33.27212758548642
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ]
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "supplied_second_order",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "PASS",
+        "strength_status": "PASS",
+        "restraint_status": "PASS",
+        "axes": {
+          "x": {
+            "slenderness": 15.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          }
+        },
+        "capacities": {
+          "x_positive": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": 152.540801942791,
+            "my_knm": 1.3737007975578308e-14,
+            "capacity_knm": 152.540801942791,
+            "axial_residual_kn": -8.78100081536104e-09,
+            "transverse_residual_knm": 1.3737007975578308e-14
+          },
+          "x_negative": {
+            "xu_mm": 194.56270178550602,
+            "mx_knm": -152.54080194279103,
+            "my_knm": 0.0,
+            "capacity_knm": 152.54080194279103,
+            "axial_residual_kn": -8.780716598266736e-09,
+            "transverse_residual_knm": 0.0
+          },
+          "y_positive": {
+            "xu_mm": 146.1556435090414,
+            "mx_knm": -1.6181729733943938e-14,
+            "my_knm": 102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854687070590444e-09,
+            "transverse_residual_knm": 1.6181729733943938e-14
+          },
+          "y_negative": {
+            "xu_mm": 146.15564350904134,
+            "mx_knm": 0.0,
+            "my_knm": -102.73794604190856,
+            "capacity_knm": 102.73794604190856,
+            "axial_residual_kn": 1.854630227171583e-09,
+            "transverse_residual_knm": 0.0
+          }
+        },
+        "puz_kn": 2103.98223686155,
+        "alpha_n": 1.0627409864652941,
+        "evaluated": {
+          "A": {
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "contour_ratio": 0.5759281538744462,
+            "direct_ratio": 0.530688822479986,
+            "ratio": 0.5759281538744462,
+            "demand": {
+              "xu_mm": 247.41756564687932,
+              "mx_knm": -94.21717187549,
+              "my_knm": 56.53030312530147,
+              "capacity_knm": 109.8751593748746,
+              "axial_residual_kn": 3.04260083794361e-09,
+              "transverse_residual_knm": -6.409095476556104e-12
+            }
+          },
+          "MID": {
+            "mx_knm": -52.95065568694984,
+            "my_knm": 33.27212758548642,
+            "contour_ratio": 0.6265660756363525,
+            "direct_ratio": 0.5745151285395277,
+            "ratio": 0.6265660756363525,
+            "demand": {
+              "xu_mm": 246.20487328329,
+              "mx_knm": -92.16581610575798,
+              "my_knm": 57.91340546604412,
+              "capacity_knm": 108.85081621703546,
+              "axial_residual_kn": -5.754998255724786e-09,
+              "transverse_residual_knm": 6.181721801112872e-13
+            }
+          },
+          "B": {
+            "mx_knm": -50.0,
+            "my_knm": 30.0,
+            "contour_ratio": 0.5759281538744462,
+            "direct_ratio": 0.530688822479986,
+            "ratio": 0.5759281538744462,
+            "demand": {
+              "xu_mm": 247.41756564687932,
+              "mx_knm": -94.21717187549,
+              "my_knm": 56.53030312530147,
+              "capacity_knm": 109.8751593748746,
+              "axial_residual_kn": 3.04260083794361e-09,
+              "transverse_residual_knm": -6.409095476556104e-12
+            }
+          }
+        },
+        "minimum_eccentricity_ratios": {
+          "x": 0.0830378921923931,
+          "y": 0.10706852164937104
+        },
+        "governing_id": "MID",
+        "governing_ratio": 0.6265660756363525
+      }
+    },
+    "missing_basis": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": null,
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -52.95065568694984,
+              "my_knm": 33.27212758548642
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ]
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "missing_basis",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "HOLD",
+        "strength_status": "HOLD",
+        "restraint_status": "PASS",
+        "issue": "COLUMN.MEMBER_DEFLECTION_BASIS",
+        "axes": {
+          "x": {
+            "slenderness": 15.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          }
+        }
+      }
+    },
+    "stale_revision": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-02",
+        "actions": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Analytic constant-EI eccentric-load beam-column, COL04 secant worksheet",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -52.95065568694984,
+              "my_knm": 33.27212758548642
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ]
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "stale_revision",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "HOLD",
+        "strength_status": "HOLD",
+        "restraint_status": "PASS",
+        "issue": "COLUMN.STALE_ANALYSIS",
+        "axes": {
+          "x": {
+            "slenderness": 15.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          }
+        }
+      }
+    },
+    "double_magnification": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Analytic constant-EI eccentric-load beam-column, COL04 secant worksheet",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -52.95065568694984,
+              "my_knm": 33.27212758548642
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ],
+          "apply_local_additional_moments": true
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "double_magnification",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "REJECT",
+        "issue": "COLUMN_ACTION_BASIS_CONFLICT"
+      }
+    },
+    "missing_station": {
+      "request": {
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "station_offset_mm": 12,
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ]
+            },
+            {
+              "tie_id": "YT",
+              "station_offset_mm": 24,
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ]
+            }
+          ]
+        },
+        "analysis_revision": "model-01",
+        "current_analysis_revision": "model-01",
+        "actions": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Analytic constant-EI eccentric-load beam-column, COL04 secant worksheet",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -50.0,
+              "my_knm": 30.0
+            }
+          ]
+        },
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL04-C",
+          "case_id": "missing_station",
+          "source_reference": "COL04 independent column worksheet"
+        }
+      },
+      "expected": {
+        "member_status": "HOLD",
+        "strength_status": "HOLD",
+        "restraint_status": "PASS",
+        "issue": "COLUMN.REQUIRED_STATIONS",
+        "axes": {
+          "x": {
+            "slenderness": 15.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 25.333333333333336,
+            "initial_moment_knm": 0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          },
+          "y": {
+            "slenderness": 20.0,
+            "classification": "SLENDER",
+            "minimum_eccentricity_mm": 22.0,
+            "initial_moment_knm": 0,
+            "end_floor_knm": 0,
+            "additional_moment_knm": 0
+          }
+        }
+      }
+    }
+  }
+}

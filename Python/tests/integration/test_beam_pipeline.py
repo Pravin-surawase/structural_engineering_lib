@@ -380,6 +380,55 @@ class TestDesignMultipleBeams:
             "pass_rate": 0.5,
         }
 
+    @pytest.mark.parametrize(
+        ("support", "status", "limit"),
+        [
+            ("cant", "fail", 7),
+            (" cantilever ", "fail", 7),
+            ("CANTILEVER", "fail", 7),
+            (" cont ", "ok", 26),
+            ("SIMPLY_SUPPORTED", "ok", 20),
+            ("unknown", "ok", 20),
+        ],
+    )
+    def test_automatic_deflection_preserves_support(
+        self, two_beam_cases, support, status, limit
+    ):
+        params = dict(
+            two_beam_cases[0], include_serviceability=True, support_condition=support
+        )
+        single = beam_pipeline.design_single_beam(
+            units="IS456", include_detailing=False, **params
+        )
+        batch = beam_pipeline.design_multiple_beams(
+            units="IS456", include_detailing=False, beams=[params]
+        )
+        result = single.serviceability
+        assert result == batch.beams[0].serviceability
+        assert result.deflection_status == status
+        assert result.deflection_utilization == pytest.approx(5000 / 457 / limit)
+        if support == "unknown":
+            assert "Defaulted to SIMPLY_SUPPORTED" in result.deflection_remarks
+
+    def test_explicit_deflection_basis_takes_precedence(self, two_beam_cases):
+        params = dict(two_beam_cases[0], support_condition="cant")
+        result = beam_pipeline.design_single_beam(
+            units="IS456",
+            include_detailing=False,
+            include_serviceability=True,
+            deflection_params={
+                "span_mm": 5000,
+                "d_mm": 457,
+                "support_condition": "SIMPLY_SUPPORTED",
+            },
+            **params,
+        )
+        assert result.serviceability.deflection_status == "ok"
+        omitted = beam_pipeline.design_single_beam(
+            units="IS456", include_detailing=False, **params
+        )
+        assert omitted.serviceability.deflection_status == "not_run"
+
     @pytest.mark.parametrize("explicit_none", [False, True])
     def test_batch_resolves_complete_depth_basis(self, two_beam_cases, explicit_none):
         from structural_lib.services.project_beam import EffectiveDepthBasisV1

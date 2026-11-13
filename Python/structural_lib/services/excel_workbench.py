@@ -150,6 +150,7 @@ _KNOWN_HELD_HEADERS = {
     "flange width",
     "flange depth",
 }
+_UNIT_LABELLED_TORSION = re.compile(r"(?:torsion|tu)\s*\(\s*kn\s*[·⋅*.-]?\s*m\s*\)")
 _WORKBOOK_ARTIFACT_NAME = "structural-lib-rectangular-beam-workbench-v1.xlsx"
 _WORKBOOK_RESOURCE_DIR = "data/excel/outputs/e1-excel-routine-workbench"
 
@@ -422,7 +423,7 @@ def _nonblank_held_headers(
         key = _header_key(header)
         if (
             key in excluded_keys
-            and key in _KNOWN_HELD_HEADERS
+            and (key in _KNOWN_HELD_HEADERS or _UNIT_LABELLED_TORSION.fullmatch(key))
             and index < len(raw)
             and not _is_blank(raw[index])
         ):

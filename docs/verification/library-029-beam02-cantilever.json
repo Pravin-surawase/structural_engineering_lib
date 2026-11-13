@@ -1,0 +1,1902 @@
+{
+  "fixture_version": "library-029-beam02-cantilever-reference/v1",
+  "sources": [
+    "Independent free-body equilibrium of the segment from x to the free end.",
+    "IS 456:2000 Cl. 38.1, Fig. 21\u201323, Annex G, Cl. 26.2, Cl. 40 and Tables 19 and 20."
+  ],
+  "section": {
+    "top": {
+      "d_mm": 450,
+      "xu_mm": 84.75018466744595,
+      "tension_area_mm2": 942.4777960769379,
+      "capacity_knm": 139.34083455851464,
+      "concrete_shear_kn": 74.709289474462,
+      "link_shear_kn": 65.33406878852706,
+      "shear_capacity_kn": 140.04335826298905,
+      "development_mm": 805.9151785714286
+    },
+    "bottom": {
+      "d_mm": 450,
+      "xu_mm": 50.67425327383219,
+      "tension_area_mm2": 402.1238596594935,
+      "capacity_knm": 61.974753294039786,
+      "concrete_shear_kn": 51.96044070229366,
+      "link_shear_kn": 65.33406878852706,
+      "shear_capacity_kn": 117.29450949082073,
+      "development_mm": 644.7321428571429
+    }
+  },
+  "station_targets": {
+    "UDL:FIXED": [
+      -40,
+      -40
+    ],
+    "POINT:FIXED": [
+      -50,
+      -50
+    ],
+    "POINT:P-LEFT": [
+      -10,
+      -30
+    ],
+    "POINT:P-RIGHT": [
+      -10,
+      -20
+    ],
+    "POINT:FREE": [
+      0,
+      0
+    ]
+  },
+  "point_shear_jump_kn": 10,
+  "governing_hogging_row": "POINT:FIXED",
+  "governing_shear_row": "POINT:FIXED",
+  "fixed_anchorage_available_mm": 850,
+  "short_anchorage_available_mm": 750,
+  "tolerances": {
+    "capacity_knm": 0.02,
+    "xu_mm": 0.01,
+    "shear_kn": 0.01
+  },
+  "cases": {
+    "point_and_udl": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A1",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "straight_bars": {
+          "start_mm": -850,
+          "end_mm": 1968,
+          "source_reference": "B02 straight full-span bars"
+        },
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T2",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T3",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B1",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B2",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -50.0,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:P-RIGHT",
+            "combination_id": "POINT",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "PASS"
+    },
+    "missing_side": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A1",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "straight_bars": {
+          "start_mm": -850,
+          "end_mm": 1968,
+          "source_reference": "B02 straight full-span bars"
+        },
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T2",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T3",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B1",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B2",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -50.0,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "HOLD"
+    },
+    "short_anchorage": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A1",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "straight_bars": {
+          "start_mm": -750,
+          "end_mm": 1968,
+          "source_reference": "B02 straight full-span bars"
+        },
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T2",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T3",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B1",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B2",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -50.0,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:P-RIGHT",
+            "combination_id": "POINT",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "FAIL"
+    },
+    "missing_anchorage": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A1",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T2",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T3",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B1",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B2",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -50.0,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:P-RIGHT",
+            "combination_id": "POINT",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "HOLD"
+    },
+    "overload": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A1",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "straight_bars": {
+          "start_mm": -850,
+          "end_mm": 1968,
+          "source_reference": "B02 straight full-span bars"
+        },
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T2",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T3",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B1",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B2",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -180,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:P-RIGHT",
+            "combination_id": "POINT",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "FAIL"
+    },
+    "flipped_cage": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A1",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "straight_bars": {
+          "start_mm": -850,
+          "end_mm": 1968,
+          "source_reference": "B02 straight full-span bars"
+        },
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "bottom",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "T2",
+            "face": "bottom",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "T3",
+            "face": "bottom",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B1",
+            "face": "top",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B2",
+            "face": "top",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -100,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:P-RIGHT",
+            "combination_id": "POINT",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "FAIL"
+    },
+    "stale_analysis": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A2",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "straight_bars": {
+          "start_mm": -850,
+          "end_mm": 1968,
+          "source_reference": "B02 straight full-span bars"
+        },
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T2",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T3",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B1",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B2",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -50.0,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:P-RIGHT",
+            "combination_id": "POINT",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "HOLD"
+    },
+    "unsupported_torsion": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A1",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "straight_bars": {
+          "start_mm": -850,
+          "end_mm": 1968,
+          "source_reference": "B02 straight full-span bars"
+        },
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T2",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T3",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B1",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B2",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0,
+            "tu_knm": 1
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -50.0,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:P-RIGHT",
+            "combination_id": "POINT",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "HOLD"
+    },
+    "duplicate_station": {
+      "request": {
+        "schema_version": "is456-cantilever-beam-check/v1",
+        "member_id": "B02",
+        "analysis_revision": "B02-A1",
+        "current_analysis_revision": "B02-A1",
+        "reinforcement_revision": "B02-R1",
+        "source_reference": "BEAM02 independent right-hand free-body equilibrium",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "clear_cover_mm": 32,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 250,
+        "link_fy_nmm2": 415,
+        "fixed_support_id": "A",
+        "fixed_support_width_mm": 900,
+        "free_end_mm": 2000,
+        "straight_bars": {
+          "start_mm": -850,
+          "end_mm": 1968,
+          "source_reference": "B02 straight full-span bars"
+        },
+        "bars": [
+          {
+            "bar_id": "T1",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T2",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "T3",
+            "face": "top",
+            "diameter_mm": 20,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 50
+          },
+          {
+            "bar_id": "B1",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 50,
+            "y_from_top_mm": 450
+          },
+          {
+            "bar_id": "B2",
+            "face": "bottom",
+            "diameter_mm": 16,
+            "x_from_left_mm": 250,
+            "y_from_top_mm": 450
+          }
+        ],
+        "stations": [
+          {
+            "station_id": "FIXED",
+            "x_mm": 0,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT",
+            "x_mm": 1000,
+            "side": "LEFT"
+          },
+          {
+            "station_id": "P-RIGHT",
+            "x_mm": 1000,
+            "side": "RIGHT"
+          },
+          {
+            "station_id": "FREE",
+            "x_mm": 2000,
+            "side": "CONTINUOUS"
+          },
+          {
+            "station_id": "P-LEFT-DUPLICATE",
+            "x_mm": 1000,
+            "side": "LEFT"
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "UDL",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "POINT",
+            "kind": "ULS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          },
+          {
+            "combination_id": "S1",
+            "kind": "SLS",
+            "required_station_ids": [
+              "FIXED",
+              "P-LEFT",
+              "P-RIGHT",
+              "FREE"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "row_id": "UDL:FIXED",
+            "combination_id": "UDL",
+            "station_id": "FIXED",
+            "mu_knm": -40.0,
+            "vu_kn": -40.0
+          },
+          {
+            "row_id": "UDL:P-LEFT",
+            "combination_id": "UDL",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:P-RIGHT",
+            "combination_id": "UDL",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "UDL:FREE",
+            "combination_id": "UDL",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "POINT:FIXED",
+            "combination_id": "POINT",
+            "station_id": "FIXED",
+            "mu_knm": -50.0,
+            "vu_kn": -50.0
+          },
+          {
+            "row_id": "POINT:P-LEFT",
+            "combination_id": "POINT",
+            "station_id": "P-LEFT",
+            "mu_knm": -10.0,
+            "vu_kn": -30.0
+          },
+          {
+            "row_id": "POINT:P-RIGHT",
+            "combination_id": "POINT",
+            "station_id": "P-RIGHT",
+            "mu_knm": -10.0,
+            "vu_kn": -20.0
+          },
+          {
+            "row_id": "POINT:FREE",
+            "combination_id": "POINT",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          },
+          {
+            "row_id": "S1:FIXED",
+            "combination_id": "S1",
+            "station_id": "FIXED",
+            "mu_knm": -24.0,
+            "vu_kn": -24.0
+          },
+          {
+            "row_id": "S1:P-LEFT",
+            "combination_id": "S1",
+            "station_id": "P-LEFT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:P-RIGHT",
+            "combination_id": "S1",
+            "station_id": "P-RIGHT",
+            "mu_knm": -6.0,
+            "vu_kn": -12.0
+          },
+          {
+            "row_id": "S1:FREE",
+            "combination_id": "S1",
+            "station_id": "FREE",
+            "mu_knm": -0.0,
+            "vu_kn": -0.0
+          }
+        ]
+      },
+      "ultimate_status": "BLOCKED"
+    }
+  }
+}

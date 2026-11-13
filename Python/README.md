@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.28.2 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.29.0 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,26 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.28.2
+## New in v0.29.0
+
+- Check signed flexure, shear and straight anchorage for supplied concurrent
+  actions on an ordinary two-span rectangular beam.
+- Check an ordinary rectangular cantilever at the fixed face, free end and
+  both sides of a supplied point-load station.
+- Check signed rectangular, T and L beam sections with actual multilayer bars.
+- Check actual short and braced slender rectangular column cages, short tied
+  and spiral circular cages, and reinforcement from a finite column catalogue.
+- Check shear, tie zones, development and the admitted contact splices for a
+  short tied eight-bar column, with a report, drawing and bar bending schedule
+  where the assembly passes.
+- Preserve the supplied load-basis status in continuous one-way and restrained
+  two-way slab API results.
+
+The [beam worked example](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/cookbook/python/continuous-beam-check.md)
+and [column worked examples](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/cookbook/python/column-four-corner-member-check.md)
+explain the inputs, outputs and limits of each supported profile.
+
+### Introduced in v0.28.2
 
 - Imported-beam inspection, reports, BBS, DXF, and project quantities use
   the current checked reinforcement layout.

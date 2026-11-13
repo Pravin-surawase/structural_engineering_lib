@@ -19,12 +19,33 @@ TESTS = tuple(
     f"Python/tests/integration/{name}.py"
     for name in (
         "test_beam_comparator_example",
+        "test_beam_instantaneous_service",
+        "test_beam_finite_service_history",
+        "test_cantilever_beam_check",
+        "test_continuous_beam_check",
+        "test_beam_continuous_detailing",
+        "test_signed_beam_section_check",
+        "test_beam_section_catalogue",
         "test_layered_column_section",
         "test_beam_section_closure",
         "test_four_corner_column_member",
+        "test_tied_rectangular_column_member",
+        "test_positioned_rectangular_column_member",
+        "test_slender_rectangular_column_member",
+        "test_circular_column_member",
+        "test_circular_column_detailing",
+        "test_column_candidate_search",
+        "test_column_interaction_slice",
+        "test_column_service_section",
+        "test_column_result_transport",
+        "test_flexure_edges_additional",
+        "test_column_member_detailing",
+        "test_column_contact_splice",
+        "test_etabs_paired_forces",
         "test_torsion_corner_geometry",
         "test_beam_primary_route_torsion",
         "test_physical_torsion_member",
+        "test_beam_edge_torsion",
         "test_torsional_serviceability",
         "test_t_beam_member",
         "test_complete_member_workflow",
@@ -41,9 +62,26 @@ EXAMPLES = tuple(
     f"Python/examples/{name}.py"
     for name in (
         "beam_comparator_reference",
+        "beam_instantaneous_service",
+        "beam_finite_service_history",
+        "cantilever_beam_check",
+        "continuous_beam_check",
+        "beam_continuous_detailing",
+        "signed_beam_section_check",
+        "beam_section_catalogue",
         "layered_column_section",
         "beam_section_closure",
         "four_corner_column_member",
+        "tied_rectangular_column_member",
+        "positioned_rectangular_column_member",
+        "slender_rectangular_column_member",
+        "circular_column_member",
+        "circular_column_detailing",
+        "column_catalogue_selection",
+        "column_interaction_slice",
+        "column_service_section",
+        "column_member_detailing",
+        "etabs_paired_forces",
         "torsion_station_reference",
         "physical_torsion_member",
         "t_beam_member",
@@ -63,7 +101,59 @@ CHECKERS = tuple(
         "torsion_serviceability_reference",
         "t_beam_reference",
     )
+) + (
+    "docs/verification/check_library_029_beam01_reference.py",
+    "docs/verification/check_library_029_beam02_reference.py",
+    "docs/verification/check_library_029_beam_sections_reference.py",
+    "docs/verification/check_library_029_beam05_reference.py",
+    "docs/verification/check_library_029_beam05_flanged_reference.py",
+    "docs/verification/check_library_029_beam05_cutoff_reference.py",
+    "docs/verification/check_library_029_beam05_lap_reference.py",
+    "docs/verification/check_library_029_beam07_reference.py",
+    "docs/verification/check_library_029_flow02_reference.py",
+    "docs/verification/check_library_029_flow03_beam_reference.py",
+    "docs/verification/check_library_029_flow04_reference.py",
+    "docs/verification/check_library_029_sec02_reference.py",
+    "docs/verification/check_library_029_sec03_reference.py",
+    "docs/verification/check_library_029_serv01_reference.py",
+    "docs/verification/check_library_029_serv02_reference.py",
+    "docs/verification/check_library_029_col02_reference.py",
+    "docs/verification/check_library_029_col03_reference.py",
+    "docs/verification/check_library_029_col04_reference.py",
+    "docs/verification/check_library_029_col05_reference.py",
+    "docs/verification/check_library_029_col06_reference.py",
+    "docs/verification/check_library_029_col07_reference.py",
+    "docs/verification/check_library_029_col07_mixed_reference.py",
+    "docs/verification/check_library_029_col07_circular_reference.py",
+    "docs/verification/check_library_029_col07_slender_reference.py",
+    "docs/verification/check_library_029_col07_splice_reference.py",
+    "docs/verification/check_library_029_col07_corner_reference.py",
 )
+BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
+BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
+BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.json"
+BEAM05_REFERENCE = "docs/verification/library-029-beam05-member-detailing.json"
+BEAM05_FLANGED_REFERENCE = "docs/verification/library-029-beam05-flanged-detailing.json"
+BEAM05_CUTOFF_REFERENCE = "docs/verification/library-029-beam05-cutoff.json"
+BEAM05_LAP_REFERENCE = "docs/verification/library-029-beam05-lap.json"
+BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
+FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
+FLOW03_BEAM_REFERENCE = "docs/verification/library-029-flow03-beam-edit.json"
+FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
+SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
+SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
+SERV01_REFERENCE = "docs/verification/library-029-serv01-beam-service.json"
+SERV02_REFERENCE = "docs/verification/library-029-serv02-beam-history.json"
+COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
+COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
+COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
+COL06_REFERENCE = "docs/verification/library-029-col06-column-catalogue.json"
+COL07_REFERENCE = "docs/verification/library-029-col07-column-member.json"
+COL07_MIXED_REFERENCE = "docs/verification/library-029-col07-mixed-member.json"
+COL07_CIRCULAR_REFERENCE = "docs/verification/library-029-col07-circular-member.json"
+COL07_SLENDER_REFERENCE = "docs/verification/library-029-col07-slender-member.json"
+COL07_SPLICE_REFERENCE = "docs/verification/library-029-col07-contact-splice.json"
+COL07_CORNER_REFERENCE = "docs/verification/library-029-col07-corner-splice.json"
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -73,6 +163,32 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
             {
                 *(repo / name for name in (*TESTS, *EXAMPLES, *CHECKERS)),
                 *(repo / "docs/verification").glob("library-027-*.json"),
+                repo / "docs/verification/library-029-col02-rectangular-column.json",
+                repo / BEAM01_REFERENCE,
+                repo / BEAM02_REFERENCE,
+                repo / BEAM_SECTION_REFERENCE,
+                repo / BEAM05_REFERENCE,
+                repo / BEAM05_FLANGED_REFERENCE,
+                repo / BEAM05_CUTOFF_REFERENCE,
+                repo / BEAM05_LAP_REFERENCE,
+                repo / BEAM07_REFERENCE,
+                repo / FLOW02_REFERENCE,
+                repo / FLOW03_BEAM_REFERENCE,
+                repo / FLOW04_REFERENCE,
+                repo / SEC02_REFERENCE,
+                repo / SEC03_REFERENCE,
+                repo / SERV01_REFERENCE,
+                repo / SERV02_REFERENCE,
+                repo / COL03_REFERENCE,
+                repo / COL04_REFERENCE,
+                repo / COL05_REFERENCE,
+                repo / COL06_REFERENCE,
+                repo / COL07_REFERENCE,
+                repo / COL07_MIXED_REFERENCE,
+                repo / COL07_SLENDER_REFERENCE,
+                repo / COL07_CIRCULAR_REFERENCE,
+                repo / COL07_SPLICE_REFERENCE,
+                repo / COL07_CORNER_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -260,7 +376,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     output.mkdir(parents=True, exist_ok=True)
     commands = []
 
-    def run(label: str, script: str, *args: str) -> str:
+    def run(label: str, script: str, *args: str, expected_code: int = 0) -> str:
         command = [sys.executable, "-I"]
         if script in CHECKERS:
             # -I deliberately excludes the script directory. These arithmetic
@@ -284,7 +400,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         )
         (output / f"{label}.stdout.log").write_text(completed.stdout)
         (output / f"{label}.stderr.log").write_text(completed.stderr)
-        if completed.returncode:
+        if completed.returncode != expected_code:
             raise AssertionError(
                 f"Installed {label} failed: {completed.returncode}\n"
                 f"{completed.stderr[-4000:]}\n{completed.stdout[-4000:]}"
@@ -294,6 +410,237 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     for checker in CHECKERS:
         run(Path(checker).stem, checker)
+    for profile, reference, example in (
+        ("continuous", BEAM01_REFERENCE, "continuous_beam_check"),
+        ("cantilever", BEAM02_REFERENCE, "cantilever_beam_check"),
+        ("section", BEAM_SECTION_REFERENCE, "signed_beam_section_check"),
+    ):
+        cases = json.loads((clone / reference).read_text())["cases"]
+        for case, entry in cases.items():
+            label = f"{profile}-beam-{case}"
+            directory = output / label
+            expected = entry.get("ultimate_status", entry.get("status", "FAIL"))
+            stdout = run(
+                label,
+                f"Python/examples/{example}.py",
+                "--reference",
+                str(clone / reference),
+                "--case",
+                case,
+                "--output-dir",
+                str(directory),
+                expected_code=2 if expected == "BLOCKED" else 0,
+            )
+            result = json.loads(stdout)
+            if expected == "BLOCKED":
+                assert result["details"]["issues"]
+                assert not directory.exists()
+                continue
+            assert result["ultimate_status"] == expected
+            if "sagging_status" in entry:
+                rows = {
+                    row["action"]["row_id"]: row["section_status"]
+                    for row in result["rows"]
+                }
+                assert rows["SAG:SECTION"] == entry["sagging_status"]
+                assert rows["HOG:SECTION"] == entry["hogging_status"]
+            assert result == json.loads((directory / "result.json").read_text())
+            identity = result["result_envelope"]["result_identity"]["input_hash"]
+            assert identity in (directory / "report.html").read_text()
+    for case, entry in json.loads((clone / SEC02_REFERENCE).read_text())[
+        "cases"
+    ].items():
+        label = f"column-interaction-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/column_interaction_slice.py",
+            "--reference",
+            str(clone / SEC02_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        assert result["envelope"]["engineering_status"] == entry.get("status", "PASS")
+        assert result["calculation"]["member_acceptance"] == "NOT_EVALUATED"
+        assert len(result["calculation"]["rays"]) == len(entry.get("rays", ()))
+        assert result == json.loads((directory / "result.json").read_text())
+        assert (
+            result["envelope"]["result_identity"]["input_hash"]
+            in (directory / "report.html").read_text()
+        )
+    for case, entry in json.loads((clone / SEC03_REFERENCE).read_text())[
+        "cases"
+    ].items():
+        label = f"column-service-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/column_service_section.py",
+            "--reference",
+            str(clone / SEC03_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        assert result["envelope"]["engineering_status"] == entry["status"]
+        assert result["calculation"]["member_acceptance"] == "NOT_EVALUATED"
+        assert result == json.loads((directory / "result.json").read_text())
+        report = (directory / "report.html").read_text()
+        assert result["envelope"]["result_identity"]["input_hash"] in report
+        assert "<svg" in report
+    for case, entry in json.loads((clone / SERV01_REFERENCE).read_text())[
+        "cases"
+    ].items():
+        label = f"beam-instantaneous-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/beam_instantaneous_service.py",
+            "--reference",
+            str(clone / SERV01_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        expected = (
+            "HOLD"
+            if entry["expected"] is None
+            else "FAIL" if case.endswith("tight_limit") else "PASS"
+        )
+        assert result["envelope"]["engineering_status"] == expected
+        assert result["calculation"]["long_term_status"] == "HOLD"
+        assert result == json.loads((directory / "result.json").read_text())
+        assert (
+            result["envelope"]["result_identity"]["input_hash"]
+            in (directory / "report.html").read_text()
+        )
+    for case, entry in json.loads((clone / SERV02_REFERENCE).read_text())[
+        "cases"
+    ].items():
+        label = f"beam-service-history-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/beam_finite_service_history.py",
+            "--reference",
+            str(clone / SERV02_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        assert result["envelope"]["engineering_status"] == entry["status"]
+        assert result == json.loads((directory / "result.json").read_text())
+        assert (
+            result["envelope"]["result_identity"]["input_hash"]
+            in (directory / "report.html").read_text()
+        )
+    for reference in (
+        BEAM05_REFERENCE,
+        BEAM05_CUTOFF_REFERENCE,
+        BEAM05_LAP_REFERENCE,
+        BEAM05_FLANGED_REFERENCE,
+    ):
+        for case, entry in json.loads((clone / reference).read_text())["cases"].items():
+            label = (
+                f"beam-flanged-detailing-{case}"
+                if reference == BEAM05_FLANGED_REFERENCE
+                else f"beam-continuous-detailing-{case}"
+            )
+            directory = output / label
+            stdout = run(
+                label,
+                "Python/examples/beam_continuous_detailing.py",
+                "--reference",
+                str(clone / reference),
+                "--case",
+                case,
+                "--output-dir",
+                str(directory),
+            )
+            result = json.loads(stdout)
+            status = entry["expected"]["status"]
+            assert result["envelope"]["engineering_status"] == status
+            assert result == json.loads((directory / "result.json").read_text())
+            input_hash = result["envelope"]["result_identity"]["input_hash"]
+            assert input_hash in (directory / "report.html").read_text()
+            assert (directory / "member.svg").is_file() == (status == "PASS")
+            assert (directory / "bbs.csv").is_file() == (status == "PASS")
+            if status == "PASS":
+                drawing = (directory / "member.svg").read_text()
+                assert input_hash in drawing
+                assert input_hash in (directory / "bbs.csv").read_text()
+                if reference == BEAM05_FLANGED_REFERENCE:
+                    assert 'data-view="section"' in drawing
+    flow03 = json.loads((clone / FLOW03_BEAM_REFERENCE).read_text())
+    for case, extra in (
+        ("edited", ()),
+        ("congested", ("--edit-centre-mm", str(flow03["congested_centre_mm"]))),
+        ("changed_stiffness", ("--stiffness-dependent",)),
+    ):
+        label = f"beam-bar-edit-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/beam_continuous_detailing.py",
+            "--reference",
+            str(clone / BEAM05_CUTOFF_REFERENCE),
+            "--case",
+            "cutoff",
+            "--edit-bar",
+            flow03["bar_id"],
+            "--edit-diameter-mm",
+            str(flow03["edited_diameter_mm"]),
+            "--output-dir",
+            str(directory),
+            *extra,
+        )
+        result = json.loads(stdout)
+        assert result["envelope"]["engineering_status"] == flow03["states"][case]
+        assert (directory / "member.svg").is_file() == (case == "edited")
+        assert (directory / "bbs.csv").is_file() == (case == "edited")
+    for option, expected in (
+        ((), "COMPLETE_FOR_DECLARED_ROWS"),
+        (("--alternate-units",), "COMPLETE_FOR_DECLARED_ROWS"),
+        (("--missing-combination",), "HOLD"),
+    ):
+        suffix = option[0].removeprefix("--") if option else "native-units"
+        stdout = run(
+            f"etabs-paired-forces-{suffix}",
+            "Python/examples/etabs_paired_forces.py",
+            "--reference",
+            str(clone / FLOW04_REFERENCE),
+            *option,
+        )
+        result = json.loads(stdout)
+        assert result["engineering"] == "not_evaluated"
+        assert result["outputs"]["status"] == expected
+    directory = output / "beam-section-catalogue"
+    stdout = run(
+        "beam-section-catalogue",
+        "Python/examples/beam_section_catalogue.py",
+        "--reference",
+        str(clone / FLOW02_REFERENCE),
+        "--output-dir",
+        str(directory),
+    )
+    result = json.loads(stdout)
+    expected = json.loads((clone / FLOW02_REFERENCE).read_text())["expected"]
+    assert result["envelope"]["engineering_status"] == "PASS"
+    assert result["calculation"]["eligible_ids"] == expected["eligible_ids"]
+    assert result == json.loads((directory / "result.json").read_text())
+    assert (
+        result["envelope"]["result_identity"]["input_hash"]
+        in (directory / "report.html").read_text()
+    )
     for name in (
         "beam_comparator_reference",
         "layered_column_section",
@@ -318,6 +665,212 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         "--output-dir",
         str(output / "four-corner"),
     )
+    for layout in (
+        "eight_bar",
+        "six_bar_omit_x_face_midpoints",
+        "six_bar_omit_y_face_midpoints",
+    ):
+        label = f"tied-rectangular-{layout}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/tied_rectangular_column_member.py",
+            "--layout",
+            layout,
+            "--output-dir",
+            str(directory),
+        )
+        member = json.loads(stdout)
+        assert member == json.loads((directory / "result.json").read_text())
+        assert member["envelope"]["engineering_status"] == "PASS"
+        assert member["calculation"]["layout"] == layout
+        input_hash = member["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
+    col03_cases = json.loads((clone / COL03_REFERENCE).read_text())["cases"]
+    for case, expected in col03_cases.items():
+        label = f"positioned-rectangular-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/positioned_rectangular_column_member.py",
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        member = json.loads(stdout)
+        assert member == json.loads((directory / "result.json").read_text())
+        assert member["envelope"]["engineering_status"] == expected["member_status"]
+        input_hash = member["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
+    col04_cases = json.loads((clone / COL04_REFERENCE).read_text())["cases"]
+    for case in (
+        "minor_slender",
+        "both_slender",
+        "mixed",
+        "supplied_second_order",
+        "overload",
+        "stale_revision",
+        "conflicting_summary",
+    ):
+        label = f"slender-rectangular-{case}"
+        directory = output / label
+        expected = col04_cases[case]["expected"]
+        reject = expected["member_status"] == "REJECT"
+        stdout = run(
+            label,
+            "Python/examples/slender_rectangular_column_member.py",
+            "--reference",
+            str(clone / COL04_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+            expected_code=2 if reject else 0,
+        )
+        member = json.loads(stdout)
+        if reject:
+            assert member["details"]["issues"][0]["code"] == expected["issue"]
+            assert not directory.exists()
+        else:
+            assert member == json.loads((directory / "result.json").read_text())
+            assert member["envelope"]["engineering_status"] == expected["member_status"]
+            input_hash = member["envelope"]["result_identity"]["input_hash"]
+            assert input_hash in (directory / "report.html").read_text()
+            assert input_hash in (directory / "section.svg").read_text()
+    col05_cases = json.loads((clone / COL05_REFERENCE).read_text())["cases"]
+    for case in (
+        "tied",
+        "spiral",
+        "spiral_wide",
+        "spiral_ordinary_wide",
+        "axial_tied",
+        "axial_spiral",
+        "spiral_missing_anchor",
+        "overload",
+    ):
+        label = f"circular-column-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/circular_column_member.py",
+            "--reference",
+            str(clone / COL05_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        member = json.loads(stdout)
+        assert member == json.loads((directory / "result.json").read_text())
+        assert (
+            member["envelope"]["engineering_status"]
+            == col05_cases[case]["expected"]["member_status"]
+        )
+        input_hash = member["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
+        assert input_hash in (directory / "section.svg").read_text()
+    col06_cases = json.loads((clone / COL06_REFERENCE).read_text())["cases"]
+    for case, entry in col06_cases.items():
+        label = f"column-catalogue-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/column_catalogue_selection.py",
+            "--reference",
+            str(clone / COL06_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        assert result == json.loads((directory / "result.json").read_text())
+        expected = entry["expected"]
+        calculation = result["calculation"]
+        assert (
+            result["envelope"]["engineering_status"] == expected["engineering_status"]
+        )
+        assert calculation["terminal_state"] == expected["terminal_state"]
+        assert calculation["selected_id"] == expected["selected_id"]
+        input_hash = result["envelope"]["result_identity"]["input_hash"]
+        report = (directory / "report.html").read_text()
+        drawing = directory / "section.svg"
+        assert input_hash in report
+        if expected["selected_id"] is None:
+            assert not drawing.exists()
+        else:
+            child = calculation["selected"]["checked_member"]
+            child_hash = child["envelope"]["result_identity"]["input_hash"]
+            assert child_hash in report
+            svg = drawing.read_text()
+            assert input_hash in svg and child_hash in svg
+            ElementTree.fromstring(svg)
+    for prefix, reference in (
+        ("column-member-detailing", COL07_REFERENCE),
+        ("column-mixed-detailing", COL07_MIXED_REFERENCE),
+        ("column-slender-detailing", COL07_SLENDER_REFERENCE),
+        ("column-contact-splice", COL07_SPLICE_REFERENCE),
+        ("column-corner-splice", COL07_CORNER_REFERENCE),
+    ):
+        col07_cases = json.loads((clone / reference).read_text())["cases"]
+        for case, entry in col07_cases.items():
+            label = f"{prefix}-{case}"
+            directory = output / label
+            stdout = run(
+                label,
+                "Python/examples/column_member_detailing.py",
+                "--reference",
+                str(clone / reference),
+                *(("--positioned",) if reference == COL07_MIXED_REFERENCE else ()),
+                *(("--slender",) if reference == COL07_SLENDER_REFERENCE else ()),
+                "--case",
+                case,
+                "--output-dir",
+                str(directory),
+            )
+            member = json.loads(stdout)
+            assert member == json.loads((directory / "result.json").read_text())
+            assert (
+                member["envelope"]["engineering_status"] == entry["expected"]["status"]
+            )
+            input_hash = member["envelope"]["result_identity"]["input_hash"]
+            assert input_hash in (directory / "report.html").read_text()
+            drawing = (directory / "member.svg").read_text()
+            assert input_hash in drawing
+            ElementTree.fromstring(drawing)
+            bbs = directory / "bbs.csv"
+            assert bbs.is_file() == entry["expected"].get(
+                "bbs_available", entry["expected"]["status"] == "PASS"
+            )
+            if bbs.is_file():
+                assert input_hash in bbs.read_text()
+    for case, entry in json.loads((clone / COL07_CIRCULAR_REFERENCE).read_text())[
+        "cases"
+    ].items():
+        label = f"circular-column-detailing-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/circular_column_detailing.py",
+            "--reference",
+            str(clone / COL07_CIRCULAR_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        status = entry["expected"]["status"]
+        assert result["envelope"]["engineering_status"] == status
+        assert result == json.loads((directory / "result.json").read_text())
+        input_hash = result["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
+        assert (directory / "member.svg").is_file() == (status == "PASS")
+        assert (directory / "bbs.csv").is_file() == (status == "PASS")
+        if status == "PASS":
+            assert input_hash in (directory / "member.svg").read_text()
+            assert input_hash in (directory / "bbs.csv").read_text()
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):
         run(
             name,

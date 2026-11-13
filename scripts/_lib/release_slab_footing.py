@@ -1,4 +1,4 @@
-"""Replay the two 0.28 worked cases from an installed wheel or sdist."""
+"""Replay the slab and footing worked cases from an installed wheel or sdist."""
 
 from __future__ import annotations
 
@@ -14,6 +14,15 @@ from typing import Any
 EXAMPLES = {
     "slab_one_way_reference.py": ("baseline", "capacity-fail", "review-limit-fail"),
     "isolated_footing_reference.py": ("baseline", "transfer-fail", "assumption-hold"),
+    "slab_coefficient_references.py": (
+        "b02-external",
+        "b02-builtin",
+        "b02-redistribution",
+        "b04-external",
+        "b04-builtin",
+        "b04-topology-conflict",
+        "b04-capacity-fail",
+    ),
 }
 
 
@@ -83,6 +92,74 @@ def verify_slab(cases: dict[str, dict]) -> None:
     review_limit = cases["review-limit-fail"]["result"]["serviceability"]
     assert review_limit["status"] == "limit_exceeded"
     assert review_limit["utilization"] > 1.0
+
+
+def verify_slab_coefficients(cases: dict[str, dict]) -> None:
+    """Check the frozen B02/B04 slab ledger for both coefficient sources."""
+    load_boundary = (
+        "not_generated_single_caller_supplied_factored_udl_or_coefficient_basis"
+    )
+
+    for case in ("b02-external", "b02-builtin"):
+        result = cases[case]["result"]
+        flexure = result["flexure"]
+        for region, moment, steel in (
+            ("positive_midspan", 10.6875, 270.835),
+            ("negative_support", 12.825, 328.665),
+        ):
+            near(flexure[region], "factored_moment_knm_per_m", moment, tolerance=1e-12)
+            near(flexure[region], "ast_required_mm2_per_m", steel, tolerance=0.001)
+        near(flexure, "factored_shear_kn_per_m", 17.1, tolerance=1e-12)
+        near(result["shear"], "tau_v_n_per_mm2", 0.148, tolerance=0.001)
+        built_in = case == "b02-builtin"
+        assert flexure["coefficient_correctness_verified_by_library"] is built_in
+        if built_in:
+            assert flexure["input"]["coefficients"]["table_id"] == "IS456_TABLE_12_13"
+
+    for case in ("b04-external", "b04-builtin"):
+        result = cases[case]["result"]
+        panel = result["panel"]
+        for region, moment in (
+            ("x_negative", 18.6),
+            ("x_positive", 13.888),
+            ("y_negative", 11.656),
+            ("y_positive", 8.68),
+        ):
+            near(panel[region], "factored_moment_knm_per_m", moment, tolerance=0.01)
+        near(panel["shear"], "tau_v_n_per_mm2", 31 / 125, tolerance=1e-12)
+        corner_torsion = panel["corner_torsion"]
+        assert [corner["torsion_class"] for corner in corner_torsion] == [
+            "full",
+            "half",
+            "half",
+            "none",
+        ]
+        near(corner_torsion[0], "zone_extent_from_each_edge_mm", 800, tolerance=1e-12)
+        built_in = case == "b04-builtin"
+        assert panel["coefficient_correctness_verified_by_library"] is built_in
+        if built_in:
+            coefficients = panel["input"]["coefficients"]
+            assert coefficients["case_id"] == "table_26_case_4"
+            assert coefficients["method"] == "built_in_exact"
+            assert coefficients["interpolation_bounds"] == [1.5, 1.5]
+
+    for case in ("b02-external", "b02-builtin", "b04-external", "b04-builtin"):
+        result = cases[case]["result"]
+        assert result["load_envelope_status"] == load_boundary
+        assert not result["complete_engineering_design_approved"]
+        serviceability = result["serviceability"]
+        assert serviceability["direct_deflection_status"].startswith("held_")
+        assert serviceability["crack_width_status"].startswith("held_")
+
+    assert "redistribution_applied" in cases["b02-redistribution"]["rejection"]
+    assert "must match" in cases["b04-topology-conflict"]["rejection"]
+    overloaded = cases["b04-capacity-fail"]["result"]
+    panel = overloaded["panel"]
+    assert panel["status"] == panel["result_envelope"]["engineering_status"] == "FAIL"
+    assert panel["governing_region"] == "x_negative_continuous_edge"
+    assert overloaded["serviceability"] is None
+    assert overloaded["load_envelope_status"] == load_boundary
+    assert not overloaded["complete_engineering_design_approved"]
 
 
 def verify_footing(cases: dict[str, dict]) -> None:
@@ -182,6 +259,11 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     output = Path(config["output"])
     drivers = Path.cwd() / "slab-footing-drivers"
     drivers.mkdir()
+    verifiers = {
+        "slab_one_way_reference.py": verify_slab,
+        "isolated_footing_reference.py": verify_footing,
+        "slab_coefficient_references.py": verify_slab_coefficients,
+    }
     records = {}
     for name, cases in EXAMPLES.items():
         driver = drivers / name
@@ -200,10 +282,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             payload = json.loads(completed.stdout)
             assert payload["case"] == case
             observed[case] = payload
-        verifier = (
-            verify_slab if name == "slab_one_way_reference.py" else verify_footing
-        )
-        verifier(observed)
+        verifiers[name](observed)
         filename = f"{driver.stem}.json"
         evidence = output / filename
         evidence.write_text(json.dumps(observed, indent=2, allow_nan=False) + "\n")

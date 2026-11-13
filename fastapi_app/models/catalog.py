@@ -6,6 +6,8 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from fastapi_app.models.capabilities import IS456ComponentCapabilityModel
+
 
 class CatalogFieldModel(BaseModel):
     field_id: str
@@ -47,12 +49,8 @@ class WorkflowCapabilityModel(BaseModel):
     qualified_review_required: bool
 
 
-class ComponentCapabilityModel(BaseModel):
-    element: str
-    public_workflows: list[str]
-    supported_case: str
-    held_cases: list[str]
-    qualified_review_required: bool
+class ComponentCapabilityModel(IS456ComponentCapabilityModel):
+    """Component capability embedded in the application workflow catalogue."""
 
 
 class ComposedWorkflowCapabilityModel(BaseModel):

@@ -93,18 +93,25 @@ def _calculate_puz(
     """
     if b_mm <= 0 or D_mm <= 0:
         raise ValueError(f"Dimensions must be positive: b_mm={b_mm}, D_mm={D_mm}")
+    return calculate_puz_for_area(b_mm * D_mm, fck, fy, Asc_mm2)
+
+
+def calculate_puz_for_area(
+    Ag_mm2: float, fck: float, fy: float, Asc_mm2: float
+) -> float:
+    """Return the Cl. 39.6 axial limit from gross area and actual steel."""
+    if Ag_mm2 <= 0:
+        raise ValueError(f"Gross area must be positive: {Ag_mm2}")
     if fck <= 0 or fy <= 0:
         raise ValueError(f"Material strengths must be positive: fck={fck}, fy={fy}")
     if Asc_mm2 < 0:
         raise ValueError(f"Steel area must be non-negative: Asc_mm2={Asc_mm2}")
-    Ag_mm2 = b_mm * D_mm
     if Asc_mm2 >= Ag_mm2:
         raise ValueError(
             f"Steel area ({Asc_mm2:.1f} mm²) must be less than gross area ({Ag_mm2:.1f} mm²)"
         )
 
     # IS 456 Cl 39.6a: Ac = b * D - Asc (net concrete area)
-    Ag_mm2 = b_mm * D_mm
     Ac_mm2 = Ag_mm2 - Asc_mm2
 
     # IS 456 Cl 39.6a: Puz = 0.45 * fck * Ac + 0.75 * fy * Asc

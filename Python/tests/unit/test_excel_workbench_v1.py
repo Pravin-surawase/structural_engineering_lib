@@ -424,14 +424,37 @@ def test_duplicate_row_ids_block_every_duplicate() -> None:
     )
 
 
-def test_populated_held_scope_column_is_visible_and_blocked() -> None:
-    headers = HEADERS + ("Torsion",)
+@pytest.mark.parametrize(
+    "header", ["Torsion", "Torsion (kNm)", "Tu (kN·m)", "  TU ( kN - m )  "]
+)
+def test_populated_held_scope_column_is_visible_and_blocked(header: str) -> None:
+    headers = HEADERS + (header,)
     result = run_excel_workbook_v1(_run_request((_derived_row() + (5.0,),), headers))
 
     assert result.counts.blocked_rows == 1
-    assert result.mapping.excluded_headers == ("Torsion",)
-    assert result.row_ledger[0].issues[0].code == "E_EXCEL_UNSUPPORTED_E1_SCOPE"
-    assert result.row_ledger[0].result_envelope["overall_status"] == "HOLD"
+    assert result.mapping.excluded_headers == (header.strip(),)
+    (row,) = result.row_ledger
+    assert row.issues[0].code == "E_EXCEL_UNSUPPORTED_E1_SCOPE"
+    assert header.strip() in row.issues[0].message
+    assert row.result_envelope["overall_status"] == "HOLD"
+    assert row.passport is None
+
+
+@pytest.mark.parametrize(
+    ("header", "value"),
+    [("Torsion (kNm)", None), ("Notes", "Check torsion separately")],
+)
+def test_blank_held_column_and_notes_preserve_calculation(
+    header: str, value: object
+) -> None:
+    original = run_excel_workbook_v1(_run_request((_derived_row(),)))
+    extra = run_excel_workbook_v1(
+        _run_request((_derived_row() + (value,),), HEADERS + (header,))
+    )
+    (base,) = original.row_ledger
+    (row,) = extra.row_ledger
+    assert row.passport is not None and base.passport is not None
+    assert row.passport.calculation_identity == base.passport.calculation_identity
 
 
 def test_freshness_changes_immediately_after_input_edit() -> None:

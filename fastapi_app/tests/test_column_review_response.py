@@ -245,6 +245,8 @@ def test_long_column_http_preserves_independent_safety_reversals(
     )
     assert response.status_code == 200
     data = unwrap(response)
+    assert data["classification_x"] == "SLENDER"
+    assert data["classification_y"] == "SHORT"
     assert data["Pb_kN"] == 708.61
     assert data["k"] == 0.8201
     assert data["Mux_design_kNm"] == expected_design
@@ -302,3 +304,77 @@ def test_http_long_and_additional_moment_use_independent_plane_factors(expected)
         expected["interaction_ratio"], abs=0.00005
     )
     assert data["is_safe"] == expected["is_safe"]
+
+
+def test_long_column_http_rejects_reversed_end_moment_pair():
+    response = client.post(
+        "/api/v1/design/column/long-column",
+        json={
+            **BASE_REQUEST,
+            "M1x_kNm": 125,
+            "M2x_kNm": 20,
+            "M1y_kNm": 0,
+            "M2y_kNm": 0,
+            "lex_mm": 5200,
+            "ley_mm": 5200,
+            "l_unsupported_mm": 5200,
+        },
+    )
+    assert response.status_code == 422
+    assert "COLUMN_END_MOMENT_ORDER" in response.text
+    assert "M2x_kNm" in response.text
+
+
+def test_pure_bending_and_axial_overload_preserve_json_status():
+    section = {
+        "b_mm": 300,
+        "D_mm": 400,
+        "fck": 25,
+        "fy": 415,
+        "Asc_mm2": 1600,
+        "d_prime_mm": 50,
+    }
+    for route, actions, field, reason, outcome_key, safe in (
+        (
+            "uniaxial",
+            {"Pu_kN": 0, "Mu_kNm": 30, "le_mm": 2400},
+            "eccentricity_mm",
+            "PURE_BENDING_ECCENTRICITY_UNDEFINED",
+            "ok",
+            True,
+        ),
+        (
+            "biaxial-check",
+            {"Pu_kN": 2500, "Mux_kNm": 30, "Muy_kNm": 15, "le_mm": 2400},
+            "interaction_ratio",
+            "UTILIZATION_NOT_EVALUATED",
+            "is_safe",
+            False,
+        ),
+        (
+            "long-column",
+            {
+                "Pu_kN": 2500,
+                "M1x_kNm": 20,
+                "M2x_kNm": 30,
+                "M1y_kNm": 10,
+                "M2y_kNm": 15,
+                "lex_mm": 5200,
+                "ley_mm": 5200,
+                "l_unsupported_mm": 5200,
+                "braced": True,
+            },
+            "interaction_ratio",
+            "UTILIZATION_NOT_EVALUATED",
+            "is_safe",
+            False,
+        ),
+    ):
+        response = client.post(
+            f"{UNIFIED_ENDPOINT}/{route}", json={**section, **actions}
+        )
+        assert response.status_code == 200
+        payload = unwrap(response)
+        assert payload[outcome_key] is safe
+        assert payload[field] is None
+        assert payload["unavailable_values"][field]["code"] == reason

@@ -1,6 +1,6 @@
 # Python Examples
 
-Runnable examples for `structural-lib-is456` 0.28.2. Get the example files from
+Runnable examples for `structural-lib-is456` 0.29.0. Get the example files from
 the source checkout that contains them and install the package in a virtual
 environment.
 
@@ -43,7 +43,7 @@ To replay the scripts against a retained candidate wheel, install that wheel
 in a clean virtual environment.
 
 ```bash
-python3 -m pip install /path/to/structural_lib_is456-0.28.0-py3-none-any.whl
+python3 -m pip install /path/to/structural_lib_is456-0.29.0-py3-none-any.whl
 python3 -m structural_lib install-preflight
 python3 -I Python/examples/slab_one_way_reference.py --case baseline
 python3 -I Python/examples/isolated_footing_reference.py --case baseline

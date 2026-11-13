@@ -12,7 +12,7 @@ from structural_lib.core.building_gravity import (
     GravityLoadCaseV1,
     GravityMemberKindV1,
     GravityMemberV1,
-    GravityNodeV1,
+    _member_length_mm,
 )
 from structural_lib.core.data_types import FootingType, LoadDefinition, LoadType
 from structural_lib.core.gravity_workflow import (
@@ -193,25 +193,6 @@ def _error_component(
     )
 
 
-def _member_length_mm(
-    member: GravityMemberV1, nodes: dict[str, GravityNodeV1]
-) -> float:
-    start = nodes[member.start_node_id]
-    end = nodes[member.end_node_id]
-    return math.dist(
-        (
-            start.x_mm,
-            start.y_mm,
-            start.z_mm,
-        ),
-        (
-            end.x_mm,
-            end.y_mm,
-            end.z_mm,
-        ),
-    )
-
-
 def _required_dimension(value: float | None, name: str) -> float:
     if value is None:
         raise ValueError(f"validated component section is missing {name}")
@@ -352,6 +333,14 @@ def build_gravity_member_actions_v1(
 ) -> tuple[GravityMemberActionV1, ...]:
     """Derive service/factored component actions from the reconciled B1 ledger."""
 
+    if (
+        ledger.model_hash != request.model_hash
+        or ledger.load_model_hash != request.load_model_hash
+    ):
+        raise ValueError(
+            "gravity ledger model or load-model identity does not match request"
+        )
+
     nodes = {item.id: item for item in request.building.nodes}
     panel = request.building.panels[0]
     x_values = [nodes[node_id].x_mm for node_id in panel.corner_node_ids]
@@ -430,6 +419,8 @@ def build_gravity_member_actions_v1(
                     position_mm=item.point_position_mm or 0.0,
                 )
                 for item in point_entries
+                # At a support the load enters its reaction directly.
+                if item.point_position_mm not in (0.0, span_mm)
             )
             diagram = compute_bmd_sfd(
                 span_mm=span_mm,
@@ -575,7 +566,7 @@ def build_component_applicability_matrix_v1(
     entries: list[GravityComponentApplicabilityV1] = []
     slab_basis_ids = _basis_ids(request.slab_design_bases, "panel_id")
     beam_basis_ids = _basis_ids(request.beam_design_bases, "beam_id")
-    column_basis_ids = _basis_ids(request.column_design_bases, "column_id")
+    column_bases = {item.column_id: item for item in request.column_design_bases}
     footing_basis_ids = _basis_ids(request.footing_design_bases, "footing_id")
     nodes = {item.id: item for item in request.building.nodes}
 
@@ -610,19 +601,25 @@ def build_component_applicability_matrix_v1(
         supplied: tuple[str, ...]
         if member.kind is GravityMemberKindV1.BEAM:
             kind = GravityComponentKindV1.BEAM
-            basis_ids = beam_basis_ids
+            holds = (
+                ()
+                if member.id in beam_basis_ids
+                else ("BEAM_DESIGN_BASIS_NOT_SUPPLIED",)
+            )
             function = "design_beam_is456"
             supported = "simply_supported_rectangular_beam_factored_explicit_actions"
             generated, supplied = _BEAM_GENERATED, _BEAM_SUPPLIED
-            reason = "BEAM_DESIGN_BASIS_NOT_SUPPLIED"
         else:
             kind = GravityComponentKindV1.COLUMN
-            basis_ids = column_basis_ids
+            column_basis = column_bases.get(member.id)
+            holds = ()
+            if column_basis is None:
+                holds = ("COLUMN_DESIGN_BASIS_NOT_SUPPLIED",)
+            elif column_basis.end_condition in {"FIXED_FIXED_SWAY", "FIXED_FREE"}:
+                holds = ("COLUMN_RESTRAINT_OUTSIDE_BRACED_SCOPE",)
             function = "design_column_is456"
             supported = "braced_rectangular_column_axial_only"
             generated, supplied = _COLUMN_GENERATED, _COLUMN_SUPPLIED
-            reason = "COLUMN_DESIGN_BASIS_NOT_SUPPLIED"
-        holds = () if member.id in basis_ids else (reason,)
         entries.append(
             GravityComponentApplicabilityV1(
                 component_id=member.id,
@@ -981,7 +978,12 @@ def run_gravity_workflow_v1(
                     function=applicable.canonical_function,
                     action_ids=(component_action.action_id,),
                     code=applicable.hold_reasons[0],
-                    message=f"{kind.value.title()} design basis was not supplied.",
+                    message=(
+                        "The supplied column end condition is outside the braced axial-only workflow."
+                        if applicable.hold_reasons[0]
+                        == "COLUMN_RESTRAINT_OUTSIDE_BRACED_SCOPE"
+                        else f"{kind.value.title()} design basis was not supplied."
+                    ),
                 )
             )
             continue
@@ -1289,6 +1291,7 @@ def run_gravity_workflow_v1(
         model_hash=request.model_hash,
         load_model_hash=request.load_model_hash,
         ledger_hash=ledger.ledger_hash,
+        design_basis_hash=request.design_basis_hash,
         applicability=applicability,
         practical_action_reconciliation=_practical_action_reconciliation(
             request, ledger

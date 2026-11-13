@@ -131,6 +131,7 @@ def run_workflow(
     torsion_eccentricity_mm: float = 50,
     bar_start_mm: float = -450,
     link_pitch_mm: float = 100,
+    declared_transfer: bool = True,
     hook_tail_node_mm: float = 129,
     omit_checks: tuple[str, ...] = (),
     reverse_right_couple: bool = False,
@@ -631,6 +632,18 @@ def run_workflow(
         supports=tuple(supports),
     )
     results["support_transfer"] = b.check_torsion_support_transfer(transfer_request)
+    results["edge_torsion"] = b.check_edge_beam_torsion(
+        b.EdgeBeamTorsionRequest(
+            transfer_request,
+            hook_request,
+            tuple(row["source_row_id"] for row in rows),
+            (
+                SOURCE
+                if declared_transfer and "support_transfer" not in omit_checks
+                else None
+            ),
+        )
+    )
     if include_serviceability:
         # Explicit demonstration components, not an inferred service factor:
         # G=3 self-weight+2 superimposed concentric; Q=3 transient at400/3.
@@ -932,7 +945,13 @@ def write_artifacts(workflow: Workflow, directory: Path) -> None:
     """Write the checked physical paths and unchanged draft package identities."""
     directory.mkdir(parents=True, exist_ok=True)
     package = workflow.results["package"].outputs["calculation_package"]
+    edge = workflow.results["edge_torsion"]
     payload = {
+        "edge_torsion_status": (
+            "HOLD"
+            if edge.engineering is b.EngineeringState.NOT_EVALUATED
+            else edge.engineering.upper()
+        ),
         "d2_status": workflow.d2_status,
         "d3_status": workflow.d3_status,
         "results": {
@@ -1010,7 +1029,8 @@ Maximum primary steel stress: {max(row['primary_tension_stress_nmm2'] for row in
 Cracked torsional stiffness uses the separately identified Bruun/Lampert research model. Sustained torsion and unknown/asymmetric support boundaries require further evidence.</p>"""
     document = f"""<!doctype html><html lang="en"><meta charset="utf-8"><title>D2 physical torsion beam</title>
 <style>body{{font:16px system-ui;max-width:1100px;margin:32px auto}}td,th{{padding:6px;border-bottom:1px solid #ddd}}pre{{white-space:pre-wrap;overflow-wrap:anywhere}}</style>
-<h1>D2 {workflow.d2_status} — {html.escape(package['issue_state'].upper())}</h1><p>D3 serviceability: {workflow.d3_status}. Full-member qualification: {member_status}; engineering approval remains separate.</p>
+<h1>D2 {workflow.d2_status} — {html.escape(package['issue_state'].upper())}</h1>
+<p>Equilibrium torsion {payload['edge_torsion_status']}. Checked result <code>{edge.result_id}</code>.</p><p>D3 serviceability: {workflow.d3_status}. Full-member qualification: {member_status}; engineering approval remains separate.</p>
 <p>300 × 400 mm; 5000 mm support centres, 4000 mm clear; four Ø20 continuous bars and Ø8/100 closed links.
 Two-sided full-stress tension anchorage is checked at both support faces. Actual actions and transfer checks appear below.</p>
 <table><thead><tr><th>Required check</th><th>Qualification</th></tr></thead><tbody>{checks}</tbody></table>
@@ -1033,8 +1053,19 @@ def main() -> None:
         action="store_true",
         help="Run the frozen D3 transient-torsion service basis",
     )
+    parser.add_argument("--eccentricity-mm", type=float, default=50)
+    parser.add_argument("--link-pitch-mm", type=float, default=100)
+    parser.add_argument("--load-n-per-mm", type=float, default=12)
+    parser.add_argument("--omit-transfer", action="store_true")
     args = parser.parse_args()
-    workflow = run_workflow(include_serviceability=args.with_serviceability)
+    workflow = run_workflow(
+        include_serviceability=args.with_serviceability,
+        torsion_eccentricity_mm=args.eccentricity_mm,
+        link_pitch_mm=args.link_pitch_mm,
+        load_n_per_mm=args.load_n_per_mm,
+        declared_transfer=not args.omit_transfer,
+        omit_checks=("support_transfer",) if args.omit_transfer else (),
+    )
     if args.output_dir:
         write_artifacts(workflow, args.output_dir)
     print(
