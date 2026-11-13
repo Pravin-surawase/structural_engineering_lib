@@ -10,7 +10,7 @@ tags: [column, interaction, section, is456]
 # Trace a signed column interaction slice
 
 Use `column.load_interaction_slice` and `column.check_interaction_slice` to
-trace signed `Mx` and `My` capacities at one supplied axial compression.
+trace signed `Mx` and `My` capacities at one supplied axial force. Compression is positive.
 The API accepts solid rectangular and circular sections with explicit bar
 centres and diameters. It returns each requested direction, the neutral-plane
 angle and depth, the signed moments, and axial and transverse residuals.
@@ -52,3 +52,10 @@ ray stays visible without a substituted capacity. The report and JSON
 identify the same input. For active transformed properties under a supplied
 rectangular or circular service action row, use the [column service section](column-service-section.md).
 Member stability, restraint, and fabrication require their own checks.
+
+The same section API accepts zero axial force and a negative value for
+tension. Replay `rectangle_zero_axial`, `circle_zero_axial`,
+`rectangle_tension` and `circle_tension` to compare all eight signed
+directions. The tension cases use −100 kN. A force beyond the pure-steel
+tension limit returns HOLD with the gross and transformed properties
+available. [Independent replay](../../verification/check_library_029_sec02_reference.py)

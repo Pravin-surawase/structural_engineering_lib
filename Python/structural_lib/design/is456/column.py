@@ -1554,7 +1554,7 @@ def check(request: ColumnDesignInputV1) -> CanonicalFamilyResultV1[ColumnDesignR
 def load_interaction_slice(
     value: Mapping[str, object] | str | bytes | ColumnInteractionInputV1,
 ) -> ColumnInteractionInputV1:
-    """Parse actual bars, a compression level and a diagram resolution.
+    """Parse actual bars, a signed axial force and a diagram resolution.
 
     Parameters
     ----------
@@ -1564,7 +1564,7 @@ def load_interaction_slice(
     Returns
     -------
     ColumnInteractionInputV1
-        The validated request for the fixed-compression section slice.
+        The validated request for the fixed-axial-force section slice.
 
     Raises
     ------
@@ -1578,7 +1578,7 @@ def load_interaction_slice(
 
     Limitations
     -----------
-    Nonnegative axial compression on a solid rectangle or circle.
+    One signed axial force on a solid rectangle or circle. Compression is positive.
 
     Provenance
     ----------

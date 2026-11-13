@@ -174,12 +174,12 @@ class _PositionedColumnSection(StrictPublicModel):
 
 
 class ColumnInteractionInputV1(_PositionedColumnSection):
-    """A signed fixed-compression section slice with explicit physical bars."""
+    """A fixed signed axial-force section slice with explicit physical bars."""
 
     schema_version: Literal["column-interaction-input/v1"] = (
         "column-interaction-input/v1"
     )
-    pu_kn: float = Field(ge=0, le=1e9)
+    pu_kn: float = Field(ge=-1e9, le=1e9)
     modular_ratio: float = Field(ge=1, le=30)
     point_count: int = Field(ge=8, le=64, multiple_of=4)
 

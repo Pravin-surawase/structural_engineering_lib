@@ -40,7 +40,7 @@ def check_interaction_slice(
     Parameters
     ----------
     request : ColumnInteractionInputV1
-        Actual bars, section, compression and direction count.
+        Actual bars, section, compression-positive axial force and direction count.
 
     Returns
     -------
@@ -59,7 +59,7 @@ def check_interaction_slice(
 
     Limitations
     -----------
-    One axial compression level. Member and detailing checks are separate.
+    One signed axial force level. Member and detailing checks are separate.
 
     Provenance
     ----------
@@ -70,15 +70,20 @@ def check_interaction_slice(
     fck, fy = materials.fck_nmm2, materials.fy_nmm2
     bars = tuple(PositionedColumnBar(**item.model_dump()) for item in request.bars)
     steel_area = sum(bar.area_mm2 for bar in bars)
+    tension_limit_kn = steel_area * fy / 1.15 / 1000
     if isinstance(geometry, RectangularInteractionGeometryV1):
         gross = rectangular_properties(geometry.b_mm, geometry.D_mm)
-        capacity = prepare_positioned_capacity(
-            b_mm=geometry.b_mm,
-            D_mm=geometry.D_mm,
-            pu_kn=request.pu_kn,
-            fck_nmm2=fck,
-            fy_nmm2=fy,
-            bars=bars,
+        capacity = (
+            prepare_positioned_capacity(
+                b_mm=geometry.b_mm,
+                D_mm=geometry.D_mm,
+                pu_kn=request.pu_kn,
+                fck_nmm2=fck,
+                fy_nmm2=fy,
+                bars=bars,
+            )
+            if request.pu_kn > -tension_limit_kn
+            else None
         )
     else:
         diameter = geometry.diameter_mm
@@ -86,8 +91,12 @@ def check_interaction_slice(
         puz = (
             0.45 * fck * (gross.area_mm2 - steel_area) + 0.75 * fy * steel_area
         ) / 1000
-        capacity = prepare_section_capacity(
-            CircularSection(diameter, fck, fy, bars), request.pu_kn, steel_area, puz
+        capacity = (
+            prepare_section_capacity(
+                CircularSection(diameter, fck, fy, bars), request.pu_kn, steel_area, puz
+            )
+            if request.pu_kn > -tension_limit_kn
+            else None
         )
     points = []
     issues = []
@@ -96,7 +105,7 @@ def check_interaction_slice(
             StructuralIssueV1(
                 "COLUMN.INTERACTION_DOMAIN_HELD",
                 "pu_kn",
-                "The supplied axial force does not have a resolved fixed-compression slice.",
+                "The supplied axial force does not have a resolved section slice within the compression and tension bounds.",
             )
         )
     else:
@@ -124,6 +133,7 @@ def check_interaction_slice(
             "pu_kn": request.pu_kn,
             "steel_area_mm2": steel_area,
             "puz_kn": capacity.puz_kn if capacity else None,
+            "pure_tension_limit_kn": -tension_limit_kn,
             "gross": asdict(gross),
             "transformed": asdict(
                 transformed_properties(gross, bars, request.modular_ratio)
@@ -214,7 +224,7 @@ def render_interaction_slice_html(
     return f"""<!doctype html>
 <html lang="en"><meta charset="utf-8"><title>Column interaction {label}</title>
 <h1>Column interaction {label}</h1>
-<p>Section slice {result.engineering_status.value} · Compression {data['pu_kn']:.3f} kN · Qualified review required</p>
+<p>Section slice {result.engineering_status.value} · Axial force {data['pu_kn']:+.3f} kN (compression positive) · Qualified review required</p>
 <p>Input identity <code>{identity.input_hash if identity else ""}</code></p>
 {''.join(properties)}
 <h2>Signed interaction points</h2>

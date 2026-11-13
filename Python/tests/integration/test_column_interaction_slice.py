@@ -1,4 +1,4 @@
-"""Compare signed fixed-compression rays and section properties."""
+"""Compare signed fixed-axial rays and section properties."""
 
 import json
 from pathlib import Path
@@ -16,7 +16,9 @@ REFERENCE = json.loads(
 CASES = REFERENCE["cases"]
 
 
-@pytest.mark.parametrize("case", ("rectangle", "circle"))
+@pytest.mark.parametrize(
+    "case", [case for case, data in CASES.items() if "rays" in data]
+)
 def test_interaction_rays_and_properties(case):
     fixture = CASES[case]
     request = column.load_interaction_slice(json.dumps(fixture["request"]))
@@ -54,11 +56,14 @@ def test_interaction_rays_and_properties(case):
     json.dumps(result.to_dict(), allow_nan=False)
 
 
-def test_unresolved_compression_withholds_interaction_diagram():
+@pytest.mark.parametrize("case", ("above_compression_domain", "beyond_tension_domain"))
+def test_unresolved_axial_force_withholds_interaction_diagram(case):
     result = column.check_interaction_slice(
-        column.load_interaction_slice(CASES["above_compression_domain"]["request"])
+        column.load_interaction_slice(CASES[case]["request"])
     )
     assert result.engineering_status.value == "HOLD"
     assert result.calculation["rays"] == []
-    assert result.calculation["gross"]["area_mm2"] == 120000
+    assert result.calculation["gross"]["area_mm2"] > 0
+    if case == "beyond_tension_domain":
+        assert result.request.pu_kn < result.calculation["pure_tension_limit_kn"]
     assert result.issues[0].code == "COLUMN.INTERACTION_DOMAIN_HELD"

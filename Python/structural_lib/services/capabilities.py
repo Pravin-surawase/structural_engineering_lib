@@ -267,7 +267,7 @@ _CAPABILITIES = (
                 "load_interaction_slice",
                 "check_interaction_slice",
                 "column-interaction-input/v1",
-                "Fixed-compression signed moment capacity points for actual rectangular and circular bars, with gross and elastic transformed properties.",
+                "Fixed-axial-force signed moment capacity points for actual rectangular and circular bars, with gross and elastic transformed properties.",
                 "docs/cookbook/python/column-interaction-slice.md",
                 "Python/examples/column_interaction_slice.py",
             ),
