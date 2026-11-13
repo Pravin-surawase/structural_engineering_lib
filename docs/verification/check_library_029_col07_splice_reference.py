@@ -68,6 +68,17 @@ def cases():
     inputs["compression_basis"]["actions"][1]["mx_knm"] = 45
     inputs["short_contact_lap"]["laps"][0]["end_mm"] = 1850
     inputs["stale_revision"]["basis"]["current_analysis_revision"] = "A2"
+    six = deepcopy(base)
+    six["identity"]["case_id"] = "six_bar_side_splice"
+    six["reinforcement"]["layout"] = "six_bar_omit_y_face_midpoints"
+    six["reinforcement"]["cross_ties"] = [
+        tie for tie in six["reinforcement"]["cross_ties"] if tie["tie_id"] == "XT"
+    ]
+    inputs["six_bar_side_splice"] = six
+    short_six = deepcopy(six)
+    short_six["identity"]["case_id"] = "six_bar_short_lap"
+    short_six["laps"][0]["end_mm"] = 1850
+    inputs["six_bar_short_lap"] = short_six
     return inputs
 
 
@@ -125,10 +136,12 @@ def expected(name, request):
         "compression_basis": ("HOLD", "COLUMN.LAP_COMPRESSION_BASIS"),
         "short_contact_lap": ("FAIL", "COLUMN.LAP_LENGTH"),
         "stale_revision": ("HOLD", "COLUMN.STALE_ANALYSIS"),
+        "six_bar_side_splice": ("PASS", None),
+        "six_bar_short_lap": ("FAIL", "COLUMN.LAP_LENGTH"),
     }
     status, issue = dispositions[name]
     result = {"status": status, "issue": issue, "bbs_available": status == "PASS"}
-    if name != "contact_splice":
+    if status != "PASS":
         return result
 
     b, d, setback, dia, dt, inside = 300, 400, 60, 20, 8, 12
@@ -145,6 +158,10 @@ def expected(name, request):
         "M_LEFT": (60, 200),
         "M_RIGHT": (240, 200),
     }
+    six = request["reinforcement"]["layout"] == "six_bar_omit_y_face_midpoints"
+    if six:
+        for mark in ("M_TOP", "M_BOTTOM"):
+            bars.pop(mark)
     spliced = ("M_LEFT", "M_RIGHT")
     mates = {mark: (bars[mark][0], bars[mark][1] + dia) for mark in spliced}
     active = {**bars, **{mark + "-U": p for mark, p in mates.items()}}
@@ -153,7 +170,7 @@ def expected(name, request):
         for (left, p), (right, q) in combinations(active.items(), 2)
         if right != left + "-U"
     )
-    assert unrelated_gap == 70
+    assert unrelated_gap == (100 if six else 70)
     # All hooks are quadrant arcs with 8d straight tails. For the overlap
     # link the exposed bends route around the outside of the two tangent circles.
     # The close surfaces are the two hook seats and the two tangent side legs.
@@ -188,9 +205,10 @@ def expected(name, request):
         **{mark + "-U": [1, 3850 - start, dia] for mark in spliced},
         "H": [len(hoops), 1220, dt],
         "XT": [len(hoops) - len(lap_stations), 180 + 2 * math.pi * r + 16 * dt, dt],
-        "YT": [len(hoops), 280 + 2 * math.pi * r + 16 * dt, dt],
         "LX": [len(lap_stations), 180 + 2 * math.pi * r + 16 * dt + 2 * dia, dt],
     }
+    if not six:
+        cuts["YT"] = [len(hoops), 280 + 2 * math.pi * r + 16 * dt, dt]
     result.update(
         contact_lap_required_mm=required,
         overlap_mm=end - start,
@@ -200,7 +218,7 @@ def expected(name, request):
         minimum_link_clear_mm=r - radius - dt / 2,
         lower_bar_centres_mm=bars,
         upper_bar_centres_mm={**bars, **mates},
-        steel_ratio=10 * math.pi * dia**2 / 4 / (b * d),
+        steel_ratio=len(active) * math.pi * dia**2 / 4 / (b * d),
         cuts=cuts,
         bbs_quantity=sum(quantity for quantity, _, _ in cuts.values()),
         bbs_total_mm=sum(quantity * cut for quantity, cut, _ in cuts.values()),
