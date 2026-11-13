@@ -29,12 +29,17 @@ from structural_lib.beam.detailing import (
     AnchoragePath,
     BarSurface,
     DevelopmentLengthRequest,
+    LapCurtailmentCheckRequest,
     LinkCage,
     LongitudinalBarPath,
     ReinforcementArrangementCheckRequest,
     ReinforcementRole,
+    SpliceDetail,
+    SpliceKind,
+    StationSteelDemand,
     StressState,
     check_anchorage,
+    check_laps_and_curtailment,
     check_reinforcement_arrangement,
 )
 from structural_lib.beam.physical_torsion import (
@@ -54,7 +59,11 @@ from structural_lib.construction import (
     CuttingStockPolicy,
     LinkPlacementZone,
     ShapeConvention,
+    SpliceRecord,
     create_bbs,
+)
+from structural_lib.construction import (
+    SpliceKind as ScheduleSpliceKind,
 )
 from structural_lib.core.errors import InputContractError, InputIssueV1
 from structural_lib.core.result_contract import (
@@ -118,6 +127,18 @@ class BeamBarEditV1(StrictPublicModel):
     x_from_left_mm: float | None = Field(default=None, gt=0)
 
 
+class BeamSeparatedBottomLapV1(StrictPublicModel):
+    """One equal-diameter separated bottom bar splice within the first span."""
+
+    bar_id: Identifier
+    partner_bar_id: Identifier
+    partner_x_from_left_mm: float = Field(gt=0)
+    start_station_id: Identifier
+    middle_station_id: Identifier
+    end_station_id: Identifier
+    placement_reference: Reference
+
+
 class BeamContinuousDetailingInputV1(StrictPublicModel):
     """Two-span action and reinforcement check with a current ordinary link detail."""
 
@@ -129,6 +150,7 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
     link_detail: BeamOrdinaryLinkDetailV1 | None = None
     stock_length_mm: float = Field(gt=0, le=18000)
     cutoff: BeamBottomCutoffV1 | None = None
+    lap: BeamSeparatedBottomLapV1 | None = None
 
     @model_validator(mode="after")
     def validate_identity(self) -> Self:
@@ -141,6 +163,7 @@ def _physical_paths(
     request: BeamContinuousDetailingInputV1,
     source_hash: str,
     cutoff_end_mm: float | None,
+    lap_bounds: tuple[float, float] | None,
 ) -> tuple[BarPathRequest, ClosedLinkDetailRequest] | None:
     member, detail = request.member, request.link_detail
     extent = member.straight_bars
@@ -196,6 +219,23 @@ def _physical_paths(
         )
         for bar in member.bars
     )
+    if request.lap is not None and lap_bounds is not None:
+        lap = request.lap
+        start, end = lap_bounds
+        original = next(bar for bar in bars if bar.bar_id == lap.bar_id)
+        bars = (
+            *(bar for bar in bars if bar.bar_id != lap.bar_id),
+            replace(
+                original, bar_mark=f"{original.bar_mark}-lap-I", end_station_mm=end
+            ),
+            replace(
+                original,
+                bar_id=lap.partner_bar_id,
+                bar_mark=f"{original.bar_mark}-lap-J",
+                start_station_mm=start,
+                x_from_left_mm=lap.partner_x_from_left_mm,
+            ),
+        )
     seeds = [
         BarPathSeed(
             bar.bar_id,
@@ -217,6 +257,12 @@ def _physical_paths(
                         bar.end_station_mm, bar.x_from_left_mm, bar.y_from_top_mm
                     ),
                 ),
+            ),
+            splice_ids=(
+                ("bottom-lap",)
+                if request.lap
+                and bar.bar_id in (request.lap.bar_id, request.lap.partner_bar_id)
+                else ()
             ),
         )
         for bar in bars
@@ -311,6 +357,7 @@ def _schedule(
     request: BeamContinuousDetailingInputV1,
     paths: OperationResult,
     detail: ClosedLinkDetailRequest,
+    splice: SpliceRecord | None,
 ) -> OperationResult:
     data = paths.output_as("reinforcement_schedule", BarPathOutput)
     binding = result_binding(paths, "reinforcement_schedule")
@@ -330,6 +377,7 @@ def _schedule(
                 "declared-stock", "v1", (request.stock_length_mm,), 3, 500
             ),
             7850,
+            splice_records=(splice,) if splice else (),
             link_zones=(
                 LinkPlacementZone(
                     "both-spans",
@@ -552,6 +600,241 @@ def _check_bottom_cutoff(
     )
 
 
+def _check_bottom_lap(
+    request: BeamContinuousDetailingInputV1,
+    checked: BeamContinuousCheckResultV1,
+) -> tuple[
+    tuple[float, float] | None,
+    dict[str, Any],
+    list[StructuralIssueV1],
+    EngineeringStatus,
+]:
+    member, lap = request.member, request.lap
+    assert lap is not None
+    stations = {item.station_id: item for item in member.stations}
+    start = stations.get(lap.start_station_id)
+    middle = stations.get(lap.middle_station_id)
+    end = stations.get(lap.end_station_id)
+    left, support, _ = member.supports
+    extent = member.straight_bars
+    bar = next((item for item in member.bars if item.bar_id == lap.bar_id), None)
+    if not (
+        extent
+        and bar
+        and bar.face == "bottom"
+        and bar.diameter_mm <= 32
+        and lap.partner_bar_id not in {item.bar_id for item in member.bars}
+        and start
+        and middle
+        and end
+        and start.side == middle.side == end.side == "CONTINUOUS"
+        and left.right_face_mm
+        < start.x_mm
+        < middle.x_mm
+        < end.x_mm
+        < support.left_face_mm
+        and lap.partner_x_from_left_mm < member.width_mm
+    ):
+        issue = StructuralIssueV1(
+            "BEAM.LAP_BASIS_HELD",
+            "lap",
+            "Identify a bottom bar up to Ø32, a distinct partner and three ordered stations in the first clear span.",
+        )
+        return None, {}, [issue], EngineeringStatus.HOLD
+
+    combos = {
+        combo.combination_id for combo in member.combinations if combo.kind == "ULS"
+    }
+    lap_ids = {start.station_id, middle.station_id, end.station_id}
+    inventory = {
+        (row.action.combination_id, row.station.station_id) for row in checked.rows
+    }
+    missing = sorted({(cid, sid) for cid in combos for sid in lap_ids} - inventory)
+    if missing:
+        issue = StructuralIssueV1(
+            "BEAM.LAP_ACTIONS_HELD",
+            "lap",
+            "Supply every declared ULS combination at the start, interior and end of the overlap.",
+        )
+        return None, {"missing_lap_rows": missing}, [issue], EngineeringStatus.HOLD
+
+    positions = tuple(
+        BarPosition(
+            item.bar_id,
+            item.diameter_mm,
+            item.x_from_left_mm,
+            item.y_from_top_mm,
+            Face(item.face),
+            1,
+        )
+        for item in member.bars
+    )
+    partner_positions = tuple(
+        (
+            replace(
+                item,
+                bar_id=lap.partner_bar_id,
+                x_from_left_mm=lap.partner_x_from_left_mm,
+            )
+            if item.bar_id == lap.bar_id
+            else item
+        )
+        for item in positions
+    )
+    geometry, flexure, shear = _sections(member, partner_positions)
+    if geometry.engineering is not EngineeringState.PASS:
+        issue = StructuralIssueV1(
+            "BEAM.LAP_PARTNER_GEOMETRY",
+            "lap",
+            "The downstream bar layout fails geometry, spacing or cover.",
+        )
+        status = (
+            EngineeringStatus.FAIL
+            if geometry.engineering is EngineeringState.FAIL
+            else EngineeringStatus.HOLD
+        )
+        return None, {"partner_geometry": geometry.to_dict()}, [issue], status
+    faces = _support_faces(member)
+    partner_rows = tuple(
+        _check_row(
+            member,
+            partner_positions,
+            row.action,
+            row.station,
+            row.kind,
+            row.diagnostic_only,
+            faces.get(row.station.x_mm),
+            flexure,
+            shear,
+        )
+        for row in checked.rows
+        if row.kind == "ULS" and row.station.x_mm >= start.x_mm
+    )
+    failed, held = _row_issues(partner_rows, faces)
+    d = member.depth_mm - bar.y_from_top_mm
+    demands = []
+    stress_rows = []
+    for row in checked.rows:
+        if row.kind != "ULS" or not start.x_mm <= row.station.x_mm <= end.x_mm:
+            continue
+        face = Face.TOP if row.action.mu_knm < 0 else Face.BOTTOM
+        capacity = min(
+            float(checked.flexural_sections[face].outputs["capacity_knm"]),
+            float(flexure[face].outputs["capacity_knm"]),
+        )
+        stress_rows.append(
+            {
+                "row_id": row.action.row_id,
+                "moment_knm": row.action.mu_knm,
+                "half_capacity_knm": 0.5 * capacity,
+            }
+        )
+        if abs(row.action.mu_knm) > 0.5 * capacity + 1e-9:
+            failed.append(
+                StructuralIssueV1(
+                    "BEAM.LAP_MOMENT_LIMIT",
+                    f"actions.{row.action.row_id}",
+                    "A supplied splice-zone moment exceeds half the signed section resistance.",
+                )
+            )
+        demands.append(
+            StationSteelDemand(
+                row.action.row_id,
+                row.station.x_mm,
+                ReinforcementRole.BOTTOM_LONGITUDINAL,
+                float(
+                    checked.flexural_sections[Face.BOTTOM].outputs[
+                        "minimum_tension_steel_area_mm2"
+                    ]
+                ),
+                abs(row.action.vu_kn) * 1000,
+                float(shear[Face.BOTTOM].outputs["provided_capacity_kn"]) * 1000,
+                row.action.row_id,
+            )
+        )
+    original = LongitudinalBarPath(
+        bar.bar_id,
+        "lap-I",
+        ReinforcementRole.BOTTOM_LONGITUDINAL,
+        bar.diameter_mm,
+        1,
+        bar.x_from_left_mm,
+        bar.y_from_top_mm,
+        extent.start_mm,
+        end.x_mm,
+        0.87 * member.fy_nmm2,
+    )
+    partner = replace(
+        original,
+        bar_id=lap.partner_bar_id,
+        bar_mark="lap-J",
+        x_from_left_mm=lap.partner_x_from_left_mm,
+        start_station_mm=start.x_mm,
+        end_station_mm=extent.end_mm,
+    )
+    checked_lap = check_laps_and_curtailment(
+        LapCurtailmentCheckRequest(
+            WORKFLOW,
+            member.member_id,
+            "first-span",
+            member.analysis_revision,
+            member.reinforcement_revision,
+            left.left_face_mm,
+            support.right_face_mm,
+            d,
+            member.fck_nmm2,
+            member.fy_nmm2,
+            BarSurface.DEFORMED,
+            (original, partner),
+            tuple(demands),
+            (
+                SpliceDetail(
+                    "bottom-lap",
+                    SpliceKind.LAP,
+                    (original.bar_id, partner.bar_id),
+                    start.x_mm,
+                    end.x_mm,
+                    StressState.TENSION,
+                    False,
+                    100 / sum(item.face == "bottom" for item in member.bars),
+                    "single-group",
+                ),
+            ),
+            (),
+        )
+    )
+    diagnostic_issues = [
+        StructuralIssueV1(
+            issue.code,
+            issue.field_or_location or "lap",
+            issue.message,
+        )
+        for issue in checked_lap.diagnostics
+    ]
+    if checked_lap.engineering is EngineeringState.FAIL:
+        failed.extend(diagnostic_issues)
+    elif checked_lap.engineering is not EngineeringState.PASS:
+        held.extend(diagnostic_issues)
+    status = (
+        EngineeringStatus.FAIL
+        if failed
+        else EngineeringStatus.HOLD if held else EngineeringStatus.PASS
+    )
+    return (
+        (start.x_mm, end.x_mm),
+        {
+            "bar_id": bar.bar_id,
+            "partner_bar_id": lap.partner_bar_id,
+            "overlap_mm": end.x_mm - start.x_mm,
+            "lap_result": checked_lap.to_dict(),
+            "stress_rows": stress_rows,
+            "partner_rows": [row.to_dict() for row in partner_rows],
+        },
+        failed + held,
+        status,
+    )
+
+
 def check_continuous_detailing(
     request: BeamContinuousDetailingInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
@@ -579,7 +862,7 @@ def check_continuous_detailing(
 
     Limitations
     -----------
-    Straight longitudinal bars, one optional first-span bottom cutoff,
+    Straight longitudinal bars, one optional first-span bottom cutoff or lap,
     and a single ordinary link mark.
 
     Provenance
@@ -594,18 +877,36 @@ def check_continuous_detailing(
     issues = []
     status = EngineeringStatus(checked.ultimate_status)
     cutoff_end = None
+    lap_bounds = None
     source_hash = identity.input_hash
-    if status is EngineeringStatus.PASS and request.cutoff is not None:
+    if status is EngineeringStatus.PASS and request.cutoff and request.lap:
+        status = EngineeringStatus.HOLD
+        issues.append(
+            StructuralIssueV1(
+                "BEAM.COMBINED_BAR_DETAIL_HELD",
+                "cutoff,lap",
+                "The cutoff and separated lap have individually checked profiles.",
+            )
+        )
+    elif status is EngineeringStatus.PASS and request.cutoff is not None:
         cutoff_end, cutoff, cutoff_issues, status = _check_bottom_cutoff(
             request, checked
         )
         data["cutoff"] = cutoff
         issues.extend(cutoff_issues)
+    elif status is EngineeringStatus.PASS and request.lap is not None:
+        lap_bounds, lap, lap_issues, status = _check_bottom_lap(request, checked)
+        data["lap"] = lap
+        issues.extend(lap_issues)
+    if request.cutoff or request.lap:
         source_hash = semantic_hash(
             "beam_detailing_source",
             {
                 "strength": identity.input_hash,
-                "cutoff": request.cutoff.model_dump(mode="json"),
+                "cutoff": (
+                    request.cutoff.model_dump(mode="json") if request.cutoff else None
+                ),
+                "lap": request.lap.model_dump(mode="json") if request.lap else None,
                 "link": (
                     request.link_detail.model_dump(mode="json")
                     if request.link_detail
@@ -614,7 +915,7 @@ def check_continuous_detailing(
             },
         )
     if status is EngineeringStatus.PASS:
-        inputs = _physical_paths(request, source_hash, cutoff_end)
+        inputs = _physical_paths(request, source_hash, cutoff_end, lap_bounds)
         if inputs is None:
             status = EngineeringStatus.HOLD
             issues.append(
@@ -652,7 +953,15 @@ def check_continuous_detailing(
                     for item in leaf.diagnostics
                 )
             if status is EngineeringStatus.PASS:
-                schedule = _schedule(request, paths, link_request)
+                splice = None
+                if lap_bounds is not None and request.lap is not None:
+                    splice = SpliceRecord(
+                        "bottom-lap",
+                        ScheduleSpliceKind.LAP,
+                        sum(lap_bounds) / 2,
+                        data["lap"]["lap_result"]["result_id"],
+                    )
+                schedule = _schedule(request, paths, link_request, splice)
                 if schedule.engineering is EngineeringState.PASS:
                     data["bbs"] = schedule.to_dict()
                 else:
@@ -672,8 +981,8 @@ def check_continuous_detailing(
         engineering_status=status,
         limitations=(
             "Only the supplied strength and anchorage rows and the declared physical layout are checked.",
-            "Ordinary straight bars, one optional bottom-bar cutoff, and one uniform two-hook link mark.",
-            "Unreported demand between stations, splices, member serviceability, support connections and fabrication approval require separate evidence.",
+            "Ordinary straight bars, one optional first-span bottom cutoff or separated bottom lap, and one uniform two-hook link mark.",
+            "Unreported demand between stations, other splices, member serviceability, support connections and fabrication approval require separate evidence.",
         ),
         provenance=(
             "IS 456 ordinary anchorage and reinforcement geometry with actual resolved cut paths.",
@@ -1076,12 +1385,22 @@ def render_continuous_detailing_html(
             f"<p>Termination shear limit {cutoff['termination_shear_limit_kn']:.3f} kN.</p>"
             f"<ul>{rows}</ul>"
         )
+    lap = result.calculation.get("lap", {})
+    lap_html = ""
+    if "lap_result" in lap:
+        checks = lap["lap_result"]["outputs"].get("splice_checks", ())
+        if checks:
+            lap_html = (
+                f"<h2>Separated bottom lap</h2><p>{html.escape(lap['bar_id'])} and "
+                f"{html.escape(lap['partner_bar_id'])}. Overlap {lap['overlap_mm']:g} mm. "
+                f"Required length {checks[0]['required_length_mm']:.3f} mm.</p>"
+            )
     issues = "".join(f"<li>{html.escape(item.message)}</li>" for item in result.issues)
     limits = "".join(f"<li>{html.escape(item)}</li>" for item in result.limitations)
     status = result.engineering_status.value if current_match else "HOLD · stale result"
     if not current_match:
         strength = {"ultimate_status": "HOLD", "serviceability_status": "HOLD"}
-        governance, cutoff_html = "", ""
+        governance, cutoff_html, lap_html = "", "", ""
     bar_edit = result.calculation.get("bar_edit")
     edit_html = ""
     if bar_edit:
@@ -1096,4 +1415,4 @@ def render_continuous_detailing_html(
 <p>Input identity <code>{identity.input_hash if identity else ""}</code></p>
 <p>Supplied strength {strength["ultimate_status"]} · Serviceability {strength["serviceability_status"]}</p>
 <h2>Governing baseline action rows</h2><ul>{governance}</ul>
-{edit_html}{cutoff_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+{edit_html}{cutoff_html}{lap_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""

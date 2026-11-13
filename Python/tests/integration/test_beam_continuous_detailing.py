@@ -194,3 +194,65 @@ def test_bar_edit_rechecks_current_physical_paths(case):
             assert "GEOMETRY.SPACING" in {issue.code for issue in result.issues}
         else:
             assert result.envelope.freshness_status == "STALE"
+
+
+LAP_CASES = json.loads(
+    (
+        Path(__file__).resolve().parents[3]
+        / "docs/verification/library-029-beam05-lap.json"
+    ).read_text(encoding="utf-8")
+)["cases"]
+
+
+@pytest.mark.parametrize("case", LAP_CASES)
+def test_separated_lap_replays_both_pieces_and_keeps_checked_evidence(case):
+    item = LAP_CASES[case]
+    expected = item["expected"]
+    result = beam.check_continuous_detailing(
+        beam.load_continuous_detailing(item["request"])
+    )
+    assert result.engineering_status == expected["status"]
+    lap = result.calculation["lap"]
+    report = beam.render_continuous_detailing_html(result)
+    svg = beam.render_continuous_detailing_svg(result)
+    bbs = beam.render_continuous_detailing_bbs_csv(result)
+    if case in {"lap", "short_lap"}:
+        checked_lap = lap["lap_result"]
+        splice = checked_lap["outputs"]["splice_checks"][0]
+        assert splice["required_length_mm"] == pytest.approx(
+            expected["required_lap_mm"]
+        )
+        assert splice["actual_length_mm"] == expected["overlap_mm"]
+        assert "Separated bottom lap" in report and "805.915 mm" in report
+        assert len(lap["stress_rows"]) == 12
+    if case == "missing_mid_lap_row":
+        assert lap["missing_lap_rows"] == [("U2", "LAP-MID")]
+    if expected["status"] != "PASS":
+        assert svg is None and bbs is None
+        return
+    assert svg is not None and svg in report and bbs is not None
+    drawing = ElementTree.fromstring(svg)
+    original = drawing.find("{*}line[@data-bar-id='bottom-3']")
+    partner = drawing.find("{*}line[@data-bar-id='bottom-3-partner']")
+    assert original is not None and partner is not None
+    assert (
+        float(original.attrib["x2"]) - float(partner.attrib["x1"])
+        == expected["overlap_mm"]
+    )
+    rows = list(csv.DictReader(StringIO(bbs)))
+    cuts = {
+        row["bar_mark"].rsplit("-", 1)[-1]: float(row["cut_mm"])
+        for row in rows
+        if "-lap-" in row["bar_mark"]
+    }
+    assert cuts == {"I": expected["cut_original_mm"], "J": expected["cut_partner_mm"]}
+    assert sum(float(row["mass_kg"]) for row in rows) == pytest.approx(
+        expected["mass_kg"]
+    )
+    arrangement = result.calculation["arrangement"]["outputs"]
+    relevant = [
+        row["actual_clear_mm"]
+        for row in arrangement["horizontal_clearance_checks"]
+        if "bottom-3-partner" in (row["first_bar_id"], row["second_bar_id"])
+    ]
+    assert min(relevant) == pytest.approx(expected["minimum_pair_clear_mm"])

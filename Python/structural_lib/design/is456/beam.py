@@ -1073,7 +1073,7 @@ def load_continuous_detailing(
     ----------
     value : Mapping, JSON str or bytes, or BeamContinuousDetailingInputV1
         The physical member, supplied actions, link placement, optional bottom
-        bar cutoff and stock length.
+        bar cutoff or separated lap and stock length.
 
     Returns
     -------
@@ -1092,8 +1092,8 @@ def load_continuous_detailing(
 
     Limitations
     -----------
-    Straight longitudinal bars with at most one first-span bottom cutoff and
-    one uniform ordinary link mark.
+    Straight longitudinal bars with at most one first-span bottom cutoff or
+    separated lap and one uniform ordinary link mark.
 
     Provenance
     ----------

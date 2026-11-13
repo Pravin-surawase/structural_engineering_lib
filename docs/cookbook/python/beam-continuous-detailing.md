@@ -41,8 +41,8 @@ case gives FAIL and the missing link detail gives HOLD. Both still produce
 an HTML review report.
 
 This route covers straight bars, one ordinary link mark and a
-rectangular section. Physical laps, other link shapes and construction
-approval require their own checks. The
+rectangular section. Other link shapes and construction approval require
+their own checks. The
 SVG is a review elevation. Serviceability is a separate calculation.
 
 ## Check one bottom bar cutoff
@@ -73,7 +73,7 @@ theoretical cutoff onward, including affected support anchors. The example
 includes a 100 mm development deficit, a termination shear failure and
 missing ULS rows. Each withholds the drawing and schedule. Full action
 coverage between supplied stations, points of inflection, other cutoff
-directions and physical laps need separate evidence.
+directions need separate evidence.
 
 ## Edit a checked bar and recheck the schedule
 
@@ -98,3 +98,31 @@ HTML, SVG and CSV renderers. They compare the input identity before
 issuing the checked artifacts. To export the edited result, pass
 `current=edited_result.request` after adopting the edited request as
 the active input.
+
+## Check one separated bottom bar lap
+
+Set `lap` with the original and partner IDs, the partner's transverse
+centre and the start, interior and end stations of the overlap. Retain
+the placement reference and every declared ULS combination at those
+stations. The same checker verifies the downstream partner layout, both
+pieces inside the checked closed links, spacing to all nearby bars and
+the signed splice-zone moment limit. It credits one bar at a time in
+strength checks. The BBS carries both physical pieces and the splice
+result identity.
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-029-beam05-lap.json \
+  --case lap --output-dir output/beam05-lap
+```
+
+The 900 mm overlap between 2600 and 3500 mm exceeds the 805.915 mm
+flexural-tension requirement. The two Ø20 pieces are 3718 and 5618 mm
+long, and the minimum clear spacing to the partner is 28 mm. A short
+overlap and a congested partner fail. Omitting the interior U2 row holds
+the result. [Independent replay](../../verification/check_library_029_beam05_lap_reference.py)
+
+This profile covers a single straight separated lap at the bottom of a
+rectangular beam with ordinary links. Contact or bundled laps, other
+directions, multiple groups, and simultaneous laps and cutoffs need
+separate acceptance cases. [IS 456 clauses 26.2.5 and 26.3](https://wriddodoti.gov.np/uploads/blog/20230331071217_IS-456-with-all-ammendments.pdf)
