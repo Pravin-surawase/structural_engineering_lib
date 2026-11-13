@@ -107,6 +107,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_beam05_cutoff_reference.py",
     "docs/verification/check_library_029_beam07_reference.py",
     "docs/verification/check_library_029_flow02_reference.py",
+    "docs/verification/check_library_029_flow03_beam_reference.py",
     "docs/verification/check_library_029_flow04_reference.py",
     "docs/verification/check_library_029_sec02_reference.py",
     "docs/verification/check_library_029_sec03_reference.py",
@@ -131,6 +132,7 @@ BEAM05_REFERENCE = "docs/verification/library-029-beam05-member-detailing.json"
 BEAM05_CUTOFF_REFERENCE = "docs/verification/library-029-beam05-cutoff.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
+FLOW03_BEAM_REFERENCE = "docs/verification/library-029-flow03-beam-edit.json"
 FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
@@ -163,6 +165,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_CUTOFF_REFERENCE,
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
+                repo / FLOW03_BEAM_REFERENCE,
                 repo / FLOW04_REFERENCE,
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
@@ -557,6 +560,33 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             if status == "PASS":
                 assert input_hash in (directory / "member.svg").read_text()
                 assert input_hash in (directory / "bbs.csv").read_text()
+    flow03 = json.loads((clone / FLOW03_BEAM_REFERENCE).read_text())
+    for case, extra in (
+        ("edited", ()),
+        ("congested", ("--edit-centre-mm", str(flow03["congested_centre_mm"]))),
+        ("changed_stiffness", ("--stiffness-dependent",)),
+    ):
+        label = f"beam-bar-edit-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/beam_continuous_detailing.py",
+            "--reference",
+            str(clone / BEAM05_CUTOFF_REFERENCE),
+            "--case",
+            "cutoff",
+            "--edit-bar",
+            flow03["bar_id"],
+            "--edit-diameter-mm",
+            str(flow03["edited_diameter_mm"]),
+            "--output-dir",
+            str(directory),
+            *extra,
+        )
+        result = json.loads(stdout)
+        assert result["envelope"]["engineering_status"] == flow03["states"][case]
+        assert (directory / "member.svg").is_file() == (case == "edited")
+        assert (directory / "bbs.csv").is_file() == (case == "edited")
     for option, expected in (
         ((), "COMPLETE_FOR_DECLARED_ROWS"),
         (("--alternate-units",), "COMPLETE_FOR_DECLARED_ROWS"),

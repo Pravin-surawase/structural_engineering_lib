@@ -13670,8 +13670,8 @@
     {
       "module": "structural_lib.design.is456.beam",
       "export_classification": "preview",
-      "declared_export_count": 86,
-      "classified_symbol_count": 96,
+      "declared_export_count": 88,
+      "classified_symbol_count": 98,
       "symbols": [
         {
           "name": "BEAM_FIELD_CONTRACTS",
@@ -13775,6 +13775,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamBarEditV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamBarEditV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_member_detailing",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -15531,6 +15550,35 @@
           }
         },
         {
+          "name": "recheck_continuous_bar_edit",
+          "qualified_name": "structural_lib.design.is456.beam.recheck_continuous_bar_edit",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_member_detailing",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(current: 'BeamContinuousDetailingInputV1', previous: 'CanonicalFamilyResultV1[dict[str, Any]]', edit: 'BeamBarEditV1', *, analysis_basis: \"Literal['fixed_supplied_actions', 'reinforcement_dependent_stiffness']\") -> 'CanonicalFamilyResultV1[dict[str, Any]]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "render_cantilever_html",
           "qualified_name": "structural_lib.design.is456.beam.render_cantilever_html",
           "kind": "function",
@@ -15594,7 +15642,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, Any]]') -> 'str | None'",
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, Any]]', *, current: 'BeamContinuousDetailingInputV1 | None' = None) -> 'str | None'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -15623,7 +15671,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, Any]]') -> 'str'",
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, Any]]', *, current: 'BeamContinuousDetailingInputV1 | None' = None) -> 'str'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -15652,7 +15700,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, Any]]') -> 'str | None'",
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, Any]]', *, current: 'BeamContinuousDetailingInputV1 | None' = None) -> 'str | None'",
             "docstring_sections": [
               "examples",
               "limitations",

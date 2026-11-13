@@ -56,7 +56,12 @@ from structural_lib.construction import (
     ShapeConvention,
     create_bbs,
 )
-from structural_lib.core.result_contract import EngineeringStatus, StructuralIssueV1
+from structural_lib.core.errors import InputContractError, InputIssueV1
+from structural_lib.core.result_contract import (
+    EngineeringStatus,
+    FreshnessStatus,
+    StructuralIssueV1,
+)
 from structural_lib.reporting.calculation_package import result_binding
 from structural_lib.services.beam_continuous import (
     BeamContinuousCheckResultV1,
@@ -69,6 +74,7 @@ from structural_lib.services.beam_continuous import (
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
     FamilyIdentityV1,
+    _input_hash,
     canonical_family_result,
     require_request_type,
 )
@@ -77,7 +83,10 @@ from structural_lib.services.contracts.beam_continuous import (
     Identifier,
     Reference,
 )
-from structural_lib.services.contracts.common import StrictPublicModel
+from structural_lib.services.contracts.common import (
+    StrictPublicModel,
+    model_validate_or_error,
+)
 
 WORKFLOW = "is456.beam.continuous-detailing/v1"
 
@@ -99,6 +108,14 @@ class BeamBottomCutoffV1(StrictPublicModel):
     bar_id: Identifier
     theoretical_station_id: Identifier
     termination_station_id: Identifier
+
+
+class BeamBarEditV1(StrictPublicModel):
+    """An explicit diameter change and optional transverse centre change."""
+
+    bar_id: Identifier
+    diameter_mm: float = Field(ge=8, le=40)
+    x_from_left_mm: float | None = Field(default=None, gt=0)
 
 
 class BeamContinuousDetailingInputV1(StrictPublicModel):
@@ -680,8 +697,172 @@ def _required_result(result: CanonicalFamilyResultV1[dict[str, Any]]) -> None:
         raise TypeError("result must be a checked continuous beam detailing result")
 
 
+def _matches_current(
+    result: CanonicalFamilyResultV1[dict[str, Any]],
+    current: BeamContinuousDetailingInputV1 | None,
+) -> bool:
+    if current is None:
+        return result.envelope.freshness_status is FreshnessStatus.CURRENT
+    require_request_type(current, BeamContinuousDetailingInputV1)
+    identity = result.envelope.result_identity
+    return (
+        result.envelope.freshness_status is FreshnessStatus.CURRENT
+        and identity is not None
+        and identity.input_hash == _input_hash(current)
+    )
+
+
+def recheck_continuous_bar_edit(
+    current: BeamContinuousDetailingInputV1,
+    previous: CanonicalFamilyResultV1[dict[str, Any]],
+    edit: BeamBarEditV1,
+    *,
+    analysis_basis: Literal[
+        "fixed_supplied_actions", "reinforcement_dependent_stiffness"
+    ],
+) -> CanonicalFamilyResultV1[dict[str, Any]]:
+    """Apply and check one physical bar edit against the current result.
+
+    Parameters
+    ----------
+    current : BeamContinuousDetailingInputV1
+        Current member and source action revisions.
+    previous : CanonicalFamilyResultV1
+        Previously checked detailing result on which the edit is based.
+    edit : BeamBarEditV1
+        Identified bar diameter and optional lateral centre, in mm.
+    analysis_basis : str
+        Whether the supplied actions depend on the reinforcement stiffness.
+
+    Returns
+    -------
+    CanonicalFamilyResultV1
+        Result bound to the edited physical member, or HOLD on a stale basis.
+
+    Raises
+    ------
+    InputContractError
+        The edit, analysis basis or resulting input is invalid.
+    TypeError
+        The previous result belongs to another workflow.
+
+    Examples
+    --------
+    >>> callable(recheck_continuous_bar_edit)
+    True
+
+    Limitations
+    -----------
+    One straight bar in the two-span rectangular detailing profile.
+
+    Provenance
+    ----------
+    Replays the same strength, placement, path and schedule owners on the
+    edited bar geometry.
+    """
+    require_request_type(current, BeamContinuousDetailingInputV1)
+    require_request_type(edit, BeamBarEditV1)
+    _required_result(previous)
+    bar = next((bar for bar in current.member.bars if bar.bar_id == edit.bar_id), None)
+    if bar is None or analysis_basis not in (
+        "fixed_supplied_actions",
+        "reinforcement_dependent_stiffness",
+    ):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="INPUT_CONTRACT_INVALID",
+                    path="edit",
+                    message="Identify an existing bar and declare the analysis stiffness basis.",
+                ),
+            )
+        )
+    edited_bar = bar.model_copy(
+        update={
+            "diameter_mm": edit.diameter_mm,
+            "x_from_left_mm": (
+                edit.x_from_left_mm
+                if edit.x_from_left_mm is not None
+                else bar.x_from_left_mm
+            ),
+        }
+    )
+    new_bars = tuple(
+        edited_bar if item.bar_id == edit.bar_id else item
+        for item in current.member.bars
+    )
+    revision = (
+        "edit-"
+        + semantic_hash(
+            "beam_bars",
+            {
+                "parent": current.member.reinforcement_revision,
+                "bars": tuple(item.model_dump(mode="json") for item in new_bars),
+            },
+        ).rsplit(":", 1)[-1]
+    )
+    proposed = current.model_dump(mode="python")
+    proposed["member"].update(bars=new_bars, reinforcement_revision=revision)
+    request = model_validate_or_error(BeamContinuousDetailingInputV1, proposed)
+    source = previous.envelope.result_identity
+    current_hash = _input_hash(current)
+    stale = not _matches_current(previous, current)
+    result: CanonicalFamilyResultV1[dict[str, Any]]
+    if stale or analysis_basis == "reinforcement_dependent_stiffness":
+        result = canonical_family_result(
+            request,
+            {
+                "strength": {
+                    "ultimate_status": "HOLD",
+                    "serviceability_status": "HOLD",
+                    "governing_rows": {},
+                },
+                "paths": None,
+                "bbs": None,
+            },
+            workflow_id=WORKFLOW,
+            engineering_status=EngineeringStatus.HOLD,
+        )
+        issue = StructuralIssueV1(
+            (
+                "BEAM.EDIT_STALE_RESULT"
+                if stale
+                else "BEAM.EDIT_ANALYSIS_REFRESH_REQUIRED"
+            ),
+            "member",
+            "The edit requires a current base result and actions compatible with the edited stiffness.",
+        )
+        result = replace(
+            result,
+            envelope=replace(
+                result.envelope,
+                issues=(issue,),
+                freshness_status=FreshnessStatus.STALE,
+            ),
+        )
+    else:
+        result = check_continuous_detailing(request)
+    return replace(
+        result,
+        calculation={
+            **result.calculation,
+            "bar_edit": {
+                "bar_id": edit.bar_id,
+                "previous_diameter_mm": bar.diameter_mm,
+                "edited_diameter_mm": edited_bar.diameter_mm,
+                "base_input_hash": source.input_hash if source else None,
+                "current_input_hash": current_hash,
+                "reinforcement_revision": revision,
+                "analysis_basis": analysis_basis,
+            },
+        },
+    )
+
+
 def render_continuous_detailing_svg(
     result: CanonicalFamilyResultV1[dict[str, Any]],
+    *,
+    current: BeamContinuousDetailingInputV1 | None = None,
 ) -> str | None:
     """Project the checked member bars and link levels onto a review elevation.
 
@@ -689,6 +870,8 @@ def render_continuous_detailing_svg(
     ----------
     result : CanonicalFamilyResultV1
         The checked physical member detail.
+    current : BeamContinuousDetailingInputV1 or None
+        Current input required by a caller exporting from an editable session.
 
     Returns
     -------
@@ -715,7 +898,7 @@ def render_continuous_detailing_svg(
     """
     _required_result(result)
     data = result.calculation
-    if data["bbs"] is None:
+    if data["bbs"] is None or not _matches_current(result, current):
         return None
     request = result.request
     assert isinstance(request, BeamContinuousDetailingInputV1)
@@ -753,6 +936,8 @@ def render_continuous_detailing_svg(
 
 def render_continuous_detailing_bbs_csv(
     result: CanonicalFamilyResultV1[dict[str, Any]],
+    *,
+    current: BeamContinuousDetailingInputV1 | None = None,
 ) -> str | None:
     """Serialize the checked BBS and preserve its input and path identities.
 
@@ -760,6 +945,8 @@ def render_continuous_detailing_bbs_csv(
     ----------
     result : CanonicalFamilyResultV1
         The checked physical member detail.
+    current : BeamContinuousDetailingInputV1 or None
+        Current input required by a caller exporting from an editable session.
 
     Returns
     -------
@@ -786,7 +973,7 @@ def render_continuous_detailing_bbs_csv(
     """
     _required_result(result)
     bbs = result.calculation["bbs"]
-    if bbs is None:
+    if bbs is None or not _matches_current(result, current):
         return None
     out = io.StringIO()
     writer = csv.writer(out, lineterminator="\n")
@@ -825,6 +1012,8 @@ def render_continuous_detailing_bbs_csv(
 
 def render_continuous_detailing_html(
     result: CanonicalFamilyResultV1[dict[str, Any]],
+    *,
+    current: BeamContinuousDetailingInputV1 | None = None,
 ) -> str:
     """Render the checked continuous detail and schedule.
 
@@ -832,6 +1021,8 @@ def render_continuous_detailing_html(
     ----------
     result : CanonicalFamilyResultV1
         The checked two-span member detail.
+    current : BeamContinuousDetailingInputV1 or None
+        Current input required by a caller exporting from an editable session.
 
     Returns
     -------
@@ -858,8 +1049,9 @@ def render_continuous_detailing_html(
     """
     _required_result(result)
     identity = result.envelope.result_identity
-    svg = render_continuous_detailing_svg(result) or ""
-    bbs = render_continuous_detailing_bbs_csv(result)
+    current_match = _matches_current(result, current)
+    svg = render_continuous_detailing_svg(result, current=current) or ""
+    bbs = render_continuous_detailing_bbs_csv(result, current=current)
     strength = result.calculation["strength"]
     governance = "".join(
         f"<li>{html.escape(check)} · {html.escape(row)}</li>"
@@ -886,11 +1078,22 @@ def render_continuous_detailing_html(
         )
     issues = "".join(f"<li>{html.escape(item.message)}</li>" for item in result.issues)
     limits = "".join(f"<li>{html.escape(item)}</li>" for item in result.limitations)
+    status = result.engineering_status.value if current_match else "HOLD · stale result"
+    if not current_match:
+        strength = {"ultimate_status": "HOLD", "serviceability_status": "HOLD"}
+        governance, cutoff_html = "", ""
+    bar_edit = result.calculation.get("bar_edit")
+    edit_html = ""
+    if bar_edit:
+        edit_html = (
+            f"<h2>Bar edit</h2><p>{html.escape(bar_edit['bar_id'])} diameter "
+            f"{bar_edit['previous_diameter_mm']:g} → {bar_edit['edited_diameter_mm']:g} mm.</p>"
+        )
     return f"""<!doctype html>
 <html lang="en"><meta charset="utf-8"><title>Continuous beam detailing</title>
 <h1>Continuous beam detailing · {html.escape(result.identity.member_id or "")}</h1>
-<p>{result.engineering_status.value} · Qualified review required</p>
+<p>{status} · Qualified review required</p>
 <p>Input identity <code>{identity.input_hash if identity else ""}</code></p>
 <p>Supplied strength {strength["ultimate_status"]} · Serviceability {strength["serviceability_status"]}</p>
 <h2>Governing baseline action rows</h2><ul>{governance}</ul>
-{cutoff_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+{edit_html}{cutoff_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""

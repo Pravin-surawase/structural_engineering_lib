@@ -27,8 +27,10 @@ from structural_lib.services.beam_instantaneous_service import (
     render_instantaneous_service_html,
 )
 from structural_lib.services.beam_member_detailing import (
+    BeamBarEditV1,
     BeamContinuousDetailingInputV1,
     check_continuous_detailing,
+    recheck_continuous_bar_edit,
     render_continuous_detailing_bbs_csv,
     render_continuous_detailing_html,
     render_continuous_detailing_svg,
@@ -106,8 +108,10 @@ from structural_lib.services.supplied_beam_check import (
 
 __all__ = [
     "BeamActionsV1",
+    "BeamBarEditV1",
     "BeamContinuousDetailingInputV1",
     "load_continuous_detailing",
+    "recheck_continuous_bar_edit",
     "check_continuous_detailing",
     "render_continuous_detailing_bbs_csv",
     "render_continuous_detailing_html",

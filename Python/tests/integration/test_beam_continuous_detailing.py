@@ -127,3 +127,70 @@ def test_bottom_cutoff_uses_the_actual_cut_and_reduced_section_rows(name):
         and identity.input_hash in report
         and identity.input_hash in bbs
     )
+
+
+FLOW03 = json.loads(
+    (
+        Path(__file__).resolve().parents[3]
+        / "docs/verification/library-029-flow03-beam-edit.json"
+    ).read_text(encoding="utf-8")
+)
+
+
+@pytest.mark.parametrize("case", FLOW03["states"])
+def test_bar_edit_rechecks_current_physical_paths(case):
+    request = beam.load_continuous_detailing(CUTOFF_CASES["cutoff"]["request"])
+    previous = beam.check_continuous_detailing(request)
+    current = request
+    if case == "stale_base":
+        current = beam.load_continuous_detailing(
+            {
+                **request.model_dump(mode="json"),
+                "stock_length_mm": 10000,
+            }
+        )
+    edit = beam.BeamBarEditV1(
+        bar_id=FLOW03["bar_id"],
+        diameter_mm=FLOW03["edited_diameter_mm"],
+        x_from_left_mm=FLOW03["congested_centre_mm"] if case == "congested" else None,
+    )
+    result = beam.recheck_continuous_bar_edit(
+        current,
+        previous,
+        edit,
+        analysis_basis=(
+            "reinforcement_dependent_stiffness"
+            if case == "changed_stiffness"
+            else "fixed_supplied_actions"
+        ),
+    )
+    edited = beam.load_continuous_detailing(result.request.model_dump(mode="json"))
+    assert edited.member.reinforcement_revision != request.member.reinforcement_revision
+    assert result.engineering_status == FLOW03["states"][case]
+    assert beam.render_continuous_detailing_bbs_csv(previous, current=edited) is None
+    assert beam.render_continuous_detailing_svg(previous, current=edited) is None
+    assert "HOLD · stale result" in beam.render_continuous_detailing_html(
+        previous, current=edited
+    )
+    report = beam.render_continuous_detailing_html(result, current=edited)
+    assert "20 → 16 mm" in report
+    output = beam.render_continuous_detailing_bbs_csv(result, current=edited)
+    if case == "edited":
+        assert output is not None
+        rows = list(csv.DictReader(StringIO(output)))
+        bar = next(row for row in rows if row["bar_mark"].endswith("-cutoff"))
+        assert float(bar["diameter_mm"]) == FLOW03["edited_diameter_mm"]
+        assert float(bar["cut_mm"]) == pytest.approx(FLOW03["edited_cut_mm"])
+        assert sum(float(row["mass_kg"]) for row in rows) == pytest.approx(
+            FLOW03["edited_mass_kg"]
+        )
+        assert beam.render_continuous_detailing_bbs_csv(result, current=request) is None
+        svg = beam.render_continuous_detailing_svg(result, current=edited)
+        assert svg is not None and svg in report
+    else:
+        assert output is None
+        assert beam.render_continuous_detailing_svg(result, current=edited) is None
+        if case == "congested":
+            assert "GEOMETRY.SPACING" in {issue.code for issue in result.issues}
+        else:
+            assert result.envelope.freshness_status == "STALE"

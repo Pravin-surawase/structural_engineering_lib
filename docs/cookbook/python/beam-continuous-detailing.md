@@ -74,3 +74,27 @@ includes a 100 mm development deficit, a termination shear failure and
 missing ULS rows. Each withholds the drawing and schedule. Full action
 coverage between supplied stations, points of inflection, other cutoff
 directions and physical laps need separate evidence.
+
+## Edit a checked bar and recheck the schedule
+
+Use `beam.recheck_continuous_bar_edit(current, previous, edit, analysis_basis=...)`
+with a `beam.BeamBarEditV1`. For an analysis whose supplied actions are fixed
+independently of the reinforcement, replay the cutoff example with:
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-029-beam05-cutoff.json --case cutoff \
+  --edit-bar bottom-3 --edit-diameter-mm 16 --output-dir output/beam03-edit
+```
+
+The new revision carries a Ø16 bar cut to 3718 mm. The total theoretical
+mass changes to 127.371 kg. The congestion control places that bar at
+175 mm from the left face, leaving a 7 mm clear gap against a 25 mm
+minimum. It fails and withholds drawing and BBS. A changed stiffness basis
+or a previous result from different current inputs returns HOLD. [Independent replay](../../verification/check_library_029_flow03_beam_reference.py)
+
+In an editable session, pass the active request as `current=` to the
+HTML, SVG and CSV renderers. They compare the input identity before
+issuing the checked artifacts. To export the edited result, pass
+`current=edited_result.request` after adopting the edited request as
+the active input.

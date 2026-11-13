@@ -19,6 +19,10 @@ def main() -> int:
     parser.add_argument("--reference", type=Path, default=_REFERENCE)
     parser.add_argument("--case", default="continuous")
     parser.add_argument("--input", type=Path, help="A complete request JSON file")
+    parser.add_argument("--edit-bar", help="Longitudinal bar ID to recheck")
+    parser.add_argument("--edit-diameter-mm", type=float)
+    parser.add_argument("--edit-centre-mm", type=float)
+    parser.add_argument("--stiffness-dependent", action="store_true")
     parser.add_argument(
         "--output-dir", type=Path, help="Fresh directory for this result"
     )
@@ -39,6 +43,23 @@ def main() -> int:
         return 2
 
     result = beam.check_continuous_detailing(request)
+    if args.edit_bar is not None:
+        if args.edit_diameter_mm is None:
+            parser.error("--edit-bar requires --edit-diameter-mm")
+        result = beam.recheck_continuous_bar_edit(
+            request,
+            result,
+            beam.BeamBarEditV1(
+                bar_id=args.edit_bar,
+                diameter_mm=args.edit_diameter_mm,
+                x_from_left_mm=args.edit_centre_mm,
+            ),
+            analysis_basis=(
+                "reinforcement_dependent_stiffness"
+                if args.stiffness_dependent
+                else "fixed_supplied_actions"
+            ),
+        )
     output = json.dumps(result.to_dict(), indent=2, allow_nan=False) + "\n"
     if args.output_dir is not None:
         folder = args.output_dir
