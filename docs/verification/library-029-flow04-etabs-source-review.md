@@ -52,6 +52,22 @@ model revision that produced both exports. The public listing supplied
 no redistribution terms for repackaging its workbooks. The fixture
 remains outside the tracked repository.
 
+## Other published examples checked
+
+- Bentley's [STAAD.Pro tutorial 1 output](https://docs.bentley.com/LiveContent/web/STAAD.Pro-v2026.0.1/Help/en/topics/Getting_Started/Tutorial%20Problem%201/c-stpst_TUT01_Viewing_the_output_file.html)
+  includes one steel portal frame run. It contains the geometry, member
+  offsets, local end actions for its beam and two columns, and a defined
+  load combination. It can support an endpoint-only STAAD sign and unit
+  test. The beam's offset and axial force require their own mapping and
+  downstream scope checks.
+- Bentley's [reinforced-concrete tutorial 2 output](https://docs.bentley.com/LiveContent/web/STAAD.Pro-v2025.0.0/Help/en/topics/Getting_Started/Tutorial%20Problem%202/c-stpst_TUT02_Viewing_the_output_file.html)
+  includes the input, second-order analysis and beam and column design
+  summaries. A matching member-force table for cases 4 and 5 is still
+  needed for the reinforced-concrete replay.
+- The [ETABS dual-tower dataset](https://data.mendeley.com/datasets/b4tzn35bj9/1)
+  provides joint, base, drift and time-history results. Its workbook has
+  no beam and column station-force tables.
+
 For the next qualification replay, pin an ETABS export containing both
 `Element Forces` tables, frame assignments and connectivity or explicit
 axes, a combination definition table, units, and a model fingerprint.
