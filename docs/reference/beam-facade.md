@@ -34,6 +34,9 @@ Source package version: `0.29.0`
 | `load_cantilever` | `structural_lib.design.is456.beam.load_cantilever(value: 'Mapping[str, object] \| str \| bytes \| BeamCantileverCheckRequestV1') -> 'BeamCantileverCheckRequestV1'` | Parse a strict supplied-action cantilever request. |
 | `check_cantilever` | `structural_lib.design.is456.beam.check_cantilever(request: 'BeamCantileverCheckRequestV1') -> 'BeamCantileverCheckResultV1'` | Check signed flexure, shear and straight fixed-face anchorage. |
 | `render_cantilever_html` | `structural_lib.design.is456.beam.render_cantilever_html(result: 'BeamCantileverCheckResultV1') -> 'str'` | Render the checked cantilever result and its input identity. |
+| `load_section` | `structural_lib.design.is456.beam.load_section(value: 'Mapping[str, object] \| str \| bytes \| BeamSectionCheckRequestV1') -> 'BeamSectionCheckRequestV1'` | Parse a strict signed beam-section request. |
+| `check_section` | `structural_lib.design.is456.beam.check_section(request: 'BeamSectionCheckRequestV1') -> 'BeamSectionCheckResultV1'` | Check actual reinforcement at a signed rectangular, T or L section. |
+| `render_section_html` | `structural_lib.design.is456.beam.render_section_html(result: 'BeamSectionCheckResultV1') -> 'str'` | Render a signed section result without recalculation. |
 
 ## Request, result, and error contracts
 
@@ -42,6 +45,7 @@ Source package version: `0.29.0`
 | Required design/detailing | `BeamDesignInputV1` | `BeamDesignResultV1`, `BeamDetailingResultV1`, `BeamDesignAndDetailResultV1`, `BeamBBSResultV1` | `InputContractError` / `input-issue/v1`; calculation errors remain distinct |
 | Two-span supplied actions | `BeamContinuousCheckRequestV1` | `BeamContinuousCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
 | Cantilever supplied actions | `BeamCantileverCheckRequestV1` | `BeamCantileverCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
+| Signed section and multilayer steel | `BeamSectionCheckRequestV1` | `BeamSectionCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
 | Supplied reinforcement | `BeamSuppliedCheckRequestV2` | `BeamSuppliedCheckResultV2` with `PASS`/`FAIL`/`HOLD` | Same Python issue boundary; REST 422 problem; WebSocket terminal `ERROR` |
 
 The typed request schemas own field type, unit-suffixed name, domain,
@@ -700,3 +704,110 @@ Renders the supplied result without rechecking or creating a schedule.
 Provenance
 ----------
 Uses the same result and analysis revision as the JSON projection.
+### `load_section`
+
+```python
+load_section(value: 'Mapping[str, object] | str | bytes | BeamSectionCheckRequestV1') -> 'BeamSectionCheckRequestV1'
+```
+
+Parse a strict signed beam-section request.
+
+Parameters
+----------
+value : Mapping, JSON str or bytes, or BeamSectionCheckRequestV1
+    One physical section with actual bar layers and supplied action rows.
+
+Returns
+-------
+BeamSectionCheckRequestV1
+    Validated section geometry and revision-bound actions.
+
+Raises
+------
+InputContractError
+    Section topology, reinforcement or action inventory is inconsistent.
+
+Examples
+--------
+>>> callable(load_section)
+True
+
+Limitations
+-----------
+Bars use web-local x and top-down y in mm. The optional monolithic
+flange has one overhang for an L or two for a T.
+
+Provenance
+----------
+Uses the strict beam-section request model and canonical input issues.
+### `check_section`
+
+```python
+check_section(request: 'BeamSectionCheckRequestV1') -> 'BeamSectionCheckResultV1'
+```
+
+Check actual reinforcement at a signed rectangular, T or L section.
+
+Parameters
+----------
+request : BeamSectionCheckRequestV1
+    Validated section and concurrent actions at one physical station.
+
+Returns
+-------
+BeamSectionCheckResultV1
+    Section resistance, bar strains and governing action rows.
+
+Raises
+------
+TypeError
+    The request is not a validated section request.
+
+Examples
+--------
+>>> callable(check_section)
+True
+
+Limitations
+-----------
+Flanges contribute in sagging only. Shear uses the web width.
+Anchorage, fabrication and serviceability need separate checks.
+
+Provenance
+----------
+Composes the maintained IS 456 effective width, flexure and shear checks.
+### `render_section_html`
+
+```python
+render_section_html(result: 'BeamSectionCheckResultV1') -> 'str'
+```
+
+Render a signed section result without recalculation.
+
+Parameters
+----------
+result : BeamSectionCheckResultV1
+    A result from :func:`check_section`.
+
+Returns
+-------
+str
+    HTML with the checked actions, bars, layers and input identity.
+
+Raises
+------
+TypeError
+    The result is not a signed section result.
+
+Examples
+--------
+>>> callable(render_section_html)
+True
+
+Limitations
+-----------
+The report covers the supplied section. Member outputs are separate.
+
+Provenance
+----------
+Uses the same result and revisions as the JSON projection.

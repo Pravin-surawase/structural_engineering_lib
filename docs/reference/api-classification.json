@@ -13473,6 +13473,7 @@
       "check",
       "check_cantilever",
       "check_continuous",
+      "check_section",
       "check_supplied",
       "design",
       "design_and_detail",
@@ -13481,9 +13482,11 @@
       "load",
       "load_cantilever",
       "load_continuous",
+      "load_section",
       "load_supplied_check",
       "render_cantilever_html",
-      "render_continuous_html"
+      "render_continuous_html",
+      "render_section_html"
     ],
     "example_inventory": [
       {
@@ -13510,6 +13513,13 @@
       {
         "example_id": "is456.beam.facade.check_continuous.docstring",
         "operation": "check_continuous",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
+        "example_id": "is456.beam.facade.check_section.docstring",
+        "operation": "check_section",
         "kind": "DOCSTRING",
         "expected": "EXECUTES_FROM_EXACT_WHEEL",
         "path": "docs/reference/beam-facade.md"
@@ -13571,6 +13581,13 @@
         "path": "docs/reference/beam-facade.md"
       },
       {
+        "example_id": "is456.beam.facade.load_section.docstring",
+        "operation": "load_section",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
         "example_id": "is456.beam.facade.load_supplied_check.docstring",
         "operation": "load_supplied_check",
         "kind": "DOCSTRING",
@@ -13587,6 +13604,13 @@
       {
         "example_id": "is456.beam.facade.render_continuous_html.docstring",
         "operation": "render_continuous_html",
+        "kind": "DOCSTRING",
+        "expected": "EXECUTES_FROM_EXACT_WHEEL",
+        "path": "docs/reference/beam-facade.md"
+      },
+      {
+        "example_id": "is456.beam.facade.render_section_html.docstring",
+        "operation": "render_section_html",
         "kind": "DOCSTRING",
         "expected": "EXECUTES_FROM_EXACT_WHEEL",
         "path": "docs/reference/beam-facade.md"
@@ -13646,8 +13670,8 @@
     {
       "module": "structural_lib.design.is456.beam",
       "export_classification": "preview",
-      "declared_export_count": 61,
-      "classified_symbol_count": 70,
+      "declared_export_count": 68,
+      "classified_symbol_count": 78,
       "symbols": [
         {
           "name": "BEAM_FIELD_CONTRACTS",
@@ -14093,6 +14117,82 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.beam_supplied_check",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamSectionBarV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamSectionBarV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamSectionCheckRequestV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamSectionCheckRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamSectionCheckResultV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamSectionCheckResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamSectionFlangeV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamSectionFlangeV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_continuous",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -14661,6 +14761,54 @@
           }
         },
         {
+          "name": "check_section",
+          "qualified_name": "structural_lib.design.is456.beam.check_section",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'BeamSectionCheckRequestV1') -> 'BeamSectionCheckResultV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.check_section.docstring"
+            ]
+          }
+        },
+        {
+          "name": "check_section_beam",
+          "qualified_name": "structural_lib.design.is456.beam.check_section_beam",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "internal",
+          "documentation": {
+            "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
+            "obligations": [],
+            "signature": "(request: 'BeamSectionCheckRequestV1') -> 'BeamSectionCheckResultV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "check_supplied",
           "qualified_name": "structural_lib.design.is456.beam.check_supplied",
           "kind": "function",
@@ -14978,6 +15126,37 @@
           }
         },
         {
+          "name": "load_section",
+          "qualified_name": "structural_lib.design.is456.beam.load_section",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | str | bytes | BeamSectionCheckRequestV1') -> 'BeamSectionCheckRequestV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.load_section.docstring"
+            ]
+          }
+        },
+        {
           "name": "load_supplied_check",
           "qualified_name": "structural_lib.design.is456.beam.load_supplied_check",
           "kind": "function",
@@ -15152,6 +15331,37 @@
           }
         },
         {
+          "name": "render_section_html",
+          "qualified_name": "structural_lib.design.is456.beam.render_section_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'BeamSectionCheckResultV1') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": [
+              "is456.beam.facade.render_section_html.docstring"
+            ]
+          }
+        },
+        {
           "name": "render_station_beam_html",
           "qualified_name": "structural_lib.design.is456.beam.render_station_beam_html",
           "kind": "function",
@@ -15162,7 +15372,7 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
-            "signature": "(result: 'BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1') -> 'str'",
+            "signature": "(result: 'BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1 | BeamSectionCheckResultV1') -> 'str'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []

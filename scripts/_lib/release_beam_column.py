@@ -21,6 +21,7 @@ TESTS = tuple(
         "test_beam_comparator_example",
         "test_cantilever_beam_check",
         "test_continuous_beam_check",
+        "test_signed_beam_section_check",
         "test_layered_column_section",
         "test_beam_section_closure",
         "test_four_corner_column_member",
@@ -52,6 +53,7 @@ EXAMPLES = tuple(
         "beam_comparator_reference",
         "cantilever_beam_check",
         "continuous_beam_check",
+        "signed_beam_section_check",
         "layered_column_section",
         "beam_section_closure",
         "four_corner_column_member",
@@ -83,6 +85,7 @@ CHECKERS = tuple(
 ) + (
     "docs/verification/check_library_029_beam01_reference.py",
     "docs/verification/check_library_029_beam02_reference.py",
+    "docs/verification/check_library_029_beam_sections_reference.py",
     "docs/verification/check_library_029_col02_reference.py",
     "docs/verification/check_library_029_col03_reference.py",
     "docs/verification/check_library_029_col04_reference.py",
@@ -94,6 +97,7 @@ CHECKERS = tuple(
 )
 BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
+BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.json"
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
@@ -113,6 +117,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / "docs/verification/library-029-col02-rectangular-column.json",
                 repo / BEAM01_REFERENCE,
                 repo / BEAM02_REFERENCE,
+                repo / BEAM_SECTION_REFERENCE,
                 repo / COL03_REFERENCE,
                 repo / COL04_REFERENCE,
                 repo / COL05_REFERENCE,
@@ -341,18 +346,19 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     for checker in CHECKERS:
         run(Path(checker).stem, checker)
-    for profile, reference in (
-        ("continuous", BEAM01_REFERENCE),
-        ("cantilever", BEAM02_REFERENCE),
+    for profile, reference, example in (
+        ("continuous", BEAM01_REFERENCE, "continuous_beam_check"),
+        ("cantilever", BEAM02_REFERENCE, "cantilever_beam_check"),
+        ("section", BEAM_SECTION_REFERENCE, "signed_beam_section_check"),
     ):
         cases = json.loads((clone / reference).read_text())["cases"]
         for case, entry in cases.items():
             label = f"{profile}-beam-{case}"
             directory = output / label
-            expected = entry["ultimate_status"]
+            expected = entry.get("ultimate_status", entry.get("status", "FAIL"))
             stdout = run(
                 label,
-                f"Python/examples/{profile}_beam_check.py",
+                f"Python/examples/{example}.py",
                 "--reference",
                 str(clone / reference),
                 "--case",
@@ -367,6 +373,13 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                 assert not directory.exists()
                 continue
             assert result["ultimate_status"] == expected
+            if "sagging_status" in entry:
+                rows = {
+                    row["action"]["row_id"]: row["section_status"]
+                    for row in result["rows"]
+                }
+                assert rows["SAG:SECTION"] == entry["sagging_status"]
+                assert rows["HOG:SECTION"] == entry["hogging_status"]
             assert result == json.loads((directory / "result.json").read_text())
             identity = result["result_envelope"]["result_identity"]["input_hash"]
             assert identity in (directory / "report.html").read_text()

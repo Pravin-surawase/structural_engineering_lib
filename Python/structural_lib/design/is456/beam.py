@@ -9,8 +9,10 @@ from structural_lib.core.errors import InputContractError, InputIssueV1
 from structural_lib.services.beam_continuous import (
     BeamCantileverCheckResultV1,
     BeamContinuousCheckResultV1,
+    BeamSectionCheckResultV1,
     check_cantilever_beam,
     check_continuous_beam,
+    check_section_beam,
     render_continuous_beam_html,
     render_station_beam_html,
 )
@@ -49,6 +51,9 @@ from structural_lib.services.contracts.beam_continuous import (
     BeamContinuousStationV1,
     BeamContinuousStraightBarsV1,
     BeamContinuousSupportV1,
+    BeamSectionBarV1,
+    BeamSectionCheckRequestV1,
+    BeamSectionFlangeV1,
 )
 from structural_lib.services.contracts.beam_serviceability import (
     BeamAnnexFCrackCheckV1,
@@ -93,6 +98,10 @@ __all__ = [
     "BeamContinuousStraightBarsV1",
     "BeamContinuousSupportV1",
     "BeamDesignAndDetailResultV1",
+    "BeamSectionBarV1",
+    "BeamSectionCheckRequestV1",
+    "BeamSectionCheckResultV1",
+    "BeamSectionFlangeV1",
     "BeamDesignInputV1",
     "BeamDesignResultV1",
     "BeamDetailingOptionsV1",
@@ -126,6 +135,7 @@ __all__ = [
     "check",
     "check_cantilever",
     "check_continuous",
+    "check_section",
     "check_supplied",
     "design",
     "design_and_detail",
@@ -135,8 +145,10 @@ __all__ = [
     "load_json",
     "load_cantilever",
     "load_continuous",
+    "load_section",
     "render_cantilever_html",
     "render_continuous_html",
+    "render_section_html",
     "load_supplied_check",
     "load_supplied_check_json",
 ]
@@ -773,4 +785,116 @@ def render_cantilever_html(result: BeamCantileverCheckResultV1) -> str:
     """
     if not isinstance(result, BeamCantileverCheckResultV1):
         raise TypeError("result must be BeamCantileverCheckResultV1")
+    return render_station_beam_html(result)
+
+
+def load_section(
+    value: Mapping[str, object] | str | bytes | BeamSectionCheckRequestV1,
+) -> BeamSectionCheckRequestV1:
+    """Parse a strict signed beam-section request.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamSectionCheckRequestV1
+        One physical section with actual bar layers and supplied action rows.
+
+    Returns
+    -------
+    BeamSectionCheckRequestV1
+        Validated section geometry and revision-bound actions.
+
+    Raises
+    ------
+    InputContractError
+        Section topology, reinforcement or action inventory is inconsistent.
+
+    Examples
+    --------
+    >>> callable(load_section)
+    True
+
+    Limitations
+    -----------
+    Bars use web-local x and top-down y in mm. The optional monolithic
+    flange has one overhang for an L or two for a T.
+
+    Provenance
+    ----------
+    Uses the strict beam-section request model and canonical input issues.
+    """
+    if isinstance(value, BeamSectionCheckRequestV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamSectionCheckRequestV1, value)
+    return model_validate_or_error(BeamSectionCheckRequestV1, value)
+
+
+def check_section(request: BeamSectionCheckRequestV1) -> BeamSectionCheckResultV1:
+    """Check actual reinforcement at a signed rectangular, T or L section.
+
+    Parameters
+    ----------
+    request : BeamSectionCheckRequestV1
+        Validated section and concurrent actions at one physical station.
+
+    Returns
+    -------
+    BeamSectionCheckResultV1
+        Section resistance, bar strains and governing action rows.
+
+    Raises
+    ------
+    TypeError
+        The request is not a validated section request.
+
+    Examples
+    --------
+    >>> callable(check_section)
+    True
+
+    Limitations
+    -----------
+    Flanges contribute in sagging only. Shear uses the web width.
+    Anchorage, fabrication and serviceability need separate checks.
+
+    Provenance
+    ----------
+    Composes the maintained IS 456 effective width, flexure and shear checks.
+    """
+    return check_section_beam(request)
+
+
+def render_section_html(result: BeamSectionCheckResultV1) -> str:
+    """Render a signed section result without recalculation.
+
+    Parameters
+    ----------
+    result : BeamSectionCheckResultV1
+        A result from :func:`check_section`.
+
+    Returns
+    -------
+    str
+        HTML with the checked actions, bars, layers and input identity.
+
+    Raises
+    ------
+    TypeError
+        The result is not a signed section result.
+
+    Examples
+    --------
+    >>> callable(render_section_html)
+    True
+
+    Limitations
+    -----------
+    The report covers the supplied section. Member outputs are separate.
+
+    Provenance
+    ----------
+    Uses the same result and revisions as the JSON projection.
+    """
+    if not isinstance(result, BeamSectionCheckResultV1):
+        raise TypeError("result must be BeamSectionCheckResultV1")
     return render_station_beam_html(result)

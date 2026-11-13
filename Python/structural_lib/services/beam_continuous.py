@@ -37,6 +37,7 @@ from structural_lib.beam.section_shear import (
     supplied_section_shear_capacity,
 )
 from structural_lib.beam.semantics import EngineeringState, OperationResult
+from structural_lib.codes.is456.beam.flexure import calculate_effective_flange_width
 from structural_lib.core.result_contract import (
     CalculationStatus,
     EngineeringStatus,
@@ -52,6 +53,8 @@ from structural_lib.services.contracts.beam_continuous import (
     BeamContinuousActionV1,
     BeamContinuousCheckRequestV1,
     BeamContinuousStationV1,
+    BeamSectionBarV1,
+    BeamSectionCheckRequestV1,
     _BeamStationCheckRequest,
 )
 
@@ -69,6 +72,11 @@ _CANTILEVER_LIMITATIONS = (
     *_COMMON_LIMITATIONS,
     "The fixed face and both supplied sides of an interior point-load station are physical checks.",
     "The free end has zero moment and shear in the supported profile.",
+)
+_SECTION_LIMITATIONS = (
+    "Checks signed actions at one supplied physical section. Bar coordinates are relative to the web.",
+    "Monolithic T and L flanges participate in compression under sagging only. Shear uses the web width.",
+    "The report preserves each bar and layer. Member-wide continuity, anchorage, fabrication and serviceability require separate checks.",
 )
 _Check = Literal["PASS", "FAIL", "HOLD"]
 _Request = TypeVar("_Request", bound=_BeamStationCheckRequest)
@@ -115,6 +123,8 @@ class _BeamStationCheckResult(Generic[_Request]):
 
     @property
     def _profile(self) -> str:
+        if isinstance(self.request, BeamSectionCheckRequestV1):
+            return "section"
         return (
             "cantilever"
             if isinstance(self.request, BeamCantileverCheckRequestV1)
@@ -123,6 +133,8 @@ class _BeamStationCheckResult(Generic[_Request]):
 
     @property
     def _limitations(self) -> tuple[str, ...]:
+        if self._profile == "section":
+            return _SECTION_LIMITATIONS
         return (
             _CANTILEVER_LIMITATIONS
             if self._profile == "cantilever"
@@ -132,7 +144,9 @@ class _BeamStationCheckResult(Generic[_Request]):
     def to_dict(self) -> dict[str, Any]:
         """Serialize numeric checks, exact rows and the shared result envelope."""
         return {
-            "schema_version": f"is456-{self._profile}-beam-result/v1",
+            "schema_version": self.request.schema_version.replace(
+                "-check/", "-result/"
+            ),
             "request": self.request.model_dump(mode="json"),
             "ultimate_status": self.ultimate_status,
             "serviceability_status": self.serviceability_status,
@@ -164,6 +178,26 @@ class BeamCantileverCheckResultV1(
     _BeamStationCheckResult[BeamCantileverCheckRequestV1]
 ):
     """Revision-bound result for a supplied rectangular cantilever."""
+
+
+@dataclass(frozen=True)
+class BeamSectionCheckResultV1(_BeamStationCheckResult[BeamSectionCheckRequestV1]):
+    """Revision-bound signed checks for an actual physical beam section."""
+
+    @property
+    def effective_flange_width_mm(self) -> float | None:
+        """Return the flange width used in the section check, if evaluated."""
+        sagging = self.flexural_sections.get(Face.BOTTOM)
+        if sagging is None:
+            return None
+        value = sagging.effective_inputs["flange_width_mm"]["value"]
+        return float(value) if value is not None else None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            **super().to_dict(),
+            "effective_flange_width_mm": self.effective_flange_width_mm,
+        }
 
 
 @dataclass(frozen=True)
@@ -218,7 +252,11 @@ def _input_hash(request: _BeamStationCheckRequest) -> str:
 
 
 def _coverage_issues(
-    request: BeamContinuousCheckRequestV1 | BeamCantileverCheckRequestV1,
+    request: (
+        BeamContinuousCheckRequestV1
+        | BeamCantileverCheckRequestV1
+        | BeamSectionCheckRequestV1
+    ),
     stations: dict[str, BeamContinuousStationV1],
 ) -> tuple[list[StructuralIssueV1], list[StructuralIssueV1]]:
     ultimate: list[StructuralIssueV1] = []
@@ -227,6 +265,7 @@ def _coverage_issues(
         (action.combination_id, action.station_id): action for action in request.actions
     }
     continuous = isinstance(request, BeamContinuousCheckRequestV1)
+    section = isinstance(request, BeamSectionCheckRequestV1)
     if isinstance(request, BeamContinuousCheckRequestV1):
         left, middle, right = request.supports
         bounds = (left.centre_mm, right.centre_mm)
@@ -241,9 +280,12 @@ def _coverage_issues(
                 (right.centre_mm, "LEFT"),
             }
         )
-    else:
+    elif isinstance(request, BeamCantileverCheckRequestV1):
         bounds = (0.0, request.free_end_mm)
         required_positions = {(position, "CONTINUOUS") for position in bounds}
+    else:
+        bounds = (0.0, 0.0)
+        required_positions = set()
     complete_spans = False
     for combination in sorted(
         request.combinations, key=lambda item: item.combination_id
@@ -262,6 +304,9 @@ def _coverage_issues(
                     )
                 )
         if not is_ultimate:
+            continue
+        if section:
+            complete_spans = True
             continue
         keys = {(stations[item].x_mm, stations[item].side) for item in needed}
         if isinstance(request, BeamContinuousCheckRequestV1):
@@ -309,7 +354,11 @@ def _coverage_issues(
                 (
                     "Declare a ULS combination with both spans, all support faces and the required centreline sides."
                     if continuous
-                    else "Declare a ULS combination covering the cantilever."
+                    else (
+                        "Declare a ULS combination covering the supplied section."
+                        if section
+                        else "Declare a ULS combination covering the cantilever."
+                    )
                 ),
             )
         )
@@ -353,6 +402,19 @@ def _centreline_issues(
 def _sections(
     request: _BeamStationCheckRequest, bars: tuple[BarPosition, ...]
 ) -> tuple[OperationResult, dict[Face, OperationResult], dict[Face, OperationResult]]:
+    flange = request.flange if isinstance(request, BeamSectionCheckRequestV1) else None
+    flange_width = (
+        calculate_effective_flange_width(
+            bw_mm=request.width_mm,
+            span_mm=flange.zero_moment_distance_mm,
+            df_mm=flange.thickness_mm,
+            flange_overhang_left_mm=flange.left_overhang_mm,
+            flange_overhang_right_mm=flange.right_overhang_mm,
+            beam_type=flange.kind,
+        )
+        if flange
+        else None
+    )
     geometry = evaluate_geometry(
         ReinforcementGeometryRequest(
             request.schema_version,
@@ -368,13 +430,15 @@ def _sections(
         face: flexural_capacity(
             FlexuralCapacityRequest(
                 request.schema_version,
-                SectionKind.RECTANGULAR,
+                SectionKind(flange.kind) if flange else SectionKind.RECTANGULAR,
                 request.width_mm,
                 request.depth_mm,
                 request.fck_nmm2,
                 request.fy_nmm2,
                 bars,
                 face,
+                flange_width_mm=flange_width,
+                flange_thickness_mm=flange.thickness_mm if flange else None,
             )
         )
         for face in Face
@@ -626,6 +690,13 @@ def check_cantilever_beam(
     return _check_station_beam(request)
 
 
+def check_section_beam(request: BeamSectionCheckRequestV1) -> BeamSectionCheckResultV1:
+    """Check a validated physical section against signed supplied actions."""
+    if not isinstance(request, BeamSectionCheckRequestV1):
+        raise TypeError("request must be BeamSectionCheckRequestV1")
+    return _check_station_beam(request)
+
+
 @overload
 def _check_station_beam(
     request: BeamContinuousCheckRequestV1,
@@ -638,9 +709,21 @@ def _check_station_beam(
 ) -> BeamCantileverCheckResultV1: ...
 
 
+@overload
 def _check_station_beam(
-    request: BeamContinuousCheckRequestV1 | BeamCantileverCheckRequestV1,
-) -> BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1:
+    request: BeamSectionCheckRequestV1,
+) -> BeamSectionCheckResultV1: ...
+
+
+def _check_station_beam(
+    request: (
+        BeamContinuousCheckRequestV1
+        | BeamCantileverCheckRequestV1
+        | BeamSectionCheckRequestV1
+    ),
+) -> (
+    BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1 | BeamSectionCheckResultV1
+):
     stale = request.analysis_revision != request.current_analysis_revision
     bars = tuple(
         BarPosition(
@@ -649,6 +732,7 @@ def _check_station_beam(
             bar.x_from_left_mm,
             bar.y_from_top_mm,
             Face(bar.face),
+            bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
         )
         for bar in sorted(request.bars, key=lambda bar: bar.bar_id)
     )
@@ -656,10 +740,11 @@ def _check_station_beam(
     stations = {station.station_id: station for station in request.stations}
     kinds = {item.combination_id: item.kind for item in request.combinations}
     centreline: set[float] = set()
+    faces: dict[float, _SupportFace] = {}
     if isinstance(request, BeamContinuousCheckRequestV1):
         centreline = {support.centre_mm for support in request.supports}
         faces = _support_faces(request)
-    else:
+    elif isinstance(request, BeamCantileverCheckRequestV1):
         faces = {
             0.0: _SupportFace(
                 request.fixed_support_id,
@@ -693,7 +778,7 @@ def _check_station_beam(
     held, service = _coverage_issues(request, stations)
     if isinstance(request, BeamContinuousCheckRequestV1):
         held.extend(_centreline_issues(request, rows))
-    else:
+    elif isinstance(request, BeamCantileverCheckRequestV1):
         for row in rows:
             if row.station.x_mm == request.free_end_mm and (
                 abs(row.action.mu_knm) > 1e-6 or abs(row.action.vu_kn) > 1e-6
@@ -773,11 +858,17 @@ def _check_station_beam(
     )
     if isinstance(request, BeamContinuousCheckRequestV1):
         return BeamContinuousCheckResultV1(request, *fields)
-    return BeamCantileverCheckResultV1(request, *fields)
+    if isinstance(request, BeamCantileverCheckRequestV1):
+        return BeamCantileverCheckResultV1(request, *fields)
+    return BeamSectionCheckResultV1(request, *fields)
 
 
 def render_station_beam_html(
-    result: BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1,
+    result: (
+        BeamContinuousCheckResultV1
+        | BeamCantileverCheckResultV1
+        | BeamSectionCheckResultV1
+    ),
 ) -> str:
     """Render the bound result without performing another design."""
 
@@ -849,6 +940,27 @@ def render_station_beam_html(
     identity = result.result_envelope.result_identity
     request = result.request
     label = f"{result._profile.title()} beam {html.escape(request.member_id)}"
+    geometry_detail = ""
+    if isinstance(result, BeamSectionCheckResultV1):
+        label = f"Beam section {html.escape(request.member_id)}"
+        flange = result.request.flange
+        if flange is not None:
+            geometry_detail = (
+                f"<p>{html.escape(flange.kind)} · "
+                f"left/right overhangs {number(flange.left_overhang_mm)} / "
+                f"{number(flange.right_overhang_mm)} mm · "
+                f"effective flange width {number(result.effective_flange_width_mm)} mm</p>"
+            )
+        geometry_detail += (
+            "<h2>Longitudinal bars</h2><ul>"
+            + "".join(
+                f"<li>{html.escape(bar.bar_id)} · {bar.face} · layer {bar.layer} · "
+                f"Ø{number(bar.diameter_mm)} at ({number(bar.x_from_left_mm)}, "
+                f"{number(bar.y_from_top_mm)}) mm</li>"
+                for bar in sorted(result.request.bars, key=lambda bar: bar.bar_id)
+            )
+            + "</ul>"
+        )
     return f"""<!doctype html>
 <html lang="en"><meta charset="utf-8">
 <title>{label}</title>
@@ -861,6 +973,7 @@ th,td{{border:1px solid #aaa;padding:.35rem;text-align:left}}</style>
 {html.escape(request.current_analysis_revision)} · Reinforcement revision
 {html.escape(request.reinforcement_revision)}</p>
 <p>Source {html.escape(request.source_reference)} · Input identity <code>{identity.input_hash if identity else ""}</code></p>
+{geometry_detail}
 <h2>Section resistance</h2><ul>{sections}</ul>
 <h2>Governing physical rows</h2><ul>{governing}</ul>
 <h2>Concurrent supplied actions</h2>

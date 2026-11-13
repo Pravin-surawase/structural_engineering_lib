@@ -46,6 +46,32 @@ class BeamContinuousBarV1(StrictPublicModel):
     y_from_top_mm: float = Field(gt=0)
 
 
+class BeamSectionBarV1(BeamContinuousBarV1):
+    """Actual bar with a face-local layer numbered outward to inward."""
+
+    layer: int = Field(default=1, ge=1, le=4)
+
+
+class BeamSectionFlangeV1(StrictPublicModel):
+    """Monolithic slab flange with overhangs measured from the web edges."""
+
+    kind: Literal["t_beam", "l_beam"]
+    thickness_mm: float = Field(gt=0, le=1000)
+    left_overhang_mm: float = Field(ge=0, le=10000)
+    right_overhang_mm: float = Field(ge=0, le=10000)
+    zero_moment_distance_mm: float = Field(gt=0, le=30000)
+    monolithic: Literal[True]
+
+    @model_validator(mode="after")
+    def check_topology(self) -> Self:
+        sides = int(self.left_overhang_mm > 0) + int(self.right_overhang_mm > 0)
+        if sides != (2 if self.kind == "t_beam" else 1):
+            raise ValueError(
+                "A T flange needs two overhangs and an L flange needs one."
+            )
+        return self
+
+
 class BeamContinuousStraightBarsV1(StrictPublicModel):
     """Shared, uninterrupted straight extent of the declared bars."""
 
@@ -117,10 +143,12 @@ class _BeamStationCheckRequest(StrictPublicModel):
     def accept_json_arrays(cls, value: object) -> object:
         return _as_tuple(value)
 
-    def _check_bar_geometry(self) -> None:
+    def _check_bar_geometry(self, *, single_layer: bool = True) -> None:
         for face in ("top", "bottom"):
             bars = [bar for bar in self.bars if bar.face == face]
-            if len(bars) < 2 or len({bar.y_from_top_mm for bar in bars}) != 1:
+            if len(bars) < 2:
+                raise ValueError("Provide at least two bars at each physical face.")
+            if single_layer and len({bar.y_from_top_mm for bar in bars}) != 1:
                 raise ValueError(
                     "Provide at least two bars in exactly one layer at each physical face."
                 )
@@ -294,5 +322,48 @@ class BeamCantileverCheckRequestV1(_BeamStationCheckRequest):
                 raise ValueError("A station lies past the declared free end.")
             if station.x_mm in (0, self.free_end_mm) and station.side != "CONTINUOUS":
                 raise ValueError("Fixed and free ends require a continuous station.")
+        self._check_action_inventory(station_ids)
+        return self
+
+
+class BeamSectionCheckRequestV1(_BeamStationCheckRequest):
+    """One physical section with optional monolithic flange and actual layers."""
+
+    schema_version: Literal["is456-beam-section-check/v1"] = (
+        "is456-beam-section-check/v1"
+    )
+    bars: tuple[BeamSectionBarV1, ...] = Field(min_length=4, max_length=40)
+    flange: BeamSectionFlangeV1 | None = None
+    straight_bars: None = None
+
+    @model_validator(mode="after")
+    def check_geometry_and_inventory(self) -> Self:
+        self._check_bar_geometry(single_layer=False)
+        if self.flange is not None and self.flange.thickness_mm >= self.depth_mm:
+            raise ValueError(
+                "Flange thickness must be less than the full section depth."
+            )
+        for face in ("top", "bottom"):
+            layers: dict[int, set[float]] = {}
+            for bar in self.bars:
+                if bar.face == face:
+                    depth = (
+                        bar.y_from_top_mm
+                        if face == "top"
+                        else self.depth_mm - bar.y_from_top_mm
+                    )
+                    layers.setdefault(bar.layer, set()).add(depth)
+            if set(layers) != set(range(1, len(layers) + 1)) or any(
+                len(depths) != 1 for depths in layers.values()
+            ):
+                raise ValueError(
+                    "Face layers must be consecutive and share one depth per layer."
+                )
+            depths = [next(iter(layers[key])) for key in sorted(layers)]
+            if any(a >= b for a, b in zip(depths[:-1], depths[1:], strict=True)):
+                raise ValueError("Number each face's layers from the outside inward.")
+        station_ids, _ = self._check_station_inventory()
+        if len(self.stations) != 1 or self.stations[0].side != "CONTINUOUS":
+            raise ValueError("Supply one physical station for this section check.")
         self._check_action_inventory(station_ids)
         return self

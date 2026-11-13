@@ -221,6 +221,7 @@ _DOCUMENTED_BEAM_OPERATIONS = frozenset(
         "check_supplied",
         "check_cantilever",
         "check_continuous",
+        "check_section",
         "design",
         "design_and_detail",
         "detail",
@@ -229,8 +230,10 @@ _DOCUMENTED_BEAM_OPERATIONS = frozenset(
         "load_supplied_check",
         "load_cantilever",
         "load_continuous",
+        "load_section",
         "render_cantilever_html",
         "render_continuous_html",
+        "render_section_html",
     }
 )
 _TEMPORARY_DOCUMENTATION_DEBT_BASELINE = frozenset(

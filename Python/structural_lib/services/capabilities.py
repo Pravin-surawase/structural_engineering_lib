@@ -131,10 +131,11 @@ _CAPABILITIES = (
             "same explicit serviceability boundary. The separate continuous-beam "
             "Python profile checks signed sagging and hogging, shear, and straight "
             "anchorage against declared concurrent rows for two rectangular spans. "
-            "The cantilever Python profile checks physical stations and straight fixed-face anchorage."
+            "The cantilever Python profile checks physical stations and straight fixed-face anchorage. "
+            "The section Python profile checks signed rectangular, monolithic T and L sections with actual bar layers."
         ),
         held_cases=(
-            "L-beam, flanged hogging, flanged torsion, hollow/box, deep, prestressed, or axially loaded cases are excluded.",
+            "L-beam and flanged hogging checks are available at one supplied Python section. Composed flanged detailing and flanged torsion are outside that profile. Hollow/box, deep, prestressed and axially loaded beam cases are excluded.",
             "The two-span Python profile requires supplied concurrent actions and holds stale or missing rows and anchorage. Serviceability, source-model completeness and fabrication are separate checks.",
             "The cantilever Python profile requires both sides of declared interior discontinuities and a zero-action free end. Serviceability and fabrication remain separate.",
             "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
@@ -164,6 +165,16 @@ _CAPABILITIES = (
                 "Ordinary rectangular cantilever with actual single-layer face bars, signed concurrent rows and straight anchorage at the fixed face.",
                 "docs/cookbook/python/cantilever-beam-check.md",
                 "Python/examples/cantilever_beam_check.py",
+            ),
+            IS456PythonProfile(
+                "is456.beam.section-check/v1",
+                "structural_lib.design.is456.beam",
+                "load_section",
+                "check_section",
+                "is456-beam-section-check/v1",
+                "One signed rectangular, monolithic T or L section with actual single- or multilayer web bars. Flexure uses the active compression zone and shear uses the web.",
+                "docs/cookbook/python/signed-beam-section-check.md",
+                "Python/examples/signed_beam_section_check.py",
             ),
         ),
     ),
