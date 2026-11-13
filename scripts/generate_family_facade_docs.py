@@ -555,6 +555,9 @@ def _beam_reference() -> str:
         "load_continuous",
         "check_continuous",
         "render_continuous_html",
+        "load_cantilever",
+        "check_cantilever",
+        "render_cantilever_html",
     )
     rows: list[str] = []
     sections: list[str] = []
@@ -601,6 +604,7 @@ Source package version: `{PROJECT_VERSION}`
 |---|---|---|---|
 | Required design/detailing | `BeamDesignInputV1` | `BeamDesignResultV1`, `BeamDetailingResultV1`, `BeamDesignAndDetailResultV1`, `BeamBBSResultV1` | `InputContractError` / `input-issue/v1`; calculation errors remain distinct |
 | Two-span supplied actions | `BeamContinuousCheckRequestV1` | `BeamContinuousCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
+| Cantilever supplied actions | `BeamCantileverCheckRequestV1` | `BeamCantileverCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
 | Supplied reinforcement | `BeamSuppliedCheckRequestV2` | `BeamSuppliedCheckResultV2` with `PASS`/`FAIL`/`HOLD` | Same Python issue boundary; REST 422 problem; WebSocket terminal `ERROR` |
 
 The typed request schemas own field type, unit-suffixed name, domain,

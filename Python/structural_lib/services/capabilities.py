@@ -130,11 +130,13 @@ _CAPABILITIES = (
             "flexure with effective-flange-width calculation, web shear, and the "
             "same explicit serviceability boundary. The separate continuous-beam "
             "Python profile checks signed sagging and hogging, shear, and straight "
-            "anchorage against declared concurrent rows for two rectangular spans."
+            "anchorage against declared concurrent rows for two rectangular spans. "
+            "The cantilever Python profile checks physical stations and straight fixed-face anchorage."
         ),
         held_cases=(
             "L-beam, flanged hogging, flanged torsion, hollow/box, deep, prestressed, or axially loaded cases are excluded.",
             "The two-span Python profile requires supplied concurrent actions and holds stale or missing rows and anchorage. Serviceability, source-model completeness and fabrication are separate checks.",
+            "The cantilever Python profile requires both sides of declared interior discontinuities and a zero-action free end. Serviceability and fabrication remain separate.",
             "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
             "Load-envelope generation and completeness validation are excluded; the flanged route accepts only declared supplied factored actions.",
             "Composed flanged detailing remains excluded.",
@@ -152,6 +154,16 @@ _CAPABILITIES = (
                 "Two-span prismatic rectangular beam with actual single-layer face bars, supplied concurrent signed actions and straight support anchorage. Service rows are retained for separate review.",
                 "docs/cookbook/python/continuous-beam-check.md",
                 "Python/examples/continuous_beam_check.py",
+            ),
+            IS456PythonProfile(
+                "is456.beam.cantilever-check/v1",
+                "structural_lib.design.is456.beam",
+                "load_cantilever",
+                "check_cantilever",
+                "is456-cantilever-beam-check/v1",
+                "Ordinary rectangular cantilever with actual single-layer face bars, signed concurrent rows and straight anchorage at the fixed face.",
+                "docs/cookbook/python/cantilever-beam-check.md",
+                "Python/examples/cantilever_beam_check.py",
             ),
         ),
     ),

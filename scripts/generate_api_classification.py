@@ -219,6 +219,7 @@ _DOCUMENTED_BEAM_OPERATIONS = frozenset(
         "bbs",
         "check",
         "check_supplied",
+        "check_cantilever",
         "check_continuous",
         "design",
         "design_and_detail",
@@ -226,7 +227,9 @@ _DOCUMENTED_BEAM_OPERATIONS = frozenset(
         "input",
         "load",
         "load_supplied_check",
+        "load_cantilever",
         "load_continuous",
+        "render_cantilever_html",
         "render_continuous_html",
     }
 )

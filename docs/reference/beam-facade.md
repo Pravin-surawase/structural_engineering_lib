@@ -31,6 +31,9 @@ Source package version: `0.29.0`
 | `load_continuous` | `structural_lib.design.is456.beam.load_continuous(value: 'Mapping[str, object] \| str \| bytes \| BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckRequestV1'` | Parse a strict supplied two-span beam request. |
 | `check_continuous` | `structural_lib.design.is456.beam.check_continuous(request: 'BeamContinuousCheckRequestV1') -> 'BeamContinuousCheckResultV1'` | Check signed flexure, shear and straight anchorage on a two-span beam. |
 | `render_continuous_html` | `structural_lib.design.is456.beam.render_continuous_html(result: 'BeamContinuousCheckResultV1') -> 'str'` | Render the checked rows, governing cases and limits in a review report. |
+| `load_cantilever` | `structural_lib.design.is456.beam.load_cantilever(value: 'Mapping[str, object] \| str \| bytes \| BeamCantileverCheckRequestV1') -> 'BeamCantileverCheckRequestV1'` | Parse a strict supplied-action cantilever request. |
+| `check_cantilever` | `structural_lib.design.is456.beam.check_cantilever(request: 'BeamCantileverCheckRequestV1') -> 'BeamCantileverCheckResultV1'` | Check signed flexure, shear and straight fixed-face anchorage. |
+| `render_cantilever_html` | `structural_lib.design.is456.beam.render_cantilever_html(result: 'BeamCantileverCheckResultV1') -> 'str'` | Render the checked cantilever result and its input identity. |
 
 ## Request, result, and error contracts
 
@@ -38,6 +41,7 @@ Source package version: `0.29.0`
 |---|---|---|---|
 | Required design/detailing | `BeamDesignInputV1` | `BeamDesignResultV1`, `BeamDetailingResultV1`, `BeamDesignAndDetailResultV1`, `BeamBBSResultV1` | `InputContractError` / `input-issue/v1`; calculation errors remain distinct |
 | Two-span supplied actions | `BeamContinuousCheckRequestV1` | `BeamContinuousCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
+| Cantilever supplied actions | `BeamCantileverCheckRequestV1` | `BeamCantileverCheckResultV1` and a bound HTML report | `InputContractError` / `input-issue/v1` |
 | Supplied reinforcement | `BeamSuppliedCheckRequestV2` | `BeamSuppliedCheckResultV2` with `PASS`/`FAIL`/`HOLD` | Same Python issue boundary; REST 422 problem; WebSocket terminal `ERROR` |
 
 The typed request schemas own field type, unit-suffixed name, domain,
@@ -589,3 +593,110 @@ The report preserves the bounded disposition and qualified-review status.
 Provenance
 ----------
 Reads the exact result and input identity without recalculating any row.
+### `load_cantilever`
+
+```python
+load_cantilever(value: 'Mapping[str, object] | str | bytes | BeamCantileverCheckRequestV1') -> 'BeamCantileverCheckRequestV1'
+```
+
+Parse a strict supplied-action cantilever request.
+
+Parameters
+----------
+value : Mapping, JSON str or bytes, or BeamCantileverCheckRequestV1
+    Physical section, fixed-support geometry and revision-bound actions.
+
+Returns
+-------
+BeamCantileverCheckRequestV1
+    A validated request for :func:`check_cantilever`.
+
+Raises
+------
+InputContractError
+    The payload violates the request contract.
+
+Examples
+--------
+>>> callable(load_cantilever)
+True
+
+Limitations
+-----------
+Coordinates are in mm from the fixed face toward the free end. Supply
+actions in kN and kN·m, including both sides of each discontinuity.
+
+Provenance
+----------
+Uses the strict IS 456 cantilever request model and canonical input issues.
+### `check_cantilever`
+
+```python
+check_cantilever(request: 'BeamCantileverCheckRequestV1') -> 'BeamCantileverCheckResultV1'
+```
+
+Check signed flexure, shear and straight fixed-face anchorage.
+
+Parameters
+----------
+request : BeamCantileverCheckRequestV1
+    Validated section, bars and supplied station actions.
+
+Returns
+-------
+BeamCantileverCheckResultV1
+    Checked rows, governing row IDs and revision-bound dispositions.
+
+Raises
+------
+TypeError
+    The request is not a validated cantilever request.
+
+Examples
+--------
+>>> callable(check_cantilever)
+True
+
+Limitations
+-----------
+Ordinary prismatic rectangular section, one bar layer per face and a
+zero-action free end. Serviceability and fabrication need separate checks.
+
+Provenance
+----------
+Composes the maintained IS 456 section, shear and direct anchorage checks.
+### `render_cantilever_html`
+
+```python
+render_cantilever_html(result: 'BeamCantileverCheckResultV1') -> 'str'
+```
+
+Render the checked cantilever result and its input identity.
+
+Parameters
+----------
+result : BeamCantileverCheckResultV1
+    A result from :func:`check_cantilever`.
+
+Returns
+-------
+str
+    Standalone HTML retaining station sides and result dispositions.
+
+Raises
+------
+TypeError
+    The result is not a cantilever check result.
+
+Examples
+--------
+>>> callable(render_cantilever_html)
+True
+
+Limitations
+-----------
+Renders the supplied result without rechecking or creating a schedule.
+
+Provenance
+----------
+Uses the same result and analysis revision as the JSON projection.

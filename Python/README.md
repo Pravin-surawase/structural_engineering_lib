@@ -16,6 +16,8 @@ IS 456 reinforced-concrete design library (Python package).
 
 - Check signed flexure, shear and straight anchorage for supplied concurrent
   actions on an ordinary two-span rectangular beam.
+- Check an ordinary rectangular cantilever at the fixed face, free end and
+  both sides of a supplied point-load station.
 - Check actual short and braced slender rectangular column cages, short tied
   and spiral circular cages, and reinforcement from a finite column catalogue.
 - Check shear, tie zones, development and the admitted contact splices for a

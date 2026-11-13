@@ -7,9 +7,12 @@ from typing import Literal
 
 from structural_lib.core.errors import InputContractError, InputIssueV1
 from structural_lib.services.beam_continuous import (
+    BeamCantileverCheckResultV1,
     BeamContinuousCheckResultV1,
+    check_cantilever_beam,
     check_continuous_beam,
     render_continuous_beam_html,
+    render_station_beam_html,
 )
 from structural_lib.services.canonical_beam import (
     BeamBBSResultV1,
@@ -38,6 +41,7 @@ from structural_lib.services.contracts.beam import (
     RectangularBeamSectionV1,
 )
 from structural_lib.services.contracts.beam_continuous import (
+    BeamCantileverCheckRequestV1,
     BeamContinuousActionV1,
     BeamContinuousBarV1,
     BeamContinuousCheckRequestV1,
@@ -78,6 +82,8 @@ __all__ = [
     "BEAM_FIELD_CONTRACTS",
     "BeamBBSResultV1",
     "BeamCalculationBasisV1",
+    "BeamCantileverCheckRequestV1",
+    "BeamCantileverCheckResultV1",
     "BeamContinuousActionV1",
     "BeamContinuousBarV1",
     "BeamContinuousCheckRequestV1",
@@ -118,6 +124,7 @@ __all__ = [
     "RectangularBeamSectionV1",
     "bbs",
     "check",
+    "check_cantilever",
     "check_continuous",
     "check_supplied",
     "design",
@@ -126,7 +133,9 @@ __all__ = [
     "input",
     "load",
     "load_json",
+    "load_cantilever",
     "load_continuous",
+    "render_cantilever_html",
     "render_continuous_html",
     "load_supplied_check",
     "load_supplied_check_json",
@@ -651,3 +660,117 @@ def bbs(
     """
 
     return generate_bbs(result)
+
+
+def load_cantilever(
+    value: Mapping[str, object] | str | bytes | BeamCantileverCheckRequestV1,
+) -> BeamCantileverCheckRequestV1:
+    """Parse a strict supplied-action cantilever request.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamCantileverCheckRequestV1
+        Physical section, fixed-support geometry and revision-bound actions.
+
+    Returns
+    -------
+    BeamCantileverCheckRequestV1
+        A validated request for :func:`check_cantilever`.
+
+    Raises
+    ------
+    InputContractError
+        The payload violates the request contract.
+
+    Examples
+    --------
+    >>> callable(load_cantilever)
+    True
+
+    Limitations
+    -----------
+    Coordinates are in mm from the fixed face toward the free end. Supply
+    actions in kN and kN·m, including both sides of each discontinuity.
+
+    Provenance
+    ----------
+    Uses the strict IS 456 cantilever request model and canonical input issues.
+    """
+    if isinstance(value, BeamCantileverCheckRequestV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamCantileverCheckRequestV1, value)
+    return model_validate_or_error(BeamCantileverCheckRequestV1, value)
+
+
+def check_cantilever(
+    request: BeamCantileverCheckRequestV1,
+) -> BeamCantileverCheckResultV1:
+    """Check signed flexure, shear and straight fixed-face anchorage.
+
+    Parameters
+    ----------
+    request : BeamCantileverCheckRequestV1
+        Validated section, bars and supplied station actions.
+
+    Returns
+    -------
+    BeamCantileverCheckResultV1
+        Checked rows, governing row IDs and revision-bound dispositions.
+
+    Raises
+    ------
+    TypeError
+        The request is not a validated cantilever request.
+
+    Examples
+    --------
+    >>> callable(check_cantilever)
+    True
+
+    Limitations
+    -----------
+    Ordinary prismatic rectangular section, one bar layer per face and a
+    zero-action free end. Serviceability and fabrication need separate checks.
+
+    Provenance
+    ----------
+    Composes the maintained IS 456 section, shear and direct anchorage checks.
+    """
+    return check_cantilever_beam(request)
+
+
+def render_cantilever_html(result: BeamCantileverCheckResultV1) -> str:
+    """Render the checked cantilever result and its input identity.
+
+    Parameters
+    ----------
+    result : BeamCantileverCheckResultV1
+        A result from :func:`check_cantilever`.
+
+    Returns
+    -------
+    str
+        Standalone HTML retaining station sides and result dispositions.
+
+    Raises
+    ------
+    TypeError
+        The result is not a cantilever check result.
+
+    Examples
+    --------
+    >>> callable(render_cantilever_html)
+    True
+
+    Limitations
+    -----------
+    Renders the supplied result without rechecking or creating a schedule.
+
+    Provenance
+    ----------
+    Uses the same result and analysis revision as the JSON projection.
+    """
+    if not isinstance(result, BeamCantileverCheckResultV1):
+        raise TypeError("result must be BeamCantileverCheckResultV1")
+    return render_station_beam_html(result)

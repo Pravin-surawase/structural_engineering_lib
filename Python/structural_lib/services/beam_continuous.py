@@ -1,4 +1,4 @@
-"""Compose existing IS 456 section and anchorage checks for a supplied two-span beam."""
+"""Compose IS 456 section and anchorage checks for supplied beam stations."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import html
 import json
 import math
 from dataclasses import asdict, dataclass
-from typing import Any, Literal
+from typing import Any, Generic, Literal, TypeVar, overload
 
 from structural_lib.beam.detailing import (
     AnchorageCheckRequest,
@@ -48,19 +48,30 @@ from structural_lib.core.result_contract import (
 )
 from structural_lib.core.version import get_runtime_version
 from structural_lib.services.contracts.beam_continuous import (
+    BeamCantileverCheckRequestV1,
     BeamContinuousActionV1,
     BeamContinuousCheckRequestV1,
     BeamContinuousStationV1,
-    BeamContinuousSupportV1,
+    _BeamStationCheckRequest,
 )
 
-_LIMITATIONS = (
+_COMMON_LIMITATIONS = (
     "Checks only the declared supplied action rows on a prismatic rectangular beam.",
-    "Support centrelines are diagnostic. Physical support faces and span stations govern.",
     "Service deflection, cracking, stability and completeness of the source analysis require separate evidence.",
     "Straight anchorage only. Curtailment, lap splices, seismic detailing and fabrication schedules are outside this check.",
 )
+_CONTINUOUS_LIMITATIONS = (
+    _COMMON_LIMITATIONS[0],
+    "Support centrelines are diagnostic. Physical support faces and span stations govern.",
+    *_COMMON_LIMITATIONS[1:],
+)
+_CANTILEVER_LIMITATIONS = (
+    *_COMMON_LIMITATIONS,
+    "The fixed face and both supplied sides of an interior point-load station are physical checks.",
+    "The free end has zero moment and shear in the supported profile.",
+)
 _Check = Literal["PASS", "FAIL", "HOLD"]
+_Request = TypeVar("_Request", bound=_BeamStationCheckRequest)
 
 
 @dataclass(frozen=True)
@@ -89,10 +100,10 @@ class BeamContinuousRowResultV1:
 
 
 @dataclass(frozen=True)
-class BeamContinuousCheckResultV1:
+class _BeamStationCheckResult(Generic[_Request]):
     """Revision-bound checks and a declared-coverage disposition."""
 
-    request: BeamContinuousCheckRequestV1
+    request: _Request
     ultimate_status: _Check
     serviceability_status: Literal["HOLD", "NOT_EVALUATED"]
     rows: tuple[BeamContinuousRowResultV1, ...]
@@ -102,10 +113,26 @@ class BeamContinuousCheckResultV1:
     governing_rows: dict[str, str]
     result_envelope: StructuralResultEnvelopeV2
 
+    @property
+    def _profile(self) -> str:
+        return (
+            "cantilever"
+            if isinstance(self.request, BeamCantileverCheckRequestV1)
+            else "continuous"
+        )
+
+    @property
+    def _limitations(self) -> tuple[str, ...]:
+        return (
+            _CANTILEVER_LIMITATIONS
+            if self._profile == "cantilever"
+            else _CONTINUOUS_LIMITATIONS
+        )
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize numeric checks, exact rows and the shared result envelope."""
         return {
-            "schema_version": "is456-continuous-beam-result/v1",
+            "schema_version": f"is456-{self._profile}-beam-result/v1",
             "request": self.request.model_dump(mode="json"),
             "ultimate_status": self.ultimate_status,
             "serviceability_status": self.serviceability_status,
@@ -121,13 +148,28 @@ class BeamContinuousCheckResultV1:
             },
             "governing_rows": self.governing_rows,
             "result_envelope": self.result_envelope.to_dict(),
-            "limitations": list(_LIMITATIONS),
+            "limitations": list(self._limitations),
         }
 
 
 @dataclass(frozen=True)
+class BeamContinuousCheckResultV1(
+    _BeamStationCheckResult[BeamContinuousCheckRequestV1]
+):
+    """Revision-bound result for a supplied two-span rectangular beam."""
+
+
+@dataclass(frozen=True)
+class BeamCantileverCheckResultV1(
+    _BeamStationCheckResult[BeamCantileverCheckRequestV1]
+):
+    """Revision-bound result for a supplied rectangular cantilever."""
+
+
+@dataclass(frozen=True)
 class _SupportFace:
-    support: BeamContinuousSupportV1
+    support_id: str
+    support_centre_mm: float
     direction: AnchorageDirection
     location: AnchorageLocation
 
@@ -143,14 +185,22 @@ def _support_faces(request: BeamContinuousCheckRequestV1) -> dict[float, _Suppor
         AnchorageDirection.INCREASING_X,
     )
     return {
-        left.right_face_mm: _SupportFace(left, decreasing, simple),
-        middle.left_face_mm: _SupportFace(middle, increasing, continuous),
-        middle.right_face_mm: _SupportFace(middle, decreasing, continuous),
-        right.left_face_mm: _SupportFace(right, increasing, simple),
+        left.right_face_mm: _SupportFace(
+            left.support_id, left.centre_mm, decreasing, simple
+        ),
+        middle.left_face_mm: _SupportFace(
+            middle.support_id, middle.centre_mm, increasing, continuous
+        ),
+        middle.right_face_mm: _SupportFace(
+            middle.support_id, middle.centre_mm, decreasing, continuous
+        ),
+        right.left_face_mm: _SupportFace(
+            right.support_id, right.centre_mm, increasing, simple
+        ),
     }
 
 
-def _input_hash(request: BeamContinuousCheckRequestV1) -> str:
+def _input_hash(request: _BeamStationCheckRequest) -> str:
     payload = request.model_dump(mode="json")
     for key, identifier in (
         ("bars", "bar_id"),
@@ -168,25 +218,32 @@ def _input_hash(request: BeamContinuousCheckRequestV1) -> str:
 
 
 def _coverage_issues(
-    request: BeamContinuousCheckRequestV1, stations: dict[str, BeamContinuousStationV1]
+    request: BeamContinuousCheckRequestV1 | BeamCantileverCheckRequestV1,
+    stations: dict[str, BeamContinuousStationV1],
 ) -> tuple[list[StructuralIssueV1], list[StructuralIssueV1]]:
     ultimate: list[StructuralIssueV1] = []
     service: list[StructuralIssueV1] = []
     received = {
         (action.combination_id, action.station_id): action for action in request.actions
     }
-    left, middle, right = request.supports
-    required_positions = {
-        (position, "CONTINUOUS") for position in _support_faces(request)
-    }
-    required_positions.update(
-        {
-            (left.centre_mm, "RIGHT"),
-            (middle.centre_mm, "LEFT"),
-            (middle.centre_mm, "RIGHT"),
-            (right.centre_mm, "LEFT"),
+    continuous = isinstance(request, BeamContinuousCheckRequestV1)
+    if isinstance(request, BeamContinuousCheckRequestV1):
+        left, middle, right = request.supports
+        bounds = (left.centre_mm, right.centre_mm)
+        required_positions = {
+            (position, "CONTINUOUS") for position in _support_faces(request)
         }
-    )
+        required_positions.update(
+            {
+                (left.centre_mm, "RIGHT"),
+                (middle.centre_mm, "LEFT"),
+                (middle.centre_mm, "RIGHT"),
+                (right.centre_mm, "LEFT"),
+            }
+        )
+    else:
+        bounds = (0.0, request.free_end_mm)
+        required_positions = {(position, "CONTINUOUS") for position in bounds}
     complete_spans = False
     for combination in sorted(
         request.combinations, key=lambda item: item.combination_id
@@ -207,13 +264,34 @@ def _coverage_issues(
         if not is_ultimate:
             continue
         keys = {(stations[item].x_mm, stations[item].side) for item in needed}
-        left_span = any(left.right_face_mm < x < middle.left_face_mm for x, _ in keys)
-        right_span = any(middle.right_face_mm < x < right.left_face_mm for x, _ in keys)
-        complete_spans |= left_span and right_span and required_positions <= keys
+        if isinstance(request, BeamContinuousCheckRequestV1):
+            left, middle, right = request.supports
+            left_span = any(
+                left.right_face_mm < x < middle.left_face_mm for x, _ in keys
+            )
+            right_span = any(
+                middle.right_face_mm < x < right.left_face_mm for x, _ in keys
+            )
+            complete_spans |= left_span and right_span and required_positions <= keys
+        else:
+            full_span = required_positions <= keys and any(
+                bounds[0] < x < bounds[1] for x, _ in keys
+            )
+            complete_spans |= full_span
+            if not full_span:
+                ultimate.append(
+                    StructuralIssueV1(
+                        "BEAM_MEMBER_COVERAGE_MISSING",
+                        f"combinations.{cid}",
+                        "Declare the fixed face, an interior station and the free end in each ULS combination.",
+                    )
+                )
         discontinuities = {
             x
-            for x, side in keys
-            if side != "CONTINUOUS" and left.centre_mm < x < right.centre_mm
+            for x, side in (
+                keys if continuous else {(s.x_mm, s.side) for s in stations.values()}
+            )
+            if side != "CONTINUOUS" and bounds[0] < x < bounds[1]
         }
         if any(not {(x, "LEFT"), (x, "RIGHT")} <= keys for x in discontinuities):
             ultimate.append(
@@ -228,7 +306,11 @@ def _coverage_issues(
             StructuralIssueV1(
                 "BEAM_MEMBER_COVERAGE_MISSING",
                 "combinations",
-                "Declare a ULS combination with both spans, all support faces and the required centreline sides.",
+                (
+                    "Declare a ULS combination with both spans, all support faces and the required centreline sides."
+                    if continuous
+                    else "Declare a ULS combination covering the cantilever."
+                ),
             )
         )
     return ultimate, service
@@ -269,7 +351,7 @@ def _centreline_issues(
 
 
 def _sections(
-    request: BeamContinuousCheckRequestV1, bars: tuple[BarPosition, ...]
+    request: _BeamStationCheckRequest, bars: tuple[BarPosition, ...]
 ) -> tuple[OperationResult, dict[Face, OperationResult], dict[Face, OperationResult]]:
     geometry = evaluate_geometry(
         ReinforcementGeometryRequest(
@@ -335,7 +417,7 @@ def _flexure_provision_ok(result: OperationResult) -> bool:
 
 
 def _anchor(
-    request: BeamContinuousCheckRequestV1,
+    request: _BeamStationCheckRequest,
     bars: tuple[BarPosition, ...],
     row: BeamContinuousActionV1,
     station: BeamContinuousStationV1,
@@ -349,7 +431,6 @@ def _anchor(
     simple = support_face.location == AnchorageLocation.SIMPLE_SUPPORT
     if simple and (face != Face.BOTTOM or row.vu_kn == 0):
         return None
-    support = support_face.support
     evidence = (
         SimpleSupportAnchorageEvidence(
             moment_capacity_knm * 1e6, abs(row.vu_kn) * 1000, (row.row_id,)
@@ -366,9 +447,9 @@ def _anchor(
             extent.start_mm,
             extent.end_mm,
             station.x_mm,
-            support.support_id,
+            support_face.support_id,
             station.x_mm,
-            support.centre_mm,
+            support_face.support_centre_mm,
             (),
             None,
             DevelopmentLengthRequest(
@@ -396,7 +477,7 @@ def _anchor(
 
 
 def _check_row(
-    request: BeamContinuousCheckRequestV1,
+    request: _BeamStationCheckRequest,
     bars: tuple[BarPosition, ...],
     action: BeamContinuousActionV1,
     station: BeamContinuousStationV1,
@@ -533,6 +614,33 @@ def check_continuous_beam(
     """Check a validated two-span request with exact supplied rows and physical bars."""
     if not isinstance(request, BeamContinuousCheckRequestV1):
         raise TypeError("request must be BeamContinuousCheckRequestV1")
+    return _check_station_beam(request)
+
+
+def check_cantilever_beam(
+    request: BeamCantileverCheckRequestV1,
+) -> BeamCantileverCheckResultV1:
+    """Check a validated cantilever at supplied physical stations."""
+    if not isinstance(request, BeamCantileverCheckRequestV1):
+        raise TypeError("request must be BeamCantileverCheckRequestV1")
+    return _check_station_beam(request)
+
+
+@overload
+def _check_station_beam(
+    request: BeamContinuousCheckRequestV1,
+) -> BeamContinuousCheckResultV1: ...
+
+
+@overload
+def _check_station_beam(
+    request: BeamCantileverCheckRequestV1,
+) -> BeamCantileverCheckResultV1: ...
+
+
+def _check_station_beam(
+    request: BeamContinuousCheckRequestV1 | BeamCantileverCheckRequestV1,
+) -> BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1:
     stale = request.analysis_revision != request.current_analysis_revision
     bars = tuple(
         BarPosition(
@@ -547,8 +655,19 @@ def check_continuous_beam(
     geometry, flexure, shear = (None, {}, {}) if stale else _sections(request, bars)
     stations = {station.station_id: station for station in request.stations}
     kinds = {item.combination_id: item.kind for item in request.combinations}
-    centreline = {support.centre_mm for support in request.supports}
-    faces = _support_faces(request)
+    centreline: set[float] = set()
+    if isinstance(request, BeamContinuousCheckRequestV1):
+        centreline = {support.centre_mm for support in request.supports}
+        faces = _support_faces(request)
+    else:
+        faces = {
+            0.0: _SupportFace(
+                request.fixed_support_id,
+                -request.fixed_support_width_mm / 2,
+                AnchorageDirection.DECREASING_X,
+                AnchorageLocation.DIRECT_SUPPORT,
+            )
+        }
     rows = tuple(
         _check_row(
             request,
@@ -572,7 +691,21 @@ def check_continuous_beam(
         )
     )
     held, service = _coverage_issues(request, stations)
-    held.extend(_centreline_issues(request, rows))
+    if isinstance(request, BeamContinuousCheckRequestV1):
+        held.extend(_centreline_issues(request, rows))
+    else:
+        for row in rows:
+            if row.station.x_mm == request.free_end_mm and (
+                abs(row.action.mu_knm) > 1e-6 or abs(row.action.vu_kn) > 1e-6
+            ):
+                issues = held if row.kind == "ULS" else service
+                issues.append(
+                    StructuralIssueV1(
+                        "BEAM_FREE_END_ACTION_HELD",
+                        f"actions.{row.action.row_id}",
+                        "The supported free end requires zero moment and shear.",
+                    )
+                )
     failed, row_held = _row_issues(rows, faces) if not stale else ([], [])
     if stale:
         held.append(
@@ -622,13 +755,15 @@ def check_continuous_beam(
             request.schema_version,
             get_runtime_version(),
             _input_hash(request),
-            "is456-continuous-beam-supplied-stations/v1",
+            request.schema_version.replace("-check/", "-supplied-stations/"),
         ),
     )
-    return BeamContinuousCheckResultV1(
-        request,
+    serviceability_status: Literal["HOLD", "NOT_EVALUATED"] = (
+        "HOLD" if service else "NOT_EVALUATED"
+    )
+    fields = (
         ultimate_status,
-        "HOLD" if service else "NOT_EVALUATED",
+        serviceability_status,
         rows,
         geometry,
         flexure,
@@ -636,9 +771,14 @@ def check_continuous_beam(
         _governing_rows(rows),
         envelope,
     )
+    if isinstance(request, BeamContinuousCheckRequestV1):
+        return BeamContinuousCheckResultV1(request, *fields)
+    return BeamCantileverCheckResultV1(request, *fields)
 
 
-def render_continuous_beam_html(result: BeamContinuousCheckResultV1) -> str:
+def render_station_beam_html(
+    result: BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1,
+) -> str:
     """Render the bound result without performing another design."""
 
     def number(value: float | None) -> str:
@@ -705,15 +845,16 @@ def render_continuous_beam_html(result: BeamContinuousCheckResultV1) -> str:
         f"<li>{check.title()} · {html.escape(row_id)}</li>"
         for check, row_id in result.governing_rows.items()
     )
-    limits = "".join(f"<li>{html.escape(limit)}</li>" for limit in _LIMITATIONS)
+    limits = "".join(f"<li>{html.escape(limit)}</li>" for limit in result._limitations)
     identity = result.result_envelope.result_identity
     request = result.request
+    label = f"{result._profile.title()} beam {html.escape(request.member_id)}"
     return f"""<!doctype html>
 <html lang="en"><meta charset="utf-8">
-<title>Continuous beam {html.escape(request.member_id)}</title>
+<title>{label}</title>
 <style>body{{font:16px system-ui;margin:2rem}}table{{border-collapse:collapse}}
 th,td{{border:1px solid #aaa;padding:.35rem;text-align:left}}</style>
-<h1>Continuous beam {html.escape(request.member_id)}</h1>
+<h1>{label}</h1>
 <p>Supplied ultimate checks <strong>{result.ultimate_status}</strong> · Serviceability
 <strong>{result.serviceability_status}</strong> · Qualified review required</p>
 <p>Analysis revision {html.escape(request.analysis_revision)} · Current revision
@@ -729,3 +870,8 @@ th,td{{border:1px solid #aaa;padding:.35rem;text-align:left}}</style>
 <th>Section</th><th>Anchorage required / available (mm)</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
 <h2>Issues and held checks</h2><ul>{issues}</ul>
 <h2>Scope</h2><ul>{limits}</ul></html>"""
+
+
+def render_continuous_beam_html(result: BeamContinuousCheckResultV1) -> str:
+    """Render a two-span result without recalculation."""
+    return render_station_beam_html(result)

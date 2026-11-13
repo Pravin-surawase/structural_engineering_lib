@@ -44,6 +44,8 @@ All notable changes to this project will be documented in this file.
 - A two-span rectangular beam check for actual face bars, signed sagging
   and hogging, shear, concurrent combinations and straight anchorage.
   The Python example and HTML report retain governing stations and revisions.
+- A rectangular cantilever check for signed flexure, shear and fixed-face
+  anchorage. The report retains both sides of a point-load station.
 
 ### Fixed
 
