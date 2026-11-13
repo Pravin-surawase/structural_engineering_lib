@@ -187,6 +187,16 @@ _CAPABILITIES = (
                 "Python/examples/cantilever_beam_check.py",
             ),
             IS456PythonProfile(
+                "is456.beam.section-catalogue/v1",
+                "structural_lib.design.is456.beam",
+                "load_section_catalogue",
+                "select_section_catalogue",
+                "is456-beam-section-catalogue-input/v1",
+                "Exhaustive two-layer bottom-bar catalogue on one solid rectangular section with fixed top steel and supplied signed actions.",
+                "docs/cookbook/python/beam-section-catalogue.md",
+                "Python/examples/beam_section_catalogue.py",
+            ),
+            IS456PythonProfile(
                 "is456.beam.section-check/v1",
                 "structural_lib.design.is456.beam",
                 "load_section",

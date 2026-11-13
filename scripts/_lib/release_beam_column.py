@@ -24,6 +24,7 @@ TESTS = tuple(
         "test_cantilever_beam_check",
         "test_continuous_beam_check",
         "test_signed_beam_section_check",
+        "test_beam_section_catalogue",
         "test_layered_column_section",
         "test_beam_section_closure",
         "test_four_corner_column_member",
@@ -60,6 +61,7 @@ EXAMPLES = tuple(
         "cantilever_beam_check",
         "continuous_beam_check",
         "signed_beam_section_check",
+        "beam_section_catalogue",
         "layered_column_section",
         "beam_section_closure",
         "four_corner_column_member",
@@ -94,6 +96,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_beam01_reference.py",
     "docs/verification/check_library_029_beam02_reference.py",
     "docs/verification/check_library_029_beam_sections_reference.py",
+    "docs/verification/check_library_029_flow02_reference.py",
     "docs/verification/check_library_029_sec02_reference.py",
     "docs/verification/check_library_029_sec03_reference.py",
     "docs/verification/check_library_029_serv01_reference.py",
@@ -110,6 +113,7 @@ CHECKERS = tuple(
 BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
 BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.json"
+FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
 SERV01_REFERENCE = "docs/verification/library-029-serv01-beam-service.json"
@@ -134,6 +138,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM01_REFERENCE,
                 repo / BEAM02_REFERENCE,
                 repo / BEAM_SECTION_REFERENCE,
+                repo / FLOW02_REFERENCE,
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
                 repo / SERV01_REFERENCE,
@@ -499,6 +504,24 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             result["envelope"]["result_identity"]["input_hash"]
             in (directory / "report.html").read_text()
         )
+    directory = output / "beam-section-catalogue"
+    stdout = run(
+        "beam-section-catalogue",
+        "Python/examples/beam_section_catalogue.py",
+        "--reference",
+        str(clone / FLOW02_REFERENCE),
+        "--output-dir",
+        str(directory),
+    )
+    result = json.loads(stdout)
+    expected = json.loads((clone / FLOW02_REFERENCE).read_text())["expected"]
+    assert result["envelope"]["engineering_status"] == "PASS"
+    assert result["calculation"]["eligible_ids"] == expected["eligible_ids"]
+    assert result == json.loads((directory / "result.json").read_text())
+    assert (
+        result["envelope"]["result_identity"]["input_hash"]
+        in (directory / "report.html").read_text()
+    )
     for name in (
         "beam_comparator_reference",
         "layered_column_section",

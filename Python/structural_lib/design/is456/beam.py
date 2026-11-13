@@ -6,6 +6,11 @@ from collections.abc import Mapping
 from typing import Literal
 
 from structural_lib.core.errors import InputContractError, InputIssueV1
+from structural_lib.services.beam_catalogue import (
+    BeamSectionCatalogueInputV1,
+    render_section_catalogue_html,
+    select_section_catalogue,
+)
 from structural_lib.services.beam_continuous import (
     BeamCantileverCheckResultV1,
     BeamContinuousCheckResultV1,
@@ -94,6 +99,10 @@ from structural_lib.services.supplied_beam_check import (
 
 __all__ = [
     "BeamActionsV1",
+    "BeamSectionCatalogueInputV1",
+    "load_section_catalogue",
+    "select_section_catalogue",
+    "render_section_catalogue_html",
     "BeamServiceHistoryInputV1",
     "load_finite_service_history",
     "check_finite_service_history",
@@ -996,3 +1005,43 @@ def load_finite_service_history(
     if isinstance(value, (str, bytes)):
         return model_validate_json_or_error(BeamServiceHistoryInputV1, value)
     return model_validate_or_error(BeamServiceHistoryInputV1, value)
+
+
+def load_section_catalogue(
+    value: Mapping[str, object] | str | bytes | BeamSectionCatalogueInputV1,
+) -> BeamSectionCatalogueInputV1:
+    """Load two finite bottom-bar catalogues for a checked rectangular section.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamSectionCatalogueInputV1
+        The fixed section, signed actions and each layer's explicit options.
+
+    Returns
+    -------
+    BeamSectionCatalogueInputV1
+        The validated section catalogue request.
+
+    Raises
+    ------
+    InputContractError
+        The request violates the finite catalogue or section contract.
+
+    Examples
+    --------
+    >>> callable(load_section_catalogue)
+    True
+
+    Limitations
+    -----------
+    Two bottom layers at fixed depths, with fixed top reinforcement.
+
+    Provenance
+    ----------
+    Uses the existing signed section contract and declared bar coordinates.
+    """
+    if isinstance(value, BeamSectionCatalogueInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamSectionCatalogueInputV1, value)
+    return model_validate_or_error(BeamSectionCatalogueInputV1, value)
