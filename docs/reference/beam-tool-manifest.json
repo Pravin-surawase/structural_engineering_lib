@@ -9,7 +9,7 @@
   "schema_version": "1.0",
   "source": {
     "catalog_schema_version": "1.0",
-    "catalog_sha256": "b76cb9ac34420e7d460ae479f6aca40f31f83041470eab73dd00db242679afef",
+    "catalog_sha256": "ba12a6f6975110302858232ec29b669fc2c91ae19a2617147b09452fbd3c8df5",
     "catalog_version": "1.3.0"
   },
   "tools": [

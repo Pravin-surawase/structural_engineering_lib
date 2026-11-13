@@ -337,7 +337,7 @@ _CAPABILITIES = (
                 "load_column_member_detailing",
                 "check_column_member_detailing",
                 "column-member-detailing-input/v1",
-                "Short braced six- and eight-bar tied rectangles with principal-plane shear, tie zones and straight end development. Supported eight-bar contact splices of opposing side midpoints or the C1/C2 corner pair include physical restraint, congestion, report, drawing and BBS checks.",
+                "Short braced six- and eight-bar tied rectangles with principal-plane shear, tie zones and straight end development. Supported six- and eight-bar side-midpoint contact splices and eight-bar C1/C2 corner splices include physical restraint, congestion, report, drawing and BBS checks.",
                 "docs/cookbook/python/column-member-detailing.md",
                 "Python/examples/column_member_detailing.py",
             ),

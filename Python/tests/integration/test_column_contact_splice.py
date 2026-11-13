@@ -112,9 +112,13 @@ def test_contact_splice_reference(case):
         )
         for piece in root.findall(".//svg:line[@data-piece-id]", ns)
     }
-    assert len(elevations) == 10
+    count = len(splice["pieces"])
+    assert count == (
+        8 if case["request"]["reinforcement"]["layout"].startswith("six_bar") else 10
+    )
+    assert len(elevations) == count
     overlap = root.find(".//svg:g[@data-section='overlap']", ns)
-    assert len(overlap.findall("svg:circle", ns)) == 10
+    assert len(overlap.findall("svg:circle", ns)) == count
     mark = "CL" if is_corner else "LX"
     assert overlap.find(f"svg:g[@data-link-mark='{mark}']", ns) is not None
     if is_corner:

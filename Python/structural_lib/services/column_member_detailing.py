@@ -398,7 +398,7 @@ def _check_actions(
                 "COLUMN.LAP_SECTION_STRENGTH",
                 status,
                 path,
-                "Check the applicable eight-bar transfer layouts without crediting both partners.",
+                "Check the applicable transfer layouts without crediting both partners.",
                 "IS 456:2000 Cl. 39.6 and checked contact assembly",
             )
         elif local.engineering_status is not _PASS:
@@ -979,7 +979,7 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             "Checks supplied stations and combinations on the declared tied rectangular member.",
             "Slender detailing uses supplied second-order actions with one principal shear plane per checked row.",
             "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
-            "Straight end projections require separately checked adjoining concrete. An eight-bar physical contact splice supports one side-midpoint or C1/C2 group with straight bars.",
+            "Straight end projections require separately checked adjoining concrete. Physical contact splice supports one admitted six- or eight-bar side-midpoint group or one eight-bar C1/C2 group with straight bars.",
             "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",
         ),
         assumptions=(

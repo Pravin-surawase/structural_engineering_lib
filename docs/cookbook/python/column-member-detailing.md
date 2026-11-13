@@ -212,6 +212,12 @@ python column_member_detailing.py --reference library-029-col07-contact-splice.j
    contains the closed hoop. The checked links supply their own cuts.
    The spliced BBS contains **109 pieces**, **109.963 m** and **124.346 kg**.
 
+The `six_bar_side_splice` case uses the same side-midpoint partners in a
+six-bar cage with the orthogonal midpoints omitted. The single midpoint
+link is replaced by the checked overlap link at nine levels. The schedule
+has 74 pieces and 94.543 kg, and the unrelated bars have 100 mm minimum
+clearance. The `six_bar_short_lap` case fails and withholds the BBS.
+
 The report and elevation identify the individual pieces. Section cuts
 show the bars and link paths below, within and above the lap. Provide the
 fabrication reference for the bend schedule and the interval compression

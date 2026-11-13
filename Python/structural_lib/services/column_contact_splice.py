@@ -112,6 +112,7 @@ def check_contact_splice(
     path = f"laps.{lap.lap_id}.contact_assembly"
     corner = set(lap.bar_ids) == set(_CORNERS)
     pair = _CORNERS if corner else _PAIR
+    six_side = steel.layout == "six_bar_omit_y_face_midpoints" and not corner
 
     def report(code: str, condition: bool, message: str, **values: Any) -> None:
         record(
@@ -124,20 +125,20 @@ def check_contact_splice(
         )
 
     if (
-        steel.layout != "eight_bar"
+        (steel.layout != "eight_bar" and not six_side)
         or set(lap.bar_ids) != set(pair)
         or lap.stress_basis != "compression"
         or dia > 25
         or cage is None
         or hoop is None
-        or len(transverse) != 3
+        or len(transverse) != (2 if six_side else 3)
         or not transverse[0]["stations_mm"]
     ):
         record(
             "COLUMN.LAP_ASSEMBLY_REQUIRED",
             _HOLD,
             path,
-            "This assembly requires one equal-bar compression group up to Ø25 at the opposing side midpoints or C1/C2 corners, with a resolved hoop and two midpoint links.",
+            "This assembly requires one equal-bar compression group up to Ø25, a resolved hoop and the midpoint links for the admitted six- or eight-bar layout.",
             _SOURCE,
         )
         return None
@@ -254,7 +255,8 @@ def check_contact_splice(
         frozenset(link.restrained_bar_ids): link for link in steel.cross_ties
     }
     x_mark = transverse_by_pair[frozenset(_PAIR)].tie_id
-    y_mark = transverse_by_pair[frozenset(_ORTHOGONAL)].tie_id
+    y_tie = transverse_by_pair.get(frozenset(_ORTHOGONAL))
+    y_mark = y_tie.tie_id if y_tie else None
     by_mark = {item["bar_id"]: item for item in transverse}
     dt = hoop.diameter_mm
     corner_gap = None
@@ -345,7 +347,9 @@ def check_contact_splice(
                 tail_mm=tail,
                 mirror=corner and label == "upper",
             ),
-            y_mark: return_link(
+        }
+        if y_mark is not None:
+            links[y_mark] = return_link(
                 axis="y",
                 left_mm=offset,
                 right_mm=g.D_mm - offset,
@@ -353,8 +357,7 @@ def check_contact_splice(
                 far_mm=g.b_mm / 2,
                 radius_mm=r,
                 tail_mm=tail,
-            ),
-        }
+            )
         if corner:
             links[x_mark] = return_link(
                 axis="x",
@@ -443,9 +446,10 @@ def check_contact_splice(
     resolved = [transverse[0]]
     placements = [
         (support_mark, "lower", [*before, *after]),
-        (y_mark, "lower", by_mark[y_mark]["stations_mm"]),
         (assembly.lap_link_id, "overlap", within),
     ]
+    if y_mark is not None:
+        placements.insert(1, (y_mark, "lower", by_mark[y_mark]["stations_mm"]))
     if corner:
         placements.append((x_mark, "lower", by_mark[x_mark]["stations_mm"]))
     for mark, label, levels in placements:
