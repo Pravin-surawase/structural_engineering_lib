@@ -170,6 +170,42 @@ def requests():
     cases["lap_too_many"]["laps"][0]["bar_ids"] += ["C3", "C4", "M_TOP"]
     cases["missing_cut_register"]["transverse_cut_schedule"] = None
     cases["stale_cut_register"]["transverse_cut_schedule"]["detailing_revision"] = "D0"
+    for axis, keep in (("x", "YT"), ("y", "XT")):
+        case_id = f"six_bar_omit_{axis}_face_midpoints"
+        candidate = deepcopy(base)
+        candidate["identity"]["case_id"] = case_id
+        candidate["reinforcement"]["layout"] = case_id
+        candidate["reinforcement"]["cross_ties"] = [
+            link
+            for link in base["reinforcement"]["cross_ties"]
+            if link["tie_id"] == keep
+        ]
+        candidate["transverse_cut_schedule"]["cut_lengths_mm"] = {
+            mark: cut
+            for mark, cut in base["transverse_cut_schedule"]["cut_lengths_mm"].items()
+            if mark in ("H", keep)
+        }
+        # Use the same two-plane shear controls, with modest compression
+        # and bending inside the frozen COL02 six-bar resistance domain.
+        for action in candidate["actions"]:
+            action["mx_knm"] *= 0.6
+            action["my_knm"] *= 0.6
+        cases[case_id] = candidate
+
+    cases["six_bar_unresolved_lap"] = deepcopy(cases["six_bar_omit_x_face_midpoints"])
+    cases["six_bar_unresolved_lap"]["identity"]["case_id"] = "six_bar_unresolved_lap"
+    cases["six_bar_unresolved_lap"]["laps"] = deepcopy(
+        cases["lap_numeric_pass"]["laps"]
+    )
+    cases["six_bar_revised_pitch"] = deepcopy(cases["six_bar_omit_y_face_midpoints"])
+    revised = cases["six_bar_revised_pitch"]
+    revised["identity"]["case_id"] = "six_bar_revised_pitch"
+    revised["tie_zones"][1]["pitch_mm"] = 120
+    revised["basis"]["detailing_revision"] = "D2"
+    revised["transverse_cut_schedule"]["detailing_revision"] = "D2"
+    cases["six_bar_stale_cut"] = deepcopy(revised)
+    cases["six_bar_stale_cut"]["identity"]["case_id"] = "six_bar_stale_cut"
+    cases["six_bar_stale_cut"]["transverse_cut_schedule"]["detailing_revision"] = "D1"
     return cases
 
 
@@ -204,6 +240,11 @@ def expected(name, request):
         "lap_too_many": ("FAIL", "COLUMN.LAP_BAR_FRACTION"),
         "missing_cut_register": ("HOLD", "COLUMN.TRANSVERSE_CUT_BASIS"),
         "stale_cut_register": ("HOLD", "COLUMN.TRANSVERSE_CUT_BASIS"),
+        "six_bar_omit_x_face_midpoints": ("PASS", None),
+        "six_bar_omit_y_face_midpoints": ("PASS", None),
+        "six_bar_unresolved_lap": ("HOLD", "COLUMN.LAP_ASSEMBLY_REQUIRED"),
+        "six_bar_revised_pitch": ("PASS", None),
+        "six_bar_stale_cut": ("HOLD", "COLUMN.TRANSVERSE_CUT_BASIS"),
     }
     status, issue = statuses[name]
     result = {"status": status, "issue": issue, "bbs_available": status == "PASS"}
@@ -238,7 +279,13 @@ def expected(name, request):
             }
         )
     if status == "PASS":
-        quantities = [(8, 20, 4700), (25, 8, 1220), (25, 8, 365), (25, 8, 465)]
+        longitudinal_count = (
+            8 if request["reinforcement"]["layout"] == "eight_bar" else 6
+        )
+        cuts = request["transverse_cut_schedule"]["cut_lengths_mm"]
+        quantities = [(longitudinal_count, 20, 4700)] + [
+            (len(stations), 8, cut) for cut in cuts.values()
+        ]
         result["bbs_quantity"] = sum(q for q, _, _ in quantities)
         result["bbs_length_mm"] = sum(q * cut for q, _, cut in quantities)
         result["bbs_weight_kg"] = sum(
