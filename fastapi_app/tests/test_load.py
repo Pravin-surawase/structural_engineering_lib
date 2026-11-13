@@ -38,8 +38,9 @@ REQUEST_TIMEOUT_SECONDS = 2.5
 
 @pytest.fixture
 def client():
-    """Create test client."""
-    return TestClient(app)
+    """Reuse one ASGI event loop for all requests in a load test."""
+    with TestClient(app) as test_client:
+        yield test_client
 
 
 @pytest.fixture
