@@ -81,8 +81,8 @@
           "first_station_mm": 75,
           "last_station_mm": 2925,
           "end_clearance_mm": 30,
-          "start_anchor_pitch_mm": 0,
-          "end_anchor_pitch_mm": 0,
+          "start_anchor_pitch_mm": null,
+          "end_anchor_pitch_mm": null,
           "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
         },
         "transverse_cut_schedule": {
@@ -269,8 +269,8 @@
           "first_station_mm": 75,
           "last_station_mm": 2925,
           "end_clearance_mm": 30,
-          "start_anchor_pitch_mm": 0,
-          "end_anchor_pitch_mm": 0,
+          "start_anchor_pitch_mm": null,
+          "end_anchor_pitch_mm": null,
           "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
         },
         "transverse_cut_schedule": {
@@ -534,8 +534,8 @@
           "first_station_mm": 75,
           "last_station_mm": 2925,
           "end_clearance_mm": 30,
-          "start_anchor_pitch_mm": 0,
-          "end_anchor_pitch_mm": 0,
+          "start_anchor_pitch_mm": null,
+          "end_anchor_pitch_mm": null,
           "source_reference": "Ordinary ring/spiral layout and end-turn fabrication worksheet"
         },
         "transverse_cut_schedule": {

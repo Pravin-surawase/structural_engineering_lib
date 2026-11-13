@@ -33,6 +33,7 @@ TESTS = tuple(
         "test_positioned_rectangular_column_member",
         "test_slender_rectangular_column_member",
         "test_circular_column_member",
+        "test_circular_column_detailing",
         "test_column_candidate_search",
         "test_column_interaction_slice",
         "test_column_service_section",
@@ -72,6 +73,7 @@ EXAMPLES = tuple(
         "positioned_rectangular_column_member",
         "slender_rectangular_column_member",
         "circular_column_member",
+        "circular_column_detailing",
         "column_catalogue_selection",
         "column_interaction_slice",
         "column_service_section",
@@ -113,6 +115,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col06_reference.py",
     "docs/verification/check_library_029_col07_reference.py",
     "docs/verification/check_library_029_col07_mixed_reference.py",
+    "docs/verification/check_library_029_col07_circular_reference.py",
     "docs/verification/check_library_029_col07_splice_reference.py",
     "docs/verification/check_library_029_col07_corner_reference.py",
 )
@@ -132,6 +135,7 @@ COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
 COL06_REFERENCE = "docs/verification/library-029-col06-column-catalogue.json"
 COL07_REFERENCE = "docs/verification/library-029-col07-column-member.json"
 COL07_MIXED_REFERENCE = "docs/verification/library-029-col07-mixed-member.json"
+COL07_CIRCULAR_REFERENCE = "docs/verification/library-029-col07-circular-member.json"
 COL07_SPLICE_REFERENCE = "docs/verification/library-029-col07-contact-splice.json"
 COL07_CORNER_REFERENCE = "docs/verification/library-029-col07-corner-splice.json"
 
@@ -160,6 +164,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / COL06_REFERENCE,
                 repo / COL07_REFERENCE,
                 repo / COL07_MIXED_REFERENCE,
+                repo / COL07_CIRCULAR_REFERENCE,
                 repo / COL07_SPLICE_REFERENCE,
                 repo / COL07_CORNER_REFERENCE,
                 repo / "docs/verification/replay_library_027_members.py",
@@ -762,6 +767,32 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             )
             if bbs.is_file():
                 assert input_hash in bbs.read_text()
+    for case, entry in json.loads((clone / COL07_CIRCULAR_REFERENCE).read_text())[
+        "cases"
+    ].items():
+        label = f"circular-column-detailing-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/circular_column_detailing.py",
+            "--reference",
+            str(clone / COL07_CIRCULAR_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        status = entry["expected"]["status"]
+        assert result["envelope"]["engineering_status"] == status
+        assert result == json.loads((directory / "result.json").read_text())
+        input_hash = result["envelope"]["result_identity"]["input_hash"]
+        assert input_hash in (directory / "report.html").read_text()
+        assert (directory / "member.svg").is_file() == (status == "PASS")
+        assert (directory / "bbs.csv").is_file() == (status == "PASS")
+        if status == "PASS":
+            assert input_hash in (directory / "member.svg").read_text()
+            assert input_hash in (directory / "bbs.csv").read_text()
     for name, args in (("d2-hold", ()), ("d3-pass", ("--with-serviceability",))):
         run(
             name,

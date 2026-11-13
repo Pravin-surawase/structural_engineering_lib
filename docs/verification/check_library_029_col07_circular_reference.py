@@ -21,7 +21,7 @@ def fixture():
     ]["continuous"]["request"]
     cases = {}
     for name, first, last, start_pitch, end_pitch in (
-        ("tied", 75, 2925, 0, 0),
+        ("tied", 75, 2925, None, None),
         ("spiral", 90, 2910, 15, 15),
     ):
         member = source[name]["request"]

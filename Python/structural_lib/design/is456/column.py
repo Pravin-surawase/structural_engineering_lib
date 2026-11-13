@@ -29,6 +29,13 @@ from structural_lib.services.column_candidate_search import (
 from structural_lib.services.column_candidate_search import (
     select_column_from_catalogue as _select_column_from_catalogue,
 )
+from structural_lib.services.column_circular_detailing import (
+    CircularColumnDetailingInputV1,
+    check_circular_column_detailing,
+    render_circular_detailing_bbs_csv,
+    render_circular_detailing_html,
+    render_circular_detailing_svg,
+)
 from structural_lib.services.column_circular_member import (
     check_circular_member as _check_circular_member,
 )
@@ -128,6 +135,12 @@ from structural_lib.services.contracts.family_f1 import (
 
 __all__ = [
     "ColumnInteractionInputV1",
+    "CircularColumnDetailingInputV1",
+    "load_circular_column_detailing",
+    "check_circular_column_detailing",
+    "render_circular_detailing_bbs_csv",
+    "render_circular_detailing_html",
+    "render_circular_detailing_svg",
     "ColumnServiceSectionInputV1",
     "load_service_section",
     "check_service_section",
@@ -1650,3 +1663,42 @@ def load_positioned_column_member_detailing(
             PositionedColumnMemberDetailingInputV1, value
         )
     return model_validate_or_error(PositionedColumnMemberDetailingInputV1, value)
+
+
+def load_circular_column_detailing(
+    value: Mapping[str, object] | str | bytes | CircularColumnDetailingInputV1,
+) -> CircularColumnDetailingInputV1:
+    """Load the circular cage, supplied actions and full member placement.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or CircularColumnDetailingInputV1
+        Actual ring or spiral, station actions, end projections and cut basis.
+
+    Returns
+    -------
+    CircularColumnDetailingInputV1
+        The validated circular member detailing request.
+
+    Raises
+    ------
+    InputContractError
+        The cage or member evidence violates the request contract.
+
+    Examples
+    --------
+    See the circular member detailing example.
+
+    Limitations
+    -----------
+    Short braced circular cages with continuous straight bars.
+
+    Provenance
+    ----------
+    Uses the COL05 circular cage and checked member placement contract.
+    """
+    if isinstance(value, CircularColumnDetailingInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(CircularColumnDetailingInputV1, value)
+    return model_validate_or_error(CircularColumnDetailingInputV1, value)

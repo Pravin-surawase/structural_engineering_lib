@@ -37,13 +37,19 @@ def render_column_member_bbs_csv(result: Result) -> str | None:
     bbs = result.calculation["bbs"]
     if bbs is None:
         return None
+    return _schedule_csv(
+        bbs["rows"],
+        {
+            "member_id": request.identity.member_id,
+            "analysis_revision": request.basis.analysis_revision,
+            "detailing_revision": request.basis.detailing_revision,
+            "input_hash": input_hash,
+        },
+    )
+
+
+def _schedule_csv(rows: list[dict[str, Any]], metadata: dict[str, str | None]) -> str:
     out = StringIO()
-    metadata = {
-        "member_id": request.identity.member_id,
-        "analysis_revision": request.basis.analysis_revision,
-        "detailing_revision": request.basis.detailing_revision,
-        "input_hash": input_hash,
-    }
     fields = (
         "bar_id",
         "role",
@@ -56,7 +62,7 @@ def render_column_member_bbs_csv(result: Result) -> str | None:
     )
     writer = csv.DictWriter(out, fieldnames=[*metadata, *fields], lineterminator="\n")
     writer.writeheader()
-    for row in bbs["rows"]:
+    for row in rows:
         values = {**metadata, **row}
         writer.writerow(
             {

@@ -242,6 +242,16 @@ _CAPABILITIES = (
         qualified_review_required=True,
         python_profiles=(
             IS456PythonProfile(
+                "is456.column.circular-member-detailing/v1",
+                "structural_lib.design.is456.column",
+                "load_circular_column_detailing",
+                "check_circular_column_detailing",
+                "column-circular-member-detailing-input/v1",
+                "Short tied and spiral circular members with continuous bars, zero supplied shear, checked end development and eligible BBS.",
+                "docs/cookbook/python/column-circular-member-detailing.md",
+                "Python/examples/circular_column_detailing.py",
+            ),
+            IS456PythonProfile(
                 "is456.column.service-section/v1",
                 "structural_lib.design.is456.column",
                 "load_service_section",
