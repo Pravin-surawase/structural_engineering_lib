@@ -20,6 +20,7 @@ TESTS = tuple(
     for name in (
         "test_beam_comparator_example",
         "test_beam_instantaneous_service",
+        "test_beam_finite_service_history",
         "test_cantilever_beam_check",
         "test_continuous_beam_check",
         "test_signed_beam_section_check",
@@ -55,6 +56,7 @@ EXAMPLES = tuple(
     for name in (
         "beam_comparator_reference",
         "beam_instantaneous_service",
+        "beam_finite_service_history",
         "cantilever_beam_check",
         "continuous_beam_check",
         "signed_beam_section_check",
@@ -95,6 +97,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_sec02_reference.py",
     "docs/verification/check_library_029_sec03_reference.py",
     "docs/verification/check_library_029_serv01_reference.py",
+    "docs/verification/check_library_029_serv02_reference.py",
     "docs/verification/check_library_029_col02_reference.py",
     "docs/verification/check_library_029_col03_reference.py",
     "docs/verification/check_library_029_col04_reference.py",
@@ -110,6 +113,7 @@ BEAM_SECTION_REFERENCE = "docs/verification/library-029-beam03-beam04-sections.j
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
 SERV01_REFERENCE = "docs/verification/library-029-serv01-beam-service.json"
+SERV02_REFERENCE = "docs/verification/library-029-serv02-beam-history.json"
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
@@ -133,6 +137,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
                 repo / SERV01_REFERENCE,
+                repo / SERV02_REFERENCE,
                 repo / COL03_REFERENCE,
                 repo / COL04_REFERENCE,
                 repo / COL05_REFERENCE,
@@ -467,6 +472,28 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         )
         assert result["envelope"]["engineering_status"] == expected
         assert result["calculation"]["long_term_status"] == "HOLD"
+        assert result == json.loads((directory / "result.json").read_text())
+        assert (
+            result["envelope"]["result_identity"]["input_hash"]
+            in (directory / "report.html").read_text()
+        )
+    for case, entry in json.loads((clone / SERV02_REFERENCE).read_text())[
+        "cases"
+    ].items():
+        label = f"beam-service-history-{case}"
+        directory = output / label
+        stdout = run(
+            label,
+            "Python/examples/beam_finite_service_history.py",
+            "--reference",
+            str(clone / SERV02_REFERENCE),
+            "--case",
+            case,
+            "--output-dir",
+            str(directory),
+        )
+        result = json.loads(stdout)
+        assert result["envelope"]["engineering_status"] == entry["status"]
         assert result == json.loads((directory / "result.json").read_text())
         assert (
             result["envelope"]["result_identity"]["input_hash"]

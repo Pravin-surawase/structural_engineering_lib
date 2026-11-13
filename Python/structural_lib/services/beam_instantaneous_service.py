@@ -74,12 +74,10 @@ class BeamInstantaneousLoadV1(StrictPublicModel):
     midpoint_load_kn: float = Field(ge=0, le=2000)
 
 
-class BeamInstantaneousServiceInputV1(StrictPublicModel):
-    """Actual reinforcement and limits for a bounded instantaneous service check."""
+class _BeamServiceInput(StrictPublicModel):
+    """Shared physical member, current service loads and review limits."""
 
-    schema_version: Literal["is456-beam-instantaneous-service-input/v1"] = (
-        "is456-beam-instantaneous-service-input/v1"
-    )
+    schema_version: str
     identity: FamilyIdentityV1
     member: Annotated[
         BeamContinuousCheckRequestV1 | BeamSectionCheckRequestV1,
@@ -96,6 +94,29 @@ class BeamInstantaneousServiceInputV1(StrictPublicModel):
         if self.identity.member_id != self.member.member_id:
             raise ValueError("The service and physical member identities must agree.")
         return self
+
+
+class BeamInstantaneousServiceInputV1(_BeamServiceInput):
+    """Actual reinforcement and limits for a bounded instantaneous service check."""
+
+    schema_version: Literal["is456-beam-instantaneous-service-input/v1"] = (
+        "is456-beam-instantaneous-service-input/v1"
+    )
+
+
+def _service_bars(request: _BeamServiceInput) -> tuple[BarPosition, ...]:
+    member = request.member
+    return tuple(
+        BarPosition(
+            bar.bar_id,
+            bar.diameter_mm,
+            bar.x_from_left_mm,
+            bar.y_from_top_mm,
+            Face(bar.face),
+            bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
+        )
+        for bar in member.bars
+    )
 
 
 def _same_faces(bars: tuple[BarPosition, ...], depth: float) -> bool:
@@ -120,7 +141,7 @@ def _same_faces(bars: tuple[BarPosition, ...], depth: float) -> bool:
 
 
 def _service_domain(
-    request: BeamInstantaneousServiceInputV1, bars: tuple[BarPosition, ...]
+    request: _BeamServiceInput, bars: tuple[BarPosition, ...]
 ) -> StructuralIssueV1 | None:
     member, load = request.member, request.service_load
     if load is None:
@@ -204,7 +225,7 @@ def _service_domain(
 
 
 def _analyze_line(
-    request: BeamInstantaneousServiceInputV1, ec: float, inertia: float
+    request: _BeamServiceInput, ec: float, inertia: float
 ) -> OperationResult:
     member, load = request.member, request.service_load
     assert load is not None
@@ -246,8 +267,68 @@ def _analyze_line(
     )
 
 
+def _face_crack(
+    request: _BeamServiceInput,
+    bars: tuple[BarPosition, ...],
+    station_id: str,
+    face: Face,
+    axis: float,
+    stress: float,
+    surface_strain: float,
+) -> OperationResult:
+    member, load = request.member, request.service_load
+    assert load is not None
+    b, depth = member.width_mm, member.depth_mm
+    # With a common outer layer the furthest face point from an outer bar
+    # is an edge or a midpoint of the gap between adjacent bar centres.
+    outer = sorted(
+        bar.x_from_left_mm for bar in bars if bar.face is face and bar.layer == 1
+    )
+    surface_points = [
+        0.0,
+        b,
+        *((a + c) / 2 for a, c in zip(outer[:-1], outer[1:], strict=True)),
+    ]
+    checks = tuple(
+        check_crack_width(
+            CrackWidthCheckRequest(
+                WORKFLOW,
+                member.member_id,
+                station_id,
+                f"{load.combination_id}/{station_id}",
+                member.reinforcement_revision,
+                b,
+                depth,
+                axis,
+                face,
+                bars,
+                surface_x,
+                stress,
+                member.fy_nmm2,
+                200000,
+                surface_strain,
+                CrackWidthLimitRequest(
+                    WORKFLOW,
+                    ExposureClass(request.exposure),
+                    False,
+                    LimitSource.SUPPLIED,
+                    supplied_limit_mm=request.crack_width_limit_mm,
+                ),
+            )
+        )
+        for surface_x in surface_points
+    )
+    return max(
+        checks,
+        key=lambda item: (
+            item.execution is not ExecutionState.COMPLETED,
+            item.outputs.get("calculated_crack_width_mm", 0),
+        ),
+    )
+
+
 def _section_state(
-    request: BeamInstantaneousServiceInputV1,
+    request: _BeamServiceInput,
     bars: tuple[BarPosition, ...],
     ec: float,
     mcr: float,
@@ -280,54 +361,13 @@ def _section_state(
         }
         for bar, (y, _) in zip(bars, layers, strict=True)
     ]
-    # With a common outer layer the furthest face point from an outer bar
-    # is an edge or a midpoint of the gap between adjacent bar centres.
-    outer = sorted(
-        bar.x_from_left_mm for bar in bars if bar.face is face and bar.layer == 1
+    crack = (
+        _face_crack(
+            request, bars, station_id, face, axis, stress, curvature * (depth - axis)
+        )
+        if abs(moment) > mcr
+        else None
     )
-    surface_points = [
-        0.0,
-        b,
-        *((a + c) / 2 for a, c in zip(outer[:-1], outer[1:], strict=True)),
-    ]
-    crack = None
-    if abs(moment) > mcr:
-        checks = tuple(
-            check_crack_width(
-                CrackWidthCheckRequest(
-                    WORKFLOW,
-                    member.member_id,
-                    station_id,
-                    f"{load.combination_id}/{station_id}",
-                    member.reinforcement_revision,
-                    b,
-                    depth,
-                    axis,
-                    face,
-                    bars,
-                    surface_x,
-                    stress,
-                    member.fy_nmm2,
-                    200000,
-                    curvature * (depth - axis),
-                    CrackWidthLimitRequest(
-                        WORKFLOW,
-                        ExposureClass(request.exposure),
-                        False,
-                        LimitSource.SUPPLIED,
-                        supplied_limit_mm=request.crack_width_limit_mm,
-                    ),
-                )
-            )
-            for surface_x in surface_points
-        )
-        crack = max(
-            checks,
-            key=lambda item: (
-                item.execution is not ExecutionState.COMPLETED,
-                item.outputs.get("calculated_crack_width_mm", 0),
-            ),
-        )
     return {
         "station_id": station_id,
         "moment_knm": moment,
@@ -376,18 +416,14 @@ def check_instantaneous_service(
     Euler-Bernoulli stiffness, transformed cracked section and IS 456 Annex F.
     """
     require_request_type(request, BeamInstantaneousServiceInputV1)
+    return _evaluate_instantaneous_service(request)
+
+
+def _evaluate_instantaneous_service(
+    request: _BeamServiceInput,
+) -> CanonicalFamilyResultV1[dict[str, Any]]:
     member = request.member
-    bars = tuple(
-        BarPosition(
-            bar.bar_id,
-            bar.diameter_mm,
-            bar.x_from_left_mm,
-            bar.y_from_top_mm,
-            Face(bar.face),
-            bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
-        )
-        for bar in member.bars
-    )
+    bars = _service_bars(request)
     issue = _service_domain(request, bars)
     status = EngineeringStatus.HOLD
     data: dict[str, Any] = {"instantaneous": None, "long_term_status": "HOLD"}
@@ -505,7 +541,7 @@ def _critical_response(
 
 
 def _check_response(
-    request: BeamInstantaneousServiceInputV1,
+    request: _BeamServiceInput,
     bars: tuple[BarPosition, ...],
 ) -> tuple[EngineeringStatus, StructuralIssueV1 | None, dict[str, Any] | None]:
     member = request.member

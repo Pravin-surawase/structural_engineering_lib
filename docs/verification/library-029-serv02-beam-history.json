@@ -201,6 +201,200 @@
       },
       "status": "PASS"
     },
+    "tight_crack_limit": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "SERV02-tight-crack-limit",
+          "member_id": "B05"
+        },
+        "member": {
+          "member_id": "B05",
+          "analysis_revision": "B03-A1",
+          "current_analysis_revision": "B03-A1",
+          "reinforcement_revision": "B03-R1",
+          "source_reference": "BEAM04 multilayer reference",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 25,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 25,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 25,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 25,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 25,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-3",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 25,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "SECTION",
+              "x_mm": 0,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "SAG",
+              "kind": "ULS",
+              "required_station_ids": [
+                "SECTION"
+              ]
+            },
+            {
+              "combination_id": "HOG",
+              "kind": "ULS",
+              "required_station_ids": [
+                "SECTION"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "SAG:SECTION",
+              "combination_id": "SAG",
+              "station_id": "SECTION",
+              "mu_knm": 200,
+              "vu_kn": 110
+            },
+            {
+              "row_id": "HOG:SECTION",
+              "combination_id": "HOG",
+              "station_id": "SECTION",
+              "mu_knm": -200,
+              "vu_kn": 110
+            }
+          ],
+          "schema_version": "is456-beam-section-check/v1"
+        },
+        "span_mm": 3000,
+        "service_load": {
+          "combination_id": "SERV01-SLS",
+          "analysis_revision": "B03-A1",
+          "reinforcement_revision": "B03-R1",
+          "source_reference": "Independent symmetric service loading worksheet",
+          "uniform_load_kn_per_m": 106.66666666666667,
+          "midpoint_load_kn": 0.0
+        },
+        "exposure": "mild",
+        "instantaneous_deflection_limit_mm": 12,
+        "crack_width_limit_mm": 0.16,
+        "history": {
+          "sustained_load": {
+            "combination_id": "SERV02-SUSTAINED",
+            "analysis_revision": "B03-A1",
+            "reinforcement_revision": "B03-R1",
+            "source_reference": "Independent symmetric service loading worksheet",
+            "uniform_load_kn_per_m": 64,
+            "midpoint_load_kn": 0.0
+          },
+          "loading_age_days": 28,
+          "at_finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "at_assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 240,
+          "finish_added_load_kn_per_m": 0,
+          "source_reference": "SERV02 example input worksheet: prescribed finite-age coefficients and strains, given for replay",
+          "bending_basis": "downward_gravity"
+        }
+      },
+      "expected": {
+        "initial_total_mm": 1.5476116659569905,
+        "initial_sustained_mm": 0.9285669995741943,
+        "at_finishes": {
+          "concrete_modulus_nmm2": 17116.32992203644,
+          "neutral_axis_mm": 226.95295844047752,
+          "cracked_inertia_mm4": 3701237364.581322,
+          "sustained_deflection_mm": 1.0654821686863876,
+          "shrinkage_deflection_mm": 0.1364063081442174,
+          "total_deflection_mm": 1.201888476830605
+        },
+        "at_assessment": {
+          "concrete_modulus_nmm2": 12448.23994329923,
+          "neutral_axis_mm": 249.23428881517333,
+          "cracked_inertia_mm4": 4593594001.7034235,
+          "sustained_deflection_mm": 1.1804380877566365,
+          "shrinkage_deflection_mm": 0.3000938779172782,
+          "total_deflection_mm": 2.099576632056711
+        },
+        "after_finishes_mm": 0.8976881552261058,
+        "flexural_neutral_axis_mm": 230.4926871002824,
+        "flexural_surface_strain": 0.0007092501728975413,
+        "flexural_width_mm": 0.16473850331290493
+      },
+      "status": "FAIL"
+    },
     "missing_sustained": {
       "request": {
         "identity": {

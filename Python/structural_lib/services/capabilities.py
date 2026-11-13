@@ -147,6 +147,16 @@ _CAPABILITIES = (
         qualified_review_required=True,
         python_profiles=(
             IS456PythonProfile(
+                "is456.beam.finite-service-history/v1",
+                "structural_lib.design.is456.beam",
+                "load_finite_service_history",
+                "check_finite_service_history",
+                "is456-beam-finite-service-history-input/v1",
+                "Simply supported rectangular UDL history with explicit finite-age creep and shrinkage, actual multilayer bars and final deflection and flexural crack checks.",
+                "docs/cookbook/python/beam-finite-service-history.md",
+                "Python/examples/beam_finite_service_history.py",
+            ),
+            IS456PythonProfile(
                 "is456.beam.instantaneous-service/v1",
                 "structural_lib.design.is456.beam",
                 "load_instantaneous_service",

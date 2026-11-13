@@ -130,6 +130,14 @@ def fixture():
             "status": "PASS",
         }
     }
+    tight = deepcopy(request)
+    tight["identity"]["case_id"] = "SERV02-tight-crack-limit"
+    tight["crack_width_limit_mm"] = 0.16
+    cases["tight_crack_limit"] = {
+        "request": tight,
+        "expected": reference(tight),
+        "status": "FAIL",
+    }
     for name, changes in (
         ("missing_sustained", {"sustained_load": None}),
         ("reverse_bending", {"bending_basis": "reverse"}),

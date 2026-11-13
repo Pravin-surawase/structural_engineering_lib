@@ -66,6 +66,6 @@ reports separate from the supplied-action strength checks.
 
 A missing load case or limit, a stale revision, or geometry outside the
 profile gives HOLD. A calculated limit exceedance gives FAIL. Long-term
-deflection stays HOLD and requires the time-dependent load and material
-history. The profile excludes torsional and shear cracking, unequal
+deflection stays HOLD in this instantaneous check. A [finite-age service history](beam-finite-service-history.md)
+accepts prescribed material and load history for a simply supported gravity beam. The profile excludes torsional and shear cracking, unequal
 continuous spans and flanged sections.

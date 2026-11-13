@@ -21,6 +21,11 @@ from structural_lib.services.beam_instantaneous_service import (
     check_instantaneous_service,
     render_instantaneous_service_html,
 )
+from structural_lib.services.beam_service_history import (
+    BeamServiceHistoryInputV1,
+    check_finite_service_history,
+    render_finite_service_history_html,
+)
 from structural_lib.services.canonical_beam import (
     BeamBBSResultV1,
     BeamDesignAndDetailResultV1,
@@ -89,6 +94,10 @@ from structural_lib.services.supplied_beam_check import (
 
 __all__ = [
     "BeamActionsV1",
+    "BeamServiceHistoryInputV1",
+    "load_finite_service_history",
+    "check_finite_service_history",
+    "render_finite_service_history_html",
     "BeamInstantaneousServiceInputV1",
     "load_instantaneous_service",
     "check_instantaneous_service",
@@ -947,3 +956,43 @@ def load_instantaneous_service(
     if isinstance(value, (str, bytes)):
         return model_validate_json_or_error(BeamInstantaneousServiceInputV1, value)
     return model_validate_or_error(BeamInstantaneousServiceInputV1, value)
+
+
+def load_finite_service_history(
+    value: Mapping[str, object] | str | bytes | BeamServiceHistoryInputV1,
+) -> BeamServiceHistoryInputV1:
+    """Load the physical member and explicit finite-age service history.
+
+    Parameters
+    ----------
+    value : Mapping, JSON str or bytes, or BeamServiceHistoryInputV1
+        The actual member, service cases, age stages and prescribed material data.
+
+    Returns
+    -------
+    BeamServiceHistoryInputV1
+        The validated history request.
+
+    Raises
+    ------
+    InputContractError
+        The request violates the history or physical member wire contract.
+
+    Examples
+    --------
+    >>> callable(load_finite_service_history)
+    True
+
+    Limitations
+    -----------
+    Simply supported rectangular beams with downward UDLs.
+
+    Provenance
+    ----------
+    Uses strict physical beam and finite-age history contracts.
+    """
+    if isinstance(value, BeamServiceHistoryInputV1):
+        return value
+    if isinstance(value, (str, bytes)):
+        return model_validate_json_or_error(BeamServiceHistoryInputV1, value)
+    return model_validate_or_error(BeamServiceHistoryInputV1, value)
