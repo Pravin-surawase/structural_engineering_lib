@@ -38,6 +38,15 @@ SNAPSHOT_TRANSPORT_HEADER = b"STRUCTSNAP-GZIP-1\n"
 SNAPSHOT_ROWS_TRANSPORT_HEADER = b"STRUCTSNAP-ROWS-1\n"
 MAXIMUM_TRANSPORT_BYTES = 64 * 1024 * 1024
 MAXIMUM_EXPANDED_SNAPSHOT_BYTES = 256 * 1024 * 1024
+# WP10 source units from the ETABS normalizer and shared conformance vectors,
+# together with the canonical units for already-normalized source quantities.
+_SOURCE_UNIT_FACTORS = (
+    ("length", "length_to_mm", {"m": 1000.0, "mm": 1.0}),
+    ("force", "force_to_kn", {"N": 0.001, "kN": 1.0}),
+    ("moment", "moment_to_knm", {"N.m": 0.001, "kNm": 1.0}),
+    ("stress", "stress_to_n_per_mm2", {"kN/m2": 0.001, "MPa": 1.0, "N/mm2": 1.0}),
+    ("mass_density", "mass_density_to_kg_per_m3", {"kN*s2/m4": 1000.0, "kg/m3": 1.0}),
+)
 # Frozen rows-1 wire columns. Containers and all raw source evidence remain objects;
 # only these repeated leaf records replace property names with positional columns.
 _PACKED_ACTION_COLUMNS = (
@@ -647,6 +656,24 @@ def _validate_units_axes(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
             "The normalization record does not bind the source units.",
             "Hash the exact original unit record before conversion.",
         )
+    for quantity, factor_field, factors in _SOURCE_UNIT_FACTORS:
+        source_unit = getattr(units.original_source_units, quantity)
+        expected = factors.get(source_unit)
+        if expected is None:
+            return _blocked(
+                "UNITS.INVALID",
+                f"units.original_source_units.{quantity}",
+                f"Unsupported source {quantity} unit {source_unit!r}.",
+                "Use a supported source-unit label.",
+            )
+        actual = getattr(units.conversion_to_canonical, factor_field)
+        if actual != expected:
+            return _blocked(
+                "UNITS.INVALID",
+                f"units.conversion_to_canonical.{factor_field}",
+                f"Source unit {source_unit!r} requires factor {expected:g}; got {actual:g}.",
+                "Rebuild the snapshot using the declared source units.",
+            )
     if not all(_valid_axes(axis) for axis in snapshot.axes):
         return _blocked(
             "AXIS.UNRESOLVED",

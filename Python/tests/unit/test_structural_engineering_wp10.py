@@ -12,12 +12,16 @@ from pathlib import Path
 import pytest
 
 from structural_lib.analysis_snapshot import (
+    analysis_action_row_id,
+    analysis_snapshot_sha256,
     canonical_analysis_snapshot_json,
     canonical_snapshot_json_bytes,
     parse_analysis_snapshot_json,
     parse_analysis_snapshot_transport,
     parse_etabs_import_request_json,
+    raw_capture_sha256,
 )
+from structural_lib.services.analysis_snapshot import CANONICALIZATION_VERSION
 
 ROOT = Path(__file__).resolve().parents[3]
 FIXTURE_PATH = (
@@ -44,8 +48,8 @@ def test_compressed_snapshot_replays_identity_and_rejects_bad_evidence() -> None
         assert rejected.diagnostics[0].code == "INPUT.SCHEMA"
 
 
-def test_compact_rows_replay_identity_and_reject_wrong_arity_or_type() -> None:
-    document = copy.deepcopy(FIXTURE["valid_snapshot"])
+def _compact_rows(value: dict) -> dict:
+    document = copy.deepcopy(value)
     for action in document["action_rows"]:
         action["provenance"] = [
             value for _, value in sorted(action["provenance"].items())
@@ -59,13 +63,16 @@ def test_compact_rows_replay_identity_and_reject_wrong_arity_or_type() -> None:
         container[name] = [
             [value for _, value in sorted(row.items())] for row in container[name]
         ]
+    return document
 
-    def encode(value: dict) -> bytes:
-        return b"STRUCTSNAP-ROWS-1\n" + gzip.compress(
-            json.dumps(value).encode(), mtime=0
-        )
 
-    encoded = encode(document)
+def _compact_transport(value: dict) -> bytes:
+    return b"STRUCTSNAP-ROWS-1\n" + gzip.compress(json.dumps(value).encode(), mtime=0)
+
+
+def test_compact_rows_replay_identity_and_reject_wrong_arity_or_type() -> None:
+    document = _compact_rows(FIXTURE["valid_snapshot"])
+    encoded = _compact_transport(document)
     result = parse_analysis_snapshot_transport(encoded)
     assert result.snapshot is not None, result.diagnostics
     assert canonical_snapshot_json_bytes(
@@ -75,7 +82,11 @@ def test_compact_rows_replay_identity_and_reject_wrong_arity_or_type() -> None:
     wrong_arity["action_rows"][0].append("extra")
     wrong_type = copy.deepcopy(document)
     wrong_type["action_rows"][0][9] = True
-    for bad in (encoded[:-4], encode(wrong_arity), encode(wrong_type)):
+    for bad in (
+        encoded[:-4],
+        _compact_transport(wrong_arity),
+        _compact_transport(wrong_type),
+    ):
         rejected = parse_analysis_snapshot_transport(bad)
         assert rejected.snapshot is None
         assert rejected.diagnostics[0].code == "INPUT.SCHEMA"
@@ -109,6 +120,79 @@ def test_wp10_04_emitted_snapshot_matches_dotnet_and_independent_dimensions() ->
         record.recorded_at_utc.endswith("Z")
         for record in snapshot.raw_capture.call_ledger.records
     )
+
+
+def _snapshot_payload(document: dict) -> bytes:
+    digest = analysis_snapshot_sha256(document)
+    document["snapshot_sha256"] = digest
+    document["snapshot_id"] = (
+        f"analysis_snapshot_id:{CANONICALIZATION_VERSION}:{digest}"
+    )
+    return canonical_snapshot_json_bytes(document)
+
+
+@pytest.mark.parametrize(
+    ("force", "moment", "factor_field"),
+    [(1000, 1000, "force_to_kn"), (1000, 1, "force_to_kn"), (1, 1000, "moment_to_knm")],
+)
+def test_wp10_rejects_scaled_actions_when_factors_disagree_with_source_units(
+    force: int, moment: int, factor_field: str
+) -> None:
+    fixture = json.loads(
+        FIXTURE_PATH.with_name("wp10-normalization-vectors.json").read_bytes()
+    )
+    document = fixture["valid_snapshot"]
+    factors = document["units"]["conversion_to_canonical"]
+    factors["force_to_kn"] *= force
+    factors["moment_to_knm"] *= moment
+    new_ids = {}
+    for row in document["action_rows"]:
+        for field in ("p_kn", "v2_kn", "v3_kn"):
+            row[field] *= force
+        for field in ("t_knm", "m2_knm", "m3_knm"):
+            row[field] *= moment
+        row["row_id"] = analysis_action_row_id(row)
+        new_ids[row["source_row_id"]] = row["row_id"]
+    document["action_rows"].sort(key=lambda row: row["row_id"])
+    for row in document["row_ledger"]["rows"]:
+        if row["source_record_id"] in new_ids:
+            row["canonical_id"] = new_ids[row["source_record_id"]]
+
+    payload = _snapshot_payload(document)
+    for result in (
+        parse_analysis_snapshot_json(payload),
+        parse_analysis_snapshot_transport(
+            b"STRUCTSNAP-GZIP-1\n" + gzip.compress(payload, mtime=0)
+        ),
+        parse_analysis_snapshot_transport(_compact_transport(_compact_rows(document))),
+    ):
+        assert result.snapshot is None
+        (issue,) = result.diagnostics
+        assert issue.code == "UNITS.INVALID"
+        assert (
+            issue.field_or_location == f"units.conversion_to_canonical.{factor_field}"
+        )
+
+
+def test_wp10_rejects_unknown_source_unit_with_consistent_identity() -> None:
+    document = copy.deepcopy(FIXTURE["valid_snapshot"])
+    source = document["units"]["original_source_units"]
+    source["force"] = "unknown force unit"
+    raw = document["raw_capture"]
+    raw["source_units"] = source
+    raw_digest = raw_capture_sha256(raw)
+    raw["raw_capture_sha256"] = raw_digest
+    raw["raw_capture_id"] = f"raw_capture_id:{CANONICALIZATION_VERSION}:{raw_digest}"
+    document["source_identity"]["raw_capture_sha256"] = raw_digest
+    document["source_identity"]["raw_capture_id"] = raw["raw_capture_id"]
+    document["normalization"]["source_units_sha256"] = hashlib.sha256(
+        canonical_snapshot_json_bytes(source)
+    ).hexdigest()
+    result = parse_analysis_snapshot_json(_snapshot_payload(document))
+    assert result.snapshot is None
+    (issue,) = result.diagnostics
+    assert issue.code == "UNITS.INVALID"
+    assert issue.field_or_location == "units.original_source_units.force"
 
 
 def _mutate(document: dict[str, object], mutations: list[dict[str, object]]) -> None:

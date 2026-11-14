@@ -48,7 +48,7 @@ public static class AnalysisSnapshotNormalizer
         ValidateCoverage(raw, sourceMetadata.Projection, context.PolicyId != Policy, sourceMetadata.GroupForceScope);
         var sourceUnits = new SnapshotSourceUnits("m", "kN", "kNm", "kN/m2", "kN*s2/m4");
         Require(raw.SourceUnits == sourceUnits, "UNITS.INVALID", "This source policy requires the proved kN_m_C basis including mass density.");
-        var conversion = new SnapshotUnitConversion(1000, 1, 1, 0.001, 1000);
+        var conversion = AnalysisSnapshotCodec.SourceUnitConversion(sourceUnits);
         var units = new SnapshotUnitBasis("mm", "kN", "kNm", "N/mm2", "kg/m3", sourceUnits, conversion);
         var points = Records<SourceSnapshotPoint>(raw, RawModelRecordKind.Point);
         var materials = Records<SourceSnapshotMaterial>(raw, RawModelRecordKind.Material);

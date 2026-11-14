@@ -37,8 +37,9 @@ Task: TASK-DATA-001
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from enum import StrEnum
-from typing import Any
+from typing import Any, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
 
@@ -366,12 +367,41 @@ class DesignDefaults(BaseModel):
     stirrup_dia_mm: int = Field(8, ge=6, le=16)
 
 
+_JoinRow = TypeVar("_JoinRow", BeamGeometry, BeamForces)
+
+
+def _index_join_rows(rows: Iterable[_JoinRow], kind: str) -> dict[str, _JoinRow]:
+    indexed: dict[str, _JoinRow] = {}
+    positions: dict[str, int] = {}
+    for position, row in enumerate(rows, start=1):
+        if row.id in indexed:
+            raise ValueError(
+                f"Duplicate {kind} member ID {row.id!r} in rows "
+                f"{positions[row.id]} and {position}; expected one {kind} row per member."
+            )
+        indexed[row.id] = row
+        positions[row.id] = position
+    return indexed
+
+
+def _merge_geometry_forces(
+    beams: Iterable[BeamGeometry], forces: Iterable[BeamForces]
+) -> list[tuple[BeamGeometry, BeamForces]]:
+    beams_by_id = _index_join_rows(beams, "geometry")
+    forces_by_id = _index_join_rows(forces, "force")
+    return [
+        (beam, forces_by_id[member_id])
+        for member_id, beam in beams_by_id.items()
+        if member_id in forces_by_id
+    ]
+
+
 class BeamBatchInput(BaseModel):
     """Complete validated input for batch beam design.
 
     This model aggregates all inputs needed for batch design:
     - List of beam geometries
-    - List of beam forces (matched by ID)
+    - List of beam forces (one force row per member ID when joined)
     - Default design parameters
     - Optional metadata
 
@@ -398,13 +428,12 @@ class BeamBatchInput(BaseModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
 
     def get_merged_data(self) -> list[tuple[BeamGeometry, BeamForces]]:
-        """Merge geometry and forces by beam ID.
+        """Return matched pairs in geometry order.
 
-        Returns:
-            List of (geometry, forces) tuples for beams with matching IDs.
+        Raises:
+            ValueError: Either input has repeated member IDs.
         """
-        forces_by_id = {f.id: f for f in self.forces}
-        return [(b, forces_by_id[b.id]) for b in self.beams if b.id in forces_by_id]
+        return _merge_geometry_forces(self.beams, self.forces)
 
     def get_unmatched_beams(self) -> list[str]:
         """Get IDs of beams without matching forces."""

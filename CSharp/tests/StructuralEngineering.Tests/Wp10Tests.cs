@@ -94,6 +94,39 @@ public sealed class Wp10Tests
     }
 
     [Fact]
+    public void SnapshotRejectsActionsScaledAgainstDeclaredSourceUnits()
+    {
+        var snapshot = AnalysisSnapshotCodec.ParseAndValidate(Fixture["valid_snapshot"]!.ToJsonString()).Snapshot!;
+        var actionRows = snapshot.ActionRows
+            .Select(row => row with { PKn = row.PKn * 1000, V2Kn = row.V2Kn * 1000, V3Kn = row.V3Kn * 1000 })
+            .Select(row => row with { RowId = AnalysisSnapshotCodec.ActionRowId(row) })
+            .OrderBy(row => row.RowId, StringComparer.Ordinal)
+            .ToArray();
+        var actionIds = actionRows.ToDictionary(row => row.SourceRowId, row => row.RowId);
+        var conversion = snapshot.Units.ConversionToCanonical;
+        var invalid = snapshot with
+        {
+            Units = snapshot.Units with { ConversionToCanonical = conversion with { ForceToKn = conversion.ForceToKn * 1000 } },
+            ActionRows = actionRows,
+            RowLedger = snapshot.RowLedger with
+            {
+                Rows = snapshot.RowLedger.Rows.Select(row =>
+                    actionIds.TryGetValue(row.SourceRecordId, out var actionId) ? row with { CanonicalId = actionId } : row).ToArray()
+            }
+        };
+        var digest = AnalysisSnapshotCodec.SnapshotSha256(invalid);
+        invalid = invalid with
+        {
+            SnapshotSha256 = digest,
+            SnapshotId = $"analysis_snapshot_id:{AnalysisSnapshotCodec.CanonicalizationVersion}:{digest}"
+        };
+
+        var result = AnalysisSnapshotCodec.ParseAndValidate(AnalysisSnapshotCodec.CanonicalJson(invalid));
+        Assert.Null(result.Snapshot);
+        Assert.Equal("UNITS.INVALID", Assert.Single(result.Diagnostics).Code);
+    }
+
+    [Fact]
     public void CompressedTransportRetainsIdentityAndRejectsMalformedEvidence()
     {
         var snapshot = AnalysisSnapshotCodec.ParseAndValidate(Fixture["valid_snapshot"]!.ToJsonString()).Snapshot!;

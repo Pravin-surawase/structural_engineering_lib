@@ -48,6 +48,11 @@ kN*s2/m4 source units, horizontal geometry, row-major local-to-global matrices,
 global +Z as top, and left as viewed from I toward J. It proves the selected
 linear-static dependency closure before accepting `Single Value` rows with
 portable null steps. All six signed force components remain from one source row.
+The portable readers verify that every conversion factor matches its source
+unit label before accepting any action rows. They support the current ETABS
+unit labels above, canonical labels and the shared conformance vector's
+`N`, `N.m` and `MPa` labels. Unknown units and contradictory factors return
+`UNITS.INVALID` in plain JSON, gzip and compact-row replay.
 Physical stations originate at object I, even when the first available result
 is inside an end offset; element station origins remain independent.
 
