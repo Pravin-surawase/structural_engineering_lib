@@ -12,7 +12,7 @@
 
 | Release | Current state |
 |---|---|
-| **Current** | [0.29.0 is published and verified](../getting-started/releases.md#v0290-published-and-verified). All 20 installed profiles, public archive hashes, and clean PyPI installation passed. |
+| **Current** | [0.29.1 is published and verified](../getting-started/releases.md#v0291-published-and-verified). All 20 installed profiles, public archive hashes, and clean PyPI installation passed. |
 | **Next** | Continue the remaining 0.30.0 cases in the [beam and column delivery plan](beam-column-programme-delivery.md). |
 
 ## Merged development work — qualified serializer integration

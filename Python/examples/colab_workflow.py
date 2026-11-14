@@ -13,7 +13,7 @@ Usage (local):
     python examples/colab_workflow.py
 
 Usage (Google Colab):
-    1) Run: %pip install -q "structural-lib-is456[dxf]==0.29.0"
+    1) Run: %pip install -q "structural-lib-is456[dxf]==0.29.1"
     2) Restart the runtime.
     3) Copy this file into the notebook environment and run it.
 """
