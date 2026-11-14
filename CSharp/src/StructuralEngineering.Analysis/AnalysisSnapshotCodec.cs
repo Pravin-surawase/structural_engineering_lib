@@ -378,10 +378,20 @@ public static partial class AnalysisSnapshotCodec
             !(FinitePositive(conversion.LengthToMm) && FinitePositive(conversion.ForceToKn) && FinitePositive(conversion.MomentToKnm) && FinitePositive(conversion.StressToNPerMm2) && FinitePositive(conversion.MassDensityToKgPerM3)) ||
             CanonicalSha256(units.OriginalSourceUnits) != snapshot.Normalization.SourceUnitsSha256 || !snapshot.Normalization.ConversionPerformedOnce)
             return Blocked("UNITS.INVALID", "units", "Source units, conversion factors, or one-time normalization evidence are inconsistent.", "Record source units once and apply a positive declared conversion once.");
+        if (conversion != SourceUnitConversion(units.OriginalSourceUnits))
+            return Blocked("UNITS.INVALID", "units.conversion_to_canonical", "Conversion factors do not match the supported source-unit labels.", "Rebuild the snapshot using the declared source units.");
         if (snapshot.Axes.Any(axis => !ValidAxes(axis)))
             return Blocked("AXIS.UNRESOLVED", "axes", "An axis or source-to-common transform is not orthonormal and right-handed.", "Resolve axes and physical faces from retained geometry evidence.");
         return null;
     }
+
+    // WP10 normalizer, shared conformance vectors, and canonical source units.
+    internal static SnapshotUnitConversion SourceUnitConversion(SnapshotSourceUnits units) => new(
+        units.Length switch { "m" => 1000, "mm" => 1, _ => 0 },
+        units.Force switch { "N" => 0.001, "kN" => 1, _ => 0 },
+        units.Moment switch { "N.m" => 0.001, "kNm" => 1, _ => 0 },
+        units.Stress switch { "kN/m2" => 0.001, "MPa" or "N/mm2" => 1, _ => 0 },
+        units.MassDensity switch { "kN*s2/m4" => 1000, "kg/m3" => 1, _ => 0 });
 
     private static EtabsSnapshotResult? ValidateMapping(AnalysisSnapshot snapshot)
     {

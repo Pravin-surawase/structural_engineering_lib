@@ -20,6 +20,7 @@ from structural_lib.core.models import (
     BeamForces,
     BeamGeometry,
     DesignDefaults,
+    _merge_geometry_forces,
 )
 
 from .adapters import (
@@ -1061,14 +1062,8 @@ def merge_geometry_forces(
     geometry_list: Iterable[BeamGeometry],
     forces_list: Iterable[BeamForces],
 ) -> list[tuple[BeamGeometry, BeamForces]]:
-    """Merge geometry and forces by beam ID, returning matched pairs only."""
-
-    forces_by_id = {force.id: force for force in forces_list}
-    return [
-        (geometry, forces_by_id[geometry.id])
-        for geometry in geometry_list
-        if geometry.id in forces_by_id
-    ]
+    """Return matched pairs in geometry order, rejecting repeated member IDs."""
+    return _merge_geometry_forces(geometry_list, forces_list)
 
 
 def validate_import(batch: BeamBatchInput) -> ValidationReport:
@@ -1079,9 +1074,14 @@ def validate_import(batch: BeamBatchInput) -> ValidationReport:
         errors.append("No geometry records found")
     if not batch.forces:
         errors.append("No force records found")
-    matched = batch.get_merged_data()
-    if not matched:
-        errors.append("No matching beam IDs between geometry and forces")
+    try:
+        matched = batch.get_merged_data()
+    except ValueError as exc:
+        errors.append(str(exc))
+        matched = []
+    else:
+        if not matched:
+            errors.append("No matching beam IDs between geometry and forces")
     unmatched_beams = batch.get_unmatched_beams()
     unmatched_forces = batch.get_unmatched_forces()
     if unmatched_beams:

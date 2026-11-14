@@ -756,6 +756,40 @@ def _component_value(row: BeamActionRowV1, component: BeamActionComponentV1) -> 
     return float(getattr(row, _ACTION_VALUES[component]))
 
 
+def _scenario_coverage_issue(
+    scenario: BeamDemandScenarioV1, rows: Sequence[BeamActionRowV1]
+) -> W3BuildIssueV1 | None:
+    required_selections = set(scenario.included_selection_ids)
+    if not scenario.member_ids:
+        # With no explicit member domain, check selections across retained rows.
+        retained_selections = {row.selection_id for row in rows}
+        for selection_id in scenario.included_selection_ids:
+            if selection_id not in retained_selections:
+                return _issue(
+                    "SCENARIO_ACTION_ROWS_MISSING",
+                    "scenario.included_selection_ids",
+                    f"No retained W2 station rows for selection {repr(selection_id)[:200]}.",
+                )
+        return None
+
+    selections_by_member: dict[str, set[str]] = defaultdict(set)
+    for row in rows:
+        selections_by_member[row.member_id].add(row.selection_id)
+    for member_id in scenario.member_ids:
+        retained = selections_by_member[member_id]
+        if not required_selections.issubset(retained):
+            missing = next(
+                item for item in scenario.included_selection_ids if item not in retained
+            )
+            return _issue(
+                "SCENARIO_ACTION_ROWS_MISSING",
+                "scenario.member_ids",
+                f"No retained W2 station rows for member {repr(member_id)[:200]} "
+                f"and selection {repr(missing)[:200]}.",
+            )
+    return None
+
+
 def _reference(
     *,
     scenario: BeamDemandScenarioV1,
@@ -963,7 +997,11 @@ def _selected_case_ids(
 def derive_beam_demand_snapshot_v1(
     request: BeamDemandDerivationRequestV1, /
 ) -> BeamDemandBuildResultV1:
-    """Derive deterministic governing references from retained same-row actions."""
+    """Derive governing references after checking retained action coverage.
+
+    Explicit members require rows for every requested selection. An empty member
+    filter uses all retained members and checks coverage across them.
+    """
 
     baseline = request.baseline
     catalogue = request.catalogue
@@ -1091,6 +1129,11 @@ def derive_beam_demand_snapshot_v1(
                 ),
             ),
             snapshot=None,
+        )
+    coverage_issue = _scenario_coverage_issue(scenario, action_rows)
+    if coverage_issue is not None:
+        return BeamDemandBuildResultV1(
+            status=W3BuildStatusV1.BLOCKED, issues=(coverage_issue,), snapshot=None
         )
     referenced_ids = {row.row_id for row in action_rows}
     for rule in selected_rules:

@@ -1,0 +1,13 @@
+{
+  "schema_version": "etabs-w3-demand-coverage-evidence/v1",
+  "finding": "R01-A39-F02",
+  "source_change_commit": "de65b8595d35b924e21afd29efb6861f8ae4df09",
+  "predecessor_receipt_sha256": "df6f0285c28efc7f1167dac72cf3e328104b6ec9ce9eb85a857c0db1d2eac30f",
+  "source": {
+    "path": "Python/structural_lib/services/contracts/etabs_w3.py",
+    "predecessor_sha256": "3147ae766498bc45eac6265a62fa7224de3138948d5e91423a5332c7ecaa47e5",
+    "current_sha256": "08c98739329170c34c9e1326b815c3a4bd7f783a3906b2831d4363cee0b4b0ef"
+  },
+  "scope": "Portable demand coverage before governing selection. Historical COM signature and spring readback observations remain bound to their original source.",
+  "live_etabs_replayed": false
+}

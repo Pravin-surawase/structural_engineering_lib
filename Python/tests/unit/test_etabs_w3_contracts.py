@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from hashlib import sha256
 from typing import Any
 
 import pytest
@@ -382,12 +383,14 @@ def _baseline() -> ETABSBeamBaselineV1:
         limitations=("Fake normalized fixture only.",),
         baseline_sha256="0" * 64,
     )
-    import hashlib
+    return _bind_baseline_hash(provisional)
 
-    digest = hashlib.sha256(
-        canonical_etabs_beam_baseline_hash_basis_json_v1(provisional).encode("utf-8")
+
+def _bind_baseline_hash(baseline: ETABSBeamBaselineV1) -> ETABSBeamBaselineV1:
+    digest = sha256(
+        canonical_etabs_beam_baseline_hash_basis_json_v1(baseline).encode("utf-8")
     ).hexdigest()
-    return provisional.model_copy(update={"baseline_sha256": digest})
+    return baseline.model_copy(update={"baseline_sha256": digest})
 
 
 def _accepted_catalogue() -> etabs_w3.ETABSResultCatalogueV1:
@@ -620,6 +623,137 @@ def test_same_row_concurrency_cross_row_screening_and_deterministic_tie() -> Non
     assert etabs_w3.verify_beam_demand_snapshot_hash_v1(result.snapshot)
     tampered = result.snapshot.model_copy(update={"member_count": 2})
     assert not etabs_w3.verify_beam_demand_snapshot_hash_v1(tampered)
+
+
+def test_demand_requires_retained_rows_for_requested_scope() -> None:
+    baseline = _baseline()
+    catalogue = _accepted_catalogue()
+    scenario, rules = _scenario_and_rules(catalogue, baseline)
+    (uls,) = scenario.included_selection_ids
+    dead = next(
+        item.selection_id for item in catalogue.result_selections if item.name == "DEAD"
+    )
+    request = etabs_w3.BeamDemandDerivationRequestV1(
+        baseline=baseline, catalogue=catalogue, scenario=scenario, envelope_rules=rules
+    )
+    valid = etabs_w3.derive_beam_demand_snapshot_v1(request)
+    assert valid.snapshot is not None
+    assert (
+        valid.snapshot.snapshot_sha256
+        == "bf47ee2befde6a1bb375d7f66400854fcbf923b9e83f98f6b451cad73538f232"
+    )
+    for members, selections, code, missing in (
+        (
+            ("member:1", "member:absent"),
+            (uls,),
+            "SCENARIO_ACTION_ROWS_MISSING",
+            "member:absent",
+        ),
+        (
+            ("member:absent",),
+            (uls,),
+            "SCENARIO_ACTION_ROWS_MISSING",
+            "no retained W2 station rows",
+        ),
+        (("member:1",), (uls, dead), "SCENARIO_ACTION_ROWS_MISSING", dead),
+        (
+            ("member:1",),
+            (dead,),
+            "SCENARIO_ACTION_ROWS_MISSING",
+            "no retained W2 station rows",
+        ),
+        ((), (uls, dead), "SCENARIO_ACTION_ROWS_MISSING", dead),
+        (
+            ("member:1",),
+            (uls, "selection:absent"),
+            "SCENARIO_SELECTION_MISSING",
+            "absent catalogue selection",
+        ),
+    ):
+        changed = scenario.model_copy(
+            update={"member_ids": members, "included_selection_ids": selections}
+        )
+        result = etabs_w3.derive_beam_demand_snapshot_v1(
+            request.model_copy(update={"scenario": changed})
+        )
+        assert result.status is etabs_w3.W3BuildStatusV1.BLOCKED
+        assert result.snapshot is None
+        (issue,) = result.issues
+        assert issue.code == code
+        assert missing in issue.message
+
+    # Both IDs appear independently, but member:1 has no DEAD rows.
+    (frame_result,) = baseline.results
+    (frame,) = baseline.frames
+    dead_selection = ETABSResultSelectionV1(
+        kind=ETABSResultSelectionKind.CASE, name="DEAD"
+    )
+    dead_result = frame_result.model_copy(
+        update={
+            "member_id": "member:2",
+            "source_frame_name": "B2",
+            "selection_evidence": frame_result.selection_evidence.model_copy(
+                update={"selection": dead_selection}
+            ),
+            "stations": (
+                frame_result.stations[0].model_copy(
+                    update={
+                        "station_id": "station:dead",
+                        "member_id": "member:2",
+                        "source_frame_name": "B2",
+                        "selection": dead_selection,
+                        "object_name": "B2",
+                        "element_name": "E-B2",
+                    }
+                ),
+            ),
+        }
+    )
+    sparse = _bind_baseline_hash(
+        baseline.model_copy(
+            update={
+                "frames": (
+                    frame,
+                    frame.model_copy(
+                        update={
+                            "member_id": "member:2",
+                            "source_unique_name": "B2",
+                            "label": "B2",
+                        }
+                    ),
+                ),
+                "results": (frame_result, dead_result),
+            }
+        )
+    )
+    both = scenario.model_copy(
+        update={
+            "baseline_sha256": sparse.baseline_sha256,
+            "member_ids": ("member:1", "member:2"),
+            "included_selection_ids": (uls, dead),
+        }
+    )
+    result = etabs_w3.derive_beam_demand_snapshot_v1(
+        request.model_copy(update={"baseline": sparse, "scenario": both})
+    )
+    assert result.status is etabs_w3.W3BuildStatusV1.BLOCKED
+    assert result.snapshot is None
+    (issue,) = result.issues
+    assert issue.code == "SCENARIO_ACTION_ROWS_MISSING"
+    assert "member:1" in issue.message and dead in issue.message
+
+    retained = etabs_w3.derive_beam_demand_snapshot_v1(
+        request.model_copy(
+            update={
+                "baseline": sparse,
+                "scenario": both.model_copy(update={"member_ids": ()}),
+            }
+        )
+    )
+    assert retained.snapshot is not None
+    assert retained.snapshot.member_count == 2
+    assert retained.snapshot.retained_action_row_count == 4
+    assert etabs_w3.verify_beam_demand_snapshot_hash_v1(retained.snapshot)
 
 
 def test_lossless_paging_and_public_exports() -> None:

@@ -8,7 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.core.models import DesignDefaults
+from structural_lib.core.models import BeamBatchInput, BeamForces, DesignDefaults
+from structural_lib.services.adapters import ManualInputAdapter
 from structural_lib.services.import_ledger import (
     ImportFieldAction,
     ImportIssueCode,
@@ -16,6 +17,7 @@ from structural_lib.services.import_ledger import (
 )
 from structural_lib.services.imports import (
     LosslessImportBlockedError,
+    merge_geometry_forces,
     parse_dual_csv,
     parse_dual_csv_lossless,
     parse_single_csv_lossless,
@@ -25,6 +27,49 @@ from structural_lib.services.imports import (
 
 def _write_csv(path: Path, text: str) -> None:
     path.write_text(text.strip() + "\n", encoding="utf-8")
+
+
+def test_batch_joins_reject_ambiguous_force_and_geometry_rows() -> None:
+    beam = ManualInputAdapter.geometry_from_dict(
+        {
+            "id": "B1",
+            "point1": {"x": 0, "y": 0, "z": 0},
+            "point2": {"x": 5, "y": 0, "z": 0},
+        }
+    )
+    governing = BeamForces(id=beam.id, load_case="ULS-GOV", mu_knm=150, vu_kn=100)
+    lower = BeamForces(id=beam.id, load_case="ULS-LOW", mu_knm=60, vu_kn=100)
+    duplicate_geometry = beam.model_copy(
+        update={"label": "second geometry", "story": "10"}
+    )
+    for beams, forces, kind in (
+        ([beam], [governing, lower], "force"),
+        ([beam], [lower, governing], "force"),
+        ([beam], [governing, governing], "force"),
+        ([beam, duplicate_geometry], [governing], "geometry"),
+    ):
+        batch = BeamBatchInput(beams=beams, forces=forces)
+        diagnostic = f"Duplicate {kind} member ID {beam.id!r} in rows 1 and 2"
+        with pytest.raises(ValueError, match=diagnostic):
+            batch.get_merged_data()
+        with pytest.raises(ValueError, match=diagnostic):
+            merge_geometry_forces(iter(beams), iter(forces))
+        report = validate_import(batch)
+        assert not report.ok
+        assert report.details["matched"] == 0
+        assert len(report.errors) == 1 and diagnostic in report.errors[0]
+
+    other = beam.model_copy(update={"id": "B1_L2", "story": "L2"})
+    other_force = lower.model_copy(update={"id": other.id})
+    batch = BeamBatchInput(beams=[beam, other], forces=[other_force, governing])
+    expected = [(beam, governing), (other, other_force)]
+    assert batch.get_merged_data() == expected
+    assert merge_geometry_forces(iter(batch.beams), iter(batch.forces)) == expected
+    assert validate_import(batch).ok
+
+    unmatched = BeamBatchInput(beams=[beam], forces=[other_force])
+    assert unmatched.get_merged_data() == []
+    assert not validate_import(unmatched).ok
 
 
 def test_parse_dual_csv_generic(tmp_path: Path) -> None:

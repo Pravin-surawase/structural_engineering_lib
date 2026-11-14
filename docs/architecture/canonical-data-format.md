@@ -208,11 +208,13 @@ class BeamBatchInput(BaseModel):
     defaults: DesignDefaults = Field(default_factory=DesignDefaults)
     metadata: dict = Field(default_factory=dict)
 
-    def get_merged_data(self) -> list[tuple[BeamGeometry, BeamForces]]:
-        """Merge geometry and forces by beam ID."""
-        forces_by_id = {f.id: f for f in self.forces}
-        return [(b, forces_by_id[b.id]) for b in self.beams if b.id in forces_by_id]
 ```
+
+Batch merging expects one geometry row and one force row per resolved member
+ID. `get_merged_data()` returns matched pairs in geometry order. Repeated IDs on
+either side raise `ValueError`, including force rows with different load cases
+for the same member. Use `validate_import` to get a validation report before
+design. Repeated display labels are valid when their resolved IDs differ.
 
 ## Adapter Pattern for Input Sources
 
