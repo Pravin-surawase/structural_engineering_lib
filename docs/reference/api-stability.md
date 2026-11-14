@@ -13,7 +13,7 @@ tags: [api, beta, compatibility]
 **Audience:** Developers
 **Status:** Beta Maturity / Normal Software Release
 **Importance:** High
-**Version:** 0.29.0
+**Version:** 0.29.1
 **Last Updated:** 2026-08-24
 
 StructLib is a pre-1.0 Beta-maturity project distributed under a normal final

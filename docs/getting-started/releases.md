@@ -1949,3 +1949,15 @@ records the source and qualification identities.
 
 This release includes the implemented cases from [PR #1064](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1064).
 The remaining features and reference projects are scheduled for 0.30.0.
+
+
+## v0.29.1 — Prepared candidate (unreleased; on hold)
+
+[PR #1080](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1080)
+rejects nonpositive support distances and reports the derived steel percentage
+and its source when the ordinary beam shear check fails the 0.15–3.0% range.
+It also updates the repository's locked Tornado dependency to 6.6.1.
+
+Coding Lab's R02-A3 torsion findings still need paired replay and review.
+The [delivery plan](../planning/beam-column-programme-delivery.md) tracks the
+remaining feature work for 0.30.0. This candidate is not tagged or published.

@@ -4,12 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.29.1] — Prepared candidate (unreleased; on hold)
+
 ### Fixed
 
 - Direct beam shear rejects a supplied zero or negative support distance
   (`av_mm`) with `E_SHEAR_005`.
 - Ordinary beam shear reports the derived steel percentage and its source
   when it fails the supported 0.15–3.0% range (`E_SHEAR_006`).
+- Refresh the repository dependency lock to Tornado 6.6.1 for
+  [CVE-2026-126347](https://github.com/advisories/GHSA-5cjw-f85j-cv6r).
 
 ## [0.29.0] — 2026-11-14
 

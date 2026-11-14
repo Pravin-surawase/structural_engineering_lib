@@ -171,6 +171,6 @@ and group imports require its matching build rather than an older published whee
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-Replay this recipe with a local build of source package version `0.29.0`.
+Replay this recipe with a local build of source package version `0.29.1`.
 Use the [release guide](../../getting-started/release-status.md) for the public
 package. Results require qualified review.
