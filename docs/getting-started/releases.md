@@ -1980,3 +1980,33 @@ and was integrated at `938629716fa786a51c034c9be0c21092422de70f`.
 TestPyPI verifies the retained archives before the production tag and upload.
 The [delivery plan](../planning/beam-column-programme-delivery.md) tracks the
 remaining features for 0.30.0.
+
+
+## v0.29.1 published and verified
+
+**2026-11-14 (Asia/Kolkata).** [PyPI 0.29.1](https://pypi.org/project/structural-lib-is456/0.29.1/)
+and [GitHub v0.29.1](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.29.1) are public. The annotated
+tag targets `0ff69c4ca5d459ffaed2213388258fac548c65ad`. The retained archives were built at
+`2d01eea5c7fae3004a2c4d0866d778ff8d6e4b4c` and preserve Python tree
+`e8ef2da4f8fc09fcef5978b5ce55d7166d7f608d`.
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.29.1-py3-none-any.whl` | `23db14e65a6050bea24bbcc69a468516578cf73ed4418f636fa23b4861c5006e` | 1400491 |
+| `structural_lib_is456-0.29.1.tar.gz` | `4d02f32fa7d00d7b5c78e299c0adf09f5708a1afdcc81200b1cfacc83d9d34ef` | 1186124 |
+
+All 20 installed profiles and 29 exact-wheel acceptance cases passed.
+Each archive passed 762 beam and column tests and 13 slab
+and footing cases. [Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43560894342)
+passed on the source candidate. [TestPyPI](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43566135198)
+and [production publication](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43566282214) used the
+same qualified archives.
+
+The six downloads from TestPyPI, PyPI and GitHub match the retained
+hashes. A fresh public installation imports 0.29.1 from its isolated
+environment. The [public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.29.1/public-install-verification.json)
+has SHA-256 `c2a2864744b30d1cf3f99bf66450d29a39bcdd0103cf32c6d08e974648fc1a00`. The [artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.29.1/artifact-manifest.json)
+records the source and qualification identities.
+
+This patch includes both ordinary beam shear fixes from [PR #1080](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1080).
+The remaining features and reference projects are scheduled for 0.30.0.
