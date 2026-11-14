@@ -726,3 +726,30 @@ class TestEnhancedShearStrength:
         # Enhanced τc means concrete carries more shear → less stirrup demand
         assert result_with_av.tau_c > result_no_av.tau_c
         assert result_with_av.spacing >= result_no_av.spacing
+
+    @pytest.mark.parametrize(
+        ("av_mm", "code"),
+        [(0, "E_SHEAR_005"), (-100, "E_SHEAR_005"), (float("nan"), "E_INPUT_017")],
+    )
+    def test_design_shear_rejects_invalid_av(self, av_mm, code):
+        result = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5, av_mm=av_mm
+        )
+
+        assert result.is_safe is False
+        assert (result.tau_v, result.tau_c, result.spacing) == (0, 0, 0)
+        assert [(error.code, error.field) for error in result.errors] == [
+            (code, "av_mm")
+        ]
+
+    @pytest.mark.parametrize(
+        ("av_mm", "tau_c"), [(None, 0.49), (300, 1.47), (900, 0.49), (1350, 0.49)]
+    )
+    def test_design_shear_support_distance_controls(self, av_mm, tau_c):
+        result = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5, av_mm=av_mm
+        )
+
+        assert result.is_safe is True
+        assert result.tau_c == pytest.approx(tau_c)
+        assert result.spacing == 300

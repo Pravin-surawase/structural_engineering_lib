@@ -177,6 +177,7 @@ engineering disposition because calculation may not have occurred.
 | `E_SHEAR_002` | `spacing` | `Spacing exceeds maximum` | Reduce stirrup spacing. | Cl. 26.5.1.6 |
 | `E_SHEAR_003` | `tv` | `Nominal shear < Tc. Provide minimum shear reinforcement.` | Minimum stirrups per Cl. 26.5.1.6. | Cl. 26.5.1.6 |
 | `E_SHEAR_004` | `fck` | `fck must be within Table 19 range (15-40); no bound substitution is permitted.` | Use fck within 15-40 for the maintained lookup. | Table 19 |
+| `E_SHEAR_005` | `av_mm` | `av_mm must be > 0` | Provide a positive distance when specifying the nearest edge of a concentrated load. | Near-support shear |
 | `E_SHEAR_006` | `pt` | `pt must be within Table 19 range (0.15-3.0 percent)` | Do not rely on hidden clamping. | Table 19 |
 
 #### Ductile Detailing (`E_DUCTILE_`)
