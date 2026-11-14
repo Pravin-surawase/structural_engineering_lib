@@ -363,8 +363,8 @@ def design_shear(
         asv: Area of shear reinforcement legs (mm^2)
         pt: Tension steel percentage for Table 19 lookup (%)
         av_mm: Distance from face of support to nearest edge of
-            concentrated load (mm). If provided and < 2d, enhanced
-            shear strength per IS 456 Cl. 40.3 is used. Optional.
+            concentrated load (mm). Must be positive when supplied. If less
+            than 2d, the near-support enhancement is used. Optional.
 
     Returns:
         ShearResult with nominal stress, design spacing, and pass/fail status.
@@ -419,6 +419,8 @@ def design_shear(
         input_errors.append(E_INPUT_001)
     if d <= 0:
         input_errors.append(E_INPUT_002)
+    if av_mm is not None and av_mm <= 0:
+        input_errors.append(E_SHEAR_005)
 
     if input_errors:
         return ShearResult(
@@ -509,7 +511,7 @@ def design_shear(
     # 3. Get Tc (with optional Cl. 40.3 enhancement)
     tc = tables.get_tc_value(fck, pt)
 
-    if av_mm is not None and av_mm > 0 and av_mm < 2 * d:
+    if av_mm is not None and av_mm < 2 * d:
         # IS 456 Cl 40.3: Enhanced shear strength near supports
         tc = enhanced_shear_strength(fck, pt, d, av_mm)
 

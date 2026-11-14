@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Direct beam shear rejects a supplied zero or negative support distance
+  (`av_mm`) with `E_SHEAR_005`.
+- Ordinary beam shear reports the derived steel percentage and its source
+  when it fails the supported 0.15–3.0% range (`E_SHEAR_006`).
+
 ## [0.29.0] — 2026-11-14
 
 See the [case coverage and 0.30.0 follow-ons](docs/planning/library-usability-improvement.md#029-progress-and-workbench-repair--2026-11-13).

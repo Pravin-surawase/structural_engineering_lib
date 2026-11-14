@@ -263,6 +263,88 @@ def test_overloaded_beam_keeps_finite_fail_across_python_transport_and_cli(
     assert json.loads(capsys.readouterr().out) == encoded
 
 
+_SHEAR_BOUNDARY_INPUTS = {
+    "units": "IS456",
+    "case_id": "R02-A2-PT",
+    "b_mm": 300,
+    "D_mm": 500,
+    "d_mm": 450,
+    "d_dash_mm": 50,
+    "mu_knm": 120,
+    "vu_kn": 100,
+    "fck_nmm2": 25,
+    "fy_nmm2": 500,
+    "asv_mm2": 100,
+}
+
+
+@pytest.mark.parametrize(
+    ("overrides", "source"),
+    [
+        ({"ast_mm2_for_shear": 4200}, "ast_mm2_for_shear"),
+        ({"mu_knm": 700}, "flexure-required steel"),
+    ],
+)
+def test_derived_shear_percentage_failure_preserves_value_and_source(overrides, source):
+    result = design_beam_is456(**(_SHEAR_BOUNDARY_INPUTS | overrides))
+    area = overrides.get("ast_mm2_for_shear", result.flexure.Ast_required)
+    derived_pt = 100 * area / (300 * 450)
+    assert derived_pt > 3
+    assert result.flexure.is_safe is True
+    assert result.is_ok is False
+    assert result.shear.is_safe is False
+    assert result.shear.tau_c == 0
+    assert [(issue.code, issue.field) for issue in result.shear.errors] == [
+        ("E_SHEAR_006", "pt")
+    ]
+    message = result.shear.errors[0].message
+    assert f"{derived_pt}%" in message
+    assert source in message
+    assert "0.15" in message and "3.0%" in message
+
+    encoded = result.to_dict()
+    assert encoded["result_envelope"]["overall_status"] == "FAIL"
+    assert encoded["utilizations"]["shear"] is None
+    assert encoded["shear"]["errors"][0]["message"] == message
+    assert (
+        message in encoded["unavailable_utilizations"]["utilizations.shear"]["reason"]
+    )
+    payload = _request().model_dump(mode="json")
+    payload["section"].update(b_mm=300, D_mm=500, d_mm=450)
+    payload["actions"].update(mu_knm=overrides.get("mu_knm", 120), vu_kn=100)
+    payload["calculation_basis"].update(
+        d_dash_mm=50, asv_mm2=100, ast_mm2_for_shear=overrides.get("ast_mm2_for_shear")
+    )
+    canonical = beam.design(beam.load(payload)).to_dict()
+    assert canonical["envelope"]["overall_status"] == "FAIL"
+    assert message in canonical["envelope"]["issues"][0]["message"]
+    assert json.loads(json.dumps(canonical, allow_nan=False)) == canonical
+
+
+@pytest.mark.parametrize(
+    ("overrides", "tau_c", "code"),
+    [
+        ({"ast_mm2_for_shear": 4050}, 0.92, "E_SHEAR_003"),
+        ({"pt_percent": 3.0}, 0.92, "E_SHEAR_003"),
+        ({"pt_percent": 3.1}, None, None),
+        ({"pt_percent": 0.5}, 0.49, None),
+        ({"ast_mm2_for_shear": 4050, "vu_kn": 450}, 0.0, "E_SHEAR_001"),
+    ],
+)
+def test_ordinary_shear_percentage_controls(overrides, tau_c, code):
+    if tau_c is None:
+        with pytest.raises(ValueError, match="pt_percent must be within"):
+            design_beam_is456(**(_SHEAR_BOUNDARY_INPUTS | overrides))
+        return
+
+    result = design_beam_is456(**(_SHEAR_BOUNDARY_INPUTS | overrides))
+    assert result.shear.tau_c == pytest.approx(tau_c)
+    assert result.is_ok is (code != "E_SHEAR_001")
+    assert result.shear.is_safe is result.is_ok
+    assert result.shear.spacing == (300 if result.is_ok else 0)
+    assert [error.code for error in result.shear.errors] == ([code] if code else [])
+
+
 def test_detailing_requires_explicit_options_and_matching_standard():
     design_result = beam.design(_request())
     with pytest.raises(InputContractError) as exc_info:

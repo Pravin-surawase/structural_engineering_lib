@@ -469,6 +469,12 @@ def design_beam_is456(
 `ComplianceCaseResult.result_envelope` is the canonical PASS/FAIL/HOLD carrier;
 `is_ok` remains a compatibility boolean.
 
+For ordinary beam shear, `pt_percent` must be within the supported range of
+0.15–3.0%. When the beam calculation derives this percentage from
+`ast_mm2_for_shear` or from the flexure-required steel, an out-of-range result
+reports the derived value and its source in `E_SHEAR_006`. The shear check
+fails and its transported utilization is `null`.
+
 The S0/S1 development candidate preserves native floating-point utilization
 fields, including the positive-infinity sentinel used to rank failed cases.
 For JSON, use the result's `to_dict()` through canonical consumers or
