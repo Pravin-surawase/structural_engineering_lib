@@ -17,7 +17,7 @@
 # spellings/order when projecting the verified freeze; compare normalized
 # package/version maps to ensure no unrelated inventory change.
 #
-# Generated: 2026-10-29; constrained security refresh, retained inventory
+# Generated: 2026-11-14; constrained security refresh, retained inventory
 # =============================================================================
 
 altair==6.2.2
@@ -145,7 +145,7 @@ tenacity==9.1.4
 tinycss2==1.5.1
 tinyhtml5==2.1.0
 toml==0.10.2
-tornado==6.6
+tornado==6.6.1
 tqdm==4.70.0
 typing-inspection==0.4.2
 typing_extensions==4.16.0
