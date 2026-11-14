@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.29.0 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.29.1 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,14 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.29.0
+## New in v0.29.1
+
+- Direct beam shear rejects zero and negative support distances supplied as
+  `av_mm`.
+- Ordinary beam shear reports the derived steel percentage and its source
+  when it falls outside the supported 0.15–3.0% range.
+
+## Introduced in v0.29.0
 
 - Check signed flexure, shear and straight anchorage for supplied concurrent
   actions on an ordinary two-span rectangular beam.
