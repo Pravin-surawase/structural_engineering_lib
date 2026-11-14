@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.29.1] — Prepared candidate (unreleased; on hold)
+## [0.29.1] — 2026-11-14
 
 ### Fixed
 

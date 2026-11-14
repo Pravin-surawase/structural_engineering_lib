@@ -1961,3 +1961,22 @@ It also updates the repository's locked Tornado dependency to 6.6.1.
 Coding Lab's R02-A3 torsion findings still need paired replay and review.
 The [delivery plan](../planning/beam-column-programme-delivery.md) tracks the
 remaining feature work for 0.30.0. This candidate is not tagged or published.
+
+
+## v0.29.1 — Release authorized (2026-11-14)
+
+The owner authorized publication of the exact 0.29.1 wheel and source
+archive. The release candidate includes both ordinary beam shear fixes
+from [PR #1080](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1080)
+and was integrated at `938629716fa786a51c034c9be0c21092422de70f`.
+
+- The [qualified artifact record](../verification/library-0291-release-artifacts.json)
+  binds the retained hashes, the paired shear replay, and 20 installed profiles.
+- The [independent review](../verification/library-0291-exact-candidate-review.json),
+  [Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43563339072/attempts/1) and
+  [owner authorization](../verification/release-publication-authorization.json)
+  bind the archives to the [publication candidate](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1082).
+
+TestPyPI verifies the retained archives before the production tag and upload.
+The [delivery plan](../planning/beam-column-programme-delivery.md) tracks the
+remaining features for 0.30.0.
