@@ -1,6 +1,6 @@
 {
-  "authorization_basis": "The owner authorized publication of the qualified pair conditional on Weekly Verification and the final gates passing. The effective timestamp records satisfaction of those checks. TestPyPI verifies the same pair before production publication.",
-  "authorized_at_utc": "2026-11-13T21:19:50Z",
+  "authorization_basis": "The owner authorized tagging and publication after qualifying the wheel and source archive. The effective timestamp records satisfaction of the release gates. TestPyPI verifies the same pair before production publication.",
+  "authorized_at_utc": "2026-11-14T06:19:57Z",
   "authorized_by": "Pravin Surawase (repository owner)",
   "authorized_targets": [
     "testpypi",
@@ -8,26 +8,26 @@
     "github-release"
   ],
   "decision": "AUTHORIZED",
-  "exact_candidate_review_receipt": "docs/verification/library-0290-exact-candidate-review.json",
-  "exact_candidate_review_receipt_sha256": "871a744a6428355cc2c81e817aa7ac6d7203ec3651f0d1f2decf28161d3b28f2",
+  "exact_candidate_review_receipt": "docs/verification/library-0291-exact-candidate-review.json",
+  "exact_candidate_review_receipt_sha256": "517751bd4ffd1365746426df0f21ea43c254333d824ed8bf5a43cd5f80d86ebf",
   "independent_review_waiver": null,
-  "owner_instruction": "lets run Weekly Verification and recheck the final gates. if everything passes, merge #1064 and tag and publish 0.29.0 using the qualified wheel and sdist. keep the remaining features for 0.30.0",
+  "owner_instruction": "lets prep 0.29.1 from main with #1080. check if any other Coding Lab fixes belong in the patch, then qualify the wheel and sdist. keep the remaining features for 0.30.0 and  tag and publish it",
   "professional_approval": false,
-  "qualified_artifact_record": "docs/verification/library-0290-release-artifacts.json",
+  "qualified_artifact_record": "docs/verification/library-0291-release-artifacts.json",
   "qualified_artifacts": [
     {
-      "filename": "structural_lib_is456-0.29.0-py3-none-any.whl",
-      "sha256": "6a5f0671ab85bfd8b22b5fed87cbf5418ac8332806705cc46923c85c0ccb3142",
-      "size_bytes": 1400151
+      "filename": "structural_lib_is456-0.29.1-py3-none-any.whl",
+      "sha256": "23db14e65a6050bea24bbcc69a468516578cf73ed4418f636fa23b4861c5006e",
+      "size_bytes": 1400491
     },
     {
-      "filename": "structural_lib_is456-0.29.0.tar.gz",
-      "sha256": "9c9c1f11511f0e779b2c8aa52b5b99a4fb8b89c0e8b78179ce6885bb8433591f",
-      "size_bytes": 1189823
+      "filename": "structural_lib_is456-0.29.1.tar.gz",
+      "sha256": "4d02f32fa7d00d7b5c78e299c0adf09f5708a1afdcc81200b1cfacc83d9d34ef",
+      "size_bytes": 1186124
     }
   ],
   "qualified_structural_engineering_review": false,
   "schema_version": "release-publication-authorization/v1",
-  "tag": "v0.29.0",
-  "version": "0.29.0"
+  "tag": "v0.29.1",
+  "version": "0.29.1"
 }
