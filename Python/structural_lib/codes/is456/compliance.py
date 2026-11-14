@@ -19,6 +19,7 @@ from __future__ import annotations
 import logging
 import math
 from collections.abc import Sequence
+from dataclasses import replace
 from enum import Enum
 from typing import Any
 
@@ -37,7 +38,7 @@ from structural_lib.core.data_types import (
     SupportCondition,
     TorsionResult,
 )
-from structural_lib.core.errors import Severity
+from structural_lib.core.errors import E_SHEAR_006, Severity
 from structural_lib.core.validation import validate_finite_reals
 
 from .beam import flexure, serviceability, shear, torsion
@@ -323,35 +324,36 @@ def check_compliance_case(
     else:
         raise ValueError(f"Unsupported beam_type: {beam_type!r}.")
 
-    # Determine pt for shear table lookup. Internally derived reinforcement can
-    # lie outside the tabulated rows, so only that path uses the nearest row.
-    pt_was_derived = pt_percent is None
-    if pt_was_derived:
+    # Keep the origin of the raw percentage for a shear-domain diagnostic.
+    derived_pt_source: str | None = None
+    if pt_percent is None:
         if ast_mm2_for_shear is not None and ast_mm2_for_shear > 0:
             pt_percent = (ast_mm2_for_shear * 100.0) / (b_mm * d_mm)
+            derived_pt_source = "ast_mm2_for_shear"
             assumptions.append("Computed pt_percent for shear using ast_mm2_for_shear.")
         elif flex.Ast_required > 0:
             pt_percent = (flex.Ast_required * 100.0) / (b_mm * d_mm)
+            derived_pt_source = "flexure-required steel"
             assumptions.append(
                 "Computed pt_percent for shear using flexure ast_required."
             )
         else:
             pt_percent = 0.0
+            derived_pt_source = (
+                "the zero fallback because no positive steel area was available"
+            )
             assumptions.append("pt_percent not provided; derived as 0.0.")
 
-    if pt_percent is None:
-        raise RuntimeError("pt_percent resolution did not produce a numeric value")
-
-    torsion_lookup_pt_percent = pt_percent
-    if pt_was_derived:
-        torsion_lookup_pt_percent = min(max(pt_percent, 0.15), 3.0)
-        if torsion_lookup_pt_percent != pt_percent:
-            assumptions.append(
-                "Derived pt_percent was bounded only for the torsion Table 19 "
-                "lookup; the decisive shear check retains the exact value."
-            )
-
     if tu_knm > 0:
+        torsion_lookup_pt_percent = pt_percent
+        if derived_pt_source is not None:
+            torsion_lookup_pt_percent = min(max(pt_percent, 0.15), 3.0)
+            if torsion_lookup_pt_percent != pt_percent:
+                assumptions.append(
+                    "Derived pt_percent was bounded only for the torsion Table 19 "
+                    "lookup; the decisive shear check retains the exact value."
+                )
+
         if cover_mm is None:
             raise ValueError("cover_mm is required when tu_knm > 0.")
         torsion_result = torsion.design_torsion(
@@ -384,6 +386,23 @@ def check_compliance_case(
         asv=asv_mm2,
         pt=pt_percent,
     )
+    if derived_pt_source is not None and E_SHEAR_006 in sh.errors:
+        issue = replace(
+            E_SHEAR_006,
+            message=(
+                "Shear steel percentage must be within the Table 19 range "
+                "supported by StructLib (0.15–3.0%). "
+                f"Derived {pt_percent}% from {derived_pt_source}."
+            ),
+            hint="Verify the longitudinal steel basis and effective depth.",
+            recovery="Review the section and reinforcement before rerunning shear.",
+        )
+        sh = replace(
+            sh,
+            errors=tuple(
+                issue if error == E_SHEAR_006 else error for error in sh.errors
+            ),
+        )
 
     defl: DeflectionResult | None = None
     crack: CrackWidthResult | None = None
