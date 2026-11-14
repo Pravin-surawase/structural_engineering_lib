@@ -19,10 +19,18 @@ def _evidence() -> dict:
 
 def test_exact_accepted_contracts_and_installed_sources() -> None:
     evidence = _evidence()
-    repair = json.loads(
-        (
-            ROOT / "docs/verification/etabs-w3f-spring-readback-repair-evidence.json"
-        ).read_text(encoding="utf-8")
+    repair_bytes = (
+        ROOT / "docs/verification/etabs-w3f-spring-readback-repair-evidence.json"
+    ).read_bytes()
+    repair = json.loads(repair_bytes)
+    demand_coverage = json.loads(
+        (ROOT / "docs/verification/etabs-w3-demand-coverage-evidence.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert (
+        hashlib.sha256(repair_bytes).hexdigest()
+        == demand_coverage["predecessor_receipt_sha256"]
     )
     assert (
         hashlib.sha256(
@@ -40,19 +48,21 @@ def test_exact_accepted_contracts_and_installed_sources() -> None:
         evidence["source"]["accepted_contract_tree"]
         == "06bbd1a9959249e800f71be7dea9e85c5eda333a"
     )
+    coverage_source = demand_coverage["source"]
+    coverage_path = "Python/structural_lib/services/contracts/etabs_w3.py"
+    assert coverage_source["path"] == coverage_path
+    assert demand_coverage["live_etabs_replayed"] is False
     for path, key in (
         ("Python/structural_lib/core/analysis_contracts.py", "accepted_core_sha256"),
-        (
-            "Python/structural_lib/services/contracts/etabs_w3.py",
-            "accepted_service_contract_sha256",
-        ),
+        (coverage_path, "accepted_service_contract_sha256"),
     ):
         binding = repair["contract_bindings"]["successor_sources"][path]
         assert binding["predecessor_sha256"] == evidence["source"][key]
-        assert (
-            hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
-            == binding["current_sha256"]
-        )
+        expected = binding["current_sha256"]
+        if path == coverage_path:
+            assert coverage_source["predecessor_sha256"] == expected
+            expected = coverage_source["current_sha256"]
+        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
     assert evidence["host"]["etabs_executable_version"] == "23.3.1.4563"
     assert evidence["host"]["comtypes"] == "1.4.16"
 
