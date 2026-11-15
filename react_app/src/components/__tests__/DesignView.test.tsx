@@ -14,6 +14,27 @@ const mockDesignInputs = vi.hoisted(() => ({
   include_serviceability: false,
 }));
 
+const mockLoadAnalysis = vi.hoisted(() => ({
+  mutate: vi.fn(),
+  data: null as null | {
+    max_bm_knm: number;
+    min_bm_knm: number;
+    max_sf_kn: number;
+    min_sf_kn: number;
+    bmd_knm: number[];
+    sfd_kn: number[];
+  },
+  isPending: false,
+}));
+
+const mockActions = vi.hoisted(() => ({
+  triggerDesign: vi.fn(),
+  updateInputs: vi.fn(),
+  updateLength: vi.fn(),
+  reconnect: vi.fn(),
+  reset: vi.fn(),
+}));
+
 // Mock react-router-dom
 vi.mock('react-router-dom', () => ({
   useNavigate: vi.fn(() => vi.fn()),
@@ -39,13 +60,7 @@ vi.mock('../../hooks/useLiveDesign', () => ({
       isFallbackActive: true,
       transportExplanation: 'Verified HTTP mode.',
     },
-    actions: {
-      triggerDesign: vi.fn(),
-      updateInputs: vi.fn(),
-      updateLength: vi.fn(),
-      reconnect: vi.fn(),
-      reset: vi.fn(),
-    },
+    actions: mockActions,
   })),
 }));
 
@@ -64,7 +79,7 @@ vi.mock('../../hooks/useExport', () => ({
 
 // Mock load analysis hook
 vi.mock('../../hooks/useLoadAnalysis', () => ({
-  useLoadAnalysis: vi.fn(() => ({ mutate: vi.fn(), data: null, isPending: false })),
+  useLoadAnalysis: vi.fn(() => mockLoadAnalysis),
 }));
 
 // Mock Viewport3D (Three.js cannot run in jsdom)
@@ -102,6 +117,8 @@ vi.mock('../../store/designStore', () => ({
 describe('DesignView', () => {
   beforeEach(() => {
     mockDesignInputs.include_serviceability = false;
+    mockLoadAnalysis.data = null;
+    mockActions.updateInputs.mockReset();
   });
 
   it('renders without crashing', () => {
@@ -156,5 +173,51 @@ describe('DesignView', () => {
     expect(screen.getAllByLabelText('Shear (Vu) in kN')).toHaveLength(1);
     expect(screen.getAllByLabelText('Concrete in N/mm2')).toHaveLength(1);
     expect(screen.queryByLabelText('Load Calculator')).not.toBeInTheDocument();
+  });
+
+  it('holds a hogging load result instead of transferring it as bottom tension', () => {
+    mockLoadAnalysis.data = {
+      max_bm_knm: 0,
+      min_bm_knm: -90,
+      max_sf_kn: 60,
+      min_sf_kn: 0,
+      bmd_knm: [-90, 0],
+      sfd_kn: [60, 0],
+    };
+    render(React.createElement(DesignView));
+    fireEvent.click(screen.getByLabelText('Load Calculator'));
+    expect(screen.getByRole('button', { name: /use values/i })).toBeDisabled();
+    expect(screen.getByText(/Transfer held/)).toHaveTextContent('-90.0 kN·m of hogging');
+    expect(screen.getAllByText('-90.0').length).toBeGreaterThan(0);
+  });
+
+  it('transfers the positive simply-supported control with its shear magnitude', () => {
+    mockLoadAnalysis.data = {
+      max_bm_knm: 22.5,
+      min_bm_knm: 0,
+      max_sf_kn: 30,
+      min_sf_kn: -30,
+      bmd_knm: [0, 22.5, 0],
+      sfd_kn: [30, 0, -30],
+    };
+    render(React.createElement(DesignView));
+    fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /use values/i }));
+    expect(mockActions.updateInputs).toHaveBeenCalledWith({ moment: 22.5, shear: 30 });
+  });
+
+  it('preserves unrounded positive actions when transferring the diagram', () => {
+    mockLoadAnalysis.data = {
+      max_bm_knm: 22.546,
+      min_bm_knm: 0,
+      max_sf_kn: 30.123,
+      min_sf_kn: -30.123,
+      bmd_knm: [0, 22.546, 0],
+      sfd_kn: [30.123, 0, -30.123],
+    };
+    render(React.createElement(DesignView));
+    fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /use values/i }));
+    expect(mockActions.updateInputs).toHaveBeenCalledWith({ moment: 22.546, shear: 30.123 });
   });
 });

@@ -182,7 +182,7 @@ def test_simple_support_anchorage_uses_moment_over_shear_plus_lo() -> None:
 
 
 @pytest.mark.parametrize("left", (True, False))
-@pytest.mark.parametrize("extension", (5, 940.234375 / 3, 400))
+@pytest.mark.parametrize("extension", (5, 115, 940.234375 / 3, 400))
 def test_simple_support_requires_real_extension_even_when_moment_over_shear_passes(
     left, extension
 ) -> None:
@@ -204,10 +204,21 @@ def test_simple_support_requires_real_extension_even_when_moment_over_shear_pass
     )
     result = check_anchorage(AnchorageCheckRequest("IS456-WP05", "B1", "r1", (path,)))
     assert result.execution == "completed"
-    assert result.engineering == ("fail" if extension == 5 else "pass")
+    assert result.engineering == ("fail" if extension in (5, 115) else "pass")
     assert result.outputs["checks"][0]["available_for_criterion_mm"] == pytest.approx(
         3 * extension
     )
+    reversed_path = replace(
+        path,
+        direction=(
+            AnchorageDirection.INCREASING_X if left else AnchorageDirection.DECREASING_X
+        ),
+    )
+    contradicted = check_anchorage(
+        AnchorageCheckRequest("IS456-WP05", "B1", "r1", (reversed_path,))
+    )
+    assert contradicted.execution == "rejected_input"
+    assert contradicted.diagnostics[0].code == "SUPPORT.DIRECTION_MISMATCH"
 
 
 @pytest.mark.parametrize(

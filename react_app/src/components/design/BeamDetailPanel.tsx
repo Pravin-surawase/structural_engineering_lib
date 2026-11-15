@@ -42,20 +42,24 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
   const redesign = () => startBatchDesign([beam]);
 
   const [editMode, setEditMode] = useState(false);
+  const [editBeamId, setEditBeamId] = useState<string | null>(null);
   const [editBarCount, setEditBarCount] = useState(mid?.tension.count ?? 2);
   const [editBarDia, setEditBarDia] = useState(mid?.tension.diameter_mm ?? 16);
   const [editStrDia, setEditStrDia] = useState(mid?.stirrup.diameter_mm ?? 8);
   const [editStrSp, setEditStrSp] = useState(mid?.stirrup.spacing_mm ?? 150);
+  const isEditingThisBeam = editMode && editBeamId === beam.id;
   const handleEditOpen = () => {
     setEditBarCount(beam.requested_bar_count ?? mid?.tension.count ?? 2);
     setEditBarDia(beam.tension_bar_diameter_mm ?? mid?.tension.diameter_mm ?? 16);
     setEditStrDia(beam.stirrup_diameter_mm ?? mid?.stirrup.diameter_mm ?? 8);
     setEditStrSp(beam.requested_stirrup_spacing_mm ?? mid?.stirrup.spacing_mm ?? 150);
+    setEditBeamId(beam.id);
     setEditMode(true);
   };
   const handleApplyRebar = () => {
+    if (!isEditingThisBeam) return;
     const store = useImportedBeamsStore.getState();
-    const current = store.beams.find((item) => (item.source_id ?? item.id) === memberId);
+    const current = store.beams.find((item) => item.id === beam.id);
     if (!current) return;
     const edited: BeamCSVRow = {
       ...current,
@@ -68,6 +72,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
     };
     store.setBeams(store.beams.map((item) => item === current ? edited : item));
     if (useImportedBeamsStore.getState().error) return;
+    setEditBeamId(null);
     setEditMode(false);
     startBatchDesign([edited]);
   };
@@ -80,9 +85,9 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
   const { mutate: exportBBS, isPending: bbsPending } = useExportBBS();
   const { mutate: exportDXF, isPending: dxfPending } = useExportDXF();
   const { mutate: exportReport, isPending: reportPending } = useExportReport();
-  const exportHeld = !layout || editMode || redesigning;
+  const exportHeld = !layout || isEditingThisBeam || redesigning;
   const downloadChecked = (download: (params: WorkbenchExportParams) => void) => {
-    if (editMode || redesigning) return;
+    if (isEditingThisBeam || redesigning) return;
     const current = currentWorkbenchLayout(useWorkspaceStore.getState().snapshot, memberId);
     const params = exportParams(current);
     if (params) download(params);
@@ -132,16 +137,23 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
             </button>
           )}
           <button
-            onClick={() => editMode ? setEditMode(false) : handleEditOpen()}
+            onClick={() => {
+              if (isEditingThisBeam) {
+                setEditBeamId(null);
+                setEditMode(false);
+              } else {
+                handleEditOpen();
+              }
+            }}
             title="Edit reinforcement"
             className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium transition-all
-              ${editMode
+              ${isEditingThisBeam
                 ? "bg-amber-500/20 border border-amber-500/40 text-amber-300"
                 : "bg-white/5 border border-white/10 text-zinc-400 hover:text-zinc-200 hover:bg-white/10"
               }`}
           >
             <Pencil className="w-3 h-3" />
-            {editMode ? "Editing" : "Edit Rebar"}
+            {isEditingThisBeam ? "Editing" : "Edit Rebar"}
           </button>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 text-zinc-500 hover:text-zinc-200 transition-colors">
             <X className="w-4 h-4" />
@@ -180,7 +192,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
       </div>
 
       {/* ── Edit Rebar Mode ── */}
-      {editMode && (
+      {isEditingThisBeam && (
         <div className="px-4 py-3 border-b border-amber-500/20 bg-amber-500/[0.03] space-y-3 shrink-0">
           <p className="text-[10px] text-amber-400/70 uppercase tracking-widest">Override Reinforcement</p>
           <div className="grid grid-cols-2 gap-2">

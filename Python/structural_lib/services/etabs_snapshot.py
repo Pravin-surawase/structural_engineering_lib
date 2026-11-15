@@ -1049,6 +1049,41 @@ def build_etabs_canonical_snapshot_v1(
                     )
                 )
                 continue
+        axial = next(
+            (
+                field.parsed_value
+                for field in row.fields
+                if field.canonical_field in ("p", "pu_max")
+                and isinstance(field.parsed_value, float)
+                and field.parsed_value != 0
+            ),
+            None,
+        )
+        if axial is not None:
+            station = _field_value(row, "station")
+            case = _field_value(row, "case_id") or result_identity.name
+            location = f", station {station} {units.station_length}" if station else ""
+            message = (
+                f"Beam {source_member_id!r}, case {case!r}{location} supplies axial "
+                f"force {axial:+g} {units.force}. The snapshot design profile accepts bending and shear."
+            )
+            _replace_row(
+                rows,
+                artifact_role=row.artifact_role,
+                source_row_number=row.source_row_number,
+                disposition=ETABSRowDisposition.BLOCKED,
+                reason_code="BEAM_AXIAL_ACTION_OUTSIDE_PROFILE",
+                reason=message,
+                canonical_member_id=force_canonical_member_id,
+            )
+            issues.append(
+                _issue(
+                    "etabs.beam_axial_action_outside_profile",
+                    f"forces.rows[{row.source_row_number}].p",
+                    message,
+                )
+            )
+            continue
         _replace_row(
             rows,
             artifact_role=row.artifact_role,

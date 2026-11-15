@@ -67,6 +67,16 @@ def shear_reinforcement_component_kn(
     return design_force_kn * (d_mm / spacing_mm) * (math.sin(alpha) + math.cos(alpha))
 
 
+def _exact_vertical_stirrup_limit_mm(
+    b_mm: float, d_mm: float, asv_mm2: float, fy_nmm2: float, required_vus_kn: float
+) -> float:
+    steel = 0.87 * min(fy_nmm2, 415.0) * asv_mm2
+    limit = min(0.75 * d_mm, 300.0, steel / (0.4 * b_mm))
+    if required_vus_kn > 0:
+        limit = min(limit, steel * d_mm / (1000.0 * required_vus_kn))
+    return limit
+
+
 def round_to_practical_spacing(spacing_mm: float, round_down: bool = True) -> float:
     """
     Round calculated stirrup spacing to practical construction values.
@@ -517,8 +527,6 @@ def design_shear(
 
     # Cl. 40.4 and 26.5.1.6 limit the strength used for stirrup design.
     # Validate the supplied grade above; do not clamp invalid material inputs.
-    fy_design = min(fy, 415.0)
-
     # 4. Calculate Vus and Spacing
     vu_n = abs(vu_kn) * 1000.0
     vc_n = tc * b * d
@@ -529,27 +537,10 @@ def design_shear(
         vus = 0.0
         design_errors.append(E_SHEAR_003)
 
-        # Spacing for min reinforcement (Cl. 26.5.1.6)
-        spacing_calc = (0.87 * fy_design * asv) / (0.4 * b)
     else:
         # Design for shear
         vus = (vu_n - vc_n) / 1000.0  # N → kN
-
-        # sv = (0.87 * fy * Asv * d) / Vus_N
-        spacing_calc = (0.87 * fy_design * asv * d) / (vus * 1000.0)  # kN → N
-
-    # 5. Apply Max Spacing Limits (Cl. 26.5.1.5)
-    max_spacing_1 = 0.75 * d
-    max_spacing_2 = 300.0
-    max_spacing_min_reinf = (0.87 * fy_design * asv) / (0.4 * b)
-
-    spacing = spacing_calc
-    if spacing > max_spacing_1:
-        spacing = max_spacing_1
-    if spacing > max_spacing_2:
-        spacing = max_spacing_2
-    if spacing > max_spacing_min_reinf:
-        spacing = max_spacing_min_reinf
+    spacing = _exact_vertical_stirrup_limit_mm(b, d, asv, fy, vus)
 
     # 6. Round to practical construction spacing (conservative)
     rounded_spacing = round_to_practical_spacing(spacing, round_down=True)

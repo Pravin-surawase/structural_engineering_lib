@@ -60,6 +60,7 @@ class TestBBSExport:
         assert resp.headers["content-type"] == "text/csv; charset=utf-8"
         assert "Content-Disposition" in resp.headers
         assert "BBS_" in resp.headers["Content-Disposition"]
+        assert resp.headers["X-Export-Classification"] == "UNCHECKED_PREVIEW"
 
         # Verify CSV content
         content = resp.text
@@ -153,6 +154,7 @@ class TestDXFExport:
         assert resp.status_code == 200
         assert "application/octet-stream" in resp.headers["content-type"]
         assert ".dxf" in resp.headers["Content-Disposition"]
+        assert resp.headers["X-Export-Classification"] == "UNCHECKED_PREVIEW"
         # DXF file should have some content
         assert len(resp.content) > 0
 
@@ -311,6 +313,7 @@ def test_imported_workbench_downloads_replay_one_checked_layout(client):
     for response in responses.values():
         assert response.status_code == 200
         assert response.headers["X-Checked-Layout-Id"] == layout["checked_layout_id"]
+        assert response.headers["X-Export-Classification"] == "CHECKED_LAYOUT"
     report = responses["report"].text
     assert layout["checked_layout_id"] in report
     assert "B1" in report

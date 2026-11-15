@@ -62,17 +62,18 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const [loadCalcSupport, setLoadCalcSupport] = useState<'simply_supported' | 'cantilever'>('simply_supported');
 
   const exportParams = {
+    source: "quick-beam" as const,
     width: inputs.width,
     depth: inputs.depth,
     span_length: length,
     clear_cover: inputs.clear_cover ?? 40,
     fck: inputs.fck,
     fy: inputs.fy,
-    ast_required: 0, // filled below when result exists
     moment: inputs.moment,
     shear: inputs.shear ?? 0,
-    torsion: inputs.torsion ?? 0,
-    include_serviceability: inputs.include_serviceability ?? false,
+    stirrup_dia_mm: inputs.stirrup_dia_mm ?? 8,
+    main_bar_dia_mm: inputs.main_bar_dia_mm ?? 20,
+    effective_depth: inputs.effective_depth,
   };
   const { mutate: exportBBS, isPending: bbsPending } = useExportBBS();
   const { mutate: exportDXF, isPending: dxfPending } = useExportDXF();
@@ -89,6 +90,10 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const rebarSuggestions = useRebarSuggestions();
   const loadAnalysis = useLoadAnalysis();
   const combinedCase = (inputs.torsion ?? 0) > 0 || Boolean(inputs.include_serviceability);
+  const minimumLoadMoment = loadAnalysis.data?.min_bm_knm;
+  // Quick Beam admits only nonnegative sagging moment and has no tension-face
+  // or station contract. Do not turn a hogging action into bottom tension steel.
+  const cannotTransferLoadResult = minimumLoadMoment !== undefined && minimumLoadMoment < -1e-9;
 
   const spanMeters = Number((length / 1000).toFixed(2));
   const updateCatalogInput = (
@@ -298,16 +303,22 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                     <button
                       onClick={() => {
                         const d = loadAnalysis.data!;
-                        const muAbs = Math.max(Math.abs(d.max_bm_knm), Math.abs(d.min_bm_knm));
                         const vuAbs = Math.max(Math.abs(d.max_sf_kn), Math.abs(d.min_sf_kn));
-                        actions.updateInputs({ moment: Math.round(muAbs * 10) / 10, shear: Math.round(vuAbs * 10) / 10 });
+                        actions.updateInputs({ moment: d.max_bm_knm, shear: vuAbs });
                       }}
+                      disabled={cannotTransferLoadResult}
+                      title={cannotTransferLoadResult ? "Quick Beam cannot represent hogging moment, tension face, or governing station. Keep the signed diagram and use a checked member workflow." : undefined}
                       className="flex-1 py-1.5 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-[11px] text-emerald-300 hover:bg-emerald-600/30 transition-colors flex items-center justify-center gap-1.5"
                     >
                       Use Values <ArrowRight className="w-3 h-3" />
                     </button>
                   )}
                 </div>
+                {cannotTransferLoadResult && (
+                  <p className="col-span-2 text-[10px] leading-4 text-amber-300/80" role="status">
+                    Transfer held. The diagram includes {minimumLoadMoment.toFixed(1)} kN·m of hogging. Quick Beam cannot preserve its tension face or station.
+                  </p>
+                )}
                 {loadAnalysis.data && <MiniDiagram data={loadAnalysis.data} />}
               </>
             )}
@@ -387,16 +398,28 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
             {showExportMenu && (
               <div className="absolute right-0 mt-1.5 w-44 rounded-xl bg-zinc-900 border border-white/10 shadow-2xl shadow-black/50 overflow-hidden">
                 {[
-                  { label: "BBS (CSV)", blocked: combinedCase, icon: <Download className="w-3.5 h-3.5" />, loading: bbsPending, onClick: () => { exportBBS({ ...exportParams, ast_required: state.result?.flexure?.ast_required ?? 0 }); setShowExportMenu(false); } },
-                  { label: "DXF Drawing", blocked: combinedCase, icon: <Ruler className="w-3.5 h-3.5" />, loading: dxfPending, onClick: () => { exportDXF({ ...exportParams, ast_required: state.result?.flexure?.ast_required ?? 0 }); setShowExportMenu(false); } },
+                  { label: "Checked BBS (CSV)", blocked: combinedCase, icon: <Download className="w-3.5 h-3.5" />, loading: bbsPending, onClick: () => { exportBBS(exportParams); setShowExportMenu(false); } },
+                  { label: "Checked DXF Drawing", blocked: combinedCase, icon: <Ruler className="w-3.5 h-3.5" />, loading: dxfPending, onClick: () => { exportDXF(exportParams); setShowExportMenu(false); } },
                   ...(["html", "json", "pdf"] as const).map((format) => ({
-                    label: `${format.toUpperCase()} Report`,
+                    label: format === "pdf" ? "Calculation PDF" : `${format.toUpperCase()} Report`,
                     blocked: combinedCase && format === "pdf",
                     icon: <FileText className="w-3.5 h-3.5" />,
                     loading: reportPending,
                     onClick: () => {
+                      if (!combinedCase && format !== "pdf") {
+                        exportReport({ ...exportParams, format });
+                        setShowExportMenu(false);
+                        return;
+                      }
                       exportReport({
-                        ...exportParams,
+                        width: inputs.width,
+                        depth: inputs.depth,
+                        fck: inputs.fck,
+                        fy: inputs.fy,
+                        moment: inputs.moment,
+                        shear: inputs.shear ?? 0,
+                        torsion: inputs.torsion ?? 0,
+                        include_serviceability: inputs.include_serviceability ?? false,
                         ast_required: state.result?.flexure?.ast_required,
                         ast_provided: state.result?.ast_total,
                         utilization: state.result ? governingUtilization(state.result) ?? undefined : undefined,
@@ -416,7 +439,7 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                   })),
                 ].map((item) => (
                   <button key={item.label} onClick={item.onClick} disabled={item.loading || !canExport || item.blocked}
-                    title={item.blocked ? "This format cannot represent the combined governing result." : undefined}
+                    title={item.blocked ? "This format cannot represent the checked governing layout." : undefined}
                     className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs text-white/60 hover:bg-white/5 hover:text-white/90 transition-colors disabled:opacity-40">
                     {item.loading ? <div className="w-3.5 h-3.5 rounded-full border border-white/30 border-t-white/70 animate-spin" /> : item.icon}
                     {item.label}
@@ -883,8 +906,8 @@ function MiniDiagram({ data }: { data: LoadAnalysisResponse }) {
   return (
     <div className="col-span-2 rounded-lg bg-white/[0.03] border border-white/8 p-2 space-y-1">
       <div className="flex justify-between text-[10px] text-zinc-400 px-1">
-        <span>Mu,max = <span className="text-cyan-300 font-semibold">{Math.abs(data.max_bm_knm).toFixed(1)}</span> kN·m</span>
-        <span>Vu,max = <span className="text-cyan-300 font-semibold">{Math.abs(data.max_sf_kn).toFixed(1)}</span> kN</span>
+        <span>Mu,max = <span className="text-cyan-300 font-semibold">{data.max_bm_knm.toFixed(1)}</span> kN·m</span>
+        <span>Mu,min = <span className="text-cyan-300 font-semibold">{data.min_bm_knm.toFixed(1)}</span> kN·m</span>
       </div>
       <svg width={w} height={h} className="w-full" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none">
         {/* Zero line */}

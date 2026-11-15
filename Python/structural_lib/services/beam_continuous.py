@@ -29,7 +29,7 @@ from structural_lib.beam.reinforcement import (
     BarPosition,
     Face,
     ReinforcementGeometryRequest,
-    evaluate_geometry,
+    _evaluate_geometry,
 )
 from structural_lib.beam.section_shear import (
     SectionShearReinforcement,
@@ -485,7 +485,7 @@ def _sections(
         if flange
         else None
     )
-    geometry = evaluate_geometry(
+    geometry = _evaluate_geometry(
         ReinforcementGeometryRequest(
             request.schema_version,
             request.width_mm,
@@ -494,7 +494,8 @@ def _sections(
             request.link_diameter_mm,
             max(max(bar.diameter_mm for bar in bars), request.aggregate_size_mm + 5),
             bars,
-        )
+        ),
+        maximum_aggregate_size_mm=request.aggregate_size_mm,
     )
     flexure = {
         face: flexural_capacity(

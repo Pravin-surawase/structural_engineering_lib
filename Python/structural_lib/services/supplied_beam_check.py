@@ -8,6 +8,7 @@ import math
 from dataclasses import dataclass
 from typing import Any, Literal
 
+from structural_lib.codes.is456.beam.shear import _exact_vertical_stirrup_limit_mm
 from structural_lib.core.result_contract import (
     CalculationStatus,
     EngineeringStatus,
@@ -163,14 +164,25 @@ def _evaluate_shear(
     )
     concrete_capacity_kn = shear_result.tau_c * request.section.b_mm * d_mm / 1000.0
     total_capacity_kn = concrete_capacity_kn + provided_capacity_kn
-    required_spacing_mm = float(shear_result.spacing)
+    section_ok = bool(shear_result.is_safe) or any(
+        error.code == "SHEAR_SPACING_NOT_CONSTRUCTIBLE" for error in shear_result.errors
+    )
+    required_spacing_mm = (
+        _exact_vertical_stirrup_limit_mm(
+            request.section.b_mm,
+            d_mm,
+            reinforcement.asv_mm2,
+            request.materials.fy_transverse_nmm2,
+            shear_result.Vus,
+        )
+        if section_ok
+        else 0.0
+    )
     spacing_ok = (
-        shear_result.is_safe
-        and required_spacing_mm > 0
+        required_spacing_mm > 0
         and reinforcement.stirrup_spacing_mm <= required_spacing_mm + 1e-9
     )
     capacity_ok = shear_result.Vus <= provided_capacity_kn + 1e-9
-    section_ok = bool(shear_result.is_safe)
     issues: list[dict[str, str]] = []
     if not section_ok:
         issues.append(
