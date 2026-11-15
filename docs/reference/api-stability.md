@@ -93,6 +93,13 @@ guide](../migration/lib-pro-007-p7-compatibility-convergence.md), the
 [deprecation policy](deprecation-policy.md), and the [release
 policy](../getting-started/releases.md#current-release-process-29-october-2026).
 
+The Pareto beam screening request retains `cover_mm` as the legacy name for
+the effective-depth offset `D - d`. The route accepts fractional millimetres
+and returns the candidate's effective depth as a number. The slab workbench
+routes accept explicit false serviceability evidence flags. They return
+`held_requires_current_reviewed_evidence` for span/depth and retain the
+independently evaluated strength checks.
+
 ## S3 contract review and migration — 29 October 2026
 
 The S3 audit reconciles 14 Python surfaces, 1,308 classified projections,

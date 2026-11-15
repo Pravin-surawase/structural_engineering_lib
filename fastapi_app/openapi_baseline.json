@@ -8830,7 +8830,6 @@
             "type": "string"
           },
           "qualified_serviceability_acceptance_acknowledged": {
-            "const": true,
             "title": "Qualified Serviceability Acceptance Acknowledged",
             "type": "boolean"
           },
@@ -8855,7 +8854,6 @@
             "type": "number"
           },
           "serviceability_limit_source_is_approved": {
-            "const": true,
             "title": "Serviceability Limit Source Is Approved",
             "type": "boolean"
           },
@@ -8986,7 +8984,6 @@
             "type": "number"
           },
           "qualified_serviceability_acceptance_acknowledged": {
-            "const": true,
             "title": "Qualified Serviceability Acceptance Acknowledged",
             "type": "boolean"
           },
@@ -9006,7 +9003,6 @@
             "type": "number"
           },
           "serviceability_limit_source_is_approved": {
-            "const": true,
             "title": "Serviceability Limit Source Is Approved",
             "type": "boolean"
           },
@@ -12723,7 +12719,6 @@
             "type": "number"
           },
           "qualified_serviceability_acceptance_acknowledged": {
-            "const": true,
             "title": "Qualified Serviceability Acceptance Acknowledged",
             "type": "boolean"
           },
@@ -12743,7 +12738,6 @@
             "type": "number"
           },
           "serviceability_limit_source_is_approved": {
-            "const": true,
             "title": "Serviceability Limit Source Is Approved",
             "type": "boolean"
           },
@@ -13996,7 +13990,6 @@
             "type": "string"
           },
           "qualified_serviceability_acceptance_acknowledged": {
-            "const": true,
             "title": "Qualified Serviceability Acceptance Acknowledged",
             "type": "boolean"
           },
@@ -14021,7 +14014,6 @@
             "type": "number"
           },
           "serviceability_limit_source_is_approved": {
-            "const": true,
             "title": "Serviceability Limit Source Is Approved",
             "type": "boolean"
           },
@@ -25405,9 +25397,9 @@
             "type": "number"
           },
           "d_mm": {
-            "description": "Effective depth (mm)",
+            "description": "Effective depth (mm); may be fractional",
             "title": "D Mm",
-            "type": "integer"
+            "type": "number"
           },
           "fck_nmm2": {
             "description": "Concrete grade (N/mm\u00b2)",
@@ -25526,12 +25518,12 @@
             "type": "number"
           },
           "cover_mm": {
-            "default": 40,
-            "description": "Concrete cover (mm)",
-            "maximum": 75.0,
-            "minimum": 20.0,
+            "default": 40.0,
+            "description": "Legacy effective-depth screening offset D-d (mm); this endpoint does not model physical clear cover or bar geometry separately.",
+            "exclusiveMaximum": 800.0,
+            "exclusiveMinimum": 0.0,
             "title": "Cover Mm",
-            "type": "integer"
+            "type": "number"
           },
           "max_candidates": {
             "default": 50,
@@ -31407,7 +31399,6 @@
             "type": "string"
           },
           "qualified_serviceability_acceptance_acknowledged": {
-            "const": true,
             "title": "Qualified Serviceability Acceptance Acknowledged",
             "type": "boolean"
           },
@@ -31427,7 +31418,6 @@
             "type": "number"
           },
           "serviceability_limit_source_is_approved": {
-            "const": true,
             "title": "Serviceability Limit Source Is Approved",
             "type": "boolean"
           },

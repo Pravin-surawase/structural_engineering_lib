@@ -38,6 +38,26 @@ class TestParetoOptimization:
         assert isinstance(data["objectives_used"], list)
         assert data["computation_time_sec"] >= 0
 
+    def test_pareto_accepts_decimal_effective_depth_offset_above_cover_limit(
+        self, client
+    ):
+        """Legacy cover_mm is a decimal D-d screening offset, not physical cover."""
+        response = client.post(
+            "/api/v1/optimization/beam/pareto",
+            json={
+                "span_mm": 5000.0,
+                "mu_knm": 150.0,
+                "vu_kn": 80.0,
+                "cover_mm": 80.5,
+                "max_candidates": 50,
+            },
+        )
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        assert data["pareto_front"]
+        candidate = data["pareto_front"][0]
+        assert candidate["D_mm"] - candidate["d_mm"] == 80.5
+
     def test_pareto_invalid_negative_span(self, client):
         """Negative span_mm should be rejected with 422."""
         payload = {
