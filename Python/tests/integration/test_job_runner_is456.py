@@ -1,3 +1,4 @@
+import csv
 import json
 from pathlib import Path
 
@@ -275,3 +276,40 @@ def test_job_preserves_valid_null_and_case_serviceability_settings(
             assert row[check] is None
         else:
             assert row[check]["is_ok"] == expected_ok
+
+
+def test_job_csv_preserves_unavailable_ratio_and_its_reason(tmp_path: Path):
+    job = {
+        "schema_version": 1,
+        "job_id": "unavailable-ratio",
+        "code": "IS456",
+        "units": "IS456",
+        "beam": {
+            "b_mm": 300,
+            "D_mm": 500,
+            "d_mm": 457,
+            "d_dash_mm": 43,
+            "fck_nmm2": 25,
+            "fy_nmm2": 500,
+        },
+        "cases": [
+            {"case_id": "nominal", "mu_knm": 150, "vu_kn": 75},
+            {"case_id": "overload", "mu_knm": 2000, "vu_kn": 75},
+        ],
+    }
+    summary = job_runner.run_job_is456(job=job, out_dir=tmp_path)
+    design_dir = tmp_path / "design"
+    payload = json.loads((design_dir / "design_results.json").read_text())
+    with (design_dir / "compliance_summary.csv").open(newline="") as stream:
+        finite, failed = csv.DictReader(stream)
+    assert not summary["is_ok"] and summary["governing_case_id"] == "overload"
+    assert finite["case_id"] == "nominal"
+    assert float(finite["util_shear"]) == pytest.approx(
+        payload["cases"][0]["utilizations"]["shear"]
+    )
+    assert failed["case_id"] == "overload"
+    assert failed["governing_utilization"] == failed["util_shear"] == ""
+    assert (
+        payload["cases"][1]["unavailable_utilizations"]["utilizations.shear"]["reason"]
+        in failed["remarks"]
+    )

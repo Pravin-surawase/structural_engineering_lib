@@ -37,6 +37,7 @@ Task: TASK-DATA-001
 
 from __future__ import annotations
 
+from collections import Counter
 from collections.abc import Iterable
 from enum import StrEnum
 from math import dist, hypot, isclose, isfinite
@@ -499,6 +500,30 @@ class BeamBatchResult(BaseModel):
     warnings: int = Field(0, ge=0)
     metadata: dict[str, Any] = Field(default_factory=dict)
 
+    @model_validator(mode="after")
+    def reconcile_result_counts(self) -> BeamBatchResult:
+        """Derive absent counts from rows and reject contradictory summaries."""
+        if not self.results:
+            if self.passed + self.failed + self.warnings > self.total_beams:
+                raise ValueError("Batch status counts cannot exceed total_beams")
+            return self
+
+        statuses = Counter(row.status for row in self.results)
+        counts = {
+            "total_beams": len(self.results),
+            "passed": statuses[DesignStatus.PASS],
+            "failed": statuses[DesignStatus.FAIL],
+            "warnings": statuses[DesignStatus.WARNING],
+        }
+        provided = self.model_fields_set.copy()
+        for field, expected in counts.items():
+            if field in provided and getattr(self, field) != expected:
+                raise ValueError(
+                    f"Batch {field} must be {expected} for the supplied result rows"
+                )
+            setattr(self, field, expected)
+        return self
+
     @computed_field
     @property
     def pass_rate(self) -> float:
@@ -514,18 +539,7 @@ class BeamBatchResult(BaseModel):
         metadata: dict[str, Any] | None = None,
     ) -> BeamBatchResult:
         """Create batch result from list of individual results."""
-        passed = sum(1 for r in results if r.status == DesignStatus.PASS)
-        failed = sum(1 for r in results if r.status == DesignStatus.FAIL)
-        warnings = sum(1 for r in results if r.status == DesignStatus.WARNING)
-
-        return cls(
-            results=results,
-            total_beams=len(results),
-            passed=passed,
-            failed=failed,
-            warnings=warnings,
-            metadata=metadata or {},
-        )
+        return cls(results=results, metadata=metadata or {})
 
 
 # =============================================================================

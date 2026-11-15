@@ -257,20 +257,30 @@ def run_job_is456(
     }
     _write_json(design_dir / "design_results.json", design_results)
 
-    # Excel-friendly compact summary
+    # Keep the existing CSV columns while sharing JSON's ratio projection.
     rows = []
-    for c in report.cases:
+    for case in design_results["cases"]:
+        utilizations = case["utilizations"]
+        reasons = case.get("unavailable_utilizations", {})
+        remarks = " | ".join(
+            part
+            for part in (
+                case["remarks"],
+                *(f"{field}: {record['reason']}" for field, record in reasons.items()),
+            )
+            if part
+        )
         rows.append(
             {
                 "job_id": job_id,
-                "case_id": c.case_id,
-                "is_ok": c.is_ok,
-                "governing_utilization": c.governing_utilization,
-                "util_flexure": c.utilizations.get("flexure"),
-                "util_shear": c.utilizations.get("shear"),
-                "util_deflection": c.utilizations.get("deflection"),
-                "util_crack_width": c.utilizations.get("crack_width"),
-                "remarks": c.remarks,
+                "case_id": case["case_id"],
+                "is_ok": case["is_ok"],
+                "governing_utilization": case["governing_utilization"],
+                "util_flexure": utilizations.get("flexure"),
+                "util_shear": utilizations.get("shear"),
+                "util_deflection": utilizations.get("deflection"),
+                "util_crack_width": utilizations.get("crack_width"),
+                "remarks": remarks,
             }
         )
 

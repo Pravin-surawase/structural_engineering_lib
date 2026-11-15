@@ -604,3 +604,22 @@ def test_force_intake_and_reload_reject_inconsistent_evidence(
     path.write_text(json.dumps(data))
     with pytest.raises(ValueError, match=field):
         load_forces(path)
+
+
+def test_batch_counts_follow_result_rows_through_construction_and_reload(
+    tmp_path: Path, sample_batch_result: BeamBatchResult
+):
+    sample_results = sample_batch_result.results
+    direct = BeamBatchResult(results=sample_results)
+    factory = BeamBatchResult.from_results(sample_results)
+    assert direct == factory
+    assert direct.total_beams == len(sample_results)
+    path = tmp_path / "result.json"
+    save_batch_result(direct, path)
+    assert load_batch_result(path) == factory
+
+    data = json.loads(path.read_text())
+    data["result"]["passed"] = direct.passed + 1
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="Batch passed"):
+        load_batch_result(path)

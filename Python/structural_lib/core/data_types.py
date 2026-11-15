@@ -398,8 +398,10 @@ class FlexureResult:
         return self.Asc_required
 
     def to_dict(self) -> dict[str, Any]:
-        """Convert result to a plain dictionary for serialization."""
-        return asdict(self)
+        """Project the section classification to its public numeric value."""
+        result = asdict(self)
+        result["section_type"] = self.section_type.value
+        return result
 
 
 @dataclass(frozen=True)
