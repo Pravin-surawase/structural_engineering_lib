@@ -1280,7 +1280,8 @@ def _report_number(value: Any) -> str:
 
 
 def _render_cli_beam_evidence(data: ReportData) -> str:
-    if data.result_envelope is None and not data.steel_zones:
+    load_basis = _safe_dict(data.results.get("summary")).get("load_basis")
+    if data.result_envelope is None and not data.steel_zones and not load_basis:
         return ""
     envelope = data.result_envelope or {}
     status = html.escape(str(envelope.get("engineering_status") or "Unavailable"))
@@ -1295,10 +1296,13 @@ def _render_cli_beam_evidence(data: ReportData) -> str:
         detailing = (
             f"\n    <p><strong>Detailing status:</strong> {layout_status}.{details}</p>"
         )
+    torsion_head = "<th>Torsion (kN·m)</th>" if load_basis else ""
     loads = "".join(
         f"<tr><td>{html.escape(str(case.get('case_id', '')))}</td>"
         f"<td>{_report_number(case.get('mu_knm'))}</td>"
-        f"<td>{_report_number(case.get('vu_kn'))}</td></tr>"
+        f"<td>{_report_number(case.get('vu_kn'))}</td>"
+        + (f"<td>{_report_number(dict(case).get('tu_knm'))}</td>" if load_basis else "")
+        + "</tr>"
         for case in data.cases
     )
     steel = "".join(
@@ -1316,15 +1320,20 @@ def _render_cli_beam_evidence(data: ReportData) -> str:
         if envelope
         else ""
     )
-    return f"""
+    basis_text = f"<p>{html.escape(str(load_basis))}</p>" if load_basis else ""
+    actions_section = f"""
 <div class="section">
     <h2>{review_heading}</h2>
+    {basis_text}
     {review_evidence}
     <table class="sanity-table">
-        <thead><tr><th>Case</th><th>Moment (kN·m)</th><th>Shear (kN)</th></tr></thead>
+        <thead><tr><th>Case</th><th>Moment (kN·m)</th><th>Shear (kN)</th>{torsion_head}</tr></thead>
         <tbody>{loads}</tbody>
     </table>
-</div>
+</div>"""
+    if load_basis and not data.steel_zones and not envelope:
+        return actions_section
+    return actions_section + f"""
 <div class="section">
     <h2>Required and Provided Steel by Zone</h2>
     {detailing}

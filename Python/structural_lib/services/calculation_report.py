@@ -315,6 +315,13 @@ class CalculationReport:
         classification_label, classification, required = _flexure_display(
             results.flexure
         )
+        proposed_capacity = results.shear.get("proposed_link_capacity_kn")
+        proposed_link_row = (
+            "<tr><td>Proposed link capacity at recommended pitch</td>"
+            f'<td class="number">{_format_number(proposed_capacity)}</td><td>kN</td></tr>'
+            if proposed_capacity is not None
+            else ""
+        )
         detail_notice, detail_rows = _detailing_display(results.detailing)
         if detail_notice or detail_rows:
             provided_row = ""
@@ -507,6 +514,9 @@ class CalculationReport:
             <tr><td>Required tension steel</td><td class="number">{
             e(required)
         }</td><td>mm²</td></tr>
+            <tr><td>Required compression steel</td><td class="number">{
+            e(_format_number(results.flexure.get("asc_required")))
+        }</td><td>mm²</td></tr>
             {provided_row}
         </table>
         {schedule}
@@ -526,10 +536,11 @@ class CalculationReport:
             <tr><td>&tau;<sub>c,max</sub> (Max Shear Stress)</td><td class="number">{
             _format_number(results.shear.get("tau_c_max"))
         }</td><td>N/mm²</td></tr>
-            <tr><td>V<sub>us</sub> (Stirrup Capacity)</td><td class="number">{
-            _format_number(results.shear.get("Vus"))
+            <tr><td>V<sub>us</sub> (Required stirrup contribution)</td><td class="number">{
+            _format_number(results.shear.get("vus_required_kn", results.shear.get("Vus")))
         }</td><td>kN</td></tr>
-            <tr><td>Stirrup Spacing</td><td class="number">{
+            {proposed_link_row}
+            <tr><td>Recommended stirrup spacing</td><td class="number">{
             _format_number(results.shear.get("spacing"))
         }</td><td>mm</td></tr>
             <tr><td>Shear Check</td><td class="{shear_status_class}">{
@@ -609,6 +620,13 @@ class CalculationReport:
             )
         )
 
+        proposed_capacity = results.shear.get("proposed_link_capacity_kn")
+        proposed_link_row = (
+            "| Proposed link capacity at recommended pitch "
+            f"| {_format_number(proposed_capacity)} | kN |\n"
+            if proposed_capacity is not None
+            else ""
+        )
         md = f"""# Calculation Report: {self.beam_id} @ {self.story}
 
 **Project:** {proj.project_name}
@@ -654,6 +672,7 @@ class CalculationReport:
 |-----------|-------|-------|
 | {classification_label} | {classification} | - |
 | Required tension steel | {required} | mm² |
+| Required compression steel | {_format_number(results.flexure.get("asc_required"))} | mm² |
 {provided}
 
 ### 2.2 Shear Design
@@ -664,8 +683,8 @@ class CalculationReport:
 | τv (Nominal Shear Stress) | {_format_number(results.shear.get("tau_v"))} | N/mm² |
 | τc (Concrete Shear Strength) | {_format_number(results.shear.get("tau_c"))} | N/mm² |
 | τc,max (Max Shear Stress) | {_format_number(results.shear.get("tau_c_max"))} | N/mm² |
-| Vus (Stirrup Capacity) | {_format_number(results.shear.get("Vus"))} | kN |
-| Stirrup Spacing | {_format_number(results.shear.get("spacing"))} | mm |
+| Vus (Required stirrup contribution) | {_format_number(results.shear.get("vus_required_kn", results.shear.get("Vus")))} | kN |
+{proposed_link_row}| Recommended stirrup spacing | {_format_number(results.shear.get("spacing"))} | mm |
 
 ---
 
@@ -721,7 +740,12 @@ def _flexure_values(flexure: Any) -> dict[str, Any]:
 def _flexure_display(flexure: dict[str, Any]) -> tuple[str, str, str]:
     section_type = flexure.get("section_type")
     label = "Section classification" if section_type else "Beam Type"
-    classification = section_type or flexure.get("beam_type") or "N/A"
+    classification = (
+        flexure.get("design_method")
+        or section_type
+        or flexure.get("beam_type")
+        or "N/A"
+    )
     area = flexure.get("ast_required")
     required = _format_number(area)
     if area == 0 and flexure.get("is_safe") is False:

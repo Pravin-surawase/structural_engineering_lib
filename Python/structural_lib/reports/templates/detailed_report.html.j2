@@ -267,6 +267,50 @@
         </div>
     </header>
 
+    {% if report_projection is defined %}
+    {% set action = inputs.loads[0] %}
+    {% set flexure = results.flexure %}
+    {% set governing = results.summary.get('governing_check') %}
+    <section class="section" id="checked-summary">
+        <h2>Design at a glance</h2>
+        <p>
+            <strong>Section:</strong> {{ inputs.get('b_mm') | format_number(0) }} × {{ inputs.get('D_mm') | format_number(0) }} mm,
+            d = {{ inputs.get('d_mm') | format_number(0) }} mm.
+            <strong>Materials:</strong> f<sub>ck</sub> = {{ inputs.get('fck') | format_number(0) }},
+            f<sub>y</sub> = {{ inputs.get('fy') | format_number(0) }} N/mm².
+        </p>
+        <p><strong>Factored actions {{ action.case_id or '' }}:</strong>
+            M<sub>u</sub> = {{ action.mu_knm | format_number }} kN·m,
+            V<sub>u</sub> = {{ action.vu_kn | format_number }} kN,
+            T<sub>u</sub> = {{ action.tu_knm | format_number }} kN·m.
+        </p>
+        <p><strong>Governing check:</strong>
+            {% if governing %}{{ governing | replace('_', ' ') | capitalize }}
+            (reported utilization {{ results.summary.governing_utilization | format_number(3) }})
+            {% else %}Unavailable{% endif %}.
+            {% if flexure.get('mu_lim_knm') is not none %}
+            Singly reinforced limiting moment {{ flexure.mu_lim_knm | format_number }} kN·m.
+            {% endif %}
+        </p>
+        {% if results.summary.failed_checks %}
+        <p><strong>Failed checks:</strong> {{ results.summary.failed_checks | join(', ') }}.</p>
+        {% endif %}
+        <p><strong>Required steel:</strong> {{ flexure.ast_required_mm2 | format_number }} mm² tension,
+            {{ flexure.asc_required_mm2 | format_number }} mm² compression.</p>
+        <p><strong>Provided longitudinal steel:</strong>
+            {% if results.detailing.status == 'available' %}
+                {% for face, label in [('top_bars', 'Top'), ('bottom_bars', 'Bottom')] %}
+                {{ label }}:
+                {% for zone in results.detailing[face] -%}
+                    {{ zone.zone }} {{ zone.area_provided_mm2 | format_number }} mm²{{ ', ' if not loop.last }}
+                {%- else -%}Not supplied{% endfor %}.
+                {% endfor %}
+                {% if results.detailing.is_valid is sameas false %}Detailing check failed.{% endif %}
+            {% else %}Not supplied.{% endif %}
+        </p>
+    </section>
+    {% endif %}
+
     <!-- Table of Contents -->
     <section class="section no-print">
         <h2>Table of Contents</h2>
@@ -359,7 +403,20 @@
         <h3>1.3 Loading</h3>
         <table>
             <tr><th>Load Type</th><th>Value</th><th>Unit</th><th>Factor</th><th>Factored</th></tr>
-            {% if inputs.get('loads') %}
+            {% if report_projection is defined %}
+            <tr>
+                <td>Design Moment (M<sub>u</sub>)</td>
+                <td class="value">{{ inputs.loads[0].mu_knm | format_number }}</td>
+                <td class="unit">kN·m</td><td>—</td>
+                <td class="value">{{ inputs.loads[0].mu_knm | format_number }}</td>
+            </tr>
+            <tr>
+                <td>Design Shear (V<sub>u</sub>)</td>
+                <td class="value">{{ inputs.loads[0].vu_kn | format_number }}</td>
+                <td class="unit">kN</td><td>—</td>
+                <td class="value">{{ inputs.loads[0].vu_kn | format_number }}</td>
+            </tr>
+            {% elif inputs.get('loads') %}
             {% for load in inputs.loads %}
             <tr>
                 <td>{{ load.get('type', 'Load') }}</td>
@@ -396,20 +453,14 @@
         <h3>2.1 Limiting Moment Capacity</h3>
         <div class="calc-step">
             <div class="calc-step-title">Step 1: Calculate limiting neutral axis depth ratio</div>
-            <div class="formula-label">For f<sub>y</sub> = {{ inputs.get('fy', 500) }} N/mm²:</div>
-            <div class="formula">
-x<sub>u,lim</sub>/d = 0.87 × f<sub>y</sub> / (0.87 × f<sub>y</sub> + 0.002 × E<sub>s</sub>)
-            </div>
+            <div class="formula-label">For f<sub>y</sub> = {{ inputs.get('fy') | format_number(0) }} N/mm²</div>
             <div class="result-highlight">
-                x<sub>u,lim</sub>/d = {{ results.flexure.get('xu_lim_ratio', 0.48) | format_number(3) }}
+                x<sub>u,lim</sub>/d = {{ results.flexure.get('xu_lim_ratio') | format_number(3) }}
             </div>
         </div>
 
         <div class="calc-step">
             <div class="calc-step-title">Step 2: Calculate limiting moment capacity</div>
-            <div class="formula">
-M<sub>u,lim</sub> = 0.36 × f<sub>ck</sub> × b × x<sub>u,lim</sub> × (d - 0.42 × x<sub>u,lim</sub>)
-            </div>
             <div class="result-highlight">
                 M<sub>u,lim</sub> = {{ results.flexure.get('mu_lim_knm', '-') | format_number }} kN·m
             </div>
@@ -431,20 +482,28 @@ M<sub>u,lim</sub> = 0.36 × f<sub>ck</sub> × b × x<sub>u,lim</sub> × (d - 0.4
                 </tr>
                 <tr>
                     <td>Section Type</td>
-                    <td colspan="2"><strong>{{ results.flexure.get('section_type', 'Singly Reinforced') }}</strong></td>
+                    <td colspan="2"><strong>{{ results.flexure.get('design_method') or results.flexure.get('section_type') or 'Unavailable' }}</strong></td>
                 </tr>
             </table>
         </div>
 
         <div class="calc-step">
             <div class="calc-step-title">Step 4: Calculate required steel area</div>
-            <div class="formula-label">Using limit state design:</div>
-            <div class="formula">
-A<sub>st</sub> = (0.5 × f<sub>ck</sub> / f<sub>y</sub>) × [1 - √(1 - 4.6 × M<sub>u</sub> / (f<sub>ck</sub> × b × d²))] × b × d
-            </div>
+            {% if results.flexure.get('design_method') == 'Compression reinforcement required' %}
+            <p>The flexure design uses the limiting concrete compression block and a steel couple
+            between the compression reinforcement and additional tension reinforcement for the excess moment.</p>
+            <div class="formula">M<sub>u,extra</sub> = |M<sub>u</sub>| − M<sub>u,lim</sub></div>
+            {% elif results.flexure.get('design_method') == 'Singly reinforced' %}
+            <p>The flexure design balances the tensile force in the reinforcement against concrete compression
+            and checks the required area against the reinforcement limits.</p>
+            {% endif %}
             <div class="result-highlight">
                 A<sub>st,required</sub> = {{ results.flexure.get('ast_required_mm2', results.flexure.get('ast_mm2', '-')) | format_number }} mm²
+                <br>A<sub>sc,required</sub> = {{ results.flexure.get('asc_required_mm2') | format_number }} mm²
             </div>
+            {% if results.flexure.get('clause_refs', {}).get('Ast') %}
+            <p class="code-ref">{{ results.flexure.clause_refs.Ast }}</p>
+            {% endif %}
         </div>
 
         <h3>2.3 Reinforcement Limits</h3>
@@ -460,7 +519,7 @@ A<sub>st</sub> = (0.5 × f<sub>ck</sub> / f<sub>y</sub>) × [1 - √(1 - 4.6 × 
                 <td>Maximum Steel (A<sub>st,max</sub>)</td>
                 <td class="value">{{ results.flexure.get('ast_max_mm2', '-') | format_number }}</td>
                 <td class="unit">mm²</td>
-                <td><span class="code-ref">Cl. 26.5.1.1</span></td>
+                <td><span class="code-ref">Cl. 26.5.1.2</span></td>
             </tr>
             <tr>
                 <td>Required Steel</td>
@@ -545,7 +604,19 @@ s<sub>v</sub> = 0.87 × f<sub>y</sub> × A<sub>sv</sub> × d / V<sub>us</sub>
             {% endif %}
             <table>
                 <tr>
-                    <td>Required Spacing (s<sub>v</sub>)</td>
+                    <td>Required stirrup contribution</td>
+                    <td class="value">{{ results.shear.get('vus_required_kn') | format_number }}</td>
+                    <td class="unit">kN</td>
+                </tr>
+                {% if results.shear.get('proposed_link_capacity_kn') is not none %}
+                <tr>
+                    <td>Proposed link capacity at recommended pitch</td>
+                    <td class="value">{{ results.shear.proposed_link_capacity_kn | format_number }}</td>
+                    <td class="unit">kN</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>Recommended link pitch (s<sub>v</sub>)</td>
                     <td class="value">{{ results.shear.get('sv_required_mm', '-') | format_number(0) }}</td>
                     <td class="unit">mm</td>
                 </tr>

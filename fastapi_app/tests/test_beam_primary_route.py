@@ -318,9 +318,18 @@ def test_combined_report_binds_current_identity_and_exports_governing_results(
     assert response.status_code == status.HTTP_200_OK
     report = response.json()
     assert report["evidence"]["calculation_identity"] == payload["calculation_identity"]
+    assert report["governing_case_id"] == report["cases"][0]["case_id"] == "CASE-1"
+    assert report["summary"]["load_basis"] == "User-supplied factored actions"
+    assert report["cases"][0]["mu_knm"] == ordinary_payload["moment"]
+    assert report["cases"][0]["vu_kn"] == ordinary_payload["shear"]
     assert report["summary"]["combined_actions"]["tu_knm"] == 10.0
     assert report["summary"]["torsion"]["requires_closed_stirrups"] is True
     assert report["summary"]["torsion"]["asv_total_mm2_per_mm"] > 0
+    html = client.post("/api/v1/export/report", json={**payload, "format": "html"})
+    assert html.status_code == status.HTTP_200_OK
+    assert "User-supplied factored actions" in html.text
+    assert "<td>CASE-1</td>" in html.text
+    assert "1.5(DL+LL)" not in html.text
 
 
 def test_stale_report_and_combined_bbs_dxf_fail_closed(
