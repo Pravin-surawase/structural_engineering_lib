@@ -530,3 +530,77 @@ class TestGetCacheMetadata:
         metadata = get_cache_metadata(tmp_path / "nonexistent.json")
 
         assert metadata is None
+
+
+@pytest.mark.parametrize("axis", ("x", "y", "z"))
+@pytest.mark.parametrize("value", (float("nan"), float("inf")))
+def test_geometry_rejects_nonfinite_endpoint_on_intake_and_reload(
+    tmp_path: Path, sample_beam: BeamGeometry, axis: str, value: float
+):
+    from structural_lib.services.adapters import ManualInputAdapter
+
+    path = tmp_path / "geometry.json"
+    save_geometry([sample_beam], path)
+    data = json.loads(path.read_text())
+    data["beams"][0]["point2"][axis] = value
+    with pytest.raises(ValueError, match=axis):
+        ManualInputAdapter.geometry_from_dict(data["beams"][0])
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match=rf"point2\.{axis}"):
+        load_geometry(path)
+
+
+@pytest.mark.parametrize("depth_mm", (50, 58))
+def test_geometry_rejects_nonpositive_derived_depth_on_reload(
+    tmp_path: Path, sample_beam: BeamGeometry, depth_mm: float
+):
+    path = tmp_path / "geometry.json"
+    save_geometry([sample_beam], path)
+    data = json.loads(path.read_text())
+    data["beams"][0]["section"]["depth_mm"] = depth_mm
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="Derived effective_depth_mm must be positive"):
+        load_geometry(path)
+
+    data["beams"][0]["section"]["d_mm"] = 30
+    path.write_text(json.dumps(data))
+    assert load_geometry(path)[0].section.effective_depth_mm == 30
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("mu_knm", float("inf")),
+        ("pu_kn", float("nan")),
+        ("shear_signed_kn", float("nan")),
+        ("moment_station", float("inf")),
+        ("shear_at_moment_station_kn", float("-inf")),
+        ("moment_signed_knm", -25),
+        ("shear_signed_kn", 25),
+    ),
+)
+def test_force_intake_and_reload_reject_inconsistent_evidence(
+    tmp_path: Path, field: str, value: float
+):
+    from structural_lib.services.adapters import ManualInputAdapter
+
+    valid = BeamForces(
+        id="B1",
+        load_case="ULS",
+        mu_knm=150,
+        vu_kn=100,
+        moment_signed_knm=-150,
+        shear_signed_kn=100,
+        shear_at_moment_station_kn=-25,
+        moment_at_shear_station_knm=10,
+    )
+    path = tmp_path / "forces.json"
+    save_forces([valid], path)
+    assert load_forces(path) == [valid]
+    data = json.loads(path.read_text())
+    data["forces"][0][field] = value
+    with pytest.raises(ValueError, match=field):
+        ManualInputAdapter.forces_from_dict(data["forces"][0])
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match=field):
+        load_forces(path)

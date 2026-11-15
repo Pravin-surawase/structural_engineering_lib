@@ -779,3 +779,40 @@ def test_lossless_paging_and_public_exports() -> None:
         etabs_w3.query_beam_action_rows_v1(baseline, limit=1001)
     for symbol in etabs_w3.__all__:
         assert hasattr(structural_lib, symbol), symbol
+
+
+def test_caller_defined_demand_blocks_duplicate_contributing_rows() -> None:
+    baseline = _baseline()
+    catalogue = _accepted_catalogue()
+    scenario, _ = _scenario_and_rules(catalogue, baseline)
+    rule = BeamDemandEnvelopeRuleV1(
+        rule_id="rule:caller",
+        mode=BeamDemandEnvelopeModeV1.CALLER_DEFINED_CODE_ENVELOPE,
+        components=(BeamActionComponentV1.V2, BeamActionComponentV1.M3),
+        caller_defined_basis=_present("Lab-defined component envelope"),
+        contributing_action_row_ids=("station:0", "station:0"),
+    )
+    request = etabs_w3.BeamDemandDerivationRequestV1(
+        baseline=baseline,
+        catalogue=catalogue,
+        scenario=scenario.model_copy(update={"envelope_rule_ids": (rule.rule_id,)}),
+        envelope_rules=(rule,),
+    )
+    blocked = etabs_w3.derive_beam_demand_snapshot_v1(request)
+    assert blocked.status is etabs_w3.W3BuildStatusV1.BLOCKED
+    assert blocked.snapshot is None
+    (issue,) = blocked.issues
+    assert issue.code == "CALLER_DEFINED_ACTION_ROW_DUPLICATE"
+
+    distinct = rule.model_copy(
+        update={"contributing_action_row_ids": ("station:1", "station:0")}
+    )
+    accepted = etabs_w3.derive_beam_demand_snapshot_v1(
+        request.model_copy(update={"envelope_rules": (distinct,)})
+    )
+    assert accepted.snapshot is not None
+    assert etabs_w3.verify_beam_demand_snapshot_hash_v1(accepted.snapshot)
+    assert all(
+        ref.action_row_ids == ("station:1", "station:0")
+        for ref in accepted.snapshot.governing_references
+    )

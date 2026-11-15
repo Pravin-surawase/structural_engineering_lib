@@ -381,7 +381,9 @@ def validate_cover(
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: list[DesignError] = []
+    errors = validate_finite_real(cover, "cover")
+    if errors:
+        return errors
 
     if cover <= 0:
         errors.append(E_INPUT_015)
@@ -433,11 +435,12 @@ def validate_loads(
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: list[DesignError] = []
+    mu_errors = validate_finite_real(mu, "mu")
+    vu_errors = validate_finite_real(vu, "vu")
 
     if not allow_negative:
-        if mu < 0:
-            errors.append(
+        if not mu_errors and mu < 0:
+            mu_errors.append(
                 DesignError(
                     code="E_INPUT_MU_NEGATIVE",
                     severity=Severity.ERROR,
@@ -446,8 +449,8 @@ def validate_loads(
                     hint="Use positive value for sagging moment.",
                 )
             )
-        if vu < 0:
-            errors.append(
+        if not vu_errors and vu < 0:
+            vu_errors.append(
                 DesignError(
                     code="E_INPUT_VU_NEGATIVE",
                     severity=Severity.ERROR,
@@ -458,8 +461,8 @@ def validate_loads(
             )
     else:
         # If allowing negative, check for unreasonable magnitude
-        if abs(mu) > 10000:
-            errors.append(
+        if not mu_errors and abs(mu) > 10000:
+            mu_errors.append(
                 DesignError(
                     code="E_INPUT_MU_UNREASONABLE",
                     severity=Severity.WARNING,
@@ -468,8 +471,8 @@ def validate_loads(
                     hint="Verify load calculations and units.",
                 )
             )
-        if abs(vu) > 5000:
-            errors.append(
+        if not vu_errors and abs(vu) > 5000:
+            vu_errors.append(
                 DesignError(
                     code="E_INPUT_VU_UNREASONABLE",
                     severity=Severity.WARNING,
@@ -479,7 +482,7 @@ def validate_loads(
                 )
             )
 
-    return errors
+    return mu_errors + vu_errors
 
 
 def validate_material_grades(
@@ -617,7 +620,9 @@ def validate_span(
         >>> errors = validate_span(span=5000)
         >>> # Returns empty (5000mm is reasonable)
     """
-    errors: list[DesignError] = []
+    errors = validate_finite_real(span, "span")
+    if errors:
+        return errors
 
     if span <= 0:
         errors.append(

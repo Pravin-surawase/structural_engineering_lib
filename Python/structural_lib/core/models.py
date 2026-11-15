@@ -39,6 +39,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from enum import StrEnum
+from math import dist, hypot, isclose, isfinite
 from typing import Any, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
@@ -99,7 +100,7 @@ class Point3D(BaseModel):
         z: Z coordinate in meters (typically elevation)
     """
 
-    model_config = ConfigDict(frozen=True, extra="forbid")
+    model_config = ConfigDict(frozen=True, extra="forbid", allow_inf_nan=False)
 
     x: float = Field(..., description="X coordinate in meters")
     y: float = Field(..., description="Y coordinate in meters")
@@ -107,10 +108,7 @@ class Point3D(BaseModel):
 
     def distance_to(self, other: Point3D) -> float:
         """Calculate Euclidean distance to another point."""
-        dx = other.x - self.x
-        dy = other.y - self.y
-        dz = other.z - self.z
-        return (dx**2 + dy**2 + dz**2) ** 0.5
+        return dist((self.x, self.y, self.z), (other.x, other.y, other.z))
 
 
 class SectionProperties(BaseModel):
@@ -156,10 +154,15 @@ class SectionProperties(BaseModel):
     )
 
     @model_validator(mode="after")
-    def validate_explicit_depth(self) -> SectionProperties:
-        """Keep a supplied analysis depth inside the section."""
+    def validate_effective_depth(self) -> SectionProperties:
+        """Keep the selected analysis depth inside the section."""
         if self.d_mm is not None and self.d_mm >= self.depth_mm:
             raise ValueError("d_mm must be less than depth_mm")
+        if self.effective_depth_mm <= 0:
+            raise ValueError(
+                "Derived effective_depth_mm must be positive. Supply a valid d_mm "
+                "or revise depth_mm, cover_mm and reinforcement diameters."
+            )
         return self
 
     @computed_field
@@ -217,16 +220,19 @@ class BeamGeometry(BaseModel):
     @property
     def is_vertical(self) -> bool:
         """Check if element is primarily vertical (column-like)."""
-        dx = abs(self.point2.x - self.point1.x)
-        dy = abs(self.point2.y - self.point1.y)
-        horizontal_length = (dx**2 + dy**2) ** 0.5
+        dx = self.point2.x - self.point1.x
+        dy = self.point2.y - self.point1.y
+        horizontal_length = hypot(dx, dy)
         return horizontal_length < 0.01  # < 10mm horizontal movement
 
     @model_validator(mode="after")
     def validate_length(self) -> BeamGeometry:
         """Ensure beam has non-zero length."""
-        if self.length_m < 0.1:  # Minimum 100mm
-            msg = f"Beam length must be at least 0.1m, got {self.length_m:.3f}m"
+        length_m = self.length_m
+        if not isfinite(length_m):
+            raise ValueError("Beam length_m must be finite")
+        if length_m < 0.1:  # Minimum 100mm
+            msg = f"Beam length must be at least 0.1m, got {length_m:.3f}m"
             raise ValueError(msg)
         return self
 
@@ -250,7 +256,7 @@ class BeamForces(BaseModel):
         station_count: Number of output stations processed
     """
 
-    model_config = ConfigDict(frozen=True, extra="forbid")
+    model_config = ConfigDict(frozen=True, extra="forbid", allow_inf_nan=False)
 
     id: str = Field(..., min_length=1, description="Beam ID matching BeamGeometry")
     load_case: str = Field(..., min_length=1, description="Load combination name")
@@ -280,6 +286,23 @@ class BeamForces(BaseModel):
         default=None,
         description="How extrema were selected; independent extrema are explicit",
     )
+
+    @model_validator(mode="after")
+    def validate_signed_extrema(self) -> BeamForces:
+        """Bind each supplied signed extremum to its own absolute value."""
+        for magnitude_field, signed_field in (
+            ("mu_knm", "moment_signed_knm"),
+            ("vu_kn", "shear_signed_kn"),
+        ):
+            signed = getattr(self, signed_field)
+            if signed is not None and not isclose(
+                abs(signed), getattr(self, magnitude_field), rel_tol=1e-9, abs_tol=1e-9
+            ):
+                raise ValueError(
+                    f"Beam {self.id!r} case {self.load_case!r}: "
+                    f"abs({signed_field}) must match {magnitude_field}"
+                )
+        return self
 
 
 class BeamDesignResult(BaseModel):
