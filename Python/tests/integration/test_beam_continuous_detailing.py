@@ -575,3 +575,142 @@ def test_layered_bottom_cutoff_replays_checked_artifacts(name):
     assert "HOLD · stale result" in beam.render_continuous_detailing_html(
         result, current=current
     )
+
+
+LAYERED_LAP_CASES = json.loads(
+    (
+        Path(__file__).resolve().parents[3]
+        / "docs/verification/library-030-beam05-layered-lap.json"
+    ).read_text(encoding="utf-8")
+)["cases"]
+
+
+@pytest.mark.parametrize("name", LAYERED_LAP_CASES)
+def test_layered_bottom_lap_replays_checked_artifacts(name):
+    case = LAYERED_LAP_CASES[name]
+    expected = case["expected"]
+    request = beam.load_continuous_detailing(case["request"])
+    result = beam.check_continuous_detailing(request)
+    assert result.engineering_status == expected["status"]
+    report = beam.render_continuous_detailing_html(result, current=request)
+    drawing = beam.render_continuous_detailing_svg(result, current=request)
+    schedule = beam.render_continuous_detailing_bbs_csv(result, current=request)
+    lap = result.calculation["lap"]
+    if expected["status"] == "FAIL":
+        assert drawing is schedule is result.calculation["bbs"] is None
+        assert "BBS held" in report
+    if "unaligned_inner_bar_id" in expected:
+        assert {issue.code for issue in result.issues} == {
+            "BEAM.LAP_LAYER_ALIGNMENT_FAIL"
+        }
+        assert lap["unaligned_inner_bar_ids"] == [expected["unaligned_inner_bar_id"]]
+        return
+
+    (splice,) = lap["lap_result"]["outputs"]["splice_checks"]
+    assert splice["actual_length_mm"] == expected["overlap_mm"]
+    assert splice["required_length_mm"] == pytest.approx(expected["required_lap_mm"])
+    assert splice["passed"]
+    overlap_rows = {row["row_id"]: row for row in lap["stress_rows"]}
+    assert overlap_rows.keys() == expected["overlap_rows"].keys()
+    for row_id, row in overlap_rows.items():
+        deltas = {
+            key: row[key] for key in ("moment_knm", "shear_kn", "half_capacity_knm")
+        }
+        assert deltas == pytest.approx(expected["overlap_rows"][row_id], rel=2e-5)
+        assert row_id in report
+    assert "906.250 mm" in report and "Overlap from 1550 to 2850 mm" in report
+    assert request.member.analysis_revision in report
+    assert request.member.reinforcement_revision in report
+
+    original, partner = request.lap.bar_id, request.lap.partner_bar_id
+    fit = result.calculation["arrangement"]["outputs"]
+    (pair,) = (
+        item
+        for item in fit["horizontal_clearance_checks"]
+        if {item["first_bar_id"], item["second_bar_id"]} == {original, partner}
+    )
+    assert pair["actual_clear_mm"] == pytest.approx(expected["pair_clear_mm"])
+    assert pair["required_clear_mm"] == expected["required_clear_mm"]
+    assert (
+        min(item["actual_clear_mm"] for item in fit["horizontal_clearance_checks"])
+        == expected["minimum_clear_mm"]
+    )
+    assert (
+        f"Clear distance between lap pieces {expected['pair_clear_mm']:g} mm" in report
+    )
+    (clearance,) = (
+        item
+        for item in fit["vertical_clearance_checks"]
+        if item["kind"] == "physical_layer_gap"
+    )
+    assert clearance["actual_clear_mm"] == expected["vertical_clear_mm"]
+    if expected["status"] == "FAIL":
+        assert not pair["passed"] and not fit["passed"]
+        assert "SPACING.HORIZONTAL" in {issue.code for issue in result.issues}
+        return
+
+    assert pair["passed"] and fit["passed"]
+    assert result.calculation["link_check"]["outputs"]["placement_pass"]
+    assert f"<th>U2:AF</th><td>{original}</td>" in report
+    assert f"<th>U2:CF</th><td>{original}</td>" not in report
+    assert f"<th>U2:CF</th><td>{partner}</td>" in report
+    assert drawing is not None and schedule is not None and drawing in report
+
+    root = ElementTree.fromstring(drawing)
+    line_i = root.find(f".//{{*}}line[@data-bar-id='{original}']")
+    line_j = root.find(f".//{{*}}line[@data-bar-id='{partner}']")
+    assert float(line_i.attrib["x2"]) == lap["end_station_mm"]
+    assert float(line_j.attrib["x1"]) == lap["start_station_mm"]
+    assert (
+        float(line_i.attrib["x2"]) - float(line_j.attrib["x1"])
+        == expected["overlap_mm"]
+    )
+    panels = root.findall("{*}svg[@data-view='section']")
+    unchanged = {bar.bar_id for bar in request.member.bars if bar.bar_id != original}
+    pieces = ({original}, {original, partner}, {partner})
+    for panel, local_pieces in zip(panels, pieces, strict=True):
+        assert panel.find("{*}rect[@data-outline='web-link']") is not None
+        points = {
+            point.attrib["data-bar-id"]: point.attrib
+            for point in panel.findall("{*}circle")
+        }
+        assert points.keys() == unchanged | local_pieces
+        if partner in points:
+            assert float(points[partner]["cx"]) == request.lap.partner_x_from_left_mm
+            assert points[partner]["data-layer"] == "1"
+        for bar in request.member.bars:
+            if bar.bar_id in points:
+                assert int(points[bar.bar_id]["data-layer"]) == bar.layer
+                assert float(points[bar.bar_id]["cx"]) == bar.x_from_left_mm
+                assert float(points[bar.bar_id]["cy"]) == bar.y_from_top_mm
+
+    table = list(csv.DictReader(StringIO(schedule)))
+    cut_marks = {
+        row["bar_mark"].rsplit("-lap-", 1)[1]: row
+        for row in table
+        if "-lap-" in row["bar_mark"]
+    }
+    assert {suffix: float(row["cut_mm"]) for suffix, row in cut_marks.items()} == {
+        "I": expected["cut_original_mm"],
+        "J": expected["cut_partner_mm"],
+    }
+    assert all(
+        int(row["quantity"]) == 1 and "-bottom-L1-D20-" in row["bar_mark"]
+        for row in cut_marks.values()
+    )
+    (link,) = (row for row in table if row["role"] == "transverse_link")
+    assert int(link["quantity"]) == expected["link_count"]
+    assert float(link["cut_mm"]) == pytest.approx(expected["link_cut_mm"], abs=1e-8)
+    full = [row for row in table if row != link and row not in cut_marks.values()]
+    assert sum(int(row["quantity"]) for row in full) == expected["full_bar_count"]
+    assert all(float(row["cut_mm"]) == expected["full_cut_mm"] for row in full)
+    assert sum(float(row["mass_kg"]) for row in table) == pytest.approx(
+        expected["mass_kg"], abs=1e-8
+    )
+    input_hash = result.envelope.result_identity.input_hash
+    path_id = result.calculation["paths"]["result_id"]
+    assert input_hash in drawing and path_id in drawing
+    assert all(
+        row["input_hash"] == input_hash and row["path_result_id"] == path_id
+        for row in table
+    )

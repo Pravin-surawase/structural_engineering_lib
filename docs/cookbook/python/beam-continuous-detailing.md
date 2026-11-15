@@ -98,7 +98,7 @@ and `cutoff` give HOLD. Each failing or held result still writes
 This profile assumes uninterrupted bars, uniform ordinary web links and
 a prismatic section up to 750 mm deep. Supply zero torsion only where
 the source analysis establishes that the scope is appropriate. Flange
-slab steel, joint reinforcement, laps in this cage, varying
+slab steel, joint reinforcement, flanged laps, varying
 sections, serviceability and fabrication approval need their own checks.
 
 ## Check one bottom bar cutoff
@@ -217,3 +217,35 @@ This profile covers a single straight separated lap at the bottom of a
 rectangular beam with ordinary links. Contact or bundled laps, other
 directions, multiple groups, and simultaneous laps and cutoffs need
 separate acceptance cases. [IS 456 clauses 26.2.5 and 26.3](https://wriddodoti.gov.np/uploads/blog/20230331071217_IS-456-with-all-ammendments.pdf)
+
+
+## Check a separated lap in the multilayer rectangle
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-layered-lap.json \
+  --case layered_lap --output-dir output/beam05-layered-lap
+```
+
+Use the same lap fields with the layered rectangular schema. Keep the lap
+within the first clear span, with sagging moment in each supplied overlap
+row. Both pieces are Ø20 in the outer bottom layer, with at least two bar
+diameters of clear concrete cover. The inner bottom bars stay in line
+over uninterrupted outer bars, as required by IS 456 clause 26.3.2(c).
+
+This specimen retains the published 300 × 600 mm section, spans, links and
+actions. It omits inner bar `B2-3` to keep both remaining inner bars aligned
+when the outer bar `B1-3` changes transverse position. Keeping `B2-3` in the
+original published cage gives FAIL for layer alignment.
+
+The 1,300 mm overlap from 1,550 to 2,850 mm exceeds the 906.250 mm basic
+straight flexural-tension lap requirement. At a partner centre of 197.5 mm,
+the pair has 27.5 mm clear spacing against a 25 mm minimum. Moving the centre
+to 215 mm reduces the gap to 10 mm and fails the overlap spacing check.
+
+The report retains concurrent actions and the as-checked downstream
+anchorage. The drawing shows the cage before, within and after the lap.
+The BBS assigns separate 3,310 and 6,910 mm cuts to the pieces and totals
+184.665 kg. Both failing controls withhold drawing and schedule.
+[Independent lap replay](../../verification/check_library_030_beam05_lap_reference.py)
+[IS 456 clauses 26.2.5 and 26.3.2](https://www.cracindia.in/admin/uploads/IS-456.pdf)
