@@ -5,7 +5,22 @@ from __future__ import annotations
 import sys
 from importlib.metadata import version
 
+import structural_lib
 from structural_lib.core import version as runtime_version
+from structural_lib.services.common_api import get_library_version
+
+
+def test_runtime_identity_is_resolved_once_for_the_import(monkeypatch):
+    identity = runtime_version.get_runtime_version_identity()
+
+    def unexpected_lookup(_origin):
+        raise AssertionError("Current package lookup repeated after import")
+
+    monkeypatch.setattr(runtime_version, "_resolve_identity", unexpected_lookup)
+    assert runtime_version.get_runtime_version_identity() is identity
+    assert (
+        get_library_version() == identity.package_version == structural_lib.__version__
+    )
 
 
 def test_source_checkout_version_cannot_be_relabelled_by_stale_metadata(

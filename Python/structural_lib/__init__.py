@@ -18,7 +18,7 @@ from .core.version import get_runtime_version as _get_runtime_version
 
 # Source checkout and installed-wheel modes have different authorities. The
 # resolver prevents unrelated installed metadata from relabelling source code.
-__version__ = _get_runtime_version(__file__)
+__version__ = _get_runtime_version()
 
 # Expose key modules
 from . import (

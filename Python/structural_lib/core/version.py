@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import tomllib
 from dataclasses import dataclass
+from functools import lru_cache
 from importlib.metadata import PackageNotFoundError, distributions, version
 from pathlib import Path
 from typing import Any
@@ -95,13 +96,7 @@ def _installed_version(origin: Path) -> str | None:
     return matching_versions.pop()
 
 
-def get_runtime_version_identity(
-    package_origin: str | Path | None = None,
-) -> RuntimeVersionIdentityV1:
-    """Return the authoritative version and comparison metadata for this import."""
-
-    origin = Path(package_origin or Path(__file__).resolve().parents[1] / "__init__.py")
-    origin = origin.resolve()
+def _resolve_identity(origin: Path) -> RuntimeVersionIdentityV1:
     source_version = _source_version(origin)
     if source_version is not None:
         try:
@@ -132,6 +127,25 @@ def get_runtime_version_identity(
         distribution_version=distribution_version,
         metadata_matches_runtime=metadata_matches,
     )
+
+
+@lru_cache(maxsize=1)
+def _imported_package_identity() -> RuntimeVersionIdentityV1:
+    origin = Path(__file__).resolve().parents[1] / "__init__.py"
+    return _resolve_identity(origin.resolve())
+
+
+def get_runtime_version_identity(
+    package_origin: str | Path | None = None,
+) -> RuntimeVersionIdentityV1:
+    """Return the version identity for this import or inspect an explicit origin.
+
+    The active package identity is fixed at import for the process lifetime.
+    Explicit origin probes inspect the current checkout and metadata.
+    """
+    if not package_origin:
+        return _imported_package_identity()
+    return _resolve_identity(Path(package_origin).resolve())
 
 
 def get_runtime_version(package_origin: str | Path | None = None) -> str:
