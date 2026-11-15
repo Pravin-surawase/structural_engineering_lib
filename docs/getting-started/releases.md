@@ -2017,3 +2017,20 @@ The 0.29.2 candidate includes the Coding Lab input, engineering check,
 reporting and compatibility repairs. The S5 verification scope includes
 the exact wheel and source archive, affected installed-package cases,
 and Weekly Verification. StructLib 0.29.1 remains the published release.
+
+
+## v0.29.2 — Release authorized (2026-11-15)
+
+The owner authorized publication of the retained 0.29.2 wheel and source
+archive from [PR #1086](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1086), merged at
+`0947a472a8b2972e0f30be02d123faeef0bbbb3f`. The publication commit preserves the
+qualified Python tree and the archive hashes.
+
+- The [qualified artifact record](../verification/library-0292-release-artifacts.json)
+  binds the 20 installed profiles, 29 wheel acceptance cases and retained Coding Lab replays.
+- The [independent review](../verification/library-0292-exact-candidate-review.json),
+  [Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43719714511) and
+  [owner authorization](../verification/release-publication-authorization.json)
+  record the release gates in [PR #1087](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1087).
+
+TestPyPI verifies the exact archives before the production tag and upload.
