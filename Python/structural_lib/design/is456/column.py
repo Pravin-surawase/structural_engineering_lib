@@ -1684,6 +1684,8 @@ def load_circular_column_detailing(
     ----------
     value : Mapping, JSON str or bytes, or CircularColumnDetailingInputV1
         Actual ring or spiral, station actions, end projections and cut basis.
+        Tied nonzero shear requires the declared plane and ring grade in
+        the request's shear basis.
 
     Returns
     -------

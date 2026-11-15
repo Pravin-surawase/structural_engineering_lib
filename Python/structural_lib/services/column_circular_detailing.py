@@ -4,12 +4,15 @@ from __future__ import annotations
 
 import html
 import math
-from dataclasses import replace
+from collections.abc import Callable
+from dataclasses import asdict, replace
 from typing import Any, Literal, Self
 
 from pydantic import Field, field_validator, model_validator
 
+from structural_lib.codes.is456.beam.shear import _exact_vertical_stirrup_limit_mm
 from structural_lib.codes.is456.column.member_detailing import (
+    ordinary_column_shear,
     straight_column_bond_lengths,
 )
 from structural_lib.core.result_contract import (
@@ -48,6 +51,7 @@ from structural_lib.services.contracts.family_f1 import ColumnMaterialsV1
 
 WORKFLOW = "is456.column.circular-member-detailing/v1"
 Result = CanonicalFamilyResultV1[dict[str, Any]]
+_SHEAR_SOURCE = "IS 456 Cl. 26.5.1.5–6 and 40, Tables 19–20, with the separately declared circular geometry basis."
 
 
 class CircularTransversePlacementV1(StrictPublicModel):
@@ -59,6 +63,16 @@ class CircularTransversePlacementV1(StrictPublicModel):
     start_anchor_pitch_mm: float | None = Field(default=None, gt=0, le=100)
     end_anchor_pitch_mm: float | None = Field(default=None, gt=0, le=100)
     source_reference: str = Field(min_length=1, max_length=240)
+
+
+class _CircularColumnShearBasisV1(StrictPublicModel):
+    """One fixed equivalent-area model with the supplied grade of closed rings."""
+
+    plane: Literal["x", "y"]
+    ring_grade_nmm2: float = Field(ge=250, le=600)
+    effective_depth_diameter_factor: float = Field(ge=0.8, le=0.8)
+    effective_concrete_area_gross_cap_factor: float = Field(ge=0.8, le=0.8)
+    credit_closed_ring_legs: Literal[2]
 
 
 class CircularColumnDetailingInputV1(StrictPublicModel):
@@ -77,6 +91,9 @@ class CircularColumnDetailingInputV1(StrictPublicModel):
     placement: CircularTransversePlacementV1 | None = None
     transverse_cut_schedule: ColumnTransverseCutScheduleV1 | None = None
     laps: tuple[ColumnCompressionLapV1, ...] = Field(default=(), max_length=8)
+    shear_basis: _CircularColumnShearBasisV1 | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
 
     @field_validator("actions", "laps", mode="before")
     @classmethod
@@ -270,6 +287,144 @@ def _schedule_transverse(
     )
 
 
+def _check_circular_shear(
+    request: CircularColumnDetailingInputV1,
+    transverse: dict[str, Any] | None,
+    *,
+    evidence_current: bool,
+    record: Callable[[str, str, str, EngineeringStatus], None],
+) -> tuple[list[dict[str, Any]], str]:
+    actions = [row for row in request.actions if row.vx_kn or row.vy_kn]
+    if not actions:
+        return [], "NOT_APPLICABLE"
+    if not evidence_current:
+        return [], "HOLD"
+    basis, steel = request.shear_basis, request.reinforcement.transverse
+    if basis is None:
+        record(
+            "COLUMN.CIRCULAR_MEMBER_ACTIONS_HELD",
+            "actions",
+            "Supply the admitted single-plane circular shear basis.",
+            EngineeringStatus.HOLD,
+        )
+        return [], "HOLD"
+    if any(row.vx_kn and row.vy_kn for row in actions):
+        record(
+            "COLUMN.COMBINED_SHEAR",
+            "actions",
+            "Simultaneous nonzero shears require a two-plane interaction basis.",
+            EngineeringStatus.HOLD,
+        )
+        return [], "HOLD"
+    if any(row.vy_kn if basis.plane == "x" else row.vx_kn for row in actions):
+        record(
+            "COLUMN.CIRCULAR_SHEAR_PLANE_HELD",
+            "actions",
+            "All nonzero shears must use the declared principal plane.",
+            EngineeringStatus.HOLD,
+        )
+        return [], "HOLD"
+    if (
+        not isinstance(steel, CircularRingV1)
+        or not steel.closed
+        or not steel.closure_reference
+    ):
+        record(
+            "COLUMN.CIRCULAR_SHEAR_RING_HELD",
+            "reinforcement.transverse",
+            "The shear basis requires tied closed rings with documented closure.",
+            EngineeringStatus.HOLD,
+        )
+        return [], "HOLD"
+    if transverse is None:
+        # Section and placement checks own the disposition when no ring grid is checked.
+        return [], "HOLD"
+    fck = request.materials.fck_nmm2
+    if fck not in (20, 25, 30, 35, 40):
+        record(
+            "COLUMN.SHEAR_MATERIAL",
+            "materials.fck_nmm2",
+            "The shear profile uses the M20–M40 tabulated grade columns.",
+            EngineeringStatus.HOLD,
+        )
+        return [], "HOLD"
+
+    diameter = request.geometry.diameter_mm
+    depth = basis.effective_depth_diameter_factor * diameter
+    gross_area = math.pi * diameter**2 / 4
+    effective_area = min(
+        diameter * depth, basis.effective_concrete_area_gross_cap_factor * gross_area
+    )
+    width = effective_area / depth
+    link_area = basis.credit_closed_ring_legs * math.pi * steel.diameter_mm**2 / 4
+    pitch_limit = _exact_vertical_stirrup_limit_mm(
+        width,
+        depth,
+        link_area,
+        basis.ring_grade_nmm2,
+        0,
+    )
+    rows = []
+    for index, action in enumerate(request.actions):
+        signed_demand = action.vx_kn if basis.plane == "x" else action.vy_kn
+        if signed_demand == 0.0:
+            continue
+        shear = ordinary_column_shear(
+            width_mm=width,
+            d_mm=depth,
+            gross_area_mm2=gross_area,
+            pu_kn=action.pu_kn,
+            vu_kn=signed_demand,
+            fck_nmm2=fck,
+            hoop_diameter_mm=steel.diameter_mm,
+            hoop_fy_nmm2=basis.ring_grade_nmm2,
+            pitch_mm=steel.pitch_mm,
+        )
+        demand = abs(signed_demand)
+        path = f"actions.{index}"
+        pitch_ok = steel.pitch_mm <= pitch_limit + 1e-9
+        capacity_ok = demand <= shear.capacity_kn + 1e-9
+        if not pitch_ok:
+            record(
+                "COLUMN.SHEAR_LINK_SPACING",
+                path,
+                f"Ring pitch {steel.pitch_mm:g} mm exceeds the {pitch_limit:.3f} mm shear limit.",
+                EngineeringStatus.FAIL,
+            )
+        if not capacity_ok:
+            record(
+                (
+                    "COLUMN.SHEAR_CRUSHING"
+                    if demand > shear.crushing_kn
+                    else "COLUMN.SHEAR_CAPACITY"
+                ),
+                path,
+                f"Shear magnitude {demand:g} kN exceeds the {shear.capacity_kn:.3f} kN resistance.",
+                EngineeringStatus.FAIL,
+            )
+        components = asdict(shear)
+        components["table_19_tc_nmm2"] = components.pop("base_concrete_stress_nmm2")
+        rows.append(
+            {
+                **components,
+                "combination_id": action.combination_id,
+                "station_mm": action.check_station_mm,
+                "shear_plane": basis.plane,
+                "signed_demand_kn": signed_demand,
+                "demand_kn": demand,
+                "gross_area_mm2": gross_area,
+                "effective_shear_area_mm2": effective_area,
+                "effective_hoop_area_mm2": link_area,
+                "ring_mark": steel.tie_id,
+                "credited_legs": basis.credit_closed_ring_legs,
+                "margin_kn": shear.capacity_kn - demand,
+                "pitch_limit_mm": pitch_limit,
+                "status": "PASS" if pitch_ok and capacity_ok else "FAIL",
+            }
+        )
+    return rows, "FAIL" if any(row["status"] == "FAIL" for row in rows) else "PASS"
+
+
 def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> Result:
     """Check circular longitudinal development, transverse placement and BBS.
 
@@ -294,7 +449,8 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
 
     Limitations
     -----------
-    Short braced circular members with zero supplied shear and continuous bars.
+    Short braced circular members with continuous bars. Nonzero shear uses
+    one declared principal plane and the supported closed-ring basis.
 
     Provenance
     ----------
@@ -317,26 +473,27 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
             "Supply current analysis rows.",
             EngineeringStatus.HOLD,
         )
-    if any(
-        not getattr(request.basis, field)
+    member_basis_complete = all(
+        getattr(request.basis, field)
         for field in (
             "nonseismic_reference",
             "action_source_reference",
             "end_development_reference",
             "placement_reference",
         )
-    ):
+    )
+    if not member_basis_complete:
         record(
             "COLUMN.CIRCULAR_MEMBER_BASIS_HELD",
             "basis",
             "Supply the ordinary member and development basis.",
             EngineeringStatus.HOLD,
         )
-    if any(row.vx_kn or row.vy_kn for row in request.actions) or request.laps:
+    if request.laps:
         record(
             "COLUMN.CIRCULAR_MEMBER_ACTIONS_HELD",
             "actions",
-            "Circular shear and physical splices require their own verified checks.",
+            "Circular physical splices require their own verified checks.",
             EngineeringStatus.HOLD,
         )
 
@@ -370,6 +527,24 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
         statuses.append(status)
         if issue is not None:
             issues.append(issue)
+    shear_rows, shear_status = _check_circular_shear(
+        request,
+        transverse,
+        evidence_current=member_basis_complete and not stale,
+        record=record,
+    )
+    if shear_status != "NOT_APPLICABLE":
+        statuses.append(EngineeringStatus(shear_status))
+    governing_shear = min(
+        shear_rows,
+        key=lambda row: (
+            row["status"] != "FAIL",
+            -row["utilization"],
+            row["combination_id"],
+            row["station_mm"],
+        ),
+        default=None,
+    )
     status = (
         EngineeringStatus.FAIL
         if EngineeringStatus.FAIL in statuses
@@ -438,9 +613,22 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
             ),
             "transverse": transverse,
             "end_required_mm": end_required,
+            **(
+                {
+                    "shear_rows": shear_rows,
+                    "shear_status": shear_status,
+                    "governing_shear": governing_shear,
+                }
+                if request.shear_basis is not None
+                else {}
+            ),
             "bbs": (
                 {
                     "rows": rows,
+                    "quantity": sum(row["quantity"] for row in rows),
+                    "total_length_mm": math.fsum(
+                        row["total_length_mm"] for row in rows
+                    ),
                     "total_weight_kg": math.fsum(
                         row["total_weight_kg"] for row in rows
                     ),
@@ -452,12 +640,13 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
         workflow_id=WORKFLOW,
         engineering_status=status,
         limitations=(
-            "Short braced regular circular cages with continuous straight bars and zero supplied shear.",
+            "Short braced regular circular cages with continuous straight bars.",
             "Ring closure uses the supplied cut evidence; the spiral is one continuous body and two declared anchorage segments.",
-            "Circular shear, splices, seismic checks, and professional approval require separate evidence.",
+            "Nonzero shear uses one declared principal plane and the closed-ring basis. Splices, spiral shear and seismic checks require separate evidence.",
         ),
         provenance=(
             "IS 456 Clauses 26.2, 26.5.3.2 and 39; checked circular section and actual transverse centreline.",
+            *((_SHEAR_SOURCE,) if governing_shear is not None else ()),
         ),
     )
     return replace(
@@ -518,6 +707,7 @@ def render_circular_detailing_bbs_csv(result: Result) -> str | None:
     bbs = result.calculation["bbs"]
     if bbs is None:
         return None
+    governor = result.calculation.get("governing_shear")
     return _schedule_csv(
         bbs["rows"],
         {
@@ -525,6 +715,14 @@ def render_circular_detailing_bbs_csv(result: Result) -> str | None:
             "analysis_revision": request.basis.analysis_revision,
             "detailing_revision": request.basis.detailing_revision,
             "input_hash": input_hash,
+            **(
+                {
+                    "governing_shear_combination_id": governor["combination_id"],
+                    "governing_shear_station_mm": f"{governor['station_mm']:g}",
+                }
+                if governor is not None
+                else {}
+            ),
         },
     )
 
@@ -578,7 +776,8 @@ def render_circular_detailing_svg(result: Result) -> str | None:
     marks: list[str] = []
     if transverse["role"] == "tied":
         marks.extend(
-            f'<line data-mark="{mark}" x1="70" x2="170" y1="{y(station):.4f}" y2="{y(station):.4f}"/>'
+            f'<line data-mark="{mark}" data-station-mm="{station:g}" '
+            f'x1="70" x2="170" y1="{y(station):.4f}" y2="{y(station):.4f}"/>'
             for station in transverse["stations_mm"]
         )
     else:
@@ -595,15 +794,56 @@ def render_circular_detailing_svg(result: Result) -> str | None:
         marks.append(
             f'<polyline data-mark="{mark}" points="{" ".join(points)}" fill="none"/>'
         )
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 530 510" role="img">
+    attributes = shear_note = ""
+    governor = result.calculation.get("governing_shear")
+    if governor is not None:
+        combination = html.escape(governor["combination_id"], quote=True)
+        station = governor["station_mm"]
+        plane = governor["shear_plane"]
+        demand = governor["signed_demand_kn"]
+        attributes = f' data-governing-shear="{combination}" data-governing-station-mm="{station:g}"'
+        shear_note = (
+            f'<line x1="173" x2="212" y1="{y(station):.4f}" y2="{y(station):.4f}" stroke="#965515"/>'
+            f'<text x="255" y="378" font-size="13">Governing shear {combination} · {station:g} mm</text>'
+            f'<text x="255" y="400" font-size="13">V{plane} {demand:+g} kN · {governor["utilization"]:.1%} utilized</text>'
+        )
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 530 510" role="img"{attributes}>
 <title>{html.escape(request.identity.member_id or '')} circular column review elevation</title>
-<desc>Input {input_hash}. Detail {html.escape(request.basis.detailing_revision)}.</desc>
+<desc>Input {input_hash}. Analysis {html.escape(request.basis.analysis_revision)}. Detail {html.escape(request.basis.detailing_revision)}.</desc>
 <rect x="60" y="{y(length):.4f}" width="120" height="{length*scale:.4f}" fill="#f1f5f9" stroke="#334155"/>
 <path d="M 75 50 V 470 M 165 50 V 470" stroke="#172b4d" fill="none"/>
 <g stroke="#17616b" stroke-width="1.3">{''.join(marks)}</g>
 {section}
 <text x="255" y="329" font-size="14">Diameter {diameter:g} mm</text>
-<text x="255" y="352" font-size="14">Clear height {length:g} mm</text></svg>"""
+<text x="255" y="352" font-size="14">Clear height {length:g} mm</text>{shear_note}</svg>"""
+
+
+def _shear_report(data: dict[str, Any]) -> str:
+    if "shear_status" not in data:
+        return ""
+    status = data["shear_status"]
+    governor = data["governing_shear"]
+    if governor is None:
+        return f"<h2>Single-plane shear</h2><p>{status}</p>"
+    rows = "".join(
+        f'<tr><th>{html.escape(row["combination_id"])}</th><td>{row["station_mm"]:g}</td>'
+        f'<td>V{row["shear_plane"]} {row["signed_demand_kn"]:+g}</td><td>{row["vc_kn"]:.2f}</td>'
+        f'<td>{row["vus_kn"]:.2f}</td><td>{row["capacity_kn"]:.2f}</td>'
+        f'<td>{row["utilization"]:.4f}</td><td>{row["status"]}</td></tr>'
+        for row in data["shear_rows"]
+    )
+    return (
+        f'<h2>Single-plane shear</h2><p>{status}. Governing shear {html.escape(governor["combination_id"])} '
+        f'at {governor["station_mm"]:g} mm. V{governor["shear_plane"]} '
+        f'{governor["signed_demand_kn"]:+g} kN. Resistance {governor["capacity_kn"]:.2f} kN.</p>'
+        f'<p>Effective shear depth {governor["d_mm"]:g} mm and concrete area '
+        f'{governor["effective_shear_area_mm2"]:.2f} mm². Table 20 cap {governor["crushing_kn"]:.2f} kN.</p>'
+        f'<p>{html.escape(governor["ring_mark"])}. {governor["credited_legs"]} credited ring legs. '
+        f'Pitch {governor["pitch_mm"]:g} mm against {governor["pitch_limit_mm"]:g} mm permitted.</p>'
+        f"<table><thead><tr><th>Combination</th><th>Station (mm)</th><th>Signed shear (kN)</th>"
+        f"<th>Vc (kN)</th><th>Vus (kN)</th><th>Resistance (kN)</th><th>Utilization</th>"
+        f"<th>Status</th></tr></thead><tbody>{rows}</tbody></table>"
+    )
 
 
 def render_circular_detailing_html(result: Result) -> str:
@@ -644,25 +884,27 @@ def render_circular_detailing_html(result: Result) -> str:
         f"<pre>{html.escape(schedule)}</pre>" if schedule else "<p>BBS held.</p>"
     )
     rows = []
-    for item in data["sections"]:
+    for item, supplied in zip(data["sections"], request.actions, strict=False):
         checked = item["checked_section"]
         actions = checked["request"]["actions"]
         status = checked["envelope"]["engineering_status"]
         rows.append(
             f"<tr><th>{html.escape(item['combination_id'])}</th><td>{actions['check_station_mm']:g}</td>"
             f"<td>{actions['pu_kn']:g}</td><td>{actions['mx_knm']:g}</td><td>{actions['my_knm']:g}</td>"
-            f"<td>{status}</td></tr>"
+            f"<td>{supplied.vx_kn:g}</td><td>{supplied.vy_kn:g}</td><td>{status}</td></tr>"
         )
     issues = "".join(
-        f"<li>{html.escape(issue.message)}</li>" for issue in result.issues
+        f"<li><code>{html.escape(issue.code)}</code> {html.escape(issue.message)}</li>"
+        for issue in result.issues
     )
     limits = "".join(f"<li>{html.escape(limit)}</li>" for limit in result.limitations)
     return f"""<!doctype html>
 <html lang="en"><meta charset="utf-8"><title>Circular column detailing</title>
 <h1>Circular column detailing · {html.escape(request.identity.member_id or '')}</h1>
 <p>{result.engineering_status.value} · Qualified review required</p>
-<p>Input identity <code>{input_hash}</code>. Detail revision {html.escape(request.basis.detailing_revision)}.</p>
+<p>Input identity <code>{input_hash}</code>. Analysis revision {html.escape(request.basis.analysis_revision)}.
+Detail revision {html.escape(request.basis.detailing_revision)}.</p>
 <p>Required straight development {data['end_required_mm']:.2f} mm at each end.</p>
 <table><thead><tr><th>Combination</th><th>Station (mm)</th><th>P (kN)</th><th>Mx (kN·m)</th>
-<th>My (kN·m)</th><th>Section status</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
-{drawing}{schedule_html}<ul>{issues}{limits}</ul></html>"""
+<th>My (kN·m)</th><th>Vx (kN)</th><th>Vy (kN)</th><th>Section status</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
+{_shear_report(data)}{drawing}{schedule_html}<ul>{issues}{limits}</ul></html>"""
