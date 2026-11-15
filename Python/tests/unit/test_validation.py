@@ -11,9 +11,6 @@ from structural_lib.core.errors import (
     E_INPUT_003,
     E_INPUT_004,
     E_INPUT_005,
-    E_INPUT_013,
-    E_INPUT_014,
-    E_INPUT_015,
     E_INPUT_018,
     E_INPUT_019,
     E_INPUT_003a,
@@ -229,7 +226,9 @@ class TestValidateGeometryRelationship:
     def test_negative_cover(self):
         """Negative cover returns error."""
         errors = validation.validate_geometry_relationship(d=450, D=500, cover=-40)
-        assert E_INPUT_015 in errors
+        assert [(error.code, error.field) for error in errors] == [
+            ("E_INPUT_COVER_NEGATIVE", "cover"),
+        ]
 
     def test_d_too_large_for_D(self):
         """d too large relative to D and cover returns error."""
@@ -248,29 +247,38 @@ class TestValidateStirrupParameters:
     def test_negative_asv(self):
         """Negative asv returns error."""
         errors = validation.validate_stirrup_parameters(asv_mm2=-100, spacing_mm=150)
-        assert E_INPUT_013 in errors
+        assert [(error.code, error.field) for error in errors] == [
+            ("E_INPUT_008", "asv_mm2"),
+        ]
 
     def test_zero_asv(self):
         """Zero asv returns error."""
         errors = validation.validate_stirrup_parameters(asv_mm2=0, spacing_mm=150)
-        assert E_INPUT_013 in errors
+        assert [(error.code, error.field) for error in errors] == [
+            ("E_INPUT_008", "asv_mm2"),
+        ]
 
     def test_negative_spacing(self):
         """Negative spacing returns error."""
         errors = validation.validate_stirrup_parameters(asv_mm2=100, spacing_mm=-150)
-        assert E_INPUT_014 in errors
+        assert [(error.code, error.field) for error in errors] == [
+            ("E_INPUT_STIRRUP_SPACING_NONPOSITIVE", "spacing_mm"),
+        ]
 
     def test_zero_spacing(self):
         """Zero spacing returns error."""
         errors = validation.validate_stirrup_parameters(asv_mm2=100, spacing_mm=0)
-        assert E_INPUT_014 in errors
+        assert [(error.code, error.field) for error in errors] == [
+            ("E_INPUT_STIRRUP_SPACING_NONPOSITIVE", "spacing_mm"),
+        ]
 
     def test_multiple_errors(self):
         """Both invalid returns two errors."""
         errors = validation.validate_stirrup_parameters(asv_mm2=-100, spacing_mm=-150)
-        assert len(errors) == 2
-        assert E_INPUT_013 in errors
-        assert E_INPUT_014 in errors
+        assert [(error.code, error.field) for error in errors] == [
+            ("E_INPUT_008", "asv_mm2"),
+            ("E_INPUT_STIRRUP_SPACING_NONPOSITIVE", "spacing_mm"),
+        ]
 
 
 class TestValidateAllPositive:
@@ -312,13 +320,16 @@ class TestValidateCover:
     def test_negative_cover(self):
         """Negative cover returns error."""
         errors = validation.validate_cover(cover=-30, D=500)
-        assert len(errors) >= 1
-        assert any(err.code == "E_INPUT_015" for err in errors)
+        assert [(error.code, error.field) for error in errors] == [
+            ("E_INPUT_COVER_NONPOSITIVE", "cover"),
+        ]
 
     def test_zero_cover(self):
         """Zero cover returns error."""
         errors = validation.validate_cover(cover=0, D=500)
-        assert len(errors) >= 1
+        assert [(error.code, error.field) for error in errors] == [
+            ("E_INPUT_COVER_NONPOSITIVE", "cover"),
+        ]
 
     def test_cover_exceeds_depth(self):
         """Cover >= D returns error."""

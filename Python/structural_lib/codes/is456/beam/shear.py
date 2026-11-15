@@ -8,7 +8,7 @@ Description:  Shear design and analysis functions
 import math
 
 from structural_lib.core.data_types import ShearResult
-from structural_lib.core.error_messages import dimension_too_small
+from structural_lib.core.error_messages import positive_value_required
 from structural_lib.core.errors import (
     E_INPUT_001,
     E_INPUT_002,
@@ -235,14 +235,14 @@ def calculate_tv(vu_kn: float, b: float, d: float) -> float:
     """
     if b <= 0:
         raise DimensionError(
-            dimension_too_small("beam width b", b, 0, "Cl. 40.1"),
-            details={"b": b, "minimum": 0},
+            positive_value_required("beam width b", b, unit="mm"),
+            details={"b": b, "minimum_exclusive": 0},
             clause_ref="Cl. 40.1",
         )
     if d <= 0:
         raise DimensionError(
-            dimension_too_small("effective depth d", d, 0, "Cl. 40.1"),
-            details={"d": d, "minimum": 0},
+            positive_value_required("effective depth d", d, unit="mm"),
+            details={"d": d, "minimum_exclusive": 0},
             clause_ref="Cl. 40.1",
         )
 
@@ -288,8 +288,8 @@ def enhanced_shear_strength(
     # Validate inputs
     if d_mm <= 0:
         raise DimensionError(
-            dimension_too_small("effective depth d", d_mm, 0, "Cl. 40.3"),
-            details={"d_mm": d_mm, "minimum": 0},
+            positive_value_required("effective depth d", d_mm, unit="mm"),
+            details={"d_mm": d_mm, "minimum_exclusive": 0},
             clause_ref="Cl. 40.3",
         )
     if av_mm <= 0:

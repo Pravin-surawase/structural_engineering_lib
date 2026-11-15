@@ -36,11 +36,16 @@ class CodeRegistry:
     def register(cls, code_id: str, code_class: type[DesignCode]) -> None:
         """Register a design code implementation.
 
+        Replacing the class invalidates its cached instance.
+
         Args:
             code_id: Unique identifier (e.g., "IS456", "ACI318")
             code_class: Class implementing DesignCode
         """
+        previous_class = cls._codes.get(code_id)
         cls._codes[code_id] = code_class
+        if previous_class is not code_class:
+            cls._instances.pop(code_id, None)
 
     @classmethod
     def get(cls, code_id: str) -> DesignCode:

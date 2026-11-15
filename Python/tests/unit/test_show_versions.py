@@ -126,9 +126,9 @@ class TestVersionInfoFields:
     def test_dependency_versions_are_strings_or_none(self, info):
         """Each dependency value is either a version string or None."""
         for pkg, ver in info.dependencies.items():
-            assert ver is None or isinstance(
-                ver, str
-            ), f"{pkg} has unexpected version type: {type(ver)}"
+            assert ver is None or isinstance(ver, str), (
+                f"{pkg} has unexpected version type: {type(ver)}"
+            )
 
     def test_expected_dependencies_listed(self, info):
         """All expected optional deps should be checked."""
@@ -278,3 +278,30 @@ class TestVersionInfoToDict:
         assert d["library_version"] == info.library_version
         assert d["python_version"] == info.python_version
         assert d["platform"] == info.platform
+
+
+def test_version_mapping_iteration_matches_public_projections():
+    info = show_versions(as_dict=True)
+    assert list(info) == info.keys() == [name for name, _ in info.items()]
+    assert list(info) == list(info.to_dict())
+
+
+def test_registering_a_different_code_replaces_the_cached_instance(monkeypatch):
+    from structural_lib.core.registry import CodeRegistry, register_code
+
+    class First:
+        pass
+
+    class Second:
+        pass
+
+    monkeypatch.setattr(CodeRegistry, "_codes", {})
+    monkeypatch.setattr(CodeRegistry, "_instances", {})
+    CodeRegistry.register("TEST-ONLY", First)
+    first = CodeRegistry.get("TEST-ONLY")
+    CodeRegistry.register("TEST-ONLY", First)
+    assert CodeRegistry.get("TEST-ONLY") is first
+    register_code("TEST-ONLY")(Second)
+    assert isinstance(CodeRegistry.get("TEST-ONLY"), Second)
+    CodeRegistry.register("TEST-ONLY", First)
+    assert isinstance(CodeRegistry.get("TEST-ONLY"), First)

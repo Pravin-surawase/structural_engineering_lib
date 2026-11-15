@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import math
 import warnings
+from dataclasses import replace
 from numbers import Real
 from typing import SupportsFloat, cast
 
@@ -23,9 +24,7 @@ from .errors import (
     E_INPUT_003,
     E_INPUT_004,
     E_INPUT_005,
-    E_INPUT_013,
-    E_INPUT_014,
-    E_INPUT_015,
+    E_INPUT_008,
     E_INPUT_018,
     E_INPUT_019,
     DesignError,
@@ -278,7 +277,16 @@ def validate_geometry_relationship(
         errors.append(E_INPUT_003a)
 
     if cover < 0:
-        errors.append(E_INPUT_015)
+        errors.append(
+            DesignError(
+                code="E_INPUT_COVER_NEGATIVE",
+                severity=Severity.ERROR,
+                message="Clear cover must be >= 0 mm",
+                field="cover",
+                hint="Check the clear cover input.",
+                recovery="Provide a nonnegative clear cover in mm.",
+            )
+        )
 
     # Relationship check: D must be greater than d + cover (simplified)
     # This allows space for clear cover and rebar diameter
@@ -309,10 +317,19 @@ def validate_stirrup_parameters(
     errors: list[DesignError] = []
 
     if asv_mm2 <= 0:
-        errors.append(E_INPUT_013)
+        errors.append(replace(E_INPUT_008, field="asv_mm2"))
 
     if spacing_mm <= 0:
-        errors.append(E_INPUT_014)
+        errors.append(
+            DesignError(
+                code="E_INPUT_STIRRUP_SPACING_NONPOSITIVE",
+                severity=Severity.ERROR,
+                message="Stirrup spacing must be > 0 mm",
+                field="spacing_mm",
+                hint="Check the stirrup spacing input.",
+                recovery="Provide a positive stirrup spacing in mm.",
+            )
+        )
 
     return errors
 
@@ -386,7 +403,16 @@ def validate_cover(
         return errors
 
     if cover <= 0:
-        errors.append(E_INPUT_015)
+        errors.append(
+            DesignError(
+                code="E_INPUT_COVER_NONPOSITIVE",
+                severity=Severity.ERROR,
+                message="Clear cover must be > 0 mm",
+                field="cover",
+                hint="Check the clear cover input.",
+                recovery="Provide a positive clear cover in mm.",
+            )
+        )
 
     if D > 0 and cover >= D:
         errors.append(

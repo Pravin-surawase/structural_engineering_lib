@@ -20,7 +20,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Literal
 
-from structural_lib.core.error_messages import material_property_out_of_range
+from structural_lib.core.error_messages import positive_value_required
 from structural_lib.core.errors import (
     ComplianceError,
     ConfigurationError,
@@ -240,10 +240,8 @@ def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
     fck = require_finite_real("fck", fck)
     if fck <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
-            ),
-            details={"fck": fck, "minimum": 0, "maximum": 100},
+            positive_value_required("concrete strength fck", fck, unit="N/mm²"),
+            details={"fck": fck, "minimum_exclusive": 0},
             clause_ref="Cl. 6.2",
         )
     if bar_type not in {"plain", "deformed"}:
@@ -302,34 +300,26 @@ def calculate_development_length_unrounded(
 
     if bar_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.1"
-            ),
-            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            positive_value_required("bar diameter", bar_dia, unit="mm"),
+            details={"bar_dia": bar_dia, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.1",
         )
     if fck <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
-            ),
-            details={"fck": fck, "minimum": 0, "maximum": 100},
+            positive_value_required("concrete strength fck", fck, unit="N/mm²"),
+            details={"fck": fck, "minimum_exclusive": 0},
             clause_ref="Cl. 6.2",
         )
     if fy <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
-            ),
-            details={"fy": fy, "minimum": 0, "maximum": 600},
+            positive_value_required("steel yield strength fy", fy, unit="N/mm²"),
+            details={"fy": fy, "minimum_exclusive": 0},
             clause_ref="Cl. 6.2",
         )
     if stress_ratio <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "stress ratio", stress_ratio, 0, 1, "Cl. 26.2.1"
-            ),
-            details={"stress_ratio": stress_ratio, "minimum": 0, "maximum": 1},
+            positive_value_required("stress ratio", stress_ratio, unit=""),
+            details={"stress_ratio": stress_ratio, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.1",
         )
 
@@ -487,10 +477,8 @@ def get_min_bend_radius(bar_dia: float, bar_type: str = "deformed") -> float:
     """
     if bar_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.2.1"
-            ),
-            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            positive_value_required("bar diameter", bar_dia, unit="mm"),
+            details={"bar_dia": bar_dia, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.2.1",
         )
 
@@ -541,10 +529,8 @@ def calculate_standard_hook(
     """
     if bar_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.2"
-            ),
-            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            positive_value_required("bar diameter", bar_dia, unit="mm"),
+            details={"bar_dia": bar_dia, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.2",
         )
 
@@ -765,10 +751,8 @@ def calculate_stirrup_anchorage(
     """
     if stirrup_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "stirrup diameter", stirrup_dia, 0, 16, "Cl. 26.2.2.2"
-            ),
-            details={"stirrup_dia": stirrup_dia, "minimum": 0, "maximum": 16},
+            positive_value_required("stirrup diameter", stirrup_dia, unit="mm"),
+            details={"stirrup_dia": stirrup_dia, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.2.2",
         )
 

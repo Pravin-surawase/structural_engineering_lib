@@ -10,7 +10,8 @@ from __future__ import annotations
 import warnings
 from collections.abc import Callable
 from functools import wraps
-from typing import Any, TypeVar
+from inspect import Parameter, Signature
+from typing import Any, TypeVar, cast
 
 F = TypeVar("F", bound=Callable)
 
@@ -24,9 +25,10 @@ def deprecated(
     reason: str | None = None,
 ) -> Callable[[F], F]:
     """
-    Mark a function or class as deprecated.
+    Mark a function or user-defined class as deprecated.
 
-    Emits a DeprecationWarning when the decorated function is called.
+    Emits a DeprecationWarning on a function call or direct class construction.
+    A decorated class keeps its identity.
     Use only when the owner has approved a real replacement and removal version.
 
     Parameters
@@ -43,7 +45,7 @@ def deprecated(
     Returns
     -------
     Callable
-        Decorated function that emits deprecation warning
+        Decorated function or the original class with a construction warning.
 
     Examples
     --------
@@ -60,7 +62,7 @@ def deprecated(
     - DeprecationWarning is silenced by default in Python
     - Users can enable with: python -W default::DeprecationWarning
     - Or in code: warnings.simplefilter("default", DeprecationWarning)
-    - Metadata stored in wrapper.__deprecated__ for introspection
+    - Metadata stored in __deprecated__ for introspection
 
     See Also
     --------
@@ -68,8 +70,7 @@ def deprecated(
     """
 
     def decorator(func: F) -> F:
-        @wraps(func)
-        def wrapper(*args: Any, **kwargs: Any) -> Any:
+        def warning_message() -> str:
             message = (
                 f"{func.__name__} is deprecated since v{version} "
                 f"and will be removed in v{remove_version}."
@@ -78,18 +79,48 @@ def deprecated(
                 message += f" Use {alternative} instead."
             if reason:
                 message += f" Reason: {reason}"
+            return message
 
-            warnings.warn(message, DeprecationWarning, stacklevel=2)
-            return func(*args, **kwargs)
-
-        # Store metadata for introspection/testing
-        wrapper.__deprecated__ = {  # type: ignore
+        metadata = {
             "version": version,
             "remove_version": remove_version,
             "alternative": alternative,
             "reason": reason,
         }
 
+        if isinstance(func, type):
+            original_new = func.__new__
+            # With the default allocator the initializer owns the signature.
+            signature_source = (
+                cast(Any, func).__init__
+                if original_new is object.__new__
+                else original_new
+            )
+
+            @wraps(signature_source)
+            def new(cls: type, /, *args: Any, **kwargs: Any) -> Any:
+                if cls is func:
+                    warnings.warn(warning_message(), DeprecationWarning, stacklevel=2)
+                if original_new is not object.__new__:
+                    return original_new(cls, *args, **kwargs)
+                if cast(Any, cls).__init__ is object.__init__ and (args or kwargs):
+                    raise TypeError(f"{cls.__name__}() takes no arguments")
+                return object.__new__(cls)
+
+            if signature_source is object.__init__:
+                new.__signature__ = Signature(  # type: ignore[attr-defined]
+                    [Parameter("cls", Parameter.POSITIONAL_ONLY)]
+                )
+            func.__new__ = staticmethod(new)  # type: ignore
+            func.__deprecated__ = metadata  # type: ignore[attr-defined]
+            return func
+
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            warnings.warn(warning_message(), DeprecationWarning, stacklevel=2)
+            return func(*args, **kwargs)
+
+        wrapper.__deprecated__ = metadata  # type: ignore
         return wrapper  # type: ignore
 
     return decorator
@@ -101,11 +132,13 @@ def deprecated_field(
     version: str,
     remove_version: str,
     alternative: str | None = None,
+    *,
+    stacklevel: int = 3,
 ) -> None:
     """
     Emit deprecation warning for a dataclass field.
 
-    Call this in __post_init__ when a deprecated field is accessed.
+    Call this when constructing a record with a deprecated field.
     Used to warn about fields that will be removed in future versions.
 
     Parameters
@@ -120,6 +153,8 @@ def deprecated_field(
         Version when field will be removed (e.g., "1.0.0")
     alternative : str, optional
         Recommended replacement field (e.g., "errors")
+    stacklevel : int, optional
+        Warning depth. Use 4 in __post_init__ with a generated constructor.
 
     Examples
     --------
@@ -132,12 +167,12 @@ def deprecated_field(
     ...         if self.error_message:
     ...             deprecated_field(
     ...                 "FlexureResult", "error_message",
-    ...                 "0.14.0", "1.0.0", "errors"
+    ...                 "0.14.0", "1.0.0", "errors", stacklevel=4
     ...             )
 
     Notes
     -----
-    - stacklevel=3 accounts for: this function → __post_init__ → user code
+    - The generated __init__ adds a frame between __post_init__ and its caller.
     - Only warn if field is actually used (check before calling)
     - Requires the same owner-approved replacement/removal evidence as @deprecated
 
@@ -152,4 +187,4 @@ def deprecated_field(
     if alternative:
         message += f" Use {dataclass_name}.{alternative} instead."
 
-    warnings.warn(message, DeprecationWarning, stacklevel=3)
+    warnings.warn(message, DeprecationWarning, stacklevel=stacklevel)
