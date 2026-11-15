@@ -201,6 +201,60 @@ describe('useLiveDesign request truth', () => {
     expect(mocks.useBeamGeometry).toHaveBeenLastCalledWith(null, { enabled: false });
   });
 
+  it('emits derived-depth requests after a Pareto proposal is manually re-based', async () => {
+    mocks.designBeam.mockResolvedValue(designResult('derived-depth'));
+    const { result } = renderHook(() => useLiveDesign({ autoDesign: false }));
+
+    act(() => {
+      useDesignStore.getState().applyParetoProposal({
+        width: 200,
+        depth: 550,
+        effective_depth: 482,
+        fck: 25,
+        fy: 500,
+      });
+      result.current.actions.updateInputs({ clear_cover: 75 });
+    });
+    await waitFor(() => expect(result.current.state.inputRevision).toBe(useDesignStore.getState().inputRevision));
+    act(() => {
+      result.current.actions.triggerDesign();
+    });
+
+    await waitFor(() => expect(mocks.designBeam).toHaveBeenCalledTimes(1));
+    expect(mocks.designBeam.mock.calls[0][0]).toMatchObject({
+      width: 200,
+      depth: 550,
+      clear_cover: 75,
+      fck: 25,
+      fy: 500,
+    });
+    expect(mocks.designBeam.mock.calls[0][0]).not.toHaveProperty('effective_depth');
+  });
+
+  it('emits derived-depth requests after a Pareto proposal overall-depth edit', async () => {
+    mocks.designBeam.mockResolvedValue(designResult('derived-depth-after-depth-edit'));
+    const { result } = renderHook(() => useLiveDesign({ autoDesign: false }));
+
+    act(() => {
+      useDesignStore.getState().applyParetoProposal({
+        width: 200,
+        depth: 550,
+        effective_depth: 482,
+        fck: 25,
+        fy: 500,
+      });
+      result.current.actions.updateInputs({ depth: 481 });
+    });
+    await waitFor(() => expect(result.current.state.inputRevision).toBe(useDesignStore.getState().inputRevision));
+    act(() => {
+      result.current.actions.triggerDesign();
+    });
+
+    await waitFor(() => expect(mocks.designBeam).toHaveBeenCalledTimes(1));
+    expect(mocks.designBeam.mock.calls[0][0]).toMatchObject({ depth: 481 });
+    expect(mocks.designBeam.mock.calls[0][0]).not.toHaveProperty('effective_depth');
+  });
+
   it('creates a stable identity for equal canonical quick inputs', () => {
     const state = useDesignStore.getState();
     expect(createQuickDesignIdentity(state.inputs, state.length, state.inputRevision)).toEqual(

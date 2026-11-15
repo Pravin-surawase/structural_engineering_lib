@@ -27,7 +27,7 @@ export function ParetoPanel({ spanMm, muKnm, vuKn, effectiveDepthOffsetMm }: Par
   } | null>(null);
   const latestRequest = useRef(0);
   const { mutate, isPending, error } = useParetoDesign();
-  const { setInputs } = useDesignStore();
+  const { applyParetoProposal } = useDesignStore();
   const submittedRequest = comparison?.request;
   const paretoResult = comparison?.result;
   const resultMatchesCurrentInputs = Boolean(
@@ -58,7 +58,7 @@ export function ParetoPanel({ spanMm, muKnm, vuKn, effectiveDepthOffsetMm }: Par
   };
 
   const handleApplyCandidate = (candidate: ParetoCandidateResponse) => {
-    setInputs({
+    applyParetoProposal({
       width: candidate.b_mm,
       depth: candidate.D_mm,
       effective_depth: candidate.d_mm,

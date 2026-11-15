@@ -52,6 +52,56 @@ describe('designStore', () => {
     expect(state.inputRevision).toBe(initialRevision + 1);
   });
 
+  it('returns a Pareto proposal to derived depth after a changed depth basis', () => {
+    const store = useDesignStore.getState();
+    store.applyParetoProposal({
+      width: 200,
+      depth: 550,
+      effective_depth: 482,
+      fck: 25,
+      fy: 500,
+    });
+    expect(useDesignStore.getState().inputs.effective_depth).toBe(482);
+    expect(useDesignStore.getState().effectiveDepthSource).toBe('pareto_proposal');
+
+    store.setInputs({ clear_cover: 75 });
+
+    expect(useDesignStore.getState().inputs.effective_depth).toBeUndefined();
+    expect(useDesignStore.getState().effectiveDepthSource).toBeNull();
+  });
+
+  it('clears a Pareto proposal for a changed overall depth but not identical or action edits', () => {
+    const store = useDesignStore.getState();
+    store.applyParetoProposal({ width: 200, depth: 550, effective_depth: 482, fck: 25, fy: 500 });
+    store.setInputs({ depth: 550 });
+    store.setInputs({ moment: 175 });
+    expect(useDesignStore.getState().inputs.effective_depth).toBe(482);
+
+    store.setInputs({ depth: 481 });
+    expect(useDesignStore.getState().inputs.effective_depth).toBeUndefined();
+  });
+
+  it('preserves an explicitly supplied effective depth in the same basis update', () => {
+    const store = useDesignStore.getState();
+    store.applyParetoProposal({ width: 200, depth: 550, effective_depth: 482, fck: 25, fy: 500 });
+    store.setInputs({ clear_cover: 75, effective_depth: 482 });
+    expect(useDesignStore.getState().inputs.effective_depth).toBe(482);
+    expect(useDesignStore.getState().effectiveDepthSource).toBe('explicit');
+  });
+
+  it('records a same-valued manual effective depth as explicit without invalidating the revision', () => {
+    const store = useDesignStore.getState();
+    store.applyParetoProposal({ width: 200, depth: 550, effective_depth: 482, fck: 25, fy: 500 });
+    const proposalRevision = useDesignStore.getState().inputRevision;
+
+    store.setInputs({ effective_depth: 482 });
+
+    expect(useDesignStore.getState().effectiveDepthSource).toBe('explicit');
+    expect(useDesignStore.getState().inputRevision).toBe(proposalRevision);
+    store.setInputs({ clear_cover: 75 });
+    expect(useDesignStore.getState().inputs.effective_depth).toBe(482);
+  });
+
   it('setResult clears error', () => {
     const store = useDesignStore.getState();
     store.setError('some error');
