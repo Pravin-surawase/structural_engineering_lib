@@ -323,3 +323,119 @@ def test_python_contract_modules_have_only_host_free_imports() -> None:
                 imported_roots.add(node.module.split(".")[0])
 
     assert imported_roots.isdisjoint(forbidden_roots)
+
+
+@pytest.mark.parametrize(
+    ("collection", "field", "value"),
+    (
+        ("points", "x_mm", 700),
+        ("materials", "elastic_modulus_n_per_mm2", 12345),
+        ("sections", "width_mm", 950),
+        ("axes", "evidence_reference", "raw-material-c30"),
+    ),
+)
+def test_normalized_model_facts_require_matching_raw_evidence(
+    collection: str,
+    field: str,
+    value: int | str,
+) -> None:
+    document = copy.deepcopy(FIXTURE["valid_snapshot"])
+    document[collection][0][field] = value
+    payload = _snapshot_payload(document)
+    for result in (
+        parse_analysis_snapshot_json(payload),
+        parse_analysis_snapshot_transport(
+            b"STRUCTSNAP-GZIP-1\n" + gzip.compress(payload, mtime=0)
+        ),
+        parse_analysis_snapshot_transport(_compact_transport(_compact_rows(document))),
+    ):
+        assert result.snapshot is None
+        assert result.diagnostics[0].code == "ETABS.MAPPING_UNRESOLVED"
+
+
+@pytest.mark.parametrize(
+    ("field", "value"), [("physical_station_mm", 7000), ("normalized_ratio", 0.9)]
+)
+def test_portable_stations_remain_within_the_member_and_match_the_ratio(
+    field: str, value: float
+) -> None:
+    document = copy.deepcopy(FIXTURE["valid_snapshot"])
+    document["stations"][0][field] = value
+    result = parse_analysis_snapshot_json(_snapshot_payload(document))
+    assert result.snapshot is None
+    assert result.diagnostics[0].code == "STATION.UNRESOLVED"
+
+
+@pytest.mark.parametrize("nested", (False, True))
+def test_portable_combinations_reject_cycles_with_matching_source_factors(
+    nested: bool,
+) -> None:
+    document = json.loads(
+        FIXTURE_PATH.with_name("wp10-normalization-vectors.json").read_bytes()
+    )["valid_snapshot"]
+    combo = document["load_combinations"][0]
+    combo_id = combo["combination_id"]
+    raw = document["raw_capture"]
+    record = next(
+        item
+        for item in raw["model_records"]
+        if item["source_record_id"] == combo["evidence_reference"]
+    )
+    target = combo_id
+    if nested:
+        target = "zz-combo"
+        reference = "zz-raw-combination"
+        document["load_combinations"].append(
+            combo | {"combination_id": target, "evidence_reference": reference}
+        )
+        raw["model_records"].append(
+            record
+            | {
+                "source_record_id": reference,
+                "fields": {"data": record["fields"]["data"] | {"id": target}},
+            }
+        )
+        ledger = document["row_ledger"]
+        disposition = next(
+            row
+            for row in ledger["rows"]
+            if row["source_record_id"] == combo["evidence_reference"]
+        )
+        ledger["rows"].append(
+            disposition | {"source_record_id": reference, "canonical_id": target}
+        )
+        ledger["source_row_count"] += 1
+        ledger["accepted_count"] += 1
+    factor = {
+        "ordinal": 0,
+        "scale_factor": 1,
+        "source_id": target,
+        "source_kind": "load_combination",
+    }
+    combo["factors"] = [factor]
+    record["fields"]["data"]["factors"] = [factor]
+    if nested:
+        other = document["load_combinations"][-1]
+        other_record = raw["model_records"][-1]
+        back_edge = factor | {"source_id": combo_id}
+        other["factors"] = [back_edge]
+        other_record["fields"]["data"]["factors"] = [back_edge]
+    result = parse_analysis_snapshot_json(_snapshot_payload(document))
+    assert result.snapshot is None
+    assert result.diagnostics[0].code == "ETABS.COMBINATION_CYCLE"
+
+
+def test_raw_model_and_force_rows_cannot_share_one_disposition() -> None:
+    document = copy.deepcopy(FIXTURE["valid_snapshot"])
+    raw_row = document["raw_capture"]["force_rows"][0]
+    former = raw_row["source_row_id"]
+    raw_row["source_row_id"] = "raw-metadata"
+    ledger = document["row_ledger"]
+    ledger["rows"] = [
+        row for row in ledger["rows"] if row["source_record_id"] != former
+    ]
+    ledger["source_row_count"] -= 1
+    ledger["accepted_count"] -= 1
+    result = parse_analysis_snapshot_json(_snapshot_payload(document))
+    assert result.snapshot is None
+    assert result.diagnostics[0].code == "ETABS.ROW_ACCOUNTING"

@@ -307,9 +307,10 @@ public static partial class AnalysisSnapshotCodec
                 return Blocked("ETABS.ROW_ACCOUNTING", "row_ledger.rows", "A row disposition has conflicting accepted/exclusion evidence.", "Use the exact fields required by its disposition.");
         }
         var sourceIds = snapshot.RawCapture.ModelRecords.Select(item => item.SourceRecordId)
-            .Concat(snapshot.RawCapture.ForceRows.Select(item => item.SourceRowId)).ToHashSet(StringComparer.Ordinal);
+            .Concat(snapshot.RawCapture.ForceRows.Select(item => item.SourceRowId)).ToArray();
         var ledgerIds = ledger.Rows.Select(item => item.SourceRecordId).ToArray();
-        if (ledgerIds.Length != ledgerIds.Distinct(StringComparer.Ordinal).Count() || !sourceIds.SetEquals(ledgerIds))
+        var uniqueSourceIds = sourceIds.ToHashSet(StringComparer.Ordinal);
+        if (sourceIds.Length != uniqueSourceIds.Count || ledgerIds.Length != ledgerIds.Distinct(StringComparer.Ordinal).Count() || !uniqueSourceIds.SetEquals(ledgerIds))
             return Blocked("ETABS.ROW_ACCOUNTING", "row_ledger.rows", "The row ledger does not account for every raw record exactly once.", "Reconcile raw and disposition identities without omission or duplication.");
         if (snapshot.ActionRows.Select(item => item.SourceRowId).Distinct(StringComparer.Ordinal).Count() != snapshot.ActionRows.Count)
             return Blocked("ETABS.ROW_ACCOUNTING", "action_rows.source_row_id", "More than one canonical action row is bound to the same raw force row.", "Bind every raw force row to at most one canonical action row.");
@@ -393,6 +394,157 @@ public static partial class AnalysisSnapshotCodec
         units.Stress switch { "kN/m2" => 0.001, "MPa" or "N/mm2" => 1, _ => 0 },
         units.MassDensity switch { "kN*s2/m4" => 1000, "kg/m3" => 1, _ => 0 });
 
+    private static JsonElement RawField(RawSnapshotModelRecord record, string key)
+    {
+        if (record.Fields.TryGetValue("data", out var data))
+            return data.ValueKind == JsonValueKind.Object && data.TryGetProperty(key, out var nested) ? nested : default;
+        return record.Fields.GetValueOrDefault(key);
+    }
+
+    private static double RawNumber(JsonElement value) =>
+        value.ValueKind == JsonValueKind.Number && value.TryGetDouble(out var number) ? number : double.NaN;
+
+    private static bool RawTextMatches(RawSnapshotModelRecord record, string key, string expected)
+    {
+        var value = RawField(record, key);
+        return value.ValueKind == JsonValueKind.String && value.GetString() == expected;
+    }
+
+    private static bool RawNumberMatches(RawSnapshotModelRecord record, string key, double? expected, double factor = 1)
+    {
+        if (expected is not { } target) return false;
+        var actual = RawNumber(RawField(record, key)) * factor;
+        return double.IsFinite(actual) &&
+            Math.Abs(actual - target) <= Math.Max(1e-9, 1e-12 * Math.Max(Math.Abs(actual), Math.Abs(target)));
+    }
+
+    private static EtabsSnapshotResult? ValidateModelFacts(AnalysisSnapshot snapshot, IReadOnlyDictionary<string, RawSnapshotModelRecord> records)
+    {
+        static EtabsSnapshotResult Mismatch(string reference) =>
+            Blocked("ETABS.MAPPING_UNRESOLVED", $"raw_capture.model_records[{reference}]", "A normalized model fact does not match the retained record kind or values.", "Retain the supported raw model fields and normalize each value from that record.");
+
+        var conversion = snapshot.Units.ConversionToCanonical;
+        var length = conversion.LengthToMm;
+        foreach (var axis in snapshot.Axes)
+        {
+            var raw = records[axis.EvidenceReference];
+            if (raw.RecordKind != RawModelRecordKind.Member || raw.Fields.Count == 0 ||
+                raw.Fields.TryGetValue("data", out var data) &&
+                (data.ValueKind != JsonValueKind.Object || !data.EnumerateObject().Any()))
+                return Mismatch(axis.EvidenceReference);
+        }
+        foreach (var point in snapshot.Points)
+        {
+            var raw = records[point.EvidenceReference];
+            var structured = raw.Fields.ContainsKey("data");
+            var factor = structured ? length : 1000;
+            if (raw.RecordKind != RawModelRecordKind.Point || !RawTextMatches(raw, "name", point.SourceName) ||
+                structured && (!RawTextMatches(raw, "id", point.PointId) || !RawTextMatches(raw, "story", point.StoryId)) ||
+                !RawNumberMatches(raw, structured ? "x" : "x_m", point.XMm, factor) ||
+                !RawNumberMatches(raw, structured ? "y" : "y_m", point.YMm, factor) ||
+                !RawNumberMatches(raw, structured ? "z" : "z_m", point.ZMm, factor))
+                return Mismatch(point.EvidenceReference);
+        }
+        var materialNames = snapshot.Materials.ToDictionary(item => item.MaterialId, item => item.SourceName, StringComparer.Ordinal);
+        foreach (var material in snapshot.Materials)
+        {
+            var raw = records[material.EvidenceReference];
+            var structured = raw.Fields.ContainsKey("data");
+            if (raw.RecordKind != RawModelRecordKind.Material || !RawTextMatches(raw, "name", material.SourceName) ||
+                (structured
+                    ? !RawTextMatches(raw, "id", material.MaterialId) ||
+                      !RawNumberMatches(raw, "elastic_modulus", material.ElasticModulusNPerMm2, conversion.StressToNPerMm2) ||
+                      !RawNumberMatches(raw, "poisson_ratio", material.PoissonRatio) ||
+                      !RawNumberMatches(raw, "mass_density", material.MassDensityKgPerM3, conversion.MassDensityToKgPerM3)
+                    : !RawNumberMatches(raw, "elastic_modulus_mpa", material.ElasticModulusNPerMm2)))
+                return Mismatch(material.EvidenceReference);
+        }
+        foreach (var section in snapshot.Sections)
+        {
+            var raw = records[section.EvidenceReference];
+            var area = length * length;
+            var fourth = area * area;
+            if (raw.RecordKind != RawModelRecordKind.Section || !RawTextMatches(raw, "name", section.SourceName))
+                return Mismatch(section.EvidenceReference);
+            if (raw.Fields.ContainsKey("data"))
+            {
+                if (!RawTextMatches(raw, "id", section.SectionId) || !RawTextMatches(raw, "material_id", section.MaterialId) ||
+                    !RawNumberMatches(raw, "width", section.WidthMm, length) || !RawNumberMatches(raw, "depth", section.DepthMm, length) ||
+                    !RawNumberMatches(raw, "area", section.AreaMm2, area) || !RawNumberMatches(raw, "torsion", section.TorsionalConstantMm4, fourth) ||
+                    !RawNumberMatches(raw, "inertia2", section.Inertia2Mm4, fourth) || !RawNumberMatches(raw, "inertia3", section.Inertia3Mm4, fourth))
+                    return Mismatch(section.EvidenceReference);
+            }
+            else if (!RawTextMatches(raw, "material", materialNames.GetValueOrDefault(section.MaterialId, "")) ||
+                section.WidthMm.HasValue && (!RawNumberMatches(raw, "width_m", section.WidthMm, 1000) || !RawNumberMatches(raw, "depth_m", section.DepthMm, 1000)))
+                return Mismatch(section.EvidenceReference);
+        }
+        return null;
+    }
+
+    private static bool HasCombinationCycle(IReadOnlyList<SnapshotLoadCombination> combinations)
+    {
+        var remaining = combinations.ToDictionary(combo => combo.CombinationId, _ => 0, StringComparer.Ordinal);
+        var dependents = combinations.ToDictionary(combo => combo.CombinationId, _ => new List<string>(), StringComparer.Ordinal);
+        foreach (var combo in combinations)
+        {
+            foreach (var factor in combo.Factors.Where(factor => factor.SourceKind == SnapshotResultSelectionKind.LoadCombination))
+            {
+                remaining[combo.CombinationId]++;
+                dependents[factor.SourceId].Add(combo.CombinationId);
+            }
+        }
+        var ready = new Queue<string>(remaining.Where(entry => entry.Value == 0).Select(entry => entry.Key));
+        var reached = 0;
+        while (ready.TryDequeue(out var id))
+        {
+            reached++;
+            foreach (var dependent in dependents[id])
+                if (--remaining[dependent] == 0) ready.Enqueue(dependent);
+        }
+        return reached != combinations.Count;
+    }
+
+    private static bool StationMatchesSource(SnapshotStation station, SnapshotMember member, SnapshotPoint start, SnapshotPoint end,
+        RawSnapshotModelRecord rawStation, RawSnapshotModelRecord rawMember, double lengthFactor)
+    {
+        var dx = end.XMm - start.XMm;
+        var dy = end.YMm - start.YMm;
+        var dz = end.ZMm - start.ZMm;
+        var length = double.Hypot(double.Hypot(dx, dy), dz);
+        var distance = station.ObjectStationMm;
+        var tolerance = 1e-8 * lengthFactor;
+        if (!double.IsFinite(length) || length <= 0 || distance < member.Offsets.EndIMm - tolerance || distance > length - member.Offsets.EndJMm + tolerance ||
+            Math.Abs(station.PhysicalStationMm - distance) > tolerance || Math.Abs(station.NormalizedRatio - distance / length) > 1e-12 ||
+            rawStation.RecordKind != RawModelRecordKind.Station)
+            return false;
+        if (!rawStation.Fields.ContainsKey("data"))
+            return station.ElementStationMm <= length + tolerance && RawTextMatches(rawStation, "object", station.ObjectId) &&
+                RawTextMatches(rawStation, "element", station.AnalysisElementId) && RawNumberMatches(rawStation, "object_station_m", distance, 1000) &&
+                RawNumberMatches(rawStation, "element_station_m", station.ElementStationMm, 1000);
+        if (!RawTextMatches(rawStation, "id", station.StationId) || !RawTextMatches(rawStation, "member_id", station.MemberId) ||
+            !RawTextMatches(rawStation, "object_id", station.ObjectId) || !RawTextMatches(rawStation, "element_id", station.AnalysisElementId) ||
+            !RawNumberMatches(rawStation, "object_station", distance, lengthFactor) ||
+            !RawNumberMatches(rawStation, "element_station", station.ElementStationMm, lengthFactor))
+            return false;
+        var elements = RawField(rawMember, "elements");
+        if (elements.ValueKind != JsonValueKind.Array) return false;
+        foreach (var element in elements.EnumerateArray())
+        {
+            if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty("id", out var id) ||
+                id.ValueKind != JsonValueKind.String || id.GetString() != station.AnalysisElementId)
+                continue;
+            var relativeI = RawNumber(element.TryGetProperty("relative_i", out var from) ? from : default);
+            var relativeJ = RawNumber(element.TryGetProperty("relative_j", out var to) ? to : default);
+            return relativeI >= 0 && relativeI < relativeJ && relativeJ <= 1 &&
+                RawTextMatches(rawMember, "id", member.MemberId) && RawTextMatches(rawMember, "object_id", member.ObjectId) &&
+                RawNumberMatches(rawMember, "end_offset_i", member.Offsets.EndIMm, lengthFactor) &&
+                RawNumberMatches(rawMember, "end_offset_j", member.Offsets.EndJMm, lengthFactor) &&
+                station.ElementStationMm <= (relativeJ - relativeI) * length + tolerance &&
+                Math.Abs(relativeI * length + station.ElementStationMm - distance) <= tolerance;
+        }
+        return false;
+    }
+
     private static EtabsSnapshotResult? ValidateMapping(AnalysisSnapshot snapshot)
     {
         if (!UniqueOrdered(snapshot.Axes, item => item.AxisId) || !UniqueOrdered(snapshot.Points, item => item.PointId) ||
@@ -410,7 +562,7 @@ public static partial class AnalysisSnapshotCodec
         if (!requiredKinds.SetEquals(snapshot.RawCapture.ModelRecords.Select(item => item.RecordKind)))
             return Blocked("ETABS.MAPPING_UNRESOLVED", "raw_capture.model_records", "The raw capture omits a required model-fact record kind.", "Capture metadata, geometry, assignments, cases, combinations, selections, and stations.");
 
-        var rawIds = snapshot.RawCapture.ModelRecords.Select(item => item.SourceRecordId).ToHashSet(StringComparer.Ordinal);
+        var rawById = snapshot.RawCapture.ModelRecords.ToDictionary(item => item.SourceRecordId, StringComparer.Ordinal);
         var evidence = new List<string> { snapshot.Metadata.EvidenceReference };
         evidence.AddRange(snapshot.Axes.Select(item => item.EvidenceReference));
         evidence.AddRange(snapshot.Points.Select(item => item.EvidenceReference));
@@ -421,9 +573,11 @@ public static partial class AnalysisSnapshotCodec
         evidence.AddRange(snapshot.LoadCombinations.Select(item => item.EvidenceReference));
         evidence.AddRange(snapshot.ResultSelections.Select(item => item.EvidenceReference));
         evidence.AddRange(snapshot.Stations.Select(item => item.EvidenceReference));
-        if (evidence.Any(item => !rawIds.Contains(item)))
+        if (evidence.Any(item => !rawById.ContainsKey(item)))
             return Blocked("ETABS.MAPPING_UNRESOLVED", "$", "A normalized model fact lacks a retained raw-record reference.", "Bind every normalized fact to one raw model record.");
 
+        var modelIssue = ValidateModelFacts(snapshot, rawById);
+        if (modelIssue is not null) return modelIssue;
         var axes = snapshot.Axes.ToDictionary(item => item.AxisId, StringComparer.Ordinal);
         var points = snapshot.Points.ToDictionary(item => item.PointId, StringComparer.Ordinal);
         var materials = snapshot.Materials.ToDictionary(item => item.MaterialId, StringComparer.Ordinal);
@@ -445,6 +599,8 @@ public static partial class AnalysisSnapshotCodec
                 combination.Factors.Any(factor => factor.SourceKind == SnapshotResultSelectionKind.LoadCase ? !cases.ContainsKey(factor.SourceId) : !combinations.ContainsKey(factor.SourceId)))
                 return Blocked("ETABS.MAPPING_UNRESOLVED", "load_combinations.factors", "A combination factor source or ordinal is unresolved.", "Retain ordered referenced cases or combinations.");
         }
+        if (HasCombinationCycle(snapshot.LoadCombinations))
+            return Blocked("ETABS.COMBINATION_CYCLE", "load_combinations.factors", "A combination depends on itself directly or through other combinations.", "Retain an acyclic combination dependency graph.");
         if (snapshot.ResultSelections.Any(selection => selection.Kind == SnapshotResultSelectionKind.LoadCase ? !cases.ContainsKey(selection.SourceId) : !combinations.ContainsKey(selection.SourceId)))
             return Blocked("ETABS.SELECTION_UNPROVED", "result_selections.source_id", "A selected case/combination definition is missing.", "Retain the selected result definition.");
         foreach (var station in snapshot.Stations)
@@ -475,6 +631,13 @@ public static partial class AnalysisSnapshotCodec
                 return Blocked("UNITS.INVALID", "action_rows", "A normalized force component does not match the one-time source conversion.", "Normalize all six signed components from the same raw row.");
             if (ActionRowId(row) != row.RowId)
                 return Blocked("SNAPSHOT.HASH_MISMATCH", "action_rows.row_id", "An action-row identity does not match its canonical payload.", "Regenerate the row identity from the complete same-row payload.");
+        }
+        foreach (var station in snapshot.Stations)
+        {
+            var member = members[station.MemberId];
+            if (!StationMatchesSource(station, member, points[member.PointIId], points[member.PointJId],
+                    rawById[station.EvidenceReference], rawById[member.EvidenceReference], conversion.LengthToMm))
+                return Blocked("STATION.UNRESOLVED", $"stations[{station.StationId}]", "The normalized station conflicts with the raw coordinates or member topology.", "Retain object and element stations, relative positions and end offsets from the member source.");
         }
         return null;
     }

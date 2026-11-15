@@ -12,6 +12,7 @@ import struct
 import zlib
 from collections.abc import Iterable, Mapping
 from enum import StrEnum
+from graphlib import CycleError, TopologicalSorter
 from typing import Any, Literal
 
 from pydantic import ValidationError
@@ -24,11 +25,17 @@ from structural_lib.core.analysis_snapshot import (
     EtabsImportRequestV1,
     EtabsSnapshotResultV1,
     RawModelRecordKind,
+    RawModelRecordV1,
     ResultSelectionKind,
     RowDisposition,
+    SnapshotAxisV1,
     SnapshotDiagnosticV1,
+    SnapshotMaterialV1,
+    SnapshotMemberV1,
     SnapshotOperationState,
+    SnapshotPointV1,
     SnapshotProvenanceV1,
+    SnapshotStationV1,
 )
 
 CANONICALIZATION_VERSION = "pf4-canonical-json-v1"
@@ -684,6 +691,217 @@ def _validate_units_axes(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
     return None
 
 
+def _raw_fields(record: RawModelRecordV1) -> dict[str, Any]:
+    data = record.fields.get("data", record.fields)
+    return data if isinstance(data, dict) else {}
+
+
+def _raw_number(value: Any) -> float:
+    if type(value) in (int, float):
+        try:
+            return float(value)
+        except OverflowError:
+            pass
+    return math.nan
+
+
+def _matches_raw(
+    fields: dict[str, Any],
+    identities: tuple[tuple[str, str], ...],
+    measurements: tuple[tuple[str, float | None, float], ...],
+) -> bool:
+    return all(fields.get(key) == expected for key, expected in identities) and all(
+        expected is not None
+        and math.isclose(
+            _raw_number(fields.get(key)) * factor, expected, rel_tol=1e-12, abs_tol=1e-9
+        )
+        for key, expected, factor in measurements
+    )
+
+
+def _validate_model_facts(
+    snapshot: AnalysisSnapshotV1, raw_by_id: dict[str, RawModelRecordV1]
+) -> EtabsSnapshotResultV1 | None:
+    conversion = snapshot.units.conversion_to_canonical
+    length = conversion.length_to_mm
+    sources = {item.material_id: item.source_name for item in snapshot.materials}
+    for kind, items in (
+        (RawModelRecordKind.POINT, snapshot.points),
+        (RawModelRecordKind.MATERIAL, snapshot.materials),
+        (RawModelRecordKind.SECTION, snapshot.sections),
+        (RawModelRecordKind.MEMBER, snapshot.axes),
+    ):
+        for item in items:
+            raw = raw_by_id[item.evidence_reference]
+            data = _raw_fields(raw)
+            structured = "data" in raw.fields
+            if raw.record_kind is not kind or not data:
+                matches = False
+            elif isinstance(item, SnapshotAxisV1):
+                matches = True
+            else:
+                identities: tuple[tuple[str, str], ...] = (("name", item.source_name),)
+                measurements: tuple[tuple[str, float | None, float], ...]
+                if isinstance(item, SnapshotPointV1):
+                    if structured:
+                        identities += (("id", item.point_id), ("story", item.story_id))
+                    measurements = tuple(
+                        (
+                            key if structured else f"{key}_m",
+                            value,
+                            length if structured else 1000.0,
+                        )
+                        for key, value in zip(
+                            ("x", "y", "z"),
+                            (item.x_mm, item.y_mm, item.z_mm),
+                            strict=True,
+                        )
+                    )
+                elif isinstance(item, SnapshotMaterialV1):
+                    if structured:
+                        identities += (("id", item.material_id),)
+                        measurements = (
+                            (
+                                "elastic_modulus",
+                                item.elastic_modulus_n_per_mm2,
+                                conversion.stress_to_n_per_mm2,
+                            ),
+                            ("poisson_ratio", item.poisson_ratio, 1.0),
+                            (
+                                "mass_density",
+                                item.mass_density_kg_per_m3,
+                                conversion.mass_density_to_kg_per_m3,
+                            ),
+                        )
+                    else:
+                        measurements = (
+                            (
+                                "elastic_modulus_mpa",
+                                item.elastic_modulus_n_per_mm2,
+                                1.0,
+                            ),
+                        )
+                elif structured:
+                    identities += (
+                        ("id", item.section_id),
+                        ("material_id", item.material_id),
+                    )
+                    measurements = (
+                        ("width", item.width_mm, length),
+                        ("depth", item.depth_mm, length),
+                        ("area", item.area_mm2, length**2),
+                        ("torsion", item.torsional_constant_mm4, length**4),
+                        ("inertia2", item.inertia_2_mm4, length**4),
+                        ("inertia3", item.inertia_3_mm4, length**4),
+                    )
+                else:
+                    identities += (("material", sources.get(item.material_id, "")),)
+                    measurements = (
+                        (
+                            ("width_m", item.width_mm, 1000.0),
+                            ("depth_m", item.depth_mm, 1000.0),
+                        )
+                        if item.width_mm is not None
+                        else ()
+                    )
+                matches = _matches_raw(data, identities, measurements)
+            if not matches:
+                return _blocked(
+                    "ETABS.MAPPING_UNRESOLVED",
+                    f"raw_capture.model_records[{item.evidence_reference}]",
+                    "A normalized model fact does not match the retained record kind or values.",
+                    "Retain the supported raw model fields and normalize each value from that record.",
+                )
+    return None
+
+
+def _station_matches_source(
+    station: SnapshotStationV1,
+    member: SnapshotMemberV1,
+    points: dict[str, SnapshotPointV1],
+    raw_station: RawModelRecordV1,
+    raw_member: RawModelRecordV1,
+    length_factor: float,
+) -> bool:
+    i, j = points[member.point_i_id], points[member.point_j_id]
+    length = math.dist((i.x_mm, i.y_mm, i.z_mm), (j.x_mm, j.y_mm, j.z_mm))
+    distance = station.object_station_mm
+    tolerance_mm = 1e-8 * length_factor
+    if (
+        not math.isfinite(length)
+        or length <= 0
+        or not member.offsets.end_i_mm - tolerance_mm
+        <= distance
+        <= length - member.offsets.end_j_mm + tolerance_mm
+        or not math.isclose(
+            station.physical_station_mm, distance, rel_tol=0, abs_tol=tolerance_mm
+        )
+        or not math.isclose(
+            station.normalized_ratio, distance / length, rel_tol=0, abs_tol=1e-12
+        )
+        or raw_station.record_kind is not RawModelRecordKind.STATION
+    ):
+        return False
+    data = _raw_fields(raw_station)
+    if "data" not in raw_station.fields:
+        return station.element_station_mm <= length + tolerance_mm and _matches_raw(
+            data,
+            (("object", station.object_id), ("element", station.analysis_element_id)),
+            (
+                ("object_station_m", distance, 1000.0),
+                ("element_station_m", station.element_station_mm, 1000.0),
+            ),
+        )
+
+    if not _matches_raw(
+        data,
+        (
+            ("id", station.station_id),
+            ("member_id", station.member_id),
+            ("object_id", station.object_id),
+            ("element_id", station.analysis_element_id),
+        ),
+        (
+            ("object_station", distance, length_factor),
+            ("element_station", station.element_station_mm, length_factor),
+        ),
+    ):
+        return False
+
+    member_fields = _raw_fields(raw_member)
+    elements = member_fields.get("elements")
+    if not isinstance(elements, list):
+        return False
+    element = next(
+        (
+            item
+            for item in elements
+            if isinstance(item, dict) and item.get("id") == station.analysis_element_id
+        ),
+        {},
+    )
+    start = _raw_number(element.get("relative_i"))
+    end = _raw_number(element.get("relative_j"))
+    return (
+        0 <= start < end <= 1
+        and _matches_raw(
+            member_fields,
+            (("id", member.member_id), ("object_id", member.object_id)),
+            (
+                ("end_offset_i", member.offsets.end_i_mm, length_factor),
+                ("end_offset_j", member.offsets.end_j_mm, length_factor),
+            ),
+        )
+        and station.element_station_mm <= (end - start) * length + tolerance_mm
+        and math.isclose(
+            start * length + station.element_station_mm,
+            distance,
+            rel_tol=0,
+            abs_tol=tolerance_mm,
+        )
+    )
+
+
 def _validate_mapping(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 | None:
     ordered = (
         (snapshot.axes, "axis_id"),
@@ -734,7 +952,7 @@ def _validate_mapping(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 | N
             "The raw capture omits a required model-fact record kind.",
             "Capture metadata, geometry, assignments, cases, combinations, selections, and stations.",
         )
-    raw_ids = {record.source_record_id for record in raw_model}
+    raw_by_id = {record.source_record_id: record for record in raw_model}
     evidence_values = [snapshot.metadata.evidence_reference]
     for values in (
         snapshot.axes,
@@ -748,13 +966,16 @@ def _validate_mapping(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 | N
         snapshot.stations,
     ):
         evidence_values.extend(item.evidence_reference for item in values)
-    if any(value not in raw_ids for value in evidence_values):
+    if any(value not in raw_by_id for value in evidence_values):
         return _blocked(
             "ETABS.MAPPING_UNRESOLVED",
             "$",
             "A normalized model fact lacks a retained raw-record reference.",
             "Bind every normalized fact to one raw model record.",
         )
+    model_issue = _validate_model_facts(snapshot, raw_by_id)
+    if model_issue is not None:
+        return model_issue
     axes = {item.axis_id: item for item in snapshot.axes}
     points = {item.point_id: item for item in snapshot.points}
     materials = {item.material_id: item for item in snapshot.materials}
@@ -800,6 +1021,23 @@ def _validate_mapping(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 | N
                     "A combination factor source is unresolved.",
                     "Retain every referenced case or combination.",
                 )
+    dependencies = {
+        combo.combination_id: tuple(
+            factor.source_id
+            for factor in combo.factors
+            if factor.source_kind is ResultSelectionKind.LOAD_COMBINATION
+        )
+        for combo in snapshot.load_combinations
+    }
+    try:
+        TopologicalSorter(dependencies).prepare()
+    except CycleError:
+        return _blocked(
+            "ETABS.COMBINATION_CYCLE",
+            "load_combinations.factors",
+            "A combination depends on itself directly or through other combinations.",
+            "Retain an acyclic combination dependency graph.",
+        )
     for selection in snapshot.result_selections:
         source = (
             cases if selection.kind is ResultSelectionKind.LOAD_CASE else combinations
@@ -938,6 +1176,22 @@ def _validate_mapping(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 | N
                 "An action-row identity does not match its canonical payload.",
                 "Regenerate the row identity from the complete same-row payload.",
             )
+    for station in snapshot.stations:
+        member = members[station.member_id]
+        if not _station_matches_source(
+            station,
+            member,
+            points,
+            raw_by_id[station.evidence_reference],
+            raw_by_id[member.evidence_reference],
+            conversion.length_to_mm,
+        ):
+            return _blocked(
+                "STATION.UNRESOLVED",
+                f"stations[{station.station_id}]",
+                "The normalized station conflicts with the raw coordinates or member topology.",
+                "Retain object and element stations, relative positions and end offsets from the member source.",
+            )
     return None
 
 
@@ -952,11 +1206,15 @@ def _validate_row_ledger(snapshot: AnalysisSnapshotV1) -> EtabsSnapshotResultV1 
             "At least one required source row is blocked.",
             "Resolve or explicitly approve the row before creating a complete snapshot.",
         )
-    source_ids = {
+    source_ids = [
         item.source_record_id for item in snapshot.raw_capture.model_records
-    } | {item.source_row_id for item in snapshot.raw_capture.force_rows}
+    ] + [item.source_row_id for item in snapshot.raw_capture.force_rows]
     ledger_ids = [item.source_record_id for item in ledger.rows]
-    if len(ledger_ids) != len(set(ledger_ids)) or set(ledger_ids) != source_ids:
+    if (
+        len(source_ids) != len(set(source_ids))
+        or len(ledger_ids) != len(set(ledger_ids))
+        or set(ledger_ids) != set(source_ids)
+    ):
         return _blocked(
             "ETABS.ROW_ACCOUNTING",
             "row_ledger.rows",

@@ -155,3 +155,16 @@ version, repeat a structural analysis, mutate a model, validate the vendor's
 analysis method, optimize a beam, approve engineering, import a workbook, or
 issue a report. Those responsibilities remain with later explicitly gated
 packets and existing design/report operations.
+
+
+### Portable model and station evidence
+
+The readers check the retained record kind and the normalized point,
+material and section values against the source fields, using the declared
+conversion for structured records. The older flattened records supply
+coordinates in metres, modulus in MPa and section dimensions in metres.
+Where those records omit a property, the reader checks the recorded subset.
+Station distance and ratio must agree with the member reference line.
+The structured capture also binds station coordinates to its raw element
+extent and end offsets. Combination dependencies must be acyclic. Raw model
+and force IDs share one disposition namespace and each ID must be unique.

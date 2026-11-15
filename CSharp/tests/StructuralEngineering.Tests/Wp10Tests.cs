@@ -126,6 +126,66 @@ public sealed class Wp10Tests
         Assert.Equal("UNITS.INVALID", Assert.Single(result.Diagnostics).Code);
     }
 
+    [Theory]
+    [InlineData("point", "ETABS.MAPPING_UNRESOLVED")]
+    [InlineData("material", "ETABS.MAPPING_UNRESOLVED")]
+    [InlineData("section", "ETABS.MAPPING_UNRESOLVED")]
+    [InlineData("axis", "ETABS.MAPPING_UNRESOLVED")]
+    [InlineData("station", "STATION.UNRESOLVED")]
+    [InlineData("ratio", "STATION.UNRESOLVED")]
+    [InlineData("cycle", "ETABS.COMBINATION_CYCLE")]
+    [InlineData("source-id", "ETABS.ROW_ACCOUNTING")]
+    public void PortableReaderBlocksConflictingSourceEvidence(string change, string code)
+    {
+        var snapshot = AnalysisSnapshotCodec.ParseAndValidate(Fixture["valid_snapshot"]!.ToJsonString()).Snapshot!;
+        var invalid = change switch
+        {
+            "point" => snapshot with { Points = [snapshot.Points[0] with { XMm = 700 }, .. snapshot.Points.Skip(1)] },
+            "material" => snapshot with { Materials = [snapshot.Materials[0] with { ElasticModulusNPerMm2 = 12345 }] },
+            "section" => snapshot with { Sections = [snapshot.Sections[0] with { WidthMm = 950 }] },
+            "axis" => snapshot with { Axes = [snapshot.Axes[0] with { EvidenceReference = snapshot.Materials[0].EvidenceReference }] },
+            "station" => snapshot with { Stations = [snapshot.Stations[0] with { PhysicalStationMm = 7000 }] },
+            "ratio" => snapshot with { Stations = [snapshot.Stations[0] with { NormalizedRatio = 0.9 }] },
+            "cycle" => snapshot with
+            {
+                LoadCombinations = [snapshot.LoadCombinations[0] with
+                {
+                    Factors = [new(0, SnapshotResultSelectionKind.LoadCombination, snapshot.LoadCombinations[0].CombinationId, 1)]
+                }]
+            },
+            "source-id" => CollidingSourceId(snapshot),
+            _ => throw new ArgumentOutOfRangeException(nameof(change)),
+        };
+        var digest = AnalysisSnapshotCodec.SnapshotSha256(invalid);
+        invalid = invalid with
+        {
+            SnapshotSha256 = digest,
+            SnapshotId = $"analysis_snapshot_id:{AnalysisSnapshotCodec.CanonicalizationVersion}:{digest}",
+        };
+
+        var result = AnalysisSnapshotCodec.ParseAndValidate(AnalysisSnapshotCodec.CanonicalJson(invalid));
+        Assert.Null(result.Snapshot);
+        Assert.Equal(code, Assert.Single(result.Diagnostics).Code);
+    }
+
+    private static AnalysisSnapshot CollidingSourceId(AnalysisSnapshot snapshot)
+    {
+        var row = snapshot.RawCapture.ForceRows[0];
+        return snapshot with
+        {
+            RawCapture = snapshot.RawCapture with
+            {
+                ForceRows = [row with { SourceRowId = snapshot.Metadata.EvidenceReference }, .. snapshot.RawCapture.ForceRows.Skip(1)],
+            },
+            RowLedger = snapshot.RowLedger with
+            {
+                Rows = snapshot.RowLedger.Rows.Where(item => item.SourceRecordId != row.SourceRowId).ToArray(),
+                SourceRowCount = snapshot.RowLedger.SourceRowCount - 1,
+                AcceptedCount = snapshot.RowLedger.AcceptedCount - 1,
+            },
+        };
+    }
+
     [Fact]
     public void CompressedTransportRetainsIdentityAndRejectsMalformedEvidence()
     {
