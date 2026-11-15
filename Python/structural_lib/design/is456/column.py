@@ -286,7 +286,9 @@ def check_column_member_detailing(
 
     Limitations
     -----------
-    Ordinary tied rectangles. Mixed and braced slender profiles use continuous bars. Eight-bar physical laps admit one opposing side-midpoint or C1/C2 group.
+    Ordinary tied rectangles. The mixed profile admits one Ø16 side contact
+    group in the twelve-bar cage. The braced slender profile uses continuous
+    bars. The eight-bar profile admits one opposing side-midpoint or C1/C2 group.
 
     Provenance
     ----------
@@ -1657,7 +1659,8 @@ def load_positioned_column_member_detailing(
 
     Limitations
     -----------
-    Ordinary short braced rectangles with continuous straight mixed bars.
+    Ordinary short braced rectangles with continuous straight mixed bars or
+    one opposed Ø16 contact group in the admitted twelve-bar cage.
 
     Provenance
     ----------

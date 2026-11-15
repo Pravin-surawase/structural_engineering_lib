@@ -13,7 +13,10 @@ from structural_lib.codes.is456.column.member_detailing import (
     straight_column_bond_lengths,
 )
 from structural_lib.codes.is456.column.positioned import positioned_member_strength
-from structural_lib.codes.is456.column.positioned_biaxial import PositionedColumnBar
+from structural_lib.codes.is456.column.positioned_biaxial import (
+    PositionedColumnBar,
+    positioned_biaxial_strength,
+)
 from structural_lib.core.result_contract import (
     EngineeringStatus,
     FreshnessStatus,
@@ -28,6 +31,10 @@ from structural_lib.services.canonical_family import (
 from structural_lib.services.column_contact_splice import (
     ContactSplice,
     check_contact_splice,
+)
+from structural_lib.services.column_mixed_contact_splice import (
+    _check_mixed_contact_splice,
+    _mixed_splice_link,
 )
 from structural_lib.services.column_positioned_member import (
     check_positioned_rectangular_member,
@@ -160,16 +167,16 @@ def _hoop_grid(
 
 
 def _check_laps(
-    request: ColumnMemberDetailingInputV1,
+    request: ColumnMemberDetailingInputV1 | PositionedColumnMemberDetailingInputV1,
     zones: list[ColumnTieZoneV1],
     bar_ids: set[str],
     required_mm: float,
+    diameter: float,
     record: _Record,
 ) -> list[dict[str, Any]]:
     if not request.laps:
         return []
     window = request.approved_lap_zone
-    diameter = request.reinforcement.longitudinal_bar_diameter_mm
     laps = sorted(request.laps, key=lambda row: (row.start_mm + row.end_mm, row.lap_id))
     seen: set[str] = set()
     details = []
@@ -362,19 +369,27 @@ def _check_actions(
             layouts = {}
             if station <= splice.end_mm:
                 layouts["lower"] = strength
+            mixed_splice = isinstance(splice.upper, tuple)
             if station >= splice.start_mm:
-                layouts["upper"] = asdict(
-                    positioned_member_strength(
-                        b_mm=geometry.b_mm,
-                        D_mm=geometry.D_mm,
-                        unsupported_length_mm=geometry.unsupported_length_mm,
-                        pu_kn=action.pu_kn,
-                        mx_knm=action.mx_knm,
-                        my_knm=action.my_knm,
-                        fck_nmm2=materials.fck_nmm2,
-                        fy_nmm2=materials.fy_nmm2,
-                        cage=splice.upper,
-                    )
+                section_inputs = {
+                    "b_mm": geometry.b_mm,
+                    "D_mm": geometry.D_mm,
+                    "unsupported_length_mm": geometry.unsupported_length_mm,
+                    "pu_kn": action.pu_kn,
+                    "mx_knm": action.mx_knm,
+                    "my_knm": action.my_knm,
+                    "fck_nmm2": materials.fck_nmm2,
+                    "fy_nmm2": materials.fy_nmm2,
+                }
+                upper_strength = (
+                    positioned_biaxial_strength(**section_inputs, bars=splice.upper)
+                    if isinstance(splice.upper, tuple)
+                    else positioned_member_strength(**section_inputs, cage=splice.upper)
+                )
+                layouts["upper"] = (
+                    {"governing_ratio": None}
+                    if upper_strength is None
+                    else asdict(upper_strength)
                 )
             ratios = [layout["governing_ratio"] for layout in layouts.values()]
             utilization = max(
@@ -394,6 +409,16 @@ def _check_actions(
                 "utilization": utilization,
                 "splice_layouts": layouts,
             }
+            if mixed_splice:
+                summary["section"]["governing_layout"] = next(
+                    (
+                        label
+                        for label, layout in layouts.items()
+                        if utilization is not None
+                        and layout["governing_ratio"] == utilization
+                    ),
+                    None,
+                )
             record(
                 "COLUMN.LAP_SECTION_STRENGTH",
                 status,
@@ -898,7 +923,35 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             required_by_diameter_mm={dia: value[0] for dia, value in bond.items()},
         )
     splice = None
-    if isinstance(
+    positioned_seat = (
+        _mixed_splice_link(request, bars_positioned)
+        if isinstance(request, PositionedColumnMemberDetailingInputV1)
+        else None
+    )
+    if positioned_seat is not None and isinstance(
+        request, PositionedColumnMemberDetailingInputV1
+    ):
+        lap_required = bond[16][1]
+        contact_required = max(1.1 * lap_required, 24 * 16)
+        laps = _check_laps(
+            request,
+            zones,
+            {bar["bar_id"] for bar in bars},
+            contact_required,
+            16,
+            record,
+        )
+        splice = _check_mixed_contact_splice(
+            request,
+            bars_positioned,
+            positioned_seat,
+            transverse,
+            contact_required,
+            record,
+        )
+        if splice is not None:
+            transverse = splice.transverse
+    elif isinstance(
         request,
         (PositionedColumnMemberDetailingInputV1, SlenderColumnMemberDetailingInputV1),
     ):
@@ -920,7 +973,12 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             )
     else:
         laps = _check_laps(
-            request, zones, {bar["bar_id"] for bar in bars}, lap_required, record
+            request,
+            zones,
+            {bar["bar_id"] for bar in bars},
+            lap_required,
+            request.reinforcement.longitudinal_bar_diameter_mm,
+            record,
         )
         splice = check_contact_splice(
             request, tied_cage, transverse, end_required, record
@@ -943,7 +1001,9 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
     status = (
         _FAIL
         if _FAIL.value in statuses
-        else _HOLD if _HOLD.value in statuses else _PASS
+        else _HOLD
+        if _HOLD.value in statuses
+        else _PASS
     )
     if status is not _PASS:
         schedule = None
@@ -951,12 +1011,31 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
     governing = max(
         shear_rows, key=lambda row: row["shear"]["utilization"], default=None
     )
+    governing_section = (
+        max(
+            (
+                row
+                for row in actions
+                if row["section"] is not None
+                and row["section"]["utilization"] is not None
+            ),
+            key=lambda row: row["section"]["utilization"],
+            default=None,
+        )
+        if splice is not None and isinstance(splice.upper, tuple)
+        else None
+    )
     result = canonical_family_result(
         request,
         {
             "checks": checks,
             "actions": actions,
             "governing_shear": governing,
+            **(
+                {"governing_section": governing_section}
+                if governing_section is not None
+                else {}
+            ),
             **(
                 {"slender_member": slender}
                 if isinstance(request, SlenderColumnMemberDetailingInputV1)
@@ -979,7 +1058,7 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             "Checks supplied stations and combinations on the declared tied rectangular member.",
             "Slender detailing uses supplied second-order actions with one principal shear plane per checked row.",
             "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
-            "Straight end projections require separately checked adjoining concrete. Physical contact splice supports one admitted six- or eight-bar side-midpoint group or one eight-bar C1/C2 group with straight bars.",
+            "Straight end projections require separately checked adjoining concrete. The physical contact splice profiles cover one straight side group on admitted six-, eight- or mixed twelve-bar cages or one eight-bar C1/C2 group.",
             "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",
         ),
         assumptions=(

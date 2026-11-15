@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass, replace
 from itertools import combinations, pairwise
 from math import dist, isclose, pi
@@ -10,10 +10,12 @@ from typing import Any
 
 from structural_lib.codes.is456.column.contact_splice import ReturnLink, return_link
 from structural_lib.codes.is456.column.four_corner import FourCornerBar, FourCornerCage
+from structural_lib.codes.is456.column.positioned_biaxial import PositionedColumnBar
 from structural_lib.core.geometry import circle_inside_rounded_rectangle
 from structural_lib.core.result_contract import EngineeringStatus
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
+    PositionedColumnMemberDetailingInputV1,
 )
 
 _SOURCE = "IS 456:2000 Cl. 26.1.1, 26.2.1.2, 26.2.2.4(b), 26.2.5 and 26.5.3"
@@ -33,7 +35,7 @@ class ContactSplice:
     start_mm: float
     end_mm: float
     required_lap_mm: float
-    upper: FourCornerCage
+    upper: FourCornerCage | tuple[PositionedColumnBar, ...]
     pieces: list[dict[str, Any]]
     transverse: list[dict[str, Any]]
     sections: dict[str, Any]
@@ -53,13 +55,16 @@ class ContactSplice:
         return {key: value for key, value in vars(self).items() if key != "upper"}
 
 
-def _point(bar: FourCornerBar) -> tuple[float, float]:
+_Bar = FourCornerBar | PositionedColumnBar
+
+
+def _point(bar: _Bar) -> tuple[float, float]:
     return bar.x_from_left_mm, bar.y_from_top_mm
 
 
 def _link_fit(
     link: ReturnLink,
-    bars: tuple[FourCornerBar, ...],
+    bars: tuple[_Bar, ...],
     width: float,
     depth: float,
     cover: float,
@@ -82,6 +87,88 @@ def _link_fit(
         inside and link.tail_gap_mm >= diameter - _EPS and clearance >= -_EPS,
         clearance,
     )
+
+
+def _lap_support(
+    levels: list[float], start: float, end: float
+) -> tuple[list[float], list[float], list[float], list[float]]:
+    before = [z for z in levels if z < start]
+    within = [z for z in levels if start < z < end]
+    after = [z for z in levels if z > end]
+    distances = (
+        [start - before[-1], within[0] - start, end - within[-1], after[0] - end]
+        if before and within and after
+        else []
+    )
+    return before, within, after, distances
+
+
+def _lap_end_support_ok(
+    levels: list[float],
+    before: list[float],
+    within: list[float],
+    after: list[float],
+    distances: list[float],
+    link_diameter: float,
+    lap_diameter: float,
+) -> bool:
+    return (
+        len(within) >= 2
+        and len(before) + len(within) + len(after) == len(levels)
+        and bool(distances)
+        and min(distances) >= link_diameter / 2 - _EPS
+        and max(distances) <= 4 * lap_diameter + _EPS
+    )
+
+
+def _gross_lap_stresses(
+    request: ColumnMemberDetailingInputV1 | PositionedColumnMemberDetailingInputV1,
+    start: float,
+    end: float,
+) -> list[float]:
+    g = request.geometry
+    return [
+        1000 * row.pu_kn / (g.b_mm * g.D_mm)
+        - 6e6 * abs(row.mx_knm) / (g.b_mm * g.D_mm**2)
+        - 6e6 * abs(row.my_knm) / (g.D_mm * g.b_mm**2)
+        for row in request.actions
+        if start <= row.check_station_mm <= end
+    ]
+
+
+def _split_pieces(
+    bars: tuple[_Bar, ...],
+    mates: Mapping[str, _Bar],
+    start: float,
+    end: float,
+    z_start: float,
+    z_end: float,
+) -> list[dict[str, Any]]:
+    pieces: list[dict[str, Any]] = []
+    for bar in bars:
+        mark = bar.bar_id
+        segments: tuple[tuple[str, _Bar, float, float], ...]
+        if mark in mates:
+            segments = (
+                (f"{mark}-L", bar, z_start, end),
+                (f"{mark}-U", mates[mark], start, z_end),
+            )
+        else:
+            segments = ((mark, bar, z_start, z_end),)
+        pieces.extend(
+            {
+                "bar_id": piece_mark,
+                "parent_bar_id": mark,
+                "diameter_mm": piece.diameter_mm,
+                "x_mm": piece.x_from_left_mm,
+                "y_mm": piece.y_from_top_mm,
+                "start_mm": low,
+                "end_mm": high,
+                "cut_length_mm": high - low,
+            }
+            for piece_mark, piece, low, high in segments
+        )
+    return pieces
 
 
 def check_contact_splice(
@@ -306,21 +393,10 @@ def check_contact_splice(
             "The supplemental and overlap links need unique fabrication marks.",
         )
         return None
-    before = [s for s in x_levels if s < start]
-    within = [s for s in x_levels if start < s < end]
-    after = [s for s in x_levels if s > end]
-    distances = (
-        [start - before[-1], within[0] - start, end - within[-1], after[0] - end]
-        if before and within and after
-        else []
-    )
+    before, within, after, distances = _lap_support(x_levels, start, end)
     report(
         "LAP_END_RESTRAINT",
-        len(within) >= 2
-        and len(before) + len(within) + len(after) == len(x_levels)
-        and bool(distances)
-        and min(distances) >= dt / 2 - _EPS
-        and max(distances) <= 4 * dia + _EPS,
+        _lap_end_support_ok(x_levels, before, within, after, distances, dt, dia),
         "Each lap end needs an adjacent inner and outer link within four bar diameters, clear of the bar end.",
         distances_mm=distances,
         limit_mm=4 * dia,
@@ -401,13 +477,7 @@ def check_contact_splice(
 
     # Compression remains a declared interval basis. The supplied in-lap
     # rows must also stay strictly inside the gross-section elastic kern.
-    actions = [row for row in request.actions if start <= row.check_station_mm <= end]
-    stresses = [
-        1000 * row.pu_kn / (g.b_mm * g.D_mm)
-        - 6e6 * abs(row.mx_knm) / (g.b_mm * g.D_mm**2)
-        - 6e6 * abs(row.my_knm) / (g.D_mm * g.b_mm**2)
-        for row in actions
-    ]
+    stresses = _gross_lap_stresses(request, start, end)
     if not assembly.compression_reference or not stresses or min(stresses) <= 0:
         record(
             "COLUMN.LAP_COMPRESSION_BASIS",
@@ -418,31 +488,14 @@ def check_contact_splice(
             minimum_gross_stress_nmm2=min(stresses, default=None),
         )
 
-    pieces: list[dict[str, Any]] = []
-    z_start = -request.end_detail.start_straight_mm
-    z_end = g.unsupported_length_mm + request.end_detail.end_straight_mm
-    for bar in cage.bars:
-        segments: tuple[tuple[str, FourCornerBar, float, float], ...]
-        if bar.bar_id in mates:
-            segments = (
-                (f"{bar.bar_id}-L", bar, z_start, end),
-                (f"{bar.bar_id}-U", mates[bar.bar_id], start, z_end),
-            )
-        else:
-            segments = ((bar.bar_id, bar, z_start, z_end),)
-        pieces.extend(
-            {
-                "bar_id": mark,
-                "parent_bar_id": bar.bar_id,
-                "diameter_mm": dia,
-                "x_mm": piece.x_from_left_mm,
-                "y_mm": piece.y_from_top_mm,
-                "start_mm": low,
-                "end_mm": high,
-                "cut_length_mm": high - low,
-            }
-            for mark, piece, low, high in segments
-        )
+    pieces = _split_pieces(
+        cage.bars,
+        mates,
+        start,
+        end,
+        -request.end_detail.start_straight_mm,
+        g.unsupported_length_mm + request.end_detail.end_straight_mm,
+    )
     resolved = [transverse[0]]
     placements = [
         (support_mark, "lower", [*before, *after]),
