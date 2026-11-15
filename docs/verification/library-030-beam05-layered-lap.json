@@ -1,0 +1,1441 @@
+{
+  "fixture_version": "library-030-beam05-layered-lap/v1",
+  "sources": [
+    "Published 300 x 600 mm BEAM05 rectangle, support and link geometry, materials and 24/32 kN/m two-span actions.",
+    "IS 456:2000 cl. 26.2.1, 26.2.5, 26.3.2 and Table 19. The passing cage omits B2-3 so both remaining inner bars stay in line with uninterrupted outer bars.",
+    "Straight cut takeoff and tangent-filleted link centreline with a 7850 kg/m\u00b3 steel density."
+  ],
+  "cases": {
+    "layered_lap": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "layered_lap",
+          "member_id": "B-RECT_MULTILAYER"
+        },
+        "member": {
+          "member_id": "B-RECT_MULTILAYER",
+          "analysis_revision": "B-RECT_MULTILAYER-A1",
+          "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+          "reinforcement_revision": "B-RECT_MULTILAYER-R1-LAP-layered_lap",
+          "source_reference": "BEAM05 two-span three-moment reference with no equilibrium torsion",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "AF",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S1",
+              "x_mm": 1500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "BF1",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B1",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B2",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "BF2",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S2",
+              "x_mm": 6500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CF",
+              "x_mm": 7500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "LAP-START",
+              "x_mm": 1550,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "LAP-MID",
+              "x_mm": 2200,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "LAP-END",
+              "x_mm": 2850,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "LAP-START",
+                "LAP-MID",
+                "LAP-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "LAP-START",
+                "LAP-MID",
+                "LAP-END"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "U1:A",
+              "combination_id": "U1",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:AF",
+              "combination_id": "U1",
+              "station_id": "AF",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S1",
+              "combination_id": "U1",
+              "station_id": "S1",
+              "mu_knm": 27.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF1",
+              "combination_id": "U1",
+              "station_id": "BF1",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": -56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B1",
+              "combination_id": "U1",
+              "station_id": "B1",
+              "mu_knm": -48.0,
+              "vu_kn": -60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B2",
+              "combination_id": "U1",
+              "station_id": "B2",
+              "mu_knm": -48.0,
+              "vu_kn": 60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF2",
+              "combination_id": "U1",
+              "station_id": "BF2",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": 56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S2",
+              "combination_id": "U1",
+              "station_id": "S2",
+              "mu_knm": 27.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CF",
+              "combination_id": "U1",
+              "station_id": "CF",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:C",
+              "combination_id": "U1",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:A",
+              "combination_id": "U2",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:AF",
+              "combination_id": "U2",
+              "station_id": "AF",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S1",
+              "combination_id": "U2",
+              "station_id": "S1",
+              "mu_knm": 36.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF1",
+              "combination_id": "U2",
+              "station_id": "BF1",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": -75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B1",
+              "combination_id": "U2",
+              "station_id": "B1",
+              "mu_knm": -64.0,
+              "vu_kn": -80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B2",
+              "combination_id": "U2",
+              "station_id": "B2",
+              "mu_knm": -64.0,
+              "vu_kn": 80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF2",
+              "combination_id": "U2",
+              "station_id": "BF2",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": 75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S2",
+              "combination_id": "U2",
+              "station_id": "S2",
+              "mu_knm": 36.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CF",
+              "combination_id": "U2",
+              "station_id": "CF",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:C",
+              "combination_id": "U2",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-START",
+              "combination_id": "U1",
+              "station_id": "LAP-START",
+              "mu_knm": 26.97,
+              "vu_kn": -1.2000000000000028,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-MID",
+              "combination_id": "U1",
+              "station_id": "LAP-MID",
+              "mu_knm": 21.11999999999999,
+              "vu_kn": -16.800000000000004,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-END",
+              "combination_id": "U1",
+              "station_id": "LAP-END",
+              "mu_knm": 5.13000000000001,
+              "vu_kn": -32.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-START",
+              "combination_id": "U2",
+              "station_id": "LAP-START",
+              "mu_knm": 35.96,
+              "vu_kn": -1.6000000000000014,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-MID",
+              "combination_id": "U2",
+              "station_id": "LAP-MID",
+              "mu_knm": 28.159999999999997,
+              "vu_kn": -22.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-END",
+              "combination_id": "U2",
+              "station_id": "LAP-END",
+              "mu_knm": 6.840000000000003,
+              "vu_kn": -43.2,
+              "tu_knm": 0
+            }
+          ],
+          "schema_version": "is456-layered-continuous-beam-check/v1",
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 1000
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 8460,
+            "source_reference": "Continuous straight specimen bars with covered ends"
+          }
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8000,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary web link with separate hook planes"
+        },
+        "stock_length_mm": 12000,
+        "lap": {
+          "bar_id": "B1-3",
+          "partner_bar_id": "B1-3-partner",
+          "partner_x_from_left_mm": 197.5,
+          "start_station_id": "LAP-START",
+          "middle_station_id": "LAP-MID",
+          "end_station_id": "LAP-END",
+          "placement_reference": "Straight separated equal bars in layer 1 with uniform closed links"
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "overlap_mm": 1300,
+        "required_lap_mm": 906.2499999999999,
+        "pair_clear_mm": 27.5,
+        "minimum_clear_mm": 27.5,
+        "required_clear_mm": 25,
+        "vertical_clear_mm": 50,
+        "overlap_rows": {
+          "U1:LAP-START": {
+            "moment_knm": 26.97,
+            "shear_kn": -1.2000000000000028,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U1:LAP-MID": {
+            "moment_knm": 21.11999999999999,
+            "shear_kn": -16.800000000000004,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U1:LAP-END": {
+            "moment_knm": 5.13000000000001,
+            "shear_kn": -32.400000000000006,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U2:LAP-START": {
+            "moment_knm": 35.96,
+            "shear_kn": -1.6000000000000014,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U2:LAP-MID": {
+            "moment_knm": 28.159999999999997,
+            "shear_kn": -22.400000000000006,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U2:LAP-END": {
+            "moment_knm": 6.840000000000003,
+            "shear_kn": -43.2,
+            "half_capacity_knm": 148.4261624301728
+          }
+        },
+        "cut_original_mm": 3310,
+        "cut_partner_mm": 6910,
+        "full_cut_mm": 8920,
+        "full_bar_count": 6,
+        "link_count": 41,
+        "link_cut_mm": 1698.1711601071436,
+        "mass_kg": 184.66533638275996
+      }
+    },
+    "layered_lap_congestion": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "layered_lap_congestion",
+          "member_id": "B-RECT_MULTILAYER"
+        },
+        "member": {
+          "member_id": "B-RECT_MULTILAYER",
+          "analysis_revision": "B-RECT_MULTILAYER-A1",
+          "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+          "reinforcement_revision": "B-RECT_MULTILAYER-R1-LAP-layered_lap_congestion",
+          "source_reference": "BEAM05 two-span three-moment reference with no equilibrium torsion",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "AF",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S1",
+              "x_mm": 1500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "BF1",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B1",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B2",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "BF2",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S2",
+              "x_mm": 6500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CF",
+              "x_mm": 7500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "LAP-START",
+              "x_mm": 1550,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "LAP-MID",
+              "x_mm": 2200,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "LAP-END",
+              "x_mm": 2850,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "LAP-START",
+                "LAP-MID",
+                "LAP-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "LAP-START",
+                "LAP-MID",
+                "LAP-END"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "U1:A",
+              "combination_id": "U1",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:AF",
+              "combination_id": "U1",
+              "station_id": "AF",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S1",
+              "combination_id": "U1",
+              "station_id": "S1",
+              "mu_knm": 27.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF1",
+              "combination_id": "U1",
+              "station_id": "BF1",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": -56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B1",
+              "combination_id": "U1",
+              "station_id": "B1",
+              "mu_knm": -48.0,
+              "vu_kn": -60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B2",
+              "combination_id": "U1",
+              "station_id": "B2",
+              "mu_knm": -48.0,
+              "vu_kn": 60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF2",
+              "combination_id": "U1",
+              "station_id": "BF2",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": 56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S2",
+              "combination_id": "U1",
+              "station_id": "S2",
+              "mu_knm": 27.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CF",
+              "combination_id": "U1",
+              "station_id": "CF",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:C",
+              "combination_id": "U1",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:A",
+              "combination_id": "U2",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:AF",
+              "combination_id": "U2",
+              "station_id": "AF",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S1",
+              "combination_id": "U2",
+              "station_id": "S1",
+              "mu_knm": 36.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF1",
+              "combination_id": "U2",
+              "station_id": "BF1",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": -75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B1",
+              "combination_id": "U2",
+              "station_id": "B1",
+              "mu_knm": -64.0,
+              "vu_kn": -80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B2",
+              "combination_id": "U2",
+              "station_id": "B2",
+              "mu_knm": -64.0,
+              "vu_kn": 80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF2",
+              "combination_id": "U2",
+              "station_id": "BF2",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": 75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S2",
+              "combination_id": "U2",
+              "station_id": "S2",
+              "mu_knm": 36.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CF",
+              "combination_id": "U2",
+              "station_id": "CF",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:C",
+              "combination_id": "U2",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-START",
+              "combination_id": "U1",
+              "station_id": "LAP-START",
+              "mu_knm": 26.97,
+              "vu_kn": -1.2000000000000028,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-MID",
+              "combination_id": "U1",
+              "station_id": "LAP-MID",
+              "mu_knm": 21.11999999999999,
+              "vu_kn": -16.800000000000004,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-END",
+              "combination_id": "U1",
+              "station_id": "LAP-END",
+              "mu_knm": 5.13000000000001,
+              "vu_kn": -32.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-START",
+              "combination_id": "U2",
+              "station_id": "LAP-START",
+              "mu_knm": 35.96,
+              "vu_kn": -1.6000000000000014,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-MID",
+              "combination_id": "U2",
+              "station_id": "LAP-MID",
+              "mu_knm": 28.159999999999997,
+              "vu_kn": -22.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-END",
+              "combination_id": "U2",
+              "station_id": "LAP-END",
+              "mu_knm": 6.840000000000003,
+              "vu_kn": -43.2,
+              "tu_knm": 0
+            }
+          ],
+          "schema_version": "is456-layered-continuous-beam-check/v1",
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 1000
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 8460,
+            "source_reference": "Continuous straight specimen bars with covered ends"
+          }
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8000,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary web link with separate hook planes"
+        },
+        "stock_length_mm": 12000,
+        "lap": {
+          "bar_id": "B1-3",
+          "partner_bar_id": "B1-3-partner",
+          "partner_x_from_left_mm": 215,
+          "start_station_id": "LAP-START",
+          "middle_station_id": "LAP-MID",
+          "end_station_id": "LAP-END",
+          "placement_reference": "Straight separated equal bars in layer 1 with uniform closed links"
+        }
+      },
+      "expected": {
+        "status": "FAIL",
+        "overlap_mm": 1300,
+        "required_lap_mm": 906.2499999999999,
+        "pair_clear_mm": 10,
+        "minimum_clear_mm": 10,
+        "required_clear_mm": 25,
+        "vertical_clear_mm": 50,
+        "overlap_rows": {
+          "U1:LAP-START": {
+            "moment_knm": 26.97,
+            "shear_kn": -1.2000000000000028,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U1:LAP-MID": {
+            "moment_knm": 21.11999999999999,
+            "shear_kn": -16.800000000000004,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U1:LAP-END": {
+            "moment_knm": 5.13000000000001,
+            "shear_kn": -32.400000000000006,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U2:LAP-START": {
+            "moment_knm": 35.96,
+            "shear_kn": -1.6000000000000014,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U2:LAP-MID": {
+            "moment_knm": 28.159999999999997,
+            "shear_kn": -22.400000000000006,
+            "half_capacity_knm": 148.4261624301728
+          },
+          "U2:LAP-END": {
+            "moment_knm": 6.840000000000003,
+            "shear_kn": -43.2,
+            "half_capacity_knm": 148.4261624301728
+          }
+        },
+        "cut_original_mm": 3310,
+        "cut_partner_mm": 6910,
+        "full_cut_mm": 8920,
+        "full_bar_count": 6,
+        "link_count": 41,
+        "link_cut_mm": 1698.1711601071436,
+        "mass_kg": 184.66533638275996
+      }
+    },
+    "published_cage_misalignment": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "published_cage_misalignment",
+          "member_id": "B-RECT_MULTILAYER"
+        },
+        "member": {
+          "member_id": "B-RECT_MULTILAYER",
+          "analysis_revision": "B-RECT_MULTILAYER-A1",
+          "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+          "reinforcement_revision": "B-RECT_MULTILAYER-R1-LAP-published_cage_misalignment",
+          "source_reference": "BEAM05 two-span three-moment reference with no equilibrium torsion",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-3",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "AF",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S1",
+              "x_mm": 1500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "BF1",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B1",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B2",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "BF2",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S2",
+              "x_mm": 6500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CF",
+              "x_mm": 7500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "LAP-START",
+              "x_mm": 1550,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "LAP-MID",
+              "x_mm": 2200,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "LAP-END",
+              "x_mm": 2850,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "LAP-START",
+                "LAP-MID",
+                "LAP-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "LAP-START",
+                "LAP-MID",
+                "LAP-END"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "U1:A",
+              "combination_id": "U1",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:AF",
+              "combination_id": "U1",
+              "station_id": "AF",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S1",
+              "combination_id": "U1",
+              "station_id": "S1",
+              "mu_knm": 27.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF1",
+              "combination_id": "U1",
+              "station_id": "BF1",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": -56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B1",
+              "combination_id": "U1",
+              "station_id": "B1",
+              "mu_knm": -48.0,
+              "vu_kn": -60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B2",
+              "combination_id": "U1",
+              "station_id": "B2",
+              "mu_knm": -48.0,
+              "vu_kn": 60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF2",
+              "combination_id": "U1",
+              "station_id": "BF2",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": 56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S2",
+              "combination_id": "U1",
+              "station_id": "S2",
+              "mu_knm": 27.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CF",
+              "combination_id": "U1",
+              "station_id": "CF",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:C",
+              "combination_id": "U1",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:A",
+              "combination_id": "U2",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:AF",
+              "combination_id": "U2",
+              "station_id": "AF",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S1",
+              "combination_id": "U2",
+              "station_id": "S1",
+              "mu_knm": 36.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF1",
+              "combination_id": "U2",
+              "station_id": "BF1",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": -75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B1",
+              "combination_id": "U2",
+              "station_id": "B1",
+              "mu_knm": -64.0,
+              "vu_kn": -80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B2",
+              "combination_id": "U2",
+              "station_id": "B2",
+              "mu_knm": -64.0,
+              "vu_kn": 80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF2",
+              "combination_id": "U2",
+              "station_id": "BF2",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": 75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S2",
+              "combination_id": "U2",
+              "station_id": "S2",
+              "mu_knm": 36.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CF",
+              "combination_id": "U2",
+              "station_id": "CF",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:C",
+              "combination_id": "U2",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-START",
+              "combination_id": "U1",
+              "station_id": "LAP-START",
+              "mu_knm": 26.97,
+              "vu_kn": -1.2000000000000028,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-MID",
+              "combination_id": "U1",
+              "station_id": "LAP-MID",
+              "mu_knm": 21.11999999999999,
+              "vu_kn": -16.800000000000004,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:LAP-END",
+              "combination_id": "U1",
+              "station_id": "LAP-END",
+              "mu_knm": 5.13000000000001,
+              "vu_kn": -32.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-START",
+              "combination_id": "U2",
+              "station_id": "LAP-START",
+              "mu_knm": 35.96,
+              "vu_kn": -1.6000000000000014,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-MID",
+              "combination_id": "U2",
+              "station_id": "LAP-MID",
+              "mu_knm": 28.159999999999997,
+              "vu_kn": -22.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:LAP-END",
+              "combination_id": "U2",
+              "station_id": "LAP-END",
+              "mu_knm": 6.840000000000003,
+              "vu_kn": -43.2,
+              "tu_knm": 0
+            }
+          ],
+          "schema_version": "is456-layered-continuous-beam-check/v1",
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 1000
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 8460,
+            "source_reference": "Continuous straight specimen bars with covered ends"
+          }
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8000,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary web link with separate hook planes"
+        },
+        "stock_length_mm": 12000,
+        "lap": {
+          "bar_id": "B1-3",
+          "partner_bar_id": "B1-3-partner",
+          "partner_x_from_left_mm": 197.5,
+          "start_station_id": "LAP-START",
+          "middle_station_id": "LAP-MID",
+          "end_station_id": "LAP-END",
+          "placement_reference": "Straight separated equal bars in layer 1 with uniform closed links"
+        }
+      },
+      "expected": {
+        "status": "FAIL",
+        "unaligned_inner_bar_id": "B2-3"
+      }
+    }
+  }
+}
