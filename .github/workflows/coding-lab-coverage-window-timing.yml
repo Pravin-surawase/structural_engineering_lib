@@ -1,0 +1,177 @@
+name: Coding Lab 72-case coverage window timing
+
+on:
+  push:
+    branches: [codex/coding-lab-coverage-window-timing]
+    paths: [.github/workflows/coding-lab-coverage-window-timing.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  paired-timing:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 50
+    steps:
+      - name: Check out the 0.29.2 candidate tested by Weekly Verification
+        uses: actions/checkout@v7
+        with:
+          ref: 1d297e2dcde8cf29ae3ec1d4288e940cb521ef17
+          persist-credentials: false
+
+      - name: Set up the original Python version
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.16'
+          architecture: x64
+
+      - name: Install the Weekly Verification dependencies
+        run: |
+          test "$(git rev-parse HEAD)" = 1d297e2dcde8cf29ae3ec1d4288e940cb521ef17
+          test "$(git rev-parse 'HEAD^{tree}')" = 0f7e0981d2b27e6621f7285b703c53ec98c1315c
+          cat > "$RUNNER_TEMP/t-beam-constraints.txt" <<'PINS'
+          pytest==9.1.1
+          pytest-cov==7.1.0
+          coverage==7.17.3
+          hypothesis==6.170.15
+          pytest-benchmark==5.3.1
+          pytest-asyncio==1.5.0
+          pydantic==2.14.3
+          numpy==2.4.6
+          ezdxf==1.4.5
+          jinja2==3.1.6
+          PINS
+          python -m pip install --upgrade pip
+          python -m pip install -c "$RUNNER_TEMP/t-beam-constraints.txt" -e 'Python/[dev,dxf,report]'
+          python -m pip install -c "$RUNNER_TEMP/t-beam-constraints.txt" -r requirements.txt
+
+      - name: Time the exact 72-case window with and without branch coverage
+        working-directory: Python
+        run: |
+          python -u - <<'PY'
+          from collections import Counter
+          import hashlib
+          import importlib.metadata
+          import json
+          import os
+          from pathlib import Path
+          import platform
+          import subprocess
+          import sys
+          from time import perf_counter
+          import xml.etree.ElementTree as ET
+
+          temp = Path(os.environ["RUNNER_TEMP"])
+          evidence = temp / "coverage-window-timing"
+          evidence.mkdir()
+          coverage_debug = temp / "t-beam-coverage-debug.txt"
+          packages = ("pytest", "pytest-cov", "coverage", "hypothesis", "pytest-benchmark",
+                      "pytest-asyncio", "pydantic", "numpy", "ezdxf", "jinja2")
+          result = {
+              "source_head": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+              "platform": platform.platform(),
+              "os_release": platform.freedesktop_os_release().get("PRETTY_NAME"),
+              "python": platform.python_version(),
+              "packages": {name: importlib.metadata.version(name) for name in packages},
+              "runs": [],
+          }
+          env = {**os.environ, "STRUCTURAL_LIB_PYTHON": sys.executable}
+          collection = subprocess.run(
+              [sys.executable, "-m", "pytest", "tests", "--collect-only", "-o", "addopts=",
+               "-q", "-m", "not slow", "--hypothesis-profile=ci", "--no-cov",
+               "-o", f"cache_dir={temp / 'collection'}"],
+              env=env, text=True, stdout=subprocess.PIPE,
+          )
+          if collection.returncode:
+              print(collection.stdout[-5000:], flush=True)
+              sys.exit("Full collection failed")
+          all_nodes = [
+              line for line in collection.stdout.splitlines()
+              if line.startswith("tests/") and "::" in line
+          ]
+          nodes = all_nodes[2592:2664]
+          manifest = ("\n".join(nodes) + "\n").encode()
+          selection_sha256 = hashlib.sha256(manifest).hexdigest()
+          (evidence / "selected-nodeids.txt").write_bytes(manifest)
+          if len(all_nodes) != 9535 or len(set(nodes)) != 72 or selection_sha256 != (
+              "d920dd55ac2da417847bfb49dc304d7838c09c353fc10d5ff487b5bd182122f7"
+          ):
+              sys.exit(
+                  f"Weekly collection or window changed: {len(all_nodes)} total, "
+                  f"{len(nodes)} selected, window SHA-256 {selection_sha256}"
+              )
+          result["weekly_collection_size"] = len(all_nodes)
+          result["selection_sha256"] = selection_sha256
+          result["selection"] = dict(sorted(Counter(
+              Path(node.split("::", 1)[0]).stem for node in nodes
+          ).items()))
+          print(json.dumps(result, indent=2), flush=True)
+          cmd = [
+              sys.executable, "-m", "pytest", *nodes,
+              "-q", "--hypothesis-profile=ci", "--durations=20", "--durations-min=0.1",
+          ]
+          test_ids = []
+          for mode, flags in [
+              ("without-coverage", ["--no-cov"]),
+              ("branch-coverage", ["--cov=structural_lib", "--cov-branch", "--cov-report=term-missing"]),
+          ]:
+              xml_path = evidence / f"{mode}.xml"
+              env = {**os.environ, "STRUCTURAL_LIB_PYTHON": sys.executable}
+              if mode == "branch-coverage":
+                  env.update(COVERAGE_FILE=str(temp / ".t-beam-coverage"),
+                             COVERAGE_DEBUG="sys", COVERAGE_DEBUG_FILE=str(coverage_debug))
+              print(f"Starting {mode}", flush=True)
+              start = perf_counter()
+              run = subprocess.run(
+                  [*cmd, *flags, f"--junitxml={xml_path}", "-o", f"cache_dir={temp / mode}"],
+                  env=env,
+              )
+              wall_seconds = perf_counter() - start
+              print(f"Finished {mode} in {wall_seconds:.3f}s with status {run.returncode}", flush=True)
+              root = ET.parse(xml_path).getroot()
+              cases = root.findall(".//testcase")
+              names = sorted((case.get("classname"), case.get("name")) for case in cases)
+              passed = sum(not any(case.find(tag) is not None for tag in ("failure", "error", "skipped"))
+                           for case in cases)
+              module_counts = Counter()
+              module_seconds = Counter()
+              for case in cases:
+                  module = case.attrib["classname"].rsplit(".", 1)[-1]
+                  module_counts[module] += 1
+                  module_seconds[module] += float(case.attrib["time"])
+              if dict(module_counts) != result["selection"]:
+                  sys.exit(f"JUnit module distribution differs: {module_counts}")
+              result["runs"].append({
+                  "module_seconds": {name: round(seconds, 3) for name, seconds
+                                     in sorted(module_seconds.items())},
+                  "mode": mode,
+                  "wall_seconds": round(wall_seconds, 3),
+                  "collected": len(cases),
+                  "passed": passed,
+                  "status": run.returncode,
+                  "slowest": [
+                      {"name": case.get("name"), "seconds": float(case.get("time"))}
+                      for case in sorted(cases, key=lambda c: float(c.get("time")), reverse=True)[:5]
+                  ],
+              })
+              test_ids.append(names)
+          if coverage_debug.is_file():
+              result["coverage_core"] = [
+                  line.strip() for line in coverage_debug.read_text().splitlines()
+                  if line.lstrip().startswith("core:")
+              ]
+          (evidence / "timing.json").write_text(json.dumps(result, indent=2) + "\n")
+          print(json.dumps(result, indent=2), flush=True)
+          if test_ids[0] != test_ids[1] or len(set(test_ids[0])) != 72:
+              sys.exit("Test selections differ from each other or the expected 72 unique cases")
+          if any(item["status"] or item["passed"] != 72 for item in result["runs"]):
+              sys.exit("Both runs must pass all 72 tests")
+          PY
+
+      - name: Retain timings and test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-window-timing
+          path: ${{ runner.temp }}/coverage-window-timing
+          if-no-files-found: warn
