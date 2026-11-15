@@ -7,6 +7,7 @@ Fix 3: Multi-layer rebar support in core/data_types.py.
 
 from __future__ import annotations
 
+import json
 import math
 
 import pytest
@@ -114,3 +115,16 @@ class TestCalculateEffectiveDepthMultilayer:
         """Empty layers list must raise ValueError."""
         with pytest.raises(ValueError):
             calculate_effective_depth_multilayer(500, [])
+
+
+@pytest.mark.parametrize("width_mm", [0, 300])
+def test_flexure_dictionary_is_strict_json_with_numeric_section_type(width_mm):
+    from structural_lib.codes.is456.beam.flexure import design_singly_reinforced
+
+    result = design_singly_reinforced(width_mm, 450, 500, 80, 25, 415)
+    payload = result.to_dict()
+    loaded = json.loads(json.dumps(payload, allow_nan=False))
+    assert loaded["section_type"] == result.section_type.value
+    assert loaded["is_safe"] == result.is_safe
+    payload["clause_refs"]["extra"] = "new"
+    assert "extra" not in result.clause_refs

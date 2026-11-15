@@ -411,11 +411,10 @@ class TestDevelopmentLength:
 class TestLapLength:
     """IS 456 Cl 26.2.5 - Lap splice requirements."""
 
-    def test_lap_equals_ld_for_compression(self):
-        """Compression lap = Ld."""
-        ld = detailing.calculate_development_length(16, 25, 500)
+    def test_lap_uses_compression_development_length(self):
+        """M25 deformed bar in compression uses 1.4 × 1.6 × 1.25 N/mm² bond."""
         lap = detailing.calculate_lap_length(16, 25, 500, in_tension=False)
-        assert lap == pytest.approx(ld, rel=0.01)
+        assert lap == 622
 
     def test_lap_1_3_ld_for_tension_over_50_percent(self):
         """Tension lap with >50% bars spliced: 1.3 × Ld."""

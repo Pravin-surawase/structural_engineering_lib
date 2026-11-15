@@ -210,6 +210,8 @@ def _review_state(dossier: CalculationDossierV1) -> str:
     active = _active_attestations(dossier.attestations)
     if any(item.decision == "REJECTED" for item in active):
         return "REVIEWED_REJECTED"
+    if any(item.decision == "ACCEPTED_WITH_HOLDS" for item in active):
+        return "REVIEW_READY"
     approvers = {
         item.identity.identity_id for item in active if item.role == "APPROVED"
     }

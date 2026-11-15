@@ -79,6 +79,17 @@ class TorsionDesignInputV1(StrictPublicModel):
             raise ValueError(
                 "cover and stirrup diameter must leave a positive closed core"
             )
+        minimum_offset_mm = (
+            self.geometry.clear_cover_mm + self.reinforcement.stirrup_diameter_mm
+        )
+        for name, depth in (
+            ("d_mm", self.geometry.d_mm),
+            ("d_opposite_mm", self.geometry.d_opposite_mm),
+        ):
+            if self.geometry.D_mm - depth < minimum_offset_mm:
+                raise ValueError(
+                    f"geometry.{name} places the face centroid outside the inside edge of the closed link"
+                )
         return self
 
 

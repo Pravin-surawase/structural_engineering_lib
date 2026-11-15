@@ -1137,10 +1137,17 @@ def derive_beam_demand_snapshot_v1(
         )
     referenced_ids = {row.row_id for row in action_rows}
     for rule in selected_rules:
+        contributing_ids = rule.contributing_action_row_ids
+        if len(contributing_ids) != len(set(contributing_ids)):
+            issues.append(
+                _issue(
+                    "CALLER_DEFINED_ACTION_ROW_DUPLICATE",
+                    f"envelope_rules:{rule.rule_id}",
+                    "caller-defined rule must reference each action row only once",
+                )
+            )
         missing = [
-            row_id
-            for row_id in rule.contributing_action_row_ids
-            if row_id not in referenced_ids
+            row_id for row_id in contributing_ids if row_id not in referenced_ids
         ]
         if missing:
             issues.append(

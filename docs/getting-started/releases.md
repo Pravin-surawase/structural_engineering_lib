@@ -2010,3 +2010,10 @@ records the source and qualification identities.
 
 This patch includes both ordinary beam shear fixes from [PR #1080](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1080).
 The remaining features and reference projects are scheduled for 0.30.0.
+
+## v0.29.2 — Prepared candidate (unreleased)
+
+The 0.29.2 candidate includes the Coding Lab input, engineering check,
+reporting and compatibility repairs. The S5 verification scope includes
+the exact wheel and source archive, affected installed-package cases,
+and Weekly Verification. StructLib 0.29.1 remains the published release.

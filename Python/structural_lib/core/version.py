@@ -6,7 +6,8 @@ from __future__ import annotations
 
 import tomllib
 from dataclasses import dataclass
-from importlib.metadata import PackageNotFoundError, version
+from functools import lru_cache
+from importlib.metadata import PackageNotFoundError, distributions, version
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +30,7 @@ class RuntimeVersionIdentityV1:
     A source checkout and an installed wheel are deliberately different modes.
     In source mode the adjacent ``Python/pyproject.toml`` is authoritative and
     installed metadata is reported only as a comparison. In installed mode the
-    wheel's distribution metadata is authoritative.
+    metadata is authoritative when the distribution owns the imported file.
     """
 
     execution_mode: str
@@ -78,33 +79,45 @@ def _source_version(package_origin: Path) -> str | None:
     return None
 
 
-def get_runtime_version_identity(
-    package_origin: str | Path | None = None,
-) -> RuntimeVersionIdentityV1:
-    """Return the authoritative version and comparison metadata for this import."""
+def _installed_version(origin: Path) -> str | None:
+    """Match recorded package ownership to the file selected by the importer."""
+    matching_versions = {
+        distribution.version
+        for distribution in distributions(name=_DISTRIBUTION_NAME)
+        if any(
+            entry.name == "__init__.py"
+            and entry.parent.name == "structural_lib"
+            and Path(str(distribution.locate_file(entry))).resolve() == origin
+            for entry in distribution.files or ()
+        )
+    }
+    if len(matching_versions) != 1:
+        return None
+    return matching_versions.pop()
 
-    origin = Path(package_origin or Path(__file__).resolve().parents[1] / "__init__.py")
-    origin = origin.resolve()
+
+def _resolve_identity(origin: Path) -> RuntimeVersionIdentityV1:
     source_version = _source_version(origin)
-    try:
-        distribution_version = version(_DISTRIBUTION_NAME)
-    except PackageNotFoundError:
-        distribution_version = None
-
     if source_version is not None:
+        try:
+            distribution_version = version(_DISTRIBUTION_NAME)
+        except PackageNotFoundError:
+            distribution_version = None
         execution_mode = "SOURCE_CHECKOUT"
         package_version = source_version
         metadata_matches = (
             distribution_version is None or distribution_version == source_version
         )
-    elif distribution_version is not None:
-        execution_mode = "INSTALLED_DISTRIBUTION"
-        package_version = distribution_version
-        metadata_matches = True
     else:
-        execution_mode = "UNINSTALLED_SOURCE"
-        package_version = "0.0.0-dev"
-        metadata_matches = False
+        distribution_version = _installed_version(origin)
+        if distribution_version is not None:
+            execution_mode = "INSTALLED_DISTRIBUTION"
+            package_version = distribution_version
+            metadata_matches = True
+        else:
+            execution_mode = "UNINSTALLED_SOURCE"
+            package_version = "0.0.0-dev"
+            metadata_matches = False
 
     return RuntimeVersionIdentityV1(
         execution_mode=execution_mode,
@@ -114,6 +127,25 @@ def get_runtime_version_identity(
         distribution_version=distribution_version,
         metadata_matches_runtime=metadata_matches,
     )
+
+
+@lru_cache(maxsize=1)
+def _imported_package_identity() -> RuntimeVersionIdentityV1:
+    origin = Path(__file__).resolve().parents[1] / "__init__.py"
+    return _resolve_identity(origin.resolve())
+
+
+def get_runtime_version_identity(
+    package_origin: str | Path | None = None,
+) -> RuntimeVersionIdentityV1:
+    """Return the version identity for this import or inspect an explicit origin.
+
+    The active package identity is fixed at import for the process lifetime.
+    Explicit origin probes inspect the current checkout and metadata.
+    """
+    if not package_origin:
+        return _imported_package_identity()
+    return _resolve_identity(Path(package_origin).resolve())
 
 
 def get_runtime_version(package_origin: str | Path | None = None) -> str:

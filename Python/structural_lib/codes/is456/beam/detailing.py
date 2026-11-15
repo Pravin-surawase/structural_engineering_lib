@@ -20,7 +20,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Literal
 
-from structural_lib.core.error_messages import material_property_out_of_range
+from structural_lib.core.error_messages import positive_value_required
 from structural_lib.core.errors import (
     ComplianceError,
     ConfigurationError,
@@ -240,10 +240,8 @@ def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
     fck = require_finite_real("fck", fck)
     if fck <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
-            ),
-            details={"fck": fck, "minimum": 0, "maximum": 100},
+            positive_value_required("concrete strength fck", fck, unit="N/mm²"),
+            details={"fck": fck, "minimum_exclusive": 0},
             clause_ref="Cl. 6.2",
         )
     if bar_type not in {"plain", "deformed"}:
@@ -302,34 +300,26 @@ def calculate_development_length_unrounded(
 
     if bar_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.1"
-            ),
-            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            positive_value_required("bar diameter", bar_dia, unit="mm"),
+            details={"bar_dia": bar_dia, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.1",
         )
     if fck <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
-            ),
-            details={"fck": fck, "minimum": 0, "maximum": 100},
+            positive_value_required("concrete strength fck", fck, unit="N/mm²"),
+            details={"fck": fck, "minimum_exclusive": 0},
             clause_ref="Cl. 6.2",
         )
     if fy <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
-            ),
-            details={"fy": fy, "minimum": 0, "maximum": 600},
+            positive_value_required("steel yield strength fy", fy, unit="N/mm²"),
+            details={"fy": fy, "minimum_exclusive": 0},
             clause_ref="Cl. 6.2",
         )
     if stress_ratio <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "stress ratio", stress_ratio, 0, 1, "Cl. 26.2.1"
-            ),
-            details={"stress_ratio": stress_ratio, "minimum": 0, "maximum": 1},
+            positive_value_required("stress ratio", stress_ratio, unit=""),
+            details={"stress_ratio": stress_ratio, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.1",
         )
 
@@ -394,16 +384,17 @@ def calculate_lap_length(
         in_tension: If True, tension splice; else compression splice
 
     Returns:
-        Lap length (mm)
+        Lap length (mm), rounded up after applying the bar-diameter minimum.
 
     Raises:
-        ValueError: If bar_dia, fck, or fy are invalid (via calculate_development_length).
+        ValueError: If bar_dia, fck, or fy are invalid.
     """
-    ld = calculate_development_length(bar_dia, fck, fy, bar_type)
+    ld = calculate_development_length_unrounded(bar_dia, fck, fy, bar_type)
 
     if not in_tension:
-        # Compression lap = Ld
-        return round(ld, 0)
+        # Clause 26.2.1.1 allows 25% higher bond stress in compression.
+        compression_ld = ld / 1.25
+        return float(math.ceil(max(compression_ld, 24 * bar_dia)))
 
     # Tension lap with enhancement factor
     if is_seismic:
@@ -413,9 +404,7 @@ def calculate_lap_length(
     else:
         alpha = 1.0  # 50% or less bars spliced
 
-    lap = alpha * ld
-
-    return round(lap, 0)
+    return float(math.ceil(max(alpha * ld, 30 * bar_dia)))
 
 
 # =============================================================================
@@ -488,13 +477,13 @@ def get_min_bend_radius(bar_dia: float, bar_type: str = "deformed") -> float:
     """
     if bar_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.2.1"
-            ),
-            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            positive_value_required("bar diameter", bar_dia, unit="mm"),
+            details={"bar_dia": bar_dia, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.2.1",
         )
 
+    if bar_type not in ("plain", "deformed"):
+        raise ValueError("bar_type must be either 'plain' or 'deformed'")
     if bar_type == "plain":
         return 2 * bar_dia
 
@@ -540,10 +529,8 @@ def calculate_standard_hook(
     """
     if bar_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.2"
-            ),
-            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            positive_value_required("bar diameter", bar_dia, unit="mm"),
+            details={"bar_dia": bar_dia, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.2",
         )
 
@@ -764,10 +751,8 @@ def calculate_stirrup_anchorage(
     """
     if stirrup_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "stirrup diameter", stirrup_dia, 0, 16, "Cl. 26.2.2.2"
-            ),
-            details={"stirrup_dia": stirrup_dia, "minimum": 0, "maximum": 16},
+            positive_value_required("stirrup diameter", stirrup_dia, unit="mm"),
+            details={"stirrup_dia": stirrup_dia, "minimum_exclusive": 0},
             clause_ref="Cl. 26.2.2.2",
         )
 
@@ -923,6 +908,11 @@ def check_anchorage_at_simple_support(
 
     if vu_kn < 0:
         errors.append(f"Shear force must be >= 0, got {vu_kn} kN")
+    if not math.isfinite(support_width) or support_width <= 0:
+        errors.append("support_width must be finite and positive")
+    if not math.isfinite(cover) or cover < 0:
+        errors.append("cover must be finite and nonnegative")
+    if errors:
         return AnchorageCheckResult(
             is_adequate=False,
             ld_required=0.0,
@@ -1280,6 +1270,9 @@ def select_bar_arrangement(
         - Returns a deterministic fallback (2-12mm) for invalid inputs.
         - Tries preferred diameter first, then larger standard diameters.
         - Uses max_layers to satisfy spacing before increasing bar size.
+        - Checks horizontal spacing in the fullest layer when it has a bar
+          pair. If no arrangement meets the spacing check, returns the last
+          checked arrangement for the caller to validate.
     """
     if ast_required <= 0:
         return BarArrangement(
@@ -1323,6 +1316,10 @@ def select_bar_arrangement(
 
         for layers in range(1, max_layers + 1):
             bars_per_layer = math.ceil(count / layers)
+            if bars_per_layer < 2:
+                # A single bar has no horizontal spacing to check, and this
+                # selector has no vertical clearance check for that layout.
+                break
             spacing = calculate_bar_spacing(b, cover, stirrup_dia, dia, bars_per_layer)
             is_valid, _ = check_min_spacing(spacing, dia)
 

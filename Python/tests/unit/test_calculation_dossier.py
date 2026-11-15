@@ -486,3 +486,51 @@ def test_no_hidden_default_or_extra_field(dossier_request):
                 update={"workbook_sha256": ev("wrong")}
             ).model_dump(mode="python")
         )
+
+
+@pytest.mark.parametrize("held_role", ["CHECKED", "APPROVED"])
+def test_active_review_holds_do_not_complete_the_quorum(built, held_role):
+    prepared = lib.record_review_attestation_v1(built, attest(built))
+    checked = lib.record_review_attestation_v1(
+        prepared,
+        attest(
+            built,
+            role="CHECKED",
+            name="checker",
+            decision="ACCEPTED_WITH_HOLDS" if held_role == "CHECKED" else "ACCEPTED",
+        ),
+    )
+    reviewed = lib.record_review_attestation_v1(
+        checked,
+        attest(
+            built,
+            role="APPROVED",
+            name="approver",
+            decision="ACCEPTED_WITH_HOLDS" if held_role == "APPROVED" else "ACCEPTED",
+        ),
+    )
+    assert reviewed.state == "REVIEW_READY"
+    assert reviewed.request.software_status == "HOLD"
+
+
+def test_a_held_checker_supersedes_a_previous_acceptance(built):
+    prepared = lib.record_review_attestation_v1(built, attest(built))
+    checker = attest(built, role="CHECKED", name="reviewer")
+    checked = lib.record_review_attestation_v1(prepared, checker)
+    accepted = lib.record_review_attestation_v1(
+        checked, attest(built, role="APPROVED", name="approver")
+    )
+    assert accepted.state == "REVIEWED_ACCEPTED"
+    held = attest(
+        built,
+        role="CHECKED",
+        name="reviewer",
+        attestation_id="held-reviewer",
+        revision=2,
+        supersedes=ev(checker.attestation_id),
+        decision="ACCEPTED_WITH_HOLDS",
+    )
+    revised = lib.record_review_attestation_v1(accepted, held)
+    assert revised.state == "REVIEW_READY"
+    assert revised.attestations == (*accepted.attestations, held)
+    assert revised.attested_sha256 != accepted.attested_sha256

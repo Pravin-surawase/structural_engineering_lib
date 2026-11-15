@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.29.2] — Candidate
+
+### Fixed
+
+- Reject ambiguous beam force matches, missing required analysis scope, and
+  inconsistent units, model facts, station coordinates, or raw row accounting.
+- Bind station-based beam checks to their original calculation results and
+  keep incomplete controlled source bases on HOLD.
+- Reject impossible torsion and support anchorage inputs, correct long-span
+  deflection screens and beam lap lengths, and report infeasible bar layouts.
+- Keep workbook calculation errors, held reviews and unavailable utilization
+  consistent across reports and exports.
+- Correct diagnostic attribution, design-code registry replacement,
+  deprecation warnings, and version checks for installed packages.
+
 ## [0.29.1] — 2026-11-14
 
 ### Fixed

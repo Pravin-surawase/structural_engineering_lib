@@ -22,8 +22,7 @@ from structural_lib.core.data_types import BeamType, DesignSectionType, FlexureR
 from structural_lib.core.error_messages import (
     dimension_negative,
     dimension_relationship_invalid,
-    dimension_too_small,
-    material_property_out_of_range,
+    positive_value_required,
 )
 from structural_lib.core.errors import (
     E_FLEXURE_001,
@@ -113,30 +112,26 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
 
     if b <= 0:
         raise DimensionError(
-            dimension_too_small("beam width b", b, 0, "Cl. 38.1"),
-            details={"b": b, "minimum": 0},
+            positive_value_required("beam width b", b, unit="mm"),
+            details={"b": b, "minimum_exclusive": 0},
             clause_ref="Cl. 38.1",
         )
     if d <= 0:
         raise DimensionError(
-            dimension_too_small("effective depth d", d, 0, "Cl. 38.1"),
-            details={"d": d, "minimum": 0},
+            positive_value_required("effective depth d", d, unit="mm"),
+            details={"d": d, "minimum_exclusive": 0},
             clause_ref="Cl. 38.1",
         )
     if fck <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
-            ),
-            details={"fck": fck, "minimum": 0, "maximum": 100},
+            positive_value_required("concrete strength fck", fck, unit="N/mm²"),
+            details={"fck": fck, "minimum_exclusive": 0},
             clause_ref="Cl. 6.2",
         )
     if fy <= 0:
         raise MaterialError(
-            material_property_out_of_range(
-                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
-            ),
-            details={"fy": fy, "minimum": 0, "maximum": 600},
+            positive_value_required("steel yield strength fy", fy, unit="N/mm²"),
+            details={"fy": fy, "minimum_exclusive": 0},
             clause_ref="Cl. 6.2",
         )
 

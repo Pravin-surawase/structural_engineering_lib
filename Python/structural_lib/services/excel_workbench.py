@@ -14,6 +14,7 @@ from numbers import Real
 from typing import Any
 
 from structural_lib.core.excel_workbook import (
+    EXCEL_IDENTIFIER_MAX_LENGTH,
     ExcelCalculationPassportV1,
     ExcelCapabilityStateV1,
     ExcelFreshnessCheckV1,
@@ -322,14 +323,28 @@ def _is_blank(value: object) -> bool:
 
 
 def _strict_identifier(
-    value: object, path: str, issues: list[ExcelRowIssueV1]
+    value: object,
+    path: str,
+    issues: list[ExcelRowIssueV1],
+    *,
+    max_length: int | None = None,
 ) -> str | None:
     if not isinstance(value, str) or not value.strip():
         issues.append(
             _issue("E_EXCEL_TEXT_REQUIRED", path, "A nonblank text value is required.")
         )
         return None
-    return value.strip()
+    identifier = value.strip()
+    if max_length is not None and len(identifier) > max_length:
+        issues.append(
+            _issue(
+                "E_EXCEL_IDENTIFIER_TOO_LONG",
+                path,
+                f"Use at most {max_length} characters after trimming whitespace.",
+            )
+        )
+        return None
+    return identifier
 
 
 def _strict_number(
@@ -435,9 +450,24 @@ def _normalize_row(
     values: Mapping[str, object], row_path: str
 ) -> tuple[dict[str, Any] | None, list[ExcelRowIssueV1], str | None, str | None]:
     issues: list[ExcelRowIssueV1] = []
-    row_id = _strict_identifier(values.get("row_id"), f"{row_path}.row_id", issues)
-    beam_id = _strict_identifier(values.get("beam_id"), f"{row_path}.beam_id", issues)
-    case_id = _strict_identifier(values.get("case_id"), f"{row_path}.case_id", issues)
+    row_id = _strict_identifier(
+        values.get("row_id"),
+        f"{row_path}.row_id",
+        issues,
+        max_length=EXCEL_IDENTIFIER_MAX_LENGTH,
+    )
+    beam_id = _strict_identifier(
+        values.get("beam_id"),
+        f"{row_path}.beam_id",
+        issues,
+        max_length=EXCEL_IDENTIFIER_MAX_LENGTH,
+    )
+    case_id = _strict_identifier(
+        values.get("case_id"),
+        f"{row_path}.case_id",
+        issues,
+        max_length=EXCEL_IDENTIFIER_MAX_LENGTH,
+    )
     mode = _strict_identifier(
         values.get("depth_basis_mode"), f"{row_path}.depth_basis_mode", issues
     )
@@ -742,7 +772,7 @@ def run_excel_workbook_v1(
                     raw_row_hash=raw_row_hash,
                     row_id=row_id,
                     beam_id=beam_id,
-                    disposition=ExcelRowDispositionV1.ACCEPTED,
+                    disposition=ExcelRowDispositionV1.BLOCKED,
                     normalized_input=normalized,
                     result_envelope=_calculation_error_envelope(exc, row_path),
                     issues=(
@@ -901,6 +931,12 @@ def serialize_excel_review_bundle_v1(bundle: ExcelReviewBundleV1) -> bytes:
 def render_excel_review_bundle_markdown_v1(
     result: ExcelWorkbookRunResultV1,
 ) -> str:
+    calculation_errors = sum(
+        item.disposition is ExcelRowDispositionV1.BLOCKED
+        and (item.result_envelope or {}).get("calculation_status")
+        == CalculationStatus.ERROR
+        for item in result.row_ledger
+    )
     lines = [
         "# Excel Routine Workbench V1 Review Bundle",
         "",
@@ -917,6 +953,11 @@ def render_excel_review_bundle_markdown_v1(
         f"- Source: {result.counts.source_rows}",
         f"- Accepted: {result.counts.accepted_rows}",
         f"- Blocked: {result.counts.blocked_rows}",
+        *(
+            [f"- Calculation errors among blocked rows: {calculation_errors}"]
+            if calculation_errors
+            else []
+        ),
         f"- Excluded: {result.counts.excluded_rows}",
         "",
         "## Rows",

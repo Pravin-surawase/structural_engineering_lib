@@ -154,3 +154,28 @@ def test_compliance_report_assigns_default_case_id_when_missing():
     )
 
     assert report.cases[0].case_id == "CASE_1"
+
+
+@pytest.mark.parametrize("unsupported_torsion", [80, float("inf"), None])
+def test_multi_case_compliance_does_not_discard_torsion(unsupported_torsion):
+    from structural_lib import check_beam_is456
+
+    row = {"case_id": "TORSION-ROW", "mu_knm": 80, "vu_kn": 60}
+    reference = {"case_id": "REFERENCE-ROW", "mu_knm": 60, "vu_kn": 50}
+    for entry, extra in (
+        (check_compliance_report, {}),
+        (check_beam_is456, {"units": "IS456"}),
+    ):
+        with pytest.raises(ValueError, match="TORSION-ROW.*tu_knm"):
+            entry(
+                cases=[row | {"tu_knm": unsupported_torsion}, reference],
+                **COMMON,
+                **extra,
+            )
+        zero = entry(cases=[row | {"tu_knm": 0}, reference], **COMMON, **extra)
+        omitted = entry(cases=[row, reference], **COMMON, **extra)
+        assert zero == omitted
+        assert [result.case_id for result in omitted.cases] == [
+            "TORSION-ROW",
+            "REFERENCE-ROW",
+        ]

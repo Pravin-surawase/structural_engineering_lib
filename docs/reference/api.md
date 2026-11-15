@@ -18,9 +18,9 @@ approval.
 **Audience:** Developers
 **Status:** Pre-1.0 Public API — Supported Cases Only
 **Importance:** Critical
-**Document Version:** 0.29.1
+**Document Version:** 0.29.2
 **Created:** 2025-01-01
-**Last Updated:** 2026-11-14<br>
+**Last Updated:** 2026-11-15<br>
 
 ---
 
@@ -579,6 +579,10 @@ def check_beam_is456(
     crack_width_defaults: dict | None = None,
 ) -> ComplianceReport
 ```
+
+Batch cases accept omitted or zero `tu_knm`. A nonzero torsion action
+raises a diagnostic naming the case. Use the single-case beam design route
+with the required torsion geometry to check that action.
 
 ### 1A.3 Detailing Output (`detail_beam_is456`)
 
@@ -2208,6 +2212,10 @@ def check_deflection_span_depth(
 - `allowable L/d` is computed as:
     $$\text{allowable} = \text{base} \times mf_{tension} \times mf_{compression} \times mf_{flanged}$$
 - If base/modifiers are not provided, the result records explicit assumptions.
+- Above 10 m, the default simple and continuous limits scale by
+  `10000 / span_mm`. A caller-supplied base remains explicit. Long
+  cantilevers require a calculated deflection check.
+- The screening inputs and modification factors must be finite and positive.
 
 ### 5.2 Crack Width Check (Annex-F-style Estimate)
 

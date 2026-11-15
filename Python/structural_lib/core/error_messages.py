@@ -471,6 +471,12 @@ def numerical_instability(operation: str, problematic_value: Any, reason: str) -
 # =============================================================================
 
 
+def positive_value_required(name: str, actual: float, *, unit: str) -> str:
+    """Describe a rejected value at or below a strictly positive bound."""
+    suffix = f" {unit}" if unit else ""
+    return f"{name} must be > 0{suffix} (got {actual}{suffix})."
+
+
 def format_value_with_unit(value: float, unit: str, precision: int = 2) -> str:
     """Format a value with its unit."""
     return f"{value:.{precision}f}{unit}"

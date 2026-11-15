@@ -302,3 +302,54 @@ def test_level_c_zero_load_retains_the_source_shrinkage_estimate():
     )
     assert result.delta_immediate_mm == result.delta_creep_mm == 0
     assert result.delta_total_mm == result.delta_shrinkage_mm > 0
+
+
+def test_default_long_span_slenderness_limits_are_scaled():
+    simply = check_deflection_span_depth(span_mm=12000, d_mm=650)
+    continuous = check_deflection_span_depth(
+        span_mm=12000, d_mm=500, support_condition="continuous"
+    )
+    assert not simply.is_ok and simply.computed["allowable_ld"] == pytest.approx(50 / 3)
+    assert not continuous.is_ok and continuous.computed[
+        "allowable_ld"
+    ] == pytest.approx(65 / 3)
+    boundary = check_deflection_span_depth(span_mm=10000, d_mm=650)
+    assert boundary.is_ok and boundary.computed["allowable_ld"] == 20
+    explicit = check_deflection_span_depth(
+        span_mm=12000, d_mm=650, base_allowable_ld=20
+    )
+    assert explicit.is_ok and explicit.computed["allowable_ld"] == 20
+    cantilever = check_deflection_span_depth(
+        span_mm=11000, d_mm=1700, support_condition="cantilever"
+    )
+    assert not cantilever.is_ok and "calculated deflection" in cantilever.remarks
+
+
+@pytest.mark.parametrize("field", ["d_mm", "base_allowable_ld", "mf_tension_steel"])
+def test_nonfinite_deflection_inputs_cannot_pass(field):
+    inputs = {"span_mm": 4000, "d_mm": 100} | {field: float("inf")}
+    result = check_deflection_span_depth(**inputs)
+    assert not result.is_ok and field in result.remarks and not result.computed
+
+
+@pytest.mark.parametrize(
+    ("overrides", "field"),
+    [
+        ({"epsilon_m": -0.002}, "epsilon_m"),
+        ({"epsilon_m": None, "fs_service_nmm2": -400}, "fs_service_nmm2"),
+        ({"acr_mm": 0}, "acr_mm"),
+        ({"epsilon_m": None, "fs_service_nmm2": 200, "es_nmm2": 0}, "es_nmm2"),
+    ],
+)
+def test_invalid_crack_width_inputs_are_structured_failures(overrides, field):
+    inputs = {
+        "exposure_class": "severe",
+        "acr_mm": 50,
+        "cmin_mm": 25,
+        "h_mm": 500,
+        "x_mm": 200,
+        "epsilon_m": 0.001,
+    }
+    assert check_crack_width(**inputs).is_ok
+    result = check_crack_width(**(inputs | overrides))
+    assert not result.is_ok and field in result.remarks and not result.computed

@@ -111,6 +111,13 @@ applicability. A current complete leaf failure produces a complete member
 engineering failure. Partial and stale evidence remains in the output but
 cannot become the governing utilization.
 
+For station-scoped shear and torsion leaves, pass the original check results
+in `MemberDesignRequest.station_source_results`. Supply a shared batch result
+once even if it supports several station leaves. A result qualifies each
+station only if its checked output includes that station and its recorded
+identity and state match the leaf. Missing or contradictory source records
+leave the aggregate partial.
+
 Effective-depth iteration is also explicit. Iterations are sequential and bind
 the calculated depth to the dependent result ids and reinforcement revision.
 The member qualifies only when the final iteration is converged against the

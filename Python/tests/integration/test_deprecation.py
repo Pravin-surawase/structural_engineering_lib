@@ -353,3 +353,55 @@ class TestDeprecationWarningsBehavior:
 
             assert len(w) == 1
             assert issubclass(w[0].category, DeprecationWarning)
+
+
+def test_deprecated_class_preserves_identity_signature_and_subclass_construction():
+    import inspect
+
+    class Old:
+        def __init__(self, length: int, *, label: str = "beam"):
+            self.identity = (length, label)
+
+    signature = inspect.signature(Old)
+    decorated = deprecated("0.14.0", "1.0.0")(Old)
+    assert decorated is Old and inspect.signature(decorated) == signature
+
+    class Child(decorated):
+        pass
+
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always")
+        direct = decorated(7, label="B1")
+        child = Child(10)
+    assert isinstance(direct, Old) and direct.identity == (7, "B1")
+    assert isinstance(child, Old) and child.identity == (10, "beam")
+    assert len(captured) == 1
+    assert captured[0].filename == __file__
+    assert issubclass(captured[0].category, DeprecationWarning)
+
+
+def test_legacy_result_field_warnings_point_to_the_constructor_call():
+    from structural_lib.core.data_types import (
+        DesignSectionType,
+        FlexureResult,
+        ShearResult,
+    )
+
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always")
+        flexure = FlexureResult(
+            80,
+            100,
+            0.5,
+            DesignSectionType.UNDER_REINFORCED,
+            50,
+            70,
+            True,
+            error_message="legacy flexure",
+        )
+        shear = ShearResult(1, 0.5, 3, 30, 100, True, remarks="legacy shear")
+        FlexureResult(80, 100, 0.5, DesignSectionType.UNDER_REINFORCED, 50, 70, True)
+        ShearResult(1, 0.5, 3, 30, 100, True)
+    assert flexure.error_message == "legacy flexure" and shear.remarks == "legacy shear"
+    assert len(captured) == 2 and all(item.filename == __file__ for item in captured)
+    assert all(issubclass(item.category, DeprecationWarning) for item in captured)

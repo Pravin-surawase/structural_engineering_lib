@@ -67,6 +67,12 @@ The invariant is:
 
 `source_rows = accepted_rows + blocked_rows + excluded_rows`
 
+A row with valid intake and a calculation error counts as blocked. Its
+envelope retains `VALID` intake, `ERROR` calculation and `HOLD` engineering
+status. It retains the normalized input while the result and passport are
+absent. Row, beam and case IDs allow up to 128 characters after trimming.
+An overlong ID blocks its own row and the raw cell remains in the ledger.
+
 ## Review, passports, and freshness
 
 Preview produces the exact canonical mapping and a deterministic mapping hash. Run is disabled until that mapping is reviewed. The task pane also compares the current selected-table snapshot to the previewed snapshot immediately before calculation.

@@ -11,6 +11,7 @@ Tests cover:
 
 import pytest
 
+from structural_lib.api import detail_beam_is456
 from structural_lib.codes.is456.beam.detailing import evaluate_tension_bar_anchorage_v1
 from structural_lib.core.errors import ConfigurationError
 from structural_lib.detailing import (
@@ -161,11 +162,12 @@ class TestLapLength:
         lap = calculate_lap_length(16, 25, 500, is_seismic=True)
         assert lap == pytest.approx(1.5 * ld, abs=5)
 
-    def test_compression_lap(self):
-        """Compression lap = Ld (no enhancement)."""
-        ld = calculate_development_length(16, 25, 500)
-        lap = calculate_lap_length(16, 25, 500, in_tension=False)
-        assert lap == pytest.approx(ld, abs=5)
+    def test_compression_lap_uses_compression_bond_stress(self):
+        assert calculate_lap_length(16, 25, 415, in_tension=False) == 516
+
+    @pytest.mark.parametrize(("in_tension", "expected_mm"), [(True, 480), (False, 384)])
+    def test_lap_length_has_a_bar_diameter_minimum(self, in_tension, expected_mm):
+        assert calculate_lap_length(16, 40, 250, in_tension=in_tension) == expected_mm
 
 
 class TestBarSpacing:
@@ -297,6 +299,36 @@ class TestFormatHelpers:
 
 class TestBeamDetailingResult:
     """Tests for complete beam detailing."""
+
+    def test_public_detailing_reports_infeasible_bottom_bar_spacing(self):
+        result = detail_beam_is456(
+            units="IS456",
+            beam_id="LAB-B1",
+            story="LAB",
+            b_mm=130,
+            D_mm=500,
+            span_mm=4000,
+            cover_mm=25,
+            fck_nmm2=25,
+            fy_nmm2=500,
+            ast_start_mm2=300,
+            ast_mid_mm2=300,
+            ast_end_mm2=300,
+            asc_start_mm2=100,
+            asc_mid_mm2=100,
+            asc_end_mm2=100,
+            stirrup_dia_mm=8,
+            preferred_tension_bar_dia_mm=20,
+            preferred_compression_bar_dia_mm=12,
+        )
+
+        assert result.is_valid is False
+        assert result.remarks.split("; ") == [
+            "Detailing has spacing violations",
+            "bot_start: FAIL: Clear spacing 0 mm from 32 mm c/c < min 32 mm",
+            "bot_mid: FAIL: Clear spacing 0 mm from 32 mm c/c < min 32 mm",
+            "bot_end: FAIL: Clear spacing 0 mm from 32 mm c/c < min 32 mm",
+        ]
 
     def test_basic_detailing(self):
         """Create detailing for a typical beam."""
@@ -747,3 +779,15 @@ class TestStirrupAnchorage:
 
         with pytest.raises(MaterialError):
             calculate_stirrup_anchorage(0)
+
+
+def test_unknown_longitudinal_bar_type_is_rejected_by_both_hook_imports():
+    from structural_lib import detailing as compatibility
+    from structural_lib.codes.is456.beam import detailing
+
+    for route in (detailing, compatibility):
+        assert route.get_min_bend_radius(32, "plain") == 64
+        assert route.get_min_bend_radius(32, "deformed") == 96
+        for helper in (route.get_min_bend_radius, route.calculate_standard_hook):
+            with pytest.raises(ValueError, match="bar_type"):
+                helper(32, bar_type="deformd")

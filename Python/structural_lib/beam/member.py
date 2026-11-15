@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, fields
 
 from .project import BeamProject, BeamProjectRequest, CheckScope, create_beam_project
 from .semantics import (
@@ -134,6 +135,7 @@ class MemberDesignRequest:
     scope_instances: tuple[MemberScopeInstance, ...]
     depth_iterations: tuple[EffectiveDepthIteration, ...]
     leaf_results: tuple[MemberLeafEvidence, ...]
+    station_source_results: tuple[OperationResult, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -265,9 +267,44 @@ def _validate_leaf_evidence(evidence: MemberLeafEvidence) -> bool:
     )
 
 
+def _station_binding_issue(
+    expectation: MemberLeafExpectation,
+    evidence: MemberLeafEvidence,
+    source: OperationResult | None,
+) -> str | None:
+    if source is None:
+        return "LEAF.STATION_SOURCE_MISSING"
+    bound = MemberLeafEvidence.from_result(
+        evidence.leaf_id,
+        source,
+        required_value=evidence.required_value,
+        selected_value=evidence.selected_value,
+        supplied_value=evidence.supplied_value,
+        unit=evidence.unit,
+        governing_utilization=evidence.governing_utilization,
+    )
+    if bound != evidence:
+        return "LEAF.STATION_SOURCE_MISMATCH"
+    if source.operation_semantic_id == "is456.beam.shear.check/v1":
+        checks = source.outputs.get("checks", ())
+        if isinstance(checks, (list, tuple)) and any(
+            isinstance(check, Mapping)
+            and check.get("station_id") == expectation.scope_id
+            for check in checks
+        ):
+            return None
+    if (
+        source.operation_semantic_id == "is456.beam.torsion.check/v1"
+        and source.outputs.get("station_id") == expectation.scope_id
+    ):
+        return None
+    return "LEAF.STATION_SCOPE_MISSING"
+
+
 def _qualify_leaf(
     expectation: MemberLeafExpectation,
     evidence: MemberLeafEvidence | None,
+    station_sources: Mapping[str, OperationResult],
 ) -> MemberLeafQualification:
     if evidence is None:
         return MemberLeafQualification(
@@ -299,6 +336,12 @@ def _qualify_leaf(
             reasons.append("LEAF.NOT_EVALUATED")
     elif evidence.engineering is not EngineeringState.NOT_EVALUATED:
         reasons.append("LEAF.NOT_APPLICABLE_STATE_INVALID")
+    if expectation.scope is CheckScope.STATION:
+        station_issue = _station_binding_issue(
+            expectation, evidence, station_sources.get(evidence.result_id)
+        )
+        if station_issue is not None:
+            reasons.append(station_issue)
     return MemberLeafQualification(
         expectation,
         evidence,
@@ -308,9 +351,17 @@ def _qualify_leaf(
 
 
 def design_member(request: MemberDesignRequest) -> OperationResult:
-    """Aggregate the project-derived complete member leaf set without rerunning formulas."""
+    """Aggregate member checks with explicit result records for station leaves."""
 
-    inputs = effective_inputs(request=request)
+    # Leaf result IDs already bind source payloads. Preserve the existing input
+    # projection while verifying the supplied copies before qualification.
+    inputs = effective_inputs(
+        request={
+            field.name: getattr(request, field.name)
+            for field in fields(request)
+            if field.name != "station_source_results"
+        }
+    )
     provenance = _provenance(request.project)
     project_request = BeamProjectRequest(
         request.project.project,
@@ -458,8 +509,15 @@ def design_member(request: MemberDesignRequest) -> OperationResult:
         )
 
     evidence_by_id = {item.leaf_id: item for item in request.leaf_results}
+    station_sources = {
+        source.result_id: source
+        for source in request.station_source_results
+        if source._has_valid_result_identity()
+    }
     qualifications = tuple(
-        _qualify_leaf(expectation, evidence_by_id.get(expectation.leaf_id))
+        _qualify_leaf(
+            expectation, evidence_by_id.get(expectation.leaf_id), station_sources
+        )
         for expectation in expected
     )
     diagnostics: list[Diagnostic] = []

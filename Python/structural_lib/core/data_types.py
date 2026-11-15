@@ -8,6 +8,7 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 from __future__ import annotations
 
 import math
+from collections.abc import Iterator
 from dataclasses import asdict, dataclass, field, fields
 from enum import Enum, auto
 from typing import TYPE_CHECKING, Any, TypedDict
@@ -356,6 +357,7 @@ class FlexureResult:
                 "0.14.0",
                 "1.0.0",
                 alternative="errors",
+                stacklevel=4,
             )
 
     @property
@@ -398,8 +400,10 @@ class FlexureResult:
         return self.Asc_required
 
     def to_dict(self) -> dict[str, Any]:
-        """Convert result to a plain dictionary for serialization."""
-        return asdict(self)
+        """Project the section classification to its public numeric value."""
+        result = asdict(self)
+        result["section_type"] = self.section_type.value
+        return result
 
 
 @dataclass(frozen=True)
@@ -422,6 +426,7 @@ class ShearResult:
                 "0.14.0",
                 "1.0.0",
                 alternative="errors",
+                stacklevel=4,
             )
 
     @property
@@ -1051,6 +1056,9 @@ class VersionInfo(DictCompatMixin):
                 lines.append(f"  {name + ':':16s}{ver_str}")
 
         return "\n".join(lines)
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.keys())
 
     def keys(self) -> list[str]:
         """Public field names (excludes internal display helpers)."""
