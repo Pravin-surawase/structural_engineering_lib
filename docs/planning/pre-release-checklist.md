@@ -11,15 +11,15 @@
 
 Current source metadata: 0.29.2.
 
-**0.29.1 is published and verified.** The [release status](../getting-started/release-status.md)
-and [publication receipt](../getting-started/releases.md#v0291-published-and-verified)
+**0.29.2 is published and verified.** The [release status](../getting-started/release-status.md)
+and [publication receipt](../getting-started/releases.md#v0292-published-and-verified)
 record the exact tag, retained archives and clean public installation.
-The release includes both ordinary beam shear fixes from #1080.
+The release includes the Coding Lab repairs from #1086.
 
 - [x] Exact retained wheel and source archive qualified on all 20 installed profiles.
 - [x] Independent software review and required PR and Weekly checks passed.
 - [x] TestPyPI, PyPI and GitHub archive identities match the qualified hashes.
-- [x] Fresh no-cache PyPI installation imports 0.29.1 from its isolated environment.
+- [x] Fresh no-cache PyPI installation imports 0.29.2 from its isolated environment.
 
 The following records are historical receipts for their named versions.
 
