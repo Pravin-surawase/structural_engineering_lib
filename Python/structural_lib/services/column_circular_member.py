@@ -16,7 +16,10 @@ from structural_lib.codes.is456.column.axial import (
     min_eccentricity,
     short_axial_capacity,
 )
-from structural_lib.codes.is456.column.circular import CircularSection
+from structural_lib.codes.is456.column.circular import (
+    CircularSection,
+    check_circular_fixed_compression,
+)
 from structural_lib.codes.is456.column.circular_cage import (
     CircularCage,
     CircularRing,
@@ -24,9 +27,6 @@ from structural_lib.codes.is456.column.circular_cage import (
     check_circular_cage,
 )
 from structural_lib.codes.is456.column.helical import _HELICAL_ENHANCEMENT_FACTOR
-from structural_lib.codes.is456.column.positioned_biaxial import (
-    prepare_section_capacity,
-)
 from structural_lib.core.data_types import ColumnClassification, EndCondition
 from structural_lib.core.result_contract import EngineeringStatus, StructuralIssueV1
 from structural_lib.services.canonical_family import (
@@ -75,11 +75,15 @@ def _strength(
     section = CircularSection(
         geo.diameter_mm, material.fck_nmm2, material.fy_nmm2, cage.bars
     )
-    prepared = prepare_section_capacity(section, pu, cage.steel_area_mm2, puz)
-    if prepared is None:
-        return None
-    length = geo.unsupported_length_mm
-    checked = prepared.check(mx, my, length, length)
+    checked = check_circular_fixed_compression(
+        section,
+        pu_kn=pu,
+        mx_knm=mx,
+        my_knm=my,
+        unsupported_length_mm=geo.unsupported_length_mm,
+        steel_area_mm2=cage.steel_area_mm2,
+        puz_kn=puz,
+    )
     if checked is None:
         return None
     return {**asdict(checked), "method": "fixed_compression", "enhancement_factor": 1.0}

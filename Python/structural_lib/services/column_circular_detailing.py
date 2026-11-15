@@ -27,6 +27,10 @@ from structural_lib.services.canonical_family import (
     canonical_family_result,
     require_request_type,
 )
+from structural_lib.services.column_circular_lap import (
+    admits_circular_contact_lap,
+    check_circular_contact_lap,
+)
 from structural_lib.services.column_circular_member import (
     check_circular_member,
     render_circular_member_svg,
@@ -36,6 +40,8 @@ from structural_lib.services.contracts.column_circular import (
     CircularColumnCageV1,
     CircularColumnGeometryV1,
     CircularColumnInputV1,
+    CircularContactLapV1,
+    CircularDetailingActionV1,
     CircularRingV1,
 )
 from structural_lib.services.contracts.column_member import RectangularColumnActionsV1
@@ -87,15 +93,27 @@ class CircularColumnDetailingInputV1(StrictPublicModel):
     reinforcement: CircularColumnCageV1
     basis: ColumnDetailingBasisV1
     end_detail: ColumnStraightEndDetailV1
-    actions: tuple[ColumnDetailingActionV1, ...] = Field(min_length=1, max_length=48)
+    actions: tuple[CircularDetailingActionV1, ...] = Field(min_length=1, max_length=48)
     placement: CircularTransversePlacementV1 | None = None
     transverse_cut_schedule: ColumnTransverseCutScheduleV1 | None = None
-    laps: tuple[ColumnCompressionLapV1, ...] = Field(default=(), max_length=8)
+    laps: tuple[ColumnCompressionLapV1 | CircularContactLapV1, ...] = Field(
+        default=(), max_length=8
+    )
     shear_basis: _CircularColumnShearBasisV1 | None = Field(
         default=None, exclude_if=lambda value: value is None
     )
 
-    @field_validator("actions", "laps", mode="before")
+    @field_validator("actions", mode="before")
+    @classmethod
+    def accept_action_rows(cls, value: object) -> object:
+        if not isinstance(value, (list, tuple)):
+            return value
+        return tuple(
+            row.model_dump() if type(row) is ColumnDetailingActionV1 else row
+            for row in value
+        )
+
+    @field_validator("laps", mode="before")
     @classmethod
     def accept_array(cls, value: object) -> object:
         return tuple(value) if isinstance(value, list) else value
@@ -125,7 +143,9 @@ def _circular_section(
         materials=request.materials,
         reinforcement=request.reinforcement,
         actions=RectangularColumnActionsV1.model_validate(
-            action.model_dump(exclude={"combination_id", "vx_kn", "vy_kn"})
+            action.model_dump(
+                exclude={"combination_id", "vx_kn", "vy_kn", "station_id"}
+            )
         ),
     )
 
@@ -133,6 +153,8 @@ def _circular_section(
 def _schedule_transverse(
     request: CircularColumnDetailingInputV1,
     section: Result,
+    *,
+    allow_member_end_stations: bool = False,
 ) -> tuple[dict[str, Any] | None, EngineeringStatus, StructuralIssueV1 | None]:
     placement, steel = request.placement, request.reinforcement.transverse
     cut = request.transverse_cut_schedule
@@ -277,6 +299,7 @@ def _schedule_transverse(
         )
     if any(
         not extent_start <= row.check_station_mm <= extent_end
+        and not (allow_member_end_stations and row.check_station_mm in (0, length))
         for row in request.actions
     ):
         return (
@@ -471,8 +494,9 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
 
     Limitations
     -----------
-    Short braced circular members with continuous bars. Nonzero shear uses
-    one declared principal plane and the supported closed-ring basis.
+    Short braced circular members with continuous bars or one supported Ø20
+    compression contact pair on a closed-ring cage. Nonzero shear uses the
+    continuous-bar profile and one declared principal plane.
 
     Provenance
     ----------
@@ -511,11 +535,18 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
             "Supply the ordinary member and development basis.",
             EngineeringStatus.HOLD,
         )
-    if request.laps:
+    proposed_lap = request.laps[0] if len(request.laps) == 1 else None
+    contact_lap = (
+        proposed_lap
+        if isinstance(proposed_lap, CircularContactLapV1)
+        and admits_circular_contact_lap(request, proposed_lap)
+        else None
+    )
+    if request.laps and contact_lap is None:
         record(
             "COLUMN.CIRCULAR_MEMBER_ACTIONS_HELD",
             "actions",
-            "Circular physical splices require their own verified checks.",
+            "Supply one tied eight-bar Ø20 perimeter contact lap with zero shear and matching signed actions at both ends and inside the overlap.",
             EngineeringStatus.HOLD,
         )
 
@@ -545,14 +576,28 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
     if sections and all(
         item.engineering_status is EngineeringStatus.PASS for item in sections
     ):
-        transverse, status, issue = _schedule_transverse(request, sections[0])
+        transverse, status, issue = _schedule_transverse(
+            request, sections[0], allow_member_end_stations=contact_lap is not None
+        )
         statuses.append(status)
         if issue is not None:
             issues.append(issue)
+    lap_detail = None
+    strength_by_phase: list[dict[str, Any]] = []
+    governing_strength: list[dict[str, Any]] = []
+    if contact_lap is not None and transverse is not None and member_basis_complete:
+        lap_detail, strength_by_phase, governing_strength = check_circular_contact_lap(
+            request,
+            contact_lap,
+            transverse,
+            sections[0].calculation,
+            end_required,
+            record,
+        )
     shear_rows, shear_status = _check_circular_shear(
         request,
         transverse,
-        evidence_current=member_basis_complete and not stale,
+        evidence_current=member_basis_complete and not stale and not request.laps,
         record=record,
     )
     if shear_status != "NOT_APPLICABLE":
@@ -578,18 +623,40 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
     )
     rows = []
     if status is EngineeringStatus.PASS and transverse is not None:
+        if lap_detail is not None:
+            transverse = {
+                **transverse,
+                "stations_mm": lap_detail["ring_stations_mm"],
+                "quantity": len(lap_detail["ring_stations_mm"]),
+            }
+            cuts = [
+                (
+                    piece["bar_id"],
+                    piece["diameter_mm"],
+                    piece["end_mm"] - piece["start_mm"],
+                )
+                for piece in lap_detail["pieces"]
+            ]
+        else:
+            full_length = (
+                request.geometry.unsupported_length_mm
+                + ends.start_straight_mm
+                + ends.end_straight_mm
+            )
+            cuts = [
+                (bar["bar_id"], bar["diameter_mm"], full_length)
+                for bar in sections[0].calculation["bars"]
+            ]
         rows = [
             {
-                "bar_id": bar["bar_id"],
+                "bar_id": mark,
                 "role": "longitudinal",
-                "diameter_mm": bar["diameter_mm"],
+                "diameter_mm": diameter,
                 "quantity": 1,
-                "cut_length_mm": request.geometry.unsupported_length_mm
-                + ends.start_straight_mm
-                + ends.end_straight_mm,
+                "cut_length_mm": cut_length,
                 "source": request.basis.end_development_reference,
             }
-            for bar in sections[0].calculation["bars"]
+            for mark, diameter, cut_length in cuts
         ]
         if transverse["bar_id"] in {row["bar_id"] for row in rows}:
             status = EngineeringStatus.FAIL
@@ -631,10 +698,22 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
                 for action, section in zip(request.actions, sections, strict=not stale)
             ],
             "section_svg": (
-                render_circular_member_svg(sections[0]) if sections else None
+                render_circular_member_svg(sections[0])
+                if sections and not request.laps
+                else None
             ),
             "transverse": transverse,
             "end_required_mm": end_required,
+            **(
+                {
+                    "circular_lap_requested": True,
+                    "lap": lap_detail,
+                    "strength_by_phase": strength_by_phase,
+                    "governing_strength": governing_strength,
+                }
+                if request.laps
+                else {}
+            ),
             **(
                 {
                     "shear_rows": shear_rows,
@@ -662,9 +741,17 @@ def check_circular_column_detailing(request: CircularColumnDetailingInputV1) -> 
         workflow_id=WORKFLOW,
         engineering_status=status,
         limitations=(
-            "Short braced regular circular cages with continuous straight bars.",
+            (
+                "One straight Ø20 compression contact pair on a short braced tied circular cage. The two transfer layouts use the matching signed supplied actions and zero shear."
+                if request.laps
+                else "Short braced regular circular cages with continuous straight bars."
+            ),
             "Ring closure uses the supplied cut evidence; the spiral is one continuous body and two declared anchorage segments.",
-            "Nonzero shear uses one declared principal plane and the closed-ring basis. Splices, spiral shear and seismic checks require separate evidence.",
+            (
+                "Ordinary closed-ring restraint, one longitudinal splice in the member and externally detailed ring closure."
+                if request.laps
+                else "Nonzero shear uses one declared principal plane and the closed-ring basis. Splices, spiral shear and seismic checks require separate evidence."
+            ),
         ),
         provenance=(
             "IS 456 Clauses 26.2, 26.5.3.2 and 39; checked circular section and actual transverse centreline.",
@@ -782,6 +869,9 @@ def render_circular_detailing_svg(result: Result) -> str | None:
     request, input_hash = _metadata(result)
     if result.calculation["bbs"] is None:
         return None
+    lap = result.calculation.get("lap")
+    if lap is not None:
+        return _render_circular_lap_svg(result, request, input_hash, lap)
     transverse = result.calculation["transverse"]
     length = request.geometry.unsupported_length_mm
     diameter = request.geometry.diameter_mm
@@ -840,6 +930,115 @@ def render_circular_detailing_svg(result: Result) -> str | None:
 <text x="255" y="352" font-size="14">Clear height {length:g} mm</text>{shear_note}</svg>"""
 
 
+def _render_circular_lap_svg(
+    result: Result,
+    request: CircularColumnDetailingInputV1,
+    input_hash: str,
+    lap: dict[str, Any],
+) -> str:
+    """Render the admitted physical lap as its actual longitudinal pieces."""
+    transverse = result.calculation["transverse"]
+    assert transverse is not None
+    length = request.geometry.unsupported_length_mm
+    ends = request.end_detail
+    total = length + ends.start_straight_mm + ends.end_straight_mm
+    scale = 420 / total
+
+    def y(station: float) -> float:
+        return 470 - (station + ends.start_straight_mm) * scale
+
+    def esc(value: object) -> str:
+        return html.escape(str(value), quote=True)
+
+    lap_id = esc(lap["lap_id"])
+    overlap_start, overlap_end = lap["overlap_bounds_mm"]
+    pieces = lap["pieces"]
+    piece_spacing = 240 / (len(pieces) - 1)
+    piece_marks = "".join(
+        f'<line class="longitudinal-piece" data-bar-id="{esc(piece["bar_id"])}" '
+        f'data-start-mm="{piece["start_mm"]:g}" data-end-mm="{piece["end_mm"]:g}" '
+        f'x1="{82 + index * piece_spacing:g}" x2="{82 + index * piece_spacing:g}" '
+        f'y1="{y(piece["start_mm"]):.4f}" y2="{y(piece["end_mm"]):.4f}"/>'
+        f'<text class="bar-mark" data-bar-id="{esc(piece["bar_id"])}" '
+        f'x="{86 + index * piece_spacing:g}" y="{y(piece["end_mm"])-4:.4f}" '
+        f'font-size="10" stroke="none">{esc(piece["bar_id"])}</text>'
+        for index, piece in enumerate(pieces)
+    )
+    rings = "".join(
+        f'<line class="ring-station" data-mark="{esc(transverse["bar_id"])}" '
+        f'data-station-mm="{station:g}" x1="65" x2="345" '
+        f'y1="{y(station):.4f}" y2="{y(station):.4f}"/>'
+        for station in transverse["stations_mm"]
+    )
+    bracket_stations = lap.get("lap_end_bracket_stations_mm", ())
+    brackets = "".join(
+        f'<line class="lap-bracket" data-lap-id="{lap_id}" data-station-mm="{station:g}" '
+        f'x1="48" x2="362" y1="{y(station):.4f}" y2="{y(station):.4f}"/>'
+        for station in bracket_stations
+    )
+    centres = lap["overlap_centres_from_column_centre_mm"]
+    section_radius = 69.0
+    section_scale = 2 * section_radius / request.geometry.diameter_mm
+    bar_radius = request.reinforcement.bar_diameter_mm * section_scale / 2
+    ring_radius = lap["ring_centreline_radius_mm"] * section_scale
+    ring_width = transverse["diameter_mm"] * section_scale
+    lower_mark, upper_mark = (f"{lap['bar_id']}-{side}" for side in ("L", "U"))
+
+    def section(position: str, centre_x: float, excluded: str) -> str:
+        marks = "".join(
+            f'<circle class="overlap-position" data-position="{position}" '
+            f'data-bar-id="{esc(bar_id)}" data-x-mm="{x:.9g}" data-y-mm="{y_coord:.9g}" '
+            f'cx="{centre_x + x * section_scale:.3f}" '
+            f'cy="{180 + y_coord * section_scale:.3f}" r="{bar_radius:.3f}">'
+            f"<title>{esc(bar_id)}</title></circle>"
+            for bar_id, (x, y_coord) in centres.items()
+            if bar_id != excluded
+        )
+        visible_pair = " / ".join(
+            esc(mark) for mark in (lower_mark, upper_mark) if mark != excluded
+        )
+        return (
+            f'<g class="section-position" data-position="{position}">'
+            f'<circle cx="{centre_x}" cy="180" r="{section_radius}" fill="#f8fafc" stroke="#334155"/>'
+            f'<circle cx="{centre_x}" cy="180" r="{ring_radius:.3f}" fill="none" stroke="#17616b" stroke-width="{ring_width:.3f}"/>'
+            f'<g fill="#172b4d">{marks}</g>'
+            f'<text x="{centre_x}" y="98" text-anchor="middle" font-size="12">{position}</text>'
+            f'<text x="{centre_x}" y="270" text-anchor="middle" font-size="12">{visible_pair}</text></g>'
+        )
+
+    circle_marks = "".join(
+        (
+            section("BELOW", 465, upper_mark),
+            section("OVERLAP", 625, ""),
+            section("ABOVE", 785, lower_mark),
+        )
+    )
+    governors = result.calculation["governing_strength"]
+    strength_note = "".join(
+        f'<text class="strength-check" data-combination-id="{esc(row["combination_id"])}" '
+        f'data-station-id="{esc(row["station_id"])}" data-station-mm="{row["station_mm"]:g}" '
+        f'x="400" y="{334 + 20 * index}" font-size="12">{esc(row["combination_id"])} '
+        f'{esc(row["station_id"])} · {esc(row["phase"].replace("_", " ").lower())} · '
+        f'{row["utilization"]:.6f}</text>'
+        for index, row in enumerate(governors[:3])
+    )
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 510" role="img"
+ data-lap-id="{lap_id}" data-ring-mark="{esc(transverse["bar_id"])}">
+<title>{esc(request.identity.member_id or '')} checked circular contact lap elevation</title>
+<desc>Input {esc(input_hash)}. Analysis {esc(request.basis.analysis_revision)}. Detail {esc(request.basis.detailing_revision)}.</desc>
+<rect x="60" y="{y(length):.4f}" width="290" height="{length * scale:.4f}" fill="#f1f5f9" stroke="#334155"/>
+<rect class="lap-zone" data-lap-id="{lap_id}" data-start-mm="{overlap_start:g}" data-end-mm="{overlap_end:g}" x="60" y="{y(overlap_end):.4f}" width="290" height="{(overlap_end-overlap_start)*scale:.4f}" fill="#fef3c7"/>
+<g stroke="#17616b" stroke-width="1.2">{rings}</g><g stroke="#965515" stroke-width="2">{brackets}</g>
+<g stroke="#172b4d" stroke-width="2">{piece_marks}</g>
+<line class="lap-bound" data-lap-id="{lap_id}" data-bound="start" x1="45" x2="365" y1="{y(overlap_start):.4f}" y2="{y(overlap_start):.4f}" stroke="#b91c1c"/>
+<line class="lap-bound" data-lap-id="{lap_id}" data-bound="end" x1="45" x2="365" y1="{y(overlap_end):.4f}" y2="{y(overlap_end):.4f}" stroke="#b91c1c"/>
+<text x="65" y="31" font-size="12">Developed elevation · Ø{request.geometry.diameter_mm:g} · {length:g} mm clear</text>
+<text x="65" y="492" font-size="12">{esc(transverse["bar_id"])} stations · Ø{transverse["diameter_mm"]:g} @ checked grid</text>
+{circle_marks}<text x="400" y="292" font-size="12">{lap_id} overlap {overlap_start:g}–{overlap_end:g} mm</text>
+<text x="400" y="313" font-size="12">Governing transfer checks</text>{strength_note}
+</svg>"""
+
+
 def _shear_report(data: dict[str, Any]) -> str:
     if "shear_status" not in data:
         return ""
@@ -865,6 +1064,63 @@ def _shear_report(data: dict[str, Any]) -> str:
         f"<table><thead><tr><th>Combination</th><th>Station (mm)</th><th>Signed shear (kN)</th>"
         f"<th>Vc (kN)</th><th>Vus (kN)</th><th>Resistance (kN)</th><th>Utilization</th>"
         f"<th>Status</th></tr></thead><tbody>{rows}</tbody></table>"
+    )
+
+
+def _lap_strength_report(data: dict[str, Any]) -> str:
+    """Render physical lap geometry and checked transfer strength."""
+    lap = data.get("lap")
+    if lap is None:
+        return ""
+    rows = "".join(
+        f'<tr><th>{html.escape(row["station_id"])}</th><td>{html.escape(row["combination_id"])}</td>'
+        f'<td>{html.escape(row["phase"])}</td><td>{row["station_mm"]:g}</td>'
+        f'<td>{row["pu_kn"]:+g}</td><td>{row["mx_knm"]:+g}</td><td>{row["my_knm"]:+g}</td>'
+        f'<td>{row["ratios"]["contour"]:.6f}</td><td>{row["ratios"]["direct_ray"]:.6f}</td>'
+        f'<td>{row["ratios"]["minimum_eccentricity_x"]:.6f}</td>'
+        f'<td>{row["ratios"]["minimum_eccentricity_y"]:.6f}</td>'
+        f'<td>{html.escape(row["governing_check"])}</td><td>{row["utilization"]:.6f}</td>'
+        f'<td>{row["status"]}</td></tr>'
+        for row in data.get("strength_by_phase", ())
+    )
+    governing = "".join(
+        f'<li>{html.escape(row["combination_id"])} {html.escape(row["station_id"])} '
+        f'· {html.escape(row["phase"])} at '
+        f'{row["station_mm"]:g} mm: {html.escape(row["governing_check"])} · '
+        f'{row["utilization"]:.6f} · {row["status"]}</li>'
+        for row in data.get("governing_strength", ())
+    )
+    ring_pitch = lap.get("maximum_lap_pitch_mm")
+    pitch = (
+        f'<p>Lap ring pitch {ring_pitch:g} mm · limit {lap["maximum_lap_ring_pitch_limit_mm"]:g} mm.</p>'
+        if ring_pitch is not None
+        else ""
+    )
+    basis = "".join(
+        f"<li>{html.escape(reference)}</li>"
+        for reference in (
+            lap.get("compression_reference"),
+            lap.get("lap_action_continuity_reference"),
+        )
+        if reference
+    )
+    return (
+        f'<section class="lap-strength" data-lap-id="{html.escape(lap["lap_id"], quote=True)}">'
+        f'<h2>Physical lap strength · {html.escape(lap["lap_id"])}</h2>'
+        f'<p>{html.escape(lap["bar_id"])} at {lap["overlap_bounds_mm"][0]:g}–'
+        f'{lap["overlap_bounds_mm"][1]:g} mm. Lap {lap["lap_provided_mm"]:g} mm '
+        f'· required {lap["lap_required_mm"]:g} mm.</p>{pitch}'
+        f'<p>Partner centre spacing {lap["contact_centre_distance_mm"]:g} mm · '
+        f'unrelated bar clearance {lap["minimum_unrelated_clearance_mm"]:.3f} mm · '
+        f'required {lap["minimum_required_unrelated_clearance_mm"]:g} mm.</p>'
+        f'<p>Projected ring closure clearance {lap["closure_sector_projected_clearance_mm"]:.3f} mm. '
+        f'Minimum gross-section compressive stress {lap["minimum_gross_stress_nmm2"]:+.6f} N/mm².</p>'
+        f"<ul>{basis}</ul>"
+        f"<table><thead><tr><th>Station ID</th><th>Combination</th><th>Layout</th>"
+        f"<th>Station (mm)</th><th>P (kN)</th><th>Mx (kN·m)</th><th>My (kN·m)</th>"
+        f"<th>Contour</th><th>Direct ray</th><th>Min. eccentricity x</th><th>Min. eccentricity y</th>"
+        f"<th>Governing check</th><th>Utilization</th><th>Status</th></tr></thead>"
+        f"<tbody>{rows}</tbody></table><h3>Governing physical checks</h3><ul>{governing}</ul></section>"
     )
 
 
@@ -900,7 +1156,7 @@ def render_circular_detailing_html(result: Result) -> str:
     """
     request, input_hash = _metadata(result)
     data = result.calculation
-    drawing = render_circular_detailing_svg(result) or ""
+    drawing = render_circular_detailing_svg(result)
     schedule = render_circular_detailing_bbs_csv(result)
     schedule_html = (
         f"<pre>{html.escape(schedule)}</pre>" if schedule else "<p>BBS held.</p>"
@@ -921,6 +1177,19 @@ def render_circular_detailing_html(result: Result) -> str:
     )
     limits = "".join(f"<li>{html.escape(limit)}</li>" for limit in result.limitations)
     transverse = data["transverse"]
+    lap = data.get("lap")
+    lap_requested = data.get("circular_lap_requested", bool(request.laps))
+    drawing_html = drawing or "<p>Checked drawing withheld.</p>"
+    admission_heading = (
+        "Regular-cage admission diagnostics"
+        if lap_requested
+        else "Checked section actions"
+    )
+    lap_unavailable = (
+        "<p>Physical lap checks unavailable; the rows below are admission diagnostics only.</p>"
+        if lap_requested and lap is None
+        else ""
+    )
     clearance = (
         f"<p>End-face clearances {transverse['start_face_clearance_mm']:g} mm at the start "
         f"and {transverse['end_face_clearance_mm']:g} mm at the end. "
@@ -936,6 +1205,8 @@ def render_circular_detailing_html(result: Result) -> str:
 <p>Input identity <code>{input_hash}</code>. Analysis revision {html.escape(request.basis.analysis_revision)}.
 Detail revision {html.escape(request.basis.detailing_revision)}.</p>
 <p>Required straight development {data['end_required_mm']:.2f} mm at each end.</p>{clearance}
+{_lap_strength_report(data)}{lap_unavailable}
+<h2>{admission_heading}</h2>
 <table><thead><tr><th>Combination</th><th>Station (mm)</th><th>P (kN)</th><th>Mx (kN·m)</th>
 <th>My (kN·m)</th><th>Vx (kN)</th><th>Vy (kN)</th><th>Section status</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
-{_shear_report(data)}{drawing}{schedule_html}<ul>{issues}{limits}</ul></html>"""
+{_shear_report(data)}{drawing_html}{schedule_html}<ul>{issues}{limits}</ul></html>"""

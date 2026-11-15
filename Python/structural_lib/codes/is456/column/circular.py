@@ -8,7 +8,12 @@ from math import acos, cos, pi, sin
 from structural_lib.codes.is456.section_materials import section_steel_stress
 
 from ._strain_compatibility import concrete_stress_at_strain, extreme_compression_strain
-from .positioned_biaxial import PositionedColumnBar, equilibrate_section
+from .positioned_biaxial import (
+    PositionedBiaxialStrength,
+    PositionedColumnBar,
+    equilibrate_section,
+    prepare_section_capacity,
+)
 
 # Positive nodes and weights of the symmetric 12-point Gauss-Legendre rule.
 _GAUSS = (
@@ -112,3 +117,20 @@ def circular_bars(
         )
         for index in range(count)
     )
+
+
+def check_circular_fixed_compression(
+    section: CircularSection,
+    *,
+    pu_kn: float,
+    mx_knm: float,
+    my_knm: float,
+    unsupported_length_mm: float,
+    steel_area_mm2: float,
+    puz_kn: float,
+) -> PositionedBiaxialStrength | None:
+    """Check signed actions and minimum eccentricities for actual circular bars."""
+    capacity = prepare_section_capacity(section, pu_kn, steel_area_mm2, puz_kn)
+    if capacity is None:
+        return None
+    return capacity.check(mx_knm, my_knm, unsupported_length_mm, unsupported_length_mm)

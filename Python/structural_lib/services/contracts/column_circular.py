@@ -4,10 +4,16 @@ from __future__ import annotations
 
 from typing import Annotated, Literal, Self
 
-from pydantic import Field, StrictBool, model_validator
+from pydantic import Field, StrictBool, field_validator, model_validator
 
 from structural_lib.services.canonical_family import FamilyIdentityV1
 from structural_lib.services.contracts.column_member import RectangularColumnActionsV1
+from structural_lib.services.contracts.column_member_detailing import (
+    ColumnDetailingActionV1,
+    _Id,
+    _Reference,
+    _Station,
+)
 from structural_lib.services.contracts.common import (
     StrictPublicModel,
     complete_field_contracts_from_schema,
@@ -63,6 +69,56 @@ class CircularColumnCageV1(StrictPublicModel):
     transverse: (
         Annotated[CircularRingV1 | CircularSpiralV1, Field(discriminator="kind")] | None
     )
+
+
+class CircularDetailingActionV1(ColumnDetailingActionV1):
+    """Concurrent circular actions with the supplied physical station ID."""
+
+    station_id: _Id | None = Field(default=None, exclude_if=lambda value: value is None)
+
+
+class CircularContactLapV1(StrictPublicModel):
+    """One equal-diameter circumferential contact pair with closed-ring restraint."""
+
+    lap_id: _Id
+    bar_id: _Id
+    start_mm: _Station
+    end_mm: _Station
+    upper_bar_angle_deg: float = Field(ge=0, lt=360)
+    compression_reference: _Reference | None = None
+    additional_ring_stations_mm: tuple[_Station, ...] = Field(max_length=500)
+    maximum_lap_ring_pitch_mm: float = Field(gt=0, le=300)
+    maximum_lap_end_ring_distance_mm: float = Field(gt=0, le=300)
+    closure_clear_sector_deg: tuple[
+        Annotated[float, Field(ge=0, lt=360)], Annotated[float, Field(gt=0, le=360)]
+    ]
+    closure_centreline_radial_envelope_mm: tuple[
+        Annotated[float, Field(gt=0, le=1000)], Annotated[float, Field(gt=0, le=1000)]
+    ]
+
+    @field_validator(
+        "additional_ring_stations_mm",
+        "closure_clear_sector_deg",
+        "closure_centreline_radial_envelope_mm",
+        mode="before",
+    )
+    @classmethod
+    def accept_arrays(cls, value: object) -> object:
+        return tuple(value) if isinstance(value, list) else value
+
+    @model_validator(mode="after")
+    def check_ordered_limits(self) -> Self:
+        angle_start, angle_end = self.closure_clear_sector_deg
+        radius_start, radius_end = self.closure_centreline_radial_envelope_mm
+        if (
+            self.end_mm <= self.start_mm
+            or angle_end <= angle_start
+            or radius_end < radius_start
+        ):
+            raise ValueError(
+                "Supply ordered lap, closure angle and closure radius limits."
+            )
+        return self
 
 
 class CircularColumnInputV1(StrictPublicModel):

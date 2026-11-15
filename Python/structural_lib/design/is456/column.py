@@ -1710,7 +1710,8 @@ def load_circular_column_detailing(
 
     Limitations
     -----------
-    Short braced circular cages with continuous straight bars.
+    Short braced circular cages with continuous straight bars or one Ø20
+    tied perimeter compression lap with matching signed actions and zero shear.
 
     Provenance
     ----------
