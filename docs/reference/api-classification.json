@@ -32116,7 +32116,7 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
-            "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
+            "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'float' = 40.0, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
             "docstring_sections": [
               "returns"
             ],
@@ -37343,7 +37343,7 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
-            "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
+            "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'float' = 40.0, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
             "docstring_sections": [
               "returns"
             ],
@@ -42209,7 +42209,7 @@
             "obligations": [
               "CLASSIFIED_PUBLIC_ROLE"
             ],
-            "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
+            "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'float' = 40.0, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
             "docstring_sections": [
               "returns"
             ],

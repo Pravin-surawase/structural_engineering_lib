@@ -411,7 +411,7 @@ class ShearResult:
     tau_v: float  # Nominal shear stress (N/mm^2)
     tau_c: float  # Design shear strength of concrete (N/mm^2)
     tau_c_max: float  # Max shear stress (N/mm^2)
-    Vus: float  # Shear capacity of stirrups (kN)
+    Vus: float  # Required shear contribution from reinforcement (kN)
     spacing: float  # Calculated spacing (mm)
     is_safe: bool  # True if section is safe in shear
     remarks: str = ""  # Deprecated: Use errors list instead

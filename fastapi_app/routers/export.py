@@ -509,14 +509,13 @@ async def export_report(
         "fck_nmm2": request.fck,
         "fy_nmm2": request.fy,
     }
-    cases = [
-        {
-            "case_id": "1.5(DL+LL)",
-            "mu_knm": request.moment,
-            "vu_kn": request.shear,
-            "tu_knm": request.torsion,
-        }
-    ]
+    factored_actions = {
+        "case_id": design_result.case_id,
+        "mu_knm": design_result.Mu_knm,
+        "vu_kn": design_result.Vu_kn,
+        "tu_knm": design_result.Tu_knm,
+    }
+    cases = [factored_actions]
     torsion_result = None
     combined_actions = None
     if design_result.torsion is not None:
@@ -562,16 +561,14 @@ async def export_report(
     results = {
         "cases": [
             {
-                "case_id": "1.5(DL+LL)",
-                "mu_knm": request.moment,
-                "vu_kn": request.shear,
-                "tu_knm": request.torsion,
+                **factored_actions,
                 "utilization": governing_utilization,
                 "is_ok": design_result.is_ok,
             }
         ],
         "summary": {
             "status": evidence["status"],
+            "load_basis": "User-supplied factored actions",
             "ast_required_mm2": design_result.flexure.Ast_required,
             "asc_required_mm2": design_result.flexure.Asc_required,
             "combined_stirrup_demand_mm2_per_mm": (
@@ -593,6 +590,7 @@ async def export_report(
         cases=cases,
         results=results,
         is_ok=design_result.is_ok,
+        governing_case_id=design_result.case_id,
         governing_utilization=governing_utilization,
         evidence=evidence,
     )

@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { act, render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { ParetoPanel } from '../design/ParetoPanel';
+import { resolveComparisonDepthOffsetMm } from '../design/comparisonDepth';
 
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
@@ -17,10 +18,9 @@ vi.mock('lucide-react', () => ({
 }));
 
 // Mock design store
+const mockSetInputs = vi.fn();
 vi.mock('../../store/designStore', () => ({
-  useDesignStore: vi.fn(() => ({
-    setInputs: vi.fn(),
-  })),
+  useDesignStore: vi.fn(() => ({ setInputs: mockSetInputs })),
 }));
 
 // Mock useParetoDesign hook — controls per test
@@ -38,6 +38,7 @@ vi.mock('../../hooks/useParetoDesign', () => ({
 
 beforeEach(() => {
   mockMutate.mockClear();
+  mockSetInputs.mockClear();
   mockHookReturn = {
     mutate: mockMutate,
     data: null,
@@ -46,7 +47,7 @@ beforeEach(() => {
   };
 });
 
-const defaultProps = { spanMm: 5000, muKnm: 150, vuKn: 80 };
+const defaultProps = { spanMm: 5000, muKnm: 150, vuKn: 80, effectiveDepthOffsetMm: 68 };
 
 describe('ParetoPanel', () => {
   it('renders the Find Alternatives button in initial state', () => {
@@ -61,9 +62,9 @@ describe('ParetoPanel', () => {
       span_mm: 5000,
       mu_knm: 150,
       vu_kn: 80,
-      cover_mm: 40,
+      cover_mm: 68,
       max_candidates: 50,
-    });
+    }, expect.objectContaining({ onSuccess: expect.any(Function) }));
   });
 
   it('shows loading state when isPending is true', () => {
@@ -136,9 +137,20 @@ describe('ParetoPanel', () => {
       isPending: false,
       error: null,
     };
+    mockMutate.mockImplementationOnce((_request, options) => act(() => options.onSuccess(mockData)));
     render(React.createElement(ParetoPanel, defaultProps));
+    fireEvent.click(screen.getByText('Find Alternatives'));
     expect(screen.getByText(/1 Alternative Design/)).toBeInTheDocument();
     expect(screen.getByText('0.42s')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /alternative design/i }));
+    fireEvent.click(screen.getByRole('button', { name: 'Apply dimensions' }));
+    expect(mockSetInputs).toHaveBeenCalledWith({
+      width: 300,
+      depth: 500,
+      effective_depth: 460,
+      fck: 25,
+      fy: 500,
+    });
   });
 
   it('returns null when no data, not pending, and no error but data has been cleared', () => {
@@ -153,5 +165,35 @@ describe('ParetoPanel', () => {
     // since !data && !isPending && !error
     render(React.createElement(ParetoPanel, defaultProps));
     expect(screen.getByText('Find Alternatives')).toBeInTheDocument();
+  });
+
+  it('holds a proposal after comparison inputs change', () => {
+    const result = {
+      pareto_front: [], pareto_count: 0, total_candidates: 0, objectives_used: [],
+      computation_time_sec: 0.1, best_by_cost: null, best_by_utilization: null,
+      best_by_weight: null, limitations: [],
+    };
+    mockMutate.mockImplementationOnce((_request, options) => act(() => options.onSuccess(result)));
+    const { rerender } = render(React.createElement(ParetoPanel, defaultProps));
+    fireEvent.click(screen.getByText('Find Alternatives'));
+    rerender(React.createElement(ParetoPanel, { ...defaultProps, effectiveDepthOffsetMm: 70 }));
+    fireEvent.click(screen.getByRole('button', { name: /0 Alternative Designs/i }));
+    expect(screen.getByText(/Comparison inputs changed after these alternatives/i)).toBeInTheDocument();
+  });
+
+  it('uses the physical depth basis for legacy screening offset', () => {
+    expect(resolveComparisonDepthOffsetMm({
+      depthMm: 500,
+      clearCoverMm: 50,
+      stirrupDiameterMm: 8,
+      mainBarDiameterMm: 20,
+    })).toBe(68);
+    expect(resolveComparisonDepthOffsetMm({
+      depthMm: 500,
+      effectiveDepthMm: 430,
+      clearCoverMm: 50,
+      stirrupDiameterMm: 8,
+      mainBarDiameterMm: 20,
+    })).toBe(70);
   });
 });

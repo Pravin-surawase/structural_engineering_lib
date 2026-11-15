@@ -266,10 +266,10 @@
     {
       "public_name": "optimize_pareto_front",
       "canonical_owner": "structural_lib.services.multi_objective_optimizer.optimize_pareto_front",
-      "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
+      "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'float' = 40.0, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'",
       "positional_parameters": 9,
       "disposition": "RETAIN_POSITIONAL_COMPATIBILITY",
-      "reason": "Existing positional callers retain argument binding; new callers use documented explicit keyword arguments. No keyword-only conversion or removal is selected in S3.",
+      "reason": "Existing positional callers retain argument binding. The effective-depth offset accepts fractional millimetres so screening uses the current D minus d.",
       "review": "LIB-S3-20261029"
     },
     {

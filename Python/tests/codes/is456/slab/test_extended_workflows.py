@@ -13,6 +13,8 @@ from structural_lib.codes.is456.slab.models import (
 from structural_lib.codes.is456.slab.one_way import OneWaySlabFlexureStatus
 from structural_lib.codes.is456.slab.serviceability import (
     SlabServiceabilityInput,
+    SlabServiceabilityStatus,
+    check_slab_span_depth_serviceability,
 )
 from structural_lib.codes.is456.slab.shear import slab_depth_shear_factor
 from structural_lib.codes.is456.slab.topology import (
@@ -187,9 +189,15 @@ def test_slab_depth_factor_matches_benchmark_points_and_interpolation() -> None:
     assert slab_depth_shear_factor(300) == pytest.approx(1.0)
 
 
-def test_serviceability_requires_reviewed_limit_carrier() -> None:
-    with pytest.raises(SlabContractError, match="limit_source_is_approved"):
+def test_serviceability_holds_without_current_reviewed_limit_carrier() -> None:
+    result = check_slab_span_depth_serviceability(
         SlabServiceabilityInput(3000, 115, 23, 1.18, "source", False, "review", True)
+    )
+    assert (
+        result.status
+        is SlabServiceabilityStatus.HELD_REQUIRES_CURRENT_REVIEWED_EVIDENCE
+    )
+    assert result.actual_span_depth_ratio == pytest.approx(3000 / 115)
 
 
 def test_b04_two_way_moments_strips_shear_and_corner_torsion() -> None:

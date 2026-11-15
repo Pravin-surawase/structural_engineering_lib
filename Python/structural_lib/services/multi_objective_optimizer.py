@@ -78,7 +78,7 @@ class ParetoCandidate:
 
     b_mm: int
     D_mm: int
-    d_mm: int
+    d_mm: float
     fck_nmm2: int
     fy_nmm2: int
     ast_required: float
@@ -445,7 +445,7 @@ def optimize_pareto_front(
     vu_kn: float,
     objectives: list[str] | None = None,
     cost_profile: CostProfile | None = None,
-    cover_mm: int = 40,
+    cover_mm: float = 40.0,
     max_candidates: int = 50,
     random_seed: int | None = None,
     asv_mm2: float = _DEFAULT_ASV_MM2,
@@ -465,7 +465,9 @@ def optimize_pareto_front(
             - 'utilization': Capacity utilization (maximize, i.e., less over-design)
             Default: ['cost', 'utilization']
         cost_profile: Regional cost data (defaults to India CPWD 2023)
-        cover_mm: Concrete cover (default 40mm)
+        cover_mm: Legacy effective-depth screening offset D-d (default 40 mm).
+            This optimizer does not resolve physical clear cover, links, or bar
+            centroid geometry separately.
         max_candidates: Maximum number of candidates to generate
         random_seed: Random seed for reproducibility
         asv_mm2: Area of the vertical stirrup legs used by the maintained

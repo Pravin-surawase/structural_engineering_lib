@@ -1,5 +1,5 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { DesignView } from '../../components/design/DesignView';
 
@@ -25,6 +25,7 @@ const mockLoadAnalysis = vi.hoisted(() => ({
     sfd_kn: number[];
   },
   isPending: false,
+  error: null as Error | null,
 }));
 
 const mockActions = vi.hoisted(() => ({
@@ -34,6 +35,7 @@ const mockActions = vi.hoisted(() => ({
   reconnect: vi.fn(),
   reset: vi.fn(),
 }));
+let mockLength = 4000;
 
 // Mock react-router-dom
 vi.mock('react-router-dom', () => ({
@@ -110,14 +112,20 @@ vi.mock('../../features/catalog/CatalogBeamInputPanel', () => ({
 vi.mock('../../store/designStore', () => ({
   useDesignStore: vi.fn(() => ({
     inputs: mockDesignInputs,
-    length: 4000,
+    length: mockLength,
   })),
 }));
 
 describe('DesignView', () => {
   beforeEach(() => {
     mockDesignInputs.include_serviceability = false;
+    mockLength = 4000;
     mockLoadAnalysis.data = null;
+    mockLoadAnalysis.error = null;
+    mockLoadAnalysis.mutate.mockReset();
+    mockLoadAnalysis.mutate.mockImplementation((_request: unknown, options?: { onSuccess?: (data: NonNullable<typeof mockLoadAnalysis.data>) => void }) => {
+      if (mockLoadAnalysis.data) options?.onSuccess?.(mockLoadAnalysis.data);
+    });
     mockActions.updateInputs.mockReset();
   });
 
@@ -186,6 +194,7 @@ describe('DesignView', () => {
     };
     render(React.createElement(DesignView));
     fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
     expect(screen.getByRole('button', { name: /use values/i })).toBeDisabled();
     expect(screen.getByText(/Transfer held/)).toHaveTextContent('-90.0 kN·m of hogging');
     expect(screen.getAllByText('-90.0').length).toBeGreaterThan(0);
@@ -202,6 +211,7 @@ describe('DesignView', () => {
     };
     render(React.createElement(DesignView));
     fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
     fireEvent.click(screen.getByRole('button', { name: /use values/i }));
     expect(mockActions.updateInputs).toHaveBeenCalledWith({ moment: 22.5, shear: 30 });
   });
@@ -217,7 +227,73 @@ describe('DesignView', () => {
     };
     render(React.createElement(DesignView));
     fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
     fireEvent.click(screen.getByRole('button', { name: /use values/i }));
     expect(mockActions.updateInputs).toHaveBeenCalledWith({ moment: 22.546, shear: 30.123 });
+  });
+
+  it('only transfers the newest matching load-calculator response', () => {
+    const callbacks: Array<(data: NonNullable<typeof mockLoadAnalysis.data>) => void> = [];
+    mockLoadAnalysis.mutate.mockImplementation((_request: unknown, options?: { onSuccess?: (data: NonNullable<typeof mockLoadAnalysis.data>) => void }) => {
+      if (options?.onSuccess) callbacks.push(options.onSuccess);
+    });
+    render(React.createElement(DesignView));
+    fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
+    act(() => callbacks[0]({ max_bm_knm: 22.5, min_bm_knm: 0, max_sf_kn: 30, min_sf_kn: -30, bmd_knm: [0, 22.5, 0], sfd_kn: [30, 0, -30] }));
+    fireEvent.change(screen.getByLabelText('w in kN/m'), { target: { value: '30' } });
+    expect(screen.getByRole('button', { name: /use values/i })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
+    fireEvent.change(screen.getByLabelText('w in kN/m'), { target: { value: '40' } });
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
+
+    act(() => callbacks[2]({ max_bm_knm: 45, min_bm_knm: 0, max_sf_kn: 60, min_sf_kn: -60, bmd_knm: [0, 45, 0], sfd_kn: [60, 0, -60] }));
+    act(() => callbacks[1]({ max_bm_knm: 33.75, min_bm_knm: 0, max_sf_kn: 45, min_sf_kn: -45, bmd_knm: [0, 33.75, 0], sfd_kn: [45, 0, -45] }));
+
+    fireEvent.click(screen.getByRole('button', { name: /use values/i }));
+    expect(mockActions.updateInputs).toHaveBeenCalledWith({ moment: 45, shear: 60 });
+  });
+
+  it('holds a diagram after the design span changes until it is recomputed', () => {
+    mockLoadAnalysis.data = {
+      max_bm_knm: 40,
+      min_bm_knm: 0,
+      max_sf_kn: 40,
+      min_sf_kn: -40,
+      bmd_knm: [0, 40, 0],
+      sfd_kn: [40, 0, -40],
+    };
+    const { rerender } = render(React.createElement(DesignView));
+    fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
+    mockLength = 5000;
+    rerender(React.createElement(DesignView));
+    expect(screen.getByRole('button', { name: /use values/i })).toBeDisabled();
+    expect(screen.getByText(/inputs changed after this diagram/i)).toBeInTheDocument();
+  });
+
+  it('keeps the previous diagram stale when recalculation fails', () => {
+    mockLoadAnalysis.data = {
+      max_bm_knm: 40,
+      min_bm_knm: 0,
+      max_sf_kn: 40,
+      min_sf_kn: -40,
+      bmd_knm: [0, 40, 0],
+      sfd_kn: [40, 0, -40],
+    };
+    const { rerender } = render(React.createElement(DesignView));
+    fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
+    expect(screen.getByRole('button', { name: /use values/i })).toBeEnabled();
+
+    fireEvent.change(screen.getByLabelText('w in kN/m'), { target: { value: '40' } });
+    mockLoadAnalysis.mutate.mockImplementationOnce(() => {
+      mockLoadAnalysis.error = new Error('Request failed');
+    });
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
+    rerender(React.createElement(DesignView));
+    expect(screen.getByText(/load calculation failed/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /use values/i })).toBeDisabled();
+    expect(mockActions.updateInputs).not.toHaveBeenCalled();
   });
 });

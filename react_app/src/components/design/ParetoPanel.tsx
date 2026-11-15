@@ -4,10 +4,10 @@
  * Shows results from POST /api/v1/optimization/beam/pareto as a compact table
  * highlighting cheapest, governing-utilization, and lightest alternatives.
  */
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Loader2, Sparkles, DollarSign, Zap, Feather, CheckCircle, XCircle, ChevronDown, ChevronRight } from "lucide-react";
 import { useParetoDesign } from "../../hooks/useParetoDesign";
-import type { ParetoCandidateResponse } from "../../api/client";
+import type { ParetoCandidateResponse, ParetoRequest, ParetoResponse } from "../../api/client";
 import { useDesignStore } from "../../store/designStore";
 
 interface ParetoPanelProps {
@@ -15,33 +15,59 @@ interface ParetoPanelProps {
   spanMm: number;
   muKnm: number;
   vuKn: number;
+  /** D-d used by the legacy optimizer's `cover_mm` screening field. */
+  effectiveDepthOffsetMm: number;
 }
 
-export function ParetoPanel({ spanMm, muKnm, vuKn }: ParetoPanelProps) {
+export function ParetoPanel({ spanMm, muKnm, vuKn, effectiveDepthOffsetMm }: ParetoPanelProps) {
   const [expanded, setExpanded] = useState(false);
-  const { mutate, data, isPending, error } = useParetoDesign();
+  const [comparison, setComparison] = useState<{
+    request: ParetoRequest;
+    result: ParetoResponse;
+  } | null>(null);
+  const latestRequest = useRef(0);
+  const { mutate, isPending, error } = useParetoDesign();
   const { setInputs } = useDesignStore();
+  const submittedRequest = comparison?.request;
+  const paretoResult = comparison?.result;
+  const resultMatchesCurrentInputs = Boolean(
+    submittedRequest
+      && submittedRequest.span_mm === spanMm
+      && submittedRequest.mu_knm === muKnm
+      && submittedRequest.vu_kn === vuKn
+      && submittedRequest.cover_mm === effectiveDepthOffsetMm,
+  );
 
   const handleFindAlternatives = () => {
-    mutate({
+    const request: ParetoRequest = {
       span_mm: spanMm,
       mu_knm: muKnm,
       vu_kn: vuKn,
-      cover_mm: 40,
+      // Legacy endpoint calls this `cover_mm`, but it only computes d = D - cover_mm.
+      // Supply the resolved D-d offset, not physical clear cover alone.
+      cover_mm: effectiveDepthOffsetMm,
       max_candidates: 50,
+    };
+    const requestNumber = latestRequest.current + 1;
+    latestRequest.current = requestNumber;
+    mutate(request, {
+      onSuccess: (result) => {
+        if (latestRequest.current === requestNumber) setComparison({ request, result });
+      },
     });
   };
 
   const handleApplyCandidate = (candidate: ParetoCandidateResponse) => {
     setInputs({
       width: candidate.b_mm,
-      depth: candidate.d_mm + 40, // d_mm + cover
+      depth: candidate.D_mm,
+      effective_depth: candidate.d_mm,
       fck: candidate.fck_nmm2,
       fy: candidate.fy_nmm2,
     });
   };
 
-  if (!data && !isPending && !error) {
+  if (!paretoResult && !isPending && !error) {
     return (
       <div className="rounded-xl bg-gradient-to-br from-violet-500/10 to-pink-500/10 border border-violet-500/20 p-3">
         <button
@@ -74,11 +100,15 @@ export function ParetoPanel({ spanMm, muKnm, vuKn }: ParetoPanelProps) {
     return (
       <div className="rounded-xl bg-red-500/10 border border-red-500/30 p-3">
         <p className="text-xs text-red-400">Optimization failed: {error.message}</p>
+        <button type="button" onClick={handleFindAlternatives} className="mt-2 text-xs font-medium text-violet-300 hover:text-violet-200">
+          Retry comparison
+        </button>
       </div>
     );
   }
 
-  if (!data) return null;
+  if (!paretoResult) return null;
+  const data = paretoResult;
 
   return (
     <div className="rounded-xl bg-gradient-to-br from-violet-500/10 to-pink-500/10 border border-violet-500/20">
@@ -164,9 +194,11 @@ export function ParetoPanel({ spanMm, muKnm, vuKn }: ParetoPanelProps) {
                     </div>
                     <button
                       onClick={() => handleApplyCandidate(candidate)}
+                      disabled={isPending || !resultMatchesCurrentInputs}
+                      title={!resultMatchesCurrentInputs ? "Refresh alternatives after changing the comparison inputs." : undefined}
                       className="px-2 py-0.5 text-[10px] font-medium rounded bg-violet-600/20 border border-violet-500/30 text-violet-300 hover:bg-violet-600/30 transition-colors"
                     >
-                      Apply
+                      Apply dimensions
                     </button>
                   </div>
 
@@ -207,6 +239,14 @@ export function ParetoPanel({ spanMm, muKnm, vuKn }: ParetoPanelProps) {
           <p className="text-[9px] text-zinc-500">
             {data.limitations.join(" ")}
           </p>
+          <p className="text-[9px] text-zinc-500">
+            Applying dimensions updates the input proposal only. Re-run design before treating it as the current checked result.
+          </p>
+          {!resultMatchesCurrentInputs && (
+            <p className="text-[9px] text-amber-300/80" role="status">
+              Comparison inputs changed after these alternatives were calculated. Refresh before applying a proposal.
+            </p>
+          )}
 
           <button
             onClick={handleFindAlternatives}

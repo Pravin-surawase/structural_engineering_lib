@@ -2,7 +2,7 @@
 
 from typing import Literal, Self
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, FiniteFloat, model_validator
 
 # =============================================================================
 # Request Models
@@ -327,7 +327,7 @@ class ParetoCandidateResponse(BaseModel):
 
     b_mm: int = Field(description="Beam width (mm)")
     D_mm: int = Field(description="Beam total depth (mm)")
-    d_mm: int = Field(description="Effective depth (mm)")
+    d_mm: float = Field(description="Effective depth (mm); may be fractional")
     fck_nmm2: int = Field(description="Concrete grade (N/mm²)")
     fy_nmm2: int = Field(description="Steel grade (N/mm²)")
     ast_required: float = Field(description="Required steel area (mm²)")
@@ -393,11 +393,15 @@ class ParetoRequest(BaseModel):
         description="Objectives to optimize: 'cost', 'steel_weight', 'utilization'. Default: ['cost', 'utilization']",
         examples=[["cost", "utilization"]],
     )
-    cover_mm: int = Field(
-        default=40,
-        ge=20,
-        le=75,
-        description="Concrete cover (mm)",
+    cover_mm: FiniteFloat = Field(
+        default=40.0,
+        gt=0,
+        lt=800,
+        strict=True,
+        description=(
+            "Legacy effective-depth screening offset D-d (mm); this endpoint "
+            "does not model physical clear cover or bar geometry separately."
+        ),
     )
     max_candidates: int = Field(
         default=50,

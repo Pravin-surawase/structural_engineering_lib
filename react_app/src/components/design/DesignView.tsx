@@ -4,12 +4,12 @@
  * Responsive workbench: common inputs, 3D review, truthful results, and
  * contextual advanced actions.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Calculator, CheckCircle, AlertCircle, Loader2, ChevronDown, ChevronRight, Shield, Lightbulb, Download, FileText, Ruler, ChevronUp, RotateCcw, ArrowRight, Activity } from "lucide-react";
 import { useExportBBS, useExportDXF, useExportReport } from "../../hooks/useExport";
 import { useLoadAnalysis } from "../../hooks/useLoadAnalysis";
-import type { LoadAnalysisResponse } from "../../api/client";
+import type { LoadAnalysisRequest, LoadAnalysisResponse } from "../../api/client";
 import type { BeamCrackWidthParams, BeamDesignResponse } from "../../api/client";
 import { governingUtilization } from "../../api/client";
 import { useDesignStore } from "../../store/designStore";
@@ -20,6 +20,7 @@ import { ConnectionStatus } from "../ui/ConnectionStatus";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { WorkflowHint } from "../ui/WorkflowHint";
 import { ParetoPanel } from "./ParetoPanel";
+import { resolveComparisonDepthOffsetMm } from "./comparisonDepth";
 import { formatPercent, formatRatio, formatSignedRatio, getTrustPresentation } from "../../utils/trustPresentation";
 import { WorkbenchHeader } from "../workbench/WorkbenchHeader";
 import { WorkbenchShell } from "../workbench/WorkbenchShell";
@@ -60,6 +61,12 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const [loadCalcType, setLoadCalcType] = useState<'udl' | 'point'>('udl');
   const [loadCalcMagnitude, setLoadCalcMagnitude] = useState(20); // kN/m or kN
   const [loadCalcSupport, setLoadCalcSupport] = useState<'simply_supported' | 'cantilever'>('simply_supported');
+  const [loadCalcPositionMm, setLoadCalcPositionMm] = useState(length / 2);
+  const [loadCalculation, setLoadCalculation] = useState<{
+    request: LoadAnalysisRequest;
+    result: LoadAnalysisResponse;
+  } | null>(null);
+  const latestLoadRequest = useRef(0);
 
   const exportParams = {
     source: "quick-beam" as const,
@@ -90,7 +97,30 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const rebarSuggestions = useRebarSuggestions();
   const loadAnalysis = useLoadAnalysis();
   const combinedCase = (inputs.torsion ?? 0) > 0 || Boolean(inputs.include_serviceability);
-  const minimumLoadMoment = loadAnalysis.data?.min_bm_knm;
+  const comparisonDepthOffsetMm = resolveComparisonDepthOffsetMm({
+    depthMm: inputs.depth,
+    // A retained design result may belong to an older input revision. Only its
+    // depth is safe to use when the lifecycle confirms it is current.
+    effectiveDepthMm: state.resultLifecycle === "current"
+      ? state.result?.effective_depth_used ?? inputs.effective_depth
+      : inputs.effective_depth,
+    clearCoverMm: inputs.clear_cover ?? 40,
+    stirrupDiameterMm: inputs.stirrup_dia_mm ?? 8,
+    mainBarDiameterMm: inputs.main_bar_dia_mm ?? 20,
+  });
+  const submittedLoadRequest = loadCalculation?.request;
+  const submittedLoad = submittedLoadRequest?.loads[0];
+  const loadAnalysisResult = loadCalculation?.result;
+  const loadResultMatchesCurrentInputs = Boolean(
+    submittedLoadRequest
+      && submittedLoad
+      && submittedLoadRequest.span_mm === length
+      && submittedLoadRequest.support_condition === loadCalcSupport
+      && submittedLoad.load_type === loadCalcType
+      && submittedLoad.magnitude === loadCalcMagnitude
+      && (loadCalcType !== 'point' || submittedLoad.position_mm === loadCalcPositionMm),
+  );
+  const minimumLoadMoment = loadAnalysisResult?.min_bm_knm;
   // Quick Beam admits only nonnegative sagging moment and has no tension-face
   // or station contract. Do not turn a hogging action into bottom tension steel.
   const cannotTransferLoadResult = minimumLoadMoment !== undefined && minimumLoadMoment < -1e-9;
@@ -280,17 +310,29 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                 <DropdownField label="Support" value={loadCalcSupport} onChange={setLoadCalcSupport as (v: string | number) => void} options={['simply_supported', 'cantilever']} format={(v) => v === 'simply_supported' ? 'SS' : 'Cantilever'} />
                 <DropdownField label="Load Type" value={loadCalcType} onChange={setLoadCalcType as (v: string | number) => void} options={['udl', 'point']} format={(v) => v === 'udl' ? 'UDL' : 'Point'} />
                 <InputField label={loadCalcType === 'udl' ? 'w' : 'P'} value={loadCalcMagnitude} onChange={setLoadCalcMagnitude} unit={loadCalcType === 'udl' ? 'kN/m' : 'kN'} min={0.1} max={500} step={0.5} />
+                {loadCalcType === 'point' && <InputField label="Load position" value={loadCalcPositionMm} onChange={setLoadCalcPositionMm} unit="mm" min={0} max={length} step={100} />}
                 <div className="col-span-2 flex gap-2">
                   <button
                     onClick={() => {
                       const load = loadCalcType === 'udl'
                         ? { load_type: 'udl' as const, magnitude: loadCalcMagnitude }
-                        : { load_type: 'point' as const, magnitude: loadCalcMagnitude, position_mm: length / 2 };
-                      loadAnalysis.mutate({
+                        : { load_type: 'point' as const, magnitude: loadCalcMagnitude, position_mm: loadCalcPositionMm };
+                      const request: LoadAnalysisRequest = {
                         span_mm: length,
                         support_condition: loadCalcSupport,
                         loads: [load],
                         num_points: 51,
+                      };
+                      const requestNumber = latestLoadRequest.current + 1;
+                      latestLoadRequest.current = requestNumber;
+                      // Bind a result to the exact inputs submitted. An older network
+                      // response must never become transferable after a later request.
+                      loadAnalysis.mutate(request, {
+                        onSuccess: (result) => {
+                          if (latestLoadRequest.current === requestNumber) {
+                            setLoadCalculation({ request, result });
+                          }
+                        },
                       });
                     }}
                     disabled={loadAnalysis.isPending}
@@ -299,27 +341,37 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                     {loadAnalysis.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Activity className="w-3 h-3" />}
                     Compute
                   </button>
-                  {loadAnalysis.data && (
+                  {loadAnalysisResult && (
                     <button
                       onClick={() => {
-                        const d = loadAnalysis.data!;
+                        const d = loadAnalysisResult;
                         const vuAbs = Math.max(Math.abs(d.max_sf_kn), Math.abs(d.min_sf_kn));
                         actions.updateInputs({ moment: d.max_bm_knm, shear: vuAbs });
                       }}
-                      disabled={cannotTransferLoadResult}
-                      title={cannotTransferLoadResult ? "Quick Beam cannot represent hogging moment, tension face, or governing station. Keep the signed diagram and use a checked member workflow." : undefined}
+                      disabled={loadAnalysis.isPending || !loadResultMatchesCurrentInputs || cannotTransferLoadResult}
+                      title={cannotTransferLoadResult ? "Quick Beam cannot represent hogging moment, tension face, or governing station. Keep the signed diagram and use a checked member workflow." : !loadResultMatchesCurrentInputs ? "Recompute after changing the load calculator inputs." : undefined}
                       className="flex-1 py-1.5 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-[11px] text-emerald-300 hover:bg-emerald-600/30 transition-colors flex items-center justify-center gap-1.5"
                     >
                       Use Values <ArrowRight className="w-3 h-3" />
                     </button>
                   )}
                 </div>
+                {loadAnalysis.error && (
+                  <p className="col-span-2 text-[10px] text-rose-300" role="alert">
+                    Load calculation failed. Check the current inputs and try again.
+                  </p>
+                )}
                 {cannotTransferLoadResult && (
                   <p className="col-span-2 text-[10px] leading-4 text-amber-300/80" role="status">
                     Transfer held. The diagram includes {minimumLoadMoment.toFixed(1)} kN·m of hogging. Quick Beam cannot preserve its tension face or station.
                   </p>
                 )}
-                {loadAnalysis.data && <MiniDiagram data={loadAnalysis.data} />}
+                {loadAnalysisResult && !loadResultMatchesCurrentInputs && (
+                  <p className="col-span-2 text-[10px] leading-4 text-amber-300/80" role="status">
+                    Load inputs changed after this diagram was calculated. Recompute before using its values.
+                  </p>
+                )}
+                {loadAnalysisResult && <MiniDiagram data={loadAnalysisResult} />}
               </>
             )}
             <InputField label="Torsion (Tu)" value={inputs.torsion ?? 0} onChange={(v) => actions.updateInputs({ torsion: v })} unit="kN·m" min={0} max={200} step={0.5} />
@@ -503,7 +555,7 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                 <CompactResults result={state.result} />
                 {!combinedCase && <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />}
                 <RebarSuggestionsPanel data={rebarSuggestions.data} isPending={rebarSuggestions.isPending} />
-                {showCompare && !combinedCase ? <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} /> : null}
+                {showCompare && !combinedCase ? <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} effectiveDepthOffsetMm={comparisonDepthOffsetMm} /> : null}
               </div>
             </div>
           )

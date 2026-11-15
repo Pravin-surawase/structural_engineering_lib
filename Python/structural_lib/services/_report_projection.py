@@ -10,6 +10,7 @@ from dataclasses import asdict, is_dataclass
 from enum import Enum
 from typing import Any, Protocol, runtime_checkable
 
+from structural_lib.codes.is456.beam.shear import shear_reinforcement_component_kn
 from structural_lib.core.data_types import ComplianceCaseResult
 from structural_lib.services.api_results import DesignAndDetailResult
 from structural_lib.services.beam_api import _detailing_result_to_dict
@@ -128,12 +129,62 @@ def project_beam_report(result: Any) -> dict[str, Any]:
         }
     )
     section_type = getattr(flexure, "section_type", None)
+    asc_required = getattr(flexure, "Asc_required", None)
+    mu_lim = getattr(flexure, "Mu_lim", None)
+    xu_max = getattr(flexure, "xu_max", None)
+    d_mm = geometry.get("d_mm")
+    equivalent_moment = getattr(calculation, "Me_knm", None)
+    flexure_method = None
+    if asc_required is not None:
+        if asc_required > 0:
+            flexure_method = "Compression reinforcement required"
+        elif getattr(flexure, "is_safe", None) is True:
+            flexure_method = "Singly reinforced"
+        else:
+            flexure_method = "Flexure check failed"
     flexure_values = {
         "ast_required": flexure.Ast_required,
+        "asc_required": asc_required,
         "ast_provided": None,
+        "asc_provided": None,
         "section_type": getattr(section_type, "name", None),
+        "design_method": flexure_method,
+        "mu_lim_knm": mu_lim,
+        "xu_lim_ratio": xu_max / d_mm if xu_max and d_mm else None,
+        "ast_min_mm2": getattr(flexure, "Ast_min", None),
+        "ast_max_mm2": getattr(flexure, "Ast_max", None),
+        "design_moment_knm": (
+            equivalent_moment
+            if equivalent_moment is not None
+            else getattr(calculation, "Mu_knm", None)
+        ),
+        "clause_refs": getattr(flexure, "clause_refs", {}),
         "is_safe": getattr(flexure, "is_safe", None),
     }
+    spacing_mm = shear_values.get("spacing")
+    asv_mm2 = retained.get("asv_mm2")
+    fy_link = materials.get("fy_transverse_nmm2", materials.get("fy_nmm2"))
+    shear_values["vus_required_kn"] = shear_values.get("Vus")
+    shear_values["proposed_link_capacity_kn"] = None
+    shear_values["proposed_link_basis"] = None
+    if (
+        shear_values.get("is_safe") is True
+        and isinstance(asv_mm2, (int, float))
+        and isinstance(fy_link, (int, float))
+        and isinstance(d_mm, (int, float))
+        and isinstance(spacing_mm, (int, float))
+        and min(asv_mm2, fy_link, d_mm, spacing_mm) > 0
+    ):
+        shear_values["proposed_link_capacity_kn"] = shear_reinforcement_component_kn(
+            asv_mm2, fy_link, d_mm, 90, spacing_mm
+        )
+        shear_values["proposed_link_basis"] = {
+            "leg_area_mm2": asv_mm2,
+            "fy_nmm2": fy_link,
+            "design_fy_nmm2": min(fy_link, 415.0),
+            "d_mm": d_mm,
+            "pitch_mm": spacing_mm,
+        }
     if isinstance(result, ComplianceCaseResult):
         flexure_values["pt_provided"] = flexure.pt_provided
     elif legacy_scalar:
@@ -207,12 +258,20 @@ def project_beam_report(result: Any) -> dict[str, Any]:
     serialized = (
         calculation.to_dict() if isinstance(calculation, ComplianceCaseResult) else {}
     )
+    utilizations = serialized.get("utilizations", {})
+    evaluated = {key: value for key, value in utilizations.items() if value is not None}
     summary = {
         "is_ok": is_ok,
         "engineering_status": engineering,
         "failed_checks": failed_checks,
         "remarks": getattr(calculation, "remarks", ""),
-        "utilizations": serialized.get("utilizations", {}),
+        "utilizations": utilizations,
+        "governing_check": (
+            max(evaluated, key=lambda key: evaluated[key])
+            if evaluated and not serialized.get("unavailable_utilizations")
+            else None
+        ),
+        "governing_utilization": serialized.get("governing_utilization"),
         "unavailable_utilizations": serialized.get("unavailable_utilizations", {}),
         "clause_refs": getattr(calculation, "clause_refs", {}),
     }
@@ -304,7 +363,9 @@ def report_evidence_rows(projection: dict[str, Any]) -> list[tuple[str, str]]:
         "Calculation request and basis": basis,
         "Effective-depth resolution": source.get("effective_depth_resolution"),
         "Required tension steel (mm²)": results["flexure"].get("ast_required"),
+        "Required compression steel (mm²)": results["flexure"].get("asc_required"),
         "Provided reinforcement and detailing (mm, mm²)": provided,
+        "Proposed vertical link basis": results["shear"].get("proposed_link_basis"),
         "Evaluated serviceability checks": results["serviceability"] or "NOT EVALUATED",
         "Evaluated torsion check": results.get("torsion") or "NOT EVALUATED",
         "Check outcomes and failure reasons": {
@@ -395,12 +456,13 @@ def report_template_context(projection: dict[str, Any]) -> dict[str, Any]:
     inputs["materials"].update(fck=inputs["fck"], fy=inputs["fy"])
     results["flexure"].update(
         ast_required_mm2=results["flexure"]["ast_required"],
-        ast_provided_mm2=None,
-        mu_knm=inputs["loads"][0]["mu_knm"],
+        asc_required_mm2=results["flexure"]["asc_required"],
+        ast_provided_mm2=results["flexure"]["ast_provided"],
+        mu_knm=results["flexure"]["design_moment_knm"],
     )
     shear = results["shear"]
     shear.update(
-        vu_kn=shear["Vu_kn"],
+        vu_kn=results["torsion"].get("Ve_kn", shear["Vu_kn"]),
         tv_nmm2=shear.get("tau_v"),
         tc_nmm2=shear.get("tau_c"),
         tc_max_nmm2=shear.get("tau_c_max"),

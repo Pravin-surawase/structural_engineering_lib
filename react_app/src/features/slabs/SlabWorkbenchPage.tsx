@@ -281,7 +281,12 @@ export function SlabWorkbenchPage() {
   const [error, setError] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+  const requestSerialRef = useRef(0);
   const isCurrent = result !== null && resultRevision === revision;
+  const usesDemonstrationEvidence = [
+    'serviceability_limit_source_reference',
+    'qualified_serviceability_acceptance_reference',
+  ].every((field) => request[field] === SAMPLES[mode][field]);
 
   const coefficientLabel = useMemo(() => {
     if (mode === 'simply-supported') return 'Closed-form one-way action';
@@ -378,14 +383,16 @@ export function SlabWorkbenchPage() {
     {
       label: 'Reviewed span/depth',
       status: serviceabilityStatus,
-      pass: serviceabilityStatus === null
+      pass: serviceabilityStatus === null || serviceabilityStatus.startsWith('held_')
         ? null
         : serviceabilityStatus === 'satisfied_with_reviewed_limit',
     },
   ];
-  const boundedReviewPass = result && reviewChecks.every((check) => check.pass !== null)
-    ? reviewChecks.every((check) => check.pass === true)
-    : null;
+  const boundedReviewPass = reviewChecks.some((check) => check.pass === false)
+    ? false
+    : reviewChecks.every((check) => check.pass === true)
+      ? true
+      : null;
 
   const heldItems = useMemo(() => {
     if (!result) return [];
@@ -425,8 +432,37 @@ export function SlabWorkbenchPage() {
 
   const cornerTorsion = readObjectArray(result, 'panel.corner_torsion');
 
+  function invalidateSampleEvidence(next: SlabWorkflowRequest) {
+    return {
+      ...next,
+      serviceability_limit_source_reference: '',
+      qualified_serviceability_acceptance_reference: '',
+      qualified_serviceability_acceptance_acknowledged: false,
+      serviceability_limit_source_is_approved: false,
+    };
+  }
+
+  function updateEvidence(field: string, value: string | boolean) {
+    setRequest((current) => ({
+      ...current,
+      [field]: value,
+      ...(field === 'serviceability_limit_source_reference' && {
+        serviceability_limit_source_is_approved: false,
+        qualified_serviceability_acceptance_acknowledged: false,
+      }),
+      ...(field === 'qualified_serviceability_acceptance_reference' && {
+        qualified_serviceability_acceptance_acknowledged: false,
+      }),
+    }));
+    setRevision((current) => current + 1);
+    setError(null);
+  }
+
   function switchMode(nextMode: SlabWorkflowMode) {
     abortRef.current?.abort();
+    abortRef.current = null;
+    requestSerialRef.current += 1;
+    setRunning(false);
     setMode(nextMode);
     setRequest({ ...SAMPLES[nextMode] });
     setRevision((value) => value + 1);
@@ -437,7 +473,10 @@ export function SlabWorkbenchPage() {
 
   function updateNumber(field: string, raw: string) {
     const value = Number(raw);
-    setRequest((current) => ({ ...current, [field]: value }));
+    setRequest((current) => {
+      const next = { ...current, [field]: value };
+      return current[field] === value ? next : invalidateSampleEvidence(next);
+    });
     setRevision((current) => current + 1);
     setError(null);
   }
@@ -454,7 +493,7 @@ export function SlabWorkbenchPage() {
       ) {
         next.corner_lift_condition = 'restrained';
       }
-      return next;
+      return current[field] === next[field] ? next : invalidateSampleEvidence(next);
     });
     setRevision((current) => current + 1);
     setError(null);
@@ -464,21 +503,37 @@ export function SlabWorkbenchPage() {
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
+    const requestSerial = ++requestSerialRef.current;
+    const submittedMode = mode;
     const submittedRevision = revision;
+    const source = String(request.serviceability_limit_source_reference).trim();
+    const acceptance = String(request.qualified_serviceability_acceptance_reference).trim();
+    const submittedRequest = {
+      ...request,
+      // The public API retains its nonblank evidence-reference contract. Empty
+      // fields are represented as missing evidence there, while the passport
+      // preserves the actual empty user fields below.
+      serviceability_limit_source_reference: source || 'missing_serviceability_source_for_current_inputs',
+      serviceability_limit_source_is_approved: Boolean(source)
+        && request.serviceability_limit_source_is_approved === true,
+      qualified_serviceability_acceptance_reference: acceptance || 'missing_qualified_acceptance_for_current_inputs',
+      qualified_serviceability_acceptance_acknowledged: Boolean(acceptance)
+        && request.qualified_serviceability_acceptance_acknowledged === true,
+    };
     setRunning(true);
     setError(null);
     try {
-      const response = await designSlabWorkflow(mode, request, controller.signal);
-      if (!controller.signal.aborted) {
+      const response = await designSlabWorkflow(submittedMode, submittedRequest, controller.signal);
+      if (!controller.signal.aborted && requestSerial === requestSerialRef.current) {
         setResult(response);
         setResultRevision(submittedRevision);
       }
     } catch (caught) {
-      if (!controller.signal.aborted) {
+      if (!controller.signal.aborted && requestSerial === requestSerialRef.current) {
         setError(caught instanceof Error ? caught.message : 'Slab design failed');
       }
     } finally {
-      if (!controller.signal.aborted) setRunning(false);
+      if (requestSerial === requestSerialRef.current) setRunning(false);
     }
   }
 
@@ -492,6 +547,11 @@ export function SlabWorkbenchPage() {
       result,
       boundaries: {
         qualified_review_required: true,
+        demonstration_preset: usesDemonstrationEvidence,
+        serviceability_review_evidence_current: (
+          request.serviceability_limit_source_is_approved === true
+          && request.qualified_serviceability_acceptance_acknowledged === true
+        ),
         complete_engineering_design_approved: false,
         flat_slabs: 'separate_held_extension',
       },
@@ -533,7 +593,15 @@ export function SlabWorkbenchPage() {
           text: 'text-rose-100/90',
           icon: 'text-rose-300',
         }
-      : {
+      : serviceabilityStatus?.startsWith('held_')
+        ? {
+            title: 'Serviceability review evidence required',
+            message: 'Enter references that apply to these current inputs and explicitly attest them before treating the reviewed span/depth check as satisfied.',
+            container: 'border-amber-400/20 bg-amber-400/[0.05]',
+            text: 'text-amber-100/80',
+            icon: 'text-amber-300',
+          }
+        : {
           title: result ? 'Review evidence incomplete' : 'Awaiting calculation',
           message: result
             ? 'The response does not contain every bounded review disposition.'
@@ -568,6 +636,11 @@ export function SlabWorkbenchPage() {
             </WorkbenchPanel>
 
             <WorkbenchPanel title="Inputs" description="All displayed dimensions and actions have explicit units.">
+              {usesDemonstrationEvidence && (
+                <p className="rounded-lg border border-blue-400/20 bg-blue-500/[0.06] p-3 text-xs leading-5 text-blue-100">
+                  Demonstration preset: its review references apply only to the unchanged sample inputs. Editing a design clears that evidence and requires a current source and qualified-review attestation.
+                </p>
+              )}
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                 {EDITABLE[mode].map(([field, label, unit]) => (
                   <label key={field} className="grid gap-1 text-xs text-zinc-400">
@@ -612,6 +685,51 @@ export function SlabWorkbenchPage() {
                   ) : null}
                 </div>
               ) : null}
+              <div className="mt-4 grid gap-3 border-t border-white/10 pt-4">
+                <p className="text-xs font-semibold text-zinc-300">Current serviceability review evidence</p>
+                <label className="grid gap-1 text-xs text-zinc-400">
+                  <span>Serviceability limit source reference</span>
+                  <input
+                    aria-label="Serviceability limit source reference"
+                    type="text"
+                    value={String(request.serviceability_limit_source_reference)}
+                    onChange={(event) => updateEvidence('serviceability_limit_source_reference', event.target.value)}
+                    placeholder="Enter the source applying to these inputs"
+                    className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-blue-400/60"
+                  />
+                </label>
+                <label className="flex items-start gap-2 text-xs leading-5 text-zinc-400">
+                  <input
+                    aria-label="Source applies to current inputs"
+                    type="checkbox"
+                    checked={request.serviceability_limit_source_is_approved === true}
+                    disabled={!String(request.serviceability_limit_source_reference).trim()}
+                    onChange={(event) => updateEvidence('serviceability_limit_source_is_approved', event.target.checked)}
+                  />
+                  I confirm this source applies to the current serviceability inputs.
+                </label>
+                <label className="grid gap-1 text-xs text-zinc-400">
+                  <span>Qualified review acceptance reference</span>
+                  <input
+                    aria-label="Qualified review acceptance reference"
+                    type="text"
+                    value={String(request.qualified_serviceability_acceptance_reference)}
+                    onChange={(event) => updateEvidence('qualified_serviceability_acceptance_reference', event.target.value)}
+                    placeholder="Enter the qualified review reference"
+                    className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-blue-400/60"
+                  />
+                </label>
+                <label className="flex items-start gap-2 text-xs leading-5 text-zinc-400">
+                  <input
+                    aria-label="Qualified review acknowledged for current inputs"
+                    type="checkbox"
+                    checked={request.qualified_serviceability_acceptance_acknowledged === true}
+                    disabled={!String(request.qualified_serviceability_acceptance_reference).trim()}
+                    onChange={(event) => updateEvidence('qualified_serviceability_acceptance_acknowledged', event.target.checked)}
+                  />
+                  I attest that qualified review accepted this serviceability limit for the current inputs.
+                </label>
+              </div>
               <button
                 type="button"
                 onClick={calculate}

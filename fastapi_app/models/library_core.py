@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, StrictInt
+from pydantic import BaseModel, Field, StrictBool, StrictInt
 
 
 class FootingLoadTransferRequest(BaseModel):
@@ -49,9 +49,9 @@ class SlabServiceabilityCarrierRequest(BaseModel):
     reviewed_base_span_depth_limit: float = Field(gt=0)
     reviewed_aggregate_modification_factor: float = Field(gt=0)
     serviceability_limit_source_reference: str = Field(min_length=1)
-    serviceability_limit_source_is_approved: Literal[True]
+    serviceability_limit_source_is_approved: StrictBool
     qualified_serviceability_acceptance_reference: str = Field(min_length=1)
-    qualified_serviceability_acceptance_acknowledged: Literal[True]
+    qualified_serviceability_acceptance_acknowledged: StrictBool
 
 
 class CompleteOneWaySlabDesignRequest(

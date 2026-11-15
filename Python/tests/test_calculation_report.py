@@ -14,6 +14,7 @@ Tests cover:
 from __future__ import annotations
 
 import json
+import math
 import tempfile
 from dataclasses import dataclass, replace
 from pathlib import Path
@@ -22,6 +23,8 @@ import pytest
 
 from structural_lib import api
 from structural_lib.core.data_types import DesignSectionType, ShearResult
+from structural_lib.design.is456 import beam
+from structural_lib.reports import generate_html_report
 from structural_lib.services.api_results import DesignAndDetailResult
 from structural_lib.services.calculation_report import (
     CalculationReport,
@@ -58,6 +61,87 @@ class _DesignFixture:
 # =============================================================================
 # Fixtures
 # =============================================================================
+
+
+def _design_for_report(fy_nmm2, mu_knm, vu_kn):
+    return beam.design(
+        beam.input(
+            member_id="QA-B1",
+            case_id="QA-ULS",
+            story="L1",
+            span_mm=5000,
+            b_mm=230,
+            D_mm=450,
+            d_mm=386,
+            d_dash_mm=47,
+            fck_nmm2=25,
+            fy_nmm2=fy_nmm2,
+            fy_transverse_nmm2=415,
+            mu_knm=mu_knm,
+            vu_kn=vu_kn,
+            asv_mm2=2 * math.pi * 10**2 / 4,
+            ast_mm2_for_shear=1130.973355,
+        )
+    )
+
+
+@pytest.mark.parametrize("fy_nmm2, ratio", [(415, 0.48), (500, 0.46)])
+@pytest.mark.parametrize("mu_knm", [100, 200])
+def test_detailed_flexure_report_projects_the_calculated_branch(fy_nmm2, ratio, mu_knm):
+    pytest.importorskip("jinja2")
+    result = _design_for_report(fy_nmm2, mu_knm, 93.75)
+    core = result.calculation.flexure
+    report = generate_calculation_report(result)
+    flexure = report.to_dict()["results"]["flexure"]
+    assert flexure["xu_lim_ratio"] == pytest.approx(ratio)
+    assert flexure["mu_lim_knm"] == pytest.approx(core.Mu_lim)
+    assert flexure["asc_required"] == pytest.approx(core.Asc_required)
+    above_limit = mu_knm > core.Mu_lim
+    assert (flexure["asc_required"] > 0) is above_limit
+    if (fy_nmm2, mu_knm) == (500, 200):
+        assert flexure["mu_lim_knm"] == pytest.approx(114.463936, abs=1e-6)
+        assert flexure["asc_required"] == pytest.approx(640.913741, abs=1e-6)
+
+    html = generate_html_report(result, template="detailed")
+    summary = html.split('id="checked-summary">', 1)[1].split("</section>", 1)[0]
+    trace = html.split('id="flexure">', 1)[1].split("</section>", 1)[0]
+    assert "230 × 450 mm" in summary and "d = 386 mm" in summary
+    assert "QA-ULS" in summary and f"{mu_knm:.2f} kN·m" in summary
+    assert "Governing check" in summary and "Not supplied." in summary
+    assert f"x<sub>u,lim</sub>/d = {ratio:.3f}" in trace
+    assert f"M<sub>u,lim</sub> = {core.Mu_lim:.2f} kN·m" in trace
+    assert f"A<sub>sc,required</sub> = {core.Asc_required:.2f} mm²" in trace
+    assert ("Compression reinforcement required" in trace) is above_limit
+    assert ("Singly reinforced</strong>" in trace) is not above_limit
+    assert "OVER_REINFORCED" not in trace
+    assert "Required compression steel" in report.to_html()
+
+
+@pytest.mark.parametrize("vu_kn, required_kn", [(93.75, 31.26442632), (30, 0)])
+def test_shear_report_distinguishes_required_force_from_proposed_links(
+    tmp_path, vu_kn, required_kn
+):
+    result = _design_for_report(415, 117.1875, vu_kn)
+    report = generate_calculation_report(result)
+    shear = report.to_dict()["results"]["shear"]
+    assert shear["vus_required_kn"] == pytest.approx(required_kn, abs=1e-6)
+    assert shear["spacing"] == 275
+    assert shear["proposed_link_capacity_kn"] == pytest.approx(79.6052726)
+    assert shear["proposed_link_basis"] == {
+        "leg_area_mm2": pytest.approx(157.079633),
+        "fy_nmm2": 415,
+        "design_fy_nmm2": 415,
+        "d_mm": 386,
+        "pitch_mm": 275,
+    }
+    for output in (
+        report.to_html(),
+        report.export_markdown(tmp_path / "report.md").read_text(),
+    ):
+        assert "Required stirrup contribution" in output
+        assert "Proposed link capacity at recommended pitch" in output
+        assert "79.61" in output
+        assert "Stirrup Capacity" not in output
 
 
 @pytest.fixture
@@ -173,13 +257,16 @@ def test_public_report_exports_actual_steel(
     )
     content = path.read_text(encoding="utf-8")
     assert report.report_id in content
-    assert report.results.flexure == {
+    retained_flexure = {
         "ast_required": pytest.approx(900.1166577522483),
         "ast_provided": None,
         "section_type": "UNDER_REINFORCED",
         "is_safe": True,
         "beam_type": None,
     }
+    assert {name: report.results.flexure[name] for name in retained_flexure} == (
+        retained_flexure
+    )
     assert report.results.shear["Vu_kn"] == result.design.Vu_kn
     assert report.results.shear["spacing"] == result.design.shear.spacing
     assert report.results.detailing["status"] == "available"
@@ -199,7 +286,7 @@ def test_public_report_exports_actual_steel(
         return
     assert "Required tension steel" in content
     assert "900.12" in content
-    assert "UNDER_REINFORCED" in content
+    assert "Singly reinforced" in content
     assert "Area provided (mm²)" in content
     for zone in ("start", "mid", "end"):
         for cells in (
