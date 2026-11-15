@@ -39,6 +39,11 @@ class ColumnDetailingBasisV1(StrictPublicModel):
     action_source_reference: _Reference | None
     end_development_reference: _Reference | None
     placement_reference: _Reference | None
+    two_plane_interaction_basis: _Reference | None = Field(
+        default=None,
+        exclude_if=lambda value: value is None,
+        description="Declared shared-hoop allocation for concurrent shear on a short continuous eight-bar rectangle.",
+    )
 
 
 class ColumnStraightEndDetailV1(StrictPublicModel):

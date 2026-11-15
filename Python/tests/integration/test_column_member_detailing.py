@@ -19,6 +19,9 @@ _REFERENCE = (
     / "docs/verification/library-029-col07-column-member.json"
 )
 _CASES = json.loads(_REFERENCE.read_text())["cases"]
+_TWO_PLANE_CASES = json.loads(
+    _REFERENCE.with_name("library-030-col07-two-plane-shear.json").read_text()
+)["cases"]
 
 
 @pytest.mark.parametrize("name", tuple(_CASES))
@@ -59,6 +62,13 @@ def test_column_detailing_reference(name):
     input_hash = payload["envelope"]["result_identity"]["input_hash"]
     report = column.render_column_member_detailing_html(result)
     svg = column.render_column_member_detailing_svg(result)
+    rendered_csv = column.render_column_member_bbs_csv(result)
+    if name == "combined_shear":
+        assert svg is None
+        assert "Checked drawing withheld" in report
+        assert rendered_csv is None
+        assert "COLUMN.COMBINED_SHEAR" in {issue.code for issue in result.issues}
+        return
     assert svg in report
     for output in (report, svg):
         for token in (
@@ -79,7 +89,6 @@ def test_column_detailing_reference(name):
     assert projected == {
         bar["bar_id"]: bar["stations_mm"] for bar in calc["transverse"]
     }
-    rendered_csv = column.render_column_member_bbs_csv(result)
     if not reference["bbs_available"]:
         assert rendered_csv is None
         assert calc["bbs"] is None
@@ -99,6 +108,110 @@ def test_column_detailing_reference(name):
         assert row["bar_id"] in report
         if row["role"] != "longitudinal":
             assert int(row["quantity"]) == len(projected[row["bar_id"]])
+
+
+@pytest.mark.parametrize("name", _TWO_PLANE_CASES)
+def test_two_plane_shear_reference_and_checked_outputs(name):
+    case = _TWO_PLANE_CASES[name]
+    expected = case["expected"]
+    request = column.load_column_member_detailing(case["request"])
+    result = column.check_column_member_detailing(request)
+    wire = result.to_dict()
+    calculation = wire["calculation"]
+    report = column.render_column_member_detailing_html(result)
+    drawing = column.render_column_member_detailing_svg(result)
+    schedule = column.render_column_member_bbs_csv(result)
+
+    assert result.engineering_status.value == expected["status"]
+    assert f"Column member detailing · {expected['status']}" in report
+    assert (drawing is not None) is expected["checked_drawing_available"]
+    assert (schedule is not None) is expected["bbs_available"]
+    if expected["issue"]:
+        assert expected["issue"] in {issue.code for issue in result.issues}
+        assert expected["issue"] in report
+    if not expected["checked_drawing_available"]:
+        assert "Checked drawing withheld" in report
+        assert "<svg" not in report
+    if not expected["bbs_available"]:
+        assert "BBS withheld" in report
+        assert calculation["bbs"] is None
+
+    rows = [row for row in calculation["actions"] if row["shear"] is not None]
+    if not expected["evaluated_shear_rows"]:
+        assert rows == []
+        assert calculation["governing_shear"] is None
+        return
+
+    assert len(rows) == 1
+    shear = rows[0]["shear"]
+    assert shear["direction"] == "xy"
+    assert shear["status"] == expected["status"]
+    assert (
+        shear["interaction_basis"]
+        == case["request"]["basis"]["two_plane_interaction_basis"]
+    )
+    assert shear["interaction_limit"] == pytest.approx(
+        expected["governing_action"]["interaction_limit"]
+    )
+    assert shear["interaction_utilization"] == pytest.approx(
+        expected["governing_action"]["interaction_utilization"]
+    )
+    assert shear["utilization"] == pytest.approx(shear["interaction_utilization"])
+    assert shear["governing_check"] == expected["governing_action"]["check"]
+    assert {(plane["direction"], plane["demand_kn"]) for plane in shear["planes"]} == {
+        (plane["direction"], plane["signed_demand_kn"])
+        for plane in expected["evaluated_shear_rows"]
+    }
+    expected_by_direction = {
+        plane["direction"]: plane for plane in expected["evaluated_shear_rows"]
+    }
+    for plane in shear["planes"]:
+        reference = expected_by_direction[plane["direction"]]
+        assert plane["status"] == ("PASS" if reference["utilization"] <= 1 else "FAIL")
+        for actual_key, expected_key in (
+            ("demand_kn", "signed_demand_kn"),
+            ("width_mm", "web_width_mm"),
+            ("d_mm", "d_mm"),
+            ("pitch_mm", "pitch_mm"),
+            ("pitch_limit_mm", "pitch_limit_mm"),
+            ("base_concrete_stress_nmm2", "table_19_tc_nmm2"),
+            ("concrete_crushing_stress_nmm2", "table_20_tc_max_nmm2"),
+            ("effective_hoop_area_mm2", "effective_hoop_area_mm2"),
+            ("capacity_kn", "capacity_kn"),
+            ("utilization", "utilization"),
+        ):
+            assert plane[actual_key] == pytest.approx(reference[expected_key])
+        assert plane["link_spacing_pass"] is reference["link_spacing_pass"]
+        assert plane["governing_check"] == "COLUMN.SHEAR_CAPACITY"
+
+    governing = calculation["governing_shear"]
+    assert governing["combination_id"] == expected["governing_action"]["combination_id"]
+    assert governing["station_mm"] == expected["governing_action"]["station_mm"]
+    assert governing["shear"] == shear
+    assert "shared hoop interaction" in report.lower()
+    assert f"{shear['interaction_utilization']:.4f}" in report
+    if expected["status"] != "PASS":
+        return
+
+    assert drawing is not None and "Shared-hoop interaction" in drawing
+    assert drawing in report
+    assert schedule is not None
+    bbs = calculation["bbs"]
+    physical = expected["physical_bbs_reference"]
+    assert bbs["quantity"] == physical["bbs_quantity"] == 83
+    assert bbs["total_length_mm"] == pytest.approx(physical["bbs_length_mm"])
+    assert bbs["total_length_mm"] == pytest.approx(88850)
+    assert bbs["total_weight_kg"] == pytest.approx(physical["bbs_weight_kg"])
+    assert bbs["total_weight_kg"] == pytest.approx(112.949681, abs=1e-6)
+    csv_rows = list(csv.DictReader(StringIO(schedule)))
+    hoop = next(row for row in csv_rows if row["bar_id"] == "H")
+    assert float(hoop["cut_length_mm"]) == pytest.approx(physical["hoop_cut_mm"])
+    svg = ElementTree.fromstring(drawing)
+    assert [
+        float(line.attrib["data-station-mm"])
+        for line in svg.iter()
+        if line.attrib.get("data-bar-id") == "H"
+    ] == physical["hoop_stations_mm"]
 
 
 def test_member_detailing_capability_resolves():

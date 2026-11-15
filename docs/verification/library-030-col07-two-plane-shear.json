@@ -1,0 +1,948 @@
+{
+  "schema_version": "library-030-col07-two-plane-shear-reference/v1",
+  "frozen_production_base": "2f6dbf6413ebe8ffa637d8bf8649855c69e73bea",
+  "base_fixture_sha256": "37659e214e31856ff756df68ea392be9cc8fcba80994ed8172312df02022ef08",
+  "sources": [
+    "IS 456:2000 Cl. 26.5.1.5\u20136, 40.2.2, 40.2.3 and 40.4, Tables 19 and 20: ordinary principal-plane component equations and link limits. https://www.cracindia.in/admin/uploads/IS-456.pdf",
+    "Behavior of reinforced concrete columns under biaxial shear forces based on ACI 318: rectangular test results support an elliptical interaction. The linear screen lies inside that curve for the same normalized directional capacities. The paper motivates the restriction, and does not validate this fixture's IS 456 capacities. https://www.sciencedirect.com/science/article/abs/pii/S0141029619302330",
+    "COL07 continuous short tied rectangular physical specimen: signed actions, M25/Fe415 materials, H closed hoop, and BBS register."
+  ],
+  "interaction_basis": {
+    "name": "bounded shared-transverse-reinforcement allocation",
+    "equation": "abs(Vx)/Vx_capacity + abs(Vy)/Vy_capacity <= 1.0",
+    "engineering_rationale": "Both directional calculations credit the same closed H hoop. Normalize each demand by its full concrete-plus-hoop capacity, and limit the sum to one. For nonnegative normalized demands, the unit linear domain is contained in the unit elliptical domain. This is a conservative specimen acceptance screen relative to that ellipse.",
+    "scope": "Independent COL07 evidence fixture only; not an IS 456 biaxial-shear prescription and not product implementation."
+  },
+  "method": "Evaluate concurrent signed shears at U1, station 150 mm, using only the two legs of the closed H hoop in each principal plane. Cross-ties restrain longitudinal bars without additional shear credit. Require the pitch limits, each directional check and the declared linear interaction to pass. Retain the base specimen's unchanged P\u2013M action, cage, end development, and cut schedule. Withhold checked drawing and BBS on FAIL or HOLD.",
+  "absolute_tolerances": {
+    "force_kn": 0.001,
+    "ratio": 1e-06,
+    "length_mm": 0.001,
+    "mass_kg": 0.001
+  },
+  "cases": {
+    "two_plane_pass": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL07-C",
+          "case_id": "two_plane_pass",
+          "source_reference": "COL07 independent worked member"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "layout": "eight_bar",
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL07 specimen cage and hoop closure",
+          "tie": {
+            "tie_id": "H",
+            "diameter_mm": 8,
+            "spacing_mm": 100,
+            "internal_bend_radius_mm": 12,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 48
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 two-plane synthetic signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "two_plane_interaction_basis": "bounded shared-transverse-reinforcement allocation v1"
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOWER",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 2340,
+            "pitch_mm": 140
+          },
+          {
+            "zone_id": "UPPER",
+            "start_mm": 2340,
+            "end_mm": 2940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 150,
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "vx_kn": -50,
+            "vy_kn": 60
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "PASS",
+        "issue": null,
+        "bbs_available": true,
+        "checked_drawing_available": true,
+        "evaluated_shear_rows": [
+          {
+            "combination_id": "U1",
+            "station_mm": 150,
+            "direction": "x",
+            "signed_demand_kn": -50,
+            "demand_kn": 50,
+            "web_width_mm": 400,
+            "d_mm": 240,
+            "pitch_mm": 100,
+            "pitch_limit_mm": 180.0,
+            "link_spacing_pass": true,
+            "credited_hoop_id": "H",
+            "credited_legs": 2,
+            "effective_hoop_area_mm2": 100.53096491487338,
+            "axial_factor": 1.5,
+            "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
+            "vc_kn": 41.75999999999999,
+            "vus_kn": 87.11209171803608,
+            "crushing_kn": 297.6,
+            "capacity_kn": 128.87209171803607,
+            "utilization": 0.38798159736086857
+          },
+          {
+            "combination_id": "U1",
+            "station_mm": 150,
+            "direction": "y",
+            "signed_demand_kn": 60,
+            "demand_kn": 60,
+            "web_width_mm": 300,
+            "d_mm": 340,
+            "pitch_mm": 100,
+            "pitch_limit_mm": 255.0,
+            "link_spacing_pass": true,
+            "credited_hoop_id": "H",
+            "credited_legs": 2,
+            "effective_hoop_area_mm2": 100.53096491487338,
+            "axial_factor": 1.5,
+            "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
+            "vc_kn": 44.36999999999999,
+            "vus_kn": 123.40879660055113,
+            "crushing_kn": 316.2,
+            "capacity_kn": 167.77879660055112,
+            "utilization": 0.35761372244699313
+          }
+        ],
+        "governing_action": {
+          "combination_id": "U1",
+          "station_mm": 150,
+          "interaction_utilization": 0.7455953198078618,
+          "interaction_limit": 1.0,
+          "check": "COLUMN.TWO_PLANE_SHARED_REINFORCEMENT"
+        },
+        "physical_bbs_reference": {
+          "source_case": "library-029-col07-column-member.json:continuous",
+          "hoop_cut_mm": 1220,
+          "hoop_stations_mm": [
+            60,
+            160,
+            260,
+            360,
+            460,
+            560,
+            660,
+            800,
+            940,
+            1080,
+            1220,
+            1360,
+            1500,
+            1640,
+            1780,
+            1920,
+            2060,
+            2200,
+            2340,
+            2440,
+            2540,
+            2640,
+            2740,
+            2840,
+            2940
+          ],
+          "bbs_quantity": 83,
+          "bbs_length_mm": 88850,
+          "bbs_weight_kg": 112.94968067451383
+        }
+      }
+    },
+    "shared_reinforcement_fail": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL07-C",
+          "case_id": "shared_reinforcement_fail",
+          "source_reference": "COL07 independent worked member"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "layout": "eight_bar",
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL07 specimen cage and hoop closure",
+          "tie": {
+            "tie_id": "H",
+            "diameter_mm": 8,
+            "spacing_mm": 100,
+            "internal_bend_radius_mm": 12,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 48
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 two-plane synthetic signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "two_plane_interaction_basis": "bounded shared-transverse-reinforcement allocation v1"
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOWER",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 2340,
+            "pitch_mm": 140
+          },
+          {
+            "zone_id": "UPPER",
+            "start_mm": 2340,
+            "end_mm": 2940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 150,
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "vx_kn": -70,
+            "vy_kn": 90
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "FAIL",
+        "issue": "COLUMN.TWO_PLANE_SHARED_REINFORCEMENT",
+        "bbs_available": false,
+        "checked_drawing_available": false,
+        "evaluated_shear_rows": [
+          {
+            "combination_id": "U1",
+            "station_mm": 150,
+            "direction": "x",
+            "signed_demand_kn": -70,
+            "demand_kn": 70,
+            "web_width_mm": 400,
+            "d_mm": 240,
+            "pitch_mm": 100,
+            "pitch_limit_mm": 180.0,
+            "link_spacing_pass": true,
+            "credited_hoop_id": "H",
+            "credited_legs": 2,
+            "effective_hoop_area_mm2": 100.53096491487338,
+            "axial_factor": 1.5,
+            "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
+            "vc_kn": 41.75999999999999,
+            "vus_kn": 87.11209171803608,
+            "crushing_kn": 297.6,
+            "capacity_kn": 128.87209171803607,
+            "utilization": 0.543174236305216
+          },
+          {
+            "combination_id": "U1",
+            "station_mm": 150,
+            "direction": "y",
+            "signed_demand_kn": 90,
+            "demand_kn": 90,
+            "web_width_mm": 300,
+            "d_mm": 340,
+            "pitch_mm": 100,
+            "pitch_limit_mm": 255.0,
+            "link_spacing_pass": true,
+            "credited_hoop_id": "H",
+            "credited_legs": 2,
+            "effective_hoop_area_mm2": 100.53096491487338,
+            "axial_factor": 1.5,
+            "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
+            "vc_kn": 44.36999999999999,
+            "vus_kn": 123.40879660055113,
+            "crushing_kn": 316.2,
+            "capacity_kn": 167.77879660055112,
+            "utilization": 0.5364205836704897
+          }
+        ],
+        "governing_action": {
+          "combination_id": "U1",
+          "station_mm": 150,
+          "interaction_utilization": 1.0795948199757057,
+          "interaction_limit": 1.0,
+          "check": "COLUMN.TWO_PLANE_SHARED_REINFORCEMENT"
+        },
+        "physical_bbs_reference": {
+          "source_case": "library-029-col07-column-member.json:continuous",
+          "hoop_cut_mm": 1220,
+          "hoop_stations_mm": [
+            60,
+            160,
+            260,
+            360,
+            460,
+            560,
+            660,
+            800,
+            940,
+            1080,
+            1220,
+            1360,
+            1500,
+            1640,
+            1780,
+            1920,
+            2060,
+            2200,
+            2340,
+            2440,
+            2540,
+            2640,
+            2740,
+            2840,
+            2940
+          ],
+          "bbs_quantity": 83,
+          "bbs_length_mm": 88850,
+          "bbs_weight_kg": 112.94968067451383
+        }
+      }
+    },
+    "directional_capacity_fail": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL07-C",
+          "case_id": "directional_capacity_fail",
+          "source_reference": "COL07 independent worked member"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "layout": "eight_bar",
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL07 specimen cage and hoop closure",
+          "tie": {
+            "tie_id": "H",
+            "diameter_mm": 8,
+            "spacing_mm": 100,
+            "internal_bend_radius_mm": 12,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 48
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 two-plane synthetic signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "two_plane_interaction_basis": "bounded shared-transverse-reinforcement allocation v1"
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOWER",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 2340,
+            "pitch_mm": 140
+          },
+          {
+            "zone_id": "UPPER",
+            "start_mm": 2340,
+            "end_mm": 2940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 150,
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "vx_kn": -140,
+            "vy_kn": 30
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "FAIL",
+        "issue": "COLUMN.SHEAR_CAPACITY",
+        "bbs_available": false,
+        "checked_drawing_available": false,
+        "evaluated_shear_rows": [
+          {
+            "combination_id": "U1",
+            "station_mm": 150,
+            "direction": "x",
+            "signed_demand_kn": -140,
+            "demand_kn": 140,
+            "web_width_mm": 400,
+            "d_mm": 240,
+            "pitch_mm": 100,
+            "pitch_limit_mm": 180.0,
+            "link_spacing_pass": true,
+            "credited_hoop_id": "H",
+            "credited_legs": 2,
+            "effective_hoop_area_mm2": 100.53096491487338,
+            "axial_factor": 1.5,
+            "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
+            "vc_kn": 41.75999999999999,
+            "vus_kn": 87.11209171803608,
+            "crushing_kn": 297.6,
+            "capacity_kn": 128.87209171803607,
+            "utilization": 1.086348472610432
+          },
+          {
+            "combination_id": "U1",
+            "station_mm": 150,
+            "direction": "y",
+            "signed_demand_kn": 30,
+            "demand_kn": 30,
+            "web_width_mm": 300,
+            "d_mm": 340,
+            "pitch_mm": 100,
+            "pitch_limit_mm": 255.0,
+            "link_spacing_pass": true,
+            "credited_hoop_id": "H",
+            "credited_legs": 2,
+            "effective_hoop_area_mm2": 100.53096491487338,
+            "axial_factor": 1.5,
+            "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
+            "vc_kn": 44.36999999999999,
+            "vus_kn": 123.40879660055113,
+            "crushing_kn": 316.2,
+            "capacity_kn": 167.77879660055112,
+            "utilization": 0.17880686122349657
+          }
+        ],
+        "governing_action": {
+          "combination_id": "U1",
+          "station_mm": 150,
+          "interaction_utilization": 1.2651553338339285,
+          "interaction_limit": 1.0,
+          "check": "COLUMN.SHEAR_CAPACITY"
+        },
+        "physical_bbs_reference": {
+          "source_case": "library-029-col07-column-member.json:continuous",
+          "hoop_cut_mm": 1220,
+          "hoop_stations_mm": [
+            60,
+            160,
+            260,
+            360,
+            460,
+            560,
+            660,
+            800,
+            940,
+            1080,
+            1220,
+            1360,
+            1500,
+            1640,
+            1780,
+            1920,
+            2060,
+            2200,
+            2340,
+            2440,
+            2540,
+            2640,
+            2740,
+            2840,
+            2940
+          ],
+          "bbs_quantity": 83,
+          "bbs_length_mm": 88850,
+          "bbs_weight_kg": 112.94968067451383
+        }
+      }
+    },
+    "interaction_basis_hold": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL07-C",
+          "case_id": "interaction_basis_hold",
+          "source_reference": "COL07 independent worked member"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "layout": "eight_bar",
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL07 specimen cage and hoop closure",
+          "tie": {
+            "tie_id": "H",
+            "diameter_mm": 8,
+            "spacing_mm": 100,
+            "internal_bend_radius_mm": 12,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 48
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 two-plane synthetic signed factored station worksheet",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "two_plane_interaction_basis": null
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOWER",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 2340,
+            "pitch_mm": 140
+          },
+          {
+            "zone_id": "UPPER",
+            "start_mm": 2340,
+            "end_mm": 2940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 150,
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "vx_kn": -50,
+            "vy_kn": 60
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "COLUMN.TWO_PLANE_INTERACTION_BASIS_HELD",
+        "bbs_available": false,
+        "checked_drawing_available": false,
+        "evaluated_shear_rows": [],
+        "governing_action": null,
+        "physical_bbs_reference": null
+      }
+    },
+    "action_source_hold": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "member_id": "COL07-C",
+          "case_id": "action_source_hold",
+          "source_reference": "COL07 independent worked member"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "layout": "eight_bar",
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL07 specimen cage and hoop closure",
+          "tie": {
+            "tie_id": "H",
+            "diameter_mm": 8,
+            "spacing_mm": 100,
+            "internal_bend_radius_mm": 12,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 48
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": null,
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "two_plane_interaction_basis": "bounded shared-transverse-reinforcement allocation v1"
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOWER",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 2340,
+            "pitch_mm": 140
+          },
+          {
+            "zone_id": "UPPER",
+            "start_mm": 2340,
+            "end_mm": 2940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 150,
+            "pu_kn": 500,
+            "mx_knm": 50,
+            "my_knm": 35,
+            "vx_kn": -50,
+            "vy_kn": 60
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "H": 1220,
+            "XT": 365,
+            "YT": 465
+          }
+        },
+        "schema_version": "column-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "COLUMN.MEMBER_BASIS_REQUIRED",
+        "bbs_available": false,
+        "checked_drawing_available": false,
+        "evaluated_shear_rows": [],
+        "governing_action": null,
+        "physical_bbs_reference": null
+      }
+    }
+  }
+}
