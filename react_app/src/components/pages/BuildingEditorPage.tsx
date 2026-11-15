@@ -517,6 +517,7 @@ export function BuildingEditorPage() {
         {showSidebar && selectedBeam && (
           <div className="w-full shrink-0 overflow-y-auto border-t border-white/5 bg-zinc-950 lg:w-[420px] lg:border-t-0 lg:border-l">
             <BeamDetailPanel
+              key={selectedBeam.id}
               beam={selectedBeam}
               onClose={() => { selectBeam(null); setSidebarClosedForId(null); }}
             />

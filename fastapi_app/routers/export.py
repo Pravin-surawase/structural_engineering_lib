@@ -52,7 +52,11 @@ router = APIRouter(
 
 
 class ExportBeamRequest(BaseModel):
-    """Beam parameters for generating export artifacts."""
+    """Legacy preview parameters for generating non-checked export artifacts.
+
+    A request with ``checked_request`` and ``checked_layout_id`` instead uses
+    the workbench replay contract and is the engineering export route.
+    """
 
     model_config = ConfigDict(strict=True, extra="forbid", allow_inf_nan=False)
 
@@ -216,7 +220,10 @@ def _run_detailing(req: ExportBeamRequest):
 @router.post(
     "/bbs",
     summary="Export Bar Bending Schedule (CSV)",
-    description="Generate BBS from beam parameters and return as CSV download.",
+    description=(
+        "Generate a BBS CSV. checked_request plus checked_layout_id replays the "
+        "authoritative checked cage; the legacy parameter shape is an unchecked preview."
+    ),
     response_class=StreamingResponse,
 )
 async def export_bbs(
@@ -239,10 +246,13 @@ async def export_bbs(
 
     if isinstance(request, WorkbenchBeamExportRequest):
         detailing = replay_checked_workbench(request).detailing.detailing
-        evidence_headers = {"X-Checked-Layout-Id": request.checked_layout_id}
+        evidence_headers = {
+            "X-Checked-Layout-Id": request.checked_layout_id,
+            "X-Export-Classification": "CHECKED_LAYOUT",
+        }
     else:
         detailing = _run_detailing(request)
-        evidence_headers = {}
+        evidence_headers = {"X-Export-Classification": "UNCHECKED_PREVIEW"}
     items = generate_bbs_from_detailing(detailing)
 
     # Build CSV in memory
@@ -281,7 +291,10 @@ async def export_bbs(
 @router.post(
     "/dxf",
     summary="Export DXF Drawing",
-    description="Generate beam DXF drawing and return as download.",
+    description=(
+        "Generate a beam DXF. checked_request plus checked_layout_id replays the "
+        "authoritative checked cage; the legacy parameter shape is an unchecked preview."
+    ),
     response_class=StreamingResponse,
 )
 async def export_dxf(
@@ -301,10 +314,13 @@ async def export_dxf(
 
     if isinstance(request, WorkbenchBeamExportRequest):
         detailing = replay_checked_workbench(request).detailing.detailing
-        evidence_headers = {"X-Checked-Layout-Id": request.checked_layout_id}
+        evidence_headers = {
+            "X-Checked-Layout-Id": request.checked_layout_id,
+            "X-Export-Classification": "CHECKED_LAYOUT",
+        }
     else:
         detailing = _run_detailing(request)
-        evidence_headers = {}
+        evidence_headers = {"X-Export-Classification": "UNCHECKED_PREVIEW"}
     dxf_bytes = quick_dxf_bytes(
         detailing,
         include_title_block=True,
@@ -360,6 +376,7 @@ async def export_report(
             media_type="application/json" if as_json else "text/html",
             headers={
                 "X-Checked-Layout-Id": request.checked_layout_id,
+                "X-Export-Classification": "CHECKED_LAYOUT",
                 "Content-Disposition": f'attachment; filename="Report_{sanitize_filename(request.beam_id)}.{request.format}"',
             },
         )

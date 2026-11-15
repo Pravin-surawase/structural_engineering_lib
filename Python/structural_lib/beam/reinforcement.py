@@ -6,6 +6,7 @@ import math
 from collections.abc import Iterable
 from dataclasses import dataclass
 from enum import StrEnum
+from itertools import pairwise
 
 from .semantics import (
     Diagnostic,
@@ -322,10 +323,28 @@ def effective_depth(
 
 
 def evaluate_geometry(request: ReinforcementGeometryRequest) -> OperationResult:
+    return _evaluate_geometry(request, maximum_aggregate_size_mm=None)
+
+
+def _minimum_is456_bar_clearance_mm(
+    maximum_aggregate_size_mm: float, diameter_mm: float, *, vertical: bool
+) -> float:
+    if vertical:
+        return max(15.0, 2 * maximum_aggregate_size_mm / 3, diameter_mm)
+    return max(maximum_aggregate_size_mm + 5, diameter_mm)
+
+
+def _evaluate_geometry(
+    request: ReinforcementGeometryRequest, *, maximum_aggregate_size_mm: float | None
+) -> OperationResult:
     inputs, provenance, diagnostics = _validate_geometry(GEOMETRY_OPERATION, request)
     if diagnostics:
         return rejected_result(
             GEOMETRY_OPERATION, inputs, diagnostics, provenance=provenance
+        )
+    if maximum_aggregate_size_mm is not None:
+        inputs.update(
+            effective_inputs(maximum_aggregate_size_mm=maximum_aggregate_size_mm)
         )
     checks: list[Diagnostic] = []
     inset = request.nominal_cover_mm + request.link_diameter_mm
@@ -350,24 +369,70 @@ def evaluate_geometry(request: ReinforcementGeometryRequest) -> OperationResult:
     governing_pair: tuple[str, str] | None = None
     for index, bar in enumerate(request.bars):
         for other in request.bars[:index]:
-            distance = math.hypot(
-                bar.x_from_left_mm - other.x_from_left_mm,
-                bar.y_from_top_mm - other.y_from_top_mm,
-            )
-            gap = distance - (bar.diameter_mm + other.diameter_mm) / 2.0
+            dx = abs(bar.x_from_left_mm - other.x_from_left_mm)
+            dy = abs(bar.y_from_top_mm - other.y_from_top_mm)
+            radii = (bar.diameter_mm + other.diameter_mm) / 2
+            gap = math.hypot(dx, dy) - radii
             if minimum_gap is None or gap < minimum_gap:
                 minimum_gap = gap
                 governing_pair = (other.bar_id, bar.bar_id)
-            if gap < request.minimum_clear_spacing_mm:
+            limit = request.minimum_clear_spacing_mm
+            direction = ""
+            if maximum_aggregate_size_mm is not None:
+                if dy <= 1e-9 or dx <= 1e-9:
+                    vertical = dy > 1e-9
+                    limit = _minimum_is456_bar_clearance_mm(
+                        maximum_aggregate_size_mm,
+                        max(bar.diameter_mm, other.diameter_mm),
+                        vertical=vertical,
+                    )
+                    direction = "vertical" if vertical else "horizontal"
+                elif bar.face == other.face and bar.layer != other.layer:
+                    # Physical row clearance is checked below for staggered bars.
+                    limit = 0.0
+            if gap + (1e-9 if maximum_aggregate_size_mm is not None else 0) < limit:
                 checks.append(
                     _diagnostic(
                         GEOMETRY_OPERATION,
                         "GEOMETRY.SPACING",
-                        "Clear spacing is below the declared minimum.",
+                        (
+                            f"{direction.capitalize()} clear spacing {gap:g} mm is below {limit:g} mm."
+                            if direction
+                            else "Clear spacing is below the declared minimum."
+                        ),
                         f"bars[{other.bar_id},{bar.bar_id}]",
                         "Increase the bar separation or revise the arrangement.",
                     )
                 )
+    if maximum_aggregate_size_mm is not None:
+        for face in Face:
+            layers: dict[int, list[BarPosition]] = {}
+            for bar in request.bars:
+                if bar.face is face:
+                    layers.setdefault(bar.layer, []).append(bar)
+            rows = sorted(
+                layers.items(),
+                key=lambda pair: min(bar.y_from_top_mm for bar in pair[1]),
+            )
+            for (upper_layer, upper), (lower_layer, lower) in pairwise(rows):
+                actual = min(
+                    bar.y_from_top_mm - bar.diameter_mm / 2 for bar in lower
+                ) - max(bar.y_from_top_mm + bar.diameter_mm / 2 for bar in upper)
+                limit = _minimum_is456_bar_clearance_mm(
+                    maximum_aggregate_size_mm,
+                    max(bar.diameter_mm for bar in (*upper, *lower)),
+                    vertical=True,
+                )
+                if actual + 1e-9 < limit:
+                    checks.append(
+                        _diagnostic(
+                            GEOMETRY_OPERATION,
+                            "GEOMETRY.SPACING",
+                            f"Vertical row clearance {actual:g} mm is below {limit:g} mm.",
+                            f"bars[{face.value},layers {upper_layer}-{lower_layer}]",
+                            "Increase the physical row spacing.",
+                        )
+                    )
     groups = {
         face.value: _face_output(
             request.depth_mm,

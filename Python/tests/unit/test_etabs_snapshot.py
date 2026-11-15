@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from structural_lib.core.models import DesignDefaults
 from structural_lib.imports import (
     ETABSApprovedExclusionV1,
@@ -93,10 +95,11 @@ def _build(
     archives: tuple[ETABSArchivedTableInputV1, ...] = (_archive(),),
     result_identity: ETABSResultIdentityV1 | None = None,
     units: ETABSExportUnitsV1 | None = None,
+    forces_csv: Path = FIXTURE_ROOT / "element-forces-frames.csv",
 ):
     return build_etabs_canonical_snapshot_v1(
         FIXTURE_ROOT / "connectivity-frame.csv",
-        FIXTURE_ROOT / "element-forces-frames.csv",
+        forces_csv,
         FIXTURE_ROOT / "trial-hall-model.e2k",
         project_export_identity=_identity(),
         units=units or _units(),
@@ -117,6 +120,39 @@ def _build(
         approved_exclusions=approvals,
         archived_tables=archives,
     )
+
+
+@pytest.mark.parametrize("axial", (-300, 300))
+@pytest.mark.parametrize(
+    "station,moment,shear", ((0, -120, 75), (5, 150, -60), (2.5, 20, 10))
+)
+def test_beam_axial_action_blocks_the_snapshot(tmp_path, axial, station, moment, shear):
+    rows = (FIXTURE_ROOT / "element-forces-frames.csv").read_text().splitlines()
+    original = f"L1,B1,101,ULS-DL-LL,{station},{moment},{shear},0"
+    amended = f"L1,B1,101,ULS-DL-LL,{station},{moment},{shear},{axial}"
+    if original in rows:
+        rows[rows.index(original)] = amended
+    else:
+        rows.insert(2, amended)
+    forces = tmp_path / "forces.csv"
+    forces.write_text("\n".join(rows) + "\n")
+    result = _build(forces_csv=forces)
+    assert result.status is ETABSSnapshotStatus.BLOCKED
+    assert result.snapshot is None
+    issue = next(
+        issue
+        for issue in result.issues
+        if issue.code == "etabs.beam_axial_action_outside_profile"
+    )
+    assert f"{axial:+g} kN" in issue.message and f"station {station} m" in issue.message
+    assert "B1_L1" in issue.message and "ULS-DL-LL" in issue.message
+
+
+def test_snapshot_admits_zero_action_when_the_optional_axial_column_is_absent(tmp_path):
+    rows = (FIXTURE_ROOT / "element-forces-frames.csv").read_text().splitlines()
+    forces = tmp_path / "forces.csv"
+    forces.write_text("\n".join(row.rsplit(",", 1)[0] for row in rows) + "\n")
+    assert _build(forces_csv=forces).status is ETABSSnapshotStatus.ACCEPTED
 
 
 def test_snapshot_is_deterministic_and_emits_canonical_beam_requests() -> None:

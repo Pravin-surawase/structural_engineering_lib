@@ -17743,7 +17743,7 @@
       },
       "ExportBeamRequest": {
         "additionalProperties": false,
-        "description": "Beam parameters for generating export artifacts.",
+        "description": "Legacy preview parameters for generating non-checked export artifacts.\n\nA request with ``checked_request`` and ``checked_layout_id`` instead uses\nthe workbench replay contract and is the engineering export route.",
         "properties": {
           "asc_required": {
             "default": 0,
@@ -39282,7 +39282,7 @@
     },
     "/api/v1/export/bbs": {
       "post": {
-        "description": "Generate BBS from beam parameters and return as CSV download.",
+        "description": "Generate a BBS CSV. checked_request plus checked_layout_id replays the authoritative checked cage; the legacy parameter shape is an unchecked preview.",
         "operationId": "export_bbs_api_v1_export_bbs_post",
         "requestBody": {
           "content": {
@@ -39528,7 +39528,7 @@
     },
     "/api/v1/export/dxf": {
       "post": {
-        "description": "Generate beam DXF drawing and return as download.",
+        "description": "Generate a beam DXF. checked_request plus checked_layout_id replays the authoritative checked cage; the legacy parameter shape is an unchecked preview.",
         "operationId": "export_dxf_api_v1_export_dxf_post",
         "requestBody": {
           "content": {

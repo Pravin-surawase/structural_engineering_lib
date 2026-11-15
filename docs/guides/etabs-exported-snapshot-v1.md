@@ -36,6 +36,11 @@ The trial API is optional. A complete manual ETABS table export is an equally
 valid acquisition path because both paths converge on the same exported-file
 contract.
 
+The snapshot beam profile accepts bending and shear. A source beam row with
+nonzero axial force blocks the snapshot and names its member, case, station
+when supplied, and signed force. Zero axial force and the optional omitted
+axial column remain valid.
+
 ## Required P5 packet
 
 The canonical builder requires:

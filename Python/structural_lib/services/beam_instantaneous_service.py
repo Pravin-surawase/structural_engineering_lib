@@ -20,7 +20,7 @@ from structural_lib.beam.reinforcement import (
     BarPosition,
     Face,
     ReinforcementGeometryRequest,
-    evaluate_geometry,
+    _evaluate_geometry,
 )
 from structural_lib.beam.semantics import (
     EngineeringState,
@@ -428,7 +428,7 @@ def _evaluate_instantaneous_service(
     status = EngineeringStatus.HOLD
     data: dict[str, Any] = {"instantaneous": None, "long_term_status": "HOLD"}
     if issue is None:
-        fit = evaluate_geometry(
+        fit = _evaluate_geometry(
             ReinforcementGeometryRequest(
                 WORKFLOW,
                 member.width_mm,
@@ -437,7 +437,8 @@ def _evaluate_instantaneous_service(
                 member.link_diameter_mm,
                 max(member.aggregate_size_mm + 5, max(bar.diameter_mm for bar in bars)),
                 bars,
-            )
+            ),
+            maximum_aggregate_size_mm=member.aggregate_size_mm,
         )
         if fit.engineering is not EngineeringState.PASS:
             issue = StructuralIssueV1(

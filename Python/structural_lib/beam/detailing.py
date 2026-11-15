@@ -8,6 +8,7 @@ from enum import StrEnum
 
 from structural_lib.core.geometry import circle_inside_rounded_rectangle
 
+from .reinforcement import _minimum_is456_bar_clearance_mm
 from .semantics import (
     ApplicabilityState,
     CompletenessState,
@@ -667,6 +668,7 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
         critical_section_at_face = support_near_face is not None and math.isclose(
             path.critical_section_x_mm,
             support_near_face,
+            rel_tol=0.0,
             abs_tol=1e-9,
         )
         if at_support and (
@@ -688,6 +690,27 @@ def check_anchorage(request: AnchorageCheckRequest) -> OperationResult:
                 ),
                 provenance=provenance,
             )
+        if at_support:
+            assert support_near_face is not None and support_centre is not None
+            into_support = support_centre - support_near_face
+            if path.direction is AnchorageDirection.DECREASING_X:
+                into_support = -into_support
+            if into_support <= 1e-9:
+                return rejected_result(
+                    ANCHORAGE_CHECK_OPERATION,
+                    inputs,
+                    (
+                        _diagnostic(
+                            ANCHORAGE_CHECK_OPERATION,
+                            "SUPPORT.DIRECTION_MISMATCH",
+                            f"Support centre {support_centre:g} mm is not beyond near face "
+                            f"{support_near_face:g} mm in the declared {path.direction.value} direction.",
+                            f"paths[{path.bar_id}].direction",
+                            "Set the direction from the near face into the bearing.",
+                        ),
+                    ),
+                    provenance=provenance,
+                )
         bend_value, bend_error = _anchorage_bend_value(path)
         if bend_error is not None:
             return rejected_result(
@@ -2149,10 +2172,10 @@ def check_reinforcement_arrangement(
                 abs(second.x_from_left_mm - first.x_from_left_mm)
                 - (first.diameter_mm + second.diameter_mm) / 2
             )
-            required = max(
-                first.diameter_mm,
-                second.diameter_mm,
-                request.maximum_aggregate_size_mm + 5,
+            required = _minimum_is456_bar_clearance_mm(
+                request.maximum_aggregate_size_mm,
+                max(first.diameter_mm, second.diameter_mm),
+                vertical=False,
             )
             passed = actual + 1e-9 >= required
             if not passed:
@@ -2188,11 +2211,10 @@ def check_reinforcement_arrangement(
                 abs(second.y_from_top_mm - first.y_from_top_mm)
                 - (first.diameter_mm + second.diameter_mm) / 2
             )
-            required = max(
-                15.0,
-                2 * request.maximum_aggregate_size_mm / 3,
-                first.diameter_mm,
-                second.diameter_mm,
+            required = _minimum_is456_bar_clearance_mm(
+                request.maximum_aggregate_size_mm,
+                max(first.diameter_mm, second.diameter_mm),
+                vertical=True,
             )
             passed = actual + 1e-9 >= required
             if not passed:
@@ -2230,10 +2252,10 @@ def check_reinforcement_arrangement(
             lower_top = min(bar.y_from_top_mm - bar.diameter_mm / 2 for bar in lower)
             actual = lower_top - upper_bottom
             largest_diameter = max(bar.diameter_mm for bar in (*upper, *lower))
-            required = max(
-                15.0,
-                2 * request.maximum_aggregate_size_mm / 3,
+            required = _minimum_is456_bar_clearance_mm(
+                request.maximum_aggregate_size_mm,
                 largest_diameter,
+                vertical=True,
             )
             passed = actual + 1e-9 >= required
             if not passed:

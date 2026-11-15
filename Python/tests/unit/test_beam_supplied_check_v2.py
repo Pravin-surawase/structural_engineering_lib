@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from math import pi
 
 import pytest
 
@@ -192,12 +193,60 @@ def test_transverse_grade_owns_minimum_shear_reinforcement_spacing() -> None:
     result = _check(low_grade)
 
     assert result.shear.status == "FAIL"
-    assert result.shear.maximum_permitted_spacing_mm == pytest.approx(175.0)
+    assert result.shear.maximum_permitted_spacing_mm == pytest.approx(
+        0.87 * 250 * (pi * 8**2 / 2) / (0.4 * 300)
+    )
     assert result.shear.spacing_is_adequate is False
     assert any(
         issue["code"] == "BEAM_STIRRUP_SPACING_INADEQUATE"
         for issue in result.shear.issues
     )
+
+
+@pytest.mark.parametrize(
+    "pitch,status", ((175, "PASS"), (190, "PASS"), (192, "PASS"), (193, "FAIL"))
+)
+def test_supplied_pitch_uses_exact_geometric_limit(pitch, status):
+    payload = _payload()
+    payload["section"] = {
+        "b_mm": 250.0,
+        "D_mm": 300.0,
+        "effective_depth_basis": {
+            "clear_cover_mm": 30.0,
+            "stirrup_diameter_mm": 8.0,
+            "tension_bar_diameter_mm": 12.0,
+        },
+    }
+    payload["actions"].update(mu_knm=40.0, vu_kn=58.15)
+    payload["materials"].update(fck_nmm2=20.0, fy_nmm2=415.0)
+    payload["reinforcement"].update(
+        clear_cover_mm=30.0,
+        tension={"diameter_mm": 12.0, "bars_per_layer": [4]},
+        stirrup_spacing_mm=float(pitch),
+    )
+    result = _check(payload)
+    assert result.shear.status == status
+    assert result.shear.maximum_permitted_spacing_mm == pytest.approx(192.0)
+
+
+@pytest.mark.parametrize("offset,status", ((-0.5, "PASS"), (0.5, "FAIL")))
+def test_supplied_pitch_can_be_governed_by_shear_transfer(offset, status):
+    payload = _payload()
+    depth = 442.0
+    tension_percentage = 100 * (4 * pi * 20**2 / 4) / (300 * depth)
+    # M25 Table 19 interpolation between 0.75% and 1.0% steel.
+    concrete_stress = 0.57 + (tension_percentage - 0.75) / 0.25 * (0.64 - 0.57)
+    demand = 230.0
+    concrete_kn = concrete_stress * 300 * depth / 1000
+    exact_pitch = (
+        0.87 * 415 * (2 * pi * 8**2 / 4) * depth / (1000 * (demand - concrete_kn))
+    )
+
+    payload["actions"]["vu_kn"] = demand
+    payload["reinforcement"]["stirrup_spacing_mm"] = exact_pitch + offset
+    result = _check(payload)
+    assert result.shear.maximum_permitted_spacing_mm == pytest.approx(exact_pitch)
+    assert result.shear.status == status
 
 
 def test_supplied_compression_steel_changes_the_flexural_result() -> None:
