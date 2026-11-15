@@ -15,6 +15,7 @@ from structural_lib.codes.is456.slab.models import SlabContractError
 from structural_lib.codes.is456.slab.topology import (
     CornerLiftCondition,
     OrientedSlabPanelGeometry,
+    SlabCorner,
     SlabEdgeContinuity,
     SlabSupportTopology,
 )
@@ -69,6 +70,98 @@ def test_table_12_combines_fixed_and_nonfixed_components_by_action() -> None:
     assert result.shear_support == pytest.approx((6 * 0.5 + 4 * 0.6) / 10)
 
 
+# IS 456:2000 Table 26, columns 1.50, 1.75 and all long-span ratios.
+# https://www.cracindia.in/admin/uploads/IS-456.pdf (printed page 91).
+# Each pair lists negative and positive magnitudes in that direction.
+_TABLE_26 = {
+    1: ((0.053, 0.041), (0.060, 0.045), (0.032, 0.024)),
+    2: ((0.057, 0.044), (0.064, 0.048), (0.037, 0.028)),
+    3: ((0.067, 0.051), (0.077, 0.059), (0.037, 0.028)),
+    4: ((0.075, 0.056), (0.084, 0.063), (0.047, 0.035)),
+    5: ((0.060, 0.045), (0.065, 0.049), (0.000, 0.035)),
+    6: ((0.000, 0.068), (0.000, 0.080), (0.045, 0.035)),
+    7: ((0.084, 0.064), (0.091, 0.069), (0.000, 0.043)),
+    8: ((0.000, 0.076), (0.000, 0.087), (0.057, 0.043)),
+    9: ((0.000, 0.089), (0.000, 0.100), (0.000, 0.056)),
+}
+
+
+@pytest.mark.parametrize(
+    ("edges", "case_id"),
+    (
+        ("CCCC", 1),
+        ("CCDC", 2),
+        ("CCCD", 2),
+        ("DCCC", 3),
+        ("CDCC", 3),
+        ("DCDC", 4),
+        ("DCCD", 4),
+        ("CDDC", 4),
+        ("CDCD", 4),
+        ("CCDD", 5),
+        ("DDCC", 6),
+        ("DCDD", 7),
+        ("CDDD", 7),
+        ("DDCD", 8),
+        ("DDDC", 8),
+        ("DDDD", 9),
+    ),
+)
+@pytest.mark.parametrize(
+    ("span_y", "fraction", "method", "bounds"),
+    (
+        (6000, 0.0, CoefficientMethod.BUILT_IN_EXACT, (1.50, 1.50)),
+        (6200, 0.2, CoefficientMethod.BUILT_IN_INTERPOLATED, (1.50, 1.75)),
+    ),
+)
+def test_table_26_all_labelled_topologies_and_reflections(
+    edges, case_id, span_y, fraction, method, bounds
+):
+    first, second, long_span = _TABLE_26[case_id]
+    short_span = tuple(
+        lo + fraction * (hi - lo) for lo, hi in zip(first, second, strict=True)
+    )
+    geometry = OrientedSlabPanelGeometry(4000, span_y, 160)
+    x_min, x_max, y_min, y_max = edges
+    corner_classes = []
+    for ordering in (
+        edges,
+        x_max + x_min + y_min + y_max,
+        x_min + x_max + y_max + y_min,
+    ):
+        topology = _topology(
+            *("discontinuous" if edge == "D" else "continuous" for edge in ordering)
+        )
+        result = resolve_builtin_two_way_panel_coefficients(
+            geometry=geometry, topology=topology
+        )
+        assert result.case_id == f"table_26_case_{case_id}"
+        assert result.method is method
+        assert result.interpolation_bounds == bounds
+        assert (
+            result.alpha_x_negative,
+            result.alpha_x_positive,
+            result.alpha_y_negative,
+            result.alpha_y_positive,
+        ) == pytest.approx(short_span + long_span, abs=1e-12)
+        assert result.table_id == "IS456_TABLE_26"
+        corner_classes.append(
+            tuple(topology.corner_torsion_class(corner).value for corner in SlabCorner)
+        )
+    original, across_x, across_y = corner_classes
+    corners = ((x_min, y_min), (x_min, y_max), (x_max, y_min), (x_max, y_max))
+    assert original == tuple(
+        ("none", "half", "full")[pair.count("D")] for pair in corners
+    )
+    assert across_x == (original[2], original[3], original[0], original[1])
+    assert across_y == (original[1], original[0], original[3], original[2])
+
+
+def test_swapped_two_way_span_order_is_rejected() -> None:
+    with pytest.raises(SlabContractError, match="short"):
+        OrientedSlabPanelGeometry(6000, 4000, 160)
+
+
 def test_table_26_case_4_b04_exact_point() -> None:
     result = resolve_builtin_two_way_panel_coefficients(
         geometry=OrientedSlabPanelGeometry(4000, 6000, 160),
@@ -118,21 +211,21 @@ def test_table_26_extrapolation_fails_closed() -> None:
         )
 
 
-def test_builtin_continuous_service_marks_coefficients_verified_by_library() -> None:
-    result = design_continuous_one_way_slab_builtin_is456(
+def _b02(fixed, nonfixed, *, spans=3, variation=15):
+    return design_continuous_one_way_slab_builtin_is456(
         short_effective_span_mm=3000,
         long_effective_span_mm=7500,
         thickness_mm=140,
         d_mm=115,
-        factored_dead_and_fixed_imposed_load_kn_per_m2=14.25,
-        factored_nonfixed_imposed_load_kn_per_m2=0,
+        factored_dead_and_fixed_imposed_load_kn_per_m2=fixed,
+        factored_nonfixed_imposed_load_kn_per_m2=nonfixed,
         positive_location="end_span_positive",
         negative_location="next_to_end_support_negative",
         shear_location="end_support",
         fck_n_per_mm2=20,
         fy_n_per_mm2=415,
-        number_of_spans=3,
-        maximum_span_variation_percent=0,
+        number_of_spans=spans,
+        maximum_span_variation_percent=variation,
         uniform_cross_section_acknowledged=True,
         substantially_uniform_load_acknowledged=True,
         redistribution_applied=False,
@@ -149,9 +242,31 @@ def test_builtin_continuous_service_marks_coefficients_verified_by_library() -> 
         qualified_serviceability_acceptance_reference="review:B02-SLS",
         qualified_serviceability_acceptance_acknowledged=True,
     )
+
+
+def test_builtin_continuous_service_marks_coefficients_verified_by_library() -> None:
+    result = _b02(14.25, 0)
     assert result.flexure.positive_midspan.factored_moment_knm_per_m == 10.6875
     assert result.flexure.coefficient_correctness_verified_by_library is True
     assert result.flexure.input.coefficients.table_id == "IS456_TABLE_12_13"
+
+
+def test_b02_mixed_actions_at_three_spans_and_15_percent_variation() -> None:
+    result = _b02(10, 4.25).flexure
+    # IS 456:2000 Tables 12 and 13 at L = 3 m.
+    assert result.positive_midspan.factored_moment_knm_per_m == pytest.approx(
+        (10 / 12 + 4.25 / 10) * 3**2
+    )
+    assert result.negative_support.factored_moment_knm_per_m == pytest.approx(
+        (10 / 10 + 4.25 / 9) * 3**2
+    )
+    assert result.factored_shear_kn_per_m == pytest.approx((0.4 * 10 + 0.45 * 4.25) * 3)
+
+
+@pytest.mark.parametrize(("spans", "variation"), ((2, 15), (3, 15.01)))
+def test_b02_rejects_outside_three_span_and_variation_bounds(spans, variation):
+    with pytest.raises(SlabContractError):
+        _b02(10, 4.25, spans=spans, variation=variation)
 
 
 def _builtin_two_way(**overrides: object):
@@ -206,13 +321,27 @@ def test_builtin_two_way_service_retains_table_case_and_composed_truth() -> None
     )
 
 
-def test_builtin_table_27_free_corner_workflow_has_no_torsion_or_false_hold() -> None:
+@pytest.mark.parametrize(
+    ("span_y", "alpha_x", "alpha_y"),
+    (
+        (6000, 0.104, 0.046),
+        (6200, 0.104 + 0.2 * (0.113 - 0.104), 0.046 + 0.2 * (0.037 - 0.046)),
+    ),
+)
+def test_builtin_table_27_free_corner_workflow_has_no_torsion_or_false_hold(
+    span_y,
+    alpha_x,
+    alpha_y,
+) -> None:
     result = _builtin_two_way(
+        y_effective_span_mm=span_y,
         x_max_edge="discontinuous",
         y_max_edge="discontinuous",
         corner_lift_condition="free_to_lift",
     )
     assert result.panel.input.coefficients.table_id == "IS456_TABLE_27"
+    assert result.panel.x_positive.coefficient == pytest.approx(alpha_x, abs=1e-12)
+    assert result.panel.y_positive.coefficient == pytest.approx(alpha_y, abs=1e-12)
     assert result.panel.x_negative.coefficient == 0.0
     assert result.panel.y_negative.coefficient == 0.0
     assert all(

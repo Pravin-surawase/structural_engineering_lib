@@ -431,6 +431,38 @@ def _centreline_issues(
     return issues
 
 
+def _bar_positions(request: _BeamStationCheckRequest) -> tuple[BarPosition, ...]:
+    return tuple(
+        BarPosition(
+            bar.bar_id,
+            bar.diameter_mm,
+            bar.x_from_left_mm,
+            bar.y_from_top_mm,
+            Face(bar.face),
+            bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
+        )
+        for bar in sorted(request.bars, key=lambda bar: bar.bar_id)
+    )
+
+
+def _positive_support_web_capacity(
+    request: BeamLayeredContinuousCheckRequestV1, bars: tuple[BarPosition, ...]
+) -> float | None:
+    web = flexural_capacity(
+        FlexuralCapacityRequest(
+            request.schema_version,
+            SectionKind.RECTANGULAR,
+            request.width_mm,
+            request.depth_mm,
+            request.fck_nmm2,
+            request.fy_nmm2,
+            bars,
+            Face.BOTTOM,
+        )
+    )
+    return float(web.outputs["capacity_knm"]) if _flexure_provision_ok(web) else None
+
+
 def _sections(
     request: _BeamStationCheckRequest, bars: tuple[BarPosition, ...]
 ) -> tuple[OperationResult, dict[Face, OperationResult], dict[Face, OperationResult]]:
@@ -801,35 +833,14 @@ def _check_station_beam(
     BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1 | BeamSectionCheckResultV1
 ):
     stale = request.analysis_revision != request.current_analysis_revision
-    bars = tuple(
-        BarPosition(
-            bar.bar_id,
-            bar.diameter_mm,
-            bar.x_from_left_mm,
-            bar.y_from_top_mm,
-            Face(bar.face),
-            bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
-        )
-        for bar in sorted(request.bars, key=lambda bar: bar.bar_id)
-    )
+    bars = _bar_positions(request)
     geometry, flexure, shear = (None, {}, {}) if stale else _sections(request, bars)
     layered = isinstance(request, BeamLayeredContinuousCheckRequestV1)
-    end_web_capacity = None
-    if layered and not stale:
-        web = flexural_capacity(
-            FlexuralCapacityRequest(
-                request.schema_version,
-                SectionKind.RECTANGULAR,
-                request.width_mm,
-                request.depth_mm,
-                request.fck_nmm2,
-                request.fy_nmm2,
-                bars,
-                Face.BOTTOM,
-            )
-        )
-        if _flexure_provision_ok(web):
-            end_web_capacity = float(web.outputs["capacity_knm"])
+    end_web_capacity = (
+        _positive_support_web_capacity(request, bars)
+        if isinstance(request, BeamLayeredContinuousCheckRequestV1) and not stale
+        else None
+    )
     stations = {station.station_id: station for station in request.stations}
     kinds = {item.combination_id: item.kind for item in request.combinations}
     centreline: set[float] = set()
