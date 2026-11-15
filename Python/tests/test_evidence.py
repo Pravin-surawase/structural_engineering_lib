@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 
 import pytest
 
@@ -12,6 +13,7 @@ from structural_lib.services.evidence import (
 )
 from structural_lib.services.report import ReportData, export_html, export_json
 from structural_lib.services.source_identity import (
+    BEAM_STRENGTH_SOURCE_BASIS,
     AmendmentApplicability,
     ControlledSourceBasisV1,
 )
@@ -197,6 +199,23 @@ def test_unknown_amendment_applicability_forces_hold() -> None:
     assert evidence["support_status"] == "HELD"
     assert evidence["status"] == "HOLD"
     assert evidence["exact_utilization"] is None
+
+
+@pytest.mark.parametrize("source_ids", [(), ("different-source",)])
+def test_reviewed_beam_basis_requires_the_amendment_in_its_sources(source_ids) -> None:
+    basis = replace(BEAM_STRENGTH_SOURCE_BASIS, source_ids=source_ids)
+    evidence = build_beam_evidence_envelope(
+        inputs=_beam_inputs(),
+        is_ok=True,
+        governing_utilization=0.8,
+        source_basis=basis,
+        generated_at="2026-08-10T00:00:00+00:00",
+    )
+
+    assert evidence["support_status"] == "HELD"
+    assert evidence["status"] == "HOLD"
+    assert evidence["exact_utilization"] is None
+    assert evidence["margin"] is None
 
 
 def test_held_beam_evidence_does_not_present_a_pass_or_fail() -> None:

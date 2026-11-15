@@ -778,6 +778,11 @@ def run_workflow(
             for leaf, name in leaf_map.items()
             if name not in omit_checks
         ),
+        station_source_results=tuple(
+            results[name]
+            for leaf, name in leaf_map.items()
+            if leaf.startswith("torsion@") and name not in omit_checks
+        ),
     )
     results["member"] = b.design_member(member_request)
     member = results["member"].output_as("member_design", b.MemberDesignOutput)

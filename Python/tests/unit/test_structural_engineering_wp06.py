@@ -43,7 +43,9 @@ from structural_lib.beam.semantics import (
     EngineeringState,
     ExecutionState,
     FreshnessState,
+    Provenance,
     canonical_json_bytes,
+    completed_result,
 )
 
 
@@ -134,10 +136,30 @@ def _leaf(
     )
 
 
-def _member_request() -> MemberDesignRequest:
+def _shear_source(stations, engineering=EngineeringState.PASS):
+    return completed_result(
+        "is456.beam.shear.check/v1",
+        {"stations": stations},
+        {"checks": [{"station_id": station} for station in stations]},
+        engineering=engineering,
+        provenance=Provenance("is456-r1", "test-station-check", ()),
+    )
+
+
+def _member_request(
+    stations: tuple[str, ...] = ("S1",),
+    *,
+    shear_engineering: EngineeringState = EngineeringState.PASS,
+) -> MemberDesignRequest:
+    source = _shear_source(stations, shear_engineering)
     leaves = (
         _leaf("flexure@B1", "is456.beam.flexure.check/v1", utilization=0.7),
-        _leaf("shear@S1", "is456.beam.shear.check/v1", utilization=0.6),
+        *(
+            MemberLeafEvidence.from_result(
+                f"shear@{station}", source, governing_utilization=0.6
+            )
+            for station in stations
+        ),
         _leaf(
             "seismic@B1",
             "is456.beam.seismic_detailing.check/v1",
@@ -153,17 +175,21 @@ def _member_request() -> MemberDesignRequest:
         "actions-r1",
         "reinforcement-r1",
         "scope-r1",
-        (MemberScopeInstance("S1", CheckScope.STATION, "scope-r1"),),
+        tuple(
+            MemberScopeInstance(station, CheckScope.STATION, "scope-r1")
+            for station in stations
+        ),
         (
             EffectiveDepthIteration(
                 1,
                 "reinforcement-r1",
                 450,
-                tuple(leaf.result_id for leaf in leaves[:2]),
+                (leaves[0].result_id, source.result_id),
                 True,
             ),
         ),
         leaves,
+        station_source_results=(source,),
     )
 
 
@@ -440,11 +466,7 @@ def test_member_keeps_incomplete_required_leaf_visible(
 
 
 def test_member_reports_complete_engineering_failure() -> None:
-    request = _member_request()
-    leaves = list(request.leaf_results)
-    leaves[1] = replace(leaves[1], engineering=EngineeringState.FAIL)
-
-    result = design_member(replace(request, leaf_results=tuple(leaves)))
+    result = design_member(_member_request(shear_engineering=EngineeringState.FAIL))
 
     assert result.execution == "completed"
     assert result.completeness == "complete_for_scope"
@@ -747,3 +769,43 @@ def test_path_requires_bend_evidence_and_reports_stock_failure() -> None:
     assert stock_fail.execution == "completed"
     assert stock_fail.engineering == "fail"
     assert stock_fail.diagnostics[0].code == "PATH.STOCK_LENGTH_EXCEEDED"
+
+
+def test_member_requires_current_source_coverage_for_every_station() -> None:
+    full = _member_request(("S1", "S2"))
+    assert design_member(full).engineering is EngineeringState.PASS
+
+    short = _member_request()
+    leaf = replace(short.leaf_results[1], leaf_id="shear@S2")
+    relabelled = replace(
+        short,
+        scope_instances=full.scope_instances,
+        leaf_results=(*short.leaf_results, leaf),
+    )
+    result = design_member(relabelled)
+    assert result.completeness is CompletenessState.PARTIAL
+    assert result.outputs["member_design"]["qualified"] is False
+    assert "LEAF.STATION_SCOPE_MISSING" in {item.code for item in result.diagnostics}
+
+    (source,) = short.station_source_results
+    changed = replace(
+        source, outputs={"checks": [{"station_id": "S1"}, {"station_id": "S2"}]}
+    )
+    for sources in ((), (changed,)):
+        missing = design_member(replace(relabelled, station_source_results=sources))
+        assert missing.completeness is CompletenessState.PARTIAL
+        assert "LEAF.STATION_SOURCE_MISSING" in {
+            item.code for item in missing.diagnostics
+        }
+
+    inconsistent = replace(full.leaf_results[2], method_revision_id="wrong-method")
+    mismatched = design_member(
+        replace(
+            full,
+            leaf_results=(*full.leaf_results[:2], inconsistent, full.leaf_results[-1]),
+        )
+    )
+    assert mismatched.completeness is CompletenessState.PARTIAL
+    assert "LEAF.STATION_SOURCE_MISMATCH" in {
+        item.code for item in mismatched.diagnostics
+    }

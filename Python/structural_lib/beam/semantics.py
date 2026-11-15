@@ -104,6 +104,22 @@ class OperationResult:
     def to_dict(self) -> dict[str, Any]:
         return {field.name: plain(getattr(self, field.name)) for field in fields(self)}
 
+    def _has_valid_result_identity(self) -> bool:
+        try:
+            outcome = _result_outcome(
+                applicability=self.applicability,
+                calculation_id=self.calculation_id,
+                completeness=self.completeness,
+                diagnostics=self.diagnostics,
+                engineering=self.engineering,
+                execution=self.execution,
+                freshness=self.freshness,
+                normalized_outputs=plain(self.outputs),
+            )
+            return self.result_id == _hash_normalized("result_id", outcome)
+        except (TypeError, ValueError):
+            return False
+
     def output_as(self, key: str, output_type: type[_OutputT]) -> _OutputT:
         """Restore an output record for the next typed operation.
 
@@ -214,6 +230,32 @@ def effective_inputs(**values: Any) -> dict[str, dict[str, Any]]:
     }
 
 
+def _result_outcome(
+    *,
+    applicability: ApplicabilityState,
+    calculation_id: str,
+    completeness: CompletenessState,
+    diagnostics: tuple[Diagnostic, ...],
+    engineering: EngineeringState,
+    execution: ExecutionState,
+    freshness: FreshnessState,
+    normalized_outputs: Mapping[str, Any],
+) -> dict[str, Any]:
+    outcome: dict[str, Any] = plain(
+        {
+            "applicability": applicability,
+            "calculation_id": calculation_id,
+            "completeness": completeness,
+            "diagnostics": diagnostics,
+            "engineering": engineering,
+            "execution": execution,
+            "freshness": freshness,
+        }
+    )
+    outcome["outputs"] = normalized_outputs
+    return outcome
+
+
 def _result(
     operation_semantic_id: str,
     inputs: Mapping[str, Any],
@@ -243,18 +285,16 @@ def _result(
             },
         )
     normalized_outputs = plain(outputs)
-    semantic_outcome = plain(
-        {
-            "applicability": applicability,
-            "calculation_id": calculation_id,
-            "completeness": completeness,
-            "diagnostics": diagnostic_items,
-            "engineering": engineering,
-            "execution": execution,
-            "freshness": freshness,
-        }
+    semantic_outcome = _result_outcome(
+        applicability=applicability,
+        calculation_id=calculation_id,
+        completeness=completeness,
+        diagnostics=diagnostic_items,
+        engineering=engineering,
+        execution=execution,
+        freshness=freshness,
+        normalized_outputs=normalized_outputs,
     )
-    semantic_outcome["outputs"] = normalized_outputs
     return OperationResult(
         schema_version=RESULT_SCHEMA_VERSION,
         operation_semantic_id=operation_semantic_id,

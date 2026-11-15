@@ -44,7 +44,10 @@ class ControlledSourceBasisV1:
     def is_resolved(self) -> bool:
         return (
             self.amendment_applicability is not AmendmentApplicability.UNKNOWN
-            and bool(self.applicability_review_id)
+            and bool((self.applicability_review_id or "").strip())
+            and bool(self.amendment_identity.strip())
+            and self.amendment_identity in self.source_ids
+            and all(source_id.strip() for source_id in self.source_ids)
         )
 
     def to_dict(self) -> dict[str, object]:
