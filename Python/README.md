@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.29.1 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.29.2 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,16 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.29.1
+## New in v0.29.2
+
+- Beam imports and snapshots validate case coverage, source units, model
+  facts and station evidence before checks use those inputs.
+- Beam checks reject invalid torsion and serviceability inputs and correct
+  lap, anchorage and longitudinal detailing outcomes.
+- Workbooks, reports and diagnostics retain failed, held and unavailable
+  results with their supporting evidence.
+
+## Introduced in v0.29.1
 
 - Direct beam shear rejects zero and negative support distances supplied as
   `av_mm`.

@@ -126,9 +126,9 @@ class TestVersionInfoFields:
     def test_dependency_versions_are_strings_or_none(self, info):
         """Each dependency value is either a version string or None."""
         for pkg, ver in info.dependencies.items():
-            assert ver is None or isinstance(ver, str), (
-                f"{pkg} has unexpected version type: {type(ver)}"
-            )
+            assert ver is None or isinstance(
+                ver, str
+            ), f"{pkg} has unexpected version type: {type(ver)}"
 
     def test_expected_dependencies_listed(self, info):
         """All expected optional deps should be checked."""

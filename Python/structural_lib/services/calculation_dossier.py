@@ -436,9 +436,7 @@ def verify_signed_calculation_dossier_v1(
     status: Literal["SIGNATURE_INVALID", "STALE_SUPERSEDED", "SIGNATURE_PENDING"] = (
         "SIGNATURE_INVALID"
         if invalid
-        else "STALE_SUPERSEDED"
-        if stale
-        else "SIGNATURE_PENDING"
+        else "STALE_SUPERSEDED" if stale else "SIGNATURE_PENDING"
     )
     return DossierVerificationResultV1(
         status=status,
