@@ -75,6 +75,14 @@ def size_footing(
     require_finite_real("a_mm", a_mm, error_type=DimensionError)
     require_finite_real("b_mm", b_mm, error_type=DimensionError)
     require_finite_real("M_service_kNm", M_service_kNm)
+    if footing_type not in (
+        FootingType.ISOLATED_SQUARE,
+        FootingType.ISOLATED_RECTANGULAR,
+    ):
+        raise ValidationError(
+            "footing_type must be ISOLATED_SQUARE or ISOLATED_RECTANGULAR",
+            details={"footing_type": footing_type},
+        )
 
     if P_service_kN <= 0:
         raise ValidationError(

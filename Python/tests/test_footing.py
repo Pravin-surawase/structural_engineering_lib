@@ -1798,3 +1798,9 @@ class TestOverallThicknessMinimum:
             fck=25,
         )
         assert result.d_mm == 149.0
+
+
+@pytest.mark.parametrize("footing_type", [None, "combined"])
+def test_standalone_footing_sizing_rejects_an_unsupported_type(footing_type):
+    with pytest.raises(ValidationError, match="footing_type"):
+        size_footing(1000, 200, 300, 400, footing_type=footing_type)
