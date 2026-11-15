@@ -317,6 +317,85 @@ def design_complete_one_way_slab_is456(
     )
 
 
+@dataclass(frozen=True)
+class _ContinuousOneWaySlabStrengthResult:
+    flexure: ContinuousOneWaySlabResult
+    positive_reinforcement: SlabReinforcementRegionResult
+    negative_reinforcement: SlabReinforcementRegionResult
+    distribution_reinforcement: SlabReinforcementRegionResult
+    shear: SlabShearResult
+
+
+def _check_continuous_one_way_slab_strength(
+    request: ContinuousOneWaySlabInput,
+    positive_bars: ProvidedSlabBars,
+    negative_bars: ProvidedSlabBars,
+    distribution_bars: ProvidedSlabBars,
+) -> _ContinuousOneWaySlabStrengthResult:
+    flexure = design_continuous_one_way_slab_flexure(request)
+    thickness_mm = request.geometry.thickness_mm
+    d_mm = request.d_mm
+    fy_n_per_mm2 = request.fy_n_per_mm2
+    fck_n_per_mm2 = request.fck_n_per_mm2
+    strip_width_mm = request.geometry.strip_width_mm or 1000.0
+    positive = check_slab_reinforcement_region(
+        region_id="continuous_positive_midspan",
+        required_for_moment_mm2_per_m=(flexure.positive_midspan.ast_required_mm2_per_m),
+        bars=positive_bars,
+        overall_depth_mm=thickness_mm,
+        effective_depth_mm=d_mm,
+        fy_n_per_mm2=fy_n_per_mm2,
+    )
+    negative = check_slab_reinforcement_region(
+        region_id="continuous_negative_support",
+        required_for_moment_mm2_per_m=(flexure.negative_support.ast_required_mm2_per_m),
+        bars=negative_bars,
+        overall_depth_mm=thickness_mm,
+        effective_depth_mm=d_mm,
+        fy_n_per_mm2=fy_n_per_mm2,
+    )
+    distribution = check_slab_reinforcement_region(
+        region_id="continuous_distribution",
+        required_for_moment_mm2_per_m=0.0,
+        bars=distribution_bars,
+        distribution_only=True,
+        overall_depth_mm=thickness_mm,
+        effective_depth_mm=d_mm,
+        fy_n_per_mm2=fy_n_per_mm2,
+    )
+    shear = check_solid_slab_one_way_shear(
+        SlabShearInput(
+            factored_shear_kn=flexure.factored_shear_kn_per_m,
+            strip_width_mm=strip_width_mm,
+            effective_depth_mm=d_mm,
+            overall_depth_mm=thickness_mm,
+            fck_n_per_mm2=fck_n_per_mm2,
+            tension_reinforcement_mm2=min(
+                positive.provided_mm2_per_m, negative.provided_mm2_per_m
+            ),
+            uniformly_distributed_load_only=True,
+            beam_or_wall_supported=True,
+        )
+    )
+    source_refs: tuple[str, ...]
+    if request.coefficients.verified_by_library:
+        source_refs = (
+            "IS 456:2000 Cl. 22.5, Table 12 and Table 13",
+            DISTRIBUTION_SPACING_SOURCE_REF,
+            request.coefficients.source_reference,
+            request.coefficients.qualified_acceptance_reference,
+        )
+    else:
+        source_refs = flexure.source_refs + (DISTRIBUTION_SPACING_SOURCE_REF,)
+    return _ContinuousOneWaySlabStrengthResult(
+        flexure=replace(flexure, source_refs=source_refs),
+        positive_reinforcement=positive,
+        negative_reinforcement=negative,
+        distribution_reinforcement=distribution,
+        shear=shear,
+    )
+
+
 def design_continuous_one_way_slab_is456(
     *,
     short_effective_span_mm: float,
@@ -370,7 +449,7 @@ def design_continuous_one_way_slab_is456(
             qualified_coefficient_acceptance_acknowledged
         ),
     )
-    flexure = design_continuous_one_way_slab_flexure(
+    strength = _check_continuous_one_way_slab_strength(
         ContinuousOneWaySlabInput(
             geometry=geometry,
             d_mm=d_mm,
@@ -385,51 +464,10 @@ def design_continuous_one_way_slab_is456(
                 substantially_uniform_load_acknowledged
             ),
             redistribution_applied=redistribution_applied,
-        )
-    )
-    positive_bars = ProvidedSlabBars(positive_bar_diameter_mm, positive_bar_spacing_mm)
-    negative_bars = ProvidedSlabBars(negative_bar_diameter_mm, negative_bar_spacing_mm)
-    distribution_bars = ProvidedSlabBars(
-        distribution_bar_diameter_mm, distribution_bar_spacing_mm
-    )
-    positive = check_slab_reinforcement_region(
-        region_id="continuous_positive_midspan",
-        required_for_moment_mm2_per_m=(flexure.positive_midspan.ast_required_mm2_per_m),
-        bars=positive_bars,
-        overall_depth_mm=thickness_mm,
-        effective_depth_mm=d_mm,
-        fy_n_per_mm2=fy_n_per_mm2,
-    )
-    negative = check_slab_reinforcement_region(
-        region_id="continuous_negative_support",
-        required_for_moment_mm2_per_m=(flexure.negative_support.ast_required_mm2_per_m),
-        bars=negative_bars,
-        overall_depth_mm=thickness_mm,
-        effective_depth_mm=d_mm,
-        fy_n_per_mm2=fy_n_per_mm2,
-    )
-    distribution = check_slab_reinforcement_region(
-        region_id="continuous_distribution",
-        required_for_moment_mm2_per_m=0.0,
-        bars=distribution_bars,
-        distribution_only=True,
-        overall_depth_mm=thickness_mm,
-        effective_depth_mm=d_mm,
-        fy_n_per_mm2=fy_n_per_mm2,
-    )
-    shear = check_solid_slab_one_way_shear(
-        SlabShearInput(
-            factored_shear_kn=flexure.factored_shear_kn_per_m,
-            strip_width_mm=strip_width_mm,
-            effective_depth_mm=d_mm,
-            overall_depth_mm=thickness_mm,
-            fck_n_per_mm2=fck_n_per_mm2,
-            tension_reinforcement_mm2=min(
-                positive.provided_mm2_per_m, negative.provided_mm2_per_m
-            ),
-            uniformly_distributed_load_only=True,
-            beam_or_wall_supported=True,
-        )
+        ),
+        ProvidedSlabBars(positive_bar_diameter_mm, positive_bar_spacing_mm),
+        ProvidedSlabBars(negative_bar_diameter_mm, negative_bar_spacing_mm),
+        ProvidedSlabBars(distribution_bar_diameter_mm, distribution_bar_spacing_mm),
     )
     serviceability = check_slab_span_depth_serviceability(
         SlabServiceabilityInput(
@@ -450,16 +488,13 @@ def design_continuous_one_way_slab_is456(
         )
     )
     return ContinuousOneWaySlabDesignResult(
-        flexure=replace(
-            flexure,
-            source_refs=flexure.source_refs + (DISTRIBUTION_SPACING_SOURCE_REF,),
-        ),
-        positive_reinforcement=positive,
-        negative_reinforcement=negative,
-        distribution_reinforcement=distribution,
-        shear=shear,
+        flexure=strength.flexure,
+        positive_reinforcement=strength.positive_reinforcement,
+        negative_reinforcement=strength.negative_reinforcement,
+        distribution_reinforcement=strength.distribution_reinforcement,
+        shear=strength.shear,
         serviceability=serviceability,
-        punching_shear_disposition=shear.punching_shear_disposition,
+        punching_shear_disposition=strength.shear.punching_shear_disposition,
     )
 
 

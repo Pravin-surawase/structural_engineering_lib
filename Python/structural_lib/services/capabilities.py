@@ -406,16 +406,28 @@ _CAPABILITIES = (
             "common oriented two-way beam/wall-supported panels with built-in bounded "
             "IS 456 coefficient lookup/interpolation or reviewed external coefficients, "
             "strip distribution, corner torsion, provided-bar checks, span/depth "
-            "serviceability carriers, and ordinary one-way shear."
+            "serviceability carriers, and ordinary one-way shear. The Python supplied-action set retains each checked UDL row and the governing row per check."
         ),
         held_cases=(
             "Direct deflection remains held until a slab-specific route validates explicit service-action combinations, load duration, reinforcement positions, cracking/effective inertia, creep and shrinkage against independent slab benchmarks.",
             "Crack width remains held until explicit bar geometry, cover, neutral-axis depth, exposure limit and service steel stress or strain are validated for supported slab strips and panels.",
-            "Each public route consumes one caller-selected factored UDL or one declared coefficient-method action basis; concentrated loads, openings, irregular panels, load-combination/pattern generation and envelope analysis are excluded.",
+            "Single-row routes consume one caller-selected factored UDL or a declared coefficient-method action basis. Supplied-action sets compare declared rows. Concentrated loads, openings, irregular panels and load generation remain out of scope.",
             "Ordinary one-way concrete shear is checked for beam/wall-supported UDL panels; when capacity is exceeded the result requires increased depth or separate engineering and never automatically designs slab shear reinforcement.",
             "Flat/drop/ribbed slabs, column strips, column-supported punching and FEM require a separately approved extension.",
         ),
         qualified_review_required=True,
+        python_profiles=(
+            IS456PythonProfile(
+                "is456.slab.supplied-action-set/v1",
+                "structural_lib.design.is456.slab",
+                "load_action_set",
+                "check_action_set",
+                "slab-action-set-input/v1",
+                "Declared ULS rows for continuous one-way strips or oriented two-way panels, with checked steel, concrete shear, reviewed span/depth and per-check governing rows.",
+                "docs/cookbook/python/slab-supplied-actions.md",
+                "Python/examples/slab_supplied_action_references.py",
+            ),
+        ),
     ),
     IS456Capability(
         element="stair",

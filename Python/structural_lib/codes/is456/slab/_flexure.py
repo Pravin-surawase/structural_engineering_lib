@@ -4,10 +4,27 @@
 
 from __future__ import annotations
 
+from structural_lib.codes.is456 import materials
 from structural_lib.codes.is456.common.stress_blocks import (
     calculate_ast_from_rectangular_stress_block as _calculate_ast_from_rectangular_stress_block,
 )
 from structural_lib.codes.is456.slab.models import SlabContractError
+
+
+def rectangular_limiting_moment_knm(
+    *, b_mm: float, d_mm: float, fck_n_per_mm2: float, fy_n_per_mm2: float
+) -> float:
+    """Return the singly reinforced slab limit under the rectangular stress block."""
+    xu_max_over_d = materials.get_xu_max_d(fy_n_per_mm2)
+    return (
+        0.36
+        * xu_max_over_d
+        * (1.0 - 0.42 * xu_max_over_d)
+        * fck_n_per_mm2
+        * b_mm
+        * d_mm**2
+        / 1_000_000.0
+    )
 
 
 def calculate_ast_from_rectangular_stress_block(

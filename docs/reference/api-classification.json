@@ -18526,8 +18526,8 @@
     {
       "module": "structural_lib.design.is456.slab",
       "export_classification": "preview",
-      "declared_export_count": 33,
-      "classified_symbol_count": 48,
+      "declared_export_count": 40,
+      "classified_symbol_count": 55,
       "symbols": [
         {
           "name": "Any",
@@ -18572,6 +18572,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.slab_api",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ContinuousOneWaySlabActionSetInputV1",
+          "qualified_name": "structural_lib.design.is456.slab.ContinuousOneWaySlabActionSetInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.slab_action_set",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -18847,6 +18866,63 @@
           }
         },
         {
+          "name": "SlabActionCheckV1",
+          "qualified_name": "structural_lib.design.is456.slab.SlabActionCheckV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_action_set",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "SlabActionRowResultV1",
+          "qualified_name": "structural_lib.design.is456.slab.SlabActionRowResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_action_set",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "SlabActionSetResultV1",
+          "qualified_name": "structural_lib.design.is456.slab.SlabActionSetResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_action_set",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "SlabCapacityFailureResult",
           "qualified_name": "structural_lib.design.is456.slab.SlabCapacityFailureResult",
           "kind": "class",
@@ -18929,6 +19005,25 @@
           "documentation": {
             "role": "INTERNAL_NO_PUBLIC_DOCUMENTATION",
             "obligations": [],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "TwoWaySlabActionSetInputV1",
+          "qualified_name": "structural_lib.design.is456.slab.TwoWaySlabActionSetInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.slab_action_set",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
             "signature": "",
             "docstring_sections": [],
             "missing_docstring_sections": [],
@@ -19060,6 +19155,35 @@
             "obligations": [],
             "signature": "(request: 'StrictPublicModel', calculation: '_CalculationT', *, workflow_id: 'str', engineering_status: 'EngineeringStatus', limitations: 'tuple[str, ...]' = (), assumptions: 'tuple[str, ...]' = (), provenance: 'tuple[str, ...]' = ()) -> 'CanonicalFamilyResultV1[_CalculationT]'",
             "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_action_set",
+          "qualified_name": "structural_lib.design.is456.slab.check_action_set",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_action_set",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'SlabActionSetInputV1') -> 'CanonicalFamilyResultV1[SlabActionSetResultV1]'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
             "missing_docstring_sections": [],
             "example_ids": []
           }
@@ -19277,6 +19401,35 @@
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
             "signature": "(*, identity: 'FamilyIdentityV1 | Mapping[str, object]', geometry: 'TwoWaySlabGeometryV1 | Mapping[str, object]', actions: 'TwoWaySlabActionsV1 | Mapping[str, object]', materials: 'SlabMaterialsV1 | Mapping[str, object]', reinforcement: 'TwoWaySlabReinforcementV1 | Mapping[str, object]', serviceability_evidence: 'SlabServiceabilityEvidenceV1 | Mapping[str, object]') -> 'TwoWaySlabInputV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_action_set",
+          "qualified_name": "structural_lib.design.is456.slab.load_action_set",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_action_set",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'Mapping[str, object] | SlabActionSetInputV1') -> 'SlabActionSetInputV1'",
             "docstring_sections": [
               "examples",
               "limitations",

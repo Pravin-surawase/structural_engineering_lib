@@ -18,6 +18,9 @@ structured errors, finite result consumption, and the current review boundary.
 Use the recipes below only when maintaining a caller that already depends on
 the named compatibility or low-level API.
 
+For several factored UDL rows on one slab geometry and reinforcement
+revision in a source build, use the [supplied slab action set](python/slab-supplied-actions.md).
+
 ## Setup
 
 The pin follows the [verified public version](../getting-started/release-status.md).

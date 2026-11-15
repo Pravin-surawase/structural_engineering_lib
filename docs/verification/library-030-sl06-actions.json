@@ -1,0 +1,1154 @@
+{
+  "fixture_version": "library-030-sl06-actions/v1",
+  "reference_base_commit": "67b8f879c88cc2d4e3c11b46afc2671da1e90e7e",
+  "sources": {
+    "code": "IS 456:2000 cl. 26.5.2, 38.1, 40.1 and 40.2, Tables 12/13/19/20/26 and Annex D",
+    "primary_mirror": "https://www.cracindia.in/admin/uploads/IS-456.pdf",
+    "amendments": [
+      "Amendment 3 (August 2007), cl. 26.3.3(b)(2), 300 mm cap for slab distribution bars",
+      "Amendment 5 (July 2019), cl. 40.2.3.1, half of Table 20 for solid slabs"
+    ],
+    "amendments_mirror": "https://nfrlyconstruction.org/uploads/File/Codes/17072023-23_147_IS-456-with-all-ammendments.pdf_504314034.pdf",
+    "admitted_input_basis": "SLAB-B02 and SLAB-B04 in is456-slab-evidence.md and Python/examples/slab_coefficient_references.py"
+  },
+  "absolute_tolerances": {
+    "actions_knm_per_m_or_kn_per_m": 1e-10,
+    "reinforcement_mm2_per_m": 0.001,
+    "stress_n_per_mm2": 1e-09,
+    "length_mm": 1e-08,
+    "utilization": 1e-09
+  },
+  "check_definitions": {
+    "section_flexure": "abs(Mu) / limiting moment for the direction",
+    "area": "governing required area / provided steel area",
+    "diameter": "provided diameter / maximum diameter",
+    "spacing": "provided spacing / maximum spacing",
+    "torsion_area_per_layer": "required area / provided area in each of four layers, only where applicable",
+    "support_shear": "nominal shear stress / min(depth-adjusted concrete design shear stress, amended maximum)",
+    "reviewed_span_depth": "actual span/depth / reviewed modified span/depth limit"
+  },
+  "service_scope": "Reviewed span/depth only. Direct deflection and crack-width acceptance remain in SERV03.",
+  "tie_rule": "Highest unrounded utilization per check among evaluated failures if present, otherwise among passes. Lexical ID on exact ties. Preserve incomplete coverage and every conclusive failure.",
+  "row_binding": "Materialize each row with the common geometry, reinforcement, selected coefficient route and shared service basis. For all-fixed B02 built-in, pass that row's UDL as fixed.",
+  "specimens": {
+    "B02": {
+      "geometry_revision": "B02-geometry/v1",
+      "reinforcement_revision": "B02-reinforcement/v1",
+      "geometry_material_and_support_inputs": {
+        "short_effective_span_mm": 3000,
+        "long_effective_span_mm": 7500,
+        "thickness_mm": 140,
+        "d_mm": 115,
+        "fck_n_per_mm2": 20,
+        "fy_n_per_mm2": 415,
+        "number_of_spans": 3,
+        "maximum_span_variation_percent": 0,
+        "uniform_cross_section_acknowledged": true,
+        "substantially_uniform_load_acknowledged": true,
+        "redistribution_applied": false
+      },
+      "reinforcement_inputs": {
+        "positive_bar_diameter_mm": 8,
+        "positive_bar_spacing_mm": 180,
+        "negative_bar_diameter_mm": 10,
+        "negative_bar_spacing_mm": 230,
+        "distribution_bar_diameter_mm": 8,
+        "distribution_bar_spacing_mm": 250
+      },
+      "shared_reviewed_service_basis": {
+        "reviewed_base_span_depth_limit": 23,
+        "reviewed_aggregate_modification_factor": 1.18,
+        "serviceability_limit_source_reference": "NPTEL-L18-B02-SLS",
+        "serviceability_limit_source_is_approved": true,
+        "qualified_serviceability_acceptance_reference": "example-review:L18-B02-SLS",
+        "qualified_serviceability_acceptance_acknowledged": true
+      },
+      "coefficient_routes": {
+        "external": {
+          "entry_point": "design_continuous_one_way_slab_is456",
+          "inputs": {
+            "positive_moment_coefficient": 0.08333333333333333,
+            "negative_moment_coefficient": 0.1,
+            "shear_coefficient": 0.4,
+            "coefficient_source_reference": "NPTEL-L18-B02",
+            "coefficient_source_is_approved": true,
+            "qualified_coefficient_acceptance_reference": "example-review:L18-B02",
+            "qualified_coefficient_acceptance_acknowledged": true
+          },
+          "load_argument": "factored_area_load_kn_per_m2",
+          "verified_by_library": false
+        },
+        "builtin": {
+          "entry_point": "design_continuous_one_way_slab_builtin_is456",
+          "table_id": "IS456_TABLE_12_13",
+          "inputs": {
+            "factored_nonfixed_imposed_load_kn_per_m2": 0,
+            "positive_location": "end_span_positive",
+            "negative_location": "next_to_end_support_negative",
+            "shear_location": "end_support"
+          },
+          "load_argument": "factored_dead_and_fixed_imposed_load_kn_per_m2",
+          "verified_by_library": true
+        }
+      },
+      "required_row_ids": [
+        "A",
+        "B"
+      ],
+      "rows": {
+        "A": {
+          "input": {
+            "row_id": "A",
+            "factored_area_load_kn_per_m2": 10
+          },
+          "expected": {
+            "actions": {
+              "signed_moments_knm_per_m": {
+                "positive_midspan": 7.499999999999999,
+                "negative_support": -9.0
+              },
+              "support_shear_magnitude_kn_per_m": 12.0
+            },
+            "flexure": {
+              "positive_midspan": {
+                "required_for_moment_mm2_per_m": 187.0395530145943,
+                "neutral_axis_depth_mm": 9.379254252211012
+              },
+              "negative_support": {
+                "required_for_moment_mm2_per_m": 226.12343643789106,
+                "neutral_axis_depth_mm": 11.339148156375082
+              }
+            },
+            "shear_basis": {
+              "steel_percent": 0.24282841766877625,
+              "base_tau_c_n_per_mm2": 0.35426273413502096,
+              "depth_factor": 1.3,
+              "design_tau_c_n_per_mm2": 0.46054155437552724,
+              "maximum_tau_n_per_mm2": 1.4
+            },
+            "checks": {
+              "positive_midspan.section_flexure": {
+                "demand": 7.499999999999999,
+                "limit": 36.49135104,
+                "utilization": 0.20552815355558837,
+                "status": "PASS"
+              },
+              "negative_support.section_flexure": {
+                "demand": 9.0,
+                "limit": 36.49135104,
+                "utilization": 0.24663378426670607,
+                "status": "PASS"
+              },
+              "positive_midspan.area": {
+                "demand": 187.0395530145943,
+                "limit": 279.2526803190927,
+                "utilization": 0.6697860618593543,
+                "status": "PASS"
+              },
+              "positive_midspan.diameter": {
+                "demand": 8,
+                "limit": 17.5,
+                "utilization": 0.45714285714285713,
+                "status": "PASS"
+              },
+              "positive_midspan.spacing": {
+                "demand": 180,
+                "limit": 300,
+                "utilization": 0.6,
+                "status": "PASS"
+              },
+              "negative_support.area": {
+                "demand": 226.12343643789106,
+                "limit": 341.47746234671666,
+                "utilization": 0.6621913929075011,
+                "status": "PASS"
+              },
+              "negative_support.diameter": {
+                "demand": 10,
+                "limit": 17.5,
+                "utilization": 0.5714285714285714,
+                "status": "PASS"
+              },
+              "negative_support.spacing": {
+                "demand": 230,
+                "limit": 300,
+                "utilization": 0.7666666666666667,
+                "status": "PASS"
+              },
+              "distribution.area": {
+                "demand": 168.0,
+                "limit": 201.06192982974676,
+                "utilization": 0.8355634512324506,
+                "status": "PASS"
+              },
+              "distribution.diameter": {
+                "demand": 8,
+                "limit": 17.5,
+                "utilization": 0.45714285714285713,
+                "status": "PASS"
+              },
+              "distribution.spacing": {
+                "demand": 250,
+                "limit": 300,
+                "utilization": 0.8333333333333334,
+                "status": "PASS"
+              },
+              "support_shear": {
+                "demand": 0.10434782608695652,
+                "limit": 0.46054155437552724,
+                "utilization": 0.22657635363316406,
+                "status": "PASS"
+              },
+              "reviewed_span_depth": {
+                "demand": 26.08695652173913,
+                "limit": 27.139999999999997,
+                "utilization": 0.9611995770721862,
+                "status": "PASS"
+              }
+            },
+            "uls_status": "PASS",
+            "reviewed_service_status": "PASS"
+          }
+        },
+        "B": {
+          "input": {
+            "row_id": "B",
+            "factored_area_load_kn_per_m2": 14.25
+          },
+          "expected": {
+            "actions": {
+              "signed_moments_knm_per_m": {
+                "positive_midspan": 10.6875,
+                "negative_support": -12.825000000000001
+              },
+              "support_shear_magnitude_kn_per_m": 17.1
+            },
+            "flexure": {
+              "positive_midspan": {
+                "required_for_moment_mm2_per_m": 270.83514094597166,
+                "neutral_axis_depth_mm": 13.581253838686541
+              },
+              "negative_support": {
+                "required_for_moment_mm2_per_m": 328.6647184744435,
+                "neutral_axis_depth_mm": 16.481166195166367
+              }
+            },
+            "shear_basis": {
+              "steel_percent": 0.24282841766877625,
+              "base_tau_c_n_per_mm2": 0.35426273413502096,
+              "depth_factor": 1.3,
+              "design_tau_c_n_per_mm2": 0.46054155437552724,
+              "maximum_tau_n_per_mm2": 1.4
+            },
+            "checks": {
+              "positive_midspan.section_flexure": {
+                "demand": 10.6875,
+                "limit": 36.49135104,
+                "utilization": 0.2928776188167135,
+                "status": "PASS"
+              },
+              "negative_support.section_flexure": {
+                "demand": 12.825000000000001,
+                "limit": 36.49135104,
+                "utilization": 0.35145314258005617,
+                "status": "PASS"
+              },
+              "positive_midspan.area": {
+                "demand": 270.83514094597166,
+                "limit": 279.2526803190927,
+                "utilization": 0.9698569075021856,
+                "status": "PASS"
+              },
+              "positive_midspan.diameter": {
+                "demand": 8,
+                "limit": 17.5,
+                "utilization": 0.45714285714285713,
+                "status": "PASS"
+              },
+              "positive_midspan.spacing": {
+                "demand": 180,
+                "limit": 300,
+                "utilization": 0.6,
+                "status": "PASS"
+              },
+              "negative_support.area": {
+                "demand": 328.6647184744435,
+                "limit": 341.47746234671666,
+                "utilization": 0.9624785079980949,
+                "status": "PASS"
+              },
+              "negative_support.diameter": {
+                "demand": 10,
+                "limit": 17.5,
+                "utilization": 0.5714285714285714,
+                "status": "PASS"
+              },
+              "negative_support.spacing": {
+                "demand": 230,
+                "limit": 300,
+                "utilization": 0.7666666666666667,
+                "status": "PASS"
+              },
+              "distribution.area": {
+                "demand": 168.0,
+                "limit": 201.06192982974676,
+                "utilization": 0.8355634512324506,
+                "status": "PASS"
+              },
+              "distribution.diameter": {
+                "demand": 8,
+                "limit": 17.5,
+                "utilization": 0.45714285714285713,
+                "status": "PASS"
+              },
+              "distribution.spacing": {
+                "demand": 250,
+                "limit": 300,
+                "utilization": 0.8333333333333334,
+                "status": "PASS"
+              },
+              "support_shear": {
+                "demand": 0.14869565217391303,
+                "limit": 0.46054155437552724,
+                "utilization": 0.32287130392725877,
+                "status": "PASS"
+              },
+              "reviewed_span_depth": {
+                "demand": 26.08695652173913,
+                "limit": 27.139999999999997,
+                "utilization": 0.9611995770721862,
+                "status": "PASS"
+              }
+            },
+            "uls_status": "PASS",
+            "reviewed_service_status": "PASS"
+          }
+        }
+      },
+      "expected_governing_ids": {
+        "positive_midspan.section_flexure": "B",
+        "negative_support.section_flexure": "B",
+        "positive_midspan.area": "B",
+        "positive_midspan.diameter": "A",
+        "positive_midspan.spacing": "A",
+        "negative_support.area": "B",
+        "negative_support.diameter": "A",
+        "negative_support.spacing": "A",
+        "distribution.area": "A",
+        "distribution.diameter": "A",
+        "distribution.spacing": "A",
+        "support_shear": "B",
+        "reviewed_span_depth": "A"
+      },
+      "expected_status": {
+        "coverage": "COMPLETE",
+        "uls": "PASS",
+        "reviewed_service": "PASS",
+        "engineering": "PASS",
+        "failed_checks_by_row": {
+          "A": [],
+          "B": []
+        }
+      },
+      "controls": {
+        "reordered": {
+          "input_order": [
+            "B",
+            "A"
+          ],
+          "expected_governing_ids": {
+            "positive_midspan.section_flexure": "B",
+            "negative_support.section_flexure": "B",
+            "positive_midspan.area": "B",
+            "positive_midspan.diameter": "A",
+            "positive_midspan.spacing": "A",
+            "negative_support.area": "B",
+            "negative_support.diameter": "A",
+            "negative_support.spacing": "A",
+            "distribution.area": "A",
+            "distribution.diameter": "A",
+            "distribution.spacing": "A",
+            "support_shear": "B",
+            "reviewed_span_depth": "A"
+          },
+          "coverage": "COMPLETE"
+        },
+        "exact_tie": {
+          "input_order": [
+            "B",
+            "A"
+          ],
+          "replace_B_load_with_A_load": true,
+          "expected_governing_ids": {
+            "positive_midspan.section_flexure": "A",
+            "negative_support.section_flexure": "A",
+            "positive_midspan.area": "A",
+            "positive_midspan.diameter": "A",
+            "positive_midspan.spacing": "A",
+            "negative_support.area": "A",
+            "negative_support.diameter": "A",
+            "negative_support.spacing": "A",
+            "distribution.area": "A",
+            "distribution.diameter": "A",
+            "distribution.spacing": "A",
+            "support_shear": "A",
+            "reviewed_span_depth": "A"
+          },
+          "coverage": "COMPLETE"
+        },
+        "duplicate_id": {
+          "input_order": [
+            "A",
+            "A",
+            "B"
+          ],
+          "intake": "REJECT_DUPLICATE_ID"
+        },
+        "missing_B": {
+          "input_order": [
+            "A"
+          ],
+          "coverage": "HOLD",
+          "missing_required_row_ids": [
+            "B"
+          ],
+          "available_governing_ids": {
+            "positive_midspan.section_flexure": "A",
+            "negative_support.section_flexure": "A",
+            "positive_midspan.area": "A",
+            "positive_midspan.diameter": "A",
+            "positive_midspan.spacing": "A",
+            "negative_support.area": "A",
+            "negative_support.diameter": "A",
+            "negative_support.spacing": "A",
+            "distribution.area": "A",
+            "distribution.diameter": "A",
+            "distribution.spacing": "A",
+            "support_shear": "A",
+            "reviewed_span_depth": "A"
+          },
+          "available_uls": "PASS",
+          "available_reviewed_service": "PASS",
+          "engineering": "HOLD",
+          "evaluated_A_retained": true
+        },
+        "missing_shared_service_basis": {
+          "input_order": [
+            "A",
+            "B"
+          ],
+          "set_shared_service_basis_to_null": true,
+          "uls": "PASS",
+          "reviewed_service": "HOLD",
+          "engineering": "HOLD",
+          "expected_governing_ids": {
+            "positive_midspan.section_flexure": "B",
+            "negative_support.section_flexure": "B",
+            "positive_midspan.area": "B",
+            "positive_midspan.diameter": "A",
+            "positive_midspan.spacing": "A",
+            "negative_support.area": "B",
+            "negative_support.diameter": "A",
+            "negative_support.spacing": "A",
+            "distribution.area": "A",
+            "distribution.diameter": "A",
+            "distribution.spacing": "A",
+            "support_shear": "B",
+            "reviewed_span_depth": null
+          },
+          "strength_failures_retained": false
+        }
+      }
+    },
+    "B04": {
+      "geometry_revision": "B04-geometry/v1",
+      "reinforcement_revision": "B04-reinforcement/v1",
+      "geometry_material_and_support_inputs": {
+        "x_effective_span_mm": 4000,
+        "y_effective_span_mm": 6000,
+        "thickness_mm": 160,
+        "d_x_mm": 135,
+        "d_y_mm": 125,
+        "fck_n_per_mm2": 20,
+        "fy_n_per_mm2": 415,
+        "x_min_edge": "discontinuous",
+        "x_max_edge": "continuous",
+        "y_min_edge": "discontinuous",
+        "y_max_edge": "continuous",
+        "corner_lift_condition": "restrained"
+      },
+      "reinforcement_inputs": {
+        "x_positive_bar_diameter_mm": 10,
+        "x_positive_bar_spacing_mm": 200,
+        "x_negative_bar_diameter_mm": 10,
+        "x_negative_bar_spacing_mm": 200,
+        "y_positive_bar_diameter_mm": 8,
+        "y_positive_bar_spacing_mm": 200,
+        "y_negative_bar_diameter_mm": 8,
+        "y_negative_bar_spacing_mm": 200,
+        "edge_strip_bar_diameter_mm": 8,
+        "edge_strip_bar_spacing_mm": 250,
+        "torsion_bar_diameter_mm": 8,
+        "torsion_bar_spacing_mm": 200
+      },
+      "shared_reviewed_service_basis": {
+        "reviewed_base_span_depth_limit": 30,
+        "reviewed_aggregate_modification_factor": 1,
+        "serviceability_limit_source_reference": "NPTEL-L19-B04-SLS",
+        "serviceability_limit_source_is_approved": true,
+        "qualified_serviceability_acceptance_reference": "example-review:L19-B04-SLS",
+        "qualified_serviceability_acceptance_acknowledged": true
+      },
+      "coefficient_routes": {
+        "external": {
+          "entry_point": "design_two_way_slab_panel_is456",
+          "inputs": {
+            "support_topology_kind": "two_adjacent_edges_discontinuous",
+            "alpha_x_negative": 0.075,
+            "alpha_x_positive": 0.056,
+            "alpha_y_negative": 0.047,
+            "alpha_y_positive": 0.035,
+            "coefficient_source_reference": "NPTEL-L19-B04",
+            "coefficient_source_is_approved": true,
+            "qualified_coefficient_acceptance_reference": "example-review:L19-B04",
+            "qualified_coefficient_acceptance_acknowledged": true
+          },
+          "load_argument": "factored_area_load_kn_per_m2",
+          "verified_by_library": false
+        },
+        "builtin": {
+          "entry_point": "design_two_way_slab_panel_builtin_is456",
+          "table_id": "IS456_TABLE_26",
+          "case_id": "table_26_case_4",
+          "inputs": {},
+          "load_argument": "factored_area_load_kn_per_m2",
+          "verified_by_library": true
+        }
+      },
+      "required_row_ids": [
+        "A",
+        "B"
+      ],
+      "rows": {
+        "A": {
+          "input": {
+            "row_id": "A",
+            "factored_area_load_kn_per_m2": 12
+          },
+          "expected": {
+            "actions": {
+              "signed_moments_knm_per_m": {
+                "x_negative": -14.399999999999999,
+                "x_positive": 10.752,
+                "y_negative": -9.024000000000001,
+                "y_positive": 6.720000000000001
+              },
+              "support_shear_magnitude_kn_per_m": 24.0
+            },
+            "flexure": {
+              "x_negative": {
+                "required_for_moment_mm2_per_m": 310.47287599219845,
+                "neutral_axis_depth_mm": 15.568921094025454
+              },
+              "x_positive": {
+                "required_for_moment_mm2_per_m": 228.7549591855344,
+                "neutral_axis_depth_mm": 11.47110805749128
+              },
+              "y_negative": {
+                "required_for_moment_mm2_per_m": 207.18250999043926,
+                "neutral_axis_depth_mm": 10.389339615562237
+              },
+              "y_positive": {
+                "required_for_moment_mm2_per_m": 152.83470942546316,
+                "neutral_axis_depth_mm": 7.664023866397707
+              }
+            },
+            "shear_basis": {
+              "steel_percent": 0.20106192982974674,
+              "base_tau_c_n_per_mm2": 0.3208495438637974,
+              "depth_factor": 1.28,
+              "design_tau_c_n_per_mm2": 0.4106874161456607,
+              "maximum_tau_n_per_mm2": 1.4
+            },
+            "checks": {
+              "x_negative.section_flexure": {
+                "demand": 14.399999999999999,
+                "limit": 50.28770304,
+                "utilization": 0.28635231139004114,
+                "status": "PASS"
+              },
+              "x_positive.section_flexure": {
+                "demand": 10.752,
+                "limit": 50.28770304,
+                "utilization": 0.21380972583789742,
+                "status": "PASS"
+              },
+              "y_negative.section_flexure": {
+                "demand": 9.024000000000001,
+                "limit": 43.11359999999999,
+                "utilization": 0.20930750389668232,
+                "status": "PASS"
+              },
+              "y_positive.section_flexure": {
+                "demand": 6.720000000000001,
+                "limit": 43.11359999999999,
+                "utilization": 0.15586729013582726,
+                "status": "PASS"
+              },
+              "x_negative.area": {
+                "demand": 310.47287599219845,
+                "limit": 392.69908169872417,
+                "utilization": 0.7906126865618467,
+                "status": "PASS"
+              },
+              "x_negative.diameter": {
+                "demand": 10,
+                "limit": 20.0,
+                "utilization": 0.5,
+                "status": "PASS"
+              },
+              "x_negative.spacing": {
+                "demand": 200,
+                "limit": 300,
+                "utilization": 0.6666666666666666,
+                "status": "PASS"
+              },
+              "x_positive.area": {
+                "demand": 228.7549591855344,
+                "limit": 392.69908169872417,
+                "utilization": 0.5825197201786011,
+                "status": "PASS"
+              },
+              "x_positive.diameter": {
+                "demand": 10,
+                "limit": 20.0,
+                "utilization": 0.5,
+                "status": "PASS"
+              },
+              "x_positive.spacing": {
+                "demand": 200,
+                "limit": 300,
+                "utilization": 0.6666666666666666,
+                "status": "PASS"
+              },
+              "y_negative.area": {
+                "demand": 207.18250999043926,
+                "limit": 251.32741228718342,
+                "utilization": 0.82435301467911,
+                "status": "PASS"
+              },
+              "y_negative.diameter": {
+                "demand": 8,
+                "limit": 20.0,
+                "utilization": 0.4,
+                "status": "PASS"
+              },
+              "y_negative.spacing": {
+                "demand": 200,
+                "limit": 300,
+                "utilization": 0.6666666666666666,
+                "status": "PASS"
+              },
+              "y_positive.area": {
+                "demand": 192.0,
+                "limit": 251.32741228718342,
+                "utilization": 0.7639437268410977,
+                "status": "PASS"
+              },
+              "y_positive.diameter": {
+                "demand": 8,
+                "limit": 20.0,
+                "utilization": 0.4,
+                "status": "PASS"
+              },
+              "y_positive.spacing": {
+                "demand": 200,
+                "limit": 300,
+                "utilization": 0.6666666666666666,
+                "status": "PASS"
+              },
+              "edge_strips.area": {
+                "demand": 192.0,
+                "limit": 201.06192982974676,
+                "utilization": 0.954929658551372,
+                "status": "PASS"
+              },
+              "edge_strips.diameter": {
+                "demand": 8,
+                "limit": 20.0,
+                "utilization": 0.4,
+                "status": "PASS"
+              },
+              "edge_strips.spacing": {
+                "demand": 250,
+                "limit": 300,
+                "utilization": 0.8333333333333334,
+                "status": "PASS"
+              },
+              "x_min_y_min.torsion_area_per_layer": {
+                "demand": 171.5662193891508,
+                "limit": 251.32741228718342,
+                "utilization": 0.6826402970842983,
+                "status": "PASS"
+              },
+              "x_min_y_max.torsion_area_per_layer": {
+                "demand": 85.7831096945754,
+                "limit": 251.32741228718342,
+                "utilization": 0.34132014854214915,
+                "status": "PASS"
+              },
+              "x_max_y_min.torsion_area_per_layer": {
+                "demand": 85.7831096945754,
+                "limit": 251.32741228718342,
+                "utilization": 0.34132014854214915,
+                "status": "PASS"
+              },
+              "x_max_y_max.torsion_area_per_layer": {
+                "demand": 0,
+                "limit": 251.32741228718342,
+                "utilization": null,
+                "status": "NOT_APPLICABLE"
+              },
+              "support_shear": {
+                "demand": 0.192,
+                "limit": 0.4106874161456607,
+                "utilization": 0.46750884602683407,
+                "status": "PASS"
+              },
+              "reviewed_span_depth": {
+                "demand": 32.0,
+                "limit": 30,
+                "utilization": 1.0666666666666667,
+                "status": "FAIL"
+              }
+            },
+            "corner_classes": {
+              "x_min_y_min": "full",
+              "x_min_y_max": "half",
+              "x_max_y_min": "half",
+              "x_max_y_max": "none"
+            },
+            "corner_zone_mm": 800.0,
+            "strip_widths_mm": {
+              "x_middle": 4500,
+              "x_each_edge": 750,
+              "y_middle": 3000,
+              "y_each_edge": 500
+            },
+            "uls_status": "PASS",
+            "reviewed_service_status": "FAIL"
+          }
+        },
+        "B": {
+          "input": {
+            "row_id": "B",
+            "factored_area_load_kn_per_m2": 15.5
+          },
+          "expected": {
+            "actions": {
+              "signed_moments_knm_per_m": {
+                "x_negative": -18.599999999999998,
+                "x_positive": 13.888,
+                "y_negative": -11.656,
+                "y_positive": 8.680000000000001
+              },
+              "support_shear_magnitude_kn_per_m": 31.0
+            },
+            "flexure": {
+              "x_negative": {
+                "required_for_moment_mm2_per_m": 407.5107155456717,
+                "neutral_axis_depth_mm": 20.434964423300666
+              },
+              "x_positive": {
+                "required_for_moment_mm2_per_m": 298.8650686559323,
+                "neutral_axis_depth_mm": 14.986837921975606
+              },
+              "y_negative": {
+                "required_for_moment_mm2_per_m": 270.60716345802047,
+                "neutral_axis_depth_mm": 13.569821717571987
+              },
+              "y_positive": {
+                "required_for_moment_mm2_per_m": 199.0003268259805,
+                "neutral_axis_depth_mm": 9.979037222294481
+              }
+            },
+            "shear_basis": {
+              "steel_percent": 0.20106192982974674,
+              "base_tau_c_n_per_mm2": 0.3208495438637974,
+              "depth_factor": 1.28,
+              "design_tau_c_n_per_mm2": 0.4106874161456607,
+              "maximum_tau_n_per_mm2": 1.4
+            },
+            "checks": {
+              "x_negative.section_flexure": {
+                "demand": 18.599999999999998,
+                "limit": 50.28770304,
+                "utilization": 0.3698717355454698,
+                "status": "PASS"
+              },
+              "x_positive.section_flexure": {
+                "demand": 13.888,
+                "limit": 50.28770304,
+                "utilization": 0.27617089587395083,
+                "status": "PASS"
+              },
+              "y_negative.section_flexure": {
+                "demand": 11.656,
+                "limit": 43.11359999999999,
+                "utilization": 0.270355525866548,
+                "status": "PASS"
+              },
+              "y_positive.section_flexure": {
+                "demand": 8.680000000000001,
+                "limit": 43.11359999999999,
+                "utilization": 0.2013285830921102,
+                "status": "PASS"
+              },
+              "x_negative.area": {
+                "demand": 407.5107155456717,
+                "limit": 392.69908169872417,
+                "utilization": 1.0377175158721428,
+                "status": "FAIL"
+              },
+              "x_negative.diameter": {
+                "demand": 10,
+                "limit": 20.0,
+                "utilization": 0.5,
+                "status": "PASS"
+              },
+              "x_negative.spacing": {
+                "demand": 200,
+                "limit": 300,
+                "utilization": 0.6666666666666666,
+                "status": "PASS"
+              },
+              "x_positive.area": {
+                "demand": 298.8650686559323,
+                "limit": 392.69908169872417,
+                "utilization": 0.7610536479054447,
+                "status": "PASS"
+              },
+              "x_positive.diameter": {
+                "demand": 10,
+                "limit": 20.0,
+                "utilization": 0.5,
+                "status": "PASS"
+              },
+              "x_positive.spacing": {
+                "demand": 200,
+                "limit": 300,
+                "utilization": 0.6666666666666666,
+                "status": "PASS"
+              },
+              "y_negative.area": {
+                "demand": 270.60716345802047,
+                "limit": 251.32741228718342,
+                "utilization": 1.0767116925105118,
+                "status": "FAIL"
+              },
+              "y_negative.diameter": {
+                "demand": 8,
+                "limit": 20.0,
+                "utilization": 0.4,
+                "status": "PASS"
+              },
+              "y_negative.spacing": {
+                "demand": 200,
+                "limit": 300,
+                "utilization": 0.6666666666666666,
+                "status": "PASS"
+              },
+              "y_positive.area": {
+                "demand": 199.0003268259805,
+                "limit": 251.32741228718342,
+                "utilization": 0.7917971422814376,
+                "status": "PASS"
+              },
+              "y_positive.diameter": {
+                "demand": 8,
+                "limit": 20.0,
+                "utilization": 0.4,
+                "status": "PASS"
+              },
+              "y_positive.spacing": {
+                "demand": 200,
+                "limit": 300,
+                "utilization": 0.6666666666666666,
+                "status": "PASS"
+              },
+              "edge_strips.area": {
+                "demand": 192.0,
+                "limit": 201.06192982974676,
+                "utilization": 0.954929658551372,
+                "status": "PASS"
+              },
+              "edge_strips.diameter": {
+                "demand": 8,
+                "limit": 20.0,
+                "utilization": 0.4,
+                "status": "PASS"
+              },
+              "edge_strips.spacing": {
+                "demand": 250,
+                "limit": 300,
+                "utilization": 0.8333333333333334,
+                "status": "PASS"
+              },
+              "x_min_y_min.torsion_area_per_layer": {
+                "demand": 224.14880149194923,
+                "limit": 251.32741228718342,
+                "utilization": 0.8918597436391932,
+                "status": "PASS"
+              },
+              "x_min_y_max.torsion_area_per_layer": {
+                "demand": 112.07440074597461,
+                "limit": 251.32741228718342,
+                "utilization": 0.4459298718195966,
+                "status": "PASS"
+              },
+              "x_max_y_min.torsion_area_per_layer": {
+                "demand": 112.07440074597461,
+                "limit": 251.32741228718342,
+                "utilization": 0.4459298718195966,
+                "status": "PASS"
+              },
+              "x_max_y_max.torsion_area_per_layer": {
+                "demand": 0,
+                "limit": 251.32741228718342,
+                "utilization": null,
+                "status": "NOT_APPLICABLE"
+              },
+              "support_shear": {
+                "demand": 0.248,
+                "limit": 0.4106874161456607,
+                "utilization": 0.6038655927846607,
+                "status": "PASS"
+              },
+              "reviewed_span_depth": {
+                "demand": 32.0,
+                "limit": 30,
+                "utilization": 1.0666666666666667,
+                "status": "FAIL"
+              }
+            },
+            "corner_classes": {
+              "x_min_y_min": "full",
+              "x_min_y_max": "half",
+              "x_max_y_min": "half",
+              "x_max_y_max": "none"
+            },
+            "corner_zone_mm": 800.0,
+            "strip_widths_mm": {
+              "x_middle": 4500,
+              "x_each_edge": 750,
+              "y_middle": 3000,
+              "y_each_edge": 500
+            },
+            "uls_status": "FAIL",
+            "reviewed_service_status": "FAIL"
+          }
+        }
+      },
+      "expected_governing_ids": {
+        "x_negative.section_flexure": "B",
+        "x_positive.section_flexure": "B",
+        "y_negative.section_flexure": "B",
+        "y_positive.section_flexure": "B",
+        "x_negative.area": "B",
+        "x_negative.diameter": "A",
+        "x_negative.spacing": "A",
+        "x_positive.area": "B",
+        "x_positive.diameter": "A",
+        "x_positive.spacing": "A",
+        "y_negative.area": "B",
+        "y_negative.diameter": "A",
+        "y_negative.spacing": "A",
+        "y_positive.area": "B",
+        "y_positive.diameter": "A",
+        "y_positive.spacing": "A",
+        "edge_strips.area": "A",
+        "edge_strips.diameter": "A",
+        "edge_strips.spacing": "A",
+        "x_min_y_min.torsion_area_per_layer": "B",
+        "x_min_y_max.torsion_area_per_layer": "B",
+        "x_max_y_min.torsion_area_per_layer": "B",
+        "x_max_y_max.torsion_area_per_layer": null,
+        "support_shear": "B",
+        "reviewed_span_depth": "A"
+      },
+      "expected_status": {
+        "coverage": "COMPLETE",
+        "uls": "FAIL",
+        "reviewed_service": "FAIL",
+        "engineering": "FAIL",
+        "failed_checks_by_row": {
+          "A": [
+            "reviewed_span_depth"
+          ],
+          "B": [
+            "x_negative.area",
+            "y_negative.area",
+            "reviewed_span_depth"
+          ]
+        }
+      },
+      "controls": {
+        "reordered": {
+          "input_order": [
+            "B",
+            "A"
+          ],
+          "expected_governing_ids": {
+            "x_negative.section_flexure": "B",
+            "x_positive.section_flexure": "B",
+            "y_negative.section_flexure": "B",
+            "y_positive.section_flexure": "B",
+            "x_negative.area": "B",
+            "x_negative.diameter": "A",
+            "x_negative.spacing": "A",
+            "x_positive.area": "B",
+            "x_positive.diameter": "A",
+            "x_positive.spacing": "A",
+            "y_negative.area": "B",
+            "y_negative.diameter": "A",
+            "y_negative.spacing": "A",
+            "y_positive.area": "B",
+            "y_positive.diameter": "A",
+            "y_positive.spacing": "A",
+            "edge_strips.area": "A",
+            "edge_strips.diameter": "A",
+            "edge_strips.spacing": "A",
+            "x_min_y_min.torsion_area_per_layer": "B",
+            "x_min_y_max.torsion_area_per_layer": "B",
+            "x_max_y_min.torsion_area_per_layer": "B",
+            "x_max_y_max.torsion_area_per_layer": null,
+            "support_shear": "B",
+            "reviewed_span_depth": "A"
+          },
+          "coverage": "COMPLETE"
+        },
+        "exact_tie": {
+          "input_order": [
+            "B",
+            "A"
+          ],
+          "replace_B_load_with_A_load": true,
+          "expected_governing_ids": {
+            "x_negative.section_flexure": "A",
+            "x_positive.section_flexure": "A",
+            "y_negative.section_flexure": "A",
+            "y_positive.section_flexure": "A",
+            "x_negative.area": "A",
+            "x_negative.diameter": "A",
+            "x_negative.spacing": "A",
+            "x_positive.area": "A",
+            "x_positive.diameter": "A",
+            "x_positive.spacing": "A",
+            "y_negative.area": "A",
+            "y_negative.diameter": "A",
+            "y_negative.spacing": "A",
+            "y_positive.area": "A",
+            "y_positive.diameter": "A",
+            "y_positive.spacing": "A",
+            "edge_strips.area": "A",
+            "edge_strips.diameter": "A",
+            "edge_strips.spacing": "A",
+            "x_min_y_min.torsion_area_per_layer": "A",
+            "x_min_y_max.torsion_area_per_layer": "A",
+            "x_max_y_min.torsion_area_per_layer": "A",
+            "x_max_y_max.torsion_area_per_layer": null,
+            "support_shear": "A",
+            "reviewed_span_depth": "A"
+          },
+          "coverage": "COMPLETE"
+        },
+        "duplicate_id": {
+          "input_order": [
+            "A",
+            "A",
+            "B"
+          ],
+          "intake": "REJECT_DUPLICATE_ID"
+        },
+        "missing_B": {
+          "input_order": [
+            "A"
+          ],
+          "coverage": "HOLD",
+          "missing_required_row_ids": [
+            "B"
+          ],
+          "available_governing_ids": {
+            "x_negative.section_flexure": "A",
+            "x_positive.section_flexure": "A",
+            "y_negative.section_flexure": "A",
+            "y_positive.section_flexure": "A",
+            "x_negative.area": "A",
+            "x_negative.diameter": "A",
+            "x_negative.spacing": "A",
+            "x_positive.area": "A",
+            "x_positive.diameter": "A",
+            "x_positive.spacing": "A",
+            "y_negative.area": "A",
+            "y_negative.diameter": "A",
+            "y_negative.spacing": "A",
+            "y_positive.area": "A",
+            "y_positive.diameter": "A",
+            "y_positive.spacing": "A",
+            "edge_strips.area": "A",
+            "edge_strips.diameter": "A",
+            "edge_strips.spacing": "A",
+            "x_min_y_min.torsion_area_per_layer": "A",
+            "x_min_y_max.torsion_area_per_layer": "A",
+            "x_max_y_min.torsion_area_per_layer": "A",
+            "x_max_y_max.torsion_area_per_layer": null,
+            "support_shear": "A",
+            "reviewed_span_depth": "A"
+          },
+          "available_uls": "PASS",
+          "available_reviewed_service": "FAIL",
+          "engineering": "FAIL",
+          "evaluated_A_retained": true
+        },
+        "missing_shared_service_basis": {
+          "input_order": [
+            "A",
+            "B"
+          ],
+          "set_shared_service_basis_to_null": true,
+          "uls": "FAIL",
+          "reviewed_service": "HOLD",
+          "engineering": "FAIL",
+          "expected_governing_ids": {
+            "x_negative.section_flexure": "B",
+            "x_positive.section_flexure": "B",
+            "y_negative.section_flexure": "B",
+            "y_positive.section_flexure": "B",
+            "x_negative.area": "B",
+            "x_negative.diameter": "A",
+            "x_negative.spacing": "A",
+            "x_positive.area": "B",
+            "x_positive.diameter": "A",
+            "x_positive.spacing": "A",
+            "y_negative.area": "B",
+            "y_negative.diameter": "A",
+            "y_negative.spacing": "A",
+            "y_positive.area": "B",
+            "y_positive.diameter": "A",
+            "y_positive.spacing": "A",
+            "edge_strips.area": "A",
+            "edge_strips.diameter": "A",
+            "edge_strips.spacing": "A",
+            "x_min_y_min.torsion_area_per_layer": "B",
+            "x_min_y_max.torsion_area_per_layer": "B",
+            "x_max_y_min.torsion_area_per_layer": "B",
+            "x_max_y_max.torsion_area_per_layer": null,
+            "support_shear": "B",
+            "reviewed_span_depth": null
+          },
+          "strength_failures_retained": true
+        }
+      }
+    }
+  }
+}
