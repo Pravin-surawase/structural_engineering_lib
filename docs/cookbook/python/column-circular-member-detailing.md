@@ -88,5 +88,26 @@ revision and input hash. The shear outputs identify the governing row and
 station. The passing BBS contains 20 Ø10 rings and eight Ø20 longitudinal
 bars, with a theoretical mass of 113.196 kg.
 The BBS is withheld for a stale ring cut register, missing spiral pitch or
-crowded turns. Physical splices, seismic confinement, slenderness and
-professional approval require separate checks.
+crowded turns.
+
+## One checked circular compression contact lap
+
+The circular-lap profile covers one straight Ø20 compression contact pair
+with both centres on the same perimeter of a short braced eight-bar tied
+cage. The CL1 reference supplies constant signed U1 actions with zero shear,
+an interval compression basis, 75 mm ring spacing through the overlap and
+the external ring closure detail. The report records both transfer layouts
+and the signed strength checks at each station.
+
+```bash
+./scripts/python_runtime.sh Python/examples/circular_column_detailing.py \
+  --reference docs/verification/library-030-col07-circular-lap-reference.json \
+  --case circular_contact_lap --output-dir circular-contact-lap
+```
+
+The 840 mm overlap meets the 797.5 mm requirement. The upper transfer
+layout governs at U1 MID and B with a utilization of 0.202402. The drawing
+shows each longitudinal piece, the CL1 bounds and the 26 R1 stations.
+The BBS contains 35 pieces with a theoretical mass of 119.633 kg.
+The three FAIL and four HOLD controls retain the diagnostic report and
+withhold the drawing and BBS.

@@ -47,7 +47,7 @@ class ColumnDetailingBasisV1(StrictPublicModel):
     lap_action_continuity_reference: _Reference | None = Field(
         default=None,
         exclude_if=lambda value: value is None,
-        description="Supplied second-order analysis evidence for compression over the slender splice interval.",
+        description="Supplied signed-action evidence for compression over the splice interval.",
     )
 
 
