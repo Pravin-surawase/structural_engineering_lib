@@ -248,7 +248,7 @@ _CAPABILITIES = (
                 "load_circular_column_detailing",
                 "check_circular_column_detailing",
                 "column-circular-member-detailing-input/v1",
-                "Short tied and spiral circular members with continuous bars, zero supplied shear, checked end development and eligible BBS.",
+                "Short circular members with continuous bars, checked end development and eligible BBS. Tied rings admit supplied nonzero shear in one declared principal plane on the fixed equivalent circular basis. The spiral profile uses zero supplied shear.",
                 "docs/cookbook/python/column-circular-member-detailing.md",
                 "Python/examples/circular_column_detailing.py",
             ),

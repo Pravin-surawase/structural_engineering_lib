@@ -31,10 +31,14 @@ def main() -> int:
             parser.error(
                 "Supply the matching fixture via --reference or a request via --input."
             )
-        cases = json.loads(args.reference.read_text(encoding="utf-8"))["cases"]
+        fixture = json.loads(args.reference.read_text(encoding="utf-8"))
+        cases = fixture["cases"]
         if args.case not in cases:
             parser.error(f"Unknown case {args.case}. Choices: {', '.join(cases)}.")
         payload = cases[args.case]["request"]
+        shear_basis = fixture.get("supplied_shear_basis")
+        if shear_basis is not None:
+            payload = {**payload, "shear_basis": shear_basis}
     try:
         request = column.load_circular_column_detailing(payload)
     except InputContractError as exc:

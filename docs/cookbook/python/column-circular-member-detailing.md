@@ -1,25 +1,27 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-13
+last_updated: 2026-11-15
 doc_type: guide
 complexity: advanced
 tags: [column, circular, detailing, bbs, is456]
 ---
 
-# Check circular column member quantities
+# Check circular column member quantities and tied-member shear
 
 Use `column.load_circular_column_detailing` and
 `column.check_circular_column_detailing` for a short braced circular
-member with a regular cage and continuous straight bars. Supply current
-signed compression and bending rows, zero shear, and the checked end
-development basis. Rings use an approved closure and cut register.
-Spirals use the body pitch and actual extra turns and pitches at both ends.
+member with a regular cage and continuous straight bars. Supply current signed
+compression and bending rows and the checked end-development basis. Rings use
+an approved closure and cut register. Spirals use the body pitch and actual
+extra turns and pitches at both ends.
 
 ```bash
-python circular_column_detailing.py --reference library-029-col07-circular-member.json \
+./scripts/python_runtime.sh Python/examples/circular_column_detailing.py \
+  --reference docs/verification/library-029-col07-circular-member.json \
   --case tied --output-dir tied
-python circular_column_detailing.py --reference library-029-col07-circular-member.json \
+./scripts/python_runtime.sh Python/examples/circular_column_detailing.py \
+  --reference docs/verification/library-029-col07-circular-member.json \
   --case spiral --output-dir spiral
 ```
 
@@ -34,9 +36,57 @@ The tied case places 20 Ø10 rings. The spiral case uses one continuous
 verifies the quantities and theoretical steel mass of 113.196 kg for
 the tied case and 133.557 kg for the spiral case.
 
-Each accepted output carries the same member and detail identity. The
-report preserves the individual signed action rows. The SVG shows the
-section and a review projection of the checked transverse arrangement.
-The BBS is withheld for a stale ring cut register, missing spiral pitch
-or crowded turns. Circular shear, physical splices, seismic confinement,
-slenderness and professional approval require separate checks.
+## Tied circular shear replay
+
+The 0.30 reference adds one declared single-plane, closed-ring shear basis to
+the existing tied cage. U1 governs at −120 kN Vy with 188.09 kN resistance
+and passes. The −210 kN row fails at `COLUMN.SHEAR_CAPACITY`.
+The two HOLD controls use `COLUMN.COMBINED_SHEAR` for simultaneous `Vx` and `Vy` and
+`COLUMN.CIRCULAR_MEMBER_BASIS_HELD` for a missing action-source reference.
+Only the `PASS` case makes a checked drawing and BBS available.
+
+```bash
+./scripts/python_runtime.sh Python/examples/circular_column_detailing.py \
+  --reference docs/verification/library-030-col07-circular-shear.json \
+  --case single_plane_pass --output-dir circular-shear-pass
+./scripts/python_runtime.sh Python/examples/circular_column_detailing.py \
+  --reference docs/verification/library-030-col07-circular-shear.json \
+  --case shear_capacity_fail
+./scripts/python_runtime.sh Python/examples/circular_column_detailing.py \
+  --reference docs/verification/library-030-col07-circular-shear.json \
+  --case combined_planes_hold
+./scripts/python_runtime.sh Python/examples/circular_column_detailing.py \
+  --reference docs/verification/library-030-col07-circular-shear.json \
+  --case missing_shear_evidence_hold
+```
+
+For a fixture with a top-level `supplied_shear_basis`, the example adds
+that basis to the selected member request before loading it. A plain
+`--input` request carries the optional `shear_basis` directly.
+
+```python
+fixture = json.loads(Path("docs/verification/library-030-col07-circular-shear.json").read_text())
+request = column.load_circular_column_detailing({
+    **fixture["cases"]["single_plane_pass"]["request"],
+    "shear_basis": fixture["supplied_shear_basis"],
+})
+result = column.check_circular_column_detailing(request)
+```
+
+This reference is limited to a Ø450 M30 tied specimen, one `y` shear plane,
+two credited legs of a closed Grade 415 ring, `d = 0.8D`, and effective
+concrete area `min(Dd, 0.8Ag)`. It applies ordinary IS 456 shear equations
+using the Table 19 lower row, compression multiplier and Table 20 cap.
+ACI 318-14 informs the circular depth and closed-hoop analogy. The
+frozen fixture records source URLs, assumptions and
+tolerances, and its [independent replay](../../verification/check_library_030_col07_circular_shear_reference.py)
+checks the expected numbers independently. Installed-artifact qualification is
+a separate release step.
+
+The report, drawing and BBS share the member, analysis revision, detailing
+revision and input hash. The shear outputs identify the governing row and
+station. The passing BBS contains 20 Ø10 rings and eight Ø20 longitudinal
+bars, with a theoretical mass of 113.196 kg.
+The BBS is withheld for a stale ring cut register, missing spiral pitch or
+crowded turns. Physical splices, seismic confinement, slenderness and
+professional approval require separate checks.
