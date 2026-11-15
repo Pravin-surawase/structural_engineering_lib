@@ -101,9 +101,8 @@ def test_mixed_contact_splice_baseline_geometry_sections_shear_and_outputs():
     )
     compression = _check(checks, "COLUMN.LAP_COMPRESSION_BASIS")
     assert compression["status"] == "PASS"
-    assert (
-        compression["minimum_gross_stress_nmm2"]
-        >= (expected["u2_interval_compression"]["minimum_gross_stress_nmm2"])
+    assert compression["minimum_gross_stress_nmm2"] >= (
+        expected["u2_interval_compression"]["minimum_gross_stress_nmm2"]
     )
 
     actions = _actions(calculation)

@@ -1001,9 +1001,7 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
     status = (
         _FAIL
         if _FAIL.value in statuses
-        else _HOLD
-        if _HOLD.value in statuses
-        else _PASS
+        else _HOLD if _HOLD.value in statuses else _PASS
     )
     if status is not _PASS:
         schedule = None

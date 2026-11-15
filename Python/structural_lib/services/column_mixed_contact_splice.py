@@ -307,12 +307,14 @@ def _check_mixed_contact_splice(
             cuts[cross.tie_id] = tie_path.centreline_length_mm
         sections[label] = {
             "bars": [
-                {
-                    **asdict(bar),
-                    "bar_id": f"{bar.bar_id}-{'U' if label == 'upper' else 'L'}",
-                }
-                if bar.bar_id in mates
-                else asdict(bar)
+                (
+                    {
+                        **asdict(bar),
+                        "bar_id": f"{bar.bar_id}-{'U' if label == 'upper' else 'L'}",
+                    }
+                    if bar.bar_id in mates
+                    else asdict(bar)
+                )
                 for bar in layout
             ],
             "links": links,
@@ -326,9 +328,11 @@ def _check_mixed_contact_splice(
         minimum_tail_mm=8 * dt,
     )
     transverse = [
-        {**series, "stations_mm": [*before, *after]}
-        if series["bar_id"] == seat.tie_id
-        else series
+        (
+            {**series, "stations_mm": [*before, *after]}
+            if series["bar_id"] == seat.tie_id
+            else series
+        )
         for series in transverse
     ] + [
         {

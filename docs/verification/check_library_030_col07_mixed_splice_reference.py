@@ -27,9 +27,9 @@ def specimen(base):
         {"zone_id": "SPLICE", "start_mm": 1020, "end_mm": 1980, "pitch_mm": 80},
         {"zone_id": "FIELD_HIGH", "start_mm": 1980, "end_mm": 2300, "pitch_mm": 160},
     ]
-    request["basis"]["action_source_reference"] = (
-        "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture"
-    )
+    request["basis"][
+        "action_source_reference"
+    ] = "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture"
     request["basis"]["detailing_revision"] = "D2"
     request["transverse_cut_schedule"]["detailing_revision"] = "D2"
     request["actions"][1].update(mx_knm=12, my_knm=-8, vx_kn=-60)
