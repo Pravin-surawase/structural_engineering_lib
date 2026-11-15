@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-12
+last_updated: 2026-11-15
 doc_type: guide
 ---
 
@@ -142,7 +142,32 @@ The supplied station actions are checked against the actual mixed cage.
 Shear credits only two closed hoop legs. The section drawing and schedule
 retain all actual bar identities. Run the `stale_register`, `short_anchor`
 and `unresolved_splice` cases to see how the report withholds the BBS.
-Mixed-cage splice assembly requires its own qualification.
+
+## Replay the mixed Ø16 contact splice
+
+The [frozen reference](../../verification/library-030-col07-mixed-splice.json)
+joins the L1/R1 Ø16 side bars to straight partners shifted 16 mm along
+the side faces. The ordinary X1 seats follow their respective bars
+below and above the overlap.
+
+```bash
+python column_member_detailing.py --positioned \
+  --reference library-030-col07-mixed-splice.json \
+  --case mixed_contact_splice --output-dir col07-mixed-contact
+```
+
+The 640 mm lap runs from 1170 to 1810 mm against a 638 mm requirement.
+At the eight overlap levels, `LX` replaces `X1` with a double return
+using four quarter bends and two tails. `X1` remains the ordinary 135°
+link below and above the lap. `Y1` and `Y2` retain their paths throughout.
+The SVG shows all three sections. The report identifies the applicable
+section layouts, U1 as the strength and shear governor, and Ø20 as the
+end-development governor.
+
+For this frozen case the issued BBS has 130 pieces, 167.374 m total length and
+179.888 kg theoretical mass. Its CSV, report and drawing all carry the member,
+analysis revision and detailing revision from the request. The fixture's
+five FAIL and two HOLD controls all withhold the BBS.
 
 ## Replay a braced slender member
 

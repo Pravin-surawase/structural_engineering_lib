@@ -358,7 +358,7 @@ _CAPABILITIES = (
                 "load_positioned_column_member_detailing",
                 "check_column_member_detailing",
                 "column-positioned-member-detailing-input/v1",
-                "Short continuous rectangular mixed cage with actual cross-tie shapes, member shear, end development and a checked fabrication cut register.",
+                "Short rectangular mixed cage with actual cross-tie shapes, principal-plane shear and end development. The twelve-bar profile admits one opposed Ø16 side contact group and checks its report, drawing and BBS.",
                 "docs/cookbook/python/column-member-detailing.md#replay-a-mixed-positioned-member",
                 "Python/examples/column_member_detailing.py",
             ),
