@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-15
+last_updated: 2026-11-16
 doc_type: guide
 ---
 
@@ -40,6 +40,39 @@ elevation schematic, with proposed laps marked as such. The CSV uses the
 approved transverse cut lengths from the request and calculates quantity,
 total length and theoretical steel mass. Use a fresh directory for each
 run. Use `--input` to supply a complete request JSON.
+
+## Review one supplied two-plane shear station
+
+The frozen [0.30 two-plane fixture](../../verification/library-030-col07-two-plane-shear.json)
+is an ordinary short, continuous,
+symmetric tied rectangular eight-bar cage: no lap is proposed. It supplies
+one concurrent factored action row at one station, with signed Vx and Vy.
+Run the passing control and the shared-hoop shortfall independently:
+
+```bash
+# Run from the repository root with the matching source checkout.
+./scripts/python_runtime.sh Python/examples/column_member_detailing.py \
+  --reference docs/verification/library-030-col07-two-plane-shear.json \
+  --case two_plane_pass --output-dir col07-two-plane-pass
+./scripts/python_runtime.sh Python/examples/column_member_detailing.py \
+  --reference docs/verification/library-030-col07-two-plane-shear.json \
+  --case shared_reinforcement_fail --output-dir col07-two-plane-fail
+```
+
+Use the produced report for qualified review. It projects both signed
+directional component capacities, their pitch limits, station and the named
+linear shared-hoop interaction check. The allocation is a bounded specimen
+rule: it shares the same closed hoop between the two ordinary IS 456
+component equations; it is not an IS 456 biaxial-column-shear equation.
+The passing control retains the same physical cage/grid and BBS. For a held
+or failed requested two-plane check, `member.svg` is not issued, the report
+says **Checked drawing withheld**, and the BBS remains withheld. Missing the
+declared interaction basis is a HOLD, not a reason to use a single-plane
+projection.
+
+This narrow profile does not cover load-envelope search, other stations or
+combinations, different cage geometry, laps, slender/circular columns,
+seismic detailing, or a general biaxial-shear design method.
 
 ## Read the calculations
 
@@ -102,7 +135,8 @@ checks the cases without the library.
 
 This profile covers the supplied stations and combinations of one short
 tied six- or eight-bar column. Coverage across the actual load envelope,
-two-plane shear interaction, other splice assemblies, adjoining joint or
+general two-plane shear interaction profiles beyond the bounded case above,
+other splice assemblies, adjoining joint or
 support checks, slender and circular members, and seismic detailing
 need separate verification.
 

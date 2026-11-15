@@ -18242,7 +18242,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str'",
+            "signature": "(result: 'CanonicalFamilyResultV1[dict[str, object]]') -> 'str | None'",
             "docstring_sections": [
               "examples",
               "limitations",

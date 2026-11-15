@@ -289,6 +289,8 @@ def check_column_member_detailing(
     Ordinary tied rectangles. The mixed profile admits one Ø16 side contact
     group in the twelve-bar cage. The braced slender profile uses continuous
     bars. The eight-bar profile admits one opposing side-midpoint or C1/C2 group.
+    Short braced continuous eight-bar members admit the declared shared-hoop
+    interaction for simultaneous Vx and Vy.
 
     Provenance
     ----------
@@ -334,7 +336,7 @@ def render_column_member_detailing_html(
 
 def render_column_member_detailing_svg(
     result: CanonicalFamilyResultV1[dict[str, object]],
-) -> str:
+) -> str | None:
     """Draw the section and member elevation with checked tie levels.
 
     Parameters
@@ -344,8 +346,10 @@ def render_column_member_detailing_svg(
 
     Returns
     -------
-    str
-        SVG showing the input identity, revisions and engineering status.
+    str | None
+        SVG showing the input identity, revisions and engineering status, or
+        ``None`` when a requested simultaneous two-plane shear screen is not
+        an engineering PASS and checked drawing issue is withheld.
 
     Raises
     ------
@@ -359,6 +363,8 @@ def render_column_member_detailing_svg(
     Limitations
     -----------
     The section cuts show the checked contact links. The closed hoop uses a supplied fabrication basis.
+    A failed or held requested two-plane shared-hoop screen withholds only its
+    checked drawing; legacy single-plane diagnostic SVG behaviour is unchanged.
 
     Provenance
     ----------

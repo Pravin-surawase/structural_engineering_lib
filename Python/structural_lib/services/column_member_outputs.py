@@ -169,13 +169,21 @@ def _splice_sections(
     return "".join(sections)
 
 
-def render_column_member_detailing_svg(result: Result) -> str:
-    """Draw the checked section and the supplied full-length reinforcement schedule."""
+def render_column_member_detailing_svg(result: Result) -> str | None:
+    """Draw the checked section and supplied full-length reinforcement schedule.
+
+    A requested simultaneous two-plane shear screen that is HOLD or FAIL has
+    no checked drawing: the physical cage must not be projected as issued
+    detailing until its shared-hoop gate passes.  Earlier single-plane
+    diagnostic drawings deliberately retain their existing behaviour.
+    """
     request, input_hash = _metadata(result)
     data = result.calculation
     geometry, ends = request.geometry, request.end_detail
     length, width, depth = geometry.unsupported_length_mm, geometry.b_mm, geometry.D_mm
     status = result.engineering_status.value
+    if data.get("two_plane_shear_requested") and status != "PASS":
+        return None
     revisions = f"analysis {request.basis.analysis_revision} · detailing {request.basis.detailing_revision}"
     title = f"{status} · {request.identity.member_id or request.identity.case_id}"
     section, _ = rectangular_section_markup(
@@ -193,6 +201,26 @@ def render_column_member_detailing_svg(result: Result) -> str:
     ]
     cage = data["cage"]
     splice = data.get("contact_splice")
+    two_plane_rows = [
+        row
+        for row in data["actions"]
+        if row["shear"] is not None and row["shear"]["direction"] == "xy"
+    ]
+    two_plane = (
+        max(two_plane_rows, key=lambda row: row["shear"]["interaction_utilization"])
+        if two_plane_rows
+        else None
+    )
+    interaction_note = ""
+    if two_plane is not None:
+        shear = two_plane["shear"]
+        interaction_note = (
+            '<text x="310" y="393" font-size="11">Shared-hoop interaction</text>'
+            f'<text x="310" y="410" font-size="9">{escape(shear["governing_check"])}</text>'
+            f'<text x="310" y="427" font-size="11">{escape(two_plane["combination_id"])} at '
+            f"{two_plane['station_mm']:g} mm · u={shear['interaction_utilization']:.4f} "
+            f"/ {shear['interaction_limit']:.4f}</text>"
+        )
     if splice is not None:
         corner_splice = splice.get("y_plane_setback_mm") is not None
         pieces = splice["pieces"]
@@ -278,7 +306,7 @@ def render_column_member_detailing_svg(result: Result) -> str:
         f'<text x="310" y="296" font-size="11">Clear member length {length:g} mm</text>'
         f'<text x="310" y="315" font-size="11">Straight projections {ends.start_straight_mm:g} / {ends.end_straight_mm:g} mm</text>'
         f'<text x="310" y="334" font-size="11">{len(data["hoop_stations_mm"])} hoop levels</text>'
-        f"{splice_note}</svg>"
+        f"{splice_note}{interaction_note}</svg>"
     )
 
 
@@ -289,6 +317,36 @@ def render_column_member_detailing_html(result: Result) -> str:
     status = result.engineering_status.value
     splice = data.get("contact_splice")
     mixed_splice = splice is not None and "transverse_level_clear_mm" in splice
+    two_plane_requested = bool(data.get("two_plane_shear_requested"))
+    two_plane_gate_reasons = [
+        f"{check['code']}: {check['message']}"
+        for check in data["checks"]
+        if check["status"] in {"HOLD", "FAIL"}
+        and (
+            check["code"].startswith("COLUMN.TWO_PLANE")
+            or check["code"]
+            in {"COLUMN.COMBINED_SHEAR", "COLUMN.MEMBER_BASIS_REQUIRED"}
+        )
+    ]
+
+    def two_plane_shear_text(shear: dict[str, Any]) -> str:
+        """Render the bounded shared-hoop screen without recalculating it."""
+        rows = []
+        for plane in shear["planes"]:
+            direction = escape(plane["direction"])
+            rows.append(
+                f"component {direction} · V={plane['demand_kn']:g} kN / capacity {plane['capacity_kn']:.2f} kN · "
+                f"Vc/Vus {plane['vc_kn']:.2f}/{plane['vus_kn']:.2f} kN · u={plane['utilization']:.4f} · "
+                f"d={plane['d_mm']:g} mm · pitch {plane['pitch_mm']:g}/{plane['pitch_limit_mm']:g} mm · "
+                f"A<sub>sv</sub> {plane['effective_hoop_area_mm2']:g} mm² · "
+                f"crushing stress {plane['concrete_crushing_stress_nmm2']:g} N/mm²"
+            )
+        return (
+            f"<td>{escape(shear['status'])} · xy<br><small>Shared hoop interaction · "
+            f"{escape(shear['governing_check'])} · basis {escape(shear['interaction_basis'])} · "
+            f"u={shear['interaction_utilization']:.4f} / {shear['interaction_limit']:.4f}.</small></td>"
+            f"<td colspan='4'><small>{'<br>'.join(rows)}</small></td>"
+        )
 
     def phase_summary(section: dict[str, Any] | None) -> str:
         """Name every applicable physical section layout and its checked axes."""
@@ -324,7 +382,16 @@ def render_column_member_detailing_html(result: Result) -> str:
         section_hash = section["input_hash"] if section else ""
         shear = row["shear"]
         if shear is None:
-            shear_text = "<td colspan='5'>Unavailable</td>"
+            if two_plane_requested:
+                reasons = "; ".join(escape(reason) for reason in two_plane_gate_reasons)
+                shear_text = (
+                    "<td colspan='5'>Unavailable — requested two-plane shared-hoop screen. "
+                    f"Gate reasons: {reasons or 'screen was not admitted.'}</td>"
+                )
+            else:
+                shear_text = "<td colspan='5'>Unavailable</td>"
+        elif shear.get("direction") == "xy":
+            shear_text = two_plane_shear_text(shear)
         else:
             shear_text = (
                 f"<td>{shear['status']} · {shear['direction']}</td><td>{shear['pitch_mm']:g}</td>"
@@ -420,6 +487,11 @@ def render_column_member_detailing_html(result: Result) -> str:
         end_governor = f"The Ø{diameter:g} bars govern end development. "
     phase_header = "<th>Section layouts and axes</th>" if mixed_splice else ""
     limits = "".join(f"<li>{escape(item)}</li>" for item in result.limitations)
+    drawing = render_column_member_detailing_svg(result)
+    drawing_text = (
+        drawing
+        or "<p>Checked drawing withheld while mandatory member checks are held or failed.</p>"
+    )
     return (
         '<!doctype html><html lang="en"><meta charset="utf-8"><title>Column member detailing</title>'
         "<style>body{font:16px system-ui;margin:2rem;max-width:80rem}table{border-collapse:collapse}"
@@ -427,7 +499,7 @@ def render_column_member_detailing_html(result: Result) -> str:
         f"<h1>Column member detailing · {status}</h1><p>Member {escape(request.identity.member_id or request.identity.case_id)}. Qualified review required.</p>"
         f"<p>Analysis revision {escape(request.basis.analysis_revision)} · detailing revision {escape(request.basis.detailing_revision)}.</p>"
         f"<p>Input <code>{input_hash}</code>.</p>"
-        f"{render_column_member_detailing_svg(result)}"
+        f"{drawing_text}"
         f"<p>Straight end development required {data['end_required_mm']:.2f} mm. "
         f"Provided {request.end_detail.start_straight_mm:g} mm at the start and "
         f"{request.end_detail.end_straight_mm:g} mm at the end. "

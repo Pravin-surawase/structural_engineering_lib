@@ -6,8 +6,9 @@ from collections.abc import Callable
 from dataclasses import asdict, replace
 from itertools import pairwise
 from math import fsum, isclose, pi
-from typing import Any, TypeVar
+from typing import Any, Literal, TypeVar
 
+from structural_lib.codes.is456.beam.shear import _exact_vertical_stirrup_limit_mm
 from structural_lib.codes.is456.column.member_detailing import (
     ordinary_column_shear,
     straight_column_bond_lengths,
@@ -80,6 +81,9 @@ _HOLD = EngineeringStatus.HOLD
 _BOND = "IS 456:2000 Cl. 26.2.1 and 26.2.5.1"
 _TIE = "IS 456:2000 Cl. 26.5.3.2 and declared project tie placement"
 _SHEAR = "IS 456:2000 Cl. 40.1–40.4 and Tables 19–20"
+_TWO_PLANE_BASIS = "bounded shared-transverse-reinforcement allocation v1"
+_TWO_PLANE_CHECK = "COLUMN.TWO_PLANE_SHARED_REINFORCEMENT"
+_TWO_PLANE_SOURCE = "Declared COL07 shared closed-hoop allocation"
 
 
 _Cage = TypeVar("_Cage", RectangularColumnCageV1, PositionedColumnCageV1)
@@ -450,23 +454,10 @@ def _check_rectangular_shear(
     record: _Record,
     splice: ContactSplice | None = None,
 ) -> dict[str, Any] | None:
-    geometry, steel, materials = (
-        request.geometry,
-        request.reinforcement,
-        request.materials,
-    )
-    tie = steel.tie
-    assert tie is not None
-    if action.vx_kn and action.vy_kn:
-        record(
-            "COLUMN.COMBINED_SHEAR",
-            _HOLD,
-            path,
-            "Simultaneous nonzero shears need a verified two-plane interaction basis.",
-            _SHEAR,
-        )
+    two_plane = bool(action.vx_kn and action.vy_kn)
+    if two_plane and not _admit_two_plane_shear(request, path, record):
         return None
-    if materials.fck_nmm2 not in (20, 25, 30, 35, 40):
+    if request.materials.fck_nmm2 not in (20, 25, 30, 35, 40):
         record(
             "COLUMN.SHEAR_MATERIAL",
             _HOLD,
@@ -475,7 +466,120 @@ def _check_rectangular_shear(
             _SHEAR,
         )
         return None
-    direction = "x" if action.vx_kn else "y"
+    if not two_plane:
+        return _check_shear_plane(
+            request, action, zone, "x" if action.vx_kn else "y", path, record, splice
+        )
+
+    planes = []
+    directions: tuple[Literal["x", "y"], ...] = ("x", "y")
+    for direction in directions:
+        plane = _check_shear_plane(
+            request,
+            action,
+            zone,
+            direction,
+            f"{path}.v{direction}_kn",
+            record,
+            shared_hoop=True,
+        )
+        if plane is None:
+            return None
+        planes.append(plane)
+    utilization = fsum(plane["utilization"] for plane in planes)
+    status = _PASS if utilization <= 1 else _FAIL
+    record(
+        _TWO_PLANE_CHECK,
+        status,
+        path,
+        "Sum the two demand-to-capacity ratios for the same closed hoop at this station.",
+        _TWO_PLANE_SOURCE,
+        interaction_basis=_TWO_PLANE_BASIS,
+        utilization=utilization,
+        limit=1.0,
+    )
+    failed_plane = max(
+        (plane for plane in planes if plane["status"] == _FAIL.value),
+        key=lambda plane: plane["utilization"],
+        default=None,
+    )
+    return {
+        "direction": "xy",
+        "planes": planes,
+        "status": _FAIL.value if failed_plane is not None else status.value,
+        "interaction_basis": _TWO_PLANE_BASIS,
+        "interaction_utilization": utilization,
+        "interaction_limit": 1.0,
+        "utilization": utilization,
+        "governing_check": (
+            failed_plane["governing_check"]
+            if failed_plane is not None
+            else _TWO_PLANE_CHECK
+        ),
+    }
+
+
+def _admit_two_plane_shear(
+    request: DetailingRequest, path: str, record: _Record
+) -> bool:
+    if (
+        not isinstance(request, ColumnMemberDetailingInputV1)
+        or request.reinforcement.layout != "eight_bar"
+        or request.laps
+        or not request.geometry.braced
+    ):
+        record(
+            "COLUMN.COMBINED_SHEAR",
+            _HOLD,
+            path,
+            "The bounded interaction requires the short braced, continuous eight-bar rectangular member profile.",
+            _TWO_PLANE_SOURCE,
+        )
+        return False
+    basis = request.basis
+    if (
+        basis.action_source_reference is None
+        or basis.analysis_revision != basis.current_analysis_revision
+    ):
+        # The member's existing source and revision checks own these HOLDs.
+        return False
+    if basis.two_plane_interaction_basis != _TWO_PLANE_BASIS:
+        record(
+            "COLUMN.COMBINED_SHEAR",
+            _HOLD,
+            path,
+            "Simultaneous nonzero shears require the admitted two-plane interaction basis.",
+            _TWO_PLANE_SOURCE,
+        )
+        record(
+            "COLUMN.TWO_PLANE_INTERACTION_BASIS_HELD",
+            _HOLD,
+            "basis.two_plane_interaction_basis",
+            f"Declare {_TWO_PLANE_BASIS} for this shared closed hoop.",
+            _TWO_PLANE_SOURCE,
+        )
+        return False
+    return True
+
+
+def _check_shear_plane(
+    request: DetailingRequest,
+    action: ColumnDetailingActionV1,
+    zone: ColumnTieZoneV1,
+    direction: Literal["x", "y"],
+    path: str,
+    record: _Record,
+    splice: ContactSplice | None = None,
+    *,
+    shared_hoop: bool = False,
+) -> dict[str, Any] | None:
+    geometry, steel, materials = (
+        request.geometry,
+        request.reinforcement,
+        request.materials,
+    )
+    tie = steel.tie
+    assert tie is not None
     if direction == "x":
         width, depth, demand = geometry.D_mm, geometry.b_mm, action.vx_kn
     else:
@@ -516,14 +620,31 @@ def _check_rectangular_shear(
         hoop_fy_nmm2=request.tie_fy_nmm2,
         pitch_mm=zone.pitch_mm,
     )
-    spacing_ok = zone.pitch_mm <= 0.75 * shear.d_mm
-    if not spacing_ok:
+    hoop_area = pi * tie.diameter_mm**2 / 2
+    pitch_limit = (
+        _exact_vertical_stirrup_limit_mm(
+            width, shear.d_mm, hoop_area, request.tie_fy_nmm2, 0
+        )
+        if shared_hoop
+        else 0.75 * shear.d_mm
+    )
+    spacing_ok = zone.pitch_mm <= pitch_limit
+    if shared_hoop or not spacing_ok:
         record(
             "COLUMN.SHEAR_LINK_SPACING",
-            _FAIL,
+            _PASS if spacing_ok else _FAIL,
             path,
-            "The spacing exceeds the 0.75d limit of the admitted vertical shear transfer model.",
-            _SHEAR,
+            (
+                "Check the hoop pitch against the vertical reinforcement limits in this plane."
+                if shared_hoop
+                else "The spacing exceeds the 0.75d limit of the admitted vertical shear transfer model."
+            ),
+            "IS 456:2000 Cl. 26.5.1.5–6" if shared_hoop else _SHEAR,
+            **(
+                {"actual_mm": zone.pitch_mm, "limit_mm": pitch_limit}
+                if shared_hoop
+                else {}
+            ),
         )
     if abs(demand) > shear.crushing_kn:
         code = "COLUMN.SHEAR_CRUSHING"
@@ -536,6 +657,15 @@ def _check_rectangular_shear(
         path,
         "Check signed shear magnitude against the two closed hoop legs and concrete.",
         _SHEAR,
+        **(
+            {
+                "signed_demand_kn": demand,
+                "capacity_kn": shear.capacity_kn,
+                "utilization": shear.utilization,
+            }
+            if shared_hoop
+            else {}
+        ),
     )
     return {
         "direction": direction,
@@ -544,6 +674,19 @@ def _check_rectangular_shear(
         "credited_hoop_id": tie.tie_id,
         "credited_legs": 2,
         **asdict(shear),
+        **(
+            {
+                "effective_hoop_area_mm2": hoop_area,
+                "concrete_crushing_stress_nmm2": shear.crushing_kn
+                * 1000
+                / (width * shear.d_mm),
+                "pitch_limit_mm": pitch_limit,
+                "link_spacing_pass": spacing_ok,
+                "governing_check": code if spacing_ok else "COLUMN.SHEAR_LINK_SPACING",
+            }
+            if shared_hoop
+            else {}
+        ),
     }
 
 
@@ -1006,6 +1149,9 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
     if status is not _PASS:
         schedule = None
     shear_rows = [row for row in actions if row["shear"] is not None]
+    two_plane_requested = isinstance(request, ColumnMemberDetailingInputV1) and any(
+        action.vx_kn and action.vy_kn for action in request.actions
+    )
     governing = max(
         shear_rows, key=lambda row: row["shear"]["utilization"], default=None
     )
@@ -1029,6 +1175,7 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             "checks": checks,
             "actions": actions,
             "governing_shear": governing,
+            **({"two_plane_shear_requested": True} if two_plane_requested else {}),
             **(
                 {"governing_section": governing_section}
                 if governing_section is not None
@@ -1055,7 +1202,18 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
         limitations=(
             "Checks supplied stations and combinations on the declared tied rectangular member.",
             "Slender detailing uses supplied second-order actions with one principal shear plane per checked row.",
-            "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit.",
+            (
+                "Principal-plane shear uses the lowest Table 19 row and two closed hoop legs. Cross-ties receive no shear credit."
+                if two_plane_requested
+                else "Shear uses the lowest Table 19 row and the two closed hoop legs in one local plane. Cross-ties receive no shear credit."
+            ),
+            *(
+                (
+                    "The declared linear interaction is limited to the ordinary braced continuous eight-bar rectangular cage with a shared closed hoop.",
+                )
+                if two_plane_requested
+                else ()
+            ),
             "Straight end projections require separately checked adjoining concrete. The physical contact splice profiles cover one straight side group on admitted six-, eight- or mixed twelve-bar cages or one eight-bar C1/C2 group.",
             "The schedule uses approved cut data for the closed hoop. Admitted contact links use their checked centreline lengths.",
         ),
@@ -1063,7 +1221,12 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             "Positive Mx compresses the top face; positive My compresses the left face. Vy uses D and Vx uses b as overall depth.",
             "The stated tie grade, nonseismic application, project end clearances and straight development basis apply to this member.",
         ),
-        provenance=(_SHEAR, _TIE, _BOND),
+        provenance=(
+            _SHEAR,
+            _TIE,
+            _BOND,
+            *((_TWO_PLANE_SOURCE,) if two_plane_requested else ()),
+        ),
     )
     return replace(
         result,
