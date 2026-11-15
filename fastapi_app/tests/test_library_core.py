@@ -218,17 +218,24 @@ def test_release_worked_cases_preserve_python_results_over_http(
     )
 
 
-def test_complete_one_way_slab_rejects_unacknowledged_review_basis(client):
+def test_complete_one_way_slab_holds_unacknowledged_review_basis(client):
     examples = Path(__file__).resolve().parents[2] / "Python" / "examples"
     request = runpy.run_path(str(examples / "slab_one_way_reference.py"))[
         "request_for"
     ]("baseline")
     request["qualified_serviceability_acceptance_acknowledged"] = False
     response = client.post("/api/v1/design/slab/one-way/complete", json=request)
-    assert response.status_code == 422
-    body = response.json()
-    assert body["success"] is False
-    assert body["error"]["code"] == "REQUEST_VALIDATION_ERROR"
+    assert response.status_code == 200, response.json()
+    result = _unwrap(response)
+    assert "flexure" in result["reinforcement"]
+    assert result["serviceability"]["status"] == (
+        "held_requires_current_reviewed_evidence"
+    )
+    request["qualified_serviceability_acceptance_acknowledged"] = "true"
+    assert (
+        client.post("/api/v1/design/slab/one-way/complete", json=request).status_code
+        == 422
+    )
 
 
 _SINGLE_SUPPLIED_SLAB_ACTION = (

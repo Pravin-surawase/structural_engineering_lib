@@ -23,6 +23,7 @@ __all__ = [
 class SlabServiceabilityStatus(StrEnum):
     SATISFIED_WITH_REVIEWED_LIMIT = "satisfied_with_reviewed_limit"
     LIMIT_EXCEEDED = "limit_exceeded"
+    HELD_REQUIRES_CURRENT_REVIEWED_EVIDENCE = "held_requires_current_reviewed_evidence"
 
 
 def _positive(value: float, name: str, unit: str) -> float:
@@ -58,12 +59,12 @@ class SlabServiceabilityInput:
             if not isinstance(value, str) or not value.strip():
                 raise SlabContractError(f"{name} must be a non-blank string")
             object.__setattr__(self, name, value.strip())
-        if self.limit_source_is_approved is not True:
-            raise SlabContractError("limit_source_is_approved must be explicitly True")
-        if self.qualified_acceptance_acknowledged is not True:
-            raise SlabContractError(
-                "qualified_acceptance_acknowledged must be explicitly True"
-            )
+        for name in (
+            "limit_source_is_approved",
+            "qualified_acceptance_acknowledged",
+        ):
+            if not isinstance(getattr(self, name), bool):
+                raise SlabContractError(f"{name} must be a boolean")
 
 
 @dataclass(frozen=True)
@@ -95,10 +96,18 @@ def check_slab_span_depth_serviceability(
         design_input.reviewed_base_span_depth_limit
         * design_input.reviewed_aggregate_modification_factor
     )
+    evidence_current = (
+        design_input.limit_source_is_approved
+        and design_input.qualified_acceptance_acknowledged
+    )
     status = (
-        SlabServiceabilityStatus.SATISFIED_WITH_REVIEWED_LIMIT
-        if actual <= limit
-        else SlabServiceabilityStatus.LIMIT_EXCEEDED
+        SlabServiceabilityStatus.HELD_REQUIRES_CURRENT_REVIEWED_EVIDENCE
+        if not evidence_current
+        else (
+            SlabServiceabilityStatus.SATISFIED_WITH_REVIEWED_LIMIT
+            if actual <= limit
+            else SlabServiceabilityStatus.LIMIT_EXCEEDED
+        )
     )
     return SlabServiceabilityResult(
         actual_span_depth_ratio=actual,

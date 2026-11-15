@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SlabWorkbenchPage } from './SlabWorkbenchPage';
 
@@ -149,6 +149,83 @@ describe('SlabWorkbenchPage', () => {
     expect(screen.getByText(/inputs changed after this response/i)).toBeInTheDocument();
     expect(screen.getByText('stale')).toBeInTheDocument();
     expect(download).toBeDisabled();
+  });
+
+  it('holds edited sample serviceability evidence while retaining the strength workflow', async () => {
+    designSlabWorkflowMock.mockResolvedValue({
+      ...passingContinuousResult(),
+      serviceability: {
+        utilization: 0.94,
+        status: 'held_requires_current_reviewed_evidence',
+        direct_deflection_status: 'held_not_implemented',
+      },
+    });
+    render(<SlabWorkbenchPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /one-way simple/i }));
+    fireEvent.change(screen.getByRole('spinbutton', { name: /reviewed modification factor/i }), {
+      target: { value: '1.3' },
+    });
+    expect(screen.getByRole('checkbox', { name: /source applies to current inputs/i })).toBeDisabled();
+    expect(screen.getByRole('checkbox', { name: /qualified review acknowledged for current inputs/i })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: /run slab design/i }));
+
+    await screen.findByText('held requires current reviewed evidence');
+    expect(designSlabWorkflowMock).toHaveBeenCalledWith(
+      'simply-supported',
+      expect.objectContaining({
+        serviceability_limit_source_is_approved: false,
+        serviceability_limit_source_reference: 'missing_serviceability_source_for_current_inputs',
+        qualified_serviceability_acceptance_reference: 'missing_qualified_acceptance_for_current_inputs',
+        qualified_serviceability_acceptance_acknowledged: false,
+      }),
+      expect.any(AbortSignal),
+    );
+    expect(screen.getByRole('button', { name: /download passport/i })).toBeEnabled();
+  });
+
+  it('labels presets as demonstrations and invalidates newly entered evidence after a later edit', () => {
+    render(<SlabWorkbenchPage />);
+    expect(screen.getByText(/demonstration preset/i)).toBeInTheDocument();
+
+    fireEvent.change(screen.getByRole('spinbutton', { name: /effective span/i }), {
+      target: { value: '3200' },
+    });
+    fireEvent.change(screen.getByRole('textbox', { name: /serviceability limit source reference/i }), {
+      target: { value: 'review:current-source' },
+    });
+    fireEvent.click(screen.getByRole('checkbox', { name: /source applies to current inputs/i }));
+    fireEvent.change(screen.getByRole('textbox', { name: /qualified review acceptance reference/i }), {
+      target: { value: 'review:current-acceptance' },
+    });
+    fireEvent.click(screen.getByRole('checkbox', { name: /qualified review acknowledged for current inputs/i }));
+
+    fireEvent.change(screen.getByRole('spinbutton', { name: /effective span/i }), {
+      target: { value: '3300' },
+    });
+    expect(screen.getByRole('textbox', { name: /serviceability limit source reference/i })).toHaveValue('');
+    expect(screen.getByRole('textbox', { name: /qualified review acceptance reference/i })).toHaveValue('');
+    expect(screen.getByRole('checkbox', { name: /source applies to current inputs/i })).not.toBeChecked();
+    expect(screen.getByRole('checkbox', { name: /qualified review acknowledged for current inputs/i })).not.toBeChecked();
+  });
+
+  it('makes the new mode runnable immediately and ignores a late response from the aborted mode', async () => {
+    let resolveFirst: ((value: ReturnType<typeof passingContinuousResult>) => void) | undefined;
+    designSlabWorkflowMock
+      .mockImplementationOnce(() => new Promise<ReturnType<typeof passingContinuousResult>>((resolve) => { resolveFirst = resolve; }))
+      .mockResolvedValueOnce(passingTwoWayResult({ caseId: 'new-mode-result' }));
+    render(<SlabWorkbenchPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /run slab design/i }));
+    expect(screen.getByRole('button', { name: /calculating/i })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: /two-way panel/i }));
+    expect(screen.getByRole('button', { name: /run slab design/i })).toBeEnabled();
+    fireEvent.click(screen.getByRole('button', { name: /run slab design/i }));
+    expect(await screen.findByText('new-mode-result')).toBeInTheDocument();
+
+    await act(async () => { resolveFirst?.(passingContinuousResult()); });
+    await waitFor(() => expect(screen.getByText('new-mode-result')).toBeInTheDocument());
+    expect(screen.queryByText('10.688')).not.toBeInTheDocument();
   });
 
   it('renders the B04 provenance, strips, torsion and returned dispositions', async () => {
