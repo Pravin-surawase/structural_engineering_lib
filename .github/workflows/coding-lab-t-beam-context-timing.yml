@@ -1,0 +1,192 @@
+name: Coding Lab T-beam context timing
+
+on:
+  push:
+    branches: [codex/coding-lab-t-beam-context-timing]
+    paths: [.github/workflows/coding-lab-t-beam-context-timing.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  paired-timing:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out the 0.29.2 candidate tested by Weekly Verification
+        uses: actions/checkout@v7
+        with:
+          ref: 1d297e2dcde8cf29ae3ec1d4288e940cb521ef17
+          persist-credentials: false
+
+      - name: Set up the original Python version
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.16'
+          architecture: x64
+
+      - name: Install the Weekly Verification dependencies
+        run: |
+          test "$(git rev-parse HEAD)" = 1d297e2dcde8cf29ae3ec1d4288e940cb521ef17
+          test "$(git rev-parse 'HEAD^{tree}')" = 0f7e0981d2b27e6621f7285b703c53ec98c1315c
+          cat > "$RUNNER_TEMP/t-beam-constraints.txt" <<'PINS'
+          pytest==9.1.1
+          pytest-cov==7.1.0
+          coverage==7.17.3
+          hypothesis==6.170.15
+          pytest-benchmark==5.3.1
+          pytest-asyncio==1.5.0
+          pydantic==2.14.3
+          numpy==2.4.6
+          ezdxf==1.4.5
+          jinja2==3.1.6
+          PINS
+          python -m pip install --upgrade pip
+          python -m pip install -c "$RUNNER_TEMP/t-beam-constraints.txt" -e 'Python/[dev,dxf,report]'
+          python -m pip install -c "$RUNNER_TEMP/t-beam-constraints.txt" -r requirements.txt
+
+      - name: Compare the 35 T-beam cases alone and inside the exact 72-case window
+        working-directory: Python
+        run: |
+          python -u - <<'PY'
+          from collections import Counter
+          import hashlib
+          import importlib.metadata
+          import json
+          import os
+          from pathlib import Path
+          import platform
+          import subprocess
+          import sys
+          from time import perf_counter
+          import xml.etree.ElementTree as ET
+
+          temp = Path(os.environ["RUNNER_TEMP"])
+          evidence = temp / "t-beam-context-timing"
+          evidence.mkdir()
+          packages = ("pytest", "pytest-cov", "coverage", "hypothesis", "pytest-benchmark",
+                      "pytest-asyncio", "pydantic", "numpy", "ezdxf", "jinja2")
+          result = {
+              "source_head": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+              "platform": platform.platform(),
+              "os_release": platform.freedesktop_os_release().get("PRETTY_NAME"),
+              "python": platform.python_version(),
+              "packages": {name: importlib.metadata.version(name) for name in packages},
+              "runs": [],
+          }
+          env = {**os.environ, "STRUCTURAL_LIB_PYTHON": sys.executable}
+          collection = subprocess.run(
+              [sys.executable, "-m", "pytest", "tests", "--collect-only", "-o", "addopts=",
+               "-q", "-m", "not slow", "--hypothesis-profile=ci", "--no-cov",
+               "-o", f"cache_dir={temp / 'collection'}"],
+              env=env, text=True, stdout=subprocess.PIPE,
+          )
+          if collection.returncode:
+              print(collection.stdout[-5000:], flush=True)
+              sys.exit("Full collection failed")
+          all_nodes = [
+              line for line in collection.stdout.splitlines()
+              if line.startswith("tests/") and "::" in line
+          ]
+          nodes = all_nodes[2592:2664]
+          manifest = ("\n".join(nodes) + "\n").encode()
+          selection_sha256 = hashlib.sha256(manifest).hexdigest()
+          (evidence / "selected-nodeids.txt").write_bytes(manifest)
+          if len(all_nodes) != 9535 or len(set(nodes)) != 72 or selection_sha256 != (
+              "d920dd55ac2da417847bfb49dc304d7838c09c353fc10d5ff487b5bd182122f7"
+          ):
+              sys.exit(
+                  f"Weekly collection or window changed: {len(all_nodes)} total, "
+                  f"{len(nodes)} selected, window SHA-256 {selection_sha256}"
+              )
+          result["weekly_collection_size"] = len(all_nodes)
+          result["selection_sha256"] = selection_sha256
+          result["selection"] = dict(sorted(Counter(
+              Path(node.split("::", 1)[0]).stem for node in nodes
+          ).items()))
+          t_beam_nodes = [
+              node for node in nodes if node.startswith("tests/integration/test_t_beam_member.py::")
+          ]
+          t_beam_manifest = ("\n".join(t_beam_nodes) + "\n").encode()
+          t_beam_sha256 = hashlib.sha256(t_beam_manifest).hexdigest()
+          if len(t_beam_nodes) != 35 or t_beam_sha256 != (
+              "1abe4e27f762fd1c665b485f71f30578f710fd4bdaed835c25ca521cf4c96a30"
+          ):
+              sys.exit(f"T-beam selection changed: {len(t_beam_nodes)} tests, {t_beam_sha256}")
+          (evidence / "t-beam-nodeids.txt").write_bytes(t_beam_manifest)
+          result["t_beam_selection_sha256"] = t_beam_sha256
+          print(json.dumps(result, indent=2), flush=True)
+          cmd = [
+              sys.executable, "-m", "pytest",
+              "-q", "--hypothesis-profile=ci", "--durations=20", "--durations-min=0.1",
+          ]
+          coverage_flags = ["--cov=structural_lib", "--cov-branch", "--cov-report=term-missing"]
+
+          def junit_identity(node):
+              path, *parents, name = node.split("::")
+              module = Path(path).with_suffix("").as_posix().replace("/", ".")
+              return ".".join([module, *parents]), name
+
+          for mode, selection in [("t-beam-alone", t_beam_nodes), ("full-window", nodes)]:
+              xml_path = evidence / f"{mode}.xml"
+              coverage_debug = temp / f"{mode}-coverage-debug.txt"
+              env = {**os.environ, "STRUCTURAL_LIB_PYTHON": sys.executable,
+                     "COVERAGE_FILE": str(temp / f".{mode}-coverage"),
+                     "COVERAGE_DEBUG": "sys", "COVERAGE_DEBUG_FILE": str(coverage_debug)}
+              print(f"Starting {mode}", flush=True)
+              start = perf_counter()
+              run = subprocess.run(
+                  [*cmd, *coverage_flags, *selection, f"--junitxml={xml_path}",
+                   f"--basetemp={temp / (mode + '-pytest')}", "-o", f"cache_dir={temp / mode}"],
+                  env=env,
+              )
+              wall_seconds = perf_counter() - start
+              print(f"Finished {mode} in {wall_seconds:.3f}s with status {run.returncode}", flush=True)
+              root = ET.parse(xml_path).getroot()
+              cases = root.findall(".//testcase")
+              names = [(case.get("classname"), case.get("name")) for case in cases]
+              if names != [junit_identity(node) for node in selection]:
+                  sys.exit(f"JUnit test IDs or execution order differ for {mode}")
+              passed = sum(not any(case.find(tag) is not None for tag in ("failure", "error", "skipped"))
+                           for case in cases)
+              module_counts = Counter()
+              module_seconds = Counter()
+              for case in cases:
+                  module = case.attrib["classname"].rsplit(".", 1)[-1]
+                  module_counts[module] += 1
+                  module_seconds[module] += float(case.attrib["time"])
+              cores = [
+                  line.strip().removeprefix("core:").strip()
+                  for line in coverage_debug.read_text().splitlines() if line.lstrip().startswith("core:")
+              ]
+              if "CTracer" not in cores:
+                  sys.exit(f"Expected CTracer in {mode}, got {cores}")
+              result["runs"].append({
+                  "coverage_core": "CTracer",
+                  "module_counts": dict(sorted(module_counts.items())),
+                  "module_seconds": {name: round(seconds, 3) for name, seconds
+                                     in sorted(module_seconds.items())},
+                  "mode": mode,
+                  "wall_seconds": round(wall_seconds, 3),
+                  "collected": len(cases),
+                  "passed": passed,
+                  "status": run.returncode,
+                  "slowest": [
+                      {"name": case.get("name"), "seconds": float(case.get("time"))}
+                      for case in sorted(cases, key=lambda c: float(c.get("time")), reverse=True)[:5]
+                  ],
+              })
+              if run.returncode or passed != len(selection):
+                  print(json.dumps(result, indent=2), flush=True)
+                  sys.exit(f"{mode} must pass all {len(selection)} selected tests")
+          (evidence / "timing.json").write_text(json.dumps(result, indent=2) + "\n")
+          print(json.dumps(result, indent=2), flush=True)
+          PY
+
+      - name: Retain timings and test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: t-beam-context-timing
+          path: ${{ runner.temp }}/t-beam-context-timing
+          if-no-files-found: warn
