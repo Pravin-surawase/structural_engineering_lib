@@ -44,6 +44,11 @@ class ColumnDetailingBasisV1(StrictPublicModel):
         exclude_if=lambda value: value is None,
         description="Declared shared-hoop allocation for concurrent shear on a short continuous eight-bar rectangle.",
     )
+    lap_action_continuity_reference: _Reference | None = Field(
+        default=None,
+        exclude_if=lambda value: value is None,
+        description="Supplied second-order analysis evidence for compression over the slender splice interval.",
+    )
 
 
 class ColumnStraightEndDetailV1(StrictPublicModel):

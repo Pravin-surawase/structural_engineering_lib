@@ -159,9 +159,16 @@ def _splice_sections(
         for bar in section["bars"]:
             mark = escape(bar["bar_id"], quote=True)
             color = "#bd6421" if bar["bar_id"].endswith("-U") else "#172b4d"
+            contact_pair = (
+                ' data-contact-pair="true"'
+                f' data-x-mm="{bar["x_from_left_mm"]:g}"'
+                f' data-y-mm="{bar["y_from_top_mm"]:g}"'
+                if label == "overlap" and bar["bar_id"].endswith(("-L", "-U"))
+                else ""
+            )
             geometry.append(
                 f'<circle cx="{bar["x_from_left_mm"]:g}" cy="{bar["y_from_top_mm"]:g}" r="{bar["diameter_mm"] / 2:g}"'
-                f' fill="{color}" data-piece-mark="{mark}"><title>{mark}</title></circle>'
+                f' fill="{color}" data-piece-mark="{mark}"{contact_pair}><title>{mark}</title></circle>'
             )
         sections.append(
             f'<text x="{left}" y="85" font-size="11">{caption}</text>'
@@ -181,8 +188,10 @@ def render_column_member_detailing_svg(result: Result) -> str | None:
     geometry, ends = request.geometry, request.end_detail
     length, width, depth = geometry.unsupported_length_mm, geometry.b_mm, geometry.D_mm
     status = result.engineering_status.value
+    slender_lap_requested = bool(data.get("slender_lap_requested"))
     if status != "PASS" and (
         data.get("two_plane_shear_requested")
+        or slender_lap_requested
         or any(issue.code == MINIMUM_SHEAR_LINK_CHECK for issue in result.issues)
     ):
         return None
@@ -269,6 +278,25 @@ def render_column_member_detailing_svg(result: Result) -> str | None:
             f'<rect x="{left - 11}" y="{y(end)}" width="6" height="{y(start) - y(end)}" fill="#be640d">'
             f"<title>{'Contact lap' if splice else 'Proposed lap'} {escape(lap['lap_id'])} · {start:g} to {end:g} mm</title></rect>"
         )
+    if slender_lap_requested:
+        boundaries = sorted(
+            {
+                0.0,
+                length,
+                *(
+                    point
+                    for lap in data["laps"]
+                    for point in (lap["start_mm"], lap["end_mm"])
+                ),
+            }
+        )
+        for station in boundaries:
+            position = y(station)
+            projection.append(
+                f'<path d="M {left - 16:g} {position:g} h 9" stroke="#bd6421" '
+                f'data-marker="lap-boundary" data-station-mm="{station:g}">'
+                f"<title>Member/lap boundary at {station:g} mm</title></path>"
+            )
     scale = 170 / max(width, depth)
     if splice is not None:
         section_markup = _splice_sections(splice, cage, width, depth)
@@ -297,6 +325,26 @@ def render_column_member_detailing_svg(result: Result) -> str | None:
             else ""
         )
         view_width = 560
+    governing_note = ""
+    governing_section = data.get("governing_section")
+    if slender_lap_requested and governing_section is not None:
+        section_governor = governing_section.get("section") or {}
+        layout = section_governor.get("governing_layout", "declared")
+        phase = governing_section.get("physical_phase") or section_governor.get("phase")
+        station_id = governing_section.get("station_id")
+        station = governing_section.get("station_mm")
+        location = station_id or (
+            f"{station:g} mm" if station is not None else "supplied station"
+        )
+        phase_text = f" · {phase}" if phase else ""
+        ratio = section_governor.get(
+            "utilization", section_governor.get("governing_ratio")
+        )
+        ratio_text = f" · u={ratio:.4f}" if ratio is not None else ""
+        governing_note = (
+            f'<text x="310" y="446" font-size="10">Governing section · '
+            f"{escape(str(location))}{phase_text} · {escape(str(layout))}{ratio_text}</text>"
+        )
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {view_width} 520" role="img" aria-labelledby="member-title">'
         f'<title id="member-title">{escape(title)}</title>'
@@ -308,7 +356,7 @@ def render_column_member_detailing_svg(result: Result) -> str | None:
         f'<text x="310" y="296" font-size="11">Clear member length {length:g} mm</text>'
         f'<text x="310" y="315" font-size="11">Straight projections {ends.start_straight_mm:g} / {ends.end_straight_mm:g} mm</text>'
         f'<text x="310" y="334" font-size="11">{len(data["hoop_stations_mm"])} hoop levels</text>'
-        f"{splice_note}{interaction_note}</svg>"
+        f"{splice_note}{interaction_note}{governing_note}</svg>"
     )
 
 
@@ -320,6 +368,7 @@ def render_column_member_detailing_html(result: Result) -> str:
     splice = data.get("contact_splice")
     mixed_splice = splice is not None and "transverse_level_clear_mm" in splice
     two_plane_requested = bool(data.get("two_plane_shear_requested"))
+    slender_lap_requested = bool(data.get("slender_lap_requested"))
     two_plane_gate_reasons = [
         f"{check['code']}: {check['message']}"
         for check in data["checks"]
@@ -371,11 +420,20 @@ def render_column_member_detailing_html(result: Result) -> str:
             )
             ratio = layout.get("governing_ratio")
             ratio_text = f" · {ratio:.4f}" if ratio is not None else ""
+            direct = layout.get("direct_ratio")
+            contour = layout.get("contour_ratio")
+            comparison = (
+                f" · direct/contour {direct:.4f}/{contour:.4f}"
+                if direct is not None and contour is not None
+                else ""
+            )
+            layout_phase = layout.get("physical_phase") or layout.get("phase")
+            phase_text = f" · {escape(str(layout_phase))}" if layout_phase else ""
             layout_status = (
                 "HOLD" if ratio is None else "PASS" if ratio <= 1 else "FAIL"
             )
             parts.append(
-                f"{escape(label)} · {layout_status}{ratio_text}"
+                f"{escape(label)}{phase_text} · {layout_status}{ratio_text}{comparison}"
                 f" <small>({escape(axes_text)})</small>"
             )
         governing = section.get("governing_layout")
@@ -405,9 +463,19 @@ def render_column_member_detailing_html(result: Result) -> str:
                 f"<td>{shear['status']} · {shear['direction']}</td><td>{shear['pitch_mm']:g}</td>"
                 f"<td>{shear['d_mm']:g}</td><td>{shear['vc_kn']:.2f} / {shear['vus_kn']:.2f}</td><td>{shear['utilization']:.4f}</td>"
             )
-        phase = f"<td>{phase_summary(section)}</td>" if mixed_splice else ""
+        phase = (
+            f"<td>{phase_summary(section)}</td>"
+            if mixed_splice or slender_lap_requested
+            else ""
+        )
+        station_id = row.get("station_id")
+        station_text = (
+            f"{row['station_mm']:g} <small>({escape(str(station_id))})</small>"
+            if station_id
+            else f"{row['station_mm']:g}"
+        )
         action_rows.append(
-            f"<tr><td>{escape(row['combination_id'])}</td><td>{row['station_mm']:g}</td>"
+            f"<tr><td>{escape(row['combination_id'])}</td><td>{station_text}</td>"
             f"<td>{a['pu_kn']:g} / {a['mx_knm']:g} / {a['my_knm']:g}</td>"
             f"<td>{a['vx_kn']:g} / {a['vy_kn']:g}</td>"
             f'<td title="{section_hash}">{section_status}</td><td>{escape(row.get("zone_id", "—"))}</td>'
@@ -478,14 +546,45 @@ def render_column_member_detailing_html(result: Result) -> str:
     if governing and governing["shear"].get("governing_check"):
         governing_text += f"<p>{escape(governing['shear']['governing_check'])}.</p>"
     governing_section = data.get("governing_section")
+    governing_section_detail = (
+        governing_section.get("section", {}) if governing_section else {}
+    )
+    governing_section_ratio = governing_section_detail.get(
+        "utilization", governing_section_detail.get("governing_ratio")
+    )
+    if governing_section_ratio is None:
+        layout = governing_section_detail.get("governing_layout")
+        governing_section_ratio = (
+            governing_section_detail.get("splice_layouts", {})
+            .get(layout, {})
+            .get("governing_ratio")
+            if layout
+            else None
+        )
     governing_section_text = (
         f"<p>Governing supplied section: {escape(governing_section['combination_id'])} at "
-        f"{governing_section['station_mm']:g} mm, {escape(governing_section['section'].get('governing_layout', 'declared layout'))} "
-        f"layout, utilization {governing_section['section']['utilization']:.4f}.</p>"
-        if governing_section
-        and governing_section.get("section", {}).get("utilization") is not None
+        f"{governing_section['station_mm']:g} mm"
+        f"{' (' + escape(str(governing_section['station_id'])) + ')' if governing_section.get('station_id') else ''}, "
+        f"{escape(governing_section_detail.get('governing_layout', 'declared layout'))} "
+        f"layout, utilization {governing_section_ratio:.4f}.</p>"
+        if governing_section and governing_section_ratio is not None
         else ""
     )
+    slender_lap_basis = ""
+    if slender_lap_requested:
+        assert isinstance(request, SlenderColumnMemberDetailingInputV1)
+        continuity = request.basis.lap_action_continuity_reference or "not declared"
+        second_order_basis = (
+            request.second_order.member_deflection_basis or "not declared"
+        )
+        provenance = request.basis.action_source_reference or "not declared"
+        slender_lap_basis = (
+            "<p>Slender lap projection uses the supplied concurrent factored second-order rows "
+            f"from <code>{escape(provenance)}</code>; revised analysis basis: "
+            f"<code>{escape(second_order_basis)}</code>; continuity basis: "
+            f"<code>{escape(continuity)}</code>. Compression must be evidenced over the whole overlap. "
+            "Tie pitch, end restraint and physical splice checks remain product checks shown below.</p>"
+        )
     end_governor = ""
     if mixed_splice:
         lengths = next(
@@ -495,7 +594,11 @@ def render_column_member_detailing_html(result: Result) -> str:
         )
         diameter = max(lengths, key=lengths.__getitem__)
         end_governor = f"The Ø{diameter:g} bars govern end development. "
-    phase_header = "<th>Section layouts and axes</th>" if mixed_splice else ""
+    phase_header = (
+        "<th>Section layouts and axes</th>"
+        if mixed_splice or slender_lap_requested
+        else ""
+    )
     limits = "".join(f"<li>{escape(item)}</li>" for item in result.limitations)
     drawing = render_column_member_detailing_svg(result)
     drawing_text = (
@@ -514,7 +617,7 @@ def render_column_member_detailing_html(result: Result) -> str:
         f"Provided {request.end_detail.start_straight_mm:g} mm at the start and "
         f"{request.end_detail.end_straight_mm:g} mm at the end. "
         f"{end_governor}Base compression lap requirement {data['lap_required_mm']:.2f} mm.</p>"
-        f"{governing_text}{governing_section_text}<h2>Supplied concurrent actions</h2><table><thead><tr>"
+        f"{slender_lap_basis}{governing_text}{governing_section_text}<h2>Supplied concurrent actions</h2><table><thead><tr>"
         "<th>Combination</th><th>Station (mm)</th><th>Pu / Mx / My (kN / kNm / kNm)</th><th>Vx / Vy (kN)</th>"
         f"<th>Section</th><th>Zone</th>{phase_header}<th>Shear</th><th>Pitch (mm)</th><th>d (mm)</th><th>Vc / Vus (kN)</th><th>Utilization</th>"
         f"</tr></thead><tbody>{''.join(action_rows)}</tbody></table>"

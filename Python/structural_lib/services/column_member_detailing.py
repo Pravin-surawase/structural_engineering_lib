@@ -42,7 +42,8 @@ from structural_lib.services.column_positioned_member import (
     evaluate_positioned_rectangular_cage,
 )
 from structural_lib.services.column_slender_member import (
-    check_slender_rectangular_member,
+    _check_slender_rectangular_member,
+    _slender_section_strength,
 )
 from structural_lib.services.column_tied_member import (
     check_tied_rectangular_member,
@@ -172,7 +173,7 @@ def _hoop_grid(
 
 
 def _check_laps(
-    request: ColumnMemberDetailingInputV1 | PositionedColumnMemberDetailingInputV1,
+    request: DetailingRequest,
     zones: list[ColumnTieZoneV1],
     bar_ids: set[str],
     required_mm: float,
@@ -730,13 +731,7 @@ def _check_shear_plane(
     }
 
 
-def _slender_detailing_actions(
-    request: SlenderColumnMemberDetailingInputV1,
-    zones: list[ColumnTieZoneV1],
-    grid: list[float],
-    valid_zones: set[str],
-    record: _Record,
-) -> tuple[list[dict[str, Any]], dict[str, Any] | None]:
+def _slender_actions_match(request: SlenderColumnMemberDetailingInputV1) -> bool:
     second_order = request.second_order
     required = {
         (
@@ -752,7 +747,18 @@ def _slender_detailing_actions(
         (row.combination_id, row.check_station_mm, row.pu_kn, row.mx_knm, row.my_knm)
         for row in request.actions
     }
-    if supplied != required:
+    return supplied == required
+
+
+def _slender_detailing_actions(
+    request: SlenderColumnMemberDetailingInputV1,
+    zones: list[ColumnTieZoneV1],
+    grid: list[float],
+    valid_zones: set[str],
+    record: _Record,
+    splice: ContactSplice | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any] | None]:
+    if not _slender_actions_match(request):
         record(
             "COLUMN.SLENDER_DETAIL_ACTIONS_HELD",
             _HOLD,
@@ -762,16 +768,27 @@ def _slender_detailing_actions(
         )
         return [], None
 
-    result = check_slender_rectangular_member(
-        SlenderRectangularColumnInputV1(
-            identity=request.identity,
-            geometry=request.restraint,
-            materials=request.materials,
-            reinforcement=request.reinforcement,
-            actions=second_order,
-            analysis_revision=request.basis.analysis_revision,
-            current_analysis_revision=request.basis.current_analysis_revision,
-        )
+    second_order = request.second_order
+    section_request = SlenderRectangularColumnInputV1(
+        identity=request.identity,
+        geometry=request.restraint,
+        materials=request.materials,
+        reinforcement=request.reinforcement,
+        actions=second_order,
+        analysis_revision=request.basis.analysis_revision,
+        current_analysis_revision=request.basis.current_analysis_revision,
+    )
+    result = _check_slender_rectangular_member(
+        section_request,
+        strength_station_ids=(
+            {
+                row.station_id
+                for row in second_order.stations
+                if row.station_mm <= splice.end_mm
+            }
+            if splice is not None
+            else None
+        ),
     )
     for issue in result.issues:
         record(
@@ -782,12 +799,43 @@ def _slender_detailing_actions(
             "Checked COL04 member",
         )
     section = result.calculation["strength"]
+    upper_section = None
+    if splice is not None and section is not None:
+        assert not isinstance(splice.upper, tuple)
+        upper_bars = tuple(
+            PositionedColumnBar(
+                bar.bar_id,
+                bar.x_from_left_mm,
+                bar.y_from_top_mm,
+                bar.diameter_mm,
+                "outer",
+            )
+            for bar in splice.upper.bars
+        )
+        upper_rows = {
+            identifier: row
+            for identifier, row in result.calculation["action_rows"].items()
+            if row["station_mm"] >= splice.start_mm
+        }
+
+        def record_upper(
+            code: str, status: EngineeringStatus, path: str, message: str, **values: Any
+        ) -> None:
+            source = values.pop(
+                "source_reference", "Checked COL04 upper contact layout"
+            )
+            record(code, status, f"lap_layouts.upper.{path}", message, source, **values)
+
+        _, upper_section = _slender_section_strength(
+            section_request, upper_bars, upper_rows, record_upper
+        )
     section_identity = result.envelope.result_identity
     assert section_identity is not None
     ids = {row.station_mm: row.station_id for row in second_order.stations}
     rows = []
     for index, action in enumerate(request.actions):
         station = action.check_station_mm
+        station_id = ids[station]
         path = f"actions.{index}"
         summary = {
             "combination_id": action.combination_id,
@@ -797,11 +845,80 @@ def _slender_detailing_actions(
                 "status": result.engineering_status.value,
                 "input_hash": section_identity.input_hash,
                 "utilization": (
-                    section["evaluated"][ids[station]]["ratio"] if section else None
+                    section["evaluated"].get(station_id, {}).get("ratio")
+                    if section
+                    else None
                 ),
             },
             "shear": None,
         }
+        if splice is not None:
+            summary["station_id"] = station_id
+            inside_overlap = splice.start_mm <= station <= splice.end_mm
+            layouts = {}
+            for label, strength in (("lower", section), ("upper", upper_section)):
+                if strength is None or station_id not in strength["evaluated"]:
+                    continue
+                checked = strength["evaluated"][station_id]
+                layouts[label] = {
+                    "physical_phase": (
+                        f"OVERLAP_{label.upper()}"
+                        if inside_overlap
+                        else f"{label.upper()}_ONLY"
+                    ),
+                    "governing_ratio": checked["ratio"],
+                    "contour_ratio": checked["contour_ratio"],
+                    "direct_ratio": checked["direct_ratio"],
+                    "puz_kn": strength["puz_kn"],
+                    "alpha_n": strength["alpha_n"],
+                    "axes": strength["axes"],
+                    "minimum_eccentricity_ratios": strength[
+                        "minimum_eccentricity_ratios"
+                    ],
+                }
+            governing_layout = max(
+                layouts,
+                key=lambda label: layouts[label]["governing_ratio"],
+                default=None,
+            )
+            utilization = (
+                layouts[governing_layout]["governing_ratio"]
+                if governing_layout is not None
+                else None
+            )
+            expected_layouts = int(station <= splice.end_mm) + int(
+                station >= splice.start_mm
+            )
+            status = (
+                _FAIL
+                if utilization is not None and utilization > 1
+                else _HOLD if len(layouts) < expected_layouts else _PASS
+            )
+            physical_phase = (
+                layouts[governing_layout]["physical_phase"]
+                if governing_layout is not None
+                else None
+            )
+            summary["section"] = {
+                "status": status.value,
+                "input_hash": None,
+                "utilization": utilization,
+                "splice_layouts": layouts,
+                "governing_layout": governing_layout,
+                "physical_phase": physical_phase,
+            }
+            record(
+                "COLUMN.LAP_SECTION_STRENGTH",
+                status,
+                path,
+                "Check the applicable physical transfer layouts with the signed second-order row and credit only one partner per pair.",
+                "IS 456:2000 Cl. 39.6–39.7 and checked contact assembly",
+                station_id=station_id,
+                governing_layout=governing_layout,
+                physical_phase=physical_phase,
+                actual=utilization,
+                limit=1.0,
+            )
         rows.append(summary)
         if (
             not action.vx_kn and not action.vy_kn
@@ -1106,6 +1223,9 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             required_by_diameter_mm={dia: value[0] for dia, value in bond.items()},
         )
     splice = None
+    slender_lap_requested = isinstance(
+        request, SlenderColumnMemberDetailingInputV1
+    ) and bool(request.laps)
     positioned_seat = (
         _mixed_splice_link(request, bars_positioned)
         if isinstance(request, PositionedColumnMemberDetailingInputV1)
@@ -1134,6 +1254,35 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
         )
         if splice is not None:
             transverse = splice.transverse
+    elif isinstance(request, SlenderColumnMemberDetailingInputV1) and request.laps:
+        diameter = request.reinforcement.longitudinal_bar_diameter_mm
+        lap_required = max(1.10 * end_required / 1.25, 24 * diameter)
+        laps = [
+            {
+                **lap.model_dump(),
+                "provided_mm": lap.end_mm - lap.start_mm,
+                "required_mm": lap_required,
+            }
+            for lap in request.laps
+        ]
+        if (
+            request.basis.analysis_revision == request.basis.current_analysis_revision
+            and request.basis.action_source_reference is not None
+            and _slender_actions_match(request)
+        ):
+            laps = _check_laps(
+                request,
+                zones,
+                {bar["bar_id"] for bar in bars},
+                lap_required,
+                diameter,
+                record,
+            )
+            splice = check_contact_splice(
+                request, tied_cage, transverse, end_required, record
+            )
+            if splice is not None:
+                transverse = splice.transverse
     elif isinstance(
         request,
         (PositionedColumnMemberDetailingInputV1, SlenderColumnMemberDetailingInputV1),
@@ -1172,11 +1321,11 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
     slender = None
     if isinstance(request, SlenderColumnMemberDetailingInputV1):
         actions, slender = _slender_detailing_actions(
-            request, zones, grid, valid_zones, record
+            request, zones, grid, valid_zones, record, splice
         )
     else:
         actions = _check_actions(request, zones, grid, valid_zones, record, splice)
-    if grid and cage is not None:
+    if grid and cage is not None and (not slender_lap_requested or splice is not None):
         schedule = _bar_schedule(request, bars, transverse, record, splice)
     else:
         schedule = None
@@ -1211,7 +1360,8 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             key=lambda row: row["section"]["utilization"],
             default=None,
         )
-        if splice is not None and isinstance(splice.upper, tuple)
+        if splice is not None
+        and (slender_lap_requested or isinstance(splice.upper, tuple))
         else None
     )
     result = canonical_family_result(
@@ -1221,6 +1371,7 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
             "actions": actions,
             "governing_shear": governing,
             **({"two_plane_shear_requested": True} if two_plane_requested else {}),
+            **({"slender_lap_requested": True} if slender_lap_requested else {}),
             **(
                 {"governing_section": governing_section}
                 if governing_section is not None
@@ -1247,6 +1398,13 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
         limitations=(
             "Checks supplied stations and combinations on the declared tied rectangular member.",
             "Slender detailing uses supplied second-order actions with one principal shear plane per checked row.",
+            *(
+                (
+                    "The slender compression-lap profile uses the declared signed second-order rows, one continuous compression interval and its opposing Ø20 side pair. The two transfer layouts are checked separately.",
+                )
+                if slender_lap_requested
+                else ()
+            ),
             (
                 "Principal-plane shear uses the lowest Table 19 row and two closed hoop legs. Cross-ties receive no shear credit."
                 if two_plane_requested

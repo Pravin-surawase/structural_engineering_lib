@@ -221,13 +221,37 @@ uses the frozen COL04 strength and independently computes the full-length
 quantities. A stale analysis, disagreement between station rows or short
 straight projection withholds the BBS.
 
-The admitted slender profile has continuous bars, one supplied
-second-order combination. One nonzero principal shear component can be
+This continuous profile uses one supplied second-order combination.
+One nonzero principal shear component can be
 checked at a station inside the tied zone. The field pitch of 120 mm gives
 114.353 kN of resistance for local X and 147.211 kN for local Y. The worked
 rows at 3000 mm use −75 and +95 kN in separate cases. A −150 kN X row
-fails, and simultaneous nonzero components remain HOLD. First-order member
-detailing and physical splices need their own checks.
+fails, and simultaneous nonzero components remain HOLD.
+
+## Replay the bounded slender contact lap
+
+Run this command from the repository root against the matching source
+checkout:
+
+```bash
+./scripts/python_runtime.sh Python/examples/column_member_detailing.py --slender \
+  --reference docs/verification/library-030-col07-slender-lap-reference.json \
+  --case s1_pass --output-dir col07-slender-lap
+```
+
+The fixture uses an ordinary braced eight-bar rectangular member with a
+symmetric cage and one opposing Ø20 midpoint pair. It supplies concurrent
+factored second-order actions with signed moments and zero shear. The request
+must supply compression evidence that covers the whole overlap. The report
+identifies the supplied stations and records the pitch, end restraint and
+physical splice checks.
+
+The report gives the direct and contour ratios for both physical section
+layouts, including both layouts at `MID` inside the overlap. The upper layout
+governs at `MID`, 3000 mm, with a utilization of **0.174419**. The drawing shows
+the checked piece and link marks. The BBS contains 166 pieces with a theoretical
+mass of 199.410 kg. Both FAIL controls and all four HOLD controls produce only
+the diagnostic HTML report and result JSON.
 
 ## Run a physical contact splice
 
