@@ -9,6 +9,7 @@ from math import dist
 from typing import Any
 
 from structural_lib.services.column_member_detailing import (
+    MINIMUM_SHEAR_LINK_CHECK,
     WORKFLOW,
     DetailingRequest,
     Result,
@@ -172,17 +173,18 @@ def _splice_sections(
 def render_column_member_detailing_svg(result: Result) -> str | None:
     """Draw the checked section and supplied full-length reinforcement schedule.
 
-    A requested simultaneous two-plane shear screen that is HOLD or FAIL has
-    no checked drawing: the physical cage must not be projected as issued
-    detailing until its shared-hoop gate passes.  Earlier single-plane
-    diagnostic drawings deliberately retain their existing behaviour.
+    A held or failed two-plane screen and a minimum shear steel failure
+    withhold the checked drawing.
     """
     request, input_hash = _metadata(result)
     data = result.calculation
     geometry, ends = request.geometry, request.end_detail
     length, width, depth = geometry.unsupported_length_mm, geometry.b_mm, geometry.D_mm
     status = result.engineering_status.value
-    if data.get("two_plane_shear_requested") and status != "PASS":
+    if status != "PASS" and (
+        data.get("two_plane_shear_requested")
+        or any(issue.code == MINIMUM_SHEAR_LINK_CHECK for issue in result.issues)
+    ):
         return None
     revisions = f"analysis {request.basis.analysis_revision} · detailing {request.basis.detailing_revision}"
     title = f"{status} · {request.identity.member_id or request.identity.case_id}"
@@ -341,10 +343,16 @@ def render_column_member_detailing_html(result: Result) -> str:
                 f"A<sub>sv</sub> {plane['effective_hoop_area_mm2']:g} mm² · "
                 f"crushing stress {plane['concrete_crushing_stress_nmm2']:g} N/mm²"
             )
+        interaction = shear["interaction_utilization"]
+        interaction_text = (
+            f"u={interaction:.4f} / {shear['interaction_limit']:.4f}."
+            if interaction is not None
+            else "Interaction withheld because a link pitch check failed."
+        )
         return (
             f"<td>{escape(shear['status'])} · xy<br><small>Shared hoop interaction · "
             f"{escape(shear['governing_check'])} · basis {escape(shear['interaction_basis'])} · "
-            f"u={shear['interaction_utilization']:.4f} / {shear['interaction_limit']:.4f}.</small></td>"
+            f"{interaction_text}</small></td>"
             f"<td colspan='4'><small>{'<br>'.join(rows)}</small></td>"
         )
 
@@ -467,6 +475,8 @@ def render_column_member_detailing_html(result: Result) -> str:
         if governing
         else ""
     )
+    if governing and governing["shear"].get("governing_check"):
+        governing_text += f"<p>{escape(governing['shear']['governing_check'])}.</p>"
     governing_section = data.get("governing_section")
     governing_section_text = (
         f"<p>Governing supplied section: {escape(governing_section['combination_id'])} at "

@@ -242,19 +242,37 @@ def _schedule_transverse(
             turn_count * math.hypot(circumference, p) for _, _, p, turn_count in stages
         )
         count, source = 1, placement.source_reference
-    clearance = min(extent_start, length - extent_end) - steel.diameter_mm / 2
-    offset = max(extent_start, length - extent_end)
-    if (
-        clearance < placement.end_clearance_mm
-        or offset > request.end_detail.max_end_hoop_offset_mm
-    ):
+    start_clearance = extent_start - steel.diameter_mm / 2
+    end_clearance = length - extent_end - steel.diameter_mm / 2
+    clearance = min(start_clearance, end_clearance)
+    if request.end_detail.end_face_clearance_mm >= placement.end_clearance_mm:
+        required_clearance = request.end_detail.end_face_clearance_mm
+        clearance_source = "end_detail.end_face_clearance_mm"
+    else:
+        required_clearance = placement.end_clearance_mm
+        clearance_source = "placement.end_clearance_mm"
+    if clearance < required_clearance:
         return (
             None,
             EngineeringStatus.FAIL,
             StructuralIssueV1(
                 "COLUMN.CIRCULAR_END_PLACEMENT",
-                "placement",
-                "Check the first and last transverse steel against the declared face clearance and end offset.",
+                clearance_source,
+                f"End-face clearances are {start_clearance:g} mm at the start and "
+                f"{end_clearance:g} mm at the end. {clearance_source} requires "
+                f"{required_clearance:g} mm at each face.",
+            ),
+        )
+    offset = max(extent_start, length - extent_end)
+    if offset > request.end_detail.max_end_hoop_offset_mm:
+        return (
+            None,
+            EngineeringStatus.FAIL,
+            StructuralIssueV1(
+                "COLUMN.CIRCULAR_END_PLACEMENT",
+                "end_detail.max_end_hoop_offset_mm",
+                f"End offset {offset:g} mm exceeds the declared "
+                f"{request.end_detail.max_end_hoop_offset_mm:g} mm limit.",
             ),
         )
     if any(
@@ -281,6 +299,10 @@ def _schedule_transverse(
             "stations_mm": [first + i * pitch for i in range(round(body) + 1)],
             "spiral_stages": stages,
             "transverse_end_clearance_mm": clearance,
+            "start_face_clearance_mm": start_clearance,
+            "end_face_clearance_mm": end_clearance,
+            "required_end_clearance_mm": required_clearance,
+            "end_clearance_source": clearance_source,
         },
         EngineeringStatus.PASS,
         None,
@@ -898,13 +920,22 @@ def render_circular_detailing_html(result: Result) -> str:
         for issue in result.issues
     )
     limits = "".join(f"<li>{html.escape(limit)}</li>" for limit in result.limitations)
+    transverse = data["transverse"]
+    clearance = (
+        f"<p>End-face clearances {transverse['start_face_clearance_mm']:g} mm at the start "
+        f"and {transverse['end_face_clearance_mm']:g} mm at the end. "
+        f"Required {transverse['required_end_clearance_mm']:g} mm from "
+        f"<code>{html.escape(transverse['end_clearance_source'])}</code>.</p>"
+        if transverse is not None
+        else ""
+    )
     return f"""<!doctype html>
 <html lang="en"><meta charset="utf-8"><title>Circular column detailing</title>
 <h1>Circular column detailing · {html.escape(request.identity.member_id or '')}</h1>
 <p>{result.engineering_status.value} · Qualified review required</p>
 <p>Input identity <code>{input_hash}</code>. Analysis revision {html.escape(request.basis.analysis_revision)}.
 Detail revision {html.escape(request.basis.detailing_revision)}.</p>
-<p>Required straight development {data['end_required_mm']:.2f} mm at each end.</p>
+<p>Required straight development {data['end_required_mm']:.2f} mm at each end.</p>{clearance}
 <table><thead><tr><th>Combination</th><th>Station (mm)</th><th>P (kN)</th><th>Mx (kN·m)</th>
 <th>My (kN·m)</th><th>Vx (kN)</th><th>Vy (kN)</th><th>Section status</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
 {_shear_report(data)}{drawing}{schedule_html}<ul>{issues}{limits}</ul></html>"""
