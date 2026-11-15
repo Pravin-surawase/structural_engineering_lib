@@ -13,6 +13,8 @@ Invariants tested:
 Comparative tests use paired inputs to avoid boundary skips.
 """
 
+import math
+
 import pytest
 
 from structural_lib import detailing, flexure, materials, shear, tables
@@ -181,10 +183,15 @@ class TestDetailingInvariants:
     @pytest.mark.parametrize("dia", BAR_DIAS)
     @pytest.mark.parametrize("fck", FCK_VALUES)
     @pytest.mark.parametrize("fy", FY_VALUES)
-    def test_lap_length_at_least_ld(self, dia, fck, fy):
-        """Lap length should be >= Ld (multiplier >= 1.0)."""
-        ld = detailing.calculate_development_length(dia, fck, fy, "deformed")
-        # Compression lap equals Ld; tension lap >= Ld
+    def test_lap_length_applies_bond_and_minimum_for_each_stress_state(
+        self, dia, fck, fy
+    ):
+        """IS 456 uses different bond stress and minimum laps for each state."""
+        plain_tension_bond_nmm2 = {20: 1.2, 25: 1.4, 30: 1.5, 35: 1.7, 40: 1.9}[fck]
+        deformed_tension_bond_nmm2 = 1.6 * plain_tension_bond_nmm2
+        steel_stress_nmm2 = 0.87 * fy
+        tension_ld_mm = dia * steel_stress_nmm2 / (4 * deformed_tension_bond_nmm2)
+        compression_ld_mm = tension_ld_mm / 1.25
         lap_compression = detailing.calculate_lap_length(
             dia,
             fck,
@@ -204,12 +211,8 @@ class TestDetailingInvariants:
             in_tension=True,
         )
 
-        assert (
-            lap_compression >= ld - 1
-        ), f"Compression lap ({lap_compression}) should be >= Ld ({ld})"
-        assert (
-            lap_tension >= ld - 1
-        ), f"Tension lap ({lap_tension}) should be >= Ld ({ld})"
+        assert lap_compression == math.ceil(max(compression_ld_mm, 24 * dia))
+        assert lap_tension == math.ceil(max(tension_ld_mm, 30 * dia))
 
     @pytest.mark.parametrize("dia", BAR_DIAS)
     @pytest.mark.parametrize("fck", FCK_VALUES)

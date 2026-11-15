@@ -23,10 +23,12 @@ def test_exact_accepted_contracts_and_installed_sources() -> None:
         ROOT / "docs/verification/etabs-w3f-spring-readback-repair-evidence.json"
     ).read_bytes()
     repair = json.loads(repair_bytes)
-    demand_coverage = json.loads(
-        (ROOT / "docs/verification/etabs-w3-demand-coverage-evidence.json").read_text(
-            encoding="utf-8"
-        )
+    demand_coverage_bytes = (
+        ROOT / "docs/verification/etabs-w3-demand-coverage-evidence.json"
+    ).read_bytes()
+    demand_coverage = json.loads(demand_coverage_bytes)
+    action_rows = json.loads(
+        (ROOT / "docs/verification/etabs-w3-action-row-evidence.json").read_bytes()
     )
     assert (
         hashlib.sha256(repair_bytes).hexdigest()
@@ -52,6 +54,14 @@ def test_exact_accepted_contracts_and_installed_sources() -> None:
     coverage_path = "Python/structural_lib/services/contracts/etabs_w3.py"
     assert coverage_source["path"] == coverage_path
     assert demand_coverage["live_etabs_replayed"] is False
+    assert (
+        hashlib.sha256(demand_coverage_bytes).hexdigest()
+        == action_rows["predecessor_receipt_sha256"]
+    )
+    action_row_source = action_rows["source"]
+    assert action_row_source["path"] == coverage_path
+    assert action_row_source["predecessor_sha256"] == coverage_source["current_sha256"]
+    assert action_rows["live_etabs_replayed"] is False
     for path, key in (
         ("Python/structural_lib/core/analysis_contracts.py", "accepted_core_sha256"),
         (coverage_path, "accepted_service_contract_sha256"),
@@ -61,7 +71,7 @@ def test_exact_accepted_contracts_and_installed_sources() -> None:
         expected = binding["current_sha256"]
         if path == coverage_path:
             assert coverage_source["predecessor_sha256"] == expected
-            expected = coverage_source["current_sha256"]
+            expected = action_row_source["current_sha256"]
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
     assert evidence["host"]["etabs_executable_version"] == "23.3.1.4563"
     assert evidence["host"]["comtypes"] == "1.4.16"

@@ -1,0 +1,13 @@
+{
+  "schema_version": "etabs-w3-action-row-evidence/v1",
+  "source_change_commit": "79a0c1fe6fb12ff3b77ab8567c4ab16dd9e2b6e3",
+  "predecessor_receipt_sha256": "ee0cc2283e64d1f6936eb59b14bdae3b3c2f62f7708325a8ee9f27051b226b12",
+  "source": {
+    "path": "Python/structural_lib/services/contracts/etabs_w3.py",
+    "predecessor_sha256": "08c98739329170c34c9e1326b815c3a4bd7f783a3906b2831d4363cee0b4b0ef",
+    "current_sha256": "a39fd5cbaf76c999982bb3ee8eb1573bb50769b0c40cb72067a7d7d2c0a98379"
+  },
+  "scope": "Portable caller-defined demand rules reject duplicate action row references. COM signature and spring readback evidence retains its original source binding.",
+  "paired_test": "Python/tests/unit/test_etabs_w3_contracts.py::test_caller_defined_demand_blocks_duplicate_contributing_rows",
+  "live_etabs_replayed": false
+}
