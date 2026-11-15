@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.29.2] — Candidate
+## [0.29.2] — 2026-11-15
 
 ### Fixed
 

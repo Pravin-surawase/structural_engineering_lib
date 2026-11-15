@@ -1,0 +1,68 @@
+{
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.29.2-py3-none-any.whl",
+      "sha256": "0020714c9f69ce3d7d33b896b04de1d57c07ba63b766c47691f45a070d32bd7a",
+      "size_bytes": 1407773
+    },
+    {
+      "filename": "structural_lib_is456-0.29.2.tar.gz",
+      "sha256": "cfd41e3d6a6b8817ccc18f35c24940b2e2987cd061515a60088e98ae7c31bbd3",
+      "size_bytes": 1193894
+    }
+  ],
+  "decision": "ACCEPT",
+  "hosted_checks": {
+    "required_pr_checks": {
+      "head_sha": "ca490d3c4c1149fc9d51d2fa4e9af1e480cd3ac1",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43719708065/job/132829186984"
+    },
+    "weekly_verification": {
+      "head_sha": "ca490d3c4c1149fc9d51d2fa4e9af1e480cd3ac1",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43719714511"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-11-15T14:03:25Z",
+  "integration_requirement": "Preserve the reviewed candidate ancestry, qualified Python tree and exact archive bytes.",
+  "local_verification": {
+    "artifact_record": "docs/verification/library-0292-release-artifacts.json",
+    "artifact_record_sha256": "39d2bdf06e4b14ed80543e65e431d76895aa653487fe91fe5d8ee67732f7556e",
+    "beam_column_tests_per_archive": {
+      "sdist": 762,
+      "wheel": 762
+    },
+    "build_head": "1d297e2dcde8cf29ae3ec1d4288e940cb521ef17",
+    "distribution_inputs_changed_after_build": false,
+    "installed_profiles": 20,
+    "installed_wheel_uat_cases": 29,
+    "qualification_receipt_sha256": "79351be80709a31ff8e88a9d09cb9d628616ce3aed34402a178a85ff61177091",
+    "slab_footing_cases_per_archive": {
+      "sdist": 13,
+      "wheel": 13
+    },
+    "source_merge_sha": "0947a472a8b2972e0f30be02d123faeef0bbbb3f"
+  },
+  "professional_approval": false,
+  "qualified_structural_engineering_review": false,
+  "review_scope": "The independent reviewer compared the exact artifact record with the retained qualification, archive hashes and verified #1086 merge. The new record preserves the qualified Python tree and build inputs. PR Validation and Weekly Verification subsequently passed on the reviewed evidence commit.",
+  "reviewed_candidate": {
+    "head_sha": "ca490d3c4c1149fc9d51d2fa4e9af1e480cd3ac1",
+    "python_tree_sha": "b79b71451e4f623f7c7075bc22e9240da8b5b19b",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ],
+    "tag": "v0.29.2",
+    "tree_sha": "945564545151df6bc83dc4f42f0d9ac2750c144c",
+    "version": "0.29.2"
+  },
+  "reviewer": {
+    "identity": "Codex independent release-contract reviewer /root/release_gate_audit",
+    "independent": true,
+    "reviewed_at_utc": "2026-11-15T13:35:17Z"
+  },
+  "schema_version": "exact-candidate-review-receipt/v1"
+}
