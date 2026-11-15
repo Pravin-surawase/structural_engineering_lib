@@ -394,16 +394,17 @@ def calculate_lap_length(
         in_tension: If True, tension splice; else compression splice
 
     Returns:
-        Lap length (mm)
+        Lap length (mm), rounded up after applying the bar-diameter minimum.
 
     Raises:
-        ValueError: If bar_dia, fck, or fy are invalid (via calculate_development_length).
+        ValueError: If bar_dia, fck, or fy are invalid.
     """
-    ld = calculate_development_length(bar_dia, fck, fy, bar_type)
+    ld = calculate_development_length_unrounded(bar_dia, fck, fy, bar_type)
 
     if not in_tension:
-        # Compression lap = Ld
-        return round(ld, 0)
+        # Clause 26.2.1.1 allows 25% higher bond stress in compression.
+        compression_ld = ld / 1.25
+        return float(math.ceil(max(compression_ld, 24 * bar_dia)))
 
     # Tension lap with enhancement factor
     if is_seismic:
@@ -413,9 +414,7 @@ def calculate_lap_length(
     else:
         alpha = 1.0  # 50% or less bars spliced
 
-    lap = alpha * ld
-
-    return round(lap, 0)
+    return float(math.ceil(max(alpha * ld, 30 * bar_dia)))
 
 
 # =============================================================================
@@ -495,6 +494,8 @@ def get_min_bend_radius(bar_dia: float, bar_type: str = "deformed") -> float:
             clause_ref="Cl. 26.2.2.1",
         )
 
+    if bar_type not in ("plain", "deformed"):
+        raise ValueError("bar_type must be either 'plain' or 'deformed'")
     if bar_type == "plain":
         return 2 * bar_dia
 
@@ -923,6 +924,11 @@ def check_anchorage_at_simple_support(
 
     if vu_kn < 0:
         errors.append(f"Shear force must be >= 0, got {vu_kn} kN")
+    if not math.isfinite(support_width) or support_width <= 0:
+        errors.append("support_width must be finite and positive")
+    if not math.isfinite(cover) or cover < 0:
+        errors.append("cover must be finite and nonnegative")
+    if errors:
         return AnchorageCheckResult(
             is_adequate=False,
             ld_required=0.0,

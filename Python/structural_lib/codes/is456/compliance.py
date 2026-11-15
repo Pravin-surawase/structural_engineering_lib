@@ -39,7 +39,7 @@ from structural_lib.core.data_types import (
     TorsionResult,
 )
 from structural_lib.core.errors import E_SHEAR_006, Severity
-from structural_lib.core.validation import validate_finite_reals
+from structural_lib.core.validation import require_finite_real, validate_finite_reals
 
 from .beam import flexure, serviceability, shear, torsion
 
@@ -546,6 +546,9 @@ def check_compliance_report(
     - crack_width_params: dict
     - ast_mm2_for_shear: float
     - fy_transverse_nmm2: float
+
+    Batch cases admit only zero or omitted torsion. Use the ordinary
+    single-case route for combined torsion design.
     """
 
     results: list[ComplianceCaseResult] = []
@@ -563,6 +566,13 @@ def check_compliance_report(
             raise ValueError("Each case must be a dict.")
 
         case_id = str(c.get("case_id", "") or f"CASE_{i + 1}")
+        if "tu_knm" in c:
+            torsion_knm = require_finite_real(c["tu_knm"], f"case {case_id!r} tu_knm")
+            if torsion_knm != 0:
+                raise ValueError(
+                    f"Case {case_id!r} supplies nonzero tu_knm. "
+                    "Use design_beam_is456 with the complete torsion input."
+                )
 
         mu_raw = c.get("mu_knm")
         vu_raw = c.get("vu_kn")

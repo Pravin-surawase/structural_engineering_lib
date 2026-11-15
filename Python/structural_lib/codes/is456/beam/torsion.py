@@ -481,6 +481,15 @@ def design_torsion(
     if d_opposite_mm >= D:
         raise ValueError("d_opposite_mm must be less than D")
 
+    minimum_offset_mm = cover + stirrup_dia
+    for name, face_depth in (("d", d), ("d_opposite_mm", d_opposite_mm)):
+        if D - face_depth < minimum_offset_mm:
+            raise DimensionError(
+                f"{name} places the face centroid outside the inside edge of the closed link.",
+                details={name: face_depth, "minimum_face_offset_mm": minimum_offset_mm},
+                clause_ref="Cl. 41.4.2",
+            )
+
     # Step 1: Calculate equivalent shear (Cl 41.3.1)
     ve_kn = calculate_equivalent_shear(vu_kn, tu_knm, b)
 

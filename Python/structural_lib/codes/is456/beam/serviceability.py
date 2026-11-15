@@ -151,6 +151,8 @@ def check_deflection_span_depth(
     Behavior:
     - Computes L/d.
     - Computes allowable L/d = base_allowable_ld × mf_tension_steel × mf_compression_steel × mf_flanged.
+    - Scales the default simple and continuous limits above 10 m. An explicit
+      limit is caller-owned. Cantilevers above 10 m need a direct check.
     - Records any assumed defaults in `assumptions`.
 
     Limitations:
@@ -168,30 +170,58 @@ def check_deflection_span_depth(
     """
 
     assumptions = []
-
-    if span_mm <= 0 or d_mm <= 0:
-        return DeflectionResult(
-            is_ok=False,
-            remarks="Invalid input: span_mm and d_mm must be > 0.",
-            support_condition=SupportCondition.SIMPLY_SUPPORTED,
-            assumptions=["Invalid inputs provided"],
-            inputs={
-                "span_mm": span_mm,
-                "d_mm": d_mm,
-                "support_condition": str(support_condition),
-            },
-            computed={},
-        )
-
     support, support_note = _normalize_support_condition(support_condition)
     if support_note:
         assumptions.append(support_note)
+
+    values = {
+        "span_mm": span_mm,
+        "d_mm": d_mm,
+        "base_allowable_ld": base_allowable_ld,
+        "mf_tension_steel": mf_tension_steel,
+        "mf_compression_steel": mf_compression_steel,
+        "mf_flanged": mf_flanged,
+    }
+    invalid = [
+        name
+        for name, value in values.items()
+        if value is not None and (not math.isfinite(value) or value <= 0)
+    ]
+    inputs = {
+        key: value
+        for key, value in (("span_mm", span_mm), ("d_mm", d_mm))
+        if math.isfinite(value)
+    }
+    if invalid:
+        return DeflectionResult(
+            is_ok=False,
+            remarks=f"Invalid input: {', '.join(invalid)} must be finite and positive.",
+            support_condition=support,
+            assumptions=assumptions,
+            inputs={**inputs, "support_condition": support.name},
+            computed={},
+        )
+
+    if span_mm > 10_000 and support is SupportCondition.CANTILEVER:
+        return DeflectionResult(
+            is_ok=False,
+            remarks="A cantilever above 10 m requires a calculated deflection check (Cl. 23.2.1).",
+            support_condition=support,
+            assumptions=assumptions,
+            inputs={**inputs, "support_condition": support.name},
+            computed={},
+        )
 
     if base_allowable_ld is None:
         base_allowable_ld = _DEFAULT_BASE_LD[support]
         assumptions.append(
             f"Used default base allowable L/d for {support.name} (base_allowable_ld={base_allowable_ld})."
         )
+        if span_mm > 10_000:
+            base_allowable_ld *= 10_000 / span_mm
+            assumptions.append(
+                "Scaled the default L/d limit by 10000/span_mm (Cl. 23.2.1)."
+            )
 
     if mf_tension_steel is None:
         mf_tension_steel = 1.0
@@ -210,6 +240,19 @@ def check_deflection_span_depth(
         base_allowable_ld * mf_tension_steel * mf_compression_steel * mf_flanged
     )
 
+    if (
+        not math.isfinite(ld_ratio)
+        or not math.isfinite(allowable_ld)
+        or allowable_ld <= 0
+    ):
+        return DeflectionResult(
+            is_ok=False,
+            remarks="Invalid computed span/depth ratio or allowable limit.",
+            support_condition=support,
+            assumptions=assumptions,
+            inputs={**inputs, "support_condition": support.name},
+            computed={},
+        )
     is_ok = ld_ratio <= allowable_ld
     remarks = (
         f"OK: L/d={ld_ratio:.3f} ≤ allowable={allowable_ld:.3f}"
@@ -296,6 +339,31 @@ def check_crack_width(
             f"Used default crack width limit for {exposure.name} (limit_mm={limit_mm})."
         )
 
+    invalid = [
+        name
+        for name, value, allow_zero in (
+            ("limit_mm", limit_mm, False),
+            ("acr_mm", acr_mm, False),
+            ("cmin_mm", cmin_mm, True),
+            ("h_mm", h_mm, False),
+            ("x_mm", x_mm, True),
+            ("epsilon_m", epsilon_m, True),
+            ("fs_service_nmm2", fs_service_nmm2 if epsilon_m is None else None, True),
+            ("es_nmm2", es_nmm2 if epsilon_m is None else None, False),
+        )
+        if value is not None
+        and (not math.isfinite(value) or value < 0 or (value == 0 and not allow_zero))
+    ]
+    if invalid:
+        return CrackWidthResult(
+            is_ok=False,
+            remarks=f"Invalid crack-width input: {', '.join(invalid)}.",
+            exposure_class=exposure,
+            assumptions=assumptions,
+            inputs={"exposure_class": exposure.name, "invalid_fields": invalid},
+            computed={},
+        )
+
     if epsilon_m is None:
         if fs_service_nmm2 is None:
             return CrackWidthResult(
@@ -357,7 +425,7 @@ def check_crack_width(
         )
 
     denom = 1.0 + 2.0 * ((acr_mm - cmin_mm) / (h_mm - x_mm))  # type: ignore[operator]
-    if denom <= 0:
+    if not math.isfinite(denom) or denom <= 0:
         return CrackWidthResult(
             is_ok=False,
             remarks="Invalid computed denominator in crack width formula (<= 0).",
@@ -372,11 +440,20 @@ def check_crack_width(
                 "x_mm": x_mm,
                 "epsilon_m": epsilon_m,
             },
-            computed={"denom": denom},
+            computed={"denom": denom} if math.isfinite(denom) else {},
         )
 
     wcr_mm = 3.0 * acr_mm * epsilon_m / denom  # type: ignore[operator]
 
+    if not math.isfinite(wcr_mm):
+        return CrackWidthResult(
+            is_ok=False,
+            remarks="The computed crack width is nonfinite.",
+            exposure_class=exposure,
+            assumptions=assumptions,
+            inputs={"exposure_class": exposure.name},
+            computed={},
+        )
     is_ok = wcr_mm <= limit_mm
     remarks = (
         f"OK: wcr={wcr_mm:.4f} mm ≤ limit={limit_mm:.4f} mm"
@@ -887,7 +964,25 @@ def check_deflection_level_b(
         )
     except ValueError as exc:
         return _sls_hold(DeflectionLevelBResult, inputs, str(exc), support)  # type: ignore[return-value]
-    return _sls_hold(DeflectionLevelBResult, inputs, "Long-term basis missing: permanent load, loading age and shrinkage cannot be inferred from duration_months.", support, computed={**section, "mcr_knm": mcr, "delta_short_mm": short, "load_basis": "UNFACTORED_SERVICE"}, mcr_knm=mcr, igross_mm4=section["igross_mm4"], icr_mm4=section["icr_mm4"], ieff_mm4=section["ieff_mm4"], delta_short_mm=short, delta_long_mm=math.inf, long_term_factor=math.inf)  # type: ignore[return-value]
+    return _sls_hold(
+        DeflectionLevelBResult,
+        inputs,
+        "Long-term basis missing: permanent load, loading age and shrinkage cannot be inferred from duration_months.",
+        support,
+        computed={
+            **section,
+            "mcr_knm": mcr,
+            "delta_short_mm": short,
+            "load_basis": "UNFACTORED_SERVICE",
+        },
+        mcr_knm=mcr,
+        igross_mm4=section["igross_mm4"],
+        icr_mm4=section["icr_mm4"],
+        ieff_mm4=section["ieff_mm4"],
+        delta_short_mm=short,
+        delta_long_mm=math.inf,
+        long_term_factor=math.inf,
+    )  # type: ignore[return-value]
 
 
 @clause("6.2.5.1")

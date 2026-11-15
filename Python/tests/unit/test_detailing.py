@@ -162,11 +162,12 @@ class TestLapLength:
         lap = calculate_lap_length(16, 25, 500, is_seismic=True)
         assert lap == pytest.approx(1.5 * ld, abs=5)
 
-    def test_compression_lap(self):
-        """Compression lap = Ld (no enhancement)."""
-        ld = calculate_development_length(16, 25, 500)
-        lap = calculate_lap_length(16, 25, 500, in_tension=False)
-        assert lap == pytest.approx(ld, abs=5)
+    def test_compression_lap_uses_compression_bond_stress(self):
+        assert calculate_lap_length(16, 25, 415, in_tension=False) == 516
+
+    @pytest.mark.parametrize(("in_tension", "expected_mm"), [(True, 480), (False, 384)])
+    def test_lap_length_has_a_bar_diameter_minimum(self, in_tension, expected_mm):
+        assert calculate_lap_length(16, 40, 250, in_tension=in_tension) == expected_mm
 
 
 class TestBarSpacing:
@@ -778,3 +779,15 @@ class TestStirrupAnchorage:
 
         with pytest.raises(MaterialError):
             calculate_stirrup_anchorage(0)
+
+
+def test_unknown_longitudinal_bar_type_is_rejected_by_both_hook_imports():
+    from structural_lib import detailing as compatibility
+    from structural_lib.codes.is456.beam import detailing
+
+    for route in (detailing, compatibility):
+        assert route.get_min_bend_radius(32, "plain") == 64
+        assert route.get_min_bend_radius(32, "deformed") == 96
+        for helper in (route.get_min_bend_radius, route.calculate_standard_hook):
+            with pytest.raises(ValueError, match="bar_type"):
+                helper(32, bar_type="deformd")

@@ -262,3 +262,35 @@ class TestAnchorageCheckEdgeCases:
 
         # Higher fy -> higher Ld required
         assert result_fe500.ld_required > result_fe415.ld_required
+
+
+@pytest.mark.parametrize(
+    ("field", "value"), [("support_width", float("inf")), ("cover", -40)]
+)
+def test_support_screen_does_not_accept_invalid_geometry(field, value):
+    from structural_lib import check_anchorage_at_simple_support as public_check
+
+    inputs = {
+        "bar_dia": 8,
+        "fck": 25,
+        "fy": 415,
+        "vu_kn": 60,
+        "support_width": 724,
+        "cover": 40,
+        "has_standard_bend": False,
+    }
+    result = check_anchorage_at_simple_support(**(inputs | {field: value}))
+    assert not result.is_adequate and field in result.errors[0]
+    public_inputs = {
+        "bar_dia_mm": 8,
+        "fck_nmm2": 25,
+        "fy_nmm2": 415,
+        "vu_kn": 60,
+        "support_width_mm": 724,
+        "cover_mm": 40,
+        "has_standard_bend": False,
+    }
+    public_result = public_check(**(public_inputs | {f"{field}_mm": value}))
+    assert public_result == result
+    assert not public_check(**public_inputs).is_adequate
+    assert public_check(**(public_inputs | {"support_width_mm": 726})).is_adequate

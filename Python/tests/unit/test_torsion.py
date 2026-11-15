@@ -500,12 +500,12 @@ class TestEdgeCases:
             mu_knm=500,
             b=600,
             D=1000,
-            d=950,
+            d=930,
             fck=30,
             fy=500,
             cover=50,
             corner_bar_centres_mm=(464.0, 864.0),
-            d_opposite_mm=950.0,
+            d_opposite_mm=930.0,
         )
         assert result.is_safe is True
         assert result.stirrup_spacing > 0
@@ -632,3 +632,58 @@ def test_design_torsion_rejects_nan_in_every_public_scalar(field):
 
     with pytest.raises(ValueError, match=field):
         design_torsion(**values)
+
+
+@pytest.mark.parametrize(
+    ("direct_field", "typed_field"), [("d", "d_mm"), ("d_opposite_mm", "d_opposite_mm")]
+)
+def test_torsion_face_depth_must_leave_room_for_cover_and_link(
+    direct_field, typed_field
+):
+    from structural_lib.core.errors import DimensionError, InputContractError
+    from structural_lib.design.is456 import torsion as facade
+
+    direct = {
+        "tu_knm": 45,
+        "vu_kn": 50,
+        "mu_knm": 0,
+        "b": 300,
+        "D": 500,
+        "d": 450,
+        "fck": 25,
+        "fy": 415,
+        "cover": 30,
+        "stirrup_dia": 8,
+        "pt": 0.5,
+        "corner_bar_centres_mm": (200, 400),
+        "d_opposite_mm": 450,
+    }
+    assert design_torsion(**direct).is_safe
+    with pytest.raises(DimensionError, match=direct_field):
+        design_torsion(**(direct | {direct_field: 490}))
+
+    geometry = {
+        "b_mm": 300,
+        "D_mm": 500,
+        "d_mm": 450,
+        "clear_cover_mm": 30,
+        "corner_bar_centres_b1_mm": 200,
+        "corner_bar_centres_d1_mm": 400,
+        "d_opposite_mm": 450,
+    }
+    request = {
+        "identity": {
+            "case_id": "ULS-1",
+            "family_id": "torsion",
+            "member_id": "T1",
+            "source_reference": "Lab",
+            "story": "F0",
+        },
+        "geometry": geometry,
+        "actions": {"mu_knm": 0, "vu_kn": 50, "tu_knm": 45},
+        "materials": {"fck_nmm2": 25, "fy_nmm2": 415},
+        "reinforcement": {"stirrup_diameter_mm": 8, "tension_steel_percent": 0.5},
+    }
+    assert facade.design(facade.load(request)).calculation.is_safe
+    with pytest.raises(InputContractError, match=typed_field):
+        facade.load(request | {"geometry": geometry | {typed_field: 490}})
