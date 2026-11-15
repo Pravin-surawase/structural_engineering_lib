@@ -11,6 +11,7 @@ from numbers import Real
 from structural_lib.codes.is456 import materials
 from structural_lib.codes.is456.slab._flexure import (
     calculate_ast_from_rectangular_stress_block,
+    rectangular_limiting_moment_knm,
 )
 from structural_lib.codes.is456.slab.classification import (
     classify_solid_rectangular_slab,
@@ -19,9 +20,11 @@ from structural_lib.codes.is456.slab.coefficients import (
     OneWayContinuousCoefficientSet,
 )
 from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
     SlabClassification,
     SlabContractError,
     SolidRectangularSlabGeometry,
+    slab_capacity_failure,
 )
 from structural_lib.codes.is456.traceability import clause
 
@@ -127,6 +130,16 @@ class ContinuousOneWaySlabResult:
     source_refs: tuple[str, ...]
 
 
+class _ContinuousSlabCapacityExceededError(SlabContractError):
+    """Expose a known engineering failure while preserving the legacy exception."""
+
+    def __init__(self, result: SlabCapacityFailureResult) -> None:
+        self.result = result
+        super().__init__(
+            f"{result.governing_region} exceeds singly reinforced rectangular capacity"
+        )
+
+
 def _moment_action(
     *,
     action_id: str,
@@ -140,19 +153,19 @@ def _moment_action(
     fy: float,
 ) -> ContinuousOneWaySlabActionResult:
     moment = coefficient * line_load_kn_per_m * span_m**2
-    xu_max_over_d = materials.get_xu_max_d(fy)
-    limiting = (
-        0.36
-        * xu_max_over_d
-        * (1.0 - 0.42 * xu_max_over_d)
-        * fck
-        * strip_width_mm
-        * d_mm**2
-        / 1_000_000.0
+    limiting = rectangular_limiting_moment_knm(
+        b_mm=strip_width_mm, d_mm=d_mm, fck_n_per_mm2=fck, fy_n_per_mm2=fy
     )
     if moment > limiting:
-        raise SlabContractError(
-            f"{action_id} exceeds singly reinforced rectangular capacity"
+        raise _ContinuousSlabCapacityExceededError(
+            slab_capacity_failure(
+                component="continuous_one_way_slab_flexure",
+                governing_region=action_id,
+                factored_moment_knm=moment,
+                limiting_moment_knm=limiting,
+                clause_refs=("IS 456:2000 Cl. 24.1", "IS 456:2000 Cl. 38.1"),
+                source_refs=("IS 456:2000 Cl. 22.5",),
+            )
         )
     ast, xu = calculate_ast_from_rectangular_stress_block(
         b_mm=strip_width_mm,

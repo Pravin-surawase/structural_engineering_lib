@@ -1,4 +1,4 @@
-"""Curated facades for the three maintained solid-slab route classes."""
+"""Curated facades for supported solid-slab checks."""
 
 from __future__ import annotations
 
@@ -39,6 +39,17 @@ from structural_lib.services.contracts.family_f1 import (
     TwoWaySlabInputV1,
     TwoWaySlabReinforcementV1,
 )
+from structural_lib.services.contracts.slab_action_set import (
+    ContinuousOneWaySlabActionSetInputV1,
+    TwoWaySlabActionSetInputV1,
+)
+from structural_lib.services.slab_action_set import (
+    SlabActionCheckV1,
+    SlabActionRowResultV1,
+    SlabActionSetResultV1,
+    check_action_set,
+    load_action_set,
+)
 from structural_lib.services.slab_api import (
     CompleteOneWaySlabDesignResult,
     ContinuousOneWaySlabDesignResult,
@@ -49,6 +60,13 @@ from structural_lib.services.slab_api import (
 )
 
 __all__ = [
+    "ContinuousOneWaySlabActionSetInputV1",
+    "TwoWaySlabActionSetInputV1",
+    "SlabActionCheckV1",
+    "SlabActionRowResultV1",
+    "SlabActionSetResultV1",
+    "check_action_set",
+    "load_action_set",
     "ContinuousOneWaySlabActionsV1",
     "ContinuousOneWaySlabGeometryV1",
     "ContinuousOneWaySlabReinforcementV1",

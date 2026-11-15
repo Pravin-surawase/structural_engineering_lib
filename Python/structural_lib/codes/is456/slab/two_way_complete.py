@@ -7,9 +7,9 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-from structural_lib.codes.is456 import materials
 from structural_lib.codes.is456.slab._flexure import (
     calculate_ast_from_rectangular_stress_block,
+    rectangular_limiting_moment_knm,
 )
 from structural_lib.codes.is456.slab.coefficients import TwoWayPanelCoefficientSet
 from structural_lib.codes.is456.slab.detailing import (
@@ -193,15 +193,8 @@ def _moment_region(
     source_refs: tuple[str, ...],
 ) -> TwoWayMomentRegionResult | SlabCapacityFailureResult:
     moment = coefficient * load * short_span_m**2
-    xu_max_over_d = materials.get_xu_max_d(fy)
-    limiting = (
-        0.36
-        * xu_max_over_d
-        * (1.0 - 0.42 * xu_max_over_d)
-        * fck
-        * 1000.0
-        * d_mm**2
-        / 1_000_000.0
+    limiting = rectangular_limiting_moment_knm(
+        b_mm=1000.0, d_mm=d_mm, fck_n_per_mm2=fck, fy_n_per_mm2=fy
     )
     if moment > limiting:
         return slab_capacity_failure(
@@ -238,6 +231,11 @@ def _moment_region(
         neutral_axis_depth_mm=xu,
         reinforcement=reinforcement,
     )
+
+
+def _support_shear_demand_kn_per_m(design_input: TwoWayPanelDesignInput) -> float:
+    short_span_m = design_input.geometry.x_effective_span_mm / 1000.0
+    return design_input.factored_area_load_kn_per_m2 * short_span_m / 2.0
 
 
 @clause("24.4", "40.2")
@@ -356,11 +354,7 @@ def design_two_way_slab_panel(
         )
     shear = check_solid_slab_one_way_shear(
         SlabShearInput(
-            factored_shear_kn=(
-                design_input.factored_area_load_kn_per_m2
-                * (design_input.geometry.x_effective_span_mm / 1000.0)
-                / 2.0
-            ),
+            factored_shear_kn=_support_shear_demand_kn_per_m(design_input),
             strip_width_mm=1000.0,
             effective_depth_mm=min(design_input.d_x_mm, design_input.d_y_mm),
             overall_depth_mm=design_input.geometry.thickness_mm,
